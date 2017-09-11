@@ -1,0 +1,97 @@
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>WebPlayer POC</title>
+        <link rel="stylesheet" href="{% static "scss/style.css" %}">
+    </head>
+    <body>
+        <!-- <p>Ctrl + M : mute</p>
+        <p>&rarr; : fastforward 10s</p>
+        <p>Ctrl + &rarr; : fastforward 30s</p>
+        <p>&larr; : rewind 10s</p>
+        <p>Ctrl + &larr; : rewind 30s</p>
+        <p>&uarr; : ++volume 1</p>
+        <p>Ctrl + &uarr; : ++volume 10</p>
+        <p>&darr; : --volume 1</p>
+        <p>Ctrl + &darr; : --volume 10</p>
+        <p>Space : Play/Pause</p> -->
+        <div id="footBar">
+            <div id="spectrumContainer"> <!-- Bc of float left, this must be before other divs -->
+
+            </div>
+            <div id="metadataContainer">
+                <div class="tootltipWrapper">
+                    <img src="{% static "img/cover.jpg" %}" alt="">
+                    <span class="tooltipCover"><img src="{% static "img/cover.jpg" %}" alt=""></span>
+                </div>
+                <ul>
+                    <li>404</li>
+                    <li>Knife Party</li>
+                    <li>Abandon Ship [LP]</li>
+                    <li><span>2014</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>Complextro</span></li>
+                </ul>
+            </div>
+            <div id="controlsContainer">
+                <div id="half">
+                    <a id="buttonRepeat"><img src="{% static "img/repeat.svg" %}" id="imageRepeat" alt=""></a>
+                    <a id="buttonPrevious"><img src="{% static "img/previous.svg" %}" id="imagePrevious" alt=""></a>
+                    <a id="buttonPlay"><img src="{% static "img/play.svg" %}" id="imagePlay" alt=""></a>
+                    <a id="buttonStop"><img src="{% static "img/stop.svg" %}" id="imageStop" alt=""></a>
+                    <a id="buttonNext"><img src="{% static "img/next.svg" %}" id="imageNext" alt=""></a>
+                    <a id="buttonMute">
+                        <img src="{% static "img/volume.svg" %}" id="imageMute" alt="" />
+                        <div id="volumeBarWrapper">
+                            <div id="volumeBar">
+                                <div id="volume"></div>
+                                <div id="volumeThumb"></div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <div id="queueExpander">
+                        <img src="{% static "img/menu.svg" %}" id="imageQueueExpander" alt="">
+                        <div id="queue">
+
+                        </div>
+                    </div>
+                </div>
+                <div id="half">
+                    <div id="progressBarWrapper">
+                        <span id="currentDuration" class="pointer">--:--</span>
+                        <div id="progressBar">
+                            <div id="progress"></div>
+                            <div id="progressThumb"></div>
+                            <div id="progressTimecodeHover">
+                                --:--
+                                <p>- --:--</p>
+                            </div>
+                        </div>
+                        <span id="totalDuration" class="pointer">--:--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <audio id="audioPlayer">
+            <source src="http://kphamle.com/lol.mp3" type="audio/ogg">
+             Your browser does not support the audio element.
+       </audio>
+
+        <!-- Add absolute path in js-->
+
+       <script type="text/javascript" src="{% static "js/Spectrum.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/Queue.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/ProgressBar.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/VolumeBar.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/Utils.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/App.js" %}"></script>
+       <script type="text/javascript">
+            var app = new App();
+        </script>
+    </body>
+</html>
