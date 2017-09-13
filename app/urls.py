@@ -6,4 +6,5 @@ app_name = 'app'
 
 urlpatterns =[
     url(r'^$', views.mainView.as_view(), name='index'),
+    url(r'^ajax/rescan/$', views.rescan_music,  name='rescan'),
 ]
