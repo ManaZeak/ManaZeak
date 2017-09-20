@@ -1,6 +1,7 @@
 # import eyed3
 import os
 
+import eyed3
 from django.views.generic.list import ListView
 from django.http import JsonResponse
 from os import listdir
@@ -18,17 +19,17 @@ class mainView(ListView):
 def initialScan(request):
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     library = os.path.join(absolutePath, 'static/audio')
-    tracks = [Track()]
+    tracks = []
 
     for root, dirs, files in os.walk(library):
         for file in files:
-            track = Track()
-
             if file.lower().endswith(('.mp3', '.ogg', '.flac', '.wav')):
-                track.location = root + "\\" + file
-                track.title = file  # REPLACE BY TAG
-                # track.year =
-                # track.composer =
+                track = Track()
+                track.location = root + "/" + file
+                audioFile = eyed3.load(root + "/" + file)
+                track.title = audioFile.tag.title
+                track.year = audioFile.tag.getBestDate().year
+                # track.composer = audioFile.frame.
                 # track.performer =
                 # track.number =
                 # track.bpm =
@@ -50,10 +51,6 @@ def initialScan(request):
                 tracks.append(track)
 
     addTracksInDB(tracks)
-    # track_path = os.path.join(library, onlyFiles[1])
-    # audio_file = eyed3.load(track_path)
-    # audio_file.tag.artist = u"Zobar2k"
-    # audio_file.tag.save()
     data = {
         'OK': "OK",
     }
