@@ -1,5 +1,5 @@
-eyed3
 Django
 django-sass-processor
 libsass
 psycopg2
+mutagen
