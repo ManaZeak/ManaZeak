@@ -20,7 +20,7 @@ class FileType(models.Model):
 
 
 class Track(models.Model):
-    location = models.FilePathField()
+    location = models.FilePathField(max_length=1000)
     title = models.CharField(max_length=1000)
     year = models.IntegerField(null=True)
     composer = models.CharField(max_length=1000, null=True)
@@ -36,8 +36,8 @@ class Track(models.Model):
     discNumber = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
     numberTotalTrack = models.IntegerField(null=True)
-    lastModified = models.DateField(null=True)
-    artist = models.ForeignKey(Artist, null=True)
+    lastModified = models.DateField(auto_now=True, null=True)
+    artist = models.ManyToManyField(Artist, null=True)
     album = models.ForeignKey(Album, null=True)
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)

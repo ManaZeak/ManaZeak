@@ -4,7 +4,8 @@ from . import views
 
 app_name = 'app'
 
-urlpatterns =[
+urlpatterns = [
     url(r'^$', views.mainView.as_view(), name='index'),
     url(r'^ajax/rescan/$', views.initialScan, name='rescan'),
+    url(r'^DEBUG/drop/$', views.dropAllDB, name='drop'),
 ]
