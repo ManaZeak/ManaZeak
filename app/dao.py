@@ -8,4 +8,3 @@ def addTracksInDB(tracks):
 def removeTracksInDB(tracks):
     for track in tracks:
         track.delete()
-

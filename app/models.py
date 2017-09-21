@@ -30,6 +30,7 @@ class Track(models.Model):
     lyrics = models.CharField(max_length=42000, null=True)
     comment = models.CharField(max_length=10000, null=True)
     bitRate = models.IntegerField(null=True)
+    bitRateMode = models.IntegerField(null=True)
     sampleRate = models.IntegerField(null=True)
     duration = models.IntegerField(null=True)
     discNumber = models.IntegerField(null=True)
