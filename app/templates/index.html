@@ -18,10 +18,15 @@
         <p>&darr; : --volume 1</p>
         <p>Ctrl + &darr; : --volume 10</p>
         <p>Space : Play/Pause</p> -->
-        <div id="footBar">
-            <div id="spectrumContainer"> <!-- Bc of float left, this must be before other divs -->
 
-            </div>
+        <div id="listView">
+
+        </div>
+
+        <div id="footBar">
+ <!--           <div id="spectrumContainer"> <!-- Bc of float left, this must be before other divs -->
+
+            <!--</div> -->
             <div id="metadataContainer">
                 <div class="tootltipWrapper">
                     <img src="{% static "img/cover.jpg" %}" alt="">
@@ -50,7 +55,6 @@
                             </div>
                         </div>
                     </a>
-
                     <div id="queueExpander">
                         <img src="{% static "img/menu.svg" %}" id="imageQueueExpander" alt="">
                         <div id="queue">
@@ -76,20 +80,20 @@
         </div>
 
         <audio id="audioPlayer">
-            <source src="http://kphamle.com/lol.mp3" type="audio/ogg">
+            <source src="/static/audio/lol.mp3" type="audio/ogg">
              Your browser does not support the audio element.
-       </audio>
+        </audio>
 
         <!-- Add absolute path in js-->
-
-       <script type="text/javascript" src="{% static "js/Spectrum.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/Queue.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/ProgressBar.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/VolumeBar.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/Utils.js" %}"></script>
-       <script type="text/javascript" src="{% static "js/App.js" %}"></script>
-       <script type="text/javascript">
+        <script type="text/javascript" src="{% static "js/Track.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ListView.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Queue.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ProgressBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/VolumeBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Utils.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/App.js" %}"></script>
+        <script type="text/javascript">
             var app = new App();
         </script>
     </body>
