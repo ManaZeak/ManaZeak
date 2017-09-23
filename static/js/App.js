@@ -3,32 +3,32 @@ var App = function() {
     this.ui = {
         play: {
             button: document.getElementById("buttonPlay"),
-            image:  document.getElementById("imagePlay"),
+            image:  document.getElementById("imagePlay")
         },
         stop: {
             button: document.getElementById("buttonStop"),
-            image:  document.getElementById("imageStop"),
+            image:  document.getElementById("imageStop")
         },
         mute: {
             button: document.getElementById("buttonMute"),
-            image:  document.getElementById("imageMute"),
+            image:  document.getElementById("imageMute")
         },
         repeat: {
             button: document.getElementById("buttonRepeat"),
-            image:  document.getElementById("imageRepeat"),
+            image:  document.getElementById("imageRepeat")
         },
         next: {
             button: document.getElementById("buttonNext"),
-            image:  document.getElementById("imageNext"),
+            image:  document.getElementById("imageNext")
         },
         previous: {
             button: document.getElementById("buttonPrevious"),
-            image:  document.getElementById("imagePrevious"),
+            image:  document.getElementById("imagePrevious")
         },
         queueExpander: {
             button: document.getElementById("queueExpander"),
-            image:  document.getElementById("imageQueueExpander"),
-        },
+            image:  document.getElementById("imageQueueExpander")
+        }
     };
 
     // Objects
@@ -52,8 +52,10 @@ var App = function() {
 
 App.prototype = {
     init: function() {
-        this.keyListenner(); // Loading shortcuts
-        this.eventListenner(); // Loading events
+        this.keyListener(); // Loading shortcuts
+        this.eventListener(); // Loading events
+
+        var tmp = new ListView();
     },
 
     mouseMove: function(event) {
@@ -207,7 +209,7 @@ App.prototype = {
         this.progressBar.invertTimecode(this.player.getPlayer());
     },
 
-    keyListenner: function() {
+    keyListener: function() {
         var that = this;
 
         // Key pressed event
@@ -228,7 +230,7 @@ App.prototype = {
                 case 40: // Down arrow
                     that.volumeDown(event);
                     break;
-                case 77: // M key (w/ ctrl)
+                case 77: // m key (w/ ctrl)
                     that.toggleMute(event);
                     break;
                 default:
@@ -251,7 +253,7 @@ App.prototype = {
         });
     },
 
-    eventListenner: function() {
+    eventListener: function() {
         var that = this;
         // Button event listeners
         this.ui.play.button.addEventListener("click", this.togglePlay.bind(this));
@@ -274,5 +276,5 @@ App.prototype = {
         });
 
         this.volumeBar.getContainer().addEventListener("mousedown", that.mouseDown.bind(this));
-    },
+    }
 };
