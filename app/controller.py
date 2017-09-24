@@ -27,7 +27,7 @@ def addTrackMP3(root, file):
     totalTrack = 0
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
-            if audioTag['TRCK'].text[0].contains("/"):
+            if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
                 tags = audioTag['TRCK'].text[0].split('/')
                 track.number = tags[0]
                 totalTrack = tags[1]
@@ -51,6 +51,8 @@ def addTrackMP3(root, file):
     if 'TSIZ' in audioTag:
         if not audioTag['TSIZ'].text[0] == "":
             track.size = audioTag['TSIZ'].text[0]
+    if 'TXXX' in audioTag:
+        print(audioTag['TXXX'].text[0])
 
     # --- Save data for many-to-many relationship ---
     track.save()
@@ -77,16 +79,20 @@ def addTrackMP3(root, file):
 
     # --- Adding album to DB ---
     if 'TALB' in audioTag:
-        albumTitle = audioTag['TPE1'].text[0]
+        albumTitle = audioTag['TALB'].text[0]
         if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
             album = Album()
             album.title = albumTitle
+            album.numberTotalTrack = totalTrack
             album.save()
-            album.artist.add(track.artist)
+            for trackArtist in track.artist.all():
+                album.artist.add(trackArtist)
         album = Album.objects.get(title=albumTitle)
-        if album.artist.filter(name=track.artist.name).count() == 0:  # The Artist wasn't added
-            album.artist.add(track.artist)
-            album.save()
+        # Check for each artist if he exists in the album
+        for trackArtist in track.artist.all():
+            if album.artist.filter(name=trackArtist.name).count() == 0:  # The Artist wasn't added
+                album.artist.add(trackArtist)
+                album.save()
         track.album = album
     else:
         pass
