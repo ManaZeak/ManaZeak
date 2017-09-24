@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.generic.list import ListView
 
 from app.controller import addTrackMP3
-from app.models import Playlist, Track, Artist
+from app.models import Playlist, Track, Artist, Album
 
 
 class mainView(ListView):
@@ -63,10 +63,13 @@ def initialScan(request):
 def dropAllDB(request):
     tracks = Track.objects.all()
     artists = Artist.objects.all()
+    albums = Album.objects.all()
     for track in tracks:
         track.delete()
     for artist in artists:
         artist.delete()
+    for album in albums:
+        album.delete()
     data = {
         'DROPPED': "OK",
         }
