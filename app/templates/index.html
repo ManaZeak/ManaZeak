@@ -19,8 +19,10 @@
         <p>Ctrl + &darr; : --volume 10</p>
         <p>Space : Play/Pause</p> -->
 
-        <div id="listView">
+        <div id="mainContainer">
+<!--            <div id="listView">
 
+            </div>-->
         </div>
 
         <div id="footBar">
@@ -85,6 +87,7 @@
         </audio>
 
         <!-- Add absolute path in js-->
+        <script type="text/javascript" src="{% static "js/createLibrary.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Track.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ListView.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Queue.js" %}"></script>
@@ -93,6 +96,7 @@
         <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/createLibrary.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
             var app = new App();

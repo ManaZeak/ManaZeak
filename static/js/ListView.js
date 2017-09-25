@@ -1,4 +1,5 @@
 var ListView = function() {
+    this.listView = null;
     this.tracksToLoad = [];
     this.tracks = [];
 
@@ -7,6 +8,9 @@ var ListView = function() {
 
 ListView.prototype = {
     init: function() {
+        this.listView = document.createElement("div");
+        this.listView.id ="listView";
+
         this.initColumnBar();
 
         var track = {
@@ -41,6 +45,7 @@ ListView.prototype = {
         this.tracksToLoad[2] = track3;
 
         this.addTracks(this.tracksToLoad);
+        document.getElementById("mainContainer").appendChild(this.listView);
     },
 
     initColumnBar: function() {
@@ -75,7 +80,7 @@ ListView.prototype = {
         columnBar.appendChild(genre);
         columnBar.appendChild(year);
 
-        document.getElementById("listView").appendChild(columnBar);
+        this.listView.appendChild(columnBar);
     },
 
     addTracks: function(tracks) {
@@ -83,7 +88,7 @@ ListView.prototype = {
             // TODO : viewPort to only load visible items
             var newTrack = new Track(tracks[i]);
 
-            newTrack.createListViewEntry();
+            newTrack.createListViewEntry(this.listView);
             newTrack.uiTrack.addEventListener("click", newTrack.toggleSelected.bind(newTrack));
             // TODO : selction mode using ctrl, otherwise unselect
 
