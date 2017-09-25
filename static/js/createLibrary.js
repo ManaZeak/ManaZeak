@@ -44,13 +44,12 @@ createLibrary.prototype = {
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                var myArr = JSON.parse(this.responseText);
-                console.log(myArr);
+            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
+                console.log(JSON.parse(this.responseText));
             }
         };
 
-        xmlhttp.open("POST", "ajax/rescan", true);
+        xmlhttp.open("POST", "ajax/rescan", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({name:"John Rambo", time:"2pm"}));
     }
