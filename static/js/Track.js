@@ -15,7 +15,7 @@ Track.prototype = {
         this.year     = track.year;
     },
 
-    createListViewEntry: function() {
+    createListViewEntry: function(listView) {
         this.uiTrack = document.createElement("div");
         this.uiTrack.className = "trackContainer";
 
@@ -49,7 +49,7 @@ Track.prototype = {
 
         //this.uiTrack.addEventListener("dblclick", this.test.bind(this));
 
-        document.getElementById("listView").appendChild(this.uiTrack);
+        listView.appendChild(this.uiTrack);
     },
 
     toggleSelected: function() {

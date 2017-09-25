@@ -57,11 +57,39 @@ App.prototype = {
 
         // TODO : get user playlists -> if none, display creation menu, else, display first playlist
 
+        // Getting user playlists
+        var xmlhttp = new XMLHttpRequest();
+        var that = this;
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                that.start(JSON.parse(this.responseText));
+            }
+        };
+
+        xmlhttp.open("GET", "ajax/getPlaylists", true);
+        xmlhttp.send();
+
         /* Test zone here, to add try new features in tmp */
-        var tmp = new ListView();
-        var tst = new Notification("BDD invalide", "Une erreur est survenue lors du chargement de la base.");
+        //var tmp = new ListView();
+        //var tst = new Notification("BDD invalide", "Une erreur est survenue lors du chargement de la base.");
         //document.getElementById("buttonToast").addEventListener("click", this.tmp.bind(this))
     },
+
+    start: function(playlists) {
+        // User first connection : need too create the first library
+        if (playlists.RESULT === "NONE") {
+            var n = new createLibrary(); // TODO : put special argument for first welcome
+        }
+    },
+
+
+
+
+
+
+
+
 
 //    tmp: function() {
   //      var tst = new Notification(1, "ZOBARE");
