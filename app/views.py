@@ -17,6 +17,13 @@ class mainView(ListView):
 def initialScan(request):
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     library = os.path.join(absolutePath, 'static/audio')
+    if not os.path.isdir(library):
+        data = {
+            'DONE': 'FAIL',
+            'ERROR': 'No such directory',
+        }
+        return JsonResponse(data)
+    failedItems = []
 
     for root, dirs, files in os.walk(library):
         for file in files:
@@ -36,7 +43,7 @@ def initialScan(request):
                 track.location = root + "/" + file
 
             else:
-                print("FAIL!")
+                failedItems.append(file)
 
                 # track.title =
                 # track.bitRate =
@@ -56,7 +63,8 @@ def initialScan(request):
                 # track.fileType =
     # addTracksInDB(tracks)
     data = {
-        'OK': "OK",
+        'DONE': "OK",
+        'FAILS': failedItems,
     }
     return JsonResponse(data)
 
