@@ -2,12 +2,15 @@
 import os
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.list import ListView
 
+import app
 from app.controller import addTrackMP3
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album
@@ -17,11 +20,9 @@ class mainView(ListView):
     template_name = 'index.html'
     queryset = Playlist
 
-    def get_context_data(self, **kwargs):
-        ctx = super(mainView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated():
-            ctx = Track.objects.all()
-        return ctx
+    @method_decorator(login_required(redirect_field_name='login.html', login_url='app:login'))
+    def dispatch(self, *args, **kwargs):
+        return super(mainView, self).dispatch(*args, **kwargs)
 
 
 def initialScan(request):
@@ -137,6 +138,26 @@ class UserFormLogin(View):
                 return redirect('app:index')
 
         return render(request, self.template_name, {'form': form})
+
+
+def getUserPlaylists(request):
+    playlists = Playlist.objects.filter(user=request.user)
+    playlistNames = []
+    playlistIds = []
+    if not playlists:
+        data = {
+            'RESULT': 'NONE'
+        }
+        return JsonResponse(data)
+    for playlist in playlists:
+        playlistNames.append(playlist.name)
+        playlistIds.append(playlist.id)
+    data = {
+        'RESULT': len(playlistNames),
+        'NAMES': playlistNames,
+        'ID': playlistIds,
+    }
+    return JsonResponse(data)
 
 
 def logoutView(request):
