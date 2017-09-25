@@ -58,14 +58,14 @@ ListView.prototype = {
         artist.className   = "artist";
         composer.className = "composer";
         album.className    = "album";
-        genre.className     = "genre";
+        genre.className    = "genre";
         year.className     = "year";
 
         title.innerHTML    = "Title";
         artist.innerHTML   = "Artist";
         composer.innerHTML = "Composer";
         album.innerHTML    = "Album";
-        genre.innerHTML     = "Genre";
+        genre.innerHTML    = "Genre";
         year.innerHTML     = "Year";
 
         columnBar.appendChild(title);
