@@ -359,28 +359,28 @@ html, body {
 .columnHeader {
     width: 100%;
     height: 30px;
-    font-size: 0.8em;
 }
 
 .trackContainer {
     width: 100%;
-    height: 30px;
-    font-size: 0.8em;
+    height: 1.3em;
+    line-height: 1.3em;
+    font-size: 0.85em;
     cursor: pointer;
 }
 
 .title {
-    width: 30%;
+    width: 25%;
     display: inline-block;
 }
 
 .artist {
-    width: 22.5%;
+    width: 20%;
     display: inline-block;
 }
 
 .composer {
-    width: 22.5%;
+    width: 20%;
     display: inline-block;
 }
 
@@ -389,7 +389,12 @@ html, body {
     display: inline-block;
 }
 
+.genre {
+    width: 12.5%;
+    display: inline-block;
+}
+
 .year {
-    width: 5%;
+    width: 2.5%;
     display: inline-block;
 }
