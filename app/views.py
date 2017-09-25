@@ -2,6 +2,7 @@
 import os
 
 from django.http import JsonResponse
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
 from app.controller import addTrackMP3
@@ -75,3 +76,6 @@ def dropAllDB(request):
         }
     return JsonResponse(data)
 
+
+class viewDB(TemplateView):
+    template_name = 'db.html'

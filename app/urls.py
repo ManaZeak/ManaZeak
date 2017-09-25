@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^$', views.mainView.as_view(), name='index'),
     url(r'^ajax/rescan/$', views.initialScan, name='rescan'),
     url(r'^DEBUG/drop/$', views.dropAllDB, name='drop'),
+    url(r'^db/$', views.viewDB.as_view(), name='db'),
 ]
