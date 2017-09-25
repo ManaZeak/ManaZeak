@@ -80,16 +80,9 @@ html, body {
 .tootltipWrapper .tooltipCover img {
     border-radius: 3px;
     height: 348px !important;
-    padding: 0;
-    padding-top: 1px;
+    padding: 1px 0 0;
     width: 348px !important;
 }
-
-
-
-
-
-
 
 #footBar #controlsContainer {
     /*border: solid 1px black;*/
@@ -156,7 +149,7 @@ html, body {
     background-color: rgb(255, 0, 0);
     border-radius: 4px;
     height: 100%;
-    width: 0%;
+    width: 0;
 
     transition: background-color 0.15s ease;
 }
@@ -167,7 +160,7 @@ html, body {
     border-radius: 5px;
     height: 10px;
     left: -6px;
-    margin-left: 0%;
+    margin-left: 0;
     position: absolute;
     top: -4px;
     opacity: 0;
@@ -274,7 +267,7 @@ html, body {
     background-color: rgb(255, 0, 0);
     border-radius: 4px;
     bottom: 0;
-    height: 0%;
+    height: 0;
     width: 100%;
     position: absolute;
 
@@ -287,7 +280,7 @@ html, body {
     border-radius: 5px;
     height: 10px;
     left: -4px;
-    bottom: 0%;
+    bottom: 0;
     position: absolute;
     margin-bottom: -4px;
     opacity: 0;
@@ -350,4 +343,58 @@ html, body {
     right: 0;
     bottom: 0;
     background-color: chartreuse;
+}
+
+
+/* listview */
+#listView {
+    width: 100%;
+    height: calc(100% - 80px);
+    top: 0;
+    position: absolute;
+    padding: 0 10%;
+    box-sizing: border-box;
+}
+
+.columnHeader {
+    width: 100%;
+    height: 30px;
+}
+
+.trackContainer {
+    width: 100%;
+    height: 1.3em;
+    line-height: 1.3em;
+    font-size: 0.85em;
+    cursor: pointer;
+}
+
+.title {
+    width: 25%;
+    display: inline-block;
+}
+
+.artist {
+    width: 20%;
+    display: inline-block;
+}
+
+.composer {
+    width: 20%;
+    display: inline-block;
+}
+
+.album {
+    width: 20%;
+    display: inline-block;
+}
+
+.genre {
+    width: 12.5%;
+    display: inline-block;
+}
+
+.year {
+    width: 2.5%;
+    display: inline-block;
 }

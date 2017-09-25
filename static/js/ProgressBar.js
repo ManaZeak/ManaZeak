@@ -100,7 +100,7 @@ ProgressBar.prototype = {
         }
     },
 
-    invertTimecode: function(track) {
+    invertTimecode: function() {
         if (!this.isInverted) {
             this.isInverted = !this.isInverted;
         } else {
@@ -118,5 +118,5 @@ ProgressBar.prototype = {
     setCurrentDuration: function(current) { this.duration.current = current; },
     setTotalDuration: function(total)     { this.duration.total = total;     },
     setIsDragging: function(isDragging)   { this.isDragging = isDragging;    },
-    setIsMouseOver: function(isMouseOver) { this.isMouseOver = isMouseOver;  },
+    setIsMouseOver: function(isMouseOver) { this.isMouseOver = isMouseOver;  }
 };
