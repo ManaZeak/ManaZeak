@@ -55,8 +55,15 @@ App.prototype = {
         this.keyListener(); // Loading shortcuts
         this.eventListener(); // Loading events
 
+        /* Test zone here, to add try new features in tmp */
         var tmp = new ListView();
+        var tst = new Notification("BDD invalide", "Une erreur est survenue lors du chargement de la base.");
+        //document.getElementById("buttonToast").addEventListener("click", this.tmp.bind(this))
     },
+
+//    tmp: function() {
+  //      var tst = new Notification(1, "ZOBARE");
+    //},
 
     mouseMove: function(event) {
         // Updating the ProgressBar while user is moving the mouse

@@ -398,3 +398,62 @@ html, body {
     width: 2.5%;
     display: inline-block;
 }
+
+/* Notification */
+.notificationContainer {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    width: 300px;
+    height: 100px;
+    z-index: 999;
+    background-color: aqua;
+    opacity: 0;
+}
+
+.icon {
+    color: #777;
+    position: absolute;
+    left: 20px;
+    top: 33px;
+    width: 33px;
+    height: 33px;
+}
+
+.title2 {
+    color: #777;
+    position: absolute;
+    left: 73px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    font-size: 1em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.message {
+    color: #777;
+    position: absolute;
+    left: 73px;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 1em;
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    word-wrap: break-word;
+}
+
+.close {
+    color: #777;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}

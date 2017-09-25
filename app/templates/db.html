@@ -10,7 +10,14 @@
     <body>
         <h1>DB Management</h1>
         <input type="text" name="" value="" placeholder="Path to library">
-        <button>Scan</button>
+        <button id="buttonScan">Scan</button>
         <button>Drop</button>
+
+        <div id="id01"></div>
+
+        <script type="text/javascript" src="{% static "js/utils/Database.js" %}"></script>
+        <script type="text/javascript">
+            var db = new Database();
+        </script>
     </body>
 </html>
