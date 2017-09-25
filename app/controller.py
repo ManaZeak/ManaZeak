@@ -17,7 +17,6 @@ def addTrackMP3(root, file):
 
     # --- FILE TAG ---
     audioTag = ID3(root + "/" + file)
-    print(audioTag.pprint())
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = audioTag['TIT2'].text[0]
@@ -25,6 +24,7 @@ def addTrackMP3(root, file):
         if not audioTag['TDRC'].text[0].get_text() == "":
             track.year = audioTag['TDRC'].text[0].get_text()[:4]  # Date of Recording
     totalTrack = 0
+    totalDisc = 1
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
@@ -51,8 +51,10 @@ def addTrackMP3(root, file):
     if 'TSIZ' in audioTag:
         if not audioTag['TSIZ'].text[0] == "":
             track.size = audioTag['TSIZ'].text[0]
-    if 'TXXX' in audioTag:
-        print(audioTag['TXXX'].text[0])
+    if len(audioTag.getall('TXXX')) != 0:
+        for txxx in audioTag.getall('TXXX'):
+            if txxx.desc == 'TOTALDISCS':
+                totalDisc = txxx.text[0]
 
     # --- Save data for many-to-many relationship ---
     track.save()
@@ -84,6 +86,7 @@ def addTrackMP3(root, file):
             album = Album()
             album.title = albumTitle
             album.numberTotalTrack = totalTrack
+            album.numberOfDisc = totalDisc
             album.save()
             for trackArtist in track.artist.all():
                 album.artist.add(trackArtist)
