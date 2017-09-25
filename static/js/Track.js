@@ -1,6 +1,7 @@
 var Track = function(track) {
     this.uiTrack = null;
     this.isSelected = false;
+    this.isOdd = null;
 
     this.init(track);
 };
@@ -15,9 +16,16 @@ Track.prototype = {
         this.year     = track.year;
     },
 
-    createListViewEntry: function() {
+    createListViewEntry: function(odd) {
         this.uiTrack = document.createElement("div");
-        this.uiTrack.className = "trackContainer";
+        if (odd) {
+            this.isOdd = true;
+            this.uiTrack.style.background = "darkgrey";
+        } else {
+            this.isOdd = false;
+            this.uiTrack.style.background = "none";
+        }
+
 
         var title    = document.createElement("div");
         var artist   = document.createElement("div");
@@ -55,7 +63,12 @@ Track.prototype = {
     toggleSelected: function() {
         if (this.isSelected) {
             this.isSelected = !this.isSelected;
-            this.uiTrack.style.background = "none";
+
+            if (this.isOdd) {
+                this.uiTrack.style.background = "darkgrey";
+            } else {
+                this.uiTrack.style.background = "none";
+            }
         } else {
             this.isSelected = !this.isSelected;
             this.uiTrack.style.background = "red";
