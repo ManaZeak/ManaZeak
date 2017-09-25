@@ -83,7 +83,8 @@ ListView.prototype = {
             // TODO : viewPort to only load visible items
             var newTrack = new Track(tracks[i]);
 
-            newTrack.createListViewEntry();
+            (i % 2 === 0) ? newTrack.createListViewEntry(true) : newTrack.createListViewEntry(false);
+            //newTrack.createListViewEntry();
             newTrack.uiTrack.addEventListener("click", newTrack.toggleSelected.bind(newTrack));
             // TODO : selction mode using ctrl, otherwise unselect
 
