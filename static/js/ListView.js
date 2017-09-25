@@ -10,11 +10,12 @@ ListView.prototype = {
         this.initColumnBar();
 
         var track = {
-          title: "Le Pudding",
-          artist: "Chinese Man",
-          composer: "Chinese Man",
-          album: "Racing With The Sun",
-          year: "2004"
+            title: "Le Pudding",
+            artist: "Chinese Man",
+            composer: "Chinese Man",
+            album: "Racing With The Sun",
+            genre: "Dubstep",
+            year: "2004"
         };
 
         var track2 = {
@@ -22,6 +23,7 @@ ListView.prototype = {
             artist: "Justice",
             composer: "Justice",
             album: "Audio, Video, Disco",
+            genre: "DnB",
             year: "2010"
         };
 
@@ -30,6 +32,7 @@ ListView.prototype = {
             artist: "Stardust",
             composer: "Stardust",
             album: "Disco Sheat",
+            genre: "Hip Hop",
             year: "1999"
         };
 
@@ -48,24 +51,28 @@ ListView.prototype = {
         var artist   = document.createElement("div");
         var composer = document.createElement("div");
         var album    = document.createElement("div");
+        var genre    = document.createElement("div");
         var year     = document.createElement("div");
 
         title.className    = "title";
         artist.className   = "artist";
         composer.className = "composer";
         album.className    = "album";
+        genre.className     = "genre";
         year.className     = "year";
 
         title.innerHTML    = "Title";
         artist.innerHTML   = "Artist";
         composer.innerHTML = "Composer";
         album.innerHTML    = "Album";
+        genre.innerHTML     = "Genre";
         year.innerHTML     = "Year";
 
         columnBar.appendChild(title);
         columnBar.appendChild(artist);
         columnBar.appendChild(composer);
         columnBar.appendChild(album);
+        columnBar.appendChild(genre);
         columnBar.appendChild(year);
 
         document.getElementById("listView").appendChild(columnBar);
