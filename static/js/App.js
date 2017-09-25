@@ -32,10 +32,10 @@ var App = function() {
     };
 
     // Objects
-    this.player =      new Player();
+    this.player      = new Player();
     this.progressBar = new ProgressBar();
-    this.volumeBar =   new VolumeBar();
-    this.queue =       new Queue();
+    this.volumeBar   = new VolumeBar();
+    this.queue       = new Queue();
 
     // IDs
     this.volumeLockId = -1;
@@ -54,6 +54,8 @@ App.prototype = {
     init: function() {
         this.keyListener(); // Loading shortcuts
         this.eventListener(); // Loading events
+
+        // TODO : get user playlists -> if none, display creation menu, else, display first playlist
 
         /* Test zone here, to add try new features in tmp */
         var tmp = new ListView();
@@ -218,6 +220,11 @@ App.prototype = {
 
     keyListener: function() {
         var that = this;
+
+        /*
+            TODO : Shortcut to add :
+            - Ctrl + q : toggle queue
+        */
 
         // Key pressed event
         document.addEventListener("keydown", function(event) {
