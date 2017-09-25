@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% block body %}
+    {% load staticfiles %}
+    <body>
+        <div class="myform">
+            {% if user.is_active %}
+                <p>Authenticated already</p>
+            {% else %}
+                <form action="" method="post" enctype="multipart/form-data" class = "colonne">
+                    {% csrf_token %}
+                    <label for="id_username">
+                        <div>Username:</div>
+                    </label>
+                    <input id="id_username" maxlength="30" name="username" type="text" class ="colonne">
+                    <label for="id_password">
+                        <div>Password:</div>
+                    </label>
+                    <input id="id_password" maxlength="30" name="password" type="password">
+                    <button class="btn btn-info" type="submit">Submit</button>
+                </form>
+            {% endif %}
+            </div>
+    </body>
+{% endblock %}
