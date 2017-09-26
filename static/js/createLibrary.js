@@ -64,15 +64,19 @@ createLibrary.prototype = {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 // TODO : check response
-                console.log(JSON.parse(this.responseText));
-                that.scanLibrary(this.responseText.ID);
+                var parsedJSON = JSON.parse(this.responseText);
+                console.log(parsedJSON.ID);
+                that.scanLibrary(parsedJSON.ID);
             }
         };
 
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
+        xmlhttp.send(JSON.stringify({
+            NAME: this.ui.input.name.value,
+            URL: this.ui.input.path.value
+        }));
     },
 
     scanLibrary: function(id) {
@@ -89,7 +93,9 @@ createLibrary.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({ID: id}));
+        xmlhttp.send(JSON.stringify({
+            ID: id
+        }));
     },
 
     parseCookies: function() { // TODO : put this in Utils
