@@ -13,7 +13,7 @@ from django.views.generic.list import ListView
 import app
 from app.controller import addTrackMP3
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album
+from app.models import Playlist, Track, Artist, Album, Library
 
 
 class mainView(ListView):
@@ -85,15 +85,18 @@ def dropAllDB(request):
         tracks = Track.objects.all()
         artists = Artist.objects.all()
         albums = Album.objects.all()
+        playlists = Playlist.objects.all()
         for track in tracks:
             track.delete()
         for artist in artists:
             artist.delete()
         for album in albums:
             album.delete()
+        for playlist in playlists:
+            playlist.delete()
         data = {
             'DROPPED': "OK",
-            }
+        }
         return JsonResponse(data)
     else:
         data = {
@@ -146,7 +149,7 @@ def getUserPlaylists(request):
     playlistIds = []
     if not playlists:
         data = {
-            'RESULT': 'NONE'
+            'RESULT': 0,
         }
         return JsonResponse(data)
     for playlist in playlists:
@@ -164,5 +167,83 @@ def logoutView(request):
     logout(request)
     return render(request, 'login.html')
 
+
 class viewDB(TemplateView):
     template_name = 'db.html'
+
+
+def loadAllLibrary(request):
+    tracks = Track.objects.all()
+    playlist = Playlist()
+    playlist.name = "default"
+    playlist.user = request.user
+    playlist.save()
+    playlist.tracks = tracks
+    data = {
+        'LOADED': 'OK',
+    }
+    return JsonResponse(data)
+
+
+def loadTrackFromPlaylist(request):
+    finalData = {}
+    if request.method == 'POST':
+        print('Raw Data: "%s"' % request.body)
+        playlist = Playlist.objects.get(id=4)  # TODO : GET this from html
+        tracks = playlist.track.all()
+
+        data = {'RESULT': len(tracks)}
+        for track in tracks:
+            artistsQuerySet = track.artist.all()
+            artists = []
+            for artist in artistsQuerySet:
+                artists.append(artist.name)
+            tmp = {
+                track.id: {
+                    'TITLE': track.title,
+                    'YEAR': track.year,
+                    'COMPOSER': track.composer,
+                    'PERFORMER': track.composer,
+                    'NUMBER': track.number,
+                    'BPM': track.bpm,
+                    'LYRICS': track.lyrics,
+                    'COMMENT': track.comment,
+                    'BITRATE': track.bitRate,
+                    'SAMPLERATE': track.sampleRate,
+                    'DURATION': track.duration,
+                    'DISCNUMBER': track.discNumber,
+                    'SIZE': track.size,
+                    'LASTMODIFIED': track.lastModified,
+                    'ARTIST': artists,
+                    # 'ALBUM': track.album.title,
+                    # 'FILETYPE': track.fileType.name,
+                }
+            }
+            finalData = {**data, **tmp}
+            data = finalData
+    return JsonResponse(finalData)
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def setLibraryPath(request):
+    if request.method == 'POST':
+        print(request.body)
+        response = request.body
+        try:
+            if not os.path.isdir(response.URL):
+                data = {
+                    'DONE': 'FAIL',
+                    'ERROR': 'No such directory',
+                }
+                return JsonResponse(data)
+            library = Library()
+            library.name = response.NAME
+            library.user = request.user
+            library.save()
+        except AttributeError:
+            print("fail")
+            data = {
+                'DONE': 'FAIL',
+                'ERROR': 'Bad request',
+            }
+            return JsonResponse(data)

@@ -47,8 +47,10 @@ class Track(models.Model):
 class Playlist(models.Model):
     name = models.CharField(max_length=1000)
     user = models.ForeignKey(User)
+    track = models.ManyToManyField(Track)
 
 
-class TrackIncludedInPlaylist(models.Model):
-    playList = models.ForeignKey(Playlist)
-    track = models.ForeignKey(Track)
+class Library(models.Model):
+    name = models.CharField(max_length=1000)
+    path = models.FilePathField(max_length=1000)
+    user = models.ForeignKey(User)
