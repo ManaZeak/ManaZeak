@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ng01
+    ports:
+      - "80:8000"
+   
+    volumes:
+      - ./src:/src
+      - ./nginx/config:/etc/nginx/conf.d
+    depends_on:
+      - web
+
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_DB: music
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rootroot
+    volumes:
+      - .:/library
+    expose:
+    - "5432"
+    ports:
+    - "5432:5432"
+
+  web:
+    build: .
+    command: bash -c " python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/library
+    expose:
+      - "8000"
+      - "5432"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
