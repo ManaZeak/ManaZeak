@@ -47,18 +47,35 @@ createLibrary.prototype = {
     },
 
     testInput: function() {
-        // TODO : test user input to avoid problems
-
         if (this.ui.input.name.value !== '' && this.ui.input.path.value !== '') {
             console.log(this.ui.input.name.value);
             console.log(this.ui.input.path.value);
-            this.scanLibrary()
+            this.sendInfo()
         } else {
             var errorNotification = new Notification("User input error", "You must fill all the fields in order to create à new library.");
         }
     },
 
-    scanLibrary: function() {
+    sendInfo: function() {
+        var xmlhttp = new XMLHttpRequest();
+        var cookies = this.parseCookies();
+        var that = this;
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
+                // TODO : check response
+                console.log(JSON.parse(this.responseText));
+                that.scanLibrary(this.responseText.ID);
+            }
+        };
+
+        xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
+        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
+    },
+
+    scanLibrary: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var cookies = this.parseCookies();
         var that = this;
@@ -72,7 +89,7 @@ createLibrary.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
+        xmlhttp.send(JSON.stringify({ID: id}));
     },
 
     parseCookies: function() { // TODO : put this in Utils
