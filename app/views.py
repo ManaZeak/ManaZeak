@@ -28,9 +28,14 @@ class mainView(ListView):
 
 def initialScan(request):
     if request.method == 'POST':
+        print(request.body)
         response = json.loads(request.body)
         try:
-            library = Library.objects.get(id=response["ID"])
+            tmp = 0
+            if 'ID' in response:
+                tmp = response['ID']
+                print(tmp)
+            library = Library.objects.get(id=tmp)
         except AttributeError:
             data = {
                 'DONE': 'FAIL',
@@ -253,15 +258,18 @@ def setLibraryPath(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
-            if not os.path.isdir(response["URL"]):
+            tmp = ""
+            if 'URL' in response:
+                tmp = response['URL']
+            if not os.path.isdir(tmp):
                 data = {
                     'DONE': 'FAIL',
                     'ERROR': 'No such directory',
                 }
                 return JsonResponse(data)
             library = Library()
-            library.path = response["URL"]
-            library.name = response["NAME"]
+            library.path = response['URL']
+            library.name = response['NAME']
             library.user = request.user
             library.save()
         except AttributeError:
