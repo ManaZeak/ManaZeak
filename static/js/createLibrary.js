@@ -16,6 +16,13 @@ createLibrary.prototype = {
         this.ui.title = document.createElement("h1");
         this.ui.title.innerHTML = "New library";
 
+        this.ui.libraryName = document.createElement("input");
+        this.ui.libraryName.id = "name";
+        this.ui.libraryName.type = "text";
+        this.ui.libraryName.placeholder = "Enter the name of the library here";
+
+        var br = document.createElement('br');
+
         this.ui.input = document.createElement("input");
         this.ui.input.id = "path";
         this.ui.input.type = "text";
@@ -26,6 +33,8 @@ createLibrary.prototype = {
         this.ui.scan.innerHTML = "Scan";
 
         this.createLibrary.appendChild(this.ui.title);
+        this.createLibrary.appendChild(this.ui.libraryName);
+        this.createLibrary.appendChild(br);
         this.createLibrary.appendChild(this.ui.input);
         this.createLibrary.appendChild(this.ui.scan);
 
@@ -53,7 +62,7 @@ createLibrary.prototype = {
         xmlhttp.open("POST", "ajax/rescan", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({URL: this.ui.input.value}));
+        xmlhttp.send(JSON.stringify({NAME: this.ui.libraryName, URL: this.ui.input.value}));
     },
 
     parseCookies: function() { // TODO : put this in Utils

@@ -363,6 +363,10 @@ html, body {
     margin-top: 35%;
 }
 
+#name {
+    width: 40%;
+}
+
 #path {
     width: 40%;
 }
