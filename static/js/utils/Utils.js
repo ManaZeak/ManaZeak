@@ -30,9 +30,24 @@ function loadJSON(file, callback) {
     xobj.overrideMimeType("application/json");
     xobj.open('GET', file, true);
     xobj.onreadystatechange = function() {
-        if (xobj.readyState == 4 && xobj.status == 200) {
+        if (xobj.readyState === 4 && xobj.status === 200) {
             callback(xobj.responseText);
         }
     };
     xobj.send(null);
+}
+
+function getCookies() {
+    var cookies = {};
+
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(function (c) {
+            var m = c.trim().match(/(\w+)=(.*)/);
+            if (m !== undefined) {
+                cookies[m[1]] = decodeURIComponent(m[2]);
+            }
+        });
+    }
+
+    return cookies;
 }

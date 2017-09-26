@@ -79,7 +79,7 @@ App.prototype = {
     start: function(playlists) {
         // User first connection : need too create the first library
         if (playlists.RESULT === 0) {
-            var n = new createLibrary(); // TODO : put special argument for first welcome
+            var n = new Library(); // TODO : put special argument for first welcome
         }
     },
 

@@ -1,4 +1,4 @@
-var createLibrary = function() {
+var Library = function() {
     this.ui = {
         title: null,
         input: {
@@ -11,7 +11,7 @@ var createLibrary = function() {
     this.init();
 };
 
-createLibrary.prototype = {
+Library.prototype = {
     init: function() {
         var br = document.createElement('br');
 
@@ -58,7 +58,7 @@ createLibrary.prototype = {
 
     sendInfo: function() {
         var xmlhttp = new XMLHttpRequest();
-        var cookies = this.parseCookies();
+        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
@@ -81,16 +81,18 @@ createLibrary.prototype = {
 
     scanLibrary: function(id) {
         var xmlhttp = new XMLHttpRequest();
-        var cookies = this.parseCookies();
+        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 console.log(JSON.parse(this.responseText));
+                // TODO : handle incoming errors if scan didn't worked
+                that.getTracks();
             }
         };
 
-        xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
+        xmlhttp.open("POST", "ajax/setLibraryPath/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
@@ -98,18 +100,23 @@ createLibrary.prototype = {
         }));
     },
 
-    parseCookies: function() { // TODO : put this in Utils
-        var cookies = {};
+    getTracks: function() {
+        var xmlhttp = new XMLHttpRequest();
+        var cookies = getCookies();
+        var that = this;
 
-        if (document.cookie && document.cookie !== '') {
-            document.cookie.split(';').forEach(function (c) {
-                var m = c.trim().match(/(\w+)=(.*)/);
-                if (m !== undefined) {
-                    cookies[m[1]] = decodeURIComponent(m[2]);
-                }
-            });
-        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
+                console.log(JSON.parse(this.responseText));
+                // End of process
+            }
+        };
 
-        return cookies;
+        xmlhttp.open("POST", "ajax/getPlaylistTrack/", true);
+        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({
+            ID: id
+        }));
     }
 };
