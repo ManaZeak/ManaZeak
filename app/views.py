@@ -143,7 +143,7 @@ def createUser(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return render(request, 'index.html')
+            return render(request, 'index.html') #TODO : fix URL
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
