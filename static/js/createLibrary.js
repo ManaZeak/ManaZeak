@@ -21,7 +21,7 @@ createLibrary.prototype = {
         this.ui.libraryName.type = "text";
         this.ui.libraryName.placeholder = "Enter the name of the library here";
 
-        var br = document.createElement('br');
+        var br = document.createElement('br'); // TODO : find another way
 
         this.ui.input = document.createElement("input");
         this.ui.input.id = "path";
