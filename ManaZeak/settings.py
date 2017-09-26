@@ -25,7 +25,7 @@ SECRET_KEY = 'cl=4#k6g)t9&1tlsz7)uvtq*to#46f6gkb*toovigtm&t4s(5o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,8 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'music',
         'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'PASSWORD': 'rootroot',
+        'HOST': 'db',
         'PORT': '5432'
     }
 }
