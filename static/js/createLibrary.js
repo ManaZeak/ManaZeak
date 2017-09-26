@@ -62,7 +62,7 @@ createLibrary.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.libraryName, URL: this.ui.input.value}));
+        xmlhttp.send(JSON.stringify({NAME: this.ui.libraryName.value, URL: this.ui.input.value}));
     },
 
     parseCookies: function() { // TODO : put this in Utils
