@@ -73,10 +73,7 @@ Library.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            NAME: this.ui.input.name.value,
-            URL: this.ui.input.path.value
-        }));
+        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
     },
 
     scanLibrary: function(id) {
@@ -92,7 +89,7 @@ Library.prototype = {
             }
         };
 
-        xmlhttp.open("POST", "ajax/setLibraryPath/", true);
+        xmlhttp.open("POST", "ajax/rescan/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
