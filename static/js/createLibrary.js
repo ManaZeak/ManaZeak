@@ -40,6 +40,17 @@ createLibrary.prototype = {
     },
 
     scanLibrary: function() {
+        var cookies = {};
+
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(function (c) {
+                var m = c.trim().match(/(\w+)=(.*)/);
+                if (m !== undefined) {
+                    cookies[m[1]] = decodeURIComponent(m[2]);
+                }
+            });
+        }
+
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
@@ -50,6 +61,7 @@ createLibrary.prototype = {
         };
 
         xmlhttp.open("POST", "ajax/rescan", true); // TODO : replace /rescan by corresponding trigger
+        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({name:"John Rambo", time:"2pm"}));
     }
