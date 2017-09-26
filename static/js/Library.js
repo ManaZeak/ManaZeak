@@ -88,7 +88,7 @@ Library.prototype = {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 console.log(JSON.parse(this.responseText));
                 // TODO : handle incoming errors if scan didn't worked
-                that.getTracks();
+                that.getTracks(id);
             }
         };
 
@@ -100,7 +100,7 @@ Library.prototype = {
         }));
     },
 
-    getTracks: function() {
+    getTracks: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
         var that = this;
