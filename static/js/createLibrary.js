@@ -1,7 +1,10 @@
 var createLibrary = function() {
     this.ui = {
         title: null,
-        input: null,
+        input: {
+            name: null,
+            path: null
+        },
         scan: null
     };
 
@@ -10,32 +13,32 @@ var createLibrary = function() {
 
 createLibrary.prototype = {
     init: function() {
+        var br = document.createElement('br');
+
         this.createLibrary = document.createElement("div");
         this.createLibrary.id = "createLibrary";
 
         this.ui.title = document.createElement("h1");
         this.ui.title.innerHTML = "New library";
 
-        this.ui.libraryName = document.createElement("input");
-        this.ui.libraryName.id = "name";
-        this.ui.libraryName.type = "text";
-        this.ui.libraryName.placeholder = "Enter the name of the library here";
+        this.ui.input.name = document.createElement("input");
+        this.ui.input.name.id = "name";
+        this.ui.input.name.type = "text";
+        this.ui.input.name.placeholder = "Enter the name of the library here";
 
-        var br = document.createElement('br'); // TODO : find another way
-
-        this.ui.input = document.createElement("input");
-        this.ui.input.id = "path";
-        this.ui.input.type = "text";
-        this.ui.input.placeholder = "Enter the path to your library";
+        this.ui.input.path = document.createElement("input");
+        this.ui.input.path.id = "path";
+        this.ui.input.path.type = "text";
+        this.ui.input.path.placeholder = "Enter the path to your library";
 
         this.ui.scan = document.createElement("button");
         this.ui.scan.id = "buttonScan";
         this.ui.scan.innerHTML = "Scan";
 
         this.createLibrary.appendChild(this.ui.title);
-        this.createLibrary.appendChild(this.ui.libraryName);
+        this.createLibrary.appendChild(this.ui.input.name);
         this.createLibrary.appendChild(br);
-        this.createLibrary.appendChild(this.ui.input);
+        this.createLibrary.appendChild(this.ui.input.path);
         this.createLibrary.appendChild(this.ui.scan);
 
         document.getElementById("mainContainer").appendChild(this.createLibrary);
@@ -45,7 +48,14 @@ createLibrary.prototype = {
 
     testInput: function() {
         // TODO : test user input to avoid problems
-        this.scanLibrary()
+
+        if (this.ui.input.name.value !== '' && this.ui.input.path.value !== '') {
+            console.log(this.ui.input.name.value);
+            console.log(this.ui.input.path.value);
+            this.scanLibrary()
+        } else {
+            var errorNotification = new Notification("User input error", "You must fill all the fields in order to create à new library.");
+        }
     },
 
     scanLibrary: function() {
@@ -62,7 +72,7 @@ createLibrary.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.libraryName.value, URL: this.ui.input.value}));
+        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
     },
 
     parseCookies: function() { // TODO : put this in Utils
