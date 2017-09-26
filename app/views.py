@@ -27,57 +27,80 @@ class mainView(ListView):
 
 
 def initialScan(request):
-    absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    library = os.path.join(absolutePath, 'static/audio')
-    if not os.path.isdir(library):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        try:
+            library = Library.objects.get(id=response["ID"])
+        except AttributeError:
+            data = {
+                'DONE': 'FAIL',
+                'ERROR': 'Bad format',
+            }
+            return JsonResponse(data)
+
+        # Old way to get the library
+        # absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        # library = os.path.join(absolutePath, 'static/audio')
+        if not os.path.isdir(library.path):
+            data = {
+                'DONE': 'FAIL',
+                'ERROR': 'No such directory',
+            }
+            return JsonResponse(data)
+
+        playlist = Playlist()
+        playlist.name = library.name
+        playlist.user = request.user
+        playlist.save()
+        failedItems = []
+        for root, dirs, files in os.walk(library.path):
+            for file in files:
+                if file.lower().endswith('.mp3'):
+                    addTrackMP3(root, file, playlist)
+
+                elif file.lower().endswith('.ogg'):
+                    track = Track()
+                    track.location = root + "/" + file
+
+                elif file.lower().endswith('.flac'):
+                    track = Track()
+                    track.location = root + "/" + file
+
+                elif file.lower().endswith('.wav'):
+                    track = Track()
+                    track.location = root + "/" + file
+
+                else:
+                    failedItems.append(file)
+
+                    # track.title =
+                    # track.bitRate =
+                    # track.composer = audioFile.frame.
+                    # track.performer =
+                    # track.number =
+                    # track.bpm =
+                    # track.lyrics =
+                    # track.comment =
+                    # track.sampleRate =
+                    # track.discNumber =
+                    # track.size =
+                    # track.numberTotalTrack
+                    # track.artist =
+                    # track.album =
+                    # track.genre =
+                    # track.fileType =
+        # addTracksInDB(tracks)
+        library.playlist = playlist
+        data = {
+            'DONE': 'OK',
+            'ID': playlist.id,
+            'FAILS': failedItems,
+        }
+    else:
         data = {
             'DONE': 'FAIL',
-            'ERROR': 'No such directory',
+            'ERROR': 'Bad request',
         }
-        return JsonResponse(data)
-    failedItems = []
-
-    for root, dirs, files in os.walk(library):
-        for file in files:
-            if file.lower().endswith('.mp3'):
-                addTrackMP3(root, file)
-
-            elif file.lower().endswith('.ogg'):
-                track = Track()
-                track.location = root + "/" + file
-
-            elif file.lower().endswith('.flac'):
-                track = Track()
-                track.location = root + "/" + file
-
-            elif file.lower().endswith('.wav'):
-                track = Track()
-                track.location = root + "/" + file
-
-            else:
-                failedItems.append(file)
-
-                # track.title =
-                # track.bitRate =
-                # track.composer = audioFile.frame.
-                # track.performer =
-                # track.number =
-                # track.bpm =
-                # track.lyrics =
-                # track.comment =
-                # track.sampleRate =
-                # track.discNumber =
-                # track.size =
-                # track.numberTotalTrack
-                # track.artist =
-                # track.album =
-                # track.genre =
-                # track.fileType =
-    # addTracksInDB(tracks)
-    data = {
-        'DONE': "OK",
-        'FAILS': failedItems,
-    }
     return JsonResponse(data)
 
 
@@ -248,6 +271,7 @@ def setLibraryPath(request):
             }
             return JsonResponse(data)
         data = {
-            'DONE': 'OK'
+            'DONE': 'OK',
+            'ID': library.id,
         }
         return JsonResponse(data)

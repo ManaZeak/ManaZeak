@@ -5,7 +5,7 @@ from mutagen.mp3 import MP3
 from app.models import Track, Artist, Album
 
 
-def addTrackMP3(root, file):
+def addTrackMP3(root, file, playlist):
     track = Track()
     # --- FILE INFORMATION ---
     audioFile = MP3(root + "/" + file)
@@ -100,3 +100,6 @@ def addTrackMP3(root, file):
     else:
         pass
         # TODO default value of artist (see if it's possible)
+
+    # --- Adding track to playlist --- #
+    playlist.track.add(track)
