@@ -1,5 +1,6 @@
 # import eyed3
 import os
+import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -227,23 +228,26 @@ def loadTrackFromPlaylist(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def setLibraryPath(request):
     if request.method == 'POST':
-        print(request.body)
-        response = request.body
+        response = json.loads(request.body)
         try:
-            if not os.path.isdir(response.URL):
+            if not os.path.isdir(response["URL"]):
                 data = {
                     'DONE': 'FAIL',
                     'ERROR': 'No such directory',
                 }
                 return JsonResponse(data)
             library = Library()
-            library.name = response.NAME
+            library.path = response["URL"]
+            library.name = response["NAME"]
             library.user = request.user
             library.save()
         except AttributeError:
-            print("fail")
             data = {
                 'DONE': 'FAIL',
                 'ERROR': 'Bad request',
             }
             return JsonResponse(data)
+        data = {
+            'DONE': 'OK'
+        }
+        return JsonResponse(data)
