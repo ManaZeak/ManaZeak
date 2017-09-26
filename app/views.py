@@ -217,39 +217,45 @@ def loadAllLibrary(request):
 def loadTrackFromPlaylist(request):
     finalData = {}
     if request.method == 'POST':
-        print('Raw Data: "%s"' % request.body)
-        playlist = Playlist.objects.get(id=4)  # TODO : GET this from html
-        tracks = playlist.track.all()
+        response = json.loads(request.body)
+        try:
+            playlist = Playlist.objects.get(id=response['ID'])  # TODO : GET this from html
+            tracks = playlist.track.all()
 
-        data = {'RESULT': len(tracks)}
-        for track in tracks:
-            artistsQuerySet = track.artist.all()
-            artists = []
-            for artist in artistsQuerySet:
-                artists.append(artist.name)
-            tmp = {
-                track.id: {
-                    'TITLE': track.title,
-                    'YEAR': track.year,
-                    'COMPOSER': track.composer,
-                    'PERFORMER': track.composer,
-                    'NUMBER': track.number,
-                    'BPM': track.bpm,
-                    'LYRICS': track.lyrics,
-                    'COMMENT': track.comment,
-                    'BITRATE': track.bitRate,
-                    'SAMPLERATE': track.sampleRate,
-                    'DURATION': track.duration,
-                    'DISCNUMBER': track.discNumber,
-                    'SIZE': track.size,
-                    'LASTMODIFIED': track.lastModified,
-                    'ARTIST': artists,
-                    # 'ALBUM': track.album.title,
-                    # 'FILETYPE': track.fileType.name,
+            data = {'RESULT': len(tracks)}
+            for track in tracks:
+                artistsQuerySet = track.artist.all()
+                artists = []
+                for artist in artistsQuerySet:
+                    artists.append(artist.name)
+                tmp = {
+                    track.id: {
+                        'TITLE': track.title,
+                        'YEAR': track.year,
+                        'COMPOSER': track.composer,
+                        'PERFORMER': track.composer,
+                        'NUMBER': track.number,
+                        'BPM': track.bpm,
+                        'LYRICS': track.lyrics,
+                        'COMMENT': track.comment,
+                        'BITRATE': track.bitRate,
+                        'SAMPLERATE': track.sampleRate,
+                        'DURATION': track.duration,
+                        'DISCNUMBER': track.discNumber,
+                        'SIZE': track.size,
+                        'LASTMODIFIED': track.lastModified,
+                        'ARTIST': artists,
+                        # 'ALBUM': track.album.title,
+                        # 'FILETYPE': track.fileType.name,
+                    }
                 }
+                finalData = {**data, **tmp}
+                data = finalData
+        except AttributeError:
+            data = {
+                'RESULT': 'FAIL',
+                'ERROR': 'Bad format'
             }
-            finalData = {**data, **tmp}
-            data = finalData
     return JsonResponse(finalData)
 
 
