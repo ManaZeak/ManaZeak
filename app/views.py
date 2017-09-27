@@ -198,10 +198,6 @@ def logoutView(request):
     return render(request, 'login.html')
 
 
-class viewDB(TemplateView):
-    template_name = 'db.html'
-
-
 def loadAllLibrary(request):
     tracks = Track.objects.all()
     playlist = Playlist()
