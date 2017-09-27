@@ -1,17 +1,17 @@
-var Library = function() {
+var Playlist = function() {
     this.ui = {
         title: null,
-        input: {
-            name: null,
-            path: null
-        },
+        name: null,
+        path: null,
         scan: null
     };
+
+    this.tracks = null;
 
     this.init();
 };
 
-Library.prototype = {
+Playlist.prototype = {
     init: function() {
         var br = document.createElement('br');
 
@@ -21,24 +21,24 @@ Library.prototype = {
         this.ui.title = document.createElement("h1");
         this.ui.title.innerHTML = "New library";
 
-        this.ui.input.name = document.createElement("input");
-        this.ui.input.name.id = "name";
-        this.ui.input.name.type = "text";
-        this.ui.input.name.placeholder = "Enter the name of the library here";
+        this.ui.name = document.createElement("input");
+        this.ui.name.id = "name";
+        this.ui.name.type = "text";
+        this.ui.name.placeholder = "Enter the name of the library here";
 
-        this.ui.input.path = document.createElement("input");
-        this.ui.input.path.id = "path";
-        this.ui.input.path.type = "text";
-        this.ui.input.path.placeholder = "Enter the path to your library";
+        this.ui.path = document.createElement("input");
+        this.ui.path.id = "path";
+        this.ui.path.type = "text";
+        this.ui.path.placeholder = "Enter the path to your library";
 
         this.ui.scan = document.createElement("button");
         this.ui.scan.id = "buttonScan";
         this.ui.scan.innerHTML = "Scan";
 
         this.createLibrary.appendChild(this.ui.title);
-        this.createLibrary.appendChild(this.ui.input.name);
+        this.createLibrary.appendChild(this.ui.name);
         this.createLibrary.appendChild(br);
-        this.createLibrary.appendChild(this.ui.input.path);
+        this.createLibrary.appendChild(this.ui.path);
         this.createLibrary.appendChild(this.ui.scan);
 
         document.getElementById("mainContainer").appendChild(this.createLibrary);
@@ -47,9 +47,7 @@ Library.prototype = {
     },
 
     testInput: function() {
-        if (this.ui.input.name.value !== '' && this.ui.input.path.value !== '') {
-            console.log(this.ui.input.name.value);
-            console.log(this.ui.input.path.value);
+        if (this.ui.name.value !== '' && this.ui.path.value !== '') {
             this.sendInfo()
         } else {
             var errorNotification = new Notification("User input error", "You must fill all the fields in order to create à new library.");
@@ -73,7 +71,7 @@ Library.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.input.name.value, URL: this.ui.input.path.value}));
+        xmlhttp.send(JSON.stringify({NAME: this.ui.name.value, URL: this.ui.path.value}));
     },
 
     scanLibrary: function(id) {
@@ -85,7 +83,7 @@ Library.prototype = {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 console.log(JSON.parse(this.responseText));
                 // TODO : handle incoming errors if scan didn't worked
-                that.getTracks(id);
+                that.getPlaylistTracks(id);
             }
         };
 
@@ -97,23 +95,27 @@ Library.prototype = {
         }));
     },
 
-    getTracks: function(id) {
+    getPlaylistTracks: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                console.log(JSON.parse(this.responseText));
-                // End of process
+                that.tracks = JSON.parse(this.responseText);
+                that.getTracksArtists();
             }
         };
 
-        xmlhttp.open("POST", "ajax/getPlaylistTrack/", true);
+        xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             ID: id
         }));
+    },
+
+    getTracksArtists: function() {
+        console.log(this.tracks);
     }
 };
