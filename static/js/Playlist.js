@@ -3,6 +3,7 @@ var Playlist = function() {
         title: null,
         name: null,
         path: null,
+        convert: null,
         scan: null
     };
 
@@ -31,6 +32,10 @@ Playlist.prototype = {
         this.ui.path.type = "text";
         this.ui.path.placeholder = "Enter the path to your library";
 
+        this.ui.convert = document.createElement("input");
+        this.ui.convert.id = "convert";
+        this.ui.convert.type = "checkbox";
+
         this.ui.scan = document.createElement("button");
         this.ui.scan.id = "buttonScan";
         this.ui.scan.innerHTML = "Scan";
@@ -39,6 +44,8 @@ Playlist.prototype = {
         this.createLibrary.appendChild(this.ui.name);
         this.createLibrary.appendChild(br);
         this.createLibrary.appendChild(this.ui.path);
+        this.createLibrary.appendChild(this.ui.convert);
+        this.createLibrary.appendChild(br);
         this.createLibrary.appendChild(this.ui.scan);
 
         document.getElementById("mainContainer").appendChild(this.createLibrary);
@@ -71,7 +78,11 @@ Playlist.prototype = {
         xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({NAME: this.ui.name.value, URL: this.ui.path.value}));
+        xmlhttp.send(JSON.stringify({
+            NAME: this.ui.name.value,
+            URL: this.ui.path.value,
+            CONVERT: this.ui.convert.checked
+        }));
     },
 
     scanLibrary: function(id) {
