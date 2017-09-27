@@ -1,11 +1,12 @@
 import math
+
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
 from app.models import Track, Artist, Album
 
 
-def addTrackMP3(root, file, playlist):
+def addTrackMP3(root, file, playlist, convert):
     track = Track()
     # --- FILE INFORMATION ---
     audioFile = MP3(root + "/" + file)
@@ -17,12 +18,17 @@ def addTrackMP3(root, file, playlist):
 
     # --- FILE TAG ---
     audioTag = ID3(root + "/" + file)
+    if convert:
+        audioTag.update_to_v24()
+        audioTag.save()
+    audioTag = ID3(root + "/" + file)
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = audioTag['TIT2'].text[0]
     if 'TDRC' in audioTag:
         if not audioTag['TDRC'].text[0].get_text() == "":
             track.year = audioTag['TDRC'].text[0].get_text()[:4]  # Date of Recording
+
     totalTrack = 0
     totalDisc = 1
     if 'TRCK' in audioTag:
@@ -55,8 +61,8 @@ def addTrackMP3(root, file, playlist):
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
                 totalDisc = txxx.text[0]
+                # --- Save data for many-to-many relationship ---
 
-    # --- Save data for many-to-many relationship ---
     track.save()
     # print(track.title)
 
@@ -75,9 +81,9 @@ def addTrackMP3(root, file, playlist):
             artist = Artist.objects.get(name=artistName)
             track.artist.add(artist)
     else:
-        pass
         # TODO default value of artist (see if it's possible)
         # tracks.append(track)
+        pass
 
     # --- Adding album to DB ---
     if 'TALB' in audioTag:
@@ -99,8 +105,8 @@ def addTrackMP3(root, file, playlist):
         track.album = album
         track.save()
     else:
-        pass
         # TODO default value of artist (see if it's possible)
+        pass
 
     # --- Adding track to playlist --- #
     playlist.track.add(track)

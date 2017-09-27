@@ -1,6 +1,5 @@
-# import eyed3
-import os
 import json
+import os
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -12,7 +11,6 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.list import ListView
 
-import app
 from app.controller import addTrackMP3
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library
@@ -29,14 +27,11 @@ class mainView(ListView):
 
 def initialScan(request):
     if request.method == 'POST':
-        print(request.body)
         response = json.loads(request.body)
+        print(response)
         try:
-            tmp = 0
-            if 'ID' in response:
-                tmp = response['ID']
-                print(tmp)
-            library = Library.objects.get(id=tmp)
+            library = Library.objects.get(id=response['ID'])
+            convert = response['CONVERT']
         except AttributeError:
             data = {
                 'DONE': 'FAIL',
@@ -57,12 +52,13 @@ def initialScan(request):
         playlist = Playlist()
         playlist.name = library.name
         playlist.user = request.user
+        playlist.isLibrary = True
         playlist.save()
         failedItems = []
         for root, dirs, files in os.walk(library.path):
             for file in files:
                 if file.lower().endswith('.mp3'):
-                    addTrackMP3(root, file, playlist)
+                    addTrackMP3(root, file, playlist, convert)
 
                 elif file.lower().endswith('.ogg'):
                     track = Track()
@@ -97,6 +93,7 @@ def initialScan(request):
                     # track.fileType =
         # addTracksInDB(tracks)
         library.playlist = playlist
+        library.save()
         data = {
             'DONE': 'OK',
             'ID': playlist.id,
@@ -116,6 +113,7 @@ def dropAllDB(request):
         artists = Artist.objects.all()
         albums = Album.objects.all()
         playlists = Playlist.objects.all()
+        libraries = Library.objects.all()
         for track in tracks:
             track.delete()
         for artist in artists:
@@ -124,6 +122,8 @@ def dropAllDB(request):
             album.delete()
         for playlist in playlists:
             playlist.delete()
+        for library in libraries:
+            library.delete()
         data = {
             'DROPPED': "OK",
         }
@@ -144,7 +144,7 @@ def createUser(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return render(request, 'index.html') #TODO : fix URL
+            return render(request, 'index.html')  # TODO : fix URL
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -159,7 +159,7 @@ class UserFormLogin(View):
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
-    # Recieve the filled out form
+    # Receive the filled out form
     def post(self, request):
         form = self.form_class(request.POST)
         username = form.data['username']
@@ -220,11 +220,11 @@ def loadTrackFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
+            print(response['ID'])
             playlist = Playlist.objects.get(id=response['ID'])
             tracks = playlist.track.all()
-
             finalData = serialize('json', tracks)
-        except AttributeError: 
+        except AttributeError:
             data = {
                 'RESULT': 'FAIL',
                 'ERROR': 'Bad format'
@@ -263,3 +263,19 @@ def setLibraryPath(request):
             'ID': library.id,
         }
         return JsonResponse(data)
+
+
+def getTracksArtists(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        try:
+            artistIds = response['ARTISTS']
+            artists = Artist.objects.filter(id__in=artistIds)
+            data = serialize('json', artists)
+        except AttributeError:
+            data = {
+                'DONE': 'FAIL',
+                'Error': 'Bad request',
+            }
+            return JsonResponse(data)
+        return HttpResponse(data)
