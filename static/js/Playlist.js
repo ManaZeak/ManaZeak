@@ -1,9 +1,9 @@
 var Playlist = function() {
     this.ui = {
-        name: null,
-        path: null,
+        name:    null,
+        path:    null,
         convert: null,
-        scan: null
+        scan:    null
     };
 
     this.rawTtracks = null;
@@ -11,6 +11,7 @@ var Playlist = function() {
 };
 
 Playlist.prototype = {
+
     init: function() {
         var that = this;
 
@@ -26,13 +27,16 @@ Playlist.prototype = {
         });
     },
 
+
     testInput: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
+            // TODO : test strings before calling setLibraryPath
             this.setLibraryPath()
         } else {
             new Notification("User input error", "You must fill all the fields in order to create à new library.");
         }
     },
+
 
     setLibraryPath: function() {
         var xmlhttp = new XMLHttpRequest();
@@ -57,6 +61,7 @@ Playlist.prototype = {
         }));
     },
 
+
     scanLibrary: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
@@ -78,6 +83,7 @@ Playlist.prototype = {
         }));
     },
 
+
     getPlaylistTracks: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
@@ -97,6 +103,7 @@ Playlist.prototype = {
             ID: id
         }));
     },
+
 
     getTracksArtists: function() {
         var artistsID = [];
@@ -134,6 +141,7 @@ Playlist.prototype = {
             ARTISTS: artistsID
         }));
     },
+
 
     getTracksAlbums: function() {
         var albumsID = [];
