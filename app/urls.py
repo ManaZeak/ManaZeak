@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^ajax/getPlaylistTracks/$', views.loadTrackFromPlaylist, name='loadTrackFromPlaylist'),
     url(r'^ajax/setLibraryPath/$', views.setLibraryPath, name='setLibrary'),
     url(r'^ajax/getTracksArtists/$', views.getTracksArtists, name='getTracksArtists'),
-    url(r'^components/getNewLibrary/$', components.newLibrary.as_view(), name='newLibraryComponent')
+    url(r'^components/newLibrary/$', components.newLibrary.as_view(), name='newLibraryComponent')
 ]
