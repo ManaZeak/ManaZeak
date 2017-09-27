@@ -45,7 +45,6 @@ Playlist.prototype = {
         this.createLibrary.appendChild(br);
         this.createLibrary.appendChild(this.ui.path);
         this.createLibrary.appendChild(this.ui.convert);
-        this.createLibrary.appendChild(br);
         this.createLibrary.appendChild(this.ui.scan);
 
         document.getElementById("mainContainer").appendChild(this.createLibrary);
@@ -80,8 +79,7 @@ Playlist.prototype = {
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             NAME: this.ui.name.value,
-            URL: this.ui.path.value,
-            CONVERT: this.ui.convert.checked
+            URL: this.ui.path.value
         }));
     },
 
@@ -102,7 +100,8 @@ Playlist.prototype = {
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
-            ID: id
+            ID: id,
+            CONVERT: this.ui.convert.checked
         }));
     },
 
