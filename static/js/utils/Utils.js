@@ -4,6 +4,7 @@ function precisionRound(value, precision) {
 }
 
 function secondsToTimecode(time) {
+    // TODO : add days
     var transformedTime = {
         h: 0,
         m: 0,

@@ -6,7 +6,7 @@ var Playlist = function() {
         scan: null
     };
 
-    this.tracks = null;
+    this.rawTtracks = null;
     this.init();
 };
 
@@ -14,25 +14,27 @@ Playlist.prototype = {
     init: function() {
         var that = this;
 
-        fetchComponentUI("components/newLibrary", function(htmlResponse) {
-            document.getElementById("mainContainer").insertAdjacentHTML('beforeend', htmlResponse);
-            that.ui.name = document.getElementById("name");
-            that.ui.path = document.getElementById("path");
+        fetchComponentUI("components/newLibrary", function(response) {
+            document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
+
+            that.ui.name    = document.getElementById("name");
+            that.ui.path    = document.getElementById("path");
             that.ui.convert = document.getElementById("convert");
-            that.ui.scan = document.getElementById("buttonScan");
+            that.ui.scan    = document.getElementById("buttonScan");
+
             that.ui.scan.addEventListener("click", that.testInput.bind(that));
         });
     },
 
     testInput: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            this.sendInfo()
+            this.setLibraryPath()
         } else {
-            var errorNotification = new Notification("User input error", "You must fill all the fields in order to create à new library.");
+            new Notification("User input error", "You must fill all the fields in order to create à new library.");
         }
     },
 
-    sendInfo: function() {
+    setLibraryPath: function() {
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
         var that = this;
@@ -83,8 +85,8 @@ Playlist.prototype = {
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                that.tracks = JSON.parse(this.responseText);
-                that.getTracksArtistsAndAlbums();
+                that.rawTracks = JSON.parse(this.responseText);
+                that.getTracksArtists();
             }
         };
 
@@ -96,20 +98,14 @@ Playlist.prototype = {
         }));
     },
 
-    getTracksArtistsAndAlbums: function() {
-        var albumsID = [];
+    getTracksArtists: function() {
         var artistsID = [];
 
-        for (var i = 0; i < this.tracks.length ;++i) {
-            albumsID.push(this.tracks[i].fields.album);
-
-            for (var j = 0; j < this.tracks[i].fields.artist.length ;++j) {
-                artistsID.push(this.tracks[i].fields.artist[j]);
+        for (var i = 0; i < this.rawTracks.length ;++i) {
+            for (var j = 0; j < this.rawTracks[i].fields.artist.length ;++j) {
+                artistsID.push(this.rawTracks[i].fields.artist[j]);
             }
         }
-
-        console.log(albumsID);
-        console.log(artistsID);
 
         var xmlhttp = new XMLHttpRequest();
         var cookies = getCookies();
@@ -117,17 +113,50 @@ Playlist.prototype = {
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                that.tracks = JSON.parse(this.responseText);
-                that.getTracksArtistsAndAlbums();
+                var tmp = JSON.parse(this.responseText);
+
+                console.log(that.rawTracks);
+/*
+                for (var i = 0; i < tmp.length ; ++i) {
+                    for (var j = 0; j < that.rawTracks.length ;++j) {
+                        if (tmp[i].pk === that.rawTracks[j].fields.artist[0]) {
+                            console.log(i + " " + j + " Found");
+                        }
+                    }
+                } */
             }
         };
 
-        xmlhttp.open("POST", "ajax/getTracksArtistsAndAlbums/", true);
+        xmlhttp.open("POST", "ajax/getTracksArtists/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
-            ALBUMS: albumsID,
             ARTISTS: artistsID
+        }));
+    },
+
+    getTracksAlbums: function() {
+        var albumsID = [];
+
+        for (var i = 0; i < this.rawTracks.length ;++i) {
+            albumsID.push(this.rawTracks[i].fields.album);
+        }
+
+        var xmlhttp = new XMLHttpRequest();
+        var cookies = getCookies();
+        var that = this;
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
+                console.log(this.responseText);
+            }
+        };
+
+        xmlhttp.open("POST", "ajax/getTracksAlbums/", true);
+        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({
+            ALBUMS: albumsID
         }));
     }
 };

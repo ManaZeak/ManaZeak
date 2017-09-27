@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^ajax/rescan/$', views.initialScan, name='rescan'),
     url(r'^ajax/getPlaylists/$', views.getUserPlaylists, name='getPlaylists'),
     url(r'^DEBUG/drop/$', views.dropAllDB, name='drop'),
-    url(r'^db/$', views.viewDB.as_view(), name='db'),
     url(r'^signup/$', views.createUser, name='signup'),
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
     url(r'^logout/$', views.logoutView, name='logout'),

@@ -1,68 +1,80 @@
 var Notification = function(title, message) {
-    // TODO : test incoming var ...
     this.notification = null;
-    this.duration = 3000;
-    this.interval = 1;
-
     this.ui = {
-        icon: null,
-        title: null,
+        icon:    null,
+        title:   null,
         message: null,
-        close: null
+        close:   null
     };
 
+    this.duration = 3000; // Notification visible duration
+    this.interval = 1;    // Refreshing interval
+
+    // TODO : test incoming var ...
     this.title = title;
     this.message = message;
 
-    this.init();
-
     // TODO : create notifController class, restyle notif
+    this._init();
 };
 
 Notification.prototype = {
-    init: function() {
+
+     // Create notification skeleton
+    _init: function() {
+        // Creating UI elements
         this.notification = document.createElement("div");
+        this.ui.icon      = document.createElement("img");
+        this.ui.title     = document.createElement("p");
+        this.ui.message   = document.createElement("p");
+        this.ui.close     = document.createElement("img");
+
+        // Setting class name
         this.notification.className = "notificationContainer";
+        this.ui.icon.className      = "icon";
+        this.ui.title.className     = "title2";
+        this.ui.message.className   = "message";
+        this.ui.close.className     = "close";
 
-        this.ui.icon = document.createElement("img");
-        this.ui.icon.className = "icon";
-        this.ui.icon.src = "../static/img/info.svg";
-
-        this.ui.title= document.createElement("p");
-        this.ui.title.className = "title2";
-        this.ui.title.innerHTML = this.title;
-
-        this.ui.message= document.createElement("p");
-        this.ui.message.className = "message";
-        this.ui.message.innerHTML = this.message;
-
-        this.ui.close = document.createElement("img");
-        this.ui.close.className = "close";
+        // Setting image source
+        this.ui.icon.src  = "../static/img/info.svg";
         this.ui.close.src = "../static/img/close.svg";
 
+        // Setting text content
+        this.ui.title.innerHTML   = this.title;
+        this.ui.message.innerHTML = this.message;
+
+        // Appending UI elements to notification container
         this.notification.appendChild(this.ui.icon);
         this.notification.appendChild(this.ui.title);
         this.notification.appendChild(this.ui.message);
         this.notification.appendChild(this.ui.close);
 
-        this.lifeCycle();
+        // Running notification life cycle
+        this._lifeCycle();
     },
 
-    lifeCycle: function() {
-        document.body.appendChild(this.notification); // Add notification div to body
-        this.open();
-        this.timeoutHandle = window.setTimeout(this.close.bind(this), this.duration);
-        this.eventListener();
+     // Handle lifespan of the notification
+    _lifeCycle: function() {
+         // Add notification to body and add listeners
+        document.body.appendChild(this.notification);
+        this._eventListener();
+
+        // Notification life cycle
+        this._open();
+        this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     },
 
-    resetTimeout: function() {
+     // Reset the notification closing
+    _resetTimeout: function() {
         window.clearTimeout(this.timeoutHandle);
-        this.timeoutHandle = window.setTimeout(this.close.bind(this), this.duration);
+        this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     },
 
-    open: function() {
-        var i = 0;
+     // Display the notification on screen
+    _open: function() {
         var that = this;
+        var i = 0;
 
         (function iterate () {
             if (i <= 100) {
@@ -73,11 +85,10 @@ Notification.prototype = {
         })();
     },
 
-    close: function() {
-        window.clearTimeout(this.timeoutHandle);
-
-        var i = 100;
+     // Remove the notification on screen
+    _close: function() {
         var that = this;
+        var i = 100;
 
         (function iterate () {
             if (i >= 0) {
@@ -88,10 +99,13 @@ Notification.prototype = {
             }
             window.setTimeout(iterate, that.interval);
         })();
+
+        window.clearTimeout(this.timeoutHandle);
     },
 
-    eventListener: function() {
-        this.notification.addEventListener("mousemove", this.resetTimeout.bind(this));
-        this.ui.close.addEventListener("click", this.close.bind(this));
+    // Notification event listeners
+    _eventListener: function() {
+        this.notification.addEventListener("mousemove", this._resetTimeout.bind(this));
+        this.ui.close.addEventListener("click", this._close.bind(this));
     }
 };
