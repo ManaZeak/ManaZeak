@@ -12,7 +12,16 @@ var Playlist = function() {
 
 Playlist.prototype = {
     init: function() {
-        this.newLibraryMenu();
+        var that = this;
+
+        fetchComponentUI("components/newLibrary", function(htmlResponse) {
+            document.getElementById("mainContainer").insertAdjacentHTML('beforeend', htmlResponse);
+            that.ui.name = document.getElementById("name");
+            that.ui.path = document.getElementById("path");
+            that.ui.convert = document.getElementById("convert");
+            that.ui.scan = document.getElementById("buttonScan");
+            that.ui.scan.addEventListener("click", that.testInput.bind(that));
+        });
     },
 
     testInput: function() {
@@ -120,26 +129,5 @@ Playlist.prototype = {
             ALBUMS: albumsID,
             ARTISTS: artistsID
         }));
-
-
-    },
-
-    newLibraryMenu: function() {
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                document.getElementById("mainContainer").insertAdjacentHTML('beforeend', this.responseText);
-                that.ui.name = document.getElementById("name");
-                that.ui.path = document.getElementById("path");
-                that.ui.convert = document.getElementById("convert");
-                that.ui.scan = document.getElementById("buttonScan");
-                that.ui.scan.addEventListener("click", that.testInput.bind(that));
-            }
-        };
-
-        xmlhttp.open("GET", "components/newLibrary", true);
-        xmlhttp.send();
     }
 };
