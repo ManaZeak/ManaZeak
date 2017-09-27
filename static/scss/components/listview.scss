@@ -1,0 +1,57 @@
+
+/* listview */
+#listView {
+    width: 100%;
+    height: calc(100% - 80px);
+    top: 0;
+    position: absolute;
+    padding: 0 10%;
+    box-sizing: border-box;
+}
+
+.columnHeader {
+    width: 100%;
+    height: 30px;
+}
+
+.trackContainer {
+    width: 100%;
+    height: 1.3em;
+    line-height: 1.3em;
+    font-size: 0.85em;
+    cursor: pointer;
+
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
+}
+
+.title {
+    width: 25%;
+    display: inline-block;
+}
+
+.artist {
+    width: 20%;
+    display: inline-block;
+}
+
+.composer {
+    width: 20%;
+    display: inline-block;
+}
+
+.album {
+    width: 20%;
+    display: inline-block;
+}
+
+.genre {
+    width: 12.5%;
+    display: inline-block;
+}
+
+.year {
+    width: 2.5%;
+    display: inline-block;
+    text-align: right;
+}
