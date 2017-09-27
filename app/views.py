@@ -45,7 +45,7 @@ def initialScan(request):
         if not os.path.isdir(library.path):
             data = {
                 'DONE': 'FAIL',
-                'ERROR': 'No such directory',
+                'ERROR': 'No such directory on your filesystem.',
             }
             return JsonResponse(data)
 
@@ -240,7 +240,7 @@ def setLibraryPath(request):
             if not os.path.isdir(tmp):
                 data = {
                     'DONE': 'FAIL',
-                    'ERROR': 'No such directory',
+                    'ERROR': 'No such directory on your filesystem.',
                 }
                 return JsonResponse(data)
             library = Library()
