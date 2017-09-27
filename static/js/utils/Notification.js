@@ -1,3 +1,5 @@
+"use strict";
+
 var Notification = function(title, message) {
     this.notification = null;
     this.ui = {
@@ -20,7 +22,7 @@ var Notification = function(title, message) {
 
 Notification.prototype = {
 
-     // Create notification skeleton
+    // Create notification skeleton
     _init: function() {
         // Creating UI elements
         this.notification = document.createElement("div");
@@ -54,7 +56,8 @@ Notification.prototype = {
         this._lifeCycle();
     },
 
-     // Handle lifespan of the notification
+
+    // Handle lifespan of the notification
     _lifeCycle: function() {
          // Add notification to body and add listeners
         document.body.appendChild(this.notification);
@@ -65,13 +68,15 @@ Notification.prototype = {
         this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     },
 
-     // Reset the notification closing
+
+    // Reset the notification closing
     _resetTimeout: function() {
         window.clearTimeout(this.timeoutHandle);
         this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     },
 
-     // Display the notification on screen
+
+    // Display the notification on screen
     _open: function() {
         var that = this;
         var i = 0;
@@ -85,7 +90,8 @@ Notification.prototype = {
         })();
     },
 
-     // Remove the notification on screen
+
+    // Remove the notification on screen
     _close: function() {
         var that = this;
         var i = 100;
@@ -94,14 +100,15 @@ Notification.prototype = {
             if (i >= 0) {
                 that.notification.style.opacity = i / 100;
                 i -= 2;
-
-                if (i === 0) { that.notification.parentNode.removeChild(that.notification); } // Remove notification from body
+                // Remove notification from body
+                if (i === 0) { that.notification.parentNode.removeChild(that.notification); }
             }
             window.setTimeout(iterate, that.interval);
         })();
 
         window.clearTimeout(this.timeoutHandle);
     },
+
 
     // Notification event listeners
     _eventListener: function() {
