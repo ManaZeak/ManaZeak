@@ -1,0 +1,45 @@
+
+/* New Library menu */
+#newLibrary {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#newLibrary h1 {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+#name {
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777;
+}
+
+#path {
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777;
+}
+
+#convertLabel {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+
+#convert {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+#buttonScan {
+    width: 75px;
+}
