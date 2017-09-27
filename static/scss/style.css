@@ -91,6 +91,34 @@
     font-size: 0.7em; }
   #footBar #progressBarWrapper {
     padding-top: 10px; }
+    #footBar #progressBarWrapper .pointer {
+      cursor: pointer; }
+  #footBar #queueExpander {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer; }
+  #footBar #queueExpander img {
+    width: 25px;
+    height: 25px;
+    margin-top: 5px;
+    margin-right: 5px; }
+  #footBar #queue {
+    width: 400px;
+    height: 500px;
+    background-color: black;
+    right: 0;
+    bottom: 35px;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.3s, opacity 0.3s ease; }
+  #footBar .queueLocked {
+    opacity: 1 !important;
+    transition: opacity 0.3s ease !important;
+    visibility: visible !important; }
 
 /*      --------        ProgressBar style       --------        */
 #progressBar {
@@ -296,59 +324,6 @@
   height: 15px;
   cursor: pointer; }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  width: 100%; }
-
-#queueExpander {
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer; }
-
-#queueExpander img {
-  width: 25px;
-  height: 25px;
-  margin-top: 5px;
-  margin-right: 5px; }
-
-#queue {
-  width: 400px;
-  height: 500px;
-  background-color: black;
-  right: 0;
-  bottom: 35px;
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s 0.3s, opacity 0.3s ease; }
-
-.queueLocked {
-  opacity: 1 !important;
-  transition: opacity 0.3s ease !important;
-  visibility: visible !important; }
-
-.pointer {
-  cursor: pointer; }
-
-#spectrumContainer {
-  width: 30%;
-  height: 200%;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: chartreuse; }
-
-#mainContainer {
-  width: 100%;
-  height: calc(100% - 80px);
-  position: absolute; }
-
 /* New Library menu */
 #newLibrary {
   position: relative;
@@ -376,7 +351,12 @@ html, body {
   border-radius: 1px;
   border: solid 1px #777; }
 
-#convertLabel {
+#infoLabel {
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto; }
+
+#id3Label {
   vertical-align: text-bottom;
   margin-right: 5px; }
 
@@ -384,7 +364,7 @@ html, body {
   margin: 0;
   margin-bottom: 20px; }
 
-#buttonScan {
+#scan {
   width: 75px; }
 
 /* listview */
@@ -435,5 +415,25 @@ html, body {
   width: 2.5%;
   display: inline-block;
   text-align: right; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 100%; }
+
+#spectrumContainer {
+  width: 30%;
+  height: 200%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: chartreuse; }
+
+#mainContainer {
+  width: 100%;
+  height: calc(100% - 80px);
+  position: absolute; }
 
 /*# sourceMappingURL=../../../../../../../../../../../static/scss/style.css.map */

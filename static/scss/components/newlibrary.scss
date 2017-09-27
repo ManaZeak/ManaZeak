@@ -30,7 +30,13 @@
     border: solid 1px #777;
 }
 
-#convertLabel {
+#infoLabel {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#id3Label {
     vertical-align: text-bottom;
     margin-right: 5px;
 }
@@ -40,6 +46,6 @@
     margin-bottom: 20px;
 }
 
-#buttonScan {
+#scan {
     width: 75px;
 }
