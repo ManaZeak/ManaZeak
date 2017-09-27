@@ -1,4 +1,4 @@
-var Library = function(isFirstLibrary) {
+var Library = function(isFirstLibrary, cookies) {
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -7,7 +7,10 @@ var Library = function(isFirstLibrary) {
         scan:      null
     };
 
+    this.cookies = cookies;
+
     this.rawTtracks = null;
+
     this.init(isFirstLibrary);
 };
 
@@ -34,17 +37,15 @@ Library.prototype = {
                 that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!\n";
             }
 
-            that.ui.scan.addEventListener("click", that.testInput.bind(that));
+            that.ui.scan.addEventListener("click", that._checkInputs.bind(that));
         });
     },
 
 
-    testInput: function() {
+    _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            // TODO : test strings before calling setLibraryPath
-            this.setLibraryPath()
+            this._sendLibraryPath();
         } else {
-
             if (this.ui.name.value !== '') {
                 this.ui.path.style.border = "solid 1px red";
                 new Notification("Path field is empty.", "You must specify the path of your library.");
@@ -60,66 +61,74 @@ Library.prototype = {
     },
 
 
-    setLibraryPath: function() {
+    _sendLibraryPath: function() {
         var xmlhttp = new XMLHttpRequest();
-        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                // TODO : check response
+            if (this.readyState === 4 && this.status === 200) { // Sending path, name given by user
                 var parsedJSON = JSON.parse(this.responseText);
-                console.log(parsedJSON.ID);
-                that.scanLibrary(parsedJSON.ID); // Library ID
+
+                if (parsedJSON.DONE === "FAIL") {
+                    new Notification("Error in path field.", parsedJSON.ERROR);
+                } else {
+                    // TODO : put waiting animation meanwhile (class to create, w/ start n stop control)
+                    that.scanLibrary(parsedJSON.ID); // Library ID
+                }
             }
         };
 
-        xmlhttp.open("POST", "ajax/setLibraryPath/", true); // TODO : replace /rescan by corresponding trigger
-        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.open("POST", "ajax/setLibraryPath/", true);
+        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             NAME: this.ui.name.value,
-            URL: this.ui.path.value
+            URL:  this.ui.path.value
         }));
     },
 
 
     scanLibrary: function(id) {
         var xmlhttp = new XMLHttpRequest();
-        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                // TODO : handle incoming errors if scan didn't worked
-                that.getPlaylistTracks(JSON.parse(this.responseText).ID);
+            if (this.readyState === 4 && this.status === 200) { // Sending convert flag given by user and associated playlist's ID
+                var parsedJSON = JSON.parse(this.responseText);
+
+                if (parsedJSON.DONE === "FAIL") {
+                    new Notification("Scan error.", parsedJSON.FAILS.length + " files haven't been scanned."); // TODO : put href to view more (file list for ex)
+                } else {
+                    // TODO : Stop waiting animation here
+                    that.fillTracks(parsedJSON.ID);
+                }
             }
         };
 
         xmlhttp.open("POST", "ajax/rescan/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
-            ID: id,
+            ID:      id,
             CONVERT: this.ui.convert.checked
         }));
     },
 
 
-    getPlaylistTracks: function(id) {
+    fillTracks: function(id) {
         var xmlhttp = new XMLHttpRequest();
-        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 that.rawTracks = JSON.parse(this.responseText);
-                that.getTracksArtists();
+
+                that.getTracksArtists(); // TODO : remove this call, and move it in app or somethin like dat
             }
         };
 
         xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             ID: id
@@ -137,7 +146,6 @@ Library.prototype = {
         }
 
         var xmlhttp = new XMLHttpRequest();
-        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
@@ -157,7 +165,7 @@ Library.prototype = {
         };
 
         xmlhttp.open("POST", "ajax/getTracksArtists/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             ARTISTS: artistsID
@@ -173,7 +181,6 @@ Library.prototype = {
         }
 
         var xmlhttp = new XMLHttpRequest();
-        var cookies = getCookies();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
@@ -183,7 +190,7 @@ Library.prototype = {
         };
 
         xmlhttp.open("POST", "ajax/getTracksAlbums/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
             ALBUMS: albumsID
