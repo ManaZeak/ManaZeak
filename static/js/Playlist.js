@@ -103,7 +103,7 @@ Playlist.prototype = {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 that.tracks = JSON.parse(this.responseText);
-                that.getTracksArtists();
+                that.getTracksArtistsAndAlbums();
             }
         };
 
@@ -115,7 +115,53 @@ Playlist.prototype = {
         }));
     },
 
-    getTracksArtists: function() {
-        console.log(this.tracks);
+    getTracksArtistsAndAlbums: function() {
+        var albumsID = [];
+        var artistsID = [];
+
+        for (var i = 0; i < this.tracks.length ;++i) {
+            albumsID.push(this.tracks[i].fields.album);
+
+            for (var j = 0; j < this.tracks[i].fields.artist.length ;++j) {
+                artistsID.push(this.tracks[i].fields.artist[j]);
+            }
+        }
+
+        console.log(albumsID);
+        console.log(artistsID);
+
+        var xmlhttp = new XMLHttpRequest();
+        var cookies = getCookies();
+        var that = this;
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
+                that.tracks = JSON.parse(this.responseText);
+                that.getTracksArtistsAndAlbums();
+            }
+        };
+
+        xmlhttp.open("POST", "ajax/getTracksArtistsAndAlbums/", true);
+        xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({
+            ALBUMS: albumsID,
+            ARTISTS: artistsID
+        }));
+
+
     }
 };
+
+/* Get a template ready to add in document
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.open('GET', '/app/templates/db.html');
+        xhr.send();
+
+*/
