@@ -1,9 +1,7 @@
 var Playlist = function() {
     this.ui = {
-        title: null,
         name: null,
         path: null,
-        convertLabel: null,
         convert: null,
         scan: null
     };
@@ -127,63 +125,21 @@ Playlist.prototype = {
     },
 
     newLibraryMenu: function() {
-        /*document.getElementById("mainContainer").innerHTML += '\
-        \
-            <h1>Add your HTML code here</h1>\
-        \
-        ';
-
-        this.newLibraryContainer = document.createElement("div");
-        this.ui.title = document.createElement("h1");
-        this.ui.name = document.createElement("input");
-        this.ui.path = document.createElement("input");
-        this.ui.convertLabel = document.createElement("span");
-        this.ui.convert = document.createElement("input");
-        this.ui.scan = document.createElement("button");
-
-        this.newLibraryContainer.id = "newLibrary";
-        this.ui.name.id = "name";
-        this.ui.path.id = "path";
-        this.ui.convertLabel.id = "convertLabel";
-        this.ui.convert.id = "convert";
-        this.ui.scan.id = "buttonScan";
-
-        this.ui.name.type = "text";
-        this.ui.path.type = "text";
-        this.ui.convert.type = "checkbox";
-
-        this.ui.title.innerHTML = "New library";
-        this.ui.scan.innerHTML = "Scan";
-        this.ui.convertLabel.innerHTML = "Automatically convert my files to ID3v2";
-
-        this.ui.name.placeholder = "Enter the name of the library here";
-        this.ui.path.placeholder = "Enter the path to your library";
-
-        this.newLibraryContainer.appendChild(this.ui.title);
-        this.newLibraryContainer.appendChild(this.ui.name);
-        this.newLibraryContainer.appendChild(document.createElement('br'));
-        this.newLibraryContainer.appendChild(this.ui.path);
-        this.newLibraryContainer.appendChild(document.createElement('br'));
-        this.newLibraryContainer.appendChild(this.ui.convertLabel);
-        this.newLibraryContainer.appendChild(this.ui.convert);
-        this.newLibraryContainer.appendChild(document.createElement('br'));
-        this.newLibraryContainer.appendChild(this.ui.scan);
-
-        document.getElementById("mainContainer").appendChild(this.newLibraryContainer);
-
-        this.ui.scan.addEventListener("click", this.testInput.bind(this));*/
-
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                console.log(this.responseText);
-                //document.getElementById("mainContainer").appendChild(this.responseText);
+                document.getElementById("mainContainer").insertAdjacentHTML('beforeend', this.responseText);
+                that.ui.name = document.getElementById("name");
+                that.ui.path = document.getElementById("path");
+                that.ui.convert = document.getElementById("convert");
+                that.ui.scan = document.getElementById("buttonScan");
+                that.ui.scan.addEventListener("click", that.testInput.bind(that));
             }
         };
 
-        xmlhttp.open("GET", "components/getNewLibrary", true);
+        xmlhttp.open("GET", "components/newLibrary", true);
         xmlhttp.send();
     }
 };
