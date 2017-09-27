@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 
 class newLibrary (TemplateView):
-    template_name = 'components/newLibrary.html'
+    template_name = 'components/newlibrary.html'
 
     @method_decorator(login_required(redirect_field_name='login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
