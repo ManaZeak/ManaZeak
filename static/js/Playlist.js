@@ -3,6 +3,7 @@ var Playlist = function() {
         title: null,
         name: null,
         path: null,
+        convertLabel: null,
         convert: null,
         scan: null
     };
@@ -126,16 +127,24 @@ Playlist.prototype = {
     },
 
     newLibraryMenu: function() {
+        /*document.getElementById("mainContainer").innerHTML += '\
+        \
+            <h1>Add your HTML code here</h1>\
+        \
+        ';
+
         this.newLibraryContainer = document.createElement("div");
         this.ui.title = document.createElement("h1");
         this.ui.name = document.createElement("input");
         this.ui.path = document.createElement("input");
+        this.ui.convertLabel = document.createElement("span");
         this.ui.convert = document.createElement("input");
         this.ui.scan = document.createElement("button");
 
         this.newLibraryContainer.id = "newLibrary";
         this.ui.name.id = "name";
         this.ui.path.id = "path";
+        this.ui.convertLabel.id = "convertLabel";
         this.ui.convert.id = "convert";
         this.ui.scan.id = "buttonScan";
 
@@ -145,6 +154,7 @@ Playlist.prototype = {
 
         this.ui.title.innerHTML = "New library";
         this.ui.scan.innerHTML = "Scan";
+        this.ui.convertLabel.innerHTML = "Automatically convert my files to ID3v2";
 
         this.ui.name.placeholder = "Enter the name of the library here";
         this.ui.path.placeholder = "Enter the path to your library";
@@ -153,24 +163,27 @@ Playlist.prototype = {
         this.newLibraryContainer.appendChild(this.ui.name);
         this.newLibraryContainer.appendChild(document.createElement('br'));
         this.newLibraryContainer.appendChild(this.ui.path);
+        this.newLibraryContainer.appendChild(document.createElement('br'));
+        this.newLibraryContainer.appendChild(this.ui.convertLabel);
         this.newLibraryContainer.appendChild(this.ui.convert);
+        this.newLibraryContainer.appendChild(document.createElement('br'));
         this.newLibraryContainer.appendChild(this.ui.scan);
 
         document.getElementById("mainContainer").appendChild(this.newLibraryContainer);
 
-        this.ui.scan.addEventListener("click", this.testInput.bind(this));
-    }
-};
+        this.ui.scan.addEventListener("click", this.testInput.bind(this));*/
 
-/* Get a template ready to add in document
+        var xmlhttp = new XMLHttpRequest();
+        var that = this;
 
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                console.log(xhr.responseText);
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+                //document.getElementById("mainContainer").appendChild(this.responseText);
             }
         };
-        xhr.open('GET', '/app/templates/db.html');
-        xhr.send();
 
-*/
+        xmlhttp.open("GET", "components/getNewLibrary", true);
+        xmlhttp.send();
+    }
+};
