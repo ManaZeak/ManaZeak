@@ -97,6 +97,7 @@ def addTrackMP3(root, file, playlist):
                 album.artist.add(trackArtist)
                 album.save()
         track.album = album
+        track.save()
     else:
         pass
         # TODO default value of artist (see if it's possible)

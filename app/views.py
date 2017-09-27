@@ -5,7 +5,8 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse
+from django.core.serializers import serialize
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
@@ -219,44 +220,17 @@ def loadTrackFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
-            playlist = Playlist.objects.get(id=response['ID'])  # TODO : GET this from html
+            playlist = Playlist.objects.get(id=response['ID'])
             tracks = playlist.track.all()
 
-            data = {'RESULT': len(tracks)}
-            for track in tracks:
-                artistsQuerySet = track.artist.all()
-                artists = []
-                for artist in artistsQuerySet:
-                    artists.append(artist.name)
-                tmp = {
-                    track.id: {
-                        'TITLE': track.title,
-                        'YEAR': track.year,
-                        'COMPOSER': track.composer,
-                        'PERFORMER': track.composer,
-                        'NUMBER': track.number,
-                        'BPM': track.bpm,
-                        'LYRICS': track.lyrics,
-                        'COMMENT': track.comment,
-                        'BITRATE': track.bitRate,
-                        'SAMPLERATE': track.sampleRate,
-                        'DURATION': track.duration,
-                        'DISCNUMBER': track.discNumber,
-                        'SIZE': track.size,
-                        'LASTMODIFIED': track.lastModified,
-                        'ARTIST': artists,
-                        # 'ALBUM': track.album.title,
-                        # 'FILETYPE': track.fileType.name,
-                    }
-                }
-                finalData = {**data, **tmp}
-                data = finalData
-        except AttributeError:
+            finalData = serialize('json', tracks)
+        except AttributeError: 
             data = {
                 'RESULT': 'FAIL',
                 'ERROR': 'Bad format'
             }
-    return JsonResponse(finalData)
+            return JsonResponse(data)
+    return HttpResponse(finalData)
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
