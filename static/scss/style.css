@@ -361,18 +361,35 @@ html, body {
 
 #newLibrary h1 {
     margin: 0;
+    margin-bottom: 20px;
 }
 
 #name {
-    width: 40%;
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777;
 }
 
 #path {
-    width: 40%;
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777;
+}
+
+#convertLabel {
+    vertical-align: text-bottom;
+    margin-right: 5px;
 }
 
 #convert {
-
+    margin: 0;
+    margin-bottom: 20px;
 }
 
 #buttonScan {
