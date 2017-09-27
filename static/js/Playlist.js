@@ -8,48 +8,12 @@ var Playlist = function() {
     };
 
     this.tracks = null;
-
     this.init();
 };
 
 Playlist.prototype = {
     init: function() {
-        var br = document.createElement('br');
-
-        this.createLibrary = document.createElement("div");
-        this.createLibrary.id = "createLibrary";
-
-        this.ui.title = document.createElement("h1");
-        this.ui.title.innerHTML = "New library";
-
-        this.ui.name = document.createElement("input");
-        this.ui.name.id = "name";
-        this.ui.name.type = "text";
-        this.ui.name.placeholder = "Enter the name of the library here";
-
-        this.ui.path = document.createElement("input");
-        this.ui.path.id = "path";
-        this.ui.path.type = "text";
-        this.ui.path.placeholder = "Enter the path to your library";
-
-        this.ui.convert = document.createElement("input");
-        this.ui.convert.id = "convert";
-        this.ui.convert.type = "checkbox";
-
-        this.ui.scan = document.createElement("button");
-        this.ui.scan.id = "buttonScan";
-        this.ui.scan.innerHTML = "Scan";
-
-        this.createLibrary.appendChild(this.ui.title);
-        this.createLibrary.appendChild(this.ui.name);
-        this.createLibrary.appendChild(br);
-        this.createLibrary.appendChild(this.ui.path);
-        this.createLibrary.appendChild(this.ui.convert);
-        this.createLibrary.appendChild(this.ui.scan);
-
-        document.getElementById("mainContainer").appendChild(this.createLibrary);
-
-        this.ui.scan.addEventListener("click", this.testInput.bind(this));
+        this.newLibraryMenu();
     },
 
     testInput: function() {
@@ -70,7 +34,7 @@ Playlist.prototype = {
                 // TODO : check response
                 var parsedJSON = JSON.parse(this.responseText);
                 console.log(parsedJSON.ID);
-                that.scanLibrary(parsedJSON.ID);
+                that.scanLibrary(parsedJSON.ID); // Library ID
             }
         };
 
@@ -90,9 +54,8 @@ Playlist.prototype = {
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                console.log(JSON.parse(this.responseText));
                 // TODO : handle incoming errors if scan didn't worked
-                that.getPlaylistTracks(id);
+                that.getPlaylistTracks(JSON.parse(this.responseText).ID);
             }
         };
 
@@ -160,6 +123,42 @@ Playlist.prototype = {
         }));
 
 
+    },
+
+    newLibraryMenu: function() {
+        this.newLibraryContainer = document.createElement("div");
+        this.ui.title = document.createElement("h1");
+        this.ui.name = document.createElement("input");
+        this.ui.path = document.createElement("input");
+        this.ui.convert = document.createElement("input");
+        this.ui.scan = document.createElement("button");
+
+        this.newLibraryContainer.id = "newLibrary";
+        this.ui.name.id = "name";
+        this.ui.path.id = "path";
+        this.ui.convert.id = "convert";
+        this.ui.scan.id = "buttonScan";
+
+        this.ui.name.type = "text";
+        this.ui.path.type = "text";
+        this.ui.convert.type = "checkbox";
+
+        this.ui.title.innerHTML = "New library";
+        this.ui.scan.innerHTML = "Scan";
+
+        this.ui.name.placeholder = "Enter the name of the library here";
+        this.ui.path.placeholder = "Enter the path to your library";
+
+        this.newLibraryContainer.appendChild(this.ui.title);
+        this.newLibraryContainer.appendChild(this.ui.name);
+        this.newLibraryContainer.appendChild(document.createElement('br'));
+        this.newLibraryContainer.appendChild(this.ui.path);
+        this.newLibraryContainer.appendChild(this.ui.convert);
+        this.newLibraryContainer.appendChild(this.ui.scan);
+
+        document.getElementById("mainContainer").appendChild(this.newLibraryContainer);
+
+        this.ui.scan.addEventListener("click", this.testInput.bind(this));
     }
 };
 

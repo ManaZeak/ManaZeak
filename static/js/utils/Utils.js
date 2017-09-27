@@ -25,10 +25,6 @@ function secondsToTimecode(time) {
     }
 }
 
-function ajaxRequestGET(file, callback) {
-
-}
-
 function getCookies() {
     var cookies = {};
 
