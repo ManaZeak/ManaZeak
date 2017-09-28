@@ -330,42 +330,35 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center; }
-
-#newLibrary h1 {
-  margin: 0;
-  margin-bottom: 20px; }
-
-#name {
-  height: 25px;
-  width: 25%;
-  margin-bottom: 20px;
-  text-align: center;
-  border-radius: 1px;
-  border: solid 1px #777; }
-
-#path {
-  height: 25px;
-  width: 25%;
-  margin-bottom: 20px;
-  text-align: center;
-  border-radius: 1px;
-  border: solid 1px #777; }
-
-#infoLabel {
-  width: 25%;
-  margin-left: auto;
-  margin-right: auto; }
-
-#id3Label {
-  vertical-align: text-bottom;
-  margin-right: 5px; }
-
-#convert {
-  margin: 0;
-  margin-bottom: 20px; }
-
-#scan {
-  width: 75px; }
+  #newLibrary h1 {
+    margin: 0;
+    margin-bottom: 20px; }
+  #newLibrary #infoLabel {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto; }
+  #newLibrary #name {
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777; }
+  #newLibrary #path {
+    height: 25px;
+    width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 1px;
+    border: solid 1px #777; }
+  #newLibrary #id3Label {
+    vertical-align: text-bottom;
+    margin-right: 5px; }
+  #newLibrary #convert {
+    margin: 0;
+    margin-bottom: 20px; }
+  #newLibrary #scan {
+    width: 75px; }
 
 /* listview */
 #listView {
@@ -415,6 +408,91 @@
   width: 2.5%;
   display: inline-block;
   text-align: right; }
+
+/*
+$modalHeight: 600px;
+$modalWidth:  600px;
+
+$headerHeight:  ($modalHeight / 6);
+$contentHeight: ($modalHeight / 6) * 4;
+$footerHeight:  ($modalHeight / 6);
+*/
+#modal {
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #modal #scan {
+    border: solid 1px black;
+    border-radius: 3px;
+    position: relative;
+    min-height: 350px;
+    background: #fff;
+    width: 600px; }
+    #modal #scan #header,
+    #modal #scan #content,
+    #modal #scan #footer {
+      box-sizing: border-box;
+      position: absolute;
+      text-align: center;
+      width: 100%; }
+    #modal #scan #header,
+    #modal #scan #footer {
+      padding: 10px 30px; }
+    #modal #scan #header {
+      border-bottom: solid 1px black;
+      top: 0;
+      height: 58.33333px; }
+      #modal #scan #header h1 {
+        line-height: 38.33333px;
+        margin: 0; }
+    #modal #scan #content {
+      top: 58.33333px;
+      height: 233.33333px;
+      padding: 10px 50px; }
+      #modal #scan #content img {
+        width: 100px;
+        height: 100px;
+        margin: 16px 0; }
+    #modal #scan #footer {
+      border-top: solid 1px black;
+      height: 58.33333px;
+      top: 291.66667px; }
+      #modal #scan #footer p {
+        line-height: 38.33333px;
+        margin: 0; }
+
+.scanOverlay {
+  cursor: not-allowed; }
+
+@keyframes lds-dual-ring {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+.lds-dual-ring {
+  position: relative; }
+
+.lds-dual-ring div {
+  z-index: 9999;
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  left: 190px;
+  top: 10px;
+  border-radius: 50%;
+  border: 4px solid #000;
+  border-color: #000 transparent;
+  -webkit-animation: lds-dual-ring 1.3s linear infinite;
+  animation: lds-dual-ring 1.3s linear infinite; }
 
 html, body {
   height: 100%;
