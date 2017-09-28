@@ -31,5 +31,5 @@ Queue.prototype = {
             this.isVisible = !this.isVisible;
             this.removeVisibilityLock();
         }
-    },
+    }
 };
