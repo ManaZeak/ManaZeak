@@ -1,4 +1,5 @@
 var ListView = function() {
+    this.listView = null;
     this.tracksToLoad = [];
     this.tracks = [];
 
@@ -7,6 +8,9 @@ var ListView = function() {
 
 ListView.prototype = {
     init: function() {
+        this.listView = document.createElement("div");
+        this.listView.id ="listView";
+
         this.initColumnBar();
 
         var track = {
@@ -41,6 +45,7 @@ ListView.prototype = {
         this.tracksToLoad[2] = track3;
 
         this.addTracks(this.tracksToLoad);
+        document.getElementById("mainContainer").appendChild(this.listView);
     },
 
     initColumnBar: function() {
@@ -58,14 +63,14 @@ ListView.prototype = {
         artist.className   = "artist";
         composer.className = "composer";
         album.className    = "album";
-        genre.className     = "genre";
+        genre.className    = "genre";
         year.className     = "year";
 
         title.innerHTML    = "Title";
         artist.innerHTML   = "Artist";
         composer.innerHTML = "Composer";
         album.innerHTML    = "Album";
-        genre.innerHTML     = "Genre";
+        genre.innerHTML    = "Genre";
         year.innerHTML     = "Year";
 
         columnBar.appendChild(title);
@@ -75,7 +80,7 @@ ListView.prototype = {
         columnBar.appendChild(genre);
         columnBar.appendChild(year);
 
-        document.getElementById("listView").appendChild(columnBar);
+        this.listView.appendChild(columnBar);
     },
 
     addTracks: function(tracks) {
@@ -83,8 +88,7 @@ ListView.prototype = {
             // TODO : viewPort to only load visible items
             var newTrack = new Track(tracks[i]);
 
-            (i % 2 === 0) ? newTrack.createListViewEntry(true) : newTrack.createListViewEntry(false);
-            //newTrack.createListViewEntry();
+            newTrack.createListViewEntry(this.listView);
             newTrack.uiTrack.addEventListener("click", newTrack.toggleSelected.bind(newTrack));
             // TODO : selction mode using ctrl, otherwise unselect
 

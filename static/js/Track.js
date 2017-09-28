@@ -1,7 +1,6 @@
 var Track = function(track) {
     this.uiTrack = null;
     this.isSelected = false;
-    this.isOdd = null;
 
     this.init(track);
 };
@@ -16,16 +15,9 @@ Track.prototype = {
         this.year     = track.year;
     },
 
-    createListViewEntry: function(odd) {
+    createListViewEntry: function(listView) {
         this.uiTrack = document.createElement("div");
-        if (odd) {
-            this.isOdd = true;
-            this.uiTrack.style.background = "darkgrey";
-        } else {
-            this.isOdd = false;
-            this.uiTrack.style.background = "none";
-        }
-
+        this.uiTrack.className = "trackContainer";
 
         var title    = document.createElement("div");
         var artist   = document.createElement("div");
@@ -57,18 +49,13 @@ Track.prototype = {
 
         //this.uiTrack.addEventListener("dblclick", this.test.bind(this));
 
-        document.getElementById("listView").appendChild(this.uiTrack);
+        listView.appendChild(this.uiTrack);
     },
 
     toggleSelected: function() {
         if (this.isSelected) {
             this.isSelected = !this.isSelected;
-
-            if (this.isOdd) {
-                this.uiTrack.style.background = "darkgrey";
-            } else {
-                this.uiTrack.style.background = "none";
-            }
+            this.uiTrack.style.background = "none";
         } else {
             this.isSelected = !this.isSelected;
             this.uiTrack.style.background = "red";

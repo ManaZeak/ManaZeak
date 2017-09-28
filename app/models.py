@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -7,8 +8,9 @@ class Artist(models.Model):
 
 class Album(models.Model):
     title = models.CharField(max_length=1000)
-    NumberOfDisc = models.IntegerField()
-    artist = models.ForeignKey(Artist)
+    numberOfDisc = models.IntegerField(null=True)
+    numberTotalTrack = models.IntegerField(null=True)
+    artist = models.ManyToManyField(Artist)
 
 
 class Genre(models.Model):
@@ -35,9 +37,8 @@ class Track(models.Model):
     duration = models.IntegerField(null=True)
     discNumber = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
-    numberTotalTrack = models.IntegerField(null=True)
     lastModified = models.DateField(auto_now=True, null=True)
-    artist = models.ManyToManyField(Artist, null=True)
+    artist = models.ManyToManyField(Artist)
     album = models.ForeignKey(Album, null=True)
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
@@ -45,8 +46,13 @@ class Track(models.Model):
 
 class Playlist(models.Model):
     name = models.CharField(max_length=1000)
+    user = models.ForeignKey(User)
+    track = models.ManyToManyField(Track)
+    isLibrary = models.BooleanField(default=False)
 
 
-class TrackIncludedInPlaylist(models.Model):
-    playList = models.ForeignKey(Playlist)
-    track = models.ForeignKey(Track)
+class Library(models.Model):
+    name = models.CharField(max_length=1000)
+    path = models.FilePathField(max_length=1000)
+    user = models.ForeignKey(User)
+    playlist = models.ForeignKey(Playlist, null=True)

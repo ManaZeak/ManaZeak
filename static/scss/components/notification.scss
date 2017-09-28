@@ -1,0 +1,68 @@
+
+/* Notification */
+.notificationContainer {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    width: 350px;
+    height: 100px;
+    z-index: 999;
+    background-color: aqua;
+    opacity: 0;
+    border: solid 1px #777;
+    border-radius: 1px;
+}
+
+.icon {
+    color: #777;
+    position: absolute;
+    left: 12.5px;
+    top: 12.5px;
+    width: 25px;
+    height: 25px;
+}
+
+.title2 {
+    color: #777;
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 70px);
+    top: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+    font-size: 1em;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.message {
+    color: #777;
+    position: absolute;
+    left: 50px;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 70px);
+    height: 40px;
+    line-height: 1em;
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.close {
+    color: #777;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+
