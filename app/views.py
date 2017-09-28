@@ -222,7 +222,93 @@ def loadTrackFromPlaylist(request):
             print(response['ID'])
             playlist = Playlist.objects.get(id=response['ID'])
             tracks = playlist.track.all()
-            finalData = serialize('json', tracks)
+            # finalData = serialize('json', tracks)
+            finalData = "["
+            for track in tracks:
+                finalData += "{ \"ID\":"
+                finalData += str(track.id)
+                finalData += ", \"TITLE\":\""
+                finalData += track.title
+                finalData += "\", \"YEAR\":"
+                finalData += str(track.year)
+                finalData += ", \"COMPOSER\":\""
+                if track.composer is not None:
+                    finalData += track.composer
+                else:
+                    finalData += " "
+                finalData += "\", \"PERFORMER\":\""
+                if track.performer is not None:
+                    finalData += track.performer
+                else:
+                    finalData += " "
+                finalData += "\", \"TRACK_NUMBER\":"
+                if track.number is not None:
+                    finalData += str(track.number)
+                else:
+                    finalData += "0"
+                finalData += ", \"BPM\":"
+                if track.bpm is not None:
+                    finalData += str(track.bpm)
+                else:
+                    finalData += "0"
+                finalData += ", \"LYRICS\":\""
+                if track.lyrics is not None:
+                    finalData += track.lyrics
+                else:
+                    finalData += " "
+                finalData += "\", \"COMMENT\":\""
+                if track.comment is not None:
+                    finalData += track.comment
+                else:
+                    finalData += " "
+                finalData += "\", \"BITRATE\":"
+                finalData += str(track.bitRate)
+                finalData += ", \"SAMPLERATE\":"
+                finalData += str(track.sampleRate)
+                finalData += ", \"DURATION\":"
+                finalData += str(track.duration)
+                finalData += ", \"DISC_NUMBER\":"
+                if track.discNumber is not None:
+                    finalData += str(track.discNumber)
+                else:
+                    finalData += "0"
+                finalData += ", \"SIZE\":"
+                if track.size is not None:
+                    finalData += str(track.size)
+                else:
+                    finalData += "0"
+                finalData += ", \"LAST_MODIFIED\":\""
+                finalData += str(track.lastModified)
+                finalData += "\", \"ARTISTS\":["
+                for artist in track.artist.all():
+                    finalData += "{\"ID\":"
+                    finalData += str(artist.id)
+                    finalData += ", \"NAME\":\""
+                    finalData += artist.name
+                    finalData += "\"},"
+                finalData = finalData[:-1]
+                finalData += "], \"ALBUM\": { \"ID\":"
+                finalData += str(track.album.id)
+                finalData += ", \"NUMBER_OF_DISC\":"
+                if track.album.numberOfDisc is not None:
+                    finalData += str(track.album.numberOfDisc)
+                else:
+                    finalData += "0"
+                finalData += ", \"NUMBER_TOTAL_TRACK\":"
+                finalData += str(track.album.numberTotalTrack)
+                finalData += ", \"ARTIST\":["
+                for artist in track.album.artist.all():
+                    finalData += "{\"ID\":"
+                    finalData += str(artist.id)
+                    finalData += ", \"NAME\":\""
+                    finalData += artist.name
+                    finalData += "\"},"
+                finalData = finalData[:-1]
+                finalData += "]}},"
+            finalData = finalData[:-1]
+            finalData += "]"
+            print(finalData)
+
         except AttributeError:
             data = {
                 'RESULT': 'FAIL',
