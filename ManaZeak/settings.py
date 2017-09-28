@@ -87,11 +87,7 @@ DATABASES = {
         'NAME': 'music',
         'USER': 'postgres',
         'PASSWORD': 'rootroot',
-<<<<<<< HEAD
         'HOST': 'db',
-=======
-        'HOST': 'localhost',
->>>>>>> fc97159b46e3e622360bdbed7dd7a98c93feb966
         'PORT': '5432'
     }
 }
@@ -140,4 +136,4 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, "static/audio/")
 MEDIA_URL = '/static/audio/'
 
-STATIC_ROOT = "/static/"
+STATIC_ROOT = "/static"
