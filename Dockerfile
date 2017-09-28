@@ -4,5 +4,5 @@
  ADD . /ManaZeak
  RUN pip install -r ManaZeak/requirements.txt
  RUN mkdir /library
- WORKDIR /library
+ WORKDIR /ManaZeak
 EXPOSE 8000
