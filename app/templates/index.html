@@ -25,7 +25,7 @@
         </div>
 
         {% include 'components/footbar.html' %}
-        {% include 'utils/modal.html' %}
+        {#% include 'utils/modal.html' %#}
 
         <audio id="audioPlayer">
             <!-- <source src="/static/audio/lol.mp3" type="audio/ogg"> -->
@@ -44,6 +44,7 @@
         <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Library.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
             var app = new App();

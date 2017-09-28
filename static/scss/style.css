@@ -433,7 +433,11 @@ $footerHeight:  ($modalHeight / 6);
     position: relative;
     min-height: 350px;
     background: #fff;
-    width: 600px; }
+    width: 600px;
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */ }
     #modal #scan #header,
     #modal #scan #content,
     #modal #scan #footer {
@@ -514,4 +518,4 @@ html, body {
   height: calc(100% - 80px);
   position: absolute; }
 
-/*# sourceMappingURL=../../../../../../../static/scss/style.css.map */
+/*# sourceMappingURL=../../../../../../../../../../../static/scss/style.css.map */

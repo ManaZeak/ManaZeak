@@ -9,7 +9,9 @@ var Library = function(isFirstLibrary, cookies) {
 
     this.cookies = cookies;
 
+    this.scanModal = null;
     this.rawTtracks = null;
+
 
     this.init(isFirstLibrary);
 };
@@ -72,7 +74,7 @@ Library.prototype = {
                 if (parsedJSON.DONE === "FAIL") {
                     new Notification("Error in path field.", parsedJSON.ERROR);
                 } else {
-                    // TODO : put waiting animation meanwhile (class to create, w/ start n stop control)
+                    that.scanModal = new Modal(); // TODO : send parameters
                     that.scanLibrary(parsedJSON.ID); // Library ID
                 }
             }
@@ -99,7 +101,7 @@ Library.prototype = {
                 if (parsedJSON.DONE === "FAIL") {
                     new Notification("Scan error.", parsedJSON.FAILS.length + " files haven't been scanned."); // TODO : put href to view more (file list for ex)
                 } else {
-                    // TODO : Stop waiting animation here
+                    that.scanModal.close();
                     that.fillTracks(parsedJSON.ID);
                 }
             }
