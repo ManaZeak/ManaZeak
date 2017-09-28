@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cl=4#k6g)t9&1tlsz7)uvtq*to#46f6gkb*toovigtm&t4s(5o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'sass_processor',
 ]
 
 STATICFILES_DIRS = (
@@ -86,7 +87,11 @@ DATABASES = {
         'NAME': 'music',
         'USER': 'postgres',
         'PASSWORD': 'rootroot',
+<<<<<<< HEAD
         'HOST': 'db',
+=======
+        'HOST': 'localhost',
+>>>>>>> fc97159b46e3e622360bdbed7dd7a98c93feb966
         'PORT': '5432'
     }
 }
@@ -115,13 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -130,9 +131,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "static/audio/")
 MEDIA_URL = '/static/audio/'
+
+<<<<<<< HEAD
+STATIC_ROOT = "/static/"
+=======
+#SASS Processor configuration
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    '/static/scss',
+]
+SASS_PROCESSSOR_AUTO_INCLUDE = False
+SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
+SASS_PROCESSOR_ROOT = "static/"
+>>>>>>> fc97159b46e3e622360bdbed7dd7a98c93feb966
