@@ -20,7 +20,7 @@ class mainView(ListView):
     template_name = 'index.html'
     queryset = Playlist
 
-    @method_decorator(login_required(redirect_field_name='login.html', login_url='app:login'))
+    @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
         return super(mainView, self).dispatch(*args, **kwargs)
 
@@ -136,23 +136,26 @@ def dropAllDB(request):
 
 
 def createUser(request):
+    print("hi")
     if request.method == 'POST':
+        print("zob")
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+            user.save()
             login(request, user)
             return render(request, 'index.html')  # TODO : fix URL
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'user/signup.html', {'form': form})
 
 
 class UserFormLogin(View):
     form_class = UserForm
-    template_name = 'login.html'
+    template_name = 'user/login.html'
 
     # Display the blank form
     def get(self, request):
@@ -195,7 +198,7 @@ def getUserPlaylists(request):
 
 def logoutView(request):
     logout(request)
-    return render(request, 'login.html')
+    return render(request, 'user/login.html')
 
 
 def loadAllLibrary(request):
@@ -229,7 +232,7 @@ def loadTrackFromPlaylist(request):
     return HttpResponse(finalData)
 
 
-@login_required(redirect_field_name='login.html', login_url='app:login')
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def setLibraryPath(request):
     if request.method == 'POST':
         response = json.loads(request.body)
