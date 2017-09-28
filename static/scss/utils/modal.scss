@@ -36,6 +36,9 @@ $verticalPadding: 10px;
         background: #fff;
         width: $scanModalWidth;
 
+        -webkit-user-select: none;  /* Chrome/Safari */
+        -moz-user-select: none;     /* Firefox */
+
 
         #header,
         #content,
