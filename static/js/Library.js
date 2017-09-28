@@ -123,9 +123,12 @@ Library.prototype = {
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                that.rawTracks = JSON.parse(this.responseText);
+                var rawString = this.responseText;
+                console.log(rawString);
+                var tmp = JSON.parse(rawString);
+                console.log(tmp);
 
-                that.getTracksArtists(); // TODO : remove this call, and move it in app or somethin like dat
+                //that.getTracksArtists(); // TODO : remove this call, and move it in app or somethin like dat
             }
         };
 
