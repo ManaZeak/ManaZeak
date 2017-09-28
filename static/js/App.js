@@ -54,11 +54,10 @@ var App = function() {
 };
 
 App.prototype = {
+
     init: function() {
         this.keyListener(); // Loading shortcuts
         this.eventListener(); // Loading events
-
-        // TODO : get user playlists -> if none, display creation menu, else, display first playlist
 
         // Getting user playlists
         var xmlhttp = new XMLHttpRequest();
@@ -72,31 +71,19 @@ App.prototype = {
 
         xmlhttp.open("GET", "ajax/getPlaylists", true);
         xmlhttp.send();
-
-        /* Test zone here, to add try new features in tmp */
-        //var tmp = new ListView();
-        //var tst = new Notification("BDD invalide", "Une erreur est survenue lors du chargement de la base.");
-        //document.getElementById("buttonToast").addEventListener("click", this.tmp.bind(this))
     },
+
 
     start: function(playlists) {
         // User first connection : need too create the first library
         if (playlists.RESULT === 0) {
             var n = new Library(true, this.cookies);
+            //var tmp = new ListView();
+        } else {
+
         }
     },
 
-
-
-
-
-
-
-
-
-//    tmp: function() {
-  //      var tst = new Notification(1, "ZOBARE");
-    //},
 
     mouseMove: function(event) {
         // Updating the ProgressBar while user is moving the mouse
@@ -118,6 +105,7 @@ App.prototype = {
         }
     },
 
+
     // Click event on ProgressBar div
     mouseDown: function(event) {
         if (!this.progressBar.getIsDragging() &&
@@ -136,6 +124,7 @@ App.prototype = {
         }
     },
 
+
     // Mouse events
     mouseUp: function() {
         // User released the ProgressBar thumb
@@ -151,13 +140,16 @@ App.prototype = {
         }
     },
 
+
     mouseOver: function() {
         this.progressBar.setIsMouseOver(true);
     },
 
+
     mouseLeave: function() {
         this.progressBar.setIsMouseOver(false);
     },
+
 
     // Player controls
     togglePlay: function() {
@@ -165,9 +157,11 @@ App.prototype = {
         this.progressBar.toggleRefreshInterval(this.player.getPlayer());
     },
 
+
     toggleRepeat: function() {
         this.player.toggleRepeat();
     },
+
 
     stopPlayback: function() {
         this.player.stopPlayback();
@@ -175,6 +169,7 @@ App.prototype = {
         this.progressBar.stopRefreshInterval();
         this.ui.play.image.src = "/static/img/play.svg";
     },
+
 
     toggleMute: function(event) {
         if (event.target.id === "buttonMute" || event.target.id === "imageMute" || (event instanceof KeyboardEvent && event.ctrlKey)) {
@@ -184,11 +179,13 @@ App.prototype = {
         }
     },
 
+
     next: function() {
         this.player.changeTrack("/static/audio/test.flac"); // New tracks to inject here
         this.player.stopPlayback();
         this.player.togglePlay();
     },
+
 
     previous: function() {
         this.player.changeTrack("/static/audio/test2.mp3"); // Old tracks to inject here
@@ -196,16 +193,19 @@ App.prototype = {
         this.player.togglePlay();
     },
 
+
     rewind: function(event) {
         this.player.rewind(event.ctrlKey);
         this.progressBar.updateProgress(this.player.getPlayer());
     },
+
 
     fastForward: function(event) {
         this.player.fastForward(event.ctrlKey);
         this.progressBar.updateProgress(this.player.getPlayer());
 
     },
+
 
     volumeUp: function(event) {
         this.volumeBar.addVisibilityLock();
@@ -219,6 +219,7 @@ App.prototype = {
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
 
+
     volumeDown: function(event) {
         if (!this.isVolumeLocked) {
             this.volumeBar.addVisibilityLock();
@@ -231,6 +232,7 @@ App.prototype = {
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
 
+
     delayHideVolume: function() {
         var that = this;
 
@@ -241,13 +243,16 @@ App.prototype = {
         }, 1500);
     },
 
+
     toggleQueue: function() {
         this.queue.toggleVisibilityLock();
     },
 
+
     invertTimecode: function() {
         this.progressBar.invertTimecode(this.player.getPlayer());
     },
+
 
     keyListener: function() {
         var that = this;
@@ -289,7 +294,8 @@ App.prototype = {
                 case 38: // Up arrow
                     that.delayHideVolume();
                     break;
-                case 40: // Down arrow
+                case         /* Test zone here, to add try new features in tmp */
+40: // Down arrow
                     that.delayHideVolume();
                     break;
                 default:
@@ -297,6 +303,7 @@ App.prototype = {
             }
         });
     },
+
 
     eventListener: function() {
         var that = this;

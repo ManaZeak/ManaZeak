@@ -1,0 +1,126 @@
+/*
+$modalHeight: 600px;
+$modalWidth:  600px;
+
+$headerHeight:  ($modalHeight / 6);
+$contentHeight: ($modalHeight / 6) * 4;
+$footerHeight:  ($modalHeight / 6);
+*/
+
+$scanModalHeight: 350px;
+$scanModalWidth:  600px;
+
+$scanHeaderHeight:  ($scanModalHeight / 6);
+$scanContentHeight: ($scanModalHeight / 6) * 4;
+$scanFooterHeight:  ($scanModalHeight / 6);
+
+$spinnerSide: 110px;
+$verticalPadding: 10px;
+
+#modal {
+    height: 100%;
+    position: fixed;
+    width: 100%;
+  	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #scan {
+        border: solid 1px black;
+        border-radius: 3px;
+        position: relative;
+        min-height: $scanModalHeight;
+        background: #fff;
+        width: $scanModalWidth;
+
+
+        #header,
+        #content,
+        #footer {
+            box-sizing: border-box;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+        }
+
+        #header,
+        #footer {
+            padding: $verticalPadding 30px;
+        }
+
+        #header {
+            border-bottom: solid 1px black;
+            top: 0;
+            height: $scanHeaderHeight;
+
+            h1 {
+                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
+                margin: 0;
+            }
+        }
+
+
+        #content {
+            top: $scanHeaderHeight;
+            height: $scanContentHeight;
+            padding: $verticalPadding 50px;
+
+            img {
+                width: 100px;
+                height: 100px;
+
+                margin: 16px 0;
+            }
+        }
+
+
+        #footer {
+            border-top: solid 1px black;
+            height: $scanFooterHeight;
+            top: ($scanHeaderHeight + $scanContentHeight);
+
+            p {
+                line-height: ($scanFooterHeight - (2 * $verticalPadding));
+                margin: 0;
+            }
+        }
+    }
+}
+
+
+.scanOverlay {
+    cursor: not-allowed;
+}
+
+
+@keyframes lds-dual-ring {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.lds-dual-ring {
+    position: relative;
+}
+
+.lds-dual-ring div {
+    z-index: 9999;
+    position: absolute;
+    width: $spinnerSide;
+    height: $spinnerSide;
+    left: ($scanModalWidth / 2) - $spinnerSide;
+    top: 10px;
+    border-radius: 50%;
+    border: 4px solid #000;
+    border-color: #000 transparent;
+    -webkit-animation: lds-dual-ring 1.3s linear infinite;
+    animation: lds-dual-ring 1.3s linear infinite;
+}
