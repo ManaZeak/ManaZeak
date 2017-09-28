@@ -3,9 +3,5 @@ django-compressor
 django-libsass
 psycopg2
 mutagen
-<<<<<<< HEAD
-=======
-libsass
-django-compressor
 django-sass-processor
->>>>>>> fc97159b46e3e622360bdbed7dd7a98c93feb966
+libsass
