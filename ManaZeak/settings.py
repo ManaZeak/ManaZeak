@@ -137,3 +137,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static/audio/")
 MEDIA_URL = '/static/audio/'
 
 STATIC_ROOT = "/assets/"
+
+#SASS Processor configuration
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    '/static/scss',
+]
+SASS_PROCESSSOR_AUTO_INCLUDE = False
+SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
+SASS_PROCESSOR_ROOT = "static/"

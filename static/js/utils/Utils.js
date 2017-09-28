@@ -4,6 +4,7 @@ function precisionRound(value, precision) {
 }
 
 function secondsToTimecode(time) {
+    // TODO : add days
     var transformedTime = {
         h: 0,
         m: 0,
@@ -25,14 +26,30 @@ function secondsToTimecode(time) {
     }
 }
 
-function loadJSON(file, callback) {
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', file, true);
-    xobj.onreadystatechange = function() {
-        if (xobj.readyState == 4 && xobj.status == 200) {
-            callback(xobj.responseText);
+function getCookies() {
+    var cookies = {};
+
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(function (c) {
+            var m = c.trim().match(/(\w+)=(.*)/);
+            if (m !== undefined) {
+                cookies[m[1]] = decodeURIComponent(m[2]);
+            }
+        });
+    }
+
+    return cookies;
+}
+
+function fetchComponentUI(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callback(this.responseText);
         }
     };
-    xobj.send(null);
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 }
