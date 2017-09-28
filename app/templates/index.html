@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <title>WebPlayer POC</title>
-        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/index.scss" %}">
+        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
     </head>
     <body>
         <!-- <p>Ctrl + M : mute</p>
@@ -18,81 +18,34 @@
         <p>Ctrl + &uarr; : ++volume 10</p>
         <p>&darr; : --volume 1</p>
         <p>Ctrl + &darr; : --volume 10</p>
+        <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
-        <div id="listView">
-
+        <div id="mainContainer">
+            {#% include 'components/newlibrary.html' %#}
         </div>
 
-        <div id="footBar">
- <!--           <div id="spectrumContainer"> <!-- Bc of float left, this must be before other divs -->
-
-            <!--</div> -->
-            <div id="metadataContainer">
-                <div class="tootltipWrapper">
-                    <img src="{% static "img/cover.jpg" %}" alt="">
-                    <span class="tooltipCover"><img src="{% static "img/cover.jpg" %}" alt=""></span>
-                </div>
-                <ul>
-                    <li>404</li>
-                    <li>Knife Party</li>
-                    <li>Abandon Ship [LP]</li>
-                    <li><span>2014</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>Complextro</span></li>
-                </ul>
-            </div>
-            <div id="controlsContainer">
-                <div id="half">
-                    <a id="buttonRepeat"><img src="{% static "img/repeat.svg" %}" id="imageRepeat" alt=""></a>
-                    <a id="buttonPrevious"><img src="{% static "img/previous.svg" %}" id="imagePrevious" alt=""></a>
-                    <a id="buttonPlay"><img src="{% static "img/play.svg" %}" id="imagePlay" alt=""></a>
-                    <a id="buttonStop"><img src="{% static "img/stop.svg" %}" id="imageStop" alt=""></a>
-                    <a id="buttonNext"><img src="{% static "img/next.svg" %}" id="imageNext" alt=""></a>
-                    <a id="buttonMute">
-                        <img src="{% static "img/volume.svg" %}" id="imageMute" alt="" />
-                        <div id="volumeBarWrapper">
-                            <div id="volumeBar">
-                                <div id="volume"></div>
-                                <div id="volumeThumb"></div>
-                            </div>
-                        </div>
-                    </a>
-                    <div id="queueExpander">
-                        <img src="{% static "img/menu.svg" %}" id="imageQueueExpander" alt="">
-                        <div id="queue">
-
-                        </div>
-                    </div>
-                </div>
-                <div id="half">
-                    <div id="progressBarWrapper">
-                        <span id="currentDuration" class="pointer">--:--</span>
-                        <div id="progressBar">
-                            <div id="progress"></div>
-                            <div id="progressThumb"></div>
-                            <div id="progressTimecodeHover">
-                                --:--
-                                <p>- --:--</p>
-                            </div>
-                        </div>
-                        <span id="totalDuration" class="pointer">--:--</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'components/footbar.html' %}
+        {#% include 'utils/modal.html' %#}
 
         <audio id="audioPlayer">
-            <source src="/static/audio/lol.mp3" type="audio/ogg">
+            <source src="" type="audio/ogg">
              Your browser does not support the audio element.
         </audio>
 
         <!-- Add absolute path in js-->
+        <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Track.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ListView.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Queue.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ProgressBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/VolumeBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/view/ListView.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/Queue.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/ProgressBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/VolumeBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Utils.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Library.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
             var app = new App();

@@ -11,9 +11,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='track',
-            name='bitRateMode',
-            field=models.IntegerField(null=True),
+        migrations.AlterUniqueTogether(
+            name='artist',
+            unique_together=set([('name',)]),
         ),
     ]
