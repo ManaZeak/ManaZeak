@@ -244,8 +244,10 @@ App.prototype = {
     },
 
 
-    toggleQueue: function() {
-        this.queue.toggleVisibilityLock();
+    toggleQueue: function(event) {
+        if (event.ctrlKey || event.type === "click") {
+            this.queue.toggleVisibilityLock();
+        }
     },
 
 
@@ -256,11 +258,6 @@ App.prototype = {
 
     keyListener: function() {
         var that = this;
-
-        /*
-            TODO : Shortcut to add :
-            - Ctrl + q : toggle queue
-        */
 
         // Key pressed event
         document.addEventListener("keydown", function(event) {
@@ -283,6 +280,9 @@ App.prototype = {
                 case 77: // m key (w/ ctrl)
                     that.toggleMute(event);
                     break;
+                case 81:
+                    that.toggleQueue(event);
+                    break;
                 default:
                     break;
             }
@@ -294,8 +294,7 @@ App.prototype = {
                 case 38: // Up arrow
                     that.delayHideVolume();
                     break;
-                case         /* Test zone here, to add try new features in tmp */
-40: // Down arrow
+                case 40: // Down arrow
                     that.delayHideVolume();
                     break;
                 default:
