@@ -1,8 +1,6 @@
 from django.conf.urls import url
-from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import RedirectView, CreateView
 
-from app import components, utils
+from app import components, utils, controller
 from . import views
 
 app_name = 'app'
@@ -17,8 +15,8 @@ urlpatterns = [
     url(r'^logout/$', views.logoutView, name='logout'),
     url(r'^ajax/loadAllLibrary/$', views.loadAllLibrary, name='loadAllLibrary'),
     url(r'^ajax/getPlaylistTracks/$', views.loadTrackFromPlaylist, name='loadTrackFromPlaylist'),
-    url(r'^ajax/setLibraryPath/$', views.setLibraryPath, name='setLibrary'),
-    url(r'^ajax/getTracksArtists/$', views.getTracksArtists, name='getTracksArtists'),
+    url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^utils/modal$', utils.ScanModal.as_view(), name='modal'),
+    url(r'^ajax/changePermission$', controller.changePermission, name='changePermission')
 ]
