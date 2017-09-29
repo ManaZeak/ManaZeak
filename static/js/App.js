@@ -73,7 +73,7 @@ App.prototype = {
             }
         };
 
-        xmlhttp.open("GET", "ajax/getPlaylists", true);
+        xmlhttp.open("GET", "ajax/getPlaylists/", true);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send();
     },
@@ -89,18 +89,17 @@ App.prototype = {
 
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
-                    console.log(JSON.parse(this.responseText));
-        //            var tmp = new ListView(this.tracks);
+                    var n = new Library(false, that.cookies, JSON.parse(this.responseText));
+//                    var tmp = new ListView(this.tracks);
                 }
             };
 
-        xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            ID: playlists.ID[0]
-        }));
-
+            xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
+            xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
+            xmlhttp.setRequestHeader("Content-Type", "application/json");
+            xmlhttp.send(JSON.stringify({
+                ID: playlists.ID[0]
+            }));
             // TODO : Get from cookie last playlist and send it
         }
     },
