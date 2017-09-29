@@ -142,8 +142,8 @@ Library.prototype = {
             this.tracks.push(new Track(this.rawTracks[i]));
         }
 
-        var tmp = new ListView(this.tracks);
         document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+        var tmp = new ListView(this.tracks);
     },
 
 

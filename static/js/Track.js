@@ -1,13 +1,65 @@
 var Track = function(track) {
     this.uiTrack = null;
     this.isSelected = false;
-    this.track = track;
+
+    this.id = {
+        track: track.ID,
+        album: track.ALBUM.ID,
+        artists: this.getArtistsIDFromArtistsArray(track.ARTISTS)
+    };
+
+    this.title        = track.TITLE;
+    this.year         = track.YEAR;
+    this.composer     = track.COMPOSER;
+    this.perfomer     = track.PERFOMER;
+    this.track        = track.TRACK_NUMBER;
+    this.trackTotal   = track.ALBUM.TOTAL_TRACK;
+    this.disc         = track.DISC_NUMBER;
+    this.discTotal    = track.ALBUM.TOTAL_DISC;
+    this.bpm          = track.BPM;
+    this.lyrics       = track.LYRICS;
+    this.comment      = track.COMMENT;
+    this.bitRate      = track.BITRATE;
+    this.sampleRate   = track.SAMPLERATE;
+    this.duration     = track.DURATION;
+    this.size         = track.SIZE;
+    this.lastModified = track.LAST_MODIFIED;
+    this.artist       = this.getArtistFromArtistsArray(track.ARTISTS);
+    this.album        = track.ALBUM.TITLE;
+    this.genre        = null;
+    this.fileType     = null;
 };
 
 Track.prototype = {
 
-    init: function() {
-        // TODO : convert json inc object to real tracks
+    getArtistsIDFromArtistsArray: function(artists) {
+        var artistsID = [];
+
+        for (var i = 0; i < artists.length ;++i) {
+            artistsID.push(artists[i].ID);
+        }
+
+        return artistsID;
+    },
+
+
+    getArtistFromArtistsArray: function(artists) {
+        var artistsName = []; // Artists name array
+        var artist = ""; // Output string
+
+        for (var i = 0; i < artists.length ;++i) {
+            artistsName.push(artists[i].NAME);
+        }
+
+        artistsName.sort();
+
+        for (i = 0; i < artistsName.length ;++i) {
+            artist += artistsName[i];
+
+            if (i < (artistsName.length - 1)) { artist += ", "; }
+        }
+
+        return artist;
     },
 
 
@@ -29,12 +81,12 @@ Track.prototype = {
         genre.className     = "genre";
         year.className     = "year";
 
-        title.innerHTML    = this.track.TITLE;
-        artist.innerHTML   = "--";
-        composer.innerHTML = this.track.COMPOSER;
-        album.innerHTML    = "--";
+        title.innerHTML    = this.title;
+        artist.innerHTML   = this.artist;
+        composer.innerHTML = this.composer;
+        album.innerHTML    = this.album;
         genre.innerHTML     = "--";
-        year.innerHTML     = this.track.YEAR;
+        year.innerHTML     = this.year;
 
         this.uiTrack.appendChild(title);
         this.uiTrack.appendChild(artist);
