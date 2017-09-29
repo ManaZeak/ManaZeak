@@ -29,7 +29,6 @@ class mainView(ListView):
 def initialScan(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        print(response)
         library = None
         convert = False
         try:
@@ -93,7 +92,6 @@ def dropAllDB(request):
 def createUser(request):
     print("hi")
     if request.method == 'POST':
-        print("zob")
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -170,12 +168,10 @@ def loadAllLibrary(request):
 
 
 # Get all track information from a playlist and format it as json
-def loadTrackFromPlaylist(request):
-    print(request.method)
+def loadTracksFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
-            print(response['ID'])
             playlist = Playlist.objects.get(id=response['ID'])
             tmp = exportPlaylistToJson(playlist)
 
