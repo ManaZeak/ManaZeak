@@ -7,6 +7,7 @@ var Library = function(isFirstLibrary, cookies) {
         scan:      null
     };
 
+    this.isFirstLibrary = isFirstLibrary;
     this.cookies = cookies;
 
     this.scanModal = null;
@@ -14,12 +15,12 @@ var Library = function(isFirstLibrary, cookies) {
     this.tracks = [];
 
 
-    this.init(isFirstLibrary);
+    this.init();
 };
 
 Library.prototype = {
 
-    init: function(isFirstLibrary) {
+    init: function() {
         var that = this;
 
         fetchComponentUI("components/newLibrary", function(response) {
@@ -31,7 +32,7 @@ Library.prototype = {
             that.ui.convert     = document.getElementById("convert");
             that.ui.scan        = document.getElementById("scan");
 
-            if (isFirstLibrary) { // TODO : Typography style to set
+            if (that.isFirstLibrary) { // TODO : Typography style to set
                 that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
                     "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
                     "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
@@ -125,7 +126,7 @@ Library.prototype = {
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 that.rawTracks = JSON.parse(this.responseText);
-                that.fillTracks();
+                that.fillTracks(that.rawTracks);
             }
         };
 
@@ -137,15 +138,15 @@ Library.prototype = {
         }));
     },
 
-    fillTracks: function() {
-        for (var i = 0; i < this.rawTracks.length ;++i) {
-            this.tracks.push(new Track(this.rawTracks[i]));
+
+    fillTracks: function(tracks) {
+        for (var i = tracks.length; i > 0 ;--i) {
+            this.tracks.push(new Track(tracks[i]));
         }
 
-        document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
-        var tmp = new ListView(this.tracks);
-    },
-
-
-    getTracks: function() { return this.tracks; }
+        if (this.isFirstLibrary) {
+            document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+            var tmp = new ListView(this.tracks);
+        }
+    }
 };

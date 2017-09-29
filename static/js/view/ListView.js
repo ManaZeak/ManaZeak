@@ -21,6 +21,7 @@ ListView.prototype = {
         columnBar.className = "columnHeader";
 
         var title    = document.createElement("div");
+//        var titleResize    = document.createElement("div");
         var artist   = document.createElement("div");
         var composer = document.createElement("div");
         var album    = document.createElement("div");
@@ -28,6 +29,8 @@ ListView.prototype = {
         var year     = document.createElement("div");
 
         title.className    = "title";
+//        titleResize.id    = "titleResize";
+//        titleResize.className    = "resize";
         artist.className   = "artist";
         composer.className = "composer";
         album.className    = "album";
@@ -42,6 +45,7 @@ ListView.prototype = {
         year.innerHTML     = "Year";
 
         columnBar.appendChild(title);
+//        columnBar.appendChild(titleResize);
         columnBar.appendChild(artist);
         columnBar.appendChild(composer);
         columnBar.appendChild(album);
