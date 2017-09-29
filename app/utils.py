@@ -105,7 +105,6 @@ def exportPlaylistToJson(playlist):
         finalData = finalData[:-1]
         finalData += "], \"ALBUM\": { \"ID\":"
         finalData += str(track.album.id)
-        print(4)
         finalData += ", \"TITLE\":\""
         if track.album.title is not None:
             finalData += track.album.title
