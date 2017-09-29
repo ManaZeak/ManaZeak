@@ -3,8 +3,10 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-
 # Render class for serving modal to client
+from app.models import FileType
+
+
 class ScanModal (TemplateView):
     template_name = 'utils/modal.html'
 
@@ -74,7 +76,14 @@ def exportPlaylistToJson(playlist):
         finalData += str(track.sampleRate)
         finalData += ", \"DURATION\":"
         finalData += str(track.duration)
-        finalData += ", \"DISC_NUMBER\":"
+        finalData += ", \"GENRE\":\""
+        if track.genre.name is not None:
+            finalData += track.genre.name
+        else:
+            finalData += "-1"
+        finalData += "\", \"FILE_TYPE\":\""
+        finalData += track.fileType.name
+        finalData += "\", \"DISC_NUMBER\":"
         if track.discNumber is not None:
             finalData += str(track.discNumber)
         else:
@@ -96,19 +105,20 @@ def exportPlaylistToJson(playlist):
         finalData = finalData[:-1]
         finalData += "], \"ALBUM\": { \"ID\":"
         finalData += str(track.album.id)
+        print(4)
         finalData += ", \"TITLE\":\""
         if track.album.title is not None:
             finalData += track.album.title
         else:
             finalData += "-1"
-        finalData += "\", \"NUMBER_OF_DISC\":"
-        if track.album.numberOfDisc is not None:
-            finalData += str(track.album.numberOfDisc)
+        finalData += "\", \"TOTAL_DISC\":"
+        if track.album.totalDisc is not None:
+            finalData += str(track.album.totalDisc)
         else:
             finalData += "-1"
-        finalData += ", \"NUMBER_TOTAL_TRACK\":"
-        if track.album.numberTotalTrack is not None:
-            finalData += str(track.album.numberTotalTrack)
+        finalData += ", \"TOTAL_TRACK\":"
+        if track.album.totalTrack is not None:
+            finalData += str(track.album.totalTrack)
         else:
             finalData += "-1"
         finalData += ", \"ARTIST\":["
@@ -123,3 +133,15 @@ def exportPlaylistToJson(playlist):
     finalData = finalData[:-1]
     finalData += "]"
     return finalData
+
+
+def populateDB():
+    if FileType.objects.all().count() == 0:
+        filteType = FileType(name="mp3")
+        filteType.save()
+        filteType = FileType(name="ogg")
+        filteType.save()
+        filteType = FileType(name="flac")
+        filteType.save()
+        filteType = FileType(name="wav")
+        filteType.save()
