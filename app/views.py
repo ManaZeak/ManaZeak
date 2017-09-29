@@ -4,16 +4,16 @@ import os
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.core.serializers import serialize
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import addTrackMP3
+from app.controller import addTrackMP3, scanLibrary
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library
+from app.utils import badFormatError
 
 
 class mainView(ListView):
@@ -29,19 +29,14 @@ def initialScan(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         print(response)
+        library = None
+        convert = False
         try:
             library = Library.objects.get(id=response['ID'])
             convert = response['CONVERT']
         except AttributeError:
-            data = {
-                'DONE': 'FAIL',
-                'ERROR': 'Bad format',
-            }
-            return JsonResponse(data)
+            badFormatError()
 
-        # Old way to get the library
-        # absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        # library = os.path.join(absolutePath, 'static/audio')
         if not os.path.isdir(library.path):
             data = {
                 'DONE': 'FAIL',
@@ -54,51 +49,7 @@ def initialScan(request):
         playlist.user = request.user
         playlist.isLibrary = True
         playlist.save()
-        failedItems = []
-        for root, dirs, files in os.walk(library.path):
-            for file in files:
-                if file.lower().endswith('.mp3'):
-                    addTrackMP3(root, file, playlist, convert)
-
-                elif file.lower().endswith('.ogg'):
-                    track = Track()
-                    track.location = root + "/" + file
-
-                elif file.lower().endswith('.flac'):
-                    track = Track()
-                    track.location = root + "/" + file
-
-                elif file.lower().endswith('.wav'):
-                    track = Track()
-                    track.location = root + "/" + file
-
-                else:
-                    failedItems.append(file)
-
-                    # track.title =
-                    # track.bitRate =
-                    # track.composer = audioFile.frame.
-                    # track.performer =
-                    # track.number =
-                    # track.bpm =
-                    # track.lyrics =
-                    # track.comment =
-                    # track.sampleRate =
-                    # track.discNumber =
-                    # track.size =
-                    # track.numberTotalTrack
-                    # track.artist =
-                    # track.album =
-                    # track.genre =
-                    # track.fileType =
-        # addTracksInDB(tracks)
-        library.playlist = playlist
-        library.save()
-        data = {
-            'DONE': 'OK',
-            'ID': playlist.id,
-            'FAILS': failedItems,
-        }
+        data = scanLibrary(library, playlist, convert)
     else:
         data = {
             'DONE': 'FAIL',
@@ -214,6 +165,7 @@ def loadAllLibrary(request):
     return JsonResponse(data)
 
 
+# Get all track information from a playlist and format it as json
 def loadTrackFromPlaylist(request):
     finalData = {}
     if request.method == 'POST':
@@ -295,7 +247,12 @@ def loadTrackFromPlaylist(request):
                 finalData = finalData[:-1]
                 finalData += "], \"ALBUM\": { \"ID\":"
                 finalData += str(track.album.id)
-                finalData += ", \"NUMBER_OF_DISC\":"
+                finalData += ", \"TITLE\":\""
+                if track.album.title is not None:
+                    finalData += track.album.title
+                else:
+                    finalData += " "
+                finalData += "\", \"NUMBER_OF_DISC\":"
                 if track.album.numberOfDisc is not None:
                     finalData += str(track.album.numberOfDisc)
                 else:
@@ -319,16 +276,13 @@ def loadTrackFromPlaylist(request):
             print(finalData)
 
         except AttributeError:
-            data = {
-                'RESULT': 'FAIL',
-                'ERROR': 'Bad format'
-            }
-            return JsonResponse(data)
+            badFormatError()
     return HttpResponse(finalData)
 
 
+# Create a new library
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
-def setLibraryPath(request):
+def newLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
@@ -357,19 +311,3 @@ def setLibraryPath(request):
             'ID': library.id,
         }
         return JsonResponse(data)
-
-
-def getTracksArtists(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        try:
-            artistIds = response['ARTISTS']
-            artists = Artist.objects.filter(id__in=artistIds)
-            data = serialize('json', artists)
-        except AttributeError:
-            data = {
-                'DONE': 'FAIL',
-                'Error': 'Bad request',
-            }
-            return JsonResponse(data)
-        return HttpResponse(data)
