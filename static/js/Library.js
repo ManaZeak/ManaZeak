@@ -10,7 +10,8 @@ var Library = function(isFirstLibrary, cookies) {
     this.cookies = cookies;
 
     this.scanModal = null;
-    this.rawTtracks = null;
+    this.rawTracks = null;
+    this.tracks = [];
 
 
     this.init(isFirstLibrary);
@@ -46,7 +47,7 @@ Library.prototype = {
 
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            this._sendLibraryPath();
+            this._newLibrary();
         } else {
             if (this.ui.name.value !== '') {
                 this.ui.path.style.border = "solid 1px red";
@@ -63,7 +64,7 @@ Library.prototype = {
     },
 
 
-    _sendLibraryPath: function() {
+    _newLibrary: function() {
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
@@ -80,7 +81,7 @@ Library.prototype = {
             }
         };
 
-        xmlhttp.open("POST", "ajax/setLibraryPath/", true);
+        xmlhttp.open("POST", "ajax/newLibrary/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
@@ -102,7 +103,7 @@ Library.prototype = {
                     new Notification("Scan error.", parsedJSON.FAILS.length + " files haven't been scanned."); // TODO : put href to view more (file list for ex)
                 } else {
                     that.scanModal.close();
-                    that.fillTracks(parsedJSON.ID);
+                    that.getTracksFromServer(parsedJSON.ID);
                 }
             }
         };
@@ -117,18 +118,14 @@ Library.prototype = {
     },
 
 
-    fillTracks: function(id) {
+    getTracksFromServer: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                var rawString = this.responseText;
-                console.log(rawString);
-                var tmp = JSON.parse(rawString);
-                console.log(tmp);
-
-                //that.getTracksArtists(); // TODO : remove this call, and move it in app or somethin like dat
+                that.rawTracks = JSON.parse(this.responseText);
+                that.fillTracks();
             }
         };
 
@@ -140,65 +137,15 @@ Library.prototype = {
         }));
     },
 
-
-    getTracksArtists: function() {
-        var artistsID = [];
-
+    fillTracks: function() {
         for (var i = 0; i < this.rawTracks.length ;++i) {
-            for (var j = 0; j < this.rawTracks[i].fields.artist.length ;++j) {
-                artistsID.push(this.rawTracks[i].fields.artist[j]);
-            }
+            this.tracks.push(new Track(this.rawTracks[i]));
         }
 
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                var tmp = JSON.parse(this.responseText);
-
-                console.log(that.rawTracks);
-/*
-                for (var i = 0; i < tmp.length ; ++i) {
-                    for (var j = 0; j < that.rawTracks.length ;++j) {
-                        if (tmp[i].pk === that.rawTracks[j].fields.artist[0]) {
-                            console.log(i + " " + j + " Found");
-                        }
-                    }
-                } */
-            }
-        };
-
-        xmlhttp.open("POST", "ajax/getTracksArtists/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            ARTISTS: artistsID
-        }));
+        var tmp = new ListView(this.tracks);
+        document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
     },
 
 
-    getTracksAlbums: function() {
-        var albumsID = [];
-
-        for (var i = 0; i < this.rawTracks.length ;++i) {
-            albumsID.push(this.rawTracks[i].fields.album);
-        }
-
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                console.log(this.responseText);
-            }
-        };
-
-        xmlhttp.open("POST", "ajax/getTracksAlbums/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            ALBUMS: albumsID
-        }));
-    }
+    getTracks: function() { return this.tracks; }
 };

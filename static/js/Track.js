@@ -1,19 +1,15 @@
 var Track = function(track) {
     this.uiTrack = null;
     this.isSelected = false;
-
-    this.init(track);
+    this.track = track;
 };
 
 Track.prototype = {
-    init: function(track) {
-        this.title    = track.title;
-        this.artist   = track.artist;
-        this.composer = track.composer;
-        this.album    = track.album;
-        this.genre    = track.genre;
-        this.year     = track.year;
+
+    init: function() {
+        // TODO : convert json inc object to real tracks
     },
+
 
     createListViewEntry: function(listView) {
         this.uiTrack = document.createElement("div");
@@ -33,12 +29,12 @@ Track.prototype = {
         genre.className     = "genre";
         year.className     = "year";
 
-        title.innerHTML    = this.title;
-        artist.innerHTML   = this.artist;
-        composer.innerHTML = this.composer;
-        album.innerHTML    = this.album;
-        genre.innerHTML     = this.genre;
-        year.innerHTML     = this.year;
+        title.innerHTML    = this.track.TITLE;
+        artist.innerHTML   = "--";
+        composer.innerHTML = this.track.COMPOSER;
+        album.innerHTML    = "--";
+        genre.innerHTML     = "--";
+        year.innerHTML     = this.track.YEAR;
 
         this.uiTrack.appendChild(title);
         this.uiTrack.appendChild(artist);
@@ -47,7 +43,7 @@ Track.prototype = {
         this.uiTrack.appendChild(genre);
         this.uiTrack.appendChild(year);
 
-        //this.uiTrack.addEventListener("dblclick", this.test.bind(this));
+        this.uiTrack.addEventListener("dblclick", this.toggleSelected.bind(this));
 
         listView.appendChild(this.uiTrack);
     },
