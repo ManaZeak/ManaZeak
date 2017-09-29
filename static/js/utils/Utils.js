@@ -3,6 +3,7 @@ function precisionRound(value, precision) {
     return Math.round(value * multiplier) / multiplier;
 }
 
+
 function secondsToTimecode(time) {
     // TODO : add days
     var transformedTime = {
@@ -26,6 +27,7 @@ function secondsToTimecode(time) {
     }
 }
 
+
 function getCookies() {
     var cookies = {};
 
@@ -40,6 +42,7 @@ function getCookies() {
 
     return cookies;
 }
+
 
 function fetchComponentUI(url, callback) {
     var xmlhttp = new XMLHttpRequest();
