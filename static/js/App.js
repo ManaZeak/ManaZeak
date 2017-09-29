@@ -82,25 +82,21 @@ App.prototype = {
     start: function(playlists) {
         console.log(playlists);
         if (playlists.RESULT === 0) {
-            var n = new Library(true, this.cookies);
+            var n = new Playlist(true, this.cookies);
         } else {
-            var xmlhttp = new XMLHttpRequest();
             var that = this;
 
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    var n = new Library(false, that.cookies, JSON.parse(this.responseText));
+            JSONParsedPostRequest(
+                "ajax/getPlaylistTracks/",
+                this.cookies,
+                JSON.stringify({
+                    ID: playlists.ID[0]
+                }),
+                function(responseText) {
+                    var n = new Playlist(false, that.cookies, responseText);
 //                    var tmp = new ListView(this.tracks);
                 }
-            };
-
-            xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
-            xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-            xmlhttp.setRequestHeader("Content-Type", "application/json");
-            xmlhttp.send(JSON.stringify({
-                ID: playlists.ID[0]
-            }));
-            // TODO : Get from cookie last playlist and send it
+            );
         }
     },
 
