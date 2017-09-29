@@ -10,7 +10,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Playlist = function(newLibrary, cookies, tracks) {
 
-    // NewLibrary relative attributs, useless is newLibrary = false
+    // NewLibrary relative attributes, useless if newLibrary = false
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -20,6 +20,9 @@ var Playlist = function(newLibrary, cookies, tracks) {
     };
 
     this.scanModal = null;
+
+
+    // Playlist internal attributes
     this.tracks = [];
 
 
