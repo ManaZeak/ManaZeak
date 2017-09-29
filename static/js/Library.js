@@ -1,4 +1,4 @@
-var Library = function(isFirstLibrary, cookies) {
+var Library = function(isFirstLibrary, cookies, tracks) {
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -11,9 +11,13 @@ var Library = function(isFirstLibrary, cookies) {
     this.cookies = cookies;
 
     this.scanModal = null;
-    this.rawTracks = null;
-    this.tracks = [];
 
+    if (typeof tracks === 'undefined') {
+        this.rawTracks = [];
+    } else {
+        this.rawTracks = tracks;
+    }
+    this.tracks = [];
 
     this.init();
 };
@@ -21,6 +25,22 @@ var Library = function(isFirstLibrary, cookies) {
 Library.prototype = {
 
     init: function() {
+        if (this.isFirstLibrary) {
+            this._newLibrary();
+        }
+
+        else {
+            this._loadLibrary();
+        }
+
+    },
+
+    _loadLibrary: function() {
+        this.fillTracks(this.rawTracks);
+    },
+
+
+    _newLibrary: function() {
         var that = this;
 
         fetchComponentUI("components/newLibrary", function(response) {
@@ -45,10 +65,9 @@ Library.prototype = {
         });
     },
 
-
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            this._newLibrary();
+            this._requestNewLibrary();
         } else {
             if (this.ui.name.value !== '') {
                 this.ui.path.style.border = "solid 1px red";
@@ -65,7 +84,7 @@ Library.prototype = {
     },
 
 
-    _newLibrary: function() {
+    _requestNewLibrary: function() {
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
@@ -140,13 +159,14 @@ Library.prototype = {
 
 
     fillTracks: function(tracks) {
-        for (var i = tracks.length; i > 0 ;--i) {
-            this.tracks.push(new Track(tracks[i]));
+        for (var i = 0; i < tracks.length ;++i) {
+           this.tracks.push(new Track(tracks[i]));
         }
 
         if (this.isFirstLibrary) {
             document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
-            var tmp = new ListView(this.tracks);
         }
+        
+        var tmp = new ListView(this.tracks);
     }
 };
