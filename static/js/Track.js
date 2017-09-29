@@ -1,11 +1,22 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Track class - track object from db with all its metadata                           *
+ *                                                                                     *
+ *  track     : raw track incoming from db JSON                                        *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Track = function(track) {
+
+    // Track internal attributes
     this.uiTrack = null;
     this.isSelected = false;
 
+
+    // Filling Track object
     this.id = {
         track: track.ID,
         album: track.ALBUM.ID,
-        artists: this.getArtistsIDFromArtistsArray(track.ARTISTS)
+        artists: this._getArtistsIDFromArtistsArray(track.ARTISTS)
     };
 
     this.title        = track.TITLE;
@@ -24,15 +35,16 @@ var Track = function(track) {
     this.duration     = track.DURATION;
     this.size         = track.SIZE;
     this.lastModified = track.LAST_MODIFIED;
-    this.artist       = this.getArtistFromArtistsArray(track.ARTISTS);
+    this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
     this.album        = track.ALBUM.TITLE;
     this.genre        = track.GENRE;
     this.fileType     = track.FILE_TYPE;
 };
 
+
 Track.prototype = {
 
-    getArtistsIDFromArtistsArray: function(artists) {
+    _getArtistsIDFromArtistsArray: function(artists) {
         var artistsID = [];
 
         for (var i = 0; i < artists.length ;++i) {
@@ -43,7 +55,7 @@ Track.prototype = {
     },
 
 
-    getArtistFromArtistsArray: function(artists) {
+    _getArtistFromArtistsArray: function(artists) {
         var artistsName = []; // Artists name array
         var artist = ""; // Output string
 
@@ -51,7 +63,7 @@ Track.prototype = {
             artistsName.push(artists[i].NAME);
         }
 
-        artistsName.sort();
+        artistsName.sort(); // In order to get artists alphabetically ordered
 
         for (i = 0; i < artistsName.length ;++i) {
             artist += artistsName[i];
@@ -63,7 +75,7 @@ Track.prototype = {
     },
 
 
-    createListViewEntry: function(listView) {
+    newListViewEntry: function(listView) {
         this.uiTrack = document.createElement("div");
         this.uiTrack.className = "trackContainer";
 
@@ -95,10 +107,12 @@ Track.prototype = {
         this.uiTrack.appendChild(genre);
         this.uiTrack.appendChild(year);
 
+        // TODO : store listenners, and add single click listenner
         this.uiTrack.addEventListener("dblclick", this.toggleSelected.bind(this));
 
         listView.appendChild(this.uiTrack);
     },
+
 
     toggleSelected: function() {
         if (this.isSelected) {
