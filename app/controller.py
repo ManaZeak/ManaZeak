@@ -1,5 +1,6 @@
 import math
 
+import os
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
@@ -11,6 +12,7 @@ def addTrackMP3(root, file, playlist, convert):
     # --- FILE INFORMATION ---
     audioFile = MP3(root + "/" + file)
     track.location = root + "/" + file
+    track.size = os.path.getsize(root + "/" + file)
     track.bitRate = audioFile.info.bitrate
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
@@ -54,9 +56,6 @@ def addTrackMP3(root, file, playlist, convert):
     if 'USLT' in audioTag:
         if not audioTag['USLT'].text[0] == "":
             track.lyrics = audioTag['USLT'].text[0]
-    if 'TSIZ' in audioTag:
-        if not audioTag['TSIZ'].text[0] == "":
-            track.size = audioTag['TSIZ'].text[0]
     if len(audioTag.getall('TXXX')) != 0:
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
