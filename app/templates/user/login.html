@@ -1,9 +1,19 @@
+{% load staticfiles %}
+{% load sass_tags %}
+
+
 <!DOCTYPE html>
+
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>ManaZeak login</title>
+        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/login.scss" %}">
+    </head>
     {% block body %}
     {% load staticfiles %}
     <body>
-        <div class="myform">
+        <div id="login">
             {% if user.is_active %}
                 <p>Authenticated already</p>
             {% else %}
@@ -11,15 +21,21 @@
                     {% csrf_token %}
                     <label for="id_username">
                         <div>Username:</div>
-                    </label>
+                    </label><br>
                     <input id="id_username" maxlength="30" name="username" type="text" class ="colonne">
                     <label for="id_password">
                         <div>Password:</div>
                     </label>
-                    <input id="id_password" maxlength="30" name="password" type="password">
+                    <input id="id_password" maxlength="30" name="password" type="password"><br><br>
                     <button class="btn btn-info" type="submit">Submit</button>
                 </form>
             {% endif %}
-            </div>
+        </div>
     </body>
 {% endblock %}
+
+
+
+
+
+

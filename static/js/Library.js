@@ -7,18 +7,20 @@ var Library = function(isFirstLibrary, cookies) {
         scan:      null
     };
 
+    this.isFirstLibrary = isFirstLibrary;
     this.cookies = cookies;
 
     this.scanModal = null;
-    this.rawTtracks = null;
+    this.rawTracks = null;
+    this.tracks = [];
 
 
-    this.init(isFirstLibrary);
+    this.init();
 };
 
 Library.prototype = {
 
-    init: function(isFirstLibrary) {
+    init: function() {
         var that = this;
 
         fetchComponentUI("components/newLibrary", function(response) {
@@ -30,7 +32,7 @@ Library.prototype = {
             that.ui.convert     = document.getElementById("convert");
             that.ui.scan        = document.getElementById("scan");
 
-            if (isFirstLibrary) { // TODO : Typography style to set
+            if (that.isFirstLibrary) { // TODO : Typography style to set
                 that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
                     "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
                     "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
@@ -46,7 +48,7 @@ Library.prototype = {
 
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            this._sendLibraryPath();
+            this._newLibrary();
         } else {
             if (this.ui.name.value !== '') {
                 this.ui.path.style.border = "solid 1px red";
@@ -63,7 +65,7 @@ Library.prototype = {
     },
 
 
-    _sendLibraryPath: function() {
+    _newLibrary: function() {
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
@@ -80,7 +82,7 @@ Library.prototype = {
             }
         };
 
-        xmlhttp.open("POST", "ajax/setLibraryPath/", true);
+        xmlhttp.open("POST", "ajax/newLibrary/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
@@ -102,7 +104,7 @@ Library.prototype = {
                     new Notification("Scan error.", parsedJSON.FAILS.length + " files haven't been scanned."); // TODO : put href to view more (file list for ex)
                 } else {
                     that.scanModal.close();
-                    that.fillTracks(parsedJSON.ID);
+                    that.getTracksFromServer(parsedJSON.ID);
                 }
             }
         };
@@ -117,15 +119,14 @@ Library.prototype = {
     },
 
 
-    fillTracks: function(id) {
+    getTracksFromServer: function(id) {
         var xmlhttp = new XMLHttpRequest();
         var that = this;
 
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) { // Sending path given by user
                 that.rawTracks = JSON.parse(this.responseText);
-
-                that.getTracksArtists(); // TODO : remove this call, and move it in app or somethin like dat
+                that.fillTracks(that.rawTracks);
             }
         };
 
@@ -138,64 +139,14 @@ Library.prototype = {
     },
 
 
-    getTracksArtists: function() {
-        var artistsID = [];
-
-        for (var i = 0; i < this.rawTracks.length ;++i) {
-            for (var j = 0; j < this.rawTracks[i].fields.artist.length ;++j) {
-                artistsID.push(this.rawTracks[i].fields.artist[j]);
-            }
+    fillTracks: function(tracks) {
+        for (var i = tracks.length; i > 0 ;--i) {
+            this.tracks.push(new Track(tracks[i]));
         }
 
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                var tmp = JSON.parse(this.responseText);
-
-                console.log(that.rawTracks);
-/*
-                for (var i = 0; i < tmp.length ; ++i) {
-                    for (var j = 0; j < that.rawTracks.length ;++j) {
-                        if (tmp[i].pk === that.rawTracks[j].fields.artist[0]) {
-                            console.log(i + " " + j + " Found");
-                        }
-                    }
-                } */
-            }
-        };
-
-        xmlhttp.open("POST", "ajax/getTracksArtists/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            ARTISTS: artistsID
-        }));
-    },
-
-
-    getTracksAlbums: function() {
-        var albumsID = [];
-
-        for (var i = 0; i < this.rawTracks.length ;++i) {
-            albumsID.push(this.rawTracks[i].fields.album);
+        if (this.isFirstLibrary) {
+            document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+            var tmp = new ListView(this.tracks);
         }
-
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) { // Sending path given by user
-                console.log(this.responseText);
-            }
-        };
-
-        xmlhttp.open("POST", "ajax/getTracksAlbums/", true);
-        xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify({
-            ALBUMS: albumsID
-        }));
     }
 };

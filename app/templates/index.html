@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>WebPlayer POC</title>
+        <title>ManaZeak</title> <!-- TODO : display and animate track metadata -->
         <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
     </head>
     <body>
@@ -21,6 +21,8 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
+        {% include 'components/topbar.html' %}
+
         <div id="mainContainer">
             {#% include 'components/newlibrary.html' %#}
         </div>
@@ -33,7 +35,7 @@
              Your browser does not support the audio element.
         </audio>
 
-        <!-- Add absolute path in js-->
+        <!-- Add absolute path in js TODO : to something about deaz ... -->
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
