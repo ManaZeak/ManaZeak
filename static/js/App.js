@@ -81,10 +81,9 @@ App.prototype = {
     start: function(playlists) {
         // User first connection : need too create the first library
         if (playlists.RESULT === 0) {
-            var n = new Library(true, this.cookies)
-            //var tmp = new ListView();
+            var n = new Library(true, this.cookies);
         } else {
-
+//            var tmp = new ListView(this.tracks);
         }
     },
 
