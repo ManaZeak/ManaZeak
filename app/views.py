@@ -171,7 +171,7 @@ def loadAllLibrary(request):
 
 
 # Get all track information from a playlist and format it as json
-def loadTrackFromPlaylist(request):
+def loadTracksFromPlaylist(request):
     print(request.method)
     if request.method == 'POST':
         response = json.loads(request.body)

@@ -94,7 +94,7 @@ App.prototype = {
                 }
             };
 
-        xmlhttp.open("POST", "ajax/getPlaylistTracks", true);
+        xmlhttp.open("POST", "ajax/getPlaylistTracks/", true);
         xmlhttp.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({
