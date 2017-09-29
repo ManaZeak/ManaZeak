@@ -73,17 +73,30 @@ App.prototype = {
             }
         };
 
-        xmlhttp.open("GET", "ajax/getPlaylists", true);
+        xmlhttp.open("GET", "ajax/getPlaylists/", true);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send();
     },
 
 
     start: function(playlists) {
+        console.log(playlists);
         if (playlists.RESULT === 0) {
-            var n = new Library(true, this.cookies);
+            var n = new Playlist(true, this.cookies);
         } else {
-            // TODO : Get from cookie last playlist and send it
-//            var tmp = new ListView(this.tracks);
+            var that = this;
+
+            JSONParsedPostRequest(
+                "ajax/getPlaylistTracks/",
+                this.cookies,
+                JSON.stringify({
+                    ID: playlists.ID[0]
+                }),
+                function(responseText) {
+                    var n = new Playlist(false, that.cookies, responseText);
+//                    var tmp = new ListView(this.tracks);
+                }
+            );
         }
     },
 

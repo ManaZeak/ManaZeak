@@ -14,9 +14,9 @@ urlpatterns = [
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
     url(r'^logout/$', views.logoutView, name='logout'),
     url(r'^ajax/loadAllLibrary/$', views.loadAllLibrary, name='loadAllLibrary'),
-    url(r'^ajax/getPlaylistTracks/$', views.loadTrackFromPlaylist, name='loadTrackFromPlaylist'),
+    url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
-    url(r'^utils/modal$', utils.ScanModal.as_view(), name='modal'),
-    url(r'^ajax/changePermission$', controller.changePermission, name='changePermission')
+    url(r'^utils/modal/$', utils.ScanModal.as_view(), name='modal'),
+    url(r'^ajax/changePermission/$', controller.changePermission, name='changePermission')
 ]
