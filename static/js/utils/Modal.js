@@ -14,9 +14,13 @@ Modal.prototype = {
 
 
     open: function() {
-        fetchComponentUI("utils/modal", function(response) {
-            document.body.insertAdjacentHTML('beforeend', response);
-        });
+        JSONParsedGetRequest(
+            "utils/modal",
+            true,
+            function(response) {
+               document.body.insertAdjacentHTML('beforeend', response);
+            }
+        );
     },
 
     close: function() {
