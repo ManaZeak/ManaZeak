@@ -1,7 +1,6 @@
-var ListView = function() {
+var ListView = function(tracks) {
     this.listView = null;
-    this.tracksToLoad = [];
-    this.tracks = [];
+    this.tracks = tracks;
 
     this.init();
 };
@@ -13,38 +12,7 @@ ListView.prototype = {
 
         this.initColumnBar();
 
-        var track = {
-            title: "Le Pudding",
-            artist: "Chinese Man",
-            composer: "Chinese Man",
-            album: "Racing With The Sun",
-            genre: "Dubstep",
-            year: "2004"
-        };
-
-        var track2 = {
-            title: "On'n On",
-            artist: "Justice",
-            composer: "Justice",
-            album: "Audio, Video, Disco",
-            genre: "DnB",
-            year: "2010"
-        };
-
-        var track3 = {
-            title: "Music Sound Better With You",
-            artist: "Stardust",
-            composer: "Stardust",
-            album: "Disco Sheat",
-            genre: "Hip Hop",
-            year: "1999"
-        };
-
-        this.tracksToLoad[0] = track;
-        this.tracksToLoad[1] = track2;
-        this.tracksToLoad[2] = track3;
-
-        this.addTracks(this.tracksToLoad);
+        this.addTracks(this.tracks);
         document.getElementById("mainContainer").appendChild(this.listView);
     },
 
@@ -53,6 +21,7 @@ ListView.prototype = {
         columnBar.className = "columnHeader";
 
         var title    = document.createElement("div");
+//        var titleResize    = document.createElement("div");
         var artist   = document.createElement("div");
         var composer = document.createElement("div");
         var album    = document.createElement("div");
@@ -60,6 +29,8 @@ ListView.prototype = {
         var year     = document.createElement("div");
 
         title.className    = "title";
+//        titleResize.id    = "titleResize";
+//        titleResize.className    = "resize";
         artist.className   = "artist";
         composer.className = "composer";
         album.className    = "album";
@@ -74,6 +45,7 @@ ListView.prototype = {
         year.innerHTML     = "Year";
 
         columnBar.appendChild(title);
+//        columnBar.appendChild(titleResize);
         columnBar.appendChild(artist);
         columnBar.appendChild(composer);
         columnBar.appendChild(album);
@@ -85,14 +57,7 @@ ListView.prototype = {
 
     addTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
-            // TODO : viewPort to only load visible items
-            var newTrack = new Track(tracks[i]);
-
-            newTrack.createListViewEntry(this.listView);
-            newTrack.uiTrack.addEventListener("click", newTrack.toggleSelected.bind(newTrack));
-            // TODO : selction mode using ctrl, otherwise unselect
-
-            this.tracks.push(newTrack);
+            tracks[i].createListViewEntry(this.listView);
         }
     }
 };

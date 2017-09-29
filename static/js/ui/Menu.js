@@ -1,21 +1,21 @@
-var Queue = function() {
-    this.queue = document.getElementById("queue");
+var Menu = function() {
+    this.menu = document.getElementById("menu");
 
     this.isVisible = false;
 };
 
-Queue.prototype = {
+Menu.prototype = {
 
     addVisibilityLock: function() {
-        if (!this.queue.className.match(/(?:^|\s)queueLocked(?!\S)/)) {
-            this.queue.className += "queueLocked";
+        if (!this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
+            this.menu.className += "menuLocked";
         }
     },
 
 
     removeVisibilityLock: function() {
-        if (this.queue.className.match(/(?:^|\s)queueLocked(?!\S)/)) {
-            this.queue.className = this.queue.className.replace(/(?:^|\s)queueLocked(?!\S)/g, '');
+        if (this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
+            this.menu.className = this.menu.className.replace(/(?:^|\s)menuLocked(?!\S)/g, '');
         }
     },
 

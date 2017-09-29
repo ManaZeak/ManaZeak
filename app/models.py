@@ -8,8 +8,8 @@ class Artist(models.Model):
 
 class Album(models.Model):
     title = models.CharField(max_length=1000)
-    numberOfDisc = models.IntegerField(null=True)
-    numberTotalTrack = models.IntegerField(null=True)
+    totalDisc = models.IntegerField(null=True)
+    totalTrack = models.IntegerField(null=True)
     artist = models.ManyToManyField(Artist)
 
 

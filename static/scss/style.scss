@@ -1,10 +1,12 @@
-@import 'components/footbar';
+@import 'tools/tools';
 @import 'components/progressbar';
 @import 'components/volumebar';
 @import 'components/notification';
 @import 'components/newlibrary';
 @import 'components/listview';
-@import 'utils/modal';
+
+@import 'components/topbar';
+@import 'components/footbar';
 
 html, body {
     height: 100%;
@@ -25,7 +27,8 @@ html, body {
 
 #mainContainer {
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100% - 100px);
+    top: 20px;
     position: absolute;
 }
 

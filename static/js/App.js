@@ -28,6 +28,9 @@ var App = function() {
         queueExpander: {
             button: document.getElementById("queueExpander"),
             image:  document.getElementById("imageQueueExpander")
+        },
+        userExpander: {
+            button:    document.getElementById("userExpander")
         }
     };
 
@@ -36,6 +39,7 @@ var App = function() {
     this.progressBar = new ProgressBar();
     this.volumeBar   = new VolumeBar();
     this.queue       = new Queue();
+    this.menu        = new Menu();
 
     // IDs
     this.volumeLockId = -1;
@@ -75,12 +79,11 @@ App.prototype = {
 
 
     start: function(playlists) {
-        // User first connection : need too create the first library
         if (playlists.RESULT === 0) {
-            var n = new Library(true, this.cookies)
-            //var tmp = new ListView();
+            var n = new Library(true, this.cookies);
         } else {
-
+            // TODO : Get from cookie last playlist and send it
+//            var tmp = new ListView(this.tracks);
         }
     },
 
@@ -251,6 +254,11 @@ App.prototype = {
     },
 
 
+    toggleMenu: function() {
+        this.menu.toggleVisibilityLock();
+    },
+
+
     invertTimecode: function() {
         this.progressBar.invertTimecode(this.player.getPlayer());
     },
@@ -314,6 +322,7 @@ App.prototype = {
         this.ui.next.button.addEventListener("click", this.next.bind(this));
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
         this.ui.queueExpander.button.addEventListener("click", this.toggleQueue.bind(this));
+        this.ui.userExpander.button.addEventListener("click", this.toggleMenu.bind(this));
 
         this.player.getPlayer().addEventListener('loadedmetadata', function() {
             that.progressBar.init(that.player.getPlayer()); // Initialize progressBar

@@ -1,0 +1,109 @@
+/*
+ *
+ *
+/* Tooltips - (Warning, these are modified classes from Twitter Bootstrap) */
+.tooltip
+{
+    display: block;
+    opacity: 0;
+    z-index: 1050;
+    visibility: visible;
+
+    position: absolute;
+
+    cursor: default;
+    font-size: 11px;
+    font-variant : small-caps;
+    font-weight: bold;
+    line-height: 1.2;
+
+    filter: alpha(opacity = 0);
+}
+
+.tooltip.in
+{
+    opacity: .8;
+
+    filter: alpha(opacity = 80);
+}
+
+.tooltip.top
+{
+    margin-top: -3px;
+    padding: 5px 0;
+}
+
+.tooltip.right
+{
+    margin-left: 3px;
+    padding: 0 5px;
+}
+
+.tooltip.bottom
+{
+    margin-top: 3px;
+    padding: 5px 0;
+}
+
+.tooltip.left
+{
+    margin-left: -3px;
+    padding: 0 5px;
+}
+
+.tooltip-inner
+{
+    max-width: 200px;
+    padding: 8px;
+
+    background-color: $black-pure;
+    color: $white-pure;
+
+    text-align: center;
+    text-decoration: none;
+}
+
+.tooltip-arrow
+{
+    border: solid transparent;
+    height: 0;
+    width: 0;
+
+    position: absolute;
+}
+
+.tooltip.top .tooltip-arrow
+{
+    border-top-color: $black-pure;
+    border-width: 5px 5px 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+}
+
+.tooltip.right .tooltip-arrow
+{
+    border-right-color: $black-pure;
+    border-width: 5px 5px 5px 0;
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+}
+
+.tooltip.left .tooltip-arrow
+{
+    border-left-color: $black-pure;
+    border-width: 5px 0 5px 5px;
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+}
+
+.tooltip.bottom .tooltip-arrow
+{
+    border-bottom-color: $black-pure;
+    border-width: 0 5px 5px;
+    top: 0;
+    left: 50%;
+    margin-left: -5px;
+}
