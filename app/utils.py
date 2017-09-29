@@ -1,10 +1,14 @@
+import os
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
 # Render class for serving modal to client
-from app.models import FileType
+from mutagen.mp3 import MP3
+
+from app.controller import addTrackMP3
+from app.models import FileType, Track
 
 
 class ScanModal (TemplateView):
@@ -105,7 +109,6 @@ def exportPlaylistToJson(playlist):
         finalData = finalData[:-1]
         finalData += "], \"ALBUM\": { \"ID\":"
         finalData += str(track.album.id)
-        print(4)
         finalData += ", \"TITLE\":\""
         if track.album.title is not None:
             finalData += track.album.title
@@ -145,3 +148,25 @@ def populateDB():
         filteType.save()
         filteType = FileType(name="wav")
         filteType.save()
+
+
+def compareTrackAndFile(track, root, file):
+    audioFile = MP3(root + "/" + file)
+    track.size = os.path.getsize(root + "/" + file)
+    track.bitRate = audioFile.info.bitrate
+    track.duration = audioFile.info.length
+    track.sampleRate = audioFile.info.sample_rate
+    track.bitRateMode = audioFile.info.bitrate_mode
+    track.fileType = fileTypeId
+
+
+def rescanLibrary(library):
+    playlist = library.playlist
+    convert = False
+    mp3ID = FileType.objects.get(name="mp3")
+    for root, dirs, files in os.walk(library.path):
+        for file in files:
+            if file.lower().endswith('.mp3'):
+                if Track.objects.filter(location=root+file).count() == 0:
+                    addTrackMP3(root, file, playlist, convert, mp3ID)
+                else:

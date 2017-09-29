@@ -1,6 +1,5 @@
 import json
 import os
-from typing import re
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -11,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import addTrackMP3, scanLibrary
+from app.controller import scanLibrary
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre
 from app.utils import badFormatError, exportPlaylistToJson, populateDB
