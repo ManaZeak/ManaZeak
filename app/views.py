@@ -10,10 +10,10 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import scanLibrary
+from app.controller import scanLibrary, badFormatError
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre
-from app.utils import badFormatError, exportPlaylistToJson, populateDB
+from app.utils import exportPlaylistToJson, populateDB
 
 
 class mainView(ListView):

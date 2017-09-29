@@ -1,14 +1,22 @@
 import json
 import math
-
 import os
 
+import binascii
 from django.http.response import JsonResponse
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
 from app.models import Track, Artist, Album, FileType, Genre
-from app.utils import badFormatError
+
+
+# Return a bad format error
+def badFormatError():
+    data = {
+        'RESULT': 'FAIL',
+        'ERROR': 'Bad format'
+    }
+    return JsonResponse(data)
 
 
 def scanLibrary(library, playlist, convert):
@@ -44,8 +52,17 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
+def CRC32_from_file(filename):
+    buf = open(filename, 'rb').read()
+    buf = (binascii.crc32(buf) & 0xFFFFFFFF)
+    return "%08X" % buf
+
+
 def addTrackMP3(root, file, playlist, convert, fileTypeId):
     track = Track()
+
+    # --- Calculating checksum
+    track.CRC = CRC32_from_file(root + "/" + file)
 
     # --- FILE INFORMATION ---
     audioFile = MP3(root + "/" + file)

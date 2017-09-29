@@ -1,31 +1,20 @@
 import os
+
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-
-# Render class for serving modal to client
-from mutagen.mp3 import MP3
 
 from app.controller import addTrackMP3
 from app.models import FileType, Track
 
 
-class ScanModal (TemplateView):
+# Render class for serving modal to client
+class ScanModal(TemplateView):
     template_name = 'utils/modal.html'
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
         return super(ScanModal, self).dispatch(*args, **kwargs)
-
-
-# Return a bad format error
-def badFormatError():
-    data = {
-        'RESULT': 'FAIL',
-        'ERROR': 'Bad format'
-    }
-    return JsonResponse(data)
 
 
 def exportPlaylistToJson(playlist):
@@ -140,24 +129,23 @@ def exportPlaylistToJson(playlist):
 
 def populateDB():
     if FileType.objects.all().count() == 0:
-        filteType = FileType(name="mp3")
-        filteType.save()
-        filteType = FileType(name="ogg")
-        filteType.save()
-        filteType = FileType(name="flac")
-        filteType.save()
-        filteType = FileType(name="wav")
-        filteType.save()
-
-
-def compareTrackAndFile(track, root, file):
-    audioFile = MP3(root + "/" + file)
-    track.size = os.path.getsize(root + "/" + file)
-    track.bitRate = audioFile.info.bitrate
-    track.duration = audioFile.info.length
-    track.sampleRate = audioFile.info.sample_rate
-    track.bitRateMode = audioFile.info.bitrate_mode
-    track.fileType = fileTypeId
+        fileType = FileType(name="mp3")
+        fileType.save()
+        fileType = FileType(name="ogg")
+        fileType.save()
+        fileType = FileType(name="flac")
+        fileType.save()
+        fileType = FileType(name="wav")
+        fileType.save()
+        # TODO : Compare md5
+        # def compareTrackAndFile(track, root, file, fileTypeId):
+        #     audioFile = MP3(root + "/" + file)
+        # track.size = os.path.getsize(root + "/" + file)
+        # track.bitRate = audioFile.info.bitrate
+        # track.duration = audioFile.info.length
+        # track.sampleRate = audioFile.info.sample_rate
+        # track.bitRateMode = audioFile.info.bitrate_mode
+        # track.fileType = fileTypeId
 
 
 def rescanLibrary(library):
@@ -167,6 +155,7 @@ def rescanLibrary(library):
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                if Track.objects.filter(location=root+file).count() == 0:
+                if Track.objects.filter(location=root + file).count() == 0:
                     addTrackMP3(root, file, playlist, convert, mp3ID)
                 else:
+                    pass
