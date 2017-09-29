@@ -228,9 +228,15 @@ def loadTrackFromPlaylist(request):
                 finalData += "{ \"ID\":"
                 finalData += str(track.id)
                 finalData += ", \"TITLE\":\""
-                finalData += track.title
+                if track.title is not None:
+                    finalData += track.title
+                else:
+                    finalData += " "
                 finalData += "\", \"YEAR\":"
-                finalData += str(track.year)
+                if track.year is not None:
+                    finalData += str(track.year)
+                else:
+                    finalData += "0"
                 finalData += ", \"COMPOSER\":\""
                 if track.composer is not None:
                     finalData += track.composer
@@ -295,7 +301,10 @@ def loadTrackFromPlaylist(request):
                 else:
                     finalData += "0"
                 finalData += ", \"NUMBER_TOTAL_TRACK\":"
-                finalData += str(track.album.numberTotalTrack)
+                if track.album.numberTotalTrack is not None:
+                    finalData += str(track.album.numberTotalTrack)
+                else:
+                    finalData += "0"
                 finalData += ", \"ARTIST\":["
                 for artist in track.album.artist.all():
                     finalData += "{\"ID\":"
