@@ -13,8 +13,8 @@ from django.views.generic.list import ListView
 
 from app.controller import addTrackMP3, scanLibrary
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library
-from app.utils import badFormatError, exportPlaylistToJson
+from app.models import Playlist, Track, Artist, Album, Library, Genre
+from app.utils import badFormatError, exportPlaylistToJson, populateDB
 
 
 class mainView(ListView):
@@ -23,6 +23,7 @@ class mainView(ListView):
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
+        populateDB()
         return super(mainView, self).dispatch(*args, **kwargs)
 
 
@@ -66,6 +67,7 @@ def dropAllDB(request):
         albums = Album.objects.all()
         playlists = Playlist.objects.all()
         libraries = Library.objects.all()
+        genres = Genre.objects.all()
         for track in tracks:
             track.delete()
         for artist in artists:
@@ -76,6 +78,8 @@ def dropAllDB(request):
             playlist.delete()
         for library in libraries:
             library.delete()
+        for genre in genres:
+            genre.delete()
         data = {
             'DROPPED': "OK",
         }
@@ -168,12 +172,15 @@ def loadAllLibrary(request):
 
 # Get all track information from a playlist and format it as json
 def loadTrackFromPlaylist(request):
+    print(request.method)
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
             print(response['ID'])
             playlist = Playlist.objects.get(id=response['ID'])
-            return HttpResponse(exportPlaylistToJson(playlist))
+            tmp = exportPlaylistToJson(playlist)
+
+            return HttpResponse(tmp)
         except AttributeError:
             badFormatError()
 

@@ -7,16 +7,17 @@ from django.http.response import JsonResponse
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
-from app.models import Track, Artist, Album
+from app.models import Track, Artist, Album, FileType, Genre
 from app.utils import badFormatError
 
 
 def scanLibrary(library, playlist, convert):
     failedItems = []
+    mp3ID = FileType.objects.get(name="mp3")
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                addTrackMP3(root, file, playlist, convert)
+                addTrackMP3(root, file, playlist, convert, mp3ID)
 
             elif file.lower().endswith('.ogg'):
                 # TODO: implement
@@ -43,7 +44,7 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
-def addTrackMP3(root, file, playlist, convert):
+def addTrackMP3(root, file, playlist, convert, fileTypeId):
     track = Track()
 
     # --- FILE INFORMATION ---
@@ -54,6 +55,7 @@ def addTrackMP3(root, file, playlist, convert):
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
     track.bitRateMode = audioFile.info.bitrate_mode
+    track.fileType = fileTypeId
 
     # --- FILE TAG ---
     audioTag = ID3(root + "/" + file)
@@ -109,6 +111,17 @@ def addTrackMP3(root, file, playlist, convert):
     # --- Save data for many-to-many relationship registering ---
     track.save()
 
+    # --- Adding genre to DB ---
+    if 'TCON' in audioTag:
+        genreName = audioTag['TCON'].text[0]
+        genreFound = Genre.objects.filter(name=genreName)
+        if genreFound.count() == 0:
+            genre = Genre()
+            genre.name = genreName
+            genre.save()
+        genre = Genre.objects.get(name=genreName)
+        track.genre = genre
+
     # --- Adding artist to DB ---
     if 'TPE1' in audioTag:  # Check if artist exists
         artists = audioTag['TPE1'].text[0].split(",")
@@ -131,8 +144,8 @@ def addTrackMP3(root, file, playlist, convert):
         if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
             album = Album()
             album.title = albumTitle
-            album.numberTotalTrack = totalTrack
-            album.numberOfDisc = totalDisc
+            album.totalTrack = totalTrack
+            album.totalDisc = totalDisc
             album.save()
             for trackArtist in track.artist.all():
                 album.artist.add(trackArtist)
