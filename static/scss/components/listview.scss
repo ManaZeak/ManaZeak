@@ -55,3 +55,11 @@
     display: inline-block;
     text-align: right;
 }
+
+.resize {
+    display: inline-block;
+    cursor: pointer;
+    width: 1px;
+    height: 10px;
+    border-right: solid 1px black;
+}

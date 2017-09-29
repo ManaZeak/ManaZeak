@@ -26,8 +26,8 @@ var Track = function(track) {
     this.lastModified = track.LAST_MODIFIED;
     this.artist       = this.getArtistFromArtistsArray(track.ARTISTS);
     this.album        = track.ALBUM.TITLE;
-    this.genre        = null;
-    this.fileType     = null;
+    this.genre        = track.GENRE;
+    this.fileType     = track.FILE_TYPE;
 };
 
 Track.prototype = {
@@ -85,7 +85,7 @@ Track.prototype = {
         artist.innerHTML   = this.artist;
         composer.innerHTML = this.composer;
         album.innerHTML    = this.album;
-        genre.innerHTML     = "--";
+        genre.innerHTML    = this.genre;
         year.innerHTML     = this.year;
 
         this.uiTrack.appendChild(title);

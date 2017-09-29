@@ -79,10 +79,10 @@ App.prototype = {
 
 
     start: function(playlists) {
-        // User first connection : need too create the first library
         if (playlists.RESULT === 0) {
             var n = new Library(true, this.cookies);
         } else {
+            // TODO : Get from cookie last playlist and send it
 //            var tmp = new ListView(this.tracks);
         }
     },
