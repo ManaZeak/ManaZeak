@@ -8,7 +8,12 @@
 var Track = function(track) {
 
     // Track internal attributes
-    this.uiTrack = null;
+    this.ui = {
+        entry: null,
+        id: null,
+        x: 0,
+        y: 0
+    };
     this.isSelected = false;
 
 
@@ -18,7 +23,6 @@ var Track = function(track) {
         album: track.ALBUM.ID,
         artists: this._getArtistsIDFromArtistsArray(track.ARTISTS)
     };
-
     this.title        = track.TITLE;
     this.year         = track.YEAR;
     this.composer     = track.COMPOSER;
@@ -76,8 +80,9 @@ Track.prototype = {
 
 
     newListViewEntry: function(listView) {
-        this.uiTrack = document.createElement("div");
-        this.uiTrack.className = "trackContainer";
+        this.ui.entry = document.createElement("div");
+        this.ui.entry.id = this.id.track;
+        this.ui.entry.className = "trackContainer";
 
         var title    = document.createElement("div");
         var artist   = document.createElement("div");
@@ -100,27 +105,29 @@ Track.prototype = {
         genre.innerHTML    = this.genre;
         year.innerHTML     = this.year;
 
-        this.uiTrack.appendChild(title);
-        this.uiTrack.appendChild(artist);
-        this.uiTrack.appendChild(composer);
-        this.uiTrack.appendChild(album);
-        this.uiTrack.appendChild(genre);
-        this.uiTrack.appendChild(year);
+        this.ui.entry.appendChild(title);
+        this.ui.entry.appendChild(artist);
+        this.ui.entry.appendChild(composer);
+        this.ui.entry.appendChild(album);
+        this.ui.entry.appendChild(genre);
+        this.ui.entry.appendChild(year);
 
         // TODO : store listenners, and add single click listenner
-        this.uiTrack.addEventListener("dblclick", this.toggleSelected.bind(this));
+        this.ui.entry.addEventListener("dblclick", this.toggleSelected.bind(this));
 
-        listView.appendChild(this.uiTrack);
+        listView.appendChild(this.ui.entry);
     },
 
 
     toggleSelected: function() {
+//        console.log(this.ui.entry.getBoundingClientRect());
+
         if (this.isSelected) {
             this.isSelected = !this.isSelected;
-            this.uiTrack.style.background = "none";
+            this.ui.entry.style.background = "none";
         } else {
             this.isSelected = !this.isSelected;
-            this.uiTrack.style.background = "red";
+            this.ui.entry.style.background = "red";
         }
     }
 };

@@ -1,10 +1,10 @@
-var Menu = function() {
+var UserMenu = function() {
     this.menu = document.getElementById("menu");
 
     this.isVisible = false;
 };
 
-Menu.prototype = {
+UserMenu.prototype = {
 
     addVisibilityLock: function() {
         if (!this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
