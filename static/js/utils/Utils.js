@@ -47,6 +47,11 @@ function getCookies() {
 }
 
 
+function getById(string) {
+    return document.getElementById(string);
+}
+
+
 function getRequest(url, callback) {
     var xmlhttp = new XMLHttpRequest();
 
@@ -60,6 +65,10 @@ function getRequest(url, callback) {
     xmlhttp.send();
 }
 
+
+function mkElem(type) {
+    return document.createElement(type);
+}
 
 
 function JSONParsedGetRequest(url, http, callback) {

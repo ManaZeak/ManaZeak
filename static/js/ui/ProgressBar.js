@@ -5,14 +5,14 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ProgressBar = function() {
     this.progressBar = {
-        container: document.getElementById("progressBar"),
-        current:   document.getElementById("progress"),
-        thumb:     document.getElementById("progressThumb")
+        container: getById("progressBar"),
+        current:   getById("progress"),
+        thumb:     getById("progressThumb")
     };
     this.duration = {
-        current: document.getElementById("currentDuration"),
-        total:   document.getElementById("totalDuration"),
-        hover:   document.getElementById("progressTimecodeHover")
+        current: getById("currentDuration"),
+        total:   getById("totalDuration"),
+        hover:   getById("progressTimecodeHover")
     };
 
     this.refreshIntervalId = -1;
