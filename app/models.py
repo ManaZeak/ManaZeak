@@ -23,6 +23,7 @@ class FileType(models.Model):
 
 class Track(models.Model):
     location = models.FilePathField(max_length=1000)
+    coverLocation = models.URLField(max_length=1000)
     title = models.CharField(max_length=1000)
     year = models.IntegerField(null=True)
     composer = models.CharField(max_length=1000, null=True)
@@ -43,6 +44,7 @@ class Track(models.Model):
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
     CRC = models.CharField(max_length=1000, null=False)
+    scanned = models.BooleanField(default=False)
 
 
 class Playlist(models.Model):

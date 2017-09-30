@@ -21,6 +21,8 @@ def badFormatError():
 
 def scanLibrary(library, playlist, convert):
     failedItems = []
+    # TODO : Check if the cover folder is present
+    # if os.path.isdir()
     mp3ID = FileType.objects.get(name="mp3")
     for root, dirs, files in os.walk(library.path):
         for file in files:
