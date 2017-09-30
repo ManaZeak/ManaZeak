@@ -6,11 +6,12 @@
  *                             false means that user wants to load existing playlist   *
  *  cookies    : DOM Obj      - user cookies                                           *
  *  tracks     : Array[Track] - Playlist tracks                                        *
+ *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(newLibrary, cookies, tracks) {
+var Playlist = function(newLibrary, cookies, tracks, callback) {
 
-    // NewLibrary relative attributs, useless is newLibrary = false
+    // NewLibrary relative attributes, useless if newLibrary = false
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -20,6 +21,9 @@ var Playlist = function(newLibrary, cookies, tracks) {
     };
 
     this.scanModal = null;
+
+
+    // Playlist internal attributes
     this.tracks = [];
 
 
@@ -31,6 +35,12 @@ var Playlist = function(newLibrary, cookies, tracks) {
         this.rawTracks = tracks;
     } else {
         this.rawTracks = [];
+    }
+
+    if (typeof callback !== 'undefined') {
+        this.callback = callback;
+    } else {
+        this.callback = null;
     }
 
 
@@ -173,9 +183,9 @@ Playlist.prototype = {
 
         if (this.newLibrary) {
             document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+            this.callback();
         }
+    },
 
-        // TODO : Don't open list view here
-        var tmp = new ListView(this.tracks);
-    }
+    getTracks: function() { return this.tracks }
 };
