@@ -26,14 +26,26 @@
         position: absolute;
         top: 20px;
         right: 0;
-        width: 200px;
-        height: 200px;
+        width: 100px;
+        height: auto;
         background-color: coral;
+        z-index: 1;
 
         opacity: 0;
         transition: visibility 0s 0.3s,
                     opacity 0.3s ease;
         visibility: hidden;
+
+        .menuEntry {
+            height: 2em;
+            line-height: 2em;
+            padding-left: 15px;
+            cursor: pointer;
+        }
+
+        #logOut {
+
+        }
     }
 
     .menuLocked {
