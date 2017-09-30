@@ -1,8 +1,13 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  UserMenu class - handle the user's menu                                            *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var UserMenu = function() {
     this.menu = document.getElementById("menu");
-
     this.isVisible = false;
 };
+
 
 UserMenu.prototype = {
 

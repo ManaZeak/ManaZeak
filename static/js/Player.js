@@ -1,15 +1,22 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Player class - handle song streaming client side, and std action on it             *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Player = function() {
     this.player = document.getElementById("audioPlayer");
     this.oldVolume = 0;
 
     this.isPlaying = false;
-    this.isMuted = false;
+    this.isMuted   = false;
     this.isLooping = false;
 
     this.init();
 };
 
+
 Player.prototype = {
+
     init: function() {
 
     },
@@ -151,14 +158,14 @@ Player.prototype = {
     },
 
 
-    /* Class Getters and Setters */
-    getPlayer: function()    { return this.player; },
-    getVolume: function()    { return this.player.volume; },
-    getOldVolume: function() { return this.oldVolume; },
-    getIsPlaying: function() { return this.isPlaying; },
-    getIsMuted: function()   { return this.isMuted; },
+    // Class Getters and Setters
+    getPlayer: function()                 { return this.player;             },
+    getVolume: function()                 { return this.player.volume;      },
+    getOldVolume: function()              { return this.oldVolume;          },
+    getIsPlaying: function()              { return this.isPlaying;          },
+    getIsMuted: function()                { return this.isMuted;            },
 
-    setVolume: function(volume)           { this.player.volume = volume; },
+    setVolume: function(volume)           { this.player.volume = volume;    },
     setCurrentTime: function(currentTime) { this.currentTime = currentTime; },
-    setIsLooping: function(looping)       { this.isLooping = looping; }
+    setIsLooping: function(looping)       { this.isLooping = looping;       }
 };

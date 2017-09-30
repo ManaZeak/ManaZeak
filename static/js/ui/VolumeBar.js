@@ -1,3 +1,8 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  VolumeBar class - handle the volume bar depending on the player's volume           *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var VolumeBar = function() {
     this.volumeBar = {
         wrapper:   document.getElementById("volumeBarWrapper"),
@@ -6,16 +11,19 @@ var VolumeBar = function() {
         thumb:     document.getElementById("volumeThumb")
     };
     this.volume = 100; // Volume value is an int between 0 and 100
-
     this.isDragging = false;
+
 
     this.init();
 };
 
+
 VolumeBar.prototype = {
+
     init: function() {
         this.updateVolume();
     },
+
 
     moveVolume: function(event) {
         var boundRect = this.volumeBar.container.getBoundingClientRect();
@@ -30,6 +38,7 @@ VolumeBar.prototype = {
         this.volumeBar.thumb.style.bottom = distanceToBottomInPr + "%";
     },
 
+
     updateVolume: function(img) {
         this.volumeBar.current.style.height = this.volume + "%";
         this.volumeBar.thumb.style.bottom = this.volume + "%";
@@ -40,17 +49,20 @@ VolumeBar.prototype = {
         }
     },
 
+
     addVisibilityLock: function() {
         if (!this.volumeBar.wrapper.className.match(/(?:^|\s)volumeBarWrapperLocked(?!\S)/)) {
             this.volumeBar.wrapper.className += "volumeBarWrapperLocked";
         }
     },
 
+
     removeVisibilityLock: function() {
         if (this.volumeBar.wrapper.className.match(/(?:^|\s)volumeBarWrapperLocked(?!\S)/)) {
             this.volumeBar.wrapper.className = this.volumeBar.wrapper.className.replace(/(?:^|\s)volumeBarWrapperLocked(?!\S)/g, '');
         }
     },
+
 
     toggleVisibilityLock: function() {
         if (this.isDragging) {
@@ -60,11 +72,12 @@ VolumeBar.prototype = {
         }
     },
 
-    /* Class Getters and Setters */
-    getContainer: function()  { return this.volumeBar.container; },
-    getVolume: function()     { return this.volume; },
-    getIsDragging: function() { return this.isDragging; },
 
-    setVolume: function(volume)         { this.volume = volume; },
-    setIsDragging: function(isDragging) { this.isDragging = isDragging; }
+    // Class Getters and Setters
+    getContainer: function()            { return this.volumeBar.container; },
+    getVolume: function()               { return this.volume;              },
+    getIsDragging: function()           { return this.isDragging;          },
+
+    setVolume: function(volume)         { this.volume = volume;            },
+    setIsDragging: function(isDragging) { this.isDragging = isDragging;    }
 };

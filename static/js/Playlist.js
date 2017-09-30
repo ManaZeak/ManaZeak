@@ -188,5 +188,6 @@ Playlist.prototype = {
     },
 
 
-    getTracks: function() { return this.tracks }
+    // Class Getters and Setters
+    getTracks: function() { return this.tracks; }
 };

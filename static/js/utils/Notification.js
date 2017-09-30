@@ -1,5 +1,11 @@
-"use strict";
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Notification class - notifications to use in various case in ManaZeak              *
+ *                                                                                     *
+ *  title   : string - Title to put in notification header                             *
+ *  message : string - Message to put in notification content                          *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Notification = function(title, message) {
     this.notification = null;
     this.ui = {
@@ -19,6 +25,7 @@ var Notification = function(title, message) {
     // TODO : create notifController class, restyle notif
     this._init();
 };
+
 
 Notification.prototype = {
 
