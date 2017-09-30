@@ -1,3 +1,4 @@
+import hashlib
 import json
 import math
 import os
@@ -22,12 +23,15 @@ def badFormatError():
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    # if os.path.isdir()
+    coverPath = "/home/squadella/Documents/covers/"  # TODO: to be defined with docker or with the front
+    if not os.path.isdir(coverPath):
+        os.makedirs(coverPath)
+
     mp3ID = FileType.objects.get(name="mp3")
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                addTrackMP3(root, file, playlist, convert, mp3ID)
+                addTrackMP3(root, file, playlist, convert, mp3ID, coverPath)
 
             elif file.lower().endswith('.ogg'):
                 # TODO: implement
@@ -60,7 +64,7 @@ def CRC32_from_file(filename):
     return "%08X" % buf
 
 
-def addTrackMP3(root, file, playlist, convert, fileTypeId):
+def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
     # --- Calculating checksum
@@ -83,6 +87,17 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId):
         audioTag.save()
     audioTag = ID3(root + "/" + file)
 
+    # --- COVER ---
+    if 'APIC:' in audioTag:
+        front = audioTag['APIC:'].data
+        # Creating md5 hash for the cover
+        md5Name = hashlib.md5()
+        md5Name.update(front)
+        # Check if the cover already exists and save it
+        if not os.path.isfile(coverPath+md5Name.hexdigest()+".jpg"):
+            with open(coverPath+md5Name.hexdigest()+".jpg", 'wb') as img:
+                img.write(front)
+        track.coverLocation = md5Name.hexdigest()+".jpg"
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = audioTag['TIT2'].text[0]
