@@ -1,15 +1,17 @@
 import os
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from mutagen.mp3 import MP3
 
-from app.controller import addTrackMP3
+from app.controller import addTrackMP3, CRC32_from_file
 from app.models import FileType, Track
 
 
 # Render class for serving modal to client
-class ScanModal(TemplateView):
+class ScanModal (TemplateView):
     template_name = 'utils/modal.html'
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
@@ -137,25 +139,34 @@ def populateDB():
         fileType.save()
         fileType = FileType(name="wav")
         fileType.save()
-        # TODO : Compare md5
-        # def compareTrackAndFile(track, root, file, fileTypeId):
-        #     audioFile = MP3(root + "/" + file)
-        # track.size = os.path.getsize(root + "/" + file)
-        # track.bitRate = audioFile.info.bitrate
-        # track.duration = audioFile.info.length
-        # track.sampleRate = audioFile.info.sample_rate
-        # track.bitRateMode = audioFile.info.bitrate_mode
-        # track.fileType = fileTypeId
 
 
+# Compare the file by hash (faster than reading the tag)
+def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replacedTitles):
+    fileCRC = CRC32_from_file(root + "/" + file)
+    if fileCRC != track.CRC:
+        replacedTitles.append(track.title)
+        track.delete()
+        addTrackMP3(root, file, playlist, convert, fileTypeId)
+    else:
+        track.scanned = True
+
+
+# TODO: remove the file in DB that have been removed
 def rescanLibrary(library):
     playlist = library.playlist
     convert = False
     mp3ID = FileType.objects.get(name="mp3")
+    replacedTitles = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                if Track.objects.filter(location=root + file).count() == 0:
+                track = Track.objects.get(location=root + file)
+                if track is None:
                     addTrackMP3(root, file, playlist, convert, mp3ID)
                 else:
-                    pass
+                    compareTrackAndFile(track, root, file, playlist, convert, mp3ID, replacedTitles)
+    # Removed the tracks that haven't been scanned
+    removedTracks = playlist.track.filter(scanned=False).delete()
+    return [replacedTitles, removedTracks]
+
