@@ -120,8 +120,7 @@ Track.prototype = {
 
 
     toggleSelected: function() {
-//        console.log(this.ui.entry.getBoundingClientRect());
-
+        // TODO : console.log(this.ui.entry.getBoundingClientRect());
         if (this.isSelected) {
             this.isSelected = !this.isSelected;
             this.ui.entry.style.background = "none";
