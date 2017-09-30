@@ -2,14 +2,15 @@
  *                                                                                     *
  *  Playlist class - Allow multiple tracks manipulation                                *
  *                                                                                     *
+ *  id         : integer      - the playlist ID in db                                  *
  *  newLibrary : boolean      - true means user wants to create a new library,         *
- *                             false means that user wants to load existing playlist   *
+ *                              false means that user wants to load existing playlist  *
  *  cookies    : DOM Obj      - user cookies                                           *
  *  tracks     : Array[Track] - Playlist tracks                                        *
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(newLibrary, cookies, tracks, callback) {
+var Playlist = function(id, newLibrary, cookies, tracks, callback) {
 
     // NewLibrary relative attributes, useless if newLibrary = false
     this.ui = {
@@ -19,15 +20,16 @@ var Playlist = function(newLibrary, cookies, tracks, callback) {
         convert:   null,
         scan:      null
     };
-
     this.scanModal = null;
 
 
     // Playlist internal attributes
     this.tracks = [];
+    this.isLibrary = false;
 
 
     // Filling Playlist object
+    this.id = id;
     this.newLibrary = newLibrary;
     this.cookies = cookies;
 
@@ -57,6 +59,7 @@ Playlist.prototype = {
 
 
     _newLibrary: function() {
+        this.isLibrary = true;
         var that = this;
 
         JSONParsedGetRequest(
@@ -121,13 +124,12 @@ Playlist.prototype = {
                 URL:  this.ui.path.value
             }),
             function(response) {
-                var parsedJSON = response;
-
-                if (parsedJSON.DONE === "FAIL") {
-                    new Notification("Error in path field.", parsedJSON.ERROR);
+                if (response.DONE === "FAIL") {
+                    new Notification("Error in path field.", response.ERROR);
                 } else {
-                    that.scanModal = new Modal(); // TODO : send parameters
-                    that._scanLibrary(parsedJSON.ID); // Library ID
+                    that.scanModal = new Modal(); // TODO : send parameters (todo when modal class is bigger)
+                    that.id = response.ID;
+                    that._scanLibrary(response.ID);
                 }
             }
         );
@@ -145,14 +147,12 @@ Playlist.prototype = {
                 CONVERT: this.ui.convert.checked
             }),
             function(response) {
-                var parsedJSON = response;
-
-                if (parsedJSON.DONE === "FAIL") {
+                if (response.DONE === "FAIL") {
                      // TODO : put href to view more (file list for ex)
-                    new Notification("Scan error.", parsedJSON.FAILS.length + " files haven't been scanned.");
+                    new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
                 } else {
                     that.scanModal.close();
-                    that._getTracksFromServer(parsedJSON.ID);
+                    that._getTracksFromServer(response.ID);
                 }
             }
         );
@@ -186,6 +186,7 @@ Playlist.prototype = {
             this.callback();
         }
     },
+
 
     getTracks: function() { return this.tracks }
 };
