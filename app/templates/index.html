@@ -5,12 +5,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>WebPlayer POC</title>
-<<<<<<< HEAD
-        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/index.scss" %}">
-=======
+        <title>ManaZeak</title> <!-- TODO : display and animate track metadata -->
         <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
->>>>>>> master
     </head>
     <body>
         <!-- <p>Ctrl + M : mute</p>
@@ -25,6 +21,8 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
+        {% include 'components/topbar.html' %}
+
         <div id="mainContainer">
             {#% include 'components/newlibrary.html' %#}
         </div>
@@ -37,18 +35,16 @@
              Your browser does not support the audio element.
         </audio>
 
-        <!-- Add absolute path in js-->
+        <!-- Add absolute path in js TODO : to something about deaz ... -->
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Track.js" %}"></script>
         <script type="text/javascript" src="{% static "js/view/ListView.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/Queue.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/ProgressBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/VolumeBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Library.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">

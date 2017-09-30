@@ -8,8 +8,8 @@ class Artist(models.Model):
 
 class Album(models.Model):
     title = models.CharField(max_length=1000)
-    numberOfDisc = models.IntegerField(null=True)
-    numberTotalTrack = models.IntegerField(null=True)
+    totalDisc = models.IntegerField(null=True)
+    totalTrack = models.IntegerField(null=True)
     artist = models.ManyToManyField(Artist)
 
 
@@ -42,6 +42,7 @@ class Track(models.Model):
     album = models.ForeignKey(Album, null=True)
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
+    CRC = models.CharField(max_length=1000, null=False)
 
 
 class Playlist(models.Model):

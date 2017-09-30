@@ -3,6 +3,7 @@ function precisionRound(value, precision) {
     return Math.round(value * multiplier) / multiplier;
 }
 
+
 function secondsToTimecode(time) {
     // TODO : add days
     var transformedTime = {
@@ -26,6 +27,7 @@ function secondsToTimecode(time) {
     }
 }
 
+
 function getCookies() {
     var cookies = {};
 
@@ -41,15 +43,34 @@ function getCookies() {
     return cookies;
 }
 
-function fetchComponentUI(url, callback) {
+
+function JSONParsedGetRequest(url, http, callback) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            callback(this.responseText);
+            if (http) { callback(this.responseText); }
+            else       { callback(JSON.parse(this.responseText)); }
         }
     };
 
     xmlhttp.open("GET", url, true);
+    if (http) { xmlhttp.setRequestHeader("Content-Type", "application/json"); }
     xmlhttp.send();
+}
+
+
+function JSONParsedPostRequest(url, cookies, message, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callback(JSON.parse(this.responseText));
+        }
+    };
+
+    xmlhttp.open("POST", url, true);
+    xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    xmlhttp.send(message);
 }
