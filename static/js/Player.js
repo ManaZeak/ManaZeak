@@ -14,9 +14,11 @@ Player.prototype = {
 
     },
 
+
     changeTrack: function(url) {
         this.player.src = url;
     },
+
 
     togglePlay: function(img) {
         if (this.isPlaying) {
@@ -32,6 +34,7 @@ Player.prototype = {
         }
     },
 
+
     stopPlayback: function() {
         this.player.pause();
         this.isPlaying = !this.isPlaying;
@@ -41,6 +44,7 @@ Player.prototype = {
         // TODO : Make a real stop feature ...
     },
 
+
     fastForward: function(ctrl) {
         if (ctrl) {
             this.player.currentTime += 30;
@@ -48,6 +52,7 @@ Player.prototype = {
             this.player.currentTime += 10;
         }
     },
+
 
     rewind: function(ctrl) {
         if (ctrl) {
@@ -57,16 +62,19 @@ Player.prototype = {
         }
     },
 
+
     /* Volume control */
     mute: function() {
         this.oldVolume = this.player.volume;
         this.player.volume = 0;
     },
 
+
     unmute: function() {
         this.player.volume = this.oldVolume;
         this.oldVolume = 0;
     },
+
 
     toggleMute: function(img) { // img not mandatory
         if (this.isMuted) {
@@ -82,6 +90,7 @@ Player.prototype = {
             else { img.src = "/static/img/volume.svg"; }
         }
     },
+
 
     volumeDown: function(ctrl, volumeBar) {
         if (!ctrl) {
@@ -103,6 +112,7 @@ Player.prototype = {
         }
     },
 
+
     volumeUp: function(ctrl, volumeBar) {
         if (this.player.volume === 0) { // Un-muting player
             this.isMuted = false;
@@ -123,6 +133,7 @@ Player.prototype = {
         this.player.volume = precisionRound(this.player.volume, 2);
     },
 
+
     toggleRepeat: function() {
         if (this.isLooping) {
             this.isLooping = !this.isLooping;
@@ -138,6 +149,7 @@ Player.prototype = {
             }, false);
         }
     },
+
 
     /* Class Getters and Setters */
     getPlayer: function()    { return this.player; },
