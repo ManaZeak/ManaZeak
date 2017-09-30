@@ -4,12 +4,32 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var UserMenu = function() {
-    this.menu = document.getElementById("menu");
+    this.menu = document.createElement("div");
+    this.menu.id = "menu";
+    this.menuEntry = {
+        logout: null
+    };
     this.isVisible = false;
+
+
+    this._init();
 };
 
 
 UserMenu.prototype = {
+
+    _init: function() {
+        document.getElementById("userExpander").appendChild(this.menu);
+        this.menuEntry.logout = document.createElement("div");
+        this.menuEntry.logout.id = "logOut";
+        this.menuEntry.logout.className = "menuEntry";
+        this.menuEntry.logout.innerHTML = "Log out";
+        this.menu.appendChild(this.menuEntry.logout);
+
+
+        this._eventListener();
+    },
+
 
     addVisibilityLock: function() {
         if (!this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
@@ -33,5 +53,20 @@ UserMenu.prototype = {
             this.isVisible = !this.isVisible;
             this.removeVisibilityLock();
         }
+    },
+
+
+    logOut: function() {
+        getRequest(
+            "logout",
+            function() {
+                location.reload();
+            }
+        );
+    },
+
+
+    _eventListener: function() {
+        this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
     }
 };
