@@ -39,7 +39,7 @@ var App = function() {
     this.progressBar = new ProgressBar();
     this.volumeBar   = new VolumeBar();
     this.queue       = new Queue();
-    this.menu        = new Menu();
+    this.userMenu    = new UserMenu();
 
     // IDs
     this.volumeLockId = -1;
@@ -60,29 +60,27 @@ var App = function() {
 App.prototype = {
 
     init: function() {
+        var that = this;
+
         this.keyListener(); // Loading shortcuts
         this.eventListener(); // Loading events
 
-        // Getting user playlists
-        var xmlhttp = new XMLHttpRequest();
-        var that = this;
-
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                that.start(JSON.parse(this.responseText));
+        JSONParsedGetRequest(
+            "ajax/getPlaylists/",
+            false,
+            function(response) {
+                that.start(response);
             }
-        };
-
-        xmlhttp.open("GET", "ajax/getPlaylists/", true);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send();
+        );
     },
 
 
     start: function(playlists) {
-        console.log(playlists);
+        // TODO : store playlist and list view in App object
         if (playlists.RESULT === 0) {
-            var n = new Playlist(true, this.cookies);
+            var n = new Playlist(true, this.cookies, undefined, function() {
+                var tmp = new ListView(n.getTracks());
+            });
         } else {
             var that = this;
 
@@ -93,8 +91,8 @@ App.prototype = {
                     ID: playlists.ID[0]
                 }),
                 function(responseText) {
-                    var n = new Playlist(false, that.cookies, responseText);
-//                    var tmp = new ListView(this.tracks);
+                    var n = new Playlist(false, that.cookies, responseText, undefined);
+                    var tmp = new ListView(n.getTracks());
                 }
             );
         }
@@ -267,8 +265,8 @@ App.prototype = {
     },
 
 
-    toggleMenu: function() {
-        this.menu.toggleVisibilityLock();
+    toggleUserMenu: function() {
+        this.userMenu.toggleVisibilityLock();
     },
 
 
@@ -335,7 +333,7 @@ App.prototype = {
         this.ui.next.button.addEventListener("click", this.next.bind(this));
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
         this.ui.queueExpander.button.addEventListener("click", this.toggleQueue.bind(this));
-        this.ui.userExpander.button.addEventListener("click", this.toggleMenu.bind(this));
+        this.ui.userExpander.button.addEventListener("click", this.toggleUserMenu.bind(this));
 
         this.player.getPlayer().addEventListener('loadedmetadata', function() {
             that.progressBar.init(that.player.getPlayer()); // Initialize progressBar
