@@ -14,27 +14,27 @@ var ListView = function(tracks) {
 ListView.prototype = {
 
     init: function() {
-        this.listView = document.createElement("div");
+        this.listView = mkElem("div");
         this.listView.id ="listView";
 
         this.initColumnBar();
 
         this.addTracks(this.tracks);
-        document.getElementById("mainContainer").appendChild(this.listView);
+        getById("mainContainer").appendChild(this.listView);
     },
 
 
     initColumnBar: function() {
-        var columnBar = document.createElement("div");
+        var columnBar = mkElem("div");
         columnBar.className = "columnHeader";
 
-        var title    = document.createElement("div");
+        var title    = mkElem("div");
 //        var titleResize    = document.createElement("div");
-        var artist   = document.createElement("div");
-        var composer = document.createElement("div");
-        var album    = document.createElement("div");
-        var genre    = document.createElement("div");
-        var year     = document.createElement("div");
+        var artist   = mkElem("div");
+        var composer = mkElem("div");
+        var album    = mkElem("div");
+        var genre    = mkElem("div");
+        var year     = mkElem("div");
 
         title.className    = "title";
 //        titleResize.id    = "titleResize";

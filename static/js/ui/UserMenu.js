@@ -4,7 +4,7 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var UserMenu = function() {
-    this.menu = document.createElement("div");
+    this.menu = mkElem("div");
     this.menu.id = "menu";
     this.menuEntry = {
         logout: null
@@ -19,8 +19,8 @@ var UserMenu = function() {
 UserMenu.prototype = {
 
     _init: function() {
-        document.getElementById("userExpander").appendChild(this.menu);
-        this.menuEntry.logout = document.createElement("div");
+        getById("userExpander").appendChild(this.menu);
+        this.menuEntry.logout = mkElem("div");
         this.menuEntry.logout.id = "logOut";
         this.menuEntry.logout.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
@@ -28,6 +28,17 @@ UserMenu.prototype = {
 
 
         this._eventListener();
+        this._keyListener();
+    },
+
+
+    logOut: function() {
+        getRequest(
+            "logout",
+            function() {
+                location.reload();
+            }
+        );
     },
 
 
@@ -56,17 +67,23 @@ UserMenu.prototype = {
     },
 
 
-    logOut: function() {
-        getRequest(
-            "logout",
-            function() {
-                location.reload();
-            }
-        );
+    _eventListener: function() {
+        this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
     },
 
 
-    _eventListener: function() {
-        this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
+    _keyListener: function() {
+        var that = this;
+
+        // Key pressed event
+        document.addEventListener("keydown", function(event) {
+            switch (event.keyCode) {
+                case 27: // Esc
+                    if (that.isVisible) { that.toggleVisibilityLock(); }
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 };
