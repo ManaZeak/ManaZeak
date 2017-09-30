@@ -57,7 +57,7 @@ ListView.prototype = {
 
     addTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
-            tracks[i].createListViewEntry(this.listView);
+            tracks[i].newListViewEntry(this.listView);
         }
     }
 };
