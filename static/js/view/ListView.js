@@ -1,3 +1,8 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  ListView class - classical list view                                               *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ListView = function(tracks) {
     this.listView = null;
     this.tracks = tracks;
@@ -5,7 +10,9 @@ var ListView = function(tracks) {
     this.init();
 };
 
+
 ListView.prototype = {
+
     init: function() {
         this.listView = document.createElement("div");
         this.listView.id ="listView";
@@ -15,6 +22,7 @@ ListView.prototype = {
         this.addTracks(this.tracks);
         document.getElementById("mainContainer").appendChild(this.listView);
     },
+
 
     initColumnBar: function() {
         var columnBar = document.createElement("div");
@@ -54,6 +62,7 @@ ListView.prototype = {
 
         this.listView.appendChild(columnBar);
     },
+
 
     addTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
