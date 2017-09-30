@@ -2628,29 +2628,26 @@ $footerHeight:  ($modalHeight / 6);
   -moz-user-select: none;
   /* Firefox */ }
 
-.title {
-  width: 25%;
+.field {
   display: inline-block; }
+
+.title {
+  width: 25%; }
 
 .artist {
-  width: 20%;
-  display: inline-block; }
+  width: 20%; }
 
 .composer {
-  width: 20%;
-  display: inline-block; }
+  width: 20%; }
 
 .album {
-  width: 20%;
-  display: inline-block; }
+  width: 20%; }
 
 .genre {
-  width: 12.5%;
-  display: inline-block; }
+  width: 12.5%; }
 
 .year {
   width: 2.5%;
-  display: inline-block;
   text-align: right; }
 
 .resize {

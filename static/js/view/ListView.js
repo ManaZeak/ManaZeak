@@ -6,6 +6,7 @@
 var ListView = function(tracks) {
     this.listView = null;
     this.tracks = tracks;
+    this.entries = [];
 
     this.init();
 };
@@ -36,14 +37,14 @@ ListView.prototype = {
         var genre    = mkElem("div");
         var year     = mkElem("div");
 
-        title.className    = "title";
+        title.className    = "title field";
 //        titleResize.id    = "titleResize";
 //        titleResize.className    = "resize";
-        artist.className   = "artist";
-        composer.className = "composer";
-        album.className    = "album";
-        genre.className    = "genre";
-        year.className     = "year";
+        artist.className   = "artist field";
+        composer.className = "composer field";
+        album.className    = "album field";
+        genre.className    = "genre field";
+        year.className     = "year field";
 
         title.innerHTML    = "Title";
         artist.innerHTML   = "Artist";
@@ -66,7 +67,60 @@ ListView.prototype = {
 
     addTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
-            tracks[i].newListViewEntry(this.listView);
+            this.newEntry(tracks[i]);
+        }
+    },
+
+
+    newEntry: function(track) {
+        var entry = mkElem("div");
+        entry.id = track.id.track;
+        entry.className = "trackContainer";
+
+        var title    = mkElem("div");
+        var artist   = mkElem("div");
+        var composer = mkElem("div");
+        var album    = mkElem("div");
+        var genre    = mkElem("div");
+        var year     = mkElem("div");
+
+        title.className    = "title field";
+        artist.className   = "artist field";
+        composer.className = "composer field";
+        album.className    = "album field";
+        genre.className     = "genre field";
+        year.className     = "year field";
+
+        title.innerHTML    = track.title;
+        artist.innerHTML   = track.artist;
+        composer.innerHTML = track.composer;
+        album.innerHTML    = track.album;
+        genre.innerHTML    = track.genre;
+        year.innerHTML     = track.year;
+
+        entry.appendChild(title);
+        entry.appendChild(artist);
+        entry.appendChild(composer);
+        entry.appendChild(album);
+        entry.appendChild(genre);
+        entry.appendChild(year);
+
+        // TODO : store listenners, and add single click listenner
+        entry.addEventListener("dblclick", this.toggleSelected.bind(this));
+
+        this.entries.push(entry);
+        this.listView.appendChild(entry);
+    },
+
+
+    toggleSelected: function() {
+        // TODO : console.log(this.ui.entry.getBoundingClientRect());
+        if (this.isSelected) {
+            this.isSelected = !this.isSelected;
+            this.ui.entry.style.background = "none";
+        } else {
+            this.isSelected = !this.isSelected;
+            this.ui.entry.style.background = "red";
         }
     }
 };

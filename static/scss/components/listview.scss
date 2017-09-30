@@ -25,34 +25,36 @@
     -moz-user-select: none;     /* Firefox */
 }
 
+.field {
+    display: inline-block;
+}
+
+.duration {
+
+}
+
 .title {
     width: 25%;
-    display: inline-block;
 }
 
 .artist {
     width: 20%;
-    display: inline-block;
 }
 
 .composer {
     width: 20%;
-    display: inline-block;
 }
 
 .album {
     width: 20%;
-    display: inline-block;
 }
 
 .genre {
     width: 12.5%;
-    display: inline-block;
 }
 
 .year {
     width: 2.5%;
-    display: inline-block;
     text-align: right;
 }
 
