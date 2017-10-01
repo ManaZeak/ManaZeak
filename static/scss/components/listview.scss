@@ -33,27 +33,37 @@
 
 }
 
-.title {
-    width: 25%;
+[class*='col-'] {
+    float: left;
+    min-height: 1px;
+    width: 16.66%;
 }
 
-.artist {
+.col-duration {
+    width: 5%;
+}
+
+.col-title {
     width: 20%;
 }
 
-.composer {
+.col-artist {
     width: 20%;
 }
 
-.album {
+.col-composer {
     width: 20%;
 }
 
-.genre {
+.col-album {
+    width: 20%;
+}
+
+.col-genre {
     width: 12.5%;
 }
 
-.year {
+.col-year {
     width: 2.5%;
     text-align: right;
 }
