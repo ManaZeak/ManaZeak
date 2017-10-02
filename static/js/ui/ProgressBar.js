@@ -1,13 +1,18 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  ProgressBar class - handle the progress bar depending on current track             *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ProgressBar = function() {
     this.progressBar = {
-        container: document.getElementById("progressBar"),
-        current:   document.getElementById("progress"),
-        thumb:     document.getElementById("progressThumb")
+        container: getById("progressBar"),
+        current:   getById("progress"),
+        thumb:     getById("progressThumb")
     };
     this.duration = {
-        current: document.getElementById("currentDuration"),
-        total:   document.getElementById("totalDuration"),
-        hover:   document.getElementById("progressTimecodeHover")
+        current: getById("currentDuration"),
+        total:   getById("totalDuration"),
+        hover:   getById("progressTimecodeHover")
     };
 
     this.refreshIntervalId = -1;
@@ -17,11 +22,14 @@ var ProgressBar = function() {
     this.isInverted = false;
 };
 
+
 ProgressBar.prototype = {
+
     init: function(track) {
         this.duration.current.innerHTML = "00:00";
         this.duration.total.innerHTML = secondsToTimecode(track.duration);
     },
+
 
     moveProgress: function(event, track) {
         var boundRect = this.progressBar.container.getBoundingClientRect();
@@ -41,6 +49,7 @@ ProgressBar.prototype = {
         }
     },
 
+
     updateProgress: function(track) {
         var distanceToLeftBorder = (track.currentTime * 100) / track.duration;
         // Style assignation
@@ -56,6 +65,7 @@ ProgressBar.prototype = {
         }
     },
 
+
     timecodeProgressHover: function(event, track) {
         var boundRect = this.progressBar.container.getBoundingClientRect();
         var distanceToLeftInPx = event.clientX - boundRect.left;
@@ -70,6 +80,7 @@ ProgressBar.prototype = {
         this.duration.hover.innerHTML = hoveredTimecode;
     },
 
+
     toggleRefreshInterval: function(track) {
         var that = this;
 
@@ -83,10 +94,12 @@ ProgressBar.prototype = {
         }
     },
 
+
     stopRefreshInterval: function() {
         clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = -1;
     },
+
 
     addVisibilityLock: function() {
         if (!this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
@@ -94,11 +107,13 @@ ProgressBar.prototype = {
         }
     },
 
+
     removeVisibilityLock: function() {
         if (this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
             this.duration.hover.className = this.duration.hover.className.replace(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/g, '');
         }
     },
+
 
     invertTimecode: function() {
         if (!this.isInverted) {
@@ -108,15 +123,16 @@ ProgressBar.prototype = {
         }
     },
 
-    /* Class Getters and Setters */
-    getContainer: function()       { return this.progressBar.container; },
-    getCurrentDuration: function() { return this.duration.current;      },
-    getTotalDuration: function()   { return this.duration.total;        },
-    getIsDragging: function()      { return this.isDragging;            },
-    getIsMouseOver: function()     { return this.isMouseOver;           },
 
-    setCurrentDuration: function(current) { this.duration.current = current; },
-    setTotalDuration: function(total)     { this.duration.total = total;     },
-    setIsDragging: function(isDragging)   { this.isDragging = isDragging;    },
-    setIsMouseOver: function(isMouseOver) { this.isMouseOver = isMouseOver;  }
+    // Class Getters and Setters
+    getContainer: function()              { return this.progressBar.container; },
+    getCurrentDuration: function()        { return this.duration.current;      },
+    getTotalDuration: function()          { return this.duration.total;        },
+    getIsDragging: function()             { return this.isDragging;            },
+    getIsMouseOver: function()            { return this.isMouseOver;           },
+
+    setCurrentDuration: function(current) { this.duration.current = current;   },
+    setTotalDuration: function(total)     { this.duration.total = total;       },
+    setIsDragging: function(isDragging)   { this.isDragging = isDragging;      },
+    setIsMouseOver: function(isMouseOver) { this.isMouseOver = isMouseOver;    }
 };

@@ -1,5 +1,11 @@
-"use strict";
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Notification class - notifications to use in various case in ManaZeak              *
+ *                                                                                     *
+ *  title   : string - Title to put in notification header                             *
+ *  message : string - Message to put in notification content                          *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Notification = function(title, message) {
     this.notification = null;
     this.ui = {
@@ -20,16 +26,17 @@ var Notification = function(title, message) {
     this._init();
 };
 
+
 Notification.prototype = {
 
     // Create notification skeleton
     _init: function() {
         // Creating UI elements
-        this.notification = document.createElement("div");
-        this.ui.icon      = document.createElement("img");
-        this.ui.title     = document.createElement("p");
-        this.ui.message   = document.createElement("p");
-        this.ui.close     = document.createElement("img");
+        this.notification = mkElem("div");
+        this.ui.icon      = mkElem("img");
+        this.ui.title     = mkElem("p");
+        this.ui.message   = mkElem("p");
+        this.ui.close     = mkElem("img");
 
         // Setting class name
         this.notification.className = "notificationContainer";
