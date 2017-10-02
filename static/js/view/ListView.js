@@ -8,6 +8,8 @@ var ListView = function(tracks) {
     this.tracks = tracks;
     this.entries = [];
 
+    this.contextMenu = new ContextMenu();
+
     this.header = {
         duration:  null,
         title:     null,
@@ -121,9 +123,23 @@ ListView.prototype = {
     },
 
 
+    toggleContextMenu: function(event) {
+        if (!this.contextMenu.getIsVisible()) {
+            this.contextMenu.toggleVisibilityLock(event);
+        } else {
+            this.contextMenu.moveContext(event);
+        }
+    },
+
+
     _eventListener: function() {
         var that = this;
 
+        document.oncontextmenu = document.body.oncontextmenu = function() {return false;}; // Disabling right click on ListView
+
+        this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
+
+        // Sorting listeners
         this.header.duration.addEventListener("click", function() {
             that.sort.isDurationAsc = !that.sort.isDurationAsc;
             that.sortBy("duration", that.sort.isDurationAsc);
