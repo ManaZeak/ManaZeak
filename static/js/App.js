@@ -86,14 +86,16 @@ App.prototype = {
                 function(response) {
                     // TODO : store playlist and list view in App object
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    that.playlists.push(new Playlist(playlists.ID, false, that.cookies, response, undefined));
+                    that.playlists.push(new Playlist(playlists.ID, playlists.NAMES, false, that.cookies, response, undefined));
                     that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                    new PlaylistBar(that.playlists);
                     //console.log(that.playlists[0].getTracks());
                 }
             );
         } else { // User first connection to the app
-            this.playlists.push(new Playlist(0, true, this.cookies, undefined, function() {
+            this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
                 that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                new PlaylistBar(that.playlists);
             }));
         }
     },
