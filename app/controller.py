@@ -23,7 +23,7 @@ def badFormatError():
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    coverPath = "/home/squadella/Documents/covers/"  # TODO: to be defined with docker or with the front
+    coverPath = "/home/messmaker/Documents/covers/"  # TODO: to be defined with docker or with the front
     if not os.path.isdir(coverPath):
         os.makedirs(coverPath)
 
