@@ -2364,6 +2364,18 @@ $footerHeight:  ($modalHeight / 6);
   overflow: visible;
   clip: auto; }
 
+#playlistBar {
+  width: 100%;
+  position: absolute;
+  height: 40px;
+  text-align: center; }
+  #playlistBar p {
+    display: inline-block;
+    margin: 0;
+    line-height: 40px; }
+  #playlistBar p:hover {
+    border-bottom: solid 3px blue; }
+
 /*      --------        ProgressBar style       --------        */
 #progressBar {
   background-color: #e9e9e9;
@@ -2607,8 +2619,8 @@ $footerHeight:  ($modalHeight / 6);
 /* listview */
 #listView {
   width: 100%;
-  height: 100%;
-  top: 0;
+  height: calc(100% - 40px);
+  top: 40px;
   position: absolute;
   padding: 0 10%;
   overflow-y: auto;
@@ -2623,7 +2635,8 @@ $footerHeight:  ($modalHeight / 6);
   height: 30px;
   line-height: 30px;
   font-size: 0.9em;
-  text-align: center; }
+  text-align: center;
+  font-weight: bold; }
 
 .trackContainer {
   width: 100%;
@@ -2646,7 +2659,8 @@ $footerHeight:  ($modalHeight / 6);
   display: inline-block; }
 
 .col-duration {
-  width: 70px; }
+  width: 70px;
+  text-align: right; }
 
 .col-title {
   width: 300px; }
@@ -2661,7 +2675,7 @@ $footerHeight:  ($modalHeight / 6);
   width: 250px; }
 
 .col-album {
-  width: 175px; }
+  width: 160px; }
 
 .col-genre {
   width: 125px; }

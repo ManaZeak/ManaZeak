@@ -75,7 +75,6 @@ ListView.prototype = {
 
 
     addTracks: function(tracks) {
-        console.log(tracks);
         for (var i = 0; i < tracks.length ;++i) {
             this.entries.push(new ListViewEntry(tracks[i], this.listView));
         }

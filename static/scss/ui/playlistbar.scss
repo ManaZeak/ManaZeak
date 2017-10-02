@@ -1,0 +1,16 @@
+#playlistBar {
+    width: 100%;
+    position: absolute;
+    height: 40px;
+    text-align: center;
+
+    p {
+        display: inline-block;
+        margin: 0;
+        line-height: 40px;
+    }
+
+    p:hover {
+        border-bottom: solid 3px blue;
+    }
+}

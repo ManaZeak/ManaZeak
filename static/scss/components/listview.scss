@@ -2,8 +2,8 @@
 /* listview */
 #listView {
     width: 100%;
-    height: 100%;
-    top: 0;
+    height: calc(100% - 40px);
+    top: 40px;
     position: absolute;
     padding: 0 10%;
     overflow-y: auto;
@@ -19,6 +19,7 @@
     line-height: 30px;
     font-size: 0.9em;
     text-align: center;
+    font-weight: bold;
 }
 
 .trackContainer {
@@ -46,6 +47,7 @@
 
 .col-duration {
     width: 70px;
+    text-align: right;
 }
 
 .col-title {
@@ -65,7 +67,7 @@
 }
 
 .col-album {
-    width: 175px;
+    width: 160px;
 }
 
 .col-genre {

@@ -80,7 +80,8 @@ App.prototype = {
                 "ajax/getPlaylistTracks/",
                 this.cookies,
                 JSON.stringify({
-                    ID: playlists.ID[0]
+                    ID: playlists.ID[0],
+                    SAVE: false
                 }),
                 function(response) {
                     // TODO : store playlist and list view in App object
