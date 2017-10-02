@@ -1,3 +1,6 @@
+"use strict";
+
+
 function precisionRound(value, precision) {
     var multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
@@ -44,13 +47,37 @@ function getCookies() {
 }
 
 
+function getById(string) {
+    return document.getElementById(string);
+}
+
+
+function getRequest(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callback(this.responseText);
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+
+function mkElem(type) {
+    return document.createElement(type);
+}
+
+
 function JSONParsedGetRequest(url, http, callback) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (http) { callback(this.responseText); }
-            else       { callback(JSON.parse(this.responseText)); }
+            else      { callback(JSON.parse(this.responseText)); }
         }
     };
 

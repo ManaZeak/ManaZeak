@@ -1,4 +1,24 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  App class - ManaZeak main class, orchestrate all the front                         *
+ *                                                                                     *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var App = function() {
+
+    // App internal attributes
+    this.volumeLockId = -1;
+    this.isVolumeLocked = false;
+    this.cookies = getCookies();
+    // Objects
+    this.player      = new Player();
+    this.progressBar = new ProgressBar();
+    this.volumeBar   = new VolumeBar();
+    this.queue       = new Queue();
+    this.userMenu    = new UserMenu();
+    this.playlists   = [];
+    this.listsView   = [];
+
+
     // UI
     this.ui = {
         play: {
@@ -33,70 +53,48 @@ var App = function() {
             button:    document.getElementById("userExpander")
         }
     };
-
-    // Objects
-    this.player      = new Player();
-    this.progressBar = new ProgressBar();
-    this.volumeBar   = new VolumeBar();
-    this.queue       = new Queue();
-    this.menu        = new Menu();
-
-    // IDs
-    this.volumeLockId = -1;
-
-    // Flags
-    this.isVolumeLocked = false;
-
-    // Cookies
-    this.cookies = getCookies();
-
-    this.init();
-
-    /*
-        TODO: addVisibilityLock in Utils
-    */
 };
 
 App.prototype = {
 
     init: function() {
-        this.keyListener(); // Loading shortcuts
-        this.eventListener(); // Loading events
-
-        // Getting user playlists
-        var xmlhttp = new XMLHttpRequest();
         var that = this;
 
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                that.start(JSON.parse(this.responseText));
+        this._keyListener();   // Loading shortcuts
+        this._eventListener(); // Loading events
+        JSONParsedGetRequest( // Loading playlists
+            "ajax/getPlaylists/",
+            false,
+            function(response) {
+                that._appStart(response);
             }
-        };
-
-        xmlhttp.open("GET", "ajax/getPlaylists/", true);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send();
+        );
     },
 
 
-    start: function(playlists) {
-        console.log(playlists);
-        if (playlists.RESULT === 0) {
-            var n = new Playlist(true, this.cookies);
-        } else {
-            var that = this;
+    _appStart: function(playlists) {
+        var that = this;
 
+        if (playlists.RESULT !== 0) { // If user already have playlist(s)
             JSONParsedPostRequest(
                 "ajax/getPlaylistTracks/",
                 this.cookies,
                 JSON.stringify({
                     ID: playlists.ID[0]
                 }),
-                function(responseText) {
-                    var n = new Playlist(false, that.cookies, responseText);
-//                    var tmp = new ListView(this.tracks);
+                function(response) {
+                    // TODO : store playlist and list view in App object
+                    // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
+                    that.playlists.push(new Playlist(playlists.ID, false, that.cookies, response, undefined));
+                    that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                    //console.log(that.playlists[0].getTracks());
                 }
             );
+        } else { // User first connection to the app
+            this.playlists.push(new Playlist(0, true, this.cookies, undefined, function() {
+                that.listsView.push(new ListView(that.playlists[0].getTracks()));
+
+            }));
         }
     },
 
@@ -107,9 +105,7 @@ App.prototype = {
             this.progressBar.moveProgress(event, this.player.getPlayer());
             this.progressBar.addVisibilityLock();
             this.progressBar.timecodeProgressHover(event, this.player.getPlayer());
-        }
-
-        else if (this.progressBar.getIsMouseOver()) {
+        } else if (this.progressBar.getIsMouseOver()) {
             this.progressBar.timecodeProgressHover(event, this.player.getPlayer());
         }
 
@@ -130,6 +126,7 @@ App.prototype = {
             this.progressBar.moveProgress(event, this.player.getPlayer());
             this.player.mute();
         }
+
         if (!this.volumeBar.getIsDragging() &&
             (event.target.id === "volume" || event.target.id === "volumeBar" || event.target.id === "volumeThumb")) {
             this.volumeBar.setIsDragging(true);
@@ -149,6 +146,7 @@ App.prototype = {
             this.progressBar.setIsDragging(false);
             this.player.unmute();
         }
+
         if (this.volumeBar.getIsDragging()) {
             this.volumeBar.setIsDragging(false);
             this.volumeBar.toggleVisibilityLock();
@@ -225,12 +223,12 @@ App.prototype = {
 
     volumeUp: function(event) {
         this.volumeBar.addVisibilityLock();
+
         if (!this.isVolumeLocked) { // TODO : put bool in volumeBar
             this.isVolumeLocked = true;
         }
 
         this.player.volumeUp(event.ctrlKey, this.volumeBar);
-
         this.volumeBar.setVolume(this.player.getVolume() * 100);
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
@@ -243,7 +241,6 @@ App.prototype = {
         }
 
         this.player.volumeDown(event.ctrlKey, this.volumeBar);
-
         this.volumeBar.setVolume(this.player.getVolume() * 100);
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
@@ -267,8 +264,8 @@ App.prototype = {
     },
 
 
-    toggleMenu: function() {
-        this.menu.toggleVisibilityLock();
+    toggleUserMenu: function() {
+        this.userMenu.toggleVisibilityLock();
     },
 
 
@@ -277,7 +274,7 @@ App.prototype = {
     },
 
 
-    keyListener: function() {
+    _keyListener: function() {
         var that = this;
 
         // Key pressed event
@@ -325,7 +322,7 @@ App.prototype = {
     },
 
 
-    eventListener: function() {
+    _eventListener: function() {
         var that = this;
         // Button event listeners
         this.ui.play.button.addEventListener("click", this.togglePlay.bind(this));
@@ -335,7 +332,7 @@ App.prototype = {
         this.ui.next.button.addEventListener("click", this.next.bind(this));
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
         this.ui.queueExpander.button.addEventListener("click", this.toggleQueue.bind(this));
-        this.ui.userExpander.button.addEventListener("click", this.toggleMenu.bind(this));
+        this.ui.userExpander.button.addEventListener("click", this.toggleUserMenu.bind(this));
 
         this.player.getPlayer().addEventListener('loadedmetadata', function() {
             that.progressBar.init(that.player.getPlayer()); // Initialize progressBar

@@ -2628,29 +2628,34 @@ $footerHeight:  ($modalHeight / 6);
   -moz-user-select: none;
   /* Firefox */ }
 
-.title {
-  width: 25%;
+.field {
   display: inline-block; }
 
-.artist {
-  width: 20%;
-  display: inline-block; }
+[class*='col-'] {
+  float: left;
+  min-height: 1px;
+  width: 16.66%; }
 
-.composer {
-  width: 20%;
-  display: inline-block; }
+.col-duration {
+  width: 5%; }
 
-.album {
-  width: 20%;
-  display: inline-block; }
+.col-title {
+  width: 20%; }
 
-.genre {
-  width: 12.5%;
-  display: inline-block; }
+.col-artist {
+  width: 20%; }
 
-.year {
+.col-composer {
+  width: 20%; }
+
+.col-album {
+  width: 20%; }
+
+.col-genre {
+  width: 12.5%; }
+
+.col-year {
   width: 2.5%;
-  display: inline-block;
   text-align: right; }
 
 .resize {
@@ -2681,12 +2686,18 @@ $footerHeight:  ($modalHeight / 6);
     position: absolute;
     top: 20px;
     right: 0;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: auto;
     background-color: coral;
+    z-index: 1;
     opacity: 0;
     transition: visibility 0s 0.3s, opacity 0.3s ease;
     visibility: hidden; }
+    #topBar #menu .menuEntry {
+      height: 2em;
+      line-height: 2em;
+      padding-left: 15px;
+      cursor: pointer; }
   #topBar .menuLocked {
     opacity: 1 !important;
     transition: opacity 0.3s ease !important;
