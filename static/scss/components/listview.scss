@@ -25,34 +25,46 @@
     -moz-user-select: none;     /* Firefox */
 }
 
-.title {
-    width: 25%;
+.field {
     display: inline-block;
 }
 
-.artist {
+.duration {
+
+}
+
+[class*='col-'] {
+    float: left;
+    min-height: 1px;
+    width: 16.66%;
+}
+
+.col-duration {
+    width: 5%;
+}
+
+.col-title {
     width: 20%;
-    display: inline-block;
 }
 
-.composer {
+.col-artist {
     width: 20%;
-    display: inline-block;
 }
 
-.album {
+.col-composer {
     width: 20%;
-    display: inline-block;
 }
 
-.genre {
+.col-album {
+    width: 20%;
+}
+
+.col-genre {
     width: 12.5%;
-    display: inline-block;
 }
 
-.year {
+.col-year {
     width: 2.5%;
-    display: inline-block;
     text-align: right;
 }
 
