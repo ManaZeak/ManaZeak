@@ -174,6 +174,7 @@ def loadTracksFromPlaylist(request):
         try:
             playlist = Playlist.objects.get(id=response['ID'])
             tmp = exportPlaylistToJson(playlist)
+            print(tmp)
 
             return HttpResponse(tmp)
         except AttributeError:
