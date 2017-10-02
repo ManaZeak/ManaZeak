@@ -47,6 +47,11 @@ function getCookies() {
 }
 
 
+function getByClass(string) {
+    return document.getElementsByClassName(string);
+}
+
+
 function getById(string) {
     return document.getElementById(string);
 }
