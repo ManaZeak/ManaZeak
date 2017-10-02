@@ -2372,6 +2372,7 @@ $footerHeight:  ($modalHeight / 6);
   #playlistBar p {
     display: inline-block;
     margin: 0;
+    padding: 0 15px;
     line-height: 40px; }
   #playlistBar p:hover {
     border-bottom: solid 3px blue; }
