@@ -8,6 +8,9 @@
     padding: 0 10%;
     overflow-y: auto;
     box-sizing: border-box;
+
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
 }
 
 .columnHeader {
@@ -15,9 +18,7 @@
     height: 30px;
     line-height: 30px;
     font-size: 0.9em;
-
-    -webkit-user-select: none;  /* Chrome/Safari */
-    -moz-user-select: none;     /* Firefox */
+    text-align: center;
 }
 
 .trackContainer {
@@ -26,18 +27,16 @@
     line-height: 1.3em;
     font-size: 0.85em;
     cursor: pointer;
-
-    -webkit-user-select: none;  /* Chrome/Safari */
-    -moz-user-select: none;     /* Firefox */
+    text-align: center;
 }
 
 
 [class*='col-'] {
-    float: left;
     overflow: hidden;
     text-overflow: ellipsis;
     min-height: 1px;
     min-width: 1%;
+    text-align: left;
     padding-left: 5px;
     padding-right: 5px;
     box-sizing: border-box;
@@ -46,42 +45,38 @@
 }
 
 .col-duration {
-    width: 5%;
-}
-
-.cur-duration {
-    left: 5%;
+    width: 70px;
 }
 
 .col-title {
-    width: 15%;
+    width: 300px;
 }
 
 .col-artist {
-    width: 15%;
+    width: 250px;
 }
 
 .col-composer {
-    width: 15%;
+    width: 250px;
 }
 
 .col-performer {
-    width: 15%;
+    width: 250px;
 }
 
 .col-album {
-    width: 15%;
+    width: 175px;
 }
 
 .col-genre {
-    width: 12.5%;
+    width: 125px;
 }
 
 .col-bitRate {
-    width: 5%;
+    width: 75px;
 }
 
 .col-year {
-    width: 2.5%;
+    width: 40px;
     text-align: right;
 }
