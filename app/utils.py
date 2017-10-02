@@ -1,17 +1,15 @@
 import os
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from mutagen.mp3 import MP3
 
 from app.controller import addTrackMP3, CRC32_from_file
 from app.models import FileType, Track
 
 
 # Render class for serving modal to client
-class ScanModal (TemplateView):
+class ScanModal(TemplateView):
     template_name = 'utils/modal.html'
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
@@ -19,113 +17,90 @@ class ScanModal (TemplateView):
         return super(ScanModal, self).dispatch(*args, **kwargs)
 
 
+def checkIfNotNone(trackAttribute):
+    if trackAttribute is not None:
+        return trackAttribute
+    else:
+        return "null"
+
+
+def checkIfNotNoneNumber(trackAttribute):
+    if trackAttribute is not None:
+        return str(trackAttribute)
+    else:
+        return "\"null\""
+
+
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
     for track in tracks:
+        print(track.title)
         finalData += "{ \"ID\":"
         finalData += str(track.id)
         finalData += ", \"TITLE\":\""
-        if track.title is not None:
-            finalData += track.title
-        else:
-            finalData += " "
+        finalData += checkIfNotNone(track.title)
         finalData += "\", \"YEAR\":"
-        if track.year is not None:
-            finalData += str(track.year)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.year)
         finalData += ", \"COMPOSER\":\""
-        if track.composer is not None:
-            finalData += track.composer
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNone(track.composer)
         finalData += "\", \"PERFORMER\":\""
-        if track.performer is not None:
-            finalData += track.performer
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNone(track.performer)
         finalData += "\", \"TRACK_NUMBER\":"
-        if track.number is not None:
-            finalData += str(track.number)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.number)
         finalData += ", \"BPM\":"
-        if track.bpm is not None:
-            finalData += str(track.bpm)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.bpm)
         finalData += ", \"LYRICS\":\""
-        if track.lyrics is not None:
-            finalData += track.lyrics
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNone(track.lyrics)
         finalData += "\", \"COMMENT\":\""
-        if track.comment is not None:
-            finalData += track.comment
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNone(track.comment)
         finalData += "\", \"BITRATE\":"
-        finalData += str(track.bitRate)
+        finalData += checkIfNotNoneNumber(track.bitRate)
         finalData += ", \"SAMPLERATE\":"
-        finalData += str(track.sampleRate)
+        finalData += checkIfNotNoneNumber(track.sampleRate)
         finalData += ", \"DURATION\":"
-        finalData += str(track.duration)
+        finalData += checkIfNotNoneNumber(track.duration)
         finalData += ", \"GENRE\":\""
-        if track.genre.name is not None:
-            finalData += track.genre.name
+        if track.genre is not None:
+            finalData += checkIfNotNone(track.genre.name)
         else:
-            finalData += "-1"
+            finalData += "null"
         finalData += "\", \"FILE_TYPE\":\""
-        finalData += track.fileType.name
+        finalData += checkIfNotNone(track.fileType.name)
         finalData += "\", \"DISC_NUMBER\":"
-        if track.discNumber is not None:
-            finalData += str(track.discNumber)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.discNumber)
         finalData += ", \"SIZE\":"
-        if track.size is not None:
-            finalData += str(track.size)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.size)
         finalData += ", \"LAST_MODIFIED\":\""
-        finalData += str(track.lastModified)
+        finalData += checkIfNotNoneNumber(track.lastModified)
         finalData += "\", \"ARTISTS\":["
         for artist in track.artist.all():
             finalData += "{\"ID\":"
             finalData += str(artist.id)
             finalData += ", \"NAME\":\""
-            finalData += artist.name
+            finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
         finalData = finalData[:-1]
         finalData += "], \"ALBUM\": { \"ID\":"
-        finalData += str(track.album.id)
+        finalData += checkIfNotNoneNumber(track.album.id)
         finalData += ", \"TITLE\":\""
-        if track.album.title is not None:
-            finalData += track.album.title
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNone(track.album.title)
         finalData += "\", \"TOTAL_DISC\":"
-        if track.album.totalDisc is not None:
-            finalData += str(track.album.totalDisc)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.album.totalDisc)
         finalData += ", \"TOTAL_TRACK\":"
-        if track.album.totalTrack is not None:
-            finalData += str(track.album.totalTrack)
-        else:
-            finalData += "-1"
+        finalData += checkIfNotNoneNumber(track.album.totalTrack)
         finalData += ", \"ARTIST\":["
         for artist in track.album.artist.all():
             finalData += "{\"ID\":"
-            finalData += str(artist.id)
+            finalData += checkIfNotNoneNumber(artist.id)
             finalData += ", \"NAME\":\""
-            finalData += artist.name
+            finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
         finalData = finalData[:-1]
         finalData += "]}},"
     finalData = finalData[:-1]
     finalData += "]"
+    print(finalData)
     return finalData
 
 
@@ -169,4 +144,3 @@ def rescanLibrary(library):
     # Removed the tracks that haven't been scanned
     removedTracks = playlist.track.filter(scanned=False).delete()
     return [replacedTitles, removedTracks]
-
