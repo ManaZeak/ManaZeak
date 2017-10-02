@@ -52,6 +52,7 @@ class Playlist(models.Model):
     user = models.ForeignKey(User)
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
+    jsonInfo = models.CharField(max_length=10000000, null=True)
 
 
 class Library(models.Model):

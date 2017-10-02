@@ -161,7 +161,14 @@ def loadTracksFromPlaylist(request):
         response = json.loads(request.body)
         try:
             playlist = Playlist.objects.get(id=response['ID'])
-            tmp = exportPlaylistToJson(playlist)
+            if 'SAVE' in response:
+                if response['SAVE']:
+                    tmp = exportPlaylistToJson(playlist)
+                    playlist.jsonInfo = tmp
+                    playlist.save()
+                else:
+                    tmp = playlist.jsonInfo
+            print(tmp)
 
             return HttpResponse(tmp)
         except AttributeError:
