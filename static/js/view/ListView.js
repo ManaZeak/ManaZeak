@@ -110,13 +110,13 @@ ListView.prototype = {
             this.listView.removeChild(this.entries[i].entry)
         }
 
-        this.entries = [];
+        this.entries = []; // To the GC, and beyond !
     },
 
 
-    sortBy: function(attribute, ascending) {
+    sortBy: function(argument, ascending) {
         this.removeEntries();
-        this.tracks.sort(sortBy(attribute, ascending));
+        this.tracks.sort(sortObjectArrayBy(argument, ascending));
         this.addEntries(this.tracks);
     },
 
@@ -128,53 +128,37 @@ ListView.prototype = {
             that.sort.isDurationAsc = !that.sort.isDurationAsc;
             that.sortBy("duration", that.sort.isDurationAsc);
         });
-
         this.header.title.addEventListener("click", function() {
             that.sort.isTitleAsc = !that.sort.isTitleAsc;
             that.sortBy("title", that.sort.isTitleAsc);
         });
-
         this.header.artist.addEventListener("click", function() {
             that.sort.isArtistAsc = !that.sort.isArtistAsc;
             that.sortBy("artist", that.sort.isArtistAsc);
         });
-
         this.header.composer.addEventListener("click", function() {
             that.sort.isComposerAsc = !that.sort.isComposerAsc;
             that.sortBy("composer", that.sort.isComposerAsc);
         });
-
         this.header.performer.addEventListener("click", function() {
             that.sort.isPerformerAsc = !that.sort.isPerformerAsc;
             that.sortBy("performer", that.sort.isPerformerAsc);
         });
-
         this.header.album.addEventListener("click", function() {
             that.sort.isAlbumAsc = !that.sort.isAlbumAsc;
             that.sortBy("album", that.sort.isAlbumAsc);
         });
-
         this.header.genre.addEventListener("click", function() {
             that.sort.isGenreAsc = !that.sort.isGenreAsc;
             that.sortBy("genre", that.sort.isGenreAsc);
         });
-
         this.header.bitRate.addEventListener("click", function() {
             that.sort.isBiteRateAsc = !that.sort.isBiteRateAsc;
             that.sortBy("bitRate", that.sort.isBiteRateAsc);
         });
-
         this.header.year.addEventListener("click", function() {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
         });
-
     }
 };
-
-/*
-        album: null,
-        genre: null,
-        bitRate: null,
-        year: null
- */
