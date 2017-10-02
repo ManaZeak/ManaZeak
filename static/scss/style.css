@@ -2636,7 +2636,8 @@ $footerHeight:  ($modalHeight / 6);
   line-height: 30px;
   font-size: 0.9em;
   text-align: center;
-  font-weight: bold; }
+  font-weight: bold;
+  cursor: pointer; }
 
 .trackContainer {
   width: 100%;

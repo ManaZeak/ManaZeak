@@ -94,7 +94,6 @@ App.prototype = {
         } else { // User first connection to the app
             this.playlists.push(new Playlist(0, true, this.cookies, undefined, function() {
                 that.listsView.push(new ListView(that.playlists[0].getTracks()));
-
             }));
         }
     },
@@ -168,6 +167,7 @@ App.prototype = {
 
     // Player controls
     togglePlay: function() {
+        this.listsView[0].sortBy();
         this.player.togglePlay(this.ui.play.image);
         this.progressBar.toggleRefreshInterval(this.player.getPlayer());
     },
