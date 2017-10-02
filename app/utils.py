@@ -81,21 +81,25 @@ def exportPlaylistToJson(playlist):
             finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
         finalData = finalData[:-1]
-        finalData += "], \"ALBUM\": { \"ID\":"
-        finalData += checkIfNotNoneNumber(track.album.id)
-        finalData += ", \"TITLE\":\""
-        finalData += checkIfNotNone(track.album.title)
-        finalData += "\", \"TOTAL_DISC\":"
-        finalData += checkIfNotNoneNumber(track.album.totalDisc)
-        finalData += ", \"TOTAL_TRACK\":"
-        finalData += checkIfNotNoneNumber(track.album.totalTrack)
-        finalData += ", \"ARTIST\":["
-        for artist in track.album.artist.all():
-            finalData += "{\"ID\":"
-            finalData += checkIfNotNoneNumber(artist.id)
-            finalData += ", \"NAME\":\""
-            finalData += checkIfNotNone(artist.name)
-            finalData += "\"},"
+        finalData += "], \"ALBUM\": { "
+        if track.album is not None:
+            finalData += "\"ID\":"
+            finalData += checkIfNotNoneNumber(track.album.id)
+            finalData += ", \"TITLE\":\""
+            finalData += checkIfNotNone(track.album.title)
+            finalData += "\", \"TOTAL_DISC\":"
+            finalData += checkIfNotNoneNumber(track.album.totalDisc)
+            finalData += ", \"TOTAL_TRACK\":"
+            finalData += checkIfNotNoneNumber(track.album.totalTrack)
+            finalData += ", \"ARTIST\":["
+            for artist in track.album.artist.all():
+                finalData += "{\"ID\":"
+                finalData += checkIfNotNoneNumber(artist.id)
+                finalData += ", \"NAME\":\""
+                finalData += checkIfNotNone(artist.name)
+                finalData += "\"},"
+        else:
+            finalData += "\"null\""
         finalData = finalData[:-1]
         finalData += "]}},"
     finalData = finalData[:-1]

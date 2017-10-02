@@ -60,24 +60,12 @@ def initialScan(request):
 
 def dropAllDB(request):
     if request.user.is_authenticated():
-        tracks = Track.objects.all()
-        artists = Artist.objects.all()
-        albums = Album.objects.all()
-        playlists = Playlist.objects.all()
-        libraries = Library.objects.all()
-        genres = Genre.objects.all()
-        for track in tracks:
-            track.delete()
-        for artist in artists:
-            artist.delete()
-        for album in albums:
-            album.delete()
-        for playlist in playlists:
-            playlist.delete()
-        for library in libraries:
-            library.delete()
-        for genre in genres:
-            genre.delete()
+        Track.objects.all().delete()
+        Artist.objects.all().delete()
+        Album.objects.all().delete()
+        Playlist.objects.all().delete()
+        Library.objects.all().delete()
+        Genre.objects.all().delete()
         data = {
             'DROPPED': "OK",
         }
@@ -214,10 +202,10 @@ def newLibrary(request):
         return JsonResponse(data)
 
 
-def changeMetaData (request):
+def changeMetaData(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        # TODO: test with a table and see if "for in" works, if dosen't work create while loop
+        # TODO: test with a table and see if "for in" works, if doesn't work create while loop
         if 'ID' in response:
             if Track.objects.filter(id=response['ID']).count() == 1:
                 track = Track.objects.get(id=response['ID'])
