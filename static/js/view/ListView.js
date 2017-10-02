@@ -30,36 +30,44 @@ ListView.prototype = {
         var columnBar = mkElem("div");
         columnBar.className = "columnHeader";
 
-        var duration    = mkElem("div");
-        var title    = mkElem("div");
-        var artist   = mkElem("div");
-        var composer = mkElem("div");
-        var album    = mkElem("div");
-        var genre    = mkElem("div");
-        var year     = mkElem("div");
+        var duration        = mkElem("div");
+        var title           = mkElem("div");
+        var artist          = mkElem("div");
+        var composer        = mkElem("div");
+        var performer       = mkElem("div");
+        var album           = mkElem("div");
+        var genre           = mkElem("div");
+        var bitRate         = mkElem("div");
+        var year            = mkElem("div");
 
-        duration.className    = "col-duration field";
-        title.className    = "col-title field";
-        artist.className   = "col-artist field";
-        composer.className = "col-composer field";
-        album.className    = "col-album field";
-        genre.className    = "col-genre field";
-        year.className     = "col-year field";
+        duration.className  = "col-duration";
+        title.className     = "col-title";
+        artist.className    = "col-artist";
+        composer.className  = "col-composer";
+        performer.className = "col-performer";
+        album.className     = "col-album";
+        genre.className     = "col-genre";
+        bitRate.className   = "col-bitRate";
+        year.className      = "col-year";
 
-        duration.innerHTML    = "Duration";
-        title.innerHTML    = "Title";
-        artist.innerHTML   = "Artist";
-        composer.innerHTML = "Composer";
-        album.innerHTML    = "Album";
-        genre.innerHTML    = "Genre";
-        year.innerHTML     = "Year";
+        duration.innerHTML  = "Duration";
+        title.innerHTML     = "Title";
+        artist.innerHTML    = "Artist";
+        composer.innerHTML  = "Composer";
+        performer.innerHTML = "Performer";
+        album.innerHTML     = "Album";
+        genre.innerHTML     = "Genre";
+        bitRate.innerHTML   = "BitRate";
+        year.innerHTML      = "Year";
 
         columnBar.appendChild(duration);
         columnBar.appendChild(title);
         columnBar.appendChild(artist);
         columnBar.appendChild(composer);
+        columnBar.appendChild(performer);
         columnBar.appendChild(album);
         columnBar.appendChild(genre);
+        columnBar.appendChild(bitRate);
         columnBar.appendChild(year);
 
         this.listView.appendChild(columnBar);
@@ -67,6 +75,7 @@ ListView.prototype = {
 
 
     addTracks: function(tracks) {
+        console.log(tracks);
         for (var i = 0; i < tracks.length ;++i) {
             this.entries.push(new ListViewEntry(tracks[i], this.listView));
         }
