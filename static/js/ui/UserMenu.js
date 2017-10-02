@@ -9,6 +9,8 @@ var UserMenu = function() {
     this.menuEntry = {
         logout: null
     };
+    this.outside = document.body;
+
     this.isVisible = false;
 
 
@@ -67,8 +69,16 @@ UserMenu.prototype = {
     },
 
 
+    clickOutside: function(e) {
+        if (!getById("userExpander").contains(e.target) && !getById("menu").contains(e.target)) {
+            this.removeVisibilityLock();
+        }
+    },
+
+
     _eventListener: function() {
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
+        this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     },
 
 
