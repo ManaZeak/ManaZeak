@@ -1,63 +1,83 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  ListView class - classical list view                                               *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ListView = function(tracks) {
     this.listView = null;
     this.tracks = tracks;
+    this.entries = [];
+
 
     this.init();
 };
 
+
 ListView.prototype = {
+
     init: function() {
-        this.listView = document.createElement("div");
+        this.listView = mkElem("div");
         this.listView.id ="listView";
 
-        this.initColumnBar();
+        this.initColumnHeader();
 
         this.addTracks(this.tracks);
-        document.getElementById("mainContainer").appendChild(this.listView);
+        getById("mainContainer").appendChild(this.listView);
     },
 
-    initColumnBar: function() {
-        var columnBar = document.createElement("div");
+
+    initColumnHeader: function() {
+        var columnBar = mkElem("div");
         columnBar.className = "columnHeader";
 
-        var title    = document.createElement("div");
-//        var titleResize    = document.createElement("div");
-        var artist   = document.createElement("div");
-        var composer = document.createElement("div");
-        var album    = document.createElement("div");
-        var genre    = document.createElement("div");
-        var year     = document.createElement("div");
+        var duration        = mkElem("div");
+        var title           = mkElem("div");
+        var artist          = mkElem("div");
+        var composer        = mkElem("div");
+        var performer       = mkElem("div");
+        var album           = mkElem("div");
+        var genre           = mkElem("div");
+        var bitRate         = mkElem("div");
+        var year            = mkElem("div");
 
-        title.className    = "title";
-//        titleResize.id    = "titleResize";
-//        titleResize.className    = "resize";
-        artist.className   = "artist";
-        composer.className = "composer";
-        album.className    = "album";
-        genre.className    = "genre";
-        year.className     = "year";
+        duration.className  = "col-duration";
+        title.className     = "col-title";
+        artist.className    = "col-artist";
+        composer.className  = "col-composer";
+        performer.className = "col-performer";
+        album.className     = "col-album";
+        genre.className     = "col-genre";
+        bitRate.className   = "col-bitRate";
+        year.className      = "col-year";
 
-        title.innerHTML    = "Title";
-        artist.innerHTML   = "Artist";
-        composer.innerHTML = "Composer";
-        album.innerHTML    = "Album";
-        genre.innerHTML    = "Genre";
-        year.innerHTML     = "Year";
+        duration.innerHTML  = "Duration";
+        title.innerHTML     = "Title";
+        artist.innerHTML    = "Artist";
+        composer.innerHTML  = "Composer";
+        performer.innerHTML = "Performer";
+        album.innerHTML     = "Album";
+        genre.innerHTML     = "Genre";
+        bitRate.innerHTML   = "BitRate";
+        year.innerHTML      = "Year";
 
+        columnBar.appendChild(duration);
         columnBar.appendChild(title);
-//        columnBar.appendChild(titleResize);
         columnBar.appendChild(artist);
         columnBar.appendChild(composer);
+        columnBar.appendChild(performer);
         columnBar.appendChild(album);
         columnBar.appendChild(genre);
+        columnBar.appendChild(bitRate);
         columnBar.appendChild(year);
 
         this.listView.appendChild(columnBar);
     },
 
+
     addTracks: function(tracks) {
+        console.log(tracks);
         for (var i = 0; i < tracks.length ;++i) {
-            tracks[i].newListViewEntry(this.listView);
+            this.entries.push(new ListViewEntry(tracks[i], this.listView));
         }
     }
 };
