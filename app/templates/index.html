@@ -24,11 +24,12 @@
         {% include 'components/topbar.html' %}
 
         <div id="mainContainer">
-            {#% include 'components/newlibrary.html' %#}
+            <div id="playlistBar">
+                <p>Playlist1</p>
+            </div>
         </div>
 
         {% include 'components/footbar.html' %}
-        {#% include 'utils/modal.html' %#}
 
         <audio id="audioPlayer">
             <source src="" type="audio/ogg">

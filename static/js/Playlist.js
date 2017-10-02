@@ -151,7 +151,6 @@ Playlist.prototype = {
                      // TODO : put href to view more (file list for ex)
                     new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
                 } else {
-                    that.scanModal.close();
                     that._getTracksFromServer(response.ID);
                 }
             }
@@ -166,10 +165,12 @@ Playlist.prototype = {
             "ajax/getPlaylistTracks/",
             this.cookies,
             JSON.stringify({
-                ID: id
+                ID: id,
+                SAVE: true
             }),
             function(response) {
                 that.rawTracks = response;
+                that.scanModal.close();
                 that._fillTracks(that.rawTracks);
             }
         );

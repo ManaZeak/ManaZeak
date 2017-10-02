@@ -35,7 +35,6 @@ def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
     for track in tracks:
-        print(track.title)
         finalData += "{ \"ID\":"
         finalData += str(track.id)
         finalData += ", \"TITLE\":\""
@@ -104,7 +103,7 @@ def exportPlaylistToJson(playlist):
         finalData += "]}},"
     finalData = finalData[:-1]
     finalData += "]"
-    print(finalData)
+
     return finalData
 
 
