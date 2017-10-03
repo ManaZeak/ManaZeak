@@ -5,6 +5,12 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ContextMenu = function() {
     this.contextMenu = null;
+    this.entries = {
+        editMD: null,
+        delete: null,
+        queue: null,
+        playlist: null
+    };
     this.outside = document.body;
     this.isVisible = false;
 
@@ -18,23 +24,26 @@ ContextMenu.prototype = {
     _init: function() {
         this.contextMenu = mkElem("div");
         this.contextMenu.id = "contextMenu";
+
+        this.entries.editMD = mkElem("p");
+        this.entries.delete = mkElem("p");
+        this.entries.queue = mkElem("p");
+        this.entries.playlist = mkElem("p");
+
+        this.entries.editMD.innerHTML = "Edit metadata";
+        this.entries.delete.innerHTML = "Delete track";
+        this.entries.queue.innerHTML = "Add to queue";
+        this.entries.playlist.innerHTML = "Add to playlist";
+
+        this.contextMenu.appendChild(this.entries.editMD);
+        this.contextMenu.appendChild(this.entries.delete);
+        this.contextMenu.appendChild(this.entries.queue);
+        this.contextMenu.appendChild(this.entries.playlist);
+
         this._eventListener();
+        this._keyListener();
 
         document.body.appendChild(this.contextMenu);
-    },
-
-
-    addVisibilityLock: function() {
-        if (!this.contextMenu.className.match(/(?:^|\s)contextMenuLocked(?!\S)/)) {
-            this.contextMenu.className += "contextMenuLocked";
-        }
-    },
-
-
-    removeVisibilityLock: function() {
-        if (this.contextMenu.className.match(/(?:^|\s)contextMenuLocked(?!\S)/)) {
-            this.contextMenu.className = this.contextMenu.className.replace(/(?:^|\s)contextMenuLocked(?!\S)/g, '');
-        }
     },
 
 
@@ -43,10 +52,10 @@ ContextMenu.prototype = {
             this.isVisible = !this.isVisible;
             this.contextMenu.style.top  = event.pageY + "px";
             this.contextMenu.style.left = event.pageX + "px";
-            this.addVisibilityLock();
+            addVisibilityLock(this.contextMenu, "contextMenuLocked");
         } else {
             this.isVisible = !this.isVisible;
-            this.removeVisibilityLock();
+            removeVisibilityLock(this.contextMenu, "contextMenuLocked");
         }
     },
 
@@ -54,21 +63,38 @@ ContextMenu.prototype = {
     clickOutside: function(event) {
         if (!getById("contextMenu").contains(event.target) && this.isVisible) {
             this.isVisible = !this.isVisible;
-            this.removeVisibilityLock();
+            removeVisibilityLock(this.contextMenu, "contextMenuLocked");
         }
     },
 
 
-    moveContext: function(event) {
-        this.contextMenu.style.top  = event.pageY + "px";
-        this.contextMenu.style.left = event.pageX + "px";
+    tmp: function() {
+        console.log("Deuz");
     },
 
 
     _eventListener: function() {
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
+
+        //this.entries.editMD.addEventListener("click", this.tmp.bind(this));
     },
 
 
-    getIsVisible: function() { return this.isVisible; }
+    _keyListener: function() {
+        var that = this;
+
+        // Key pressed event
+        document.addEventListener("keydown", function(event) {
+            switch (event.keyCode) {
+                case 27: // Esc
+                    if (that.isVisible) { that.toggleVisibilityLock(); }
+                    break;
+                default:
+                    break;
+            }
+        });
+    },
+
+
+    getContextMenu: function() { return this.contextMenu; }
 };

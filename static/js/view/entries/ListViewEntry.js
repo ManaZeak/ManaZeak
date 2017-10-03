@@ -6,7 +6,7 @@
 var ListViewEntry = function(track, listView) {
     this.entry = mkElem("div");
 
-    this.entry.id = track.id.track;
+    this.entry.id = "track" + track.id.track;
     this.entry.className = "trackContainer";
 
     var duration        = mkElem("div");
@@ -49,14 +49,12 @@ var ListViewEntry = function(track, listView) {
     this.entry.appendChild(bitRate);
     this.entry.appendChild(year);
 
-    listView.appendChild(this.entry);
-
-
     // ListViewEntry internal attributes
-    this.x = 0;
-    this.y = 0;
+    this.boundingRect = null;
     this.singleClickEvent = this.entry.addEventListener("click", this.toggleSelected.bind(this));
     this.doubleClickEvent = this.entry.addEventListener("dblClick", this.toggleSelected.bind(this));
+
+    listView.appendChild(this.entry);
 };
 
 
@@ -70,5 +68,10 @@ ListViewEntry.prototype = {
             this.isSelected = !this.isSelected;
             this.entry.style.background = "red";
         }
+    },
+
+
+    computePosition: function() {
+        this.boundingRect = this.entry.getBoundingClientRect();
     }
 };
