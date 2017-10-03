@@ -211,3 +211,22 @@ def newLibrary(request):
             'ID': library.id,
         }
         return JsonResponse(data)
+
+
+def changeMetaData (request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        # TODO: test with a table and see if "for in" works, if dosen't work create while loop
+        if 'ID' in response:
+            if Track.objects.filter(id=response['ID']).count() == 1:
+                track = Track.objects.get(id=response['ID'])
+                if 'TITLE' in response:
+                    track.title = response['TITLE']
+            else:
+                data = {
+                    'DONE': 'FAIL',
+                    'ERROR': 'DB error',
+                }
+                return JsonResponse(data)
+        else:
+            badFormatError()

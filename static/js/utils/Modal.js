@@ -1,13 +1,15 @@
-"use strict";
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Modal class - modals to use in various case in ManaZeak                            *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Modal = function() {
-
     this._init();
 };
 
+
 Modal.prototype = {
 
-    // Create modal skeleton
     _init: function() {
         this.open();
     },
