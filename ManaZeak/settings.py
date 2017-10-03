@@ -127,14 +127,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT="/ManaZeak/library"
+#STATIC_ROOT="/ManaZeak/library"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static/","library/"),
+    os.path.join(BASE_DIR, "static/"),
 ]
 
 #MEDIA_ROOT = os.path.join(BASE_DIR, "library/")
-MEDIA_URL = '/library/'
+#MEDIA_URL = '/library/'
 
 
 
