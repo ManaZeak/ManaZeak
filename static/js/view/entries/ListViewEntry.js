@@ -59,12 +59,9 @@ var ListViewEntry = function(track, listView) {
 
 ListViewEntry.prototype = {
     toggleSelected: function() {
-        // TODO : console.log(this.ui.entry.getBoundingClientRect());
         if (this.isSelected) {
-            this.isSelected = !this.isSelected;
             this.entry.style.background = "none";
         } else {
-            this.isSelected = !this.isSelected;
             this.entry.style.background = "red";
         }
     },

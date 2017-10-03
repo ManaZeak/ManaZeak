@@ -8,6 +8,7 @@ var ListView = function(tracks) {
     this.tracks = tracks;
     this.entries = [];
     this.entriesListeners = [];
+    this.entriesSelected = [];
 
     this.contextMenu = new ContextMenu();
 
@@ -133,6 +134,15 @@ ListView.prototype = {
 
     toggleContextMenu: function(event) {
         var targetIndex = this.collision(event);
+
+        if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
+            // TODO : push entrie to entriesSelected
+            this.unselectAll();
+            this.entries[targetIndex].toggleSelected();
+            this.entries[targetIndex].setIsSelected(true);
+        } else {
+
+        }
         //console.log(targetIndex);
 // update contextMenu selection attriutes
 
@@ -149,6 +159,8 @@ ListView.prototype = {
                 return i;
             }
         }
+
+        return -1;
     },
 
 
@@ -167,11 +179,55 @@ ListView.prototype = {
     trackClicked: function(event) {
         var targetIndex = this.collision(event);
 
-        if (!this.entries[targetIndex - 1].getIsSelected()) {
-            this.entries[targetIndex - 1].setIsSelected(true);
+        if (this.entriesSelected.length === 0) {
+            this.entries[targetIndex].toggleSelected();
+            this.entries[targetIndex].setIsSelected(true);
+            this.entriesSelected.push(this.entries[targetIndex]);
         }
-        console.log(targetIndex);
+
+        else if (event.ctrlKey) {
+            if (!this.entries[targetIndex].getIsSelected()) {
+                this.entries[targetIndex].toggleSelected();
+                this.entries[targetIndex].setIsSelected(true);
+                this.entriesSelected.push(this.entries[targetIndex]);
+            }
+
+            else {
+                this.entries[targetIndex].toggleSelected();
+                this.entries[targetIndex].setIsSelected(false);
+
+                for (var i = 0; i < this.entriesSelected.length ;++i) {
+                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
+                        this.entriesSelected.splice(i, 1);
+                    }
+                }
+            }
+        }
+
+        else {
+            this.unselectAll();
+            // TODO : push entrie to entriesSelected
+
+            if (!this.entries[targetIndex].getIsSelected()) {
+                this.entries[targetIndex].toggleSelected();
+                this.entries[targetIndex].setIsSelected(true);
+                this.entriesSelected.push(this.entries[targetIndex]);
+            }
+        }
     },
+
+
+    unselectAll: function() {
+        this.entriesSelected = [];
+
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (this.entries[i].getIsSelected()) {
+                this.entries[i].toggleSelected();
+                this.entries[i].setIsSelected(false);
+            }
+        }
+    },
+
 
 
     _eventListener: function() {
