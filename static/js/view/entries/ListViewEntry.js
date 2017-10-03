@@ -51,8 +51,7 @@ var ListViewEntry = function(track, listView) {
 
     // ListViewEntry internal attributes
     this.boundingRect = null;
-    this.singleClickEvent = this.entry.addEventListener("click", this.toggleSelected.bind(this));
-    this.doubleClickEvent = this.entry.addEventListener("dblClick", this.toggleSelected.bind(this));
+    this.isSelected = false;
 
     listView.appendChild(this.entry);
 };
@@ -76,5 +75,8 @@ ListViewEntry.prototype = {
     },
 
 
-    getEntry: function() { return this.entry; }
+    getEntry: function() { return this.entry; },
+    getIsSelected: function() { return this.isSelected; },
+
+    setIsSelected: function(isSelected) { this.isSelected = isSelected }
 };

@@ -107,13 +107,9 @@ ListView.prototype = {
 
         for (var i = 0; i < tracks.length ;++i) {
             var id = this.entries.push(new ListViewEntry(tracks[i], this.listView));
-            this.entriesListeners.push(this.entries[id - 1].getEntry().addEventListener("click", that.tmp.bind(that)));
+            // TODO : Handle dble click
+            this.entriesListeners.push(this.entries[id - 1].getEntry().addEventListener("click", that.trackClicked.bind(that)));
         }
-    },
-
-
-    tmp: function(event) {
-        console.log(event)
     },
 
 
@@ -166,6 +162,17 @@ ListView.prototype = {
         console.log("First")
     },
 */
+
+
+    trackClicked: function(event) {
+        var targetIndex = this.collision(event);
+
+        if (!this.entries[targetIndex - 1].getIsSelected()) {
+            this.entries[targetIndex - 1].setIsSelected(true);
+        }
+        console.log(targetIndex);
+    },
+
 
     _eventListener: function() {
         var that = this;
