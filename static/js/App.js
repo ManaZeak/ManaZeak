@@ -169,7 +169,6 @@ App.prototype = {
 
     // Player controls
     togglePlay: function() {
-        this.listsView[0].sortBy();
         this.player.togglePlay(this.ui.play.image);
         this.progressBar.toggleRefreshInterval(this.player.getPlayer());
     },

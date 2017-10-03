@@ -7,6 +7,7 @@ var ListView = function(tracks) {
     this.listView = null;
     this.tracks = tracks;
     this.entries = [];
+    this.entriesListeners = [];
 
     this.contextMenu = new ContextMenu();
 
@@ -102,9 +103,17 @@ ListView.prototype = {
 
 
     addEntries: function(tracks) {
+        var that = this;
+
         for (var i = 0; i < tracks.length ;++i) {
-            this.entries.push(new ListViewEntry(tracks[i], this.listView));
+            var id = this.entries.push(new ListViewEntry(tracks[i], this.listView));
+            this.entriesListeners.push(this.entries[id - 1].getEntry().addEventListener("click", that.tmp.bind(that)));
         }
+    },
+
+
+    tmp: function(event) {
+        console.log(event)
     },
 
 
@@ -113,7 +122,9 @@ ListView.prototype = {
             this.listView.removeChild(this.entries[i].entry)
         }
 
-        this.entries = []; // To the GC, and beyond !
+        // To the GC, and beyond
+        this.entries = [];
+        this.entriesListeners = [];
     },
 
 
@@ -125,10 +136,23 @@ ListView.prototype = {
 
 
     toggleContextMenu: function(event) {
-        console.log(event.pageY);
-        console.log(this.entries[0].boundingRect);
+        var targetIndex = this.collision(event);
+        //console.log(targetIndex);
+// update contextMenu selection attriutes
 
         this.contextMenu.toggleVisibilityLock(event);
+    },
+
+
+    collision: function(event) {
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (event.pageX > this.entries[i].boundingRect.x
+             && event.pageX < this.entries[i].boundingRect.x + this.entries[i].boundingRect.width
+             && event.pageY > this.entries[i].boundingRect.y
+             && event.pageY < this.entries[i].boundingRect.y + this.entries[i].boundingRect.height) {
+                return i;
+            }
+        }
     },
 
 
