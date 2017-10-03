@@ -2535,6 +2535,8 @@ $footerHeight:  ($modalHeight / 6);
     margin: 0;
     padding: 5px 15px;
     cursor: pointer; }
+  #contextMenu p:hover {
+    background-color: khaki; }
 
 .contextMenuLocked {
   opacity: 1 !important;

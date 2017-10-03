@@ -73,5 +73,8 @@ ListViewEntry.prototype = {
 
     computePosition: function() {
         this.boundingRect = this.entry.getBoundingClientRect();
-    }
+    },
+
+
+    getEntry: function() { return this.entry; }
 };
