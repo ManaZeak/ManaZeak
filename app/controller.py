@@ -2,13 +2,14 @@ import hashlib
 import json
 import math
 import os
+import threading
 
-import binascii
 from django.http.response import JsonResponse
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
 from app.models import Track, Artist, Album, FileType, Genre
+from app.utils import exportPlaylistToJson, CRCGenerator
 
 
 # Return a bad format error
@@ -28,10 +29,12 @@ def scanLibrary(library, playlist, convert):
         os.makedirs(coverPath)
 
     mp3ID = FileType.objects.get(name="mp3")
+    mp3Files = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                addTrackMP3(root, file, playlist, convert, mp3ID, coverPath)
+                # addTrackMP3(root, file, playlist, convert, mp3ID, coverPath)
+                mp3Files.append(root + "/" + file)
 
             elif file.lower().endswith('.ogg'):
                 # TODO: implement
@@ -48,8 +51,27 @@ def scanLibrary(library, playlist, convert):
             else:
                 failedItems.append(file)
 
+    # TODO: if trackPath is null, return an error
+    addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    trackPath = splitTable(mp3Files)
+    threads = []
+    # saving all the library to base
+    for tracks in trackPath:
+        threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
     library.playlist = playlist
     library.save()
+    tracks = playlist.track.all()
+    splicedTracks = splitTable(tracks)
+    threads = []
+    # generating CRC checksum
+    for tracks in splicedTracks:
+        threads.append(CRCGenerator(tracks))
+    for thread in threads:
+        thread.start()
     data = {
         'DONE': 'OK',
         'ID': playlist.id,
@@ -58,22 +80,67 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
-def CRC32_from_file(filename):
-    buf = open(filename, 'rb').read()
-    buf = (binascii.crc32(buf) & 0xFFFFFFFF)
-    return "%08X" % buf
+def addAllGenreAndAlbumAndArtistsMP3(filePaths):
+    for filePath in filePaths:
+        audioTag = ID3(filePath)
+        # --- Adding genre to DB ---
+        if 'TCON' in audioTag:
+            genreName = audioTag['TCON'].text[0]
+            if Genre.objects.filter(name=genreName).count() == 0:
+                genre = Genre()
+                genre.name = genreName
+                genre.save()
+        # --- Adding album to DB ---
+        if 'TALB' in audioTag:
+            albumTitle = audioTag['TALB'].text[0]
+            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
+                album = Album()
+                album.title = albumTitle
+                album.save()
+        # --- Adding artist to DB ---
+        if 'TPE1' in audioTag:  # Check if artist exists
+            artists = audioTag['TPE1'].text[0].split(",")
+            for artistName in artists:
+                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
+                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
+                    artist = Artist()
+                    artist.name = artistName
+                    artist.save()
 
 
-def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
+# TODO: TEST this with front
+# Change the permission of the song for the web server
+def changePermission(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        try:  # Current song if protected next song is exposed.
+            if 'CURR_ID' in response:
+                trackId = response['CURR_ID']
+                track = Track.objects.get(id=trackId)
+                os.chmod(track.location, 0o600)
+            else:
+                badFormatError()
+            if 'NEXTID' in response:
+                trackId = response['URL']
+                track = Track.objects.get(id=trackId)
+                os.chmod(track.location, 0o666)
+            else:
+                badFormatError()
+            data = {
+                'RESULT': 'DONE',
+            }
+            return JsonResponse(data)
+        except AttributeError:
+            badFormatError()
+
+
+def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
-    # --- Calculating checksum
-    track.CRC = CRC32_from_file(root + "/" + file)
-
     # --- FILE INFORMATION ---
-    audioFile = MP3(root + "/" + file)
-    track.location = root + "/" + file
-    track.size = os.path.getsize(root + "/" + file)
+    audioFile = MP3(path)
+    track.location = path
+    track.size = os.path.getsize(path)
     track.bitRate = audioFile.info.bitrate
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
@@ -81,11 +148,11 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track.fileType = fileTypeId
 
     # --- FILE TAG ---
-    audioTag = ID3(root + "/" + file)
+    audioTag = ID3(path)
     if convert:
         audioTag.update_to_v24()
         audioTag.save()
-    audioTag = ID3(root + "/" + file)
+    audioTag = ID3(path)
 
     # --- COVER ---
     if 'APIC:' in audioTag:
@@ -94,10 +161,10 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
         md5Name = hashlib.md5()
         md5Name.update(front)
         # Check if the cover already exists and save it
-        if not os.path.isfile(coverPath+md5Name.hexdigest()+".jpg"):
-            with open(coverPath+md5Name.hexdigest()+".jpg", 'wb') as img:
+        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
+            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                 img.write(front)
-        track.coverLocation = md5Name.hexdigest()+".jpg"
+        track.coverLocation = md5Name.hexdigest() + ".jpg"
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = audioTag['TIT2'].text[0]
@@ -148,13 +215,9 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     # --- Adding genre to DB ---
     if 'TCON' in audioTag:
         genreName = audioTag['TCON'].text[0]
-        genreFound = Genre.objects.filter(name=genreName)
-        if genreFound.count() == 0:
-            genre = Genre()
-            genre.name = genreName
-            genre.save()
-        genre = Genre.objects.get(name=genreName)
-        track.genre = genre
+        if Genre.objects.filter(name=genreName).count() == 1:
+            genre = Genre.objects.get(name=genreName)
+            track.genre = genre
 
     # --- Adding artist to DB ---
     if 'TPE1' in audioTag:  # Check if artist exists
@@ -191,6 +254,7 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
                 album.save()
         track.album = album
         track.save()
+
     else:
         # TODO default value of artist (see if it's possible)
         pass
@@ -198,28 +262,26 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     # --- Adding track to playlist --- #
     playlist.track.add(track)
 
+class ImportMp3Thread(threading.Thread):
+    def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
+        threading.Thread.__init__(self)
+        self.mp3Paths = mp3Paths
+        self.playlist = playlist
+        self.convert = convert
+        self.fileTypeId = fileTypeId
+        self.coverPath = coverPath
 
-# TODO: TEST this with front
-# Change the permission of the song for the web server
-def changePermission(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        try:  # Current song if protected next song is exposed.
-            if 'CURR_ID' in response:
-                trackId = response['CURR_ID']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o600)
-            else:
-                badFormatError()
-            if 'NEXTID' in response:
-                trackId = response['URL']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o666)
-            else:
-                badFormatError()
-            data = {
-                'RESULT': 'DONE',
-            }
-            return JsonResponse(data)
-        except AttributeError:
-            badFormatError()
+    def run(self):
+        print(self.mp3Paths)
+        for path in self.mp3Paths:
+            addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
+
+
+def splitTable(table):
+    print(table)
+    if len(table) % 4 == 0:
+        chunkSize = int(len(table) / 4)
+    else:
+        chunkSize = int(len(table) / 4) + 1
+    for i in range(0, len(table), chunkSize):
+        yield table[i:i + chunkSize]
