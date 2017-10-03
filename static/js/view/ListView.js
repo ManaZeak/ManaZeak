@@ -49,6 +49,7 @@ ListView.prototype = {
 
         this.addEntries(this.tracks);
         getById("mainContainer").appendChild(this.listView);
+        this.computePositions();
     },
 
 
@@ -124,20 +125,31 @@ ListView.prototype = {
 
 
     toggleContextMenu: function(event) {
-        if (!this.contextMenu.getIsVisible()) {
-            this.contextMenu.toggleVisibilityLock(event);
-        } else {
-            this.contextMenu.moveContext(event);
-        }
+        console.log(event.pageY);
+        console.log(this.entries[0].boundingRect);
+
+        this.contextMenu.toggleVisibilityLock(event);
     },
 
+
+    computePositions: function() {
+        for (i = 0; i < this.entries.length ;++i) {
+            this.entries[i].computePosition();
+        }
+    },
+/*
+    sendAttributesToContextMenu: function() {
+        console.log("First")
+    },
+*/
 
     _eventListener: function() {
         var that = this;
 
-        document.oncontextmenu = document.body.oncontextmenu = function() {return false;}; // Disabling right click on ListView
-
+        this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
         this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
+
+//        this.contextMenu.getContextMenu().addEventListener("click", this.sendAttributesToContextMenu.bind(this));
 
         // Sorting listeners
         this.header.duration.addEventListener("click", function() {

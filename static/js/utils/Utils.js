@@ -93,6 +93,20 @@ function mkElem(type) {
 }
 
 
+function addVisibilityLock(object, className) { // TODO : put in Utils
+    if (!object.className.match(className)) {
+        object.className += className;
+    }
+}
+
+
+function removeVisibilityLock(object, className) {
+    if (object.className.match(className)) {
+        object.className = object.className.replace(className, '');
+    }
+}
+
+
 function JSONParsedGetRequest(url, http, callback) {
     var xmlhttp = new XMLHttpRequest();
 
