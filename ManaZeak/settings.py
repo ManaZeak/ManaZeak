@@ -87,8 +87,8 @@ DATABASES = {
         'NAME': 'music',
         'USER': 'postgres',
         'PASSWORD': 'rootroot',
-        # 'HOST': 'db',
-        'HOST': 'localhost',
+        'HOST': 'db',
+        # 'HOST': 'localhost',
         'PORT': '5432'
     }
 }
@@ -134,8 +134,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/"),
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "library/")
-MEDIA_URL = '/library/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, "library/")
+# MEDIA_URL = '/library/'
 
 
 
