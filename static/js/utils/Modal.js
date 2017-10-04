@@ -5,13 +5,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Modal = function(type) {
 
+    this.url = null;
+    this.haveButtons = false; // Add cancel and save button when set to true
+    this.isOpen = false;
+    this.editModal = {};
+
     switch (type) {
         case "scanLibrary":
-            this.open(false, "utils/modal/scanLibrary");
+            this.url = "utils/modal/scanLibrary";
             break;
         case "editMetadata":
-            this.open(true, "utils/modal/editMetadata");
-            this._keyListener();
+            this.url = "utils/modal/editMetadata";
+            this.haveButtons = true;
             break;
         default:
             new Notification("Can not open modal", "The given modal type doesn't exists");
@@ -22,16 +27,16 @@ var Modal = function(type) {
 
 Modal.prototype = {
 
-    open: function(buttons, url) {
+    open: function() {
         var that = this;
 
         JSONParsedGetRequest(
-            url,
+            this.url,
             true,
             function(response) {
                 document.body.insertAdjacentHTML('beforeend', response);
-
-                if (buttons) { that._eventListener(); }
+                that.isOpen = true;
+                if (that.haveButtons) { that._eventListener(); }
             }
         );
     },
@@ -39,26 +44,29 @@ Modal.prototype = {
 
     close: function() {
         document.body.removeChild(document.getElementById("modal"));
+        this.isOpen = false;
+    },
+
+
+    initEditMetadata: function(entriesSelected) {
+        if (entriesSelected.length === 1) { // TODO : from utils, modify here
+            getById("trackListContainer").parentNode.removeChild(getById("trackListContainer"));
+            getById("inputContainer").className += "inputStandAlone";
+        } else {
+
+        }
+    },
+
+
+    editEntryTrackInfo: function(entry) {
+        //entry.track.title = "SCOPARE";
     },
 
 
     _eventListener: function() {
-        getById("cancel").addEventListener("click", this.close.bind(this));
+        getById("cancel").addEventListener("click", this.close);
     },
 
 
-    _keyListener: function()  {
-        var that = this;
-
-        // Key pressed event
-        document.addEventListener("keydown", function(event) {
-            switch (event.keyCode) {
-                case 27: // Esc
-                    that.close();
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
+    getIsOpen: function() { return this.isOpen; }
 };
