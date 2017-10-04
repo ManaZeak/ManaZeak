@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
-    url(r'^utils/modal/scan/$', utils.ScanModal.as_view(), name='scanModal'),
+    url(r'^utils/modal/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
     url(r'^utils/modal/editMetadata/$', utils.EditMetadataModal.as_view(), name='editMetadataModal'),
     url(r'^ajax/changePermission/$', controller.changePermission, name='changePermission'),
 ]
