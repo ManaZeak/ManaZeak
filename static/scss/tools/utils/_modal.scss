@@ -7,7 +7,7 @@ $contentHeight: ($modalHeight / 6) * 4;
 $footerHeight:  ($modalHeight / 6);
 */
 
-$scanModalHeight: 350px;
+$scanModalHeight: 400px;
 $scanModalWidth:  600px;
 
 $scanHeaderHeight:  ($scanModalHeight / 6);
@@ -91,10 +91,14 @@ $verticalPadding: 10px;
             }
         }
     }
+
+    #edit {
+
+    }
 }
 
 
-.scanOverlay {
+.overlay {
     cursor: not-allowed;
 }
 
@@ -110,9 +114,11 @@ $verticalPadding: 10px;
     }
 }
 
+
 .lds-dual-ring {
     position: relative;
 }
+
 
 .lds-dual-ring div {
     z-index: 9999;

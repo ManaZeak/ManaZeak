@@ -29,7 +29,7 @@ $footerHeight:  ($modalHeight / 6);
     border: solid 1px black;
     border-radius: 3px;
     position: relative;
-    min-height: 350px;
+    min-height: 400px;
     background: #fff;
     width: 600px;
     -webkit-user-select: none;
@@ -49,13 +49,13 @@ $footerHeight:  ($modalHeight / 6);
     #modal #scan #header {
       border-bottom: solid 1px black;
       top: 0;
-      height: 58.33333px; }
+      height: 66.66667px; }
       #modal #scan #header h1 {
-        line-height: 38.33333px;
+        line-height: 46.66667px;
         margin: 0; }
     #modal #scan #content {
-      top: 58.33333px;
-      height: 233.33333px;
+      top: 66.66667px;
+      height: 266.66667px;
       padding: 10px 50px; }
       #modal #scan #content img {
         width: 100px;
@@ -63,10 +63,10 @@ $footerHeight:  ($modalHeight / 6);
         margin: 16px 0; }
     #modal #scan #footer {
       border-top: solid 1px black;
-      height: 58.33333px;
-      top: 291.66667px; }
+      height: 66.66667px;
+      top: 333.33333px; }
       #modal #scan #footer p {
-        line-height: 38.33333px;
+        line-height: 46.66667px;
         margin: 0; }
 
 .scanOverlay {

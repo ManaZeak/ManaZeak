@@ -66,7 +66,6 @@ def dropAllDB(request):
         Playlist.objects.all().delete()
         Library.objects.all().delete()
         Genre.objects.all().delete()
-        Genre.objects.all().delete()
         data = {
             'DROPPED': "OK",
         }
@@ -162,10 +161,10 @@ def loadTracksFromPlaylist(request):
         response = json.loads(request.body)
         try:
             playlist = Playlist.objects.get(id=response['ID'])
-            # tmp = exportPlaylistToJson(playlist)
-            # playlist.jsonInfo = tmp
-            # playlist.save()
-            return JsonResponse({'NOT': 'IMPLEMENTED'})
+            tmp = exportPlaylistToJson(playlist)
+            #playlist.jsonInfo = tmp
+            #playlist.save()
+            return HttpResponse(tmp)
 
         except AttributeError:
             badFormatError()
