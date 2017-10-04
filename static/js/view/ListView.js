@@ -136,15 +136,12 @@ ListView.prototype = {
         var targetIndex = this.collision(event);
 
         if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
-            // TODO : push entrie to entriesSelected
             this.unselectAll();
             this.entries[targetIndex].toggleSelected();
             this.entries[targetIndex].setIsSelected(true);
-        } else {
-
+            this.entriesSelected.push(this.entries[targetIndex]);
         }
-        //console.log(targetIndex);
-// update contextMenu selection attriutes
+        // TODO : update contextMenu selection attriutes
 
         this.contextMenu.toggleVisibilityLock(event);
     },
@@ -169,23 +166,18 @@ ListView.prototype = {
             this.entries[i].computePosition();
         }
     },
-/*
-    sendAttributesToContextMenu: function() {
-        console.log("First")
-    },
-*/
 
 
     trackClicked: function(event) {
         var targetIndex = this.collision(event);
 
-        if (this.entriesSelected.length === 0) {
+        if (this.entriesSelected.length === 0) { // No entries is selected
             this.entries[targetIndex].toggleSelected();
             this.entries[targetIndex].setIsSelected(true);
             this.entriesSelected.push(this.entries[targetIndex]);
         }
 
-        else if (event.ctrlKey) {
+        else if (event.ctrlKey) { // User pressed ctrl : multi selection
             if (!this.entries[targetIndex].getIsSelected()) {
                 this.entries[targetIndex].toggleSelected();
                 this.entries[targetIndex].setIsSelected(true);
@@ -204,14 +196,25 @@ ListView.prototype = {
             }
         }
 
-        else {
-            this.unselectAll();
+        else { // Selection isn't empty and user clicked without ctrl
             // TODO : push entrie to entriesSelected
 
             if (!this.entries[targetIndex].getIsSelected()) {
+                this.unselectAll();
                 this.entries[targetIndex].toggleSelected();
                 this.entries[targetIndex].setIsSelected(true);
                 this.entriesSelected.push(this.entries[targetIndex]);
+            }
+
+            else {
+                this.entries[targetIndex].toggleSelected();
+                this.entries[targetIndex].setIsSelected(false);
+
+               for (i = 0; i < this.entriesSelected.length ;++i) {
+                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
+                        this.entriesSelected.splice(i, 1);
+                    }
+                }
             }
         }
     },
