@@ -14,7 +14,7 @@ class Album(models.Model):
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, unique=True)
 
 
 class FileType(models.Model):
