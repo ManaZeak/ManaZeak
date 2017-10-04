@@ -129,7 +129,7 @@ Playlist.prototype = {
                     new Notification("Error in path field.", response.ERROR);
                 } else {
                     that.name = that.ui.name.value;
-                    that.scanModal = new Modal(); // TODO : send parameters (todo when modal class is bigger)
+                    that.scanModal = new Modal("newLibrary"); // TODO : send parameters (todo when modal class is bigger)
                     that.id = response.ID;
                     that._scanLibrary(response.ID);
                 }

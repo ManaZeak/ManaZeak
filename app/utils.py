@@ -17,7 +17,7 @@ from app.models import FileType, Track, Genre, Album, Artist
 
 # Render class for serving modal to client
 class ScanModal(TemplateView):
-    template_name = 'utils/modal.html'
+    template_name = 'utils/modal/newLibrary.html'
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):

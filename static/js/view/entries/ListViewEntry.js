@@ -8,6 +8,7 @@ var ListViewEntry = function(track, listView) {
 
     this.entry.id = "track" + track.id.track;
     this.entry.className = "trackContainer";
+    this.track = track;
 
     var duration        = mkElem("div");
     var title           = mkElem("div");

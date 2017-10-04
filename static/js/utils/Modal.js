@@ -3,21 +3,26 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Modal = function() {
-    this._init();
+var Modal = function(type) {
+
+    switch (type) {
+        case "newLibrary":
+            this.open("utils/newLibraryModal");
+            break;
+        case "editMetadata":
+            break;
+        default:
+            new Notification("Can not open modal", "The given modal type doesn't exists");
+            break;
+    }
 };
 
 
 Modal.prototype = {
 
-    _init: function() {
-        this.open();
-    },
-
-
-    open: function() {
+    open: function(url) {
         JSONParsedGetRequest(
-            "utils/modal",
+            url,
             true,
             function(response) {
                document.body.insertAdjacentHTML('beforeend', response);

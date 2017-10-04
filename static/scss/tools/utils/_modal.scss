@@ -91,10 +91,14 @@ $verticalPadding: 10px;
             }
         }
     }
+
+    #edit {
+
+    }
 }
 
 
-.scanOverlay {
+.overlay {
     cursor: not-allowed;
 }
 
@@ -110,9 +114,11 @@ $verticalPadding: 10px;
     }
 }
 
+
 .lds-dual-ring {
     position: relative;
 }
+
 
 .lds-dual-ring div {
     z-index: 9999;

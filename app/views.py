@@ -161,10 +161,10 @@ def loadTracksFromPlaylist(request):
         response = json.loads(request.body)
         try:
             playlist = Playlist.objects.get(id=response['ID'])
-            # tmp = exportPlaylistToJson(playlist)
-            # playlist.jsonInfo = tmp
-            # playlist.save()
-            return JsonResponse({'NOT': 'IMPLEMENTED'})
+            tmp = exportPlaylistToJson(playlist)
+            #playlist.jsonInfo = tmp
+            #playlist.save()
+            return HttpResponse(tmp)
 
         except AttributeError:
             badFormatError()
