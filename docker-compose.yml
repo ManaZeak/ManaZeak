@@ -33,7 +33,7 @@ services:
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - /home/pierre/Documents/ACDC/:/library
-      - /static:/static
+      - ./static:/static
     expose:
       - "8000"
       - "5432"
