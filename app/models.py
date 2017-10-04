@@ -14,7 +14,7 @@ class Album(models.Model):
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, unique=True)
 
 
 class FileType(models.Model):
@@ -52,7 +52,6 @@ class Playlist(models.Model):
     user = models.ForeignKey(User)
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
-    jsonInfo = models.CharField(max_length=10000000, null=True)
 
 
 class Library(models.Model):
