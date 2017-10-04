@@ -108,32 +108,6 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                     artist.save()
 
 
-# TODO: TEST this with front
-# Change the permission of the song for the web server
-def changePermission(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        try:  # Current song if protected next song is exposed.
-            if 'CURR_ID' in response:
-                trackId = response['CURR_ID']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o600)
-            else:
-                badFormatError()
-            if 'NEXTID' in response:
-                trackId = response['URL']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o666)
-            else:
-                badFormatError()
-            data = {
-                'RESULT': 'DONE',
-            }
-            return JsonResponse(data)
-        except AttributeError:
-            badFormatError()
-
-
 def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -261,6 +235,7 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
 
     # --- Adding track to playlist --- #
     playlist.track.add(track)
+
 
 class ImportMp3Thread(threading.Thread):
     def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
