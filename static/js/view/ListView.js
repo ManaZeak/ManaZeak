@@ -109,7 +109,7 @@ ListView.prototype = {
         for (var i = 0; i < tracks.length ;++i) {
             var id = this.entries.push(new ListViewEntry(tracks[i], this.listView));
             // TODO : Handle dble click
-            this.entriesListeners.push(this.entries[id - 1].getEntry().addEventListener("click", that.trackClicked.bind(that)));
+            this.entriesListeners.push(this.entries[(id - 1)].getEntry().addEventListener("click", that.trackClicked.bind(that)));
         }
     },
 
@@ -129,42 +129,7 @@ ListView.prototype = {
         this.removeEntries();
         this.tracks.sort(sortObjectArrayBy(argument, ascending));
         this.addEntries(this.tracks);
-    },
-
-
-    toggleContextMenu: function(event) {
-        var targetIndex = this.collision(event);
-
-        if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
-            this.unselectAll();
-            this.entries[targetIndex].toggleSelected();
-            this.entries[targetIndex].setIsSelected(true);
-            this.entriesSelected.push(this.entries[targetIndex]);
-        }
-        // TODO : update contextMenu selection attriutes
-
-        this.contextMenu.toggleVisibilityLock(event);
-    },
-
-
-    collision: function(event) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (event.pageX > this.entries[i].boundingRect.x
-             && event.pageX < this.entries[i].boundingRect.x + this.entries[i].boundingRect.width
-             && event.pageY > this.entries[i].boundingRect.y
-             && event.pageY < this.entries[i].boundingRect.y + this.entries[i].boundingRect.height) {
-                return i;
-            }
-        }
-
-        return -1;
-    },
-
-
-    computePositions: function() {
-        for (i = 0; i < this.entries.length ;++i) {
-            this.entries[i].computePosition();
-        }
+        this.computePositions();
     },
 
 
@@ -220,6 +185,42 @@ ListView.prototype = {
     },
 
 
+    toggleContextMenu: function(event) {
+        var targetIndex = this.collision(event);
+
+        if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
+            this.unselectAll();
+            this.entries[targetIndex].toggleSelected();
+            this.entries[targetIndex].setIsSelected(true);
+            this.entriesSelected.push(this.entries[targetIndex]);
+        }
+        // TODO : update contextMenu selection attriutes
+        this.contextMenu.updateSelectedEntries(this.entriesSelected);
+        this.contextMenu.toggleVisibilityLock(event);
+    },
+
+
+    collision: function(event) {
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (event.pageX > this.entries[i].boundingRect.x
+             && event.pageX < this.entries[i].boundingRect.x + this.entries[i].boundingRect.width
+             && event.pageY > this.entries[i].boundingRect.y
+             && event.pageY < this.entries[i].boundingRect.y + this.entries[i].boundingRect.height) {
+                return i;
+            }
+        }
+
+        return -1;
+    },
+
+
+    computePositions: function() {
+        for (i = 0; i < this.entries.length ;++i) {
+            this.entries[i].computePosition();
+        }
+    },
+
+
     unselectAll: function() {
         this.entriesSelected = [];
 
@@ -230,7 +231,6 @@ ListView.prototype = {
             }
         }
     },
-
 
 
     _eventListener: function() {

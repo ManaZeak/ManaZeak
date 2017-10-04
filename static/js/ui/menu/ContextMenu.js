@@ -15,6 +15,9 @@ var ContextMenu = function() {
     this.isVisible = false;
 
 
+    this.selected = [];
+
+
     this._init();
 };
 
@@ -68,8 +71,8 @@ ContextMenu.prototype = {
     },
 
 
-    tmp: function() {
-        console.log("Deuz");
+    updateSelectedEntries: function(entries) {
+        this.selected = entries;
     },
 
 
