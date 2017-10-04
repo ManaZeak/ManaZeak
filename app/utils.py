@@ -15,13 +15,22 @@ from mutagen.mp3 import MP3
 from app.models import FileType, Track, Genre, Album, Artist
 
 
-# Render class for serving modal to client
+# Render class for serving modal to client (Scan)
 class ScanModal(TemplateView):
-    template_name = 'utils/modal/newLibrary.html'
+    template_name = 'utils/modal/scan.html'
 
     @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
         return super(ScanModal, self).dispatch(*args, **kwargs)
+
+
+# Render class for serving modal to client (Edit metadata)
+class EditMetadataModal(TemplateView):
+    template_name = 'utils/modal/editMetadata.html'
+
+    @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
+    def dispatch(self, *args, **kwargs):
+        return super(EditMetadataModal, self).dispatch(*args, **kwargs)
 
 
 def checkIfNotNone(trackAttribute):
