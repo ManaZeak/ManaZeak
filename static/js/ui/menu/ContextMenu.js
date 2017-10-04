@@ -15,8 +15,8 @@ var ContextMenu = function() {
     this.isVisible = false;
 
 
-    this.selected = [];
-    this.modal = null;
+    this.entriesSelected = [];
+    this.modal = new Modal("editMetadata");
 
     this._init();
 };
@@ -72,17 +72,25 @@ ContextMenu.prototype = {
 
 
     updateSelectedEntries: function(entries) {
-        this.selected = entries;
-        console.log(this.selected);
+        this.entriesSelected = entries;
+        //this.modal.tmp(this.entriesSelected[0]);
     },
 
 
     editModal: function() {
         this.isVisible = !this.isVisible;
-        removeVisibilityLock(this.contextMenu, "contextMenuLocked");
+        var that = this;
 
-        this.modal = new Modal("editMetadata");
-        console.log("Scopare");
+        removeVisibilityLock(this.contextMenu, "contextMenuLocked");
+        this.modal.open();
+
+        function waitingModalOpening(){
+            if (!that.modal.getIsOpen()) {
+                setTimeout(function() { waitingModalOpening() }, 100);
+            } else {
+                that.modal.initEditMetadata(that.entriesSelected);
+            }
+        }
     },
 
 
