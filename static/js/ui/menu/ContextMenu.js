@@ -16,7 +16,7 @@ var ContextMenu = function() {
 
 
     this.selected = [];
-
+    this.modal = null;
 
     this._init();
 };
@@ -81,7 +81,7 @@ ContextMenu.prototype = {
         this.isVisible = !this.isVisible;
         removeVisibilityLock(this.contextMenu, "contextMenuLocked");
 
-        new Modal("editMetadata");
+        this.modal = new Modal("editMetadata");
         console.log("Scopare");
     },
 

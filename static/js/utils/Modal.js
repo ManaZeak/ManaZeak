@@ -11,6 +11,7 @@ var Modal = function(type) {
             break;
         case "editMetadata":
             this.open(true, "utils/modal/editMetadata");
+            this._keyListener();
             break;
         default:
             new Notification("Can not open modal", "The given modal type doesn't exists");
@@ -30,18 +31,13 @@ Modal.prototype = {
             function(response) {
                 document.body.insertAdjacentHTML('beforeend', response);
 
-                if (buttons) {
-                    that._eventListener();
-                    that._keyListener();
-                }
+                if (buttons) { that._eventListener(); }
             }
         );
     },
 
 
     close: function() {
-        console.log("1");
-
         document.body.removeChild(document.getElementById("modal"));
     },
 
