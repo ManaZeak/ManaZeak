@@ -10,7 +10,7 @@
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(id, newLibrary, cookies, tracks, callback) {
+var Playlist = function(id, name, newLibrary, cookies, tracks, callback) {
 
     // NewLibrary relative attributes, useless if newLibrary = false
     this.ui = {
@@ -24,6 +24,7 @@ var Playlist = function(id, newLibrary, cookies, tracks, callback) {
 
 
     // Playlist internal attributes
+    this.name = name;
     this.tracks = [];
     this.isLibrary = false;
 
@@ -127,7 +128,8 @@ Playlist.prototype = {
                 if (response.DONE === "FAIL") {
                     new Notification("Error in path field.", response.ERROR);
                 } else {
-                    that.scanModal = new Modal(); // TODO : send parameters (todo when modal class is bigger)
+                    that.name = that.ui.name.value;
+                    that.scanModal = new Modal("newLibrary"); // TODO : send parameters (todo when modal class is bigger)
                     that.id = response.ID;
                     that._scanLibrary(response.ID);
                 }
@@ -151,7 +153,6 @@ Playlist.prototype = {
                      // TODO : put href to view more (file list for ex)
                     new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
                 } else {
-                    that.scanModal.close();
                     that._getTracksFromServer(response.ID);
                 }
             }
@@ -166,10 +167,12 @@ Playlist.prototype = {
             "ajax/getPlaylistTracks/",
             this.cookies,
             JSON.stringify({
-                ID: id
+                ID: id,
+                SAVE: true
             }),
             function(response) {
                 that.rawTracks = response;
+                that.scanModal.close();
                 that._fillTracks(that.rawTracks);
             }
         );
@@ -189,5 +192,8 @@ Playlist.prototype = {
 
 
     // Class Getters and Setters
-    getTracks: function() { return this.tracks; }
+    getTracks: function()     { return this.tracks; },
+    getName: function()       { return this.name;   },
+
+    setName: function(name)   { this.name = name;   }
 };

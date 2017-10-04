@@ -9,6 +9,8 @@ var UserMenu = function() {
     this.menuEntry = {
         logout: null
     };
+    this.outside = document.body;
+
     this.isVisible = false;
 
 
@@ -42,33 +44,27 @@ UserMenu.prototype = {
     },
 
 
-    addVisibilityLock: function() {
-        if (!this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
-            this.menu.className += "menuLocked";
-        }
-    },
-
-
-    removeVisibilityLock: function() {
-        if (this.menu.className.match(/(?:^|\s)menuLocked(?!\S)/)) {
-            this.menu.className = this.menu.className.replace(/(?:^|\s)menuLocked(?!\S)/g, '');
-        }
-    },
-
-
     toggleVisibilityLock: function() {
         if (!this.isVisible) {
             this.isVisible = !this.isVisible;
-            this.addVisibilityLock();
+            addVisibilityLock(this.menu, "menuLocked");
         } else {
             this.isVisible = !this.isVisible;
-            this.removeVisibilityLock();
+            removeVisibilityLock(this.menu, "menuLocked");
+        }
+    },
+
+
+    clickOutside: function(e) {
+        if (!getById("userExpander").contains(e.target) && !getById("menu").contains(e.target)) {
+            removeVisibilityLock(this.menu, "menuLocked");
         }
     },
 
 
     _eventListener: function() {
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
+        this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     },
 
 
