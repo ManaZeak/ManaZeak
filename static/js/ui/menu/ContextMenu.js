@@ -73,13 +73,20 @@ ContextMenu.prototype = {
 
     updateSelectedEntries: function(entries) {
         this.selected = entries;
+        console.log(this.selected);
+    },
+
+
+    editModal: function() {
+        new Modal("ZOB");
+        console.log("Scopare");
     },
 
 
     _eventListener: function() {
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
 
-        //this.entries.editMD.addEventListener("click", this.tmp.bind(this));
+        this.entries.editMD.addEventListener("click", this.editModal.bind(this));
     },
 
 
