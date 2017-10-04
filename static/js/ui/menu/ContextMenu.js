@@ -78,7 +78,10 @@ ContextMenu.prototype = {
 
 
     editModal: function() {
-        new Modal("ZOB");
+        this.isVisible = !this.isVisible;
+        removeVisibilityLock(this.contextMenu, "contextMenuLocked");
+
+        new Modal("editMetadata");
         console.log("Scopare");
     },
 
