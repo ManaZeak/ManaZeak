@@ -18,5 +18,4 @@ urlpatterns = [
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^utils/modal/$', utils.ScanModal.as_view(), name='modal'),
-    url(r'^ajax/changePermission/$', controller.changePermission, name='changePermission')
 ]
