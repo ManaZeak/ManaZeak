@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cl=4#k6g)t9&1tlsz7)uvtq*to#46f6gkb*toovigtm&t4s(5o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -88,7 +88,6 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'rootroot',
         'HOST': 'db',
-        # 'HOST': 'localhost',
         'PORT': '5432'
     }
 }
