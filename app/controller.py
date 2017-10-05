@@ -5,6 +5,7 @@ import os
 import threading
 
 from django.http.response import JsonResponse
+from django.utils.html import strip_tags
 from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 
@@ -24,7 +25,7 @@ def badFormatError():
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    coverPath = "/home/messmaker/Documents/covers/"  # TODO: to be defined with docker or with the front
+    coverPath = "/home/squadella/Documents/covers/"  # TODO: to be defined with docker or with the front
     if not os.path.isdir(coverPath):
         os.makedirs(coverPath)
 
@@ -108,32 +109,6 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                     artist.save()
 
 
-# TODO: TEST this with front
-# Change the permission of the song for the web server
-def changePermission(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        try:  # Current song if protected next song is exposed.
-            if 'CURR_ID' in response:
-                trackId = response['CURR_ID']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o600)
-            else:
-                badFormatError()
-            if 'NEXTID' in response:
-                trackId = response['URL']
-                track = Track.objects.get(id=trackId)
-                os.chmod(track.location, 0o666)
-            else:
-                badFormatError()
-            data = {
-                'RESULT': 'DONE',
-            }
-            return JsonResponse(data)
-        except AttributeError:
-            badFormatError()
-
-
 def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -167,61 +142,61 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
         track.coverLocation = md5Name.hexdigest() + ".jpg"
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
-            track.title = audioTag['TIT2'].text[0]
+            track.title = strip_tags(audioTag['TIT2'].text[0])
 
     if 'TDRC' in audioTag:
         if not audioTag['TDRC'].text[0].get_text() == "":
-            track.year = audioTag['TDRC'].text[0].get_text()[:4]  # Date of Recording
+            track.year = strip_tags(audioTag['TDRC'].text[0].get_text())[:4]  # Date of Recording
 
     totalTrack = 0
     totalDisc = 1
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
-                tags = audioTag['TRCK'].text[0].split('/')
+                tags = strip_tags(audioTag['TRCK'].text[0]).split('/')
                 track.number = tags[0]
                 totalTrack = tags[1]
             else:
-                track.number = audioTag['TRCK'].text[0]
+                track.number = strip_tags(audioTag['TRCK'].text[0])
 
     if 'TCOM' in audioTag:
         if not audioTag['TCOM'].text[0] == "":
-            track.composer = audioTag['TCOM'].text[0]
+            track.composer = strip_tags(audioTag['TCOM'].text[0])
 
     if 'TOPE' in audioTag:
         if not audioTag['TOPE'].text[0] == "":
-            track.performer = audioTag['TOPE'].text[0]
+            track.performer = strip_tags(audioTag['TOPE'].text[0])
 
     if 'TBPM' in audioTag:
         if not audioTag['TBPM'].text[0] == "":
-            track.bpm = math.floor(float(audioTag['TBPM'].text[0]))
+            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
 
     if 'COMM' in audioTag:
         if not audioTag['COMM'].text[0] == "":
-            track.comment = audioTag['COMM'].text[0]
+            track.comment = strip_tags(audioTag['COMM'].text[0])
 
     if 'USLT' in audioTag:
         if not audioTag['USLT'].text[0] == "":
-            track.lyrics = audioTag['USLT'].text[0]
+            track.lyrics = strip_tags(audioTag['USLT'].text[0])
 
     if len(audioTag.getall('TXXX')) != 0:
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
-                totalDisc = txxx.text[0]
+                totalDisc = strip_tags(txxx.text[0])
 
     # --- Save data for many-to-many relationship registering ---
     track.save()
 
     # --- Adding genre to DB ---
     if 'TCON' in audioTag:
-        genreName = audioTag['TCON'].text[0]
+        genreName = strip_tags(audioTag['TCON'].text[0])
         if Genre.objects.filter(name=genreName).count() == 1:
             genre = Genre.objects.get(name=genreName)
             track.genre = genre
 
     # --- Adding artist to DB ---
     if 'TPE1' in audioTag:  # Check if artist exists
-        artists = audioTag['TPE1'].text[0].split(",")
+        artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
         for artistName in artists:
             artistName = artistName.lstrip()  # Remove useless spaces at the beginning
             num_results = Artist.objects.filter(name=artistName).count()
@@ -237,7 +212,7 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
 
     # --- Adding album to DB ---
     if 'TALB' in audioTag:
-        albumTitle = audioTag['TALB'].text[0]
+        albumTitle = strip_tags(audioTag['TALB'].text[0])
         if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
             album = Album()
             album.title = albumTitle
@@ -261,6 +236,7 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
 
     # --- Adding track to playlist --- #
     playlist.track.add(track)
+
 
 class ImportMp3Thread(threading.Thread):
     def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
