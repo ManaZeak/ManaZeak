@@ -3,12 +3,13 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(tracks) {
+var ListView = function(tracks, cookies) {
     this.listView = null;
     this.tracks = tracks;
+    this.cookies = cookies;
     this.entries = [];
-    this.entriesListeners = [];
-    this.entriesSelected = [];
+    this.entriesSelected = {};
+    this.dbl_click = false;
 
     this.contextMenu = new ContextMenu();
 
@@ -106,11 +107,8 @@ ListView.prototype = {
     addEntries: function(tracks) {
         var that = this;
 
-        for (var i = 0; i < tracks.length ;++i) {
-            var id = this.entries.push(new ListViewEntry(tracks[i], this.listView));
-            // TODO : Handle dble click
-            this.entriesListeners.push(this.entries[(id - 1)].getEntry().addEventListener("click", that.trackClicked.bind(that)));
-        }
+        for (var i = 0; i < tracks.length ;++i)
+            this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
     },
 
 
@@ -121,7 +119,6 @@ ListView.prototype = {
 
         // To the GC, and beyond
         this.entries = [];
-        this.entriesListeners = [];
     },
 
 
@@ -132,67 +129,55 @@ ListView.prototype = {
         this.computePositions();
     },
 
+    viewClicked: function(event) {
+        var that = this;
+        var target = event.target;
+        while(target.parentNode !== this.listView)
+            target = target.parentNode;
 
-    trackClicked: function(event) {
-        var targetIndex = this.collision(event);
-
-        if (this.entriesSelected.length === 0) { // No entries is selected
-            this.entries[targetIndex].toggleSelected();
-            this.entries[targetIndex].setIsSelected(true);
-            this.entriesSelected.push(this.entries[targetIndex]);
-        }
-
-        else if (event.ctrlKey) { // User pressed ctrl : multi selection
-            if (!this.entries[targetIndex].getIsSelected()) {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(true);
-                this.entriesSelected.push(this.entries[targetIndex]);
-            }
-
-            else {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(false);
-
-                for (var i = 0; i < this.entriesSelected.length ;++i) {
-                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
-                        this.entriesSelected.splice(i, 1);
+        var id = target.dataset.listViewID;
+        if(this.dbl_click)
+        {
+            console.log(this.cookies);
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    ID: this.entries[id].entry.id
+                }),
+                function(response) {
+                    if (response.RESULT === "FAIL") {
+                        new Notification("Bad format.", response.ERROR);
+                    } else {
+                        console.log(response);
+                        window.app.player.changeTrack("../" + response.PATH);
                     }
                 }
-            }
+            );
+            return;
         }
+        this.dbl_click = true;
+        window.setTimeout(function() { that.dbl_click = false; }, 400);
 
-        else { // Selection isn't empty and user clicked without ctrl
-            // TODO : push entrie to entriesSelected
-
-            if (!this.entries[targetIndex].getIsSelected()) {
-                this.unselectAll();
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(true);
-                this.entriesSelected.push(this.entries[targetIndex]);
-            }
-
-            else {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(false);
-
-               for (i = 0; i < this.entriesSelected.length ;++i) {
-                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
-                        this.entriesSelected.splice(i, 1);
-                    }
-                }
-            }
-        }
+        var new_state = !this.entriesSelected[id];
+        if(!event.ctrlKey && new_state === true)
+            this.unselectAll();
+        this.entriesSelected[id] = new_state;
+        this.entries[id].setIsSelected(new_state);
     },
 
-
     toggleContextMenu: function(event) {
-        var targetIndex = this.collision(event);
+        var target = event.target;
+        while(target.parentNode !== this.listView && target.tagName !== 'BODY')
+            target = target.parentNode;
+        if(target.tagName === 'BODY')
+            return false;
 
-        if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
+        var id = target.dataset.listViewID;
+        if (!this.entries[id].getIsSelected()) {
             this.unselectAll();
-            this.entries[targetIndex].toggleSelected();
-            this.entries[targetIndex].setIsSelected(true);
-            this.entriesSelected.push(this.entries[targetIndex]);
+            this.entries[id].setIsSelected(true);
+            this.entriesSelected[id] = true;
         }
         // TODO : update contextMenu selection attriutes
         this.contextMenu.updateSelectedEntries(this.entriesSelected);
@@ -222,22 +207,20 @@ ListView.prototype = {
 
 
     unselectAll: function() {
-        this.entriesSelected = [];
-
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].getIsSelected()) {
-                this.entries[i].toggleSelected();
+        this.entriesSelected = {};
+        for (var i = 0; i < this.entries.length ;++i)
+            if (this.entries[i].getIsSelected())
                 this.entries[i].setIsSelected(false);
-            }
-        }
     },
 
 
     _eventListener: function() {
         var that = this;
 
-        this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
+        //this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
+        //this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
         this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
+        this.listView.addEventListener("click", this.viewClicked.bind(this));
 
 //        this.contextMenu.getContextMenu().addEventListener("click", this.sendAttributesToContextMenu.bind(this));
 

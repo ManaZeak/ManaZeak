@@ -15,7 +15,7 @@ var ContextMenu = function() {
     this.isVisible = false;
 
 
-    this.entriesSelected = [];
+    this.entriesSelected = {};
     this.modal = new Modal("editMetadata");
 
     this._init();
@@ -73,7 +73,6 @@ ContextMenu.prototype = {
 
     updateSelectedEntries: function(entries) {
         this.entriesSelected = entries;
-        //this.modal.tmp(this.entriesSelected[0]);
     },
 
 
