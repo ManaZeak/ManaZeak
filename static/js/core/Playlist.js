@@ -130,6 +130,7 @@ Playlist.prototype = {
                 } else {
                     that.name = that.ui.name.value;
                     that.scanModal = new Modal("scanLibrary"); // TODO : send parameters (todo when modal class is bigger)
+                    that.scanModal.open();
                     that.id = response.ID;
                     that._scanLibrary(response.ID);
                 }
