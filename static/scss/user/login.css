@@ -7,14 +7,6 @@
  *
  *
 /* Program colors */
-/*
-$modalHeight: 600px;
-$modalWidth:  600px;
-
-$headerHeight:  ($modalHeight / 6);
-$contentHeight: ($modalHeight / 6) * 4;
-$footerHeight:  ($modalHeight / 6);
-*/
 #modal {
   height: 100%;
   position: fixed;
@@ -24,7 +16,8 @@ $footerHeight:  ($modalHeight / 6);
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  z-index: 999; }
   #modal #scan {
     border: solid 1px black;
     border-radius: 3px;
@@ -68,8 +61,50 @@ $footerHeight:  ($modalHeight / 6);
       #modal #scan #footer p {
         line-height: 46.66667px;
         margin: 0; }
+  #modal #edit {
+    border: solid 1px black;
+    border-radius: 3px;
+    position: relative;
+    min-height: 600px;
+    background: #fff;
+    width: 800px; }
+    #modal #edit #header,
+    #modal #edit #content,
+    #modal #edit #footer {
+      box-sizing: border-box;
+      position: absolute;
+      text-align: center;
+      width: 100%; }
+    #modal #edit #header {
+      border-bottom: solid 1px black;
+      top: 0;
+      height: 60px;
+      padding: 10px 30px; }
+      #modal #edit #header h1 {
+        line-height: 40px;
+        margin: 0; }
+    #modal #edit #content {
+      top: 60px;
+      height: 480px;
+      padding: 10px 50px; }
+    #modal #edit #footer {
+      border-top: solid 1px black;
+      text-align: right;
+      height: 60px;
+      top: 540px;
+      padding: 10px; }
+      #modal #edit #footer .button {
+        display: inline-block;
+        border: solid 1px black;
+        border-radius: 2px;
+        cursor: pointer;
+        box-sizing: border-box;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 25px;
+        margin-left: 5px; }
 
-.scanOverlay {
+.overlay {
   cursor: not-allowed; }
 
 @keyframes lds-dual-ring {

@@ -129,7 +129,28 @@ $editFooterHeight:  ($editModalHeight / 10);
         #content {
             top: $editHeaderHeight;
             height: $editContentHeight;
-            padding: $verticalPadding 50px;
+            position: relative;
+
+            #trackListContainer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                display: inline-block;
+                width: 225px;
+            }
+
+            #inputContainer {
+                float: right;
+                position: relative;
+                height: 100%;
+                display: inline-block;
+                width: calc(100% - 225px);
+            }
+
+            .inputStandAlone {
+                width: 100% !important;
+            }
         }
 
 
