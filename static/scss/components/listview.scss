@@ -2,16 +2,25 @@
 /* listview */
 #listView {
     width: 100%;
-    height: calc(100% - 100px);
-    top: 0;
+    height: calc(100% - 40px);
+    top: 40px;
     position: absolute;
     padding: 0 10%;
+    overflow-y: auto;
     box-sizing: border-box;
+
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
 }
 
 .columnHeader {
     width: 100%;
     height: 30px;
+    line-height: 30px;
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .trackContainer {
@@ -20,46 +29,57 @@
     line-height: 1.3em;
     font-size: 0.85em;
     cursor: pointer;
-
-    -webkit-user-select: none;  /* Chrome/Safari */
-    -moz-user-select: none;     /* Firefox */
+    text-align: center;
 }
 
-.title {
-    width: 25%;
+
+[class*='col-'] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 1px;
+    min-width: 1%;
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    white-space: nowrap;
     display: inline-block;
 }
 
-.artist {
-    width: 20%;
-    display: inline-block;
-}
-
-.composer {
-    width: 20%;
-    display: inline-block;
-}
-
-.album {
-    width: 20%;
-    display: inline-block;
-}
-
-.genre {
-    width: 12.5%;
-    display: inline-block;
-}
-
-.year {
-    width: 2.5%;
-    display: inline-block;
+.col-duration {
+    width: 70px;
     text-align: right;
 }
 
-.resize {
-    display: inline-block;
-    cursor: pointer;
-    width: 1px;
-    height: 10px;
-    border-right: solid 1px black;
+.col-title {
+    width: 300px;
+}
+
+.col-artist {
+    width: 250px;
+}
+
+.col-composer {
+    width: 250px;
+}
+
+.col-performer {
+    width: 250px;
+}
+
+.col-album {
+    width: 160px;
+}
+
+.col-genre {
+    width: 125px;
+}
+
+.col-bitRate {
+    width: 75px;
+}
+
+.col-year {
+    width: 40px;
+    text-align: right;
 }

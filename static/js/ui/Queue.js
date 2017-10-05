@@ -1,6 +1,10 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  Queue class - handle the user current tracks queue                                 *
+ *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Queue = function() {
-    this.queue = document.getElementById("queue");
-
+    this.queue = getById("queue");
     this.isVisible = false;
 };
 
