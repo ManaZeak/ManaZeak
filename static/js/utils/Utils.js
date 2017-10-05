@@ -93,7 +93,7 @@ function mkElem(type) {
 }
 
 
-function addVisibilityLock(object, className) { // TODO : put in Utils
+function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
     if (!object.className.match(className)) {
         object.className += className;
     }

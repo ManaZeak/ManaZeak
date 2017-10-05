@@ -79,7 +79,7 @@ App.prototype = {
             JSONParsedPostRequest(
                 "ajax/getPlaylistTracks/",
                 this.cookies,
-                JSON.stringify({
+                JSON.stringify({ // TODO : replace stringify w/ vanilla json requeest
                     ID: playlists.ID[0],
                     SAVE: false
                 }),
