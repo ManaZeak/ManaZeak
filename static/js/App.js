@@ -74,6 +74,7 @@ App.prototype = {
 
     _appStart: function(playlists) {
         var that = this;
+        console.log(that.cookies);
 
         if (playlists.RESULT !== 0) { // If user already have playlist(s)
             JSONParsedPostRequest(
@@ -87,14 +88,14 @@ App.prototype = {
                     // TODO : store playlist and list view in App object
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists.push(new Playlist(playlists.ID, playlists.NAMES, false, that.cookies, response, undefined));
-                    that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                    that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
                     new PlaylistBar(that.playlists);
                     //console.log(that.playlists[0].getTracks());
                 }
             );
         } else { // User first connection to the app
             this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
-                that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
                 new PlaylistBar(that.playlists);
             }));
         }

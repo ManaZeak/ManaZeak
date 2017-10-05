@@ -3,10 +3,12 @@
  *  ListViewEntry class - list view entry                                              *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListViewEntry = function(track, listView) {
+var ListViewEntry = function(track, listView, id) {
     this.entry = document.createElement("div");
 
-    this.entry.id = "track" + track.id.track;
+    this.entry.id = track.id.track;
+    this.entry.dataset.listViewID = id;
+
     this.entry.className = "trackContainer";
     this.track = track;
 
@@ -59,14 +61,6 @@ var ListViewEntry = function(track, listView) {
 
 
 ListViewEntry.prototype = {
-    toggleSelected: function() {
-        if (this.isSelected) {
-            this.entry.style.background = "none";
-        } else {
-            this.entry.style.background = "red";
-        }
-    },
-
 
     computePosition: function() {
         this.boundingRect = this.entry.getBoundingClientRect();
@@ -76,5 +70,12 @@ ListViewEntry.prototype = {
     getEntry: function() { return this.entry; },
     getIsSelected: function() { return this.isSelected; },
 
-    setIsSelected: function(isSelected) { this.isSelected = isSelected }
+    setIsSelected: function(isSelected) {
+        this.isSelected = isSelected;
+        if (this.isSelected) {
+            this.entry.style.background = "red";
+        } else {
+            this.entry.style.background = "none";
+        }
+    }
 };

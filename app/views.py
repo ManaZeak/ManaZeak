@@ -226,7 +226,7 @@ def changeMetaData(request):
 
 def getTrackPathByID(request):
     if request.method == 'POST':
-        response = json.load(request.body)
+        response = json.loads(request.body)
         if 'ID' in response:
             trackId = strip_tags(response['ID'])
             if Track.objects.filter(id=trackId).count() == 1:
