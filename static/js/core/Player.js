@@ -27,17 +27,27 @@ Player.prototype = {
     },
 
 
+    play: function() {
+        this.isPlaying = true;
+        this.player.play();
+
+        if (img) { img.src = "/static/img/pause.svg"; }
+    },
+
+
+    pause: function() {
+        this.isPlaying = false;
+        this.player.pause();
+
+        if (img) { img.src = "/static/img/play.svg"; }
+    },
+
+
     togglePlay: function(img) {
         if (this.isPlaying) {
-            this.isPlaying = !this.isPlaying;
-            this.player.pause();
 
-            if (img) { img.src = "/static/img/play.svg"; }
         } else {
-            this.isPlaying = !this.isPlaying;
-            this.player.play();
-
-            if (img) { img.src = "/static/img/pause.svg"; }
+            this.play();
         }
     },
 
