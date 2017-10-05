@@ -34,6 +34,7 @@ services:
     volumes:
       - /home/pierre/Documents/ACDC/:/library
       - ./static:/static
+      - .:/ManaZeak
     expose:
       - "8000"
       - "5432"
