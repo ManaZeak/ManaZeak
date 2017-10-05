@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
+from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
@@ -208,8 +209,9 @@ def changeMetaData(request):
         response = json.loads(request.body)
         # TODO: test with a table and see if "for in" works, if doesn't work create while loop
         if 'ID' in response:
-            if Track.objects.filter(id=response['ID']).count() == 1:
-                track = Track.objects.get(id=response['ID'])
+            trackId = strip_tags(response['ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
                 if 'TITLE' in response:
                     track.title = response['TITLE']
             else:
@@ -220,3 +222,24 @@ def changeMetaData(request):
                 return JsonResponse(data)
         else:
             badFormatError()
+
+
+def getTrackPathByID(request):
+    if request.method == 'POST':
+        response = json.load(request.body)
+        if 'ID' in response:
+            trackId = strip_tags(response['ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                data = {
+                    'PATH': track.location
+                }
+            else:
+                data = {
+                    'DONE': 'FAIL',
+                    'ERROR': 'DB error',
+                }
+
+        else:
+            badFormatError()
+        return JsonResponse(data)
