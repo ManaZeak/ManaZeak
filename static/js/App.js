@@ -1,4 +1,24 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                                     *
+ *  App class - ManaZeak main class, orchestrate all the front                         *
+ *                                                                                     *                                                                                     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var App = function() {
+
+    // App internal attributes
+    this.volumeLockId = -1;
+    this.isVolumeLocked = false;
+    this.cookies = getCookies();
+    // Objects
+    this.player      = new Player();
+    this.progressBar = new ProgressBar();
+    this.volumeBar   = new VolumeBar();
+    this.queue       = new Queue();
+    this.userMenu    = new UserMenu();
+    this.playlists   = [];
+    this.listsView   = [];
+
+
     // UI
     this.ui = {
         play: {
@@ -33,28 +53,6 @@ var App = function() {
             button:    document.getElementById("userExpander")
         }
     };
-
-    // Objects
-    this.player      = new Player();
-    this.progressBar = new ProgressBar();
-    this.volumeBar   = new VolumeBar();
-    this.queue       = new Queue();
-    this.userMenu    = new UserMenu();
-
-    // IDs
-    this.volumeLockId = -1;
-
-    // Flags
-    this.isVolumeLocked = false;
-
-    // Cookies
-    this.cookies = getCookies();
-
-    this.init();
-
-    /*
-        TODO: addVisibilityLock in Utils
-    */
 };
 
 App.prototype = {
@@ -62,39 +60,43 @@ App.prototype = {
     init: function() {
         var that = this;
 
-        this.keyListener(); // Loading shortcuts
-        this.eventListener(); // Loading events
-
-        JSONParsedGetRequest(
+        this._keyListener();   // Loading shortcuts
+        this._eventListener(); // Loading events
+        JSONParsedGetRequest( // Loading playlists
             "ajax/getPlaylists/",
             false,
             function(response) {
-                that.start(response);
+                that._appStart(response);
             }
         );
     },
 
 
-    start: function(playlists) {
-        // TODO : store playlist and list view in App object
-        if (playlists.RESULT === 0) {
-            var n = new Playlist(true, this.cookies, undefined, function() {
-                var tmp = new ListView(n.getTracks());
-            });
-        } else {
-            var that = this;
+    _appStart: function(playlists) {
+        var that = this;
 
+        if (playlists.RESULT !== 0) { // If user already have playlist(s)
             JSONParsedPostRequest(
                 "ajax/getPlaylistTracks/",
                 this.cookies,
                 JSON.stringify({
-                    ID: playlists.ID[0]
+                    ID: playlists.ID[0],
+                    SAVE: false
                 }),
-                function(responseText) {
-                    var n = new Playlist(false, that.cookies, responseText, undefined);
-                    var tmp = new ListView(n.getTracks());
+                function(response) {
+                    // TODO : store playlist and list view in App object
+                    // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
+                    that.playlists.push(new Playlist(playlists.ID, playlists.NAMES, false, that.cookies, response, undefined));
+                    that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                    new PlaylistBar(that.playlists);
+                    //console.log(that.playlists[0].getTracks());
                 }
             );
+        } else { // User first connection to the app
+            this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
+                that.listsView.push(new ListView(that.playlists[0].getTracks()));
+                new PlaylistBar(that.playlists);
+            }));
         }
     },
 
@@ -105,9 +107,7 @@ App.prototype = {
             this.progressBar.moveProgress(event, this.player.getPlayer());
             this.progressBar.addVisibilityLock();
             this.progressBar.timecodeProgressHover(event, this.player.getPlayer());
-        }
-
-        else if (this.progressBar.getIsMouseOver()) {
+        } else if (this.progressBar.getIsMouseOver()) {
             this.progressBar.timecodeProgressHover(event, this.player.getPlayer());
         }
 
@@ -128,6 +128,7 @@ App.prototype = {
             this.progressBar.moveProgress(event, this.player.getPlayer());
             this.player.mute();
         }
+
         if (!this.volumeBar.getIsDragging() &&
             (event.target.id === "volume" || event.target.id === "volumeBar" || event.target.id === "volumeThumb")) {
             this.volumeBar.setIsDragging(true);
@@ -147,6 +148,7 @@ App.prototype = {
             this.progressBar.setIsDragging(false);
             this.player.unmute();
         }
+
         if (this.volumeBar.getIsDragging()) {
             this.volumeBar.setIsDragging(false);
             this.volumeBar.toggleVisibilityLock();
@@ -223,12 +225,12 @@ App.prototype = {
 
     volumeUp: function(event) {
         this.volumeBar.addVisibilityLock();
+
         if (!this.isVolumeLocked) { // TODO : put bool in volumeBar
             this.isVolumeLocked = true;
         }
 
         this.player.volumeUp(event.ctrlKey, this.volumeBar);
-
         this.volumeBar.setVolume(this.player.getVolume() * 100);
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
@@ -241,7 +243,6 @@ App.prototype = {
         }
 
         this.player.volumeDown(event.ctrlKey, this.volumeBar);
-
         this.volumeBar.setVolume(this.player.getVolume() * 100);
         this.volumeBar.updateVolume(this.ui.mute.image);
     },
@@ -275,7 +276,7 @@ App.prototype = {
     },
 
 
-    keyListener: function() {
+    _keyListener: function() {
         var that = this;
 
         // Key pressed event
@@ -323,7 +324,7 @@ App.prototype = {
     },
 
 
-    eventListener: function() {
+    _eventListener: function() {
         var that = this;
         // Button event listeners
         this.ui.play.button.addEventListener("click", this.togglePlay.bind(this));
