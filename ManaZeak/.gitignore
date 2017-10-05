@@ -108,14 +108,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
-### Sass ###
-.sass-cache/
-*.css.map
-
-
 # End of https://www.gitignore.io/api/linux,pycharm,windows
 
 
 static/audio
-static/audio2
