@@ -105,8 +105,6 @@ ListView.prototype = {
 
 
     addEntries: function(tracks) {
-        var that = this;
-
         for (var i = 0; i < tracks.length ;++i)
             this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
     },
@@ -151,6 +149,7 @@ ListView.prototype = {
                     } else {
                         console.log(response);
                         window.app.player.changeTrack("../" + response.PATH);
+                        window.app.player.togglePlay();
                     }
                 }
             );
@@ -185,20 +184,6 @@ ListView.prototype = {
     },
 
 
-    collision: function(event) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (event.pageX > this.entries[i].boundingRect.x
-             && event.pageX < this.entries[i].boundingRect.x + this.entries[i].boundingRect.width
-             && event.pageY > this.entries[i].boundingRect.y
-             && event.pageY < this.entries[i].boundingRect.y + this.entries[i].boundingRect.height) {
-                return i;
-            }
-        }
-
-        return -1;
-    },
-
-
     computePositions: function() {
         for (i = 0; i < this.entries.length ;++i) {
             this.entries[i].computePosition();
@@ -217,12 +202,9 @@ ListView.prototype = {
     _eventListener: function() {
         var that = this;
 
-        //this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
-        //this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
+        this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
         this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
         this.listView.addEventListener("click", this.viewClicked.bind(this));
-
-//        this.contextMenu.getContextMenu().addEventListener("click", this.sendAttributesToContextMenu.bind(this));
 
         // Sorting listeners
         this.header.duration.addEventListener("click", function() {
