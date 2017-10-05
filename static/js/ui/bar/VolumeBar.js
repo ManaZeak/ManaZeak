@@ -5,10 +5,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var VolumeBar = function() {
     this.volumeBar = {
-        wrapper:   getById("volumeBarWrapper"),
-        container: getById("volumeBar"),
-        current:   getById("volume"),
-        thumb:     getById("volumeThumb")
+        wrapper:   document.getElementById("volumeBarWrapper"),
+        container: document.getElementById("volumeBar"),
+        current:   document.getElementById("volume"),
+        thumb:     document.getElementById("volumeThumb")
     };
     this.volume = 100; // Volume value is an int between 0 and 100
     this.isDragging = false;

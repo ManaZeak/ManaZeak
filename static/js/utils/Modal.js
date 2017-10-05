@@ -50,8 +50,8 @@ Modal.prototype = {
 
     initEditMetadata: function(entriesSelected) {
         if (entriesSelected.length === 1) { // TODO : from utils, modify here
-            getById("trackListContainer").parentNode.removeChild(getById("trackListContainer"));
-            getById("inputContainer").className += "inputStandAlone";
+            document.getElementById("trackListContainer").parentNode.removeChild(document.getElementById("trackListContainer"));
+            document.getElementById("inputContainer").className += "inputStandAlone";
         } else {
 
         }
@@ -64,7 +64,7 @@ Modal.prototype = {
 
 
     _eventListener: function() {
-        getById("cancel").addEventListener("click", this.close);
+        document.getElementById("cancel").addEventListener("click", this.close);
     },
 
 

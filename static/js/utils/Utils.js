@@ -69,11 +69,6 @@ function getByClass(string) {
 }
 
 
-function getById(string) {
-    return document.getElementById(string);
-}
-
-
 function getRequest(url, callback) {
     var xmlhttp = new XMLHttpRequest();
 
@@ -88,24 +83,14 @@ function getRequest(url, callback) {
 }
 
 
-function mkElem(type) {
-    return document.createElement(type);
-}
-
-
 function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
-    if (!object.className.match(className)) {
-        object.className += className;
-    }
+    object.classList.add(className);
 }
 
 
 function removeVisibilityLock(object, className) {
-    if (object.className.match(className)) {
-        object.className = object.className.replace(className, '');
-    }
+    object.classList.remove(className);
 }
-
 
 function JSONParsedGetRequest(url, http, callback) {
     var xmlhttp = new XMLHttpRequest();

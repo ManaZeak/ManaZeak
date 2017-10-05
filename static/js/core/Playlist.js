@@ -67,13 +67,13 @@ Playlist.prototype = {
             "components/newLibrary",
             true,
             function(response) {
-                getById("mainContainer").insertAdjacentHTML('beforeend', response);
+                document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
-                that.ui.infoLabel   = getById("infoLabel");
-                that.ui.name        = getById("name");
-                that.ui.path        = getById("path");
-                that.ui.convert     = getById("convert");
-                that.ui.scan        = getById("scan");
+                that.ui.infoLabel   = document.getElementById("infoLabel");
+                that.ui.name        = document.getElementById("name");
+                that.ui.path        = document.getElementById("path");
+                that.ui.convert     = document.getElementById("convert");
+                that.ui.scan        = document.getElementById("scan");
 
                 if (that.newLibrary) { // TODO : Typography style to set
                     that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
@@ -186,7 +186,7 @@ Playlist.prototype = {
         }
 
         if (this.newLibrary) {
-            getById("mainContainer").removeChild(getById("newLibrary"));
+            document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
             this.callback();
         }
     },

@@ -43,31 +43,31 @@ var ListView = function(tracks) {
 ListView.prototype = {
 
     init: function() {
-        this.listView = mkElem("div");
+        this.listView = document.createElement("div");
         this.listView.id ="listView";
 
         this.initColumnHeader();
         this._eventListener();
 
         this.addEntries(this.tracks);
-        getById("mainContainer").appendChild(this.listView);
+        document.getElementById("mainContainer").appendChild(this.listView);
         this.computePositions();
     },
 
 
     initColumnHeader: function() {
-        var columnBar = mkElem("div");
+        var columnBar = document.createElement("div");
         columnBar.className = "columnHeader";
 
-        this.header.duration  = mkElem("div");
-        this.header.title     = mkElem("div");
-        this.header.artist    = mkElem("div");
-        this.header.composer  = mkElem("div");
-        this.header.performer = mkElem("div");
-        this.header.album     = mkElem("div");
-        this.header.genre     = mkElem("div");
-        this.header.bitRate   = mkElem("div");
-        this.header.year      = mkElem("div");
+        this.header.duration  = document.createElement("div");
+        this.header.title     = document.createElement("div");
+        this.header.artist    = document.createElement("div");
+        this.header.composer  = document.createElement("div");
+        this.header.performer = document.createElement("div");
+        this.header.album     = document.createElement("div");
+        this.header.genre     = document.createElement("div");
+        this.header.bitRate   = document.createElement("div");
+        this.header.year      = document.createElement("div");
 
         this.header.duration.className    = "col-duration";
         this.header.title.className       = "col-title";

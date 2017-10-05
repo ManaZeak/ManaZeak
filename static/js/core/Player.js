@@ -4,7 +4,7 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var Player = function() {
-    this.player = getById("audioPlayer");
+    this.player = document.getElementById("audioPlayer");
     this.oldVolume = 0;
 
     this.isPlaying = false;

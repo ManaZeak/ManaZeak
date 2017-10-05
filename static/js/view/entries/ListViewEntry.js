@@ -4,21 +4,21 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ListViewEntry = function(track, listView) {
-    this.entry = mkElem("div");
+    this.entry = document.createElement("div");
 
     this.entry.id = "track" + track.id.track;
     this.entry.className = "trackContainer";
     this.track = track;
 
-    var duration        = mkElem("div");
-    var title           = mkElem("div");
-    var artist          = mkElem("div");
-    var composer        = mkElem("div");
-    var performer       = mkElem("div");
-    var album           = mkElem("div");
-    var genre           = mkElem("div");
-    var bitRate         = mkElem("div");
-    var year            = mkElem("div");
+    var duration        = document.createElement("div");
+    var title           = document.createElement("div");
+    var artist          = document.createElement("div");
+    var composer        = document.createElement("div");
+    var performer       = document.createElement("div");
+    var album           = document.createElement("div");
+    var genre           = document.createElement("div");
+    var bitRate         = document.createElement("div");
+    var year            = document.createElement("div");
 
     duration.className  = "col-duration";
     title.className     = "col-title";

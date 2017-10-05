@@ -197,14 +197,23 @@ App.prototype = {
 
 
     next: function() {
-        this.player.changeTrack("/static/audio/test.flac"); // New tracks to inject here
-        this.player.stopPlayback();
-        this.player.togglePlay();
+        JSONParsedPostRequest(
+            "ajax/getTrackPathByID/",
+            this.cookies,
+            JSON.stringify({
+                ID: this.ui.name.value,
+            }),
+            function(response) {
+                this.player.changeTrack("/static/audio/test.flac"); // TODO : New tracks to inject here
+                this.player.stopPlayback();
+                this.player.togglePlay();
+            }
+        );
     },
 
 
     previous: function() {
-        this.player.changeTrack("/static/audio/test2.mp3"); // Old tracks to inject here
+        this.player.changeTrack("/static/audio/test2.mp3"); // TODO : Old tracks to inject here
         this.player.stopPlayback();
         this.player.togglePlay();
     },
