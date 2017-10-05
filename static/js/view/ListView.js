@@ -130,13 +130,14 @@ ListView.prototype = {
     viewClicked: function(event) {
         var that = this;
         var target = event.target;
-        while(target.parentNode !== this.listView)
+        // TODO : fix when target is null => when user click outside left or right of the listview
+        while(target.parentNode !== this.listView) {
             target = target.parentNode;
+        }
 
         var id = target.dataset.listViewID;
-        if(this.dbl_click)
-        {
-            console.log(this.cookies);
+
+        if (this.dbl_click) {
             JSONParsedPostRequest(
                 "ajax/getTrackPathByID/",
                 this.cookies,
@@ -147,20 +148,23 @@ ListView.prototype = {
                     if (response.RESULT === "FAIL") {
                         new Notification("Bad format.", response.ERROR);
                     } else {
-                        console.log(response);
                         window.app.player.changeTrack("../" + response.PATH);
-                        window.app.player.togglePlay();
+                        window.app.player.play();
                     }
                 }
             );
+
             return;
         }
         this.dbl_click = true;
         window.setTimeout(function() { that.dbl_click = false; }, 400);
 
         var new_state = !this.entriesSelected[id];
-        if(!event.ctrlKey && new_state === true)
+
+        if (!event.ctrlKey && new_state === true) {
             this.unselectAll();
+        }
+
         this.entriesSelected[id] = new_state;
         this.entries[id].setIsSelected(new_state);
     },

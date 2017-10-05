@@ -82,16 +82,21 @@ ProgressBar.prototype = {
 
 
     toggleRefreshInterval: function(track) {
-        var that = this;
-
         if (this.refreshIntervalId === -1) {
-            this.refreshIntervalId = setInterval(function() {
-                that.updateProgress(track);
-            }, 1000);
+            this.startRefreshInterval(track);
         } else {
-            clearInterval(this.refreshIntervalId);
+            this.stopRefreshInterval();
             this.refreshIntervalId = -1;
         }
+    },
+
+
+    startRefreshInterval: function(track) {
+        var that = this;
+
+        this.refreshIntervalId = setInterval(function() {
+            that.updateProgress(track);
+        }, 1000);
     },
 
 
