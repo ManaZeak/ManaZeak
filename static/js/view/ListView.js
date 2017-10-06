@@ -9,7 +9,7 @@ var ListView = function(tracks, cookies) {
     this.cookies = cookies;
     this.entries = [];
     this.entriesSelected = {};
-    this.dbl_click = false;
+    this.dblClick = false;
 
     this.contextMenu = new ContextMenu();
 
@@ -47,7 +47,7 @@ ListView.prototype = {
         this.listView = document.createElement("div");
         this.listView.id ="listView";
 
-        this.initColumnHeader();
+        this.initHeader();
         this._eventListener();
 
         this.addEntries(this.tracks);
@@ -56,7 +56,7 @@ ListView.prototype = {
     },
 
 
-    initColumnHeader: function() {
+    initHeader: function() {
         var columnBar = document.createElement("div");
         columnBar.className = "columnHeader";
 
@@ -127,6 +127,7 @@ ListView.prototype = {
         this.computePositions();
     },
 
+
     viewClicked: function(event) {
         var that = this;
         var target = event.target;
@@ -137,7 +138,7 @@ ListView.prototype = {
 
         var id = target.dataset.listViewID;
 
-        if (this.dbl_click) {
+        if (this.dblClick) {
             JSONParsedPostRequest(
                 "ajax/getTrackPathByID/",
                 this.cookies,
@@ -156,27 +157,29 @@ ListView.prototype = {
 
             return;
         }
-        this.dbl_click = true;
-        window.setTimeout(function() { that.dbl_click = false; }, 400);
+        this.dblClick = true;
+        window.setTimeout(function() { that.dblClick = false; }, 400);
 
-        var new_state = !this.entriesSelected[id];
+        var newState = !this.entriesSelected[id];
 
-        if (!event.ctrlKey && new_state === true) {
-            this.unselectAll();
-        }
+        if (!event.ctrlKey && newState === true) { this.unselectAll(); }
 
-        this.entriesSelected[id] = new_state;
-        this.entries[id].setIsSelected(new_state);
+        this.entriesSelected[id] = newState;
+        this.entries[id].setIsSelected(newState);
     },
+
 
     toggleContextMenu: function(event) {
         var target = event.target;
-        while(target.parentNode !== this.listView && target.tagName !== 'BODY')
+
+        while (target.parentNode !== this.listView && target.tagName !== 'BODY') {
             target = target.parentNode;
-        if(target.tagName === 'BODY')
-            return false;
+        }
+
+        if (target.tagName === 'BODY') { return false; }
 
         var id = target.dataset.listViewID;
+        
         if (!this.entries[id].getIsSelected()) {
             this.unselectAll();
             this.entries[id].setIsSelected(true);
