@@ -6,7 +6,7 @@ import threading
 
 from django.http.response import JsonResponse
 from django.utils.html import strip_tags
-from mutagen.id3 import ID3
+from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3
 
 from app.models import Track, Artist, Album, FileType, Genre
@@ -83,7 +83,10 @@ def scanLibrary(library, playlist, convert):
 
 def addAllGenreAndAlbumAndArtistsMP3(filePaths):
     for filePath in filePaths:
-        audioTag = ID3(filePath)
+        try:
+            audioTag = ID3(filePath)
+        except ID3NoHeaderError:
+            audioTag = ID3()
         # --- Adding genre to DB ---
         if 'TCON' in audioTag:
             genreName = audioTag['TCON'].text[0]
@@ -123,11 +126,14 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track.fileType = fileTypeId
 
     # --- FILE TAG ---
-    audioTag = ID3(path)
-    if convert:
-        audioTag.update_to_v24()
-        audioTag.save()
-    audioTag = ID3(path)
+    try:
+        audioTag = ID3(path)
+        if convert:
+            audioTag.update_to_v24()
+            audioTag.save()
+        audioTag = ID3(path)
+    except ID3NoHeaderError:
+        audioTag = ID3()
 
     # --- COVER ---
     if 'APIC:' in audioTag:
