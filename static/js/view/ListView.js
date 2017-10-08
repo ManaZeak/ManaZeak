@@ -149,6 +149,7 @@ ListView.prototype = {
                     if (response.RESULT === "FAIL") {
                         new Notification("Bad format.", response.ERROR);
                     } else {
+                        window.app.trackPreview.changeTrack(that.entries[id].track);
                         window.app.player.changeTrack("../" + response.PATH);
                         window.app.player.play();
                     }

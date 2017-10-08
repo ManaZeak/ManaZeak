@@ -2806,17 +2806,17 @@
   height: 80px;
   position: absolute;
   width: 100%; }
-  #footBar #metadataContainer {
+  #footBar #trackPreview {
     box-sizing: border-box;
     float: left;
     width: 30%;
     height: 100%;
     position: relative;
     padding-left: 50px; }
-    #footBar #metadataContainer img {
+    #footBar #trackPreview img {
       height: 80px;
       width: 80px; }
-    #footBar #metadataContainer ul {
+    #footBar #trackPreview ul {
       display: inline-block;
       font-size: 0.8em;
       margin: 0;

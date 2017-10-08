@@ -8,11 +8,11 @@ var App = function() {
     // App internal attributes
     this.cookies = getCookies();
     // Objects
-    this.player      = new Player();
-    this.userMenu    = new UserMenu();
-    this.playlists   = [];
-
-    this.listsView   = [];
+    this.player       = new Player();
+    this.trackPreview = new TrackPreview();
+    this.userMenu     = new UserMenu();
+    this.playlists    = [];
+    this.listsView    = [];
 
 
     // UI
