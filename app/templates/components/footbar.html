@@ -4,16 +4,16 @@
     <!--<div id="spectrumContainer"> <!-- Bc of float left, this must be before other divs -->
 
     <!--</div> -->
-    <div id="metadataContainer">
+    <div id="trackPreview">
         <div class="tooltipWrapper">
-            <img src="{% static "img/cover.jpg" %}" alt="">
+            <img src="{% static "img/cover.jpg" %}" alt="" id="trackPreviewCover">
             <span class="tooltipCover"><img src="{% static "img/cover.jpg" %}" alt=""></span>
         </div>
         <ul>
-            <li>404</li>
-            <li>Knife Party</li>
-            <li>Abandon Ship [LP]</li>
-            <li><span>2014</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span>Complextro</span></li>
+            <li id="trackPreviewTitle">404</li>
+            <li id="trackPreviewArtist">Knife Party</li>
+            <li id="trackPreviewAlbum">Abandon Ship [LP]</li>
+            <li><span id="trackPreviewYear">2014</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="trackPreviewGenre">Complextro</span></li>
         </ul>
     </div>
     <div id="controlsContainer">
