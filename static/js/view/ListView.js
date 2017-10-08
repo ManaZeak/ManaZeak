@@ -149,7 +149,10 @@ ListView.prototype = {
                     if (response.RESULT === "FAIL") {
                         new Notification("Bad format.", response.ERROR);
                     } else {
-                        window.app.trackPreview.changeTrack(that.entries[id].track);
+                        var cover = response.COVER;
+                        if (cover === undefined) { cover = "../static/img/cover.jpg"; }
+
+                        window.app.trackPreview.changeTrack(that.entries[id].track, cover);
                         window.app.player.changeTrack("../" + response.PATH);
                         window.app.player.play();
                     }

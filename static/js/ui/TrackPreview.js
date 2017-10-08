@@ -18,8 +18,9 @@ var TrackPreview = function() {
 
 TrackPreview.prototype = {
 
-    changeTrack: function(track) {
+    changeTrack: function(track, cover) {
         // TODO : handle cover
+        this.ui.cover.src = cover;
         this.ui.title.innerHTML = track.title;
         this.ui.artist.innerHTML = track.artist;
         this.ui.album.innerHTML = track.album;
