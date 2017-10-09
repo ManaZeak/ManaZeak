@@ -49,7 +49,7 @@ var Player = function() {
             image:  document.getElementById("imageQueueExpander")
         },
         userExpander: {
-            button:    document.getElementById("userExpander")
+            button: document.getElementById("userExpander")
         }
     };
 
@@ -95,11 +95,12 @@ Player.prototype = {
     stopPlayback: function() {
         this.pause();
         this.isPlaying = !this.isPlaying;
-        this.currentTime = 0;
-        this.progressBar.updateProgress(this.player);
+        this.player.currentTime = 0;
         this.progressBar.stopRefreshInterval();
-        this.ui.play.image.src = "/static/img/play.svg";
+        this.progressBar.resetProgressBar();
 
+        this.ui.play.image.src = "/static/img/play.svg";
+        window.app.trackPreview.setInvisible();
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
         // TODO : Make a real stop feature ...
