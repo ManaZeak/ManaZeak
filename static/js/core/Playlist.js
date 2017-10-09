@@ -141,6 +141,7 @@ Playlist.prototype = {
 
     _scanLibrary: function(id) {
         var that = this;
+        console.log("Scanning library -- in progress");
 
         JSONParsedPostRequest(
             "ajax/rescan/",
@@ -154,6 +155,7 @@ Playlist.prototype = {
                      // TODO : put href to view more (file list for ex)
                     new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
                 } else {
+                    console.log("Scanning library -- done");
                     that._getTracksFromServer(response.ID);
                 }
             }
@@ -163,15 +165,17 @@ Playlist.prototype = {
 
     _getTracksFromServer: function(id) {
         var that = this;
+        console.log("Tracks received from server -- in progress");
 
         JSONParsedPostRequest(
-            "ajax/getPlaylistTracks/",
+            "ajax/getSimplifiedTracks/",
             this.cookies,
             JSON.stringify({
                 ID: id,
                 SAVE: true
             }),
             function(response) {
+                console.log("Tracks received from server -- done");
                 that.rawTracks = response;
                 that.scanModal.close();
                 that._fillTracks(that.rawTracks);
