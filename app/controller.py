@@ -63,6 +63,7 @@ def scanLibrary(library, playlist, convert):
     # TODO: if trackPath is null, return an error
     print("indexed all files")
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    print("Added DB structure")
     trackPath = splitTable(mp3Files)
     threads = []
     # saving all the library to base
@@ -70,8 +71,10 @@ def scanLibrary(library, playlist, convert):
         threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
     for thread in threads:
         thread.start()
+    print("launched scanning threads")
     for thread in threads:
         thread.join()
+    print("ended scanning")
     library.playlist = playlist
     library.save()
     tracks = playlist.track.all()
@@ -263,7 +266,6 @@ class ImportMp3Thread(threading.Thread):
         self.coverPath = coverPath
 
     def run(self):
-        print(self.mp3Paths)
         for path in self.mp3Paths:
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 

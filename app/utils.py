@@ -1,9 +1,7 @@
-import hashlib
-import os
-
 import binascii
-
+import hashlib
 import math
+import os
 import threading
 
 from django.contrib.auth.decorators import login_required
@@ -46,6 +44,46 @@ def checkIfNotNoneNumber(trackAttribute):
         return str(trackAttribute)
     else:
         return "\"null\""
+
+
+def exportPlaylistToSimpleJson(playlist):
+    tracks = playlist.track.all
+    finalData = "["
+    for track in tracks:
+        finalData += "{ \"ID\":"
+        finalData += str(track.id)
+        finalData += ", \"TITLE\":\""
+        finalData += checkIfNotNone(track.title)
+        finalData += "\", \"YEAR\":"
+        finalData += checkIfNotNoneNumber(track.year)
+        finalData += ", \"COMPOSER\":\""
+        finalData += checkIfNotNone(track.composer)
+        finalData += "\", \"PERFORMER\":\""
+        finalData += checkIfNotNone(track.performer)
+        finalData += "\", \"BITRATE\":"
+        finalData += checkIfNotNoneNumber(track.bitRate)
+        finalData += "\", \"ARTISTS\":["
+        for artist in track.artist.all():
+            finalData += "{\"ID\":"
+            finalData += str(artist.id)
+            finalData += ", \"NAME\":\""
+            finalData += checkIfNotNone(artist.name)
+            finalData += "\"},"
+        finalData = finalData[:-1]
+        finalData += "], \"ALBUM\": { "
+        if track.album is not None:
+            finalData += "\"ID\":"
+            finalData += checkIfNotNoneNumber(track.album.id)
+            finalData += ", \"TITLE\":\""
+        finalData += "}, \"GENRE\":\""
+        if track.genre is not None:
+            finalData += checkIfNotNone(track.genre.name)
+        else:
+            finalData += "null"
+        finalData += "},"
+    finalData = finalData[:-1]
+    finalData += "]"
+    return finalData
 
 
 def exportPlaylistToJson(playlist):
@@ -114,10 +152,10 @@ def exportPlaylistToJson(playlist):
                 finalData += ", \"NAME\":\""
                 finalData += checkIfNotNone(artist.name)
                 finalData += "\"},"
+            finalData = finalData[:-1]
+            finalData += "]}},"
         else:
-            finalData += "\"ID\":\"null\"}"
-        finalData = finalData[:-1]
-        finalData += "]}},"
+            finalData += "\"ID\":\"null\"}},"
     finalData = finalData[:-1]
     finalData += "]"
     return finalData

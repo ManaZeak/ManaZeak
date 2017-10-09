@@ -14,7 +14,7 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, badFormatError
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre
-from app.utils import exportPlaylistToJson, populateDB
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson
 
 
 class mainView(ListView):
@@ -141,6 +141,25 @@ def getUserPlaylists(request):
 def logoutView(request):
     logout(request)
     return render(request, 'user/login.html')
+
+
+def loadSimplifiedLibrary(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'ID' not in response:
+            badFormatError()
+        if Playlist.objects.filter(id=response['ID']).count() == 1:
+            playlist = Playlist.objects.get(id=response['ID'])
+            tracks = exportPlaylistToSimpleJson(playlist)
+            with open("Output.txt", "w") as text_file:
+                text_file.write("%s" % tracks)
+            return HttpResponse(tracks)
+        else:
+            data = {
+                'RESULT': 'FAIL',
+                'ERROR': 'DB error',
+            }
+            return JsonResponse(data)
 
 
 def loadAllLibrary(request):
