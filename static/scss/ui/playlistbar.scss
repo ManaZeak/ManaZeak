@@ -9,8 +9,13 @@
         margin: 0;
         padding: 0 15px;
         line-height: 40px;
+        cursor: pointer;
+
+        transition: 0.2s ease;
     }
 
+    p:active,
+    p:focus,
     p:hover {
         border-bottom: solid 3px blue;
     }
