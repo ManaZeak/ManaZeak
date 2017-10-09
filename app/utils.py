@@ -47,7 +47,8 @@ def checkIfNotNoneNumber(trackAttribute):
 
 
 def exportPlaylistToSimpleJson(playlist):
-    tracks = playlist.track.all
+    tracks = playlist.track.all()
+    print("id" + str(playlist.id))
     finalData = "["
     for track in tracks:
         finalData += "{ \"ID\":"
@@ -60,9 +61,11 @@ def exportPlaylistToSimpleJson(playlist):
         finalData += checkIfNotNone(track.composer)
         finalData += "\", \"PERFORMER\":\""
         finalData += checkIfNotNone(track.performer)
-        finalData += "\", \"BITRATE\":"
+        finalData += "\", \"DURATION\":"
+        finalData += checkIfNotNoneNumber(track.duration)
+        finalData += ", \"BITRATE\":"
         finalData += checkIfNotNoneNumber(track.bitRate)
-        finalData += "\", \"ARTISTS\":["
+        finalData += ", \"ARTISTS\":["
         for artist in track.artist.all():
             finalData += "{\"ID\":"
             finalData += str(artist.id)
@@ -75,14 +78,16 @@ def exportPlaylistToSimpleJson(playlist):
             finalData += "\"ID\":"
             finalData += checkIfNotNoneNumber(track.album.id)
             finalData += ", \"TITLE\":\""
-        finalData += "}, \"GENRE\":\""
+            finalData += checkIfNotNone(track.album.title)
+        finalData += "\"}, \"GENRE\":\""
         if track.genre is not None:
             finalData += checkIfNotNone(track.genre.name)
         else:
             finalData += "null"
-        finalData += "},"
+        finalData += "\"},"
     finalData = finalData[:-1]
     finalData += "]"
+    print(finalData)
     return finalData
 
 

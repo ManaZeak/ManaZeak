@@ -81,10 +81,10 @@ def scanLibrary(library, playlist, convert):
     splicedTracks = splitTable(tracks)
     threads = []
     # generating CRC checksum
-    for tracks in splicedTracks:
-        threads.append(CRCGenerator(tracks))
-    for thread in threads:
-        thread.start()
+    #for tracks in splicedTracks:
+    #    threads.append(CRCGenerator(tracks))
+    #for thread in threads:
+    #    thread.start()
     data = {
         'DONE': 'OK',
         'ID': playlist.id,
@@ -271,7 +271,6 @@ class ImportMp3Thread(threading.Thread):
 
 
 def splitTable(table):
-    print(table)
     if len(table) % 4 == 0:
         chunkSize = int(len(table) / 4)
     else:

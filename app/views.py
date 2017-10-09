@@ -28,6 +28,7 @@ class mainView(ListView):
 
 
 def initialScan(request):
+    print("asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
         library = None
@@ -51,6 +52,7 @@ def initialScan(request):
         playlist.isLibrary = True
         playlist.save()
         data = scanLibrary(library, playlist, convert)
+        print("ended initial scan")
     else:
         data = {
             'DONE': 'FAIL',
