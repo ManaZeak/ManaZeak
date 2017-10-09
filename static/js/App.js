@@ -55,7 +55,7 @@ App.prototype = {
                 function(response) {
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     for (var i = 0; i < playlists.RESULT; ++i) {
-                        that.playlists.push(new Playlist(playlists.ID[i], playlists.NAMES[i], false, that.cookies, response, undefined));
+                        that.playlists.push(new Playlist(playlists.ID[i], playlists.NAMES[i], false, true, that.cookies, response, undefined));
                     }
 
                     that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
@@ -63,7 +63,7 @@ App.prototype = {
                 }
             );
         } else { // User first connection to the app
-            this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
+            this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
                 that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
                 console.log(that.playlists);
                 new PlaylistBar(that.playlists);
@@ -79,8 +79,8 @@ App.prototype = {
            this.ui.mainContainer.removeChild(this.ui.mainContainer.firstChild);
         }
 
-        this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
-                that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
+        this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
+                that.listsView.push(new ListView(that.playlists[that.playlists.length - 1].getTracks(), that.cookies));
                 new PlaylistBar(that.playlists);
         }));
     },
