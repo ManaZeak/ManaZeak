@@ -150,7 +150,7 @@ ListView.prototype = {
                         new Notification("Bad format.", response.ERROR);
                     } else {
                         var cover = response.COVER;
-                        if (cover === undefined) { cover = "../static/img/cover.jpg"; }
+                        if (cover === null || cover === undefined) { cover = "../static/img/cover.jpg"; }
 
                         window.app.trackPreview.changeTrack(that.entries[id].track, cover);
                         window.app.player.changeTrack("../" + response.PATH);
