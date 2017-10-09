@@ -25,9 +25,17 @@ def badFormatError():
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    coverPath = "/home/squadella/Documents/covers/"  # TODO: to be defined with docker or with the front
+    coverPath = "/ManaZeak/static/img/covers/"  # TODO: to be defined with docker or with the front
     if not os.path.isdir(coverPath):
-        os.makedirs(coverPath)
+        try:
+            os.makedirs(coverPath)
+        except OSError:
+            print("error")
+            data = {
+                'DONE': 'FAIL',
+                'ERROR': 'Can\'t create cover path',
+            }
+            return data
 
     mp3ID = FileType.objects.get(name="mp3")
     mp3Files = []
@@ -53,6 +61,7 @@ def scanLibrary(library, playlist, convert):
                 failedItems.append(file)
 
     # TODO: if trackPath is null, return an error
+    print("indexed all files")
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
     trackPath = splitTable(mp3Files)
     threads = []

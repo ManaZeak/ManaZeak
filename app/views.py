@@ -232,7 +232,8 @@ def getTrackPathByID(request):
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 data = {
-                    'PATH': track.location
+                    'PATH': track.location,
+                    'COVER': track.coverLocation
                 }
             else:
                 data = {
