@@ -154,7 +154,7 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
         if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
             with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                 img.write(front)
-        track.coverLocation = md5Name.hexdigest() + ".jpg"
+        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = strip_tags(audioTag['TIT2'].text[0])
