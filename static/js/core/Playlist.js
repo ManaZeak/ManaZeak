@@ -10,7 +10,7 @@
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(id, name, newLibrary, cookies, tracks, callback) {
+var Playlist = function(id, name, newLibrary, load, cookies, tracks, callback) {
 
     // NewLibrary relative attributes, useless if newLibrary = false
     this.ui = {
@@ -25,6 +25,7 @@ var Playlist = function(id, name, newLibrary, cookies, tracks, callback) {
 
     // Playlist internal attributes
     this.name = name;
+    this.load = load;
     this.tracks = [];
     this.isLibrary = false;
 
@@ -54,8 +55,8 @@ var Playlist = function(id, name, newLibrary, cookies, tracks, callback) {
 Playlist.prototype = {
 
     _init: function() {
-        if (this.newLibrary) { this._newLibrary(); } // Library creation process
-        else { this._loadLibrary(); }                // Library loading process
+        if (this.load) { this._loadLibrary(); } // Library creation process
+        else { this._newLibrary(); }                // Library loading process
     },
 
 
