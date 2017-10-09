@@ -123,6 +123,11 @@ ProgressBar.prototype = {
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML = "--:--";
         this.duration.hover.innerHTML = "--:--";
+
+        this.progressBar.current.style.width = 0 + "%";
+        this.progressBar.thumb.style.marginLeft = 0 + "%";
+
+        this.stopRefreshInterval();
     },
 
 

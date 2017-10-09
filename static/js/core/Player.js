@@ -83,7 +83,7 @@ Player.prototype = {
 
 
     // Player controls
-    togglePlay: function(img) {
+    togglePlay: function() {
         if (this.isPlaying) {
             this.pause();
         } else {
