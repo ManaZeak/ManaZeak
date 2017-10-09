@@ -6,8 +6,8 @@
     <!--</div> -->
     <div id="trackPreview">
         <div class="tooltipWrapper">
-            <img src="{% static "img/cover.jpg" %}" alt="" id="trackPreviewCover">
-            <span class="tooltipCover"><img src="{% static "img/cover.jpg" %}" alt=""></span>
+            <img src="{% static "img/covers/default.jpg" %}" alt="" id="trackPreviewCover">
+            <span class="tooltipCover"><img src="{% static "img/covers/default.jpg" %}" alt="" id="trackPreviewThumb"></span>
         </div>
         <ul>
             <li id="trackPreviewTitle">404</li>
@@ -18,13 +18,13 @@
     </div>
     <div id="controlsContainer">
         <div id="half">
-            <a id="buttonRepeat"><img src="{% static "img/repeat.svg" %}" id="imageRepeat" alt=""></a>
-            <a id="buttonPrevious"><img src="{% static "img/previous.svg" %}" id="imagePrevious" alt=""></a>
-            <a id="buttonPlay"><img src="{% static "img/play.svg" %}" id="imagePlay" alt=""></a>
-            <a id="buttonStop"><img src="{% static "img/stop.svg" %}" id="imageStop" alt=""></a>
-            <a id="buttonNext"><img src="{% static "img/next.svg" %}" id="imageNext" alt=""></a>
+            <a id="buttonRepeat"><img src="{% static "img/player/repeat.svg" %}" id="imageRepeat" alt=""></a>
+            <a id="buttonPrevious"><img src="{% static "img/player/previous.svg" %}" id="imagePrevious" alt=""></a>
+            <a id="buttonPlay"><img src="{% static "img/player/play.svg" %}" id="imagePlay" alt=""></a>
+            <a id="buttonStop"><img src="{% static "img/player/stop.svg" %}" id="imageStop" alt=""></a>
+            <a id="buttonNext"><img src="{% static "img/player/next.svg" %}" id="imageNext" alt=""></a>
             <a id="buttonMute">
-                <img src="{% static "img/volume.svg" %}" id="imageMute" alt="" />
+                <img src="{% static "img/player/volume.svg" %}" id="imageMute" alt="" />
                 <div id="volumeBarWrapper">
                     <div id="volumeBar">
                         <div id="volume"></div>
@@ -33,7 +33,7 @@
                 </div>
             </a>
             <div id="queueExpander">
-                <img src="{% static "img/menu.svg" %}" id="imageQueueExpander" alt="">
+                <img src="{% static "img/player/menu.svg" %}" id="imageQueueExpander" alt="">
                 <div id="queue">
 
                 </div>

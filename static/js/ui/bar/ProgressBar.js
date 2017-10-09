@@ -81,16 +81,6 @@ ProgressBar.prototype = {
     },
 
 
-    toggleRefreshInterval: function(track) {
-        if (this.refreshIntervalId === -1) {
-            this.startRefreshInterval(track);
-        } else {
-            this.stopRefreshInterval();
-            this.refreshIntervalId = -1;
-        }
-    },
-
-
     startRefreshInterval: function(track) {
         var that = this;
 
@@ -126,6 +116,13 @@ ProgressBar.prototype = {
         } else {
             this.isInverted = !this.isInverted;
         }
+    },
+
+
+    resetProgressBar: function() {
+        this.duration.current.innerHTML = "--:--";
+        this.duration.total.innerHTML = "--:--";
+        this.duration.hover.innerHTML = "--:--";
     },
 
 
