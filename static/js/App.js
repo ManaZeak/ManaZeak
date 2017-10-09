@@ -17,6 +17,7 @@ var App = function() {
 
     // UI
     this.ui = {
+        mainContainer: document.getElementById("mainContainer"),
         userExpander: {
             button:    document.getElementById("userExpander")
         }
@@ -50,22 +51,38 @@ App.prototype = {
                 JSON.stringify({ // TODO : replace stringify w/ vanilla json requeest
                     ID: playlists.ID[0],
                     SAVE: false
-                }),
+                }), // TODO : set selected PlaylistBar item with solid border
                 function(response) {
-                    // TODO : store playlist and list view in App object
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    that.playlists.push(new Playlist(playlists.ID, playlists.NAMES, false, that.cookies, response, undefined));
+                    for (var i = 0; i < playlists.RESULT; ++i) {
+                        that.playlists.push(new Playlist(playlists.ID[i], playlists.NAMES[i], false, that.cookies, response, undefined));
+                    }
+
                     that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
                     new PlaylistBar(that.playlists);
-                    //console.log(that.playlists[0].getTracks());
                 }
             );
         } else { // User first connection to the app
             this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
                 that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
+                console.log(that.playlists);
                 new PlaylistBar(that.playlists);
             }));
         }
+    },
+
+
+    requestNewPlaylist: function() {
+        var that = this;
+
+        while (this.ui.mainContainer.firstChild) {
+           this.ui.mainContainer.removeChild(this.ui.mainContainer.firstChild);
+        }
+
+        this.playlists.push(new Playlist(0, null, true, this.cookies, undefined, function() {
+                that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
+                new PlaylistBar(that.playlists);
+        }));
     },
 
 

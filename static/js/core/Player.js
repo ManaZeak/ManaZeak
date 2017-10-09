@@ -68,7 +68,7 @@ Player.prototype = {
 
     play: function() {
         this.isPlaying = true;
-        this.ui.play.image.src = "/static/img/pause.svg";
+        this.ui.play.image.src = "/static/img/player/pause.svg";
         this.progressBar.startRefreshInterval(this.player);
         this.player.play();
     },
@@ -76,7 +76,7 @@ Player.prototype = {
 
     pause: function() {
         this.isPlaying = false;
-        this.ui.play.image.src = "/static/img/play.svg";
+        this.ui.play.image.src = "/static/img/player/play.svg";
         this.progressBar.stopRefreshInterval();
         this.player.pause();
     },
@@ -99,7 +99,7 @@ Player.prototype = {
         this.progressBar.stopRefreshInterval();
         this.progressBar.resetProgressBar();
 
-        this.ui.play.image.src = "/static/img/play.svg";
+        this.ui.play.image.src = "/static/img/player/play.svg";
         window.app.trackPreview.setInvisible();
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
