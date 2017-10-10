@@ -46,6 +46,9 @@ var Playlist = function(id, name, newLibrary, load, cookies, tracks, callback) {
     } else {
         this.callback = null;
     }
+    // Set interval for _scan function
+    this.refreshIntervalId = -1;
+
 
 
     this._init(); // Playlist initialization
@@ -147,26 +150,51 @@ Playlist.prototype = {
 
     _scanLibrary: function(id) {
         var that = this;
+
+        this.refreshIntervalId = setInterval(function() {
+            that._scanLibrary_aux();
+        }, 5000); // every 5s
+    },
+
+
+    _scanLibrary_aux: function() {
+        var that = this;
         console.log("Scanning library -- in progress");
 
         JSONParsedPostRequest(
-            "ajax/rescan/",
+            "ajax/checkLibraryScan/",
             this.cookies,
             JSON.stringify({
-                ID:      id,
-                CONVERT: this.ui.convert.checked
+                ID:      id
             }),
             function(response) {
                 if (response.DONE === "FAIL") {
-                     // TODO : put href to view more (file list for ex)
                     new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
                 } else {
-                    console.log("Scanning library -- done");
-                    that._getTracksFromServer(response.ID);
+                    var self = that;
+
+                    JSONParsedPostRequest(
+                        "ajax/rescan/",
+                        that.cookies,
+                        JSON.stringify({
+                            ID:      id,
+                            CONVERT: that.ui.convert.checked
+                        }),
+                        function(response) {
+                            if (response.DONE === "FAIL") {
+                                 // TODO : put href to view more (file list for ex)
+                                new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
+                            } else {
+                                console.log("Scanning library -- done");
+                                self._getTracksFromServer(response.ID);
+                            }
+                        }
+                    );
                 }
             }
         );
     },
+
 
 
     _getTracksFromServer: function(id) {
