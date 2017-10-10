@@ -11,6 +11,7 @@ var App = function() {
     this.player       = new Player();
     this.trackPreview = new TrackPreview();
     this.userMenu     = new UserMenu();
+    this.topbar       = new TopBar();
     this.playlists    = [];
     this.listsView    = [];
 
