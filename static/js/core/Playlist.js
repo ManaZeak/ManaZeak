@@ -46,9 +46,9 @@ var Playlist = function(id, name, newLibrary, load, cookies, tracks, callback) {
     } else {
         this.callback = null;
     }
-    // Set interval for _scan function
-    this.refreshIntervalId = -1;
 
+    // Interval id for _getTracksFromServer_aux
+    this.refreshIntervalId = -1;
 
 
     this._init(); // Playlist initialization
@@ -71,8 +71,6 @@ Playlist.prototype = {
             "components/newLibrary",
             true,
             function(response) {
-                // TODO : check response (new modal that asks user to refresh the page)
-
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
                 that.ui.infoLabel   = document.getElementById("infoLabel");
@@ -152,67 +150,70 @@ Playlist.prototype = {
 
     _scanLibrary: function(id) {
         var that = this;
-
-        this.refreshIntervalId = setInterval(function() {
-            that._scanLibrary_aux(id);
-        }, 5000); // every 5s
-    },
-
-
-    _scanLibrary_aux: function(id) {
-        var that = this;
         console.log("Scanning library -- in progress");
 
         JSONParsedPostRequest(
-            "ajax/checkLibraryScan/",
+            "ajax/rescan/",
             this.cookies,
             JSON.stringify({
-                ID:      id
+                ID:      id,
+                CONVERT: this.ui.convert.checked
             }),
             function(response) {
-                if (response.DONE === "TRUE") { // Database scan is over
-                    var self = that;
-
-                    JSONParsedPostRequest(
-                        "ajax/rescan/",
-                        that.cookies,
-                        JSON.stringify({
-                            ID:      id,
-                            CONVERT: that.ui.convert.checked
-                        }),
-                        function(response) {
-                            if (response.DONE === "FAIL") {
-                                 // TODO : put href to view more (file list for ex)
-                                new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
-                            } else {
-                                console.log("Scanning library -- done");
-                                self._getTracksFromServer(response.ID);
-                            }
-                        }
-                    );
+                if (response.DONE === true) {
+                     // TODO : put href to view more (file list for ex)
+                    console.log("Scanning library -- done");
+                    that._getTracksFromServer(response.ID);
                 }
             }
         );
     },
 
 
-
     _getTracksFromServer: function(id) {
         var that = this;
-        console.log("Tracks received from server -- in progress");
+
+        this.refreshIntervalId = setInterval(function() {
+            console.log("Tracks received from server -- in progress");
+            that._getTracksFromServer_aux(id);
+        }, 5000); // every 5s
+    },
+
+
+    _getTracksFromServer_aux: function(id) {
+        console.log("_getTracksFromServer_aux() called");
+        var that = this;
 
         JSONParsedPostRequest(
-            "ajax/getSimplifiedTracks/",
+            "ajax/checkLibraryScan/",
             this.cookies,
             JSON.stringify({
-                ID: id,
-                SAVE: true
+                ID: id
             }),
             function(response) {
-                console.log("Tracks received from server -- done");
-                that.rawTracks = response;
-                that.scanModal.close();
-                that._fillTracks(that.rawTracks);
+                var self = that;
+
+                if (response.DONE === true) {
+                    clearInterval(this.refreshIntervalId);
+                    this.refreshIntervalId = -1;
+
+                    JSONParsedPostRequest(
+                        "ajax/getSimplifiedTracks/",
+                        that.cookies,
+                        JSON.stringify({
+                            ID: id,
+                            SAVE: true
+                        }),
+                        function(response) {
+                            console.log("Tracks received from server -- done");
+                            self.rawTracks = response;
+                            self.scanModal.close();
+                            self._fillTracks(self.rawTracks);
+                        }
+                    );
+                }
+
+
             }
         );
     },
