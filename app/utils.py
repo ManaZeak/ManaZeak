@@ -5,6 +5,7 @@ import os
 import threading
 
 from django.contrib.auth.decorators import login_required
+from django.http.response import JsonResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -357,3 +358,12 @@ class CRCGenerator(threading.Thread):
             track.CRC = "%08X" % buf
             print("CRC = " + track.CRC)
             track.save()
+
+
+class ResponseThread(threading.Thread):
+    def __init__(self, text):
+        threading.Thread.__init__(self)
+        self.text = text
+
+    def run(self):
+        return JsonResponse(self.text)
