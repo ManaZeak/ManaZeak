@@ -1,5 +1,4 @@
 import hashlib
-import json
 import math
 import os
 import threading
@@ -10,10 +9,12 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3
 
 from app.models import Track, Artist, Album, FileType, Genre
-from app.utils import exportPlaylistToJson, CRCGenerator
 
 
 # Return a bad format error
+from app.utils import ResponseThread
+
+
 def badFormatError():
     data = {
         'RESULT': 'FAIL',
@@ -62,6 +63,11 @@ def scanLibrary(library, playlist, convert):
 
     # TODO: if trackPath is null, return an error
     print("indexed all files")
+    data = {
+        'DONE':True,
+    }
+    response = ResponseThread(data)
+    response.run()
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
     print("Added DB structure")
     trackPath = splitTable(mp3Files)
