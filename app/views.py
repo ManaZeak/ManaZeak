@@ -265,3 +265,22 @@ def getTrackPathByID(request):
         else:
             badFormatError()
         return JsonResponse(data)
+
+
+def checkScanStatus(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'ID' in response:
+            if Playlist.objects.filter(id=response['ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['ID'])
+                data = {
+                    'DATA': playlist.isScanned,
+                }
+            else:
+                data = {
+                    'DONE': 'FAIL',
+                    'ERROR': 'DB error',
+                }
+            return JsonResponse(data)
+        else:
+            badFormatError()
