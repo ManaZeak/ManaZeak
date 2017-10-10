@@ -31,6 +31,23 @@ function secondsToTimecode(time) {
 }
 
 
+function sortObjectArrayBy(key, ascending) {
+    return function(a, b) {
+        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
+
+        const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+
+        var compare = 0;
+
+        if (varA > varB) { compare = 1;}
+        else if (varA < varB) { compare = -1; }
+
+        return (!ascending ? (compare * -1) : compare);
+    };
+}
+
+
 function getCookies() {
     var cookies = {};
 
@@ -73,6 +90,20 @@ function getRequest(url, callback) {
 
 function mkElem(type) {
     return document.createElement(type);
+}
+
+
+function addVisibilityLock(object, className) { // TODO : put in Utils
+    if (!object.className.match(className)) {
+        object.className += className;
+    }
+}
+
+
+function removeVisibilityLock(object, className) {
+    if (object.className.match(className)) {
+        object.className = object.className.replace(className, '');
+    }
 }
 
 

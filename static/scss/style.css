@@ -7,14 +7,6 @@
  *
  *
 /* Program colors */
-/*
-$modalHeight: 600px;
-$modalWidth:  600px;
-
-$headerHeight:  ($modalHeight / 6);
-$contentHeight: ($modalHeight / 6) * 4;
-$footerHeight:  ($modalHeight / 6);
-*/
 #modal {
   height: 100%;
   position: fixed;
@@ -24,12 +16,13 @@ $footerHeight:  ($modalHeight / 6);
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  z-index: 999; }
   #modal #scan {
     border: solid 1px black;
     border-radius: 3px;
     position: relative;
-    min-height: 350px;
+    min-height: 400px;
     background: #fff;
     width: 600px;
     -webkit-user-select: none;
@@ -49,13 +42,13 @@ $footerHeight:  ($modalHeight / 6);
     #modal #scan #header {
       border-bottom: solid 1px black;
       top: 0;
-      height: 58.33333px; }
+      height: 66.66667px; }
       #modal #scan #header h1 {
-        line-height: 38.33333px;
+        line-height: 46.66667px;
         margin: 0; }
     #modal #scan #content {
-      top: 58.33333px;
-      height: 233.33333px;
+      top: 66.66667px;
+      height: 266.66667px;
       padding: 10px 50px; }
       #modal #scan #content img {
         width: 100px;
@@ -63,13 +56,55 @@ $footerHeight:  ($modalHeight / 6);
         margin: 16px 0; }
     #modal #scan #footer {
       border-top: solid 1px black;
-      height: 58.33333px;
-      top: 291.66667px; }
+      height: 66.66667px;
+      top: 333.33333px; }
       #modal #scan #footer p {
-        line-height: 38.33333px;
+        line-height: 46.66667px;
         margin: 0; }
+  #modal #edit {
+    border: solid 1px black;
+    border-radius: 3px;
+    position: relative;
+    min-height: 600px;
+    background: #fff;
+    width: 800px; }
+    #modal #edit #header,
+    #modal #edit #content,
+    #modal #edit #footer {
+      box-sizing: border-box;
+      position: absolute;
+      text-align: center;
+      width: 100%; }
+    #modal #edit #header {
+      border-bottom: solid 1px black;
+      top: 0;
+      height: 60px;
+      padding: 10px 30px; }
+      #modal #edit #header h1 {
+        line-height: 40px;
+        margin: 0; }
+    #modal #edit #content {
+      top: 60px;
+      height: 480px;
+      padding: 10px 50px; }
+    #modal #edit #footer {
+      border-top: solid 1px black;
+      text-align: right;
+      height: 60px;
+      top: 540px;
+      padding: 10px; }
+      #modal #edit #footer .button {
+        display: inline-block;
+        border: solid 1px black;
+        border-radius: 2px;
+        cursor: pointer;
+        box-sizing: border-box;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 25px;
+        margin-left: 5px; }
 
-.scanOverlay {
+.overlay {
   cursor: not-allowed; }
 
 @keyframes lds-dual-ring {
@@ -2364,6 +2399,19 @@ $footerHeight:  ($modalHeight / 6);
   overflow: visible;
   clip: auto; }
 
+#playlistBar {
+  width: 100%;
+  position: absolute;
+  height: 40px;
+  text-align: center; }
+  #playlistBar p {
+    display: inline-block;
+    margin: 0;
+    padding: 0 15px;
+    line-height: 40px; }
+  #playlistBar p:hover {
+    border-bottom: solid 3px blue; }
+
 /*      --------        ProgressBar style       --------        */
 #progressBar {
   background-color: #e9e9e9;
@@ -2507,6 +2555,29 @@ $footerHeight:  ($modalHeight / 6);
 #volumeBar:hover > #volume {
   background-color: lime; }
 
+#contextMenu {
+  width: 150px;
+  height: auto;
+  border: solid 1px black;
+  border-radius: 2px;
+  position: absolute;
+  background-color: #e9e9e9;
+  font-size: 0.9em;
+  opacity: 0;
+  transition: visibility 0s 0.3s, opacity 0.3s ease;
+  visibility: hidden; }
+  #contextMenu p {
+    margin: 0;
+    padding: 5px 15px;
+    cursor: pointer; }
+  #contextMenu p:hover {
+    background-color: khaki; }
+
+.contextMenuLocked {
+  opacity: 1 !important;
+  transition: opacity 0.3s ease !important;
+  visibility: visible !important; }
+
 /* Notification */
 .notificationContainer {
   position: fixed;
@@ -2607,21 +2678,25 @@ $footerHeight:  ($modalHeight / 6);
 /* listview */
 #listView {
   width: 100%;
-  height: 100%;
-  top: 0;
+  height: calc(100% - 40px);
+  top: 40px;
   position: absolute;
   padding: 0 10%;
-  box-sizing: border-box; }
+  overflow-y: auto;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */ }
 
 .columnHeader {
   width: 100%;
   height: 30px;
   line-height: 30px;
   font-size: 0.9em;
-  -webkit-user-select: none;
-  /* Chrome/Safari */
-  -moz-user-select: none;
-  /* Firefox */ }
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer; }
 
 .trackContainer {
   width: 100%;
@@ -2629,17 +2704,14 @@ $footerHeight:  ($modalHeight / 6);
   line-height: 1.3em;
   font-size: 0.85em;
   cursor: pointer;
-  -webkit-user-select: none;
-  /* Chrome/Safari */
-  -moz-user-select: none;
-  /* Firefox */ }
+  text-align: center; }
 
 [class*='col-'] {
-  float: left;
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: 1px;
   min-width: 1%;
+  text-align: left;
   padding-left: 5px;
   padding-right: 5px;
   box-sizing: border-box;
@@ -2647,34 +2719,32 @@ $footerHeight:  ($modalHeight / 6);
   display: inline-block; }
 
 .col-duration {
-  width: 5%; }
-
-.cur-duration {
-  left: 5%; }
+  width: 70px;
+  text-align: right; }
 
 .col-title {
-  width: 15%; }
+  width: 300px; }
 
 .col-artist {
-  width: 15%; }
+  width: 250px; }
 
 .col-composer {
-  width: 15%; }
+  width: 250px; }
 
 .col-performer {
-  width: 15%; }
+  width: 250px; }
 
 .col-album {
-  width: 15%; }
+  width: 160px; }
 
 .col-genre {
-  width: 12.5%; }
+  width: 125px; }
 
 .col-bitRate {
-  width: 5%; }
+  width: 75px; }
 
 .col-year {
-  width: 2.5%;
+  width: 40px;
   text-align: right; }
 
 #topBar {
@@ -2858,4 +2928,4 @@ html, body {
   top: 20px;
   position: absolute; }
 
-/*# sourceMappingURL=../../../../../../../static/scss/style.css.map */
+/*# sourceMappingURL=../../../../../../../../../../../static/scss/style.css.map */
