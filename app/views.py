@@ -52,6 +52,7 @@ def initialScan(request):
         playlist.isLibrary = True
         playlist.save()
         data = scanLibrary(library, playlist, convert)
+        playlist.isScanned = True
         print("ended initial scan")
     else:
         data = {
@@ -248,6 +249,7 @@ def changeMetaData(request):
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        data = {}
         if 'ID' in response:
             trackId = strip_tags(response['ID'])
             if Track.objects.filter(id=trackId).count() == 1:
@@ -274,11 +276,12 @@ def checkScanStatus(request):
             if Playlist.objects.filter(id=response['ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['ID'])
                 data = {
+                    'DONE': False,
                     'DATA': playlist.isScanned,
                 }
             else:
                 data = {
-                    'DONE': 'FAIL',
+                    'DONE': False,
                     'ERROR': 'DB error',
                 }
             return JsonResponse(data)
