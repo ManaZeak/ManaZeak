@@ -71,6 +71,8 @@ Playlist.prototype = {
             "components/newLibrary",
             true,
             function(response) {
+                // TODO : check response (new modal that asks user to refresh the page)
+
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
                 that.ui.infoLabel   = document.getElementById("infoLabel");
