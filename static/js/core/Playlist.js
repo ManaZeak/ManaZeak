@@ -152,12 +152,12 @@ Playlist.prototype = {
         var that = this;
 
         this.refreshIntervalId = setInterval(function() {
-            that._scanLibrary_aux();
+            that._scanLibrary_aux(id);
         }, 5000); // every 5s
     },
 
 
-    _scanLibrary_aux: function() {
+    _scanLibrary_aux: function(id) {
         var that = this;
         console.log("Scanning library -- in progress");
 
@@ -168,9 +168,7 @@ Playlist.prototype = {
                 ID:      id
             }),
             function(response) {
-                if (response.DONE === "FAIL") {
-                    new Notification("Scan error.", response.FAILS.length + " files haven't been scanned.");
-                } else {
+                if (response.DONE === "TRUE") { // Database scan is over
                     var self = that;
 
                     JSONParsedPostRequest(
