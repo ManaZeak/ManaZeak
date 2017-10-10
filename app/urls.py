@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^ajax/getSimplifiedTracks/$', views.loadSimplifiedLibrary, name='simplifiedJson'),
+    url(r'^ajax/checkLibraryScan/$', views.checkScanStatus, name='checkLibraryScan'),
     url(r'^ajax/getTrackPathByID/$', views.getTrackPathByID, name='getTrackPathByID'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^utils/modal/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
