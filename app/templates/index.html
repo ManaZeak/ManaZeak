@@ -24,11 +24,10 @@
         {% include 'components/topbar.html' %}
 
         <div id="mainContainer">
-            {#% include 'components/newlibrary.html' %#}
+
         </div>
 
         {% include 'components/footbar.html' %}
-        {#% include 'utils/modal.html' %#}
 
         <audio id="audioPlayer">
             <source src="" type="audio/ogg">
@@ -39,15 +38,17 @@
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Track.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/Track.js" %}"></script>
         <script type="text/javascript" src="{% static "js/view/entries/ListViewEntry.js" %}"></script>
         <script type="text/javascript" src="{% static "js/view/ListView.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/UserMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/menu/UserMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/Queue.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/ProgressBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/VolumeBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Playlist.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/Player.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/bar/ProgressBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/bar/VolumeBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/bar/PlaylistBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/menu/ContextMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/Playlist.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
             var app = new App();
