@@ -52,6 +52,7 @@ class Playlist(models.Model):
     user = models.ForeignKey(User)
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
+    isScanned = models.BooleanField(default=False)
 
 
 class Library(models.Model):
