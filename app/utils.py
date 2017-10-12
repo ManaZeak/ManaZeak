@@ -143,7 +143,7 @@ def CRC32_from_file(filename):
 
 # Compare the file by hash (faster than reading the tag)
 def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replacedTitles):
-    fileCRC = CRC32_from_file(root + "/" + file)
+    fileCRC = CRC32_from_file(os.path.join(root, file))
     if fileCRC != track.CRC:
         replacedTitles.append(track.title)
         track.delete()
@@ -175,12 +175,12 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
     # --- Calculating checksum
-    track.CRC = CRC32_from_file(root + "/" + file)
+    track.CRC = CRC32_from_file(os.path.join(root, file))
 
     # --- FILE INFORMATION ---
-    audioFile = MP3(root + "/" + file)
-    track.location = root + "/" + file
-    track.size = os.path.getsize(root + "/" + file)
+    audioFile = MP3(os.path.join(root, file))
+    track.location = os.path.join(root, file)
+    track.size = os.path.getsize(os.path.join(root, file))
     track.bitRate = audioFile.info.bitrate
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
@@ -188,11 +188,11 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track.fileType = fileTypeId
 
     # --- FILE TAG ---
-    audioTag = ID3(root + "/" + file)
+    audioTag = ID3(os.path.join(root, file))
     if convert:
         audioTag.update_to_v24()
         audioTag.save()
-    audioTag = ID3(root + "/" + file)
+    audioTag = ID3(os.path.join(root, file))
 
     # --- COVER ---
     if 'APIC:' in audioTag:
