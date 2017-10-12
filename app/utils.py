@@ -596,6 +596,7 @@ class ImportMp3Thread(threading.Thread):
 
 
 def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
+    print("process")
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
     print("Added DB structure")
     print(len(mp3Files))
@@ -610,6 +611,8 @@ def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
     for thread in threads:
         thread.join()
     print("ended scanning")
+    playlist.isScanned = True
+    playlist.save()
     library.playlist = playlist
     library.save()
     # tracks = playlist.track.all()

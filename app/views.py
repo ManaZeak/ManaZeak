@@ -1,5 +1,6 @@
 import json
 import os
+from builtins import print
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -251,12 +252,13 @@ def getTrackPathByID(request):
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'ID' in response:
-            if Playlist.objects.filter(id=response['ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['ID'])
+        if 'PLAYLIST_ID' in response:
+            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+                print("Playlist status : "+str(playlist.isScanned))
                 data = errorCheckMessage(playlist.isScanned, None)
             else:
                 data = errorCheckMessage(False, "dbError")
             return JsonResponse(data)
         else:
-            return errorCheckMessage(False, "badFormat")
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
