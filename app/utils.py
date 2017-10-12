@@ -56,6 +56,46 @@ def checkIfNotNoneNumber(trackAttribute):
         return "\"null\""
 
 
+# Return a bad format error
+def badFormatError():
+    data = {
+        'RESULT': 'FAIL',
+        'ERROR': 'Bad format'
+    }
+    return JsonResponse(data)
+
+
+def errorCheckMessage(isDone, error):
+    errorTitle = ""
+    errorMessage = ""
+    if error == "badFormat":
+        errorTitle = "Wrong format"
+        errorMessage = "The server didn't understood what you said."
+    elif error == "badRequest":
+        errorTitle = "Bad request"
+        errorMessage = "The server didn't expected this request."
+    elif error == "dbError":
+        errorTitle = "Database error"
+        errorMessage = "Something went wrong with the database."
+    elif error == "fileNotFound":
+        errorTitle = "No such file"
+        errorMessage = "The server didn't find the file you asked."
+    elif error == "dirNotFound":
+        errorTitle = "No such directory"
+        errorMessage = "The server didn't find the directory you asked."
+    elif error == "coverError":
+        errorTitle = "Can't create file"
+        errorMessage = "The server cannot generate the file for the covers, check the permissions."
+    elif error is None:
+        errorTitle = "null"
+        errorMessage = "null"
+    return {
+        'DONE': isDone,
+        'ERROR_H1': "\"" + errorTitle + "\"",
+        'ERROR_MSG': "\"" + errorMessage + "\"",
+    }
+
+
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
     print("id" + str(playlist.id))

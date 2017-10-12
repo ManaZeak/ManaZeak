@@ -1,50 +1,29 @@
-import hashlib
-import math
 import os
-import threading
-from django import db
-
-from django.http.response import JsonResponse
-from django.utils.html import strip_tags
 from multiprocessing import Process
-from mutagen.id3 import ID3, ID3NoHeaderError
-from mutagen.mp3 import MP3
 
-from app.models import Track, Artist, Album, FileType, Genre
+from django import db
+from django.http.response import JsonResponse
 
-
-# Return a bad format error
-from app.utils import ResponseThread, scanLibraryProcess
-
-
-def badFormatError():
-    data = {
-        'RESULT': 'FAIL',
-        'ERROR': 'Bad format'
-    }
-    return JsonResponse(data)
+from app.models import FileType
+from app.utils import scanLibraryProcess, errorCheckMessage
 
 
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    coverPath = "/ManaZeak/static/img/covers/"  # TODO: to be defined with docker or with the front
+    coverPath = "/ManaZeak/static/img/covers/"
     if not os.path.isdir(coverPath):
         try:
             os.makedirs(coverPath)
         except OSError:
-            print("error")
-            data = {
-                'DONE': 'FAIL',
-                'ERROR': 'Can\'t create cover path',
-            }
-            return data
+            return errorCheckMessage(False, "coverError")
+    else:
+        return errorCheckMessage(False, "dirNotFound")
 
     mp3Files = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                # addTrackMP3(root, file, playlist, convert, mp3ID, coverPath)
                 mp3Files.append(root + "/" + file)
 
             elif file.lower().endswith('.ogg'):
@@ -69,9 +48,7 @@ def scanLibrary(library, playlist, convert):
     db.connections.close_all()
     scanThread.start()
     data = {
-        'DONE': True,
-        'ID': playlist.id,
+        'PLAYLIST_ID': playlist.id,
     }
+    data = {**data, **errorCheckMessage(True, None)}
     return data
-
-
