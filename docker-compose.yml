@@ -8,7 +8,7 @@ services:
       - "80:8000"
 
     volumes:
-      - /home/pierre/Documents/ACDC/:/library
+      - /run/media/squadella/SS/Music/Artist2/:/library
       - ./nginx/config:/etc/nginx/conf.d
       - ./static:/static
     depends_on:
@@ -32,7 +32,7 @@ services:
     build: .
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
-      - /home/pierre/Documents/ACDC/:/library
+      - /run/media/squadella/SS/Music/Artist2/:/library
       - ./static:/static
       - .:/ManaZeak
     expose:

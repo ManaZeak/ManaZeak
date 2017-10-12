@@ -5,12 +5,13 @@
     position: absolute;
     width: 100%;
 
-    #metadataContainer {
+    #trackPreview {
         box-sizing: border-box;
         float: left;
         width: 30%;
         height: 100%;
         position: relative;
+        opacity: 0;
         padding-left: 50px;
 
         img {

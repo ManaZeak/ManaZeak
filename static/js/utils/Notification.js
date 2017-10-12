@@ -32,11 +32,11 @@ Notification.prototype = {
     // Create notification skeleton
     _init: function() {
         // Creating UI elements
-        this.notification = mkElem("div");
-        this.ui.icon      = mkElem("img");
-        this.ui.title     = mkElem("p");
-        this.ui.message   = mkElem("p");
-        this.ui.close     = mkElem("img");
+        this.notification = document.createElement("div");
+        this.ui.icon      = document.createElement("img");
+        this.ui.title     = document.createElement("p");
+        this.ui.message   = document.createElement("p");
+        this.ui.close     = document.createElement("img");
 
         // Setting class name
         this.notification.className = "notificationContainer";
@@ -83,6 +83,7 @@ Notification.prototype = {
     },
 
 
+    //TODO: CSS Animation instead
     // Display the notification on screen
     _open: function() {
         var that = this;
@@ -97,7 +98,7 @@ Notification.prototype = {
         })();
     },
 
-
+    //TODO: CSS Animation instead
     // Remove the notification on screen
     _close: function() {
         var that = this;
