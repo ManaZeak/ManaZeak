@@ -238,16 +238,10 @@ Playlist.prototype = {
                         }),
                         function(response) {
                             // response = raw tracks JSON object
-                            if (!response.DONE) {
-                                new Notification(response.ERROR_H1, response.ERROR_MSG);
-                            }
-
-                            else {
-                                console.log("Tracks received from server -- done");
-                                self.rawTracks = response;
-                                self.scanModal.close();
-                                self._fillTracks(self.rawTracks);
-                            }
+                            console.log("Tracks received from server -- done");
+                            self.rawTracks = response;
+                            self.scanModal.close();
+                            self._fillTracks(self.rawTracks);
                         }
                     );
                 }
