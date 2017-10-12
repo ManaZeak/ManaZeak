@@ -65,7 +65,7 @@ App.prototype = {
                 }),
                 function(response) {
                     // response = raw tracks JSON object
-                    for (var i = 0; i < playlists.RESULT; ++i) {
+                    for (var i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], false, true, that.cookies, response, undefined));
                     }
 
