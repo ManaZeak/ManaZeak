@@ -98,114 +98,134 @@ def errorCheckMessage(isDone, error):
 
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
-    print("id" + str(playlist.id))
+    spiltedTracks = splitTable(tracks)
+    threads = []
     finalData = "["
-    for track in tracks:
-        finalData += "{ \"ID\":"
-        finalData += str(track.id)
-        finalData += ", \"TITLE\":\""
-        finalData += checkIfNotNone(track.title)
-        finalData += "\", \"YEAR\":"
-        finalData += checkIfNotNoneNumber(track.year)
-        finalData += ", \"COMPOSER\":\""
-        finalData += checkIfNotNone(track.composer)
-        finalData += "\", \"PERFORMER\":\""
-        finalData += checkIfNotNone(track.performer)
-        finalData += "\", \"DURATION\":"
-        finalData += checkIfNotNoneNumber(track.duration)
-        finalData += ", \"BITRATE\":"
-        finalData += checkIfNotNoneNumber(track.bitRate)
-        finalData += ", \"ARTISTS\":["
-        for artist in track.artist.all():
-            finalData += "{\"ID\":"
-            finalData += str(artist.id)
-            finalData += ", \"NAME\":\""
-            finalData += checkIfNotNone(artist.name)
-            finalData += "\"},"
-        if len(track.artist.all()) != 0:
-            finalData = finalData[:-1]
-        finalData += "], \"ALBUM\": { "
-        if track.album is not None:
-            finalData += "\"ID\":"
-            finalData += checkIfNotNoneNumber(track.album.id)
-            finalData += ", \"TITLE\":\""
-            finalData += checkIfNotNone(track.album.title)
-            finalData += "\""
-        finalData += "}, \"GENRE\":\""
-        if track.genre is not None:
-            finalData += checkIfNotNone(track.genre.name)
-        else:
-            finalData += "null"
-        finalData += "\"},"
+    for splitedTrack in spiltedTracks:
+        threads.append(SimpleJsonCreator(splitedTrack))
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+        finalData += thread.finalData
     finalData = finalData[:-1]
     finalData += "]"
     return finalData.replace('\n', '').replace('\r', '')
+
+
+class SimpleJsonCreator(threading.Thread):
+    finalData = ""
+
+    def __init__(self, tracks):
+        threading.Thread.__init__(self)
+        self.tracks = tracks
+
+    def run(self):
+        internData = ""
+        for track in self.tracks:
+            internData += "{\"ID\":"
+            internData += str(track.id)
+            internData += ",\"TITLE\":\""
+            internData += checkIfNotNone(track.title)
+            internData += "\",\"YEAR\":"
+            internData += checkIfNotNoneNumber(track.year)
+            internData += ",\"COMPOSER\":\""
+            internData += checkIfNotNone(track.composer)
+            internData += "\",\"PERFORMER\":\""
+            internData += checkIfNotNone(track.performer)
+            internData += "\",\"DURATION\":"
+            internData += checkIfNotNoneNumber(track.duration)
+            internData += ",\"BITRATE\":"
+            internData += checkIfNotNoneNumber(track.bitRate)
+            internData += ",\"ARTISTS\":["
+            for artist in track.artist.all():
+                internData += "{\"ID\":"
+                internData += str(artist.id)
+                internData += ",\"NAME\":\""
+                internData += checkIfNotNone(artist.name)
+                internData += "\"},"
+            if len(track.artist.all()) != 0:
+                internData = internData[:-1]
+            internData += "],\"ALBUM\":{"
+            if track.album is not None:
+                internData += "\"ID\":"
+                internData += checkIfNotNoneNumber(track.album.id)
+                internData += ",\"TITLE\":\""
+                internData += checkIfNotNone(track.album.title)
+                internData += "\""
+            internData += "},\"GENRE\":\""
+            if track.genre is not None:
+                internData += checkIfNotNone(track.genre.name)
+            else:
+                internData += "null"
+            internData += "\"},"
+        self.finalData = internData
 
 
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
     for track in tracks:
-        finalData += "{ \"ID\":"
+        finalData += "{\"ID\":"
         finalData += str(track.id)
-        finalData += ", \"TITLE\":\""
+        finalData += ",\"TITLE\":\""
         finalData += checkIfNotNone(track.title)
-        finalData += "\", \"YEAR\":"
+        finalData += "\",\"YEAR\":"
         finalData += checkIfNotNoneNumber(track.year)
-        finalData += ", \"COMPOSER\":\""
+        finalData += ",\"COMPOSER\":\""
         finalData += checkIfNotNone(track.composer)
-        finalData += "\", \"PERFORMER\":\""
+        finalData += "\",\"PERFORMER\":\""
         finalData += checkIfNotNone(track.performer)
-        finalData += "\", \"TRACK_NUMBER\":"
+        finalData += "\",\"TRACK_NUMBER\":"
         finalData += checkIfNotNoneNumber(track.number)
-        finalData += ", \"BPM\":"
+        finalData += ",\"BPM\":"
         finalData += checkIfNotNoneNumber(track.bpm)
-        finalData += ", \"LYRICS\":\""
+        finalData += ",\"LYRICS\":\""
         finalData += checkIfNotNone(track.lyrics)
-        finalData += "\", \"COMMENT\":\""
+        finalData += "\",\"COMMENT\":\""
         finalData += checkIfNotNone(track.comment)
-        finalData += "\", \"BITRATE\":"
+        finalData += "\",\"BITRATE\":"
         finalData += checkIfNotNoneNumber(track.bitRate)
-        finalData += ", \"SAMPLERATE\":"
+        finalData += ",\"SAMPLERATE\":"
         finalData += checkIfNotNoneNumber(track.sampleRate)
-        finalData += ", \"DURATION\":"
+        finalData += ",\"DURATION\":"
         finalData += checkIfNotNoneNumber(track.duration)
-        finalData += ", \"GENRE\":\""
+        finalData += ",\"GENRE\":\""
         if track.genre is not None:
             finalData += checkIfNotNone(track.genre.name)
         else:
             finalData += "null"
-        finalData += "\", \"FILE_TYPE\":\""
+        finalData += "\",\"FILE_TYPE\":\""
         finalData += checkIfNotNone(track.fileType.name)
-        finalData += "\", \"DISC_NUMBER\":"
+        finalData += "\",\"DISC_NUMBER\":"
         finalData += checkIfNotNoneNumber(track.discNumber)
-        finalData += ", \"SIZE\":"
+        finalData += ",\"SIZE\":"
         finalData += checkIfNotNoneNumber(track.size)
-        finalData += ", \"LAST_MODIFIED\":\""
+        finalData += ",\"LAST_MODIFIED\":\""
         finalData += checkIfNotNoneNumber(track.lastModified)
-        finalData += "\", \"ARTISTS\":["
+        finalData += "\",\"ARTISTS\":["
         for artist in track.artist.all():
             finalData += "{\"ID\":"
             finalData += str(artist.id)
-            finalData += ", \"NAME\":\""
+            finalData += ",\"NAME\":\""
             finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
         finalData = finalData[:-1]
-        finalData += "], \"ALBUM\": { "
+        finalData += "],\"ALBUM\":{"
         if track.album is not None:
             finalData += "\"ID\":"
             finalData += checkIfNotNoneNumber(track.album.id)
-            finalData += ", \"TITLE\":\""
+            finalData += ",\"TITLE\":\""
             finalData += checkIfNotNone(track.album.title)
-            finalData += "\", \"TOTAL_DISC\":"
+            finalData += "\",\"TOTAL_DISC\":"
             finalData += checkIfNotNoneNumber(track.album.totalDisc)
-            finalData += ", \"TOTAL_TRACK\":"
+            finalData += ",\"TOTAL_TRACK\":"
             finalData += checkIfNotNoneNumber(track.album.totalTrack)
-            finalData += ", \"ARTIST\":["
+            finalData += ",\"ARTIST\":["
             for artist in track.album.artist.all():
                 finalData += "{\"ID\":"
                 finalData += checkIfNotNoneNumber(artist.id)
-                finalData += ", \"NAME\":\""
+                finalData += ",\"NAME\":\""
                 finalData += checkIfNotNone(artist.name)
                 finalData += "\"},"
             finalData = finalData[:-1]
