@@ -60,3 +60,4 @@ class Library(models.Model):
     path = models.FilePathField(max_length=1000)
     user = models.ForeignKey(User)
     playlist = models.ForeignKey(Playlist, null=True)
+    convertID3 = models.BooleanField(default=False)

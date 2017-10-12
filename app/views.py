@@ -1,5 +1,6 @@
 import json
 import os
+from builtins import print
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -11,10 +12,10 @@ from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import scanLibrary, badFormatError
+from app.controller import scanLibrary
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
 class mainView(ListView):
@@ -28,37 +29,26 @@ class mainView(ListView):
 
 
 def initialScan(request):
-    print("asked for initial scan")
+    print("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
-        library = None
-        convert = False
         try:
-            library = Library.objects.get(id=response['ID'])
-            convert = response['CONVERT']
+            library = Library.objects.get(id=response['LIBRARY_ID'])
         except AttributeError:
-            badFormatError()
-
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
         if not os.path.isdir(library.path):
-            data = {
-                'DONE': 'FAIL',
-                'ERROR': 'No such directory',
-            }
-            return JsonResponse(data)
+            return JsonResponse(errorCheckMessage(False, "dirNotFound"))
 
         playlist = Playlist()
         playlist.name = library.name
         playlist.user = request.user
         playlist.isLibrary = True
         playlist.save()
-        data = scanLibrary(library, playlist, convert)
+        data = scanLibrary(library, playlist, library.convertID3)
         playlist.isScanned = True
-        print("ended initial scan")
+        print("Ended initial scan")
     else:
-        data = {
-            'DONE': 'FAIL',
-            'ERROR': 'Bad request',
-        }
+        data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
 
 
@@ -126,18 +116,16 @@ def getUserPlaylists(request):
     playlistNames = []
     playlistIds = []
     if not playlists:
-        data = {
-            'RESULT': 0,
-        }
-        return JsonResponse(data)
+        return JsonResponse(errorCheckMessage(False, None))
     for playlist in playlists:
         playlistNames.append(playlist.name)
         playlistIds.append(playlist.id)
     data = {
-        'RESULT': len(playlistNames),
-        'NAMES': playlistNames,
-        'ID': playlistIds,
+        'NUMBER': len(playlistNames),
+        'PLAYLIST_NAMES': playlistNames,
+        'PLAYLIST_IDS': playlistIds,
     }
+    data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
 
 
@@ -148,21 +136,18 @@ def logoutView(request):
 
 def loadSimplifiedLibrary(request):
     if request.method == 'POST':
+        print("Getting json export of the library")
         response = json.loads(request.body)
-        if 'ID' not in response:
-            badFormatError()
-        if Playlist.objects.filter(id=response['ID']).count() == 1:
-            playlist = Playlist.objects.get(id=response['ID'])
+        if 'PLAYLIST_ID' not in response:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+        if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+            playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
             tracks = exportPlaylistToSimpleJson(playlist)
             with open("Output.txt", "w") as text_file:
                 text_file.write("%s" % tracks)
             return HttpResponse(tracks)
         else:
-            data = {
-                'RESULT': 'FAIL',
-                'ERROR': 'DB error',
-            }
-            return JsonResponse(data)
+            return JsonResponse(errorCheckMessage(False, "dbError"))
 
 
 def loadAllLibrary(request):
@@ -190,7 +175,7 @@ def loadTracksFromPlaylist(request):
             return HttpResponse(tmp)
 
         except AttributeError:
-            badFormatError()
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
 
 
 # Create a new library
@@ -199,30 +184,25 @@ def newLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         try:
-            tmp = ""
-            if 'URL' in response:
+            if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
                 tmp = response['URL']
+            else:
+                return JsonResponse(errorCheckMessage(False, "badFormat"))
             if not os.path.isdir(tmp):
-                data = {
-                    'DONE': 'FAIL',
-                    'ERROR': 'No such directory',
-                }
-                return JsonResponse(data)
+                return JsonResponse(errorCheckMessage(False, "dirNotFound"))
             library = Library()
             library.path = response['URL']
             library.name = response['NAME']
+            library.convertID3 = response['CONVERT']
             library.user = request.user
+
             library.save()
         except AttributeError:
-            data = {
-                'DONE': 'FAIL',
-                'ERROR': 'Bad request',
-            }
-            return JsonResponse(data)
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
         data = {
-            'DONE': 'OK',
-            'ID': library.id,
+            'LIBRARY_ID': library.id,
         }
+        data = {**data, **errorCheckMessage(True, None)}
         return JsonResponse(data)
 
 
@@ -243,7 +223,7 @@ def changeMetaData(request):
                 }
                 return JsonResponse(data)
         else:
-            badFormatError()
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
 
 
 def getTrackPathByID(request):
@@ -265,25 +245,20 @@ def getTrackPathByID(request):
                 }
 
         else:
-            badFormatError()
+            data = errorCheckMessage(False, "badFormat")
         return JsonResponse(data)
 
 
-def checkScanStatus(request):
+def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'ID' in response:
-            if Playlist.objects.filter(id=response['ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['ID'])
-                data = {
-                    'DONE': False,
-                    'DATA': playlist.isScanned,
-                }
+        if 'PLAYLIST_ID' in response:
+            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+                print("Playlist status : "+str(playlist.isScanned))
+                data = errorCheckMessage(playlist.isScanned, None)
             else:
-                data = {
-                    'DONE': False,
-                    'ERROR': 'DB error',
-                }
+                data = errorCheckMessage(False, "dbError")
             return JsonResponse(data)
         else:
-            badFormatError()
+            return JsonResponse(errorCheckMessage(False, "badFormat"))

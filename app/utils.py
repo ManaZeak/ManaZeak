@@ -56,115 +56,176 @@ def checkIfNotNoneNumber(trackAttribute):
         return "\"null\""
 
 
+# Return a bad format error
+def badFormatError():
+    data = {
+        'RESULT': 'FAIL',
+        'ERROR': 'Bad format'
+    }
+    return JsonResponse(data)
+
+
+def errorCheckMessage(isDone, error):
+    errorTitle = ""
+    errorMessage = ""
+    if error == "badFormat":
+        errorTitle = "Wrong format"
+        errorMessage = "The server didn't understood what you said."
+    elif error == "badRequest":
+        errorTitle = "Bad request"
+        errorMessage = "The server didn't expected this request."
+    elif error == "dbError":
+        errorTitle = "Database error"
+        errorMessage = "Something went wrong with the database."
+    elif error == "fileNotFound":
+        errorTitle = "No such file"
+        errorMessage = "The server didn't find the file you asked."
+    elif error == "dirNotFound":
+        errorTitle = "No such directory"
+        errorMessage = "The server didn't find the directory you asked."
+    elif error == "coverError":
+        errorTitle = "Can't create file"
+        errorMessage = "The server cannot generate the file for the covers, check the permissions."
+    elif error is None:
+        errorTitle = "null"
+        errorMessage = "null"
+    return {
+        'DONE': isDone,
+        'ERROR_H1': "\"" + errorTitle + "\"",
+        'ERROR_MSG': "\"" + errorMessage + "\"",
+    }
+
+
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
-    print("id" + str(playlist.id))
+    spiltedTracks = splitTable(tracks)
+    threads = []
     finalData = "["
-    for track in tracks:
-        finalData += "{ \"ID\":"
-        finalData += str(track.id)
-        finalData += ", \"TITLE\":\""
-        finalData += checkIfNotNone(track.title)
-        finalData += "\", \"YEAR\":"
-        finalData += checkIfNotNoneNumber(track.year)
-        finalData += ", \"COMPOSER\":\""
-        finalData += checkIfNotNone(track.composer)
-        finalData += "\", \"PERFORMER\":\""
-        finalData += checkIfNotNone(track.performer)
-        finalData += "\", \"DURATION\":"
-        finalData += checkIfNotNoneNumber(track.duration)
-        finalData += ", \"BITRATE\":"
-        finalData += checkIfNotNoneNumber(track.bitRate)
-        finalData += ", \"ARTISTS\":["
-        for artist in track.artist.all():
-            finalData += "{\"ID\":"
-            finalData += str(artist.id)
-            finalData += ", \"NAME\":\""
-            finalData += checkIfNotNone(artist.name)
-            finalData += "\"},"
-        finalData = finalData[:-1]
-        finalData += "], \"ALBUM\": { "
-        if track.album is not None:
-            finalData += "\"ID\":"
-            finalData += checkIfNotNoneNumber(track.album.id)
-            finalData += ", \"TITLE\":\""
-            finalData += checkIfNotNone(track.album.title)
-        finalData += "\"}, \"GENRE\":\""
-        if track.genre is not None:
-            finalData += checkIfNotNone(track.genre.name)
-        else:
-            finalData += "null"
-        finalData += "\"},"
+    for splitedTrack in spiltedTracks:
+        threads.append(SimpleJsonCreator(splitedTrack))
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+        finalData += thread.finalData
     finalData = finalData[:-1]
     finalData += "]"
-    print(finalData)
-    return finalData
+    return finalData.replace('\n', '').replace('\r', '')
+
+
+class SimpleJsonCreator(threading.Thread):
+    finalData = ""
+
+    def __init__(self, tracks):
+        threading.Thread.__init__(self)
+        self.tracks = tracks
+
+    def run(self):
+        internData = ""
+        for track in self.tracks:
+            internData += "{\"ID\":"
+            internData += str(track.id)
+            internData += ",\"TITLE\":\""
+            internData += checkIfNotNone(track.title)
+            internData += "\",\"YEAR\":"
+            internData += checkIfNotNoneNumber(track.year)
+            internData += ",\"COMPOSER\":\""
+            internData += checkIfNotNone(track.composer)
+            internData += "\",\"PERFORMER\":\""
+            internData += checkIfNotNone(track.performer)
+            internData += "\",\"DURATION\":"
+            internData += checkIfNotNoneNumber(track.duration)
+            internData += ",\"BITRATE\":"
+            internData += checkIfNotNoneNumber(track.bitRate)
+            internData += ",\"ARTISTS\":["
+            for artist in track.artist.all():
+                internData += "{\"ID\":"
+                internData += str(artist.id)
+                internData += ",\"NAME\":\""
+                internData += checkIfNotNone(artist.name)
+                internData += "\"},"
+            if len(track.artist.all()) != 0:
+                internData = internData[:-1]
+            internData += "],\"ALBUM\":{"
+            if track.album is not None:
+                internData += "\"ID\":"
+                internData += checkIfNotNoneNumber(track.album.id)
+                internData += ",\"TITLE\":\""
+                internData += checkIfNotNone(track.album.title)
+                internData += "\""
+            internData += "},\"GENRE\":\""
+            if track.genre is not None:
+                internData += checkIfNotNone(track.genre.name)
+            else:
+                internData += "null"
+            internData += "\"},"
+        self.finalData = internData
 
 
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
     for track in tracks:
-        finalData += "{ \"ID\":"
+        finalData += "{\"ID\":"
         finalData += str(track.id)
-        finalData += ", \"TITLE\":\""
+        finalData += ",\"TITLE\":\""
         finalData += checkIfNotNone(track.title)
-        finalData += "\", \"YEAR\":"
+        finalData += "\",\"YEAR\":"
         finalData += checkIfNotNoneNumber(track.year)
-        finalData += ", \"COMPOSER\":\""
+        finalData += ",\"COMPOSER\":\""
         finalData += checkIfNotNone(track.composer)
-        finalData += "\", \"PERFORMER\":\""
+        finalData += "\",\"PERFORMER\":\""
         finalData += checkIfNotNone(track.performer)
-        finalData += "\", \"TRACK_NUMBER\":"
+        finalData += "\",\"TRACK_NUMBER\":"
         finalData += checkIfNotNoneNumber(track.number)
-        finalData += ", \"BPM\":"
+        finalData += ",\"BPM\":"
         finalData += checkIfNotNoneNumber(track.bpm)
-        finalData += ", \"LYRICS\":\""
+        finalData += ",\"LYRICS\":\""
         finalData += checkIfNotNone(track.lyrics)
-        finalData += "\", \"COMMENT\":\""
+        finalData += "\",\"COMMENT\":\""
         finalData += checkIfNotNone(track.comment)
-        finalData += "\", \"BITRATE\":"
+        finalData += "\",\"BITRATE\":"
         finalData += checkIfNotNoneNumber(track.bitRate)
-        finalData += ", \"SAMPLERATE\":"
+        finalData += ",\"SAMPLERATE\":"
         finalData += checkIfNotNoneNumber(track.sampleRate)
-        finalData += ", \"DURATION\":"
+        finalData += ",\"DURATION\":"
         finalData += checkIfNotNoneNumber(track.duration)
-        finalData += ", \"GENRE\":\""
+        finalData += ",\"GENRE\":\""
         if track.genre is not None:
             finalData += checkIfNotNone(track.genre.name)
         else:
             finalData += "null"
-        finalData += "\", \"FILE_TYPE\":\""
+        finalData += "\",\"FILE_TYPE\":\""
         finalData += checkIfNotNone(track.fileType.name)
-        finalData += "\", \"DISC_NUMBER\":"
+        finalData += "\",\"DISC_NUMBER\":"
         finalData += checkIfNotNoneNumber(track.discNumber)
-        finalData += ", \"SIZE\":"
+        finalData += ",\"SIZE\":"
         finalData += checkIfNotNoneNumber(track.size)
-        finalData += ", \"LAST_MODIFIED\":\""
+        finalData += ",\"LAST_MODIFIED\":\""
         finalData += checkIfNotNoneNumber(track.lastModified)
-        finalData += "\", \"ARTISTS\":["
+        finalData += "\",\"ARTISTS\":["
         for artist in track.artist.all():
             finalData += "{\"ID\":"
             finalData += str(artist.id)
-            finalData += ", \"NAME\":\""
+            finalData += ",\"NAME\":\""
             finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
         finalData = finalData[:-1]
-        finalData += "], \"ALBUM\": { "
+        finalData += "],\"ALBUM\":{"
         if track.album is not None:
             finalData += "\"ID\":"
             finalData += checkIfNotNoneNumber(track.album.id)
-            finalData += ", \"TITLE\":\""
+            finalData += ",\"TITLE\":\""
             finalData += checkIfNotNone(track.album.title)
-            finalData += "\", \"TOTAL_DISC\":"
+            finalData += "\",\"TOTAL_DISC\":"
             finalData += checkIfNotNoneNumber(track.album.totalDisc)
-            finalData += ", \"TOTAL_TRACK\":"
+            finalData += ",\"TOTAL_TRACK\":"
             finalData += checkIfNotNoneNumber(track.album.totalTrack)
-            finalData += ", \"ARTIST\":["
+            finalData += ",\"ARTIST\":["
             for artist in track.album.artist.all():
                 finalData += "{\"ID\":"
                 finalData += checkIfNotNoneNumber(artist.id)
-                finalData += ", \"NAME\":\""
+                finalData += ",\"NAME\":\""
                 finalData += checkIfNotNone(artist.name)
                 finalData += "\"},"
             finalData = finalData[:-1]
@@ -184,21 +245,21 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
             audioTag = ID3()
         # --- Adding genre to DB ---
         if 'TCON' in audioTag:
-            genreName = audioTag['TCON'].text[0]
+            genreName = strip_tags(audioTag['TCON'].text[0])
             if Genre.objects.filter(name=genreName).count() == 0:
                 genre = Genre()
                 genre.name = genreName
                 genre.save()
         # --- Adding album to DB ---
         if 'TALB' in audioTag:
-            albumTitle = audioTag['TALB'].text[0]
+            albumTitle = strip_tags(audioTag['TALB'].text[0])
             if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
                 album = Album()
                 album.title = albumTitle
                 album.save()
         # --- Adding artist to DB ---
         if 'TPE1' in audioTag:  # Check if artist exists
-            artists = audioTag['TPE1'].text[0].split(",")
+            artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
             for artistName in artists:
                 artistName = artistName.lstrip()  # Remove useless spaces at the beginning
                 if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
@@ -555,42 +616,31 @@ class ImportMp3Thread(threading.Thread):
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
-class ScanThread(threading.Thread):
-    def __init__(self, mp3Files, library, playlist, convert, coverPath):
-        threading.Thread.__init__(self)
-        self.mp3Files = mp3Files
-        self.playlist = playlist
-        self.convert = convert
-        self.coverPath = coverPath
-        self.library = library
-
-    def run(self):
-        mp3Files = self.mp3Files
-        playlist = self.playlist
-        convert = self.convert
-        coverPath = self.coverPath
-        library = self.library
-        mp3ID = FileType.objects.get(name="mp3")
-        addAllGenreAndAlbumAndArtistsMP3(mp3Files)
-        print("Added DB structure")
-        trackPath = splitTable(mp3Files)
-        threads = []
-        # saving all the library to base
-        for tracks in trackPath:
-            threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
-        for thread in threads:
-            thread.start()
-        print("launched scanning threads")
-        for thread in threads:
-            thread.join()
-        print("ended scanning")
-        library.playlist = playlist
-        library.save()
-        tracks = playlist.track.all()
-        splicedTracks = splitTable(tracks)
-        threads = []
-        # generating CRC checksum
-        # for tracks in splicedTracks:
-        #    threads.append(CRCGenerator(tracks))
-        # for thread in threads:
-        #    thread.start()
+def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
+    print("process")
+    addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    print("Added DB structure")
+    print(len(mp3Files))
+    trackPath = splitTable(mp3Files)
+    threads = []
+    # saving all the library to base
+    for tracks in trackPath:
+        threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
+    for thread in threads:
+        thread.start()
+    print("launched scanning threads")
+    for thread in threads:
+        thread.join()
+    print("ended scanning")
+    playlist.isScanned = True
+    playlist.save()
+    library.playlist = playlist
+    library.save()
+    # tracks = playlist.track.all()
+    # splicedTracks = splitTable(tracks)
+    # threads = []
+    # generating CRC checksum
+    # for tracks in splicedTracks:
+    #    threads.append(CRCGenerator(tracks))
+    # for thread in threads:
+    #    thread.start()
