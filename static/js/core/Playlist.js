@@ -187,7 +187,7 @@ Playlist.prototype = {
                  * } */
                 if (response.DONE) {
                     console.log("Scanning library -- done");
-                    that._getTracksFromServer(response.ID);
+                    that._getTracksFromServer(response.PLAYLIST_ID);
                 }
 
                 else {
@@ -251,13 +251,12 @@ Playlist.prototype = {
                         }
                     );
                 }
-
-                else if (response.ERROR_H1 !== "null") {
+                else if (response.ERROR_H1 === "null") {
                     clearInterval(that.refreshIntervalId);
                     that.refreshIntervalId = -1;
 
                     // TODO : refresh UI to come back to Library/Playlist creation
-                    new Notification(response.ERROR_H1, response.MSG);
+                    new Notification(response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
