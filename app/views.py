@@ -28,7 +28,7 @@ class mainView(ListView):
 
 
 def initialScan(request):
-    print("asked for initial scan")
+    print("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
         library = None
@@ -53,7 +53,7 @@ def initialScan(request):
         playlist.save()
         data = scanLibrary(library, playlist, convert)
         playlist.isScanned = True
-        print("ended initial scan")
+        print("Ended initial scan")
     else:
         data = {
             'DONE': 'FAIL',
@@ -148,6 +148,7 @@ def logoutView(request):
 
 def loadSimplifiedLibrary(request):
     if request.method == 'POST':
+        print("Getting json export of the library")
         response = json.loads(request.body)
         if 'ID' not in response:
             badFormatError()

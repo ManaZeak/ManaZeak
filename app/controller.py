@@ -2,6 +2,7 @@ import hashlib
 import math
 import os
 import threading
+from django import db
 
 from django.http.response import JsonResponse
 from django.utils.html import strip_tags
@@ -65,6 +66,7 @@ def scanLibrary(library, playlist, convert):
     print("indexed all files")
     mp3ID = FileType.objects.get(name="mp3")
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, library, playlist, convert, coverPath, mp3ID,))
+    db.connections.close_all()
     scanThread.start()
     data = {
         'DONE': True,
