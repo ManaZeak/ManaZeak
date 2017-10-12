@@ -1,48 +1,28 @@
-import hashlib
-import math
 import os
-import threading
+from multiprocessing import Process
 
-from django.http.response import JsonResponse
-from django.utils.html import strip_tags
-from mutagen.id3 import ID3, ID3NoHeaderError
-from mutagen.mp3 import MP3
+from django import db
 
-from app.models import Track, Artist, Album, FileType, Genre
-
-
-# Return a bad format error
-from app.utils import ResponseThread, ScanThread
-
-
-def badFormatError():
-    data = {
-        'RESULT': 'FAIL',
-        'ERROR': 'Bad format'
-    }
-    return JsonResponse(data)
+from app.models import FileType
+from app.utils import scanLibraryProcess, errorCheckMessage
 
 
 def scanLibrary(library, playlist, convert):
     failedItems = []
     # TODO : Check if the cover folder is present
-    coverPath = "/ManaZeak/static/img/covers/"  # TODO: to be defined with docker or with the front
+    coverPath = "/ManaZeak/static/img/covers/"
+    print("started scanning library")
     if not os.path.isdir(coverPath):
         try:
             os.makedirs(coverPath)
         except OSError:
-            print("error")
-            data = {
-                'DONE': 'FAIL',
-                'ERROR': 'Can\'t create cover path',
-            }
-            return data
+            return errorCheckMessage(False, "coverError")
 
+    print(library.path)
     mp3Files = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                # addTrackMP3(root, file, playlist, convert, mp3ID, coverPath)
                 mp3Files.append(root + "/" + file)
 
             elif file.lower().endswith('.ogg'):
@@ -62,12 +42,14 @@ def scanLibrary(library, playlist, convert):
 
     # TODO: if trackPath is null, return an error
     print("indexed all files")
-    scanThread = ScanThread(mp3Files, library, playlist, convert, coverPath)
-    scanThread.run()
+    mp3ID = FileType.objects.get(name="mp3")
+    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, library, playlist, convert, coverPath, mp3ID,))
+    print("me")
+    db.connections.close_all()
+    print("der")
+    scanThread.start()
     data = {
-        'DONE': True,
-        'ID': playlist.id,
+        'PLAYLIST_ID': playlist.id,
     }
+    data = {**data, **errorCheckMessage(True, None)}
     return data
-
-
