@@ -15,7 +15,7 @@ var ContextMenu = function() {
     this.isVisible = false;
 
 
-    this.entriesSelected = [];
+    this.entriesSelected = {};
     this.modal = new Modal("editMetadata");
 
     this._init();
@@ -25,13 +25,13 @@ var ContextMenu = function() {
 ContextMenu.prototype = {
 
     _init: function() {
-        this.contextMenu = mkElem("div");
+        this.contextMenu = document.createElement("div");
         this.contextMenu.id = "contextMenu";
 
-        this.entries.editMD = mkElem("p");
-        this.entries.delete = mkElem("p");
-        this.entries.queue = mkElem("p");
-        this.entries.playlist = mkElem("p");
+        this.entries.editMD = document.createElement("p");
+        this.entries.delete = document.createElement("p");
+        this.entries.queue = document.createElement("p");
+        this.entries.playlist = document.createElement("p");
 
         this.entries.editMD.innerHTML = "Edit metadata";
         this.entries.delete.innerHTML = "Delete track";
@@ -64,7 +64,7 @@ ContextMenu.prototype = {
 
 
     clickOutside: function(event) {
-        if (!getById("contextMenu").contains(event.target) && this.isVisible) {
+        if (!document.getElementById("contextMenu").contains(event.target) && this.isVisible) {
             this.isVisible = !this.isVisible;
             removeVisibilityLock(this.contextMenu, "contextMenuLocked");
         }
@@ -73,7 +73,6 @@ ContextMenu.prototype = {
 
     updateSelectedEntries: function(entries) {
         this.entriesSelected = entries;
-        //this.modal.tmp(this.entriesSelected[0]);
     },
 
 
