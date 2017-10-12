@@ -122,14 +122,16 @@ def exportPlaylistToSimpleJson(playlist):
             finalData += ", \"NAME\":\""
             finalData += checkIfNotNone(artist.name)
             finalData += "\"},"
-        finalData = finalData[:-1]
+        if len(track.artist.all()) != 0:
+            finalData = finalData[:-1]
         finalData += "], \"ALBUM\": { "
         if track.album is not None:
             finalData += "\"ID\":"
             finalData += checkIfNotNoneNumber(track.album.id)
             finalData += ", \"TITLE\":\""
             finalData += checkIfNotNone(track.album.title)
-        finalData += "\"}, \"GENRE\":\""
+            finalData += "\""
+        finalData += "}, \"GENRE\":\""
         if track.genre is not None:
             finalData += checkIfNotNone(track.genre.name)
         else:
@@ -137,8 +139,7 @@ def exportPlaylistToSimpleJson(playlist):
         finalData += "\"},"
     finalData = finalData[:-1]
     finalData += "]"
-    print(finalData)
-    return finalData
+    return finalData.replace('\n', '').replace('\r', '')
 
 
 def exportPlaylistToJson(playlist):
@@ -224,21 +225,21 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
             audioTag = ID3()
         # --- Adding genre to DB ---
         if 'TCON' in audioTag:
-            genreName = audioTag['TCON'].text[0]
+            genreName = strip_tags(audioTag['TCON'].text[0])
             if Genre.objects.filter(name=genreName).count() == 0:
                 genre = Genre()
                 genre.name = genreName
                 genre.save()
         # --- Adding album to DB ---
         if 'TALB' in audioTag:
-            albumTitle = audioTag['TALB'].text[0]
+            albumTitle = strip_tags(audioTag['TALB'].text[0])
             if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
                 album = Album()
                 album.title = albumTitle
                 album.save()
         # --- Adding artist to DB ---
         if 'TPE1' in audioTag:  # Check if artist exists
-            artists = audioTag['TPE1'].text[0].split(",")
+            artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
             for artistName in artists:
                 artistName = artistName.lstrip()  # Remove useless spaces at the beginning
                 if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
