@@ -31,10 +31,19 @@ App.prototype = {
 
         //this._keyListener();   // Loading shortcuts
         this._eventListener(); // Loading events
-        JSONParsedGetRequest( // Loading playlists
+
+        // Loading playlists
+        JSONParsedGetRequest(
             "ajax/getPlaylists/",
             false,
             function(response) {
+                /* response = {
+                 *     DONE:           bool
+                 *     PLAYLIST_IDS:   int[] / undefined
+                 *     PLAYLIST_NAMES: string[] / undefined
+                 *     ERROR_H1:       string
+                 *     ERROR_MSG:      string
+                 * } */
                 that._appStart(response);
             }
         );
@@ -44,25 +53,34 @@ App.prototype = {
     _appStart: function(playlists) {
         var that = this;
 
-        if (playlists.RESULT !== 0) { // If user already have playlist(s)
+        // User already have playlists
+        if (playlists.DONE) {
             JSONParsedPostRequest(
-                "ajax/getPlaylistTracks/",
+                "ajax/getSimplifiedTracks/",
                 this.cookies,
-                JSON.stringify({ // TODO : replace stringify w/ vanilla json requeest
-                    ID: playlists.ID[0],
-                    SAVE: false
+                JSON.stringify({
+                    PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
                 }), // TODO : set selected PlaylistBar item with solid border
                 function(response) {
-                    // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    for (var i = 0; i < playlists.RESULT; ++i) {
-                        that.playlists.push(new Playlist(playlists.ID[i], playlists.NAMES[i], false, true, that.cookies, response, undefined));
+                    if (!response.DONE) {
+                        new Notification(response.ERROR_H1, response.ERROR_MSG);
                     }
 
-                    that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
-                    new PlaylistBar(that.playlists);
+                    else {
+                        for (var i = 0; i < playlists.RESULT; ++i) {
+                            that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], false, true, that.cookies, response, undefined));
+                        }
+
+                        // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
+                        that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
+                        new PlaylistBar(that.playlists);
+                    }
                 }
             );
-        } else { // User first connection to the app
+        }
+
+        // User first connection
+        else {
             this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
                 that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
                 console.log(that.playlists);
