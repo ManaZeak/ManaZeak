@@ -555,42 +555,28 @@ class ImportMp3Thread(threading.Thread):
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
-class ScanThread(threading.Thread):
-    def __init__(self, mp3Files, library, playlist, convert, coverPath):
-        threading.Thread.__init__(self)
-        self.mp3Files = mp3Files
-        self.playlist = playlist
-        self.convert = convert
-        self.coverPath = coverPath
-        self.library = library
-
-    def run(self):
-        mp3Files = self.mp3Files
-        playlist = self.playlist
-        convert = self.convert
-        coverPath = self.coverPath
-        library = self.library
-        mp3ID = FileType.objects.get(name="mp3")
-        addAllGenreAndAlbumAndArtistsMP3(mp3Files)
-        print("Added DB structure")
-        trackPath = splitTable(mp3Files)
-        threads = []
-        # saving all the library to base
-        for tracks in trackPath:
-            threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
-        for thread in threads:
-            thread.start()
-        print("launched scanning threads")
-        for thread in threads:
-            thread.join()
-        print("ended scanning")
-        library.playlist = playlist
-        library.save()
-        tracks = playlist.track.all()
-        splicedTracks = splitTable(tracks)
-        threads = []
-        # generating CRC checksum
-        # for tracks in splicedTracks:
-        #    threads.append(CRCGenerator(tracks))
-        # for thread in threads:
-        #    thread.start()
+def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
+    addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    print("Added DB structure")
+    print(len(mp3Files))
+    trackPath = splitTable(mp3Files)
+    threads = []
+    # saving all the library to base
+    for tracks in trackPath:
+        threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
+    for thread in threads:
+        thread.start()
+    print("launched scanning threads")
+    for thread in threads:
+        thread.join()
+    print("ended scanning")
+    library.playlist = playlist
+    library.save()
+    # tracks = playlist.track.all()
+    # splicedTracks = splitTable(tracks)
+    # threads = []
+    # generating CRC checksum
+    # for tracks in splicedTracks:
+    #    threads.append(CRCGenerator(tracks))
+    # for thread in threads:
+    #    thread.start()
