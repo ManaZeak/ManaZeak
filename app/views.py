@@ -138,10 +138,10 @@ def loadSimplifiedLibrary(request):
     if request.method == 'POST':
         print("Getting json export of the library")
         response = json.loads(request.body)
-        if 'ID' not in response:
+        if 'PLAYLIST_ID' not in response:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
-        if Playlist.objects.filter(id=response['ID']).count() == 1:
-            playlist = Playlist.objects.get(id=response['ID'])
+        if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+            playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
             tracks = exportPlaylistToSimpleJson(playlist)
             with open("Output.txt", "w") as text_file:
                 text_file.write("%s" % tracks)
