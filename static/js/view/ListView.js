@@ -152,7 +152,7 @@ ListView.prototype = {
                 "ajax/getTrackPathByID/",
                 this.cookies,
                 JSON.stringify({
-                    ID: this.entries[id].entry.id
+                    TRACK_ID: this.entries[id].entry.id
                 }),
                 function(response) {
                     if (response.RESULT === "FAIL") {
