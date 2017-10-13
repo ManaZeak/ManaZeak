@@ -177,7 +177,7 @@ ListView.prototype = {
 
         var newState = !this.entriesSelected[id];
 
-        if (!event.ctrlKey && newState === true) {  }
+        if (!event.ctrlKey && newState === true) { this.unSelectAll(); }
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);

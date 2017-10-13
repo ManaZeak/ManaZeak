@@ -14,7 +14,7 @@ var PlaylistBar = function(playlists, selectedPlaylist) {
 
     this.init();
 };
-
+// TODO : fuse topbar and playlist bar together
 
 PlaylistBar.prototype = {
 

@@ -39,6 +39,7 @@ App.prototype = {
             "ajax/getPlaylists/",
             false,
             function(response) {
+                // TODO : ask ordered playlist : backend : libraries first then playlist
                 /* response = {
                  *     DONE:           bool
                  *     PLAYLIST_IDS:   int[] / undefined
