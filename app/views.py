@@ -1,6 +1,7 @@
 import json
 import os
 from builtins import print
+from random import randint
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -264,7 +265,7 @@ def checkLibraryScanStatus(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
 
 
-def shuffleNextSound(request):
+def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
@@ -285,5 +286,32 @@ def shuffleNextSound(request):
                 data = errorCheckMessage(False, "dbError")
             return JsonResponse(data)
         return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
+
+
+def randomNextTrack(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistID = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistID).count() == 1:
+                playlist = Playlist.objects.get(id=playlistID)
+                rangeRand = playlist.track.count()
+                selectedTrack = randint(0, rangeRand)
+                count = 0
+                for track in playlist.track.all():
+                    if count == selectedTrack:
+                        data = {
+                            'PATH': track.location,
+                            'COVER': track.coverLocation
+                        }
+                        data = {**data, **errorCheckMessage(True, None)}
+                        return JsonResponse(data)
+                    else:
+                        count += 1
+            return JsonResponse(errorCheckMessage(False, "dbError"))
+        else:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
     else:
         return JsonResponse(errorCheckMessage(False, "badRequest"))
