@@ -67,7 +67,7 @@ App.prototype = {
                 function(response) {
                     // response = raw tracks JSON object
                     for (var i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
-                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], false, true, that.cookies, response, undefined));
+                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], playlists.PLAYLIST_IS_LIBRARY[i], true, that.cookies, response, undefined));
                     }
 
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)

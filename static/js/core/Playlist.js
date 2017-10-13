@@ -10,9 +10,9 @@
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback) {
+var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, callback) {
 
-    // NewLibrary relative attributes, useless if newLibrary = false
+    // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -24,15 +24,10 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
 
 
     // Playlist internal attributes
-    this.name = name;
-    this.load = load;
-    this.tracks = [];
-    this.isLibrary = false;
-
-
-    // Filling Playlist object
     this.id = id;
-    this.newLibrary = newLibrary;
+    this.name = name;
+    this.isLibrary = isLibrary;
+    this.isLoading = isLoading;
     this.cookies = cookies;
 
     if (typeof rawTracks !== 'undefined') {
@@ -47,8 +42,8 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
         this.callback = null;
     }
 
-    // Interval id for _getTracksFromServer_aux
-    this.refreshIntervalId = -1;
+    this.tracks = [];
+    this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
 
     this._init(); // Playlist initialization
@@ -58,8 +53,19 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
 Playlist.prototype = {
 
     _init: function() {
-        if (this.load) { this._loadLibrary(); } // Library creation process
-        else { this._newLibrary(); }            // Library loading process
+        if (this.isLoading) {
+            if (this.isLibrary) { this._loadLibrary(); } // Library loading process
+        }
+        else {
+            if (this.isLibrary) { this._newLibrary(); } // Library creation process
+        }
+    },
+
+
+    /*  Library creation and loading  */
+
+    _loadLibrary: function() {
+        this._fillTracks(this.rawTracks);
     },
 
 
@@ -102,11 +108,6 @@ Playlist.prototype = {
     },
 
 
-    _loadLibrary: function() {
-        this._fillTracks(this.rawTracks);
-    },
-
-
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
             this._requestNewLibrary();
@@ -132,7 +133,6 @@ Playlist.prototype = {
     },
 
 
-    // TODO : create _requestNewPlaylist, among creating Library class
     _requestNewLibrary: function() {
         var that = this;
 
@@ -201,7 +201,7 @@ Playlist.prototype = {
     _getTracksFromServer: function(playlistId) {
         var that = this;
 
-        this.refreshIntervalId = setInterval(function() {
+        this.getTracksIntervalId = setInterval(function() {
             console.log("Tracks received from server -- in progress");
             that._getTracksFromServer_aux(playlistId);
         }, 5000); // every 5s
@@ -227,8 +227,8 @@ Playlist.prototype = {
                 var self = that;
 
                 if (response.DONE) {
-                    clearInterval(that.refreshIntervalId);
-                    that.refreshIntervalId = -1;
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
 
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
@@ -246,8 +246,8 @@ Playlist.prototype = {
                     );
                 }
                 else if (response.ERROR_H1 === "null") {
-                    clearInterval(that.refreshIntervalId);
-                    that.refreshIntervalId = -1;
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
 
                     // TODO : refresh UI to come back to Library/Playlist creation
                     new Notification(response.ERROR_H1, response.ERROR_MSG);
@@ -257,12 +257,14 @@ Playlist.prototype = {
     },
 
 
+    /* Class utilities */
+
     _fillTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
             this.tracks.push(new Track(tracks[i]));
         }
 
-        if (this.newLibrary) {
+        if (!this.isLoading) {
             document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
             this.callback();
         }
