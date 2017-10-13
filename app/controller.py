@@ -1,5 +1,6 @@
 import os
 from multiprocessing import Process
+from random import randint
 
 from django import db
 
@@ -53,3 +54,22 @@ def scanLibrary(library, playlist, convert):
     }
     data = {**data, **errorCheckMessage(True, None)}
     return data
+
+
+def shuffleSoundSelector(shuffle):
+    playlist = shuffle.playlist
+    if shuffle.tracksPlayed.count() == 0:
+        possibleTracks = playlist.track.all()
+    else:
+        possibleTracks = playlist.track.exclude(shuffle.tracksPlayed)
+
+    # Select a random track
+    length = len(possibleTracks)
+    selected = randint(0, length)
+    count = 0
+    for track in possibleTracks:
+        if count == selected:
+            return track
+        else:
+            count += 1
+    return -1

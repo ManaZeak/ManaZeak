@@ -12,9 +12,9 @@ from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import scanLibrary
+from app.controller import scanLibrary, shuffleSoundSelector
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
@@ -137,7 +137,7 @@ def getUserPlaylists(request):
         'NUMBER': len(playlistNames),
         'PLAYLIST_NAMES': playlistNames,
         'PLAYLIST_IDS': playlistIds,
-        'PLAYLIST_IS_LIBRARY':isLibrary,
+        'PLAYLIST_IS_LIBRARY': isLibrary,
     }
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
@@ -241,7 +241,7 @@ def getTrackPathByID(request):
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
-                errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "dbError")
 
         else:
             data = errorCheckMessage(False, "badFormat")
@@ -262,3 +262,28 @@ def checkLibraryScanStatus(request):
             return JsonResponse(data)
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+def shuffleNextSound(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            if Shuffle.objects.filter(playlist=response['PLAYLIST_ID'], user=request.user).count() == 1:
+                shuffle = Shuffle.objects.get(playlist=response['PLAYLIST_ID'], user=request.user)
+            else:
+                shuffle = Shuffle(playlist=response['PLAYLIST_ID'], user=request.user)
+            track = shuffleSoundSelector(shuffle)
+            shuffle.tracksPlayed.add(track)
+            shuffle.save()
+            if Track.objects.filter(track=track).count() == 1:
+                data = {
+                    'PATH': track.location,
+                    'COVER': track.coverLocation
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+            return JsonResponse(data)
+        return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))

@@ -62,3 +62,9 @@ class Library(models.Model):
     user = models.ForeignKey(User)
     playlist = models.ForeignKey(Playlist, null=True)
     convertID3 = models.BooleanField(default=False)
+
+
+class Shuffle(models.Model):
+    playlist = models.ForeignKey(Playlist)
+    user = models.ForeignKey(User)
+    tracksPlayed = models.ManyToManyField(Track)
