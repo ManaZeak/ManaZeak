@@ -3,8 +3,9 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(tracks, cookies) {
+var ListView = function(playlistId, tracks, cookies) {
     this.listView = null;
+    this.playlistId = playlistId;
     this.tracks = tracks;
     this.cookies = cookies;
     this.entries = [];
@@ -51,7 +52,6 @@ ListView.prototype = {
         this._eventListener();
 
         this.addEntries(this.tracks);
-        document.getElementById("mainContainer").appendChild(this.listView);
         this.computePositions();
     },
 
@@ -101,6 +101,15 @@ ListView.prototype = {
         columnBar.appendChild(this.header.year);
 
         this.listView.appendChild(columnBar);
+    },
+
+
+    showListView: function() {
+        document.getElementById("mainContainer").appendChild(this.listView);
+    },
+
+    hideListView: function() {
+        document.getElementById("mainContainer").removeChild(this.listView);
     },
 
 
@@ -168,7 +177,7 @@ ListView.prototype = {
 
         var newState = !this.entriesSelected[id];
 
-        if (!event.ctrlKey && newState === true) { this.unselectAll(); }
+        if (!event.ctrlKey && newState === true) {  }
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);
@@ -187,7 +196,7 @@ ListView.prototype = {
         var id = target.dataset.listViewID;
         
         if (!this.entries[id].getIsSelected()) {
-            this.unselectAll();
+            this.unSelectAll();
             this.entries[id].setIsSelected(true);
             this.entriesSelected[id] = true;
         }
@@ -204,7 +213,7 @@ ListView.prototype = {
     },
 
 
-    unselectAll: function() {
+    unSelectAll: function() {
         this.entriesSelected = {};
         for (var i = 0; i < this.entries.length ;++i)
             if (this.entries[i].getIsSelected())

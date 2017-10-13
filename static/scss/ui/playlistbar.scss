@@ -14,9 +14,23 @@
         transition: 0.2s ease;
     }
 
-    p:active,
-    p:focus,
-    p:hover {
+    p.playlist:active,
+    p.playlist:focus,
+    p.playlist:hover {
         border-bottom: solid 3px blue;
+    }
+
+    .playlistLocked {
+        border-bottom: solid 3px blue;
+    }
+
+    p.library:active,
+    p.library:focus,
+    p.library:hover {
+        border-bottom: solid 3px red;
+    }
+
+    .libraryLocked {
+        border-bottom: solid 3px red;
     }
 }
