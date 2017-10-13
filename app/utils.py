@@ -33,6 +33,7 @@ class EditMetadataModal(TemplateView):
         return super(EditMetadataModal, self).dispatch(*args, **kwargs)
 
 
+# Split a table in 4 table of equal size
 def splitTable(table):
     if len(table) % 4 == 0:
         chunkSize = int(len(table) / 4)
@@ -42,6 +43,7 @@ def splitTable(table):
         yield table[i:i + chunkSize]
 
 
+# Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
         return trackAttribute
@@ -49,6 +51,7 @@ def checkIfNotNone(trackAttribute):
         return "null"
 
 
+# Check if an attribute is existing or not and add "" around it
 def checkIfNotNoneNumber(trackAttribute):
     if trackAttribute is not None:
         return str(trackAttribute)
@@ -65,6 +68,7 @@ def badFormatError():
     return JsonResponse(data)
 
 
+# Generate the base of any status message
 def errorCheckMessage(isDone, error):
     errorTitle = ""
     errorMessage = ""
@@ -96,6 +100,7 @@ def errorCheckMessage(isDone, error):
     }
 
 
+# Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
     spiltedTracks = splitTable(tracks)
@@ -113,6 +118,7 @@ def exportPlaylistToSimpleJson(playlist):
     return finalData.replace('\n', '').replace('\r', '')
 
 
+# Thread for creating the json in parallel
 class SimpleJsonCreator(threading.Thread):
     finalData = ""
 
@@ -162,6 +168,7 @@ class SimpleJsonCreator(threading.Thread):
         self.finalData = internData
 
 
+# export a playlist to json, not threaded, to be avoided
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
@@ -237,6 +244,8 @@ def exportPlaylistToJson(playlist):
     return finalData
 
 
+# Function to add all the genre, album and artist to the database
+# Need to do this action before scan to avoid concurrency errors
 def addAllGenreAndAlbumAndArtistsMP3(filePaths):
     for filePath in filePaths:
         try:
@@ -268,6 +277,7 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                     artist.save()
 
 
+# Create the file type entry
 def populateDB():
     if FileType.objects.all().count() == 0:
         fileType = FileType(name="mp3")
@@ -280,6 +290,7 @@ def populateDB():
         fileType.save()
 
 
+# Create the CRC32 code from a file
 def CRC32_from_file(filename):
     buf = open(filename, 'rb').read()
     buf = (binascii.crc32(buf) & 0xFFFFFFFF)
@@ -297,7 +308,7 @@ def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replac
         track.scanned = True
 
 
-# TODO: remove the file in DB that have been removed
+# Check if new file have been added
 def rescanLibrary(library):
     playlist = library.playlist
     convert = False
@@ -316,6 +327,7 @@ def rescanLibrary(library):
     return [replacedTitles, removedTracks]
 
 
+# Scan all the attributes of an MP3 track, and add it to base.
 def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -445,6 +457,7 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     playlist.track.add(track)
 
 
+# Adding a MP3 track to the database
 def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -577,6 +590,7 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     playlist.track.add(track)
 
 
+# Thread for generating multiple CRC32
 class CRCGenerator(threading.Thread):
     def __init__(self, tracks):
         threading.Thread.__init__(self)
@@ -593,15 +607,7 @@ class CRCGenerator(threading.Thread):
             track.save()
 
 
-class ResponseThread(threading.Thread):
-    def __init__(self, text):
-        threading.Thread.__init__(self)
-        self.text = text
-
-    def run(self):
-        return JsonResponse(self.text)
-
-
+# Import in a threaded way a library
 class ImportMp3Thread(threading.Thread):
     def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
         threading.Thread.__init__(self)
@@ -616,6 +622,7 @@ class ImportMp3Thread(threading.Thread):
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
+# Scan a library.
 def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
     print("process")
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
@@ -636,6 +643,7 @@ def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
     playlist.save()
     library.playlist = playlist
     library.save()
+    # TODO : re-enable CRC generation
     # tracks = playlist.track.all()
     # splicedTracks = splitTable(tracks)
     # threads = []

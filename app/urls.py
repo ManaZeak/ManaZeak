@@ -13,7 +13,6 @@ urlpatterns = [
     url(r'^signup/$', views.createUser, name='signup'),
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
     url(r'^logout/$', views.logoutView, name='logout'),
-    url(r'^ajax/loadAllLibrary/$', views.loadAllLibrary, name='loadAllLibrary'),
     url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
     url(r'^ajax/getSimplifiedTracks/$', views.loadSimplifiedLibrary, name='simplifiedJson'),

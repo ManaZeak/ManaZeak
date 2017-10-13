@@ -45,6 +45,7 @@ class Track(models.Model):
     fileType = models.ForeignKey(FileType, null=True)
     CRC = models.CharField(max_length=1000, null=False)
     scanned = models.BooleanField(default=False)
+    playCounter = models.IntegerField(default=0)
 
 
 class Playlist(models.Model):
