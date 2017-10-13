@@ -42,6 +42,7 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
         this.callback = null;
     }
 
+    // Boolean to add to know if tracks are sette dor not
     this.tracks = [];
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
@@ -53,6 +54,8 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
 Playlist.prototype = {
 
     _init: function() {
+        //if (typeof rawTracks === undefined) { return; }
+
         if (this.isLoading) {
             if (this.isLibrary) { this._loadLibrary(); } // Library loading process
         }
@@ -242,6 +245,11 @@ Playlist.prototype = {
                             self.rawTracks = response;
                             self.scanModal.close();
                             self._fillTracks(self.rawTracks);
+
+                            if (!self.isLoading) {
+                                document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+                                self.callback();
+                            }
                         }
                     );
                 }
@@ -257,23 +265,39 @@ Playlist.prototype = {
     },
 
 
+    getPlaylistsTracks: function(playlistId, callback) {
+        var that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getSimplifiedTracks/",
+            that.cookies,
+            JSON.stringify({
+                PLAYLIST_ID: playlistId
+            }),
+            function(response) {
+                // response = raw tracks JSON object
+                that.rawTracks = response;
+                that._fillTracks(that.rawTracks);
+                callback();
+            }
+        );
+    },
+
+
     /* Class utilities */
 
     _fillTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
             this.tracks.push(new Track(tracks[i]));
         }
-
-        if (!this.isLoading) {
-            document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
-            this.callback();
-        }
     },
 
 
     // Class Getters and Setters
-    getTracks: function()     { return this.tracks; },
-    getName: function()       { return this.name;   },
+    getId: function()         { return this.id;        },
+    getTracks: function()     { return this.tracks;    },
+    getName: function()       { return this.name;      },
+    getIsLibrary: function()  { return this.isLibrary; },
 
-    setName: function(name)   { this.name = name;   }
+    setName: function(name)   { this.name = name;      }
 };
