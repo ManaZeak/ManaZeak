@@ -1,4 +1,5 @@
 import hashlib
+import subprocess
 import time
 
 import os
@@ -15,13 +16,12 @@ def scan():
         for file in files:
             md5 = hashlib.md5(file).hexdigest()
             count += 1
-            for mood in moods:
-                if md5 in moods:
-                    break
-                else:
-                    # TODO: generate moodbar with bash
-                    pass
+            if md5 not in moods:
+                command = 'moodbar ' + os.path.join(root, file) + ' -o ' + md5 + '.mood'
+                process = subprocess.Popen([command])
+                process.wait()
     return count
+
 
 def countFile():
     count = 0
@@ -35,7 +35,7 @@ def main():
     totalFiles = scan()
     while True:
         if totalFiles != countFile():
-            scan()
+            totalFiles = scan()
         time.sleep(600)
 
 
