@@ -43,6 +43,7 @@ class Track(models.Model):
     album = models.ForeignKey(Album, null=True)
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
+    moodbar = models.URLField(max_length=1000, null=True)
     CRC = models.CharField(max_length=1000, null=False)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
