@@ -34,21 +34,21 @@ def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
-        try:
+        if 'LIBRARY_ID' in response:
             library = Library.objects.get(id=response['LIBRARY_ID'])
-        except AttributeError:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-        if not os.path.isdir(library.path):
-            return JsonResponse(errorCheckMessage(False, "dirNotFound"))
-
-        playlist = Playlist()
-        playlist.name = library.name
-        playlist.user = request.user
-        playlist.isLibrary = True
-        playlist.save()
-        data = scanLibrary(library, playlist, library.convertID3)
-        playlist.isScanned = True
-        print("Ended initial scan")
+            if os.path.isdir(library.path):
+                playlist = Playlist()
+                playlist.name = library.name
+                playlist.user = request.user
+                playlist.isLibrary = True
+                playlist.save()
+                data = scanLibrary(library, playlist, library.convertID3)
+                print("Ended initial scan")
+                playlist.isScanned = True
+            else:
+                data = errorCheckMessage(False, "dirNotFound")
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

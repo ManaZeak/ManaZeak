@@ -7,6 +7,7 @@ import os
 
 def scan():
     # TODO: put correct path
+    # TODO: the moodbar docker must have the SAME architecture as the manazeak one.
     moods = []
     count = 0
     for root, dirs, files in os.walk("/moods/"):
@@ -14,10 +15,11 @@ def scan():
             moods.append(file[:-4])
     for root, dirs, files in os.walk("/sound/"):
         for file in files:
-            md5 = hashlib.md5(file).hexdigest()
+            path = os.path.join(root, file)
+            md5 = hashlib.md5(path).hexdigest()
             count += 1
             if md5 not in moods:
-                command = 'moodbar ' + os.path.join(root, file) + ' -o ' + md5 + '.mood'
+                command = 'moodbar ' + path + ' -o ' + md5 + '.mood'
                 process = subprocess.Popen([command])
                 process.wait()
     return count
