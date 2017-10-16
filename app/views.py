@@ -91,7 +91,7 @@ def createUser(request):
     return render(request, 'user/signup.html', {'form': form})
 
 
-# Render the user form login view
+# Render the user form login views
 class UserFormLogin(View):
     form_class = UserForm
     template_name = 'user/login.html'

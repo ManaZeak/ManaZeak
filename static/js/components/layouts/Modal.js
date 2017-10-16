@@ -50,10 +50,8 @@ Modal.prototype = {
 
     initEditMetadata: function(entriesSelected) {
         var props = Object.getOwnPropertyNames(entriesSelected);
-        for(var entry in props)
-        {
-            if(entriesSelected[entry] === true)
-            {
+        for(var entry in props) {
+            if(entriesSelected[entry] === true) {
                 // TODO : from utils, modify here
                 document.getElementById("trackListContainer").parentNode.removeChild(document.getElementById("trackListContainer"));
                 document.getElementById("inputContainer").className += "inputStandAlone";

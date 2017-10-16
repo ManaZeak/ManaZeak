@@ -398,7 +398,7 @@ Player.prototype = {
         // Key pressed event
         document.addEventListener("keydown", function(event) {
             switch (event.keyCode) {
-                case 32: // Space bar
+                case 32: // Space player
                     that.togglePlay();
                     break;
                 case 37: // Left arrow

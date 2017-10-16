@@ -33,14 +33,14 @@ function secondsToTimecode(time) {
 
 function sortObjectArrayBy(key, ascending) {
     return function(a, b) {
-        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         var compare = 0;
 
-        if (varA > varB) { compare = 1;}
+        if (varA > varB)      { compare =  1; }
         else if (varA < varB) { compare = -1; }
 
         return (!ascending ? (compare * -1) : compare);
@@ -52,8 +52,8 @@ function getCookies() {
     var cookies = {};
 
     if (document.cookie && document.cookie !== '') {
-        document.cookie.split(';').forEach(function (c) {
-            var m = c.trim().match(/(\w+)=(.*)/);
+        document.cookie.split(';').forEach(function (cookie) {
+            var m = cookie.trim().match(/(\w+)=(.*)/);
             if (m !== undefined) {
                 cookies[m[1]] = decodeURIComponent(m[2]);
             }
@@ -65,16 +65,16 @@ function getCookies() {
 
 
 function getRequest(url, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             callback(this.responseText);
         }
     };
 
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    xhr.open("GET", url, true);
+    xhr.send();
 }
 
 
@@ -89,34 +89,34 @@ function removeVisibilityLock(object, className) {
 
 
 function JSONParsedGetRequest(url, http, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (http) { callback(this.responseText); }
             else      { callback(JSON.parse(this.responseText)); }
         }
     };
 
-    xmlhttp.open("GET", url, true);
-    if (http) { xmlhttp.setRequestHeader("Content-Type", "application/json"); }
-    xmlhttp.send();
+    xhr.open("GET", url, true);
+    if (http) { xhr.setRequestHeader("Content-Type", "application/json"); }
+    xhr.send();
 }
 
 
 function JSONParsedPostRequest(url, cookies, message, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             callback(JSON.parse(this.responseText));
         }
     };
 
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
-    xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.send(message);
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(message);
 }
 
 
@@ -131,7 +131,7 @@ function renderMoodFile(file, parentDiv) {
         if (this.readyState === 4 && this.status === 200) {
             var rgb = new Array(this.responseText.length / 3);
 
-            for (var i = 0, len = rgb.length; i < len; i++) {
+            for (var i = 0, len = rgb.length; i < len; ++i) {
                 var r = this.responseText.charCodeAt(i * 3)       & 0xff;
                 var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
                 var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
@@ -142,8 +142,7 @@ function renderMoodFile(file, parentDiv) {
                 };
             }
 
-//            var svg = d3.select(parentDiv).append("svg")
-            var svg = parentDiv.append("svg")
+            var svg = d3.select(parentDiv).append("svg")
                 .attr("height", 10)
 //                .attr("width", "100%")
                 .append("g");

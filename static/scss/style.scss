@@ -1,12 +1,11 @@
-@import 'tools/tools';
-@import 'ui/topbar';
-@import 'ui/progressbar';
-@import 'ui/volumebar';
-@import 'components/contextmenu';
-@import 'components/notification';
-@import 'components/newlibrary';
-@import 'components/listview';
-@import 'components/footbar';
+@import 'utils/tools';
+@import 'components/layouts/topbar';
+@import 'ui/player/progressbar';
+@import 'ui/player/volumebar';
+@import 'ui/menu/contextmenu';
+@import 'components/layouts/notification';
+@import 'components/views/listview';
+@import 'components/layouts/footbar';
 
 html, body {
     height: 100%;
@@ -27,8 +26,8 @@ html, body {
 
 #mainContainer {
     width: 100%;
-    height: calc(100% - 140px);
-    top: 60px;
+    height: calc(100% - 130px);
+    top: 50px;
     position: absolute;
 }
 
