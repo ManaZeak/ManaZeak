@@ -1,6 +1,7 @@
 import json
 import os
 from builtins import print
+from random import randint
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -12,9 +13,9 @@ from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
-from app.controller import scanLibrary
+from app.controller import scanLibrary, shuffleSoundSelector
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
@@ -33,21 +34,21 @@ def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
-        try:
+        if 'LIBRARY_ID' in response:
             library = Library.objects.get(id=response['LIBRARY_ID'])
-        except AttributeError:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-        if not os.path.isdir(library.path):
-            return JsonResponse(errorCheckMessage(False, "dirNotFound"))
-
-        playlist = Playlist()
-        playlist.name = library.name
-        playlist.user = request.user
-        playlist.isLibrary = True
-        playlist.save()
-        data = scanLibrary(library, playlist, library.convertID3)
-        playlist.isScanned = True
-        print("Ended initial scan")
+            if os.path.isdir(library.path):
+                playlist = Playlist()
+                playlist.name = library.name
+                playlist.user = request.user
+                playlist.isLibrary = True
+                playlist.save()
+                data = scanLibrary(library, playlist, library.convertID3)
+                print("Ended initial scan")
+                playlist.isScanned = True
+            else:
+                data = errorCheckMessage(False, "dirNotFound")
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -137,7 +138,7 @@ def getUserPlaylists(request):
         'NUMBER': len(playlistNames),
         'PLAYLIST_NAMES': playlistNames,
         'PLAYLIST_IDS': playlistIds,
-        'PLAYLIST_IS_LIBRARY':isLibrary,
+        'PLAYLIST_IS_LIBRARY': isLibrary,
     }
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
@@ -241,7 +242,7 @@ def getTrackPathByID(request):
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
-                errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "dbError")
 
         else:
             data = errorCheckMessage(False, "badFormat")
@@ -262,3 +263,75 @@ def checkLibraryScanStatus(request):
             return JsonResponse(data)
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+def shuffleNextTrack(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            if Shuffle.objects.filter(playlist=response['PLAYLIST_ID'], user=request.user).count() == 1:
+                shuffle = Shuffle.objects.get(playlist=response['PLAYLIST_ID'], user=request.user)
+            else:
+                shuffle = Shuffle(playlist=response['PLAYLIST_ID'], user=request.user)
+            track = shuffleSoundSelector(shuffle)
+            shuffle.tracksPlayed.add(track)
+            shuffle.save()
+            if Track.objects.filter(track=track).count() == 1:
+                data = {
+                    'PATH': track.location,
+                    'COVER': track.coverLocation
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+            return JsonResponse(data)
+        return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
+
+
+def getMoodbarByID(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackID = response['TRACK_ID']
+            if Track.objects.filter(id=trackID).count() == 1:
+                track = Track.objects.get(id=trackID)
+                data = {
+                    'MOOD': track.moodbar
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return data
+
+
+def randomNextTrack(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistID = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistID).count() == 1:
+                playlist = Playlist.objects.get(id=playlistID)
+                rangeRand = playlist.track.count()
+                selectedTrack = randint(0, rangeRand)
+                count = 0
+                for track in playlist.track.all():
+                    if count == selectedTrack:
+                        data = {
+                            'PATH': track.location,
+                            'COVER': track.coverLocation
+                        }
+                        data = {**data, **errorCheckMessage(True, None)}
+                        return JsonResponse(data)
+                    else:
+                        count += 1
+            return JsonResponse(errorCheckMessage(False, "dbError"))
+        else:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
