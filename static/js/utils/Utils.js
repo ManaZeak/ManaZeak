@@ -64,6 +64,16 @@ function getCookies() {
 }
 
 
+function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
+    object.classList.add(className);
+}
+
+
+function removeVisibilityLock(object, className) {
+    object.classList.remove(className);
+}
+
+
 function getRequest(url, callback) {
     var xhr = new XMLHttpRequest();
 
@@ -75,16 +85,6 @@ function getRequest(url, callback) {
 
     xhr.open("GET", url, true);
     xhr.send();
-}
-
-
-function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
-    object.classList.add(className);
-}
-
-
-function removeVisibilityLock(object, className) {
-    object.classList.remove(className);
 }
 
 
@@ -117,6 +117,11 @@ function JSONParsedPostRequest(url, cookies, message, callback) {
     xhr.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(message);
+}
+
+
+function JSONMoodbarPostRequest(url, cookies, message, callback) {
+
 }
 
 
