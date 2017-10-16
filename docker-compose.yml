@@ -1,20 +1,18 @@
 version: '2'
 
 services:
-  nginx:
+ nginx:
     image: nginx:latest
     container_name: ng01
     ports:
       - "80:8000"
-
     volumes:
       - /home/pierre/Documents/ACDC/:/library
       - ./nginx/config:/etc/nginx/conf.d
       - ./static:/static
     depends_on:
       - web
-
-  db:
+ db:
     image: postgres:latest
     container_name: db
     environment:
@@ -28,17 +26,24 @@ services:
     ports:
     - "5432:5432"
 
-  web:
-    build: .
-    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - /home/pierre/Documents/ACDC/:/library
-      - ./static:/static
-      - .:/ManaZeak
-    expose:
-      - "8000"
-      - "5432"
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
+ web:
+     build: .
+     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+     volumes:
+     - /home/pierre/Documents/ACDC/:/library
+     - ./static:/static
+     - .:/ManaZeak
+     expose:
+     - "8000"
+     - "5432"
+     ports:
+     - "8000:8000"
+     depends_on:
+     - db
+
+ moodbar:
+     build: ./moodbar
+     container_name: moodbar
+     volumes:
+     - /home/pierre/Documents/ACDC/:/moodbar/library
+     - /home/pierre/Documents/Gitlab/ManaZeak/static:/moodbar/static
