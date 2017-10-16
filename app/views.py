@@ -290,6 +290,26 @@ def shuffleNextTrack(request):
         return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
+def getMoodbarByID(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackID = response['TRACK_ID']
+            if Track.objects.filter(id=trackID).count() == 1:
+                track = Track.objects.get(id=trackID)
+                data = {
+                    'MOOD': track.moodbar
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return data
+
+
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
