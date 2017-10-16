@@ -1,5 +1,4 @@
 import hashlib
-import subprocess
 import time
 
 import os
@@ -10,24 +9,26 @@ def scan():
     # TODO: the moodbar docker must have the SAME architecture as the manazeak one.
     moods = []
     count = 0
-    for root, dirs, files in os.walk("/moods/"):
+    print("starting scanning")
+    for root, dirs, files in os.walk("/moodbar/static/"):
         for file in files:
             moods.append(file[:-4])
-    for root, dirs, files in os.walk("/sound/"):
+    for root, dirs, files in os.walk("/library/"):
         for file in files:
             path = os.path.join(root, file)
-            md5 = hashlib.md5(path).hexdigest()
+            md5 = "./static/"
+            md5 += hashlib.md5(path).hexdigest()
             count += 1
             if md5 not in moods:
-                command = 'moodbar ' + path + ' -o ' + md5 + '.mood'
-                process = subprocess.Popen([command])
-                process.wait()
+                command = 'moodbar \"' + path + '\" -o ' + md5 + '.mood'
+                os.system(command)
+    print("finished scanning")
     return count
 
 
 def countFile():
     count = 0
-    for root, dirs, files in os.walk("/sound/"):
+    for root, dirs, files in os.walk("/library/"):
         for _ in files:
             count += 1
     return count
