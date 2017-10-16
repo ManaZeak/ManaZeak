@@ -35,17 +35,16 @@ var TopBar = function(cookies) {
 
 
 };
-// TODO : fuse topbar and playlist player together
+
 
 TopBar.prototype = {
 
     init: function(playlists, selectedPlaylist) {
         this.playlists = playlists;
-        this.selectedPlaylist = selectedPlaylist;
 
         this.addEntries();
         this.addNewPlaylistButton();
-        this.setSelected(this.selectedPlaylist);
+        this.setSelected(selectedPlaylist);
         this._eventListener();
     },
 
@@ -70,6 +69,7 @@ TopBar.prototype = {
 
 
     setSelected: function(id) {
+	this.selectedPlaylist = id;
         this.entries[id].setIsSelected(true);
     },
 
@@ -82,9 +82,7 @@ TopBar.prototype = {
 
     unSelectAll: function() {
         for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].getIsSelected()) {
-                this.entries[i].setIsSelected(false);
-            }
+		this.entries[i].setIsSelected(false);
         }
     },
 
@@ -97,10 +95,11 @@ TopBar.prototype = {
     viewClicked: function(event) {
         var target = event.target;
         // TODO : fix when target is null => when user click outside left or right of the listview
-        while(target.parentNode !== this.playlistBar) {
+        while(target.parentNode && target.parentNode !== this.playlistBar) {
             target = target.parentNode;
         }
-
+	if(target.parentNode === null)
+		return true;
         var id = target.dataset.listViewID;
 
         if (id !== undefined) {
