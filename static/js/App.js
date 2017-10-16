@@ -12,8 +12,9 @@ var App = function() {
     this.trackPreview = new TrackPreview();
     this.userMenu     = new UserMenu();
     this.topbar       = new TopBar();
+    this.playlistBar  = null;
+    this.listView     = null;
     this.playlists    = [];
-    this.listsView    = [];
 
 
     // UI
@@ -38,6 +39,7 @@ App.prototype = {
             "ajax/getPlaylists/",
             false,
             function(response) {
+                // TODO : ask ordered playlist : backend : libraries first then playlist
                 /* response = {
                  *     DONE:           bool
                  *     PLAYLIST_IDS:   int[] / undefined
@@ -65,14 +67,18 @@ App.prototype = {
                     PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
                 }),
                 function(response) {
+                    that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0], playlists.PLAYLIST_NAMES[0], playlists.PLAYLIST_IS_LIBRARY[0], true, that.cookies, response, undefined));
+
                     // response = raw tracks JSON object
-                    for (var i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
-                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], playlists.PLAYLIST_IS_LIBRARY[i], true, that.cookies, response, undefined));
+                    for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
+                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], playlists.PLAYLIST_IS_LIBRARY[i], true, that.cookies, undefined, undefined));
                     }
 
+                    that.playlistBar = new PlaylistBar(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
-                    new PlaylistBar(that.playlists);
+                    console.log(that.playlists);
+                    that.listView = new ListView(that.playlists[0].getId(), that.playlists[0].getTracks(), that.cookies);
+                    that.listView.showListView();
                 }
             );
         }
@@ -80,10 +86,28 @@ App.prototype = {
         // User first connection
         else {
             this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
-                that.listsView.push(new ListView(that.playlists[0].getTracks(), that.cookies));
-                console.log(that.playlists);
-                new PlaylistBar(that.playlists);
+                that.playlistBar = new PlaylistBar(that.playlists, 0);
+                that.listView = new ListView(that.playlists[0].getId(), that.playlists[0].getTracks(), that.cookies);
+                that.listView.showListView();
             }));
+        }
+    },
+
+
+    changePlaylist: function(playlistId) {
+        var that = this;
+
+        for (var i = 0; i < this.playlists.length ;++i) {
+            if (this.playlists[i].getId() == playlistId) {
+                that.playlists[i].getPlaylistsTracks(playlistId, function() {
+                that.playlistBar.setSelected(i);
+                that.listView.hideListView();
+                that.listView = null;
+                that.listView = new ListView(playlistId, that.playlists[i].getTracks(), that.cookies);
+                that.listView.showListView();
+                });
+                break;
+            }
         }
     },
 
@@ -96,8 +120,10 @@ App.prototype = {
         }
 
         this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
-                that.listsView.push(new ListView(that.playlists[that.playlists.length - 1].getTracks(), that.cookies));
-                new PlaylistBar(that.playlists);
+            that.listView = null;
+            that.listView = new ListView(that.playlists[0].getId(), that.playlists[that.playlists.length - 1].getTracks(), that.cookies);
+            that.listView.showListView();
+            that.playlistBar = new PlaylistBar(that.playlists, that.playlistBar.entries.length);
         }));
     },
 

@@ -3,8 +3,9 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(tracks, cookies) {
+var ListView = function(playlistId, tracks, cookies) {
     this.listView = null;
+    this.playlistId = playlistId;
     this.tracks = tracks;
     this.cookies = cookies;
     this.entries = [];
@@ -14,6 +15,7 @@ var ListView = function(tracks, cookies) {
     this.contextMenu = new ContextMenu();
 
     this.header = {
+        container: null,
         duration:  null,
         title:     null,
         artist:    null,
@@ -51,14 +53,13 @@ ListView.prototype = {
         this._eventListener();
 
         this.addEntries(this.tracks);
-        document.getElementById("mainContainer").appendChild(this.listView);
         this.computePositions();
     },
 
 
     initHeader: function() {
-        var columnBar = document.createElement("div");
-        columnBar.className = "columnHeader";
+        this.header.container = document.createElement("div");
+        this.header.container.className = "columnHeader";
 
         this.header.duration  = document.createElement("div");
         this.header.title     = document.createElement("div");
@@ -90,17 +91,30 @@ ListView.prototype = {
         this.header.bitRate.innerHTML     = "BitRate";
         this.header.year.innerHTML        = "Year";
 
-        columnBar.appendChild(this.header.duration);
-        columnBar.appendChild(this.header.title);
-        columnBar.appendChild(this.header.artist);
-        columnBar.appendChild(this.header.composer);
-        columnBar.appendChild(this.header.performer);
-        columnBar.appendChild(this.header.album);
-        columnBar.appendChild(this.header.genre);
-        columnBar.appendChild(this.header.bitRate);
-        columnBar.appendChild(this.header.year);
+        this.header.container.appendChild(this.header.duration);
+        this.header.container.appendChild(this.header.title);
+        this.header.container.appendChild(this.header.artist);
+        this.header.container.appendChild(this.header.composer);
+        this.header.container.appendChild(this.header.performer);
+        this.header.container.appendChild(this.header.album);
+        this.header.container.appendChild(this.header.genre);
+        this.header.container.appendChild(this.header.bitRate);
+        this.header.container.appendChild(this.header.year);
 
-        this.listView.appendChild(columnBar);
+        //document.getElementById("mainContainer").appendChild(this.header.container);
+    },
+
+
+    showListView: function() {
+        document.getElementById("mainContainer").appendChild(this.header.container);
+        document.getElementById("mainContainer").appendChild(this.listView);
+
+    },
+
+    hideListView: function() {
+        document.getElementById("mainContainer").removeChild(this.header.container);
+        document.getElementById("mainContainer").removeChild(this.listView);
+        // TODO : remove header too
     },
 
 
@@ -143,7 +157,7 @@ ListView.prototype = {
                 "ajax/getTrackPathByID/",
                 this.cookies,
                 JSON.stringify({
-                    ID: this.entries[id].entry.id
+                    TRACK_ID: this.entries[id].entry.id
                 }),
                 function(response) {
                     if (response.RESULT === "FAIL") {
@@ -168,7 +182,7 @@ ListView.prototype = {
 
         var newState = !this.entriesSelected[id];
 
-        if (!event.ctrlKey && newState === true) { this.unselectAll(); }
+        if (!event.ctrlKey && newState === true) { this.unSelectAll(); }
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);
@@ -187,7 +201,7 @@ ListView.prototype = {
         var id = target.dataset.listViewID;
         
         if (!this.entries[id].getIsSelected()) {
-            this.unselectAll();
+            this.unSelectAll();
             this.entries[id].setIsSelected(true);
             this.entriesSelected[id] = true;
         }
@@ -204,7 +218,7 @@ ListView.prototype = {
     },
 
 
-    unselectAll: function() {
+    unSelectAll: function() {
         this.entriesSelected = {};
         for (var i = 0; i < this.entries.length ;++i)
             if (this.entries[i].getIsSelected())
