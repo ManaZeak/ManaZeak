@@ -15,6 +15,7 @@ var ListView = function(playlistId, tracks, cookies) {
     this.contextMenu = new ContextMenu();
 
     this.header = {
+        container: null,
         duration:  null,
         title:     null,
         artist:    null,
@@ -57,8 +58,8 @@ ListView.prototype = {
 
 
     initHeader: function() {
-        var columnBar = document.createElement("div");
-        columnBar.className = "columnHeader";
+        this.header.container = document.createElement("div");
+        this.header.container.className = "columnHeader";
 
         this.header.duration  = document.createElement("div");
         this.header.title     = document.createElement("div");
@@ -90,26 +91,30 @@ ListView.prototype = {
         this.header.bitRate.innerHTML     = "BitRate";
         this.header.year.innerHTML        = "Year";
 
-        columnBar.appendChild(this.header.duration);
-        columnBar.appendChild(this.header.title);
-        columnBar.appendChild(this.header.artist);
-        columnBar.appendChild(this.header.composer);
-        columnBar.appendChild(this.header.performer);
-        columnBar.appendChild(this.header.album);
-        columnBar.appendChild(this.header.genre);
-        columnBar.appendChild(this.header.bitRate);
-        columnBar.appendChild(this.header.year);
+        this.header.container.appendChild(this.header.duration);
+        this.header.container.appendChild(this.header.title);
+        this.header.container.appendChild(this.header.artist);
+        this.header.container.appendChild(this.header.composer);
+        this.header.container.appendChild(this.header.performer);
+        this.header.container.appendChild(this.header.album);
+        this.header.container.appendChild(this.header.genre);
+        this.header.container.appendChild(this.header.bitRate);
+        this.header.container.appendChild(this.header.year);
 
-        this.listView.appendChild(columnBar);
+        //document.getElementById("mainContainer").appendChild(this.header.container);
     },
 
 
     showListView: function() {
+        document.getElementById("mainContainer").appendChild(this.header.container);
         document.getElementById("mainContainer").appendChild(this.listView);
+
     },
 
     hideListView: function() {
+        document.getElementById("mainContainer").removeChild(this.header.container);
         document.getElementById("mainContainer").removeChild(this.listView);
+        // TODO : remove header too
     },
 
 
