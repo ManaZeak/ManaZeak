@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^ajax/getSimplifiedTracks/$', views.loadSimplifiedLibrary, name='simplifiedJson'),
     url(r'^ajax/checkLibraryScanStatus/$', views.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/getTrackPathByID/$', views.getTrackPathByID, name='getTrackPathByID'),
+    url(r'^ajax/getMoodbarByID/$', views.getMoodbarByID, name='getMoodbarByID'),
     url(r'^ajax/shuffleNextTrack/$', views.shuffleNextTrack, name='shuffleNextTrack'),
     url(r'^ajax/randomNextTrack/$', views.randomNextTrack, name='randomNextTrack'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
