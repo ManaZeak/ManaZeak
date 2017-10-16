@@ -400,6 +400,7 @@ Player.prototype = {
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
         this.ui.queueExpander.button.addEventListener("click", this.toggleQueue.bind(this));
 
+        this.player.addEventListener("ended", this.next.bind(this));
         this.player.addEventListener('loadedmetadata', function() {
             that.progressBar.init(that.player); // Initialize progressBar
             that.progressBar.getContainer().addEventListener("mouseover", that.mouseOver.bind(that));
@@ -410,8 +411,6 @@ Player.prototype = {
             window.addEventListener("mouseup", that.mouseUp.bind(that));
             window.addEventListener("mousemove", that.mouseMove.bind(that));
         });
-
-        this.player.addEventListener("ended", this.next.bind(this));
 
         this.volumeBar.getContainer().addEventListener("mousedown", that.mouseDown.bind(this));
     },
