@@ -4,7 +4,7 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var UserMenu = function() {
-    this.menu = mkElem("div");
+    this.menu = document.createElement("div");
     this.menu.id = "menu";
     this.menuEntry = {
         logout: null
@@ -21,8 +21,8 @@ var UserMenu = function() {
 UserMenu.prototype = {
 
     _init: function() {
-        getById("userExpander").appendChild(this.menu);
-        this.menuEntry.logout = mkElem("div");
+        document.getElementById("userExpander").appendChild(this.menu);
+        this.menuEntry.logout = document.createElement("div");
         this.menuEntry.logout.id = "logOut";
         this.menuEntry.logout.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
@@ -56,7 +56,7 @@ UserMenu.prototype = {
 
 
     clickOutside: function(e) {
-        if (!getById("userExpander").contains(e.target) && !getById("menu").contains(e.target)) {
+        if (!document.getElementById("userExpander").contains(e.target) && !document.getElementById("menu").contains(e.target)) {
             removeVisibilityLock(this.menu, "menuLocked");
         }
     },

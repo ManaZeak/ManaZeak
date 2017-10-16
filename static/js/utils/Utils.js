@@ -64,16 +64,6 @@ function getCookies() {
 }
 
 
-function getByClass(string) {
-    return document.getElementsByClassName(string);
-}
-
-
-function getById(string) {
-    return document.getElementById(string);
-}
-
-
 function getRequest(url, callback) {
     var xmlhttp = new XMLHttpRequest();
 
@@ -88,22 +78,13 @@ function getRequest(url, callback) {
 }
 
 
-function mkElem(type) {
-    return document.createElement(type);
-}
-
-
-function addVisibilityLock(object, className) { // TODO : put in Utils
-    if (!object.className.match(className)) {
-        object.className += className;
-    }
+function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
+    object.classList.add(className);
 }
 
 
 function removeVisibilityLock(object, className) {
-    if (object.className.match(className)) {
-        object.className = object.className.replace(className, '');
-    }
+    object.classList.remove(className);
 }
 
 
@@ -136,4 +117,51 @@ function JSONParsedPostRequest(url, cookies, message, callback) {
     xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
     xmlhttp.send(message);
+}
+
+
+// Credit for this function "Valodim"
+// https://gist.github.com/Valodim/5225460
+function renderMoodFile(file, parentDiv) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', file, true);
+    xhr.overrideMimeType('text/plain; charset=x-user-defined');
+    xhr.onreadystatechange = function(e) {
+        if (this.readyState === 4 && this.status === 200) {
+            var rgb = new Array(this.responseText.length / 3);
+
+            for (var i = 0, len = rgb.length; i < len; i++) {
+                var r = this.responseText.charCodeAt(i * 3)       & 0xff;
+                var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
+                var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
+
+                rgb[i] = {
+                    offset: (i / len * 100) + "%",
+                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
+                };
+            }
+
+//            var svg = d3.select(parentDiv).append("svg")
+            var svg = parentDiv.append("svg")
+                .attr("height", 10)
+//                .attr("width", "100%")
+                .append("g");
+            svg.append("linearGradient")
+                .attr("id", "moodbar-gradient-" + file[0] + file[1])
+                .attr("gradientUnits", "userSpaceOnUse")
+                .selectAll("stop")
+                .data(rgb)
+                .enter().append("stop")
+                .attr("offset", function(d)     { return d.offset; })
+                .attr("stop-color", function(d) { return d.color; });
+            svg.append("rect")
+                .attr("fill", "url(#moodbar-gradient-" + file[0] + file[1] + ")")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", "100%")
+                .attr("height", "10")
+        }
+    };
+    xhr.send();
 }
