@@ -411,6 +411,8 @@ Player.prototype = {
             window.addEventListener("mousemove", that.mouseMove.bind(that));
         });
 
+        this.player.addEventListener("ended", this.next.bind(this));
+
         this.volumeBar.getContainer().addEventListener("mousedown", that.mouseDown.bind(this));
     },
 
