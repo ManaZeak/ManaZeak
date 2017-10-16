@@ -46,6 +46,6 @@ services:
      container_name: moodbar
      command: bash -c "python moodbarGenerator.py"
      volumes:
-     - /home/pierre/Documents/ACDC/:/library
-     - /home/pierre/Documents/Gitlab/ManaZeak/static/moodbar/:/moodbar/static
-     - /home/pierre/Documents/Gitlab/ManaZeak/scripts/:/moodbar
+     - /run/media/Home/Music/back/_ArtistsBack/ACDC/:/library
+     - /run/media/Home/Documents/DevZone/Web/ManaZeak/static/mood/:/moodbar/static
+     - /run/media/Home/Documents/DevZone/Web/ManaZeak/scripts/:/moodbar

@@ -297,8 +297,9 @@ def getMoodbarByID(request):
             trackID = response['TRACK_ID']
             if Track.objects.filter(id=trackID).count() == 1:
                 track = Track.objects.get(id=trackID)
+                print(track.moodbar)
                 data = {
-                    'MOOD': track.moodbar
+                    'MOOD': track.moodbar,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
@@ -307,7 +308,7 @@ def getMoodbarByID(request):
             data = errorCheckMessage(False, "badFormat")
     else:
         data = errorCheckMessage(False, "badRequest")
-    return data
+    return JsonResponse(data)
 
 
 def randomNextTrack(request):
