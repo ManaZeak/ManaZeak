@@ -138,14 +138,15 @@ ListView.prototype = {
         this.removeEntries();
         this.tracks.sort(sortObjectArrayBy(argument, ascending));
         this.addEntries(this.tracks);
-        this.computePositions();
     },
 
 
     viewClicked: function(event) {
         var that = this;
         var target = event.target;
-        // TODO : fix when target is null => when user click outside left or right of the listview
+
+	if(target === this.listView)
+		return true;
         while(target.parentNode !== this.listView) {
             target = target.parentNode;
         }
@@ -192,11 +193,11 @@ ListView.prototype = {
     toggleContextMenu: function(event) {
         var target = event.target;
 
-        while (target.parentNode !== this.listView && target.tagName !== 'BODY') {
+        while (target.parentNode && target.parentNode !== this.listView) {
             target = target.parentNode;
         }
 
-        if (target.tagName === 'BODY') { return false; }
+        if (target.parentNode === null) { return false; }
 
         var id = target.dataset.listViewID;
         
