@@ -92,11 +92,11 @@ App.prototype = {
         for (var i = 0; i < this.playlists.length ;++i) {
             if (this.playlists[i].getId() == playlistId) {
                 that.playlists[i].getPlaylistsTracks(playlistId, function() {
-                that.playlistBar.setSelected(i);
-                that.listView.hideListView();
-                that.listView = null;
-                that.listView = new ListView(playlistId, that.playlists[i].getTracks(), that.cookies);
-                that.listView.showListView();
+                    that.playlistBar.setSelected(i);
+                    that.listView.hideListView();
+                    that.listView = null;
+                    that.listView = new ListView(playlistId, that.playlists[i].getTracks(), that.cookies);
+                    that.listView.showListView();
                 });
                 break;
             }
@@ -104,7 +104,7 @@ App.prototype = {
     },
 
 
-    requestNewPlaylist: function() {
+    requestNewLibrary: function() {
         var that = this;
 
         while (this.ui.mainContainer.firstChild) {

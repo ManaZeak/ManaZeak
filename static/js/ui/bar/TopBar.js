@@ -29,6 +29,9 @@ var TopBar = function(cookies) {
     document.body.appendChild(this.topBar);
 
     this.userMenu     = new UserMenu();
+    this.menu = new NewLibPlayMenu();
+
+
 };
 // TODO : fuse topbar and playlist bar together
 
@@ -69,8 +72,9 @@ TopBar.prototype = {
     },
 
 
-    newPlaylist: function() {
-        window.app.requestNewPlaylist();
+    newLibPlay: function(e) {
+        this.menu.toggleVisibilityLock(e);
+//        window.app.requestNewPlaylist();
     },
 
 
@@ -92,12 +96,12 @@ TopBar.prototype = {
 
         var id = target.dataset.listViewID;
 
-        console.log(id);
+        if (id !== undefined) {
+            this.unSelectAll();
+            this.entries[id].setIsSelected(true);
 
-        this.unSelectAll();
-        this.entries[id].setIsSelected(true);
-
-        window.app.changePlaylist(this.entries[id].entry.id);
+            window.app.changePlaylist(this.entries[id].entry.id);
+        }
     },
 
 
@@ -110,7 +114,7 @@ TopBar.prototype = {
             "ajax/getMoodbarFromID/",
             this.cookies,
             JSON.stringify({
-                ID: id
+                TRACK_ID: id
             }),
             function(response) {
                 renderMoodFile(response.FILE, that.moodbar);
@@ -126,7 +130,7 @@ TopBar.prototype = {
 
 
     _eventListener: function() {
-        this.newPlaylistButton.addEventListener("click", this.newPlaylist);
+        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
     }

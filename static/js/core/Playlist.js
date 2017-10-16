@@ -79,7 +79,7 @@ Playlist.prototype = {
         JSONParsedGetRequest(
             "components/newLibrary",
             true,
-            function(response) {
+            function(response) { // TODO : create modal of procedure
                 // TODO : test response to see if it's html or void
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
@@ -91,19 +91,13 @@ Playlist.prototype = {
 
                 console.log(that.newLibrary);
 
-                if (that.newLibrary) { // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
-                    console.log("Here");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-                        "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
-                        "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
-                        "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-                }
+                // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
 
-                else {
-                    console.log("There");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!\n";
-                    // TODO : remove path input depending on radioBox
-                }
+                that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
+                    "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
+                    "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
+                    "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
+                // TODO : remove path input depending on radioBox
 
                 that.ui.scan.addEventListener("click", that._checkInputs.bind(that));
             }
