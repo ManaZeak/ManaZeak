@@ -123,3 +123,4 @@ static/audio2
 docker-compose.yml
 src/
 Output.txt
+*.mood
