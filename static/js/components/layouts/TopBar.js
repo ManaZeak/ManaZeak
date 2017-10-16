@@ -14,26 +14,28 @@ var TopBar = function(cookies) {
     this.newPlaylistButton = null;
 
     this.topBar = document.createElement("div");
-    this.topBar.id = "topBar";
 
     this.userExpander = document.createElement("div");
-    this.userExpander.id = "userExpander";
     this.moodbar = document.createElement("div");
-    this.moodbar.id = "moodbar";
     this.playlistBar = document.createElement("div");
+
+
+    this.topBar.id = "topBar";
+
+    this.userExpander.id = "userExpander";
+    this.moodbar.id = "moodbar";
     this.playlistBar.id = "playlistBar";
 
     this.topBar.appendChild(this.moodbar);
     this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
-    document.body.appendChild(this.topBar);
 
-    this.userMenu     = new UserMenu();
+    this.userMenu     = new UserMenu(this.userExpander);
     this.menu = new NewLibPlayMenu();
 
 
 };
-// TODO : fuse topbar and playlist bar together
+// TODO : fuse topbar and playlist player together
 
 TopBar.prototype = {
 
@@ -87,6 +89,11 @@ TopBar.prototype = {
     },
 
 
+    refreshPlaylistBar: function() {
+        // TODO
+    },
+
+
     viewClicked: function(event) {
         var target = event.target;
         // TODO : fix when target is null => when user click outside left or right of the listview
@@ -133,5 +140,8 @@ TopBar.prototype = {
         this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
-    }
+    },
+
+
+    getTopBar: function() { return this.topBar; }
 };

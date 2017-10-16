@@ -44,7 +44,7 @@ ProgressBar.prototype = {
             this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
             // Changing track currentTime
             track.currentTime = (track.duration * distanceToLeftInPr) / 100;
-            // Updating progress bar -- /!\ Code under this while be trigger every sec due to setInterval(); in init();
+            // Updating progress player -- /!\ Code under this while be trigger every sec due to setInterval(); in init();
             this.updateProgress(track);
         }
     },
