@@ -3,11 +3,12 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Modal = function(type) {
+var Modal = function(type, id) {
 
     this.url = null;
     this.haveButtons = false; // Add cancel and save button when set to true
     this.isOpen = false;
+    this.id = id;
     this.editModal = {};
 
     switch (type) {
@@ -43,6 +44,7 @@ Modal.prototype = {
 
 
     close: function() {
+	//TODO: Use unique ID (this.id)
         document.body.removeChild(document.getElementById("modal"));
         this.isOpen = false;
     },
@@ -66,6 +68,7 @@ Modal.prototype = {
 
 
     _eventListener: function() {
+	//TODO: Use unique ID
         document.getElementById("cancel").addEventListener("click", this.close);
     },
 
