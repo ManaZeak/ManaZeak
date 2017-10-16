@@ -8,7 +8,7 @@ var PlaylistBarEntry = function(playlist, playlistBar, id, isLibrary) {
 
     this.playlist = playlist;
 
-    this.entry = document.createElement("p");
+    this.entry = document.createElement("div");
     this.entry.id = playlist.id;
     this.isLibrary = isLibrary;
     this.entry.dataset.listViewID = id;

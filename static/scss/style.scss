@@ -1,13 +1,11 @@
 @import 'tools/tools';
-@import 'ui/playlistbar';
+@import 'ui/topbar';
 @import 'ui/progressbar';
 @import 'ui/volumebar';
 @import 'components/contextmenu';
 @import 'components/notification';
 @import 'components/newlibrary';
 @import 'components/listview';
-
-@import 'ui/topbar';
 @import 'components/footbar';
 
 html, body {
@@ -29,8 +27,8 @@ html, body {
 
 #mainContainer {
     width: 100%;
-    height: calc(100% - 100px);
-    top: 20px;
+    height: calc(100% - 140px);
+    top: 60px;
     position: absolute;
 }
 
