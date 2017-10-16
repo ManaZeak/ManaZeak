@@ -21,11 +21,7 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
-        {% include 'components/topbar.html' %}
-
-        <div id="mainContainer">
-
-        </div>
+        <div id="mainContainer"></div>
 
         {% include 'components/footbar.html' %}
 
@@ -44,11 +40,10 @@
         <script type="text/javascript" src="{% static "js/ui/menu/UserMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/Queue.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/TrackPreview.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/TopBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/bar/ProgressBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/bar/VolumeBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/bar/entries/PlaylistBarEntry.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/PlaylistBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/bar/TopBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/menu/ContextMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>

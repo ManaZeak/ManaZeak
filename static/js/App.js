@@ -10,19 +10,14 @@ var App = function() {
     // Objects
     this.player       = new Player();
     this.trackPreview = new TrackPreview();
-    this.userMenu     = new UserMenu();
-    this.topbar       = new TopBar();
-    this.playlistBar  = null;
+    this.playlistBar  = new TopBar(this.cookies);
     this.listView     = null;
     this.playlists    = [];
 
 
     // UI
     this.ui = {
-        mainContainer: document.getElementById("mainContainer"),
-        userExpander: {
-            button:    document.getElementById("userExpander")
-        }
+        mainContainer: document.getElementById("mainContainer")
     };
 };
 
@@ -30,9 +25,6 @@ App.prototype = {
 
     init: function() {
         var that = this;
-
-        //this._keyListener();   // Loading shortcuts
-        this._eventListener(); // Loading events
 
         // Loading playlists
         JSONParsedGetRequest(
@@ -74,7 +66,7 @@ App.prototype = {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i], playlists.PLAYLIST_NAMES[i], playlists.PLAYLIST_IS_LIBRARY[i], true, that.cookies, undefined, undefined));
                     }
 
-                    that.playlistBar = new PlaylistBar(that.playlists, 0);
+                    that.playlistBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     console.log(that.playlists);
                     that.listView = new ListView(that.playlists[0].getId(), that.playlists[0].getTracks(), that.cookies);
@@ -86,7 +78,7 @@ App.prototype = {
         // User first connection
         else {
             this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
-                that.playlistBar = new PlaylistBar(that.playlists, 0);
+                that.playlistBar.init(that.playlists, 0);
                 that.listView = new ListView(that.playlists[0].getId(), that.playlists[0].getTracks(), that.cookies);
                 that.listView.showListView();
             }));
@@ -123,18 +115,7 @@ App.prototype = {
             that.listView = null;
             that.listView = new ListView(that.playlists[0].getId(), that.playlists[that.playlists.length - 1].getTracks(), that.cookies);
             that.listView.showListView();
-            that.playlistBar = new PlaylistBar(that.playlists, that.playlistBar.entries.length);
+            that.playlistBar.init(that.playlists, that.playlistBar.entries.length);
         }));
-    },
-
-
-    toggleUserMenu: function() {
-        this.userMenu.toggleVisibilityLock();
-    },
-
-    _eventListener: function() {
-        var that = this;
-        // Button event listeners
-        this.ui.userExpander.button.addEventListener("click", this.toggleUserMenu.bind(this));
     }
 };
