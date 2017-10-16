@@ -18,25 +18,30 @@ $editFooterHeight:  ($editModalHeight / 10);
 
 
 #modal {
-    height: 100%;
-    position: fixed;
-    width: 100%;
-  	top: 0;
-	left: 0;
-	background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 999;
+
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.6);
 
 
     #scan {
+        min-height: $scanModalHeight;
+        width: $scanModalWidth;
+
+        position: relative;
+
         border: solid 1px black;
         border-radius: 3px;
-        position: relative;
-        min-height: $scanModalHeight;
         background: #fff;
-        width: $scanModalWidth;
 
         -webkit-user-select: none;  /* Chrome/Safari */
         -moz-user-select: none;     /* Firefox */
@@ -45,25 +50,28 @@ $editFooterHeight:  ($editModalHeight / 10);
         #header,
         #content,
         #footer {
-            box-sizing: border-box;
-            position: absolute;
-            text-align: center;
             width: 100%;
+            position: absolute;
+            box-sizing: border-box;
+            text-align: center;
         }
+
 
         #header,
         #footer {
             padding: $verticalPadding 30px;
         }
 
+
         #header {
-            border-bottom: solid 1px black;
-            top: 0;
             height: $scanHeaderHeight;
+            top: 0;
+            border-bottom: solid 1px black;
+
 
             h1 {
-                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
                 margin: 0;
+                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
             }
         }
 
@@ -73,10 +81,10 @@ $editFooterHeight:  ($editModalHeight / 10);
             height: $scanContentHeight;
             padding: $verticalPadding 50px;
 
+
             img {
                 width: 100px;
                 height: 100px;
-
                 margin: 16px 0;
             }
         }
@@ -86,6 +94,7 @@ $editFooterHeight:  ($editModalHeight / 10);
             border-top: solid 1px black;
             height: $scanFooterHeight;
             top: ($scanHeaderHeight + $scanContentHeight);
+
 
             p {
                 line-height: ($scanFooterHeight - (2 * $verticalPadding));
@@ -103,6 +112,7 @@ $editFooterHeight:  ($editModalHeight / 10);
         background: #fff;
         width: $editModalWidth;
 
+
         #header,
         #content,
         #footer {
@@ -119,6 +129,7 @@ $editFooterHeight:  ($editModalHeight / 10);
             height: $editHeaderHeight;
             padding: $verticalPadding 30px;
 
+
             h1 {
                 line-height: ($editHeaderHeight - (2 * $verticalPadding));
                 margin: 0;
@@ -131,6 +142,7 @@ $editFooterHeight:  ($editModalHeight / 10);
             height: $editContentHeight;
             position: relative;
 
+
             #trackListContainer {
                 position: absolute;
                 top: 0;
@@ -140,6 +152,7 @@ $editFooterHeight:  ($editModalHeight / 10);
                 width: 225px;
             }
 
+
             #inputContainer {
                 float: right;
                 position: relative;
@@ -147,6 +160,7 @@ $editFooterHeight:  ($editModalHeight / 10);
                 display: inline-block;
                 width: calc(100% - 225px);
             }
+
 
             .inputStandAlone {
                 width: 100% !important;
@@ -186,11 +200,11 @@ $editFooterHeight:  ($editModalHeight / 10);
 @keyframes lds-dual-ring {
     0% {
         -webkit-transform: rotate(0);
-        transform: rotate(0);
+                transform: rotate(0);
     }
     100% {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
+                transform: rotate(360deg);
     }
 }
 

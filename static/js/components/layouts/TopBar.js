@@ -114,19 +114,20 @@ TopBar.prototype = {
     changeMoodbar: function(id) {
         var that = this;
 
-        renderMoodFile("../../mood/test.mood", that.moodbar);
-/*
-        JSONParsedPostRequest( // Loading playlists
-            "ajax/getMoodbarFromID/",
-            this.cookies,
-            JSON.stringify({
-                TRACK_ID: id
-            }),
-            function(response) {
-                renderMoodFile(response.FILE, that.moodbar);
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.status);
+                renderMoodFile(this.responseText.MOOD, that.moodbar);
             }
-        );
-*/
+        };
+
+        xhr.open("POST", "ajax/getMoodbarByID/", true);
+        xhr.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
+        xhr.send(JSON.stringify({
+            TRACK_ID: id
+        }));
     },
 
 
