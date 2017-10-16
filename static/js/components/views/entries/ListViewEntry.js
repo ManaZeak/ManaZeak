@@ -62,11 +62,6 @@ var ListViewEntry = function(track, listView, id) {
 
 ListViewEntry.prototype = {
 
-    computePosition: function() {
-        this.boundingRect = this.entry.getBoundingClientRect();
-    },
-
-
     getEntry: function() { return this.entry; },
     getIsSelected: function() { return this.isSelected; },
 

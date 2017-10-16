@@ -5,7 +5,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var PlaylistBarEntry = function(playlist, playlistBar, id, isLibrary) {
 
-
     this.playlist = playlist;
 
     this.entry = document.createElement("div");
