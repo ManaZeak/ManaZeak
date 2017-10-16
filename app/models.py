@@ -43,8 +43,10 @@ class Track(models.Model):
     album = models.ForeignKey(Album, null=True)
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
+    moodbar = models.URLField(max_length=1000, null=True)
     CRC = models.CharField(max_length=1000, null=False)
     scanned = models.BooleanField(default=False)
+    playCounter = models.IntegerField(default=0)
 
 
 class Playlist(models.Model):
@@ -52,6 +54,7 @@ class Playlist(models.Model):
     user = models.ForeignKey(User)
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
+    isScanned = models.BooleanField(default=False)
 
 
 class Library(models.Model):
@@ -59,3 +62,10 @@ class Library(models.Model):
     path = models.FilePathField(max_length=1000)
     user = models.ForeignKey(User)
     playlist = models.ForeignKey(Playlist, null=True)
+    convertID3 = models.BooleanField(default=False)
+
+
+class Shuffle(models.Model):
+    playlist = models.ForeignKey(Playlist)
+    user = models.ForeignKey(User)
+    tracksPlayed = models.ManyToManyField(Track)

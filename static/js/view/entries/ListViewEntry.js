@@ -3,22 +3,24 @@
  *  ListViewEntry class - list view entry                                              *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListViewEntry = function(track, listView) {
-    this.entry = mkElem("div");
+var ListViewEntry = function(track, listView, id) {
+    this.entry = document.createElement("div");
 
-    this.entry.id = "track" + track.id.track;
+    this.entry.id = track.id.track;
+    this.entry.dataset.listViewID = id;
+
     this.entry.className = "trackContainer";
     this.track = track;
 
-    var duration        = mkElem("div");
-    var title           = mkElem("div");
-    var artist          = mkElem("div");
-    var composer        = mkElem("div");
-    var performer       = mkElem("div");
-    var album           = mkElem("div");
-    var genre           = mkElem("div");
-    var bitRate         = mkElem("div");
-    var year            = mkElem("div");
+    var duration        = document.createElement("div");
+    var title           = document.createElement("div");
+    var artist          = document.createElement("div");
+    var composer        = document.createElement("div");
+    var performer       = document.createElement("div");
+    var album           = document.createElement("div");
+    var genre           = document.createElement("div");
+    var bitRate         = document.createElement("div");
+    var year            = document.createElement("div");
 
     duration.className  = "col-duration";
     title.className     = "col-title";
@@ -59,14 +61,6 @@ var ListViewEntry = function(track, listView) {
 
 
 ListViewEntry.prototype = {
-    toggleSelected: function() {
-        if (this.isSelected) {
-            this.entry.style.background = "none";
-        } else {
-            this.entry.style.background = "red";
-        }
-    },
-
 
     computePosition: function() {
         this.boundingRect = this.entry.getBoundingClientRect();
@@ -76,5 +70,12 @@ ListViewEntry.prototype = {
     getEntry: function() { return this.entry; },
     getIsSelected: function() { return this.isSelected; },
 
-    setIsSelected: function(isSelected) { this.isSelected = isSelected }
+    setIsSelected: function(isSelected) {
+        this.isSelected = isSelected;
+        if (this.isSelected) {
+            this.entry.style.background = "red";
+        } else {
+            this.entry.style.background = "none";
+        }
+    }
 };

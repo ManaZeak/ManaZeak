@@ -3,16 +3,19 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(tracks) {
+var ListView = function(playlistId, tracks, cookies) {
     this.listView = null;
+    this.playlistId = playlistId;
     this.tracks = tracks;
+    this.cookies = cookies;
     this.entries = [];
-    this.entriesListeners = [];
-    this.entriesSelected = [];
+    this.entriesSelected = {};
+    this.dblClick = false;
 
     this.contextMenu = new ContextMenu();
 
     this.header = {
+        container: null,
         duration:  null,
         title:     null,
         artist:    null,
@@ -43,31 +46,30 @@ var ListView = function(tracks) {
 ListView.prototype = {
 
     init: function() {
-        this.listView = mkElem("div");
+        this.listView = document.createElement("div");
         this.listView.id ="listView";
 
-        this.initColumnHeader();
+        this.initHeader();
         this._eventListener();
 
         this.addEntries(this.tracks);
-        getById("mainContainer").appendChild(this.listView);
         this.computePositions();
     },
 
 
-    initColumnHeader: function() {
-        var columnBar = mkElem("div");
-        columnBar.className = "columnHeader";
+    initHeader: function() {
+        this.header.container = document.createElement("div");
+        this.header.container.className = "columnHeader";
 
-        this.header.duration  = mkElem("div");
-        this.header.title     = mkElem("div");
-        this.header.artist    = mkElem("div");
-        this.header.composer  = mkElem("div");
-        this.header.performer = mkElem("div");
-        this.header.album     = mkElem("div");
-        this.header.genre     = mkElem("div");
-        this.header.bitRate   = mkElem("div");
-        this.header.year      = mkElem("div");
+        this.header.duration  = document.createElement("div");
+        this.header.title     = document.createElement("div");
+        this.header.artist    = document.createElement("div");
+        this.header.composer  = document.createElement("div");
+        this.header.performer = document.createElement("div");
+        this.header.album     = document.createElement("div");
+        this.header.genre     = document.createElement("div");
+        this.header.bitRate   = document.createElement("div");
+        this.header.year      = document.createElement("div");
 
         this.header.duration.className    = "col-duration";
         this.header.title.className       = "col-title";
@@ -89,28 +91,36 @@ ListView.prototype = {
         this.header.bitRate.innerHTML     = "BitRate";
         this.header.year.innerHTML        = "Year";
 
-        columnBar.appendChild(this.header.duration);
-        columnBar.appendChild(this.header.title);
-        columnBar.appendChild(this.header.artist);
-        columnBar.appendChild(this.header.composer);
-        columnBar.appendChild(this.header.performer);
-        columnBar.appendChild(this.header.album);
-        columnBar.appendChild(this.header.genre);
-        columnBar.appendChild(this.header.bitRate);
-        columnBar.appendChild(this.header.year);
+        this.header.container.appendChild(this.header.duration);
+        this.header.container.appendChild(this.header.title);
+        this.header.container.appendChild(this.header.artist);
+        this.header.container.appendChild(this.header.composer);
+        this.header.container.appendChild(this.header.performer);
+        this.header.container.appendChild(this.header.album);
+        this.header.container.appendChild(this.header.genre);
+        this.header.container.appendChild(this.header.bitRate);
+        this.header.container.appendChild(this.header.year);
 
-        this.listView.appendChild(columnBar);
+        //document.getElementById("mainContainer").appendChild(this.header.container);
+    },
+
+
+    showListView: function() {
+        document.getElementById("mainContainer").appendChild(this.header.container);
+        document.getElementById("mainContainer").appendChild(this.listView);
+
+    },
+
+    hideListView: function() {
+        document.getElementById("mainContainer").removeChild(this.header.container);
+        document.getElementById("mainContainer").removeChild(this.listView);
+        // TODO : remove header too
     },
 
 
     addEntries: function(tracks) {
-        var that = this;
-
-        for (var i = 0; i < tracks.length ;++i) {
-            var id = this.entries.push(new ListViewEntry(tracks[i], this.listView));
-            // TODO : Handle dble click
-            this.entriesListeners.push(this.entries[(id - 1)].getEntry().addEventListener("click", that.trackClicked.bind(that)));
-        }
+        for (var i = 0; i < tracks.length ;++i)
+            this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
     },
 
 
@@ -121,7 +131,6 @@ ListView.prototype = {
 
         // To the GC, and beyond
         this.entries = [];
-        this.entriesListeners = [];
     },
 
 
@@ -133,84 +142,72 @@ ListView.prototype = {
     },
 
 
-    trackClicked: function(event) {
-        var targetIndex = this.collision(event);
-
-        if (this.entriesSelected.length === 0) { // No entries is selected
-            this.entries[targetIndex].toggleSelected();
-            this.entries[targetIndex].setIsSelected(true);
-            this.entriesSelected.push(this.entries[targetIndex]);
+    viewClicked: function(event) {
+        var that = this;
+        var target = event.target;
+        // TODO : fix when target is null => when user click outside left or right of the listview
+        while(target.parentNode !== this.listView) {
+            target = target.parentNode;
         }
 
-        else if (event.ctrlKey) { // User pressed ctrl : multi selection
-            if (!this.entries[targetIndex].getIsSelected()) {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(true);
-                this.entriesSelected.push(this.entries[targetIndex]);
-            }
+        var id = target.dataset.listViewID;
 
-            else {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(false);
+        if (this.dblClick) {
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    TRACK_ID: this.entries[id].entry.id
+                }),
+                function(response) {
+                    if (response.RESULT === "FAIL") {
+                        new Notification("Bad format.", response.ERROR);
+                    } else {
+                        var cover = response.COVER;
+                        if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
 
-                for (var i = 0; i < this.entriesSelected.length ;++i) {
-                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
-                        this.entriesSelected.splice(i, 1);
+                        window.app.trackPreview.setVisible();
+                        window.app.trackPreview.changeTrack(that.entries[id].track, cover);
+                        window.app.topbar.changeMoodbar(that.entries[id].entry.id);
+                        window.app.player.changeTrack("../" + response.PATH);
+                        window.app.player.play();
                     }
                 }
-            }
+            );
+
+            return;
         }
+        this.dblClick = true;
+        window.setTimeout(function() { that.dblClick = false; }, 400);
 
-        else { // Selection isn't empty and user clicked without ctrl
-            // TODO : push entrie to entriesSelected
+        var newState = !this.entriesSelected[id];
 
-            if (!this.entries[targetIndex].getIsSelected()) {
-                this.unselectAll();
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(true);
-                this.entriesSelected.push(this.entries[targetIndex]);
-            }
+        if (!event.ctrlKey && newState === true) { this.unSelectAll(); }
 
-            else {
-                this.entries[targetIndex].toggleSelected();
-                this.entries[targetIndex].setIsSelected(false);
-
-               for (i = 0; i < this.entriesSelected.length ;++i) {
-                    if (this.entriesSelected[i].entry.id === this.entries[targetIndex].entry.id) {
-                        this.entriesSelected.splice(i, 1);
-                    }
-                }
-            }
-        }
+        this.entriesSelected[id] = newState;
+        this.entries[id].setIsSelected(newState);
     },
 
 
     toggleContextMenu: function(event) {
-        var targetIndex = this.collision(event);
+        var target = event.target;
 
-        if (targetIndex !== -1 && !this.entries[targetIndex].getIsSelected()) {
-            this.unselectAll();
-            this.entries[targetIndex].toggleSelected();
-            this.entries[targetIndex].setIsSelected(true);
-            this.entriesSelected.push(this.entries[targetIndex]);
+        while (target.parentNode !== this.listView && target.tagName !== 'BODY') {
+            target = target.parentNode;
+        }
+
+        if (target.tagName === 'BODY') { return false; }
+
+        var id = target.dataset.listViewID;
+        
+        if (!this.entries[id].getIsSelected()) {
+            this.unSelectAll();
+            this.entries[id].setIsSelected(true);
+            this.entriesSelected[id] = true;
         }
         // TODO : update contextMenu selection attriutes
         this.contextMenu.updateSelectedEntries(this.entriesSelected);
         this.contextMenu.toggleVisibilityLock(event);
-    },
-
-
-    collision: function(event) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (event.pageX > this.entries[i].boundingRect.x
-             && event.pageX < this.entries[i].boundingRect.x + this.entries[i].boundingRect.width
-             && event.pageY > this.entries[i].boundingRect.y
-             && event.pageY < this.entries[i].boundingRect.y + this.entries[i].boundingRect.height) {
-                return i;
-            }
-        }
-
-        return -1;
     },
 
 
@@ -221,15 +218,11 @@ ListView.prototype = {
     },
 
 
-    unselectAll: function() {
-        this.entriesSelected = [];
-
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].getIsSelected()) {
-                this.entries[i].toggleSelected();
+    unSelectAll: function() {
+        this.entriesSelected = {};
+        for (var i = 0; i < this.entries.length ;++i)
+            if (this.entries[i].getIsSelected())
                 this.entries[i].setIsSelected(false);
-            }
-        }
     },
 
 
@@ -238,8 +231,7 @@ ListView.prototype = {
 
         this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
         this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
-
-//        this.contextMenu.getContextMenu().addEventListener("click", this.sendAttributesToContextMenu.bind(this));
+        this.listView.addEventListener("click", this.viewClicked.bind(this));
 
         // Sorting listeners
         this.header.duration.addEventListener("click", function() {
