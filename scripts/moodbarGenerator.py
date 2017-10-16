@@ -27,7 +27,7 @@ def scan():
 
 def countFile():
     count = 0
-    for root, dirs, files in os.walk("/sound/"):
+    for root, dirs, files in os.walk("/library/"):
         for _ in files:
             count += 1
     return count
