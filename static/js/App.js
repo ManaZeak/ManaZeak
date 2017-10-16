@@ -13,7 +13,7 @@ var App = function() {
 
     this.mainContainer.id = "mainContainer";
 
-    this.player       = new Player();
+    this.player       = new Player(this.cookies);
     this.trackPreview = new TrackPreview();
     this.listView     = null;
     this.playlists    = [];

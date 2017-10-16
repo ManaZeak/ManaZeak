@@ -3,8 +3,12 @@
  *  Player class - handle song streaming client side, and std action on it             *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Player = function() {
+var Player = function(cookies) {
+    this.cookies = cookies;
+
     this.player = document.getElementById("audioPlayer");
+
+    this.currentTrackId = -1;
 
     this.oldVolume = 0;
     this.volumeLockId = -1;
@@ -111,32 +115,51 @@ Player.prototype = {
         var that = this;
         this.stopPlayback();
 
+        var nextTrack = window.app.listView.getNextTrack(this.currentTrackId);
+
         JSONParsedPostRequest(
             "ajax/getTrackPathByID/",
             this.cookies,
             JSON.stringify({
-                ID: 1// TODO : get from serv
+                TRACK_ID: nextTrack.id// TODO : get from serv
             }),
             function(response) {
-                that.changeTrack("../" + response.PATH); // TODO : New tracks to inject here
-                that.togglePlay();
+                that.currentTrackId = nextTrack.id;
+                var cover = response.COVER;
+                if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+
+                window.app.trackPreview.setVisible();
+                window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                window.app.topBar.changeMoodbar(that.currentTrackId);
+                that.changeTrack("../" + response.PATH, that.currentTrackId);
+                that.play();
             }
         );
     },
 
 
     previous: function() {
+        var that = this;
         this.stopPlayback();
+
+        var previuousTrack = window.app.listView.getPreviousTrack(this.currentTrackId);
 
         JSONParsedPostRequest(
             "ajax/getTrackPathByID/",
             this.cookies,
             JSON.stringify({
-                ID: 1// TODO : get from serv
+                TRACK_ID: previuousTrack.id// TODO : get from serv
             }),
             function(response) {
-                that.changeTrack("../" + response.PATH); // TODO : New tracks to inject here
-                that.togglePlay();
+                that.currentTrackId = previuousTrack.id;
+                var cover = response.COVER;
+                if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+
+                window.app.trackPreview.setVisible();
+                window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                window.app.topBar.changeMoodbar(that.currentTrackId);
+                that.changeTrack("../" + response.PATH, that.currentTrackId);
+                that.play();
             }
         );
     },
@@ -265,7 +288,8 @@ Player.prototype = {
     },
 
 
-    changeTrack: function(url) {
+    changeTrack: function(url, id) {
+        this.currentTrackId = id;
         this.player.src = url;
     },
 
