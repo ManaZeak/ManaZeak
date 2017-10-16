@@ -2,8 +2,8 @@
 /* listview */
 #listView {
     width: 100%;
-    height: calc(100% - 40px);
-    top: 40px;
+    height: calc(100% - 70px);
+    top: 70px;
     position: absolute;
     padding: 0 10%;
     overflow-y: auto;
@@ -21,6 +21,8 @@
     text-align: center;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    top: 40px;
 }
 
 .trackContainer {

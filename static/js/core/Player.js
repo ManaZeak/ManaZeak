@@ -256,8 +256,8 @@ Player.prototype = {
                 this.mute();
             }
 
-            if (this.player.volume === 0) { this.ui.mute.image.src = "/static/img/mute.svg"; }
-            else { this.ui.mute.image.src = "/static/img/volume.svg"; }
+            if (this.player.volume === 0) { this.ui.mute.image.src = "/static/img/player/mute.svg"; }
+            else { this.ui.mute.image.src = "/static/img/player/volume.svg"; }
 
             this.volumeBar.setVolume(this.player.getVolume() * 100);
             this.volumeBar.updateVolume(this.ui.mute.image);

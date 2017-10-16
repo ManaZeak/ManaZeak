@@ -44,8 +44,8 @@ VolumeBar.prototype = {
         this.volumeBar.thumb.style.bottom = this.volume + "%";
 
         if (img) {
-            if (this.volume === 0) { img.src = "/static/img/mute.svg"; }
-            else { img.src = "/static/img/volume.svg"; }
+            if (this.volume === 0) { img.src = "/static/img/player/mute.svg"; }
+            else { img.src = "/static/img/player/volume.svg"; }
         }
     },
 

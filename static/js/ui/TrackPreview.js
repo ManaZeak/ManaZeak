@@ -21,7 +21,7 @@ var TrackPreview = function() {
 TrackPreview.prototype = {
 
     changeTrack: function(track, cover) {
-        // TODO : handle cover
+        // TODO : handle cover smooth transition
         this.ui.cover.src = cover;
         this.ui.thumb.src = cover;
         this.ui.title.innerHTML = track.title;
