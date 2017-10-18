@@ -53,7 +53,6 @@ ListView.prototype = {
         this._eventListener();
 
         this.addEntries(this.tracks);
-        this.computePositions();
     },
 
 
@@ -145,8 +144,8 @@ ListView.prototype = {
         var that = this;
         var target = event.target;
 
-	if(target === this.listView)
-		return true;
+        if (target === this.listView)
+            return true;
         while(target.parentNode !== this.listView) {
             target = target.parentNode;
         }
@@ -170,7 +169,7 @@ ListView.prototype = {
                         window.app.trackPreview.setVisible(true);
                         window.app.trackPreview.changeTrack(that.entries[id].track, cover);
                         window.app.topBar.changeMoodbar(that.entries[id].entry.id);
-                        window.app.player.changeTrack("../" + response.PATH);
+                        window.app.player.changeTrack("../" + response.PATH, that.entries[id].entry.id);
                         window.app.player.play();
                     }
                 }
@@ -190,6 +189,46 @@ ListView.prototype = {
     },
 
 
+    getNextTrack: function(id) {
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (this.entries[i].entry.id === id)
+                break;
+        }
+
+        return {
+            id:  this.entries[(i + 1) % this.entries.length].entry.id
+        };
+    },
+
+
+    getPreviousTrack: function(id) {
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (this.entries[i].entry.id === id)
+                break;
+        }
+
+        if (i === 0)
+            return {
+              id: this.entries[this.entries.length - 1].entry.id
+            };
+        else {
+            return {
+                id:  this.entries[i - 1].entry.id
+            };
+        }
+    },
+
+
+    getTrackInfo: function(id) {
+        for (var i = 0; i < this.entries.length ;++i) {
+            if (this.entries[i].entry.id === id)
+                break;
+        }
+
+        return this.entries[i].track;
+    },
+
+
     toggleContextMenu: function(event) {
         var target = event.target;
 
@@ -200,7 +239,7 @@ ListView.prototype = {
         if (target.parentNode === null) { return false; }
 
         var id = target.dataset.listViewID;
-        
+
         if (!this.entries[id].getIsSelected()) {
             this.unSelectAll();
             this.entries[id].setIsSelected(true);
@@ -209,13 +248,6 @@ ListView.prototype = {
         // TODO : update contextMenu selection attriutes
         this.contextMenu.updateSelectedEntries(this.entriesSelected);
         this.contextMenu.toggleVisibilityLock(event);
-    },
-
-
-    computePositions: function() {
-        for (i = 0; i < this.entries.length ;++i) {
-            this.entries[i].computePosition();
-        }
     },
 
 

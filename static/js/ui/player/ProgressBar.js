@@ -37,7 +37,7 @@ ProgressBar.prototype = {
             var distanceToLeftInPx = event.clientX - boundRect.left;
             var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
             // OOB protection
-            if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; } // TODO : next track if 100 %
+            if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
             if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
             // Style assignation
             this.progressBar.current.style.width = distanceToLeftInPr + "%";
@@ -71,7 +71,7 @@ ProgressBar.prototype = {
         var distanceToLeftInPx = event.clientX - boundRect.left;
         var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
         // Avoid OOB
-        if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; } // TODO : next track if 100 %
+        if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
         if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
 
         var hoveredTimecode = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
