@@ -51,16 +51,12 @@ VolumeBar.prototype = {
 
 
     addVisibilityLock: function() {
-        if (!this.volumeBar.wrapper.className.match(/(?:^|\s)volumeBarWrapperLocked(?!\S)/)) {
-            this.volumeBar.wrapper.className += "volumeBarWrapperLocked";
-        }
+	this.volumeBar.wrapper.classList.add('volumeBarWrapperLocked');
     },
 
 
     removeVisibilityLock: function() {
-        if (this.volumeBar.wrapper.className.match(/(?:^|\s)volumeBarWrapperLocked(?!\S)/)) {
-            this.volumeBar.wrapper.className = this.volumeBar.wrapper.className.replace(/(?:^|\s)volumeBarWrapperLocked(?!\S)/g, '');
-        }
+	this.volumeBar.wrapper.classList.remove('volumeBarWrapperLocked');
     },
 
 

@@ -167,7 +167,7 @@ ListView.prototype = {
                         var cover = response.COVER;
                         if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
 
-                        window.app.trackPreview.setVisible();
+                        window.app.trackPreview.setVisible(true);
                         window.app.trackPreview.changeTrack(that.entries[id].track, cover);
                         window.app.topBar.changeMoodbar(that.entries[id].entry.id);
                         window.app.player.changeTrack("../" + response.PATH);
