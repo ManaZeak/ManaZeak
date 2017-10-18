@@ -31,12 +31,7 @@ TrackPreview.prototype = {
         this.ui.genre.innerHTML = track.genre;
     },
 
-    setVisible: function() {
-        this.ui.container.style.opacity  = 1;
-    },
-
-
-    setInvisible: function() {
-        this.ui.container.style.opacity = 0;
+    setVisible: function(visible) {
+        this.ui.container.style.opacity  = visible ? 1 : 0;
     }
 };

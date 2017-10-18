@@ -100,7 +100,7 @@ Player.prototype = {
         this.progressBar.resetProgressBar();
 
         this.ui.play.image.src = "/static/img/player/play.svg";
-        window.app.trackPreview.setInvisible();
+        window.app.trackPreview.setVisible(false);
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
         // TODO : Make a real stop feature ...
