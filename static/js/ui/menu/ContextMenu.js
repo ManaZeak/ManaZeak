@@ -1,111 +1,83 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
- *  ContextMenu class - handle the context menu on right click                         *
+ *  NewContextMenu class - handle the context menu on right click                      *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ContextMenu = function() {
+var NewContextMenu = function()
+{
     this.contextMenu = null;
-    this.entries = {
-        editMD: null,
-        delete: null,
-        queue: null,
-        playlist: null
-    };
-    this.outside = document.body;
+    this.element = null;
     this.isVisible = false;
-
-
-    this.entriesSelected = {};
-    this.modal = new Modal("editMetadata");
 
     this._init();
 };
 
 
-ContextMenu.prototype = {
+NewContextMenu.prototype = {
 
-    _init: function() {
-        this.contextMenu = document.createElement("div");
-        this.contextMenu.id = "contextMenu";
+    _init: function()
+    {
+        this.contextMenu = new ContextMenuEntry("", null);
+        this.contextMenu.activate_event_listener();
+        this.contextMenu.add_child(new ContextMenuEntry("TEST_1", null));
+        this.contextMenu.add_child(new ContextMenuEntry("TEST_2", null));
+        this.contextMenu.add_child(new ContextMenuEntry("TEST_3", function(a) {console.log(a);}, 'NON'));
+        this.contextMenu.children[0].add_child(new ContextMenuEntry("TEST_0", function() {console.log('OUI')}));
 
-        this.entries.editMD = document.createElement("p");
-        this.entries.delete = document.createElement("p");
-        this.entries.queue = document.createElement("p");
-        this.entries.playlist = document.createElement("p");
-
-        this.entries.editMD.innerHTML = "Edit metadata";
-        this.entries.delete.innerHTML = "Delete track";
-        this.entries.queue.innerHTML = "Add to queue";
-        this.entries.playlist.innerHTML = "Add to playlist";
-
-        this.contextMenu.appendChild(this.entries.editMD);
-        this.contextMenu.appendChild(this.entries.delete);
-        this.contextMenu.appendChild(this.entries.queue);
-        this.contextMenu.appendChild(this.entries.playlist);
+        this.element = document.createElement('DIV');
+        this.element.id = "mzk-context-menu-container";
+        this.element.appendChild(this.contextMenu.element);
+        document.body.insertBefore(this.element, document.body.firstChild);
 
         this._eventListener();
         this._keyListener();
-
-        document.body.appendChild(this.contextMenu);
     },
 
-
-    toggleVisibilityLock: function(event) {
-        if (!this.isVisible) {
-            this.isVisible = !this.isVisible;
-            this.contextMenu.style.top  = event.pageY + "px";
-            this.contextMenu.style.left = event.pageX + "px";
-            addVisibilityLock(this.contextMenu, "contextMenuLocked");
-        } else {
-            this.isVisible = !this.isVisible;
-            removeVisibilityLock(this.contextMenu, "contextMenuLocked");
-        }
-    },
-
-
-    clickOutside: function(event) {
-        if (!document.getElementById("contextMenu").contains(event.target) && this.isVisible) {
-            this.isVisible = !this.isVisible;
-            removeVisibilityLock(this.contextMenu, "contextMenuLocked");
-        }
-    },
-
-
-    updateSelectedEntries: function(entries) {
-        this.entriesSelected = entries;
-    },
-
-
-    editModal: function() {
-        this.isVisible = !this.isVisible;
-        var that = this;
-
-        removeVisibilityLock(this.contextMenu, "contextMenuLocked");
-        this.modal.open();
-
-        function waitingModalOpening(){
-            if (!that.modal.getIsOpen()) {
-                setTimeout(function() { waitingModalOpening() }, 100);
-            } else {
-                that.modal.initEditMetadata(that.entriesSelected);
+    _eventListener: function()
+    {
+        var self = this;
+        document.body.addEventListener("contextmenu", function(event)
+        {
+            if(event.pageY <= document.documentElement.clientHeight / 2)
+            {
+                self.element.style.bottom = "unset";
+                self.element.style.top = event.pageY + "px";
             }
-        }
+            else
+            {
+                self.element.style.top = "unset";
+                self.element.style.bottom = (document.documentElement.clientHeight - event.pageY) + "px";
+            }
+
+            if(event.pageX <= document.documentElement.clientWidth / 2)
+            {
+                self.element.style.right = "unset";
+                self.element.style.left = event.pageX + "px";
+            }
+            else
+            {
+                self.element.style.left = "unset";
+                self.element.style.right = (document.documentElement.clientWidth - event.pageX) + "px";
+            }
+            self.contextMenu.close_all();
+            self.element.classList.add("mzk-open");
+
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        });
     },
 
 
-    _eventListener: function() {
-        this.outside.addEventListener("click", this.clickOutside.bind(this), false);
-
-        this.entries.editMD.addEventListener("click", this.editModal.bind(this));
-    },
-
-
-    _keyListener: function() {
+    _keyListener: function()
+    {
         var that = this;
 
         // Key pressed event
-        document.addEventListener("keydown", function(event) {
-            switch (event.keyCode) {
+        document.addEventListener("keydown", function(event)
+        {
+            switch (event.keyCode)
+            {
                 case 27: // Esc
                     if (that.isVisible) { that.toggleVisibilityLock(); }
                     break;
@@ -113,8 +85,5 @@ ContextMenu.prototype = {
                     break;
             }
         });
-    },
-
-
-    getContextMenu: function() { return this.contextMenu; }
+    }
 };

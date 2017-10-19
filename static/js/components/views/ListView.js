@@ -12,7 +12,7 @@ var ListView = function(playlistId, tracks, cookies) {
     this.entriesSelected = {};
     this.dblClick = false;
 
-    this.contextMenu = new ContextMenu();
+    this.contextMenu = new NewContextMenu();
 
     this.header = {
         container: null,
@@ -246,7 +246,7 @@ ListView.prototype = {
             this.entriesSelected[id] = true;
         }
         // TODO : update contextMenu selection attriutes
-        this.contextMenu.updateSelectedEntries(this.entriesSelected);
+        //this.contextMenu.updateSelectedEntries(this.entriesSelected);
         this.contextMenu.toggleVisibilityLock(event);
     },
 
