@@ -11,18 +11,13 @@ var Queue = function() {
 Queue.prototype = {
 
     addVisibilityLock: function() {
-        if (!this.queue.className.match(/(?:^|\s)queueLocked(?!\S)/)) {
-            this.queue.className += "queueLocked";
-        }
+        this.queue.classList.add("queueLocked");
     },
 
 
     removeVisibilityLock: function() {
-        if (this.queue.className.match(/(?:^|\s)queueLocked(?!\S)/)) {
-            this.queue.className = this.queue.className.replace(/(?:^|\s)queueLocked(?!\S)/g, '');
-        }
+        this.queue.classList.remove("queueLocked");
     },
-
 
     toggleVisibilityLock: function() {
         if (!this.isVisible) {
