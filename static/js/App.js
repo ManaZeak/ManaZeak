@@ -17,6 +17,7 @@ var App = function() {
     this.trackPreview = new TrackPreview();
     this.listView     = null;
     this.playlists    = [];
+    this.cssFiles     = {};
 
     document.body.appendChild(this.topBar.getTopBar());
     document.body.appendChild(this.mainContainer);
