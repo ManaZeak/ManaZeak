@@ -128,7 +128,7 @@ Player.prototype = {
                 var cover = response.COVER;
                 if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
 
-                window.app.trackPreview.setVisible();
+                window.app.trackPreview.setVisible(true);
                 window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
                 window.app.topBar.changeMoodbar(that.currentTrackId);
                 that.changeTrack("../" + response.PATH, that.currentTrackId);
@@ -155,7 +155,7 @@ Player.prototype = {
                 var cover = response.COVER;
                 if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
 
-                window.app.trackPreview.setVisible();
+                window.app.trackPreview.setVisible(true);
                 window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
                 window.app.topBar.changeMoodbar(that.currentTrackId);
                 that.changeTrack("../" + response.PATH, that.currentTrackId);
