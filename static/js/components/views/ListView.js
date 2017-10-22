@@ -169,7 +169,7 @@ ListView.prototype = {
                         window.app.trackPreview.setVisible(true);
                         window.app.trackPreview.changeTrack(that.entries[id].track, cover);
                         window.app.topBar.changeMoodbar(that.entries[id].entry.id);
-                        window.app.player.changeTrack("../" + response.PATH, that.entries[id].entry.id);
+                        window.app.player.changeTrack(".." + response.PATH, that.entries[id].entry.id);
                         window.app.player.play();
                     }
                 }

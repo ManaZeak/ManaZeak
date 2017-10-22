@@ -183,13 +183,16 @@ def newLibrary(request):
         response = json.loads(request.body)
         try:
             if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
-                tmp = response['URL']
+                dirPath = response['URL']
             else:
                 return JsonResponse(errorCheckMessage(False, "badFormat"))
-            if not os.path.isdir(tmp):
+            if not os.path.isdir(dirPath):
                 return JsonResponse(errorCheckMessage(False, "dirNotFound"))
+            # Removing / at the end of the dir path if present
+            if dirPath.endswith("/"):
+                dirPath = dirPath[:-1]
             library = Library()
-            library.path = response['URL']
+            library.path = dirPath
             library.name = response['NAME']
             library.convertID3 = response['CONVERT']
             library.user = request.user
@@ -236,6 +239,7 @@ def getTrackPathByID(request):
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
+                print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
                     'COVER': track.coverLocation
