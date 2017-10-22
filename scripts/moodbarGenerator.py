@@ -17,7 +17,7 @@ def scan():
         for file in files:
             path = os.path.join(root, file)
             md5 = "./static/"
-            md5 += hashlib.md5(path).hexdigest()
+            md5 += hashlib.md5(path.encode('utf-8')).hexdigest()
             count += 1
             if md5 not in moods:
                 command = 'moodbar \"' + path + '\" -o ' + md5 + '.mood'
