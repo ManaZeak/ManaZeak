@@ -118,7 +118,8 @@ TopBar.prototype = {
 
         xhr.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                renderMoodFile(this.responseText.MOOD, that.moodbar);
+                var tmp = JSON.parse(this.responseText);
+                renderMoodFile(tmp.MOOD, that.moodbar);
             }
         };
 
