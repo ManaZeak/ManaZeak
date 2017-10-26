@@ -134,6 +134,10 @@ function renderMoodFile(file, parentDiv) {
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4 && this.status === 200) {
+            while(parentDiv.firstChild){
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+
             var rgb = new Array(this.responseText.length / 3);
 
             for (var i = 0, len = rgb.length; i < len; ++i) {
@@ -148,8 +152,8 @@ function renderMoodFile(file, parentDiv) {
             }
 
             var svg = d3.select(parentDiv).append("svg")
-                .attr("height", 10)
-//                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("width", "100%")
                 .append("g");
             svg.append("linearGradient")
                 .attr("id", "moodbar-gradient-" + file[0] + file[1])
@@ -164,7 +168,7 @@ function renderMoodFile(file, parentDiv) {
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", "100%")
-                .attr("height", "10")
+                .attr("height", "100%")
         }
     };
     xhr.send();

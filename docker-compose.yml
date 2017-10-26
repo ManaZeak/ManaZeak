@@ -7,7 +7,7 @@ services:
     ports:
       - "80:8000"
     volumes:
-      - /run/media/Home/Music/back/_ArtistsBack/:/library
+      - /run/media/Home/Music/back/_ArtistsBack/ACDC/:/library
       - ./nginx/config:/etc/nginx/conf.d
       - ./static:/static
     depends_on:
@@ -30,7 +30,7 @@ services:
     build: .
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
-      - /run/media/Home/Music/back/_ArtistsBack/:/library
+      - /run/media/Home/Music/back/_ArtistsBack/ACDC/:/library
       - ./static:/static
       - .:/ManaZeak
     expose:
