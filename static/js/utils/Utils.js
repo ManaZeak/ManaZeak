@@ -147,7 +147,7 @@ function renderMoodFile(file, parentDiv) {
 
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
+                    color:  "rgb(" + r + ", " + b + ", " + g + ")" // bc why not swapping ? ... and because bg ...
                 };
             }
 
