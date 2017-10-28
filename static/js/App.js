@@ -85,7 +85,7 @@ App.prototype = {
                                                  that.playlists[0].getTracks(),
                                                  that.cookies);
                     that.listView.showListView();
-                    that.playlistPreview.changePlaylist(that.playlists[0]);
+                    that.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
                 }
             );
         }

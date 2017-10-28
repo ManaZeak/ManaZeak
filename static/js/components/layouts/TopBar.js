@@ -36,6 +36,8 @@ var TopBar = function(cookies) {
 TopBar.prototype = {
 
     init: function(playlists, selectedPlaylist) {
+        this.removeEntries();
+
         this.playlists = playlists;
 
         this.addEntries();
@@ -54,6 +56,16 @@ TopBar.prototype = {
         for (var i = 0; i < this.playlists.length ;++i) {
             this.addEntry(this.playlists[i]);
         }
+    },
+
+
+    removeEntries: function() {
+        for (var i = 0; i < this.entries.length ;++i) {
+            this.listView.removeChild(this.entries[i].entry)
+        }
+
+        // To the GC, and beyond
+        this.entries = [];
     },
 
 

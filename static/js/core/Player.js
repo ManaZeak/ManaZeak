@@ -134,7 +134,7 @@ Player.prototype = {
                     console.log(response);
                     // that.currentTrackId = response.TRACK_ID; // TODO : get track ID from serv heres
                     var cover = response.COVER;
-                    if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+                    if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
 
                     window.app.trackPreview.setVisible(true);
                     //window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
@@ -153,7 +153,7 @@ Player.prototype = {
                 function(response) {
                     that.currentTrackId = window.app.listView.getNextTrack(that.currentTrackId);
                     var cover = response.COVER;
-                    if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+                    if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
 
                     window.app.trackPreview.setVisible(true);
                     window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
@@ -181,7 +181,7 @@ Player.prototype = {
             function(response) {
                 that.currentTrackId = previuousTrack.id;
                 var cover = response.COVER;
-                if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+                if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
 
                 window.app.trackPreview.setVisible(true);
                 window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
