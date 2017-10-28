@@ -195,9 +195,7 @@ ListView.prototype = {
                 break;
         }
 
-        return {
-            id:  this.entries[(i + 1) % this.entries.length].entry.id
-        };
+        return this.entries[(i + 1) % this.entries.length].entry.id;
     },
 
 
