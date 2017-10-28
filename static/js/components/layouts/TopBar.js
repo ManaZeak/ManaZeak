@@ -19,9 +19,7 @@ var TopBar = function(cookies) {
     this.moodbar = document.createElement("div");
     this.playlistBar = document.createElement("div");
 
-
     this.topBar.id = "topBar";
-
     this.userExpander.id = "userExpander";
     this.moodbar.id = "moodbar";
     this.playlistBar.id = "playlistBar";
@@ -32,8 +30,6 @@ var TopBar = function(cookies) {
 
     this.userMenu     = new UserMenu(this.userExpander);
     this.menu = new NewLibPlayMenu();
-
-
 };
 
 
@@ -69,7 +65,7 @@ TopBar.prototype = {
 
 
     setSelected: function(id) {
-	this.selectedPlaylist = id;
+	    this.selectedPlaylist = id;
         this.entries[id].setIsSelected(true);
     },
 
@@ -94,12 +90,16 @@ TopBar.prototype = {
 
     viewClicked: function(event) {
         var target = event.target;
+
         // TODO : fix when target is null => when user click outside left or right of the listview
         while(target.parentNode && target.parentNode !== this.playlistBar) {
             target = target.parentNode;
         }
-	if(target.parentNode === null)
-		return true;
+
+	    if(target.parentNode === null) {
+		    return true;
+        }
+
         var id = target.dataset.listViewID;
 
         if (id !== undefined) {

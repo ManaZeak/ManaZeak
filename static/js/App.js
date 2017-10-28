@@ -13,11 +13,12 @@ var App = function() {
 
     this.mainContainer.id = "mainContainer";
 
-    this.player       = new Player(this.cookies);
-    this.trackPreview = new TrackPreview();
-    this.listView     = null;
-    this.playlists    = [];
-    this.cssFiles     = {};
+    this.player          = new Player(this.cookies);
+    this.trackPreview    = new TrackPreview();
+    this.playlistPreview = new PlaylistPreview();
+    this.listView        = null;
+    this.playlists       = [];
+    this.cssFiles        = {};
 
     document.body.appendChild(this.topBar.getTopBar());
     document.body.appendChild(this.mainContainer);
@@ -84,6 +85,7 @@ App.prototype = {
                                                  that.playlists[0].getTracks(),
                                                  that.cookies);
                     that.listView.showListView();
+                    that.playlistPreview.changePlaylist(that.playlists[0]);
                 }
             );
         }
@@ -103,7 +105,7 @@ App.prototype = {
         var that = this;
 
         for (var i = 0; i < this.playlists.length ;++i) {
-            if (this.playlists[i].getId() == playlistId) {
+            if (this.playlists[i].getId() === playlistId) {
                 that.playlists[i].getPlaylistsTracks(playlistId, function() {
                     that.topBar.setSelected(i);
                     that.listView.hideListView();
