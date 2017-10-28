@@ -164,7 +164,7 @@ ListView.prototype = {
                         new Notification("Bad format.", response.ERROR);
                     } else {
                         var cover = response.COVER;
-                        if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+                        if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
 
                         window.app.trackPreview.setVisible(true);
                         window.app.trackPreview.changeTrack(that.entries[id].track, cover);

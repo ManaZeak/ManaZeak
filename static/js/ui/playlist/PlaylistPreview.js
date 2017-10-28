@@ -22,8 +22,8 @@ PlaylistPreview.prototype = {
 
     changePlaylist: function(playlist, cover) {
         // TODO : handle cover smooth transition
-        //this.ui.cover.src = cover;
-        //this.ui.thumb.src = cover;
+        this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
+        this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
         console.log(playlist);
         this.ui.name.innerHTML = playlist.name;
         this.ui.total.innerHTML = playlist.trackTotal + " tracks";
