@@ -18,6 +18,8 @@ var Player = function(cookies) {
     this.isMuted   = false;
     this.isLooping = false;
 
+    this.shuffle   = 0; // 0 = off, 1 = custom shuffle, 2 = random
+
     this.progressBar = new ProgressBar();
     this.volumeBar   = new VolumeBar();
     this.queue       = new Queue();
@@ -315,6 +317,8 @@ Player.prototype = {
                 this.play();
             }, false);
         }
+
+        window.app.playlistPreview.updatePlaylistPreview();
     },
 
 
@@ -469,6 +473,7 @@ Player.prototype = {
     getVolume: function()                 { return this.player.volume;      },
     getOldVolume: function()              { return this.oldVolume;          },
     getIsPlaying: function()              { return this.isPlaying;          },
+    getIsLooping: function()              { return this.isLooping;          },
     getIsMuted: function()                { return this.isMuted;            },
 
     setVolume: function(volume)           { this.player.volume = volume;    },

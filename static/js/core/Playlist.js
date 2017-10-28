@@ -42,10 +42,13 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
         this.callback = null;
     }
 
-    // Boolean to add to know if tracks are sette dor not
+    // Boolean to add to know if tracks are set or not
     this.tracks = [];
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
+
+    this.trackTotal    = 0;
+    this.durationTotal = 0;
 
     this._init(); // Playlist initialization
 };
@@ -69,6 +72,7 @@ Playlist.prototype = {
 
     _loadLibrary: function() {
         this._fillTracks(this.rawTracks);
+        console.log(this);
     },
 
 
@@ -282,6 +286,9 @@ Playlist.prototype = {
 
     _fillTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
+            ++this.trackTotal;
+            this.durationTotal += tracks[i].DURATION;
+
             this.tracks.push(new Track(tracks[i]));
         }
     },

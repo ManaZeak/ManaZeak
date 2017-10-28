@@ -10,20 +10,25 @@ function precisionRound(value, precision) {
 function secondsToTimecode(time) {
     // TODO : add days
     var transformedTime = {
+        d: 0,
         h: 0,
         m: 0,
         s: 0
     };
     // Cutting total seconds
-    transformedTime.h = Math.floor(time / 3600);
-    transformedTime.m = Math.floor((time - (transformedTime.h * 3600)) / 60);
-    transformedTime.s = Math.round(time - (transformedTime.h * 3600) - (transformedTime.m * 60));
+    transformedTime.d = Math.floor(time / 86400);
+    transformedTime.h = Math.floor((time - (transformedTime.d * 86400)) / 3600);
+    transformedTime.m = Math.floor((time - (transformedTime.d * 86400) - (transformedTime.h * 3600)) / 60);
+    transformedTime.s = Math.round(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
     // Adding an extra 0 for values inferior to 10
+    transformedTime.d = transformedTime.d < 10 ? "0" + transformedTime.d : transformedTime.d;
     transformedTime.h = transformedTime.h < 10 ? "0" + transformedTime.h : transformedTime.h;
     transformedTime.m = transformedTime.m < 10 ? "0" + transformedTime.m : transformedTime.m;
     transformedTime.s = transformedTime.s < 10 ? "0" + transformedTime.s : transformedTime.s;
     // Formatting output
-    if (transformedTime.h > 0) {
+    if (transformedTime.d > 0) {
+        return transformedTime.d + " days, " + transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
+    } else if (transformedTime.h > 0) {
         return transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
     } else {
         return transformedTime.m + ":" + transformedTime.s;
