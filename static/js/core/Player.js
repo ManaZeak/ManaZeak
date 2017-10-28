@@ -17,8 +17,7 @@ var Player = function(cookies) {
     this.isPlaying = false;
     this.isMuted   = false;
     this.isLooping = false;
-
-    this.shuffle   = 0; // 0 = off, 1 = custom shuffle, 2 = random
+    this.isShuffle   = false; // 0 = off, 1 = custom shuffle, 2 = random
 
     this.progressBar = new ProgressBar();
     this.volumeBar   = new VolumeBar();
@@ -41,6 +40,10 @@ var Player = function(cookies) {
         repeat: {
             button: document.getElementById("buttonRepeat"),
             image:  document.getElementById("imageRepeat")
+        },
+        shuffle: {
+            button: document.getElementById("buttonShuffle"),
+            image:  document.getElementById("imageShuffle")
         },
         next: {
             button: document.getElementById("buttonNext"),
@@ -117,26 +120,49 @@ Player.prototype = {
         var that = this;
         this.stopPlayback();
 
-        var nextTrack = window.app.listView.getNextTrack(this.currentTrackId);
+        var nextTrack = null;
 
-        JSONParsedPostRequest(
-            "ajax/getTrackPathByID/",
-            this.cookies,
-            JSON.stringify({
-                TRACK_ID: nextTrack.id// TODO : get from serv
-            }),
-            function(response) {
-                that.currentTrackId = nextTrack.id;
-                var cover = response.COVER;
-                if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+        if (this.isShuffle) {
+            JSONParsedPostRequest(
+                "ajax/randomNextTrack/",
+                this.cookies,
+                JSON.stringify({
+                    PLAYLIST_ID: window.app.playlists[0].getId() // TODO : get from serv
+                    // TODO: send isRepeat here
+                }),
+                function(response) {
+                    console.log(response);
+                    // that.currentTrackId = response.TRACK_ID; // TODO : get track ID from serv heres
+                    var cover = response.COVER;
+                    if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
 
-                window.app.trackPreview.setVisible(true);
-                window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
-                window.app.topBar.changeMoodbar(that.currentTrackId);
-                that.changeTrack("../" + response.PATH, that.currentTrackId);
-                that.play();
-            }
-        );
+                    window.app.trackPreview.setVisible(true);
+                    //window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                    //window.app.topBar.changeMoodbar(that.currentTrackId);
+                    that.changeTrack("../" + response.PATH, that.currentTrackId);
+                    that.play();
+                }
+            );
+        } else {
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    TRACK_ID: window.app.listView.getNextTrack(this.currentTrackId)// TODO : get from serv
+                }),
+                function(response) {
+                    that.currentTrackId = window.app.listView.getNextTrack(that.currentTrackId);
+                    var cover = response.COVER;
+                    if (cover === null || cover === undefined) { cover = "../static/img/covers/default.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                    window.app.topBar.changeMoodbar(that.currentTrackId);
+                    that.changeTrack("../" + response.PATH, that.currentTrackId);
+                    that.play();
+                }
+            );
+        }
     },
 
 
@@ -322,6 +348,17 @@ Player.prototype = {
     },
 
 
+    toggleShuffle: function() {
+        if (this.isShuffle) {
+            this.isShuffle = !this.isShuffle;
+        } else {
+            this.isShuffle = !this.isShuffle;
+        }
+
+        window.app.playlistPreview.updatePlaylistPreview();
+    },
+
+
     mouseMove: function(event) {
         // Updating the ProgressBar while user is moving the mouse
         if (this.progressBar.getIsDragging()) {
@@ -399,6 +436,7 @@ Player.prototype = {
         this.ui.play.button.addEventListener("click", this.togglePlay.bind(this));
         this.ui.stop.button.addEventListener("click", this.stopPlayback.bind(this));
         this.ui.mute.button.addEventListener("click", this.toggleMute.bind(this));
+        this.ui.shuffle.button.addEventListener("click", this.toggleShuffle.bind(this));
         this.ui.repeat.button.addEventListener("click", this.toggleRepeat.bind(this));
         this.ui.next.button.addEventListener("click", this.next.bind(this));
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
@@ -474,6 +512,7 @@ Player.prototype = {
     getOldVolume: function()              { return this.oldVolume;          },
     getIsPlaying: function()              { return this.isPlaying;          },
     getIsLooping: function()              { return this.isLooping;          },
+    getIsShuffle: function()              { return this.isShuffle;          },
     getIsMuted: function()                { return this.isMuted;            },
 
     setVolume: function(volume)           { this.player.volume = volume;    },
