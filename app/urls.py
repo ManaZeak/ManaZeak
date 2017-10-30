@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^logout/$', views.logoutView, name='logout'),
     url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
     url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
+    url(r'^ajax/newPlaylist/§$', views.newPlaylist, name='newPlaylist'),
     url(r'^ajax/getSimplifiedTracks/$', views.loadSimplifiedLibrary, name='simplifiedJson'),
     url(r'^ajax/checkLibraryScanStatus/$', views.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/getTrackPathByID/$', views.getTrackPathByID, name='getTrackPathByID'),
