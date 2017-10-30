@@ -1,7 +1,9 @@
-import binascii
 import hashlib
-import math
 import os
+
+import binascii
+
+import math
 import threading
 
 from django.contrib.auth.decorators import login_required
@@ -33,6 +35,7 @@ class EditMetadataModal(TemplateView):
         return super(EditMetadataModal, self).dispatch(*args, **kwargs)
 
 
+# Split a table in 4 table of equal size
 def splitTable(table):
     if len(table) % 4 == 0:
         chunkSize = int(len(table) / 4)
@@ -42,6 +45,7 @@ def splitTable(table):
         yield table[i:i + chunkSize]
 
 
+# Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
         return trackAttribute
@@ -49,6 +53,7 @@ def checkIfNotNone(trackAttribute):
         return "null"
 
 
+# Check if an attribute is existing or not and add "" around it
 def checkIfNotNoneNumber(trackAttribute):
     if trackAttribute is not None:
         return str(trackAttribute)
@@ -56,15 +61,7 @@ def checkIfNotNoneNumber(trackAttribute):
         return "\"null\""
 
 
-# Return a bad format error
-def badFormatError():
-    data = {
-        'RESULT': 'FAIL',
-        'ERROR': 'Bad format'
-    }
-    return JsonResponse(data)
-
-
+# Generate the base of any status message
 def errorCheckMessage(isDone, error):
     errorTitle = ""
     errorMessage = ""
@@ -83,6 +80,9 @@ def errorCheckMessage(isDone, error):
     elif error == "dirNotFound":
         errorTitle = "No such directory"
         errorMessage = "The server didn't find the directory you asked."
+    elif error == "emptyLibrary":
+        errorTitle = "The library is empty"
+        errorMessage = "There is no file to add in the library"
     elif error == "coverError":
         errorTitle = "Can't create file"
         errorMessage = "The server cannot generate the file for the covers, check the permissions."
@@ -96,6 +96,7 @@ def errorCheckMessage(isDone, error):
     }
 
 
+# Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
     spiltedTracks = splitTable(tracks)
@@ -113,6 +114,7 @@ def exportPlaylistToSimpleJson(playlist):
     return finalData.replace('\n', '').replace('\r', '')
 
 
+# Thread for creating the json in parallel
 class SimpleJsonCreator(threading.Thread):
     finalData = ""
 
@@ -162,6 +164,7 @@ class SimpleJsonCreator(threading.Thread):
         self.finalData = internData
 
 
+# export a playlist to json, not threaded, to be avoided
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
     finalData = "["
@@ -237,12 +240,16 @@ def exportPlaylistToJson(playlist):
     return finalData
 
 
+# Function to add all the genre, album and artist to the database
+# Need to do this action before scan to avoid concurrency errors
 def addAllGenreAndAlbumAndArtistsMP3(filePaths):
     for filePath in filePaths:
         try:
             audioTag = ID3(filePath)
         except ID3NoHeaderError:
             audioTag = ID3()
+        hasArtist = False
+        trackArtists = []
         # --- Adding genre to DB ---
         if 'TCON' in audioTag:
             genreName = strip_tags(audioTag['TCON'].text[0])
@@ -250,13 +257,6 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                 genre = Genre()
                 genre.name = genreName
                 genre.save()
-        # --- Adding album to DB ---
-        if 'TALB' in audioTag:
-            albumTitle = strip_tags(audioTag['TALB'].text[0])
-            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-                album = Album()
-                album.title = albumTitle
-                album.save()
         # --- Adding artist to DB ---
         if 'TPE1' in audioTag:  # Check if artist exists
             artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
@@ -266,8 +266,22 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                     artist = Artist()
                     artist.name = artistName
                     artist.save()
+                    trackArtists.append(artist)
+                else:
+                    trackArtists.append(Artist.objects.get(name=artistName))
+                hasArtist = True
+        # --- Adding album to DB ---
+        if 'TALB' in audioTag:
+            albumTitle = strip_tags(audioTag['TALB'].text[0])
+            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
+                album = Album()
+                album.title = albumTitle
+                album.save()
+                if hasArtist:
+                    album.artist.add(*trackArtists)
 
 
+# Create the file type entry
 def populateDB():
     if FileType.objects.all().count() == 0:
         fileType = FileType(name="mp3")
@@ -280,6 +294,7 @@ def populateDB():
         fileType.save()
 
 
+# Create the CRC32 code from a file
 def CRC32_from_file(filename):
     buf = open(filename, 'rb').read()
     buf = (binascii.crc32(buf) & 0xFFFFFFFF)
@@ -297,7 +312,7 @@ def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replac
         track.scanned = True
 
 
-# TODO: remove the file in DB that have been removed
+# Check if new file have been added
 def rescanLibrary(library):
     playlist = library.playlist
     convert = False
@@ -316,6 +331,7 @@ def rescanLibrary(library):
     return [replacedTitles, removedTracks]
 
 
+# Scan all the attributes of an MP3 track, and add it to base.
 def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -445,6 +461,7 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
     playlist.track.add(track)
 
 
+# Adding a MP3 track to the database
 def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     track = Track()
 
@@ -487,8 +504,6 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
         if not audioTag['TDRC'].text[0].get_text() == "":
             track.year = strip_tags(audioTag['TDRC'].text[0].get_text())[:4]  # Date of Recording
 
-    totalTrack = 0
-    totalDisc = 1
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
@@ -529,54 +544,40 @@ def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
     # --- Adding genre to DB ---
     if 'TCON' in audioTag:
         genreName = strip_tags(audioTag['TCON'].text[0])
-        if Genre.objects.filter(name=genreName).count() == 1:
-            genre = Genre.objects.get(name=genreName)
-            track.genre = genre
+        genre = Genre.objects.get(name=genreName)
+        track.genre = genre
 
     # --- Adding artist to DB ---
     if 'TPE1' in audioTag:  # Check if artist exists
         artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
         for artistName in artists:
             artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-            num_results = Artist.objects.filter(name=artistName).count()
-            if num_results == 0:  # The artist doesn't exist
-                artist = Artist()
-                artist.name = artistName
-                artist.save()
             artist = Artist.objects.get(name=artistName)
             track.artist.add(artist)
-    else:
-        # TODO default value of artist (see if it's possible)
-        pass
 
     # --- Adding album to DB ---
     if 'TALB' in audioTag:
         albumTitle = strip_tags(audioTag['TALB'].text[0])
-        if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-            album = Album()
-            album.title = albumTitle
-            album.totalTrack = totalTrack
-            album.totalDisc = totalDisc
-            album.save()
-            for trackArtist in track.artist.all():
-                album.artist.add(trackArtist)
         album = Album.objects.get(title=albumTitle)
-        # Check for each artist if he exists in the album
-        for trackArtist in track.artist.all():
-            if album.artist.filter(name=trackArtist.name).count() == 0:  # The Artist wasn't added
-                album.artist.add(trackArtist)
-                album.save()
         track.album = album
         track.save()
-
-    else:
-        # TODO default value of artist (see if it's possible)
-        pass
 
     # --- Adding track to playlist --- #
     playlist.track.add(track)
 
 
+# Create the md5 of all the files and add create the URLs
+def createMoodbarsUrls(playlist):
+    print("Generating moodbar URLs")
+    tracks = playlist.track.all()
+    for track in tracks:
+        md5 = hashlib.md5(track.location.encode('utf-8')).hexdigest()
+        track.moodbar = "../static/mood/" + md5 + ".mood"
+        track.save()
+    print("Ended generating moodbars")
+
+
+# Thread for generating multiple CRC32
 class CRCGenerator(threading.Thread):
     def __init__(self, tracks):
         threading.Thread.__init__(self)
@@ -593,15 +594,7 @@ class CRCGenerator(threading.Thread):
             track.save()
 
 
-class ResponseThread(threading.Thread):
-    def __init__(self, text):
-        threading.Thread.__init__(self)
-        self.text = text
-
-    def run(self):
-        return JsonResponse(self.text)
-
-
+# Import in a threaded way a library
 class ImportMp3Thread(threading.Thread):
     def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
         threading.Thread.__init__(self)
@@ -616,31 +609,3 @@ class ImportMp3Thread(threading.Thread):
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
-def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
-    print("process")
-    addAllGenreAndAlbumAndArtistsMP3(mp3Files)
-    print("Added DB structure")
-    print(len(mp3Files))
-    trackPath = splitTable(mp3Files)
-    threads = []
-    # saving all the library to base
-    for tracks in trackPath:
-        threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
-    for thread in threads:
-        thread.start()
-    print("launched scanning threads")
-    for thread in threads:
-        thread.join()
-    print("ended scanning")
-    playlist.isScanned = True
-    playlist.save()
-    library.playlist = playlist
-    library.save()
-    # tracks = playlist.track.all()
-    # splicedTracks = splitTable(tracks)
-    # threads = []
-    # generating CRC checksum
-    # for tracks in splicedTracks:
-    #    threads.append(CRCGenerator(tracks))
-    # for thread in threads:
-    #    thread.start()

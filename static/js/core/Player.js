@@ -3,8 +3,12 @@
  *  Player class - handle song streaming client side, and std action on it             *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Player = function() {
+var Player = function(cookies) {
+    this.cookies = cookies;
+
     this.player = document.getElementById("audioPlayer");
+
+    this.currentTrackId = -1;
 
     this.oldVolume = 0;
     this.volumeLockId = -1;
@@ -13,6 +17,7 @@ var Player = function() {
     this.isPlaying = false;
     this.isMuted   = false;
     this.isLooping = false;
+    this.isShuffle   = false; // 0 = off, 1 = custom shuffle, 2 = random
 
     this.progressBar = new ProgressBar();
     this.volumeBar   = new VolumeBar();
@@ -35,6 +40,10 @@ var Player = function() {
         repeat: {
             button: document.getElementById("buttonRepeat"),
             image:  document.getElementById("imageRepeat")
+        },
+        shuffle: {
+            button: document.getElementById("buttonShuffle"),
+            image:  document.getElementById("imageShuffle")
         },
         next: {
             button: document.getElementById("buttonNext"),
@@ -100,7 +109,7 @@ Player.prototype = {
         this.progressBar.resetProgressBar();
 
         this.ui.play.image.src = "/static/img/player/play.svg";
-        window.app.trackPreview.setInvisible();
+        window.app.trackPreview.setVisible(false);
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
         // TODO : Make a real stop feature ...
@@ -111,32 +120,74 @@ Player.prototype = {
         var that = this;
         this.stopPlayback();
 
-        JSONParsedPostRequest(
-            "ajax/getTrackPathByID/",
-            this.cookies,
-            JSON.stringify({
-                ID: 1// TODO : get from serv
-            }),
-            function(response) {
-                that.changeTrack("../" + response.PATH); // TODO : New tracks to inject here
-                that.togglePlay();
-            }
-        );
+        var nextTrack = null;
+
+        if (this.isShuffle) {
+            JSONParsedPostRequest(
+                "ajax/randomNextTrack/",
+                this.cookies,
+                JSON.stringify({
+                    PLAYLIST_ID: window.app.playlists[0].getId() // TODO : get from serv
+                    // TODO: send isRepeat here
+                }),
+                function(response) {
+                    console.log(response);
+                    // that.currentTrackId = response.TRACK_ID; // TODO : get track ID from serv heres
+                    var cover = response.COVER;
+                    if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    //window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                    //window.app.topBar.changeMoodbar(that.currentTrackId);
+                    that.changeTrack("../" + response.PATH, that.currentTrackId);
+                    that.play();
+                }
+            );
+        } else {
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    TRACK_ID: window.app.listView.getNextTrack(this.currentTrackId)// TODO : get from serv
+                }),
+                function(response) {
+                    that.currentTrackId = window.app.listView.getNextTrack(that.currentTrackId);
+                    var cover = response.COVER;
+                    if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                    window.app.topBar.changeMoodbar(that.currentTrackId);
+                    that.changeTrack("../" + response.PATH, that.currentTrackId);
+                    that.play();
+                }
+            );
+        }
     },
 
 
     previous: function() {
+        var that = this;
         this.stopPlayback();
+
+        var previuousTrack = window.app.listView.getPreviousTrack(this.currentTrackId);
 
         JSONParsedPostRequest(
             "ajax/getTrackPathByID/",
             this.cookies,
             JSON.stringify({
-                ID: 1// TODO : get from serv
+                TRACK_ID: previuousTrack.id// TODO : get from serv
             }),
             function(response) {
-                that.changeTrack("../" + response.PATH); // TODO : New tracks to inject here
-                that.togglePlay();
+                that.currentTrackId = previuousTrack.id;
+                var cover = response.COVER;
+                if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                window.app.trackPreview.setVisible(true);
+                window.app.trackPreview.changeTrack(window.app.listView.getTrackInfo(that.currentTrackId), cover);
+                window.app.topBar.changeMoodbar(that.currentTrackId);
+                that.changeTrack("../" + response.PATH, that.currentTrackId);
+                that.play();
             }
         );
     },
@@ -256,8 +307,8 @@ Player.prototype = {
                 this.mute();
             }
 
-            if (this.player.volume === 0) { this.ui.mute.image.src = "/static/img/mute.svg"; }
-            else { this.ui.mute.image.src = "/static/img/volume.svg"; }
+            if (this.player.volume === 0) { this.ui.mute.image.src = "/static/img/player/mute.svg"; }
+            else { this.ui.mute.image.src = "/static/img/player/volume.svg"; }
 
             this.volumeBar.setVolume(this.player.getVolume() * 100);
             this.volumeBar.updateVolume(this.ui.mute.image);
@@ -265,7 +316,8 @@ Player.prototype = {
     },
 
 
-    changeTrack: function(url) {
+    changeTrack: function(url, id) {
+        this.currentTrackId = id;
         this.player.src = url;
     },
 
@@ -291,6 +343,19 @@ Player.prototype = {
                 this.play();
             }, false);
         }
+
+        window.app.playlistPreview.updatePlaylistPreview();
+    },
+
+
+    toggleShuffle: function() {
+        if (this.isShuffle) {
+            this.isShuffle = !this.isShuffle;
+        } else {
+            this.isShuffle = !this.isShuffle;
+        }
+
+        window.app.playlistPreview.updatePlaylistPreview();
     },
 
 
@@ -371,11 +436,13 @@ Player.prototype = {
         this.ui.play.button.addEventListener("click", this.togglePlay.bind(this));
         this.ui.stop.button.addEventListener("click", this.stopPlayback.bind(this));
         this.ui.mute.button.addEventListener("click", this.toggleMute.bind(this));
+        this.ui.shuffle.button.addEventListener("click", this.toggleShuffle.bind(this));
         this.ui.repeat.button.addEventListener("click", this.toggleRepeat.bind(this));
         this.ui.next.button.addEventListener("click", this.next.bind(this));
         this.ui.previous.button.addEventListener("click", this.previous.bind(this));
         this.ui.queueExpander.button.addEventListener("click", this.toggleQueue.bind(this));
 
+        this.player.addEventListener("ended", this.next.bind(this));
         this.player.addEventListener('loadedmetadata', function() {
             that.progressBar.init(that.player); // Initialize progressBar
             that.progressBar.getContainer().addEventListener("mouseover", that.mouseOver.bind(that));
@@ -398,7 +465,7 @@ Player.prototype = {
         // Key pressed event
         document.addEventListener("keydown", function(event) {
             switch (event.keyCode) {
-                case 32: // Space bar
+                case 32: // Space player
                     that.togglePlay();
                     break;
                 case 37: // Left arrow
@@ -444,6 +511,8 @@ Player.prototype = {
     getVolume: function()                 { return this.player.volume;      },
     getOldVolume: function()              { return this.oldVolume;          },
     getIsPlaying: function()              { return this.isPlaying;          },
+    getIsLooping: function()              { return this.isLooping;          },
+    getIsShuffle: function()              { return this.isShuffle;          },
     getIsMuted: function()                { return this.isMuted;            },
 
     setVolume: function(volume)           { this.player.volume = volume;    },

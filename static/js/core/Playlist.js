@@ -10,9 +10,9 @@
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback) {
+var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, callback) {
 
-    // NewLibrary relative attributes, useless if newLibrary = false
+    // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
     this.ui = {
         infoLabel: null,
         name:      null,
@@ -24,15 +24,10 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
 
 
     // Playlist internal attributes
-    this.name = name;
-    this.load = load;
-    this.tracks = [];
-    this.isLibrary = false;
-
-
-    // Filling Playlist object
     this.id = id;
-    this.newLibrary = newLibrary;
+    this.name = name;
+    this.isLibrary = isLibrary;
+    this.isLoading = isLoading;
     this.cookies = cookies;
 
     if (typeof rawTracks !== 'undefined') {
@@ -47,9 +42,13 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
         this.callback = null;
     }
 
-    // Interval id for _getTracksFromServer_aux
-    this.refreshIntervalId = -1;
+    // Boolean to add to know if tracks are set or not
+    this.tracks = [];
+    this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
+
+    this.trackTotal    = 0;
+    this.durationTotal = 0;
 
     this._init(); // Playlist initialization
 };
@@ -58,8 +57,22 @@ var Playlist = function(id, name, newLibrary, load, cookies, rawTracks, callback
 Playlist.prototype = {
 
     _init: function() {
-        if (this.load) { this._loadLibrary(); } // Library creation process
-        else { this._newLibrary(); }            // Library loading process
+        //if (typeof rawTracks === undefined) { return; }
+
+        if (this.isLoading) {
+            if (this.isLibrary) { this._loadLibrary(); } // Library loading process
+        }
+        else {
+            if (this.isLibrary) { this._newLibrary(); } // Library creation process
+        }
+    },
+
+
+    /*  Library creation and loading  */
+
+    _loadLibrary: function() {
+        this._fillTracks(this.rawTracks);
+        console.log(this);
     },
 
 
@@ -70,7 +83,7 @@ Playlist.prototype = {
         JSONParsedGetRequest(
             "components/newLibrary",
             true,
-            function(response) {
+            function(response) { // TODO : create modal of procedure
                 // TODO : test response to see if it's html or void
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
@@ -82,28 +95,17 @@ Playlist.prototype = {
 
                 console.log(that.newLibrary);
 
-                if (that.newLibrary) { // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
-                    console.log("Here");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-                        "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
-                        "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
-                        "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-                }
+                // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
 
-                else {
-                    console.log("There");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!\n";
-                    // TODO : remove path input depending on radioBox
-                }
+                that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
+                    "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
+                    "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
+                    "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
+                // TODO : remove path input depending on radioBox
 
                 that.ui.scan.addEventListener("click", that._checkInputs.bind(that));
             }
         );
-    },
-
-
-    _loadLibrary: function() {
-        this._fillTracks(this.rawTracks);
     },
 
 
@@ -132,7 +134,6 @@ Playlist.prototype = {
     },
 
 
-    // TODO : create _requestNewPlaylist, among creating Library class
     _requestNewLibrary: function() {
         var that = this;
 
@@ -201,7 +202,7 @@ Playlist.prototype = {
     _getTracksFromServer: function(playlistId) {
         var that = this;
 
-        this.refreshIntervalId = setInterval(function() {
+        this.getTracksIntervalId = setInterval(function() {
             console.log("Tracks received from server -- in progress");
             that._getTracksFromServer_aux(playlistId);
         }, 5000); // every 5s
@@ -227,8 +228,8 @@ Playlist.prototype = {
                 var self = that;
 
                 if (response.DONE) {
-                    clearInterval(that.refreshIntervalId);
-                    that.refreshIntervalId = -1;
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
 
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
@@ -242,12 +243,17 @@ Playlist.prototype = {
                             self.rawTracks = response;
                             self.scanModal.close();
                             self._fillTracks(self.rawTracks);
+
+                            if (!self.isLoading) {
+                                document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
+                                self.callback();
+                            }
                         }
                     );
                 }
                 else if (response.ERROR_H1 === "null") {
-                    clearInterval(that.refreshIntervalId);
-                    that.refreshIntervalId = -1;
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
 
                     // TODO : refresh UI to come back to Library/Playlist creation
                     new Notification(response.ERROR_H1, response.ERROR_MSG);
@@ -257,21 +263,42 @@ Playlist.prototype = {
     },
 
 
+    getPlaylistsTracks: function(playlistId, callback) {
+        var that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getSimplifiedTracks/",
+            that.cookies,
+            JSON.stringify({
+                PLAYLIST_ID: playlistId
+            }),
+            function(response) {
+                // response = raw tracks JSON object
+                that.rawTracks = response;
+                that._fillTracks(that.rawTracks);
+                callback();
+            }
+        );
+    },
+
+
+    /* Class utilities */
+
     _fillTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
-            this.tracks.push(new Track(tracks[i]));
-        }
+            ++this.trackTotal;
+            this.durationTotal += tracks[i].DURATION;
 
-        if (this.newLibrary) {
-            document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
-            this.callback();
+            this.tracks.push(new Track(tracks[i]));
         }
     },
 
 
     // Class Getters and Setters
-    getTracks: function()     { return this.tracks; },
-    getName: function()       { return this.name;   },
+    getId: function()         { return this.id;        },
+    getTracks: function()     { return this.tracks;    },
+    getName: function()       { return this.name;      },
+    getIsLibrary: function()  { return this.isLibrary; },
 
-    setName: function(name)   { this.name = name;   }
+    setName: function(name)   { this.name = name;      }
 };
