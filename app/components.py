@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
 
-# Used for rendering the new library view
+# Used for rendering the new library views
 class NewLibrary (TemplateView):
     template_name = 'components/newlibrary.html'
 

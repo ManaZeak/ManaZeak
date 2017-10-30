@@ -3,14 +3,14 @@
  *  UserMenu class - handle the user's menu                                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var UserMenu = function() {
+var UserMenu = function(parent) {
     this.menu = document.createElement("div");
     this.menu.id = "menu";
     this.menuEntry = {
         logout: null
     };
     this.outside = document.body;
-
+    this.parent = parent;
     this.isVisible = false;
 
 
@@ -21,7 +21,7 @@ var UserMenu = function() {
 UserMenu.prototype = {
 
     _init: function() {
-        document.getElementById("userExpander").appendChild(this.menu);
+        this.parent.appendChild(this.menu);
         this.menuEntry.logout = document.createElement("div");
         this.menuEntry.logout.id = "logOut";
         this.menuEntry.logout.className = "menuEntry";

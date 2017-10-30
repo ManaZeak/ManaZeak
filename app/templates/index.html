@@ -21,12 +21,6 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
-        {% include 'components/topbar.html' %}
-
-        <div id="mainContainer">
-
-        </div>
-
         {% include 'components/footbar.html' %}
 
         <audio id="audioPlayer">
@@ -35,20 +29,24 @@
         </audio>
 
         <!-- Add absolute path in js TODO : to something about deaz ... -->
+        <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/layouts/Modal.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/layouts/Notification.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Track.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/view/entries/ListViewEntry.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/view/ListView.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/views/entries/ListViewEntry.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/views/ListView.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/menu/UserMenu.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/Queue.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/TrackPreview.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/TopBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/ProgressBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/VolumeBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/bar/PlaylistBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/Queue.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/playlist/PlaylistPreview.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/player/TrackPreview.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/player/ProgressBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/player/VolumeBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/layouts/entries/PlaylistBarEntry.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/layouts/TopBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/ui/menu/ContextMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/menu/ContextMenuEntry.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/ui/menu/NewLibPlayMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>

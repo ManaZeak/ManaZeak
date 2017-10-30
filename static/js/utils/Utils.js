@@ -10,20 +10,25 @@ function precisionRound(value, precision) {
 function secondsToTimecode(time) {
     // TODO : add days
     var transformedTime = {
+        d: 0,
         h: 0,
         m: 0,
         s: 0
     };
     // Cutting total seconds
-    transformedTime.h = Math.floor(time / 3600);
-    transformedTime.m = Math.floor((time - (transformedTime.h * 3600)) / 60);
-    transformedTime.s = Math.round(time - (transformedTime.h * 3600) - (transformedTime.m * 60));
+    transformedTime.d = Math.floor(time / 86400);
+    transformedTime.h = Math.floor((time - (transformedTime.d * 86400)) / 3600);
+    transformedTime.m = Math.floor((time - (transformedTime.d * 86400) - (transformedTime.h * 3600)) / 60);
+    transformedTime.s = Math.round(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
     // Adding an extra 0 for values inferior to 10
+    transformedTime.d = transformedTime.d < 10 ? "0" + transformedTime.d : transformedTime.d;
     transformedTime.h = transformedTime.h < 10 ? "0" + transformedTime.h : transformedTime.h;
     transformedTime.m = transformedTime.m < 10 ? "0" + transformedTime.m : transformedTime.m;
     transformedTime.s = transformedTime.s < 10 ? "0" + transformedTime.s : transformedTime.s;
     // Formatting output
-    if (transformedTime.h > 0) {
+    if (transformedTime.d > 0) {
+        return transformedTime.d + " days, " + transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
+    } else if (transformedTime.h > 0) {
         return transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
     } else {
         return transformedTime.m + ":" + transformedTime.s;
@@ -33,14 +38,14 @@ function secondsToTimecode(time) {
 
 function sortObjectArrayBy(key, ascending) {
     return function(a, b) {
-        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         var compare = 0;
 
-        if (varA > varB) { compare = 1;}
+        if (varA > varB)      { compare =  1; }
         else if (varA < varB) { compare = -1; }
 
         return (!ascending ? (compare * -1) : compare);
@@ -52,8 +57,8 @@ function getCookies() {
     var cookies = {};
 
     if (document.cookie && document.cookie !== '') {
-        document.cookie.split(';').forEach(function (c) {
-            var m = c.trim().match(/(\w+)=(.*)/);
+        document.cookie.split(';').forEach(function (cookie) {
+            var m = cookie.trim().match(/(\w+)=(.*)/);
             if (m !== undefined) {
                 cookies[m[1]] = decodeURIComponent(m[2]);
             }
@@ -61,20 +66,6 @@ function getCookies() {
     }
 
     return cookies;
-}
-
-
-function getRequest(url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            callback(this.responseText);
-        }
-    };
-
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
 }
 
 
@@ -88,35 +79,54 @@ function removeVisibilityLock(object, className) {
 }
 
 
-function JSONParsedGetRequest(url, http, callback) {
-    var xmlhttp = new XMLHttpRequest();
+function getRequest(url, callback) {
+    var xhr = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
+    xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callback(this.responseText);
+        }
+    };
+
+    xhr.open("GET", url, true);
+    xhr.send();
+}
+
+
+function JSONParsedGetRequest(url, http, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             if (http) { callback(this.responseText); }
             else      { callback(JSON.parse(this.responseText)); }
         }
     };
 
-    xmlhttp.open("GET", url, true);
-    if (http) { xmlhttp.setRequestHeader("Content-Type", "application/json"); }
-    xmlhttp.send();
+    xhr.open("GET", url, true);
+    if (http) { xhr.setRequestHeader("Content-Type", "application/json"); }
+    xhr.send();
 }
 
 
 function JSONParsedPostRequest(url, cookies, message, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange = function() {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             callback(JSON.parse(this.responseText));
         }
     };
 
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
-    xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.send(message);
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(message);
+}
+
+
+function JSONMoodbarPostRequest(url, cookies, message, callback) {
+
 }
 
 
@@ -129,23 +139,26 @@ function renderMoodFile(file, parentDiv) {
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4 && this.status === 200) {
+            while(parentDiv.firstChild){
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+
             var rgb = new Array(this.responseText.length / 3);
 
-            for (var i = 0, len = rgb.length; i < len; i++) {
+            for (var i = 0, len = rgb.length; i < len; ++i) {
                 var r = this.responseText.charCodeAt(i * 3)       & 0xff;
                 var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
                 var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
 
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
+                    color:  "rgb(" + r + ", " + b + ", " + g + ")" // bc why not swapping ? ... and because bg ...
                 };
             }
 
-//            var svg = d3.select(parentDiv).append("svg")
-            var svg = parentDiv.append("svg")
-                .attr("height", 10)
-//                .attr("width", "100%")
+            var svg = d3.select(parentDiv).append("svg")
+                .attr("height", "100%")
+                .attr("width", "100%")
                 .append("g");
             svg.append("linearGradient")
                 .attr("id", "moodbar-gradient-" + file[0] + file[1])
@@ -160,7 +173,7 @@ function renderMoodFile(file, parentDiv) {
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", "100%")
-                .attr("height", "10")
+                .attr("height", "100%")
         }
     };
     xhr.send();
