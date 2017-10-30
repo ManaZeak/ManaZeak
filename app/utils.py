@@ -86,6 +86,9 @@ def errorCheckMessage(isDone, error):
     elif error == "coverError":
         errorTitle = "Can't create file"
         errorMessage = "The server cannot generate the file for the covers, check the permissions."
+    elif error == "permissionError":
+        errorTitle = "Not permitted"
+        errorMessage = "You are not allowed to do this."
     elif error is None:
         errorTitle = "null"
         errorMessage = "null"
