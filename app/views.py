@@ -154,8 +154,6 @@ def loadSimplifiedLibrary(request):
         if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
             playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
             tracks = exportPlaylistToSimpleJson(playlist)
-            with open("Output.txt", "w") as text_file:
-                text_file.write("%s" % tracks)
             return HttpResponse(tracks)
         else:
             return JsonResponse(errorCheckMessage(False, "dbError"))
@@ -193,7 +191,7 @@ def newLibrary(request):
                 dirPath = dirPath[:-1]
             library = Library()
             library.path = dirPath
-            library.name = response['NAME']
+            library.name = strip_tags(response['NAME'])
             library.convertID3 = response['CONVERT']
             library.user = request.user
 
@@ -202,10 +200,31 @@ def newLibrary(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
         data = {
             'LIBRARY_ID': library.id,
+            'NAME': library.name,
         }
         data = {**data, **errorCheckMessage(True, None)}
         return JsonResponse(data)
 
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def newPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        try:
+            if 'NAME' in response:
+                playlist = Playlist()
+                playlist.name = strip_tags(response['NAME'])
+                playlist.user = request.user
+                playlist.save()
+                data = {
+                    'ID': playlist.id,
+                    'NAME': playlist.name,
+                }
+                return JsonResponse(data)
+        except AttributeError:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
@@ -328,6 +347,7 @@ def randomNextTrack(request):
                 for track in playlist.track.all():
                     if count == selectedTrack:
                         data = {
+                            'TRACK_ID': track.id,
                             'PATH': track.location,
                             'COVER': track.coverLocation
                         }
