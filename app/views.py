@@ -174,36 +174,39 @@ def loadTracksFromPlaylist(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
 
 
-# Create a new library
+# Create a new library can only be done while being a superuser.
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def newLibrary(request):
     if request.method == 'POST':
-        response = json.loads(request.body)
-        try:
-            if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
-                dirPath = response['URL']
-            else:
-                return JsonResponse(errorCheckMessage(False, "badFormat"))
-            if not os.path.isdir(dirPath):
-                return JsonResponse(errorCheckMessage(False, "dirNotFound"))
-            # Removing / at the end of the dir path if present
-            if dirPath.endswith("/"):
-                dirPath = dirPath[:-1]
-            library = Library()
-            library.path = dirPath
-            library.name = strip_tags(response['NAME'])
-            library.convertID3 = response['CONVERT']
-            library.user = request.user
+        if request.user.is_superuser:
+            response = json.loads(request.body)
 
-            library.save()
-        except AttributeError:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-        data = {
-            'LIBRARY_ID': library.id,
-            'NAME': library.name,
-        }
-        data = {**data, **errorCheckMessage(True, None)}
-        return JsonResponse(data)
+            try:
+                if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
+                    dirPath = response['URL']
+                else:
+                    return JsonResponse(errorCheckMessage(False, "badFormat"))
+                if not os.path.isdir(dirPath):
+                    return JsonResponse(errorCheckMessage(False, "dirNotFound"))
+                # Removing / at the end of the dir path if present
+                if dirPath.endswith("/"):
+                    dirPath = dirPath[:-1]
+                library = Library()
+                library.path = dirPath
+                library.name = strip_tags(response['NAME'])
+                library.convertID3 = response['CONVERT']
+                library.user = request.user
+                library.save()
+            except AttributeError:
+                return JsonResponse(errorCheckMessage(False, "badFormat"))
+            data = {
+                'LIBRARY_ID': library.id,
+                'NAME': library.name,
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+            return JsonResponse(data)
+        return JsonResponse(errorCheckMessage(False, "permissionError"))
+    return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
@@ -225,6 +228,7 @@ def newPlaylist(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     else:
         return JsonResponse(errorCheckMessage(False, "badRequest"))
+
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
