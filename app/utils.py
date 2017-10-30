@@ -571,7 +571,8 @@ def createMoodbarsUrls(playlist):
     print("Generating moodbar URLs")
     tracks = playlist.track.all()
     for track in tracks:
-        md5 = hashlib.md5(track.location.encode('utf-8')).hexdigest()
+        path = track.location.encode("ascii", "ignore")
+        md5 = hashlib.md5(path).hexdigest()
         track.moodbar = "../static/mood/" + md5 + ".mood"
         track.save()
     print("Ended generating moodbars")
