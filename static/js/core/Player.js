@@ -380,8 +380,10 @@ Player.prototype = {
 
     // Click event on ProgressBar div
     mouseDown: function(event) {
+        console.log(event.target);
         if (!this.progressBar.getIsDragging() &&
-            (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb")) {
+            (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
+             event.target.tagName === "rect" || event.target.id === "moodbarThumb")) {
             this.progressBar.setIsDragging(true);
             this.progressBar.moveProgress(event, this.player);
             this.mute();
@@ -448,6 +450,7 @@ Player.prototype = {
             that.progressBar.getContainer().addEventListener("mouseover", that.mouseOver.bind(that));
             that.progressBar.getContainer().addEventListener("mouseleave", that.mouseLeave.bind(that));
             that.progressBar.getContainer().addEventListener("mousedown", that.mouseDown.bind(that));
+            that.progressBar.getMoodbar().addEventListener("mousedown", that.mouseDown.bind(that));
             that.progressBar.getCurrentDuration().addEventListener("click", that.invertTimecode.bind(that));
             that.progressBar.getTotalDuration().addEventListener("click", that.invertTimecode.bind(that));
             window.addEventListener("mouseup", that.mouseUp.bind(that));
