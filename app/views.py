@@ -15,7 +15,7 @@ from django.views.generic.list import ListView
 
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
@@ -253,15 +253,26 @@ def changeMetaData(request):
 
 
 # Return the link to a track with a track id
+# TODO: understand what happen when spammed (duped listening counters) lock?
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getTrackPathByID(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
-        data = {}
         if 'TRACK_ID' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
+                # Save the general play count
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
+                track.save()
+                # Save the counter for the user
+                if Stats.objects.filter(user=user, track=track).count() == 0:
+                    stat = Stats(user=user, track=track, playCounter=1)
+                else:
+                    stat = Stats.objects.get(user=user, track=track)
+                    stat.playCounter += 1
+                stat.save()
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
@@ -290,6 +301,7 @@ def checkLibraryScanStatus(request):
             return JsonResponse(data)
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+    return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 def shuffleNextTrack(request):
@@ -313,8 +325,7 @@ def shuffleNextTrack(request):
                 data = errorCheckMessage(False, "dbError")
             return JsonResponse(data)
         return JsonResponse(errorCheckMessage(False, "badFormat"))
-    else:
-        return JsonResponse(errorCheckMessage(False, "badRequest"))
+    return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 def getMoodbarByID(request):
@@ -336,6 +347,13 @@ def getMoodbarByID(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
 
 
 def randomNextTrack(request):
