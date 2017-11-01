@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3
 
-from app.models import FileType, Track, Genre, Album, Artist
+from app.models import FileType, Track, Genre, Album, Artist, Stats
 
 
 # Render class for serving modal to client (Scan)
@@ -619,4 +619,43 @@ class ImportMp3Thread(threading.Thread):
         for path in self.mp3Paths:
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
+
+def getUserNbTrackListened(user):
+    tracks = Stats.objects.filter(user=user)
+    totalListenedTrack = 0
+
+    for track in tracks:
+        totalListenedTrack += track.playCounter
+
+    print(totalListenedTrack)
+    return totalListenedTrack
+
+
+def getUserNbTrackPushed(user):
+    totalUploadedTracks = Track.objects.filter(uploader=user).count()
+
+    return totalUploadedTracks
+
+
+def getUserGenre(user):
+    genres = Genre.objects.all()
+    genreCounter = []
+
+    for genre in genres:
+        counter = 0
+        tracks = Stats.objects.filter(track__genre=genre, user=user)
+        for track in tracks:
+            counter += track.playCounter
+
+        genreCounter.append(counter)
+
+    return genreCounter
+
+
+def getUserGenrePercentage(user):
+    genreCounter = getUserGenre(user)
+    total = 0
+
+    for counter in genreCounter:
+        total = total + counter
 

@@ -16,7 +16,8 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
+    getUserNbTrackListened, getUserNbTrackPushed, getUserGenre
 
 
 class mainView(ListView):
@@ -63,6 +64,7 @@ def dropAllDB(request):
         Playlist.objects.all().delete()
         Library.objects.all().delete()
         Genre.objects.all().delete()
+        Stats.objects.all().delete()
         data = {
             'DROPPED': "OK",
         }
@@ -353,7 +355,13 @@ def getMoodbarByID(request):
 def getUserStats(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        user = request.user
+    user = request.user
+
+    getUserNbTrackListened(user)
+    getUserNbTrackPushed(user)
+    mdr = getUserGenre(user)
+
+    return JsonResponse({'mdr': mdr})
 
 
 def randomNextTrack(request):
