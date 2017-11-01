@@ -47,6 +47,7 @@ class Track(models.Model):
     CRC = models.CharField(max_length=1000, null=False)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
+    uploader = models.ForeignKey(User, null=True)
 
 
 class Playlist(models.Model):
@@ -69,3 +70,10 @@ class Shuffle(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
     tracksPlayed = models.ManyToManyField(Track)
+
+
+class Stats(models.Model):
+    user = models.ForeignKey(User)
+    track = models.ForeignKey(Track)
+    listeningPercentage = models.IntegerField(null=True)
+    playCounter = models.IntegerField(default=0)

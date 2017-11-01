@@ -1,13 +1,10 @@
-import hashlib
-import os
-
 import binascii
-
+import hashlib
 import math
+import os
 import threading
 
 from django.contrib.auth.decorators import login_required
-from django.http.response import JsonResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -65,33 +62,43 @@ def checkIfNotNoneNumber(trackAttribute):
 def errorCheckMessage(isDone, error):
     errorTitle = ""
     errorMessage = ""
+
     if error == "badFormat":
         errorTitle = "Wrong format"
         errorMessage = "The server didn't understood what you said."
+
     elif error == "badRequest":
         errorTitle = "Bad request"
         errorMessage = "The server didn't expected this request."
+
     elif error == "dbError":
         errorTitle = "Database error"
         errorMessage = "Something went wrong with the database."
+
     elif error == "fileNotFound":
         errorTitle = "No such file"
         errorMessage = "The server didn't find the file you asked."
+
     elif error == "dirNotFound":
         errorTitle = "No such directory"
         errorMessage = "The server didn't find the directory you asked."
+
     elif error == "emptyLibrary":
         errorTitle = "The library is empty"
         errorMessage = "There is no file to add in the library"
+
     elif error == "coverError":
         errorTitle = "Can't create file"
         errorMessage = "The server cannot generate the file for the covers, check the permissions."
+
     elif error == "permissionError":
         errorTitle = "Not permitted"
         errorMessage = "You are not allowed to do this."
+
     elif error is None:
         errorTitle = "null"
         errorMessage = "null"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "\"" + errorTitle + "\"",
