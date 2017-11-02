@@ -7,7 +7,7 @@ from django import db
 
 from app.models import FileType
 from app.utils import errorCheckMessage, ImportMp3Thread, splitTable, \
-    addAllGenreAndAlbumAndArtistsMP3, createMoodbarsUrls
+    addAllGenreAndAlbumAndArtistsMP3, createMoodbarsUrls, addAllGenreAndAlbumAndArtistsFLAC, ImportFlacThread
 
 
 def scanLibrary(library, playlist, convert):
@@ -21,6 +21,7 @@ def scanLibrary(library, playlist, convert):
             return errorCheckMessage(False, "coverError")
 
     mp3Files = []
+    flacFiles = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
@@ -31,8 +32,7 @@ def scanLibrary(library, playlist, convert):
                 pass
 
             elif file.lower().endswith('.flac'):
-                # TODO: implement
-                pass
+                flacFiles.append(root + "/" + file)
 
             elif file.lower().endswith('.wav'):
                 # TODO: implement
@@ -42,12 +42,13 @@ def scanLibrary(library, playlist, convert):
                 failedItems.append(file)
 
     # TODO, change when implement other file types
-    if len(mp3Files) == 0:
+    if len(mp3Files) == 0 and len(flacFiles) == 0:
         return errorCheckMessage(False, "emptyLibrary")
 
     print("indexed all files")
     mp3ID = FileType.objects.get(name="mp3")
-    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, library, playlist, convert, coverPath, mp3ID,))
+    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, library,
+                                                          playlist, convert, coverPath, mp3ID,))
     print("me")
     db.connections.close_all()
     print("der")
@@ -60,17 +61,26 @@ def scanLibrary(library, playlist, convert):
 
 
 # Scan a library.
-def scanLibraryProcess(mp3Files, library, playlist, convert, coverPath, mp3ID):
+def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPath, mp3ID):
     addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    addAllGenreAndAlbumAndArtistsFLAC(flacFiles)
     print("Filled DB structure")
-    print(len(mp3Files))
-    trackPath = splitTable(mp3Files)
     threads = []
-    # Saving all the library to base
-    for tracks in trackPath:
-        threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
-    for thread in threads:
-        thread.start()
+
+    if len(mp3Files) > 0:
+        trackPath = splitTable(mp3Files)
+        # Saving all the library to base
+        for tracks in trackPath:
+            threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
+        for thread in threads:
+            thread.start()
+    if len(flacFiles) > 0:
+        trackPath = splitTable(flacFiles)
+        for tracks in trackPath:
+            thread = ImportFlacThread(tracks, playlist, coverPath)
+            thread.start()
+            threads.append(thread)
+
     print("Launched scanning threads")
     for thread in threads:
         thread.join()

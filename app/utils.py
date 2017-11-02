@@ -11,6 +11,7 @@ from django.http.response import JsonResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
+from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3
 
@@ -59,6 +60,13 @@ def checkIfNotNoneNumber(trackAttribute):
         return str(trackAttribute)
     else:
         return "\"null\""
+
+
+def processVorbisTag(tag):
+    tag = strip_tags(tag)
+    tag = tag[2:]
+    tag = tag[:-2]
+    return tag
 
 
 # Generate the base of any status message
@@ -282,6 +290,63 @@ def addAllGenreAndAlbumAndArtistsMP3(filePaths):
                 album.save()
                 if hasArtist:
                     album.artist.add(*trackArtists)
+
+
+def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
+    for filePath in filePaths:
+        # TODO: check if the tags are presents.
+        audioTag = FLAC(filePath)
+        # --- Adding genre to DB ---
+        if 'GENRE' in audioTag:
+            genreName = strip_tags(audioTag['GENRE'])
+            # Removing formatting
+            genreName = genreName[2:]
+            genreName = genreName[:-2]
+
+            if Genre.objects.filter(name=genreName).count() == 0:
+                genre = Genre()
+                genre.name = genreName
+                genre.save()
+        # --- Adding artist to DB ---
+        if 'ARTIST' in audioTag:  # Check if artist exists
+            artists = strip_tags(audioTag['ARTIST'])
+            # Removing formatting
+            artists = artists[2:]
+            artists = artists[:-2]
+
+            artists = artists.split(",")
+            for artistName in artists:
+                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
+                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
+                    artist = Artist()
+                    artist.name = artistName
+                    artist.save()
+        # --- Adding album to DB ---
+        if 'ALBUM' in audioTag:
+            albumTitle = strip_tags(audioTag['ALBUM'])
+            # Removing formatting
+            albumTitle = albumTitle[2:]
+            albumTitle = albumTitle[:-2]
+
+            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
+                album = Album()
+                album.title = albumTitle
+                album.save()
+                if 'ALBUMARTIST' in audioTag:
+                    albumArtists = strip_tags(audioTag['ALBUMARTIST'])
+                    # Removing formatting
+                    albumArtists = albumArtists[2:]
+                    albumArtists = albumArtists[:-2]
+
+                    albumArtists = albumArtists.split(",")
+                    for albumArtist in albumArtists:
+                        if Artist.objects.filter(name=albumArtist).count() == 0:
+                            artist = Artist()
+                            artist.name = albumArtist
+                            artist.save()
+                        else:
+                            artist = Artist.objects.get(name=albumArtist)
+                        album.artist.add(artist)
 
 
 # Create the file type entry
@@ -598,6 +663,74 @@ class CRCGenerator(threading.Thread):
             track.save()
 
 
+def addFlacTrackThread(path, playlist, coverPath):
+    track = Track()
+
+    # --- FILE INFORMATION ---
+    audioFile = FLAC(path)
+    track.location = path
+    track.size = os.path.getsize(path)
+    track.bitRate = audioFile.info.bitrate
+    track.duration = audioFile.info.length
+    track.sampleRate = audioFile.info.sample_rate
+
+    # --- COVER ---
+    pictures = audioFile.pictures
+    if len(pictures) != 0:
+        # Creating md5 hash for the cover
+        md5Name = hashlib.md5()
+        md5Name.update(pictures[0].data)
+        # Check if the cover already exists and save it
+        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
+            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
+                img.write(pictures[0].data)
+        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
+
+    if 'TITLE' in audioFile:
+        trackTitle = processVorbisTag(audioFile['TITLE'])
+        if not trackTitle == "":
+            track.title = trackTitle
+
+    if 'DATE' in audioFile:
+        trackDate = processVorbisTag(audioFile['DATE'])
+        if not trackDate == "":
+            track.year = trackDate  # Date of Recording
+
+    if 'TRACKNUMBER' in audioFile:
+        trackNumber = processVorbisTag(audioFile['TRACKNUMBER'])
+        if not trackNumber == "":
+            track.number = trackNumber
+
+    if 'COMPOSER' in audioFile:
+        trackComposer = processVorbisTag(audioFile['COMPOSER'])
+        if not trackComposer == "":
+            track.composer = trackComposer
+
+    if 'PERFORMER' in audioFile:
+        trackPerformer = processVorbisTag(audioFile['PERFORMER'])
+        if not trackPerformer == "":
+            track.performer = trackPerformer
+
+    '''if 'TBPM' in audioTag:
+        if not audioTag['TBPM'].text[0] == "":
+            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
+
+    if 'COMM' in audioTag:
+        if not audioTag['COMM'].text[0] == "":
+            track.comment = strip_tags(audioTag['COMM'].text[0])
+
+    if 'USLT' in audioTag:
+        if not audioTag['USLT'].text[0] == "":
+            track.lyrics = strip_tags(audioTag['USLT'].text[0])
+
+    if len(audioTag.getall('TXXX')) != 0:
+        for txxx in audioTag.getall('TXXX'):
+            if txxx.desc == 'TOTALDISCS':
+                totalDisc = strip_tags(txxx.text[0])
+    '''
+    track.save()
+    playlist.track.add(track)
+
 # Import in a threaded way a library
 class ImportMp3Thread(threading.Thread):
     def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
@@ -613,3 +746,13 @@ class ImportMp3Thread(threading.Thread):
             addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
+class ImportFlacThread(threading.Thread):
+    def __init__(self, tracks, playlist, coverPath):
+        threading.Thread.__init__(self)
+        self.tracks = tracks
+        self.playlist = playlist
+        self.coverPath = coverPath
+
+    def run(self):
+        for track in self.tracks:
+            addFlacTrackThread(track, self.playlist, self.coverPath)
