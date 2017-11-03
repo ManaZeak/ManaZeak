@@ -337,6 +337,128 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
                         album.artist.add(artist)
 
 
+def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles):
+    genreReference = {}
+    albumReference = {}
+    artistReference = {}
+
+    # Adding default values
+    genreReference[""] = Genre.objects.get(name="")
+    artistReference[""] = Artist.objects.get(name="")
+    albumReference[""] = Album.objects.get(title="")
+
+    # MP3 file processor
+    for filePath in mp3Files:
+        try:
+            audioTag = ID3(filePath)
+        except ID3NoHeaderError:
+            audioTag = ID3()
+        hasArtist = False
+        trackArtists = []
+
+        # --- Adding genre to DB ---
+        if 'TCON' in audioTag:
+            genreName = strip_tags(audioTag['TCON'].text[0])
+            if Genre.objects.filter(name=genreName).count() == 0:
+                genre = Genre()
+                genre.name = genreName
+                genre.save()
+                # Add genre to dict
+                genreReference[genreName] = genre.id
+            elif genreName not in genreReference:
+                genre = Genre.objects.get(name=genreName)
+                # Add genre to dict
+                genreReference[genreName] = genre.id
+
+        # --- Adding artist to DB ---
+        if 'TPE1' in audioTag:  # Check if artist exists
+            artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
+            for artistName in artists:
+                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
+                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
+                    artist = Artist()
+                    artist.name = artistName
+                    artist.save()
+                    artistReference[artistName] = artist.id
+                    trackArtists.append(artist)
+                elif artistName not in artistReference:
+                    artist = Artist.objects.get(name=artistName)
+                    artistReference[artistName] = artist.id
+                    trackArtists.append(artist)
+                else:
+                    trackArtists.append(Artist.objects.get(name=artistName))
+                hasArtist = True
+
+        # --- Adding album to DB ---
+        if 'TALB' in audioTag:
+            albumTitle = strip_tags(audioTag['TALB'].text[0])
+            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
+                album = Album()
+                album.title = albumTitle
+                album.save()
+                albumReference[albumTitle] = album.id
+                if hasArtist:
+                    album.artist.add(*trackArtists)
+            elif albumTitle not in albumReference:
+                albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
+
+    # Processing flac files
+    for filePath in flacFiles:
+        # TODO: check if the tags are presents.
+        audioTag = FLAC(filePath)
+        # --- Adding genre to DB ---
+        if 'GENRE' in audioTag:
+            genreName = processVorbisTag(audioTag['GENRE'])
+
+            if Genre.objects.filter(name=genreName).count() == 0:
+                genre = Genre()
+                genre.name = genreName
+                genre.save()
+                genreReference[genreName] = genre.id
+            elif genreName not in genreReference:
+                genreReference[genreName] = Genre.objects.get(name=genreName).id
+
+        # --- Adding artist to DB ---
+        if 'ARTIST' in audioTag:  # Check if artist exists
+            artists = processVorbisTag(audioTag['ARTIST'])
+
+            artists = artists.split(",")
+            for artistName in artists:
+                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
+                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
+                    artist = Artist()
+                    artist.name = artistName
+                    artist.save()
+                    artistReference[artistName] = artist.id
+                elif artistName not in artistReference:
+                    artistReference[artistName] = Artist.objects.get(name=artistName)
+
+        # --- Adding album to DB ---
+        if 'ALBUM' in audioTag:
+            albumTitle = processVorbisTag(audioTag['ALBUM'])
+
+            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
+                album = Album()
+                album.title = albumTitle
+                album.save()
+                albumReference[albumTitle] = album.id
+                if 'ALBUMARTIST' in audioTag:
+                    albumArtists = processVorbisTag(audioTag['ALBUMARTIST'])
+
+                    albumArtists = albumArtists.split(",")
+                    for albumArtist in albumArtists:
+                        if Artist.objects.filter(name=albumArtist).count() == 0:
+                            artist = Artist()
+                            artist.name = albumArtist
+                            artist.save()
+                            artistReference[albumArtist] = artist.id
+                        else:
+                            artist = Artist.objects.get(name=albumArtist)
+                        album.artist.add(artist)
+            elif albumTitle not in albumReference:
+                albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
+
+      
 # Create the file type entry
 def populateDB():
     if FileType.objects.all().count() == 0:
