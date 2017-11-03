@@ -6,6 +6,7 @@ from random import randint
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
@@ -76,14 +77,19 @@ def dropAllDB(request):
 
 # Create a new user in database
 def createUser(request):
-    print("hi")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        admin = False
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+            print("users : " + str(User.objects.all().count()))
+            if User.objects.all().count() == 1:
+                admin = True
             user = authenticate(username=username, password=raw_password)
+            user.is_superuser = admin
+            print(admin)
             user.save()
             login(request, user)
             return render(request, 'index.html')  # TODO : fix URL
