@@ -298,10 +298,7 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
         audioTag = FLAC(filePath)
         # --- Adding genre to DB ---
         if 'GENRE' in audioTag:
-            genreName = strip_tags(audioTag['GENRE'])
-            # Removing formatting
-            genreName = genreName[2:]
-            genreName = genreName[:-2]
+            genreName = processVorbisTag(audioTag['GENRE'])
 
             if Genre.objects.filter(name=genreName).count() == 0:
                 genre = Genre()
@@ -309,10 +306,7 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
                 genre.save()
         # --- Adding artist to DB ---
         if 'ARTIST' in audioTag:  # Check if artist exists
-            artists = strip_tags(audioTag['ARTIST'])
-            # Removing formatting
-            artists = artists[2:]
-            artists = artists[:-2]
+            artists = processVorbisTag(audioTag['ARTIST'])
 
             artists = artists.split(",")
             for artistName in artists:
@@ -323,20 +317,14 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
                     artist.save()
         # --- Adding album to DB ---
         if 'ALBUM' in audioTag:
-            albumTitle = strip_tags(audioTag['ALBUM'])
-            # Removing formatting
-            albumTitle = albumTitle[2:]
-            albumTitle = albumTitle[:-2]
+            albumTitle = processVorbisTag(audioTag['ALBUM'])
 
             if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
                 album = Album()
                 album.title = albumTitle
                 album.save()
                 if 'ALBUMARTIST' in audioTag:
-                    albumArtists = strip_tags(audioTag['ALBUMARTIST'])
-                    # Removing formatting
-                    albumArtists = albumArtists[2:]
-                    albumArtists = albumArtists[:-2]
+                    albumArtists = processVorbisTag(audioTag['ALBUMARTIST'])
 
                     albumArtists = albumArtists.split(",")
                     for albumArtist in albumArtists:
@@ -711,6 +699,7 @@ def addFlacTrackThread(path, playlist, coverPath):
         if not trackPerformer == "":
             track.performer = trackPerformer
 
+    # TODO: find how to include this tags
     '''if 'TBPM' in audioTag:
         if not audioTag['TBPM'].text[0] == "":
             track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
@@ -728,8 +717,26 @@ def addFlacTrackThread(path, playlist, coverPath):
             if txxx.desc == 'TOTALDISCS':
                 totalDisc = strip_tags(txxx.text[0])
     '''
+
+    track.save()
+
+    if 'GENRE' in audioFile:
+        genreName = processVorbisTag(audioFile['GENRE'])
+        track.genre = Genre.objects.get(name=genreName)
+
+    if 'ALBUM' in audioFile:
+        albumName = processVorbisTag(audioFile['ALBUM'])
+        track.album = Album.objects.get(title=albumName)
+
+    if 'ARTIST' in audioFile:
+        artistNames = processVorbisTag(audioFile['ARTIST']).split(",")
+        for artistName in artistNames:
+            artistName = artistName.lstrip()
+            track.artist.add(Artist.objects.get(name=artistName))
+
     track.save()
     playlist.track.add(track)
+
 
 # Import in a threaded way a library
 class ImportMp3Thread(threading.Thread):

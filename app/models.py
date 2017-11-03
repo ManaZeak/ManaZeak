@@ -3,11 +3,11 @@ from django.db import models
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, unique=True)
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=1000)
+    title = models.CharField(max_length=1000, unique=True)
     totalDisc = models.IntegerField(null=True)
     totalTrack = models.IntegerField(null=True)
     artist = models.ManyToManyField(Artist)
