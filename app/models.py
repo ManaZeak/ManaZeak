@@ -3,18 +3,18 @@ from django.db import models
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, null=True)
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=1000, unique=True)
+    title = models.CharField(max_length=1000, unique=True, null=True)
     totalDisc = models.IntegerField(null=True)
     totalTrack = models.IntegerField(null=True)
     artist = models.ManyToManyField(Artist)
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, null=True)
 
 
 class FileType(models.Model):

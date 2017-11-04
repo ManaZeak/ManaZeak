@@ -1,13 +1,15 @@
-import hashlib
-import os
-
 import binascii
-
+import csv
+import hashlib
 import math
+import os
 import threading
 
+import io
+from contextlib import closing
+
 from django.contrib.auth.decorators import login_required
-from django.http.response import JsonResponse
+from django.db import connection
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -337,25 +339,93 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
                         album.artist.add(artist)
 
 
-def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles):
-    genreReference = {}
+# With a given set give
+def addGenreBulk(genres):
+    genreReference = {"": Genre.objects.get(name=None).id}
+
+    # Add genre to the database
+    genreInBase = Genre.objects.filter(name__in=genres)
+    genreToAdd = len(genres) - len(genreInBase)
+
+    # Get the sequence value
+    cursor = connection.cursor()
+    cursor.execute("SELECT nextval('app_genre_id_seq')")
+    firstId = cursor.fetchone()
+    # Offset the sequence value
+    sql = 'ALTER SEQUENCE app_genre_id_seq RESTART WITH {0};'.format(str(firstId[0] + genreToAdd))
+    cursor.execute(sql)
+    cursor.close()
+
+    # Add known genre into the dict and remove the genre known in database in the set
+    for genre in genreInBase:
+        genreReference[genre.name] = genre.id
+        genres.remove(genre.name)
+
+    # Creating the structure for DB import
+    counter = 0
+    infoGenre = []
+    for genre in genres:
+        genreReference[genre] = firstId[0] + counter
+        infoGenre.append((firstId[0] + counter, genre.name))
+        counter += 1
+
+    print("generating CSV")
+    # Creating a CSV file in memory for faster import in the database
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for info in infoGenre:
+        writer.writerow([info[x] for x in range(0, len(info))])
+
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='app_genre',
+            sep='\t',
+            columns=('id', 'name'),
+        )
+
+    return genreReference
+
+
+def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     albumReference = {}
     artistReference = {}
+    tracksInfo = []
+    artists = set()
+    albums = set()
+    genres = set()
 
     # Adding default values
-    genreReference[""] = Genre.objects.get(name="")
-    artistReference[""] = Artist.objects.get(name="")
-    albumReference[""] = Album.objects.get(title="")
+    artistReference[""] = Artist.objects.get(name=None)
+    albumReference[""] = Album.objects.get(title=None)
+
+    mp3fileReference = FileType.objects.get(name="mp3")
+
+    print("Started scanning MP3 file")
 
     # MP3 file processor
     for filePath in mp3Files:
-        try:
-            audioTag = ID3(filePath)
-        except ID3NoHeaderError:
-            audioTag = ID3()
-        hasArtist = False
-        trackArtists = []
+        track = createMP3Track(filePath, convert, mp3fileReference, coverPath)
+        tracksInfo.append(track)
+        for artist in track.artist:
+            artists.add(artist)
+        albums.add(track.album)
+        genres.add(track.genre)
 
+    print("Finished scanning MP3 file")
+
+    # Analyse the genre found and add the missing genre to the base
+    genreReference = addGenreBulk(genres)
+
+    # Add Artist to the database
+
+
+    # cursor.executemany('INSERT INTO app_genre VALUES (?, ?)', infoGenre)
+
+
+
+    '''
         # --- Adding genre to DB ---
         if 'TCON' in audioTag:
             genreName = strip_tags(audioTag['TCON'].text[0])
@@ -401,7 +471,7 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles):
                     album.artist.add(*trackArtists)
             elif albumTitle not in albumReference:
                 albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
-
+        tracksInfo.append(LocalTrack())
     # Processing flac files
     for filePath in flacFiles:
         # TODO: check if the tags are presents.
@@ -457,19 +527,32 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles):
                         album.artist.add(artist)
             elif albumTitle not in albumReference:
                 albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
+'''
+    # Preparing informations about tracks for adding them to the database
+    # TODO: info sur les tracks a ajouter (préparation bulk)
+    # TODO: info sur les TJ a ajouter (préparation bulk)
+    # TODO: insérer toutes les infos sur les tracks en bulk avec un curseur (http://www.smipple.net/snippet/adige/kinterbasdb%20executemany)
+    # TODO: insérer toutes les infos dans les TJ
+    # TODO: remove old function, re factor for more generic function.
 
-      
+
 # Create the file type entry
 def populateDB():
     if FileType.objects.all().count() == 0:
-        fileType = FileType(name="mp3")
-        fileType.save()
-        fileType = FileType(name="ogg")
-        fileType.save()
-        fileType = FileType(name="flac")
-        fileType.save()
-        fileType = FileType(name="wav")
-        fileType.save()
+        print("Created files types")
+        FileType(name="mp3").save()
+        FileType(name="ogg").save()
+        FileType(name="flac").save()
+        FileType(name="wav").save()
+    if Artist.objects.all().count() == 0:
+        print("Created default artist")
+        Artist(name=None).save()
+    if Album.objects.all().count() == 0:
+        print("Created default album")
+        Album(title=None).save()
+    if Genre.objects.all().count() == 0:
+        print("Created default genre")
+        Genre(name=None).save()
 
 
 # Create the CRC32 code from a file
@@ -485,7 +568,7 @@ def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replac
     if fileCRC != track.CRC:
         replacedTitles.append(track.title)
         track.delete()
-        addTrackMP3(root, file, playlist, convert, fileTypeId)
+        # addTrackMP3(root, file, playlist, convert, fileTypeId)
     else:
         track.scanned = True
 
@@ -501,7 +584,8 @@ def rescanLibrary(library):
             if file.lower().endswith('.mp3'):
                 track = Track.objects.get(location=root + file)
                 if track is None:
-                    addTrackMP3(root, file, playlist, convert, mp3ID)
+                    # addTrackMP3(root, file, playlist, convert, mp3ID)
+                    pass
                 else:
                     compareTrackAndFile(track, root, file, playlist, convert, mp3ID, replacedTitles)
     # Removed the tracks that haven't been scanned
@@ -510,28 +594,31 @@ def rescanLibrary(library):
 
 
 # Scan all the attributes of an MP3 track, and add it to base.
-def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
-    track = Track()
+def createMP3Track(filePath, convert, fileTypeId, coverPath):
+    track = LocalTrack()
 
     # --- Calculating checksum
-    track.CRC = CRC32_from_file(root + "/" + file)
+    track.CRC = CRC32_from_file(filePath)
 
     # --- FILE INFORMATION ---
-    audioFile = MP3(root + "/" + file)
-    track.location = root + "/" + file
-    track.size = os.path.getsize(root + "/" + file)
+    audioFile = MP3(filePath)
+    track.location = filePath
+    track.size = os.path.getsize(filePath)
     track.bitRate = audioFile.info.bitrate
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
     track.bitRateMode = audioFile.info.bitrate_mode
     track.fileType = fileTypeId
 
+    # Check if the file has a tag header
+    try:
+        audioTag = ID3(filePath)
+    except ID3NoHeaderError:
+        audioTag = ID3()
     # --- FILE TAG ---
-    audioTag = ID3(root + "/" + file)
     if convert:
         audioTag.update_to_v24()
         audioTag.save()
-    audioTag = ID3(root + "/" + file)
 
     # --- COVER ---
     if 'APIC:' in audioTag:
@@ -552,8 +639,6 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
         if not audioTag['TDRC'].text[0].get_text() == "":
             track.year = strip_tags(audioTag['TDRC'].text[0].get_text()[:4])  # Date of Recording
 
-    totalTrack = 0
-    totalDisc = 1
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
@@ -588,10 +673,7 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
             if txxx.desc == 'TOTALDISCS':
                 totalDisc = strip_tags(txxx.text[0])
 
-    # --- Save data for many-to-many relationship registering ---
-    track.save()
-
-    # --- Adding genre to DB ---
+    # --- Adding genre to structure ---
     if 'TCON' in audioTag:
         genreName = strip_tags(audioTag['TCON'].text[0])
         genreFound = Genre.objects.filter(name=genreName)
@@ -602,41 +684,19 @@ def addTrackMP3(root, file, playlist, convert, fileTypeId, coverPath):
         genre = Genre.objects.get(name=genreName)
         track.genre = genre
 
-    # --- Adding artist to DB ---
+    # --- Adding artist to structure ---
     if 'TPE1' in audioTag:  # Check if artist exists
         artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
         for artistName in artists:
             artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-            num_results = Artist.objects.filter(name=artistName).count()
-            if num_results == 0:  # The artist doesn't exist
-                artist = Artist()
-                artist.name = artistName
-                artist.save()
-            artist = Artist.objects.get(name=artistName)
-            track.artist.add(artist)
+            track.artist.append(artistName)
 
-    # --- Adding album to DB ---
+    # --- Adding album to structure ---
     if 'TALB' in audioTag:
         albumTitle = strip_tags(audioTag['TALB'].text[0])
-        if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-            album = Album()
-            album.title = albumTitle
-            album.totalTrack = totalTrack
-            album.totalDisc = totalDisc
-            album.save()
-            for trackArtist in track.artist.all():
-                album.artist.add(trackArtist)
-        album = Album.objects.get(title=albumTitle)
-        # Check for each artist if he exists in the album
-        for trackArtist in track.artist.all():
-            if album.artist.filter(name=trackArtist.name).count() == 0:  # The Artist wasn't added
-                album.artist.add(trackArtist)
-                album.save()
-        track.album = album
-        track.save()
+        track.album = albumTitle
 
-    # --- Adding track to playlist --- #
-    playlist.track.add(track)
+    return track
 
 
 # Adding a MP3 track to the database
@@ -885,3 +945,13 @@ class ImportFlacThread(threading.Thread):
     def run(self):
         for track in self.tracks:
             addFlacTrackThread(track, self.playlist, self.coverPath)
+
+
+class LocalTrack:
+    def __init__(self, ):
+        self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
+            = self.album = self.genre = self.moodbar = self.CRC = ""
+        self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
+            = self.duration = self.discNumber = self.size = 0
+        self.artist = []
+        self.scanned = False

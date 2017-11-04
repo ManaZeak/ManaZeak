@@ -7,7 +7,8 @@ from django import db
 
 from app.models import FileType
 from app.utils import errorCheckMessage, ImportMp3Thread, splitTable, \
-    addAllGenreAndAlbumAndArtistsMP3, createMoodbarsUrls, addAllGenreAndAlbumAndArtistsFLAC, ImportFlacThread
+    addAllGenreAndAlbumAndArtistsMP3, createMoodbarsUrls, addAllGenreAndAlbumAndArtistsFLAC, ImportFlacThread, \
+    addAllGenreAndAlbumAndArtists
 
 
 def scanLibrary(library, playlist, convert):
@@ -62,7 +63,8 @@ def scanLibrary(library, playlist, convert):
 
 # Scan a library.
 def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPath, mp3ID):
-    addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert)
+    '''(addAllGenreAndAlbumAndArtistsMP3(mp3Files)
     addAllGenreAndAlbumAndArtistsFLAC(flacFiles)
     print("Filled DB structure")
     threads = []
@@ -99,7 +101,7 @@ def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPat
     # for thread in threads:
     #    thread.start()
     createMoodbarsUrls(playlist)
-
+'''
 
 # Select a sound with shuffle mode enabled
 def shuffleSoundSelector(shuffle):
