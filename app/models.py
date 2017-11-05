@@ -5,6 +5,9 @@ from django.db import models
 class Artist(models.Model):
     name = models.CharField(max_length=1000, unique=True, null=True)
 
+    class Meta:
+        app_label = 'app'
+
 
 class Album(models.Model):
     title = models.CharField(max_length=1000, unique=True, null=True)
@@ -15,6 +18,9 @@ class Album(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=1000, unique=True, null=True)
+
+    class Meta:
+        app_label = 'app'
 
 
 class FileType(models.Model):

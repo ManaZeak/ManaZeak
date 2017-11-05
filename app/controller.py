@@ -46,13 +46,12 @@ def scanLibrary(library, playlist, convert):
     if len(mp3Files) == 0 and len(flacFiles) == 0:
         return errorCheckMessage(False, "emptyLibrary")
 
-    print("indexed all files")
+    print("Indexed all files")
     mp3ID = FileType.objects.get(name="mp3")
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, library,
                                                           playlist, convert, coverPath, mp3ID,))
-    print("me")
     db.connections.close_all()
-    print("der")
+    print("Launched scan thread")
     scanThread.start()
     data = {
         'PLAYLIST_ID': playlist.id,
@@ -64,7 +63,7 @@ def scanLibrary(library, playlist, convert):
 # Scan a library.
 def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPath, mp3ID):
     addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert)
-    '''(addAllGenreAndAlbumAndArtistsMP3(mp3Files)
+    '''(addAllGenreAndAlbumAndArtistsMP3(mp3Fil es)
     addAllGenreAndAlbumAndArtistsFLAC(flacFiles)
     print("Filled DB structure")
     threads = []

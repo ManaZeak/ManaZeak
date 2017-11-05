@@ -8,8 +8,9 @@ import threading
 import io
 from contextlib import closing
 
-from django.contrib.auth.decorators import login_required
+from django.core.cache.backends import db
 from django.db import connection
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -339,11 +340,12 @@ def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
                         album.artist.add(artist)
 
 
-# With a given set give
+# With a given set add the missing genre to the database and return a dict with name:id
 def addGenreBulk(genres):
     genreReference = {"": Genre.objects.get(name=None).id}
+    newGenre = {}
 
-    # Add genre to the database
+    # Get all existing genre
     genreInBase = Genre.objects.filter(name__in=genres)
     genreToAdd = len(genres) - len(genreInBase)
 
@@ -352,9 +354,7 @@ def addGenreBulk(genres):
     cursor.execute("SELECT nextval('app_genre_id_seq')")
     firstId = cursor.fetchone()
     # Offset the sequence value
-    sql = 'ALTER SEQUENCE app_genre_id_seq RESTART WITH {0};'.format(str(firstId[0] + genreToAdd))
-    cursor.execute(sql)
-    cursor.close()
+    cursor.execute('ALTER SEQUENCE app_genre_id_seq RESTART WITH {0};'.format(str(firstId[0] + genreToAdd)))
 
     # Add known genre into the dict and remove the genre known in database in the set
     for genre in genreInBase:
@@ -363,18 +363,17 @@ def addGenreBulk(genres):
 
     # Creating the structure for DB import
     counter = 0
-    infoGenre = []
     for genre in genres:
-        genreReference[genre] = firstId[0] + counter
-        infoGenre.append((firstId[0] + counter, genre.name))
+        newGenre[genre] = firstId[0] + counter
         counter += 1
 
-    print("generating CSV")
     # Creating a CSV file in memory for faster import in the database
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
-    for info in infoGenre:
-        writer.writerow([info[x] for x in range(0, len(info))])
+    for genre in newGenre:
+        writer.writerow([newGenre[genre], genre])
+
+    virtualFile.seek(0)
 
     # Import the csv into the database
     with closing(connection.cursor()) as cursor:
@@ -385,24 +384,71 @@ def addGenreBulk(genres):
             columns=('id', 'name'),
         )
 
-    return genreReference
+    return {**genreReference, **newGenre}
+
+
+def addArtistBulk(artists):
+    artistReference = {"": Artist.objects.get(name=None)}
+    newArtist = {}
+
+    # Get all existing artist
+    artistsInBase = Artist.objects.filter(name__in=artists)
+    artistsToAdd = len(artists) - len(artistsInBase)
+
+    # Get the sequence value
+    cursor = connection.cursor()
+    cursor.execute("SELECT nextval('app_artist_id_seq')")
+    firstId = cursor.fetchone()
+    # Offset the sequence value
+    cursor.execute('ALTER SEQUENCE app_artist_id_seq RESTART WITH {0};'.format(str(firstId[0] + artistsToAdd)))
+
+    # Add the known artists to the dict and remove the artist in the set
+    for artist in artistsInBase:
+        artistReference[artist.name] = artist.id
+        artists.remove(artist.name)
+
+    # Creating the structure for csv creation
+    counter = 0
+    for artist in artists:
+        newArtist[artist] = firstId[0]+counter
+        counter += 1
+
+    # Creating the csv file from the information for DB import
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for artist in newArtist:
+        writer.writerow([newArtist[artist], artist])
+
+    virtualFile.seek(0)
+
+    db.connections.close_all()
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_artist"',
+            sep='\t',
+            columns=('id', 'name'),
+        )
+    print("ok")
+    return artistReference
 
 
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     albumReference = {}
-    artistReference = {}
     tracksInfo = []
     artists = set()
     albums = set()
     genres = set()
 
     # Adding default values
-    artistReference[""] = Artist.objects.get(name=None)
     albumReference[""] = Album.objects.get(title=None)
 
     mp3fileReference = FileType.objects.get(name="mp3")
 
     print("Started scanning MP3 file")
+
+    # TODO: Create general file processor
 
     # MP3 file processor
     for filePath in mp3Files:
@@ -416,14 +462,14 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     print("Finished scanning MP3 file")
 
     # Analyse the genre found and add the missing genre to the base
-    genreReference = addGenreBulk(genres)
+    genresReference = addGenreBulk(genres)
+    artistsReference = addArtistBulk(artists)
 
     # Add Artist to the database
+    print("meder c est fini")
 
 
     # cursor.executemany('INSERT INTO app_genre VALUES (?, ?)', infoGenre)
-
-
 
     '''
         # --- Adding genre to DB ---
@@ -676,13 +722,7 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
         genreName = strip_tags(audioTag['TCON'].text[0])
-        genreFound = Genre.objects.filter(name=genreName)
-        if genreFound.count() == 0:
-            genre = Genre()
-            genre.name = genreName
-            genre.save()
-        genre = Genre.objects.get(name=genreName)
-        track.genre = genre
+        track.genre = genreName
 
     # --- Adding artist to structure ---
     if 'TPE1' in audioTag:  # Check if artist exists
