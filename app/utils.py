@@ -421,7 +421,6 @@ def addArtistBulk(artists):
 
     virtualFile.seek(0)
 
-    db.connections.close_all()
     # Import the csv into the database
     with closing(connection.cursor()) as cursor:
         cursor.copy_from(
@@ -430,15 +429,82 @@ def addArtistBulk(artists):
             sep='\t',
             columns=('id', 'name'),
         )
-    print("ok")
-    return artistReference
+
+    return {**artistReference, **newArtist}
+
+
+def addAlbumBulk(albums, artists):
+    albumReference = {"": Album.objects.get(title=None)}
+    newAlbums = {}
+    albumSet = set()
+
+    # Transforming the dict into a set for the query
+    for album in albums:
+        albumSet.add(album)
+
+    # Get all the existing artists in the table from our set
+    albumInBase = Album.objects.filter(title__in=albumSet)
+    albumToAdd = len(albumSet) - len(albumInBase)
+
+    # Get the sequence value
+    cursor = connection.cursor()
+    cursor.execute("SELECT nextval('app_album_id_seq')")
+    firstId = cursor.fetchone()
+    # Offset the sequence value
+    cursor.execute('ALTER SEQUENCE app_album_id_seq RESTART WITH {0};'.format(str(firstId[0] + albumToAdd)))
+
+    # Add the known artists to the dict and remove the artist in the set
+    for album in albumInBase:
+        albumReference[album.name] = album.id
+        del albums[album.name]
+
+    # Creating the csv
+    counter = 0
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for album in albums:
+        newAlbums[album] = firstId[0]+counter
+        writer.writerow([firstId[0]+counter, album])
+        counter += 1
+
+    virtualFile.seek(0)
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_album"',
+            sep='\t',
+            columns=('id', 'title'),
+        )
+
+    # Creating the csv for the link between artist and album
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    print("the artists")
+    print(artists)
+    for album in newAlbums:
+        artistsAdded = albums[album].split(",")
+        for artist in artistsAdded:
+            writer.writerow([newAlbums[album], artists[artist]])
+
+    virtualFile.seek(0)
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_album_artist"',
+            sep='\t',
+            columns=('album_id', 'artist_id'),
+        )
+
+    return {**albumReference, **newAlbums}
 
 
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     albumReference = {}
     tracksInfo = []
     artists = set()
-    albums = set()
+    albums = {}
     genres = set()
 
     # Adding default values
@@ -452,18 +518,22 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
 
     # MP3 file processor
     for filePath in mp3Files:
+        albumArtist = ""
         track = createMP3Track(filePath, convert, mp3fileReference, coverPath)
         tracksInfo.append(track)
         for artist in track.artist:
             artists.add(artist)
-        albums.add(track.album)
+            albumArtist += artist + ","
+        albumArtist = albumArtist[:-1]
         genres.add(track.genre)
+        albums[track.album] = albumArtist
 
     print("Finished scanning MP3 file")
 
     # Analyse the genre found and add the missing genre to the base
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
+    albumReference = addAlbumBulk(albums, artistsReference)
 
     # Add Artist to the database
     print("meder c est fini")
