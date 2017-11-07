@@ -41,7 +41,7 @@ class Track(models.Model):
     bitRate = models.IntegerField(null=True)
     bitRateMode = models.IntegerField(null=True)
     sampleRate = models.IntegerField(null=True)
-    duration = models.IntegerField(null=True)
+    duration = models.FloatField(null=True)
     discNumber = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
     lastModified = models.DateField(auto_now=True, null=True)
