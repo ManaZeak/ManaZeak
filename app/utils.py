@@ -387,7 +387,7 @@ def addGenreBulk(genres):
 
 
 def addArtistBulk(artists):
-    artistReference = {"": Artist.objects.get(name=None)}
+    artistReference = {"": Artist.objects.get(name=None).id}
     newArtist = {}
 
     # Get all existing artist
@@ -463,7 +463,7 @@ def addAlbumBulk(albums, artists):
     writer = csv.writer(virtualFile, delimiter='\t')
     for album in albums:
         newAlbums[album] = firstId[0] + counter
-        writer.writerow([firstId[0] + counter, album.rstrip()])
+        writer.writerow([firstId[0] + counter, album])
         counter += 1
 
     virtualFile.seek(0)
@@ -479,14 +479,15 @@ def addAlbumBulk(albums, artists):
     # Creating the csv for the link between artist and album
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
-    print("the artists")
-    print(artists)
     for album in newAlbums:
         artistsAdded = albums[album].split(",")
         for artist in artistsAdded:
             writer.writerow([newAlbums[album], artists[artist]])
 
     virtualFile.seek(0)
+
+    print("the artists")
+    print(artists)
     # Import the csv into the database
     with closing(connection.cursor()) as cursor:
         cursor.copy_from(
@@ -515,7 +516,7 @@ def addTrackBulk(tracks, artists, albums, genres):
         writer.writerow([counter, track.location, track.title, track.year, track.composer, track.performer,
                          track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
                          track.sampleRate, track.duration, track.discNumber, track.size,
-                         albums[track.album], track.fileType.id, genres[track.genre], track.CRC, track.coverLocation,
+                         albums[track.album], track.fileType, genres[track.genre], track.CRC, track.coverLocation,
                          track.moodbar, track.scanned, track.playCounter, datetime.now()])
         counter += 1
 
@@ -541,9 +542,10 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     genres = set()
 
     # Adding default values
-    albumReference[""] = Album.objects.get(title=None)
+    albumReference[""] = Album.objects.get(title=None).id
 
-    mp3fileReference = FileType.objects.get(name="mp3")
+    mp3FileReference = FileType.objects.get(name="mp3")
+    flacFileReference = FileType.objects.get(name="flac")
 
     print("Started scanning MP3 file")
 
@@ -552,11 +554,23 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     # MP3 file processor
     for filePath in mp3Files:
         albumArtist = ""
-        track = createMP3Track(filePath, convert, mp3fileReference, coverPath)
+        track = createMP3Track(filePath, convert, mp3FileReference, coverPath)
         tracksInfo.append(track)
         for artist in track.artist:
             artists.add(artist)
             albumArtist += artist + ","
+        albumArtist = albumArtist[:-1]
+        genres.add(track.genre)
+        albums[track.album] = albumArtist
+
+    for filePath in flacFiles:
+        albumArtist = ""
+        track = createFLACTrack(filePath, flacFileReference, coverPath)
+        tracksInfo.append(track)
+        for artist in track.artist:
+            artists.add(artist)
+            albumArtist += artist + ","
+            print(albumArtist)
         albumArtist = albumArtist[:-1]
         genres.add(track.genre)
         albums[track.album] = albumArtist
@@ -571,8 +585,6 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
 
     # Add Artist to the database
     print("meder c est fini")
-
-    # cursor.executemany('INSERT INTO app_genre VALUES (?, ?)', infoGenre)
 
     '''
         # --- Adding genre to DB ---
@@ -747,7 +759,8 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     track = LocalTrack()
 
     # --- Calculating checksum
-    track.CRC = CRC32_from_file(filePath)
+    #
+    # track.CRC = CRC32_from_file(filePath)
 
     # --- FILE INFORMATION ---
     audioFile = MP3(filePath)
@@ -764,7 +777,7 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         track.bitRateMode = 2
     else:
         track.bitRateMode = 3
-    track.fileType = fileTypeId
+    track.fileType = fileTypeId.id
 
     # Check if the file has a tag header
     try:
@@ -844,6 +857,90 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     # --- Adding album to structure ---
     if 'TALB' in audioTag:
         albumTitle = strip_tags(audioTag['TALB'].text[0]).rstrip()
+        track.album = albumTitle.replace('\n', '')
+
+    return track
+
+
+def createFLACTrack(filePath, fileTypeId, coverPath):
+    track = LocalTrack()
+
+    # --- FILE INFORMATION ---
+    audioFile = FLAC(filePath)
+    track.location = filePath
+    track.size = os.path.getsize(filePath)
+    track.bitRate = audioFile.info.bitrate
+    track.duration = audioFile.info.length
+    track.sampleRate = audioFile.info.sample_rate
+    track.fileType = fileTypeId.id
+
+    # --- COVER ---
+    pictures = audioFile.pictures
+    if len(pictures) != 0:
+        # Creating md5 hash for the cover
+        md5Name = hashlib.md5()
+        md5Name.update(pictures[0].data)
+        # Check if the cover already exists and save it
+        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
+            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
+                img.write(pictures[0].data)
+        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
+
+    if 'TITLE' in audioFile:
+        trackTitle = processVorbisTag(audioFile['TITLE'])
+        if not trackTitle == "":
+            track.title = trackTitle
+
+    if 'DATE' in audioFile:
+        trackDate = processVorbisTag(audioFile['DATE'])
+        if not trackDate == "":
+            track.year = trackDate  # Date of Recording
+
+    if 'TRACKNUMBER' in audioFile:
+        trackNumber = processVorbisTag(audioFile['TRACKNUMBER'])
+        if not trackNumber == "":
+            track.number = trackNumber
+
+    if 'COMPOSER' in audioFile:
+        trackComposer = processVorbisTag(audioFile['COMPOSER'])
+        if not trackComposer == "":
+            track.composer = trackComposer
+
+    if 'PERFORMER' in audioFile:
+        trackPerformer = processVorbisTag(audioFile['PERFORMER'])
+        if not trackPerformer == "":
+            track.performer = trackPerformer
+
+    # TODO: find how to include this tags
+    '''if 'TBPM' in audioTag:
+        if not audioTag['TBPM'].text[0] == "":
+            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
+
+    if 'COMM' in audioTag:
+        if not audioTag['COMM'].text[0] == "":
+            track.comment = strip_tags(audioTag['COMM'].text[0])
+
+    if 'USLT' in audioTag:
+        if not audioTag['USLT'].text[0] == "":
+            track.lyrics = strip_tags(audioTag['USLT'].text[0])
+
+    if len(audioTag.getall('TXXX')) != 0:
+        for txxx in audioTag.getall('TXXX'):
+            if txxx.desc == 'TOTALDISCS':
+                totalDisc = strip_tags(txxx.text[0])
+    '''
+
+    if 'GENRE' in audioFile:
+        genreName = processVorbisTag(audioFile['GENRE'])
+        track.genre = genreName.rstrip()
+
+    if 'ARTIST' in audioFile:  # Check if artist exists
+        artists = processVorbisTag(audioFile['ARTIST']).split(",")
+        for artist in artists:
+            track.artist.append(artist.lstrip().rstrip())
+
+    if 'ALBUM' in audioFile:
+        albumTitle = processVorbisTag(audioFile['ALBUM'])
         track.album = albumTitle.replace('\n', '')
 
     return track
