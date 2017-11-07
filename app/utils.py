@@ -1,22 +1,21 @@
 import binascii
 import csv
 import hashlib
+import io
 import math
 import os
 import threading
-
-import io
 from contextlib import closing
+from datetime import datetime
 
-from django.core.cache.backends import db
-from django.db import connection
 from django.contrib.auth.decorators import login_required
+from django.db import connection
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
-from mutagen.mp3 import MP3
+from mutagen.mp3 import MP3, BitrateMode
 
 from app.models import FileType, Track, Genre, Album, Artist
 
@@ -371,7 +370,7 @@ def addGenreBulk(genres):
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
     for genre in newGenre:
-        writer.writerow([newGenre[genre], genre])
+        writer.writerow([newGenre[genre], genre.rstrip()])
 
     virtualFile.seek(0)
 
@@ -410,14 +409,14 @@ def addArtistBulk(artists):
     # Creating the structure for csv creation
     counter = 0
     for artist in artists:
-        newArtist[artist] = firstId[0]+counter
+        newArtist[artist] = firstId[0] + counter
         counter += 1
 
     # Creating the csv file from the information for DB import
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
     for artist in newArtist:
-        writer.writerow([newArtist[artist], artist])
+        writer.writerow([newArtist[artist], artist.rstrip()])
 
     virtualFile.seek(0)
 
@@ -463,8 +462,8 @@ def addAlbumBulk(albums, artists):
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
     for album in albums:
-        newAlbums[album] = firstId[0]+counter
-        writer.writerow([firstId[0]+counter, album])
+        newAlbums[album] = firstId[0] + counter
+        writer.writerow([firstId[0] + counter, album.rstrip()])
         counter += 1
 
     virtualFile.seek(0)
@@ -498,6 +497,40 @@ def addAlbumBulk(albums, artists):
         )
 
     return {**albumReference, **newAlbums}
+
+
+def addTrackBulk(tracks, artists, albums, genres):
+    # Moving the sequence before insert
+    cursor = connection.cursor()
+    cursor.execute("SELECT nextval('app_track_id_seq')")
+    firstId = cursor.fetchone()
+    # Offset the sequence value
+    cursor.execute('ALTER SEQUENCE app_track_id_seq RESTART WITH {0};'.format(str(firstId[0] + len(tracks))))
+
+    # Creating the csv
+    counter = firstId[0]
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for track in tracks:
+        writer.writerow([counter, track.location, track.title, track.year, track.composer, track.performer,
+                         track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
+                         track.sampleRate, track.duration, track.discNumber, track.size,
+                         albums[track.album], track.fileType.id, genres[track.genre], track.CRC, track.coverLocation,
+                         track.moodbar, track.scanned, track.playCounter, datetime.now()])
+        counter += 1
+
+    virtualFile.seek(0)
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_track"',
+            sep='\t',
+            columns=('id', 'location', 'title', 'year', 'composer', 'performer', 'number', 'bpm', 'lyrics', 'comment',
+                     '"bitRate"', '"bitRateMode"', '"sampleRate"', 'duration', '"discNumber"', 'size', 'album_id',
+                     '"fileType_id"', 'genre_id', '"CRC"', '"coverLocation"', 'moodbar', 'scanned', '"playCounter"',
+                     '"lastModified"'),
+        )
 
 
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
@@ -534,10 +567,10 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
+    addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference)
 
     # Add Artist to the database
     print("meder c est fini")
-
 
     # cursor.executemany('INSERT INTO app_genre VALUES (?, ?)', infoGenre)
 
@@ -723,7 +756,14 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     track.bitRate = audioFile.info.bitrate
     track.duration = audioFile.info.length
     track.sampleRate = audioFile.info.sample_rate
-    track.bitRateMode = audioFile.info.bitrate_mode
+    if audioFile.info.bitrate_mode == BitrateMode.UNKNOWN:
+        track.bitRateMode = 0
+    elif audioFile.info.bitrate_mode == BitrateMode.CBR:
+        track.bitRateMode = 1
+    elif audioFile.info.bitrate_mode == BitrateMode.VBR:
+        track.bitRateMode = 2
+    else:
+        track.bitRateMode = 3
     track.fileType = fileTypeId
 
     # Check if the file has a tag header
@@ -749,36 +789,36 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         track.coverLocation = md5Name.hexdigest() + ".jpg"
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
-            track.title = strip_tags(audioTag['TIT2'].text[0])
+            track.title = strip_tags(audioTag['TIT2'].text[0]).rstrip()
 
     if 'TDRC' in audioTag:
         if not audioTag['TDRC'].text[0].get_text() == "":
-            track.year = strip_tags(audioTag['TDRC'].text[0].get_text()[:4])  # Date of Recording
+            track.year = strip_tags(audioTag['TDRC'].text[0].get_text()[:4]).rstrip()  # Date of Recording
 
     if 'TRCK' in audioTag:
         if not audioTag['TRCK'].text[0] == "":
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
-                tags = strip_tags(audioTag['TRCK'].text[0]).split('/')
+                tags = strip_tags(audioTag['TRCK'].text[0]).rstrip().split('/')
                 track.number = tags[0]
-                totalTrack = tags[1]
+                track.totalTrack = tags[1]
             else:
-                track.number = strip_tags(audioTag['TRCK'].text[0])
+                track.number = strip_tags(audioTag['TRCK'].text[0]).rstrip()
 
     if 'TCOM' in audioTag:
         if not audioTag['TCOM'].text[0] == "":
-            track.composer = strip_tags(audioTag['TCOM'].text[0])
+            track.composer = strip_tags(audioTag['TCOM'].text[0]).rstrip()
 
     if 'TOPE' in audioTag:
         if not audioTag['TOPE'].text[0] == "":
-            track.performer = strip_tags(audioTag['TOPE'].text[0])
+            track.performer = strip_tags(audioTag['TOPE'].text[0]).rstrip()
 
     if 'TBPM' in audioTag:
         if not audioTag['TBPM'].text[0] == "":
-            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
+            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0]).rstrip()))
 
     if 'COMM' in audioTag:
         if not audioTag['COMM'].text[0] == "":
-            track.comment = strip_tags(audioTag['COMM'].text[0])
+            track.comment = strip_tags(audioTag['COMM'].text[0]).rstrip()
 
     if 'USLT' in audioTag:
         if not audioTag['USLT'].text[0] == "":
@@ -787,24 +827,24 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     if len(audioTag.getall('TXXX')) != 0:
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
-                totalDisc = strip_tags(txxx.text[0])
+                totalDisc = strip_tags(txxx.text[0]).rstrip()
 
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
-        genreName = strip_tags(audioTag['TCON'].text[0])
+        genreName = strip_tags(audioTag['TCON'].text[0]).rstrip()
         track.genre = genreName
 
     # --- Adding artist to structure ---
     if 'TPE1' in audioTag:  # Check if artist exists
         artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
         for artistName in artists:
-            artistName = artistName.lstrip()  # Remove useless spaces at the beginning
+            artistName = artistName.lstrip().rstrip()  # Remove useless spaces at the beginning
             track.artist.append(artistName)
 
     # --- Adding album to structure ---
     if 'TALB' in audioTag:
-        albumTitle = strip_tags(audioTag['TALB'].text[0])
-        track.album = albumTitle
+        albumTitle = strip_tags(audioTag['TALB'].text[0]).rstrip()
+        track.album = albumTitle.replace('\n', '')
 
     return track
 
@@ -1062,6 +1102,6 @@ class LocalTrack:
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = self.CRC = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
-            = self.duration = self.discNumber = self.size = 0
+            = self.duration = self.discNumber = self.size = self.playCounter = 0
         self.artist = []
         self.scanned = False
