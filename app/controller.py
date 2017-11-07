@@ -62,45 +62,10 @@ def scanLibrary(library, playlist, convert):
 
 # Scan a library.
 def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPath, mp3ID):
-    addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert)
-    '''(addAllGenreAndAlbumAndArtistsMP3(mp3Fil es)
-    addAllGenreAndAlbumAndArtistsFLAC(flacFiles)
-    print("Filled DB structure")
-    threads = []
-
-    if len(mp3Files) > 0:
-        trackPath = splitTable(mp3Files)
-        # Saving all the library to base
-        for tracks in trackPath:
-            threads.append(ImportMp3Thread(tracks, playlist, convert, mp3ID, coverPath))
-        for thread in threads:
-            thread.start()
-    if len(flacFiles) > 0:
-        trackPath = splitTable(flacFiles)
-        for tracks in trackPath:
-            thread = ImportFlacThread(tracks, playlist, coverPath)
-            thread.start()
-            threads.append(thread)
-
-    print("Launched scanning threads")
-    for thread in threads:
-        thread.join()
-    print("Ended scan")
+    addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
-    library.playlist = playlist
-    library.save()
-    # TODO : re-enable CRC generation
-    # tracks = playlist.track.all()
-    # splicedTracks = splitTable(tracks)
-    # threads = []
-    # generating CRC checksum
-    # for tracks in splicedTracks:
-    #    threads.append(CRCGenerator(tracks))
-    # for thread in threads:
-    #    thread.start()
-    createMoodbarsUrls(playlist)
-'''
+    
 
 # Select a sound with shuffle mode enabled
 def shuffleSoundSelector(shuffle):
