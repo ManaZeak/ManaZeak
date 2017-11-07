@@ -1,4 +1,3 @@
-import hashlib
 import os
 from multiprocessing import Process
 from random import randint
@@ -6,9 +5,7 @@ from random import randint
 from django import db
 
 from app.models import FileType
-from app.utils import errorCheckMessage, ImportMp3Thread, splitTable, \
-    addAllGenreAndAlbumAndArtistsMP3, createMoodbarsUrls, addAllGenreAndAlbumAndArtistsFLAC, ImportFlacThread, \
-    addAllGenreAndAlbumAndArtists
+from app.utils import errorCheckMessage, addAllGenreAndAlbumAndArtists
 
 
 def scanLibrary(library, playlist, convert):
@@ -65,7 +62,7 @@ def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPat
     addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
-    
+
 
 # Select a sound with shuffle mode enabled
 def shuffleSoundSelector(shuffle):

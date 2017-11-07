@@ -1,16 +1,11 @@
 import binascii
-import csv
 import hashlib
-import io
 import math
 import multiprocessing
 import os
 import threading
-from contextlib import closing
-from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.db import connection
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -18,6 +13,7 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
+from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
 from app.models import FileType, Track, Genre, Album, Artist
 
 
@@ -264,323 +260,6 @@ def exportPlaylistToJson(playlist):
     return finalData
 
 
-# Function to add all the genre, album and artist to the database
-# Need to do this action before scan to avoid concurrency errors
-def addAllGenreAndAlbumAndArtistsMP3(filePaths):
-    for filePath in filePaths:
-        try:
-            audioTag = ID3(filePath)
-        except ID3NoHeaderError:
-            audioTag = ID3()
-        hasArtist = False
-        trackArtists = []
-        # --- Adding genre to DB ---
-        if 'TCON' in audioTag:
-            genreName = strip_tags(audioTag['TCON'].text[0])
-            if Genre.objects.filter(name=genreName).count() == 0:
-                genre = Genre()
-                genre.name = genreName
-                genre.save()
-        # --- Adding artist to DB ---
-        if 'TPE1' in audioTag:  # Check if artist exists
-            artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
-            for artistName in artists:
-                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
-                    artist = Artist()
-                    artist.name = artistName
-                    artist.save()
-                    trackArtists.append(artist)
-                else:
-                    trackArtists.append(Artist.objects.get(name=artistName))
-                hasArtist = True
-        # --- Adding album to DB ---
-        if 'TALB' in audioTag:
-            albumTitle = strip_tags(audioTag['TALB'].text[0])
-            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-                album = Album()
-                album.title = albumTitle
-                album.save()
-                if hasArtist:
-                    album.artist.add(*trackArtists)
-
-
-def addAllGenreAndAlbumAndArtistsFLAC(filePaths):
-    for filePath in filePaths:
-        # TODO: check if the tags are presents.
-        audioTag = FLAC(filePath)
-        # --- Adding genre to DB ---
-        if 'GENRE' in audioTag:
-            genreName = processVorbisTag(audioTag['GENRE'])
-
-            if Genre.objects.filter(name=genreName).count() == 0:
-                genre = Genre()
-                genre.name = genreName
-                genre.save()
-        # --- Adding artist to DB ---
-        if 'ARTIST' in audioTag:  # Check if artist exists
-            artists = processVorbisTag(audioTag['ARTIST'])
-
-            artists = artists.split(",")
-            for artistName in artists:
-                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
-                    artist = Artist()
-                    artist.name = artistName
-                    artist.save()
-        # --- Adding album to DB ---
-        if 'ALBUM' in audioTag:
-            albumTitle = processVorbisTag(audioTag['ALBUM'])
-
-            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-                album = Album()
-                album.title = albumTitle
-                album.save()
-                if 'ALBUMARTIST' in audioTag:
-                    albumArtists = processVorbisTag(audioTag['ALBUMARTIST'])
-
-                    albumArtists = albumArtists.split(",")
-                    for albumArtist in albumArtists:
-                        if Artist.objects.filter(name=albumArtist).count() == 0:
-                            artist = Artist()
-                            artist.name = albumArtist
-                            artist.save()
-                        else:
-                            artist = Artist.objects.get(name=albumArtist)
-                        album.artist.add(artist)
-
-
-# With a given set add the missing genre to the database and return a dict with name:id
-def addGenreBulk(genres):
-    genreReference = {"": Genre.objects.get(name=None).id}
-    newGenre = {}
-
-    # Get all existing genre
-    genreInBase = Genre.objects.filter(name__in=genres)
-    genreToAdd = len(genres) - len(genreInBase)
-
-    # Get the sequence value
-    cursor = connection.cursor()
-    cursor.execute("SELECT nextval('app_genre_id_seq')")
-    firstId = cursor.fetchone()
-    # Offset the sequence value
-    cursor.execute('ALTER SEQUENCE app_genre_id_seq RESTART WITH {0};'.format(str(firstId[0] + genreToAdd)))
-
-    # Add known genre into the dict and remove the genre known in database in the set
-    for genre in genreInBase:
-        genreReference[genre.name] = genre.id
-        genres.remove(genre.name)
-
-    # Creating the structure for DB import
-    counter = 0
-    for genre in genres:
-        newGenre[genre] = firstId[0] + counter
-        counter += 1
-
-    # Creating a CSV file in memory for faster import in the database
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for genre in newGenre:
-        writer.writerow([newGenre[genre], genre.rstrip()])
-
-    virtualFile.seek(0)
-
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='app_genre',
-            sep='\t',
-            columns=('id', 'name'),
-        )
-    virtualFile.close()
-
-    return {**genreReference, **newGenre}
-
-
-def addArtistBulk(artists):
-    artistReference = {"": Artist.objects.get(name=None).id}
-    newArtist = {}
-
-    # Get all existing artist
-    artistsInBase = Artist.objects.filter(name__in=artists)
-    artistsToAdd = len(artists) - len(artistsInBase)
-
-    # Get the sequence value
-    cursor = connection.cursor()
-    cursor.execute("SELECT nextval('app_artist_id_seq')")
-    firstId = cursor.fetchone()
-    # Offset the sequence value
-    cursor.execute('ALTER SEQUENCE app_artist_id_seq RESTART WITH {0};'.format(str(firstId[0] + artistsToAdd)))
-
-    # Add the known artists to the dict and remove the artist in the set
-    for artist in artistsInBase:
-        artistReference[artist.name] = artist.id
-        artists.remove(artist.name)
-
-    # Creating the structure for csv creation
-    counter = 0
-    for artist in artists:
-        newArtist[artist] = firstId[0] + counter
-        counter += 1
-
-    # Creating the csv file from the information for DB import
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for artist in newArtist:
-        writer.writerow([newArtist[artist], artist.rstrip()])
-
-    virtualFile.seek(0)
-
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_artist"',
-            sep='\t',
-            columns=('id', 'name'),
-        )
-    virtualFile.close()
-
-    return {**artistReference, **newArtist}
-
-
-def addAlbumBulk(albums, artists):
-    albumReference = {"": Album.objects.get(title=None)}
-    newAlbums = {}
-    albumSet = set()
-
-    # Transforming the dict into a set for the query
-    for album in albums:
-        albumSet.add(album)
-
-    # Get all the existing artists in the table from our set
-    albumInBase = Album.objects.filter(title__in=albumSet)
-    albumToAdd = len(albumSet) - len(albumInBase)
-
-    # Get the sequence value
-    cursor = connection.cursor()
-    cursor.execute("SELECT nextval('app_album_id_seq')")
-    firstId = cursor.fetchone()
-    # Offset the sequence value
-    cursor.execute('ALTER SEQUENCE app_album_id_seq RESTART WITH {0};'.format(str(firstId[0] + albumToAdd)))
-
-    # Add the known artists to the dict and remove the artist in the set
-    for album in albumInBase:
-        albumReference[album.name] = album.id
-        del albums[album.name]
-
-    # Creating the csv
-    counter = 0
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for album in albums:
-        newAlbums[album] = firstId[0] + counter
-        writer.writerow([firstId[0] + counter, album])
-        counter += 1
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_album"',
-            sep='\t',
-            columns=('id', 'title'),
-        )
-
-    # Creating the csv for the link between artist and album
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for album in newAlbums:
-        artistsAdded = albums[album].split(",")
-        for artist in artistsAdded:
-            writer.writerow([newAlbums[album], artists[artist]])
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_album_artist"',
-            sep='\t',
-            columns=('album_id', 'artist_id'),
-        )
-    virtualFile.close()
-
-    return {**albumReference, **newAlbums}
-
-
-def addTrackBulk(tracks, artists, albums, genres, playlistId):
-    referenceTracks = {}
-
-    # Moving the sequence before insert
-    cursor = connection.cursor()
-    cursor.execute("SELECT nextval('app_track_id_seq')")
-    firstId = cursor.fetchone()
-    # Offset the sequence value
-    cursor.execute('ALTER SEQUENCE app_track_id_seq RESTART WITH {0};'.format(str(firstId[0] + len(tracks))))
-
-    # Creating the csv
-    counter = firstId[0]
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for track in tracks:
-        writer.writerow([counter, track.location, track.title, track.year, track.composer, track.performer,
-                         track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
-                         track.sampleRate, track.duration, track.discNumber, track.size,
-                         albums[track.album], track.fileType, genres[track.genre], track.CRC, track.coverLocation,
-                         track.moodbar, track.scanned, track.playCounter, datetime.now()])
-        referenceTracks[track] = counter
-        counter += 1
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_track"',
-            sep='\t',
-            columns=('id', 'location', 'title', 'year', 'composer', 'performer', 'number', 'bpm', 'lyrics', 'comment',
-                     '"bitRate"', '"bitRateMode"', '"sampleRate"', 'duration', '"discNumber"', 'size', 'album_id',
-                     '"fileType_id"', 'genre_id', '"CRC"', '"coverLocation"', 'moodbar', 'scanned', '"playCounter"',
-                     '"lastModified"'),
-        )
-
-    # Creating the csv for the link between tracks and artists
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for track in tracks:
-        for artist in track.artist:
-            writer.writerow([referenceTracks[track], artists[artist]])
-
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_track_artist"',
-            sep='\t',
-            columns=('track_id', 'artist_id'),
-        )
-
-    # Creating csv for the link between tracks and playlist
-    virtualFile = io.StringIO()
-    writer = csv.writer(virtualFile, delimiter='\t')
-    for track in tracks:
-        writer.writerow([playlistId, referenceTracks[track]])
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_from(
-            file=virtualFile,
-            table='"app_playlist_track"',
-            sep='\t',
-            columns=('playlist_id', 'track_id'),
-        )
-    virtualFile.close()
-
-
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):
     tracks = []
     albumReference = {}
@@ -601,17 +280,29 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
 
     threads = []
     # MP3 file processor
-    splicedMP3 = splitTableCustom(mp3Files, multiprocessing.cpu_count())
-    splicedFLAC = splitTableCustom(flacFiles, multiprocessing.cpu_count())
-    for mp3 in splicedMP3:
-        thread = ImportBulkThread(0, mp3, convert, mp3FileReference, coverPath)
-        threads.append(thread)
-        thread.start()
-
-    for flac in splicedFLAC:
-        thread = ImportBulkThread(1, flac, convert, flacFileReference, coverPath)
-        threads.append(thread)
-        thread.start()
+    if len(mp3Files) != 0:
+        procNumber = multiprocessing.cpu_count()
+        while len(mp3Files) < procNumber:
+            procNumber -= 1
+            if procNumber == 0:
+                print("ERROR!")
+                return
+        splicedMP3 = splitTableCustom(mp3Files, procNumber)
+        for mp3 in splicedMP3:
+            thread = ImportBulkThread(0, mp3, convert, mp3FileReference, coverPath)
+            threads.append(thread)
+            thread.start()
+    if len(flacFiles) != 0:
+        procNumber = multiprocessing.cpu_count()
+        while len(flacFiles) < procNumber:
+            procNumber -= 1
+            if procNumber == 0:
+                return
+        splicedFLAC = splitTableCustom(flacFiles, multiprocessing.cpu_count())
+        for flac in splicedFLAC:
+            thread = ImportBulkThread(1, flac, convert, flacFileReference, coverPath)
+            threads.append(thread)
+            thread.start()
 
     print("Started all scanning threads")
     for thread in threads:
@@ -635,13 +326,6 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
     print("Finished import")
-
-    # Preparing informations about tracks for adding them to the database
-    # TODO: info sur les tracks a ajouter (préparation bulk)
-    # TODO: info sur les TJ a ajouter (préparation bulk)
-    # TODO: insérer toutes les infos sur les tracks en bulk avec un curseur (http://www.smipple.net/snippet/adige/kinterbasdb%20executemany)
-    # TODO: insérer toutes les infos dans les TJ
-    # TODO: remove old function, re factor for more generic function.
 
 
 class ImportBulkThread(threading.Thread):
@@ -913,111 +597,6 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     return track
 
 
-# Adding a MP3 track to the database
-def addTrackMP3Thread(path, playlist, convert, fileTypeId, coverPath):
-    track = Track()
-
-    # --- FILE INFORMATION ---
-    audioFile = MP3(path)
-    track.location = path
-    track.size = os.path.getsize(path)
-    track.bitRate = audioFile.info.bitrate
-    track.duration = audioFile.info.length
-    track.sampleRate = audioFile.info.sample_rate
-    track.bitRateMode = audioFile.info.bitrate_mode
-    track.fileType = fileTypeId
-
-    # --- FILE TAG ---
-    try:
-        audioTag = ID3(path)
-        if convert:
-            audioTag.update_to_v24()
-            audioTag.save()
-        audioTag = ID3(path)
-    except ID3NoHeaderError:
-        audioTag = ID3()
-
-    # --- COVER ---
-    if 'APIC:' in audioTag:
-        front = audioTag['APIC:'].data
-        # Creating md5 hash for the cover
-        md5Name = hashlib.md5()
-        md5Name.update(front)
-        # Check if the cover already exists and save it
-        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
-            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
-                img.write(front)
-        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
-    if 'TIT2' in audioTag:
-        if not audioTag['TIT2'].text[0] == "":
-            track.title = strip_tags(audioTag['TIT2'].text[0])
-
-    if 'TDRC' in audioTag:
-        if not audioTag['TDRC'].text[0].get_text() == "":
-            track.year = strip_tags(audioTag['TDRC'].text[0].get_text())[:4]  # Date of Recording
-
-    if 'TRCK' in audioTag:
-        if not audioTag['TRCK'].text[0] == "":
-            if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
-                tags = strip_tags(audioTag['TRCK'].text[0]).split('/')
-                track.number = tags[0]
-                totalTrack = tags[1]
-            else:
-                track.number = strip_tags(audioTag['TRCK'].text[0])
-
-    if 'TCOM' in audioTag:
-        if not audioTag['TCOM'].text[0] == "":
-            track.composer = strip_tags(audioTag['TCOM'].text[0])
-
-    if 'TOPE' in audioTag:
-        if not audioTag['TOPE'].text[0] == "":
-            track.performer = strip_tags(audioTag['TOPE'].text[0])
-
-    if 'TBPM' in audioTag:
-        if not audioTag['TBPM'].text[0] == "":
-            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
-
-    if 'COMM' in audioTag:
-        if not audioTag['COMM'].text[0] == "":
-            track.comment = strip_tags(audioTag['COMM'].text[0])
-
-    if 'USLT' in audioTag:
-        if not audioTag['USLT'].text[0] == "":
-            track.lyrics = strip_tags(audioTag['USLT'].text[0])
-
-    if len(audioTag.getall('TXXX')) != 0:
-        for txxx in audioTag.getall('TXXX'):
-            if txxx.desc == 'TOTALDISCS':
-                totalDisc = strip_tags(txxx.text[0])
-
-    # --- Save data for many-to-many relationship registering ---
-    track.save()
-
-    # --- Adding genre to DB ---
-    if 'TCON' in audioTag:
-        genreName = strip_tags(audioTag['TCON'].text[0])
-        genre = Genre.objects.get(name=genreName)
-        track.genre = genre
-
-    # --- Adding artist to DB ---
-    if 'TPE1' in audioTag:  # Check if artist exists
-        artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
-        for artistName in artists:
-            artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-            artist = Artist.objects.get(name=artistName)
-            track.artist.add(artist)
-
-    # --- Adding album to DB ---
-    if 'TALB' in audioTag:
-        albumTitle = strip_tags(audioTag['TALB'].text[0])
-        album = Album.objects.get(title=albumTitle)
-        track.album = album
-        track.save()
-
-    # --- Adding track to playlist --- #
-    playlist.track.add(track)
-
-
 # Create the md5 of all the files and add create the URLs
 def createMoodbarsUrls(playlist):
     print("Generating moodbar URLs")
@@ -1045,120 +624,6 @@ class CRCGenerator(threading.Thread):
             track.CRC = "%08X" % buf
             print("CRC = " + track.CRC)
             track.save()
-
-
-def addFlacTrackThread(path, playlist, coverPath):
-    track = Track()
-
-    # --- FILE INFORMATION ---
-    audioFile = FLAC(path)
-    track.location = path
-    track.size = os.path.getsize(path)
-    track.bitRate = audioFile.info.bitrate
-    track.duration = audioFile.info.length
-    track.sampleRate = audioFile.info.sample_rate
-
-    # --- COVER ---
-    pictures = audioFile.pictures
-    if len(pictures) != 0:
-        # Creating md5 hash for the cover
-        md5Name = hashlib.md5()
-        md5Name.update(pictures[0].data)
-        # Check if the cover already exists and save it
-        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
-            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
-                img.write(pictures[0].data)
-        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
-
-    if 'TITLE' in audioFile:
-        trackTitle = processVorbisTag(audioFile['TITLE'])
-        if not trackTitle == "":
-            track.title = trackTitle
-
-    if 'DATE' in audioFile:
-        trackDate = processVorbisTag(audioFile['DATE'])
-        if not trackDate == "":
-            track.year = trackDate  # Date of Recording
-
-    if 'TRACKNUMBER' in audioFile:
-        trackNumber = processVorbisTag(audioFile['TRACKNUMBER'])
-        if not trackNumber == "":
-            track.number = trackNumber
-
-    if 'COMPOSER' in audioFile:
-        trackComposer = processVorbisTag(audioFile['COMPOSER'])
-        if not trackComposer == "":
-            track.composer = trackComposer
-
-    if 'PERFORMER' in audioFile:
-        trackPerformer = processVorbisTag(audioFile['PERFORMER'])
-        if not trackPerformer == "":
-            track.performer = trackPerformer
-
-    # TODO: find how to include this tags
-    '''if 'TBPM' in audioTag:
-        if not audioTag['TBPM'].text[0] == "":
-            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0])))
-
-    if 'COMM' in audioTag:
-        if not audioTag['COMM'].text[0] == "":
-            track.comment = strip_tags(audioTag['COMM'].text[0])
-
-    if 'USLT' in audioTag:
-        if not audioTag['USLT'].text[0] == "":
-            track.lyrics = strip_tags(audioTag['USLT'].text[0])
-
-    if len(audioTag.getall('TXXX')) != 0:
-        for txxx in audioTag.getall('TXXX'):
-            if txxx.desc == 'TOTALDISCS':
-                totalDisc = strip_tags(txxx.text[0])
-    '''
-
-    track.save()
-
-    if 'GENRE' in audioFile:
-        genreName = processVorbisTag(audioFile['GENRE'])
-        track.genre = Genre.objects.get(name=genreName)
-
-    if 'ALBUM' in audioFile:
-        albumName = processVorbisTag(audioFile['ALBUM'])
-        track.album = Album.objects.get(title=albumName)
-
-    if 'ARTIST' in audioFile:
-        artistNames = processVorbisTag(audioFile['ARTIST']).split(",")
-        for artistName in artistNames:
-            artistName = artistName.lstrip()
-            track.artist.add(Artist.objects.get(name=artistName))
-
-    track.save()
-    playlist.track.add(track)
-
-
-# Import in a threaded way a library
-class ImportMp3Thread(threading.Thread):
-    def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
-        threading.Thread.__init__(self)
-        self.mp3Paths = mp3Paths
-        self.playlist = playlist
-        self.convert = convert
-        self.fileTypeId = fileTypeId
-        self.coverPath = coverPath
-
-    def run(self):
-        for path in self.mp3Paths:
-            addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
-
-
-class ImportFlacThread(threading.Thread):
-    def __init__(self, tracks, playlist, coverPath):
-        threading.Thread.__init__(self)
-        self.tracks = tracks
-        self.playlist = playlist
-        self.coverPath = coverPath
-
-    def run(self):
-        for track in self.tracks:
-            addFlacTrackThread(track, self.playlist, self.coverPath)
 
 
 class LocalTrack:
