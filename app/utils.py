@@ -3,6 +3,7 @@ import csv
 import hashlib
 import io
 import math
+import multiprocessing
 import os
 import threading
 from contextlib import closing
@@ -44,6 +45,16 @@ def splitTable(table):
         chunkSize = int(len(table) / 4)
     else:
         chunkSize = int(len(table) / 4) + 1
+    for i in range(0, len(table), chunkSize):
+        yield table[i:i + chunkSize]
+
+
+# Split a table in x tables of equal size
+def splitTableCustom(table, number):
+    if len(table) % number == 0:
+        chunkSize = int(len(table) / number)
+    else:
+        chunkSize = int(len(table) / number) + 1
     for i in range(0, len(table), chunkSize):
         yield table[i:i + chunkSize]
 
@@ -382,6 +393,7 @@ def addGenreBulk(genres):
             sep='\t',
             columns=('id', 'name'),
         )
+    virtualFile.close()
 
     return {**genreReference, **newGenre}
 
@@ -428,6 +440,7 @@ def addArtistBulk(artists):
             sep='\t',
             columns=('id', 'name'),
         )
+    virtualFile.close()
 
     return {**artistReference, **newArtist}
 
@@ -485,9 +498,6 @@ def addAlbumBulk(albums, artists):
             writer.writerow([newAlbums[album], artists[artist]])
 
     virtualFile.seek(0)
-
-    print("the artists")
-    print(artists)
     # Import the csv into the database
     with closing(connection.cursor()) as cursor:
         cursor.copy_from(
@@ -496,11 +506,14 @@ def addAlbumBulk(albums, artists):
             sep='\t',
             columns=('album_id', 'artist_id'),
         )
+    virtualFile.close()
 
     return {**albumReference, **newAlbums}
 
 
-def addTrackBulk(tracks, artists, albums, genres):
+def addTrackBulk(tracks, artists, albums, genres, playlistId):
+    referenceTracks = {}
+
     # Moving the sequence before insert
     cursor = connection.cursor()
     cursor.execute("SELECT nextval('app_track_id_seq')")
@@ -518,6 +531,7 @@ def addTrackBulk(tracks, artists, albums, genres):
                          track.sampleRate, track.duration, track.discNumber, track.size,
                          albums[track.album], track.fileType, genres[track.genre], track.CRC, track.coverLocation,
                          track.moodbar, track.scanned, track.playCounter, datetime.now()])
+        referenceTracks[track] = counter
         counter += 1
 
     virtualFile.seek(0)
@@ -533,8 +547,42 @@ def addTrackBulk(tracks, artists, albums, genres):
                      '"lastModified"'),
         )
 
+    # Creating the csv for the link between tracks and artists
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for track in tracks:
+        for artist in track.artist:
+            writer.writerow([referenceTracks[track], artists[artist]])
 
-def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_track_artist"',
+            sep='\t',
+            columns=('track_id', 'artist_id'),
+        )
+
+    # Creating csv for the link between tracks and playlist
+    virtualFile = io.StringIO()
+    writer = csv.writer(virtualFile, delimiter='\t')
+    for track in tracks:
+        writer.writerow([playlistId, referenceTracks[track]])
+
+    virtualFile.seek(0)
+    # Import the csv into the database
+    with closing(connection.cursor()) as cursor:
+        cursor.copy_from(
+            file=virtualFile,
+            table='"app_playlist_track"',
+            sep='\t',
+            columns=('playlist_id', 'track_id'),
+        )
+    virtualFile.close()
+
+
+def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):
+    tracks = []
     albumReference = {}
     tracksInfo = []
     artists = set()
@@ -551,10 +599,27 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
 
     # TODO: Create general file processor
 
+    threads = []
     # MP3 file processor
-    for filePath in mp3Files:
+    splicedMP3 = splitTableCustom(mp3Files, multiprocessing.cpu_count())
+    splicedFLAC = splitTableCustom(flacFiles, multiprocessing.cpu_count())
+    for mp3 in splicedMP3:
+        thread = ImportBulkThread(0, mp3, convert, mp3FileReference, coverPath)
+        threads.append(thread)
+        thread.start()
+
+    for flac in splicedFLAC:
+        thread = ImportBulkThread(1, flac, convert, flacFileReference, coverPath)
+        threads.append(thread)
+        thread.start()
+
+    print("Started all scanning threads")
+    for thread in threads:
+        thread.join()
+        tracks += thread.tracks
+
+    for track in tracks:
         albumArtist = ""
-        track = createMP3Track(filePath, convert, mp3FileReference, coverPath)
         tracksInfo.append(track)
         for artist in track.artist:
             artists.add(artist)
@@ -563,138 +628,40 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert):
         genres.add(track.genre)
         albums[track.album] = albumArtist
 
-    for filePath in flacFiles:
-        albumArtist = ""
-        track = createFLACTrack(filePath, flacFileReference, coverPath)
-        tracksInfo.append(track)
-        for artist in track.artist:
-            artists.add(artist)
-            albumArtist += artist + ","
-            print(albumArtist)
-        albumArtist = albumArtist[:-1]
-        genres.add(track.genre)
-        albums[track.album] = albumArtist
-
-    print("Finished scanning MP3 file")
-
+    print("Starting adding tracks to database")
     # Analyse the genre found and add the missing genre to the base
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
-    addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference)
+    addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+    print("Finished import")
 
-    # Add Artist to the database
-    print("meder c est fini")
-
-    '''
-        # --- Adding genre to DB ---
-        if 'TCON' in audioTag:
-            genreName = strip_tags(audioTag['TCON'].text[0])
-            if Genre.objects.filter(name=genreName).count() == 0:
-                genre = Genre()
-                genre.name = genreName
-                genre.save()
-                # Add genre to dict
-                genreReference[genreName] = genre.id
-            elif genreName not in genreReference:
-                genre = Genre.objects.get(name=genreName)
-                # Add genre to dict
-                genreReference[genreName] = genre.id
-
-        # --- Adding artist to DB ---
-        if 'TPE1' in audioTag:  # Check if artist exists
-            artists = strip_tags(audioTag['TPE1'].text[0]).split(",")
-            for artistName in artists:
-                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
-                    artist = Artist()
-                    artist.name = artistName
-                    artist.save()
-                    artistReference[artistName] = artist.id
-                    trackArtists.append(artist)
-                elif artistName not in artistReference:
-                    artist = Artist.objects.get(name=artistName)
-                    artistReference[artistName] = artist.id
-                    trackArtists.append(artist)
-                else:
-                    trackArtists.append(Artist.objects.get(name=artistName))
-                hasArtist = True
-
-        # --- Adding album to DB ---
-        if 'TALB' in audioTag:
-            albumTitle = strip_tags(audioTag['TALB'].text[0])
-            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-                album = Album()
-                album.title = albumTitle
-                album.save()
-                albumReference[albumTitle] = album.id
-                if hasArtist:
-                    album.artist.add(*trackArtists)
-            elif albumTitle not in albumReference:
-                albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
-        tracksInfo.append(LocalTrack())
-    # Processing flac files
-    for filePath in flacFiles:
-        # TODO: check if the tags are presents.
-        audioTag = FLAC(filePath)
-        # --- Adding genre to DB ---
-        if 'GENRE' in audioTag:
-            genreName = processVorbisTag(audioTag['GENRE'])
-
-            if Genre.objects.filter(name=genreName).count() == 0:
-                genre = Genre()
-                genre.name = genreName
-                genre.save()
-                genreReference[genreName] = genre.id
-            elif genreName not in genreReference:
-                genreReference[genreName] = Genre.objects.get(name=genreName).id
-
-        # --- Adding artist to DB ---
-        if 'ARTIST' in audioTag:  # Check if artist exists
-            artists = processVorbisTag(audioTag['ARTIST'])
-
-            artists = artists.split(",")
-            for artistName in artists:
-                artistName = artistName.lstrip()  # Remove useless spaces at the beginning
-                if Artist.objects.filter(name=artistName).count() == 0:  # The artist doesn't exist
-                    artist = Artist()
-                    artist.name = artistName
-                    artist.save()
-                    artistReference[artistName] = artist.id
-                elif artistName not in artistReference:
-                    artistReference[artistName] = Artist.objects.get(name=artistName)
-
-        # --- Adding album to DB ---
-        if 'ALBUM' in audioTag:
-            albumTitle = processVorbisTag(audioTag['ALBUM'])
-
-            if Album.objects.filter(title=albumTitle).count() == 0:  # If the album doesn't exist
-                album = Album()
-                album.title = albumTitle
-                album.save()
-                albumReference[albumTitle] = album.id
-                if 'ALBUMARTIST' in audioTag:
-                    albumArtists = processVorbisTag(audioTag['ALBUMARTIST'])
-
-                    albumArtists = albumArtists.split(",")
-                    for albumArtist in albumArtists:
-                        if Artist.objects.filter(name=albumArtist).count() == 0:
-                            artist = Artist()
-                            artist.name = albumArtist
-                            artist.save()
-                            artistReference[albumArtist] = artist.id
-                        else:
-                            artist = Artist.objects.get(name=albumArtist)
-                        album.artist.add(artist)
-            elif albumTitle not in albumReference:
-                albumReference[albumTitle] = Album.objects.get(title=albumTitle).id
-'''
     # Preparing informations about tracks for adding them to the database
     # TODO: info sur les tracks a ajouter (préparation bulk)
     # TODO: info sur les TJ a ajouter (préparation bulk)
     # TODO: insérer toutes les infos sur les tracks en bulk avec un curseur (http://www.smipple.net/snippet/adige/kinterbasdb%20executemany)
     # TODO: insérer toutes les infos dans les TJ
     # TODO: remove old function, re factor for more generic function.
+
+
+class ImportBulkThread(threading.Thread):
+    def __init__(self, fileType, files, convert, fileReference, coverPath):
+        threading.Thread.__init__(self)
+        self.fileType = fileType
+        self.files = files
+        self.convert = convert
+        self.fileReference = fileReference
+        self.coverPath = coverPath
+        self.tracks = []
+
+    def run(self):
+        # Check the file type for choosing the way of processing files
+        if self.fileType == 0:  # MP3 files
+            for file in self.files:
+                self.tracks.append(createMP3Track(file, self.convert, self.fileReference, self.coverPath))
+        elif self.fileType == 1:  # FLAC files
+            for file in self.files:
+                self.tracks.append(createFLACTrack(file, self.fileReference, self.coverPath))
 
 
 # Create the file type entry

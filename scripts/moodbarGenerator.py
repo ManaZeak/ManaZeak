@@ -6,9 +6,8 @@ import time
 import os
 
 
-# Split a table in 4 table of equal size
+# Split a table in x tables of equal size
 def splitTable(table, number):
-    print("echo splitting the table")
     if len(table) % number == 0:
         chunkSize = int(len(table) / number)
     else:
