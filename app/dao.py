@@ -30,8 +30,8 @@ def addAlbumBulk(albums, artists):
 
     # Add the known artists to the dict and remove the artist in the set
     for album in albumInBase:
-        albumReference[album.name] = album.id
-        del albums[album.name]
+        albumReference[album.title] = album.id
+        del albums[album.title]
 
     # Creating the csv
     counter = 0

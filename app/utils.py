@@ -85,30 +85,43 @@ def errorCheckMessage(isDone, error):
     if error == "badFormat":
         errorTitle = "Wrong format"
         errorMessage = "The server didn't understood what you said."
+
     elif error == "badRequest":
         errorTitle = "Bad request"
         errorMessage = "The server didn't expected this request."
+
     elif error == "dbError":
         errorTitle = "Database error"
         errorMessage = "Something went wrong with the database."
+
     elif error == "fileNotFound":
         errorTitle = "No such file"
         errorMessage = "The server didn't find the file you asked."
+
     elif error == "dirNotFound":
         errorTitle = "No such directory"
         errorMessage = "The server didn't find the directory you asked."
+
     elif error == "emptyLibrary":
         errorTitle = "The library is empty"
         errorMessage = "There is no file to add in the library"
+
     elif error == "coverError":
         errorTitle = "Can't create file"
         errorMessage = "The server cannot generate the file for the covers, check the permissions."
+
     elif error == "permissionError":
         errorTitle = "Not permitted"
         errorMessage = "You are not allowed to do this."
+
+    elif error == "rescanError":
+        errorTitle = "Library isn't ready"
+        errorMessage = "Another scan is running in background, be a little more patient"
+
     elif error is None:
         errorTitle = "null"
         errorMessage = "null"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "\"" + errorTitle + "\"",
@@ -383,26 +396,6 @@ def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replac
         # addTrackMP3(root, file, playlist, convert, fileTypeId)
     else:
         track.scanned = True
-
-
-# Check if new file have been added
-def rescanLibrary(library):
-    playlist = library.playlist
-    convert = False
-    mp3ID = FileType.objects.get(name="mp3")
-    replacedTitles = []
-    for root, dirs, files in os.walk(library.path):
-        for file in files:
-            if file.lower().endswith('.mp3'):
-                track = Track.objects.get(location=root + file)
-                if track is None:
-                    # addTrackMP3(root, file, playlist, convert, mp3ID)
-                    pass
-                else:
-                    compareTrackAndFile(track, root, file, playlist, convert, mp3ID, replacedTitles)
-    # Removed the tracks that haven't been scanned
-    removedTracks = playlist.track.filter(scanned=False).delete()
-    return [replacedTitles, removedTracks]
 
 
 # Scan all the attributes of an MP3 track, and add it to base.
