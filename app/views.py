@@ -3,6 +3,7 @@ import os
 from builtins import print
 from random import randint
 
+import time
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -305,6 +306,23 @@ def checkLibraryScanStatus(request):
             return JsonResponse(data)
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+# Function for check if a library has been scanned.
+def checkLibraryScanStatusLong(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+
+                # Check during 20 seconds if the library has been scanned
+                for _ in range(40):
+                    if playlist.isScanned:
+                        return JsonResponse(errorCheckMessage(playlist.isScanned, None))
+                    else:
+                        time.sleep(0.5)
+                return JsonResponse(errorCheckMessage(False, None))
 
 
 def shuffleNextTrack(request):
