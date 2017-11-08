@@ -380,31 +380,9 @@ def populateDB():
         Genre(name=None).save()
 
 
-# Create the CRC32 code from a file
-def CRC32_from_file(filename):
-    buf = open(filename, 'rb').read()
-    buf = (binascii.crc32(buf) & 0xFFFFFFFF)
-    return "%08X" % buf
-
-
-# Compare the file by hash (faster than reading the tag)
-def compareTrackAndFile(track, root, file, playlist, convert, fileTypeId, replacedTitles):
-    fileCRC = CRC32_from_file(root + "/" + file)
-    if fileCRC != track.CRC:
-        replacedTitles.append(track.title)
-        track.delete()
-        # addTrackMP3(root, file, playlist, convert, fileTypeId)
-    else:
-        track.scanned = True
-
-
 # Scan all the attributes of an MP3 track, and add it to base.
 def createMP3Track(filePath, convert, fileTypeId, coverPath):
     track = LocalTrack()
-
-    # --- Calculating checksum
-    #
-    # track.CRC = CRC32_from_file(filePath)
 
     # --- FILE INFORMATION ---
     audioFile = MP3(filePath)
@@ -602,27 +580,10 @@ def createMoodbarsUrls(playlist):
     print("Ended generating moodbars")
 
 
-# Thread for generating multiple CRC32
-class CRCGenerator(threading.Thread):
-    def __init__(self, tracks):
-        threading.Thread.__init__(self)
-        self.tracks = tracks
-
-    def run(self):
-        tracks = list(self.tracks)
-        print(tracks)
-        for track in tracks:
-            buf = open(track.location, 'rb').read()
-            buf = (binascii.crc32(buf) & 0xFFFFFFFF)
-            track.CRC = "%08X" % buf
-            print("CRC = " + track.CRC)
-            track.save()
-
-
 class LocalTrack:
     def __init__(self, ):
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
-            = self.album = self.genre = self.moodbar = self.CRC = ""
+            = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
             = self.duration = self.discNumber = self.size = self.playCounter = 0
         self.artist = []
