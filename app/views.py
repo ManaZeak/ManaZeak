@@ -15,6 +15,7 @@ from django.views.generic.base import View
 from django.views.generic.list import ListView
 
 from app.controller import scanLibrary, shuffleSoundSelector
+from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
@@ -176,6 +177,16 @@ def loadTracksFromPlaylist(request):
 
         except AttributeError:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+def bulkExport(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'LIBRARY_ID' in response:
+            libraryId = strip_tags(response['LIBRARY_ID'])
+            if Library.objects.filter(id=libraryId).count() == 1:
+                library = Library.objects.get(id=libraryId)
+                return HttpResponse(getPlaylistExport(library.playlist.id))
 
 
 # Create a new library can only be done while being a superuser.
