@@ -44,8 +44,6 @@ def initialScan(request):
                 playlist.isLibrary = True
                 playlist.save()
                 data = scanLibrary(library, playlist, library.convertID3)
-                print("Ended initial scan")
-                playlist.isScanned = True
             else:
                 data = errorCheckMessage(False, "dirNotFound")
         else:
@@ -366,6 +364,41 @@ def randomNextTrack(request):
                     else:
                         count += 1
             return JsonResponse(errorCheckMessage(False, "dbError"))
+        else:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
+
+
+# Drop a library and index all the tracks
+def rescanLibrary(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'LIBRARY_ID' in response:
+            library = strip_tags(response['LIBRARY_ID'])
+            if Library.objects.filter(id=library).count() == 1:
+                library = Library.objects.get(id=library)
+
+                # Check if the library is not used somewhere else
+                if library.playlist.isScanned:
+                    # Delete all the old tracks
+                    library.playlist.delete()
+
+                    # Recreating playlist
+                    playlist = Playlist()
+                    playlist.name = library.name
+                    playlist.user = request.user
+                    playlist.isLibrary = True
+                    playlist.save()
+                    library.playlist = playlist
+
+                    # Scan library
+                    data = scanLibrary(library, playlist, library.convertID3)
+                    return JsonResponse(data)
+                else:
+                    return JsonResponse(errorCheckMessage(False, "rescanError"))
+            else:
+                return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     else:
