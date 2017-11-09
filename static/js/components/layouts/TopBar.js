@@ -17,14 +17,17 @@ var TopBar = function(cookies) {
 
     this.userExpander = document.createElement("div");
     this.moodbar = document.createElement("div");
+    this.moodbarThumb = document.createElement("div");
     this.playlistBar = document.createElement("div");
 
     this.topBar.id = "topBar";
     this.userExpander.id = "userExpander";
     this.moodbar.id = "moodbar";
+    this.moodbarThumb.id = "moodbarThumb";
     this.playlistBar.id = "playlistBar";
 
     this.topBar.appendChild(this.moodbar);
+    this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
 

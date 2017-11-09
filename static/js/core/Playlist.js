@@ -205,7 +205,7 @@ Playlist.prototype = {
         this.getTracksIntervalId = setInterval(function() {
             console.log("Tracks received from server -- in progress");
             that._getTracksFromServer_aux(playlistId);
-        }, 5000); // every 5s
+        }, 20000); // every 20s
     },
 
 

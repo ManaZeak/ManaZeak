@@ -139,10 +139,7 @@ function renderMoodFile(file, parentDiv) {
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4 && this.status === 200) {
-            while(parentDiv.firstChild){
-                parentDiv.removeChild(parentDiv.firstChild);
-            }
-
+            d3.selectAll('#moodbar svg').remove();
             var rgb = new Array(this.responseText.length / 3);
 
             for (var i = 0, len = rgb.length; i < len; ++i) {
