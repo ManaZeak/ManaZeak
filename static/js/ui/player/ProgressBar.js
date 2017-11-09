@@ -9,6 +9,10 @@ var ProgressBar = function() {
         current:   document.getElementById("progress"),
         thumb:     document.getElementById("progressThumb")
     };
+    this.moodbar = {
+        container: null,
+        thumb: null
+    };
     this.duration = {
         current: document.getElementById("currentDuration"),
         total:   document.getElementById("totalDuration"),
@@ -28,11 +32,14 @@ ProgressBar.prototype = {
     init: function(track) {
         this.duration.current.innerHTML = "00:00";
         this.duration.total.innerHTML = secondsToTimecode(track.duration);
+        this.moodbar.container = document.getElementById("moodbar");
+        this.moodbar.thumb = document.getElementById("moodbarThumb");
     },
 
 
-    moveProgress: function(event, track) {
-        var boundRect = this.progressBar.container.getBoundingClientRect();
+    moveMoodbar: function(event, track) {
+        var boundRect = this.moodbar.container.getBoundingClientRect();
+
         if (this.isDragging) {
             var distanceToLeftInPx = event.clientX - boundRect.left;
             var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
@@ -42,6 +49,28 @@ ProgressBar.prototype = {
             // Style assignation
             this.progressBar.current.style.width = distanceToLeftInPr + "%";
             this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
+            this.moodbar.thumb.style.marginLeft = distanceToLeftInPr + "%";
+            // Changing track currentTime
+            track.currentTime = (track.duration * distanceToLeftInPr) / 100;
+            // Updating progress player -- /!\ Code under this while be trigger every sec due to setInterval(); in init();
+            this.updateProgress(track);
+        }
+    },
+
+
+    moveProgress: function(event, track) {
+        var boundRect = this.progressBar.container.getBoundingClientRect();
+
+        if (this.isDragging) {
+            var distanceToLeftInPx = event.clientX - boundRect.left;
+            var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
+            // OOB protection
+            if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
+            if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
+            // Style assignation
+            this.progressBar.current.style.width = distanceToLeftInPr + "%";
+            this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
+            this.moodbar.thumb.style.marginLeft = distanceToLeftInPr + "%";
             // Changing track currentTime
             track.currentTime = (track.duration * distanceToLeftInPr) / 100;
             // Updating progress player -- /!\ Code under this while be trigger every sec due to setInterval(); in init();
@@ -55,6 +84,7 @@ ProgressBar.prototype = {
         // Style assignation
         this.progressBar.current.style.width = distanceToLeftBorder + "%";
         this.progressBar.thumb.style.marginLeft = distanceToLeftBorder + "%";
+        this.moodbar.thumb.style.marginLeft = distanceToLeftBorder + "%";
 
         if (!this.isInverted) { // TODO : savoir quoi faire exactement
             this.duration.current.innerHTML = secondsToTimecode(track.currentTime);
@@ -126,6 +156,7 @@ ProgressBar.prototype = {
 
         this.progressBar.current.style.width = 0 + "%";
         this.progressBar.thumb.style.marginLeft = 0 + "%";
+        this.moodbar.thumb.style.marginLeft = 0 + "%";
 
         this.stopRefreshInterval();
     },
@@ -133,6 +164,7 @@ ProgressBar.prototype = {
 
     // Class Getters and Setters
     getContainer: function()              { return this.progressBar.container; },
+    getMoodbar: function()                { return this.moodbar.container;     },
     getCurrentDuration: function()        { return this.duration.current;      },
     getTotalDuration: function()          { return this.duration.total;        },
     getIsDragging: function()             { return this.isDragging;            },
