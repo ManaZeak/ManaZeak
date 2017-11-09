@@ -292,24 +292,8 @@ def getTrackPathByID(request):
         return JsonResponse(data)
 
 
-# Return if a library has finished to be scanned
-def checkLibraryScanStatus(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                print("Playlist status : " + str(playlist.isScanned))
-                data = errorCheckMessage(playlist.isScanned, None)
-            else:
-                data = errorCheckMessage(False, "dbError")
-            return JsonResponse(data)
-        else:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-
-
 # Function for check if a library has been scanned.
-def checkLibraryScanStatusLong(request):
+def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
