@@ -117,6 +117,7 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
         for artist in track.artist:
             writer.writerow([referenceTracks[track], artists[artist]])
 
+    virtualFile.seek(0)
     # Import the csv into the database
     with closing(connection.cursor()) as cursor:
         cursor.copy_from(
