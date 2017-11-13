@@ -10,6 +10,7 @@
  *  callback   : function     - function to call after _fillTrack on newLibrary        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+//TODO: get shuffle and repeat from server
 var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, callback) {
 
     // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
@@ -28,6 +29,8 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
     this.name = name;
     this.isLibrary = isLibrary;
     this.isLoading = isLoading;
+    this.isShuffle = false;
+    this.isRepeat  = false;
     this.cookies = cookies;
 
     if (typeof rawTracks !== 'undefined') {
@@ -44,6 +47,7 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
 
     // Boolean to add to know if tracks are set or not
     this.tracks = [];
+    this.currentTrack = 0;
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
 
@@ -83,7 +87,7 @@ Playlist.prototype = {
         JSONParsedGetRequest(
             "components/newLibrary",
             true,
-            function(response) { // TODO : create modal of procedure
+            function(response) { // TODO : create modals of procedure
                 // TODO : test response to see if it's html or void
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
@@ -290,6 +294,100 @@ Playlist.prototype = {
             this.durationTotal += tracks[i].DURATION;
 
             this.tracks.push(new Track(tracks[i]));
+        }
+    },
+
+
+    playNextTrack: function() {
+        var that = this;
+
+        if (this.isShuffle) {
+            JSONParsedPostRequest(
+                "ajax/randomNextTrack/",
+                this.cookies,
+                JSON.stringify({
+                    PLAYLIST_ID: that.id
+                    // TODO: send isRepeat here
+                }),
+                function(response) {
+                    console.log(response);
+                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
+                    var cover = response.COVER;
+                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    //window.app.topBar.changeMoodbar(that.currentTrack);
+                    window.app.player.changeTrack("../" + response.PATH);
+                }
+            );
+        } else {
+            this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
+                }),
+                function(response) {
+                    console.log(that.currentTrack);
+                    console.log(that.currentTrack);
+                    var cover = response.COVER;
+                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    console.log(response);
+                    window.app.trackPreview.setVisible(true);
+                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    window.app.topBar.changeMoodbar(that.currentTrack);
+                    window.app.player.changeTrack("../" + response.PATH);
+                }
+            );
+        }
+    },
+
+
+    playPreviousTrack: function() {
+        var that = this;
+
+        if (this.isShuffle) {
+            //TODO: Get from server history
+            JSONParsedPostRequest(
+                "ajax/randomNextTrack/",
+                this.cookies,
+                JSON.stringify({
+                    PLAYLIST_ID: that.id
+                    // TODO: send isRepeat here
+                }),
+                function(response) {
+                    console.log(response);
+                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
+                    var cover = response.COVER;
+                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    //window.app.topBar.changeMoodbar(that.currentTrack);
+                    window.app.player.changeTrack("../" + response.PATH);
+                }
+            );
+        } else {
+            this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
+            JSONParsedPostRequest(
+                "ajax/getTrackPathByID/",
+                this.cookies,
+                JSON.stringify({
+                    TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
+                }),
+                function(response) {
+                    var cover = response.COVER;
+                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
+
+                    window.app.trackPreview.setVisible(true);
+                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    window.app.topBar.changeMoodbar(that.currentTrack);
+                    window.app.player.changeTrack("../" + response.PATH);
+                }
+            );
         }
     },
 

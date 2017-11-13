@@ -35,7 +35,7 @@ PlaylistPreview.prototype = {
 
     updatePlaylistPreview: function() {
         this.ui.repeat.innerHTML = !window.app.player.getIsLooping() ? "Repeat off" : "Repeat on";
-        this.ui.shuffle.innerHTML = !window.app.player.getIsShuffle() ? "Shuffle off" : "Shuffle on";
+        //this.ui.shuffle.innerHTML = !window.app.player.getIsShuffle() ? "Shuffle off" : "Shuffle on";
     },
 
 

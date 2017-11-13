@@ -156,7 +156,8 @@ ProgressBar.prototype = {
 
         this.progressBar.current.style.width = 0 + "%";
         this.progressBar.thumb.style.marginLeft = 0 + "%";
-        this.moodbar.thumb.style.marginLeft = 0 + "%";
+        if(this.moodbar.thumb)
+            this.moodbar.thumb.style.marginLeft = 0 + "%";
 
         this.stopRefreshInterval();
     },
