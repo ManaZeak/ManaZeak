@@ -20,46 +20,6 @@ var Player = function(cookies) {
     this.volumeBar   = new VolumeBar();
     this.queue       = new Queue();
 
-    // UI
-    this.ui = {
-        play: {
-            button: document.getElementById("buttonPlay"),
-            image:  document.getElementById("imagePlay")
-        },
-        stop: {
-            button: document.getElementById("buttonStop"),
-            image:  document.getElementById("imageStop")
-        },
-        mute: {
-            button: document.getElementById("buttonMute"),
-            image:  document.getElementById("imageMute")
-        },
-        repeat: {
-            button: document.getElementById("buttonRepeat"),
-            image:  document.getElementById("imageRepeat")
-        },
-        shuffle: {
-            button: document.getElementById("buttonShuffle"),
-            image:  document.getElementById("imageShuffle")
-        },
-        next: {
-            button: document.getElementById("buttonNext"),
-            image:  document.getElementById("imageNext")
-        },
-        previous: {
-            button: document.getElementById("buttonPrevious"),
-            image:  document.getElementById("imagePrevious")
-        },
-        queueExpander: {
-            button: document.getElementById("queueExpander"),
-            image:  document.getElementById("imageQueueExpander")
-        },
-        userExpander: {
-            button: document.getElementById("userExpander")
-        }
-    };
-
-
     this.init();
 };
 
@@ -74,7 +34,6 @@ Player.prototype = {
 
     play: function() {
         this.isPlaying = true;
-        this.ui.play.image.src = "/static/img/player/pause.svg";
         this.progressBar.startRefreshInterval(this.player);
         this.player.play();
     },
@@ -82,7 +41,6 @@ Player.prototype = {
 
     pause: function() {
         this.isPlaying = false;
-        this.ui.play.image.src = "/static/img/player/play.svg";
         this.progressBar.stopRefreshInterval();
         this.player.pause();
     },
@@ -105,7 +63,6 @@ Player.prototype = {
         this.progressBar.stopRefreshInterval();
         this.progressBar.resetProgressBar();
 
-        this.ui.play.image.src = "/static/img/player/play.svg";
         window.app.trackPreview.setVisible(false);
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
@@ -240,7 +197,7 @@ Player.prototype = {
         this.stopPlayback();
         console.log(url);
         this.player.src = url;
-        this.player.play();
+        this.play();
     },
 
 

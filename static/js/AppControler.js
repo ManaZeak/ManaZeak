@@ -1,5 +1,4 @@
 App.prototype.togglePlay = function() {
-    console.log('OUI');
     this.player.togglePlay();
 };
 
