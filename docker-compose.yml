@@ -7,7 +7,7 @@ services:
     ports:
       - "80:8000"
     volumes:
-      - /home/pierre/Documents/ACDC/:/library
+      - /run/media/squadella/DATA/Music/_Artists/:/library
       - ./nginx/config:/etc/nginx/conf.d
       - ./static:/static
     depends_on:
@@ -30,7 +30,7 @@ services:
     build: .
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
-      - /home/pierre/Documents/ACDC/:/library
+      - /run/media/squadella/DATA/Music/_Artists/:/library
       - ./static:/static
       - .:/ManaZeak
     expose:
@@ -46,6 +46,6 @@ services:
      container_name: moodbar
      command: bash -c "python moodbarGenerator.py"
      volumes:
-     - /home/pierre/Documents/ACDC/:/library
-     - /home/pierre/Documents/Gitlab/ManaZeak/static/moodbar/:/moodbar/static
-     - /home/pierre/Documents/Gitlab/ManaZeak/scripts/:/moodbar
+     - /run/media/squadella/DATA/Music/_Artists/:/library
+     - /home/squadella/Documents/GitHub/ManaZeak/static/mood/:/moodbar/static
+     - /home/squadella/Documents/GitHub/ManaZeak/scripts/:/moodbar

@@ -42,10 +42,13 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
         this.callback = null;
     }
 
-    // Boolean to add to know if tracks are sette dor not
+    // Boolean to add to know if tracks are set or not
     this.tracks = [];
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
+
+    this.trackTotal    = 0;
+    this.durationTotal = 0;
 
     this._init(); // Playlist initialization
 };
@@ -69,6 +72,7 @@ Playlist.prototype = {
 
     _loadLibrary: function() {
         this._fillTracks(this.rawTracks);
+        console.log(this);
     },
 
 
@@ -79,7 +83,7 @@ Playlist.prototype = {
         JSONParsedGetRequest(
             "components/newLibrary",
             true,
-            function(response) {
+            function(response) { // TODO : create modal of procedure
                 // TODO : test response to see if it's html or void
                 document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
 
@@ -91,19 +95,13 @@ Playlist.prototype = {
 
                 console.log(that.newLibrary);
 
-                if (that.newLibrary) { // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
-                    console.log("Here");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-                        "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
-                        "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
-                        "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-                }
+                // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
 
-                else {
-                    console.log("There");
-                    that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!\n";
-                    // TODO : remove path input depending on radioBox
-                }
+                that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
+                    "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
+                    "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
+                    "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
+                // TODO : remove path input depending on radioBox
 
                 that.ui.scan.addEventListener("click", that._checkInputs.bind(that));
             }
@@ -207,7 +205,7 @@ Playlist.prototype = {
         this.getTracksIntervalId = setInterval(function() {
             console.log("Tracks received from server -- in progress");
             that._getTracksFromServer_aux(playlistId);
-        }, 5000); // every 5s
+        }, 20000); // every 20s
     },
 
 
@@ -288,6 +286,9 @@ Playlist.prototype = {
 
     _fillTracks: function(tracks) {
         for (var i = 0; i < tracks.length ;++i) {
+            ++this.trackTotal;
+            this.durationTotal += tracks[i].DURATION;
+
             this.tracks.push(new Track(tracks[i]));
         }
     },
