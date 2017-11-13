@@ -6,8 +6,8 @@
     <!--</div> -->
     <div id="trackPreview">
         <div class="tooltipWrapper">
-            <img src="{% static "img/covers/default.jpg" %}" alt="" id="trackPreviewCover">
-            <span class="tooltipCover"><img src="{% static "img/covers/default.jpg" %}" alt="" id="trackPreviewThumb"></span>
+            <img src="{% static "img/utils/defaultcover.jpg" %}" alt="" id="trackPreviewCover">
+            <span class="tooltipTrackCover"><img src="{% static "img/utils/defaultcover.jpg" %}" alt="" id="trackPreviewThumb"></span>
         </div>
         <ul>
             <li id="trackPreviewTitle">404</li>
@@ -18,6 +18,7 @@
     </div>
     <div id="controlsContainer">
         <div id="half">
+            <a id="buttonShuffle"><img src="{% static "img/player/shuffle.svg" %}" id="imageShuffle" alt=""></a>
             <a id="buttonRepeat"><img src="{% static "img/player/repeat.svg" %}" id="imageRepeat" alt=""></a>
             <a id="buttonPrevious"><img src="{% static "img/player/previous.svg" %}" id="imagePrevious" alt=""></a>
             <a id="buttonPlay"><img src="{% static "img/player/play.svg" %}" id="imagePlay" alt=""></a>
@@ -49,6 +50,18 @@
                 </div>
                 <span id="totalDuration" class="pointer">--:--</span>
             </div>
+        </div>
+    </div>
+    <div id="playlistPreview">
+        <ul>
+            <li id="playlistPreviewName">404</li>
+            <li id="playlistPreviewTotal">Knife Party</li>
+            <li id="playlistPreviewDuration">Abandon Ship [LP]</li>
+            <li><span id="playlistPreviewRepeat">2014</span>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="playlistPreviewShuffle">Complextro</span></li>
+        </ul>
+        <div class="tooltipWrapper">
+            <img src="{% static "img/utils/defaultcover.jpg" %}" alt="" id="playlistPreviewCover">
+            <span class="tooltipPlaylistCover"><img src="{% static "img/utils/defaultcover.jpg" %}" alt="" id="playlistPreviewThumb"></span>
         </div>
     </div>
 </div>
