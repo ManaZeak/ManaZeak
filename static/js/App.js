@@ -13,11 +13,12 @@ var App = function() {
 
     this.mainContainer.id = "mainContainer";
 
-    this.player          = new Player(this.cookies);
+    this.player          = null;
     this.trackPreview    = new TrackPreview();
     this.playlistPreview = new PlaylistPreview();
     this.listView        = null;
     this.playlists       = [];
+    this.activePlaylist = null;
     this.cssFiles        = {};
 
     document.body.appendChild(this.topBar.getTopBar());
@@ -27,6 +28,7 @@ var App = function() {
 App.prototype = {
 
     init: function() {
+        this.player = new Player(this.cookies);
         var that = this;
 
         // Loading playlists
@@ -67,7 +69,6 @@ App.prototype = {
                                                      that.cookies,
                                                      response,
                                                      undefined));
-
                     // response = raw tracks JSON object
                     for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
@@ -81,6 +82,7 @@ App.prototype = {
 
                     that.topBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
+                    that.activePlaylist = that.playlists[0];
                     that.listView = new ListView(that.playlists[0].getId(),
                                                  that.playlists[0].getTracks(),
                                                  that.cookies);
@@ -138,3 +140,8 @@ App.prototype = {
         }));
     }
 };
+
+//TODO: Closure or something
+var addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
+for(var i = 0; i < addonSrcs.length; ++i)
+    addonSrcs[i].src = addonSrcs[i].dataset.src;

@@ -5,7 +5,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ListView = function(playlistId, tracks, cookies) {
     this.listView = null;
-    this.playlistId = playlistId;
     this.tracks = tracks;
     this.cookies = cookies;
     this.entries = [];
@@ -186,44 +185,6 @@ ListView.prototype = {
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);
-    },
-
-
-    getNextTrack: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        return this.entries[(i + 1) % this.entries.length].entry.id;
-    },
-
-
-    getPreviousTrack: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        if (i === 0)
-            return {
-              id: this.entries[this.entries.length - 1].entry.id
-            };
-        else {
-            return {
-                id:  this.entries[i - 1].entry.id
-            };
-        }
-    },
-
-
-    getTrackInfo: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        return this.entries[i].track;
     },
 
 
