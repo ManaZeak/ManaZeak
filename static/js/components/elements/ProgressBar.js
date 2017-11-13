@@ -113,7 +113,7 @@ ProgressBar.prototype = {
 
     startRefreshInterval: function(track) {
         var that = this;
-
+        console.log('OK');
         this.refreshIntervalId = setInterval(function() {
             that.updateProgress(track);
         }, 1000);
