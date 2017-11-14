@@ -1,17 +1,7 @@
-version: '2'
+version: '3'
 
 services:
- nginx:
-    image: nginx:latest
-    container_name: ng01
-    ports:
-      - "80:8000"
-    volumes:
-      - /run/media/squadella/DATA/Music/_Artists/:/library
-      - ./nginx/config:/etc/nginx/conf.d
-      - ./static:/static
-    depends_on:
-      - web
+
  db:
     image: postgres:latest
     container_name: db
@@ -30,22 +20,42 @@ services:
     build: .
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
-      - /run/media/squadella/DATA/Music/_Artists/:/library
+      - /home/pierre/Documents/ACDC/:/library
       - ./static:/static
       - .:/ManaZeak
-    expose:
-      - "8000"
-      - "5432"
+
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - db
+
+ nginx:
+    image: nginx:latest
+    container_name: ng01
+    ports:
+      - "80:8000"
+    volumes:
+      - /home/pierre/Documents/ACDC/:/library
+      - ./nginx/config:/etc/nginx/conf.d
+      - ./static:/static
+    depends_on:
+      - web
 
  moodbar:
      build: ./moodbar
      container_name: moodbar
      command: bash -c "python moodbarGenerator.py"
      volumes:
-     - /run/media/squadella/DATA/Music/_Artists/:/library
-     - /home/squadella/Documents/GitHub/ManaZeak/static/mood/:/moodbar/static
-     - /home/squadella/Documents/GitHub/ManaZeak/scripts/:/moodbar
+     - /home/pierre/Documents/ACDC/:/library
+     - /home/pierre/Documents/Gitlab/ManaZeak/static/mood/:/moodbar/static
+     - /home/pierre/Documents/Gitlab/ManaZeak/scripts/:/moodbar
+
+ syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing01
+    volumes:
+    - /home/pierre/Documents/ACDC/:/var/syncthing
+    ports:
+      - "127.0.0.1:8384:8384"
+      - "22000:22000"
+      - "21027:21027/udp"
