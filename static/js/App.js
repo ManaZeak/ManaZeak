@@ -101,8 +101,6 @@ App.prototype = {
         else {
             this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
                 that.topBar.init(that.playlists, 0);
-                that.listView = new ListView(that.playlists[0].getId(), that.playlists[0].getTracks(), that.cookies);
-                that.listView.showListView();
             }));
         }
     },
