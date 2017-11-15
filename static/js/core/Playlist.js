@@ -57,7 +57,7 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
 
     var viewkeys = Object.keys(window.app.availableViews);
     this.views = new Array(viewkeys.length).fill(null);
-    this.activeView = null;
+    this.activeView = window.app.availableViews[viewkeys[0]];
 
     this._init(); // Playlist initialization
 };
@@ -245,11 +245,6 @@ Playlist.prototype = {
                             self._fillTracks(self.rawTracks);
                             self.refreshViews();
                             self.showView(self.activeView);
-
-                            if (!self.isLoading) {
-                                document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
-                                self.callback();
-                            }
                         }
                     );
                 }
