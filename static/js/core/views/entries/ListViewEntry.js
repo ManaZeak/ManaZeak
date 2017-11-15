@@ -4,23 +4,21 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ListViewEntry = function(track, listView, id) {
-    this.entry = document.createElement("div");
-
-    this.entry.id = track.id.track;
+    this.entry = document.createElement("DIV");
     this.entry.dataset.listViewID = id;
-
     this.entry.className = "trackContainer";
+
     this.track = track;
 
-    var duration        = document.createElement("div");
-    var title           = document.createElement("div");
-    var artist          = document.createElement("div");
-    var composer        = document.createElement("div");
-    var performer       = document.createElement("div");
-    var album           = document.createElement("div");
-    var genre           = document.createElement("div");
-    var bitRate         = document.createElement("div");
-    var year            = document.createElement("div");
+    var duration        = document.createElement("DIV");
+    var title           = document.createElement("DIV");
+    var artist          = document.createElement("DIV");
+    var composer        = document.createElement("DIV");
+    var performer       = document.createElement("DIV");
+    var album           = document.createElement("DIV");
+    var genre           = document.createElement("DIV");
+    var bitRate         = document.createElement("DIV");
+    var year            = document.createElement("DIV");
 
     duration.className  = "col-duration";
     title.className     = "col-title";
@@ -62,7 +60,6 @@ var ListViewEntry = function(track, listView, id) {
 
 ListViewEntry.prototype = {
 
-    getEntry: function() { return this.entry; },
     getIsSelected: function() { return this.isSelected; },
 
     setIsSelected: function(isSelected) {

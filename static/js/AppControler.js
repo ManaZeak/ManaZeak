@@ -32,3 +32,25 @@ App.prototype.next = function() {
 App.prototype.previous = function() {
     this.activePlaylist.playPreviousTrack();
 };
+
+App.prototype.changeTrack = function(track) {
+
+    JSONParsedPostRequest(
+        "ajax/getTrackPathByID/",
+        this.cookies,
+        JSON.stringify({
+            TRACK_ID: track.id.track
+        }),
+        function(response) {
+            if (response.RESULT === "FAIL") {
+                new Notification("Bad format.", response.ERROR);
+            } else {
+                window.app.trackPreview.setVisible(true);
+                window.app.trackPreview.changeTrack(track, response.COVER);
+                window.app.topBar.changeMoodbar(track.id.track);
+                window.app.player.changeTrack(".." + response.PATH, track.id.track);
+                window.app.player.play();
+            }
+        }
+    );
+};

@@ -11,7 +11,7 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 //TODO: get shuffle and repeat from server
-var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, callback) {
+var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
 
     // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
     this.ui = {
@@ -31,8 +31,8 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
     this.isLoading = isLoading;
     this.isShuffle = false;
     this.isRepeat  = false;
-    this.cookies = cookies;
 
+    //TODO: fix this
     if (typeof rawTracks !== 'undefined') {
         this.rawTracks = rawTracks;
     } else {
@@ -45,6 +45,7 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
         this.callback = null;
     }
 
+
     // Boolean to add to know if tracks are set or not
     this.tracks = [];
     this.currentTrack = 0;
@@ -54,9 +55,12 @@ var Playlist = function(id, name, isLibrary, isLoading, cookies, rawTracks, call
     this.trackTotal    = 0;
     this.durationTotal = 0;
 
+    var viewkeys = Object.keys(window.app.availableViews);
+    this.views = new Array(viewkeys.length).fill(null);
+    this.activeView = null;
+
     this._init(); // Playlist initialization
 };
-
 
 Playlist.prototype = {
 
@@ -140,7 +144,7 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/newLibrary/",
-            this.cookies,
+            window.app.cookies,
             JSON.stringify({
                 CONVERT: this.ui.convert.checked,
                 NAME:    this.ui.name.value,
@@ -174,7 +178,7 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
-            this.cookies,
+            window.app.cookies,
             // "{\"LIBRARY_ID\":" + libraryId + "}", TODO : test this
             JSON.stringify({
                 LIBRARY_ID: libraryId
@@ -212,7 +216,7 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/checkLibraryScanStatus/",
-            this.cookies,
+            window.app.cookies,
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -230,7 +234,7 @@ Playlist.prototype = {
 
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
-                        that.cookies,
+                        window.app.cookies,
                         JSON.stringify({
                             PLAYLIST_ID: playlistId
                         }),
@@ -239,6 +243,8 @@ Playlist.prototype = {
                             self.rawTracks = response;
                             self.scanModal.close();
                             self._fillTracks(self.rawTracks);
+                            self.refreshViews();
+                            self.showView(self.activeView);
 
                             if (!self.isLoading) {
                                 document.getElementById("mainContainer").removeChild(document.getElementById("newLibrary"));
@@ -264,7 +270,7 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
-            that.cookies,
+            window.app.cookies,
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -272,6 +278,8 @@ Playlist.prototype = {
                 // response = raw tracks JSON object
                 that.rawTracks = response;
                 that._fillTracks(that.rawTracks);
+                that.refreshViews();
+                that.showView(that.activeView);
                 callback();
             }
         );
@@ -296,7 +304,7 @@ Playlist.prototype = {
         if (this.isShuffle) {
             JSONParsedPostRequest(
                 "ajax/randomNextTrack/",
-                this.cookies,
+                window.app.cookies,
                 JSON.stringify({
                     PLAYLIST_ID: that.id
                     // TODO: send isRepeat here
@@ -313,7 +321,7 @@ Playlist.prototype = {
             this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
             JSONParsedPostRequest(
                 "ajax/getTrackPathByID/",
-                this.cookies,
+                window.app.cookies,
                 JSON.stringify({
                     TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
                 }),
@@ -335,7 +343,7 @@ Playlist.prototype = {
             //TODO: Get from server history
             JSONParsedPostRequest(
                 "ajax/randomNextTrack/",
-                this.cookies,
+                window.app.cookies,
                 JSON.stringify({
                     PLAYLIST_ID: that.id
                     // TODO: send isRepeat here
@@ -353,7 +361,7 @@ Playlist.prototype = {
             this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
             JSONParsedPostRequest(
                 "ajax/getTrackPathByID/",
-                this.cookies,
+                window.app.cookies,
                 JSON.stringify({
                     TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
                 }),
@@ -367,6 +375,28 @@ Playlist.prototype = {
         }
     },
 
+
+    activate: function() {
+        window.app.activePlaylist = this;
+        this.showView(window.app.availableViews.LIST);
+    },
+
+    showView: function(viewType) {
+        var v = this.views[viewType.index];
+        if(v === null) {
+            this.views[viewType.index] = new viewType.class(viewType.class.prototype.getDataFromPlaylist(this));
+            v = this.views[viewType.index];
+        }
+        v.show();
+        this.activeView = v;
+    },
+
+    refreshViews: function()
+    {
+        for(var i = 0; i < this.views.length; ++i)
+            if(this.views[i] !== null)
+                this.views[i].init(this.views[i].getDataFromPlaylist(this));
+    },
 
     // Class Getters and Setters
     getId: function()         { return this.id;        },

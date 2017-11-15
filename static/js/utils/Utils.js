@@ -1,5 +1,12 @@
 "use strict";
 
+function extendClass(parent, child) {
+    var proto = Object.create(parent.prototype);
+    for(var i in child.prototype) {
+        proto[i] = child.prototype[i];
+    }
+    child.prototype = proto;
+}
 
 function precisionRound(value, precision) {
     var multiplier = Math.pow(10, precision || 0);

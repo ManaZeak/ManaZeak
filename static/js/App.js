@@ -16,10 +16,20 @@ var App = function() {
     this.player          = null;
     this.trackPreview    = new TrackPreview();
     this.playlistPreview = new PlaylistPreview();
-    this.listView        = null;
     this.playlists       = [];
     this.activePlaylist = null;
     this.cssFiles        = {};
+
+    this.availableViews = {
+        LIST: {
+            index: 0,
+            class: ListView
+        },
+        ALBUM: {
+            index: 1,
+            class: null
+        }
+    };
 
     document.body.appendChild(this.topBar.getTopBar());
     document.body.appendChild(this.mainContainer);
@@ -62,11 +72,11 @@ App.prototype = {
                     PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
                 }),
                 function(response) {
+                    //TODO: init others in callback
                     that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0],
                                                      playlists.PLAYLIST_NAMES[0],
                                                      playlists.PLAYLIST_IS_LIBRARY[0],
                                                      true,
-                                                     that.cookies,
                                                      response,
                                                      undefined));
                     // response = raw tracks JSON object
@@ -75,18 +85,13 @@ App.prototype = {
                                                          playlists.PLAYLIST_NAMES[i],
                                                          playlists.PLAYLIST_IS_LIBRARY[i],
                                                          true,
-                                                         that.cookies,
                                                          undefined,
                                                          undefined));
                     }
 
                     that.topBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    that.activePlaylist = that.playlists[0];
-                    that.listView = new ListView(that.playlists[0].getId(),
-                                                 that.playlists[0].getTracks(),
-                                                 that.cookies);
-                    that.listView.showListView();
+                    that.playlists[0].activate();
                     that.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
                 }
             );
