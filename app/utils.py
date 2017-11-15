@@ -144,6 +144,8 @@ def exportPlaylistToSimpleJson(playlist):
         finalData += thread.finalData
     finalData = finalData[:-1]
     finalData += "]"
+    playlist.jsonExport = finalData.replace('\n', '').replace('\r', '')
+    playlist.save()
     return finalData.replace('\n', '').replace('\r', '')
 
 
