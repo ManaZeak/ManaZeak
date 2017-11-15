@@ -76,7 +76,6 @@ Playlist.prototype = {
 
     _loadLibrary: function() {
         this._fillTracks(this.rawTracks);
-        console.log(this);
     },
 
 
@@ -96,8 +95,6 @@ Playlist.prototype = {
                 that.ui.path        = document.getElementById("path");
                 that.ui.convert     = document.getElementById("convert");
                 that.ui.scan        = document.getElementById("scan");
-
-                console.log(that.newLibrary);
 
                 // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
 
@@ -174,7 +171,6 @@ Playlist.prototype = {
 
     _initialLibraryScan: function(libraryId) {
         var that = this;
-        console.log("Scanning library -- in progress");
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
@@ -191,7 +187,6 @@ Playlist.prototype = {
                  *     ERROR_MSG:   string
                  * } */
                 if (response.DONE) {
-                    console.log("Scanning library -- done");
                     that._getTracksFromServer(response.PLAYLIST_ID);
                 }
 
@@ -207,14 +202,12 @@ Playlist.prototype = {
         var that = this;
 
         this.getTracksIntervalId = setInterval(function() {
-            console.log("Tracks received from server -- in progress");
             that._getTracksFromServer_aux(playlistId);
         }, 20000); // every 20s
     },
 
 
     _getTracksFromServer_aux: function(playlistId) {
-        console.log("_getTracksFromServer_aux() called");
         var that = this;
 
         JSONParsedPostRequest(
@@ -243,7 +236,6 @@ Playlist.prototype = {
                         }),
                         function(response) {
                             // response = raw tracks JSON object
-                            console.log("Tracks received from server -- done");
                             self.rawTracks = response;
                             self.scanModal.close();
                             self._fillTracks(self.rawTracks);
@@ -310,13 +302,9 @@ Playlist.prototype = {
                     // TODO: send isRepeat here
                 }),
                 function(response) {
-                    console.log(response);
                     // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
-                    var cover = response.COVER;
-                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
-
                     window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
                     //window.app.topBar.changeMoodbar(that.currentTrack);
                     window.app.player.changeTrack("../" + response.PATH);
                 }
@@ -330,14 +318,8 @@ Playlist.prototype = {
                     TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
                 }),
                 function(response) {
-                    console.log(that.currentTrack);
-                    console.log(that.currentTrack);
-                    var cover = response.COVER;
-                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
-
-                    console.log(response);
                     window.app.trackPreview.setVisible(true);
-                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
                     window.app.topBar.changeMoodbar(that.currentTrack);
                     window.app.player.changeTrack("../" + response.PATH);
                 }
@@ -359,13 +341,10 @@ Playlist.prototype = {
                     // TODO: send isRepeat here
                 }),
                 function(response) {
-                    console.log(response);
                     // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
-                    var cover = response.COVER;
-                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
 
                     window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
                     //window.app.topBar.changeMoodbar(that.currentTrack);
                     window.app.player.changeTrack("../" + response.PATH);
                 }
@@ -379,11 +358,8 @@ Playlist.prototype = {
                     TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
                 }),
                 function(response) {
-                    var cover = response.COVER;
-                    if (cover == null) { cover = "../static/img/utils/defaultcover.jpg"; }
-
                     window.app.trackPreview.setVisible(true);
-                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], cover);
+                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
                     window.app.topBar.changeMoodbar(that.currentTrack);
                     window.app.player.changeTrack("../" + response.PATH);
                 }
