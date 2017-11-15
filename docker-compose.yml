@@ -50,6 +50,7 @@ services:
     syncthing:
         image: syncthing/syncthing:latest
         container_name: syncthing01
+        network_mode: "host" # For local discovery
         volumes:
             - /home/pierre/Documents/ACDC/:/var/syncthing
         ports:
