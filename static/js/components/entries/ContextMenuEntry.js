@@ -59,7 +59,6 @@ ContextMenuEntry.prototype = {
         for(var i = 0; i < array_of_IDs.length; i++)
             show_selector += "," + menu_selector + ".mzk-ctx-include-" + array_of_IDs[i] + this_selector;
         this.show_rule = sheet.insertRule(show_selector + show_css);
-        console.dir(sheet);
     },
 
     add_child: function (other_entry, before_ID, after)

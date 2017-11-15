@@ -162,11 +162,8 @@ ListView.prototype = {
                     if (response.RESULT === "FAIL") {
                         new Notification("Bad format.", response.ERROR);
                     } else {
-                        var cover = response.COVER;
-                        if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
-
                         window.app.trackPreview.setVisible(true);
-                        window.app.trackPreview.changeTrack(that.entries[id].track, cover);
+                        window.app.trackPreview.changeTrack(that.entries[id].track, response.COVER);
                         window.app.topBar.changeMoodbar(that.entries[id].entry.id);
                         window.app.player.changeTrack(".." + response.PATH, that.entries[id].entry.id);
                         window.app.player.play();

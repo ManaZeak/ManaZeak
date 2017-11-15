@@ -21,6 +21,8 @@ var TrackPreview = function() {
 TrackPreview.prototype = {
 
     changeTrack: function(track, cover) {
+        if (cover == null || cover == '') { cover = "../static/img/utils/defaultcover.jpg"; }
+        else { cover = '../static/img/covers/' + cover; }
         // TODO : handle cover smooth transition
         this.ui.cover.src = cover;
         this.ui.thumb.src = cover;

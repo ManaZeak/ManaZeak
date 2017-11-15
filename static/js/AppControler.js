@@ -5,6 +5,7 @@ App.prototype.togglePlay = function() {
 
 App.prototype.stopPlayback = function() {
     this.player.stopPlayback();
+    this.trackPreview.setVisible(false);
 };
 
 

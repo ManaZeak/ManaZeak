@@ -24,7 +24,7 @@ PlaylistPreview.prototype = {
         // TODO : handle cover smooth transition
         this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
         this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
-        console.log(playlist);
+
         this.ui.name.innerHTML = playlist.name;
         this.ui.total.innerHTML = playlist.trackTotal + " tracks";
         this.ui.duration.innerHTML = "Duration : " + secondsToTimecode(playlist.durationTotal);

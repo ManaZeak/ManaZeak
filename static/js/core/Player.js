@@ -62,8 +62,6 @@ Player.prototype = {
         this.player.currentTime = 0;
         this.progressBar.stopRefreshInterval();
         this.progressBar.resetProgressBar();
-
-        window.app.trackPreview.setVisible(false);
         // OR this, but it doesn't keep in memory the current track (to think about)
         // this.player.src = "";
         // TODO : Make a real stop feature ...
@@ -195,7 +193,6 @@ Player.prototype = {
 
     changeTrack: function(url) {
         this.stopPlayback();
-        console.log(url);
         this.player.src = url;
         this.play();
     },
@@ -229,7 +226,6 @@ Player.prototype = {
 
     // Click event on ProgressBar div
     mouseDown: function(event) {
-        console.log(event.target);
         if (!this.progressBar.getIsDragging() &&
             (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
              event.target.tagName === "rect" || event.target.id === "moodbarThumb")) {
