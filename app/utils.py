@@ -1,4 +1,3 @@
-import binascii
 import hashlib
 import math
 import multiprocessing
@@ -14,7 +13,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Track, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist
 
 
 # Render class for serving modal to client (Scan)
@@ -58,7 +57,7 @@ def splitTableCustom(table, number):
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
-        result = trackAttribute.replace('"', '\\"').replace('\'', '\\\'')
+        result = trackAttribute.replace('"', '\\"')
         return result
     else:
         return "null"
@@ -133,7 +132,12 @@ def errorCheckMessage(isDone, error):
 # Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
-    spiltedTracks = splitTable(tracks)
+    procNumber = multiprocessing.cpu_count()
+    while len(tracks) < procNumber:
+        procNumber -= 1
+        if procNumber == 0:
+            return
+    spiltedTracks = splitTableCustom(tracks, procNumber)
     threads = []
     finalData = "["
     for splitedTrack in spiltedTracks:
