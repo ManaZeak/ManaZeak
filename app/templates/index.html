@@ -21,8 +21,6 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
-        {% include 'components/footbar.html' %}
-
         <audio id="audioPlayer">
             <source src="" type="audio/ogg">
              Your browser does not support the audio element.
@@ -65,7 +63,6 @@
                     if(loaded == addonSrcs.length) {
                         window.app = new App();
                         //TODO: Move this to footbar
-                        new Controls();
                         app.init();
                     }
                 };

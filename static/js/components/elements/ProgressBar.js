@@ -3,20 +3,33 @@
  *  ProgressBar class - handle the progress bar depending on current track             *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ProgressBar = function() {
+var ProgressBar = function(container) {
+
+    this.container = document.createElement("DIV");
+    this.container.id = "progressBarWrapper";
+
     this.progressBar = {
-        container: document.getElementById("progressBar"),
-        current:   document.getElementById("progress"),
-        thumb:     document.getElementById("progressThumb")
+        container: document.createElement("DIV"),
+        current:   document.createElement("DIV"),
+        thumb:     document.createElement("DIV")
     };
+    this.duration = {
+        current: document.createElement("SPAN"),
+        total:   document.createElement("SPAN"),
+        hover:   document.createElement("DIV")
+    };
+
+    this.progressBar.container.id = "progressBar";
+    this.progressBar.current.id = "progress";
+    this.progressBar.thumb.id = "progressThumb";
+
+    this.duration.current.id = "currentDuration";
+    this.duration.total.id = "totalDuration";
+    this.duration.hover.id = "progressTimecodeHover";
+
     this.moodbar = {
         container: null,
         thumb: null
-    };
-    this.duration = {
-        current: document.getElementById("currentDuration"),
-        total:   document.getElementById("totalDuration"),
-        hover:   document.getElementById("progressTimecodeHover")
     };
 
     this.refreshIntervalId = -1;
@@ -24,28 +37,44 @@ var ProgressBar = function() {
     this.isDragging = false;
     this.isMouseOver = false;
     this.isInverted = false;
+
+    this.progressBar.container.appendChild(this.progressBar.current);
+    this.progressBar.container.appendChild(this.progressBar.thumb);
+    this.progressBar.container.appendChild(this.duration.hover);
+
+    this.container.appendChild(this.duration.current);
+    this.container.appendChild(this.progressBar.container);
+    this.container.appendChild(this.duration.total);
+
+    container.appendChild(this.container);
+
+    this._init();
 };
 
 
 ProgressBar.prototype = {
 
-    init: function(track) {
-        this.duration.current.innerHTML = "00:00";
-        this.duration.total.innerHTML = secondsToTimecode(track.duration);
+    _init: function () {
+        this.duration.current.innerHTML = "--:--";
+        this.duration.total.innerHTML = "--:--";
         this.moodbar.container = document.getElementById("moodbar");
         this.moodbar.thumb = document.getElementById("moodbarThumb");
     },
 
 
-    moveMoodbar: function(event, track) {
+    moveMoodbar: function (event, track) {
         var boundRect = this.moodbar.container.getBoundingClientRect();
 
         if (this.isDragging) {
             var distanceToLeftInPx = event.clientX - boundRect.left;
             var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
             // OOB protection
-            if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
-            if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
+            if (distanceToLeftInPr > 100) {
+                distanceToLeftInPr = 100;
+            }
+            if (distanceToLeftInPr < 0) {
+                distanceToLeftInPr = 0;
+            }
             // Style assignation
             this.progressBar.current.style.width = distanceToLeftInPr + "%";
             this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
@@ -58,15 +87,19 @@ ProgressBar.prototype = {
     },
 
 
-    moveProgress: function(event, track) {
+    moveProgress: function (event, track) {
         var boundRect = this.progressBar.container.getBoundingClientRect();
 
         if (this.isDragging) {
             var distanceToLeftInPx = event.clientX - boundRect.left;
             var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
             // OOB protection
-            if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
-            if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
+            if (distanceToLeftInPr > 100) {
+                distanceToLeftInPr = 100;
+            }
+            if (distanceToLeftInPr < 0) {
+                distanceToLeftInPr = 0;
+            }
             // Style assignation
             this.progressBar.current.style.width = distanceToLeftInPr + "%";
             this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
@@ -79,7 +112,7 @@ ProgressBar.prototype = {
     },
 
 
-    updateProgress: function(track) {
+    updateProgress: function (track) {
         var distanceToLeftBorder = (track.currentTime * 100) / track.duration;
         // Style assignation
         this.progressBar.current.style.width = distanceToLeftBorder + "%";
@@ -96,13 +129,17 @@ ProgressBar.prototype = {
     },
 
 
-    timecodeProgressHover: function(event, track) {
+    timecodeProgressHover: function (event, track) {
         var boundRect = this.progressBar.container.getBoundingClientRect();
         var distanceToLeftInPx = event.clientX - boundRect.left;
         var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
         // Avoid OOB
-        if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
-        if (distanceToLeftInPr < 0) { distanceToLeftInPr = 0; }
+        if (distanceToLeftInPr > 100) {
+            distanceToLeftInPr = 100;
+        }
+        if (distanceToLeftInPr < 0) {
+            distanceToLeftInPr = 0;
+        }
 
         var hoveredTimecode = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
         // We must convert back InPr to InPx ( distInPx = (boundRect.width * distanceToLeftInPr / 100) ) bc pixel size must be capped to progressBar bounds
@@ -111,35 +148,35 @@ ProgressBar.prototype = {
     },
 
 
-    startRefreshInterval: function(track) {
+    startRefreshInterval: function (track) {
         var that = this;
-        this.refreshIntervalId = setInterval(function() {
+        this.refreshIntervalId = setInterval(function () {
             that.updateProgress(track);
         }, 1000);
     },
 
 
-    stopRefreshInterval: function() {
+    stopRefreshInterval: function () {
         clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = -1;
     },
 
 
-    addVisibilityLock: function() {
+    addVisibilityLock: function () {
         if (!this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
             this.duration.hover.className += "progressTimecodeHoverLocked";
         }
     },
 
 
-    removeVisibilityLock: function() {
+    removeVisibilityLock: function () {
         if (this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
             this.duration.hover.className = this.duration.hover.className.replace(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/g, '');
         }
     },
 
 
-    invertTimecode: function() {
+    invertTimecode: function () {
         if (!this.isInverted) {
             this.isInverted = !this.isInverted;
         } else {
@@ -148,30 +185,67 @@ ProgressBar.prototype = {
     },
 
 
-    resetProgressBar: function() {
+    resetProgressBar: function () {
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML = "--:--";
         this.duration.hover.innerHTML = "--:--";
 
         this.progressBar.current.style.width = 0 + "%";
         this.progressBar.thumb.style.marginLeft = 0 + "%";
-        if(this.moodbar.thumb)
+        if (this.moodbar.thumb)
             this.moodbar.thumb.style.marginLeft = 0 + "%";
 
         this.stopRefreshInterval();
     },
 
 
-    // Class Getters and Setters
-    getContainer: function()              { return this.progressBar.container; },
-    getMoodbar: function()                { return this.moodbar.container;     },
-    getCurrentDuration: function()        { return this.duration.current;      },
-    getTotalDuration: function()          { return this.duration.total;        },
-    getIsDragging: function()             { return this.isDragging;            },
-    getIsMouseOver: function()            { return this.isMouseOver;           },
+    mouseMove: function (event) {
+        // Updating the ProgressBar while user is moving the mouse
+        if (this.isDragging) {
+            this.moveProgress(event, window.app.player.getPlayer());
+            this.addVisibilityLock();
+            this.timecodeProgressHover(event, window.app.player.getPlayer());
+        } else if (this.isMouseOver) {
+            this.timecodeProgressHover(event, window.app.player.getPlayer());
+        }
+    },
 
-    setCurrentDuration: function(current) { this.duration.current = current;   },
-    setTotalDuration: function(total)     { this.duration.total = total;       },
-    setIsDragging: function(isDragging)   { this.isDragging = isDragging;      },
-    setIsMouseOver: function(isMouseOver) { this.isMouseOver = isMouseOver;    }
+    mouseDown: function (event) {
+        //TODO: Clean this shit up
+        if (!this.isDragging &&
+            (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
+                event.target.tagName === "rect" || event.target.id === "moodbarThumb")) {
+            this.isDragging = true;
+            this.moveProgress(event, window.app.player.getPlayer());
+            window.app.mute();
+        }
+    },
+
+    mouseUp: function (event) {
+        // User released the ProgressBar thumb
+        if (this.isDragging) {
+            this.removeVisibilityLock();
+            this.isDragging = false;
+            window.app.unmute();
+        }
+    },
+
+    _eventListener: function () {
+        var that = this;
+        window.addEventListener("mousemove", this.mouseMove.bind(this));
+        window.addEventListener("mouseup", this.mouseUp.bind(this));
+        this.progressBar.container.addEventListener("mousedown", this.mouseDown.bind(this));
+        this.progressBar.container.addEventListener("mouseover", function () {
+            that.isMouseOver = true;
+        });
+        this.progressBar.container.addEventListener("mouseleave", function () {
+            that.isMouseOver = false;
+        });
+        this.duration.current.addEventListener("click", this.invertTimecode.bind(this));
+        this.duration.total.addEventListener("click", this.invertTimecode.bind(this));
+
+        window.app.addListener('changeTrackDone', function() {
+
+        });
+    }
 };

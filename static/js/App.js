@@ -10,12 +10,11 @@ var App = function() {
     // Objects
     this.topBar  = new TopBar(this.cookies);
     this.mainContainer = document.createElement("div");
+    this.footBar = null;
 
     this.mainContainer.id = "mainContainer";
 
     this.player          = null;
-    this.trackPreview    = new TrackPreview();
-    this.playlistPreview = new PlaylistPreview();
     this.playlists       = [];
     this.activePlaylist = null;
     this.cssFiles        = {};
@@ -54,6 +53,9 @@ App.prototype = {
 
     init: function() {
         this.player = new Player(this.cookies);
+        this.footBar = new FootBar();
+        document.body.appendChild(this.footBar.getFootBar());
+
         var that = this;
 
         // Loading playlists
@@ -107,7 +109,7 @@ App.prototype = {
                     that.topBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
-                    that.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+                    //that.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
                 }
             );
         }
