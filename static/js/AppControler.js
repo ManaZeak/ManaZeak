@@ -5,7 +5,7 @@ App.prototype.togglePlay = function() {
 
 App.prototype.stopPlayback = function() {
     this.player.stopPlayback();
-    this.trackPreview.setVisible(false);
+    //this.trackPreview.setVisible(false);
 };
 
 
@@ -33,6 +33,47 @@ App.prototype.previous = function() {
     this.activePlaylist.playPreviousTrack();
 };
 
+App.prototype.fastForward = function(amount) {
+    this.player.getPlayer().currentTime += amount;
+};
+
+App.prototype.rewind = function(amount) {
+    this.player.getPlayer().currentTime -= amount;
+};
+
+App.prototype.seekTime = function(time) {
+
+};
+
+App.prototype.setVolume = function(volume) {
+    if(volume > 1)
+        volume = 1;
+    else if(volume < 0)
+        volume = 0;
+
+    this.player.getPlayer().volume = precisionRound(volume, 2);
+};
+
+App.prototype.adjustVolume = function(amount) {
+    this.setVolume(this.player.getPlayer().volume + amount);
+};
+
+App.prototype.mute = function() {
+    this.player.mute();
+};
+
+App.prototype.unmute = function() {
+    this.player.unmute();
+};
+
+App.prototype.toggleMute = function()
+{
+    if(this.player.isMuted)
+        this.unmute();
+    else
+        this.mute();
+};
+
 App.prototype.changeTrack = function(track) {
 
     JSONParsedPostRequest(
@@ -45,8 +86,8 @@ App.prototype.changeTrack = function(track) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
             } else {
-                window.app.trackPreview.setVisible(true);
-                window.app.trackPreview.changeTrack(track, response.COVER);
+                //window.app.trackPreview.setVisible(true);
+                //window.app.trackPreview.changeTrack(track, response.COVER);
                 window.app.topBar.changeMoodbar(track.id.track);
                 window.app.player.changeTrack(".." + response.PATH, track.id.track);
                 window.app.togglePlay();
@@ -54,3 +95,5 @@ App.prototype.changeTrack = function(track) {
         }
     );
 };
+
+App.prototype.updateMetadata = function() {};

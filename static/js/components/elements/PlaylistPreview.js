@@ -3,18 +3,40 @@
  *  PlaylistPreview class - handle the playlist info container (right/footbar)         *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var PlaylistPreview = function() {
+var PlaylistPreview = function(container) {
+    this.container = document.createElement("DIV");
+    this.container.id = "playlistPreview";
+
     // UI
     this.ui = {
-        container: document.getElementById("playlistPreview"),
-        cover:     document.getElementById("playlistPreviewCover"),
-        thumb:     document.getElementById("playlistPreviewThumb"),
-        name:      document.getElementById("playlistPreviewName"),
-        total:     document.getElementById("playlistPreviewTotal"),
-        duration:  document.getElementById("playlistPreviewDuration"),
-        repeat:    document.getElementById("playlistPreviewRepeat"),
-        shuffle:   document.getElementById("playlistPreviewShuffle")
+        container: document.createElement("DIV"),
+        cover:     document.createElement("DIV"),
+        thumb:     document.createElement("DIV"),
+        name:      document.createElement("DIV"),
+        total:     document.createElement("DIV"),
+        duration:  document.createElement("DIV"),
+        repeat:    document.createElement("DIV"),
+        shuffle:   document.createElement("DIV")
     };
+
+    this.ui.container.id = "playlistPreview";
+    this.ui.cover.id     = "playlistPreviewCover";
+    this.ui.thumb.id     = "playlistPreviewThumb";
+    this.ui.name.id      = "playlistPreviewName";
+    this.ui.total.id     = "playlistPreviewTotal";
+    this.ui.duration.id  = "playlistPreviewDuration";
+    this.ui.repeat.id    = "playlistPreviewRepeat";
+    this.ui.shuffle.id   = "playlistPreviewShuffle";
+
+    this.container.appendChild(this.ui.container);
+    this.container.appendChild(this.ui.cover);
+    this.container.appendChild(this.ui.thumb);
+    this.container.appendChild(this.ui.name);
+    this.container.appendChild(this.ui.total);
+    this.container.appendChild(this.ui.duration);
+    this.container.appendChild(this.ui.repeat);
+    this.container.appendChild(this.ui.shuffle);
+    container.appendChild(this.container);
 };
 
 

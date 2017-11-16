@@ -53,6 +53,8 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
 
 
     this.trackTotal    = 0;
+    this.artistTotal   = 0;
+    this.albumTotal    = 0;
     this.durationTotal = 0;
 
     var viewkeys = Object.keys(window.app.availableViews);
@@ -306,7 +308,7 @@ Playlist.prototype = {
                 }),
                 function(response) {
                     // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
-                    window.app.trackPreview.setVisible(true);
+                    //window.app.trackPreview.setVisible(true);
                     //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
                     //window.app.topBar.changeMoodbar(that.currentTrack);
                     window.app.player.changeTrack("../" + response.PATH);
@@ -314,19 +316,7 @@ Playlist.prototype = {
             );
         } else {
             this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
-            JSONParsedPostRequest(
-                "ajax/getTrackPathByID/",
-                window.app.cookies,
-                JSON.stringify({
-                    TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
-                }),
-                function(response) {
-                    window.app.trackPreview.setVisible(true);
-                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
+            window.app.changeTrack(this.tracks[this.currentTrack]);
         }
     },
 
@@ -354,19 +344,7 @@ Playlist.prototype = {
             );
         } else {
             this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
-            JSONParsedPostRequest(
-                "ajax/getTrackPathByID/",
-                window.app.cookies,
-                JSON.stringify({
-                    TRACK_ID: that.tracks[that.currentTrack].id.track// TODO : get from serv
-                }),
-                function(response) {
-                    window.app.trackPreview.setVisible(true);
-                    window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
+            window.app.changeTrack(this.tracks[this.currentTrack]);
         }
     },
 
