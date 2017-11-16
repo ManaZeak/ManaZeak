@@ -58,7 +58,8 @@ def splitTableCustom(table, number):
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
-        return trackAttribute
+        result = trackAttribute.replace('"', '\\"').replace('\'', '\\\'')
+        return result
     else:
         return "null"
 
@@ -403,6 +404,11 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         track.bitRateMode = 3
     track.fileType = fileTypeId.id
 
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
+
     # Check if the file has a tag header
     try:
         audioTag = ID3(filePath)
@@ -498,6 +504,11 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     track.sampleRate = audioFile.info.sample_rate
     track.fileType = fileTypeId.id
 
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
+
     # --- COVER ---
     pictures = audioFile.pictures
     if len(pictures) != 0:
@@ -583,7 +594,7 @@ def createMoodbarsUrls(playlist):
 
 
 class LocalTrack:
-    def __init__(self, ):
+    def __init__(self):
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
