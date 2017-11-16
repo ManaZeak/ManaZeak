@@ -58,7 +58,7 @@ Player.prototype = {
 
     stopPlayback: function() {
         this.pause();
-        this.isPlaying = !this.isPlaying;
+        this.isPlaying = false;
         this.player.currentTime = 0;
         this.progressBar.stopRefreshInterval();
         this.progressBar.resetProgressBar();
@@ -194,7 +194,6 @@ Player.prototype = {
     changeTrack: function(url) {
         this.stopPlayback();
         this.player.src = url;
-        this.play();
     },
 
 
@@ -305,7 +304,7 @@ Player.prototype = {
         document.addEventListener("keydown", function(event) {
             switch (event.keyCode) {
                 case 32: // Space player
-                    that.togglePlay();
+                    window.app.togglePlay();
                     break;
                 case 37: // Left arrow
                     that.rewind(event);

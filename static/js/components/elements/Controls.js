@@ -45,20 +45,25 @@ var Controls = function() {
 
 
 Controls.prototype = {
+
+    setPlayPause: function() {
+        if(window.app.player.getIsPlaying() === true)
+            this.ui.play.image.src = "/static/img/player/pause.svg";
+        else
+            this.ui.play.image.src = "/static/img/player/play.svg";
+    },
+
     _eventListener: function() {
         var that = this;
         // Button event listeners
         this.ui.play.button.addEventListener("click", function() {
             window.app.togglePlay();
-            if(window.app.player.getIsPlaying() == true)
-                that.ui.play.image.src = "/static/img/player/pause.svg";
-            else
-                that.ui.play.image.src = "/static/img/player/play.svg";
         });
         this.ui.stop.button.addEventListener("click", function() {
-            that.ui.play.image.src = "/static/img/player/play.svg";
             window.app.stopPlayback();
         });
+
+        window.app.addListener(['togglePlay', 'stopPlayback'], this.setPlayPause.bind(this));
 
         this.ui.mute.button.addEventListener("click", window.app.toggleMute.bind(window.app));
         this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));

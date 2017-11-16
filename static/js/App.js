@@ -31,6 +31,21 @@ var App = function() {
         }
     };
 
+    this.listeners = {};
+    for(var property in this) {
+        if(typeof this[property] === "function") {
+            this.listeners[property] = [];
+            var oldFunc = this[property];
+            this[property] = (function(pname, func) {
+                return function() {
+                    func.apply(this, arguments);
+                    for(var i = 0; i < this.listeners[pname].length;++i)
+                        this.listeners[pname][i]();
+                }
+            }(property, oldFunc));
+        }
+    }
+
     document.body.appendChild(this.topBar.getTopBar());
     document.body.appendChild(this.mainContainer);
 };
@@ -141,6 +156,15 @@ App.prototype = {
             that.listView.showListView();
             that.topBar.init(that.playlists, that.topBar.entries.length);
         }));
+    },
+
+    addListener: function(event, callback) {
+        if (Array.isArray(event))
+            for (var i = 0; i < event.length; ++i)
+                if(this.listeners[event[i]])
+                    this.listeners[event[i]].push(callback);
+        else if(this.listeners[event])
+            this.listeners[event].push(callback);
     }
 };
 
