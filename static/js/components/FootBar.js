@@ -13,7 +13,7 @@ var FootBar = function() {
     this.footBar.id = "footBar";
     this.controlsContainer.id = "controlsContainer";
 
-    //this.trackPreview    = new TrackPreview();
+    this.trackPreview    = new TrackPreview(this.footBar);
     this.controls        = new Controls(this.controlsContainer);
     this.playlistPreview = new PlaylistPreview(this.footBar);
 

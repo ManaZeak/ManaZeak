@@ -36,6 +36,7 @@ var PlaylistPreview = function(container) {
     this.container.appendChild(this.ui.duration);
     this.container.appendChild(this.ui.repeat);
     this.container.appendChild(this.ui.shuffle);
+
     container.appendChild(this.container);
 };
 
