@@ -59,31 +59,8 @@ ProgressBar.prototype = {
         this.duration.total.innerHTML = "--:--";
         this.moodbar.container = document.getElementById("moodbar");
         this.moodbar.thumb = document.getElementById("moodbarThumb");
-    },
 
-
-    moveMoodbar: function (event, track) {
-        var boundRect = this.moodbar.container.getBoundingClientRect();
-
-        if (this.isDragging) {
-            var distanceToLeftInPx = event.clientX - boundRect.left;
-            var distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
-            // OOB protection
-            if (distanceToLeftInPr > 100) {
-                distanceToLeftInPr = 100;
-            }
-            if (distanceToLeftInPr < 0) {
-                distanceToLeftInPr = 0;
-            }
-            // Style assignation
-            this.progressBar.current.style.width = distanceToLeftInPr + "%";
-            this.progressBar.thumb.style.marginLeft = distanceToLeftInPr + "%";
-            this.moodbar.thumb.style.marginLeft = distanceToLeftInPr + "%";
-            // Changing track currentTime
-            track.currentTime = (track.duration * distanceToLeftInPr) / 100;
-            // Updating progress player -- /!\ Code under this while be trigger every sec due to setInterval(); in init();
-            this.updateProgress(track);
-        }
+        this._eventListener();
     },
 
 
@@ -113,7 +90,6 @@ ProgressBar.prototype = {
 
 
     updateProgress: function (track) {
-        console.log("call");
         var distanceToLeftBorder = (track.currentTime * 100) / track.duration;
         // Style assignation
         this.progressBar.current.style.width = distanceToLeftBorder + "%";
@@ -149,17 +125,14 @@ ProgressBar.prototype = {
     },
 
 
-    startRefreshInterval: function (track) {
+    refreshInterval: function (track) {
+        clearInterval(this.refreshIntervalId);
+        this.refreshIntervalId = -1;
+
         var that = this;
         this.refreshIntervalId = setInterval(function () {
             that.updateProgress(track);
-        }, 1000);
-    },
-
-
-    stopRefreshInterval: function () {
-        clearInterval(this.refreshIntervalId);
-        this.refreshIntervalId = -1;
+        }, 50);
     },
 
 
@@ -212,6 +185,7 @@ ProgressBar.prototype = {
     },
 
     mouseDown: function (event) {
+        console.log("Test");
         //TODO: Clean this shit up
         if (!this.isDragging &&
             (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
@@ -236,17 +210,9 @@ ProgressBar.prototype = {
         window.addEventListener("mousemove", this.mouseMove.bind(this));
         window.addEventListener("mouseup", this.mouseUp.bind(this));
         this.progressBar.container.addEventListener("mousedown", this.mouseDown.bind(this));
-        this.progressBar.container.addEventListener("mouseover", function () {
-            that.isMouseOver = true;
-        });
-        this.progressBar.container.addEventListener("mouseleave", function () {
-            that.isMouseOver = false;
-        });
+        this.progressBar.container.addEventListener("mouseover", function () { that.isMouseOver = true; });
+        this.progressBar.container.addEventListener("mouseleave", function () { that.isMouseOver = false; });
         this.duration.current.addEventListener("click", this.invertTimecode.bind(this));
         this.duration.total.addEventListener("click", this.invertTimecode.bind(this));
-
-        window.app.addListener('changeTrackDone', function() {
-
-        });
     }
 };

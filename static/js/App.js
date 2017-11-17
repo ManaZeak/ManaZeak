@@ -38,8 +38,9 @@ var App = function() {
             this[property] = (function(pname, func) {
                 return function() {
                     func.apply(this, arguments);
-                    for(var i = 0; i < this.listeners[pname].length;++i)
-                        this.listeners[pname][i]();
+                    for(var i = 0; i < this.listeners[pname].length;++i) {
+                        this.listeners[pname][i].apply(null, arguments);
+                    }
                 }
             }(property, oldFunc));
         }
