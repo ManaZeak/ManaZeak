@@ -36,12 +36,10 @@ FootBar.prototype = {
         var that = this;
 
         window.app.addListener('togglePlay', function() {
-            if(window.app.player.getIsPlaying())
-                that.progressBar.startRefreshInterval(window.app.player.getPlayer());
-            else
-                that.progressBar.stopRefreshInterval();
+            if(window.app.player.getIsPlaying()) {
+                that.progressBar.refreshInterval(window.app.player.getPlayer());
+            }
         });
-        console.log(window.app.listeners);
 
         window.app.addListener('stopPlayback', function() {
             that.progressBar.stopRefreshInterval();

@@ -90,9 +90,12 @@ App.prototype.changeTrack = function(track) {
                 //window.app.trackPreview.changeTrack(track, response.COVER);
                 window.app.topBar.changeMoodbar(track.id.track);
                 window.app.player.changeTrack(".." + response.PATH, track.id.track);
-                //this.updateMetadata();
                 window.app.togglePlay();
             }
         }
     );
+};
+
+App.prototype.updateMetadata = function() {
+    //this.footBar.progressBar.updateProgress(this.player.getPlayer());
 };
