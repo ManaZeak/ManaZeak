@@ -196,6 +196,7 @@ ProgressBar.prototype = {
             (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
                 event.target.tagName === "rect" || event.target.id === "moodbarThumb")) {
             this.isDragging = true;
+            this.stopRefreshInterval();
             this.moveProgress(event, window.app.player.getPlayer());
             window.app.mute();
         }
@@ -204,6 +205,7 @@ ProgressBar.prototype = {
     mouseUp: function (event) {
         // User released the ProgressBar thumb
         if (this.isDragging) {
+            this.refreshInterval(window.app.player.getPlayer());
             this.removeVisibilityLock();
             this.isDragging = false;
             window.app.unmute();

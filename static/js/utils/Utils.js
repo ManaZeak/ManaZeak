@@ -26,7 +26,7 @@ function secondsToTimecode(time) {
     transformedTime.d = Math.floor(time / 86400);
     transformedTime.h = Math.floor((time - (transformedTime.d * 86400)) / 3600);
     transformedTime.m = Math.floor((time - (transformedTime.d * 86400) - (transformedTime.h * 3600)) / 60);
-    transformedTime.s = Math.round(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
+    transformedTime.s = Math.floor(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
     // Adding an extra 0 for values inferior to 10
     transformedTime.d = transformedTime.d < 10 ? "0" + transformedTime.d : transformedTime.d;
     transformedTime.h = transformedTime.h < 10 ? "0" + transformedTime.h : transformedTime.h;

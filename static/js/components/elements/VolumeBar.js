@@ -69,7 +69,6 @@ VolumeBar.prototype = {
 
 
     updateVolume: function(volume) {
-
         this.volume = volume;
         this.volumeBar.current.style.height = volume + "%";
         this.volumeBar.thumb.style.bottom = volume + "%";
