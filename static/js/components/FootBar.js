@@ -33,14 +33,15 @@ FootBar.prototype = {
 
 
     _eventListener: function() {
-
         var that = this;
+
         window.app.addListener('togglePlay', function() {
             if(window.app.player.getIsPlaying())
-                that.progressBar.startRefreshInterval(window.app.player);
+                that.progressBar.startRefreshInterval(window.app.player.getPlayer());
             else
                 that.progressBar.stopRefreshInterval();
         });
+        console.log(window.app.listeners);
 
         window.app.addListener('stopPlayback', function() {
             that.progressBar.stopRefreshInterval();
@@ -48,7 +49,7 @@ FootBar.prototype = {
         });
 
         window.app.addListener(['fastForward', 'rewind'], function() {
-            that.progressBar.updateProgress(window.app.player);
+            that.progressBar.updateProgress(window.app.player.getPlayer());
         });
 
     },

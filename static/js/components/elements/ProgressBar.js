@@ -113,6 +113,7 @@ ProgressBar.prototype = {
 
 
     updateProgress: function (track) {
+        console.log("call");
         var distanceToLeftBorder = (track.currentTime * 100) / track.duration;
         // Style assignation
         this.progressBar.current.style.width = distanceToLeftBorder + "%";

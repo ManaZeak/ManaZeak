@@ -161,10 +161,11 @@ App.prototype = {
     },
 
     addListener: function(event, callback) {
-        if (Array.isArray(event))
+        if (Array.isArray(event)) {
             for (var i = 0; i < event.length; ++i)
-                if(this.listeners[event[i]])
+                if (this.listeners[event[i]])
                     this.listeners[event[i]].push(callback);
+        }
         else if(this.listeners[event])
             this.listeners[event].push(callback);
     }
