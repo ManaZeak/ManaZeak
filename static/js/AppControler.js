@@ -86,8 +86,8 @@ App.prototype.changeTrack = function(track) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
             } else {
-                //window.app.trackPreview.setVisible(true);
-                //window.app.trackPreview.changeTrack(track, response.COVER);
+                window.app.footBar.trackPreview.setVisible(true);
+                window.app.footBar.trackPreview.changeTrack(track, response.COVER);
                 window.app.topBar.changeMoodbar(track.id.track);
                 window.app.player.changeTrack(".." + response.PATH, track.id.track);
                 window.app.togglePlay();
