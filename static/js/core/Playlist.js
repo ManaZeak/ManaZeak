@@ -307,6 +307,7 @@ Playlist.prototype = {
                     // TODO: send isRepeat here
                 }),
                 function(response) {
+                    // TODO : make controller function in App.controller
                     // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
                     //window.app.trackPreview.setVisible(true);
                     //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
@@ -364,8 +365,7 @@ Playlist.prototype = {
         this.activeView = v;
     },
 
-    refreshViews: function()
-    {
+    refreshViews: function() {
         for(var i = 0; i < this.views.length; ++i)
             if(this.views[i] !== null)
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));

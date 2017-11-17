@@ -110,7 +110,7 @@ App.prototype = {
                     that.topBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
-                    //that.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+                    that.changePlaylist();
                 }
             );
         }

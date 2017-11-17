@@ -43,7 +43,6 @@ var TrackPreview = function(container) {
     this.ui.genre.id = "trackPreviewGenre";
 
     this.ui.genreYear.appendChild(this.ui.year);
-    //this.ui.genreYear.innerHTML += "&nbsp;&nbsp;-&nbsp;&nbsp;";
     this.ui.genreYear.appendChild(this.ui.genre);
 
     this.listContainer.appendChild(this.ui.title);
@@ -55,6 +54,8 @@ var TrackPreview = function(container) {
     this.ui.container.appendChild(this.listContainer);
 
     container.appendChild(this.ui.container);
+
+    this._eventListener();
 };
 
 
@@ -76,11 +77,21 @@ TrackPreview.prototype = {
         }
 
         this.ui.genre.innerHTML = track.genre;
-
-        console.log(this.ui.year);
     },
 
     setVisible: function(visible) {
         this.ui.container.style.opacity  = visible ? 1 : 0;
+    },
+
+    _eventListener: function() {
+        var that = this;
+
+        window.app.addListener(["togglePlay", "changeTrack"], function() {
+               that.setVisible(true);
+        });
+
+        window.app.addListener("stopPlayback", function() {
+            that.setVisible(false);
+        });
     }
 };

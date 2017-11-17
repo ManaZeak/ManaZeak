@@ -5,7 +5,6 @@ App.prototype.togglePlay = function() {
 
 App.prototype.stopPlayback = function() {
     this.player.stopPlayback();
-    //this.trackPreview.setVisible(false);
 };
 
 
@@ -39,10 +38,6 @@ App.prototype.fastForward = function(amount) {
 
 App.prototype.rewind = function(amount) {
     this.player.getPlayer().currentTime -= amount;
-};
-
-App.prototype.seekTime = function(time) {
-
 };
 
 App.prototype.setVolume = function(volume) {
@@ -95,6 +90,12 @@ App.prototype.changeTrack = function(track) {
         }
     );
 };
+
+
+App.prototype.changePlaylist = function() {
+    this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+};
+
 
 App.prototype.updateMetadata = function() {
     //this.footBar.progressBar.updateProgress(this.player.getPlayer());
