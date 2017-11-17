@@ -8,11 +8,6 @@ App.prototype.stopPlayback = function() {
 };
 
 
-App.prototype.toggleMute = function() {
-    this.player.toggleMute();
-};
-
-
 App.prototype.toggleShuffle = function() {
     this.activePlaylist.toggleShuffle();
 };

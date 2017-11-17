@@ -27,7 +27,6 @@ var FootBar = function() {
 FootBar.prototype = {
 
     _init: function() {
-
         this._eventListener();
     },
 
