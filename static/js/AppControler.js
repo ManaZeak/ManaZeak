@@ -66,6 +66,8 @@ App.prototype.toggleMute = function()
 
 App.prototype.changeTrack = function(track) {
 
+    this.activePlaylist.setCurrentTrack(track);
+
     JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         this.cookies,
