@@ -116,7 +116,7 @@ function JSONParsedGetRequest(url, http, callback) {
 }
 
 
-function JSONParsedPostRequest(url, cookies, message, callback) {
+function JSONParsedPostRequest(url, message, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -126,7 +126,7 @@ function JSONParsedPostRequest(url, cookies, message, callback) {
     };
 
     xhr.open("POST", url, true);
-    xhr.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+    xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(message);
 }
@@ -137,7 +137,7 @@ function JSONMoodbarPostRequest(url, cookies, message, callback) {
 }
 
 
-// Credit for this function "Valodim"
+// Credit for this function : "Valodim"
 // https://gist.github.com/Valodim/5225460
 function renderMoodFile(file, parentDiv) {
     var xhr = new XMLHttpRequest();
@@ -156,7 +156,7 @@ function renderMoodFile(file, parentDiv) {
 
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + b + ", " + g + ")" // bc why not swapping ? ... and because bg ...
+                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
                 };
             }
 

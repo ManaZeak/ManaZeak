@@ -66,11 +66,10 @@ App.prototype.toggleMute = function()
 
 App.prototype.changeTrack = function(track) {
 
-    this.activePlaylist.setCurrentTrack(track);
+    // TODO better : this.activePlaylist.setCurrentTrack(track);
 
     JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
-        this.cookies,
         JSON.stringify({
             TRACK_ID: track.id.track
         }),
@@ -97,3 +96,5 @@ App.prototype.changePlaylist = function() {
 App.prototype.updateMetadata = function() {
     //this.footBar.progressBar.updateProgress(this.player.getPlayer());
 };
+
+// TODO : refresh all UI at one function

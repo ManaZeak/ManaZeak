@@ -38,13 +38,11 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     } else {
         this.rawTracks = [];
     }
-
     if (typeof callback !== 'undefined') {
         this.callback = callback;
     } else {
         this.callback = null;
     }
-
 
     // Boolean to add to know if tracks are set or not
     this.tracks = [];
@@ -119,6 +117,7 @@ Playlist.prototype = {
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
             this._requestNewLibrary();
+            // TODO : remove ui.scan listener
         }
 
         else {
@@ -146,7 +145,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/newLibrary/",
-            window.app.cookies,
             JSON.stringify({
                 CONVERT: this.ui.convert.checked,
                 NAME:    this.ui.name.value,
@@ -180,7 +178,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
-            window.app.cookies,
             // "{\"LIBRARY_ID\":" + libraryId + "}", TODO : test this
             JSON.stringify({
                 LIBRARY_ID: libraryId
@@ -218,7 +215,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/checkLibraryScanStatus/",
-            window.app.cookies,
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -230,13 +226,12 @@ Playlist.prototype = {
                  * } */
                 var self = that;
 
-                if (response.DONE) {
-                    clearInterval(that.getTracksIntervalId);
-                    that.getTracksIntervalId = -1;
+                clearInterval(that.getTracksIntervalId);
+                that.getTracksIntervalId = -1;
 
+                if (response.DONE) {
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
-                        window.app.cookies,
                         JSON.stringify({
                             PLAYLIST_ID: playlistId
                         }),
@@ -247,13 +242,14 @@ Playlist.prototype = {
                             self._fillTracks(self.rawTracks);
                             self.refreshViews();
                             self.showView(self.activeView);
+
+                            if (self.callback) {
+                                self.callback();
+                            }
                         }
                     );
                 }
                 else if (response.ERROR_H1 === "null") {
-                    clearInterval(that.getTracksIntervalId);
-                    that.getTracksIntervalId = -1;
-
                     // TODO : refresh UI to come back to Library/Playlist creation
                     new Notification(response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -267,7 +263,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
-            window.app.cookies,
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -301,7 +296,6 @@ Playlist.prototype = {
         if (this.isShuffle) {
             JSONParsedPostRequest(
                 "ajax/randomNextTrack/",
-                window.app.cookies,
                 JSON.stringify({
                     PLAYLIST_ID: that.id
                     // TODO: send isRepeat here
@@ -329,7 +323,6 @@ Playlist.prototype = {
             //TODO: Get from server history
             JSONParsedPostRequest(
                 "ajax/randomNextTrack/",
-                window.app.cookies,
                 JSON.stringify({
                     PLAYLIST_ID: that.id
                     // TODO: send isRepeat here

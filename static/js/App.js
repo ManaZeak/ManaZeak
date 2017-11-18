@@ -58,7 +58,6 @@ App.prototype = {
         document.body.appendChild(this.footBar.getFootBar());
 
         var that = this;
-
         // Loading playlists
         JSONParsedGetRequest(
             "ajax/getPlaylists/",
@@ -85,7 +84,6 @@ App.prototype = {
         if (playlists.DONE) {
             JSONParsedPostRequest(
                 "ajax/getSimplifiedTracks/",
-                this.cookies,
                 JSON.stringify({
                     PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
                 }),
@@ -110,6 +108,7 @@ App.prototype = {
                     that.topBar.init(that.playlists, 0);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
+                    that.footBar.playlistPreview.setVisible(true);
                     that.changePlaylist();
                 }
             );
@@ -117,8 +116,10 @@ App.prototype = {
 
         // User first connection
         else {
-            this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
+            this.activePlaylist = this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
                 that.topBar.init(that.playlists, 0);
+                that.footBar.playlistPreview.setVisible(true);
+                that.footBar.playlistPreview.changePlaylist(that.playlists[that.playlists.length - 1]); // TODO : get Lib/Play image/icon
             }));
         }
     },

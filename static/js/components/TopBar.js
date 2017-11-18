@@ -35,7 +35,7 @@ var TopBar = function() {
 
 
 TopBar.prototype = {
-
+// TODO : handle first connection, bug occuring on refresh
     init: function(playlists, selectedPlaylist) {
         this.removeEntries();
 
@@ -62,7 +62,7 @@ TopBar.prototype = {
 
     removeEntries: function() {
         for (var i = 0; i < this.entries.length ;++i) {
-            this.listView.removeChild(this.entries[i].entry)
+            this.playlistBar.removeChild(this.entries[i].entry)
         }
 
         // To the GC, and beyond
@@ -91,13 +91,21 @@ TopBar.prototype = {
 
     unSelectAll: function() {
         for (var i = 0; i < this.entries.length ;++i) {
-		this.entries[i].setIsSelected(false);
+		    this.entries[i].setIsSelected(false);
         }
     },
 
 
     refreshPlaylistBar: function() {
-        // TODO
+        if (this.newPlaylistButton) {
+            this.playlistBar.removeChild(this.newPlaylistButton);
+        }
+
+        this.removeEntries();
+        this.addEntries();
+        this.addNewPlaylistButton();
+        // TODO : set selected to new one
+        //this.setSelected(selectedPlaylist);
     },
 
 
