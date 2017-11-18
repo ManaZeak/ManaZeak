@@ -371,6 +371,14 @@ Playlist.prototype = {
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
     },
 
+    setCurrentTrack: function(track) {
+        for (var i = 0; i < this.tracks.length ;++i) {
+            if (this.tracks[i].id === track.id) {
+                this.currentTrack = i;
+            }
+        }
+    },
+
     // Class Getters and Setters
     getId: function()         { return this.id;        },
     getTracks: function()     { return this.tracks;    },
