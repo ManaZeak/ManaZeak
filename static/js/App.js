@@ -8,7 +8,7 @@ var App = function() {
     this.cookies = getCookies();
 
     // Objects
-    this.topBar  = new TopBar(this.cookies);
+    this.topBar  = new TopBar();
     this.mainContainer = document.createElement("div");
     this.footBar = null;
 

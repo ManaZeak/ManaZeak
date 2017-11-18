@@ -3,9 +3,7 @@
  *  PlaylistBar class - handle the playlist bar                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var TopBar = function(cookies) {
-    this.cookies = cookies;
-
+var TopBar = function() {
     this.moodbar = null;
     this.playlistBar = null;
     this.playlists = null;
@@ -139,7 +137,7 @@ TopBar.prototype = {
         };
 
         xhr.open("POST", "ajax/getMoodbarByID/", true);
-        xhr.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
+        xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
         xhr.send(JSON.stringify({
             TRACK_ID: id
         }));
