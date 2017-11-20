@@ -27,13 +27,16 @@ App.prototype.previous = function() {
     this.activePlaylist.playPreviousTrack();
 };
 
+
 App.prototype.fastForward = function(amount) {
     this.player.getPlayer().currentTime += amount;
 };
 
+
 App.prototype.rewind = function(amount) {
     this.player.getPlayer().currentTime -= amount;
 };
+
 
 App.prototype.setVolume = function(volume) {
     if(volume > 1)
@@ -44,25 +47,29 @@ App.prototype.setVolume = function(volume) {
     this.player.getPlayer().volume = precisionRound(volume, 2);
 };
 
+
 App.prototype.adjustVolume = function(amount) {
     this.setVolume(this.player.getPlayer().volume + amount);
 };
+
 
 App.prototype.mute = function() {
     this.player.mute();
 };
 
+
 App.prototype.unmute = function() {
     this.player.unmute();
 };
 
-App.prototype.toggleMute = function()
-{
+
+App.prototype.toggleMute = function() {
     if(this.player.isMuted)
         this.unmute();
     else
         this.mute();
 };
+
 
 App.prototype.changeTrack = function(track) {
 
