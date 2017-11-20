@@ -75,3 +75,11 @@ class Shuffle(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
     tracksPlayed = models.ManyToManyField(Track)
+
+
+class PlaylistSettings(models.Model):
+    playlist = models.ForeignKey(Playlist)
+    user = models.ForeignKey(User)
+    shuffleEnabled = models.BooleanField(default=False)
+    randomEnabled = models.BooleanField(default=False)
+    viewMode = models.IntegerField(max_length=10)
