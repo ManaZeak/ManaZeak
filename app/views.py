@@ -3,9 +3,11 @@ import os
 from builtins import print
 from random import randint
 
+import time
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
@@ -14,6 +16,7 @@ from django.views.generic.base import View
 from django.views.generic.list import ListView
 
 from app.controller import scanLibrary, shuffleSoundSelector
+from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
@@ -44,8 +47,6 @@ def initialScan(request):
                 playlist.isLibrary = True
                 playlist.save()
                 data = scanLibrary(library, playlist, library.convertID3)
-                print("Ended initial scan")
-                playlist.isScanned = True
             else:
                 data = errorCheckMessage(False, "dirNotFound")
         else:
@@ -78,14 +79,19 @@ def dropAllDB(request):
 
 # Create a new user in database
 def createUser(request):
-    print("hi")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        admin = False
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+            print("users : " + str(User.objects.all().count()))
+            if User.objects.all().count() == 1:
+                admin = True
             user = authenticate(username=username, password=raw_password)
+            user.is_superuser = admin
+            print(admin)
             user.save()
             login(request, user)
             return render(request, 'index.html')  # TODO : fix URL
@@ -174,6 +180,16 @@ def loadTracksFromPlaylist(request):
 
         except AttributeError:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+def bulkExport(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'LIBRARY_ID' in response:
+            libraryId = strip_tags(response['LIBRARY_ID'])
+            if Library.objects.filter(id=libraryId).count() == 1:
+                library = Library.objects.get(id=libraryId)
+                return HttpResponse(getPlaylistExport(library.playlist.id))
 
 
 # Create a new library can only be done while being a superuser.
@@ -289,13 +305,23 @@ def getTrackPathByID(request):
         return JsonResponse(data)
 
 
-# Return if a library has finished to be scanned
+# Function for check if a library has been scanned.
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+<<<<<<< HEAD
+
+                # Check during 20 seconds if the library has been scanned
+                for _ in range(40):
+                    if playlist.isScanned:
+                        return JsonResponse(errorCheckMessage(playlist.isScanned, None))
+                    else:
+                        time.sleep(0.5)
+                return JsonResponse(errorCheckMessage(False, None))
+=======
                 print("Playlist status : " + str(playlist.isScanned))
                 data = errorCheckMessage(playlist.isScanned, None)
             else:
@@ -304,6 +330,7 @@ def checkLibraryScanStatus(request):
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     return JsonResponse(errorCheckMessage(False, "badRequest"))
+>>>>>>> c5bc98858c4e3398b4471523fd08ded2604180b9
 
 
 def shuffleNextTrack(request):
@@ -359,9 +386,10 @@ def getUserStats(request):
 
     getUserNbTrackListened(user)
     getUserNbTrackPushed(user)
-    mdr = getUserGenre(user)
-
-    return JsonResponse({'mdr': mdr})
+    getUserGenre(user)
+    getUserGenrePercentage(user) 
+    mdr = getUserPrefArtist(user)
+    return JsonResponse({'mdr':mdr})
 
 
 def randomNextTrack(request):
@@ -386,6 +414,41 @@ def randomNextTrack(request):
                     else:
                         count += 1
             return JsonResponse(errorCheckMessage(False, "dbError"))
+        else:
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
+
+
+# Drop a library and index all the tracks
+def rescanLibrary(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'LIBRARY_ID' in response:
+            library = strip_tags(response['LIBRARY_ID'])
+            if Library.objects.filter(id=library).count() == 1:
+                library = Library.objects.get(id=library)
+
+                # Check if the library is not used somewhere else
+                if library.playlist.isScanned:
+                    # Delete all the old tracks
+                    library.playlist.delete()
+
+                    # Recreating playlist
+                    playlist = Playlist()
+                    playlist.name = library.name
+                    playlist.user = request.user
+                    playlist.isLibrary = True
+                    playlist.save()
+                    library.playlist = playlist
+
+                    # Scan library
+                    data = scanLibrary(library, playlist, library.convertID3)
+                    return JsonResponse(data)
+                else:
+                    return JsonResponse(errorCheckMessage(False, "rescanError"))
+            else:
+                return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     else:

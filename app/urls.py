@@ -22,7 +22,10 @@ urlpatterns = [
     url(r'^ajax/getMoodbarByID/$', views.getMoodbarByID, name='getMoodbarByID'),
     url(r'^ajax/shuffleNextTrack/$', views.shuffleNextTrack, name='shuffleNextTrack'),
     url(r'^ajax/randomNextTrack/$', views.randomNextTrack, name='randomNextTrack'),
+    url(r'^ajax/rescanLibrary/$', views.rescanLibrary, name='rescanLibrary'),
+
     url(r'^ajax/getUserStats/$', views.getUserStats, name='getUserStats'),
+
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^utils/modal/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
     url(r'^utils/modal/editMetadata/$', utils.EditMetadataModal.as_view(), name='editMetadataModal'),
