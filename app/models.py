@@ -3,18 +3,24 @@ from django.db import models
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, unique=True, null=True)
+
+    class Meta:
+        app_label = 'app'
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=1000)
+    title = models.CharField(max_length=1000, unique=True, null=True)
     totalDisc = models.IntegerField(null=True)
     totalTrack = models.IntegerField(null=True)
     artist = models.ManyToManyField(Artist)
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, null=True)
+
+    class Meta:
+        app_label = 'app'
 
 
 class FileType(models.Model):
@@ -35,7 +41,7 @@ class Track(models.Model):
     bitRate = models.IntegerField(null=True)
     bitRateMode = models.IntegerField(null=True)
     sampleRate = models.IntegerField(null=True)
-    duration = models.IntegerField(null=True)
+    duration = models.FloatField(null=True)
     discNumber = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
     lastModified = models.DateField(auto_now=True, null=True)
@@ -44,7 +50,6 @@ class Track(models.Model):
     genre = models.ForeignKey(Genre, null=True)
     fileType = models.ForeignKey(FileType, null=True)
     moodbar = models.URLField(max_length=1000, null=True)
-    CRC = models.CharField(max_length=1000, null=False)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
     uploader = models.ForeignKey(User, null=True)
