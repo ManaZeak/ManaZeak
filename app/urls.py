@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^ajax/randomNextTrack/$', views.randomNextTrack, name='randomNextTrack'),
     url(r'^ajax/rescanLibrary/$', views.rescanLibrary, name='rescanLibrary'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
-    url(r'^utils/modal/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
-    url(r'^utils/modal/editMetadata/$', utils.EditMetadataModal.as_view(), name='editMetadataModal'),
+    url(r'^utils/modals/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
+    url(r'^utils/modals/editMetadata/$', utils.EditMetadataModal.as_view(), name='editMetadataModal'),
 ]

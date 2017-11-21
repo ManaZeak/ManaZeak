@@ -3,9 +3,7 @@
  *  PlaylistBar class - handle the playlist bar                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var TopBar = function(cookies) {
-    this.cookies = cookies;
-
+var TopBar = function() {
     this.moodbar = null;
     this.playlistBar = null;
     this.playlists = null;
@@ -37,15 +35,14 @@ var TopBar = function(cookies) {
 
 
 TopBar.prototype = {
-
+// TODO : handle first connection, bug occuring on refresh
     init: function(playlists, selectedPlaylist) {
         this.removeEntries();
-
         this.playlists = playlists;
 
         this.addEntries();
         this.addNewPlaylistButton();
-        this.setSelected(selectedPlaylist);
+        this.setSelected(selectedPlaylist.id);
         this._eventListener();
     },
 
@@ -64,7 +61,7 @@ TopBar.prototype = {
 
     removeEntries: function() {
         for (var i = 0; i < this.entries.length ;++i) {
-            this.listView.removeChild(this.entries[i].entry)
+            this.playlistBar.removeChild(this.entries[i].entry)
         }
 
         // To the GC, and beyond
@@ -81,11 +78,19 @@ TopBar.prototype = {
 
     setSelected: function(id) {
 	    this.selectedPlaylist = id;
-        this.entries[id].setIsSelected(true);
+
+	    for (var i = 0; i < this.entries.length ;++i) {
+	        if (this.entries[i].getId() == id) {
+	            console.log("Match");
+                this.entries[i].setIsSelected(true);
+            }
+        }
+
     },
 
 
     newLibPlay: function(e) {
+        console.log(this.menu);
         this.menu.toggleVisibilityLock(e);
 //        window.app.requestNewPlaylist();
     },
@@ -93,13 +98,21 @@ TopBar.prototype = {
 
     unSelectAll: function() {
         for (var i = 0; i < this.entries.length ;++i) {
-		this.entries[i].setIsSelected(false);
+		    this.entries[i].setIsSelected(false);
         }
     },
 
 
-    refreshPlaylistBar: function() {
-        // TODO
+    refreshTopBar: function() {
+        if (this.newPlaylistButton) {
+            this.playlistBar.removeChild(this.newPlaylistButton);
+        }
+
+        this.removeEntries();
+        this.addEntries();
+        this.addNewPlaylistButton();
+        // TODO : set selected to new one
+        this.setSelected(this.selectedPlaylist);
     },
 
 
@@ -120,8 +133,11 @@ TopBar.prototype = {
         if (id !== undefined) {
             this.unSelectAll();
             this.entries[id].setIsSelected(true);
+            window.app.refreshUI();
+        }
 
-            window.app.changePlaylist(this.entries[id].entry.id);
+        else {
+
         }
     },
 
@@ -139,7 +155,7 @@ TopBar.prototype = {
         };
 
         xhr.open("POST", "ajax/getMoodbarByID/", true);
-        xhr.setRequestHeader('X-CSRFToken', this.cookies['csrftoken']);
+        xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
         xhr.send(JSON.stringify({
             TRACK_ID: id
         }));

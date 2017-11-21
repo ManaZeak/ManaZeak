@@ -155,14 +155,20 @@ def loadSimplifiedLibrary(request):
     if request.method == 'POST':
         print("Getting json export of the library")
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' not in response:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-        if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-            playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-            tracks = exportPlaylistToSimpleJson(playlist)
-            return HttpResponse(tracks)
+        if 'PLAYLIST_ID' in response:
+            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+                if playlist.jsonExport is None:
+                    tracks = exportPlaylistToSimpleJson(playlist)
+                else:
+                    tracks = playlist.jsonExport
+                return HttpResponse(tracks)
+            else:
+                return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
-            return JsonResponse(errorCheckMessage(False, "dbError"))
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 # Get all track information from a playlist and format it as json
@@ -394,7 +400,7 @@ def rescanLibrary(request):
 
                 # Check if the library is not used somewhere else
                 if library.playlist.isScanned:
-                    # Delete all the old tracks
+                    # Delete all the js tracks
                     library.playlist.delete()
 
                     # Recreating playlist

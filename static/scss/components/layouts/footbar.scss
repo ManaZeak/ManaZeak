@@ -17,6 +17,8 @@
         img {
             height: 80px;
             width: 80px;
+
+            cursor: pointer; // TODO : on click, launch cover modal (w/ transparency in black around + ability to set/remove/download cover)
         }
 
         ul {
@@ -205,12 +207,14 @@
         height: 100%;
         position: relative;
         opacity: 1;
-        //opacity: 0;
+        opacity: 0;
         padding-right: 50px;
 
         img {
             height: 80px;
             width: 80px;
+
+            cursor: pointer; // TODO : on click, launch cover modal (w/ transparency in black around + ability to set/remove/download cover)
         }
 
         ul {
