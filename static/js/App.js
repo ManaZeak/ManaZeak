@@ -116,7 +116,6 @@ App.prototype = {
 
         // User first connection
         else {
-            console.log("TTT");
             this.activePlaylist = this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
                 that.topBar.init(that.playlists, that.playlists[0]);
                 that.footBar.playlistPreview.setVisible(true);
