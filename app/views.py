@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage,\
     getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist
 
@@ -369,11 +369,11 @@ def getUserStats(request):
         response = json.loads(request.body)
     user = request.user
 
-    getUserNbTrackListened(user)
+    mdr = getUserNbTrackListened(user)
     getUserNbTrackPushed(user)
     getUserGenre(user)
-    getUserGenrePercentage(user) 
-    mdr = getUserPrefArtist(user)
+    getUserGenrePercentage(user)
+    getUserPrefArtist(user)
     return JsonResponse({'mdr': mdr})
 
 
