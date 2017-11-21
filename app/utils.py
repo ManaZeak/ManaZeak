@@ -14,7 +14,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist, Stats, Track
 
 
 # Render class for serving modal to client (Scan)
@@ -666,32 +666,35 @@ def getUserGenre(user):
 
 def getUserGenrePercentage(user):
     genreCounter = getUserGenre(user)
-    totalgenre = 0
-    
-    for counter in genreCounter:
-        totalgenre = totalgenre + genreCounter.counter
+    genrePercentage = []
+    totalGenre = 1 # At the moment protection against empty tests
+    i = 0
 
-    for counter in genreCounter:
-        percentage = genreCounter.counter / totalgenre
-        genreCounter.append(percentage)
+    for i in genreCounter:
+        totalGenre = totalGenre + i
 
-    return genreCounter
+    for i in genreCounter:
+        percentage = 100*i / totalGenre
+        genrePercentage.append(percentage)
+
+    return genrePercentage
+
 
 def getUserPrefArtist(user):
     artists = Artist.objects.all()
     artistCounter = []
-   
+
     for artist in artists:
         counter = 0
         tracks = Stats.objects.filter(track__artist=artist, user=user)
-      
+
         for track in tracks:
             counter += track.playCounter
 
         artistCounter.append(counter)
-        
+
     artistTuple = (artists, artistCounter)
+    #sorted(artistTuple, key=lambda artistCounter?: artistCounter[1]? )
+    # Need to sort artist tuple by artistCounter column
 
-    sorted(artistTuple, key=lambda artistTuple: artistTuple.artistCounter.counter)
-
-    return artistTuple
+    return artistCounter
