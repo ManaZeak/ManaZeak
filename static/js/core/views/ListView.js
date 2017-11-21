@@ -3,11 +3,9 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(playlistId, tracks, cookies) {
+var ListView = function(data) {
+
     this.listView = null;
-    this.playlistId = playlistId;
-    this.tracks = tracks;
-    this.cookies = cookies;
     this.entries = [];
     this.entriesSelected = {};
     this.dblClick = false;
@@ -39,25 +37,29 @@ var ListView = function(playlistId, tracks, cookies) {
         isYearAsc:      false
     };
 
-    this.init();
-};
+    View.call(this, data);
 
+};
 
 ListView.prototype = {
 
-    init: function() {
-        this.listView = document.createElement("div");
+    getDataFromPlaylist: function(playlist) {
+        return playlist.tracks;
+    },
+
+    _init: function(data) {
+        this.listView = document.createElement("DIV");
         this.listView.id ="listView";
 
         this.initHeader();
-        this._eventListener();
-
-        this.addEntries(this.tracks);
+        this.addEntries(data);
+        this.container.appendChild(this.header.container);
+        this.container.appendChild(this.listView);
     },
 
 
     initHeader: function() {
-        this.header.container = document.createElement("div");
+        this.header.container = document.createElement("DIV");
         this.header.container.className = "columnHeader";
 
         this.header.duration  = document.createElement("div");
@@ -103,40 +105,14 @@ ListView.prototype = {
         //document.getElementById("mainContainer").appendChild(this.header.container);
     },
 
-
-    showListView: function() {
-        document.getElementById("mainContainer").appendChild(this.header.container);
-        document.getElementById("mainContainer").appendChild(this.listView);
-
-    },
-
-    hideListView: function() {
-        document.getElementById("mainContainer").removeChild(this.header.container);
-        document.getElementById("mainContainer").removeChild(this.listView);
-        // TODO : remove header too
-    },
-
-
     addEntries: function(tracks) {
         for (var i = 0; i < tracks.length ;++i)
             this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
     },
 
 
-    removeEntries: function() {
-        for (var i = 0; i < this.entries.length ;++i) {
-            this.listView.removeChild(this.entries[i].entry)
-        }
-
-        // To the GC, and beyond
-        this.entries = [];
-    },
-
-
     sortBy: function(argument, ascending) {
-        this.removeEntries();
-        this.tracks.sort(sortObjectArrayBy(argument, ascending));
-        this.addEntries(this.tracks);
+        this.entries.sort(sortObjectArrayBy(argument, ascending));
     },
 
 
@@ -153,28 +129,7 @@ ListView.prototype = {
         var id = target.dataset.listViewID;
 
         if (this.dblClick) {
-            JSONParsedPostRequest(
-                "ajax/getTrackPathByID/",
-                this.cookies,
-                JSON.stringify({
-                    TRACK_ID: this.entries[id].entry.id
-                }),
-                function(response) { // TODO : format this to other json requests
-                    if (response.RESULT === "FAIL") {
-                        new Notification("Bad format.", response.ERROR);
-                    } else {
-                        var cover = response.COVER;
-                        if (cover === null || cover === undefined) { cover = "../static/img/utils/defaultcover.jpg"; }
-
-                        window.app.trackPreview.setVisible(true);
-                        window.app.trackPreview.changeTrack(that.entries[id].track, cover);
-                        window.app.topBar.changeMoodbar(that.entries[id].entry.id);
-                        window.app.player.changeTrack(".." + response.PATH, that.entries[id].entry.id);
-                        window.app.player.play();
-                    }
-                }
-            );
-
+            window.app.changeTrack(this.entries[id].track);
             return;
         }
         this.dblClick = true;
@@ -189,66 +144,6 @@ ListView.prototype = {
     },
 
 
-    getNextTrack: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        return this.entries[(i + 1) % this.entries.length].entry.id;
-    },
-
-
-    getPreviousTrack: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        if (i === 0)
-            return {
-              id: this.entries[this.entries.length - 1].entry.id
-            };
-        else {
-            return {
-                id:  this.entries[i - 1].entry.id
-            };
-        }
-    },
-
-
-    getTrackInfo: function(id) {
-        for (var i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].entry.id === id)
-                break;
-        }
-
-        return this.entries[i].track;
-    },
-
-
-    toggleContextMenu: function(event) {
-        var target = event.target;
-
-        while (target.parentNode && target.parentNode !== this.listView) {
-            target = target.parentNode;
-        }
-
-        if (target.parentNode === null) { return false; }
-
-        var id = target.dataset.listViewID;
-
-        if (!this.entries[id].getIsSelected()) {
-            this.unSelectAll();
-            this.entries[id].setIsSelected(true);
-            this.entriesSelected[id] = true;
-        }
-        // TODO : update contextMenu selection attriutes
-        //this.contextMenu.updateSelectedEntries(this.entriesSelected);
-        this.contextMenu.toggleVisibilityLock(event);
-    },
-
-
     unSelectAll: function() {
         this.entriesSelected = {};
         for (var i = 0; i < this.entries.length ;++i)
@@ -260,8 +155,7 @@ ListView.prototype = {
     _eventListener: function() {
         var that = this;
 
-        this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; }; // Disabling right click on ListView
-        this.listView.addEventListener("contextmenu", this.toggleContextMenu.bind(this));
+        //this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; };
         this.listView.addEventListener("click", this.viewClicked.bind(this));
 
         // Sorting listeners
@@ -303,3 +197,5 @@ ListView.prototype = {
         });
     }
 };
+
+extendClass(View, ListView);
