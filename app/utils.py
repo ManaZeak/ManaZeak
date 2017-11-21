@@ -1,8 +1,7 @@
-import binascii
 import hashlib
 import math
-
 import multiprocessing
+import operator
 import os
 import threading
 
@@ -14,12 +13,8 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
-
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Track, Genre, Album, Artist
-
-from app.models import FileType, Track, Genre, Album, Artist, Stats
-
+from app.models import FileType, Genre, Album, Artist
 
 
 # Render class for serving modal to client (Scan)
@@ -63,7 +58,8 @@ def splitTableCustom(table, number):
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
-        return trackAttribute
+        result = trackAttribute.replace('"', '\\"')
+        return result
     else:
         return "null"
 
@@ -87,7 +83,6 @@ def processVorbisTag(tag):
 def errorCheckMessage(isDone, error):
     errorTitle = ""
     errorMessage = ""
-
     if error == "badFormat":
         errorTitle = "Wrong format"
         errorMessage = "The server didn't understood what you said."
@@ -120,11 +115,9 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Not permitted"
         errorMessage = "You are not allowed to do this."
 
-
     elif error == "rescanError":
         errorTitle = "Library isn't ready"
         errorMessage = "Another scan is running in background, be a little more patient"
-
 
     elif error is None:
         errorTitle = "null"
@@ -140,7 +133,12 @@ def errorCheckMessage(isDone, error):
 # Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
-    spiltedTracks = splitTable(tracks)
+    procNumber = multiprocessing.cpu_count()
+    while len(tracks) < procNumber:
+        procNumber -= 1
+        if procNumber == 0:
+            return
+    spiltedTracks = splitTableCustom(tracks, procNumber)
     threads = []
     finalData = "["
     for splitedTrack in spiltedTracks:
@@ -152,6 +150,8 @@ def exportPlaylistToSimpleJson(playlist):
         finalData += thread.finalData
     finalData = finalData[:-1]
     finalData += "]"
+    playlist.jsonExport = finalData.replace('\n', '').replace('\r', '')
+    playlist.save()
     return finalData.replace('\n', '').replace('\r', '')
 
 
@@ -346,7 +346,31 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+
     print("Finished import")
+
+
+"""
+def ArtistViewJsonGenerator(tracks):
+    jsonExport = "{["
+    tracks.sort(key=operator.attrgetter('number'))
+    tracks.sort(key=operator.attrgetter('album'))
+    tracks.sort(key=operator.attrgetter('artist'))
+    for track in tracks:
+        jsonExport += "{"
+    for artist in artistsReference: # TODO: check si alphabétique
+        jsonExport += "{\"ARTIST_ID\" : \"" + artistsReference[artist]
+        jsonExport += "\", \"ARTIST_NAME\": \"" + artist + "\",[{"
+        for album in albumArtists:
+            if artist in albumArtists[album]:
+                artistNames = albumArtists[album].split(",")
+                for artistName in artistNames:
+                    if artist == artistName:
+                        jsonExport += "\"ALBUM_ID\" : " + albumReference[album]
+                        jsonExport += "\"ALBUM_NAME\" : \"" + album + "\", [{"
+                        for track in tracks:
+                            if track.album == album
+    """
 
 
 class ImportBulkThread(threading.Thread):
@@ -408,6 +432,11 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     else:
         track.bitRateMode = 3
     track.fileType = fileTypeId.id
+
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
 
     # Check if the file has a tag header
     try:
@@ -504,6 +533,11 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     track.sampleRate = audioFile.info.sample_rate
     track.fileType = fileTypeId.id
 
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
+
     # --- COVER ---
     pictures = audioFile.pictures
     if len(pictures) != 0:
@@ -588,46 +622,14 @@ def createMoodbarsUrls(playlist):
     print("Ended generating moodbars")
 
 
-
 class LocalTrack:
-    def __init__(self, ):
+    def __init__(self):
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
             = self.duration = self.discNumber = self.size = self.playCounter = 0
         self.artist = []
         self.scanned = False
-
-# Thread for generating multiple CRC32
-class CRCGenerator(threading.Thread):
-    def __init__(self, tracks):
-        threading.Thread.__init__(self)
-        self.tracks = tracks
-
-    def run(self):
-        tracks = list(self.tracks)
-        print(tracks)
-        for track in tracks:
-            buf = open(track.location, 'rb').read()
-            buf = (binascii.crc32(buf) & 0xFFFFFFFF)
-            track.CRC = "%08X" % buf
-            print("CRC = " + track.CRC)
-            track.save()
-
-
-# Import in a threaded way a library
-class ImportMp3Thread(threading.Thread):
-    def __init__(self, mp3Paths, playlist, convert, fileTypeId, coverPath):
-        threading.Thread.__init__(self)
-        self.mp3Paths = mp3Paths
-        self.playlist = playlist
-        self.convert = convert
-        self.fileTypeId = fileTypeId
-        self.coverPath = coverPath
-
-    def run(self):
-        for path in self.mp3Paths:
-            addTrackMP3Thread(path, self.playlist, self.convert, self.fileTypeId, self.coverPath)
 
 
 def getUserNbTrackListened(user):
@@ -669,18 +671,17 @@ def getUserGenrePercentage(user):
     for counter in genreCounter:
         totalgenre = totalgenre + genreCounter.counter
 
-    for counter in genreCounter
+    for counter in genreCounter:
         percentage = genreCounter.counter / totalgenre
-    
-    genreCounter.append(percentage)
+        genreCounter.append(percentage)
 
     return genreCounter
 
-def getUserPrefArtist(user)
+def getUserPrefArtist(user):
     artists = Artist.objects.all()
     artistCounter = []
    
-    for artist in artists
+    for artist in artists:
         counter = 0
         tracks = Stats.objects.filter(track__artist=artist, user=user)
       
