@@ -81,7 +81,6 @@ TopBar.prototype = {
 
 	    for (var i = 0; i < this.entries.length ;++i) {
 	        if (this.entries[i].getId() == id) {
-	            console.log("Match");
                 this.entries[i].setIsSelected(true);
             }
         }
