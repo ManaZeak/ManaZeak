@@ -20,7 +20,7 @@ from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
-    getUserNbTrackListened, getUserNbTrackPushed, getUserGenre
+    getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist
 
 
 class mainView(ListView):
@@ -312,7 +312,6 @@ def checkLibraryScanStatus(request):
         if 'PLAYLIST_ID' in response:
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-<<<<<<< HEAD
 
                 # Check during 20 seconds if the library has been scanned
                 for _ in range(40):
@@ -321,7 +320,7 @@ def checkLibraryScanStatus(request):
                     else:
                         time.sleep(0.5)
                 return JsonResponse(errorCheckMessage(False, None))
-=======
+
                 print("Playlist status : " + str(playlist.isScanned))
                 data = errorCheckMessage(playlist.isScanned, None)
             else:
@@ -330,7 +329,7 @@ def checkLibraryScanStatus(request):
         else:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     return JsonResponse(errorCheckMessage(False, "badRequest"))
->>>>>>> c5bc98858c4e3398b4471523fd08ded2604180b9
+
 
 
 def shuffleNextTrack(request):
@@ -389,7 +388,7 @@ def getUserStats(request):
     getUserGenre(user)
     getUserGenrePercentage(user) 
     mdr = getUserPrefArtist(user)
-    return JsonResponse({'mdr':mdr})
+    return JsonResponse({'mdr': mdr})
 
 
 def randomNextTrack(request):
