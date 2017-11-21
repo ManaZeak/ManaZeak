@@ -82,4 +82,4 @@ class PlaylistSettings(models.Model):
     user = models.ForeignKey(User)
     shuffleEnabled = models.BooleanField(default=False)
     randomEnabled = models.BooleanField(default=False)
-    viewMode = models.IntegerField(max_length=10)
+    viewMode = models.IntegerField()

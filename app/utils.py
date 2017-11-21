@@ -1,6 +1,7 @@
 import hashlib
 import math
 import multiprocessing
+import operator
 import os
 import threading
 
@@ -345,7 +346,31 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+
     print("Finished import")
+
+
+"""
+def ArtistViewJsonGenerator(tracks):
+    jsonExport = "{["
+    tracks.sort(key=operator.attrgetter('number'))
+    tracks.sort(key=operator.attrgetter('album'))
+    tracks.sort(key=operator.attrgetter('artist'))
+    for track in tracks:
+        jsonExport += "{"
+    for artist in artistsReference: # TODO: check si alphabétique
+        jsonExport += "{\"ARTIST_ID\" : \"" + artistsReference[artist]
+        jsonExport += "\", \"ARTIST_NAME\": \"" + artist + "\",[{"
+        for album in albumArtists:
+            if artist in albumArtists[album]:
+                artistNames = albumArtists[album].split(",")
+                for artistName in artistNames:
+                    if artist == artistName:
+                        jsonExport += "\"ALBUM_ID\" : " + albumReference[album]
+                        jsonExport += "\"ALBUM_NAME\" : \"" + album + "\", [{"
+                        for track in tracks:
+                            if track.album == album
+    """
 
 
 class ImportBulkThread(threading.Thread):
