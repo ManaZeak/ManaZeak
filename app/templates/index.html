@@ -21,8 +21,6 @@
         <p>Ctrl + q : toggle queue</p>
         <p>Space : Play/Pause</p> -->
 
-        {% include 'components/footbar.html' %}
-
         <audio id="audioPlayer">
             <source src="" type="audio/ogg">
              Your browser does not support the audio element.
@@ -31,28 +29,45 @@
         <!-- Add absolute path in js TODO : to something about deaz ... -->
         <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/layouts/Modal.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/layouts/Notification.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/Modal.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/Notification.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Track.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/views/entries/ListViewEntry.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/views/ListView.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/menu/UserMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/views/entries/ListViewEntry.js" %}"></script>
+        <!-- Attention au loading -->
+        <script type="text/javascript" src="{% static "js/core/View.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/core/views/ListView.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/UserMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Queue.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/playlist/PlaylistPreview.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/player/TrackPreview.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/player/VolumeBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/layouts/entries/PlaylistBarEntry.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/components/layouts/TopBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/player/ProgressBar.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/menu/ContextMenu.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/menu/ContextMenuEntry.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/ui/menu/NewLibPlayMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/PlaylistPreview.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/TrackPreview.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/VolumeBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/entries/PlaylistBarEntry.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/TopBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/FootBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/ProgressBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/ContextMenu.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/entries/ContextMenuEntry.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/modals/NewLibPlayMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/Controls.js" %}"></script>
+        <script type="text/javascript" data-script-type="appAddon" data-src="{% static "js/AppControler.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
-            var app = new App();
-            app.init();
+            //Load App from multiple files
+            var addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
+            var loaded = 0;
+            for(var i = 0; i < addonSrcs.length; ++i) {
+                addonSrcs[i].onload = function() {
+                    loaded++;
+                    if(loaded == addonSrcs.length) {
+                        window.app = new App();
+                        //TODO: Move this to footbar
+                        app.init();
+                    }
+                };
+                addonSrcs[i].src = addonSrcs[i].dataset.src;
+            }
         </script>
     </body>
 </html>

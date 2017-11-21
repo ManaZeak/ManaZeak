@@ -400,7 +400,7 @@ def rescanLibrary(request):
 
                 # Check if the library is not used somewhere else
                 if library.playlist.isScanned:
-                    # Delete all the old tracks
+                    # Delete all the js tracks
                     library.playlist.delete()
 
                     # Recreating playlist
