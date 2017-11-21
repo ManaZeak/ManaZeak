@@ -1,5 +1,12 @@
 "use strict";
 
+function extendClass(parent, child) {
+    var proto = Object.create(parent.prototype);
+    for(var i in child.prototype) {
+        proto[i] = child.prototype[i];
+    }
+    child.prototype = proto;
+}
 
 function precisionRound(value, precision) {
     var multiplier = Math.pow(10, precision || 0);
@@ -19,7 +26,7 @@ function secondsToTimecode(time) {
     transformedTime.d = Math.floor(time / 86400);
     transformedTime.h = Math.floor((time - (transformedTime.d * 86400)) / 3600);
     transformedTime.m = Math.floor((time - (transformedTime.d * 86400) - (transformedTime.h * 3600)) / 60);
-    transformedTime.s = Math.round(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
+    transformedTime.s = Math.floor(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
     // Adding an extra 0 for values inferior to 10
     transformedTime.d = transformedTime.d < 10 ? "0" + transformedTime.d : transformedTime.d;
     transformedTime.h = transformedTime.h < 10 ? "0" + transformedTime.h : transformedTime.h;
@@ -109,7 +116,7 @@ function JSONParsedGetRequest(url, http, callback) {
 }
 
 
-function JSONParsedPostRequest(url, cookies, message, callback) {
+function JSONParsedPostRequest(url, message, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -119,7 +126,7 @@ function JSONParsedPostRequest(url, cookies, message, callback) {
     };
 
     xhr.open("POST", url, true);
-    xhr.setRequestHeader('X-CSRFToken', cookies['csrftoken']);
+    xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(message);
 }
@@ -130,7 +137,7 @@ function JSONMoodbarPostRequest(url, cookies, message, callback) {
 }
 
 
-// Credit for this function "Valodim"
+// Credit for this function : "Valodim"
 // https://gist.github.com/Valodim/5225460
 function renderMoodFile(file, parentDiv) {
     var xhr = new XMLHttpRequest();
@@ -149,7 +156,7 @@ function renderMoodFile(file, parentDiv) {
 
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + b + ", " + g + ")" // bc why not swapping ? ... and because bg ...
+                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
                 };
             }
 

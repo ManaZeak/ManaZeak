@@ -23,7 +23,7 @@ def scanLibrary(library, playlist, convert):
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
-                mp3Files.append(root + "/" + file)
+                mp3Files.append(os.path.join(root, file))
 
             elif file.lower().endswith('.ogg'):
                 # TODO: implement
