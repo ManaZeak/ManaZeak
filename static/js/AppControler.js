@@ -104,4 +104,10 @@ App.prototype.updateMetadata = function() {
     //this.footBar.progressBar.updateProgress(this.player.getPlayer());
 };
 
-// TODO : refresh all UI at one function
+
+App.prototype.refreshUI = function() {
+    //this.playlists[this.activePlaylist - 1].refreshViews();
+    this.topBar.refreshTopBar();
+    this.topBar.setSelected(this.activePlaylist.id);
+    this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+};

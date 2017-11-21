@@ -38,12 +38,11 @@ TopBar.prototype = {
 // TODO : handle first connection, bug occuring on refresh
     init: function(playlists, selectedPlaylist) {
         this.removeEntries();
-
         this.playlists = playlists;
 
         this.addEntries();
         this.addNewPlaylistButton();
-        this.setSelected(selectedPlaylist);
+        this.setSelected(selectedPlaylist.id);
         this._eventListener();
     },
 
@@ -79,11 +78,19 @@ TopBar.prototype = {
 
     setSelected: function(id) {
 	    this.selectedPlaylist = id;
-        this.entries[id].setIsSelected(true);
+
+	    for (var i = 0; i < this.entries.length ;++i) {
+	        if (this.entries[i].getId() == id) {
+	            console.log("Match");
+                this.entries[i].setIsSelected(true);
+            }
+        }
+
     },
 
 
     newLibPlay: function(e) {
+        console.log(this.menu);
         this.menu.toggleVisibilityLock(e);
 //        window.app.requestNewPlaylist();
     },
@@ -96,7 +103,7 @@ TopBar.prototype = {
     },
 
 
-    refreshPlaylistBar: function() {
+    refreshTopBar: function() {
         if (this.newPlaylistButton) {
             this.playlistBar.removeChild(this.newPlaylistButton);
         }
@@ -105,7 +112,7 @@ TopBar.prototype = {
         this.addEntries();
         this.addNewPlaylistButton();
         // TODO : set selected to new one
-        //this.setSelected(selectedPlaylist);
+        this.setSelected(this.selectedPlaylist);
     },
 
 
@@ -126,8 +133,11 @@ TopBar.prototype = {
         if (id !== undefined) {
             this.unSelectAll();
             this.entries[id].setIsSelected(true);
+            window.app.refreshUI();
+        }
 
-            window.app.changePlaylist(this.entries[id].entry.id);
+        else {
+
         }
     },
 
