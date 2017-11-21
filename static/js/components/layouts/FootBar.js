@@ -1,1 +1,0 @@
-// TODO : replace HTMl template by class

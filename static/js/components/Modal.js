@@ -13,14 +13,14 @@ var Modal = function(type, id) {
 
     switch (type) {
         case "scanLibrary":
-            this.url = "utils/modal/scanLibrary";
+            this.url = "utils/modals/scanLibrary";
             break;
         case "editMetadata":
-            this.url = "utils/modal/editMetadata";
+            this.url = "utils/modals/editMetadata";
             this.haveButtons = true;
             break;
         default:
-            new Notification("Can not open modal", "The given modal type doesn't exists");
+            new Notification("Can not open modals", "The given modals type doesn't exists");
             break;
     }
 };

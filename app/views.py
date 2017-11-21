@@ -18,8 +18,8 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage,\
     getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist
 
 
@@ -157,14 +157,20 @@ def loadSimplifiedLibrary(request):
     if request.method == 'POST':
         print("Getting json export of the library")
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' not in response:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-        if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-            playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-            tracks = exportPlaylistToSimpleJson(playlist)
-            return HttpResponse(tracks)
+        if 'PLAYLIST_ID' in response:
+            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+                if playlist.jsonExport is None:
+                    tracks = exportPlaylistToSimpleJson(playlist)
+                else:
+                    tracks = playlist.jsonExport
+                return HttpResponse(tracks)
+            else:
+                return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
-            return JsonResponse(errorCheckMessage(False, "dbError"))
+            return JsonResponse(errorCheckMessage(False, "badFormat"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 # Get all track information from a playlist and format it as json
@@ -271,26 +277,15 @@ def changeMetaData(request):
 
 
 # Return the link to a track with a track id
-# TODO: understand what happen when spammed (duped listening counters) lock?
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getTrackPathByID(request):
     if request.method == 'POST':
-        user = request.user
         response = json.loads(request.body)
+        data = {}
         if 'TRACK_ID' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
-                # Save the general play count
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
-                track.save()
-                # Save the counter for the user
-                if Stats.objects.filter(user=user, track=track).count() == 0:
-                    stat = Stats(user=user, track=track, playCounter=1)
-                else:
-                    stat = Stats.objects.get(user=user, track=track)
-                    stat.playCounter += 1
-                stat.save()
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
@@ -321,16 +316,6 @@ def checkLibraryScanStatus(request):
                         time.sleep(0.5)
                 return JsonResponse(errorCheckMessage(False, None))
 
-                print("Playlist status : " + str(playlist.isScanned))
-                data = errorCheckMessage(playlist.isScanned, None)
-            else:
-                data = errorCheckMessage(False, "dbError")
-            return JsonResponse(data)
-        else:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
-    return JsonResponse(errorCheckMessage(False, "badRequest"))
-
-
 
 def shuffleNextTrack(request):
     if request.method == 'POST':
@@ -353,7 +338,8 @@ def shuffleNextTrack(request):
                 data = errorCheckMessage(False, "dbError")
             return JsonResponse(data)
         return JsonResponse(errorCheckMessage(False, "badFormat"))
-    return JsonResponse(errorCheckMessage(False, "badRequest"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
 def getMoodbarByID(request):
