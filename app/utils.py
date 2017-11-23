@@ -1,9 +1,9 @@
 import hashlib
 import math
 import multiprocessing
-import operator
 import os
 import threading
+from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -667,14 +667,14 @@ def getUserGenre(user):
 def getUserGenrePercentage(user):
     genreCounter = getUserGenre(user)
     genrePercentage = []
-    totalGenre = 1 # At the moment protection against empty tests
+    totalGenre = 1  # At the moment protection against empty tests
     i = 0
 
     for i in genreCounter:
         totalGenre = totalGenre + i
 
     for i in genreCounter:
-        percentage = 100*i / totalGenre
+        percentage = 100 * i / totalGenre
         genrePercentage.append(percentage)
 
     return genrePercentage
@@ -691,10 +691,19 @@ def getUserPrefArtist(user):
         for track in tracks:
             counter += track.playCounter
 
-        artistCounter.append(counter)
+        artistCounter.append((artist.id, artist.name, counter))
 
-    artistTuple = (artists, artistCounter)
-    #sorted(artistTuple, key=lambda artistCounter?: artistCounter[1]? )
-    # Need to sort artist tuple by artistCounter column
+    artistCounter.sort(key=itemgetter(2), reverse=True)
 
     return artistCounter
+
+
+def userNeverPlayed(user):
+    stats = Stats.objects.filter(user=user)
+    playedArtistId = set()
+    for stat in stats:
+        for artist in stat.track.artist.all():
+            playedArtistId.add(artist.id)
+    neverPlayerArtists = Artist.objects.exclude(id__in=playedArtistId)
+    print(len(neverPlayerArtists))
+    return neverPlayerArtists
