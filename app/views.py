@@ -19,8 +19,9 @@ from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, Stats
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage,\
-    getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
+    getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist, \
+    userNeverPlayed
 
 
 class mainView(ListView):
@@ -286,6 +287,17 @@ def getTrackPathByID(request):
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
+                track.save()
+                user = request.user
+                if Stats.objects.filter(user=user, track=track).count() == 0:
+                    stat = Stats()
+                    stat.track = track
+                    stat.user = user
+                    stat.playCounter = 1
+                else:
+                    stat = Stats.objects.get(user=user, track=track)
+                    stat.playCounter += 1
+                stat.save()
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
@@ -373,8 +385,9 @@ def getUserStats(request):
     getUserNbTrackPushed(user)
     getUserGenre(user)
     getUserGenrePercentage(user)
-    getUserPrefArtist(user)
-    return JsonResponse({'mdr': mdr})
+    prefArtists = getUserPrefArtist(user)
+    userNeverPlayed(user)
+    return JsonResponse({'mdr': prefArtists[:100]})
 
 
 def randomNextTrack(request):
