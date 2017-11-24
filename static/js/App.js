@@ -89,25 +89,24 @@ App.prototype = {
                 function(response) {
                     //TODO: init others in callback
                     that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0],
-                                                     playlists.PLAYLIST_NAMES[0],
-                                                     playlists.PLAYLIST_IS_LIBRARY[0],
-                                                     true,
-                                                     response,
-                                                     undefined));
+                        playlists.PLAYLIST_NAMES[0],
+                        playlists.PLAYLIST_IS_LIBRARY[0],
+                        true,
+                        response,
+                        undefined));
                     // response = raw tracks JSON object
                     for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
-                                                         playlists.PLAYLIST_NAMES[i],
-                                                         playlists.PLAYLIST_IS_LIBRARY[i],
-                                                         true,
-                                                         undefined,
-                                                         undefined));
+                            playlists.PLAYLIST_NAMES[i],
+                            playlists.PLAYLIST_IS_LIBRARY[i],
+                            true,
+                            undefined, // TODO : load tracks from other playlists.
+                            undefined));
                     }
 
                     that.topBar.init(that.playlists, that.playlists[0]);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
-                    that.refreshUI();
                     that.footBar.playlistPreview.setVisible(true);
                     that.changePlaylist();
                 }
@@ -137,8 +136,8 @@ App.prototype = {
                     that.listView.hideListView();
                     that.listView = null;
                     that.listView = new ListView(playlistId,
-                                                 that.playlists[i].getTracks(),
-                                                 that.cookies);
+                        that.playlists[i].getTracks(),
+                        that.cookies);
                     that.listView.showListView();
                 });
                 break;
@@ -151,16 +150,15 @@ App.prototype = {
         var that = this;
 
         while (this.mainContainer.firstChild) {
-           this.mainContainer.removeChild(this.mainContainer.firstChild);
+            this.mainContainer.removeChild(this.mainContainer.firstChild);
         }
 
-        this.playlists.push(new Playlist(0, null, true, false, this.cookies, undefined, function() {
-            that.listView = null;
-            that.listView = new ListView(that.playlists[0].getId(),
-                                         that.playlists[that.playlists.length - 1].getTracks(),
-                                         that.cookies);
-            that.listView.showListView();
-            that.topBar.init(that.playlists, that.topBar.entries.length);
+        this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
+            that.playlists[0].activate();
+            that.topBar.refreshTopBar();
+            that.footBar.playlistPreview.setVisible(true);
+            that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+            that.activePlaylist = that.playlists[0];
         }));
     },
 
