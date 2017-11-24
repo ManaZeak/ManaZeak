@@ -6,6 +6,7 @@ import os
 import threading
 
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -14,7 +15,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist, Track
 
 
 # Render class for serving modal to client (Scan)
@@ -350,27 +351,29 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     print("Finished import")
 
 
-"""
-def ArtistViewJsonGenerator(tracks):
-    jsonExport = "{["
-    tracks.sort(key=operator.attrgetter('number'))
-    tracks.sort(key=operator.attrgetter('album'))
-    tracks.sort(key=operator.attrgetter('artist'))
-    for track in tracks:
-        jsonExport += "{"
-    for artist in artistsReference: # TODO: check si alphabétique
-        jsonExport += "{\"ARTIST_ID\" : \"" + artistsReference[artist]
-        jsonExport += "\", \"ARTIST_NAME\": \"" + artist + "\",[{"
-        for album in albumArtists:
-            if artist in albumArtists[album]:
-                artistNames = albumArtists[album].split(",")
-                for artistName in artistNames:
-                    if artist == artistName:
-                        jsonExport += "\"ALBUM_ID\" : " + albumReference[album]
-                        jsonExport += "\"ALBUM_NAME\" : \"" + album + "\", [{"
-                        for track in tracks:
-                            if track.album == album
-    """
+def artistViewJsonGenerator(request):
+    playlistId = 1
+    playlistTracks = Track.objects.filter(playlist=playlistId)
+    artists = Artist.objects.filter(track__in=playlistTracks).distinct().order_by('name')
+    responseJson = "["
+    for artist in artists:
+        responseJson += "{\"ARTIST_ID\":" + checkIfNotNoneNumber(artist.id) + ","
+        responseJson += "\"ARTIST_NAME\":\"" + checkIfNotNone(artist.name) + "\",["
+        albums = Album.objects.filter(track__in=playlistTracks, artist__album__artist=artist)
+        for album in albums:
+            responseJson += "{\"ALBUM_ID\":" + checkIfNotNoneNumber(album.id) + ","
+            responseJson += "\"ALBUM_TITLE\":\"" + checkIfNotNone(album.title) + "\",["
+            tracks = Track.objects.filter(album=album).order_by('album__track__number')
+            for track in tracks:
+                responseJson += "{\"TRACK_ID\":" + checkIfNotNoneNumber(track.id) + ","
+                responseJson += "\"TRACK_TITLE\":" + checkIfNotNone(track.title) + "},"
+            responseJson = responseJson[:-1]
+            responseJson += "]},"
+        responseJson = responseJson[:-1]
+        responseJson += "]},"
+    responseJson = responseJson[:-1]
+    responseJson += "]"
+    return HttpResponse(responseJson)
 
 
 class ImportBulkThread(threading.Thread):
