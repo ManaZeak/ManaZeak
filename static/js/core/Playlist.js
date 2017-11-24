@@ -257,13 +257,13 @@ Playlist.prototype = {
     },
 
 
-    getPlaylistsTracks: function(playlistId, callback) {
+    getPlaylistsTracks: function(callback) {
         var that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
             JSON.stringify({
-                PLAYLIST_ID: playlistId
+                PLAYLIST_ID: this.id
             }),
             function(response) {
                 // response = raw tracks JSON object
@@ -287,7 +287,6 @@ Playlist.prototype = {
         for (var i = 0; i < tracks.length ;++i) {
             ++this.trackTotal;
             this.durationTotal += tracks[i].DURATION;
-
             this.tracks.push(new Track(tracks[i]));
         }
     },
