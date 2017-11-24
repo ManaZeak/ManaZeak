@@ -101,7 +101,7 @@ ProgressBar.prototype = {
             this.duration.total.innerHTML = secondsToTimecode(track.duration);
         } else {
             this.duration.current.innerHTML = secondsToTimecode(track.currentTime);
-            this.duration.total.innerHTML = secondsToTimecode(track.duration - track.currentTime);
+            this.duration.total.innerHTML = "-" + secondsToTimecode(track.duration - track.currentTime);
         }
     },
 
