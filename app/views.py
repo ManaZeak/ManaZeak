@@ -305,14 +305,7 @@ def checkLibraryScanStatus(request):
         if 'PLAYLIST_ID' in response:
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-
-                # Check during 20 seconds if the library has been scanned
-                for _ in range(40):
-                    if playlist.isScanned:
-                        return JsonResponse(errorCheckMessage(playlist.isScanned, None))
-                    else:
-                        time.sleep(0.5)
-                return JsonResponse(errorCheckMessage(False, None))
+                return JsonResponse(errorCheckMessage(playlist.isScanned, None))
 
 
 def shuffleNextTrack(request):

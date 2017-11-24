@@ -205,8 +205,9 @@ Playlist.prototype = {
         var that = this;
 
         this.getTracksIntervalId = setInterval(function() {
+            console.log("Dez");
             that._getTracksFromServer_aux(playlistId);
-        }, 20000); // every 20s
+        }, 500); // called every .5s
     },
 
 
@@ -226,10 +227,10 @@ Playlist.prototype = {
                  * } */
                 var self = that;
 
-                clearInterval(that.getTracksIntervalId);
-                that.getTracksIntervalId = -1;
-
                 if (response.DONE) {
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
+
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
                         JSON.stringify({
@@ -310,8 +311,8 @@ Playlist.prototype = {
                 }
             );
         } else {
-            this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            this.currentTrack = this.activeView.getNextEntry();
+            window.app.changeTrack(this.currentTrack);
         }
     },
 
@@ -337,8 +338,8 @@ Playlist.prototype = {
                 }
             );
         } else {
-            this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            this.currentTrack = this.activeView.getPreviousEntry();
+            window.app.changeTrack(this.currentTrack);
         }
     },
 
@@ -360,7 +361,7 @@ Playlist.prototype = {
 
 
     updateView: function(track) {
-        this.currentTrack = track.id.track - 1;
+        this.currentTrack = track; // TODO : handle list sorting, search for entry in view instead
         this.activeView.setSelected(track);
     },
 
@@ -369,14 +370,6 @@ Playlist.prototype = {
         for(var i = 0; i < this.views.length; ++i)
             if(this.views[i] !== null)
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
-    },
-
-    setCurrentTrack: function(track) {
-        for (var i = 0; i < this.tracks.length ;++i) {
-            if (this.tracks[i].id === track.id) {
-                this.currentTrack = i;
-            }
-        }
     },
 
     // Class Getters and Setters
