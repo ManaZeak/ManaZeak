@@ -23,7 +23,6 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     };
     this.scanModal = null;
 
-
     // Playlist internal attributes
     this.id = id;
     this.name = name;
@@ -205,7 +204,6 @@ Playlist.prototype = {
         var that = this;
 
         this.getTracksIntervalId = setInterval(function() {
-            console.log("Dez");
             that._getTracksFromServer_aux(playlistId);
         }, 500); // called every .5s
     },

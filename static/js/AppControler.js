@@ -108,6 +108,5 @@ App.prototype.updateMetadata = function() {
 App.prototype.refreshUI = function() {
     //this.playlists[this.activePlaylist - 1].refreshViews();
     this.topBar.refreshTopBar();
-    this.topBar.setSelected(this.activePlaylist.id);
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
 };
