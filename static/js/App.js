@@ -116,10 +116,12 @@ App.prototype = {
 
         // User first connection
         else {
-            this.activePlaylist = this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
+            this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
+                that.playlists[0].activate();
                 that.topBar.init(that.playlists, that.playlists[0]);
                 that.footBar.playlistPreview.setVisible(true);
-                that.footBar.playlistPreview.changePlaylist(that.playlists[that.playlists.length - 1]); // TODO : get Lib/Play image/icon
+                that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+                that.activePlaylist = that.playlists[0];
             }));
         }
     },

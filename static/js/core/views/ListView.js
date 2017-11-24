@@ -111,6 +111,23 @@ ListView.prototype = {
     },
 
 
+    getNextEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i + 1) % this.entries.length].track;
+            }
+        }
+    },
+
+    getPreviousEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
+            }
+        }
+    },
+
+
     sortBy: function(argument, ascending) {
         this.entries.sort(sortObjectArrayBy(argument, ascending));
     },
