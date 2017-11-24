@@ -270,8 +270,12 @@ Playlist.prototype = {
                 that.rawTracks = response;
                 that._fillTracks(that.rawTracks);
                 that.refreshViews();
-                that.showView(that.activeView);
-                callback();
+                
+                if (callback) {
+                    that.showView(that.activeView);
+
+                    callback();
+                }
             }
         );
     },

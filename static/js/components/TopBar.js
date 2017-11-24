@@ -133,8 +133,6 @@ TopBar.prototype = {
             this.unSelectAll();
             this.setSelected(id);
             this.entries[id].playlist.activate();
-            console.log(this.entries[id].playlist)
-            window.app.changePlaylist();
             window.app.refreshUI();
         }
     },
