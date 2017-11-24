@@ -339,7 +339,12 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
             albumArtist += artist + ","
         albumArtist = albumArtist[:-1]
         genres.add(track.genre)
-        albums[track.album] = albumArtist
+        if track.album in albums:
+            for artist in albumArtist.split(","):
+                if artist not in albums[track.album]:
+                    albums[track.album] += "," + artist
+        else:
+            albums[track.album] = albumArtist
 
     print("Starting adding tracks to database")
     # Analyse the genre found and add the missing genre to the base
@@ -352,27 +357,31 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
 
 
 def artistViewJsonGenerator(request):
-    playlistId = 1
+    playlistId = 52
     playlistTracks = Track.objects.filter(playlist=playlistId)
     artists = Artist.objects.filter(track__in=playlistTracks).distinct().order_by('name')
     responseJson = "["
     for artist in artists:
-        responseJson += "{\"ARTIST_ID\":" + checkIfNotNoneNumber(artist.id) + ","
-        responseJson += "\"ARTIST_NAME\":\"" + checkIfNotNone(artist.name) + "\",["
-        albums = Album.objects.filter(track__in=playlistTracks, artist__album__artist=artist)
+        print(artist.name)
+        responseJson += "{\"ID\":" + checkIfNotNoneNumber(artist.id) + ","
+        responseJson += "\"ART\":\"" + checkIfNotNone(artist.name) + "\",\"AL\":["
+        albums = Album.objects.filter(track__in=playlistTracks, track__artist=artist)
+        print(len(albums))
         for album in albums:
-            responseJson += "{\"ALBUM_ID\":" + checkIfNotNoneNumber(album.id) + ","
-            responseJson += "\"ALBUM_TITLE\":\"" + checkIfNotNone(album.title) + "\",["
-            tracks = Track.objects.filter(album=album).order_by('album__track__number')
+            responseJson += "{\"ID\":" + checkIfNotNoneNumber(album.id) + ","
+            responseJson += "\"ALB\":\"" + checkIfNotNone(album.title) + "\",\"TR\":["
+            tracks = playlistTracks.filter(album=album, artist=artist)
             for track in tracks:
-                responseJson += "{\"TRACK_ID\":" + checkIfNotNoneNumber(track.id) + ","
-                responseJson += "\"TRACK_TITLE\":" + checkIfNotNone(track.title) + "},"
+                responseJson += "{\"ID\":" + checkIfNotNoneNumber(track.id) + ","
+                responseJson += "\"TRK\":\"" + checkIfNotNone(track.title) + "\"},"
             responseJson = responseJson[:-1]
             responseJson += "]},"
         responseJson = responseJson[:-1]
         responseJson += "]},"
     responseJson = responseJson[:-1]
     responseJson += "]"
+    with open("Output.txt", "w") as text_file:
+        text_file.write("%s" % responseJson)
     return HttpResponse(responseJson)
 
 
