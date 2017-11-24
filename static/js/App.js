@@ -16,7 +16,7 @@ var App = function() {
 
     this.player          = null;
     this.playlists       = [];
-    this.activePlaylist = null;
+    this.activePlaylist  = null;
     this.cssFiles        = {};
 
     this.availableViews = {
@@ -95,14 +95,14 @@ App.prototype = {
                                                      response,
                                                      undefined));
                     // response = raw tracks JSON object
-//                    for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
-//                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
-//                                                         playlists.PLAYLIST_NAMES[i],
-//                                                         playlists.PLAYLIST_IS_LIBRARY[i],
-//                                                         true,
-//                                                         undefined,
-//                                                         undefined));
-//                    }
+                    for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
+                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
+                                                         playlists.PLAYLIST_NAMES[i],
+                                                         playlists.PLAYLIST_IS_LIBRARY[i],
+                                                         true,
+                                                         undefined,
+                                                         undefined));
+                    }
 
                     that.topBar.init(that.playlists, that.playlists[0]);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
@@ -116,7 +116,6 @@ App.prototype = {
 
         // User first connection
         else {
-            console.log("TTT");
             this.activePlaylist = this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
                 that.topBar.init(that.playlists, that.playlists[0]);
                 that.footBar.playlistPreview.setVisible(true);

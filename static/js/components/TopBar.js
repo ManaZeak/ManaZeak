@@ -81,7 +81,6 @@ TopBar.prototype = {
 
 	    for (var i = 0; i < this.entries.length ;++i) {
 	        if (this.entries[i].getId() == id) {
-	            console.log("Match");
                 this.entries[i].setIsSelected(true);
             }
         }
@@ -108,9 +107,11 @@ TopBar.prototype = {
             this.playlistBar.removeChild(this.newPlaylistButton);
         }
 
+        this.newPlaylistButton.removeEventListener("click", this.newLibPlay.bind(this));
         this.removeEntries();
         this.addEntries();
         this.addNewPlaylistButton();
+        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
         // TODO : set selected to new one
         this.setSelected(this.selectedPlaylist);
     },
@@ -135,14 +136,11 @@ TopBar.prototype = {
             this.entries[id].setIsSelected(true);
             window.app.refreshUI();
         }
-
-        else {
-
-        }
     },
 
 
     changeMoodbar: function(id) {
+        // TODO : add thumb if not already, also, hide thumb at app start
         var that = this;
 
         var xhr = new XMLHttpRequest();
@@ -168,7 +166,6 @@ TopBar.prototype = {
 
 
     _eventListener: function() {
-        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
     },
