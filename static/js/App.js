@@ -87,14 +87,13 @@ App.prototype = {
                     PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
                 }),
                 function(response) {
-                    //TODO: init others in callback
+                    // response = raw tracks JSON object
                     that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0],
                         playlists.PLAYLIST_NAMES[0],
                         playlists.PLAYLIST_IS_LIBRARY[0],
                         true,
-                        undefined,
+                        response,
                         undefined));
-                    // response = raw tracks JSON object
                     for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
                             playlists.PLAYLIST_NAMES[i],
@@ -108,6 +107,7 @@ App.prototype = {
                     that.topBar.init(that.playlists, that.playlists[0]);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
+                    that.changePlaylist();
                     that.footBar.playlistPreview.setVisible(true);
                 }
             );
@@ -120,7 +120,7 @@ App.prototype = {
                 that.topBar.init(that.playlists, that.playlists[0]);
                 that.footBar.playlistPreview.setVisible(true);
                 that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-                that.activePlaylist = that.playlists[0];
+                    // ? that.activePlaylist = that.playlists[0];
             }));
         }
     },

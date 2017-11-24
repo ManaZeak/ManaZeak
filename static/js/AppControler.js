@@ -101,16 +101,9 @@ App.prototype.changePlaylist = function() {
 
 
 App.prototype.getAllPlaylistsTracks = function() {
-    var that = this;
-
-    for (var i = 0; i < this.playlists.length ;++i) {
-        this.playlists[i].getPlaylistsTracks(this.playlists[i].id, undefined);
+    for (var i = 1; i < this.playlists.length ;++i) {
+        this.playlists[i].getPlaylistsTracks(undefined);
     }
-};
-
-
-App.prototype.updateMetadata = function() {
-    //this.footBar.progressBar.updateProgress(this.player.getPlayer());
 };
 
 
