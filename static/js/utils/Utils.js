@@ -154,9 +154,11 @@ function renderMoodFile(file, parentDiv) {
                 var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
                 var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
 
+                // TODO : Have fun here w/ colors
+
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
+                    color:  "rgba(" + r + ", " + b + ", " + g + ", 0.9)"
                 };
             }
 
