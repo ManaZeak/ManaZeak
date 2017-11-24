@@ -92,7 +92,7 @@ App.prototype = {
                         playlists.PLAYLIST_NAMES[0],
                         playlists.PLAYLIST_IS_LIBRARY[0],
                         true,
-                        response,
+                        undefined,
                         undefined));
                     // response = raw tracks JSON object
                     for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
@@ -104,11 +104,11 @@ App.prototype = {
                             undefined));
                     }
 
+                    that.getAllPlaylistsTracks();
                     that.topBar.init(that.playlists, that.playlists[0]);
                     // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
                     that.playlists[0].activate();
                     that.footBar.playlistPreview.setVisible(true);
-                    that.changePlaylist();
                 }
             );
         }
@@ -122,26 +122,6 @@ App.prototype = {
                 that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
                 that.activePlaylist = that.playlists[0];
             }));
-        }
-    },
-
-
-    changePlaylist: function(playlistId) {
-        var that = this;
-
-        for (var i = 0; i < this.playlists.length ;++i) {
-            if (this.playlists[i].getId() === playlistId) {
-                that.playlists[i].getPlaylistsTracks(playlistId, function() {
-                    that.topBar.setSelected(i);
-                    that.listView.hideListView();
-                    that.listView = null;
-                    that.listView = new ListView(playlistId,
-                        that.playlists[i].getTracks(),
-                        that.cookies);
-                    that.listView.showListView();
-                });
-                break;
-            }
         }
     },
 

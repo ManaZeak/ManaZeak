@@ -100,6 +100,15 @@ App.prototype.changePlaylist = function() {
 };
 
 
+App.prototype.getAllPlaylistsTracks = function() {
+    var that = this;
+
+    for (var i = 0; i < this.playlists.length ;++i) {
+        this.playlists[i].getPlaylistsTracks(this.playlists[i].id, undefined);
+    }
+};
+
+
 App.prototype.updateMetadata = function() {
     //this.footBar.progressBar.updateProgress(this.player.getPlayer());
 };
