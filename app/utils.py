@@ -1,7 +1,7 @@
-import binascii
 import hashlib
 import math
 import multiprocessing
+import operator
 import os
 import threading
 
@@ -14,7 +14,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Track, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist
 
 
 # Render class for serving modal to client (Scan)
@@ -58,7 +58,8 @@ def splitTableCustom(table, number):
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
     if trackAttribute is not None:
-        return trackAttribute
+        result = trackAttribute.replace('"', '\\"')
+        return result
     else:
         return "null"
 
@@ -132,7 +133,12 @@ def errorCheckMessage(isDone, error):
 # Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
-    spiltedTracks = splitTable(tracks)
+    procNumber = multiprocessing.cpu_count()
+    while len(tracks) < procNumber:
+        procNumber -= 1
+        if procNumber == 0:
+            return
+    spiltedTracks = splitTableCustom(tracks, procNumber)
     threads = []
     finalData = "["
     for splitedTrack in spiltedTracks:
@@ -144,6 +150,8 @@ def exportPlaylistToSimpleJson(playlist):
         finalData += thread.finalData
     finalData = finalData[:-1]
     finalData += "]"
+    playlist.jsonExport = finalData.replace('\n', '').replace('\r', '')
+    playlist.save()
     return finalData.replace('\n', '').replace('\r', '')
 
 
@@ -338,7 +346,31 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+
     print("Finished import")
+
+
+"""
+def ArtistViewJsonGenerator(tracks):
+    jsonExport = "{["
+    tracks.sort(key=operator.attrgetter('number'))
+    tracks.sort(key=operator.attrgetter('album'))
+    tracks.sort(key=operator.attrgetter('artist'))
+    for track in tracks:
+        jsonExport += "{"
+    for artist in artistsReference: # TODO: check si alphabétique
+        jsonExport += "{\"ARTIST_ID\" : \"" + artistsReference[artist]
+        jsonExport += "\", \"ARTIST_NAME\": \"" + artist + "\",[{"
+        for album in albumArtists:
+            if artist in albumArtists[album]:
+                artistNames = albumArtists[album].split(",")
+                for artistName in artistNames:
+                    if artist == artistName:
+                        jsonExport += "\"ALBUM_ID\" : " + albumReference[album]
+                        jsonExport += "\"ALBUM_NAME\" : \"" + album + "\", [{"
+                        for track in tracks:
+                            if track.album == album
+    """
 
 
 class ImportBulkThread(threading.Thread):
@@ -400,6 +432,11 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     else:
         track.bitRateMode = 3
     track.fileType = fileTypeId.id
+
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
 
     # Check if the file has a tag header
     try:
@@ -496,6 +533,11 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     track.sampleRate = audioFile.info.sample_rate
     track.fileType = fileTypeId.id
 
+    # Generating moodbar hash
+    path = track.location.encode("ascii", "ignore")
+    md5 = hashlib.md5(path).hexdigest()
+    track.moodbar = "../static/mood/" + md5 + ".mood"
+
     # --- COVER ---
     pictures = audioFile.pictures
     if len(pictures) != 0:
@@ -581,7 +623,7 @@ def createMoodbarsUrls(playlist):
 
 
 class LocalTrack:
-    def __init__(self, ):
+    def __init__(self):
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \

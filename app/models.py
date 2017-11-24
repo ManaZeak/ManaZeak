@@ -60,6 +60,7 @@ class Playlist(models.Model):
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
+    jsonExport = models.CharField(max_length=10000000, null=True)
 
 
 class Library(models.Model):
@@ -74,3 +75,11 @@ class Shuffle(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
     tracksPlayed = models.ManyToManyField(Track)
+
+
+class PlaylistSettings(models.Model):
+    playlist = models.ForeignKey(Playlist)
+    user = models.ForeignKey(User)
+    shuffleEnabled = models.BooleanField(default=False)
+    randomEnabled = models.BooleanField(default=False)
+    viewMode = models.IntegerField()
