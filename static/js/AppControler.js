@@ -72,8 +72,7 @@ App.prototype.toggleMute = function() {
 
 
 App.prototype.changeTrack = function(track) {
-
-    // TODO better : this.activePlaylist.setCurrentTrack(track);
+    var that = this;
 
     JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
@@ -84,11 +83,12 @@ App.prototype.changeTrack = function(track) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
             } else {
-                window.app.footBar.trackPreview.setVisible(true);
-                window.app.footBar.trackPreview.changeTrack(track, response.COVER);
-                window.app.topBar.changeMoodbar(track.id.track);
-                window.app.player.changeTrack(".." + response.PATH, track.id.track);
-                window.app.togglePlay();
+                that.footBar.trackPreview.setVisible(true);
+                that.footBar.trackPreview.changeTrack(track, response.COVER);
+                that.topBar.changeMoodbar(track.id.track);
+                that.player.changeTrack(".." + response.PATH, track.id.track);
+                that.activePlaylist.updateView(track);
+                that.togglePlay();
             }
         }
     );

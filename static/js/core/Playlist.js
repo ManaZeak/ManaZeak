@@ -358,6 +358,13 @@ Playlist.prototype = {
         this.activeView = v;
     },
 
+
+    updateView: function(track) {
+        this.currentTrack = track.id.track - 1;
+        this.activeView.setSelected(track);
+    },
+
+
     refreshViews: function() {
         for(var i = 0; i < this.views.length; ++i)
             if(this.views[i] !== null)

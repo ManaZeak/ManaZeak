@@ -144,6 +144,18 @@ ListView.prototype = {
     },
 
 
+    setSelected: function(track) {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) { //  Un-selecting all
+                this.entries[i].setIsSelected(false);
+            }
+            if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
+                this.entries[i].setIsSelected(true);
+            }
+        }
+    },
+
+
     unSelectAll: function() {
         this.entriesSelected = {};
         for (var i = 0; i < this.entries.length ;++i)
