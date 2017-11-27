@@ -19,7 +19,10 @@ App.prototype.toggleRepeat = function() {
 
 
 App.prototype.next = function() {
-    this.activePlaylist.playNextTrack();
+    if(this.queue.isEmpty() == false)
+        this.popQueue();
+    else
+        this.activePlaylist.playNextTrack();
 };
 
 
@@ -110,4 +113,14 @@ App.prototype.refreshUI = function() {
     this.topBar.refreshTopBar();
     this.topBar.setSelected(this.activePlaylist.id);
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+};
+
+
+App.prototype.pushQueue = function(track) {
+    this.queue.enqueue(track);
+};
+
+
+App.prototype.popQueue = function () {
+    this.changeTrack(this.queue.dequeue());
 };
