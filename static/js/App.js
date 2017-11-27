@@ -17,6 +17,7 @@ var App = function() {
     this.player          = null;
     this.playlists       = [];
     this.activePlaylist  = null;
+    this.queue           = new Queue();
     this.cssFiles        = {};
 
     this.availableViews = {
