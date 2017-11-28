@@ -397,7 +397,7 @@ Playlist.prototype = {
             "ajax/toggleRepeat/",
             JSON.stringify({
                 PLAYLIST_ID: this.id,
-                RANDOM_MODE: this.repeatMode
+                REPEAT_MODE: this.repeatMode
             }),
             null
         );
