@@ -15,7 +15,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist, Track
+from app.models import FileType, Genre, Album, Artist, Track, Playlist
 
 
 # Render class for serving modal to client (Scan)
@@ -352,12 +352,12 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+    artistViewJsonGenerator(playlistId)
 
     print("Finished import")
 
 
-def artistViewJsonGenerator(request):
-    playlistId = 52
+def artistViewJsonGenerator(playlistId):
     playlistTracks = Track.objects.filter(playlist=playlistId)
     artists = Artist.objects.filter(track__in=playlistTracks).distinct().order_by('name')
     responseJson = "["
@@ -373,16 +373,17 @@ def artistViewJsonGenerator(request):
             tracks = playlistTracks.filter(album=album, artist=artist)
             for track in tracks:
                 responseJson += "{\"ID\":" + checkIfNotNoneNumber(track.id) + ","
-                responseJson += "\"TRK\":\"" + checkIfNotNone(track.title) + "\"},"
+                responseJson += "\"TRK\":\"" + checkIfNotNone(track.title) + "\","
+                responseJson += "\"DUR\":" + checkIfNotNoneNumber(track.duration) + "},"
             responseJson = responseJson[:-1]
             responseJson += "]},"
         responseJson = responseJson[:-1]
         responseJson += "]},"
     responseJson = responseJson[:-1]
     responseJson += "]"
-    with open("Output.txt", "w") as text_file:
-        text_file.write("%s" % responseJson)
-    return HttpResponse(responseJson)
+    playlist = Playlist.objects.get(id=playlistId)
+    playlist.jsonExportAlbumView = responseJson
+    playlist.save()
 
 
 class ImportBulkThread(threading.Thread):
