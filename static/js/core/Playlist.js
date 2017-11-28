@@ -28,7 +28,7 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     this.name = name;
     this.isLibrary = isLibrary;
     this.isLoading = isLoading;
-    this.isShuffle = false;
+    this.shuffleMode = 0; // 0 : off, 1 : random, 2: shuffle
     this.isRepeat  = false;
 
     //TODO: fix this
@@ -295,53 +295,73 @@ Playlist.prototype = {
     playNextTrack: function() {
         var that = this;
 
-        if (this.isShuffle) {
-            JSONParsedPostRequest(
-                "ajax/randomNextTrack/",
-                JSON.stringify({
-                    PLAYLIST_ID: that.id
-                    // TODO: send isRepeat here
-                }),
-                function(response) {
-                    // TODO : make controller function in App.controller
-                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
-                    //window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    //window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
-        } else {
-            this.currentTrack = this.activeView.getNextEntry();
-            window.app.changeTrack(this.currentTrack);
+        switch (this.shuffleMode) {
+
+            case 0: // Shuffle off
+                this.currentTrack = this.activeView.getNextEntry();
+                window.app.changeTrack(this.currentTrack);
+                break;
+
+            case 1: // Random
+                JSONParsedPostRequest(
+                    "ajax/randomNextTrack/",
+                    JSON.stringify({
+                        PLAYLIST_ID: that.id
+                        // TODO: send isRepeat here
+                    }),
+                    function(response) {
+                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                        window.app.changeTrack(that.currentTrack);
+                    }
+                );
+                break;
+
+            case 2: // Shuffle on
+                JSONParsedPostRequest(
+                    "ajax/shuffleNextTrack/",
+                    JSON.stringify({
+                        PLAYLIST_ID: that.id
+                        // TODO: send isRepeat here
+                    }),
+                    function(response) {
+                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                        window.app.changeTrack(that.currentTrack);
+                    }
+                );
+                break;
+
+            default:
+                break;
         }
     },
 
 
     playPreviousTrack: function() {
-        var that = this;
+        switch (this.shuffleMode) {
 
-        if (this.isShuffle) {
-            //TODO: Get from server history
-            JSONParsedPostRequest(
-                "ajax/randomNextTrack/",
-                JSON.stringify({
-                    PLAYLIST_ID: that.id
-                    // TODO: send isRepeat here
-                }),
-                function(response) {
-                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
+            case 0: // Shuffle off
+                this.currentTrack = this.activeView.getPreviousEntry();
+                window.app.changeTrack(this.currentTrack);
+                break;
 
-                    window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    //window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
-        } else {
-            this.currentTrack = this.activeView.getPreviousEntry();
-            window.app.changeTrack(this.currentTrack);
+            case 1: // Random
+                //TODO: Get from server history
+                break;
+
+            case 2: // Shuffle on
+                //TODO: Get from server history
+                break;
+
+            default:
+                break;
         }
+    },
+
+
+    toggleShuffle: function() {
+        ++this.shuffleMode;
+        this.shuffleMode %= 3;
+        window.app.refreshUI();
     },
 
 
@@ -378,6 +398,7 @@ Playlist.prototype = {
     getTracks: function()     { return this.tracks;    },
     getName: function()       { return this.name;      },
     getIsLibrary: function()  { return this.isLibrary; },
+    getshuffleMode: function()  { return this.shuffleMode; },
 
     setName: function(name)   { this.name = name;      }
 };
