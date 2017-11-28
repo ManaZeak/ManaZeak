@@ -333,12 +333,14 @@ Playlist.prototype = {
                         "ajax/shuffleNextTrack/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
-                            // TODO: send isRepeat here
                         }),
                         function(response) {
-                            // TODO : test if shuffle is done -> ask server
-                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                            window.app.changeTrack(that.currentTrack);
+                            if (response.LAST) {
+                                window.app.stopPlayback();
+                            } else {
+                                that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                                window.app.changeTrack(that.currentTrack);
+                            }
                         }
                     );
                     break;
