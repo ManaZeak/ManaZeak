@@ -29,6 +29,7 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     this.isLibrary = isLibrary;
     this.isLoading = isLoading;
     this.shuffleMode = 0; // 0 : off, 1 : random, 2: shuffle
+    this.repeatMode = 0; // 0 : off, 1 : one, 2: all
     this.isRepeat  = false;
 
     //TODO: fix this
@@ -270,7 +271,7 @@ Playlist.prototype = {
                 that.rawTracks = response;
                 that._fillTracks(that.rawTracks);
                 that.refreshViews();
-                
+
                 if (callback) {
                     that.showView(that.activeView);
 
@@ -295,43 +296,57 @@ Playlist.prototype = {
     playNextTrack: function() {
         var that = this;
 
-        switch (this.shuffleMode) {
+        if (this.repeatMode === 1) {
+            window.app.repeatTrack();
+        } else {
+            switch (this.shuffleMode) {
 
-            case 0: // Shuffle off
-                this.currentTrack = this.activeView.getNextEntry();
-                window.app.changeTrack(this.currentTrack);
-                break;
-
-            case 1: // Random
-                JSONParsedPostRequest(
-                    "ajax/randomNextTrack/",
-                    JSON.stringify({
-                        PLAYLIST_ID: that.id
-                        // TODO: send isRepeat here
-                    }),
-                    function(response) {
-                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                        window.app.changeTrack(that.currentTrack);
+                case 0: // Shuffle off
+                    if (this.repeatMode !== 0) {
+                        this.currentTrack = this.activeView.getNextEntry();
+                        window.app.changeTrack(this.currentTrack);
+                    } else {
+                        if (this.activeView.isLastEntry()) {
+                            window.app.stopPlayback();
+                        } else {
+                            this.currentTrack = this.activeView.getNextEntry();
+                            window.app.changeTrack(this.currentTrack);
+                        }
                     }
-                );
-                break;
+                    break;
 
-            case 2: // Shuffle on
-                JSONParsedPostRequest(
-                    "ajax/shuffleNextTrack/",
-                    JSON.stringify({
-                        PLAYLIST_ID: that.id
-                        // TODO: send isRepeat here
-                    }),
-                    function(response) {
-                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                        window.app.changeTrack(that.currentTrack);
-                    }
-                );
-                break;
+                case 1: // Random
+                    JSONParsedPostRequest(
+                        "ajax/randomNextTrack/",
+                        JSON.stringify({
+                            PLAYLIST_ID: that.id
+                            // TODO: send isRepeat here
+                        }),
+                        function(response) {
+                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                            window.app.changeTrack(that.currentTrack);
+                        }
+                    );
+                    break;
 
-            default:
-                break;
+                case 2: // Shuffle on
+                    JSONParsedPostRequest(
+                        "ajax/shuffleNextTrack/",
+                        JSON.stringify({
+                            PLAYLIST_ID: that.id
+                            // TODO: send isRepeat here
+                        }),
+                        function(response) {
+                            // TODO : test if shuffle is done -> ask server
+                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                            window.app.changeTrack(that.currentTrack);
+                        }
+                    );
+                    break;
+
+                default:
+                    break;
+            }
         }
     },
 
@@ -361,6 +376,13 @@ Playlist.prototype = {
     toggleShuffle: function() {
         ++this.shuffleMode;
         this.shuffleMode %= 3;
+        window.app.refreshUI();
+    },
+
+
+    toggleRepeat: function() {
+        ++this.repeatMode;
+        this.repeatMode %= 3;
         window.app.refreshUI();
     },
 
@@ -399,6 +421,7 @@ Playlist.prototype = {
     getName: function()       { return this.name;      },
     getIsLibrary: function()  { return this.isLibrary; },
     getshuffleMode: function()  { return this.shuffleMode; },
+    getRepeatMode: function()  { return this.repeatMode; },
 
     setName: function(name)   { this.name = name;      }
 };

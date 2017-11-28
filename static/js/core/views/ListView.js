@@ -140,6 +140,17 @@ ListView.prototype = {
     },
 
 
+    isLastEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                break;
+            }
+        }
+
+        return i === (this.entries.length - 1);
+    },
+
+
     sortBy: function(argument, ascending) {
         this.entries.sort(sortObjectArrayBy(argument, ascending));
     },
@@ -235,6 +246,10 @@ ListView.prototype = {
         this.header.year.addEventListener("click", function() {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
+        });
+
+        window.app.addListener("stopPlayback", function() {
+            that.unSelectAll();
         });
     },
 
