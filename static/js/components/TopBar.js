@@ -24,6 +24,8 @@ var TopBar = function() {
     this.moodbarThumb.id = "moodbarThumb";
     this.playlistBar.id = "playlistBar";
 
+    this.moodbarThumb.isVisible = false;
+
     this.topBar.appendChild(this.moodbar);
     this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
@@ -139,6 +141,10 @@ TopBar.prototype = {
 
 
     changeMoodbar: function(id) {
+        if (!this.moodbarThumb.isVisible) {
+            this.moodbarThumb.isVisible = true;
+            addVisibilityLock(this.moodbarThumb, "moodbarThumbLocked");
+        }
         // TODO : add thumb if not already, also, hide thumb at app start
         var that = this;
 
@@ -156,6 +162,13 @@ TopBar.prototype = {
         xhr.send(JSON.stringify({
             TRACK_ID: id
         }));
+    },
+
+
+    resetMoodbar: function() {
+        d3.selectAll('#moodbar svg').remove();
+        this.moodbarThumb.isVisible = false;
+        removeVisibilityLock(this.moodbarThumb, "moodbarThumbLocked");
     },
 
 

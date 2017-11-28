@@ -45,7 +45,7 @@
     margin-left: 0;
     position: absolute;
     top: 0;
-    opacity: 1;
+    opacity: 0;
     width: 6px;
     z-index: 999;
 
@@ -80,6 +80,10 @@
 
 /* Class that make the timecode always visible, must be the same as `#progressBar:hover > #progressTimecodeHover` to guarantee fade in effect */
 .progressTimecodeHoverLocked {
+    opacity: 1 !important;
+}
+
+.moodbarThumbLocked {
     opacity: 1 !important;
 }
 
