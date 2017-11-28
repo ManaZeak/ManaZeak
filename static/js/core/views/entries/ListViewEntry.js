@@ -59,6 +59,10 @@ var ListViewEntry = function(track, listView, id) {
 
 
 ListViewEntry.prototype = {
+    
+    reinsertInListView: function(listView) {
+        listView.appendChild(listView.removeChild(this.entry));
+    },
 
     getIsSelected: function() { return this.isSelected; },
 

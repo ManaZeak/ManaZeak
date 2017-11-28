@@ -151,7 +151,11 @@ ListView.prototype = {
 
 
     sortBy: function(argument, ascending) {
-        this.entries.sort(sortObjectArrayBy(argument, ascending));
+        //TODO: Optimise this for bigger playlists (need custom sort)
+        this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
+        console.log(this.entries);
+        for(var i = 0; i < this.entries.length; i++)
+            this.entries[i].reinsertInListView(this.listView);
     },
 
 
