@@ -322,6 +322,7 @@ def shuffleNextTrack(request):
             shuffle.save()
             if Track.objects.filter(id=track.id).count() == 1:
                 data = {
+                    'TRACK_ID': track.id,
                     'PATH': track.location,
                     'COVER': track.coverLocation
                 }
