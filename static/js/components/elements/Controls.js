@@ -96,6 +96,7 @@ Controls.prototype = {
             this.ui.play.image.src = "/static/img/player/play.svg";
     },
 
+
     _eventListener: function() {
         var that = this;
         // Button event listeners

@@ -73,10 +73,13 @@ App.prototype.unmute = function() {
 
 
 App.prototype.toggleMute = function() {
-    if(this.player.isMuted)
+    if(this.player.isMuted) {
         this.unmute();
-    else
+        this.setVolume(this.player.oldVolume);
+    } else {
         this.mute();
+        this.setVolume(0);
+    }
 };
 
 

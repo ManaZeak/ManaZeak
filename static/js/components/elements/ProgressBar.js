@@ -141,20 +141,6 @@ ProgressBar.prototype = {
     },
 
 
-    addVisibilityLock: function () {
-        if (!this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
-            this.duration.hover.className += "progressTimecodeHoverLocked";
-        }
-    },
-
-
-    removeVisibilityLock: function () {
-        if (this.duration.hover.className.match(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/)) {
-            this.duration.hover.className = this.duration.hover.className.replace(/(?:^|\s)progressTimecodeHoverLocked(?!\S)/g, '');
-        }
-    },
-
-
     invertTimecode: function () {
         if (!this.isInverted) {
             this.isInverted = !this.isInverted;
@@ -182,7 +168,7 @@ ProgressBar.prototype = {
         // Updating the ProgressBar while user is moving the mouse
         if (this.isDragging) {
             this.moveProgress(event, window.app.player.getPlayer());
-            this.addVisibilityLock();
+            addVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
             this.timecodeProgressHover(event, window.app.player.getPlayer());
         } else if (this.isMouseOver) {
             this.timecodeProgressHover(event, window.app.player.getPlayer());
@@ -206,7 +192,7 @@ ProgressBar.prototype = {
         // User released the ProgressBar thumb
         if (this.isDragging) {
             this.refreshInterval(window.app.player.getPlayer());
-            this.removeVisibilityLock();
+            removeVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
             this.isDragging = false;
             window.app.unmute();
         }
