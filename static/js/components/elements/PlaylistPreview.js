@@ -76,7 +76,21 @@ PlaylistPreview.prototype = {
     updatePlaylistPreview: function() {
         // TODO : link to App.controler event
         this.ui.repeat.innerHTML = !window.app.player.getIsLooping() ? "Repeat off" : "Repeat on";
-        //this.ui.shuffle.innerHTML = !window.app.player.getIsShuffle() ? "Shuffle off" : "Shuffle on";
+
+        var shuffleMode = window.app.activePlaylist.getshuffleMode();
+        switch (shuffleMode) {
+            case 0:
+                this.ui.repeat.innerHTML = " - Shuffle off";
+                break;
+            case 1:
+                this.ui.repeat.innerHTML = " - Random";
+                break;
+            case 2:
+                this.ui.repeat.innerHTML = " - Shuffle on";
+                break;
+            default:
+                break;
+        }
     },
 
 
