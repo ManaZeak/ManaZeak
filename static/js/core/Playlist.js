@@ -320,7 +320,6 @@ Playlist.prototype = {
                         "ajax/randomNextTrack/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
-                            // TODO: send isRepeat here
                         }),
                         function(response) {
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
@@ -376,6 +375,15 @@ Playlist.prototype = {
     toggleShuffle: function() {
         ++this.shuffleMode;
         this.shuffleMode %= 3;
+
+        JSONParsedPostRequest(
+            "ajax/toggleRandom/",
+            JSON.stringify({
+                RANDOM_MODE: this.shuffleMode
+            }),
+            null
+        );
+
         window.app.refreshUI();
     },
 
