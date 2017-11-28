@@ -114,7 +114,6 @@ ListView.prototype = {
 
 
     getEntryById: function(id) {
-        console.log(id);
         for (var i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].track.id.track === id) {
                 return this.entries[i].track;

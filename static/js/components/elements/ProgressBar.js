@@ -176,7 +176,6 @@ ProgressBar.prototype = {
     },
 
     mouseDown: function (event) {
-        console.log("Test");
         //TODO: Clean this shit up
         if (!this.isDragging &&
             (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb" ||
