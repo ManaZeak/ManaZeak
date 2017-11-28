@@ -312,14 +312,15 @@ def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
-            if Shuffle.objects.filter(playlist=response['PLAYLIST_ID'], user=request.user).count() == 1:
-                shuffle = Shuffle.objects.get(playlist=response['PLAYLIST_ID'], user=request.user)
+            if Shuffle.objects.filter(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user).count() == 1:
+                shuffle = Shuffle.objects.get(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
             else:
-                shuffle = Shuffle(playlist=response['PLAYLIST_ID'], user=request.user)
+                shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
+                shuffle.save()
             track = shuffleSoundSelector(shuffle)
             shuffle.tracksPlayed.add(track)
             shuffle.save()
-            if Track.objects.filter(track=track).count() == 1:
+            if Track.objects.filter(id=track.id).count() == 1:
                 data = {
                     'PATH': track.location,
                     'COVER': track.coverLocation

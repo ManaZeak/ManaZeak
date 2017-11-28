@@ -4,7 +4,7 @@ from random import randint
 
 from django import db
 
-from app.models import FileType
+from app.models import FileType, Track
 from app.utils import errorCheckMessage, addAllGenreAndAlbumAndArtists
 
 
@@ -67,16 +67,17 @@ def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPat
 # Select a sound with shuffle mode enabled
 def shuffleSoundSelector(shuffle):
     playlist = shuffle.playlist
-    if shuffle.tracksPlayed.count() == 0:
-        possibleTracks = playlist.track.all()
-    else:
-        possibleTracks = playlist.track.exclude(shuffle.tracksPlayed)
-
+    tracksPlayed = shuffle.tracksPlayed.all()
+    tracks = playlist.track.all()
+    possibleTracks = set()
+    for possibleTrack in tracks:
+        if possibleTrack not in tracksPlayed:
+            possibleTracks.add(possibleTrack)
     # Select a random track
-    length = len(possibleTracks)
+    length = len(tracks)
     selected = randint(0, length)
     count = 0
-    for track in possibleTracks:
+    for track in tracks:
         if count == selected:
             return track
         else:
