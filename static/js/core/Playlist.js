@@ -379,6 +379,7 @@ Playlist.prototype = {
         JSONParsedPostRequest(
             "ajax/toggleRandom/",
             JSON.stringify({
+                PLAYLIST_ID: this.id,
                 RANDOM_MODE: this.shuffleMode
             }),
             null
@@ -391,6 +392,16 @@ Playlist.prototype = {
     toggleRepeat: function() {
         ++this.repeatMode;
         this.repeatMode %= 3;
+
+        JSONParsedPostRequest(
+            "ajax/toggleRepeat/",
+            JSON.stringify({
+                PLAYLIST_ID: this.id,
+                RANDOM_MODE: this.repeatMode
+            }),
+            null
+        );
+
         window.app.refreshUI();
     },
 
