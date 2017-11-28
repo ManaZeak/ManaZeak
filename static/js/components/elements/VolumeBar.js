@@ -78,21 +78,11 @@ VolumeBar.prototype = {
     },
 
 
-    addVisibilityLock: function() {
-	this.volumeBar.wrapper.classList.add('volumeBarWrapperLocked');
-    },
-
-
-    removeVisibilityLock: function() {
-	this.volumeBar.wrapper.classList.remove('volumeBarWrapperLocked');
-    },
-
-
     toggleVisibilityLock: function() {
         if (this.isDragging) {
-            this.addVisibilityLock();
+            addVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
         } else {
-            this.removeVisibilityLock();
+            removeVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
         }
     },
 
@@ -110,7 +100,7 @@ VolumeBar.prototype = {
 
     /* Volume control */
     volumeUp: function(event) {
-        this.addVisibilityLock();
+        addVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
 
         this.isVolumeLocked = true;
         window.app.player.setIsMuted(false);
@@ -124,7 +114,7 @@ VolumeBar.prototype = {
 
 
     volumeDown: function(event) {
-        this.addVisibilityLock();
+        addVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
 
         this.isVolumeLocked = true;
         window.app.player.setIsMuted(false);
@@ -145,6 +135,7 @@ VolumeBar.prototype = {
             window.app.setVolume(this.volume / 100);
         }
     },
+
 
 
     mouseDown: function(event) {
@@ -171,7 +162,7 @@ VolumeBar.prototype = {
     _eventListener: function() {
         var that = this;
 
-        this.ui.mute.button.addEventListener("click", window.app.toggleMute.bind(window.app));
+        this.ui.mute.image.addEventListener("click", window.app.toggleMute.bind(window.app));
 
         window.app.addListener('setVolume', function() {
             that.updateVolume(window.app.player.getPlayer().volume * 100);
@@ -184,10 +175,5 @@ VolumeBar.prototype = {
 
 
     // Class Getters and Setters
-    getContainer: function()            { return this.volumeBar.container; },
-    getVolume: function()               { return this.volume;              },
-    getIsDragging: function()           { return this.isDragging;          },
-
-    setVolume: function(volume)         { this.volume = volume;            },
-    setIsDragging: function(isDragging) { this.isDragging = isDragging;    }
+    setVolume: function(volume) { this.volume = volume; }
 };
