@@ -10,7 +10,7 @@ var ListView = function(data) {
     this.entriesSelected = {};
     this.dblClick = false;
 
-    this.contextMenu = new NewContextMenu();
+    this.contextMenu = null;
 
     this.header = {
         container: null,
@@ -55,6 +55,8 @@ ListView.prototype = {
         this.addEntries(data);
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
+
+        this._contextMenuSetup();
     },
 
 
@@ -111,6 +113,23 @@ ListView.prototype = {
     },
 
 
+    getNextEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i + 1) % this.entries.length].track;
+            }
+        }
+    },
+
+    getPreviousEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
+            }
+        }
+    },
+
+
     sortBy: function(argument, ascending) {
         this.entries.sort(sortObjectArrayBy(argument, ascending));
     },
@@ -141,6 +160,18 @@ ListView.prototype = {
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);
+    },
+
+
+    setSelected: function(track) {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) { //  Un-selecting all
+                this.entries[i].setIsSelected(false);
+            }
+            if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
+                this.entries[i].setIsSelected(true);
+            }
+        }
     },
 
 
@@ -194,6 +225,22 @@ ListView.prototype = {
         this.header.year.addEventListener("click", function() {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
+        });
+    },
+
+    _contextMenuSetup: function () {
+        var self = this;
+        var clickedEntry = undefined;
+
+        this.contextMenu = new NewContextMenu(this.listView, function(event) {
+            var target = event.target;
+            while(target.dataset.listViewID == null)
+                target = target.parentNode;
+            clickedEntry = target.dataset.listViewID;
+        });
+
+        this.contextMenu.addEntry(null, "Add to Queue", function() {
+            window.app.pushQueue(self.entries[clickedEntry].track);
         });
     }
 };

@@ -29,8 +29,12 @@ View.prototype = {
     getDataFromPlaylist: function(playlist) {
         return null;
     },
+
+
     _init: function(data) {
     },
+
+
     _eventListener: function() {
     }
 };
