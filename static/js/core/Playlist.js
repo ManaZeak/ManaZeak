@@ -23,7 +23,6 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     };
     this.scanModal = null;
 
-
     // Playlist internal attributes
     this.id = id;
     this.name = name;
@@ -206,7 +205,7 @@ Playlist.prototype = {
 
         this.getTracksIntervalId = setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
-        }, 20000); // every 20s
+        }, 500); // called every .5s
     },
 
 
@@ -226,10 +225,10 @@ Playlist.prototype = {
                  * } */
                 var self = that;
 
-                clearInterval(that.getTracksIntervalId);
-                that.getTracksIntervalId = -1;
-
                 if (response.DONE) {
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
+
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
                         JSON.stringify({
@@ -258,21 +257,25 @@ Playlist.prototype = {
     },
 
 
-    getPlaylistsTracks: function(playlistId, callback) {
+    getPlaylistsTracks: function(callback) {
         var that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
             JSON.stringify({
-                PLAYLIST_ID: playlistId
+                PLAYLIST_ID: this.id
             }),
             function(response) {
                 // response = raw tracks JSON object
                 that.rawTracks = response;
                 that._fillTracks(that.rawTracks);
                 that.refreshViews();
-                that.showView(that.activeView);
-                callback();
+                
+                if (callback) {
+                    that.showView(that.activeView);
+
+                    callback();
+                }
             }
         );
     },
@@ -284,7 +287,6 @@ Playlist.prototype = {
         for (var i = 0; i < tracks.length ;++i) {
             ++this.trackTotal;
             this.durationTotal += tracks[i].DURATION;
-
             this.tracks.push(new Track(tracks[i]));
         }
     },
@@ -310,8 +312,8 @@ Playlist.prototype = {
                 }
             );
         } else {
-            this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            this.currentTrack = this.activeView.getNextEntry();
+            window.app.changeTrack(this.currentTrack);
         }
     },
 
@@ -337,8 +339,8 @@ Playlist.prototype = {
                 }
             );
         } else {
-            this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            this.currentTrack = this.activeView.getPreviousEntry();
+            window.app.changeTrack(this.currentTrack);
         }
     },
 
@@ -358,18 +360,17 @@ Playlist.prototype = {
         this.activeView = v;
     },
 
+
+    updateView: function(track) {
+        this.currentTrack = track; // TODO : handle list sorting, search for entry in view instead
+        this.activeView.setSelected(track);
+    },
+
+
     refreshViews: function() {
         for(var i = 0; i < this.views.length; ++i)
             if(this.views[i] !== null)
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
-    },
-
-    setCurrentTrack: function(track) {
-        for (var i = 0; i < this.tracks.length ;++i) {
-            if (this.tracks[i].id === track.id) {
-                this.currentTrack = i;
-            }
-        }
     },
 
     // Class Getters and Setters
