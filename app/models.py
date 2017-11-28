@@ -60,7 +60,8 @@ class Playlist(models.Model):
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
-    jsonExport = models.CharField(max_length=10000000, null=True)
+    jsonExportListView = models.CharField(max_length=10000000, null=True)
+    jsonExportAlbumView = models.CharField(max_length=10000000, null=True)
 
 
 class Library(models.Model):
