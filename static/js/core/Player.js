@@ -10,7 +10,7 @@ var Player = function(cookies) {
 
     this.isPlaying = false;
     this.isMuted   = false;
-    this.isLooping = false;
+    this.loopingMode = false;
 
     this.oldVolume = 0;
 
@@ -97,6 +97,11 @@ Player.prototype = {
     },
 
 
+    repeatTrack: function() {
+        this.player.currentTime = 0;
+    },
+
+
     toggleQueue: function(event) {
         if (event.ctrlKey || event.type === "click") {
             this.queue.toggleVisibilityLock();
@@ -163,11 +168,10 @@ Player.prototype = {
     getVolume: function()                 { return this.player.volume;      },
     getOldVolume: function()              { return this.oldVolume;          },
     getIsPlaying: function()              { return this.isPlaying;          },
-    getIsLooping: function()              { return this.isLooping;          },
+    getLoopingMode: function()              { return this.loopingMode;          },
     getIsMuted: function()                { return this.isMuted;            },
 
     setIsMuted: function(muted)           { this.isMuted = muted;           },
     setVolume: function(volume)           { this.player.volume = volume;    },
     setCurrentTime: function(currentTime) { this.currentTime = currentTime; },
-    setIsLooping: function(looping)       { this.isLooping = looping;       }
 };

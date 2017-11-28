@@ -75,18 +75,31 @@ PlaylistPreview.prototype = {
 
     updatePlaylistPreview: function() {
         // TODO : link to App.controler event
-        this.ui.repeat.innerHTML = !window.app.player.getIsLooping() ? "Repeat off" : "Repeat on";
+        var repeatMode = window.app.activePlaylist.getRepeatMode();
+        switch (repeatMode) {
+            case 0:
+                this.ui.repeat.innerHTML = "Repeat off";
+                break;
+            case 1:
+                this.ui.repeat.innerHTML = "Repeat one";
+                break;
+            case 2:
+                this.ui.repeat.innerHTML = "Repeat all";
+                break;
+            default:
+                break;
+        }
 
         var shuffleMode = window.app.activePlaylist.getshuffleMode();
         switch (shuffleMode) {
             case 0:
-                this.ui.repeat.innerHTML = " - Shuffle off";
+                this.ui.shuffle.innerHTML = " - Shuffle off";
                 break;
             case 1:
-                this.ui.repeat.innerHTML = " - Random";
+                this.ui.shuffle.innerHTML = " - Random";
                 break;
             case 2:
-                this.ui.repeat.innerHTML = " - Shuffle on";
+                this.ui.shuffle.innerHTML = " - Shuffle on";
                 break;
             default:
                 break;

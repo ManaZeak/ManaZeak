@@ -31,6 +31,11 @@ App.prototype.previous = function() {
 };
 
 
+App.prototype.repeatTrack = function() {
+    this.player.repeatTrack();
+};
+
+
 App.prototype.fastForward = function(amount) {
     this.player.getPlayer().currentTime += amount;
 };
