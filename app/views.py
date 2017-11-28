@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
@@ -417,3 +417,27 @@ def rescanLibrary(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
     else:
         return JsonResponse(errorCheckMessage(False, "badRequest"))
+
+
+def toggleRandom(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'RANDOM_MODE' in response and 'PLAYLIST_ID' in response:
+            randomMode = strip_tags(response['RANDOM_MODE'])
+            randomMode = int(randomMode)
+            if randomMode in range(0, 3):
+                user = request.user
+                playlistId = strip_tags(response['PLAYLIST_ID'])
+                if Playlist.objects.filter(id=playlistId).count() == 1:
+                    playlist = Playlist.objects.get(id=playlistId)
+                    if PlaylistSettings.objects.filter(playlist=playlist, user=user).count() == 1:
+                        settings = PlaylistSettings.objects.get(playlist=playlist, user=user)
+                    else:
+                        settings = PlaylistSettings()
+                        settings.user = user
+                        # TODO : change to right view mode
+                        settings.viewMode = 0
+                        settings.playlist = playlist
+                    settings.randomMode = randomMode
+                    settings.save()
+                    return JsonResponse(errorCheckMessage(True, None))

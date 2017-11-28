@@ -66,6 +66,7 @@ def scanLibraryProcess(mp3Files, flacFiles, library, playlist, convert, coverPat
 
 # Select a sound with shuffle mode enabled
 def shuffleSoundSelector(shuffle):
+    print("meder")
     playlist = shuffle.playlist
     tracksPlayed = shuffle.tracksPlayed.all()
     tracks = playlist.track.all()
@@ -74,11 +75,23 @@ def shuffleSoundSelector(shuffle):
         if possibleTrack not in tracksPlayed:
             possibleTracks.add(possibleTrack)
     # Select a random track
-    length = len(tracks)
+    length = len(possibleTracks)
+    print(length)
+    if length == 0:
+        for track in tracks:
+            possibleTracks.add(track)
+        length = len(possibleTracks)
+        print("toast : ", length)
+
     selected = randint(0, length)
     count = 0
-    for track in tracks:
+
+    # TODO: AJOUTER FLAG LAST -> BOOLEAN
+
+    for track in possibleTracks:
         if count == selected:
+            shuffle.tracksPlayed.clear()
+            shuffle.save()
             return track
         else:
             count += 1
