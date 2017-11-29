@@ -11,7 +11,7 @@ var FootBar = function() {
     this.progressContainer = document.createElement("DIV");
 
     this.footBar.id = "footBar";
-    this.controlsContainer.id = "controlsContainer";
+    this.controlsContainer.className = "mzk-controls-container";
 
     this.trackPreview    = new TrackPreview(this.footBar);
     this.controls        = new Controls(this.controlsContainer);

@@ -89,6 +89,11 @@ NewContextMenu.prototype = {
             event.stopPropagation();
             event.stopImmediatePropagation();
         });
+        
+        document.body.addEventListener('click', function(event) {
+            self.element.className = "";
+            self.contextMenu.close_all();
+        });
     },
 
 
