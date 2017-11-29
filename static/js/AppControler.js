@@ -115,6 +115,7 @@ App.prototype.changePlaylist = function() {
 
 
 App.prototype.changePageTitle = function(path) {
+    // IDEA : Recontruct frrom Track attributes bc special char won't display as below ... (?/etc.)
     document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
 };
 
