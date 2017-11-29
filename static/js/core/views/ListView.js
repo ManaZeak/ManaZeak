@@ -153,7 +153,7 @@ ListView.prototype = {
     sortBy: function(argument, ascending) {
         //TODO: Optimise this for bigger playlists (need custom sort)
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
-        console.log(this.entries);
+
         for(var i = 0; i < this.entries.length; i++)
             this.entries[i].reinsertInListView(this.listView);
     },
@@ -163,8 +163,10 @@ ListView.prototype = {
         var that = this;
         var target = event.target;
 
-        if (target === this.listView)
+        if (target === this.listView) {
             return true;
+        }
+
         while(target.parentNode !== this.listView) {
             target = target.parentNode;
         }
@@ -175,6 +177,7 @@ ListView.prototype = {
             window.app.changeTrack(this.entries[id].track);
             return;
         }
+
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 400);
 
