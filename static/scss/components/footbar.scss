@@ -194,10 +194,16 @@
 
         color: white;
 
-        //visibility: hidden;
-        //opacity: 0;
+        visibility: hidden;
+        opacity: 0;
         transition: visibility 0s 0.3s,
                     opacity 0.3s ease;
+
+        &.mzk-open {
+            opacity: 1 !important;
+            transition: opacity 0.3s ease !important;
+            visibility: visible !important;
+        }
 
         ul.mzk-queue-list {
             overflow-y: scroll;
@@ -282,12 +288,6 @@
                 align-items:center;
             }
         }
-    }
-
-    .queueLocked {
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-        visibility: visible !important;
     }
 
     #playlistPreview {
