@@ -4,6 +4,7 @@ App.prototype.togglePlay = function() {
 
 
 App.prototype.stopPlayback = function() {
+    this.changePageTitle("ManaZeak");
     this.player.stopPlayback();
     this.topBar.resetMoodbar();
 };
@@ -99,6 +100,7 @@ App.prototype.changeTrack = function(track) {
                 that.footBar.trackPreview.changeTrack(track, response.COVER);
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeTrack(".." + response.PATH, track.id.track);
+                that.changePageTitle(response.PATH);
                 that.activePlaylist.updateView(track);
                 that.togglePlay();
             }
@@ -109,6 +111,11 @@ App.prototype.changeTrack = function(track) {
 
 App.prototype.changePlaylist = function() {
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+};
+
+
+App.prototype.changePageTitle = function(path) {
+    document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
 };
 
 
