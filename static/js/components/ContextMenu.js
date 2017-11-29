@@ -43,6 +43,10 @@ NewContextMenu.prototype = {
         }
     },
 
+    reattach: function() {
+        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
+    },
+
     _eventListener: function()
     {
         var self = this;

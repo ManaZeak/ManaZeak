@@ -84,6 +84,10 @@ QueuePreview.prototype = {
         this.ui.queueList.appendChild(li);
     },
 
+    toggle: function() {
+        this.ui.container.classList.toggle("mzk-open");
+    },
+
     _eventListener: function() {
         var self = this;
         var findParentLI = function(element) {
