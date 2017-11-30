@@ -25,10 +25,10 @@ var PlaylistPreview = function(container) {
     this.tooltipWrapper.className = "tooltipWrapper";
 
     this.ui.cover.id = "playlistPreviewCover";
-    this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
+    this.ui.cover.src = "../static/img/utils/defaultcover.svg";
 
     this.ui.thumb.id = "playlistPreviewThumb";
-    this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
+    this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
     this.ui.thumbTooltip.className = "tooltipPlaylistCover";
 
     this.ui.thumbTooltip.appendChild(this.ui.thumb);
@@ -62,8 +62,8 @@ PlaylistPreview.prototype = {
 
     changePlaylist: function(playlist, cover) {
         // TODO : handle cover smooth transition
-        this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
-        this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
+        this.ui.cover.src = "../static/img/utils/defaultcover.svg";
+        this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
 
         this.ui.name.innerHTML = playlist.name;
         this.ui.total.innerHTML = playlist.trackTotal + " tracks";

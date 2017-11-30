@@ -13,7 +13,7 @@ var TrackPreview = function(container) {
 TrackPreview.prototype = {
 
     changeTrack: function(track, cover) {
-        if (cover == null || cover == '') { cover = "../static/img/utils/defaultcover.jpg"; }
+        if (cover == null || cover == '') { cover = "../static/img/utils/defaultcover.svg"; }
         else { cover = '../static/img/covers/' + cover; }
         // TODO : handle cover smooth transition
         this.ui.cover.src = cover;
@@ -55,10 +55,10 @@ TrackPreview.prototype = {
         this.tooltipWrapper.className = "tooltipWrapper";
 
         this.ui.cover.id = "trackPreviewCover";
-        this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
+        this.ui.cover.src = "../static/img/utils/defaultcover.svg";
 
         this.ui.thumb.id = "trackPreviewThumb";
-        this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
+        this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
         this.ui.thumbTooltip.className = "tooltipTrackCover";
 
         this.ui.thumbTooltip.appendChild(this.ui.thumb);

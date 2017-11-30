@@ -202,7 +202,6 @@ ProgressBar.prototype = {
     mouseUp: function (event) {
         if (this.isDragging) {
             // User released the ProgressBar thumb
-            console.log("Here");
             this.refreshInterval(window.app.player.getPlayer());
             removeVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
             this.isDragging = false;
