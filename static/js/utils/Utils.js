@@ -43,15 +43,19 @@ function secondsToTimecode(time) {
 }
 
 
-function sortObjectArrayBy(key, ascending) {
+function sortObjectArrayBy(key, ascending, subobject) {
     return function(a, b) {
+        if(subobject != null) {
+            a = a[subobject];
+            b = b[subobject];
+        }
+        
         if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         var compare = 0;
-
         if (varA > varB)      { compare =  1; }
         else if (varA < varB) { compare = -1; }
 

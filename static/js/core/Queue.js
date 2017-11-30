@@ -76,7 +76,8 @@ var Queue = function() {
 };
 
 Queue.prototype = {
-
+// TODO : add text saying that queue is empty when no track is loaded. Use same size as LI item, and put text at the center, same font as Track title in LI
+    // TODO : ? Add notif when track has been added ? To discuss if useful or not
     enqueue: function(track) {
         var newLink = new QueueEntry(track);
 
@@ -108,12 +109,31 @@ Queue.prototype = {
         return tmp.track;
     },
 
+    slide: function(element, newPos) {
+        var link = this.first;
+        var diff = newPos - element;
+
+        for(;element-- > 0 && link != null; link = link.next);
+        if(link != null) {
+            if(diff > 0)
+                for(; diff-- > 0; link = link.next)
+                    link.moveNext();
+            else
+                for(; diff++ < 0; link = link.previous)
+                    link.movePrev();
+        }
+    },
+
     isEmpty: function() {
         return this.first == null;
     },
 
     setReverse: function(newReverse) {
         this.reverse = newReverse == true;
+    },
+
+    isReverse: function () {
+        return this.reverse;
     }
 
 };
