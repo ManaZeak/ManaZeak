@@ -13,6 +13,8 @@ html, body {
     overflow: hidden;
     padding: 0;
     width: 100%;
+
+    color: $primary-text;
 }
 
 #spectrumContainer {
@@ -29,5 +31,7 @@ html, body {
     height: calc(100% - 130px);
     top: 50px;
     position: absolute;
+
+    background: $primary-color;
 }
 

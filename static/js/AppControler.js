@@ -49,10 +49,8 @@ App.prototype.rewind = function(amount) {
 
 
 App.prototype.setVolume = function(volume) {
-    if(volume > 1)
-        volume = 1;
-    else if(volume < 0)
-        volume = 0;
+    if (volume > 1) { volume = 1; }
+    else if (volume < 0) { volume = 0; }
 
     this.player.getPlayer().volume = precisionRound(volume, 2);
 };

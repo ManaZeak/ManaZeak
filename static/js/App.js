@@ -124,6 +124,8 @@ App.prototype = {
                     // ? that.activePlaylist = that.playlists[0];
             }));
         }
+
+        this._keyListener();
     },
 
 
@@ -151,6 +153,65 @@ App.prototype = {
         }
         else if(this.listeners[event])
             this.listeners[event].push(callback);
+    },
+
+
+
+
+    // TODO : put this someday in a Shortcut class (in Utils maybe ?)
+    _keyListener: function() {
+        var that = this;
+
+        // Key pressed event
+        document.addEventListener("keydown", function(event) {
+            switch (event.keyCode) {
+                case 32: // Space player
+                    that.togglePlay();
+                    break;
+                case 37: // Left arrow
+                    if (event.ctrlKey)
+                        that.rewind(30);
+                    else
+                        that.rewind(10);
+                    break;
+                case 38: // Up arrow
+                    that.footBar.volumeUp(event);
+                    break;
+                case 39: // Right arrow
+                    if (event.ctrlKey)
+                        that.fastForward(30);
+                    else
+                        that.fastForward(10);
+                    break;
+                case 40: // Down arrow
+                    that.footBar.volumeDown(event);
+                    break;
+                case 77: // m key (w/ ctrl)
+                    if (event.ctrlKey)
+                        that.toggleMute(event);
+                    break;
+                case 81:
+                    if (event.ctrlKey)
+                        that.toggleQueue(event);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // Key released event
+        document.addEventListener("keyup", function(event) {
+            switch (event.keyCode) {
+                case 38: // Up arrow
+                    that.footBar.delayHideVolume();
+                    break;
+                case 40: // Down arrow
+                    that.footBar.delayHideVolume();
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 };
 
