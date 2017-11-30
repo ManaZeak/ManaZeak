@@ -109,7 +109,7 @@ ListView.prototype = {
 
     addEntries: function(tracks) {
         for (var i = 0; i < tracks.length ;++i)
-            this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
+            this.entries.push(new ListViewEntry(tracks[i], this.listView));
     },
 
 
@@ -151,11 +151,13 @@ ListView.prototype = {
 
 
     sortBy: function(argument, ascending) {
-        //TODO: Optimise this for bigger playlists (need custom sort)
+        //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
 
+        this.listView.innerHTML = "";
         for(var i = 0; i < this.entries.length; i++)
-            this.entries[i].reinsertInListView(this.listView);
+            this.entries[i].insert(this.listView);
+        this.contextMenu.reattach();
     },
 
 
@@ -171,7 +173,7 @@ ListView.prototype = {
             target = target.parentNode;
         }
 
-        var id = target.dataset.listViewID;
+        var id = target.dataset.childID;
 
         if (this.dblClick) {
             window.app.changeTrack(this.entries[id].track);
@@ -265,9 +267,9 @@ ListView.prototype = {
 
         this.contextMenu = new NewContextMenu(this.listView, function(event) {
             var target = event.target;
-            while(target.dataset.listViewID == null)
+            while(target.dataset.childID == null)
                 target = target.parentNode;
-            clickedEntry = target.dataset.listViewID;
+            clickedEntry = target.dataset.childID;
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {

@@ -129,7 +129,7 @@ TopBar.prototype = {
 		    return true;
         }
 
-        var id = target.dataset.listViewID;
+        var id = target.dataset.childID;
 
         if (id !== undefined) {
             this.unSelectAll();
