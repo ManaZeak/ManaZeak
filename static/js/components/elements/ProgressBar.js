@@ -168,7 +168,7 @@ ProgressBar.prototype = {
         // Updating the ProgressBar while user is moving the mouse
         if (this.isDragging) {
             this.moveProgress(event, window.app.player.getPlayer());
-            addVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
+            addVisibilityLock(this.duration.hover);
             this.timecodeProgressHover(event, window.app.player.getPlayer());
         } else if (this.isMouseOver) {
             this.timecodeProgressHover(event, window.app.player.getPlayer());
@@ -191,7 +191,7 @@ ProgressBar.prototype = {
         // User released the ProgressBar thumb
         if (this.isDragging) {
             this.refreshInterval(window.app.player.getPlayer());
-            removeVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
+            removeVisibilityLock(this.duration.hover);
             this.isDragging = false;
             window.app.unmute();
         }

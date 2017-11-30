@@ -2,9 +2,15 @@
 #buttonMute {
     position: relative;
     display: inline-block;
+
+    //Show volume bar on hover
+    &:hover #volumeBarWrapper {
+        @extend .mzk-visible;
+    }
 }
 
 #volumeBarWrapper {
+    @extend .mzk-hidden;
     background-color: rgba(240, 240, 240, 1);
     border: solid 1px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -12,27 +18,11 @@
     bottom: 45px;
     left: 3px;
     height: 140px;
-    opacity: 0;
     position: absolute;
     text-align: center;
-    transition: visibility 0s 0.3s,
-                opacity 0.3s ease;
+
     width: 30px;
-    visibility: hidden;
     z-index: 1;
-}
-
-/* Class that make the wrapper always visible, must be the same as `#buttonMute:hover #volumeBarWrapper` to guarantee fade in effect */
-.volumeBarWrapperLocked {
-    opacity: 1 !important;
-    transition: opacity 0.3s ease !important;
-    visibility: visible !important;
-}
-
-#buttonMute:hover #volumeBarWrapper {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    visibility: visible;
 }
 
 #buttonMute #volumeBarWrapper::after {
