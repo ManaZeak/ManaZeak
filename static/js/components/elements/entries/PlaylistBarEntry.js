@@ -35,9 +35,9 @@ PlaylistBarEntry.prototype = {
     setIsSelected: function(isSelected) {
         this.isSelected = isSelected;
         if (this.isSelected) {
-            addVisibilityLock(this.entry, "libraryLocked");
+            this.entry.classList.add("librarySelected");
         } else {
-            removeVisibilityLock(this.entry, "libraryLocked");
+            this.entry.classList.remove("librarySelected");
         }
     }
 };

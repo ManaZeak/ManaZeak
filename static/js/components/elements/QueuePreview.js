@@ -84,8 +84,11 @@ QueuePreview.prototype = {
         this.ui.queueList.appendChild(li);
     },
 
-    toggle: function() {
-        this.ui.container.classList.toggle("mzk-open");
+    show: function(event) {
+        toggleVisibilityLock(this.ui.container);
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
     },
 
     _eventListener: function() {
@@ -142,6 +145,17 @@ QueuePreview.prototype = {
                 default:
                     break;
             }
+        });
+
+        //TODO: Fix this kind of things (Valentin)
+        this.ui.container.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        });
+
+        document.body.addEventListener('click', function() {
+           removeVisibilityLock(self.ui.container);
         });
     },
 

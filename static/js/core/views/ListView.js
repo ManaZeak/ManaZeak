@@ -165,15 +165,22 @@ ListView.prototype = {
         var that = this;
         var target = event.target;
 
-        if (target === this.listView) {
+        if (target === this.listView)
+        {
+            this.unSelectAll();
             return true;
         }
 
-        while(target.parentNode !== this.listView) {
+        while(target.parentNode !== this.listView)
             target = target.parentNode;
-        }
 
         var id = target.dataset.childID;
+
+        //Clicked outside of the entries
+        if(id == undefined) {
+            this.unSelectAll();
+            return true;
+        }
 
         if (this.dblClick) {
             window.app.changeTrack(this.entries[id].track);
@@ -267,13 +274,18 @@ ListView.prototype = {
 
         this.contextMenu = new NewContextMenu(this.listView, function(event) {
             var target = event.target;
-            while(target.dataset.childID == null)
+            while(target.parentNode != null && target.dataset.childID == null)
                 target = target.parentNode;
-            clickedEntry = target.dataset.childID;
+
+            if(target.parentNode != null)
+                clickedEntry = target.dataset.childID;
+            else
+                clickedEntry = undefined;
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
-            window.app.pushQueue(self.entries[clickedEntry].track);
+            if(clickedEntry != undefined)
+                window.app.pushQueue(self.entries[clickedEntry].track);
         });
     }
 };

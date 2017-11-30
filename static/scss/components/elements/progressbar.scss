@@ -9,6 +9,10 @@
     margin: 0 10px;
     position: relative;
     width: 85%;
+
+    &:hover > #progressTimecodeHover {
+        @extend .mzk-visible;
+    }
 }
 
 #progressBar #progress {
@@ -36,6 +40,7 @@
 }
 
 #moodbar #moodbarThumb {
+    @extend .mzk-hidden;
     background-color: $white;
     border: solid 1px $dark-secondary-color;
     border-radius: 1px;
@@ -53,6 +58,7 @@
 }
 
 #progressTimecodeHover {
+    @extend .mzk-hidden;
     background-color: $primary-text;
     border: solid 1px $dark-secondary-color;
     color: $dark-secondary-color;
@@ -62,10 +68,8 @@
     left: 0;
     height: 20px;
     line-height: 20px;
-    opacity: 0;
     position: absolute;
     text-align: center;
-    transition: opacity 0.15s ease;
     width: 60px;
     pointer-events: none; /* Disable hover effect from parent */
     font-size: 0.7em;
@@ -77,18 +81,5 @@
 }
 
 #progressBar:hover > #progressThumb {
-    opacity: 1;
-}
-
-/* Class that make the timecode always visible, must be the same as `#progressBar:hover > #progressTimecodeHover` to guarantee fade in effect */
-.progressTimecodeHoverLocked {
-    opacity: 1 !important;
-}
-
-.moodbarThumbLocked {
-    opacity: 1 !important;
-}
-
-#progressBar:hover > #progressTimecodeHover {
     opacity: 1;
 }

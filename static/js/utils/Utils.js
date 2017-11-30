@@ -79,14 +79,20 @@ function getCookies() {
     return cookies;
 }
 
+function toggleVisibilityLock(object) {
+    if(object.classList.contains("mzk-visible"))
+        removeVisibilityLock(object);
+    else
+        addVisibilityLock(object);
+}
 
-function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
-    object.classList.add(className);
+function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
+    object.classList.add("mzk-visible");
 }
 
 
-function removeVisibilityLock(object, className) {
-    object.classList.remove(className);
+function removeVisibilityLock(object) {
+    object.classList.remove("mzk-visible");
 }
 
 

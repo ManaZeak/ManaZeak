@@ -69,10 +69,10 @@ ListViewEntry.prototype = {
     setIsSelected: function(isSelected) {
         this.isSelected = isSelected;
         if (this.isSelected) {
-            addVisibilityLock(this.entry, "trackContainerLocker");
+            this.entry.classList.add("mzk-selected");
             //this.entry.style.background = "red";
         } else {
-            removeVisibilityLock(this.entry, "trackContainerLocker");
+            this.entry.classList.remove("mzk-selected");
             //this.entry.style.background = "none";
         }
     }

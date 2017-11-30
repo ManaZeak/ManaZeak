@@ -85,7 +85,7 @@ NewContextMenu.prototype = {
                 target = target.parentNode;
             }
 
-            self.element.classList.add("mzk-ctx-open");
+            addVisibilityLock(self.element);
             if(self.openCallback)
                 self.openCallback(event);
 
@@ -93,7 +93,8 @@ NewContextMenu.prototype = {
             event.stopPropagation();
             event.stopImmediatePropagation();
         });
-        
+
+        //TODO: VLE
         document.body.addEventListener('click', function(event) {
             self.element.className = "";
             self.contextMenu.close_all();
