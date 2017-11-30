@@ -130,22 +130,36 @@ def logoutView(request):
 
 # Return all the id of the user playlists
 def getUserPlaylists(request):
-    playlists = Playlist.objects.filter(user=request.user)
+    print("getting usr playlist")
+    playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
     playlistNames = []
     playlistIds = []
     isLibrary = []
-    if not playlists:
-        return JsonResponse(errorCheckMessage(False, None))
+
+    # Adding User playlists
     for playlist in playlists:
         playlistNames.append(playlist.name)
         playlistIds.append(playlist.id)
-        isLibrary.append(playlist.isLibrary)
+        isLibrary.append(False)
+
+    # Adding global libraries
+    libraries = Playlist.objects.filter(isLibrary=True)
+    for library in libraries:
+        playlistNames.append(library.name)
+        playlistIds.append(library.id)
+        isLibrary.append(True)
+
+    if len(playlistIds) == 0:
+        return JsonResponse(errorCheckMessage(False, None))
+
     data = {
         'NUMBER': len(playlistNames),
         'PLAYLIST_NAMES': playlistNames,
         'PLAYLIST_IDS': playlistIds,
         'PLAYLIST_IS_LIBRARY': isLibrary,
     }
+
+    print(data)
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
 
@@ -312,8 +326,10 @@ def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
-            if Shuffle.objects.filter(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user).count() == 1:
-                shuffle = Shuffle.objects.get(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
+            if Shuffle.objects.filter(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
+                                      user=request.user).count() == 1:
+                shuffle = Shuffle.objects.get(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
+                                              user=request.user)
             else:
                 shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
                 shuffle.save()
