@@ -51,5 +51,17 @@ FootBar.prototype = {
 
     },
 
+    volumeUp: function(event) {
+        this.controls.volumeBar.volumeUp(event);
+    },
+
+    volumeDown: function(event) {
+        this.controls.volumeBar.volumeDown(event);
+    },
+
+    delayHideVolume: function() {
+        this.controls.volumeBar.delayHideVolume();
+    },
+
     getFootBar: function() { return this.footBar; }
 };
