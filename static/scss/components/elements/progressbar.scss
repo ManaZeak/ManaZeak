@@ -73,7 +73,7 @@
 }
 
 #progressBar:hover > #progress {
-    background-color: rgb(0, 255, 0);
+    background-color: $anti-accent-color;
 }
 
 #progressBar:hover > #progressThumb {
