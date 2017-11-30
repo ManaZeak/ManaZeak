@@ -143,7 +143,7 @@ TopBar.prototype = {
     changeMoodbar: function(id) {
         if (!this.moodbarThumb.isVisible) {
             this.moodbarThumb.isVisible = true;
-            addVisibilityLock(this.moodbarThumb, "moodbarThumbLocked");
+            addVisibilityLock(this.moodbarThumb);
         }
         // TODO : add thumb if not already, also, hide thumb at app start
         var that = this;
@@ -168,7 +168,7 @@ TopBar.prototype = {
     resetMoodbar: function() {
         d3.selectAll('#moodbar svg').remove();
         this.moodbarThumb.isVisible = false;
-        removeVisibilityLock(this.moodbarThumb, "moodbarThumbLocked");
+        removeVisibilityLock(this.moodbarThumb);
     },
 
 

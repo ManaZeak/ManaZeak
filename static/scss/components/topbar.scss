@@ -27,6 +27,7 @@
     }
 
     #menu {
+        @extend .mzk-hidden;
         position: absolute;
         top: 20px;
         right: 0;
@@ -34,11 +35,6 @@
         height: auto;
         background-color: coral;
         z-index: 1;
-
-        opacity: 0;
-        transition: visibility 0s 0.3s,
-        opacity 0.3s ease;
-        visibility: hidden;
 
         .menuEntry {
             height: 2em;
@@ -50,12 +46,6 @@
         #logOut {
 
         }
-    }
-
-    .menuLocked {
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-        visibility: visible !important;
     }
 
 
@@ -94,12 +84,8 @@
 
         div.library:active,
         div.library:focus,
-        div.library:hover {
-            box-shadow: 0 -2px red inset;
-            //border-bottom: solid 3px red;
-        }
-
-        .libraryLocked {
+        div.library:hover,
+        div.library.librarySelected {
             box-shadow: 0 -2px red inset;
             //border-bottom: solid 3px red;
         }
