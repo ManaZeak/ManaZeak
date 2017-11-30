@@ -56,8 +56,8 @@
     max-width: 200px;
     padding: 8px;
 
-    background-color: $black-pure;
-    color: $white-pure;
+    background-color: black;
+    color: white;
 
     text-align: center;
     text-decoration: none;
@@ -74,7 +74,7 @@
 
 .tooltip.top .tooltip-arrow
 {
-    border-top-color: $black-pure;
+    border-top-color: black;
     border-width: 5px 5px 0;
     bottom: 0;
     left: 50%;
@@ -83,7 +83,7 @@
 
 .tooltip.right .tooltip-arrow
 {
-    border-right-color: $black-pure;
+    border-right-color: black;
     border-width: 5px 5px 5px 0;
     top: 50%;
     left: 0;
@@ -92,7 +92,7 @@
 
 .tooltip.left .tooltip-arrow
 {
-    border-left-color: $black-pure;
+    border-left-color: black;
     border-width: 5px 0 5px 5px;
     top: 50%;
     right: 0;
@@ -101,7 +101,7 @@
 
 .tooltip.bottom .tooltip-arrow
 {
-    border-bottom-color: $black-pure;
+    border-bottom-color: black;
     border-width: 0 5px 5px;
     top: 0;
     left: 50%;
