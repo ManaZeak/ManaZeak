@@ -36,7 +36,7 @@ var VolumeBar = function(container) {
     this.ui.mute.button.appendChild(this.volumeBar.wrapper);
     container.appendChild(this.ui.mute.button);
 
-    this.volume = 100; // Volume value is an int between 0 and 100
+    this.volume = 0; // Volume value is an int between 0 and 100
     this.isDragging = false;
 
     this.volumeLockId = -1;
@@ -49,7 +49,7 @@ var VolumeBar = function(container) {
 VolumeBar.prototype = {
 
     init: function() {
-        this.updateVolume(100);
+        this.updateVolume(50);
         this._eventListener();
     },
 
