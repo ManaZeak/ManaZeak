@@ -76,7 +76,8 @@ var Queue = function() {
 };
 
 Queue.prototype = {
-
+// TODO : add text saying that queue is empty when no track is loaded. Use same size as LI item, and put text at the center, same font as Track title in LI
+    // TODO : ? Add notif when track has been added ? To discuss if useful or not
     enqueue: function(track) {
         var newLink = new QueueEntry(track);
 
