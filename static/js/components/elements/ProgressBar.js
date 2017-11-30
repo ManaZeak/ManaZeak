@@ -93,7 +93,7 @@ ProgressBar.prototype = {
             this.updateProgress(track);
         }
     },
-    
+
 
     updateProgress: function (track) {
         var distanceToLeftBorder = (track.currentTime * 100) / track.duration;
@@ -182,7 +182,6 @@ ProgressBar.prototype = {
     },
 
     mouseDown: function (event) {
-        console.log(event.target);
         //TODO: Clean this shit up
         if (!this.isDragging &&
             (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb")) {
