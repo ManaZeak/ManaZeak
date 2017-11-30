@@ -21,8 +21,8 @@ var Player = function(cookies) {
 Player.prototype = {
 
     init: function() {
+        this.player.volume = 0.5; // TODO : init from global var in App
         this._eventListener();
-        this._keyListener();
     },
 
 
@@ -100,76 +100,15 @@ Player.prototype = {
     },
 
 
-    toggleQueue: function(event) {
-        if (event.ctrlKey || event.type === "click") {
-            this.queue.toggleVisibilityLock();
-        }
-    },
-
-
     _eventListener: function() {
-        var that = this;
         this.player.addEventListener("ended", window.app.next.bind(window.app));
     },
 
 
-
-    _keyListener: function() {
-        var that = this;
-
-        // Key pressed event
-        document.addEventListener("keydown", function(event) {
-            switch (event.keyCode) {
-                case 32: // Space player
-                    window.app.togglePlay();
-                    break;
-                case 37: // Left arrow
-                    that.rewind(event);
-                    break;
-                case 38: // Up arrow
-                    that.volumeUp(event);
-                    break;
-                case 39: // Right arrow
-                    that.fastForward(event);
-                    break;
-                case 40: // Down arrow
-                    that.volumeDown(event);
-                    break;
-                case 77: // m key (w/ ctrl)
-                    that.toggleMute(event);
-                    break;
-                case 81:
-                    that.toggleQueue(event);
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        // Key released event
-        document.addEventListener("keyup", function(event) {
-            switch (event.keyCode) {
-                case 38: // Up arrow
-                    that.delayHideVolume();
-                    break;
-                case 40: // Down arrow
-                    that.delayHideVolume();
-                    break;
-                default:
-                    break;
-            }
-        });
-    },
-
     // Class Getters and Setters
     getPlayer: function()                 { return this.player;             },
-    getVolume: function()                 { return this.player.volume;      },
-    getOldVolume: function()              { return this.oldVolume;          },
     getIsPlaying: function()              { return this.isPlaying;          },
-    getLoopingMode: function()              { return this.loopingMode;          },
-    getIsMuted: function()                { return this.isMuted;            },
 
     setIsMuted: function(muted)           { this.isMuted = muted;           },
-    setVolume: function(volume)           { this.player.volume = volume;    },
-    setCurrentTime: function(currentTime) { this.currentTime = currentTime; },
+    setVolume: function(volume)           { this.player.volume = volume;    }
 };

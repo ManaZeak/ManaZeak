@@ -40,7 +40,6 @@ var VolumeBar = function(container) {
     this.isDragging = false;
 
     this.volumeLockId = -1;
-    this.isVolumeLocked = false;
 
     this.init();
 };
@@ -92,8 +91,7 @@ VolumeBar.prototype = {
 
         clearTimeout(this.volumeLockId);
         this.volumeLockId = setTimeout(function() {
-            that.volumeBar.removeVisibilityLock();
-            that.isVolumeLocked = false;
+            removeVisibilityLock(that.volumeBar.wrapper, "volumeBarWrapperLocked");
         }, 1500);
     },
 
@@ -102,7 +100,6 @@ VolumeBar.prototype = {
     volumeUp: function(event) {
         addVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
 
-        this.isVolumeLocked = true;
         window.app.player.setIsMuted(false);
 
         if (!event.ctrlKey) {
@@ -116,7 +113,6 @@ VolumeBar.prototype = {
     volumeDown: function(event) {
         addVisibilityLock(this.volumeBar.wrapper, "volumeBarWrapperLocked");
 
-        this.isVolumeLocked = true;
         window.app.player.setIsMuted(false);
 
         if (!event.ctrlKey) {
@@ -128,7 +124,6 @@ VolumeBar.prototype = {
 
 
     mouseMove: function(event) {
-
         if (this.isDragging) {
             this.toggleVisibilityLock();
             this.moveVolume(event);
