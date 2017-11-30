@@ -109,7 +109,16 @@ ListView.prototype = {
 
     addEntries: function(tracks) {
         for (var i = 0; i < tracks.length ;++i)
-            this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
+            this.entries.push(new ListViewEntry(tracks[i], this.listView));
+    },
+
+
+    getEntryById: function(id) {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].track.id.track === id) {
+                return this.entries[i].track;
+            }
+        }
     },
 
 
@@ -130,8 +139,25 @@ ListView.prototype = {
     },
 
 
+    isLastEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                break;
+            }
+        }
+
+        return i === (this.entries.length - 1);
+    },
+
+
     sortBy: function(argument, ascending) {
-        this.entries.sort(sortObjectArrayBy(argument, ascending));
+        //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
+        this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
+
+        this.listView.innerHTML = "";
+        for(var i = 0; i < this.entries.length; i++)
+            this.entries[i].insert(this.listView);
+        this.contextMenu.reattach();
     },
 
 
@@ -139,18 +165,21 @@ ListView.prototype = {
         var that = this;
         var target = event.target;
 
-        if (target === this.listView)
+        if (target === this.listView) {
             return true;
+        }
+
         while(target.parentNode !== this.listView) {
             target = target.parentNode;
         }
 
-        var id = target.dataset.listViewID;
+        var id = target.dataset.childID;
 
         if (this.dblClick) {
             window.app.changeTrack(this.entries[id].track);
             return;
         }
+
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 400);
 
@@ -226,6 +255,10 @@ ListView.prototype = {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
         });
+
+        window.app.addListener("stopPlayback", function() {
+            that.unSelectAll();
+        });
     },
 
     _contextMenuSetup: function () {
@@ -234,9 +267,9 @@ ListView.prototype = {
 
         this.contextMenu = new NewContextMenu(this.listView, function(event) {
             var target = event.target;
-            while(target.dataset.listViewID == null)
+            while(target.dataset.childID == null)
                 target = target.parentNode;
-            clickedEntry = target.dataset.listViewID;
+            clickedEntry = target.dataset.childID;
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {

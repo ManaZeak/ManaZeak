@@ -41,7 +41,7 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         border: solid 1px black;
         border-radius: 3px;
-        background: #fff;
+        background: $primary-color;
 
         -webkit-user-select: none;  /* Chrome/Safari */
         -moz-user-select: none;     /* Firefox */

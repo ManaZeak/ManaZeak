@@ -4,7 +4,9 @@ App.prototype.togglePlay = function() {
 
 
 App.prototype.stopPlayback = function() {
+    this.changePageTitle("ManaZeak");
     this.player.stopPlayback();
+    this.topBar.resetMoodbar();
 };
 
 
@@ -31,6 +33,11 @@ App.prototype.previous = function() {
 };
 
 
+App.prototype.repeatTrack = function() {
+    this.player.repeatTrack();
+};
+
+
 App.prototype.fastForward = function(amount) {
     this.player.getPlayer().currentTime += amount;
 };
@@ -42,10 +49,8 @@ App.prototype.rewind = function(amount) {
 
 
 App.prototype.setVolume = function(volume) {
-    if(volume > 1)
-        volume = 1;
-    else if(volume < 0)
-        volume = 0;
+    if (volume > 1) { volume = 1; }
+    else if (volume < 0) { volume = 0; }
 
     this.player.getPlayer().volume = precisionRound(volume, 2);
 };
@@ -67,10 +72,13 @@ App.prototype.unmute = function() {
 
 
 App.prototype.toggleMute = function() {
-    if(this.player.isMuted)
+    if(this.player.isMuted) {
         this.unmute();
-    else
+        this.setVolume(this.player.oldVolume);
+    } else {
         this.mute();
+        this.setVolume(0);
+    }
 };
 
 
@@ -90,6 +98,7 @@ App.prototype.changeTrack = function(track) {
                 that.footBar.trackPreview.changeTrack(track, response.COVER);
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeTrack(".." + response.PATH, track.id.track);
+                that.changePageTitle(response.PATH);
                 that.activePlaylist.updateView(track);
                 that.togglePlay();
             }
@@ -100,6 +109,12 @@ App.prototype.changeTrack = function(track) {
 
 App.prototype.changePlaylist = function() {
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+};
+
+
+App.prototype.changePageTitle = function(path) {
+    // IDEA : Recontruct frrom Track attributes bc special char won't display as below ... (?/etc.)
+    document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
 };
 
 
@@ -124,4 +139,12 @@ App.prototype.pushQueue = function(track) {
 
 App.prototype.popQueue = function () {
     this.changeTrack(this.queue.dequeue());
+};
+
+App.prototype.reverseQueue = function(reverse) {
+    this.queue.setReverse(reverse);
+};
+
+App.prototype.moveQueue = function(element, newPos) {
+    this.queue.slide(element, newPos);
 };

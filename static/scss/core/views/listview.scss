@@ -23,6 +23,9 @@
     cursor: pointer;
     position: absolute;
     top: 0;
+
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
 }
 
 .trackContainer {
@@ -32,6 +35,11 @@
     font-size: 0.85em;
     cursor: pointer;
     text-align: center;
+}
+
+
+.trackContainerLocker {
+    background-color: $secondary-color !important;
 }
 
 

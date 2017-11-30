@@ -121,7 +121,6 @@ ContextMenuEntry.prototype = {
             if(clicked.children.length == 0)
             {
                 clicked.run_callback();
-
             }
             //Else expand it
             else
@@ -129,11 +128,12 @@ ContextMenuEntry.prototype = {
                 if(clicked.parent.multi_open_submenu)
                     clicked.parent.close_all();
                 clicked.element.classList.toggle("mzk-ctx-open");
+                
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                event.stopPropagation();
             }
 
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            event.stopPropagation();
         }, true);
     },
 

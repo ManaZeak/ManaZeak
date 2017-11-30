@@ -11,7 +11,7 @@ var FootBar = function() {
     this.progressContainer = document.createElement("DIV");
 
     this.footBar.id = "footBar";
-    this.controlsContainer.id = "controlsContainer";
+    this.controlsContainer.className = "mzk-controls-container";
 
     this.trackPreview    = new TrackPreview(this.footBar);
     this.controls        = new Controls(this.controlsContainer);
@@ -49,6 +49,18 @@ FootBar.prototype = {
             that.progressBar.updateProgress(window.app.player.getPlayer());
         });
 
+    },
+
+    volumeUp: function(event) {
+        this.controls.volumeBar.volumeUp(event);
+    },
+
+    volumeDown: function(event) {
+        this.controls.volumeBar.volumeDown(event);
+    },
+
+    delayHideVolume: function() {
+        this.controls.volumeBar.delayHideVolume();
     },
 
     getFootBar: function() { return this.footBar; }
