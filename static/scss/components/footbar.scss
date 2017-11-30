@@ -39,18 +39,16 @@
         height: 100%;
 
         .tooltipTrackCover {
+            @extend .mzk-hidden;
             background-color: rgba(0, 0, 0, 1);
             border-radius: 3px;
             bottom: 85px;
             height: 500px;
             width: 500px;
             left: 0;
-            opacity: 0;
             position: absolute;
             text-align: center;
-            transition: visibility 0s 0.3s,
-                        opacity 0.3s ease;
-            visibility: hidden;
+
             z-index: 1;
 
             img {
@@ -62,18 +60,16 @@
         }
 
         .tooltipPlaylistCover {
+            @extend .mzk-hidden;
             background-color: rgba(0, 0, 0, 1);
             border-radius: 3px;
             bottom: 85px;
             height: 500px;
             width: 500px;
             right: 0;
-            opacity: 0;
             position: absolute;
             text-align: center;
-            transition: visibility 0s 0.3s,
-                        opacity 0.3s ease;
-            visibility: hidden;
+
             z-index: 1;
 
             img {
@@ -105,9 +101,7 @@
 
     .tooltipWrapper:hover .tooltipTrackCover,
     .tooltipWrapper:hover .tooltipPlaylistCover {
-        opacity: 1;
-        transition: opacity 0.3s ease;
-        visibility: visible;
+        @extend .mzk-visible;
     }
 
     .mzk-controls-container {
@@ -171,6 +165,10 @@
         top: 0;
         right: 0;
         cursor: pointer;
+
+        &:hover .mzk-queue-preview {
+            @extend .mzk-visible;
+        }
     }
 
     .queueExpander img {
@@ -181,6 +179,7 @@
     }
 
     .mzk-queue-preview {
+        @extend .mzk-hidden;
         width: 400px;
         height: auto;
         max-height: 500px;
@@ -195,17 +194,6 @@
         justify-content: space-between;
 
         color: white;
-
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s 0.3s,
-                    opacity 0.3s ease;
-
-        &.mzk-open {
-            opacity: 1 !important;
-            transition: opacity 0.3s ease !important;
-            visibility: visible !important;
-        }
 
         ul.mzk-queue-list {
             overflow-y: auto;

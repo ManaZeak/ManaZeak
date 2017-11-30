@@ -47,17 +47,17 @@ UserMenu.prototype = {
     toggleVisibilityLock: function() {
         if (!this.isVisible) {
             this.isVisible = !this.isVisible;
-            addVisibilityLock(this.menu, "menuLocked");
+            addVisibilityLock(this.menu);
         } else {
             this.isVisible = !this.isVisible;
-            removeVisibilityLock(this.menu, "menuLocked");
+            removeVisibilityLock(this.menu);
         }
     },
 
 
     clickOutside: function(e) {
         if (!document.getElementById("userExpander").contains(e.target) && !document.getElementById("menu").contains(e.target)) {
-            removeVisibilityLock(this.menu, "menuLocked");
+            removeVisibilityLock(this.menu);
         }
     },
 

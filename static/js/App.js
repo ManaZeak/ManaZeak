@@ -156,8 +156,6 @@ App.prototype = {
     },
 
 
-
-
     // TODO : put this someday in a Shortcut class (in Utils maybe ?)
     _keyListener: function() {
         var that = this;

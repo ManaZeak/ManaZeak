@@ -43,10 +43,10 @@ NewLibPlayMenu.prototype = {
             this.isVisible = !this.isVisible;
             this.newLibPlayMenu.style.top  = event.pageY + "px";
             this.newLibPlayMenu.style.left = event.pageX + "px";
-            addVisibilityLock(this.newLibPlayMenu, "newLibPlayLocked");
+            addVisibilityLock(this.newLibPlayMenu);
         } else {
             this.isVisible = !this.isVisible;
-            removeVisibilityLock(this.newLibPlayMenu, "newLibPlayLocked");
+            removeVisibilityLock(this.newLibPlayMenu);
         }
     },
 

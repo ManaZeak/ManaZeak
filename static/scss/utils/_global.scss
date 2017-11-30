@@ -4,10 +4,10 @@
 /* Global elements */
 .animate /* TopBar Dropdown */
 {
-    -webkit-transition:	max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
-  	-moz-transition:	max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
-  	-o-transition: 		max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
-  	transition: 		max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
+  -webkit-transition:	max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
+  -moz-transition:	max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
+  -o-transition: 		max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
+  transition: 		max-width .2s, max-height .2s, width .2s, height .2s, background-color .2s, padding-bottom .2s;
 }
 
 .btn /* Button global styling */
@@ -19,4 +19,24 @@
 	font-size: .9em;
 
 	@include transition(0.5s);
+}
+
+//=================================== VISIBILITY LOCK ===================================
+
+.mzk-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0s 0.3s,
+  opacity 0.3s ease;
+
+  //We need to beat hidden's specificity because of how @extend works
+  &.mzk-visible {
+    @extend .mzk-visible;
+  }
+}
+
+.mzk-visible {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  visibility: visible;
 }
