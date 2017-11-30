@@ -35,11 +35,10 @@
     font-size: 0.85em;
     cursor: pointer;
     text-align: center;
-}
 
-
-.trackContainerLocker {
-    background-color: $secondary-color !important;
+    &.mzk-selected {
+        background-color: $secondary-color;
+    }
 }
 
 

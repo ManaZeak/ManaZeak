@@ -115,5 +115,6 @@ Controls.prototype = {
         this.ui.repeat.button.addEventListener("click", window.app.toggleRepeat.bind(window.app));
         this.ui.next.button.addEventListener("click", window.app.next.bind(window.app));
         this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
+        this.ui.queueExpander.button.addEventListener("click", this.queuePreview.show.bind(this.queuePreview));
     }
 };

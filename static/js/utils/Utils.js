@@ -79,6 +79,12 @@ function getCookies() {
     return cookies;
 }
 
+function toggleVisibilityLock(object) {
+    if(object.classList.contains("mzk-visible"))
+        removeVisibilityLock(object);
+    else
+        addVisibilityLock(object);
+}
 
 function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-visible");
