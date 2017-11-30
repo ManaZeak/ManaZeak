@@ -84,6 +84,13 @@ QueuePreview.prototype = {
         this.ui.queueList.appendChild(li);
     },
 
+    show: function(event) {
+        toggleVisibilityLock(this.ui.container);
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+    },
+
     _eventListener: function() {
         var self = this;
         var findParentLI = function(element) {
@@ -138,6 +145,17 @@ QueuePreview.prototype = {
                 default:
                     break;
             }
+        });
+
+        //TODO: Fix this kind of things (Valentin)
+        this.ui.container.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        });
+
+        document.body.addEventListener('click', function() {
+           removeVisibilityLock(self.ui.container);
         });
     },
 
