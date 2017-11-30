@@ -49,6 +49,9 @@ $menu-indentation: 10px;
       }
 
     }
+    & > li:hover {
+      background-color: $dark-secondary-color;
+    }
   }
 }
 
@@ -70,6 +73,6 @@ $menu-indentation: 10px;
   }
 
   p:hover {
-    background-color: khaki;
+    background-color: $dark-secondary-color;
   }
 }
