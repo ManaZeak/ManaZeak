@@ -14,8 +14,6 @@ var Player = function(cookies) {
 
     this.oldVolume = 0;
 
-    this.queue       = new Queue();
-
     this.init();
 };
 

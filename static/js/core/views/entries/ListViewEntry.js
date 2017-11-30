@@ -3,9 +3,8 @@
  *  ListViewEntry class - list view entry                                              *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListViewEntry = function(track, listView, id) {
+var ListViewEntry = function(track, listView) {
     this.entry = document.createElement("DIV");
-    this.entry.dataset.listViewID = id;
     this.entry.className = "trackContainer";
 
     this.track = track;
@@ -54,14 +53,15 @@ var ListViewEntry = function(track, listView, id) {
     this.boundingRect = null;
     this.isSelected = false;
 
-    listView.appendChild(this.entry);
+    this.insert(listView);
 };
 
 
 ListViewEntry.prototype = {
     
-    reinsertInListView: function(listView) {
-        listView.appendChild(listView.removeChild(this.entry));
+    insert: function(listView) {
+        this.entry.dataset.childID = listView.children.length;
+        listView.appendChild(this.entry);
     },
 
     getIsSelected: function() { return this.isSelected; },

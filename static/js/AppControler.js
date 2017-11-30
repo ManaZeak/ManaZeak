@@ -142,3 +142,11 @@ App.prototype.pushQueue = function(track) {
 App.prototype.popQueue = function () {
     this.changeTrack(this.queue.dequeue());
 };
+
+App.prototype.reverseQueue = function(reverse) {
+    this.queue.setReverse(reverse);
+};
+
+App.prototype.moveQueue = function(element, newPos) {
+    this.queue.slide(element, newPos);
+};

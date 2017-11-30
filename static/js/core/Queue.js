@@ -108,12 +108,31 @@ Queue.prototype = {
         return tmp.track;
     },
 
+    slide: function(element, newPos) {
+        var link = this.first;
+        var diff = newPos - element;
+
+        for(;element-- > 0 && link != null; link = link.next);
+        if(link != null) {
+            if(diff > 0)
+                for(; diff-- > 0; link = link.next)
+                    link.moveNext();
+            else
+                for(; diff++ < 0; link = link.previous)
+                    link.movePrev();
+        }
+    },
+
     isEmpty: function() {
         return this.first == null;
     },
 
     setReverse: function(newReverse) {
         this.reverse = newReverse == true;
+    },
+
+    isReverse: function () {
+        return this.reverse;
     }
 
 };

@@ -110,7 +110,7 @@
         visibility: visible;
     }
 
-    #controlsContainer {
+    .mzk-controls-container {
         /*border: solid 1px black;*/
         box-sizing: border-box;
         display: inline-block;
@@ -123,7 +123,7 @@
         -webkit-user-select: none;  /* Chrome/Safari */
         -moz-user-select: none;     /* Firefox */
 
-        #half {
+        .half {
             height: 50%;
             text-align: center;
             width: 100%;
@@ -164,7 +164,7 @@
     }
 
     // QUEUE
-    #queueExpander {
+    .queueExpander {
         width: 35px;
         height: 35px;
         position: absolute;
@@ -173,30 +173,121 @@
         cursor: pointer;
     }
 
-    #queueExpander img {
+    .queueExpander img {
         width: 25px;
         height: 25px;
         margin-top: 5px;
         margin-right: 5px;
     }
 
-    #queue {
+    .mzk-queue-preview {
         width: 400px;
         height: 500px;
         background-color: black;
         right: 0;
         bottom: 35px;
         position: absolute;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        color: white;
+
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s 0.3s,
                     opacity 0.3s ease;
-    }
 
-    .queueLocked {
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-        visibility: visible !important;
+        &.mzk-open {
+            opacity: 1 !important;
+            transition: opacity 0.3s ease !important;
+            visibility: visible !important;
+        }
+
+        ul.mzk-queue-list {
+            overflow-y: scroll;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+
+            border-bottom-style: solid;
+            border-bottom-color: white;
+            border-bottom-width: 1px;
+
+            li {
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                border-bottom-style: solid;
+                border-bottom-color: white;
+                border-bottom-width: 1px;
+
+                & > img {
+                    vertical-align: middle;
+                    width: 10%;
+                    margin: 0px;
+                    height: auto;
+                }
+
+                span {
+                    max-width: 100%;
+                    white-space: nowrap;
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .mzk-qprev-body {
+                    display: inline-flex;
+                    flex-direction: column;
+                    align-items: start;
+                    width: 80%;
+
+                    .mzk-qprev-title {
+                        font-size: 1em;
+                        margin: 1px 0px;
+                    }
+
+                    .mzk-qprev-origin {
+                        font-size: 0.8em;
+                        margin: 1px 0px;
+                    }
+
+                    .mzk-qprev-composer {
+                        font-size: 0.6em;
+                        margin: 1px 0px;
+                    }
+                }
+
+                .mzk-qprev-controls {
+                    width: 5%;
+                    display: inline-flex;
+                    flex-direction: column;
+                }
+            }
+        }
+
+        .mzk-queue-status {
+            flex: none;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            & > * {
+                white-space: nowrap;
+                margin: 0px 5px;
+            }
+
+            label {
+                display: flex;
+                align-items:center;
+            }
+        }
     }
 
     #playlistPreview {

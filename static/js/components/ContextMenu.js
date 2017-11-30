@@ -43,6 +43,10 @@ NewContextMenu.prototype = {
         }
     },
 
+    reattach: function() {
+        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
+    },
+
     _eventListener: function()
     {
         var self = this;
@@ -88,6 +92,11 @@ NewContextMenu.prototype = {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+        });
+        
+        document.body.addEventListener('click', function(event) {
+            self.element.className = "";
+            self.contextMenu.close_all();
         });
     },
 
