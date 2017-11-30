@@ -195,12 +195,14 @@ ProgressBar.prototype = {
             this.isDraggingOnMoodbar = true;
             this.stopRefreshInterval();
             this.moveProgress(event, window.app.player.getPlayer());
+            window.app.mute();
         }
     },
 
     mouseUp: function (event) {
-        // User released the ProgressBar thumb
         if (this.isDragging) {
+            // User released the ProgressBar thumb
+            console.log("Here");
             this.refreshInterval(window.app.player.getPlayer());
             removeVisibilityLock(this.duration.hover, "progressTimecodeHoverLocked");
             this.isDragging = false;
