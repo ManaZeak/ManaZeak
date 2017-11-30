@@ -178,7 +178,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
-            // "{\"LIBRARY_ID\":" + libraryId + "}", TODO : test this
             JSON.stringify({
                 LIBRARY_ID: libraryId
             }),

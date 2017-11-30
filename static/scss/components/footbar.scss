@@ -1,5 +1,5 @@
 #footBar {
-    background-color: rgb(233, 233, 233);
+    background-color: $secondary-color;
     bottom: 0;
     height: 80px;
     position: absolute;
@@ -172,17 +172,19 @@
     }
 
     .queueExpander img {
-        width: 25px;
-        height: 25px;
-        margin-top: 5px;
-        margin-right: 5px;
+        width: 25px !important;
+        height: 25px !important;
+        margin-top: 5px !important;
+        margin-right: 5px !important;
     }
 
     .mzk-queue-preview {
         @extend .mzk-hidden;
         width: 400px;
-        height: 500px;
-        background-color: black;
+        height: auto;
+        max-height: 500px;
+        background-color: $secondary-color;
+        border: solid 1px $dark-secondary-color;
         right: 0;
         bottom: 35px;
         position: absolute;
@@ -194,30 +196,24 @@
         color: white;
 
         ul.mzk-queue-list {
-            overflow-y: scroll;
+            overflow-y: auto;
             height: 100%;
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding: 0;
             list-style: none;
-
-            border-bottom-style: solid;
-            border-bottom-color: white;
-            border-bottom-width: 1px;
 
             li {
                 padding: 5px;
                 display: flex;
                 align-items: center;
+                padding-left: 15px;
                 justify-content: space-between;
 
-                border-bottom-style: solid;
-                border-bottom-color: white;
-                border-bottom-width: 1px;
+                border-bottom: solid 1px $primary-text;
 
                 & > img {
                     vertical-align: middle;
-                    width: 10%;
-                    margin: 0px;
+                    margin: 0 !important;
                     height: auto;
                 }
 
@@ -236,17 +232,17 @@
 
                     .mzk-qprev-title {
                         font-size: 1em;
-                        margin: 1px 0px;
+                        margin: 1px 0;
                     }
 
                     .mzk-qprev-origin {
                         font-size: 0.8em;
-                        margin: 1px 0px;
+                        margin: 1px 0;
                     }
 
                     .mzk-qprev-composer {
                         font-size: 0.6em;
-                        margin: 1px 0px;
+                        margin: 1px 0;
                     }
                 }
 
@@ -266,9 +262,12 @@
             align-items: center;
             justify-content: space-between;
 
+            box-sizing: content-box;
+            border-top: solid 1px $dark-secondary-color;
+
             & > * {
                 white-space: nowrap;
-                margin: 0px 5px;
+                margin: 0 5px;
             }
 
             label {
