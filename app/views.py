@@ -164,6 +164,38 @@ def getUserPlaylists(request):
     return JsonResponse(data)
 
 
+# Send basic data about the playlist
+def getPlaylistInfo(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                artists = set()
+                genres = set()
+                bitRate = 0
+                for track in playlist.track:
+                    artists.add(track.artist)
+                    genres.add(track.genre)
+                    bitRate += track.bitRate
+                bitRate = bitRate/len(playlist.track)
+                data = {
+                    'TRACK_TOTAL': playlist.track.count(),
+                    'ARTIST_TOTAL': len(artists),
+                    'GENRE_TOTAL': len(genres),
+                    'AVERAGE_BIT_RATE': bitRate,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 # Load a library by returning simplified json
 def loadSimplifiedLibrary(request):
     if request.method == 'POST':
