@@ -3,9 +3,11 @@
  *  NewContextMenu class - handle the context menu on right click                      *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var NewContextMenu = function()
+var NewContextMenu = function(parentElement, openCallback)
 {
     this.contextMenu = null;
+    this.parentElement = parentElement;
+    this.openCallback = openCallback;
     this.element = null;
     this.isVisible = false;
 
@@ -19,26 +21,36 @@ NewContextMenu.prototype = {
     {
         this.contextMenu = new ContextMenuEntry("master", "", null);
         this.contextMenu.activate_event_listener();
-        this.contextMenu.add_child(new ContextMenuEntry("1", "TEST_1", null));
-        this.contextMenu.add_child(new ContextMenuEntry("2", "TEST_2", null));
-        this.contextMenu.add_child(new ContextMenuEntry("3", "TEST_3", function(a) {console.log(a);}, 'NON'), "1", true);
-        this.contextMenu.children[0].add_child(new ContextMenuEntry("4", "TEST_0", function() {console.log('OUI')}));
-        this.contextMenu.children[1].add_child(new ContextMenuEntry(null, "TEST_HR", null));
-        this.contextMenu.children[2].set_visible_areas(["footBar"]);
 
         this.element = document.createElement('DIV');
         this.element.id = "mzk-ctx-wrap";
         this.element.appendChild(this.contextMenu.element);
-        document.body.insertBefore(this.element, document.body.firstChild);
+        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
 
         this._eventListener();
         this._keyListener();
     },
 
+    addEntry: function(entryPath, displayStr, callback /*, more args for the callback */) {
+        var path = entryPath;
+        var context;
+        if(Array.isArray(entryPath)) {
+
+        } else {
+            context = Object.create(ContextMenuEntry.prototype);
+            ContextMenuEntry.apply(context, arguments);
+            this.contextMenu.add_child(context);
+        }
+    },
+
+    reattach: function() {
+        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
+    },
+
     _eventListener: function()
     {
         var self = this;
-        document.body.addEventListener("contextmenu", function(event)
+        this.parentElement.addEventListener("contextmenu", function(event)
         {
             if(event.pageY <= document.documentElement.clientHeight / 2)
             {
@@ -73,10 +85,19 @@ NewContextMenu.prototype = {
                 target = target.parentNode;
             }
 
-            self.element.classList.add("mzk-ctx-open");
+            addVisibilityLock(self.element);
+            if(self.openCallback)
+                self.openCallback(event);
+
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+        });
+
+        //TODO: VLE
+        document.body.addEventListener('click', function(event) {
+            self.element.className = "";
+            self.contextMenu.close_all();
         });
     },
 

@@ -88,6 +88,6 @@ class Stats(models.Model):
 class PlaylistSettings(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
-    shuffleEnabled = models.BooleanField(default=False)
-    randomEnabled = models.BooleanField(default=False)
+    randomMode = models.IntegerField(default=0)
+    repeatEnabled = models.IntegerField(default=0)
     viewMode = models.IntegerField()

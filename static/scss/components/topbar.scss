@@ -2,31 +2,32 @@
     position: relative;
     width: 100%;
     height: 50px;
-    background-color: rgb(233, 233, 233);
+    background-color: $secondary-color;
 
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
 
     #moodbar {
-        border-bottom: solid 1px rgb(133, 133, 133);
         box-sizing: border-box;
         position: absolute;
         width: 80%;
-        height: 20px;
+        height: 16px;
         left: 10%;
 
         cursor: pointer;
-        background-color: cornflowerblue;
     }
 
 
     #userExpander {
         position: absolute;
         right: 0;
-        height: 100%;
+        height: 20px;
         width: 20px;
-        background-color: khaki;
+        background-color: $secondary-color;
     }
 
     #menu {
+        @extend .mzk-hidden;
         position: absolute;
         top: 20px;
         right: 0;
@@ -34,11 +35,6 @@
         height: auto;
         background-color: coral;
         z-index: 1;
-
-        opacity: 0;
-        transition: visibility 0s 0.3s,
-        opacity 0.3s ease;
-        visibility: hidden;
 
         .menuEntry {
             height: 2em;
@@ -52,12 +48,6 @@
         }
     }
 
-    .menuLocked {
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-        visibility: visible !important;
-    }
-
 
     #playlistBar {
         width: 100%;
@@ -65,7 +55,6 @@
         height: 30px;
         top: 20px;
         text-align: center;
-        background-color: rgb(233, 233, 233);
 
         div {
             display: inline-block;
@@ -94,12 +83,8 @@
 
         div.library:active,
         div.library:focus,
-        div.library:hover {
-            box-shadow: 0 -2px red inset;
-            //border-bottom: solid 3px red;
-        }
-
-        .libraryLocked {
+        div.library:hover,
+        div.library.librarySelected {
             box-shadow: 0 -2px red inset;
             //border-bottom: solid 3px red;
         }

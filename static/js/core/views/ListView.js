@@ -10,7 +10,7 @@ var ListView = function(data) {
     this.entriesSelected = {};
     this.dblClick = false;
 
-    this.contextMenu = new NewContextMenu();
+    this.contextMenu = null;
 
     this.header = {
         container: null,
@@ -55,6 +55,8 @@ ListView.prototype = {
         this.addEntries(data);
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
+
+        this._contextMenuSetup();
     },
 
 
@@ -96,7 +98,7 @@ ListView.prototype = {
         this.header.container.appendChild(this.header.title);
         this.header.container.appendChild(this.header.artist);
         this.header.container.appendChild(this.header.composer);
-        this.header.container.appendChild(this.header.performer);
+        //this.header.container.appendChild(this.header.performer);
         this.header.container.appendChild(this.header.album);
         this.header.container.appendChild(this.header.genre);
         this.header.container.appendChild(this.header.bitRate);
@@ -107,12 +109,55 @@ ListView.prototype = {
 
     addEntries: function(tracks) {
         for (var i = 0; i < tracks.length ;++i)
-            this.entries.push(new ListViewEntry(tracks[i], this.listView, i));
+            this.entries.push(new ListViewEntry(tracks[i], this.listView));
+    },
+
+
+    getEntryById: function(id) {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].track.id.track === id) {
+                return this.entries[i].track;
+            }
+        }
+    },
+
+
+    getNextEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i + 1) % this.entries.length].track;
+            }
+        }
+    },
+
+    getPreviousEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
+            }
+        }
+    },
+
+
+    isLastEntry: function() {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) {
+                break;
+            }
+        }
+
+        return i === (this.entries.length - 1);
     },
 
 
     sortBy: function(argument, ascending) {
-        this.entries.sort(sortObjectArrayBy(argument, ascending));
+        //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
+        this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
+
+        this.listView.innerHTML = "";
+        for(var i = 0; i < this.entries.length; i++)
+            this.entries[i].insert(this.listView);
+        this.contextMenu.reattach();
     },
 
 
@@ -121,17 +166,27 @@ ListView.prototype = {
         var target = event.target;
 
         if (target === this.listView)
+        {
+            this.unSelectAll();
             return true;
-        while(target.parentNode !== this.listView) {
-            target = target.parentNode;
         }
 
-        var id = target.dataset.listViewID;
+        while(target.parentNode !== this.listView)
+            target = target.parentNode;
+
+        var id = target.dataset.childID;
+
+        //Clicked outside of the entries
+        if(id == undefined) {
+            this.unSelectAll();
+            return true;
+        }
 
         if (this.dblClick) {
             window.app.changeTrack(this.entries[id].track);
             return;
         }
+
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 400);
 
@@ -141,6 +196,18 @@ ListView.prototype = {
 
         this.entriesSelected[id] = newState;
         this.entries[id].setIsSelected(newState);
+    },
+
+
+    setSelected: function(track) {
+        for (var i = 0; i < this.entries.length; ++i) {
+            if (this.entries[i].getIsSelected()) { //  Un-selecting all
+                this.entries[i].setIsSelected(false);
+            }
+            if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
+                this.entries[i].setIsSelected(true);
+            }
+        }
     },
 
 
@@ -194,6 +261,31 @@ ListView.prototype = {
         this.header.year.addEventListener("click", function() {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
+        });
+
+        window.app.addListener("stopPlayback", function() {
+            that.unSelectAll();
+        });
+    },
+
+    _contextMenuSetup: function () {
+        var self = this;
+        var clickedEntry = undefined;
+
+        this.contextMenu = new NewContextMenu(this.listView, function(event) {
+            var target = event.target;
+            while(target.parentNode != null && target.dataset.childID == null)
+                target = target.parentNode;
+
+            if(target.parentNode != null)
+                clickedEntry = target.dataset.childID;
+            else
+                clickedEntry = undefined;
+        });
+
+        this.contextMenu.addEntry(null, "Add to Queue", function() {
+            if(clickedEntry != undefined)
+                window.app.pushQueue(self.entries[clickedEntry].track);
         });
     }
 };

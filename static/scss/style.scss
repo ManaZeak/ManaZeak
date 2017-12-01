@@ -1,11 +1,11 @@
 @import 'utils/tools';
-@import 'components/layouts/topbar';
-@import 'ui/player/progressbar';
-@import 'ui/player/volumebar';
-@import 'ui/menu/contextmenu';
-@import 'components/layouts/notification';
-@import 'components/views/listview';
-@import 'components/layouts/footbar';
+@import 'components/topbar';
+@import 'components/elements/progressbar';
+@import 'components/elements/volumebar';
+@import 'components/elements/contextmenu';
+@import 'components/notification';
+@import 'core/views/listview';
+@import 'components/footbar';
 
 html, body {
     height: 100%;
@@ -13,6 +13,8 @@ html, body {
     overflow: hidden;
     padding: 0;
     width: 100%;
+
+    color: $primary-text;
 }
 
 #spectrumContainer {
@@ -29,5 +31,8 @@ html, body {
     height: calc(100% - 130px);
     top: 50px;
     position: absolute;
+
+    background: $primary-color;
+    font-family: Helvetica, serif;
 }
 

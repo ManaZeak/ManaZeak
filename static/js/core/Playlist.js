@@ -23,13 +23,13 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     };
     this.scanModal = null;
 
-
     // Playlist internal attributes
     this.id = id;
     this.name = name;
     this.isLibrary = isLibrary;
     this.isLoading = isLoading;
-    this.isShuffle = false;
+    this.shuffleMode = 0; // 0 : off, 1 : random, 2: shuffle
+    this.repeatMode = 0; // 0 : off, 1 : one, 2: all
     this.isRepeat  = false;
 
     //TODO: fix this
@@ -178,7 +178,6 @@ Playlist.prototype = {
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
-            // "{\"LIBRARY_ID\":" + libraryId + "}", TODO : test this
             JSON.stringify({
                 LIBRARY_ID: libraryId
             }),
@@ -206,7 +205,7 @@ Playlist.prototype = {
 
         this.getTracksIntervalId = setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
-        }, 20000); // every 20s
+        }, 500); // called every .5s
     },
 
 
@@ -226,10 +225,10 @@ Playlist.prototype = {
                  * } */
                 var self = that;
 
-                clearInterval(that.getTracksIntervalId);
-                that.getTracksIntervalId = -1;
-
                 if (response.DONE) {
+                    clearInterval(that.getTracksIntervalId);
+                    that.getTracksIntervalId = -1;
+
                     JSONParsedPostRequest(
                         "ajax/getSimplifiedTracks/",
                         JSON.stringify({
@@ -258,21 +257,25 @@ Playlist.prototype = {
     },
 
 
-    getPlaylistsTracks: function(playlistId, callback) {
+    getPlaylistsTracks: function(callback) {
         var that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
             JSON.stringify({
-                PLAYLIST_ID: playlistId
+                PLAYLIST_ID: this.id
             }),
             function(response) {
                 // response = raw tracks JSON object
                 that.rawTracks = response;
                 that._fillTracks(that.rawTracks);
                 that.refreshViews();
-                that.showView(that.activeView);
-                callback();
+
+                if (callback) {
+                    that.showView(that.activeView);
+
+                    callback();
+                }
             }
         );
     },
@@ -284,7 +287,6 @@ Playlist.prototype = {
         for (var i = 0; i < tracks.length ;++i) {
             ++this.trackTotal;
             this.durationTotal += tracks[i].DURATION;
-
             this.tracks.push(new Track(tracks[i]));
         }
     },
@@ -293,53 +295,115 @@ Playlist.prototype = {
     playNextTrack: function() {
         var that = this;
 
-        if (this.isShuffle) {
-            JSONParsedPostRequest(
-                "ajax/randomNextTrack/",
-                JSON.stringify({
-                    PLAYLIST_ID: that.id
-                    // TODO: send isRepeat here
-                }),
-                function(response) {
-                    // TODO : make controller function in App.controller
-                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
-                    //window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    //window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
+        if (this.repeatMode === 1) {
+            window.app.repeatTrack();
         } else {
-            this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            switch (this.shuffleMode) {
+
+                case 0: // Shuffle off
+                    if (this.repeatMode !== 0) {
+                        this.currentTrack = this.activeView.getNextEntry();
+                        window.app.changeTrack(this.currentTrack);
+                    } else {
+                        if (this.activeView.isLastEntry()) {
+                            window.app.stopPlayback();
+                        } else {
+                            this.currentTrack = this.activeView.getNextEntry();
+                            window.app.changeTrack(this.currentTrack);
+                        }
+                    }
+                    break;
+
+                case 1: // Random
+                    JSONParsedPostRequest(
+                        "ajax/randomNextTrack/",
+                        JSON.stringify({
+                            PLAYLIST_ID: that.id
+                        }),
+                        function(response) {
+                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                            window.app.changeTrack(that.currentTrack);
+                        }
+                    );
+                    break;
+
+                case 2: // Shuffle on
+                    JSONParsedPostRequest(
+                        "ajax/shuffleNextTrack/",
+                        JSON.stringify({
+                            PLAYLIST_ID: that.id
+                        }),
+                        function(response) {
+                            if (response.LAST) {
+                                window.app.stopPlayback();
+                            } else {
+                                that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                                window.app.changeTrack(that.currentTrack);
+                            }
+                        }
+                    );
+                    break;
+
+                default:
+                    break;
+            }
         }
     },
 
 
     playPreviousTrack: function() {
-        var that = this;
+        switch (this.shuffleMode) {
 
-        if (this.isShuffle) {
-            //TODO: Get from server history
-            JSONParsedPostRequest(
-                "ajax/randomNextTrack/",
-                JSON.stringify({
-                    PLAYLIST_ID: that.id
-                    // TODO: send isRepeat here
-                }),
-                function(response) {
-                    // that.currentTrack = response.TRACK_ID; // TODO : get track ID from serv heres
+            case 0: // Shuffle off
+                this.currentTrack = this.activeView.getPreviousEntry();
+                window.app.changeTrack(this.currentTrack);
+                break;
 
-                    window.app.trackPreview.setVisible(true);
-                    //window.app.trackPreview.changeTrack(that.tracks[that.currentTrack], response.COVER);
-                    //window.app.topBar.changeMoodbar(that.currentTrack);
-                    window.app.player.changeTrack("../" + response.PATH);
-                }
-            );
-        } else {
-            this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
-            window.app.changeTrack(this.tracks[this.currentTrack]);
+            case 1: // Random
+                //TODO: Get from server history
+                break;
+
+            case 2: // Shuffle on
+                //TODO: Get from server history
+                break;
+
+            default:
+                break;
         }
+    },
+
+
+    toggleShuffle: function() {
+        ++this.shuffleMode;
+        this.shuffleMode %= 3;
+
+        JSONParsedPostRequest(
+            "ajax/toggleRandom/",
+            JSON.stringify({
+                PLAYLIST_ID: this.id,
+                RANDOM_MODE: this.shuffleMode
+            }),
+            null
+        );
+
+        window.app.refreshUI();
+    },
+
+
+    toggleRepeat: function() {
+        ++this.repeatMode;
+        this.repeatMode %= 3;
+
+        JSONParsedPostRequest(
+            "ajax/toggleRepeat/",
+            JSON.stringify({
+                PLAYLIST_ID: this.id,
+                REPEAT_MODE: this.repeatMode
+            }),
+            null
+        );
+
+        window.app.refreshUI();
     },
 
 
@@ -358,18 +422,17 @@ Playlist.prototype = {
         this.activeView = v;
     },
 
+
+    updateView: function(track) {
+        this.currentTrack = track; // TODO : handle list sorting, search for entry in view instead
+        this.activeView.setSelected(track);
+    },
+
+
     refreshViews: function() {
         for(var i = 0; i < this.views.length; ++i)
             if(this.views[i] !== null)
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
-    },
-
-    setCurrentTrack: function(track) {
-        for (var i = 0; i < this.tracks.length ;++i) {
-            if (this.tracks[i].id === track.id) {
-                this.currentTrack = i;
-            }
-        }
     },
 
     // Class Getters and Setters
@@ -377,6 +440,8 @@ Playlist.prototype = {
     getTracks: function()     { return this.tracks;    },
     getName: function()       { return this.name;      },
     getIsLibrary: function()  { return this.isLibrary; },
+    getshuffleMode: function()  { return this.shuffleMode; },
+    getRepeatMode: function()  { return this.repeatMode; },
 
     setName: function(name)   { this.name = name;      }
 };
