@@ -98,7 +98,7 @@ ListView.prototype = {
         this.header.container.appendChild(this.header.title);
         this.header.container.appendChild(this.header.artist);
         this.header.container.appendChild(this.header.composer);
-        this.header.container.appendChild(this.header.performer);
+        //this.header.container.appendChild(this.header.performer);
         this.header.container.appendChild(this.header.album);
         this.header.container.appendChild(this.header.genre);
         this.header.container.appendChild(this.header.bitRate);
