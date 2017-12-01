@@ -43,15 +43,19 @@ function secondsToTimecode(time) {
 }
 
 
-function sortObjectArrayBy(key, ascending) {
+function sortObjectArrayBy(key, ascending, subobject) {
     return function(a, b) {
+        if(subobject != null) {
+            a = a[subobject];
+            b = b[subobject];
+        }
+        
         if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         var compare = 0;
-
         if (varA > varB)      { compare =  1; }
         else if (varA < varB) { compare = -1; }
 
@@ -75,14 +79,20 @@ function getCookies() {
     return cookies;
 }
 
+function toggleVisibilityLock(object) {
+    if(object.classList.contains("mzk-visible"))
+        removeVisibilityLock(object);
+    else
+        addVisibilityLock(object);
+}
 
-function addVisibilityLock(object, className) { // TODO : rename to addClass -> modify modal accordingly
-    object.classList.add(className);
+function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
+    object.classList.add("mzk-visible");
 }
 
 
-function removeVisibilityLock(object, className) {
-    object.classList.remove(className);
+function removeVisibilityLock(object) {
+    object.classList.remove("mzk-visible");
 }
 
 
@@ -154,9 +164,11 @@ function renderMoodFile(file, parentDiv) {
                 var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
                 var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
 
+                // TODO : Have fun here w/ colors
+
                 rgb[i] = {
                     offset: (i / len * 100) + "%",
-                    color:  "rgb(" + r + ", " + g + ", " + b + ")"
+                    color:  "rgba(" + r + ", " + b + ", " + g + ", 0.9)"
                 };
             }
 

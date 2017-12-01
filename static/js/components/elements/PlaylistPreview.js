@@ -25,10 +25,10 @@ var PlaylistPreview = function(container) {
     this.tooltipWrapper.className = "tooltipWrapper";
 
     this.ui.cover.id = "playlistPreviewCover";
-    this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
+    this.ui.cover.src = "../static/img/utils/defaultcover.svg";
 
     this.ui.thumb.id = "playlistPreviewThumb";
-    this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
+    this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
     this.ui.thumbTooltip.className = "tooltipPlaylistCover";
 
     this.ui.thumbTooltip.appendChild(this.ui.thumb);
@@ -62,8 +62,8 @@ PlaylistPreview.prototype = {
 
     changePlaylist: function(playlist, cover) {
         // TODO : handle cover smooth transition
-        this.ui.cover.src = "../static/img/utils/defaultcover.jpg";
-        this.ui.thumb.src = "../static/img/utils/defaultcover.jpg";
+        this.ui.cover.src = "../static/img/utils/defaultcover.svg";
+        this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
 
         this.ui.name.innerHTML = playlist.name;
         this.ui.total.innerHTML = playlist.trackTotal + " tracks";
@@ -75,8 +75,35 @@ PlaylistPreview.prototype = {
 
     updatePlaylistPreview: function() {
         // TODO : link to App.controler event
-        this.ui.repeat.innerHTML = !window.app.player.getIsLooping() ? "Repeat off" : "Repeat on";
-        //this.ui.shuffle.innerHTML = !window.app.player.getIsShuffle() ? "Shuffle off" : "Shuffle on";
+        var repeatMode = window.app.activePlaylist.getRepeatMode();
+        switch (repeatMode) {
+            case 0:
+                this.ui.repeat.innerHTML = "Repeat off";
+                break;
+            case 1:
+                this.ui.repeat.innerHTML = "Repeat one";
+                break;
+            case 2:
+                this.ui.repeat.innerHTML = "Repeat all";
+                break;
+            default:
+                break;
+        }
+
+        var shuffleMode = window.app.activePlaylist.getshuffleMode();
+        switch (shuffleMode) {
+            case 0:
+                this.ui.shuffle.innerHTML = " - Shuffle off";
+                break;
+            case 1:
+                this.ui.shuffle.innerHTML = " - Random";
+                break;
+            case 2:
+                this.ui.shuffle.innerHTML = " - Shuffle on";
+                break;
+            default:
+                break;
+        }
     },
 
 

@@ -24,6 +24,8 @@ var TopBar = function() {
     this.moodbarThumb.id = "moodbarThumb";
     this.playlistBar.id = "playlistBar";
 
+    this.moodbarThumb.isVisible = false;
+
     this.topBar.appendChild(this.moodbar);
     this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
@@ -35,7 +37,7 @@ var TopBar = function() {
 
 
 TopBar.prototype = {
-// TODO : handle first connection, bug occuring on refresh
+
     init: function(playlists, selectedPlaylist) {
         this.removeEntries();
         this.playlists = playlists;
@@ -73,15 +75,15 @@ TopBar.prototype = {
         this.newPlaylistButton = document.createElement("div");
         this.newPlaylistButton.innerHTML = "+";
         this.playlistBar.appendChild(this.newPlaylistButton);
+        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
     },
 
 
     setSelected: function(id) {
-	    this.selectedPlaylist = id;
 
 	    for (var i = 0; i < this.entries.length ;++i) {
-	        if (this.entries[i].getId() == id) {
-	            console.log("Match");
+	        if (i == id || this.entries[i].getId() == id) {
+                this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
             }
         }
@@ -90,9 +92,7 @@ TopBar.prototype = {
 
 
     newLibPlay: function(e) {
-        console.log(this.menu);
         this.menu.toggleVisibilityLock(e);
-//        window.app.requestNewPlaylist();
     },
 
 
@@ -108,6 +108,7 @@ TopBar.prototype = {
             this.playlistBar.removeChild(this.newPlaylistButton);
         }
 
+        this.newPlaylistButton.removeEventListener("click", this.newLibPlay.bind(this));
         this.removeEntries();
         this.addEntries();
         this.addNewPlaylistButton();
@@ -128,21 +129,23 @@ TopBar.prototype = {
 		    return true;
         }
 
-        var id = target.dataset.listViewID;
+        var id = target.dataset.childID;
 
         if (id !== undefined) {
             this.unSelectAll();
-            this.entries[id].setIsSelected(true);
+            this.setSelected(id);
+            this.entries[id].playlist.activate();
             window.app.refreshUI();
-        }
-
-        else {
-
         }
     },
 
 
     changeMoodbar: function(id) {
+        if (!this.moodbarThumb.isVisible) {
+            this.moodbarThumb.isVisible = true;
+            addVisibilityLock(this.moodbarThumb);
+        }
+        // TODO : add thumb if not already, also, hide thumb at app start
         var that = this;
 
         var xhr = new XMLHttpRequest();
@@ -162,13 +165,19 @@ TopBar.prototype = {
     },
 
 
+    resetMoodbar: function() {
+        d3.selectAll('#moodbar svg').remove();
+        this.moodbarThumb.isVisible = false;
+        removeVisibilityLock(this.moodbarThumb);
+    },
+
+
     toggleUserMenu: function() {
         this.userMenu.toggleVisibilityLock();
     },
 
 
     _eventListener: function() {
-        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
     },

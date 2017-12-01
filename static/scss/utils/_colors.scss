@@ -2,83 +2,13 @@
  *
  *
 /* Program colors */
-$black-pure:		rgba(0, 0, 0, 1);
-$black-3quarter: 	rgba(0, 0, 0, 0.75);
-$black-2third: 		rgba(0, 0, 0, 0.33);
-$black-half: 		rgba(0, 0, 0, 0.5);
-$black-third: 		rgba(0, 0, 0, 0.33);
-$black-quarter: 	rgba(0, 0, 0, 0.25);
-$black-eighth: 		rgba(0, 0, 0, 0.125);
-$black-sixteenth:	rgba(0, 0, 0, 0.0625);
+$primary-color: rgba(44, 44, 48, 1);
+$secondary-color: rgba(31, 33, 39, 1);
 
-$blue-pure: 		rgba(26, 65, 96, 1);
-$blue-3quarter: 	rgba(26, 65, 96, 0.75);
-$blue-2third: 		rgba(26, 65, 96, 0.66);
-$blue-half: 		rgba(26, 65, 96, 0.5);
-$blue-third: 		rgba(26, 65, 96, 0.33);
-$blue-quarter: 		rgba(26, 65, 96, 0.25);
-$blue-eighth: 		rgba(26, 65, 96, 0.125);
-$blue-sixteenth:	rgba(26, 65, 96, 0.0625);
+$accent-color: rgba(255, 0, 0, 1);
+$anti-accent-color: rgba(0, 0, 255, 1);
+$dark-secondary-color: rgba(14, 15, 20, 1);
 
-$brown-pure: 		rgba(55, 43, 39, 1);
-$brown-3quarter: 	rgba(55, 43, 39, 0.75);
-$brown-2third: 		rgba(55, 43, 39, 0.66);
-$brown-half: 		rgba(55, 43, 39, 0.5);
-$brown-third: 		rgba(55, 43, 39, 0.33);
-$brown-quarter: 	rgba(55, 43, 39, 0.25);
-$brown-eighth:		rgba(55, 43, 39, 0.125);
-$brown-sixteenth: 	rgba(55, 43, 39, 0.0625);
+$primary-text: rgba(170, 170, 190, 1);
 
-$green-pure: 		rgba(40, 73, 42, 1);
-$green-3quarter: 	rgba(40, 73, 42, 0.75);
-$green-2third: 		rgba(40, 73, 42, 0.66);
-$green-half: 		rgba(40, 73, 42, 0.5);
-$green-third:		rgba(40, 73, 42, 0.33);
-$green-quarter: 	rgba(40, 73, 42, 0.25);
-$green-eighth: 		rgba(40, 73, 42, 0.125);
-$green-sixteenth: 	rgba(40, 73, 42, 0.0625);
-
-$orange-pure: 		rgba(100, 65, 15, 1);
-$orange-3quarter: 	rgba(100, 65, 15, 0.75);
-$orange-2third: 	rgba(100, 65, 15, 0.66);
-$orange-half: 		rgba(100, 65, 15, 0.5);
-$orange-third: 		rgba(100, 65, 15, 0.33);
-$orange-quarter: 	rgba(100, 65, 15, 0.25);
-$orange-eighth: 	rgba(100, 65, 15, 0.125);
-$orange-sixteenth: 	rgba(100, 65, 15, 0.0625);
-
-$purple-pure: 		rgba(49, 34, 76, 1);
-$purple-3quarter: 	rgba(49, 34, 76, 0.75);
-$purple-2third: 	rgba(49, 34, 76, 0.66);
-$purple-half: 		rgba(49, 34, 76, 0.5);
-$purple-third: 		rgba(49, 34, 76, 0.33);
-$purple-quarter: 	rgba(49, 34, 76, 0.25);
-$purple-eighth: 	rgba(49, 34, 76, 0.125);
-$purple-sixteenth: 	rgba(49, 34, 76, 0.0625);
-
-$red-pure: 			rgba(94, 33, 31, 1);
-$red-3quarter: 		rgba(94, 33, 31, 0.75);
-$red-2third: 		rgba(94, 33, 31, 0.66);
-$red-half:			rgba(94, 33, 31, 0.5);
-$red-third: 		rgba(94, 33, 31, 0.33);
-$red-quarter: 		rgba(94, 33, 31, 0.25);
-$red-eighth: 		rgba(94, 33, 31, 0.125);
-$red-sixteenth: 	rgba(94, 33, 31, 0.0625);
-
-$yellow-pure: 		rgba(100, 79, 16, 1);
-$yellow-3quarter: 	rgba(100, 79, 16, 0.75);
-$yellow-2third: 	rgba(100, 79, 16, 0.66);
-$yellow-half: 		rgba(100, 79, 16, 0.5);
-$yellow-third: 		rgba(100, 79, 16, 0.33);
-$yellow-quarter: 	rgba(100, 79, 16, 0.25);
-$yellow-eighth: 	rgba(100, 79, 16, 0.125);
-$yellow-sixteenth: 	rgba(100, 79, 16, 0.0625);
-
-$white-pure: 		rgba(255, 255, 255, 1);
-$white-3quarter: 	rgba(255, 255, 255, 0.75);
-$white-2third: 		rgba(255, 255, 255, 0.66);
-$white-half: 		rgba(255, 255, 255, 0.5);
-$white-third: 		rgba(255, 255, 255, 0.33);
-$white-quarter: 	rgba(255, 255, 255, 0.25);
-$white-eighth: 		rgba(255, 255, 255, 0.125);
-$white-sixteenth: 	rgba(255, 255, 255, 0.0625);
+$white: rgba(255, 255, 255, 1);

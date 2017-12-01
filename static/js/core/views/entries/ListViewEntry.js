@@ -3,9 +3,8 @@
  *  ListViewEntry class - list view entry                                              *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListViewEntry = function(track, listView, id) {
+var ListViewEntry = function(track, listView) {
     this.entry = document.createElement("DIV");
-    this.entry.dataset.listViewID = id;
     this.entry.className = "trackContainer";
 
     this.track = track;
@@ -44,7 +43,7 @@ var ListViewEntry = function(track, listView, id) {
     this.entry.appendChild(title);
     this.entry.appendChild(artist);
     this.entry.appendChild(composer);
-    this.entry.appendChild(performer);
+    //this.entry.appendChild(performer);
     this.entry.appendChild(album);
     this.entry.appendChild(genre);
     this.entry.appendChild(bitRate);
@@ -54,20 +53,27 @@ var ListViewEntry = function(track, listView, id) {
     this.boundingRect = null;
     this.isSelected = false;
 
-    listView.appendChild(this.entry);
+    this.insert(listView);
 };
 
 
 ListViewEntry.prototype = {
+    
+    insert: function(listView) {
+        this.entry.dataset.childID = listView.children.length;
+        listView.appendChild(this.entry);
+    },
 
     getIsSelected: function() { return this.isSelected; },
 
     setIsSelected: function(isSelected) {
         this.isSelected = isSelected;
         if (this.isSelected) {
-            this.entry.style.background = "red";
+            this.entry.classList.add("mzk-selected");
+            //this.entry.style.background = "red";
         } else {
-            this.entry.style.background = "none";
+            this.entry.classList.remove("mzk-selected");
+            //this.entry.style.background = "none";
         }
     }
 };
