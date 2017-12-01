@@ -100,7 +100,7 @@ $listView-padding: 0 10%;
 .col-duration {
     width: 5%;
     text-align: right;
-    min-width: 80px;
+    //min-width: 80px;
 }
 
 .col-title {
@@ -112,7 +112,7 @@ $listView-padding: 0 10%;
 }
 
 .col-composer {
-    width: 18%;
+    width: 18.5%;
 }
 /*
 .col-performer { // Tod Add In Another ListView Type
@@ -122,7 +122,7 @@ $listView-padding: 0 10%;
 }
 */
 .col-album {
-    width: 17%;
+    width: 19%;
 }
 
 .col-genre {
@@ -132,11 +132,11 @@ $listView-padding: 0 10%;
 .col-bitRate {
     width: 5%;
     text-align: right;
-    min-width: 75px;
+    //min-width: 75px;
 }
 
 .col-year {
-    width: 3.2%;
-    min-width: 47px;
+    width: 3.5%;
+    //min-width: 47px;
     float: right;
 }
