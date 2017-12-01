@@ -43,7 +43,7 @@ var ListViewEntry = function(track, listView) {
     this.entry.appendChild(title);
     this.entry.appendChild(artist);
     this.entry.appendChild(composer);
-    this.entry.appendChild(performer);
+    //this.entry.appendChild(performer);
     this.entry.appendChild(album);
     this.entry.appendChild(genre);
     this.entry.appendChild(bitRate);
