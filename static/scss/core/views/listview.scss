@@ -1,6 +1,44 @@
 
 $listView-padding: 0 10%;
 
+
+@media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled
+    #listView, .columnHeader {
+        padding: 0 20px !important;
+        font-size: 0.9em !important;
+    }
+
+    .col-title {
+        width: 17% !important;
+        min-width: 150px !important;
+    }
+
+    .col-artist {
+        width: 17% !important;
+        min-width: 150px !important;
+    }
+
+    .col-composer {
+        width: 17% !important;
+        min-width: 150px !important;
+    }
+
+    .col-album {
+        width: 17% !important;
+        min-width: 150px !important;
+    }
+
+    .col-genre {
+        width: 15% !important;
+        min-width: 140px !important;
+    }
+
+    .col-year {
+        text-align: center !important;
+    }
+}
+
+
 /* listview */
 #listView {
     width: 100%;
@@ -56,6 +94,7 @@ $listView-padding: 0 10%;
     box-sizing: border-box;
     white-space: nowrap;
     display: inline-block;
+    float: left;
 }
 
 .col-duration {
@@ -66,32 +105,28 @@ $listView-padding: 0 10%;
 
 .col-title {
     width: 22%;
-    min-width: 300px;
 }
 
 .col-artist {
-    width: 14.8%;
-    min-width: 180px;
+    width: 16%;
 }
 
 .col-composer {
-    width: 17.5%;
-    min-width: 250px;
+    width: 18%;
 }
-
+/*
 .col-performer { // Tod Add In Another ListView Type
-    width: 14.5%;
-    min-width: 180px;
+    //width: 14.5%;
+    width: 16%;
+    min-width: 217px;
 }
-
+*/
 .col-album {
-    width: 22%;
-    min-width: 180px;
+    width: 17%;
 }
 
 .col-genre {
-    width: 10.2%;
-    min-width: 156px;
+    width: 11%;
 }
 
 .col-bitRate {
@@ -102,5 +137,6 @@ $listView-padding: 0 10%;
 
 .col-year {
     width: 3.2%;
-    min-width: 45px;
+    min-width: 47px;
+    float: right;
 }
