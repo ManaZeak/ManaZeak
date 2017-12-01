@@ -701,9 +701,14 @@ def getUserPrefArtist(user):
 def userNeverPlayed(user):
     stats = Stats.objects.filter(user=user)
     playedArtistId = set()
+
     for stat in stats:
         for artist in stat.track.artist.all():
             playedArtistId.add(artist.id)
-    neverPlayerArtists = Artist.objects.exclude(id__in=playedArtistId)
-    print(len(neverPlayerArtists))
-    return neverPlayerArtists
+    neverPlayedArtists = Artist.objects.exclude(id__in=playedArtistId)
+    neverPlayed = []
+    for artist in neverPlayedArtists:
+        neverPlayed.append(artist.id)
+
+    #print(len(neverPlayerArtists))
+    return neverPlayed

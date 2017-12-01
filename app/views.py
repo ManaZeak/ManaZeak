@@ -375,19 +375,63 @@ def getMoodbarByID(request):
     return JsonResponse(data)
 
 
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def adminGetUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+    user = request.user
+    if user.is_superuser:
+        for users in User.objects.all():
+            if Stats.objects.filter(user=users):
+                nbTrackListened = getUserNbTrackListened(users)
+                nbTrackPushed = getUserNbTrackPushed(users)
+                userGenre = getUserGenre(users)
+                userGenrePercentage = getUserGenrePercentage(users)
+                prefArtists = getUserPrefArtist(users)
+                neverPlayed = userNeverPlayed(user)
+
+                data = {
+                        'USER': users.id,
+                        'PREF_ARTIST': prefArtists[:100],
+                        'NB_TRACK_LISTENED': nbTrackListened,
+                        'NB_TRACK_PUSHED': nbTrackPushed,
+                        'USER_GENRE': userGenre,
+                        'USER_GENRE_PERCENTAGE': userGenrePercentage,
+                        'NEVER_PLAYED': neverPlayed,
+                }
+                return JsonResponse(data)
+            else:
+                return JsonResponse(errorCheckMessage(False, "doesNotExist"))
+    else:
+        return JsonResponse(errorCheckMessage(False, "unauthorized"))
+
+
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserStats(request):
     if request.method == 'POST':
         response = json.loads(request.body)
     user = request.user
 
-    mdr = getUserNbTrackListened(user)
-    getUserNbTrackPushed(user)
-    getUserGenre(user)
-    getUserGenrePercentage(user)
+    nbTrackListened = getUserNbTrackListened(user)
+    nbTrackPushed = getUserNbTrackPushed(user)
+    userGenre = getUserGenre(user)
+    userGenrePercentage = getUserGenrePercentage(user)
     prefArtists = getUserPrefArtist(user)
-    userNeverPlayed(user)
-    return JsonResponse({'mdr': prefArtists[:100]})
+    neverPlayed = userNeverPlayed(user)
+
+    data = {
+            'PREF_ARTIST': prefArtists[:100],
+            'NB_TRACK_LISTENED': nbTrackListened,
+            'NB_TRACK_PUSHED': nbTrackPushed,
+            'USER_GENRE': userGenre,
+            'USER_GENRE_PERCENTAGE': userGenrePercentage,
+            'NEVER_PLAYED': neverPlayed,
+    }
+
+    return JsonResponse(data)
+
+
 
 
 def randomNextTrack(request):
