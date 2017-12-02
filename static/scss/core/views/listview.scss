@@ -33,6 +33,10 @@ $listView-padding: 0 10%;
     }
 }
 
+.columnHeaderOffset {
+    width: calc(100% - 20px) !important;
+}
+
 
 /* listview */
 #listView {
@@ -134,4 +138,5 @@ $listView-padding: 0 10%;
     width: 3.5%;
     //min-width: 47px;
     float: right;
+    margin-right: - 19px;
 }

@@ -23,6 +23,11 @@ View.prototype = {
     show: function() {
         this.pageContainer.innerHTML = "";
         this.pageContainer.appendChild(this.container);
+
+        // TODO : dirty work here, put this somewhere else
+        if (this.listView.scrollHeight > this.listView.clientHeight) {
+            this.header.container.className += " columnHeaderOffset";
+        }
     },
 
 

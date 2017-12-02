@@ -419,6 +419,7 @@ Playlist.prototype = {
             v = this.views[viewType.index];
         }
         v.show();
+
         this.activeView = v;
     },
 
