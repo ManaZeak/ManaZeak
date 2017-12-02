@@ -219,8 +219,20 @@ ListView.prototype = {
     },
 
 
+    tmp: function() {
+        console.log("fire");
+        // TODO : show under track the TrackInfo div (to create) - With all useful metadata and 5 suggestions based on better songs from artist
+    },
+
+
     _eventListener: function() {
         var that = this;
+        var timeout;
+
+        this.listView.onmousemove = function(){
+            clearTimeout(timeout);
+            timeout = setTimeout(function(){that.tmp();}, 500);
+        };
 
         //this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; };
         this.listView.addEventListener("click", this.viewClicked.bind(this));
