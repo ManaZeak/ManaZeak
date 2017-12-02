@@ -33,11 +33,6 @@ $listView-padding: 0 10%;
     }
 }
 
-.columnHeaderOffset {
-    width: calc(100% - 20px) !important;
-}
-
-
 /* listview */
 #listView {
     width: 100%;
@@ -99,7 +94,6 @@ $listView-padding: 0 10%;
 .col-duration {
     width: 5%;
     text-align: right;
-    //min-width: 80px;
 }
 
 .col-title {
@@ -115,9 +109,7 @@ $listView-padding: 0 10%;
 }
 /*
 .col-performer { // Tod Add In Another ListView Type
-    //width: 14.5%;
     width: 16%;
-    min-width: 217px;
 }
 */
 .col-album {
@@ -131,12 +123,14 @@ $listView-padding: 0 10%;
 .col-bitRate {
     width: 5%;
     text-align: right;
-    //min-width: 75px;
 }
 
 .col-year {
     width: 3.5%;
-    //min-width: 47px;
-    float: right;
-    margin-right: - 19px;
 }
+
+// Must be aplied when a vertical scrollBar is active
+.columnHeaderOffset {
+    width: calc(100% - 20px) !important;
+}
+
