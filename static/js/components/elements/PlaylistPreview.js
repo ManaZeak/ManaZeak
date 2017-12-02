@@ -7,33 +7,19 @@ var PlaylistPreview = function(container) {
     // UI
     this.ui = {
         container: document.createElement("DIV"),
-        thumb:  document.createElement("IMG"),
-        cover:  document.createElement("IMG"),
         name:  document.createElement("LI"),
         total: document.createElement("LI"),
         duration:  document.createElement("LI"),
         repeatShuffle: document.createElement("LI"),
         repeat:   document.createElement("SPAN"),
         genre:  document.createElement("SPAN"),
-        shuffle: document.createElement("SPAN"),
-        thumbTooltip: document.createElement("SPAN")
+        shuffle: document.createElement("SPAN")
     };
 
     this.ui.container.id = "playlistPreview";
 
     this.tooltipWrapper = document.createElement("DIV");
     this.tooltipWrapper.className = "tooltipWrapper";
-
-    this.ui.cover.id = "playlistPreviewCover";
-    this.ui.cover.src = "../static/img/utils/defaultcover.svg";
-
-    this.ui.thumb.id = "playlistPreviewThumb";
-    this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
-    this.ui.thumbTooltip.className = "tooltipPlaylistCover";
-
-    this.ui.thumbTooltip.appendChild(this.ui.thumb);
-    this.tooltipWrapper.appendChild(this.ui.cover);
-    this.tooltipWrapper.appendChild(this.ui.thumbTooltip);
 
     this.listContainer = document.createElement("UL");
 
@@ -60,14 +46,10 @@ var PlaylistPreview = function(container) {
 
 PlaylistPreview.prototype = {
 
-    changePlaylist: function(playlist, cover) {
-        // TODO : handle cover smooth transition
-        this.ui.cover.src = "../static/img/utils/defaultcover.svg";
-        this.ui.thumb.src = "../static/img/utils/defaultcover.svg";
-
+    changePlaylist: function(playlist) {
         this.ui.name.innerHTML = playlist.name;
         this.ui.total.innerHTML = playlist.trackTotal + " tracks";
-        this.ui.duration.innerHTML = "Duration : " + secondsToTimecode(playlist.durationTotal);
+        this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);
 
         this.updatePlaylistPreview();
     },

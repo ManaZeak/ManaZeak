@@ -188,7 +188,7 @@ ListView.prototype = {
         }
 
         this.dblClick = true;
-        window.setTimeout(function() { that.dblClick = false; }, 400);
+        window.setTimeout(function() { that.dblClick = false; }, 500);
 
         var newState = !this.entriesSelected[id];
 
