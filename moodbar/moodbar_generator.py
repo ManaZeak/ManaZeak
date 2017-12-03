@@ -24,15 +24,14 @@ class ScanThread(threading.Thread):
         self.count = 0
 
     def run(self):
-        for file in self.files:
+        for f in self.files:
+            print(f)
             md5Path = "./static/"
-            pathUTF8 = file.decode("utf-8")
-            path = pathUTF8.encode("ascii", "ignore")
-            md5 = hashlib.md5(path).hexdigest()
+            md5 = hashlib.md5(f.encode("ascii", "ignore")).hexdigest()
             md5Path += md5
             self.count += 1
             if md5 not in self.moods:
-                command = 'moodbar \"' + file + '\" -o ' + md5Path + '.mood'
+                command = 'moodbar \"' + f + '\" -o ' + md5Path + '.mood'
                 os.system(command)
 
 
@@ -95,5 +94,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
