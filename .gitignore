@@ -122,3 +122,6 @@ static/audio2
 src/
 Output.txt
 *.mood
+
+node_modules/
+moodbar/moodbar-0.1.2
