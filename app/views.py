@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
 
 
@@ -321,15 +321,32 @@ def changeMetaData(request):
 
 
 # Return the link to a track with a track id
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        user = request.user
         data = {}
         if 'TRACK_ID' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
+                track.save()
+                # Creating user history
+                history = History()
+                history.track = track
+                history.save()
+                if UserHistory.objects.filter(user=user).count() == 0:
+                    userHistory = UserHistory(user=user)
+                    userHistory.save()
+                    userHistory.histories.add(history)
+                # Adding to existing history
+                else:
+                    userHistory = UserHistory.objects.get(user=user)
+                    userHistory.save()
+                    userHistory.histories.add(history)
+
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
