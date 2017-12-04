@@ -119,6 +119,10 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Library isn't ready"
         errorMessage = "Another scan is running in background, be a little more patient"
 
+    elif error == "noHistory":
+        errorTitle = "Your history is empty"
+        errorMessage = "Can't go backward if you never played any song!"
+
     elif error is None:
         errorTitle = "null"
         errorMessage = "null"
