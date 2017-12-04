@@ -5,6 +5,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var TrackInfo = function(container) {
 
+    this.volumeLockId = -1;
+
     this._createUI(container);
     this._eventListener();
 };
@@ -13,8 +15,14 @@ var TrackInfo = function(container) {
 TrackInfo.prototype = {
 
     setVisible: function(visible) {
-        this.ui.container.style.opacity  = visible ? 1 : 0;
+        //this.ui.container.style.opacity  = visible ? 1 : 0;
     },
+
+
+    isVisible: function() {
+        return !!(this.ui.container.style.opacity = 1);
+    },
+
 
     _createUI: function(container) {
 
@@ -28,7 +36,6 @@ TrackInfo.prototype = {
     },
 
     updateGeometry: function(rect, offset) {
-        console.log(offset);
         this.ui.container.style.top = (rect.top - 24) + "px"; //
         this.ui.container.style.left = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
     },
