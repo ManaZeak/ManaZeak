@@ -8,6 +8,7 @@ var ListView = function(data) {
     this.listView = null;
     this.entries = [];
     this.entriesSelected = {};
+    this.trackInfo = null;
     this.dblClick = false;
 
     this.contextMenu = null;
@@ -55,6 +56,8 @@ ListView.prototype = {
         this.addEntries(data);
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
+
+        this.trackInfo = new TrackInfo(this.container);
 
         this._contextMenuSetup();
     },
@@ -219,9 +222,16 @@ ListView.prototype = {
     },
 
 
-    tmp: function() {
-        console.log("fire");
-        // TODO : show under track the TrackInfo div (to create) - With all useful metadata and 5 suggestions based on better songs from artist
+    tmp: function(event) {
+        if (event.target.classList.contains("trackContainer")) {
+            console.log("deaz");
+            this.trackInfo.setVisible(true);
+        } else if (event.target.parentNode.classList.contains("trackContainer")){
+            console.log("Deazzzzz");
+            this.trackInfo.updateGeometry(event.target.parentNode.getBoundingClientRect(), this.header.duration.offsetWidth);
+            this.trackInfo.updateInfos(this.entries[event.target.parentNode.dataset.childID].track);
+            this.trackInfo.setVisible(true);
+        }
     },
 
 
@@ -229,12 +239,16 @@ ListView.prototype = {
         var that = this;
         var timeout;
 
-        this.listView.onmousemove = function(){
+        this.listView.onmousemove = function(event) {
             clearTimeout(timeout);
-            timeout = setTimeout(function(){that.tmp();}, 500);
+            timeout = setTimeout(function(){that.tmp(event);}, 500);
         };
 
-        //this.listView.oncontextmenu = this.listView.oncontextmenu = function() { return false; };
+        this.listView.onscroll = function() {
+            console.log("Inside");
+            that.trackInfo.setVisible(false);
+        };
+
         this.listView.addEventListener("click", this.viewClicked.bind(this));
 
         // Sorting listeners
