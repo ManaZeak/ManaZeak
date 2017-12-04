@@ -367,6 +367,17 @@ Playlist.prototype = {
                 break;
 
             default:
+                JSONParsedPostRequest(
+                    "ajax/getLastSongPlayed/",
+                    JSON.stringify({
+                        PLAYLIST_ID: that.id
+                    }),
+                    function(response) {
+                        // TODO : test if track comes from the current playlist ...
+                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                        window.app.changeTrack(that.currentTrack);
+                    }
+                );
                 break;
         }
     },
