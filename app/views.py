@@ -65,6 +65,8 @@ def dropAllDB(request):
         Playlist.objects.all().delete()
         Library.objects.all().delete()
         Genre.objects.all().delete()
+        UserHistory.objects.all().delete()
+        History.objects.all().delete()
         data = {
             'DROPPED': "OK",
         }
@@ -334,25 +336,27 @@ def getTrackPathByID(request):
         response = json.loads(request.body)
         user = request.user
         data = {}
-        if 'TRACK_ID' in response:
+        if 'TRACK_ID' in response and 'PREVIOUS' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
                 track.save()
-                # Creating user history
-                history = History()
-                history.track = track
-                history.save()
-                if UserHistory.objects.filter(user=user).count() == 0:
-                    userHistory = UserHistory(user=user)
-                    userHistory.save()
-                    userHistory.histories.add(history)
-                # Adding to existing history
-                else:
-                    userHistory = UserHistory.objects.get(user=user)
-                    userHistory.save()
-                    userHistory.histories.add(history)
+                print("PREVIOUS : ", response['PREVIOUS'])
+                if not response['PREVIOUS']:
+                    # Creating user history
+                    history = History()
+                    history.track = track
+                    history.save()
+                    if UserHistory.objects.filter(user=user).count() == 0:
+                        userHistory = UserHistory(user=user)
+                        userHistory.save()
+                        userHistory.histories.add(history)
+                    # Adding to existing history
+                    else:
+                        userHistory = UserHistory.objects.get(user=user)
+                        userHistory.save()
+                        userHistory.histories.add(history)
 
                 print("PATH : " + track.location)
                 data = {
@@ -553,8 +557,10 @@ def getLastSongPlayed(request):
             userHistory = UserHistory.objects.get(user=user)
             if userHistory.histories.count() != 0:
                 trackId = 0
-                for history in userHistory.histories.order_by('date'):
+                for history in userHistory.histories.order_by('-date'):
+                    print(history.track.title)
                     trackId = history.track.id
+                    history.delete()
                     break
                 data = {
                     'TRACK_ID': trackId,
