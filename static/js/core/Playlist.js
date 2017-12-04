@@ -302,13 +302,13 @@ Playlist.prototype = {
                 case 0: // Shuffle off
                     if (this.repeatMode !== 0) {
                         this.currentTrack = this.activeView.getNextEntry();
-                        window.app.changeTrack(this.currentTrack);
+                        window.app.changeTrack(this.currentTrack, "FALSE");
                     } else {
                         if (this.activeView.isLastEntry()) {
                             window.app.stopPlayback();
                         } else {
                             this.currentTrack = this.activeView.getNextEntry();
-                            window.app.changeTrack(this.currentTrack);
+                            window.app.changeTrack(this.currentTrack, "FALSE");
                         }
                     }
                     break;
@@ -321,7 +321,7 @@ Playlist.prototype = {
                         }),
                         function(response) {
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                            window.app.changeTrack(that.currentTrack);
+                            window.app.changeTrack(that.currentTrack, "FALSE");
                         }
                     );
                     break;
@@ -337,7 +337,7 @@ Playlist.prototype = {
                                 window.app.stopPlayback();
                             } else {
                                 that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                                window.app.changeTrack(that.currentTrack);
+                                window.app.changeTrack(that.currentTrack, "FALSE");
                             }
                         }
                     );
@@ -357,7 +357,7 @@ Playlist.prototype = {
 
             case 0: // Shuffle off
                 this.currentTrack = this.activeView.getPreviousEntry();
-                window.app.changeTrack(this.currentTrack);
+                window.app.changeTrack(this.currentTrack, "TRUE");
                 break;
 
             default:
@@ -374,7 +374,7 @@ Playlist.prototype = {
                              * } */
                             // TODO : test if track comes from the current playlist ...
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                            window.app.changeTrack(that.currentTrack);
+                            window.app.changeTrack(that.currentTrack, "FALSE");
                         } else {
                             new Notification(response.ERROR_H1, response.ERROR_MSG);
                         }

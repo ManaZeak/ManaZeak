@@ -82,7 +82,7 @@ App.prototype.toggleMute = function() {
 };
 
 
-App.prototype.changeTrack = function(track) {
+App.prototype.changeTrack = function(track, previous) {
     var that = this;
 
     this.footBar.progressBar.resetProgressBar();
@@ -90,7 +90,8 @@ App.prototype.changeTrack = function(track) {
     JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         JSON.stringify({
-            TRACK_ID: track.id.track
+            TRACK_ID: track.id.track,
+            PREVIOUS: previous
         }),
         function(response) {
             if (response.RESULT === "FAIL") {
@@ -140,7 +141,7 @@ App.prototype.pushQueue = function(track) {
 
 
 App.prototype.popQueue = function () {
-    this.changeTrack(this.queue.dequeue());
+    this.changeTrack(this.queue.dequeue(), "FALSE");
 };
 
 App.prototype.reverseQueue = function(reverse) {
