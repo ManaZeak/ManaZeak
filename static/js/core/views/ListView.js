@@ -298,14 +298,15 @@ ListView.prototype = {
             var clickedEntry = undefined;
 
             this.contextMenu = new NewContextMenu(this.listView, function(event) {
-                // TODO : bug when click on col-*. This feature only works when clicking on trackContainer of the track, not on its cols
-                var target = event.target;
 
-                while (target.parentNode !== null && target.dataset.childID === null) {
+                var target = event.target;
+                console.log(target);
+
+                while (target.parentNode != null && target.dataset.childID == null) {
                     target = target.parentNode;
                 }
 
-                if (target.parentNode !== null) {
+                if (target.parentNode != null) {
                     clickedEntry = target.dataset.childID;
                 } else {
                     clickedEntry = undefined;
