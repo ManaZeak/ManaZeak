@@ -339,10 +339,12 @@ ListView.prototype = {
                         TRACK_ID: that.entries[clickedEntry].track.id.track
                     }),
                     function(response) {
-                        var dl = document.createElement('a');
-                        dl.setAttribute('href', 'data:text/csv;charset=utf-8');
-                        dl.setAttribute('download', window.location.href  + response.PATH);
+                        var dl = document.createElement("a");
+                        dl.href = response.PATH;
+                        dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                        document.body.appendChild(dl);
                         dl.click();
+                        document.body.removeChild(dl);
                     }
                 );
             }
