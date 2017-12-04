@@ -186,7 +186,7 @@ ListView.prototype = {
         }
 
         if (this.dblClick) {
-            window.app.changeTrack(this.entries[id].track, "FALSE");
+            window.app.changeTrack(this.entries[id].track, false);
             return;
         }
 
@@ -222,7 +222,7 @@ ListView.prototype = {
     },
 
 
-    tmp: function(event) {
+    showTrackInfo: function(event) {
         if (event.target.classList.contains("trackContainer")) {
             this.trackInfo.updateGeometry(event.target.getBoundingClientRect(), this.header.duration.offsetWidth);
             this.trackInfo.updateInfos(this.entries[event.target.dataset.childID].track);
@@ -237,24 +237,11 @@ ListView.prototype = {
 
     _eventListener: function() {
         var that = this;
-        var open, close;
+        var open;
 
         window.onmousemove = function(event) {
             clearTimeout(open);
-
-            /*            if (event.target.id === "trackInfo") {
-                            console.log("Not tcha");
-                            clearTimeout(close);
-                        */
-
-            open = setTimeout(function() { that.tmp(event); }, 500);
-            /*
-                        close = setTimeout(function() {
-                            if (that.trackInfo.isVisible() && event.target.id !== "trackInfo") {
-                                console.log("Tcha");
-                                that.trackInfo.setVisible(false);
-
-                        }, 200);*/
+            open = setTimeout(function() { that.showTrackInfo(event); }, 500); // Delay apparition of half a second
         };
 
         this.listView.onscroll = function() {
@@ -306,50 +293,50 @@ ListView.prototype = {
         });
     },
 
-    _contextMenuSetup: function () {
-        var that = this;
-        var clickedEntry = undefined;
+        _contextMenuSetup: function () {
+            var that = this;
+            var clickedEntry = undefined;
 
-        this.contextMenu = new NewContextMenu(this.listView, function(event) {
-            // TODO : bug when click on col-*. This feature only works when clicking on trackContainer of the track, not on its cols
-            var target = event.target;
+            this.contextMenu = new NewContextMenu(this.listView, function(event) {
+                // TODO : bug when click on col-*. This feature only works when clicking on trackContainer of the track, not on its cols
+                var target = event.target;
 
-            while (target.parentNode !== null && target.dataset.childID === null) {
-                target = target.parentNode;
-            }
+                while (target.parentNode !== null && target.dataset.childID === null) {
+                    target = target.parentNode;
+                }
 
-            if (target.parentNode !== null) {
-                clickedEntry = target.dataset.childID;
-            } else {
-                clickedEntry = undefined;
-            }
-        });
+                if (target.parentNode !== null) {
+                    clickedEntry = target.dataset.childID;
+                } else {
+                    clickedEntry = undefined;
+                }
+            });
 
-        this.contextMenu.addEntry(null, "Add to Queue", function() {
-            if (clickedEntry !== undefined) {
-                window.app.pushQueue(that.entries[clickedEntry].track);
-            }
-        });
+            this.contextMenu.addEntry(null, "Add to Queue", function() {
+                if (clickedEntry !== undefined) {
+                    window.app.pushQueue(that.entries[clickedEntry].track);
+                }
+            });
 
-        this.contextMenu.addEntry(null, "Download track", function() {
-            if (clickedEntry !== undefined) {
-                JSONParsedPostRequest(
-                    "ajax/download/",
-                    JSON.stringify({
-                        TRACK_ID: that.entries[clickedEntry].track.id.track
-                    }),
-                    function(response) {
-                        var dl = document.createElement("a");
-                        dl.href = response.PATH;
-                        dl.download = response.PATH.replace(/^.*[\\\/]/, '');
-                        document.body.appendChild(dl);
-                        dl.click();
-                        document.body.removeChild(dl);
-                    }
-                );
-            }
-        });
-    }
-};
+            this.contextMenu.addEntry(null, "Download track", function() {
+                if (clickedEntry !== undefined) {
+                    JSONParsedPostRequest(
+                        "ajax/download/",
+                        JSON.stringify({
+                            TRACK_ID: that.entries[clickedEntry].track.id.track
+                        }),
+                        function(response) {
+                            var dl = document.createElement("a");
+                            dl.href = response.PATH;
+                            dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                            document.body.appendChild(dl);
+                            dl.click();
+                            document.body.removeChild(dl);
+                        }
+                    );
+                }
+            });
+        }
+    };
 
 extendClass(View, ListView);
