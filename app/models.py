@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class Artist(models.Model):
@@ -83,3 +84,17 @@ class PlaylistSettings(models.Model):
     randomMode = models.IntegerField(default=0)
     repeatEnabled = models.IntegerField(default=0)
     viewMode = models.IntegerField()
+
+
+class History(models.Model):
+    track = models.ForeignKey(Track)
+    date = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.date = timezone.now()
+        return super(History, self).save(*args, **kwargs)
+
+class UserHistory(models.Model):
+    user = models.ForeignKey(User)
+    histories = models.ManyToManyField(History)
