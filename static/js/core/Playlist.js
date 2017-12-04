@@ -367,11 +367,9 @@ Playlist.prototype = {
                 break;
 
             default:
-                JSONParsedPostRequest(
+                JSONParsedGetRequest(
                     "ajax/getLastSongPlayed/",
-                    JSON.stringify({
-                        PLAYLIST_ID: that.id
-                    }),
+                    false,
                     function(response) {
                         // TODO : test if track comes from the current playlist ...
                         that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
