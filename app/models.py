@@ -53,6 +53,7 @@ class Track(models.Model):
     moodbar = models.URLField(max_length=1000, null=True)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
+    # downloadCounter = models.IntegerField(default=0)
 
 
 class Playlist(models.Model):
@@ -88,7 +89,7 @@ class PlaylistSettings(models.Model):
 
 class History(models.Model):
     track = models.ForeignKey(Track)
-    date = models.DateTimeField()
+    date = models.TimeField()
 
     def save(self, *args, **kwargs):
         if not self.id:

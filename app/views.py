@@ -3,7 +3,6 @@ import os
 from builtins import print
 from random import randint
 
-import time
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -33,6 +32,7 @@ class mainView(ListView):
 
 
 # Perform the initial scan for a library
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
@@ -56,6 +56,7 @@ def initialScan(request):
 
 
 # Drop all database, used for debug
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def dropAllDB(request):
     if request.user.is_authenticated():
         Track.objects.all().delete()
@@ -123,12 +124,14 @@ class UserFormLogin(View):
 
 
 # Log out the user
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def logoutView(request):
     logout(request)
     return render(request, 'user/login.html')
 
 
 # Return all the id of the user playlists
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
     print("getting usr playlist")
     playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
@@ -165,6 +168,7 @@ def getUserPlaylists(request):
 
 
 # Send basic data about the playlist
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getPlaylistInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -197,6 +201,7 @@ def getPlaylistInfo(request):
 
 
 # Load a library by returning simplified json
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def loadSimplifiedLibrary(request):
     if request.method == 'POST':
         print("Getting json export of the library")
@@ -218,6 +223,7 @@ def loadSimplifiedLibrary(request):
 
 
 # Get all track information from a playlist and format it as json
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def loadTracksFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -300,6 +306,7 @@ def newPlaylist(request):
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def changeMetaData(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -360,8 +367,19 @@ def getTrackPathByID(request):
             data = errorCheckMessage(False, "badFormat")
         return JsonResponse(data)
 
+'''
+def getDownloadLocation(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+'''
+
 
 # Function for check if a library has been scanned.
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -371,6 +389,7 @@ def checkLibraryScanStatus(request):
                 return JsonResponse(errorCheckMessage(playlist.isScanned, None))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -400,6 +419,7 @@ def shuffleNextTrack(request):
         return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getMoodbarByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -421,6 +441,7 @@ def getMoodbarByID(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -450,6 +471,7 @@ def randomNextTrack(request):
 
 
 # Drop a library and index all the tracks
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def rescanLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -484,6 +506,7 @@ def rescanLibrary(request):
         return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def toggleRandom(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -506,3 +529,27 @@ def toggleRandom(request):
                     settings.randomMode = randomMode
                     settings.save()
                     return JsonResponse(errorCheckMessage(True, None))
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getLastSongPlayed(request):
+    if request.method == 'GET':
+        user = request.user
+        if UserHistory.objects.filter(user=user).count() != 0:
+            userHistory = UserHistory.objects.get(user=user)
+            if userHistory.histories.count() != 0:
+                trackId = 0
+                for history in userHistory.histories.order_by('date'):
+                    trackId = history.track.id
+                    break
+                data = {
+                    'TRACK_ID': trackId,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "noHistory")
+        else:
+            data = errorCheckMessage(False, "noHistory")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
