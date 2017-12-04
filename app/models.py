@@ -53,7 +53,7 @@ class Track(models.Model):
     moodbar = models.URLField(max_length=1000, null=True)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
-    # downloadCounter = models.IntegerField(default=0)
+    downloadCounter = models.IntegerField(default=0)
 
 
 class Playlist(models.Model):
