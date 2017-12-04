@@ -2,8 +2,67 @@
     width: 0;
     height: 0;
     position: absolute;
-    background-color: khaki;
+    background-color: $secondary-color;
     opacity: 0;
 
     transition: 0.1s ease;
+
+    img {
+        width: 150px;
+        height: 150px;
+        margin-top: 25px;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    #numbers {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200px;
+        text-align: center;
+        font-size: 0.8em;
+        line-height: 1.8em;
+    }
+
+    #trackWrapper {
+        display: inline-block;
+        font-size: 0.8em;
+        top: 0;
+        width: auto;
+        max-width: 340px;
+        margin-top: 26px;
+        margin-right: 25px;
+        padding-right: 25px;
+        border-right: solid 1px $dark-secondary-color;
+        float: right;
+
+        p {
+            margin: 0;
+            padding: 1px 0;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #title {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        #album {
+            margin-bottom: 5px;
+        }
+    }
+
+    #suggestionWrapper {
+        // TODO : add entries as best artist song
+        //width: 225px;
+        width: 50px;
+        height: 100%;
+        float: right;
+    }
 }

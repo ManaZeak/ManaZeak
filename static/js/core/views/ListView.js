@@ -241,7 +241,7 @@ ListView.prototype = {
 
         window.onmousemove = function(event) {
             clearTimeout(open);
-            open = setTimeout(function() { that.showTrackInfo(event); }, 1000); // Delay apparition of a second
+            open = setTimeout(function() { that.showTrackInfo(event); }, 500); // Delay apparition of a second
         };
 
         this.listView.onscroll = function() {
