@@ -224,10 +224,10 @@ ListView.prototype = {
 
     tmp: function(event) {
         if (event.target.classList.contains("trackContainer")) {
-            console.log("deaz");
+            this.trackInfo.updateGeometry(event.target.getBoundingClientRect(), this.header.duration.offsetWidth);
+            this.trackInfo.updateInfos(this.entries[event.target.dataset.childID].track);
             this.trackInfo.setVisible(true);
         } else if (event.target.parentNode.classList.contains("trackContainer")){
-            console.log("Deazzzzz");
             this.trackInfo.updateGeometry(event.target.parentNode.getBoundingClientRect(), this.header.duration.offsetWidth);
             this.trackInfo.updateInfos(this.entries[event.target.parentNode.dataset.childID].track);
             this.trackInfo.setVisible(true);
@@ -237,15 +237,27 @@ ListView.prototype = {
 
     _eventListener: function() {
         var that = this;
-        var timeout;
+        var open, close;
 
-        this.listView.onmousemove = function(event) {
-            clearTimeout(timeout);
-            timeout = setTimeout(function(){that.tmp(event);}, 500);
+        window.onmousemove = function(event) {
+            clearTimeout(open);
+
+/*            if (event.target.id === "trackInfo") {
+                console.log("Not tcha");
+                clearTimeout(close);
+            */
+
+            open = setTimeout(function() { that.tmp(event); }, 500);
+/*
+            close = setTimeout(function() {
+                if (that.trackInfo.isVisible() && event.target.id !== "trackInfo") {
+                    console.log("Tcha");
+                    that.trackInfo.setVisible(false);
+
+            }, 200);*/
         };
 
         this.listView.onscroll = function() {
-            console.log("Inside");
             that.trackInfo.setVisible(false);
         };
 

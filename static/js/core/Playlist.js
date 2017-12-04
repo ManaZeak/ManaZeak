@@ -358,14 +358,6 @@ Playlist.prototype = {
                 window.app.changeTrack(this.currentTrack);
                 break;
 
-            case 1: // Random
-                //TODO: Get from server history
-                break;
-
-            case 2: // Shuffle on
-                //TODO: Get from server history
-                break;
-
             default:
                 JSONParsedGetRequest(
                     "ajax/getLastSongPlayed/",
