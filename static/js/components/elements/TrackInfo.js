@@ -15,7 +15,7 @@ var TrackInfo = function(container) {
 TrackInfo.prototype = {
 
     setVisible: function(visible) {
-        //this.ui.container.style.opacity  = visible ? 1 : 0;
+        this.ui.container.style.opacity  = visible ? 1 : 0;
     },
 
 
