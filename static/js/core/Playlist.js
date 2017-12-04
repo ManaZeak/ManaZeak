@@ -351,6 +351,8 @@ Playlist.prototype = {
 
 
     playPreviousTrack: function() {
+        var that = this;
+
         switch (this.shuffleMode) {
 
             case 0: // Shuffle off
