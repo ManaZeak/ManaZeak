@@ -82,13 +82,11 @@ TrackInfo.prototype = {
         this.ui.album.innerHTML = track.year + " - " + track.album;
         this.ui.numbers.innerHTML = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
         this.ui.trackDetails.innerHTML = secondsToTimecode(track.duration) + " - " + track.fileType + " - " + Math.round(track.bitRate / 1000) + "kbps - " + track.sampleRate + "Hz";
-
-        console.log(track);
     },
 
     setVisible: function(visible) {
         this.ui.container.style.opacity = visible ? 1 : 0;
-        //this.closeTrackInfo();
+        this.closeTrackInfo();
     },
 
 
@@ -118,7 +116,7 @@ TrackInfo.prototype = {
     },
 
     _eventListener: function() {
-        //this.ui.container.addEventListener("mouseenter", this.lockTrackInfo.bind(this));
-        //this.ui.container.addEventListener("mouseleave", this.resetTrackGeometry.bind(this));
+        this.ui.container.addEventListener("mouseenter", this.lockTrackInfo.bind(this));
+        this.ui.container.addEventListener("mouseleave", this.resetTrackGeometry.bind(this));
     }
 };
