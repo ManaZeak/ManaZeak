@@ -307,31 +307,44 @@ ListView.prototype = {
     },
 
     _contextMenuSetup: function () {
-        var self = this;
+        var that = this;
         var clickedEntry = undefined;
 
         this.contextMenu = new NewContextMenu(this.listView, function(event) {
+            // TODO : bug when click on col-*. This feature only works when clicking on trackContainer of the track, not on its cols
             var target = event.target;
-            while(target.parentNode !== null && target.dataset.childID === null)
-                target = target.parentNode;
 
-            if(target.parentNode !== null)
+            while (target.parentNode !== null && target.dataset.childID === null) {
+                target = target.parentNode;
+            }
+
+            if (target.parentNode !== null) {
                 clickedEntry = target.dataset.childID;
-            else
+            } else {
                 clickedEntry = undefined;
+            }
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
-            if(clickedEntry !== undefined)
-                window.app.pushQueue(self.entries[clickedEntry].track);
+            if (clickedEntry !== undefined) {
+                window.app.pushQueue(that.entries[clickedEntry].track);
+            }
         });
 
         this.contextMenu.addEntry(null, "Download track", function() {
-            if(clickedEntry !== undefined) {
-                var dl = document.createElement('a');
-                dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
-                dl.setAttribute('download', 'filename.txt');
-                dl.click();
+            if (clickedEntry !== undefined) {
+                JSONParsedPostRequest(
+                    "ajax/download/",
+                    JSON.stringify({
+                        TRACK_ID: that.entries[clickedEntry].track.id.track
+                    }),
+                    function(response) {
+                        var dl = document.createElement('a');
+                        dl.setAttribute('href', 'data:text/csv;charset=utf-8');
+                        dl.setAttribute('download', window.location.href  + response.PATH);
+                        dl.click();
+                    }
+                );
             }
         });
     }
