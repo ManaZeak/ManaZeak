@@ -242,19 +242,19 @@ ListView.prototype = {
         window.onmousemove = function(event) {
             clearTimeout(open);
 
-/*            if (event.target.id === "trackInfo") {
-                console.log("Not tcha");
-                clearTimeout(close);
-            */
+            /*            if (event.target.id === "trackInfo") {
+                            console.log("Not tcha");
+                            clearTimeout(close);
+                        */
 
             open = setTimeout(function() { that.tmp(event); }, 500);
-/*
-            close = setTimeout(function() {
-                if (that.trackInfo.isVisible() && event.target.id !== "trackInfo") {
-                    console.log("Tcha");
-                    that.trackInfo.setVisible(false);
+            /*
+                        close = setTimeout(function() {
+                            if (that.trackInfo.isVisible() && event.target.id !== "trackInfo") {
+                                console.log("Tcha");
+                                that.trackInfo.setVisible(false);
 
-            }, 200);*/
+                        }, 200);*/
         };
 
         this.listView.onscroll = function() {
@@ -312,18 +312,27 @@ ListView.prototype = {
 
         this.contextMenu = new NewContextMenu(this.listView, function(event) {
             var target = event.target;
-            while(target.parentNode != null && target.dataset.childID == null)
+            while(target.parentNode !== null && target.dataset.childID === null)
                 target = target.parentNode;
 
-            if(target.parentNode != null)
+            if(target.parentNode !== null)
                 clickedEntry = target.dataset.childID;
             else
                 clickedEntry = undefined;
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
-            if(clickedEntry != undefined)
+            if(clickedEntry !== undefined)
                 window.app.pushQueue(self.entries[clickedEntry].track);
+        });
+
+        this.contextMenu.addEntry(null, "Download track", function() {
+            if(clickedEntry !== undefined) {
+                var dl = document.createElement('a');
+                dl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
+                dl.setAttribute('download', 'filename.txt');
+                dl.click();
+            }
         });
     }
 };
