@@ -357,7 +357,7 @@ Playlist.prototype = {
 
             case 0: // Shuffle off
                 this.currentTrack = this.activeView.getPreviousEntry();
-                window.app.changeTrack(this.currentTrack, true);
+                window.app.changeTrack(this.currentTrack, false);
                 break;
 
             default:
@@ -374,7 +374,7 @@ Playlist.prototype = {
                              * } */
                             // TODO : test if track comes from the current playlist ...
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                            window.app.changeTrack(that.currentTrack, false);
+                            window.app.changeTrack(that.currentTrack, true);
                         } else {
                             new Notification(response.ERROR_H1, response.ERROR_MSG);
                         }
