@@ -15,8 +15,11 @@ TrackPreview.prototype = {
     changeTrack: function(track, cover) {
         if (cover == null || cover == '') { cover = "../static/img/utils/defaultcover.svg"; }
         else { cover = '../static/img/covers/' + cover; }
+
         // TODO : handle cover smooth transition
+        //this.ui.cover.src = track.cover;
         this.ui.cover.src = cover;
+        //this.ui.thumb.src = track.cover;
         this.ui.thumb.src = cover;
         this.ui.title.innerHTML = track.title;
         this.ui.artist.innerHTML = track.artist;

@@ -43,6 +43,7 @@ var Track = function(track) {
     this.album        = track.ALBUM.TITLE       !== "null" ? track.ALBUM.TITLE : "";
     this.genre        = track.GENRE             !== "null" ? track.GENRE : "";
     this.fileType     = track.FILE_TYPE         !== "null" ? track.FILE_TYPE : "";
+    this.cover        = track.COVER             !== "null" ? track.COVER : "../static/img/utils/defaultcover.svg";
 };
 
 
