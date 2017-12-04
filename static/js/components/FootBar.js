@@ -34,14 +34,7 @@ FootBar.prototype = {
     _eventListener: function() {
         var that = this;
 
-        window.app.addListener('togglePlay', function() {
-            if(window.app.player.getIsPlaying()) {
-                that.progressBar.refreshInterval(window.app.player.getPlayer());
-            }
-        });
-
         window.app.addListener('stopPlayback', function() {
-            that.progressBar.stopRefreshInterval();
             that.progressBar.resetProgressBar();
         });
 

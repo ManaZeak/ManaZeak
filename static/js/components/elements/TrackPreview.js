@@ -28,6 +28,8 @@ TrackPreview.prototype = {
         }
 
         this.ui.genre.innerHTML = track.genre;
+
+        this.setVisible(true);
     },
 
     setVisible: function(visible) {
