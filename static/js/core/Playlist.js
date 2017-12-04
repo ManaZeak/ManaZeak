@@ -371,9 +371,19 @@ Playlist.prototype = {
                     "ajax/getLastSongPlayed/",
                     false,
                     function(response) {
-                        // TODO : test if track comes from the current playlist ...
-                        that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                        window.app.changeTrack(that.currentTrack);
+                        if (response.DONE) {
+                            /* response = {
+                             *     DONE:        bool
+                             *     TRACK_ID:    int
+                             *     ERROR_H1:    string
+                             *     ERROR_MSG:   string
+                             * } */
+                            // TODO : test if track comes from the current playlist ...
+                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                            window.app.changeTrack(that.currentTrack);
+                        } else {
+                            new Notification(response.ERROR_H1, response.ERROR_MSG);
+                        }
                     }
                 );
                 break;
