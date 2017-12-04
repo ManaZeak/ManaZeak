@@ -183,7 +183,7 @@ def getPlaylistInfo(request):
                     artists.add(track.artist)
                     genres.add(track.genre)
                     bitRate += track.bitRate
-                bitRate = bitRate/len(playlist.track)
+                bitRate = bitRate / len(playlist.track)
                 data = {
                     'TRACK_TOTAL': playlist.track.count(),
                     'ARTIST_TOTAL': len(artists),
@@ -357,7 +357,7 @@ def getTrackPathByID(request):
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
-                    'COVER': track.coverLocation
+                    'COVER': track.coverLocation,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
@@ -367,7 +367,9 @@ def getTrackPathByID(request):
             data = errorCheckMessage(False, "badFormat")
         return JsonResponse(data)
 
-'''
+
+# Download the given song
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getDownloadLocation(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -375,7 +377,19 @@ def getDownloadLocation(request):
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
-'''
+                track.downloadCounter += 1
+                track.save()
+                data = {
+                    'PATH': track.location,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 # Function for check if a library has been scanned.
@@ -408,7 +422,7 @@ def shuffleNextTrack(request):
                 data = {
                     'TRACK_ID': track.id,
                     'PATH': track.location,
-                    'COVER': track.coverLocation
+                    'COVER': track.coverLocation,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:

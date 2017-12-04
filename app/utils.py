@@ -631,6 +631,6 @@ class LocalTrack:
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
-            = self.duration = self.discNumber = self.size = self.playCounter = 0
+            = self.duration = self.discNumber = self.size = self.playCounter = self.downloadCounter = 0
         self.artist = []
         self.scanned = False
