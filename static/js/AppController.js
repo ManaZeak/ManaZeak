@@ -85,6 +85,8 @@ App.prototype.toggleMute = function() {
 App.prototype.changeTrack = function(track) {
     var that = this;
 
+    this.footBar.progressBar.resetProgressBar();
+
     JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         JSON.stringify({
@@ -94,7 +96,6 @@ App.prototype.changeTrack = function(track) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
             } else {
-                that.footBar.trackPreview.setVisible(true);
                 that.footBar.trackPreview.changeTrack(track, response.COVER);
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeTrack(".." + response.PATH, track.id.track);
@@ -129,6 +130,7 @@ App.prototype.refreshUI = function() {
     //this.playlists[this.activePlaylist - 1].refreshViews();
     this.topBar.refreshTopBar();
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+    this.footBar.progressBar.refreshInterval(this.player.getPlayer());
 };
 
 

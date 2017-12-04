@@ -101,6 +101,7 @@ Player.prototype = {
 
 
     _eventListener: function() {
+        this.player.addEventListener("loadedmetadata", window.app.refreshUI.bind(window.app));
         this.player.addEventListener("ended", window.app.next.bind(window.app));
     },
 
