@@ -186,7 +186,7 @@ ListView.prototype = {
         }
 
         if (this.dblClick) {
-            window.app.changeTrack(this.entries[id].track);
+            window.app.changeTrack(this.entries[id].track, "FALSE");
             return;
         }
 
