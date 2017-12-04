@@ -4,8 +4,9 @@
     position: absolute;
     background-color: $secondary-color;
     opacity: 0;
+    border: solid 1px $dark-secondary-color;
 
-    transition: 0.1s ease;
+//    transition: 0.05s ease;
 
     img {
         width: 150px;
