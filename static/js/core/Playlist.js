@@ -49,7 +49,6 @@ var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     this.currentTrack = 0;
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
-
     this.trackTotal    = 0;
     this.artistTotal   = 0;
     this.albumTotal    = 0;
