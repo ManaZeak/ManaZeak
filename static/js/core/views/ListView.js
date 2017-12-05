@@ -58,6 +58,8 @@ ListView.prototype = {
         this.container.appendChild(this.listView);
 
         this.trackInfo = new TrackInfo(this.container);
+        this.hoveredTrack = null;
+        this.hoveredTimeout = null;
 
         this._contextMenuSetup();
     },
@@ -223,14 +225,24 @@ ListView.prototype = {
 
 
     showTrackInfo: function(event) {
-        if (event.target.classList.contains("trackContainer")) {
-            this.trackInfo.updateGeometry(event.target.getBoundingClientRect(), this.header.duration.offsetWidth);
-            this.trackInfo.updateInfos(this.entries[event.target.dataset.childID].track);
-            this.trackInfo.setVisible(true);
-        } else if (event.target.parentNode.classList.contains("trackContainer")){
-            this.trackInfo.updateGeometry(event.target.parentNode.getBoundingClientRect(), this.header.duration.offsetWidth);
-            this.trackInfo.updateInfos(this.entries[event.target.parentNode.dataset.childID].track);
-            this.trackInfo.setVisible(true);
+
+        if(event.target == this.listView)
+            return this.trackInfo.setVisible(false);
+
+        var target = event.target;
+        while(target.dataset.childID == undefined)
+            target = target.parentNode;
+
+        if(target != this.hoveredTrack) {
+            this.trackInfo.setVisible(false);
+            clearTimeout(this.hoveredTimeout);
+            this.hoveredTrack = target;
+            var self = this;
+            this.hoveredTimeout = window.setTimeout(function() {
+                self.trackInfo.updateGeometry(self.hoveredTrack.getBoundingClientRect(), self.header.duration.offsetWidth);
+                self.trackInfo.updateInfos(self.entries[self.hoveredTrack.dataset.childID].track);
+                self.trackInfo.setVisible(true);
+            }, 500);
         }
     },
 
@@ -239,14 +251,13 @@ ListView.prototype = {
         var that = this;
         var open;
 
-        window.onmousemove = function(event) {
-            clearTimeout(open);
-            open = setTimeout(function() { that.showTrackInfo(event); }, 500); // Delay apparition of a second
-        };
+        this.listView.addEventListener('mouseover', this.showTrackInfo.bind(this));
 
+        /*
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
         };
+        */
 
         this.listView.addEventListener("click", this.viewClicked.bind(this));
 
@@ -297,10 +308,9 @@ ListView.prototype = {
             var that = this;
             var clickedEntry = undefined;
 
-            this.contextMenu = new NewContextMenu(this.listView, function(event) {
+            this.contextMenu = new ContextMenu(this.listView, function(event) {
 
                 var target = event.target;
-                console.log(target);
 
                 while (target.parentNode != null && target.dataset.childID == null) {
                     target = target.parentNode;

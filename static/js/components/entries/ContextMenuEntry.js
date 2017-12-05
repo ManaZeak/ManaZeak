@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
- *  NewContextMenu class - handle the context menu on right click                      *
+ *  ContextMenu class - handle the context menu on right click                         *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var ContextMenuEntry = function (entryID, displayString, callback/*, MORE ARGUMENTS HERE*/)
