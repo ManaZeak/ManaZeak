@@ -137,7 +137,7 @@ TrackInfo.prototype = {
         if (visible == true) {
             this.ui.container.style.opacity = 1;
             this.ui.container.style.zIndex = 0;
-            this.startInactivityTimeout();
+            this.startInactivityTimeout(3000);  // If mouse doesn't move for 3 seconds outside the TrackInfo container, it's closed.
         } else {
             var that = this;
 
@@ -174,12 +174,12 @@ TrackInfo.prototype = {
     },
 
 
-    startInactivityTimeout: function() {
+    startInactivityTimeout: function(time) {
         var that = this;
 
         this.inactivityTimeoutId = setTimeout(function() {
             that.setVisible(false);
-        }, 3000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
+        }, time);
     },
 
 
