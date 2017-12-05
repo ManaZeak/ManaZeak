@@ -215,7 +215,7 @@ def loadSimplifiedLibrary(request):
                     tracks = exportPlaylistToSimpleJson(playlist)
                 else:
                     tracks = playlist.jsonExport
-                return HttpResponse(tracks)
+                return HttpResponse(tracks, content_type="application/json")
             else:
                 return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
