@@ -179,7 +179,7 @@ TrackInfo.prototype = {
 
         this.inactivityTimeoutId = setTimeout(function() {
             that.setVisible(false);
-        }, 3000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
+        }, 300000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
     },
 
 
