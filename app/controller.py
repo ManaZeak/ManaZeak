@@ -76,12 +76,10 @@ def shuffleSoundSelector(shuffle):
             possibleTracks.add(possibleTrack)
     # Select a random track
     length = len(possibleTracks)
-    print(length)
     if length == 0:
         for track in tracks:
             possibleTracks.add(track)
         length = len(possibleTracks)
-        print("toast : ", length)
 
     selected = randint(0, length)
     count = 0

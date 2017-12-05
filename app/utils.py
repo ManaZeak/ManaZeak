@@ -184,7 +184,9 @@ class SimpleJsonCreator(threading.Thread):
             internData += checkIfNotNoneNumber(track.duration)
             internData += ",\"BITRATE\":"
             internData += checkIfNotNoneNumber(track.bitRate)
-            internData += ",\"ARTISTS\":["
+            internData += ",\"COVER\":\""
+            internData += checkIfNotNone(track.coverLocation)
+            internData += "\",\"ARTISTS\":["
             for artist in track.artist.all():
                 internData += "{\"ID\":"
                 internData += str(artist.id)
