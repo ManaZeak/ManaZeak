@@ -6,7 +6,7 @@
     opacity: 0;
     border: solid 1px $dark-secondary-color;
 
-//    transition: 0.05s ease;
+    //    transition: 0.05s ease;
 
     img {
         width: 150px;
@@ -37,7 +37,7 @@
         margin-top: 26px;
         margin-right: 25px;
         padding-right: 25px;
-        border-right: solid 1px $dark-secondary-color;
+        border-right: solid 1px $dark-primary-color;
         float: right;
 
         p {
@@ -60,10 +60,54 @@
     }
 
     #suggestionWrapper {
-        // TODO : add entries as best artist song
-        //width: 225px;
-        width: 50px;
-        height: 100%;
+        width: 300px;
+        height: auto;
         float: right;
+        font-size: 0.7em;
+        margin-top: 20px;
+        margin-right: 45px;
+
+        #title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                padding: 5px 10px;
+
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                cursor: pointer;
+            }
+
+            li:active,
+            li:hover,
+            li:focus {
+                background-color: $dark-secondary-color;
+            }
+        }
+
+        img {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            top: 0;
+            right: 0;
+            margin-left: 0;
+            margin-top: 10px;
+            margin-right: 10px;
+
+            cursor: pointer;
+        }
     }
 }
