@@ -78,6 +78,8 @@ TrackInfo.prototype = {
                 if (response.RESULT === "FAIL") {
                     new Notification("Bad format.", response.ERROR);
                 } else {
+                    console.log(response);
+                    track.updateMetadata(response);
                     // TODO : update in front with all new infos
                     // TODO : display info on container
                     // TODO : request 5 top track, or genre like, or random if nothing is related
