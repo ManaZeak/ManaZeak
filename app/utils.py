@@ -249,6 +249,8 @@ def exportTrackInfo(track):
     finalData += checkIfNotNoneNumber(track.size)
     finalData += ",\"LAST_MODIFIED\":\""
     finalData += checkIfNotNoneNumber(track.lastModified)
+    finalData += "\",\"COVER\":\""
+    finalData += checkIfNotNone(track.coverLocation)
     finalData += "\",\"ARTISTS\":["
     for artist in track.artist.all():
         finalData += "{\"ID\":"
