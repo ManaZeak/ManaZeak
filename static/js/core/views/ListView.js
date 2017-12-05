@@ -237,11 +237,11 @@ ListView.prototype = {
             this.trackInfo.setVisible(false);
             clearTimeout(this.hoveredTimeout);
             this.hoveredTrack = target;
-            var self = this;
+            var that = this;
             this.hoveredTimeout = window.setTimeout(function() {
-                self.trackInfo.updateGeometry(self.hoveredTrack.getBoundingClientRect(), self.header.duration.offsetWidth);
-                self.trackInfo.updateInfos(self.entries[self.hoveredTrack.dataset.childID].track);
-                self.trackInfo.setVisible(true);
+                that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
+                // Must wait that info are updated before showing TrackInfo
+                that.trackInfo.updateInfos(that.entries[that.hoveredTrack.dataset.childID].track, that.trackInfo.setVisible(true));
             }, 500);
         }
     },
