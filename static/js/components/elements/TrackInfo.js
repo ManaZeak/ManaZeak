@@ -71,8 +71,7 @@ TrackInfo.prototype = {
         // TODO : update in front with all new infos
         // TODO : display info on container
         // TODO : request 5 top track, or genre like, or random if nothing is related
-        this.ui.cover.src = "../static/img/utils/defaultcover.svg";
-        //this.ui.cover.src = track.cover;
+        this.ui.cover.src = track.cover;
         this.ui.title.innerHTML = track.title;
         this.ui.artist.innerHTML = track.artist;
         this.ui.albumArtist.innerHTML = "Album Artists : " + track.albumArtist;

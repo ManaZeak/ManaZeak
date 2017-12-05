@@ -97,7 +97,7 @@ App.prototype.changeTrack = function(track, previous) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
             } else {
-                that.footBar.trackPreview.changeTrack(track, response.COVER);
+                that.footBar.trackPreview.changeTrack(track);
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeTrack(".." + response.PATH, track.id.track);
                 that.changePageTitle(response.PATH);
