@@ -36,7 +36,7 @@ services:
             - "80:8000"
         volumes:
             - /PATH/TO/MUSIC:/library
-            - ./nginx/config:/etc/nginx/conf.d
+            - ./docker/nginx/config:/etc/nginx/conf.d
             - ./static:/static
         depends_on:
             - web
