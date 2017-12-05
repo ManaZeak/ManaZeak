@@ -237,11 +237,14 @@ ListView.prototype = {
             this.trackInfo.setVisible(false);
             clearTimeout(this.hoveredTimeout);
             this.hoveredTrack = target;
-            var self = this;
+            var that = this;
             this.hoveredTimeout = window.setTimeout(function() {
-                self.trackInfo.updateGeometry(self.hoveredTrack.getBoundingClientRect(), self.header.duration.offsetWidth);
-                self.trackInfo.updateInfos(self.entries[self.hoveredTrack.dataset.childID].track);
-                self.trackInfo.setVisible(true);
+                var self = that;
+
+                that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
+                that.trackInfo.updateInfos(that.entries[that.hoveredTrack.dataset.childID].track, function() {
+                    self.trackInfo.setVisible(true)
+                });
             }, 500);
         }
     },

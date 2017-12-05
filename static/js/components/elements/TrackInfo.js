@@ -66,21 +66,41 @@ TrackInfo.prototype = {
     },
 
 
-    updateInfos: function(track) {
-        // TODO : get all metadata from track
-        // TODO : update in front with all new infos
-        // TODO : display info on container
-        // TODO : request 5 top track, or genre like, or random if nothing is related
-        this.ui.cover.src = track.cover;
-        this.ui.title.innerHTML = track.title;
-        this.ui.artist.innerHTML = track.artist;
-        this.ui.albumArtist.innerHTML = "Album Artists : " + track.albumArtist;
-        this.ui.composer.innerHTML = "Composer : " + track.composer;
-        this.ui.performer.innerHTML = "Performer : " + track.performer;
-        this.ui.genre.innerHTML = "Genre : " + track.genre;
-        this.ui.album.innerHTML = track.year + " - " + track.album;
-        this.ui.numbers.innerHTML = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-        this.ui.trackDetails.innerHTML = secondsToTimecode(track.duration) + " - " + track.fileType + " - " + Math.round(track.bitRate / 1000) + "kbps - " + track.sampleRate + "Hz";
+    updateInfos: function(track, callback) {
+        var that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getTrackDetailedInfo/",
+            JSON.stringify({
+                TRACK_ID: track.id.track
+            }),
+            function(response) {
+                if (response.RESULT === "FAIL") {
+                    new Notification("Bad format.", response.ERROR);
+                } else {
+                    console.log(response);
+                    track.updateMetadata(response);
+                    // TODO : update in front with all new infos
+                    // TODO : display info on container
+                    // TODO : request 5 top track, or genre like, or random if nothing is related
+                    that.ui.cover.src = track.cover;
+                    that.ui.title.innerHTML = track.title;
+                    that.ui.artist.innerHTML = track.artist;
+                    that.ui.albumArtist.innerHTML = "Album Artists : " + track.albumArtist;
+                    that.ui.composer.innerHTML = "Composer : " + track.composer;
+                    that.ui.performer.innerHTML = "Performer : " + track.performer;
+                    that.ui.genre.innerHTML = "Genre : " + track.genre;
+                    that.ui.album.innerHTML = track.year + " - " + track.album;
+                    that.ui.numbers.innerHTML = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+                    that.ui.trackDetails.innerHTML = secondsToTimecode(track.duration) + " - " +
+                                                     track.fileType + " - " +
+                                                     Math.round(track.bitRate / 1000) + "kbps - " +
+                                                     track.sampleRate + "Hz";
+                    console.log("teast");
+                    callback();
+                }
+            }
+        );
     },
 
     setVisible: function(visible) {

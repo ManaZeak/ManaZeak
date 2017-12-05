@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^ajax/rescanLibrary/$', views.rescanLibrary, name='rescanLibrary'),
     url(r'^ajax/toggleRandom/$', views.toggleRandom, name='toogleRandom'),
     url(r'^ajax/getPlaylistInfo/$', views.getPlaylistInfo, name='getPlaylistInfo'),
+    url(r'^ajax/getTrackDetailedInfo/$', views.getTrackDetailedInfo, name='getTrackDetailedInfo'),
     url(r'^ajax/getLastSongPlayed/$', views.getLastSongPlayed, name='getLastSongPlayed'),
     url(r'^ajax/download/$', views.getDownloadLocation, name='getDownloadLocation'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
