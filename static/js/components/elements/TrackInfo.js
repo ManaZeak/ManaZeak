@@ -5,6 +5,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var TrackInfo = function(container) {
 
+    this.trackSuggestionMode = 0; // 0 = By Artists, 1 = By Album, 2 = By Genre
     this.locked = false;
 
     this._createUI(container);
@@ -30,7 +31,15 @@ TrackInfo.prototype = {
             album: document.createElement("P"),
             trackDetails: document.createElement("P"),
 
-            suggestionWrapper: document.createElement("DIV")
+            suggestionWrapper: document.createElement("DIV"),
+            suggestionTitle: document.createElement("P"),
+            suggestionList: document.createElement("UL"),
+            trackOne: document.createElement("LI"),
+            trackTwo: document.createElement("LI"),
+            trackThree: document.createElement("LI"),
+            trackFour: document.createElement("LI"),
+
+            changeTrackType: document.createElement("IMG")
         };
 
         this.ui.container.id = "trackInfo";
@@ -40,6 +49,15 @@ TrackInfo.prototype = {
         this.ui.numbers.id = "numbers";
         this.ui.genre.id = "album";
         this.ui.suggestionWrapper.id = "suggestionWrapper";
+        this.ui.suggestionTitle.id = "title";
+
+        this.ui.changeTrackType.src = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
+
+        // TODO : entries subClass in here for deaz
+        this.ui.suggestionList.appendChild(this.ui.trackOne);
+        this.ui.suggestionList.appendChild(this.ui.trackTwo);
+        this.ui.suggestionList.appendChild(this.ui.trackThree);
+        this.ui.suggestionList.appendChild(this.ui.trackFour);
 
         this.ui.trackWrapper.appendChild(this.ui.title);
         this.ui.trackWrapper.appendChild(this.ui.artist);
@@ -49,6 +67,10 @@ TrackInfo.prototype = {
         this.ui.trackWrapper.appendChild(this.ui.performer);
         this.ui.trackWrapper.appendChild(this.ui.genre);
         this.ui.trackWrapper.appendChild(this.ui.trackDetails);
+
+        this.ui.suggestionWrapper.appendChild(this.ui.suggestionTitle);
+        this.ui.suggestionWrapper.appendChild(this.ui.suggestionList);
+        this.ui.suggestionWrapper.appendChild(this.ui.changeTrackType);
 
         this.ui.container.appendChild(this.ui.cover);
         this.ui.container.appendChild(this.ui.numbers);
@@ -80,9 +102,6 @@ TrackInfo.prototype = {
                 } else {
                     console.log(response);
                     track.updateMetadata(response);
-                    // TODO : update in front with all new infos
-                    // TODO : display info on container
-                    // TODO : request 5 top track, or genre like, or random if nothing is related
                     that.ui.cover.src = track.cover;
                     that.ui.title.innerHTML = track.title;
                     that.ui.artist.innerHTML = track.artist;
@@ -96,7 +115,13 @@ TrackInfo.prototype = {
                                                      track.fileType + " - " +
                                                      Math.round(track.bitRate / 1000) + "kbps - " +
                                                      track.sampleRate + "Hz";
-                    console.log("teast");
+
+                    that.ui.suggestionTitle.innerHTML = "From the same artist :";
+                    that.ui.trackOne.innerHTML = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
+                    that.ui.trackTwo.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+                    that.ui.trackThree.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+                    that.ui.trackFour.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+
                     callback();
                 }
             }
@@ -120,14 +145,42 @@ TrackInfo.prototype = {
         this.ui.container.style.width = 0;
     },
 
+
+    toggleChangeType: function() {
+        ++this.trackSuggestionMode;
+        this.trackSuggestionMode %= 3;
+
+        switch (this.trackSuggestionMode) {
+            case 0:
+                this.ui.suggestionTitle.innerHTML = "From the same artist :";
+                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/artist.svg";
+                break;
+            case 1:
+                this.ui.suggestionTitle.innerHTML = "From the same album :";
+                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/album.svg";
+                break;
+            case 2:
+                this.ui.suggestionTitle.innerHTML = "From the same genre :";
+                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/genre.svg";
+                break;
+            default:
+                break;
+        }
+    },
+
+
     _eventListener: function() {
-        var self = this;
+        var that = this;
         this.ui.container.addEventListener("mouseenter", function() {
-            self.locked = true;
+            that.locked = true;
         });
         this.ui.container.addEventListener("mouseleave", function() {
-            self.locked = false;
-            self.setVisible(false);
+            that.locked = false;
+            that.setVisible(false);
+        });
+
+        this.ui.changeTrackType.addEventListener("click", function() {
+            that.toggleChangeType();
         });
     }
 };
