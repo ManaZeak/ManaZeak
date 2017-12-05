@@ -5,7 +5,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var TrackInfo = function(container) {
 
-    this.trackInfoLockId = -1;
+    this.locked = false;
 
     this._createUI(container);
     this._eventListener();
@@ -85,18 +85,13 @@ TrackInfo.prototype = {
     },
 
     setVisible: function(visible) {
-        this.ui.container.style.opacity = visible ? 1 : 0;
-        this.closeTrackInfo();
-    },
+        if(this.locked == true)
+            return;
 
-
-    closeTrackInfo: function() {
-        var that = this;
-// TODO : find a way to keep trackInfo open while user hover the track that trigger its apparition
-        clearTimeout(this.trackInfoLockId);
-        this.trackInfoLockId = setTimeout(function() {
-            that.resetTrackGeometry();
-        }, 1000);
+        if(visible == true)
+            this.ui.container.style.opacity = 1;
+        else
+            this.resetTrackGeometry();
     },
 
 
@@ -106,17 +101,14 @@ TrackInfo.prototype = {
         this.ui.container.style.width = 0;
     },
 
-
-    isVisible: function() {
-        return !!(this.ui.container.style.opacity = 1);
-    },
-
-    lockTrackInfo: function() {
-        clearTimeout(this.trackInfoLockId);
-    },
-
     _eventListener: function() {
-        this.ui.container.addEventListener("mouseenter", this.lockTrackInfo.bind(this));
-        this.ui.container.addEventListener("mouseleave", this.resetTrackGeometry.bind(this));
+        var self = this;
+        this.ui.container.addEventListener("mouseenter", function() {
+            self.locked = true;
+        });
+        this.ui.container.addEventListener("mouseleave", function() {
+            self.locked = false;
+            self.setVisible(false);
+        });
     }
 };

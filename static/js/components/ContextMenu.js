@@ -1,21 +1,22 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
- *  NewContextMenu class - handle the context menu on right click                      *
+ *  ContextMenu class - handle the context menu on right click                      *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var NewContextMenu = function(parentElement, openCallback)
+var ContextMenu = function(parentElement, openCallback, event)
 {
     this.contextMenu = null;
     this.parentElement = parentElement;
     this.openCallback = openCallback;
     this.element = null;
     this.isVisible = false;
+    this.event = event ? event : 'contextmenu';
 
     this._init();
 };
 
 
-NewContextMenu.prototype = {
+ContextMenu.prototype = {
 
     _init: function()
     {
@@ -50,7 +51,7 @@ NewContextMenu.prototype = {
     _eventListener: function()
     {
         var self = this;
-        this.parentElement.addEventListener("contextmenu", function(event)
+        this.parentElement.addEventListener(this.event, function(event)
         {
             if(event.pageY <= document.documentElement.clientHeight / 2)
             {
@@ -94,7 +95,6 @@ NewContextMenu.prototype = {
             event.stopImmediatePropagation();
         });
 
-        //TODO: VLE
         document.body.addEventListener('click', function(event) {
             self.element.className = "";
             self.contextMenu.close_all();
