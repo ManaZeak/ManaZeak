@@ -5,6 +5,7 @@
     background-color: $secondary-color;
     opacity: 0;
     border: solid 1px $dark-secondary-color;
+    border-radius: 3px;
 
     transition: opacity 0.1s ease-in-out;
     box-sizing: border-box;
