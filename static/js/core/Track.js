@@ -15,8 +15,6 @@ var Track = function(track) {
         y: 0
     };
     this.isSelected = false;
-
-
     // Filling Track object
     this.id = {
         track: track.ID                         !== "null" ? track.ID : "",
@@ -43,7 +41,7 @@ var Track = function(track) {
     this.album        = track.ALBUM.TITLE       !== "null" ? track.ALBUM.TITLE : "";
     this.genre        = track.GENRE             !== "null" ? track.GENRE : "";
     this.fileType     = track.FILE_TYPE         !== "null" ? track.FILE_TYPE : "";
-    this.cover        = track.COVER             !== "null" ? track.COVER : "../static/img/utils/defaultcover.svg";
+    this.cover        = track.COVER             !== "null" ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
 };
 
 
