@@ -61,7 +61,8 @@
     }
 
     #suggestionWrapper {
-        width: 300px;
+        max-width: 300px;
+        width: auto;
         height: auto;
         float: right;
         font-size: 0.7em;
