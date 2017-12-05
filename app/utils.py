@@ -211,6 +211,78 @@ class SimpleJsonCreator(threading.Thread):
         self.finalData = internData
 
 
+def exportTrackInfo(track):
+    finalData = "{\"ID\":"
+    finalData += str(track.id)
+    finalData += ",\"TITLE\":\""
+    finalData += checkIfNotNone(track.title)
+    finalData += "\",\"YEAR\":"
+    finalData += checkIfNotNoneNumber(track.year)
+    finalData += ",\"COMPOSER\":\""
+    finalData += checkIfNotNone(track.composer)
+    finalData += "\",\"PERFORMER\":\""
+    finalData += checkIfNotNone(track.performer)
+    finalData += "\",\"TRACK_NUMBER\":"
+    finalData += checkIfNotNoneNumber(track.number)
+    finalData += ",\"BPM\":"
+    finalData += checkIfNotNoneNumber(track.bpm)
+    finalData += ",\"LYRICS\":\""
+    finalData += checkIfNotNone(track.lyrics)
+    finalData += "\",\"COMMENT\":\""
+    finalData += checkIfNotNone(track.comment)
+    finalData += "\",\"BITRATE\":"
+    finalData += checkIfNotNoneNumber(track.bitRate)
+    finalData += ",\"SAMPLERATE\":"
+    finalData += checkIfNotNoneNumber(track.sampleRate)
+    finalData += ",\"DURATION\":"
+    finalData += checkIfNotNoneNumber(track.duration)
+    finalData += ",\"GENRE\":\""
+    if track.genre is not None:
+        finalData += checkIfNotNone(track.genre.name)
+    else:
+        finalData += "null"
+    finalData += "\",\"FILE_TYPE\":\""
+    finalData += checkIfNotNone(track.fileType.name)
+    finalData += "\",\"DISC_NUMBER\":"
+    finalData += checkIfNotNoneNumber(track.discNumber)
+    finalData += ",\"SIZE\":"
+    finalData += checkIfNotNoneNumber(track.size)
+    finalData += ",\"LAST_MODIFIED\":\""
+    finalData += checkIfNotNoneNumber(track.lastModified)
+    finalData += "\",\"COVER\":\""
+    finalData += checkIfNotNone(track.coverLocation)
+    finalData += "\",\"ARTISTS\":["
+    for artist in track.artist.all():
+        finalData += "{\"ID\":"
+        finalData += str(artist.id)
+        finalData += ",\"NAME\":\""
+        finalData += checkIfNotNone(artist.name)
+        finalData += "\"},"
+    finalData = finalData[:-1]
+    finalData += "],\"ALBUM\":{"
+    if track.album is not None:
+        finalData += "\"ID\":"
+        finalData += checkIfNotNoneNumber(track.album.id)
+        finalData += ",\"TITLE\":\""
+        finalData += checkIfNotNone(track.album.title)
+        finalData += "\",\"TOTAL_DISC\":"
+        finalData += checkIfNotNoneNumber(track.album.totalDisc)
+        finalData += ",\"TOTAL_TRACK\":"
+        finalData += checkIfNotNoneNumber(track.album.totalTrack)
+        finalData += ",\"ARTIST\":["
+        for artist in track.album.artist.all():
+            finalData += "{\"ID\":"
+            finalData += checkIfNotNoneNumber(artist.id)
+            finalData += ",\"NAME\":\""
+            finalData += checkIfNotNone(artist.name)
+            finalData += "\"},"
+        finalData = finalData[:-1]
+        finalData += "]}}"
+    else:
+        finalData += "\"ID\":\"null\"}}"
+    return finalData
+
+
 # export a playlist to json, not threaded, to be avoided
 def exportPlaylistToJson(playlist):
     tracks = playlist.track.all()
