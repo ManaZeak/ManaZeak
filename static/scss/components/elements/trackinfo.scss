@@ -36,7 +36,7 @@
         width: auto;
         max-width: 340px;
         margin-top: 26px;
-        margin-right: 20px;
+        margin-right: 25px;
         padding-right: 25px;
         border-right: solid 1px $dark-primary-color;
         float: right;
@@ -65,15 +65,15 @@
         height: auto;
         float: right;
         font-size: 0.7em;
-        margin-top: 20px;
         margin-right: 45px;
 
         #title {
             font-size: 1.3em;
             font-weight: bold;
+            line-height: 1.3em;
             margin: 0;
-            margin-bottom: 5px;
-            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 15px;
         }
 
         ul {
