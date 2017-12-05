@@ -17,41 +17,40 @@ TrackInfo.prototype = {
 
     _createUI: function(container) {
         this.ui = {
-            container: document.createElement("DIV"),
-            cover: document.createElement("IMG"),
-            numbers: document.createElement("P"),
+            container:         document.createElement("DIV"),
+            cover:             document.createElement("IMG"),
+            numbers:           document.createElement("P"),
 
-            trackWrapper: document.createElement("DIV"),
-            title: document.createElement("P"),
-            artist: document.createElement("P"),
-            albumArtist: document.createElement("P"),
-            composer: document.createElement("P"),
-            performer: document.createElement("P"),
-            genre: document.createElement("P"),
-            album: document.createElement("P"),
-            trackDetails: document.createElement("P"),
+            trackWrapper:      document.createElement("DIV"),
+            title:             document.createElement("P"),
+            artist:            document.createElement("P"),
+            albumArtist:       document.createElement("P"),
+            composer:          document.createElement("P"),
+            performer:         document.createElement("P"),
+            genre:             document.createElement("P"),
+            album:             document.createElement("P"),
+            trackDetails:      document.createElement("P"),
 
             suggestionWrapper: document.createElement("DIV"),
-            suggestionTitle: document.createElement("P"),
-            suggestionList: document.createElement("UL"),
-            trackOne: document.createElement("LI"),
-            trackTwo: document.createElement("LI"),
-            trackThree: document.createElement("LI"),
-            trackFour: document.createElement("LI"),
+            suggestionTitle:   document.createElement("P"),
+            suggestionList:    document.createElement("UL"),
+            trackOne:          document.createElement("LI"),
+            trackTwo:          document.createElement("LI"),
+            trackThree:        document.createElement("LI"),
+            trackFour:         document.createElement("LI"),
 
-            changeTrackType: document.createElement("IMG")
+            changeTrackType:   document.createElement("IMG")
         };
 
-        this.ui.container.id = "trackInfo";
-        this.ui.trackWrapper.id = "trackWrapper";
-        this.ui.title.id = "title";
-        this.ui.album.id = "album";
-        this.ui.numbers.id = "numbers";
-        this.ui.genre.id = "album";
+        this.ui.container.id         = "trackInfo";
+        this.ui.trackWrapper.id      = "trackWrapper";
+        this.ui.title.id             = "title";
+        this.ui.album.id             = "album";
+        this.ui.numbers.id           = "numbers";
+        this.ui.genre.id             = "album";
         this.ui.suggestionWrapper.id = "suggestionWrapper";
-        this.ui.suggestionTitle.id = "title";
-
-        this.ui.changeTrackType.src = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
+        this.ui.suggestionTitle.id   = "title";
+        this.ui.changeTrackType.src  = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
 
         // TODO : entries subClass in here for deaz
         this.ui.suggestionList.appendChild(this.ui.trackOne);
@@ -81,10 +80,10 @@ TrackInfo.prototype = {
     },
 
     updateGeometry: function(rect, offset) {
-        this.ui.container.style.top = (rect.top - 24) + "px"; //
-        this.ui.container.style.left = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
+        this.ui.container.style.top    = (rect.top - 24) + "px";
+        this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
         this.ui.container.style.height = "200px";
-        this.ui.container.style.width = "auto";
+        this.ui.container.style.width  = "auto";
     },
 
 
@@ -100,28 +99,28 @@ TrackInfo.prototype = {
                 if (response.RESULT === "FAIL") {
                     new Notification("Bad format.", response.ERROR);
                 } else {
-                    console.log(response);
                     track.updateMetadata(response);
-                    that.ui.cover.src = track.cover;
-                    that.ui.title.innerHTML = track.title;
-                    that.ui.artist.innerHTML = track.artist;
-                    that.ui.albumArtist.innerHTML = "Album Artists : " + track.albumArtist;
-                    that.ui.composer.innerHTML = "Composer : " + track.composer;
-                    that.ui.performer.innerHTML = "Performer : " + track.performer;
-                    that.ui.genre.innerHTML = "Genre : " + track.genre;
-                    that.ui.album.innerHTML = track.year + " - " + track.album;
-                    that.ui.numbers.innerHTML = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                    that.ui.trackDetails.innerHTML = secondsToTimecode(track.duration) + " - " +
-                                                     track.fileType + " - " +
-                                                     Math.round(track.bitRate / 1000) + "kbps - " +
-                                                     track.sampleRate + "Hz";
 
+                    that.ui.cover.src                 = track.cover;
+                    that.ui.title.innerHTML           = track.title;
+                    that.ui.artist.innerHTML          = track.artist;
+                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
+                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
+                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
+                    that.ui.album.innerHTML           = track.year + " - " + track.album;
+                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                                                        track.fileType + " - " +
+                                                        Math.round(track.bitRate / 1000) + "kbps - " +
+                                                        track.sampleRate + "Hz";
                     that.ui.suggestionTitle.innerHTML = "From the same artist :";
-                    that.ui.trackOne.innerHTML = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
-                    that.ui.trackTwo.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
-                    that.ui.trackThree.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
-                    that.ui.trackFour.innerHTML = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+                    that.ui.trackOne.innerHTML        = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
+                    that.ui.trackTwo.innerHTML        = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+                    that.ui.trackThree.innerHTML      = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
+                    that.ui.trackFour.innerHTML       = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
 
+                    // TODO : Load track from serv
                     callback();
                 }
             }
@@ -129,26 +128,29 @@ TrackInfo.prototype = {
     },
 
     setVisible: function(visible) {
-        if(this.locked == true)
+        if (this.locked == true) {
             return;
+        }
 
-        if(visible == true)
+        if (visible == true) {
             this.ui.container.style.opacity = 1;
-        else
-            this.resetTrackGeometry();
-    },
+            this.ui.container.style.zIndex = 0;
+        } else {
+            var that = this;
 
-
-    resetTrackGeometry: function() {
-        this.ui.container.style.opacity = 0;
-        this.ui.container.style.height = 0;
-        this.ui.container.style.width = 0;
+            this.ui.container.style.opacity = 0;
+            setTimeout(function() {
+                that.ui.container.style.zIndex = -1;
+            }, 200); // 200ms bc of transition time in #TrackInfo - trackinfo.scss
+        }
     },
 
 
     toggleChangeType: function() {
         ++this.trackSuggestionMode;
         this.trackSuggestionMode %= 3;
+
+        // TODO : ask tracks from server and build list
 
         switch (this.trackSuggestionMode) {
             case 0:
@@ -171,9 +173,11 @@ TrackInfo.prototype = {
 
     _eventListener: function() {
         var that = this;
+
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
         });
+
         this.ui.container.addEventListener("mouseleave", function() {
             that.locked = false;
             that.setVisible(false);

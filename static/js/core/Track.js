@@ -100,10 +100,11 @@ Track.prototype = {
         this.duration     = track.DURATION          !== "null" ? track.DURATION : "";
         this.size         = track.SIZE              !== "null" ? track.SIZE : "";
         this.lastModified = track.LAST_MODIFIED     !== "null" ? track.LAST_MODIFIED : "";
-        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
         this.album        = track.ALBUM.TITLE       !== "null" ? track.ALBUM.TITLE : "";
         this.genre        = track.GENRE             !== "null" ? track.GENRE : "";
         this.fileType     = track.FILE_TYPE         !== "null" ? track.FILE_TYPE : "";
         this.cover        = track.COVER             !== "null" ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
+        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
+        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTIST);
     }
 };

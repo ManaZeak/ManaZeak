@@ -245,7 +245,7 @@ ListView.prototype = {
                 that.trackInfo.updateInfos(that.entries[that.hoveredTrack.dataset.childID].track, function() {
                     self.trackInfo.setVisible(true)
                 });
-            }, 500);
+            }, 1000);
         }
     },
 
