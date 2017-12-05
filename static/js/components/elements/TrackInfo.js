@@ -144,7 +144,7 @@ TrackInfo.prototype = {
             this.ui.container.style.opacity = 0;
             setTimeout(function() {
                 that.ui.container.style.zIndex = -1;
-            }, 200); // 200ms bc of transition time in #TrackInfo - trackinfo.scss
+            }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
         }
     },
 
@@ -179,7 +179,7 @@ TrackInfo.prototype = {
 
         this.inactivityTimeoutId = setTimeout(function() {
             that.setVisible(false);
-        }, 300000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
+        }, 3000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
     },
 
 
