@@ -225,7 +225,6 @@ ListView.prototype = {
 
 
     showTrackInfo: function(event) {
-
         if(event.target == this.listView)
             return this.trackInfo.setVisible(false);
 

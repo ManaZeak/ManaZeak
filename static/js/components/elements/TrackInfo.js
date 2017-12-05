@@ -5,6 +5,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 var TrackInfo = function(container) {
 
+    this.inactivityTimeoutId = -1;
     this.trackSuggestionMode = 0; // 0 = By Artists, 1 = By Album, 2 = By Genre
     this.locked = false;
 
@@ -114,6 +115,7 @@ TrackInfo.prototype = {
                                                         track.fileType + " - " +
                                                         Math.round(track.bitRate / 1000) + "kbps - " +
                                                         track.sampleRate + "Hz";
+                                                        // TODO : add total played and other interesting stats about track
                     that.ui.suggestionTitle.innerHTML = "From the same artist :";
                     that.ui.trackOne.innerHTML        = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
                     that.ui.trackTwo.innerHTML        = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
@@ -135,6 +137,7 @@ TrackInfo.prototype = {
         if (visible == true) {
             this.ui.container.style.opacity = 1;
             this.ui.container.style.zIndex = 0;
+            this.startInactivityTimeout();
         } else {
             var that = this;
 
@@ -171,11 +174,26 @@ TrackInfo.prototype = {
     },
 
 
+    startInactivityTimeout: function() {
+        var that = this;
+
+        this.inactivityTimeoutId = setTimeout(function() {
+            that.setVisible(false);
+        }, 3000); // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
+    },
+
+
+    stopInactivityTimeout: function() {
+        clearTimeout(this.inactivityTimeoutId);
+    },
+
+
     _eventListener: function() {
         var that = this;
 
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
+            that.stopInactivityTimeout();
         });
 
         this.ui.container.addEventListener("mouseleave", function() {
