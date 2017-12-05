@@ -18,7 +18,7 @@ from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo
 
 
 class mainView(ListView):
@@ -238,6 +238,23 @@ def loadTracksFromPlaylist(request):
 
         except AttributeError:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+def getTrackDetailedInfo(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                return HttpResponse(exportTrackInfo(track), content_type="application/json")
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 def bulkExport(request):

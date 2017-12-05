@@ -70,7 +70,7 @@ TrackInfo.prototype = {
         var that = this;
 
         JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo",
+            "ajax/getTrackDetailedInfo/",
             JSON.stringify({
                 TRACK_ID: track.id.track
             }),
