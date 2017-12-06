@@ -3,36 +3,35 @@
  *  PlaylistBar class - handle the playlist bar                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var TopBar = function() {
-    this.moodbar = null;
-    this.playlistBar = null;
-    this.playlists = null;
-    this.selectedPlaylist = null;
-    this.entries = [];
+let TopBar = function() {
+    this.moodbar           = null;
+    this.playlistBar       = null;
+    this.playlists         = null;
+    this.selectedPlaylist  = null;
+    this.entries           = [];
     this.newPlaylistButton = null;
 
-    this.topBar = document.createElement("div");
-
+    this.topBar       = document.createElement("div");
     this.userExpander = document.createElement("div");
-    this.moodbar = document.createElement("div");
+    this.moodbar      = document.createElement("div");
     this.moodbarThumb = document.createElement("div");
-    this.playlistBar = document.createElement("div");
+    this.playlistBar  = document.createElement("div");
 
-    this.topBar.id = "topBar";
+    this.topBar.id       = "topBar";
     this.userExpander.id = "userExpander";
-    this.moodbar.id = "moodbar";
+    this.moodbar.id      = "moodbar";
     this.moodbarThumb.id = "moodbarThumb";
-    this.playlistBar.id = "playlistBar";
-
-    this.moodbarThumb.isVisible = false;
+    this.playlistBar.id  = "playlistBar";
 
     this.topBar.appendChild(this.moodbar);
     this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
 
-    this.userMenu     = new UserMenu(this.userExpander);
-    this.menu = new NewLibPlayMenu();
+    this.moodbarThumb.isVisible = false;
+
+    this.userMenu = new UserMenu(this.userExpander);
+    this.menu     = new NewLibPlayMenu();
 };
 
 
@@ -55,14 +54,14 @@ TopBar.prototype = {
 
 
     addEntries: function() {
-        for (var i = 0; i < this.playlists.length ;++i) {
+        for (let i = 0; i < this.playlists.length; ++i) {
             this.addEntry(this.playlists[i]);
         }
     },
 
 
     removeEntries: function() {
-        for (var i = 0; i < this.entries.length ;++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             this.playlistBar.removeChild(this.entries[i].entry)
         }
 
@@ -80,8 +79,7 @@ TopBar.prototype = {
 
 
     setSelected: function(id) {
-
-	    for (var i = 0; i < this.entries.length ;++i) {
+	    for (let i = 0; i < this.entries.length; ++i) {
 	        if (i == id || this.entries[i].getId() == id) {
                 this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
@@ -97,7 +95,7 @@ TopBar.prototype = {
 
 
     unSelectAll: function() {
-        for (var i = 0; i < this.entries.length ;++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
 		    this.entries[i].setIsSelected(false);
         }
     },
@@ -118,9 +116,8 @@ TopBar.prototype = {
 
 
     viewClicked: function(event) {
-        var target = event.target;
+        let target = event.target;
 
-        // TODO : fix when target is null => when user click outside left or right of the listview
         while(target.parentNode && target.parentNode !== this.playlistBar) {
             target = target.parentNode;
         }
@@ -129,7 +126,7 @@ TopBar.prototype = {
 		    return true;
         }
 
-        var id = target.dataset.childID;
+        let id = target.dataset.childID;
 
         if (id !== undefined) {
             this.unSelectAll();
@@ -145,10 +142,9 @@ TopBar.prototype = {
             this.moodbarThumb.isVisible = true;
             addVisibilityLock(this.moodbarThumb);
         }
-        // TODO : add thumb if not already, also, hide thumb at app start
-        var that = this;
 
-        var xhr = new XMLHttpRequest();
+        let that = this;
+        let xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {

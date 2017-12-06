@@ -3,7 +3,7 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var View = function(data) {
+let View = function(data) {
 
     this.pageContainer = document.getElementById("mainContainer");
     this.container = document.createElement("DIV");

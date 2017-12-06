@@ -3,16 +3,13 @@
  *  Player class - handle song streaming client side, and std action on it             *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Player = function(cookies) {
+let Player = function(cookies) {
     this.cookies = cookies;
-
     this.player = document.getElementById("audioPlayer");
 
-    this.isPlaying = false;
-    this.isMuted   = false;
-    this.loopingMode = false;
-
-    this.oldVolume = 0;
+    this.isPlaying   = false;
+    this.isMuted     = false;
+    this.oldVolume   = 0;
 
     this.init();
 };
@@ -38,7 +35,6 @@ Player.prototype = {
     },
 
 
-    // Player controls
     togglePlay: function() {
         if (this.isPlaying) {
             this.pause();
@@ -52,9 +48,6 @@ Player.prototype = {
         this.pause();
         this.isPlaying = false;
         this.player.currentTime = 0;
-        // OR this, but it doesn't keep in memory the current track (to think about)
-        // this.player.src = "";
-        // TODO : Make a real stop feature ...
     },
 
 

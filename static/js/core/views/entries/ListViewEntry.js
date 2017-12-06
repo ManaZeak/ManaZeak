@@ -3,21 +3,21 @@
  *  ListViewEntry class - list view entry                                              *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListViewEntry = function(track, listView) {
+let ListViewEntry = function(track, listView) {
     this.entry = document.createElement("DIV");
     this.entry.className = "trackContainer";
 
     this.track = track;
 
-    var duration        = document.createElement("DIV");
-    var title           = document.createElement("DIV");
-    var artist          = document.createElement("DIV");
-    var composer        = document.createElement("DIV");
-    var performer       = document.createElement("DIV");
-    var album           = document.createElement("DIV");
-    var genre           = document.createElement("DIV");
-    var bitRate         = document.createElement("DIV");
-    var year            = document.createElement("DIV");
+    let duration        = document.createElement("DIV");
+    let title           = document.createElement("DIV");
+    let artist          = document.createElement("DIV");
+    let composer        = document.createElement("DIV");
+    let performer       = document.createElement("DIV");
+    let album           = document.createElement("DIV");
+    let genre           = document.createElement("DIV");
+    let bitRate         = document.createElement("DIV");
+    let year            = document.createElement("DIV");
 
     duration.className  = "col-duration";
     title.className     = "col-title";
@@ -50,7 +50,6 @@ var ListViewEntry = function(track, listView) {
     this.entry.appendChild(year);
 
     // ListViewEntry internal attributes
-    this.boundingRect = null;
     this.isSelected = false;
 
     this.insert(listView);
@@ -64,16 +63,14 @@ ListViewEntry.prototype = {
         listView.appendChild(this.entry);
     },
 
+
     getIsSelected: function() { return this.isSelected; },
+
 
     setIsSelected: function(isSelected) {
         this.isSelected = isSelected;
-        if (this.isSelected) {
-            this.entry.classList.add("mzk-selected");
-            //this.entry.style.background = "red";
-        } else {
-            this.entry.classList.remove("mzk-selected");
-            //this.entry.style.background = "none";
-        }
+
+        if (this.isSelected) { this.entry.classList.add("mzk-selected");    }
+        else                 { this.entry.classList.remove("mzk-selected"); }
     }
 };
