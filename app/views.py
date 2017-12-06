@@ -18,7 +18,8 @@ from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
+    generateSimilarTrackJson
 
 
 class mainView(ListView):
@@ -590,3 +591,38 @@ def getLastSongPlayed(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+def getSimilarTrack(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        selectedTracks = []
+        if 'TRACK_ID' in response and 'MODE' in response and 'PLAYLIST':
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                mode = strip_tags(response['MODE'])
+                numberTrackTarget = 4
+
+                # Same artist track selection
+                if mode == "0":
+
+                    tracks = Track.objects.filter(artist__in=track.artist.all()).order_by('-playCounter')
+
+                    if len(tracks) < 4:
+                        if len(tracks) == 0:
+                            return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        else:
+                            numberTrackTarget = len(tracks)
+
+                    for trackCursor in tracks:
+                        selectedTracks.append(trackCursor)
+                        if len(selectedTracks) == numberTrackTarget:
+                            break
+
+                # Same genre track selection
+                elif mode == 1:
+                    pass
+                # Returning results
+                print(generateSimilarTrackJson(selectedTracks))
+                return HttpResponse(generateSimilarTrackJson(selectedTracks), content_type="application/json")
