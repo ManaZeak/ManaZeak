@@ -3,10 +3,9 @@
  *  App class - ManaZeak main class, orchestrate all the front                         *
  *                                                                                     *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var App = function() {
+let App = function() {
 
     this.cookies = getCookies();
-
     // Objects
     this.topBar  = new TopBar();
     this.mainContainer = document.createElement("div");
@@ -32,14 +31,16 @@ var App = function() {
     };
 
     this.listeners = {};
-    for(var property in this) {
-        if(typeof this[property] === "function") {
+    for (let property in this) {
+        if (typeof this[property] === "function") {
             this.listeners[property] = [];
-            var oldFunc = this[property];
+
+            let oldFunc = this[property];
+
             this[property] = (function(pname, func) {
                 return function() {
                     func.apply(this, arguments);
-                    for(var i = 0; i < this.listeners[pname].length;++i) {
+                    for (let i = 0; i < this.listeners[pname].length; ++i) {
                         this.listeners[pname][i].apply(null, arguments);
                     }
                 }
@@ -58,7 +59,7 @@ App.prototype = {
         this.footBar = new FootBar();
         document.body.appendChild(this.footBar.getFootBar());
 
-        var that = this;
+        let that = this;
         // Loading playlists
         JSONParsedGetRequest(
             "ajax/getPlaylists/",
@@ -79,7 +80,7 @@ App.prototype = {
 
 
     _appStart: function(playlists) {
-        var that = this;
+        let that = this;
         // User already have playlists
         if (playlists.DONE) {
             JSONParsedPostRequest(
@@ -95,7 +96,7 @@ App.prototype = {
                         true,
                         response,
                         undefined));
-                    for (var i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
+                    for (let i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
                         that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
                             playlists.PLAYLIST_NAMES[i],
                             playlists.PLAYLIST_IS_LIBRARY[i],
@@ -130,7 +131,7 @@ App.prototype = {
 
 
     requestNewLibrary: function() {
-        var that = this;
+        let that = this;
 
         while (this.mainContainer.firstChild) {
             this.mainContainer.removeChild(this.mainContainer.firstChild);
@@ -145,20 +146,23 @@ App.prototype = {
         }));
     },
 
+
     addListener: function(event, callback) {
         if (Array.isArray(event)) {
-            for (var i = 0; i < event.length; ++i)
+            for (let i = 0; i < event.length; ++i)
                 if (this.listeners[event[i]])
                     this.listeners[event[i]].push(callback);
         }
-        else if(this.listeners[event])
+
+        else if (this.listeners[event]) {
             this.listeners[event].push(callback);
+        }
     },
 
 
     // TODO : put this someday in a Shortcut class (in Utils maybe ?)
     _keyListener: function() {
-        var that = this;
+        let that = this;
 
         // Key pressed event
         document.addEventListener("keydown", function(event) {
@@ -214,6 +218,8 @@ App.prototype = {
 };
 
 //TODO: Closure or something
-var addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
-for(var i = 0; i < addonSrcs.length; ++i)
+let addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
+
+for (let i = 0; i < addonSrcs.length; ++i) {
     addonSrcs[i].src = addonSrcs[i].dataset.src;
+}

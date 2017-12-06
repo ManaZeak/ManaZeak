@@ -11,51 +11,46 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 //TODO: get shuffle and repeat from server
-var Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
-
+let Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
     this.ui = {
-        infoLabel: null,
-        name:      null,
-        path:      null,
-        convert:   null,
-        scan:      null
+        infoLabel:   null,
+        name:        null,
+        path:        null,
+        convert:     null,
+        scan:        null
     };
     this.scanModal = null;
 
     // Playlist internal attributes
-    this.id = id;
-    this.name = name;
-    this.isLibrary = isLibrary;
-    this.isLoading = isLoading;
+    this.id          = id;
+    this.name        = name;
+    this.isLibrary   = isLibrary;
+    this.isLoading   = isLoading;
     this.shuffleMode = 0; // 0 : off, 1 : random, 2: shuffle
-    this.repeatMode = 0; // 0 : off, 1 : one, 2: all
-    this.isRepeat  = false;
+    this.repeatMode  = 0; // 0 : off, 1 : one, 2: all
+    this.isRepeat    = false;
 
     //TODO: fix this
-    if (typeof rawTracks !== 'undefined') {
-        this.rawTracks = rawTracks;
-    } else {
-        this.rawTracks = [];
-    }
-    if (typeof callback !== 'undefined') {
-        this.callback = callback;
-    } else {
-        this.callback = null;
-    }
+    if (typeof rawTracks !== 'undefined') { this.rawTracks = rawTracks; }
+    else                                  { this.rawTracks = [];        }
+
+    if (typeof callback !== 'undefined')  { this.callback = callback;   }
+    else                                  { this.callback = null;       }
 
     // Boolean to add to know if tracks are set or not
-    this.tracks = [];
-    this.currentTrack = 0;
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
 
+    this.tracks        = [];
+    this.currentTrack  = 0;
     this.trackTotal    = 0;
     this.artistTotal   = 0;
     this.albumTotal    = 0;
     this.durationTotal = 0;
 
-    var viewkeys = Object.keys(window.app.availableViews);
-    this.views = new Array(viewkeys.length).fill(null);
+    let viewkeys = Object.keys(window.app.availableViews);
+
+    this.views      = new Array(viewkeys.length).fill(null);
     this.activeView = window.app.availableViews[viewkeys[0]];
 
     this._init(); // Playlist initialization
@@ -65,7 +60,6 @@ Playlist.prototype = {
 
     _init: function() {
         //if (typeof rawTracks === undefined) { return; }
-
         if (this.isLoading) {
             if (this.isLibrary) { this._loadLibrary(); } // Library loading process
         }
@@ -75,16 +69,15 @@ Playlist.prototype = {
     },
 
 
-    /*  Library creation and loading  */
-
     _loadLibrary: function() {
         this._fillTracks(this.rawTracks);
     },
 
 
     _newLibrary: function() {
+        let that = this;
+
         this.isLibrary = true;
-        var that = this;
 
         JSONParsedGetRequest(
             "components/newLibrary",
@@ -116,7 +109,6 @@ Playlist.prototype = {
     _checkInputs: function() {
         if (this.ui.name.value !== '' && this.ui.path.value !== '') {
             this._requestNewLibrary();
-            // TODO : remove ui.scan listener
         }
 
         else {
@@ -140,7 +132,7 @@ Playlist.prototype = {
 
 
     _requestNewLibrary: function() {
-        var that = this;
+        let that = this;
 
         JSONParsedPostRequest(
             "ajax/newLibrary/",
@@ -200,16 +192,16 @@ Playlist.prototype = {
 
 
     _getTracksFromServer: function(playlistId) {
-        var that = this;
+        let that = this;
 
-        this.getTracksIntervalId = setInterval(function() {
+        this.getTracksIntervalId = window.setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
-        }, 500); // called every .5s
+        }, 500); // One call every 0.5s
     },
 
 
     _getTracksFromServer_aux: function(playlistId) {
-        var that = this;
+        let that = this;
 
         JSONParsedPostRequest(
             "ajax/checkLibraryScanStatus/",
@@ -222,10 +214,10 @@ Playlist.prototype = {
                  *     ERROR_H1:    string
                  *     ERROR_MSG:   string
                  * } */
-                var self = that;
+                let self = that;
 
                 if (response.DONE) {
-                    clearInterval(that.getTracksIntervalId);
+                    window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
 
                     JSONParsedPostRequest(
@@ -257,7 +249,7 @@ Playlist.prototype = {
 
 
     getPlaylistsTracks: function(callback) {
-        var that = this;
+        let that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimplifiedTracks/",
@@ -280,10 +272,8 @@ Playlist.prototype = {
     },
 
 
-    /* Class utilities */
-
     _fillTracks: function(tracks) {
-        for (var i = 0; i < tracks.length ;++i) {
+        for (let i = 0; i < tracks.length; ++i) {
             ++this.trackTotal;
             this.durationTotal += tracks[i].DURATION;
             this.tracks.push(new Track(tracks[i]));
@@ -292,13 +282,14 @@ Playlist.prototype = {
 
 
     playNextTrack: function() {
-        var that = this;
+        let that = this;
 
         if (this.repeatMode === 1) {
             window.app.repeatTrack();
-        } else {
-            switch (this.shuffleMode) {
+        }
 
+        else {
+            switch (this.shuffleMode) {
                 case 0: // Shuffle off
                     if (this.repeatMode !== 0) {
                         this.currentTrack = this.activeView.getNextEntry();
@@ -335,7 +326,9 @@ Playlist.prototype = {
                         function(response) {
                             if (response.LAST) {
                                 window.app.stopPlayback();
-                            } else {
+                            }
+
+                            else {
                                 that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
                                 window.app.changeTrack(that.currentTrack, false);
                             }
@@ -351,10 +344,9 @@ Playlist.prototype = {
 
 
     playPreviousTrack: function() {
-        var that = this;
+        let that = this;
 
         switch (this.shuffleMode) {
-
             case 0: // Shuffle off
                 this.currentTrack = this.activeView.getPreviousEntry();
                 window.app.changeTrack(this.currentTrack, false);
@@ -424,15 +416,17 @@ Playlist.prototype = {
         this.showView(window.app.availableViews.LIST);
     },
 
+
     showView: function(viewType) {
-        var v = this.views[viewType.index];
-        if(v === null) {
+        let v = this.views[viewType.index];
+
+        if (v === null) {
             this.views[viewType.index] = new viewType.class(viewType.class.prototype.getDataFromPlaylist(this));
             v = this.views[viewType.index];
         }
-        v.show();
 
         this.activeView = v;
+        v.show();
     },
 
 
@@ -443,18 +437,21 @@ Playlist.prototype = {
 
 
     refreshViews: function() {
-        for(var i = 0; i < this.views.length; ++i)
-            if(this.views[i] !== null)
+        for(let i = 0; i < this.views.length; ++i) {
+            if(this.views[i] !== null) {
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
+            }
+        }
     },
 
-    // Class Getters and Setters
+
     getId: function()         { return this.id;        },
     getTracks: function()     { return this.tracks;    },
     getName: function()       { return this.name;      },
     getIsLibrary: function()  { return this.isLibrary; },
-    getshuffleMode: function()  { return this.shuffleMode; },
+    getshuffleMode: function() { return this.shuffleMode; },
     getRepeatMode: function()  { return this.repeatMode; },
+
 
     setName: function(name)   { this.name = name;      }
 };

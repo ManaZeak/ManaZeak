@@ -21,10 +21,8 @@ App.prototype.toggleRepeat = function() {
 
 
 App.prototype.next = function() {
-    if(this.queue.isEmpty() == false)
-        this.popQueue();
-    else
-        this.activePlaylist.playNextTrack();
+    if (this.queue.isEmpty() == false) { this.popQueue();                     }
+    else                               { this.activePlaylist.playNextTrack(); }
 };
 
 
@@ -49,7 +47,7 @@ App.prototype.rewind = function(amount) {
 
 
 App.prototype.setVolume = function(volume) {
-    if (volume > 1) { volume = 1; }
+    if (volume > 1)      { volume = 1; }
     else if (volume < 0) { volume = 0; }
 
     this.player.getPlayer().volume = precisionRound(volume, 2);
@@ -75,7 +73,9 @@ App.prototype.toggleMute = function() {
     if(this.player.isMuted) {
         this.unmute();
         this.setVolume(this.player.oldVolume);
-    } else {
+    }
+
+    else {
         this.mute();
         this.setVolume(0);
     }
@@ -83,7 +83,7 @@ App.prototype.toggleMute = function() {
 
 
 App.prototype.changeTrack = function(track, previous) {
-    var that = this;
+    let that = this;
 
     this.footBar.progressBar.resetProgressBar();
 
@@ -96,7 +96,9 @@ App.prototype.changeTrack = function(track, previous) {
         function(response) {
             if (response.RESULT === "FAIL") {
                 new Notification("Bad format.", response.ERROR);
-            } else {
+            }
+
+            else {
                 that.footBar.trackPreview.changeTrack(track);
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeTrack(".." + response.PATH, track.id.track);
@@ -121,7 +123,7 @@ App.prototype.changePageTitle = function(path) {
 
 
 App.prototype.getAllPlaylistsTracks = function() {
-    for (var i = 1; i < this.playlists.length ;++i) {
+    for (let i = 1; i < this.playlists.length ;++i) {
         this.playlists[i].getPlaylistsTracks(undefined);
     }
 };
@@ -144,9 +146,11 @@ App.prototype.popQueue = function () {
     this.changeTrack(this.queue.dequeue(), false);
 };
 
+
 App.prototype.reverseQueue = function(reverse) {
     this.queue.setReverse(reverse);
 };
+
 
 App.prototype.moveQueue = function(element, newPos) {
     this.queue.slide(element, newPos);

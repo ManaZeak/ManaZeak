@@ -5,27 +5,25 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 let ListView = function(data) {
 
-    this.listView = null;
-    this.entries = [];
+    this.listView        = null;
+    this.entries         = [];
     this.entriesSelected = {};
-    this.trackInfo = null;
-    this.dblClick = false;
-
-    this.contextMenu = null;
+    this.trackInfo       = null;
+    this.dblClick        = false;
+    this.contextMenu     = null;
 
     this.header = {
-        container: null,
-        duration:  null,
-        title:     null,
-        artist:    null,
-        composer:  null,
-        performer: null,
-        album:     null,
-        genre:     null,
-        bitRate:   null,
-        year:      null
+        container:      null,
+        duration:       null,
+        title:          null,
+        artist:         null,
+        composer:       null,
+        performer:      null,
+        album:          null,
+        genre:          null,
+        bitRate:        null,
+        year:           null
     };
-
     this.sort = {
         isDurationAsc:  false,
         isTitleAsc:     false,
@@ -47,6 +45,7 @@ ListView.prototype = {
     getDataFromPlaylist: function(playlist) {
         return playlist.tracks;
     },
+
 
     _init: function(data) {
         this.listView = document.createElement("DIV");
@@ -161,11 +160,12 @@ ListView.prototype = {
     sortBy: function(argument, ascending) {
         //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
-
         this.listView.innerHTML = "";
+
         for (let i = 0; i < this.entries.length; i++) {
             this.entries[i].insert(this.listView);
         }
+
         this.contextMenu.reattach();
     },
 
@@ -255,7 +255,7 @@ ListView.prototype = {
                 let self = that;
 
                 that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
-                that.trackInfo.updateInfos(that.entries[that.hoveredTrack.dataset.childID].track, function() {
+                that.trackInfo.updateInfo(that.entries[that.hoveredTrack.dataset.childID].track, function() {
                     self.trackInfo.setVisible(true)
                 });
             }, 1000);
@@ -266,16 +266,11 @@ ListView.prototype = {
     _eventListener: function() {
         let that = this;
 
-        this.listView.addEventListener('mouseover', this.showTrackInfo.bind(this));
-
-        /*
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
         };
-        */
-
+        this.listView.addEventListener('mouseover', this.showTrackInfo.bind(this));
         this.listView.addEventListener("click", this.viewClicked.bind(this));
-
         // Sorting listeners
         this.header.duration.addEventListener("click", function() {
             that.sort.isDurationAsc = !that.sort.isDurationAsc;
@@ -318,6 +313,7 @@ ListView.prototype = {
             that.unSelectAll();
         });
     },
+
 
     _contextMenuSetup: function () {
         let that = this;

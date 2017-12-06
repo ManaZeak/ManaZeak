@@ -3,7 +3,7 @@
  *  UserMenu class - handle the user's menu                                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var UserMenu = function(parent) {
+let UserMenu = function(parent) {
     this.menu = document.createElement("div");
     this.menu.id = "menu";
     this.menuEntry = {
@@ -12,7 +12,6 @@ var UserMenu = function(parent) {
     this.outside = document.body;
     this.parent = parent;
     this.isVisible = false;
-
 
     this._init();
 };
@@ -48,7 +47,9 @@ UserMenu.prototype = {
         if (!this.isVisible) {
             this.isVisible = !this.isVisible;
             addVisibilityLock(this.menu);
-        } else {
+        }
+
+        else {
             this.isVisible = !this.isVisible;
             removeVisibilityLock(this.menu);
         }
@@ -69,7 +70,7 @@ UserMenu.prototype = {
 
 
     _keyListener: function() {
-        var that = this;
+        let that = this;
 
         // Key pressed event
         document.addEventListener("keydown", function(event) {

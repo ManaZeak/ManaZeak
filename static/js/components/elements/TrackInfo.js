@@ -1,9 +1,9 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                                     *
- *  TrackPreview class - handle the track info container (left/footbar)                *
+ *  TrackInfo class - handle the track info container                                  *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var TrackInfo = function(container) {
+let TrackInfo = function(container) {
 
     this.inactivityTimeoutId = -1;
     this.trackSuggestionMode = 0; // 0 = By Artists, 1 = By Album, 2 = By Genre
@@ -88,8 +88,8 @@ TrackInfo.prototype = {
     },
 
 
-    updateInfos: function(track, callback) {
-        var that = this;
+    updateInfo: function(track, callback) {
+        let that = this;
 
         JSONParsedPostRequest(
             "ajax/getTrackDetailedInfo/",
@@ -130,19 +130,21 @@ TrackInfo.prototype = {
     },
 
     setVisible: function(visible) {
-        if (this.locked == true) {
+        if (this.locked === true) {
             return;
         }
 
-        if (visible == true) {
+        if (visible === true) {
             this.ui.container.style.opacity = 1;
             this.ui.container.style.zIndex = 0;
             this.startInactivityTimeout(3000);  // If mouse doesn't move for 3 seconds outside the TrackInfo container, it's closed.
-        } else {
-            var that = this;
+        }
+
+        else {
+            let that = this;
 
             this.ui.container.style.opacity = 0;
-            setTimeout(function() {
+            window.setTimeout(function() {
                 that.ui.container.style.zIndex = -1;
             }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
         }
@@ -154,53 +156,54 @@ TrackInfo.prototype = {
         this.trackSuggestionMode %= 3;
 
         // TODO : ask tracks from server and build list
-
         switch (this.trackSuggestionMode) {
             case 0:
                 this.ui.suggestionTitle.innerHTML = "From the same artist :";
-                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/artist.svg";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/artist.svg";
                 break;
+
             case 1:
                 this.ui.suggestionTitle.innerHTML = "From the same album :";
-                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/album.svg";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/album.svg";
                 break;
+
             case 2:
                 this.ui.suggestionTitle.innerHTML = "From the same genre :";
-                this.ui.changeTrackType.src = "/static/img/utils/trackinfo/genre.svg";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/genre.svg";
                 break;
+
             default:
+                // TODO : Switch default event
                 break;
         }
     },
 
 
     startInactivityTimeout: function(time) {
-        var that = this;
+        let that = this;
 
-        this.inactivityTimeoutId = setTimeout(function() {
+        this.inactivityTimeoutId = window.setTimeout(function() {
             that.setVisible(false);
         }, time);
     },
 
 
     stopInactivityTimeout: function() {
-        clearTimeout(this.inactivityTimeoutId);
+        window.clearTimeout(this.inactivityTimeoutId);
     },
 
 
     _eventListener: function() {
-        var that = this;
+        let that = this;
 
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
             that.stopInactivityTimeout();
         });
-
         this.ui.container.addEventListener("mouseleave", function() {
             that.locked = false;
             that.setVisible(false);
         });
-
         this.ui.changeTrackType.addEventListener("click", function() {
             that.toggleChangeType();
         });

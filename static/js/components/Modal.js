@@ -3,22 +3,24 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Modal = function(type, id) {
+let Modal = function(type, id) {
 
-    this.url = null;
+    this.url         = null;
     this.haveButtons = false; // Add cancel and save button when set to true
-    this.isOpen = false;
-    this.id = id;
-    this.editModal = {};
+    this.isOpen      = false;
+    this.id          = id;
+    this.editModal   = {};
 
     switch (type) {
         case "scanLibrary":
             this.url = "utils/modals/scanLibrary";
             break;
+
         case "editMetadata":
             this.url = "utils/modals/editMetadata";
             this.haveButtons = true;
             break;
+
         default:
             new Notification("Can not open modals", "The given modals type doesn't exists");
             break;
@@ -29,7 +31,7 @@ var Modal = function(type, id) {
 Modal.prototype = {
 
     open: function() {
-        var that = this;
+        let that = this;
 
         JSONParsedGetRequest(
             this.url,
@@ -51,9 +53,10 @@ Modal.prototype = {
 
 
     initEditMetadata: function(entriesSelected) {
-        var props = Object.getOwnPropertyNames(entriesSelected);
-        for(var entry in props) {
-            if(entriesSelected[entry] === true) {
+        let props = Object.getOwnPropertyNames(entriesSelected);
+
+        for (let entry in props) {
+            if (entriesSelected[entry] === true) {
                 // TODO : from utils, modify here
                 document.getElementById("trackListContainer").parentNode.removeChild(document.getElementById("trackListContainer"));
                 document.getElementById("inputContainer").className += "inputStandAlone";
@@ -68,7 +71,7 @@ Modal.prototype = {
 
 
     _eventListener: function() {
-	//TODO: Use unique ID
+	    //TODO: Use unique ID
         document.getElementById("cancel").addEventListener("click", this.close);
     },
 
