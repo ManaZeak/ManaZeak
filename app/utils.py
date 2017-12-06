@@ -373,8 +373,8 @@ def generateSimilarTrackJson(selectedTracks):
         data += checkIfNotNoneNumber(track.duration)
         data += ",\"TITLE\":\""
         data += checkIfNotNone(track.title)
-        data += "\",\"COMPOSER\":\""
-        data += checkIfNotNone(track.composer)
+        data += "\",\"PERFORMER\":\""
+        data += checkIfNotNone(track.performer)
         data += "\"},"
     data = data[:-1]
     data += "]"
