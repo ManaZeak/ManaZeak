@@ -3,6 +3,8 @@
  *  TrackInfo class - handle the track info container                                  *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+const TOTAL_SUGGESTIONS_NUMBER = 4;
+
 let TrackInfo = function(container) {
 
     this.inactivityTimeoutId = -1;
@@ -35,13 +37,15 @@ TrackInfo.prototype = {
             suggestionWrapper: document.createElement("DIV"),
             suggestionTitle:   document.createElement("P"),
             suggestionList:    document.createElement("UL"),
-            trackOne:          document.createElement("LI"),
-            trackTwo:          document.createElement("LI"),
-            trackThree:        document.createElement("LI"),
-            trackFour:         document.createElement("LI"),
 
             changeTrackType:   document.createElement("IMG")
         };
+
+        this.ui.tracks = [];
+
+        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+            this.ui.tracks[i] = document.createElement("LI");
+        }
 
         this.ui.container.id         = "trackInfo";
         this.ui.trackWrapper.id      = "trackWrapper";
@@ -54,10 +58,10 @@ TrackInfo.prototype = {
         this.ui.changeTrackType.src  = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
 
         // TODO : entries subClass in here for deaz
-        this.ui.suggestionList.appendChild(this.ui.trackOne);
-        this.ui.suggestionList.appendChild(this.ui.trackTwo);
-        this.ui.suggestionList.appendChild(this.ui.trackThree);
-        this.ui.suggestionList.appendChild(this.ui.trackFour);
+
+        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+            this.ui.suggestionList.appendChild(this.ui.tracks[i]);
+        }
 
         this.ui.trackWrapper.appendChild(this.ui.title);
         this.ui.trackWrapper.appendChild(this.ui.artist);
@@ -117,19 +121,14 @@ TrackInfo.prototype = {
                         track.sampleRate + " Hz";
                     // TODO : add total played and other interesting stats about track
                     that.ui.suggestionTitle.innerHTML = "From the same artist :";
-                    that.ui.trackOne.innerHTML        = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
-                    that.ui.trackTwo.innerHTML        = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
-                    that.ui.trackThree.innerHTML      = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
-                    that.ui.trackFour.innerHTML       = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
 
-                    // TODO : Load track from serv
-                    that.getSuggestionTracks(track);
-
+                    that.updateSuggestion(track);
                     callback();
                 }
             }
         );
     },
+
 
     setVisible: function(visible) {
         if (this.locked === true) {
@@ -181,12 +180,12 @@ TrackInfo.prototype = {
     },
 
 
-    getSuggestionTracks: function(track) {
+    updateSuggestion: function(track) {
         let that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimilarTrack/",
-            JSON.stringify({
+            JSON.stringify({ // TODO : send total_ to avoid oob
                 TRACK_ID: track.id.track,
                 MODE:     this.trackSuggestionMode
             }),
@@ -194,7 +193,9 @@ TrackInfo.prototype = {
                 if (response.RESULT === "FAIL") {
                     new Notification("Bad format.", response.ERROR);
                 } else {
-                    console.log("Roxi");
+                    for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].performer;
+                    }
                 }
             }
         );
