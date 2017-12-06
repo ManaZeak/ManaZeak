@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, Stats
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, Stats, Data
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, \
     getUserNbTrackListened, getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, getUserPrefArtist, \
     userNeverPlayed
@@ -424,30 +424,25 @@ def adminGetUserStats(request):
     if request.method == 'POST':
         response = json.loads(request.body)
     user = request.user
+    data = []
     if user.is_superuser:
         for users in User.objects.all():
-            if Stats.objects.filter(user=users):
-                nbTrackListened = getUserNbTrackListened(users)
-                nbTrackPushed = getUserNbTrackPushed(users)
-                userGenre = getUserGenre(users)
-                userGenrePercentage = getUserGenrePercentage(users)
-                prefArtists = getUserPrefArtist(users)
-                neverPlayed = userNeverPlayed(user)
+            temp = {
+                'USER': users.username,
+                'PREF_ARTIST': getUserPrefArtist(users),
+                'NB_TRACK_LISTENED': getUserNbTrackListened(users),
+                'NB_TRACK_PUSHED': getUserNbTrackPushed(users),
+                'USER_GENRE': getUserGenre(users),
+                'USER_GENRE_PERCENTAGE': getUserGenrePercentage(users),
+                'NEVER_PLAYED': userNeverPlayed(users),
+            }
 
-                data = {
-                        'USER': users.id,
-                        'PREF_ARTIST': prefArtists[:100],
-                        'NB_TRACK_LISTENED': nbTrackListened,
-                        'NB_TRACK_PUSHED': nbTrackPushed,
-                        'USER_GENRE': userGenre,
-                        'USER_GENRE_PERCENTAGE': userGenrePercentage,
-                        'NEVER_PLAYED': neverPlayed,
-                }
-                return JsonResponse(data)
-            else:
-                return JsonResponse(errorCheckMessage(False, "doesNotExist"))
+            data.append(temp)
+
+        return JsonResponse(data, safe=False)
     else:
         return JsonResponse(errorCheckMessage(False, "unauthorized"))
+
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
