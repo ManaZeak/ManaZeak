@@ -4,19 +4,27 @@
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 const TOTAL_SUGGESTIONS_NUMBER = 4;
+const TOTAL_SUGGESTIONS_MODES  = 3; // 0 = By Artists, 1 = By Album, 2 = By Genre
 
 let TrackInfo = function(container) {
 
-    this.inactivityTimeoutId = -1;
-    this.trackSuggestionMode = 0; // 0 = By Artists, 1 = By Album, 2 = By Genre
+    this.inactivityTimeoutId = -1; // TODO : use -1 cases in test to avoid errors
+    this.trackSuggestionMode = -1;
     this.locked = false;
 
     this._createUI(container);
+
+    this._init();
     this._eventListener();
 };
 
 
 TrackInfo.prototype = {
+
+    _init: function() {
+        this.updateSuggestionMode(0); // TODO : store this in cookies and use it, keep 0 by default
+    },
+
 
     _createUI: function(container) {
         this.ui = {
@@ -120,10 +128,59 @@ TrackInfo.prototype = {
                         Math.round(track.bitRate / 1000) + " kbps - " +
                         track.sampleRate + " Hz";
                     // TODO : add total played and other interesting stats about track
-                    that.ui.suggestionTitle.innerHTML = "From the same artist :";
-
-                    that.updateSuggestion(track);
+                    that.updateSuggestionMode();
+                    that.updateSuggestionTracks(track);
                     callback();
+                }
+            }
+        );
+    },
+
+
+    updateSuggestionMode: function() {
+        this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;
+
+        // TODO : ask tracks from server and build list
+        switch (this.trackSuggestionMode) {
+            case 0:
+                this.ui.suggestionTitle.innerHTML = "From the same artist :";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/artist.svg";
+                break;
+
+            case 1:
+                this.ui.suggestionTitle.innerHTML = "From the same album :";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/album.svg";
+                break;
+
+            case 2:
+                this.ui.suggestionTitle.innerHTML = "From the same genre :";
+                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/genre.svg";
+                break;
+
+            default:
+                // TODO : Switch default event
+                break;
+        }
+    },
+
+
+    updateSuggestionTracks: function(track) {
+        let that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getSimilarTrack/",
+            JSON.stringify({ // TODO : send total_ to avoid oob
+                TRACK_ID: track.id.track,
+                MODE:     this.trackSuggestionMode
+            }),
+            function(response) {
+                if (response.RESULT === "FAIL") {
+                    new Notification("Bad format.", response.ERROR);
+                } else {
+                    console.log(response);
+                    for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].performer;
+                    }
                 }
             }
         );
@@ -154,51 +211,8 @@ TrackInfo.prototype = {
 
     toggleChangeType: function() {
         ++this.trackSuggestionMode;
-        this.trackSuggestionMode %= 3;
 
-        // TODO : ask tracks from server and build list
-        switch (this.trackSuggestionMode) {
-            case 0:
-                this.ui.suggestionTitle.innerHTML = "From the same artist :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/artist.svg";
-                break;
-
-            case 1:
-                this.ui.suggestionTitle.innerHTML = "From the same album :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/album.svg";
-                break;
-
-            case 2:
-                this.ui.suggestionTitle.innerHTML = "From the same genre :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/genre.svg";
-                break;
-
-            default:
-                // TODO : Switch default event
-                break;
-        }
-    },
-
-
-    updateSuggestion: function(track) {
-        let that = this;
-
-        JSONParsedPostRequest(
-            "ajax/getSimilarTrack/",
-            JSON.stringify({ // TODO : send total_ to avoid oob
-                TRACK_ID: track.id.track,
-                MODE:     this.trackSuggestionMode
-            }),
-            function(response) {
-                if (response.RESULT === "FAIL") {
-                    new Notification("Bad format.", response.ERROR);
-                } else {
-                    for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].performer;
-                    }
-                }
-            }
-        );
+        this.updateSuggestionMode();
     },
 
 

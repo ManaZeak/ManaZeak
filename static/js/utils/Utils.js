@@ -88,6 +88,18 @@ function getCookies() {
 }
 
 
+function setCookie(cookieKey, cookieValue, expiresDay) {
+    let d = new Date();
+
+    d.setTime(d.getTime() + (expiresDay * 24 * 60 * 60 * 1000));
+
+    let expires = "expires="+ d.toUTCString();
+
+    document.cookie = cookieKey + "=" + cookieValue + ";" + expires + ";path=/";
+}
+
+
+
 function toggleVisibilityLock(object) {
     if(object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
     else                                         { addVisibilityLock(object);    }
