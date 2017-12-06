@@ -36,6 +36,7 @@
         top: 0;
         width: auto;
         max-width: 340px;
+        min-width: 240px;
         margin-top: 26px;
         margin-right: 25px;
         padding-right: 25px;
@@ -63,6 +64,7 @@
 
     #suggestionWrapper {
         max-width: 300px;
+        min-width: 200px;
         width: auto;
         height: auto;
         float: right;
