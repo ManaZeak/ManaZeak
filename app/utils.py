@@ -83,7 +83,12 @@ def processVorbisTag(tag):
 def errorCheckMessage(isDone, error):
     errorTitle = ""
     errorMessage = ""
-    if error == "badFormat":
+
+    if error is None:
+        errorTitle = "null"
+        errorMessage = "null"
+
+    elif error == "badFormat":
         errorTitle = "Wrong format"
         errorMessage = "The server didn't understood what you said."
 
@@ -123,9 +128,9 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Your history is empty"
         errorMessage = "Can't go backward if you never played any song!"
 
-    elif error is None:
-        errorTitle = "null"
-        errorMessage = "null"
+    elif error == "noSameArtist":
+        errorTitle = "No results were found"
+        errorMessage = "Can't find any track by the same artist"
 
     return {
         'DONE': isDone,
@@ -357,6 +362,23 @@ def exportPlaylistToJson(playlist):
     finalData = finalData[:-1]
     finalData += "]"
     return finalData
+
+
+def generateSimilarTrackJson(selectedTracks):
+    data = "["
+    for track in selectedTracks:
+        data += "{\"ID\":"
+        data += checkIfNotNoneNumber(track.id)
+        data += ",\"DURATION\":"
+        data += checkIfNotNoneNumber(track.duration)
+        data += ",\"TITLE\":\""
+        data += checkIfNotNone(track.title)
+        data += "\",\"COMPOSER\":\""
+        data += checkIfNotNone(track.composer)
+        data += "\"},"
+    data = data[:-1]
+    data += "]"
+    return data
 
 
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):

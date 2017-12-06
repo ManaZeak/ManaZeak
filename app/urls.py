@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^ajax/getPlaylistInfo/$', views.getPlaylistInfo, name='getPlaylistInfo'),
     url(r'^ajax/getTrackDetailedInfo/$', views.getTrackDetailedInfo, name='getTrackDetailedInfo'),
     url(r'^ajax/getLastSongPlayed/$', views.getLastSongPlayed, name='getLastSongPlayed'),
+    url(r'^ajax/getSimilarTrack/$', views.getSimilarTrack, name='getSimilarTrack'),
     url(r'^ajax/download/$', views.getDownloadLocation, name='getDownloadLocation'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^utils/modals/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
