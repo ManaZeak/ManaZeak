@@ -10,6 +10,7 @@ let TrackInfo = function(container) {
 
     this.inactivityTimeoutId   = -1; // TODO : use -1 cases in test to avoid errors
     this.trackSuggestionMode   = -1;
+    this.track                 = null;
     this.locked                = false;
 
     this._createUI(container);
@@ -106,6 +107,7 @@ TrackInfo.prototype = {
 
     updateInfo: function(track, callback) {
         let that = this;
+        this.track = track;
 
         JSONParsedPostRequest(
             "ajax/getTrackDetailedInfo/",
@@ -217,6 +219,7 @@ TrackInfo.prototype = {
         ++this.trackSuggestionMode;
 
         this.updateSuggestionMode(this.trackSuggestionMode);
+        this.updateSuggestionTracks(this.track);
     },
 
 
