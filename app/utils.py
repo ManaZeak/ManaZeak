@@ -712,3 +712,4 @@ def userNeverPlayed(user):
 
     #print(len(neverPlayerArtists))
     return neverPlayed
+
