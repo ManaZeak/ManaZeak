@@ -1,5 +1,5 @@
 # ManaZeak
-ManaZeak is a free software that gives you the ability to listen to your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that shares it. 
+ManaZeak is a free software that gives you the ability to listen and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that shares it. 
 
 # Get Started
 In order to make an instance work, run the following commands :
