@@ -606,23 +606,37 @@ def getSimilarTrack(request):
 
                 # Same artist track selection
                 if mode == "0":
-
-                    tracks = Track.objects.filter(artist__in=track.artist.all()).order_by('-playCounter')
-
-                    if len(tracks) < 4:
-                        if len(tracks) == 0:
-                            return JsonResponse(errorCheckMessage(False, "noSameArtist"))
-                        else:
-                            numberTrackTarget = len(tracks)
-
-                    for trackCursor in tracks:
-                        selectedTracks.append(trackCursor)
-                        if len(selectedTracks) == numberTrackTarget:
-                            break
-
+                    tracks = Track.objects.filter(artist__in=track.artist.all()).exclude(id=track.id).order_by('-playCounter')
                 # Same genre track selection
-                elif mode == 1:
-                    pass
+                elif mode == "1":
+                    tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
+                # Same album track selection
+                elif mode == "2":
+                    tracks = Track.objects.filter(album=track.album).exclude(id=track.id).order_by('-playCounter')
+                # Other values
+                else:
+                    return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+                # Check length of the query set
+                if len(tracks) < 4:
+                    if len(tracks) == 0:
+                        return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                    else:
+                        numberTrackTarget = len(tracks)
+
+                # Choosing the X most listened tracks
+                for trackCursor in tracks:
+                    selectedTracks.append(trackCursor)
+                    if len(selectedTracks) == numberTrackTarget:
+                        break
+
                 # Returning results
                 print(generateSimilarTrackJson(selectedTracks))
                 return HttpResponse(generateSimilarTrackJson(selectedTracks), content_type="application/json")
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return data
