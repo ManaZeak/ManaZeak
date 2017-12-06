@@ -56,8 +56,8 @@ TrackPreview.prototype = {
         this.ui.cover.id               = "trackPreviewCover";
         this.ui.thumb.id               = "trackPreviewThumb";
         this.ui.thumbTooltip.className = "tooltipTrackCover";
-        this.ui.cover.src              = "../static/img/utils/defaultcover.svg";
-        this.ui.thumb.src              = "../static/img/utils/defaultcover.svg";
+        this.ui.cover.src              = "/static/img/utils/defaultcover.svg";
+        this.ui.thumb.src              = "/static/img/utils/defaultcover.svg";
 
         this.ui.title.id               = "trackPreviewTitle";
         this.ui.artist.id              = "trackPreviewArtist";
