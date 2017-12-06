@@ -439,7 +439,7 @@ def adminGetUserStats(request):
 
             data.append(temp)
 
-        return JsonResponse(data, safe=False)
+        return JsonResponse(dict({'mydata': data}))
     else:
         return JsonResponse(errorCheckMessage(False, "unauthorized"))
 
