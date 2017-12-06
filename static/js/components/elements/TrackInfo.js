@@ -113,8 +113,8 @@ TrackInfo.prototype = {
                     that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
                     that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
                                                         track.fileType + " - " +
-                                                        Math.round(track.bitRate / 1000) + "kbps - " +
-                                                        track.sampleRate + "Hz";
+                                                        Math.round(track.bitRate / 1000) + " kbps - " +
+                                                        track.sampleRate + " Hz";
                                                         // TODO : add total played and other interesting stats about track
                     that.ui.suggestionTitle.innerHTML = "From the same artist :";
                     that.ui.trackOne.innerHTML        = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
