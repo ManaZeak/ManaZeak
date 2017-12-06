@@ -604,14 +604,17 @@ def getSimilarTrack(request):
                 mode = strip_tags(response['MODE'])
                 numberTrackTarget = 4
 
+                print(type(mode))
+
                 # Same artist track selection
-                if mode == "0":
-                    tracks = Track.objects.filter(artist__in=track.artist.all()).exclude(id=track.id).order_by('-playCounter')
+                if mode == '0':
+                    tracks = Track.objects.filter(artist__in=track.artist.all()).exclude(id=track.id)\
+                        .order_by('-playCounter')
                 # Same genre track selection
-                elif mode == "1":
+                elif mode == '1':
                     tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
                 # Same album track selection
-                elif mode == "2":
+                elif mode == '2':
                     tracks = Track.objects.filter(album=track.album).exclude(id=track.id).order_by('-playCounter')
                 # Other values
                 else:
@@ -631,7 +634,6 @@ def getSimilarTrack(request):
                         break
 
                 # Returning results
-                print(generateSimilarTrackJson(selectedTracks))
                 return HttpResponse(generateSimilarTrackJson(selectedTracks), content_type="application/json")
             else:
                 data = errorCheckMessage(False, "dbError")
