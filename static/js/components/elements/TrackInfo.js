@@ -219,7 +219,7 @@ TrackInfo.prototype = {
         this.ui.changeSuggestionType.addEventListener("click", function() {
             that._toggleChangeType();
         });
-    }
+    },
 
 
     /**
@@ -343,5 +343,5 @@ TrackInfo.prototype = {
                 }
             );
         }
-    },
+    }
 };

@@ -78,9 +78,7 @@ function getCookies() {
         document.cookie.split(';').forEach(function (cookie) {
             let m = cookie.trim().match(/(\w+)=(.*)/);
 
-            if (m !== undefined) {
-                cookies[m[1]] = decodeURIComponent(m[2]);
-            }
+            if (m !== undefined) { cookies[m[1]] = decodeURIComponent(m[2]); }
         });
     }
 
