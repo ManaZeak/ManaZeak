@@ -441,7 +441,7 @@ def adminGetUserStats(request):
 
         return JsonResponse(dict({'mydata': data}))
     else:
-        return JsonResponse(errorCheckMessage(False, "unauthorized"))
+        return JsonResponse(errorCheckMessage(False, "permissionError"))
 
 
 

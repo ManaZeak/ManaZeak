@@ -95,11 +95,3 @@ class PlaylistSettings(models.Model):
     repeatEnabled = models.IntegerField(default=0)
     viewMode = models.IntegerField()
 
-class Data(models.Model):
-    user = models.CharField(max_length=1000, unique=True, null=True)
-    prefArtist = ArrayField(models.CharField(max_length=1000), size=100)
-    nbTrackListened = models.IntegerField(null=True)
-    nbTrackPushed = models.IntegerField(null=True)
-    userGenre = models.IntegerField(null=True)
-    userGenrePercentage = models.IntegerField(null=True)
-    neverPlayed = ArrayField(models.CharField(max_length=1000), size=100)
