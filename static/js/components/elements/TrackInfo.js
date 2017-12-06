@@ -54,12 +54,6 @@ TrackInfo.prototype = {
             changeTrackType:   document.createElement("IMG")
         };
 
-        this.ui.tracks = [];
-
-        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-            this.ui.tracks[i] = document.createElement("LI");
-        }
-
         this.ui.container.id         = "trackInfo";
         this.ui.trackWrapper.id      = "trackWrapper";
         this.ui.title.id             = "title";
@@ -70,10 +64,12 @@ TrackInfo.prototype = {
         this.ui.suggestionTitle.id   = "title";
         this.ui.changeTrackType.src  = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
 
+        this.tracks = [];
+        this.initTracksArray();
         // TODO : entries subClass in here for deaz
-
         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-            this.ui.suggestionList.appendChild(this.ui.tracks[i]);
+            this.tracks[i].ui = document.createElement("LI");
+            this.ui.suggestionList.appendChild(this.tracks[i].ui);
         }
 
         this.ui.trackWrapper.appendChild(this.ui.title);
@@ -97,6 +93,18 @@ TrackInfo.prototype = {
         container.appendChild(this.ui.container);
     },
 
+    initTracksArray: function() {
+        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+            this.tracks[i] = {
+                ui:        null,
+                id:        null,
+                duration:  null,
+                title:     null,
+                performer: null
+            };
+        }
+    },
+
     updateGeometry: function(rect, offset) {
         this.ui.container.style.top    = (rect.top - 24) + "px";
         this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
@@ -107,7 +115,6 @@ TrackInfo.prototype = {
 
     updateInfo: function(track, callback) {
         let that = this;
-        this.track = track;
 
         JSONParsedPostRequest(
             "ajax/getTrackDetailedInfo/",
@@ -119,6 +126,7 @@ TrackInfo.prototype = {
                     new Notification("Bad format.", response.ERROR);
                 } else {
                     track.updateMetadata(response);
+                    that.track = track;
 
                     that.ui.cover.src                 = track.cover;
                     that.ui.title.innerHTML           = track.title;
@@ -133,9 +141,11 @@ TrackInfo.prototype = {
                         track.fileType + " - " +
                         Math.round(track.bitRate / 1000) + " kbps - " +
                         track.sampleRate + " Hz";
+
                     // TODO : add total played and other interesting stats about track
-                    that.updateSuggestionMode(that.trackSuggestionMode);
-                    that.updateSuggestionTracks(track);
+                    that.updateSuggestionMode();
+                    that.updateSuggestionTracks();
+
                     callback();
                 }
             }
@@ -144,10 +154,11 @@ TrackInfo.prototype = {
 
 
     updateSuggestionMode: function(value) {
-        this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES;
+        if (value) { this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES; }
+        else       { this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;        }
+
         setCookie("TRACK_INFO_SUGGESTION_MODE", this.trackSuggestionMode, 20);
 
-        // TODO : ask tracks from server and build list
         switch (this.trackSuggestionMode) {
             case 0:
                 this.ui.suggestionTitle.innerHTML = "From the same artist :";
@@ -171,21 +182,28 @@ TrackInfo.prototype = {
     },
 
 
-    updateSuggestionTracks: function(track) {
+    updateSuggestionTracks: function() {
         let that = this;
 
         JSONParsedPostRequest(
             "ajax/getSimilarTrack/",
             JSON.stringify({ // TODO : send total_ to avoid oob
-                TRACK_ID: track.id.track,
+                TRACK_ID: this.track.id.track,
                 MODE:     this.trackSuggestionMode
             }),
             function(response) {
-                if (response.RESULT === "FAIL") {
+                if (response.DONE === "FAIL") {
                     new Notification("Bad format.", response.ERROR);
                 } else {
                     for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].PERFORMER;
+                        that.tracks[i].id        = response[i].ID;
+                        that.tracks[i].duration  = response[i].DURATION;
+                        that.tracks[i].title     = response[i].TITLE;
+                        that.tracks[i].performer = response[i].PERFORMER;
+
+                        that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
+                                                      that.tracks[i].title + "<br>" +
+                                                      that.tracks[i].performer;
                     }
                 }
             }
