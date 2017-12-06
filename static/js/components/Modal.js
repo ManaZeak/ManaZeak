@@ -22,7 +22,7 @@ let Modal = function(type, id) {
             break;
 
         default:
-            new Notification("Can not open modals", "The given modals type doesn't exists");
+            new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
             break;
     }
 };

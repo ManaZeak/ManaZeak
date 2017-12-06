@@ -6,7 +6,7 @@
  *  message : string - Message to put in notification content                          *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Notification = function(title, message) {
+let Notification = function(type, title, message) {
     this.notification = null;
     this.ui = {
         icon:           null,
@@ -19,18 +19,20 @@ let Notification = function(title, message) {
     this.interval = 1;    // Refreshing interval
 
     // TODO : test incoming var ...
+    this.type = type;
     this.title   = title;
     this.message = message;
 
     // TODO : create notifController class, restyle notif
-    this._init();
+    this._createUI();
+
+    this._lifeCycle();
 };
 
 
 Notification.prototype = {
 
-    // Create notification skeleton
-    _init: function() {
+    _createUI: function() {
         this.notification = document.createElement("div");
         this.ui.icon      = document.createElement("img");
         this.ui.title     = document.createElement("p");
@@ -39,11 +41,23 @@ Notification.prototype = {
 
         this.notification.className = "notificationContainer";
         this.ui.icon.className      = "icon";
-        this.ui.title.className     = "title2";
+        this.ui.title.className     = "title";
         this.ui.message.className   = "message";
         this.ui.close.className     = "close";
-        this.ui.icon.src            = "../static/img/info.svg";
-        this.ui.close.src           = "../static/img/close.svg";
+
+        switch (this.type) {
+            case "INFO":
+                this.ui.icon.src  = "/static/img/utils/notification/info.svg";
+                break;
+            case "ERROR":
+                this.ui.icon.src  = "/static/img/utils/notification/error.svg";
+                break;
+            default:
+                this.ui.icon.src  = "/static/img/utils/notification/error.svg";
+                break;
+        }
+
+        this.ui.close.src         = "/static/img/utils/notification/close.svg";
 
         this.ui.title.innerHTML   = this.title;
         this.ui.message.innerHTML = this.message;
@@ -52,8 +66,6 @@ Notification.prototype = {
         this.notification.appendChild(this.ui.title);
         this.notification.appendChild(this.ui.message);
         this.notification.appendChild(this.ui.close);
-
-        this._lifeCycle();
     },
 
 

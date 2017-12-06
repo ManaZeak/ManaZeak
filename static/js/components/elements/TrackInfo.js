@@ -1,36 +1,134 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  TrackInfo class - handle the track info container                                  *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-const TOTAL_SUGGESTIONS_NUMBER = 4;
-const TOTAL_SUGGESTIONS_MODES  = 3; // 0 = By Artists, 1 = By Album, 2 = By Genre
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  TrackInfo class                                *
+ *                                                 *
+ *  Handle track information and suggests tracks,  *
+ *  triggered on hover over a view entry           *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+const TOTAL_SUGGESTIONS_NUMBER = 4; // Number of track to display in suggested tracks
+const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSuggestionMode in constructor)
 
 let TrackInfo = function(container) {
 
-    this.inactivityTimeoutId   = -1; // TODO : use -1 cases in test to avoid errors
-    this.trackSuggestionMode   = -1;
-    this.track                 = null;
-    this.locked                = false;
+    this.inactivityTimeoutId   = -1;    // ID for the inactivity timeout
+    this.trackSuggestionMode   = 0;     // 0: By Artists / 1: By Album / 2: By Genre
+    this.track                 = null;  // Track that triggered TrackInfo in view
+    this.locked                = false; // TrackInfo lock status
 
     this._createUI(container);
-
     this._init();
-    this._eventListener();
 };
 
 
 TrackInfo.prototype = {
 
-    _init: function() {
-        let cookies = getCookies();
 
-        if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 &&
-            cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) { this.updateSuggestionMode(cookies.TRACK_INFO_SUGGESTION_MODE); }
-        else                                                              { this.updateSuggestionMode(0);                                  }
+//  --------------------------------  PUBLIC METHODS  --------------------------------  //
+
+
+    /**
+     * method : setVisible (public)
+     * class  : TrackInfo
+     * desc   : Set TrackInfo visibility. Must be fired in updateInfo() callback
+     * arg    : {bool} visible - The visibility status to set
+     **/
+    setVisible: function(visible) {
+        if (this.locked === true) {
+            return;
+        }
+
+        if (visible === true) {
+            this.ui.container.style.opacity = 1;
+            this.ui.container.style.zIndex = 0;
+
+            this._startInactivityTimeout(5000);  // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
+        }
+
+        else {
+            let that = this;
+
+            this.ui.container.style.opacity = 0;
+
+            window.setTimeout(function() {
+                that.ui.container.style.zIndex = -1;
+            }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
+        }
     },
 
 
+    /**
+     * method : updateGeometry (public)
+     * class  : TrackInfo
+     * desc   : Set the new position of the TrackInfo container depending on the targeted entry's boundingRect.
+     * arg    : {object} rect - The view entry boundingRect
+     *          {int}  offset - The left offset to open TrackInfo with
+     **/
+    updateGeometry: function(rect, offset) {
+        this.ui.container.style.top    = (rect.top - 24) + "px";
+        this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
+        this.ui.container.style.height = "200px";
+        this.ui.container.style.width  = "auto";
+    },
+
+
+    /**
+     * method : updateInfo (public)
+     * class  : TrackInfo
+     * desc   : Update all elements in TrackInfo container and fetch suggested track according to the given track
+     * arg    : {object}      track - The Track object that will be used for the update
+     *          {function} callback - The function to callback (not mandatory)
+     **/
+    updateInfo: function(track, callback) {
+        let that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getTrackDetailedInfo/",
+            JSON.stringify({
+                TRACK_ID: track.id.track
+            }),
+            function(response) {
+                if (response.RESULT === "FAIL") {
+                    new Notification("ERROR", "Bad format.", response.ERROR);
+                } else {
+                    track.updateMetadata(response);
+                    that.track = track;
+
+                    that.ui.cover.src                 = track.cover;
+                    that.ui.title.innerHTML           = track.title;
+                    that.ui.artist.innerHTML          = track.artist;
+                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
+                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
+                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
+                    that.ui.album.innerHTML           = track.year + " - " + track.album;
+                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                        track.fileType + " - " +
+                        Math.round(track.bitRate / 1000) + " kbps - " +
+                        track.sampleRate + " Hz";
+
+                    // TODO : add total played and other interesting stats about track
+                    that._updateSuggestionMode();
+                    that._updateSuggestionTracks();
+
+                    if (callback) { callback(); }
+                }
+            }
+        );
+    },
+
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+
+    /**
+     * method : _createUI (private)
+     * class  : TrackInfo
+     * desc   : Build and append UI elements to parent
+     * arg    : {object} container - The TrackInfo parent
+     **/
     _createUI: function(container) {
         this.ui = {
             container:         document.createElement("DIV"),
@@ -51,7 +149,7 @@ TrackInfo.prototype = {
             suggestionTitle:   document.createElement("P"),
             suggestionList:    document.createElement("UL"),
 
-            changeTrackType:   document.createElement("IMG")
+            changeSuggestionType:   document.createElement("IMG")
         };
 
         this.ui.container.id         = "trackInfo";
@@ -62,12 +160,20 @@ TrackInfo.prototype = {
         this.ui.genre.id             = "album";
         this.ui.suggestionWrapper.id = "suggestionWrapper";
         this.ui.suggestionTitle.id   = "title";
-        this.ui.changeTrackType.src  = "/static/img/utils/trackinfo/artist.svg"; // Get from cookies mode
+        this.ui.changeSuggestionType.src  = "";
 
         this.tracks = [];
-        this.initTracksArray();
+
         // TODO : entries subClass in here for deaz
         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+            this.tracks[i] = {
+                ui:        null,
+                id:        null,
+                duration:  null,
+                title:     null,
+                performer: null
+            };
+
             this.tracks[i].ui = document.createElement("LI");
             this.ui.suggestionList.appendChild(this.tracks[i].ui);
         }
@@ -83,7 +189,7 @@ TrackInfo.prototype = {
 
         this.ui.suggestionWrapper.appendChild(this.ui.suggestionTitle);
         this.ui.suggestionWrapper.appendChild(this.ui.suggestionList);
-        this.ui.suggestionWrapper.appendChild(this.ui.changeTrackType);
+        this.ui.suggestionWrapper.appendChild(this.ui.changeSuggestionType);
 
         this.ui.container.appendChild(this.ui.cover);
         this.ui.container.appendChild(this.ui.numbers);
@@ -93,155 +199,52 @@ TrackInfo.prototype = {
         container.appendChild(this.ui.container);
     },
 
-    initTracksArray: function() {
-        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-            this.tracks[i] = {
-                ui:        null,
-                id:        null,
-                duration:  null,
-                title:     null,
-                performer: null
-            };
-        }
-    },
 
-    updateGeometry: function(rect, offset) {
-        this.ui.container.style.top    = (rect.top - 24) + "px";
-        this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
-        this.ui.container.style.height = "200px";
-        this.ui.container.style.width  = "auto";
-    },
-
-
-    updateInfo: function(track, callback) {
+    /**
+     * method : _eventListener (private)
+     * class  : TrackInfo
+     * desc   : TrackInfo event listeners
+     **/
+    _eventListener: function() {
         let that = this;
 
-        JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo/",
-            JSON.stringify({
-                TRACK_ID: track.id.track
-            }),
-            function(response) {
-                if (response.RESULT === "FAIL") {
-                    new Notification("Bad format.", response.ERROR);
-                } else {
-                    track.updateMetadata(response);
-                    that.track = track;
+        this.ui.container.addEventListener("mouseenter", function() {
+            that.locked = true;
+            that._stopInactivityTimeout();
+        });
+        this.ui.container.addEventListener("mouseleave", function() {
+            that.locked = false;
+            that.setVisible(false);
+        });
+        this.ui.changeSuggestionType.addEventListener("click", function() {
+            that._toggleChangeType();
+        });
+    }
 
-                    that.ui.cover.src                 = track.cover;
-                    that.ui.title.innerHTML           = track.title;
-                    that.ui.artist.innerHTML          = track.artist;
-                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
-                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
-                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
-                    that.ui.album.innerHTML           = track.year + " - " + track.album;
-                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                        track.fileType + " - " +
-                        Math.round(track.bitRate / 1000) + " kbps - " +
-                        track.sampleRate + " Hz";
 
-                    // TODO : add total played and other interesting stats about track
-                    that.updateSuggestionMode();
-                    that.updateSuggestionTracks();
+    /**
+     * method : _init (private)
+     * class  : TrackInfo
+     * desc   : Init suggestions from cookies and add listeners on UI elements
+     **/
+    _init: function() {
+        let cookies = getCookies();
 
-                    callback();
-                }
-            }
-        );
+        if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 &&
+            cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) { this._updateSuggestionMode(cookies.TRACK_INFO_SUGGESTION_MODE); }
+        else                                                              { this._updateSuggestionMode(0);                                  }
+
+        this._eventListener();
     },
 
 
-    updateSuggestionMode: function(value) {
-        if (value) { this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES; }
-        else       { this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;        }
-
-        setCookie("TRACK_INFO_SUGGESTION_MODE", this.trackSuggestionMode, 20);
-
-        switch (this.trackSuggestionMode) {
-            case 0:
-                this.ui.suggestionTitle.innerHTML = "From the same artist :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/artist.svg";
-                break;
-
-            case 1:
-                this.ui.suggestionTitle.innerHTML = "From the same album :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/album.svg";
-                break;
-
-            case 2:
-                this.ui.suggestionTitle.innerHTML = "From the same genre :";
-                this.ui.changeTrackType.src       = "/static/img/utils/trackinfo/genre.svg";
-                break;
-
-            default:
-                // TODO : Switch default event
-                break;
-        }
-    },
-
-
-    updateSuggestionTracks: function() {
-        let that = this;
-
-        JSONParsedPostRequest(
-            "ajax/getSimilarTrack/",
-            JSON.stringify({ // TODO : send total_ to avoid oob
-                TRACK_ID: this.track.id.track,
-                MODE:     this.trackSuggestionMode
-            }),
-            function(response) {
-                if (response.DONE === "FAIL") {
-                    new Notification("Bad format.", response.ERROR);
-                } else {
-                    for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                        that.tracks[i].id        = response[i].ID;
-                        that.tracks[i].duration  = response[i].DURATION;
-                        that.tracks[i].title     = response[i].TITLE;
-                        that.tracks[i].performer = response[i].PERFORMER;
-
-                        that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
-                                                      that.tracks[i].title + "<br>" +
-                                                      that.tracks[i].performer;
-                    }
-                }
-            }
-        );
-    },
-
-
-    setVisible: function(visible) {
-        if (this.locked === true) {
-            return;
-        }
-
-        if (visible === true) {
-            this.ui.container.style.opacity = 1;
-            this.ui.container.style.zIndex = 0;
-            this.startInactivityTimeout(3000);  // If mouse doesn't move for 3 seconds outside the TrackInfo container, it's closed.
-        }
-
-        else {
-            let that = this;
-
-            this.ui.container.style.opacity = 0;
-            window.setTimeout(function() {
-                that.ui.container.style.zIndex = -1;
-            }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
-        }
-    },
-
-
-    toggleChangeType: function() {
-        ++this.trackSuggestionMode;
-
-        this.updateSuggestionMode(this.trackSuggestionMode);
-        this.updateSuggestionTracks(this.track);
-    },
-
-
-    startInactivityTimeout: function(time) {
+    /**
+     * method : _startInactivityTimeout (private)
+     * class  : TrackInfo
+     * desc   : Starts a timeout to make TrackInfo invisible after a given amount of time if not canceled by _stopInactivityTimeout
+     * arg    : {bool} visible - TrackInfo visibility status to set
+     **/
+    _startInactivityTimeout: function(time) {
         let that = this;
 
         this.inactivityTimeoutId = window.setTimeout(function() {
@@ -250,24 +253,95 @@ TrackInfo.prototype = {
     },
 
 
-    stopInactivityTimeout: function() {
-        window.clearTimeout(this.inactivityTimeoutId);
+    /**
+     * method : _stopInactivityTimeout (private)
+     * class  : TrackInfo
+     * desc   : Stops the inactivity timeout
+     **/
+    _stopInactivityTimeout: function() {
+        if (this.inactivityTimeoutId !== -1) { window.clearTimeout(this.inactivityTimeoutId); }
+    },
+
+    /**
+     * method : _toggleChangeType (private)
+     * class  : TrackInfo
+     * desc   : Event from changeSuggestionType attribute clicked to change suggestion mode
+     **/
+    _toggleChangeType: function() {
+        ++this.trackSuggestionMode;
+
+        this._updateSuggestionMode();
+        this._updateSuggestionTracks();
     },
 
 
-    _eventListener: function() {
+    /**
+     * method : _updateSuggestionMode (private)
+     * class  : TrackInfo
+     * desc   : Update the suggestion UI title and icon elements according to the trackSuggestionMode attribute
+     * arg    : {int} value - The set value (not mandatory)
+     **/
+    _updateSuggestionMode: function(value) {
+        if (value) { this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES; }
+        else       { this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;        }
+
+        setCookie("TRACK_INFO_SUGGESTION_MODE", this.trackSuggestionMode, 20);
+
+        switch (this.trackSuggestionMode) {
+            case 0:
+                this.ui.suggestionTitle.innerHTML = "From the same artist :";
+                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/artist.svg";
+                break;
+
+            case 1:
+                this.ui.suggestionTitle.innerHTML = "From the same album :";
+                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/album.svg";
+                break;
+
+            case 2:
+                this.ui.suggestionTitle.innerHTML = "From the same genre :";
+                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/genre.svg";
+                break;
+
+            default:
+                new Notification("ERROR", "Track Info suggestion error.", "The suggestion mode value is beyond its bounds.");
+                break;
+        }
+    },
+
+
+    /**
+     * method : _updateSuggestionTracks (private)
+     * class  : TrackInfo
+     * desc   : Fetch suggested tracks depending on trackSuggestionMode attribute and update UI
+     **/
+    _updateSuggestionTracks: function() {
         let that = this;
 
-        this.ui.container.addEventListener("mouseenter", function() {
-            that.locked = true;
-            that.stopInactivityTimeout();
-        });
-        this.ui.container.addEventListener("mouseleave", function() {
-            that.locked = false;
-            that.setVisible(false);
-        });
-        this.ui.changeTrackType.addEventListener("click", function() {
-            that.toggleChangeType();
-        });
-    }
+        if (this.track !== null) {
+            JSONParsedPostRequest(
+                "ajax/getSimilarTrack/",
+                JSON.stringify({ // TODO : send total_ to avoid oob
+                    TRACK_ID: this.track.id.track,
+                    MODE:     this.trackSuggestionMode
+                }),
+                function(response) {
+                    if (response.DONE === "FAIL") {
+                        new Notification("ERROR", "Bad format.", response.ERROR);
+                    } else {
+                        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+                            that.tracks[i].id        = response[i].ID;
+                            that.tracks[i].duration  = response[i].DURATION;
+                            that.tracks[i].title     = response[i].TITLE;
+                            that.tracks[i].performer = response[i].PERFORMER;
+
+                            that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
+                                that.tracks[i].title + "<br>" +
+                                that.tracks[i].performer;
+                        }
+                    }
+                }
+            );
+        }
+    },
 };
