@@ -95,7 +95,7 @@ App.prototype.changeTrack = function(track, previous) {
         }),
         function(response) {
             if (response.RESULT === "FAIL") {
-                new Notification("Bad format.", response.ERROR);
+                new Notification("ERROR", "Bad format.", response.ERROR);
             }
 
             else {

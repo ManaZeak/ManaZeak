@@ -7,14 +7,13 @@
     width: 350px;
     height: 100px;
     z-index: 999;
-    background-color: aqua;
+    background-color: $primary-color;
     opacity: 0;
-    border: solid 1px #777;
+    border: solid 1px $dark-primary-color;
     border-radius: 1px;
 }
 
 .icon {
-    color: #777;
     position: absolute;
     left: 12.5px;
     top: 12.5px;
@@ -22,8 +21,8 @@
     height: 25px;
 }
 
-.title2 {
-    color: #777;
+.title {
+    color: $primary-text;
     position: absolute;
     left: 50px;
     width: calc(100% - 70px);
@@ -38,7 +37,7 @@
 }
 
 .message {
-    color: #777;
+    color: $primary-text;
     position: absolute;
     left: 50px;
     bottom: 0;

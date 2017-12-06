@@ -114,18 +114,18 @@ Playlist.prototype = {
         else {
             if (this.ui.name.value !== '') {
                 this.ui.path.style.border = "solid 1px red";
-                new Notification("Path field is empty.", "You must specify the path of your library.");
+                new Notification("INFO", "Path field is empty.", "You must specify the path of your library.");
             }
 
             else if (this.ui.path.value !== '') {
                 this.ui.name.style.border = "solid 1px red";
-                new Notification("Name field is empty.", "You must give your library a name.");
+                new Notification("INFO", "Name field is empty.", "You must give your library a name.");
             }
 
             else {
                 this.ui.path.style.border = "solid 1px red";
                 this.ui.name.style.border = "solid 1px red";
-                new Notification("Both fields are empty.", "You must fill both fields to create a new library.");
+                new Notification("INFO", "Both fields are empty.", "You must fill both fields to create a new library.");
             }
         }
     },
@@ -157,7 +157,7 @@ Playlist.prototype = {
                 }
 
                 else {
-                    new Notification(response.ERROR_H1, response.ERROR_MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -184,7 +184,7 @@ Playlist.prototype = {
                 }
 
                 else {
-                    new Notification(response.ERROR_H1, response.ERROR_MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -241,7 +241,7 @@ Playlist.prototype = {
                 }
                 else if (response.ERROR_H1 === "null") {
                     // TODO : refresh UI to come back to Library/Playlist creation
-                    new Notification(response.ERROR_H1, response.ERROR_MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -368,7 +368,7 @@ Playlist.prototype = {
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
                             window.app.changeTrack(that.currentTrack, true);
                         } else {
-                            new Notification(response.ERROR_H1, response.ERROR_MSG);
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                         }
                     }
                 );
