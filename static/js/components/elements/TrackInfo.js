@@ -112,10 +112,10 @@ TrackInfo.prototype = {
                     that.ui.album.innerHTML           = track.year + " - " + track.album;
                     that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
                     that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                                                        track.fileType + " - " +
-                                                        Math.round(track.bitRate / 1000) + " kbps - " +
-                                                        track.sampleRate + " Hz";
-                                                        // TODO : add total played and other interesting stats about track
+                        track.fileType + " - " +
+                        Math.round(track.bitRate / 1000) + " kbps - " +
+                        track.sampleRate + " Hz";
+                    // TODO : add total played and other interesting stats about track
                     that.ui.suggestionTitle.innerHTML = "From the same artist :";
                     that.ui.trackOne.innerHTML        = "2:08 - Chasing Starslkqjsldkjqlskjlqksjdlkqsjd<br>501 (feat. Eptic)";
                     that.ui.trackTwo.innerHTML        = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
@@ -123,6 +123,8 @@ TrackInfo.prototype = {
                     that.ui.trackFour.innerHTML       = "2:08 - Chasing Stars<br>501 (feat. Eptic)";
 
                     // TODO : Load track from serv
+                    that.getSuggestionTracks(track);
+
                     callback();
                 }
             }
@@ -176,6 +178,26 @@ TrackInfo.prototype = {
                 // TODO : Switch default event
                 break;
         }
+    },
+
+
+    getSuggestionTracks: function(track) {
+        let that = this;
+
+        JSONParsedPostRequest(
+            "ajax/getSimilarTrack/",
+            JSON.stringify({
+                TRACK_ID: track.id.track,
+                MODE:     this.trackSuggestionMode
+            }),
+            function(response) {
+                if (response.RESULT === "FAIL") {
+                    new Notification("Bad format.", response.ERROR);
+                } else {
+                    console.log("Roxi");
+                }
+            }
+        );
     },
 
 
