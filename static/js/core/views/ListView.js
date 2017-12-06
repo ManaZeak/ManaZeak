@@ -3,7 +3,7 @@
  *  ListView class - classical list view                                               *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var ListView = function(data) {
+let ListView = function(data) {
 
     this.listView = null;
     this.entries = [];
@@ -112,14 +112,16 @@ ListView.prototype = {
         //document.getElementById("mainContainer").appendChild(this.header.container);
     },
 
+
     addEntries: function(tracks) {
-        for (var i = 0; i < tracks.length ;++i)
+        for (let i = 0; i < tracks.length; ++i) {
             this.entries.push(new ListViewEntry(tracks[i], this.listView));
+        }
     },
 
 
     getEntryById: function(id) {
-        for (var i = 0; i < this.entries.length; ++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].track.id.track === id) {
                 return this.entries[i].track;
             }
@@ -128,15 +130,16 @@ ListView.prototype = {
 
 
     getNextEntry: function() {
-        for (var i = 0; i < this.entries.length; ++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i + 1) % this.entries.length].track;
             }
         }
     },
 
+
     getPreviousEntry: function() {
-        for (var i = 0; i < this.entries.length; ++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
             }
@@ -145,7 +148,7 @@ ListView.prototype = {
 
 
     isLastEntry: function() {
-        for (var i = 0; i < this.entries.length; ++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 break;
             }
@@ -160,29 +163,30 @@ ListView.prototype = {
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
 
         this.listView.innerHTML = "";
-        for(var i = 0; i < this.entries.length; i++)
+        for (let i = 0; i < this.entries.length; i++) {
             this.entries[i].insert(this.listView);
+        }
         this.contextMenu.reattach();
     },
 
 
     viewClicked: function(event) {
-        var that = this;
-        var target = event.target;
+        let that = this;
+        let target = event.target;
 
-        if (target === this.listView)
-        {
+        if (target === this.listView) {
             this.unSelectAll();
             return true;
         }
 
-        while(target.parentNode !== this.listView)
+        while (target.parentNode !== this.listView) {
             target = target.parentNode;
+        }
 
-        var id = target.dataset.childID;
+        let id = target.dataset.childID;
 
-        //Clicked outside of the entries
-        if(id == undefined) {
+        // Clicked outside of the entries
+        if (id === undefined || id === null) {
             this.unSelectAll();
             return true;
         }
@@ -195,7 +199,7 @@ ListView.prototype = {
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 500);
 
-        var newState = !this.entriesSelected[id];
+        let newState = !this.entriesSelected[id];
 
         if (!event.ctrlKey && newState === true) { this.unSelectAll(); }
 
@@ -205,7 +209,7 @@ ListView.prototype = {
 
 
     setSelected: function(track) {
-        for (var i = 0; i < this.entries.length; ++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
                 this.entries[i].setIsSelected(false);
             }
@@ -218,27 +222,37 @@ ListView.prototype = {
 
     unSelectAll: function() {
         this.entriesSelected = {};
-        for (var i = 0; i < this.entries.length ;++i)
-            if (this.entries[i].getIsSelected())
+
+        for (let i = 0; i < this.entries.length ;++i) {
+            if (this.entries[i].getIsSelected()) {
                 this.entries[i].setIsSelected(false);
+            }
+        }
     },
 
 
     showTrackInfo: function(event) {
-        if(event.target == this.listView)
+        if (event.target == this.listView) {
             return this.trackInfo.setVisible(false);
+        }
 
-        var target = event.target;
-        while(target.dataset.childID == undefined)
+        let target = event.target;
+
+        if (target.dataset.childID === undefined) { return; } // Avoid right click to cause error
+
+        while (target.dataset.childID === undefined) {
             target = target.parentNode;
+        }
 
         if(target != this.hoveredTrack) {
-            this.trackInfo.setVisible(false);
-            clearTimeout(this.hoveredTimeout);
             this.hoveredTrack = target;
-            var that = this;
+            this.trackInfo.setVisible(false);
+            window.clearTimeout(this.hoveredTimeout);
+
+            let that = this;
+
             this.hoveredTimeout = window.setTimeout(function() {
-                var self = that;
+                let self = that;
 
                 that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
                 that.trackInfo.updateInfos(that.entries[that.hoveredTrack.dataset.childID].track, function() {
@@ -250,8 +264,7 @@ ListView.prototype = {
 
 
     _eventListener: function() {
-        var that = this;
-        var open;
+        let that = this;
 
         this.listView.addEventListener('mouseover', this.showTrackInfo.bind(this));
 
@@ -306,50 +319,54 @@ ListView.prototype = {
         });
     },
 
-        _contextMenuSetup: function () {
-            var that = this;
-            var clickedEntry = undefined;
+    _contextMenuSetup: function () {
+        let that = this;
+        let clickedEntry = undefined;
 
-            this.contextMenu = new ContextMenu(this.listView, function(event) {
+        this.contextMenu = new ContextMenu(this.listView, function(event) {
+            clearTimeout(that.hoveredTimeout);
+            that.trackInfo.setVisible(false);
 
-                var target = event.target;
+            let target = event.target;
 
-                while (target.parentNode != null && target.dataset.childID == null) {
-                    target = target.parentNode;
-                }
+            while (target.parentNode != null && target.dataset.childID == null) {
+                target = target.parentNode;
+            }
 
-                if (target.parentNode != null) {
-                    clickedEntry = target.dataset.childID;
-                } else {
-                    clickedEntry = undefined;
-                }
-            });
+            if (target.parentNode != null) {
+                clickedEntry = target.dataset.childID;
+            } else {
+                clickedEntry = undefined;
+            }
+        });
 
-            this.contextMenu.addEntry(null, "Add to Queue", function() {
-                if (clickedEntry !== undefined) {
-                    window.app.pushQueue(that.entries[clickedEntry].track);
-                }
-            });
+        this.contextMenu.addEntry(null, "Add to Queue", function() {
+            if (clickedEntry !== undefined) {
+                window.app.pushQueue(that.entries[clickedEntry].track);
+            }
+        });
 
-            this.contextMenu.addEntry(null, "Download track", function() {
-                if (clickedEntry !== undefined) {
-                    JSONParsedPostRequest(
-                        "ajax/download/",
-                        JSON.stringify({
-                            TRACK_ID: that.entries[clickedEntry].track.id.track
-                        }),
-                        function(response) {
-                            var dl = document.createElement("a");
-                            dl.href = response.PATH;
-                            dl.download = response.PATH.replace(/^.*[\\\/]/, '');
-                            document.body.appendChild(dl);
-                            dl.click();
-                            document.body.removeChild(dl);
-                        }
-                    );
-                }
-            });
-        }
-    };
+        this.contextMenu.addEntry(null, "Download track", function() {
+            if (clickedEntry !== undefined) {
+                JSONParsedPostRequest(
+                    "ajax/download/",
+                    JSON.stringify({
+                        TRACK_ID: that.entries[clickedEntry].track.id.track
+                    }),
+                    function(response) {
+                        let dl = document.createElement("a");
+
+                        dl.href = response.PATH;
+                        dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                        document.body.appendChild(dl);
+                        dl.click();
+                        document.body.removeChild(dl);
+                        dl.remove();
+                    }
+                );
+            }
+        });
+    }
+};
 
 extendClass(View, ListView);
