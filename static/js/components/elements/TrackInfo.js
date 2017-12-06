@@ -8,9 +8,9 @@ const TOTAL_SUGGESTIONS_MODES  = 3; // 0 = By Artists, 1 = By Album, 2 = By Genr
 
 let TrackInfo = function(container) {
 
-    this.inactivityTimeoutId = -1; // TODO : use -1 cases in test to avoid errors
-    this.trackSuggestionMode = -1;
-    this.locked = false;
+    this.inactivityTimeoutId   = -1; // TODO : use -1 cases in test to avoid errors
+    this.trackSuggestionMode   = -1;
+    this.locked                = false;
 
     this._createUI(container);
 
@@ -22,7 +22,11 @@ let TrackInfo = function(container) {
 TrackInfo.prototype = {
 
     _init: function() {
-        this.updateSuggestionMode(0); // TODO : store this in cookies and use it, keep 0 by default
+        let cookies = getCookies();
+
+        if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 &&
+            cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) { this.updateSuggestionMode(cookies.TRACK_INFO_SUGGESTION_MODE); }
+        else                                                              { this.updateSuggestionMode(0);                                  }
     },
 
 
@@ -128,7 +132,7 @@ TrackInfo.prototype = {
                         Math.round(track.bitRate / 1000) + " kbps - " +
                         track.sampleRate + " Hz";
                     // TODO : add total played and other interesting stats about track
-                    that.updateSuggestionMode();
+                    that.updateSuggestionMode(that.trackSuggestionMode);
                     that.updateSuggestionTracks(track);
                     callback();
                 }
@@ -137,8 +141,9 @@ TrackInfo.prototype = {
     },
 
 
-    updateSuggestionMode: function() {
-        this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;
+    updateSuggestionMode: function(value) {
+        this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES;
+        setCookie("TRACK_INFO_SUGGESTION_MODE", this.trackSuggestionMode, 20);
 
         // TODO : ask tracks from server and build list
         switch (this.trackSuggestionMode) {
@@ -177,9 +182,8 @@ TrackInfo.prototype = {
                 if (response.RESULT === "FAIL") {
                     new Notification("Bad format.", response.ERROR);
                 } else {
-                    console.log(response);
                     for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].performer;
+                        that.ui.tracks[i].innerHTML = secondsToTimecode(response[i].DURATION) + " - " + response[i].TITLE + "<br>" + response[i].PERFORMER;
                     }
                 }
             }
@@ -212,7 +216,7 @@ TrackInfo.prototype = {
     toggleChangeType: function() {
         ++this.trackSuggestionMode;
 
-        this.updateSuggestionMode();
+        this.updateSuggestionMode(this.trackSuggestionMode);
     },
 
 

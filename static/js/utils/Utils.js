@@ -95,7 +95,10 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
 
     let expires = "expires="+ d.toUTCString();
 
-    document.cookie = cookieKey + "=" + cookieValue + ";" + expires + ";path=/";
+    document.cookie = cookieKey + "=" +
+                      cookieValue + ";" +
+                      expires +
+                      ";path=/";
 }
 
 
