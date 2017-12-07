@@ -96,6 +96,7 @@ class History(models.Model):
             self.date = timezone.now()
         return super(History, self).save(*args, **kwargs)
 
+
 class UserHistory(models.Model):
     user = models.ForeignKey(User)
     histories = models.ManyToManyField(History)
