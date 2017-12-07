@@ -66,6 +66,7 @@ def dropAllDB(request):
         Playlist.objects.all().delete()
         Library.objects.all().delete()
         Genre.objects.all().delete()
+        Shuffle.objects.all().delete()
         UserHistory.objects.all().delete()
         History.objects.all().delete()
         data = {
@@ -437,7 +438,7 @@ def shuffleNextTrack(request):
             else:
                 shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
                 shuffle.save()
-            track = shuffleSoundSelector(shuffle)
+            track, playlistEnd = shuffleSoundSelector(shuffle)
             shuffle.tracksPlayed.add(track)
             shuffle.save()
             if Track.objects.filter(id=track.id).count() == 1:
@@ -445,6 +446,7 @@ def shuffleNextTrack(request):
                     'TRACK_ID': track.id,
                     'PATH': track.location,
                     'COVER': track.coverLocation,
+                    'END': playlistEnd,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
