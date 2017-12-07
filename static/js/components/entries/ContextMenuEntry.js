@@ -41,7 +41,6 @@ ContextMenuEntry.prototype = {
 
     set_multi_open_submenu: function(allow) {
         this.multi_open_submenu = allow;
-
         return this;
     },
 

@@ -9,13 +9,15 @@ let TopBar = function() {
     this.playlists         = null;
     this.selectedPlaylist  = null;
     this.entries           = [];
-    this.newPlaylistButton = null;
 
-    this.topBar       = document.createElement("div");
-    this.userExpander = document.createElement("div");
-    this.moodbar      = document.createElement("div");
-    this.moodbarThumb = document.createElement("div");
-    this.playlistBar  = document.createElement("div");
+    this.topBar             = document.createElement("div");
+    this.userExpander       = document.createElement("div");
+    this.moodbar            = document.createElement("div");
+    this.moodbarThumb       = document.createElement("div");
+    this.playlistBar        = document.createElement("div");
+    this.newPlaylistButton  = document.createElement("div");
+
+    this.newPlaylistButton.innerText = '+';
 
     this.topBar.id       = "topBar";
     this.userExpander.id = "userExpander";
@@ -27,11 +29,12 @@ let TopBar = function() {
     this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
+    this.playlistBar.appendChild(this.newPlaylistButton);
 
     this.moodbarThumb.isVisible = false;
 
     this.userMenu = new UserMenu(this.userExpander);
-    this.menu     = new NewLibPlayMenu();
+    this.newLibMenu     = null;
 };
 
 
@@ -42,9 +45,9 @@ TopBar.prototype = {
         this.playlists = playlists;
 
         this.addEntries();
-        this.addNewPlaylistButton();
         this.setSelected(selectedPlaylist.id);
         this._eventListener();
+        this._contextMenuSetup();
     },
 
 
@@ -54,9 +57,11 @@ TopBar.prototype = {
 
 
     addEntries: function() {
+        this.playlistBar.removeChild(this.newPlaylistButton);
         for (let i = 0; i < this.playlists.length; ++i) {
             this.addEntry(this.playlists[i]);
         }
+        this.playlistBar.appendChild(this.newPlaylistButton);
     },
 
 
@@ -67,14 +72,6 @@ TopBar.prototype = {
 
         // To the GC, and beyond
         this.entries = [];
-    },
-
-
-    addNewPlaylistButton: function() {
-        this.newPlaylistButton = document.createElement("div");
-        this.newPlaylistButton.innerHTML = "+";
-        this.playlistBar.appendChild(this.newPlaylistButton);
-        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
     },
 
 
@@ -89,11 +86,6 @@ TopBar.prototype = {
     },
 
 
-    newLibPlay: function(e) {
-        this.menu.toggleVisibilityLock(e);
-    },
-
-
     unSelectAll: function() {
         for (let i = 0; i < this.entries.length; ++i) {
 		    this.entries[i].setIsSelected(false);
@@ -102,14 +94,8 @@ TopBar.prototype = {
 
 
     refreshTopBar: function() {
-        if (this.newPlaylistButton) {
-            this.playlistBar.removeChild(this.newPlaylistButton);
-        }
-
-        this.newPlaylistButton.removeEventListener("click", this.newLibPlay.bind(this));
         this.removeEntries();
         this.addEntries();
-        this.addNewPlaylistButton();
         // TODO : set selected to new one
         this.setSelected(this.selectedPlaylist);
     },
@@ -176,6 +162,13 @@ TopBar.prototype = {
     _eventListener: function() {
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
+    },
+
+    _contextMenuSetup: function() {
+        this.newLibMenu = new ContextMenu(this.newPlaylistButton, null, 'click');
+        this.newLibMenu.addEntry(null, 'New Library', function() {
+            window.app.requestNewLibrary();
+        });
     },
 
 
