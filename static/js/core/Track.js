@@ -80,7 +80,5 @@ Track.prototype = {
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
         this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
         this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTIST);
-        console.log(this);
-
     }
 };
