@@ -628,7 +628,12 @@ def getSimilarTrack(request):
                 # Check length of the query set
                 if len(tracks) < 4:
                     if len(tracks) == 0:
-                        return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        if mode == 0:
+                            return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        elif mode == 1:
+                            return JsonResponse(errorCheckMessage(False, "noSameAlbum"))
+                        else:
+                            return JsonResponse(errorCheckMessage(False, "noSameGenre"))
                     else:
                         numberTrackTarget = len(tracks)
 
@@ -639,7 +644,7 @@ def getSimilarTrack(request):
                         break
 
                 # Returning results
-                return HttpResponse(generateSimilarTrackJson(selectedTracks), content_type="application/json")
+                return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

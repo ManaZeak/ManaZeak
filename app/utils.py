@@ -61,7 +61,7 @@ def checkIfNotNone(trackAttribute):
         result = trackAttribute.replace('"', '\\"')
         return result
     else:
-        return "null"
+        return ""
 
 
 # Check if an attribute is existing or not and add "" around it
@@ -69,7 +69,7 @@ def checkIfNotNoneNumber(trackAttribute):
     if trackAttribute is not None:
         return str(trackAttribute)
     else:
-        return "\"null\""
+        return "\"\""
 
 
 def processVorbisTag(tag):
@@ -131,6 +131,14 @@ def errorCheckMessage(isDone, error):
     elif error == "noSameArtist":
         errorTitle = "No results were found"
         errorMessage = "Can't find any track by the same artist"
+
+    elif error == "noSameGenre":
+        errorTitle = "No results were found"
+        errorMessage = "Can't find any track with the same genre"
+
+    elif error == "noSameAlbum":
+        errorTitle = "No results were found"
+        errorMessage = "Can't find any track with the same album"
 
     return {
         'DONE': isDone,
@@ -365,20 +373,17 @@ def exportPlaylistToJson(playlist):
 
 
 def generateSimilarTrackJson(selectedTracks):
-    data = "["
+    if len(selectedTracks) == 0:
+        return None
+    data = []
     for track in selectedTracks:
-        data += "{\"ID\":"
-        data += checkIfNotNoneNumber(track.id)
-        data += ",\"DURATION\":"
-        data += checkIfNotNoneNumber(track.duration)
-        data += ",\"TITLE\":\""
-        data += checkIfNotNone(track.title)
-        data += "\",\"PERFORMER\":\""
-        data += checkIfNotNone(track.performer)
-        data += "\"},"
-    data = data[:-1]
-    data += "]"
-    return data
+        data.append({
+            'ID': checkIfNotNoneNumber(track.id),
+            'DURATION': checkIfNotNoneNumber(track.duration),
+            'TITLE': checkIfNotNone(track.title),
+            'PERFORMER': checkIfNotNone(track.performer),
+        })
+    return dict({'RESULT': data})
 
 
 def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):
