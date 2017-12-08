@@ -142,8 +142,8 @@ def errorCheckMessage(isDone, error):
 
     return {
         'DONE': isDone,
-        'ERROR_H1': "\"" + errorTitle + "\"",
-        'ERROR_MSG': "\"" + errorMessage + "\"",
+        'ERROR_H1': "" + errorTitle + "",
+        'ERROR_MSG': "" + errorMessage + "",
     }
 
 
