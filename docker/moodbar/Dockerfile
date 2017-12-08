@@ -39,4 +39,4 @@ RUN apk del --purge \
 RUN rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["ash", "-c"]
-ENTRYPOINT ["python3", "moodbar_generator.py"]
+ENTRYPOINT ["python3", "-u", "moodbar_generator.py"]
