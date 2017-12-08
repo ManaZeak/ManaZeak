@@ -337,10 +337,10 @@ TrackInfo.prototype = {
                     } else {
                         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
                             if (response[i]) {
-                                that.tracks[i].id        = response[i].ID;
-                                that.tracks[i].duration  = response[i].DURATION;
-                                that.tracks[i].title     = response[i].TITLE;
-                                that.tracks[i].performer = response[i].PERFORMER;
+                                that.tracks[i].id        = response.RESULT[i].ID;
+                                that.tracks[i].duration  = response.RESULT[i].DURATION;
+                                that.tracks[i].title     = response.RESULT[i].TITLE;
+                                that.tracks[i].performer = response.RESULT[i].PERFORMER;
 
                                 that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
                                     that.tracks[i].title + "<br>" +
