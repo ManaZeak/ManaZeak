@@ -336,7 +336,7 @@ TrackInfo.prototype = {
                         that.tracks[0].ui.style.opacity = 1;
                     } else {
                         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                            if (response[i]) {
+                            if (response.RESULT[i]) {
                                 that.tracks[i].id        = response.RESULT[i].ID;
                                 that.tracks[i].duration  = response.RESULT[i].DURATION;
                                 that.tracks[i].title     = response.RESULT[i].TITLE;
