@@ -57,7 +57,7 @@ def splitTableCustom(table, number):
 
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
-    if trackAttribute is not None:
+    if trackAttribute is not None and trackAttribute != "":
         result = trackAttribute.replace('"', '\\"')
         return result
     else:
