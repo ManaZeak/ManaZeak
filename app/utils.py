@@ -6,6 +6,7 @@ import os
 import threading
 
 from django.contrib.auth.decorators import login_required
+from django.db import connection
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -14,7 +15,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist, TrackView
 
 
 # Render class for serving modal to client (Scan)
@@ -57,7 +58,7 @@ def splitTableCustom(table, number):
 
 # Check if an attribute is existing or not
 def checkIfNotNone(trackAttribute):
-    if trackAttribute is not None:
+    if trackAttribute is not None and trackAttribute != "":
         result = trackAttribute.replace('"', '\\"')
         return result
     else:
@@ -137,6 +138,72 @@ def errorCheckMessage(isDone, error):
         'ERROR_H1': "\"" + errorTitle + "\"",
         'ERROR_MSG': "\"" + errorMessage + "\"",
     }
+
+
+# Export the all the DB tracks to a view
+def updateTrackView(playlistId):
+    TrackView.objects.all().delete()
+    sql = """
+        CREATE OR REPLACE VIEW app_track_view (track_id, track_location, track_title, track_year, track_composer, 
+        track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode, 
+        track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified,track_album_id,
+        track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, artist_name,
+        artist_id)
+          AS SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
+          track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play, 
+          trck_mood, trck_dl, albumTitle,gen_id, genreName,
+          string_agg(artistName, ',') AS art_name,
+          string_agg(art_id::TEXT, ',') AS art_id
+        FROM (
+              SELECT * FROM
+                (
+                  SELECT
+                    app_track.id                AS trck_id,
+                    app_track.location          AS trk_loc,
+                    app_track.title             AS trck_tit,
+                    app_track.year              AS trck_year,
+                    app_track.composer          AS trck_comp,
+                    app_track.performer         AS trk_perf,
+                    app_track.number            AS trck_num,
+                    app_track.bpm               AS trk_bpm,
+                    app_track.lyrics            AS trck_lyr,
+                    app_track.comment           AS trck_com,
+                    app_track."bitRate"         AS track_bit_rate,
+                    app_track."bitRateMode"     AS trck_bitmode,
+                    app_track."sampleRate"      AS trck_sampRate,
+                    app_track.duration          AS trck_dur,
+                    app_track."discNumber"      AS trck_dnum,
+                    app_track.size              AS trck_siz,
+                    app_track."lastModified"    AS trck_lastM,
+                    app_track."coverLocation"   AS trck_cov,
+                    app_track."playCounter"     AS trck_play,
+                    app_track.moodbar           AS trck_mood,
+                    app_track."downloadCounter" AS trck_dl,
+                    *
+                  FROM app_track
+                    INNER JOIN (SELECT
+                                  title AS albumTitle,
+                                  id
+                                FROM app_album) a ON app_track.album_id = a.id
+                    INNER JOIN (SELECT
+                                  name AS genreName,
+                                  id   AS gen_id
+                                FROM app_genre) a2 ON app_track.genre_id = gen_id
+                    INNER JOIN (SELECT
+                                  name          AS artistName,
+                                  app_artist.id AS art_id
+                                FROM app_artist) a4
+                    INNER JOIN app_track_artist a3 ON art_id = a3.artist_id ON app_track.id = a3.track_id
+                ) test
+              INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id 
+              WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
+        ) request
+    GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
+     trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum;
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(sql, playlistId)
 
 
 # Exporting a playlist to json with not all the file metadata

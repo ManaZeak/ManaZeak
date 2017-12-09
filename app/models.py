@@ -56,6 +56,39 @@ class Track(models.Model):
     downloadCounter = models.IntegerField(default=0)
 
 
+class TrackView(models.Model):
+    track_id = models.BigIntegerField(primary_key=True)
+    track_location = models.FilePathField(max_length=1000)
+    track_title = models.CharField(max_length=1000)
+    track_year = models.IntegerField(null=True)
+    track_composer = models.CharField(max_length=1000, null=True)
+    track_performer = models.CharField(max_length=1000, null=True)
+    track_number = models.IntegerField(null=True)
+    track_bpm = models.IntegerField(null=True)
+    track_lyrics = models.CharField(max_length=42000, null=True)
+    track_comment = models.CharField(max_length=10000, null=True)
+    track_bitRate = models.IntegerField(null=True)
+    track_bitRateMode = models.IntegerField(null=True)
+    track_sampleRate = models.IntegerField(null=True)
+    track_duration = models.FloatField(null=True)
+    track_discNumber = models.IntegerField(null=True)
+    track_size = models.IntegerField(null=True)
+    track_lastModified = models.DateField(auto_now=True, null=True)
+    track_album_id = models.BigIntegerField()
+    track_fileType_id = models.BigIntegerField()
+    track_mood = models.URLField(max_length=1000, null=True)
+    track_download_counter = models.IntegerField(default=0)
+    album_title = models.CharField(max_length=1000, null=True)
+    genre_id = models.BigIntegerField()
+    genre_name = models.CharField(max_length=1000, null=True)
+    artist_name = models.CharField(max_length=1000, null=True)
+    artist_id = models.CharField(max_length=1000, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'app_track_view'
+
+
 class Playlist(models.Model):
     name = models.CharField(max_length=1000)
     user = models.ForeignKey(User)
