@@ -52,7 +52,6 @@ Track.prototype = {
 
 
     updateMetadata: function(track) {
-        console.log(track);
         // Filling Track object
         this.id = {
             track:          track.ID ? track.ID : "",
