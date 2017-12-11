@@ -23,6 +23,10 @@ let Modal = function(type, id) {
             this._scanLibraryUI();
             break;
 
+        case "newWish":
+            this._newWishUI();
+            break;
+
         case "editMetadata":
             this.url = "utils/modals/editMetadata";
             this.haveButtons = true;
@@ -131,6 +135,40 @@ Modal.prototype = {
         let that = this;
         scan.addEventListener("click", function() {
             that._checkInputs(name, path, convert);
+        });
+    },
+
+
+    _newWishUI: function() {
+        this.ui.container.id = "newWish";
+        this.ui.title.innerHTML = "Track suggestion";
+
+        let text        = document.createElement("P");
+        let wish        = document.createElement("INPUT");
+        let submit      = document.createElement("BUTTON");
+
+        wish.type    = "text";
+        wish.placeholder = "Enter your suggestion here";
+
+        text.innerHTML = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
+            "Paste an url or write the more information you can about it, and an administrator will process your request. " +
+            "You'll be notified when the track you asked has been added to a playlist.";
+        submit.innerHTML = "Submit";
+
+        this.ui.content.appendChild(text);
+        this.ui.content.appendChild(wish);
+        this.ui.footer.appendChild(submit);
+
+        let that = this;
+        submit.addEventListener("click", function(e) {
+            if (wish.value !== '') {
+                e.target.removeEventListener("click", arguments.callee);
+                // TODO : give suggestion to serv
+                that.close();
+            } else {
+                wish.style.border = "solid 1px red";
+                new Notification("INFO", "Suggestion field is empty.", "You must specify a name or an url for your track.");
+            }
         });
     },
 
