@@ -11,9 +11,11 @@ let Modal = function(type, id) {
     this.id          = id;
     this.editModal   = {};
 
+    this._createUI();
+
     switch (type) {
         case "scanLibrary":
-            this.url = "utils/modals/scanLibrary";
+            this._scanLibraryUI();
             break;
 
         case "editMetadata":
@@ -30,23 +32,65 @@ let Modal = function(type, id) {
 
 Modal.prototype = {
 
-    open: function() {
-        let that = this;
+    _createUI: function() {
+        this.ui = {
+            overlay: document.createElement("DIV"),
+            container: document.createElement("DIV"),
+            header: document.createElement("DIV"),
+            title: document.createElement("H1"),
+            content: document.createElement("DIV"),
+            footer: document.createElement("DIV")
+        };
 
-        JSONParsedGetRequest(
-            this.url,
-            true,
-            function(response) {
-                document.body.insertAdjacentHTML('beforeend', response);
-                that.isOpen = true;
-                if (that.haveButtons) { that._eventListener(); }
-            }
-        );
+        this.ui.overlay.id = "modal";
+        this.ui.overlay.className = "overlay";
+
+        this.ui.header.id = "header";
+        this.ui.content.id = "content";
+        this.ui.footer.id = "footer";
+
+        this.ui.header.appendChild(this.ui.title);
+        this.ui.container.appendChild(this.ui.header);
+        this.ui.container.appendChild(this.ui.content);
+        this.ui.container.appendChild(this.ui.footer);
+
+        this.ui.overlay.appendChild(this.ui.container);
+    },
+
+
+    _scanLibraryUI: function() {
+        this.ui.container.id = "scan";
+        this.ui.title.innerHTML = "Library scan in progress...";
+
+        let contentText = document.createElement("P");
+        let spinnerContainer = document.createElement("DIV");
+        let spinnerRing = document.createElement("DIV");
+        let spinnerFloatDiv = document.createElement("DIV");
+        let spinnerImage = document.createElement("IMG");
+        let footerText = document.createElement("P");
+
+        contentText.innerHTML = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some cofee and let the server manage its business.";
+        spinnerContainer.className = "lds-css";
+        spinnerRing.className = "lds-dual-ring";
+        spinnerImage.src = "/static/img/utils/python.svg";
+        footerText.innerHTML = "On average, it take a minute to process two thousand files. Just do the math ;)";
+
+        spinnerRing.appendChild(spinnerFloatDiv);
+        spinnerContainer.appendChild(spinnerRing);
+
+        this.ui.content.appendChild(contentText);
+        this.ui.content.appendChild(spinnerContainer);
+        this.ui.content.appendChild(spinnerImage);
+        this.ui.footer.appendChild(footerText);
+    },
+
+    open: function() {
+        document.body.appendChild(this.ui.overlay);
     },
 
 
     close: function() {
-	//TODO: Use unique ID (this.id)
+        //TODO: Use unique ID (this.id)
         document.body.removeChild(document.getElementById("modal"));
         this.isOpen = false;
     },
@@ -71,7 +115,7 @@ Modal.prototype = {
 
 
     _eventListener: function() {
-	    //TODO: Use unique ID
+        //TODO: Use unique ID
         document.getElementById("cancel").addEventListener("click", this.close);
     },
 
