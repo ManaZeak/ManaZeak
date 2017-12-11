@@ -56,7 +56,7 @@ ListView.prototype = {
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
 
-        this.trackInfo = new TrackInfo(this.container);
+        //this.trackInfo = new TrackInfo(this.container);
         this.hoveredTrack = null;
         this.hoveredTimeout = null;
 

@@ -57,7 +57,7 @@ Track.prototype = {
         this.id = {
             track:          track.ID ? track.ID : "",
             album:          track.ALBUM.ID ? track.ALBUM.ID : "",
-            artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
+            artists:        this._getArtistsIDFromArtistsArray(track.ARTIST)
         };
         this.title        = track.TITLE             ? track.TITLE : "";
         this.year         = track.YEAR              ? track.YEAR : "";
@@ -79,9 +79,7 @@ Track.prototype = {
         this.genre        = track.GENRE             ? track.GENRE : "";
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
-        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
+        this.artist       = this._getArtistFromArtistsArray(track.ARTIST);
         this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTIST);
-
-        console.log(this);
     }
 };

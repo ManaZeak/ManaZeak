@@ -118,7 +118,6 @@ Modal.prototype = {
             "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-
         convertLabel.innerHTML = "Automatically convert files to <a href=\"https://en.wikipedia.org/wiki/ID3#ID3v2\" target=\"_blank\">ID3v2</a>";
         scan.innerHTML = "Scan";
 
@@ -133,8 +132,6 @@ Modal.prototype = {
         scan.addEventListener("click", function() {
             that._checkInputs(name, path, convert);
         });
-
-
     },
 
 
