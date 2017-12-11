@@ -290,22 +290,27 @@ TrackInfo.prototype = {
         switch (this.trackSuggestionMode) {
             case 0:
                 this.ui.suggestionTitle.innerHTML = "From the same artist :";
-                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/artist.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/artist.svg";
                 break;
 
             case 1:
                 this.ui.suggestionTitle.innerHTML = "From the same album :";
-                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/album.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/album.svg";
                 break;
 
             case 2:
                 this.ui.suggestionTitle.innerHTML = "From the same genre :";
-                this.ui.changeSuggestionType.src       = "/static/img/utils/trackinfo/genre.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/genre.svg";
                 break;
 
             default:
                 new Notification("ERROR", "Track Info suggestion error.", "The suggestion mode value is beyond its bounds.");
                 break;
+        }
+
+        for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
+            this.tracks[i].ui.style.opacity = 0;
+            this.tracks[i].ui.innerHTML = "";
         }
     },
 
@@ -326,18 +331,23 @@ TrackInfo.prototype = {
                     MODE:     this.trackSuggestionMode
                 }),
                 function(response) {
-                    if (response.DONE === "FAIL") {
-                        new Notification("ERROR", "Bad format.", response.ERROR);
+                    if (!response.DONE) {
+                        that.tracks[0].ui.innerHTML = response.ERROR_H1 + "<br>" + response.ERROR_MSG;
+                        that.tracks[0].ui.style.opacity = 1;
                     } else {
                         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
-                            that.tracks[i].id        = response[i].ID;
-                            that.tracks[i].duration  = response[i].DURATION;
-                            that.tracks[i].title     = response[i].TITLE;
-                            that.tracks[i].performer = response[i].PERFORMER;
+                            if (response.RESULT[i]) {
+                                that.tracks[i].id        = response.RESULT[i].ID;
+                                that.tracks[i].duration  = response.RESULT[i].DURATION;
+                                that.tracks[i].title     = response.RESULT[i].TITLE;
+                                that.tracks[i].performer = response.RESULT[i].PERFORMER;
 
-                            that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
-                                that.tracks[i].title + "<br>" +
-                                that.tracks[i].performer;
+                                that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
+                                    that.tracks[i].title + "<br>" +
+                                    that.tracks[i].performer;
+
+                                that.tracks[i].ui.style.opacity = 1;
+                            }
                         }
                     }
                 }

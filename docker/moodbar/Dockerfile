@@ -38,5 +38,4 @@ RUN apk del --purge \
     gstreamer0.10-dev
 RUN rm -rf /var/cache/apk/*
 
-ENTRYPOINT ["ash", "-c"]
-ENTRYPOINT ["python3", "moodbar_generator.py"]
+CMD ["python3", "-u", "/moodbar/moodbar_generator.py"]
