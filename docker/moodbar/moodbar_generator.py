@@ -2,23 +2,23 @@
 # coding: utf-8
 
 import os
+from datetime import datetime
 from hashlib import md5
 from multiprocessing import Pool
-from os.path import join, getsize
+from os.path import join
+from shlex import quote 
 from time import sleep
-
 
 LIBRARY_FOLDER = '/library'
 MOODBAR_FOLDER = '/moodbar/static'
 MAX_PROCESSES = 3
-
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 def generate_moodbar(file):
     filename_md5 = md5(file.encode("ascii", "ignore")).hexdigest()
     moodfile_path = join(MOODBAR_FOLDER, '{}.mood'.format(filename_md5))
-    # TODO: Better special chars management (quotes)
     if not os.path.exists(moodfile_path):
-        os.system('moodbar "{}" -o {}'.format(file, moodfile_path))
+        os.system('moodbar {} -o {}'.format(quote(file), moodfile_path))
 
 
 def list_songs(path):
@@ -27,23 +27,30 @@ def list_songs(path):
             if name.endswith('mp3'):
                 yield join(root, name)
 
+
 def scan():
-    # TODO: Display start time and running time
-    print("[SCAN] Starting ...")
+    start_time = datetime.now()
+    print("[SCAN] {} - Starting ...".format(start_time.strftime(DATE_FORMAT)))
 
     with Pool(processes=MAX_PROCESSES) as p:
         p.map(generate_moodbar, list_songs(LIBRARY_FOLDER))
 
-    print("[SCAN] Done !")
+    end_time = datetime.now()
+    running_time = (end_time - start_time).seconds
+    running_time_str = "({}m{}s)".format(running_time // 60, running_time % 60)
+    print("[SCAN] {} - Done in {} !".format(end_time.strftime(DATE_FORMAT),
+                                            running_time_str))
+
 
 def main():
     print("LIBRARY_FOLDER : {}".format(LIBRARY_FOLDER))
     print("MOODBAR_FOLDER : {}".format(MOODBAR_FOLDER))
     print("MAX_PROCESSES  : {}".format(MAX_PROCESSES))
 
-    scan() # Start scan
+    scan()  # Start scan
 
-    while True: # Execute the scan and wait 3600 seconds (1h) before scanning again
+    # Execute the scan and wait 3600 seconds (1h) before scanning again
+    while True:
         sleep(3600)
         scan()
 
