@@ -1,7 +1,9 @@
+$topbar-height: 50px;
+
 #topBar {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: $topbar-height;
     background-color: $secondary-color;
 
     -webkit-user-select: none;  /* Chrome/Safari */
