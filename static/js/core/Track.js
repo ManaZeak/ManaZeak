@@ -52,6 +52,8 @@ Track.prototype = {
 
 
     updateMetadata: function(track) {
+
+console.log(track);
         // Filling Track object
         this.id = {
             track:          track.ID ? track.ID : "",
@@ -63,9 +65,9 @@ Track.prototype = {
         this.composer     = track.COMPOSER          ? track.COMPOSER : "";
         this.performer    = track.PERFORMER         ? track.PERFORMER : "";
         this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER : "";
-        this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : "";
+        this.trackTotal   = track.ALBUM_TOTAL_TRACK ? track.ALBUM_TOTAL_TRACK : "";
         this.disc         = track.DISC_NUMBER       ? track.DISC_NMBER : "";
-        this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC : "";
+        this.discTotal    = track.ALBUM_TOTAL_DISC  ? track.ALBUM_TOTAL_DISC : "";
         this.bpm          = track.BPM               ? track.BPM : "";
         this.lyrics       = track.LYRICS            ? track.LYRICS : "";
         this.comment      = track.COMMENT           ? track.COMMENT : "";
@@ -74,7 +76,7 @@ Track.prototype = {
         this.duration     = track.DURATION          ? track.DURATION : "";
         this.size         = track.SIZE              ? track.SIZE : "";
         this.lastModified = track.LAST_MODIFIED     ? track.LAST_MODIFIED : "";
-        this.album        = track.ALBUM.TITLE       ? track.ALBUM.TITLE : "";
+        this.album        = track.ALBUM             ? track.ALBUM : "";
         this.genre        = track.GENRE             ? track.GENRE : "";
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
