@@ -228,10 +228,10 @@ Playlist.prototype = {
 
 
     _fillTracks: function(tracks) {
-        for (let i = 0; i < tracks.length; ++i) {
+        for (let i = 0; i < tracks.RESULT.length; ++i) {
             ++this.trackTotal;
-            this.durationTotal += tracks[i].DURATION;
-            this.tracks.push(new Track(tracks[i]));
+            this.durationTotal += tracks.RESULT[i].DURATION;
+            this.tracks.push(new Track(tracks.RESULT[i]));
         }
     },
 
