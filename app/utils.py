@@ -142,11 +142,13 @@ def errorCheckMessage(isDone, error):
 
 # Export the all the DB tracks to a view
 def updateTrackView(playlistId):
-    TrackView.objects.all().delete()
+    sql = """DROP VIEW public.app_track_view RESTRICT;"""
+    with connection.cursor() as cursor:
+        cursor.execute(sql, playlistId)
     sql = """
         CREATE OR REPLACE VIEW app_track_view (track_id, track_location, track_title, track_year, track_composer, 
         track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode, 
-        track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified,track_album_id,
+        track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified, track_cover,
         track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, artist_name,
         artist_id)
           AS SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
@@ -203,7 +205,36 @@ def updateTrackView(playlistId):
       trck_mood, trck_dl, albumTitle, gen_id, trck_dnum;
     """
     with connection.cursor() as cursor:
-        cursor.execute(sql, playlistId)
+        cursor.execute(sql, str(playlistId))
+
+
+def simpleJsonGenerator():
+    tracks = TrackView.objects.all()
+    data = []
+    for track in tracks:
+        artists = []
+        splitedArtistName = track.artist_name.split(",")
+        splitedArtistId = track.artist_id.split(",")
+        for i in range(0, len(splitedArtistId)):
+            artists.append({
+                'ID': splitedArtistId[i],
+                'NAME': splitedArtistName[i],
+            })
+        data.append({
+            'ID': track.track_id,
+            'TITLE': track.track_title,
+            'YEAR': track.track_year,
+            'COMPOSER': track.track_composer,
+            'PERFORMER': track.track_performer,
+            'DURATION': track.track_duration,
+            'BITRATE': track.track_bitrate,
+            'COVER': track.track_cover,
+            'ARTIST': artists,
+            'ALBUM': track.album_title,
+            'GENRE': track.genre_name,
+        })
+    print("end genration")
+    return data
 
 
 # Exporting a playlist to json with not all the file metadata

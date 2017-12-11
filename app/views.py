@@ -19,7 +19,7 @@ from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
-    generateSimilarTrackJson
+    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
 
 
 class mainView(ListView):
@@ -213,11 +213,8 @@ def loadSimplifiedLibrary(request):
         if 'PLAYLIST_ID' in response:
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                if playlist.jsonExport is None:
-                    tracks = exportPlaylistToSimpleJson(playlist)
-                else:
-                    tracks = playlist.jsonExport
-                return HttpResponse(tracks, content_type="application/json")
+                updateTrackView(playlist.id)
+                return JsonResponse(dict({'RESULT': simpleJsonGenerator()}))
             else:
                 return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
