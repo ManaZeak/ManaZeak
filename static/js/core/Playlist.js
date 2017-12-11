@@ -14,13 +14,11 @@
 let Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     // NewLibrary relative attributes, useless (if isLibrary = false && isLoading = false)
     this.ui = {
-        infoLabel:   null,
         name:        null,
         path:        null,
         convert:     null,
-        scan:        null
     };
-    this.scanModal = null;
+    this.modal = null;
 
     // Playlist internal attributes
     this.id          = id;
@@ -75,71 +73,26 @@ Playlist.prototype = {
 
 
     _newLibrary: function() {
-        let that = this;
-
         this.isLibrary = true;
 
-        JSONParsedGetRequest(
-            "components/newLibrary",
-            true,
-            function(response) { // TODO : create modals of procedure
-                // TODO : test response to see if it's html or void
-                document.getElementById("mainContainer").insertAdjacentHTML('beforeend', response);
+        this.modal = new Modal("newLibrary", this.id);
+        this.modal.open();
 
-                that.ui.infoLabel   = document.getElementById("infoLabel");
-                that.ui.name        = document.getElementById("name");
-                that.ui.path        = document.getElementById("path");
-                that.ui.convert     = document.getElementById("convert");
-                that.ui.scan        = document.getElementById("scan");
-
-                // TODO : Typography style to set - Replace newLibrary bool by radiobox (must disapear in the end)
-
-                that.ui.infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-                    "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
-                    "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
-                    "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-                // TODO : remove path input depending on radioBox
-
-                that.ui.scan.addEventListener("click", that._checkInputs.bind(that));
-            }
-        );
-    },
-
-
-    _checkInputs: function() {
-        if (this.ui.name.value !== '' && this.ui.path.value !== '') {
-            this._requestNewLibrary();
-        }
-
-        else {
-            if (this.ui.name.value !== '') {
-                this.ui.path.style.border = "solid 1px red";
-                new Notification("INFO", "Path field is empty.", "You must specify the path of your library.");
-            }
-
-            else if (this.ui.path.value !== '') {
-                this.ui.name.style.border = "solid 1px red";
-                new Notification("INFO", "Name field is empty.", "You must give your library a name.");
-            }
-
-            else {
-                this.ui.path.style.border = "solid 1px red";
-                this.ui.name.style.border = "solid 1px red";
-                new Notification("INFO", "Both fields are empty.", "You must fill both fields to create a new library.");
-            }
-        }
-    },
-
-
-    _requestNewLibrary: function() {
         let that = this;
+        this.modal.setCallback(function(name, path, convert) {
+            that._requestNewLibrary(name.value, path.value, convert.checked);
+        })
+    },
 
+
+    _requestNewLibrary: function(name, path, convert) {
+        let that = this;
         JSONParsedPostRequest(
             "ajax/newLibrary/",
             JSON.stringify({
-                CONVERT: this.ui.convert.checked,
-                NAME:    this.ui.name.value,
-                URL:     this.ui.path.value
+                URL:     path,
+                NAME:    name,
+                CONVERT: convert
             }),
             function(response) {
                 /* response = {
@@ -149,9 +102,11 @@ Playlist.prototype = {
                  *     ERROR_MSG:  string
                  * } */
                 if (response.DONE) {
-                    that.name = that.ui.name.value;
-                    that.scanModal = new Modal("scanLibrary");
-                    that.scanModal.open();
+                    that.name = name;
+                    that.modal.close();
+                    that.modal = null;
+                    that.modal = new Modal("scanLibrary", that.id);
+                    that.modal.open();
                     that.id = response.LIBRARY_ID;
                     that._initialLibraryScan(response.LIBRARY_ID);
                 }
@@ -228,7 +183,7 @@ Playlist.prototype = {
                         function(response) {
                             // response = raw tracks JSON object
                             self.rawTracks = response;
-                            self.scanModal.close();
+                            self.modal.close();
                             self._fillTracks(self.rawTracks);
                             self.refreshViews();
                             self.showView(self.activeView);

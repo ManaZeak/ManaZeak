@@ -612,12 +612,12 @@ def getSimilarTrack(request):
                 if mode == 0:
                     tracks = Track.objects.filter(artist__in=track.artist.all()).exclude(id=track.id) \
                         .order_by('-playCounter')
-                # Same genre track selection
-                elif mode == 1:
-                    tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
                 # Same album track selection
-                elif mode == 2:
+                elif mode == 1:
                     tracks = Track.objects.filter(album=track.album).exclude(id=track.id).order_by('-playCounter')
+                # Same genre track selection
+                elif mode == 2:
+                    tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
                 # Other values
                 else:
                     return JsonResponse(errorCheckMessage(False, "badFormat"))
@@ -625,7 +625,12 @@ def getSimilarTrack(request):
                 # Check length of the query set
                 if len(tracks) < 4:
                     if len(tracks) == 0:
-                        return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        if mode == 0:
+                            return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        elif mode == 1:
+                            return JsonResponse(errorCheckMessage(False, "noSameAlbum"))
+                        else:
+                            return JsonResponse(errorCheckMessage(False, "noSameGenre"))
                     else:
                         numberTrackTarget = len(tracks)
 
@@ -636,7 +641,7 @@ def getSimilarTrack(request):
                         break
 
                 # Returning results
-                return HttpResponse(generateSimilarTrackJson(selectedTracks), content_type="application/json")
+                return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

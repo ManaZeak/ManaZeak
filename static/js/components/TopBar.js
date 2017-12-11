@@ -34,6 +34,7 @@ let TopBar = function() {
     this.moodbarThumb.isVisible = false;
 
     this.userMenu = new UserMenu(this.userExpander);
+    this.wishList = new WishList(this.topBar);
     this.newLibMenu     = null;
 };
 

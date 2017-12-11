@@ -33,7 +33,7 @@ $editFooterHeight:  ($editModalHeight / 10);
     background: rgba(0, 0, 0, 0.6);
 
 
-    #scan {
+    #newLibrary {
         min-height: $scanModalHeight;
         width: $scanModalWidth;
 
@@ -46,12 +46,13 @@ $editFooterHeight:  ($editModalHeight / 10);
         -webkit-user-select: none;  /* Chrome/Safari */
         -moz-user-select: none;     /* Firefox */
 
+        text-align: center;
 
         #header,
         #content,
         #footer {
+            height: auto;
             width: 100%;
-            position: absolute;
             box-sizing: border-box;
             text-align: center;
         }
@@ -65,7 +66,6 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         #header {
             height: $scanHeaderHeight;
-            top: 0;
             border-bottom: solid 1px black;
 
 
@@ -77,8 +77,108 @@ $editFooterHeight:  ($editModalHeight / 10);
 
 
         #content {
-            top: $scanHeaderHeight;
-            height: $scanContentHeight;
+            min-height: $scanContentHeight;
+            padding: $verticalPadding 50px;
+
+
+            #infoLabel {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            input[type=text] {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            #name {
+                height: 25px;
+                width: 300px;
+                margin-bottom: 20px;
+                text-align: center;
+                border-radius: 1px;
+                border: solid 1px #777;
+            }
+
+            #path {
+                height: 25px;
+                width: 300px;
+                margin-bottom: 20px;
+                text-align: center;
+                border-radius: 1px;
+                border: solid 1px #777;
+            }
+
+            #id3Label {
+                vertical-align: text-bottom;
+                margin-right: 5px;
+            }
+
+            #convert {
+                margin: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        #footer {
+            border-top: solid 1px black;
+            height: auto;
+
+
+            #scanButton {
+                width: 75px;
+            }
+        }
+    }
+
+
+    #scan {
+        min-height: $scanModalHeight;
+        width: $scanModalWidth;
+
+        position: relative;
+
+        border: solid 1px black;
+        border-radius: 3px;
+        background: $primary-color;
+
+        -webkit-user-select: none;  /* Chrome/Safari */
+        -moz-user-select: none;     /* Firefox */
+        cursor: not-allowed;
+
+        #header,
+        #content,
+        #footer {
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+
+        #header,
+        #footer {
+            padding: $verticalPadding 30px;
+        }
+
+
+        #header {
+            height: $scanHeaderHeight;
+            border-bottom: solid 1px black;
+
+
+            h1 {
+                margin: 0;
+                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
+            }
+        }
+
+
+        #content {
+            min-height: $scanContentHeight;
             padding: $verticalPadding 50px;
 
 
@@ -92,13 +192,13 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         #footer {
             border-top: solid 1px black;
-            height: $scanFooterHeight;
-            top: ($scanHeaderHeight + $scanContentHeight);
+            min-height: $scanFooterHeight;
+            height: auto;
 
 
             p {
-                line-height: ($scanFooterHeight - (2 * $verticalPadding));
                 margin: 0;
+                padding: 15px 0;
             }
         }
     }
@@ -193,18 +293,18 @@ $editFooterHeight:  ($editModalHeight / 10);
 
 
 .overlay {
-    cursor: not-allowed;
+
 }
 
 
 @keyframes lds-dual-ring {
     0% {
         -webkit-transform: rotate(0);
-                transform: rotate(0);
+        transform: rotate(0);
     }
     100% {
         -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -226,57 +326,4 @@ $editFooterHeight:  ($editModalHeight / 10);
     border-color: $primary-text transparent;
     -webkit-animation: lds-dual-ring 1.3s linear infinite;
     animation: lds-dual-ring 1.3s linear infinite;
-}
-
-
-
-/* New Library menu */
-#newLibrary {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-
-    h1 {
-        margin: 0;
-        margin-bottom: 20px;
-    }
-
-    #infoLabel {
-        width: 25%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    #name {
-        height: 25px;
-        width: 25%;
-        margin-bottom: 20px;
-        text-align: center;
-        border-radius: 1px;
-        border: solid 1px #777;
-    }
-
-    #path {
-        height: 25px;
-        width: 25%;
-        margin-bottom: 20px;
-        text-align: center;
-        border-radius: 1px;
-        border: solid 1px #777;
-    }
-
-    #id3Label {
-        vertical-align: text-bottom;
-        margin-right: 5px;
-    }
-
-    #convert {
-        margin: 0;
-        margin-bottom: 20px;
-    }
-
-    #scan {
-        width: 75px;
-    }
 }
