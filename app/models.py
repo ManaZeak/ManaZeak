@@ -133,3 +133,10 @@ class History(models.Model):
 class UserHistory(models.Model):
     user = models.ForeignKey(User)
     histories = models.ManyToManyField(History)
+
+
+class Wish(models.Model):
+    user = models.ForeignKey(User)
+    date = models.DateField(auto_now=True, null=True)
+    text = models.CharField(max_length=1000)
+    status = models.IntegerField()

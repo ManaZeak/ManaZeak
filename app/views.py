@@ -1,8 +1,10 @@
+import datetime
 import json
 import os
 from builtins import print
 from random import randint
 
+import time
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -17,7 +19,8 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
+    Wish
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
     generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
 
@@ -592,6 +595,7 @@ def getLastSongPlayed(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getSimilarTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -649,3 +653,22 @@ def getSimilarTrack(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return data
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def createWish(request):
+    if request.method == 'POST':
+        user = request.user
+        response = json.loads(request.body)
+        if 'WISH' in response:
+            wish = Wish()
+            wish.user = user
+            wish.text = strip_tags(str(response['WISH']))
+            wish.status = 0 # Not done; 1 Refused; 2 Accepted
+            wish.save()
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
