@@ -150,7 +150,7 @@ def errorCheckMessage(isDone, error):
 
 # Export the all the DB tracks to a view
 def updateTrackView(playlistId):
-    sql = """DROP VIEW public.app_track_view RESTRICT;"""
+    sql = """DROP VIEW IF EXISTS public.app_track_view RESTRICT;"""
     with connection.cursor() as cursor:
         cursor.execute(sql, playlistId)
     sql = """
