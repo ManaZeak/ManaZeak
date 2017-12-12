@@ -20,7 +20,7 @@ from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
-    Wish
+    Wish, Stats
 from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
     generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
 
@@ -71,6 +71,7 @@ def dropAllDB(request):
         Genre.objects.all().delete()
         Shuffle.objects.all().delete()
         UserHistory.objects.all().delete()
+        Stats.objects.all().delete()
         History.objects.all().delete()
         data = {
             'DROPPED': "OK",
@@ -363,6 +364,16 @@ def getTrackPathByID(request):
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
                 track.save()
+                user = request.user
+                if Stats.objects.filter(user=user, track=track).count() == 0:
+                    stat = Stats()
+                    stat.track = track
+                    stat.user = user
+                    stat.playCounter = 1
+                else:
+                    stat = Stats.objects.get(user=user, track=track)
+                    stat.playCounter += 1
+                stat.save()
                 print("PREVIOUS : ", response['PREVIOUS'])
                 if not response['PREVIOUS']:
                     # Creating user history
@@ -482,6 +493,58 @@ def getMoodbarByID(request):
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
+def adminGetUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+    user = request.user
+    data = []
+    if user.is_superuser:
+        for users in User.objects.all():
+            temp = {
+                'USER': users.username,
+                'PREF_ARTIST': getUserPrefArtist(users),
+                'NB_TRACK_LISTENED': getUserNbTrackListened(users),
+                'NB_TRACK_PUSHED': getUserNbTrackPushed(users),
+                'USER_GENRE': getUserGenre(users),
+                'USER_GENRE_PERCENTAGE': getUserGenrePercentage(users),
+                'NEVER_PLAYED': userNeverPlayed(users),
+            }
+
+            data.append(temp)
+
+        return JsonResponse(dict({'mydata': data}))
+    else:
+        return JsonResponse(errorCheckMessage(False, "permissionError"))
+
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+    user = request.user
+
+    nbTrackListened = getUserNbTrackListened(user)
+    nbTrackPushed = getUserNbTrackPushed(user)
+    userGenre = getUserGenre(user)
+    userGenrePercentage = getUserGenrePercentage(user)
+    prefArtists = getUserPrefArtist(user)
+    neverPlayed = userNeverPlayed(user)
+
+    data = {
+            'PREF_ARTIST': prefArtists[:100],
+            'NB_TRACK_LISTENED': nbTrackListened,
+            'NB_TRACK_PUSHED': nbTrackPushed,
+            'USER_GENRE': userGenre,
+            'USER_GENRE_PERCENTAGE': userGenrePercentage,
+            'NEVER_PLAYED': neverPlayed,
+    }
+
+    return JsonResponse(data)
+
+
+
+
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -522,7 +585,7 @@ def rescanLibrary(request):
 
                 # Check if the library is not used somewhere else
                 if library.playlist.isScanned:
-                    # Delete all the js tracks
+                    # Delete all the old tracks
                     library.playlist.delete()
 
                     # Recreating playlist
