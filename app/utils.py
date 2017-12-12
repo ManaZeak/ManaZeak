@@ -206,7 +206,7 @@ def updateTrackView(playlistId):
                       ON app_track.id = a3.track_id
                 ) test
               INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
-              WHERE app_playlist.id = 1) playlists ON trck_id = playlists.track_id
+              WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
         ) request
     GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
      trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
