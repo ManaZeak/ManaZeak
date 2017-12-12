@@ -1,0 +1,104 @@
+@import "../utils/tools";
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+
+    color: $primary-text;
+    font-family: Helvetica, serif;
+}
+
+
+#login {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    color: $primary-text;
+    background-color: $primary-color;
+    text-align: center;
+
+    h1 {
+        font-size: 2.8em;
+        margin-top: 100px;
+        margin-bottom: 0;
+    }
+
+    p {
+        margin-bottom: 25px;
+        margin-top: 25px;
+
+        a {
+            color: $accent-color;
+            text-decoration: none;
+        }
+    }
+
+    form {
+        display: table;
+        width: auto;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 25px;
+        box-sizing: border-box;
+        text-align: center;
+
+        background-color: $secondary-color;
+
+        @include box-shadow(0px, 0px, 5px, 1px, $dark-secondary-color);
+    }
+
+
+    input,
+    button {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    button,
+    #button {
+        margin-top: 25px;
+        border: solid 1px $primary-text;
+        color: $primary-text;
+        background-color: inherit;
+        padding: 6px 25px;
+        cursor: pointer;
+    }
+
+    input {
+        margin-top: 5px;
+        text-align: center;
+        color: $primary-text;
+        background-color: inherit;
+        border: none;
+        border-bottom: solid 1px $primary-text;
+    }
+
+    #error {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        background-color: $dark-primary-color;
+        text-align: left;
+        padding: 15px 25px;
+        
+        
+        ul {
+            padding: 0;
+            list-style: none;
+
+            li {
+                ul {
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+}
+
