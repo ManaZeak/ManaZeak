@@ -81,42 +81,30 @@ App.prototype = {
 
     _appStart: function(playlists) {
         let that = this;
-        // User already have playlists
-        if (playlists.DONE) {
+        if (playlists.DONE) { // User already have playlists
             let modal = new Modal("fetchPlaylists", 1); // TODO : gen unique ID from utils here
             modal.open();
 
-            JSONParsedPostRequest(
-                "ajax/getSimplifiedTracks/",
-                JSON.stringify({
-                    PLAYLIST_ID: playlists.PLAYLIST_IDS[0]
-                }),
-                function(response) {
-                    // response = raw tracks JSON object
-                    modal.close();
-                    that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0],
-                        playlists.PLAYLIST_NAMES[0],
-                        playlists.PLAYLIST_IS_LIBRARY[0],
-                        true,
-                        response,
-                        undefined));
-                    for (let i = 1; i < playlists.PLAYLIST_IDS.length; ++i) {
-                        that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
-                            playlists.PLAYLIST_NAMES[i],
-                            playlists.PLAYLIST_IS_LIBRARY[i],
-                            true,
-                            undefined, // TODO : load tracks from other playlists.
-                            undefined));
-                    }
+            console.log(playlists);
 
-                    that.getAllPlaylistsTracks();
-                    that.topBar.init(that.playlists, that.playlists[0]);
-                    // TODO : change that.playlists[0] to last ID stored in cookies (0 by default)
-                    that.playlists[0].activate();
-                    that.changePlaylist();
-                    that.footBar.playlistPreview.setVisible(true);
-                }
-            );
+            for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
+                that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
+                    playlists.PLAYLIST_NAMES[i],
+                    playlists.PLAYLIST_IS_LIBRARY[i],
+                    true,
+                    undefined,
+                    undefined));
+            }
+            this.topBar.init(this.playlists, this.playlists[0]);
+            this.playlists[0].getPlaylistsTracks(function() {
+                modal.close();
+                that.playlists[0].activate();
+                that.changePlaylist();
+                that.footBar.playlistPreview.setVisible(true);
+
+                // TODO : replace begin arg to the active playlists, to avoid loading it
+                that.getAllPlaylistsTracks(1); // 1 stand for the begining of the loop in playlists
+            });
         }
 
         // User first connection
@@ -126,7 +114,7 @@ App.prototype = {
                 that.topBar.init(that.playlists, that.playlists[0]);
                 that.footBar.playlistPreview.setVisible(true);
                 that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-                    // ? that.activePlaylist = that.playlists[0];
+                // ? that.activePlaylist = that.playlists[0];
             }));
         }
 
