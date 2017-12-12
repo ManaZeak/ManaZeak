@@ -217,6 +217,7 @@ def loadSimplifiedLibrary(request):
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
                 updateTrackView(playlist.id)
+                print(dict({'RESULT': simpleJsonGenerator()}))
                 return JsonResponse(dict({'RESULT': simpleJsonGenerator()}))
             else:
                 return JsonResponse(errorCheckMessage(False, "dbError"))
@@ -242,6 +243,7 @@ def loadTracksFromPlaylist(request):
             return JsonResponse(errorCheckMessage(False, "badFormat"))
 
 
+# TODO: nouvelle convention JSON!
 def getTrackDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -249,7 +251,8 @@ def getTrackDetailedInfo(request):
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
-                return HttpResponse(exportTrackInfo(track), content_type="application/json")
+                # TODO : change to dict
+                return JsonResponse(dict({'RESULT': exportTrackInfo(track)}))
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

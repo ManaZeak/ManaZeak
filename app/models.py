@@ -81,8 +81,11 @@ class TrackView(models.Model):
     album_title = models.CharField(max_length=1000, null=True)
     genre_id = models.BigIntegerField()
     genre_name = models.CharField(max_length=1000, null=True)
+    album_id = models.BigIntegerField()
     artist_name = models.CharField(max_length=1000, null=True)
     artist_id = models.CharField(max_length=1000, null=True)
+    album_artist_id = models.CharField(max_length=1000, null=True)
+    album_artist_name = models.CharField(max_length=1000, null=True)
 
     class Meta:
         managed = False

@@ -89,32 +89,29 @@ TrackInfo.prototype = {
                 TRACK_ID: track.id.track
             }),
             function(response) {
-                if (response.RESULT === "FAIL") {
-                    new Notification("ERROR", "Bad format.", response.ERROR);
-                } else {
-                    track.updateMetadata(response);
-                    that.track = track;
+                track.updateMetadata(response.RESULT);
+                that.track = track;
 
-                    that.ui.cover.src                 = track.cover;
-                    that.ui.title.innerHTML           = track.title;
-                    that.ui.artist.innerHTML          = track.artist;
-                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
-                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
-                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
-                    that.ui.album.innerHTML           = track.year + " - " + track.album;
-                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                        track.fileType + " - " +
-                        Math.round(track.bitRate / 1000) + " kbps - " +
-                        track.sampleRate + " Hz";
+                that.ui.cover.src                 = track.cover;
+                that.ui.title.innerHTML           = track.title;
+                that.ui.artist.innerHTML          = track.artist;
+                that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+                that.ui.composer.innerHTML        = "Composer : " + track.composer;
+                that.ui.performer.innerHTML       = "Performer : " + track.performer;
+                that.ui.genre.innerHTML           = "Genre : " + track.genre;
+                that.ui.album.innerHTML           = track.year + " - " + track.album;
+                that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+                that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                    track.fileType + " - " +
+                    Math.round(track.bitRate / 1000) + " kbps - " +
+                    track.sampleRate + " Hz";
 
-                    // TODO : add total played and other interesting stats about track
-                    that._updateSuggestionMode();
-                    that._updateSuggestionTracks();
+                // TODO : add total played and other interesting stats about track
+                that._updateSuggestionMode();
+                that._updateSuggestionTracks();
 
-                    if (callback) { callback(); }
-                }
+                if (callback) { callback(); }
+
             }
         );
     },

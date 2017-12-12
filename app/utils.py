@@ -154,16 +154,18 @@ def updateTrackView(playlistId):
     with connection.cursor() as cursor:
         cursor.execute(sql, playlistId)
     sql = """
-        CREATE OR REPLACE VIEW app_track_view (track_id, track_location, track_title, track_year, track_composer, 
-        track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode, 
+        CREATE OR REPLACE VIEW app_track_view (track_id, track_location, track_title, track_year, track_composer,
+        track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,
         track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified, track_cover,
-        track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, artist_name,
-        artist_id)
+        track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, album_id, artist_name,
+        artist_id, album_artist_id, album_artist_name)
           AS SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
-          track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play, 
-          trck_mood, trck_dl, albumTitle,gen_id, genreName,
-          string_agg(artistName, ',') AS art_name,
-          string_agg(art_id::TEXT, ',') AS art_id
+          track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play,
+          trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
+          string_agg(DISTINCT artistName, ',') AS art_name,
+          string_agg(DISTINCT art_id::TEXT, ',') AS art_id,
+          string_agg(DISTINCT album_artist_id::TEXT, ',') AS alb_art,
+          string_agg(DISTINCT album_artist_name, ',') AS alb_art_name
         FROM (
               SELECT * FROM
                 (
@@ -191,10 +193,8 @@ def updateTrackView(playlistId):
                     app_track."downloadCounter" AS trck_dl,
                     *
                   FROM app_track
-                    INNER JOIN (SELECT
-                                  title AS albumTitle,
-                                  id
-                                FROM app_album) a ON app_track.album_id = a.id
+                    INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
+                                  INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
                     INNER JOIN (SELECT
                                   name AS genreName,
                                   id   AS gen_id
@@ -202,15 +202,15 @@ def updateTrackView(playlistId):
                     INNER JOIN (SELECT
                                   name          AS artistName,
                                   app_artist.id AS art_id
-                                FROM app_artist) a4
-                    INNER JOIN app_track_artist a3 ON art_id = a3.artist_id ON app_track.id = a3.track_id
+                                FROM app_artist) a4 INNER JOIN app_track_artist a3 ON art_id = a3.artist_id
+                      ON app_track.id = a3.track_id
                 ) test
-              INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id 
-              WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
+              INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
+              WHERE app_playlist.id = 1) playlists ON trck_id = playlists.track_id
         ) request
     GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
      trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
-      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum;
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id;
     """
     with connection.cursor() as cursor:
         cursor.execute(sql, str(playlistId))
@@ -221,12 +221,20 @@ def simpleJsonGenerator():
     data = []
     for track in tracks:
         artists = []
-        splitedArtistName = track.artist_name.split(",")
-        splitedArtistId = track.artist_id.split(",")
-        for i in range(0, len(splitedArtistId)):
+        splicedArtistName = track.artist_name.split(",")
+        splicedArtistId = track.artist_id.split(",")
+        for i in range(0, len(splicedArtistId)):
             artists.append({
-                'ID': splitedArtistId[i],
-                'NAME': splitedArtistName[i],
+                'ID': splicedArtistId[i],
+                'NAME': splicedArtistName[i],
+            })
+        splicedAlbumArtist = track.album_artist_name.split(",")
+        splicedAlbumArtistId = track.album_artist_id.split(",")
+        albumArtists = []
+        for i in range(0, len(splicedAlbumArtistId)):
+            albumArtists.append({
+                'ID': splicedAlbumArtistId[i],
+                'NAME': splicedAlbumArtist[i]
             })
         data.append({
             'ID': track.track_id,
@@ -237,8 +245,12 @@ def simpleJsonGenerator():
             'DURATION': track.track_duration,
             'BITRATE': track.track_bitrate,
             'COVER': track.track_cover,
-            'ARTIST': artists,
-            'ALBUM': track.album_title,
+            'ARTISTS': artists,
+            'ALBUM': {
+                'ID': track.album_id,
+                'TITLE': track.album_title,
+                'ARTISTS': albumArtists,
+            },
             'GENRE': track.genre_name,
         })
     print("end genration")
@@ -323,75 +335,57 @@ class SimpleJsonCreator(threading.Thread):
 
 
 def exportTrackInfo(track):
-    finalData = "{\"ID\":"
-    finalData += str(track.id)
-    finalData += ",\"TITLE\":\""
-    finalData += checkIfNotNone(track.title)
-    finalData += "\",\"YEAR\":"
-    finalData += checkIfNotNoneNumber(track.year)
-    finalData += ",\"COMPOSER\":\""
-    finalData += checkIfNotNone(track.composer)
-    finalData += "\",\"PERFORMER\":\""
-    finalData += checkIfNotNone(track.performer)
-    finalData += "\",\"TRACK_NUMBER\":"
-    finalData += checkIfNotNoneNumber(track.number)
-    finalData += ",\"BPM\":"
-    finalData += checkIfNotNoneNumber(track.bpm)
-    finalData += ",\"LYRICS\":\""
-    finalData += checkIfNotNone(track.lyrics)
-    finalData += "\",\"COMMENT\":\""
-    finalData += checkIfNotNone(track.comment)
-    finalData += "\",\"BITRATE\":"
-    finalData += checkIfNotNoneNumber(track.bitRate)
-    finalData += ",\"SAMPLERATE\":"
-    finalData += checkIfNotNoneNumber(track.sampleRate)
-    finalData += ",\"DURATION\":"
-    finalData += checkIfNotNoneNumber(track.duration)
-    finalData += ",\"GENRE\":\""
     if track.genre is not None:
-        finalData += checkIfNotNone(track.genre.name)
+        genre = track.genre.name
     else:
-        finalData += "null"
-    finalData += "\",\"FILE_TYPE\":\""
-    finalData += checkIfNotNone(track.fileType.name)
-    finalData += "\",\"DISC_NUMBER\":"
-    finalData += checkIfNotNoneNumber(track.discNumber)
-    finalData += ",\"SIZE\":"
-    finalData += checkIfNotNoneNumber(track.size)
-    finalData += ",\"LAST_MODIFIED\":\""
-    finalData += checkIfNotNoneNumber(track.lastModified)
-    finalData += "\",\"COVER\":\""
-    finalData += checkIfNotNone(track.coverLocation)
-    finalData += "\",\"ARTISTS\":["
+        genre = None
+
+    artists = []
     for artist in track.artist.all():
-        finalData += "{\"ID\":"
-        finalData += str(artist.id)
-        finalData += ",\"NAME\":\""
-        finalData += checkIfNotNone(artist.name)
-        finalData += "\"},"
-    finalData = finalData[:-1]
-    finalData += "],\"ALBUM\":{"
+        artists.append({
+            'ID': artist.id,
+            'NAME': artist.name,
+        })
+
+    album = {}
     if track.album is not None:
-        finalData += "\"ID\":"
-        finalData += checkIfNotNoneNumber(track.album.id)
-        finalData += ",\"TITLE\":\""
-        finalData += checkIfNotNone(track.album.title)
-        finalData += "\",\"TOTAL_DISC\":"
-        finalData += checkIfNotNoneNumber(track.album.totalDisc)
-        finalData += ",\"TOTAL_TRACK\":"
-        finalData += checkIfNotNoneNumber(track.album.totalTrack)
-        finalData += ",\"ARTIST\":["
+        albumArtists = []
         for artist in track.album.artist.all():
-            finalData += "{\"ID\":"
-            finalData += checkIfNotNoneNumber(artist.id)
-            finalData += ",\"NAME\":\""
-            finalData += checkIfNotNone(artist.name)
-            finalData += "\"},"
-        finalData = finalData[:-1]
-        finalData += "]}}"
-    else:
-        finalData += "\"ID\":\"null\"}}"
-    return finalData
+            albumArtists.append({
+                'ID': artist.id,
+                'NAME': artist.name,
+            })
+        album = {
+            'ID': track.album.id,
+            'TITLE': track.album.title,
+            'TOTAL_DISC': track.album.totalDisc,
+            'TOTAL_TRACK': track.album.totalTrack,
+            'ARTISTS': albumArtists,
+        }
+
+    data = {
+        'ID': track.id,
+        'TITLE': track.title,
+        'YEAR': track.year,
+        'COMPOSER': track.composer,
+        'PERFORMER': track.performer,
+        'TRACK_NUMBER': track.number,
+        'BPM': track.bpm,
+        'LYRICS': track.lyrics,
+        'COMMENT': track.comment,
+        'BITRATE': track.bitRate,
+        'SAMPLERATE': track.sampleRate,
+        'DURATION': track.duration,
+        'GENRE': genre,
+        'FILE_TYPE': track.fileType.name,
+        'DISC_NUMBER': track.discNumber,
+        'SIZE': track.size,
+        'LAST_MODIFIED': track.lastModified,
+        'COVER': track.coverLocation,
+        'ARTISTS': artists,
+        'ALBUM': album,
+    }
+    return data
 
 
 # export a playlist to json, not threaded, to be avoided
