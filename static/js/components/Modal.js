@@ -6,15 +6,16 @@
 let Modal = function(type, id) {
 
     this.url         = null;
-    this.haveButtons = false; // Add cancel and save button when set to true
-    this.isOpen      = false;
     this.id          = id;
     this.callback    = null;
-    this.editModal   = {};
 
     this._createUI();
 
     switch (type) {
+        case "fetchPlaylists":
+            this._fetchPlaylistsUI();
+            break;
+
         case "newLibrary":
             this._newLibraryUI();
             break;
@@ -25,11 +26,6 @@ let Modal = function(type, id) {
 
         case "newWish":
             this._newWishUI();
-            break;
-
-        case "editMetadata":
-            this.url = "utils/modals/editMetadata";
-            this.haveButtons = true;
             break;
 
         default:
@@ -64,6 +60,31 @@ Modal.prototype = {
         this.ui.container.appendChild(this.ui.footer);
 
         this.ui.overlay.appendChild(this.ui.container);
+    },
+
+
+    _fetchPlaylistsUI: function() {
+        this.ui.container.id = "fetchPlaylists";
+        this.ui.title.innerHTML = "Fetching your playlists";
+
+        let spinnerContainer = document.createElement("DIV");
+        let spinnerRing = document.createElement("DIV");
+        let spinnerFloatDiv = document.createElement("DIV");
+        let spinnerImage = document.createElement("IMG");
+        let text        = document.createElement("P");
+
+
+        spinnerContainer.className = "lds-css";
+        spinnerRing.className = "lds-dual-ring";
+        spinnerImage.src = "/static/img/utils/python.svg";
+        text.innerHTML = "Currently fetching your libraries and playlists, please wait.";
+
+        spinnerRing.appendChild(spinnerFloatDiv);
+        spinnerContainer.appendChild(spinnerRing);
+
+        this.ui.content.appendChild(spinnerContainer);
+        this.ui.content.appendChild(spinnerImage);
+        this.ui.footer.appendChild(text);
     },
 
 
@@ -217,38 +238,10 @@ Modal.prototype = {
     close: function() {
         //TODO: Use unique ID (this.id)
         document.body.removeChild(document.getElementById("modal"));
-        this.isOpen = false;
-    },
-
-
-    initEditMetadata: function(entriesSelected) {
-        let props = Object.getOwnPropertyNames(entriesSelected);
-
-        for (let entry in props) {
-            if (entriesSelected[entry] === true) {
-                // TODO : from utils, modify here
-                document.getElementById("trackListContainer").parentNode.removeChild(document.getElementById("trackListContainer"));
-                document.getElementById("inputContainer").className += "inputStandAlone";
-            }
-        }
-    },
-
-
-    editEntryTrackInfo: function(entry) {
-        //entry.track.title = "SCOPARE";
-    },
-
-
-    _eventListener: function() {
-        //TODO: Use unique ID
-        document.getElementById("cancel").addEventListener("click", this.close);
     },
 
 
     setCallback: function(callback) {
         this.callback = callback;
-    },
-
-
-    getIsOpen: function() { return this.isOpen; }
+    }
 };

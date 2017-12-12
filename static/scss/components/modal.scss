@@ -35,6 +35,63 @@ $editFooterHeight:  ($editModalHeight / 10);
 
     background: rgba(0, 0, 0, 0.8);
 
+
+    #fetchPlaylists {
+        height: auto;
+        width: $modalWidth;
+
+        position: relative;
+
+        border: solid 1px black;
+        border-radius: 3px;
+        background: $primary-color;
+
+        -webkit-user-select: none;  /* Chrome/Safari */
+        -moz-user-select: none;     /* Firefox */
+
+        #header,
+        #content,
+        #footer {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #header,
+        #content {
+            border-bottom: solid 1px $dark-secondary-color;
+        }
+
+
+        #header,
+        #footer {
+            padding: 15px 30px;
+        }
+
+
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            h1 {
+                margin: 0;
+            }
+        }
+
+
+        #content {
+            padding: 25px 50px;
+
+            img {
+                width: 100px;
+                height: 100px;
+                margin: 16px 0;
+            }
+        }
+    }
+
+
     #newLibrary {
         min-height: $scanModalHeight;
         width: $scanModalWidth;
