@@ -3,28 +3,30 @@
  *  QueueView class - classical queue (pre)view                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var QueuePreview = function(container) {
+let QueuePreview = function(container) {
     this.contextMenu = null;
     this.reverse = window.app.queue.isReverse();
 
     this._createUI(container);
+
     this._eventListener();
     this._contextMenuSetup();
 
 };
 
+
 QueuePreview.prototype = {
 
     _createUI: function(container) {
         this.ui = {
-            container:  document.createElement("DIV"),
+            container:      document.createElement("DIV"),
             statusBar:  {
-                container: document.createElement("DIV"),
+                container:  document.createElement("DIV"),
                 trackCount: document.createElement("SPAN"),
                 reverseBox: document.createElement("INPUT"),
                 reverseLbl: document.createElement("LABEL")
             },
-            queueList:  document.createElement("UL")
+            queueList:      document.createElement("UL")
         };
 
         this.ui.container.className             = "mzk-queue-preview";
@@ -46,16 +48,17 @@ QueuePreview.prototype = {
         container.appendChild(this.ui.container);
     },
 
+
     addEntry: function(track) {
-        var li              = document.createElement("LI");
-        var img             = document.createElement("IMG");
-        var body            = document.createElement("DIV");
-        var title           = document.createElement("SPAN");
-        var origin          = document.createElement("SPAN");
-        var composer        = document.createElement("SPAN");
-        var qControls       = document.createElement("DIV");
-        var qControlsUp     = document.createElement("SPAN");
-        var qControlsDown   = document.createElement("SPAN");
+        let li              = document.createElement("LI");
+        let img             = document.createElement("IMG");
+        let body            = document.createElement("DIV");
+        let title           = document.createElement("SPAN");
+        let origin          = document.createElement("SPAN");
+        let composer        = document.createElement("SPAN");
+        let qControls       = document.createElement("DIV");
+        let qControlsUp     = document.createElement("SPAN");
+        let qControlsDown   = document.createElement("SPAN");
 
         body.className      = "mzk-qprev-body";
         title.className     = "mzk-qprev-title";
@@ -69,14 +72,16 @@ QueuePreview.prototype = {
         qControlsUp.innerText   = "U";
         qControlsDown.innerText = "D";
 
-        qControlsUp.dataset.callback = "moveUp";
+        qControlsUp.dataset.callback   = "moveUp";
         qControlsDown.dataset.callback = "moveDown";
 
         body.appendChild(title);
         body.appendChild(origin);
         body.appendChild(composer);
+
         qControls.appendChild(qControlsUp);
         qControls.appendChild(qControlsDown);
+
         li.appendChild(img);
         li.appendChild(body);
         li.appendChild(qControls);
@@ -84,70 +89,70 @@ QueuePreview.prototype = {
         this.ui.queueList.appendChild(li);
     },
 
+
     show: function(event) {
         toggleVisibilityLock(this.ui.container);
+
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
     },
 
+
     _eventListener: function() {
-        var self = this;
-        var findParentLI = function(element) {
-            while(element.tagName != 'UL' && element.tagName != 'LI')
+        let self = this;
+
+        let findParentLI = function(element) {
+            while (element.tagName !== 'UL' && element.tagName !== 'LI') {
                 element = element.parentNode;
-            if(element.tagName == 'LI')
-                return element;
-            else
-                return null;
+
+                if (element.tagName === 'LI') { return element; }
+                else                          { return null;    }
+            }
         };
 
-        window.app.addListener('pushQueue', function(track) {
-           self.addEntry(track);
-        });
-        window.app.addListener('popQueue', function(track) {
-           self.ui.queueList.removeChild(self.reverse ? self.ui.queueList.lastChild : self.ui.queueList.firstChild);
-        });
-        window.app.addListener('reverseQueue', function(reverse) {
-            self.reverse = reverse;
-        });
-
-        this.ui.statusBar.reverseBox.addEventListener('click', function(event) {
+        this.ui.statusBar.reverseBox.addEventListener('click', function() {
             window.app.reverseQueue(!self.reverse);
         });
-
         this.ui.queueList.addEventListener('click', function(event) {
-            var li, sib;
-            switch(event.target.dataset.callback) {
+            let li, sib;
+
+            switch (event.target.dataset.callback) {
                 case 'moveUp':
                     li = findParentLI(event.target);
-                    if(li != null) {
+
+                    if (li !== null || li !== undefined) {
                         sib = li.previousSibling;
-                        if(sib != null) {
-                            for(var i = 0; li.parentNode.children[i] != li; i++);
+
+                        if(sib !== null || li !== undefined) {
+                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+
                             self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib);
                             window.app.moveQueue(i, i -1);
                         }
                     }
                     break;
+
                 case 'moveDown':
                     li = findParentLI(event.target);
-                    if(li != null) {
+                    if(li !== null || li !== undefined) {
                         sib = li.nextSibling;
-                        if(sib != null) {
-                            for(var i = 0; li.parentNode.children[i] != li; i++);
+
+                        if(sib !== null || li !== undefined) {
+                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+
                             self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib.nextSibling);
                             window.app.moveQueue(i, i + 1);
                         }
 
                     }
                     break;
+
                 default:
+                    // TODO : Switch default event
                     break;
             }
         });
-
-        //TODO: Fix this kind of things (Valentin)
         this.ui.container.addEventListener('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
@@ -155,9 +160,21 @@ QueuePreview.prototype = {
         });
 
         document.body.addEventListener('click', function() {
-           removeVisibilityLock(self.ui.container);
+            removeVisibilityLock(self.ui.container);
+        });
+
+
+        window.app.addListener('pushQueue', function(track) {
+            self.addEntry(track);
+        });
+        window.app.addListener('popQueue', function() {
+            self.ui.queueList.removeChild(self.reverse ? self.ui.queueList.lastChild : self.ui.queueList.firstChild);
+        });
+        window.app.addListener('reverseQueue', function(reverse) {
+            self.reverse = reverse;
         });
     },
+
 
     _contextMenuSetup: function () {
 

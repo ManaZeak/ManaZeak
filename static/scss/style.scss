@@ -1,5 +1,7 @@
 @import 'utils/tools';
 @import 'components/topbar';
+@import 'components/elements/trackinfo';
+@import 'components/elements/wishlist';
 @import 'components/elements/progressbar';
 @import 'components/elements/volumebar';
 @import 'components/elements/contextmenu';
@@ -15,6 +17,7 @@ html, body {
     width: 100%;
 
     color: $primary-text;
+    font-family: Helvetica, serif;
 }
 
 #spectrumContainer {

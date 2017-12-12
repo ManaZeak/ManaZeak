@@ -1,11 +1,45 @@
 
+$listView-padding: 0 10%;
+
+
+@media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled
+    #listView, .columnHeader {
+        padding: 0 20px !important;
+        font-size: 0.8em !important;
+    }
+
+    .col-title {
+        width: 17% !important;
+    }
+
+    .col-artist {
+        width: 17% !important;
+    }
+
+    .col-composer {
+        width: 17% !important;
+    }
+
+    .col-album {
+        width: 17% !important;
+    }
+
+    .col-genre {
+        width: 15% !important;
+    }
+
+    .col-year {
+        text-align: center !important;
+    }
+}
+
 /* listview */
 #listView {
     width: 100%;
-    height: calc(100% - 30px);
-    top: 30px;
+    height: calc(100% - 35px);
+    top: 35px;
     position: absolute;
-    padding: 0 10%;
+    padding: $listView-padding;
     overflow-y: auto;
     box-sizing: border-box;
 
@@ -15,13 +49,14 @@
 
 .columnHeader {
     width: 100%;
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
     font-size: 0.9em;
-    text-align: center;
     font-weight: bold;
+    padding: $listView-padding;
     cursor: pointer;
     position: absolute;
+    box-sizing: border-box;
     top: 0;
 
     -webkit-user-select: none;  /* Chrome/Safari */
@@ -31,10 +66,11 @@
 .trackContainer {
     width: 100%;
     height: 1.3em;
-    line-height: 1.3em;
-    font-size: 0.85em;
+    line-height: 1.46em;
+    font-size: 0.8em;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
-    text-align: center;
 
     &.mzk-selected {
         background-color: $secondary-color;
@@ -46,49 +82,55 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-height: 1px;
-    min-width: 1%;
     text-align: left;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
     box-sizing: border-box;
     white-space: nowrap;
     display: inline-block;
+    float: left;
 }
 
 .col-duration {
-    width: 70px;
+    width: 5%;
     text-align: right;
 }
 
 .col-title {
-    width: 300px;
+    width: 22%;
 }
 
 .col-artist {
-    width: 250px;
+    width: 16%;
 }
 
 .col-composer {
-    width: 250px;
+    width: 18.5%;
 }
-
-.col-performer {
-    width: 250px;
+/*
+.col-performer { // Tod Add In Another ListView Type
+    width: 16%;
 }
-
+*/
 .col-album {
-    width: 160px;
+    width: 19%;
 }
 
 .col-genre {
-    width: 125px;
+    width: 11%;
 }
 
 .col-bitRate {
-    width: 75px;
+    width: 5%;
+    text-align: right;
 }
 
 .col-year {
-    width: 40px;
-    text-align: right;
+    width: 3.5%;
 }
+
+// Must be aplied when a vertical scrollBar is active
+.columnHeaderOffset {
+    width: calc(100% - 20px) !important;
+}
+

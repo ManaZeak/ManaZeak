@@ -2,21 +2,20 @@ version: '3'
 services:
 
     db:
-      image: postgres:latest
-      container_name: db
-      environment:
-          POSTGRES_DB: music
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: rootroot
-      volumes:
-        - ./db_data:/var/lib/postgresql/data
-      expose:
-        - "5432"
-      ports:
-        - "5432:5432"
+        image: postgres:latest
+        container_name: manazeak_postgresql
+        environment:
+            POSTGRES_DB: music
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: rootroot
+        volumes:
+            - ./db_data:/var/lib/postgresql/data
 
     web:
-        build: .
+        build:
+            context: .
+            dockerfile: docker/django/Dockerfile
+        container_name: manazeak_app
         command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
         volumes:
             - /PATH/TO/MUSIC:/library
@@ -24,6 +23,7 @@ services:
             - .:/ManaZeak
         links:
             - syncthing:st
+            - db
         ports:
             - "127.0.0.1:8000:8000"
         depends_on:
@@ -31,28 +31,29 @@ services:
 
     nginx:
         image: nginx:latest
-        container_name: ng01
+        container_name: manazeak_nginx
         ports:
             - "80:8000"
         volumes:
             - /PATH/TO/MUSIC:/library
-            - ./nginx/config:/etc/nginx/conf.d
+            - ./docker/nginx/config:/etc/nginx/conf.d
             - ./static:/static
         depends_on:
             - web
+        links:
+            - web
 
     moodbar:
-        build: ./moodbar
-        container_name: moodbar
-        command: bash -c "python moodbarGenerator.py"
+        build:
+            context: docker/moodbar
+        container_name: manazeak_moodbar
         volumes:
             - /PATH/TO/MUSIC:/library
-            - ./static/mood/:/moodbar/static
-            - ./scripts/:/moodbar
+            - ./static/mood:/moodbar/static
 
     syncthing:
         image: syncthing/syncthing:latest
-        container_name: syncthing01
+        container_name: manazeak_syncthing
         # network_mode: "host" # For local discovery
         volumes:
             - /PATH/TO/MUSIC:/var/syncthing

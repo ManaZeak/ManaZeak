@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 from builtins import print
@@ -18,8 +19,10 @@ from django.views.generic.list import ListView
 from app.controller import scanLibrary, shuffleSoundSelector
 from app.dao import getPlaylistExport
 from app.form import UserForm
-from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage
+from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
+    Wish, Stats
+from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
+    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
 
 
 class mainView(ListView):
@@ -33,6 +36,7 @@ class mainView(ListView):
 
 
 # Perform the initial scan for a library
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
@@ -56,6 +60,7 @@ def initialScan(request):
 
 
 # Drop all database, used for debug
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def dropAllDB(request):
     if request.user.is_authenticated():
         Track.objects.all().delete()
@@ -64,6 +69,10 @@ def dropAllDB(request):
         Playlist.objects.all().delete()
         Library.objects.all().delete()
         Genre.objects.all().delete()
+        Shuffle.objects.all().delete()
+        UserHistory.objects.all().delete()
+        Stats.objects.all().delete()
+        History.objects.all().delete()
         data = {
             'DROPPED': "OK",
         }
@@ -123,12 +132,14 @@ class UserFormLogin(View):
 
 
 # Log out the user
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def logoutView(request):
     logout(request)
     return render(request, 'user/login.html')
 
 
 # Return all the id of the user playlists
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
     print("getting usr playlist")
     playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
@@ -164,7 +175,41 @@ def getUserPlaylists(request):
     return JsonResponse(data)
 
 
+# Send basic data about the playlist
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getPlaylistInfo(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                artists = set()
+                genres = set()
+                bitRate = 0
+                for track in playlist.track:
+                    artists.add(track.artist)
+                    genres.add(track.genre)
+                    bitRate += track.bitRate
+                bitRate = bitRate / len(playlist.track)
+                data = {
+                    'TRACK_TOTAL': playlist.track.count(),
+                    'ARTIST_TOTAL': len(artists),
+                    'GENRE_TOTAL': len(genres),
+                    'AVERAGE_BIT_RATE': bitRate,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 # Load a library by returning simplified json
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def loadSimplifiedLibrary(request):
     if request.method == 'POST':
         print("Getting json export of the library")
@@ -172,11 +217,8 @@ def loadSimplifiedLibrary(request):
         if 'PLAYLIST_ID' in response:
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                if playlist.jsonExport is None:
-                    tracks = exportPlaylistToSimpleJson(playlist)
-                else:
-                    tracks = playlist.jsonExport
-                return HttpResponse(tracks)
+                updateTrackView(playlist.id)
+                return JsonResponse(dict({'RESULT': simpleJsonGenerator()}))
             else:
                 return JsonResponse(errorCheckMessage(False, "dbError"))
         else:
@@ -186,6 +228,7 @@ def loadSimplifiedLibrary(request):
 
 
 # Get all track information from a playlist and format it as json
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def loadTracksFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -198,6 +241,25 @@ def loadTracksFromPlaylist(request):
 
         except AttributeError:
             return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+
+# TODO: nouvelle convention JSON!
+def getTrackDetailedInfo(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                # TODO : change to dict
+                return JsonResponse(dict({'RESULT': exportTrackInfo(track)}))
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 def bulkExport(request):
@@ -268,6 +330,7 @@ def newPlaylist(request):
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def changeMetaData(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -289,19 +352,48 @@ def changeMetaData(request):
 
 
 # Return the link to a track with a track id
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        user = request.user
         data = {}
-        if 'TRACK_ID' in response:
+        if 'TRACK_ID' in response and 'PREVIOUS' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
                 track.playCounter += 1
+                track.save()
+                user = request.user
+                if Stats.objects.filter(user=user, track=track).count() == 0:
+                    stat = Stats()
+                    stat.track = track
+                    stat.user = user
+                    stat.playCounter = 1
+                else:
+                    stat = Stats.objects.get(user=user, track=track)
+                    stat.playCounter += 1
+                stat.save()
+                print("PREVIOUS : ", response['PREVIOUS'])
+                if not response['PREVIOUS']:
+                    # Creating user history
+                    history = History()
+                    history.track = track
+                    history.save()
+                    if UserHistory.objects.filter(user=user).count() == 0:
+                        userHistory = UserHistory(user=user)
+                        userHistory.save()
+                        userHistory.histories.add(history)
+                    # Adding to existing history
+                    else:
+                        userHistory = UserHistory.objects.get(user=user)
+                        userHistory.save()
+                        userHistory.histories.add(history)
+
                 print("PATH : " + track.location)
                 data = {
                     'PATH': track.location,
-                    'COVER': track.coverLocation
+                    'COVER': track.coverLocation,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
@@ -312,7 +404,32 @@ def getTrackPathByID(request):
         return JsonResponse(data)
 
 
+# Download the given song
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getDownloadLocation(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                track.downloadCounter += 1
+                track.save()
+                data = {
+                    'PATH': track.location,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 # Function for check if a library has been scanned.
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -322,6 +439,7 @@ def checkLibraryScanStatus(request):
                 return JsonResponse(errorCheckMessage(playlist.isScanned, None))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -333,14 +451,15 @@ def shuffleNextTrack(request):
             else:
                 shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
                 shuffle.save()
-            track = shuffleSoundSelector(shuffle)
+            track, playlistEnd = shuffleSoundSelector(shuffle)
             shuffle.tracksPlayed.add(track)
             shuffle.save()
             if Track.objects.filter(id=track.id).count() == 1:
                 data = {
                     'TRACK_ID': track.id,
                     'PATH': track.location,
-                    'COVER': track.coverLocation
+                    'COVER': track.coverLocation,
+                    'END': playlistEnd,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
@@ -351,6 +470,7 @@ def shuffleNextTrack(request):
         return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getMoodbarByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -370,6 +490,59 @@ def getMoodbarByID(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def adminGetUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+    user = request.user
+    data = []
+    if user.is_superuser:
+        for users in User.objects.all():
+            temp = {
+                'USER': users.username,
+                'PREF_ARTIST': getUserPrefArtist(users),
+                'NB_TRACK_LISTENED': getUserNbTrackListened(users),
+                'NB_TRACK_PUSHED': getUserNbTrackPushed(users),
+                'USER_GENRE': getUserGenre(users),
+                'USER_GENRE_PERCENTAGE': getUserGenrePercentage(users),
+                'NEVER_PLAYED': userNeverPlayed(users),
+            }
+
+            data.append(temp)
+
+        return JsonResponse(dict({'mydata': data}))
+    else:
+        return JsonResponse(errorCheckMessage(False, "permissionError"))
+
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getUserStats(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+    user = request.user
+
+    nbTrackListened = getUserNbTrackListened(user)
+    nbTrackPushed = getUserNbTrackPushed(user)
+    userGenre = getUserGenre(user)
+    userGenrePercentage = getUserGenrePercentage(user)
+    prefArtists = getUserPrefArtist(user)
+    neverPlayed = userNeverPlayed(user)
+
+    data = {
+            'PREF_ARTIST': prefArtists[:100],
+            'NB_TRACK_LISTENED': nbTrackListened,
+            'NB_TRACK_PUSHED': nbTrackPushed,
+            'USER_GENRE': userGenre,
+            'USER_GENRE_PERCENTAGE': userGenrePercentage,
+            'NEVER_PLAYED': neverPlayed,
+    }
+
+    return JsonResponse(data)
+
+
 
 
 def randomNextTrack(request):
@@ -401,6 +574,7 @@ def randomNextTrack(request):
 
 
 # Drop a library and index all the tracks
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def rescanLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -411,7 +585,7 @@ def rescanLibrary(request):
 
                 # Check if the library is not used somewhere else
                 if library.playlist.isScanned:
-                    # Delete all the js tracks
+                    # Delete all the old tracks
                     library.playlist.delete()
 
                     # Recreating playlist
@@ -435,6 +609,7 @@ def rescanLibrary(request):
         return JsonResponse(errorCheckMessage(False, "badRequest"))
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def toggleRandom(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -457,3 +632,107 @@ def toggleRandom(request):
                     settings.randomMode = randomMode
                     settings.save()
                     return JsonResponse(errorCheckMessage(True, None))
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getLastSongPlayed(request):
+    if request.method == 'GET':
+        user = request.user
+        if UserHistory.objects.filter(user=user).count() != 0:
+            userHistory = UserHistory.objects.get(user=user)
+            if userHistory.histories.count() != 0:
+                trackId = 0
+                for history in userHistory.histories.order_by('-date'):
+                    trackId = history.track.id
+                    history.delete()
+                    break
+                data = {
+                    'TRACK_ID': trackId,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "noHistory")
+        else:
+            data = errorCheckMessage(False, "noHistory")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getSimilarTrack(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        selectedTracks = []
+        if 'TRACK_ID' in response and 'MODE' in response and 'PLAYLIST':
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                mode = strip_tags(response['MODE'])
+                numberTrackTarget = 4
+
+                try:
+                    mode = int(mode)
+                except ValueError:
+                    mode = 5
+
+                # Same artist track selection
+                if mode == 0:
+                    tracks = Track.objects.filter(artist__in=track.artist.all()).exclude(id=track.id) \
+                        .order_by('-playCounter')
+                # Same album track selection
+                elif mode == 1:
+                    tracks = Track.objects.filter(album=track.album).exclude(id=track.id).order_by('-playCounter')
+                # Same genre track selection
+                elif mode == 2:
+                    tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
+                # Other values
+                else:
+                    return JsonResponse(errorCheckMessage(False, "badFormat"))
+
+                # Check length of the query set
+                if len(tracks) < 4:
+                    if len(tracks) == 0:
+                        if mode == 0:
+                            return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                        elif mode == 1:
+                            return JsonResponse(errorCheckMessage(False, "noSameAlbum"))
+                        else:
+                            return JsonResponse(errorCheckMessage(False, "noSameGenre"))
+                    else:
+                        numberTrackTarget = len(tracks)
+
+                # Choosing the X most listened tracks
+                for trackCursor in tracks:
+                    selectedTracks.append(trackCursor)
+                    if len(selectedTracks) == numberTrackTarget:
+                        break
+
+                # Returning results
+                return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return data
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def createWish(request):
+    if request.method == 'POST':
+        user = request.user
+        response = json.loads(request.body)
+        if 'WISH' in response:
+            wish = Wish()
+            wish.user = user
+            wish.text = strip_tags(str(response['WISH']))
+            wish.status = 0 # Not done; 1 Refused; 2 Accepted
+            wish.save()
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)

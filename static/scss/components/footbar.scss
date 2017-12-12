@@ -23,12 +23,15 @@
 
         ul {
             display: inline-block;
+            vertical-align: 66%;
             font-size: 0.8em;
             margin: 0;
-            vertical-align: 60%;
-            line-height: 1.4em;
             padding-left: 20px;
             list-style: none;
+
+            li {
+                padding: 1px 0;
+            }
         }
     }
 
@@ -297,12 +300,15 @@
 
         ul {
             display: inline-block;
+            vertical-align: 66%;
             font-size: 0.8em;
             margin: 0;
-            vertical-align: 60%;
-            line-height: 1.4em;
-            padding-right: 20px;
+            padding-right: 0;
             list-style: none;
+        }
+
+        li {
+            padding: 1px 0;
         }
     }
 }

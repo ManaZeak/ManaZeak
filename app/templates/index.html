@@ -36,6 +36,8 @@
         <!-- Attention au loading -->
         <script type="text/javascript" src="{% static "js/core/View.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/views/ListView.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/TrackInfo.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/elements/WishList.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/UserMenu.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Queue.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/PlaylistPreview.js" %}"></script>
@@ -52,23 +54,15 @@
         <script type="text/javascript" src="{% static "js/core/Playlist.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/Controls.js" %}"></script>
-        <script type="text/javascript" data-script-type="appAddon" data-src="{% static "js/AppControler.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
-            //Load App from multiple files
-            var addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
-            var loaded = 0;
-            for(var i = 0; i < addonSrcs.length; ++i) {
-                addonSrcs[i].onload = function() {
-                    loaded++;
-                    if(loaded == addonSrcs.length) {
-                        window.app = new App();
-                        //TODO: Move this to footbar
-                        app.init();
-                    }
-                };
-                addonSrcs[i].src = addonSrcs[i].dataset.src;
-            }
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("Init app ...")
+                window.app = new App();
+                app.init();
+                //TODO: Move this to footbar
+            });
         </script>
+        <script type="text/javascript" src="{% static "js/AppController.js" %}"></script>
     </body>
 </html>
