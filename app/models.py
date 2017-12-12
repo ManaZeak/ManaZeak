@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 
@@ -54,6 +55,7 @@ class Track(models.Model):
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
     downloadCounter = models.IntegerField(default=0)
+    uploader = models.ForeignKey(User, null=True)
 
 
 class TrackView(models.Model):
@@ -113,6 +115,13 @@ class Shuffle(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
     tracksPlayed = models.ManyToManyField(Track)
+
+
+class Stats(models.Model):
+    user = models.ForeignKey(User)
+    track = models.ForeignKey(Track)
+    listeningPercentage = models.IntegerField(null=True)
+    playCounter = models.IntegerField(default=0)
 
 
 class PlaylistSettings(models.Model):

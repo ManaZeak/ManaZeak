@@ -4,6 +4,7 @@ import multiprocessing
 import operator
 import os
 import threading
+from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
 from django.db import connection
@@ -15,7 +16,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist, TrackView
+from app.models import FileType, Genre, Album, Artist, Stats, Track, TrackView
 
 
 # Render class for serving modal to client (Scan)
@@ -829,3 +830,86 @@ class LocalTrack:
             = self.duration = self.discNumber = self.size = self.playCounter = self.downloadCounter = 0
         self.artist = []
         self.scanned = False
+
+
+def getUserNbTrackListened(user):
+    tracks = Stats.objects.filter(user=user)
+    totalListenedTrack = 0
+
+    for track in tracks:
+        totalListenedTrack += track.playCounter
+
+    print(totalListenedTrack)
+    return totalListenedTrack
+
+
+def getUserNbTrackPushed(user):
+    totalUploadedTracks = Track.objects.filter(uploader=user).count()
+
+    return totalUploadedTracks
+
+
+def getUserGenre(user):
+    genres = Genre.objects.all()
+    genreCounter = []
+
+    for genre in genres:
+        counter = 0
+        tracks = Stats.objects.filter(track__genre=genre, user=user)
+        for track in tracks:
+            counter += track.playCounter
+
+        genreCounter.append(counter)
+
+    return genreCounter
+
+
+def getUserGenrePercentage(user):
+    genreCounter = getUserGenre(user)
+    genrePercentage = []
+    totalGenre = 1  # At the moment protection against empty tests
+    i = 0
+
+    for i in genreCounter:
+        totalGenre = totalGenre + i
+
+    for i in genreCounter:
+        percentage = 100 * i / totalGenre
+        genrePercentage.append(percentage)
+
+    return genrePercentage
+
+
+def getUserPrefArtist(user):
+    artists = Artist.objects.all()
+    artistCounter = []
+
+    for artist in artists:
+        counter = 0
+        tracks = Stats.objects.filter(track__artist=artist, user=user)
+
+        for track in tracks:
+            counter += track.playCounter
+
+        artistCounter.append((artist.id, artist.name, counter))
+
+    artistCounter.sort(key=itemgetter(2), reverse=True)
+
+    return artistCounter
+
+
+def userNeverPlayed(user):
+    stats = Stats.objects.filter(user=user)
+    playedArtistId = set()
+
+    for stat in stats:
+        for artist in stat.track.artist.all():
+            playedArtistId.add(artist.id)
+    neverPlayedArtists = Artist.objects.exclude(id__in=playedArtistId)
+    neverPlayed = []
+    for artist in neverPlayedArtists:
+        neverPlayed.append(artist.id)
+
+    #print(len(neverPlayerArtists))
+    return neverPlayed
+
