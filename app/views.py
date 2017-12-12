@@ -217,7 +217,6 @@ def loadSimplifiedLibrary(request):
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
                 updateTrackView(playlist.id)
-                print(dict({'RESULT': simpleJsonGenerator()}))
                 return JsonResponse(dict({'RESULT': simpleJsonGenerator()}))
             else:
                 return JsonResponse(errorCheckMessage(False, "dbError"))
@@ -581,7 +580,6 @@ def getLastSongPlayed(request):
             if userHistory.histories.count() != 0:
                 trackId = 0
                 for history in userHistory.histories.order_by('-date'):
-                    print(history.track.title)
                     trackId = history.track.id
                     history.delete()
                     break
