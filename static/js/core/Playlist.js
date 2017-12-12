@@ -68,6 +68,9 @@ Playlist.prototype = {
 
 
     _loadLibrary: function() {
+        if (this.rawTracks.length === 0) {
+            return;
+        }
         this._fillTracks(this.rawTracks);
     },
 
@@ -226,7 +229,8 @@ Playlist.prototype = {
     },
 
 
-    _fillTracks: function(tracks) {
+    _fillTracks: function(tracks) { // Tracks is JSON response to playlist ID
+
         for (let i = 0; i < tracks.RESULT.length; ++i) {
             ++this.trackTotal;
             this.durationTotal += tracks.RESULT[i].DURATION;

@@ -94,6 +94,7 @@ App.prototype.changeTrack = function(track, previous) {
             PREVIOUS: previous
         }),
         function(response) {
+            console.log(track);
             if (response.RESULT === "FAIL") {
                 new Notification("ERROR", "Bad format.", response.ERROR);
             }
@@ -112,6 +113,7 @@ App.prototype.changeTrack = function(track, previous) {
 
 
 App.prototype.changePlaylist = function() {
+
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
 };
 
@@ -122,8 +124,8 @@ App.prototype.changePageTitle = function(path) {
 };
 
 
-App.prototype.getAllPlaylistsTracks = function() {
-    for (let i = 1; i < this.playlists.length ;++i) {
+App.prototype.getAllPlaylistsTracks = function(begin) {
+    for (let i = begin; i < this.playlists.length; ++i) {
         this.playlists[i].getPlaylistsTracks(undefined);
     }
 };
