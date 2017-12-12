@@ -83,6 +83,9 @@ App.prototype = {
         let that = this;
         // User already have playlists
         if (playlists.DONE) {
+            let modal = new Modal("fetchPlaylists", 1); // TODO : gen unique ID from utils here
+            modal.open();
+
             JSONParsedPostRequest(
                 "ajax/getSimplifiedTracks/",
                 JSON.stringify({
@@ -90,6 +93,7 @@ App.prototype = {
                 }),
                 function(response) {
                     // response = raw tracks JSON object
+                    modal.close();
                     that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[0],
                         playlists.PLAYLIST_NAMES[0],
                         playlists.PLAYLIST_IS_LIBRARY[0],

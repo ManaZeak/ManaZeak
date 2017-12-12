@@ -170,7 +170,6 @@ Playlist.prototype = {
                  *     ERROR_MSG:   string
                  * } */
                 let self = that;
-
                 if (response.DONE) {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
@@ -183,10 +182,10 @@ Playlist.prototype = {
                         function(response) {
                             // response = raw tracks JSON object
                             self.rawTracks = response;
-                            self.modal.close();
                             self._fillTracks(self.rawTracks);
                             self.refreshViews();
                             self.showView(self.activeView);
+                            self.modal.close();
 
                             if (self.callback) {
                                 self.callback();
