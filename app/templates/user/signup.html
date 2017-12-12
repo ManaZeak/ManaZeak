@@ -1,23 +1,48 @@
-<html>
-    <head>
-        <title>Django Store - User Login</title>
-    </head>
-    <body>
-        <h1>User Login</h1>
+{% load staticfiles %}
+{% load sass_tags %}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ManaZeak signup</title>
+    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/user.scss" %}">
+</head>
+{% block body %}
+    {% load staticfiles %}
+<body>
+    <div id="login">
+       <h1>ManaZeak</h1>
         {% if form.has_errors %}
-        <p>Your username and password didn't match. Please try again.</p>
+            <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
-        <form method="POST" action="">
-            <p><label for="id_username">Username:</label>
-            {{ form.username }}</p>
-            <p><label for="id_password">Password:</label>
-            {{ form.password1 }}</p>
-            {{ form.password2 }}
-            <input type="hidden" name="next" value="/" />
-            <input type="submit" value="register" />
-            {% csrf_token %}
+            <p>Use this form to sign up, and begin to use ManaZeak</p>       <!-- TODO proper redirection w/ url -->
+
+            <form action="" method="POST" name="signup">
+                <p><label for="id_username">Username:</label>
+                {{ form.username }}</p>
+                <p><label for="id_password">Password:</label>
+                {{ form.password1 }}</p>
+                {{ form.password2 }}
+                <input type="hidden" name="next" value="/" />
+                <input type="submit" value="register" id="button" />
+                {% csrf_token %}
+            </form>
+
+        <div id="error">
             {{ form.errors }}
             {{ form.non_field_errors }}
-        </form>
-    </body>
-</html>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.keyCode === 18) {
+                document.signup.submit();
+            }
+        });
+    </script>
+</body>
+{% endblock %}
