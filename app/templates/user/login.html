@@ -5,33 +5,39 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>ManaZeak login</title>
-        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/login.scss" %}">
-    </head>
-    {% block body %}
+<head>
+    <meta charset="utf-8">
+    <title>ManaZeak login</title>
+    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/user.scss" %}">
+</head>
+{% block body %}
     {% load staticfiles %}
-    <body>
-        <div id="login">
-            {% if user.is_active %}
-                <p>Authenticated already</p>
-            {% else %}
-                <form action="" method="post" enctype="multipart/form-data" class = "colonne">
-                    {% csrf_token %}
-                    <label for="id_username">
-                        <div>Username:</div>
-                    </label><br>
-                    <input id="id_username" maxlength="30" name="username" type="text" class ="colonne">
-                    <label for="id_password">
-                        <div>Password:</div>
-                    </label>
-                    <input id="id_password" maxlength="30" name="password" type="password"><br><br>
-                    <button class="btn btn-info" type="submit">Submit</button>
-                </form>
-            {% endif %}
-        </div>
-    </body>
+<body>
+    <div id="login">
+       <h1>ManaZeak</h1>
+        {% if user.is_active %}
+            <p>Authenticated already. Go back to <a href="../">ManaZeak</a></p> <!-- TODO proper redirection w/ url -->
+        {% else %}
+            <p>Please login below, or <a href="../signup">sign up</a></p>       <!-- TODO proper redirection w/ url -->
+            <form action="" method="post" enctype="multipart/form-data" name="login">
+                {% csrf_token %}
+                <label for="id_username">Username:</label>
+                <input id="id_username" maxlength="30" name="username" type="text"><br>
+                <label for="id_password">Password:</label>
+                <input id="id_password" maxlength="30" name="password" type="password">
+                <button type="submit">Submit</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.keyCode === 18) {
+                document.login.submit();
+            }
+        });
+    </script>
+</body>
 {% endblock %}
 
 
