@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import components, utils, controller
+from app import components, utils
 from . import views
 
 app_name = 'app'
@@ -33,7 +33,5 @@ urlpatterns = [
     url(r'^ajax/download/$', views.getDownloadLocation, name='getDownloadLocation'),
     url(r'^ajax/submitWish/$', views.createWish, name='createWish'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
-    url(r'^utils/modals/scanLibrary/$', utils.ScanModal.as_view(), name='scanModal'),
-    url(r'^utils/modals/editMetadata/$', utils.EditMetadataModal.as_view(), name='editMetadataModal'),
     url(r'^debug/$', utils.artistViewJsonGenerator),
 ]

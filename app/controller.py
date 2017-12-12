@@ -4,7 +4,7 @@ from random import randint
 
 from django import db
 
-from app.models import FileType, Track
+from app.models import FileType
 from app.utils import errorCheckMessage, addAllGenreAndAlbumAndArtists
 
 
