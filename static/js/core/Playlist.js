@@ -68,6 +68,9 @@ Playlist.prototype = {
 
 
     _loadLibrary: function() {
+        if (this.rawTracks.length === 0) {
+            return;
+        }
         this._fillTracks(this.rawTracks);
     },
 
@@ -170,7 +173,6 @@ Playlist.prototype = {
                  *     ERROR_MSG:   string
                  * } */
                 let self = that;
-
                 if (response.DONE) {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
@@ -183,10 +185,10 @@ Playlist.prototype = {
                         function(response) {
                             // response = raw tracks JSON object
                             self.rawTracks = response;
-                            self.modal.close();
                             self._fillTracks(self.rawTracks);
                             self.refreshViews();
                             self.showView(self.activeView);
+                            self.modal.close();
 
                             if (self.callback) {
                                 self.callback();
@@ -227,11 +229,12 @@ Playlist.prototype = {
     },
 
 
-    _fillTracks: function(tracks) {
-        for (let i = 0; i < tracks.length; ++i) {
+    _fillTracks: function(tracks) { // Tracks is JSON response to playlist ID
+
+        for (let i = 0; i < tracks.RESULT.length; ++i) {
             ++this.trackTotal;
-            this.durationTotal += tracks[i].DURATION;
-            this.tracks.push(new Track(tracks[i]));
+            this.durationTotal += tracks.RESULT[i].DURATION;
+            this.tracks.push(new Track(tracks.RESULT[i]));
         }
     },
 

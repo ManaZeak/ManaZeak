@@ -79,6 +79,6 @@ Track.prototype = {
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
         this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
-        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTIST);
+        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
     }
 };

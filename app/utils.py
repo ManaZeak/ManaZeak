@@ -4,8 +4,11 @@ import multiprocessing
 import operator
 import os
 import threading
+from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
+from django.db import connection
+from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -14,7 +17,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import FileType, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist, Stats, Track, TrackView, Playlist
 
 
 # Render class for serving modal to client (Scan)
@@ -147,6 +150,117 @@ def errorCheckMessage(isDone, error):
     }
 
 
+# Export the all the DB tracks to a view
+def updateTrackView(playlistId):
+    sql = """DROP VIEW IF EXISTS public.app_track_view RESTRICT;"""
+    with connection.cursor() as cursor:
+        cursor.execute(sql, playlistId)
+    sql = """
+        CREATE OR REPLACE VIEW app_track_view (track_id, track_location, track_title, track_year, track_composer,
+        track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,
+        track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified, track_cover,
+        track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, album_id, artist_name,
+        artist_id, album_artist_id, album_artist_name)
+          AS SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
+          track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play,
+          trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
+          string_agg(DISTINCT artistName, ',') AS art_name,
+          string_agg(DISTINCT art_id::TEXT, ',') AS art_id,
+          string_agg(DISTINCT album_artist_id::TEXT, ',') AS alb_art,
+          string_agg(DISTINCT album_artist_name, ',') AS alb_art_name
+        FROM (
+              SELECT * FROM
+                (
+                  SELECT
+                    app_track.id                AS trck_id,
+                    app_track.location          AS trk_loc,
+                    app_track.title             AS trck_tit,
+                    app_track.year              AS trck_year,
+                    app_track.composer          AS trck_comp,
+                    app_track.performer         AS trk_perf,
+                    app_track.number            AS trck_num,
+                    app_track.bpm               AS trk_bpm,
+                    app_track.lyrics            AS trck_lyr,
+                    app_track.comment           AS trck_com,
+                    app_track."bitRate"         AS track_bit_rate,
+                    app_track."bitRateMode"     AS trck_bitmode,
+                    app_track."sampleRate"      AS trck_sampRate,
+                    app_track.duration          AS trck_dur,
+                    app_track."discNumber"      AS trck_dnum,
+                    app_track.size              AS trck_siz,
+                    app_track."lastModified"    AS trck_lastM,
+                    app_track."coverLocation"   AS trck_cov,
+                    app_track."playCounter"     AS trck_play,
+                    app_track.moodbar           AS trck_mood,
+                    app_track."downloadCounter" AS trck_dl,
+                    *
+                  FROM app_track
+                    INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
+                                  INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
+                    INNER JOIN (SELECT
+                                  name AS genreName,
+                                  id   AS gen_id
+                                FROM app_genre) a2 ON app_track.genre_id = gen_id
+                    INNER JOIN (SELECT
+                                  name          AS artistName,
+                                  app_artist.id AS art_id
+                                FROM app_artist) a4 INNER JOIN app_track_artist a3 ON art_id = a3.artist_id
+                      ON app_track.id = a3.track_id
+                ) test
+              INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
+              WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
+        ) request
+    GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
+     trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY alb_art_name;
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(sql, str(playlistId))
+
+
+def simpleJsonGenerator():
+    tracks = TrackView.objects.all()
+    data = []
+    for track in tracks:
+        splicedArtistName = track.artist_name.split(",")
+        splicedArtistId = track.artist_id.split(",")
+        artists = []
+
+        for artistId, artist in zip(splicedArtistId, splicedArtistName):
+            artists.append({
+                'ID': artistId,
+                'NAME': artist,
+            })
+        splicedAlbumArtist = track.album_artist_name.split(",")
+        splicedAlbumArtistId = track.album_artist_id.split(",")
+        albumArtists = []
+
+        for artistId, artist in zip(splicedAlbumArtistId, splicedAlbumArtist):
+            albumArtists.append({
+                'ID': artistId,
+                'NAME': artist
+            })
+        data.append({
+            'ID': track.track_id,
+            'TITLE': track.track_title,
+            'YEAR': track.track_year,
+            'COMPOSER': track.track_composer,
+            'PERFORMER': track.track_performer,
+            'DURATION': track.track_duration,
+            'BITRATE': track.track_bitrate,
+            'COVER': track.track_cover,
+            'ARTISTS': artists,
+            'ALBUM': {
+                'ID': track.album_id,
+                'TITLE': track.album_title,
+                'ARTISTS': albumArtists,
+            },
+            'GENRE': track.genre_name,
+        })
+    print("end genration")
+    return data
+
+
 # Exporting a playlist to json with not all the file metadata
 def exportPlaylistToSimpleJson(playlist):
     tracks = playlist.track.all()
@@ -225,75 +339,57 @@ class SimpleJsonCreator(threading.Thread):
 
 
 def exportTrackInfo(track):
-    finalData = "{\"ID\":"
-    finalData += str(track.id)
-    finalData += ",\"TITLE\":\""
-    finalData += checkIfNotNone(track.title)
-    finalData += "\",\"YEAR\":"
-    finalData += checkIfNotNoneNumber(track.year)
-    finalData += ",\"COMPOSER\":\""
-    finalData += checkIfNotNone(track.composer)
-    finalData += "\",\"PERFORMER\":\""
-    finalData += checkIfNotNone(track.performer)
-    finalData += "\",\"TRACK_NUMBER\":"
-    finalData += checkIfNotNoneNumber(track.number)
-    finalData += ",\"BPM\":"
-    finalData += checkIfNotNoneNumber(track.bpm)
-    finalData += ",\"LYRICS\":\""
-    finalData += checkIfNotNone(track.lyrics)
-    finalData += "\",\"COMMENT\":\""
-    finalData += checkIfNotNone(track.comment)
-    finalData += "\",\"BITRATE\":"
-    finalData += checkIfNotNoneNumber(track.bitRate)
-    finalData += ",\"SAMPLERATE\":"
-    finalData += checkIfNotNoneNumber(track.sampleRate)
-    finalData += ",\"DURATION\":"
-    finalData += checkIfNotNoneNumber(track.duration)
-    finalData += ",\"GENRE\":\""
     if track.genre is not None:
-        finalData += checkIfNotNone(track.genre.name)
+        genre = track.genre.name
     else:
-        finalData += "null"
-    finalData += "\",\"FILE_TYPE\":\""
-    finalData += checkIfNotNone(track.fileType.name)
-    finalData += "\",\"DISC_NUMBER\":"
-    finalData += checkIfNotNoneNumber(track.discNumber)
-    finalData += ",\"SIZE\":"
-    finalData += checkIfNotNoneNumber(track.size)
-    finalData += ",\"LAST_MODIFIED\":\""
-    finalData += checkIfNotNoneNumber(track.lastModified)
-    finalData += "\",\"COVER\":\""
-    finalData += checkIfNotNone(track.coverLocation)
-    finalData += "\",\"ARTISTS\":["
+        genre = None
+
+    artists = []
     for artist in track.artist.all():
-        finalData += "{\"ID\":"
-        finalData += str(artist.id)
-        finalData += ",\"NAME\":\""
-        finalData += checkIfNotNone(artist.name)
-        finalData += "\"},"
-    finalData = finalData[:-1]
-    finalData += "],\"ALBUM\":{"
+        artists.append({
+            'ID': artist.id,
+            'NAME': artist.name,
+        })
+
+    album = {}
     if track.album is not None:
-        finalData += "\"ID\":"
-        finalData += checkIfNotNoneNumber(track.album.id)
-        finalData += ",\"TITLE\":\""
-        finalData += checkIfNotNone(track.album.title)
-        finalData += "\",\"TOTAL_DISC\":"
-        finalData += checkIfNotNoneNumber(track.album.totalDisc)
-        finalData += ",\"TOTAL_TRACK\":"
-        finalData += checkIfNotNoneNumber(track.album.totalTrack)
-        finalData += ",\"ARTIST\":["
+        albumArtists = []
         for artist in track.album.artist.all():
-            finalData += "{\"ID\":"
-            finalData += checkIfNotNoneNumber(artist.id)
-            finalData += ",\"NAME\":\""
-            finalData += checkIfNotNone(artist.name)
-            finalData += "\"},"
-        finalData = finalData[:-1]
-        finalData += "]}}"
-    else:
-        finalData += "\"ID\":\"null\"}}"
-    return finalData
+            albumArtists.append({
+                'ID': artist.id,
+                'NAME': artist.name,
+            })
+        album = {
+            'ID': track.album.id,
+            'TITLE': track.album.title,
+            'TOTAL_DISC': track.album.totalDisc,
+            'TOTAL_TRACK': track.album.totalTrack,
+            'ARTISTS': albumArtists,
+        }
+
+    data = {
+        'ID': track.id,
+        'TITLE': track.title,
+        'YEAR': track.year,
+        'COMPOSER': track.composer,
+        'PERFORMER': track.performer,
+        'TRACK_NUMBER': track.number,
+        'BPM': track.bpm,
+        'LYRICS': track.lyrics,
+        'COMMENT': track.comment,
+        'BITRATE': track.bitRate,
+        'SAMPLERATE': track.sampleRate,
+        'DURATION': track.duration,
+        'GENRE': genre,
+        'FILE_TYPE': track.fileType.name,
+        'DISC_NUMBER': track.discNumber,
+        'SIZE': track.size,
+        'LAST_MODIFIED': track.lastModified,
+        'COVER': track.coverLocation,
+        'ARTISTS': artists,
+        'ALBUM': album,
+    }
+    return data
 
 
 # export a playlist to json, not threaded, to be avoided
@@ -443,7 +539,12 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
             albumArtist += artist + ","
         albumArtist = albumArtist[:-1]
         genres.add(track.genre)
-        albums[track.album] = albumArtist
+        if track.album in albums:
+            for artist in albumArtist.split(","):
+                if artist not in albums[track.album]:
+                    albums[track.album] += "," + artist
+        else:
+            albums[track.album] = albumArtist
 
     print("Starting adding tracks to database")
     # Analyse the genre found and add the missing genre to the base
@@ -451,31 +552,38 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
+    artistViewJsonGenerator(playlistId)
 
     print("Finished import")
 
 
-"""
-def ArtistViewJsonGenerator(tracks):
-    jsonExport = "{["
-    tracks.sort(key=operator.attrgetter('number'))
-    tracks.sort(key=operator.attrgetter('album'))
-    tracks.sort(key=operator.attrgetter('artist'))
-    for track in tracks:
-        jsonExport += "{"
-    for artist in artistsReference: # TODO: check si alphabétique
-        jsonExport += "{\"ARTIST_ID\" : \"" + artistsReference[artist]
-        jsonExport += "\", \"ARTIST_NAME\": \"" + artist + "\",[{"
-        for album in albumArtists:
-            if artist in albumArtists[album]:
-                artistNames = albumArtists[album].split(",")
-                for artistName in artistNames:
-                    if artist == artistName:
-                        jsonExport += "\"ALBUM_ID\" : " + albumReference[album]
-                        jsonExport += "\"ALBUM_NAME\" : \"" + album + "\", [{"
-                        for track in tracks:
-                            if track.album == album
-    """
+def artistViewJsonGenerator(playlistId):
+    playlistTracks = Track.objects.filter(playlist=playlistId)
+    artists = Artist.objects.filter(track__in=playlistTracks).distinct().order_by('name')
+    responseJson = "["
+    for artist in artists:
+        print(artist.name)
+        responseJson += "{\"ID\":" + checkIfNotNoneNumber(artist.id) + ","
+        responseJson += "\"ART\":\"" + checkIfNotNone(artist.name) + "\",\"AL\":["
+        albums = Album.objects.filter(track__in=playlistTracks, track__artist=artist)
+        print(len(albums))
+        for album in albums:
+            responseJson += "{\"ID\":" + checkIfNotNoneNumber(album.id) + ","
+            responseJson += "\"ALB\":\"" + checkIfNotNone(album.title) + "\",\"TR\":["
+            tracks = playlistTracks.filter(album=album, artist=artist)
+            for track in tracks:
+                responseJson += "{\"ID\":" + checkIfNotNoneNumber(track.id) + ","
+                responseJson += "\"TRK\":\"" + checkIfNotNone(track.title) + "\","
+                responseJson += "\"DUR\":" + checkIfNotNoneNumber(track.duration) + "},"
+            responseJson = responseJson[:-1]
+            responseJson += "]},"
+        responseJson = responseJson[:-1]
+        responseJson += "]},"
+    responseJson = responseJson[:-1]
+    responseJson += "]"
+    playlist = Playlist.objects.get(id=playlistId)
+    playlist.jsonExportAlbumView = responseJson
+    playlist.save()
 
 
 class ImportBulkThread(threading.Thread):
@@ -735,3 +843,86 @@ class LocalTrack:
             = self.duration = self.discNumber = self.size = self.playCounter = self.downloadCounter = 0
         self.artist = []
         self.scanned = False
+
+
+def getUserNbTrackListened(user):
+    tracks = Stats.objects.filter(user=user)
+    totalListenedTrack = 0
+
+    for track in tracks:
+        totalListenedTrack += track.playCounter
+
+    print(totalListenedTrack)
+    return totalListenedTrack
+
+
+def getUserNbTrackPushed(user):
+    totalUploadedTracks = Track.objects.filter(uploader=user).count()
+
+    return totalUploadedTracks
+
+
+def getUserGenre(user):
+    genres = Genre.objects.all()
+    genreCounter = []
+
+    for genre in genres:
+        counter = 0
+        tracks = Stats.objects.filter(track__genre=genre, user=user)
+        for track in tracks:
+            counter += track.playCounter
+
+        genreCounter.append(counter)
+
+    return genreCounter
+
+
+def getUserGenrePercentage(user):
+    genreCounter = getUserGenre(user)
+    genrePercentage = []
+    totalGenre = 1  # At the moment protection against empty tests
+    i = 0
+
+    for i in genreCounter:
+        totalGenre = totalGenre + i
+
+    for i in genreCounter:
+        percentage = 100 * i / totalGenre
+        genrePercentage.append(percentage)
+
+    return genrePercentage
+
+
+def getUserPrefArtist(user):
+    artists = Artist.objects.all()
+    artistCounter = []
+
+    for artist in artists:
+        counter = 0
+        tracks = Stats.objects.filter(track__artist=artist, user=user)
+
+        for track in tracks:
+            counter += track.playCounter
+
+        artistCounter.append((artist.id, artist.name, counter))
+
+    artistCounter.sort(key=itemgetter(2), reverse=True)
+
+    return artistCounter
+
+
+def userNeverPlayed(user):
+    stats = Stats.objects.filter(user=user)
+    playedArtistId = set()
+
+    for stat in stats:
+        for artist in stat.track.artist.all():
+            playedArtistId.add(artist.id)
+    neverPlayedArtists = Artist.objects.exclude(id__in=playedArtistId)
+    neverPlayed = []
+    for artist in neverPlayedArtists:
+        neverPlayed.append(artist.id)
+
+    #print(len(neverPlayerArtists))
+    return neverPlayed
+
