@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils import timezone
 
 
 class Artist(models.Model):
@@ -52,6 +54,44 @@ class Track(models.Model):
     moodbar = models.URLField(max_length=1000, null=True)
     scanned = models.BooleanField(default=False)
     playCounter = models.IntegerField(default=0)
+    downloadCounter = models.IntegerField(default=0)
+    uploader = models.ForeignKey(User, null=True)
+
+
+class TrackView(models.Model):
+    track_id = models.BigIntegerField(primary_key=True)
+    track_location = models.FilePathField(max_length=1000)
+    track_title = models.CharField(max_length=1000)
+    track_year = models.IntegerField(null=True)
+    track_composer = models.CharField(max_length=1000, null=True)
+    track_performer = models.CharField(max_length=1000, null=True)
+    track_number = models.IntegerField(null=True)
+    track_bpm = models.IntegerField(null=True)
+    track_lyrics = models.CharField(max_length=42000, null=True)
+    track_comment = models.CharField(max_length=10000, null=True)
+    track_bitrate = models.IntegerField(null=True)
+    track_bitratemode = models.IntegerField(null=True)
+    track_samplerate = models.IntegerField(null=True)
+    track_duration = models.FloatField(null=True)
+    track_discnumber = models.IntegerField(null=True)
+    track_size = models.IntegerField(null=True)
+    track_lastmodified = models.DateField(auto_now=True, null=True)
+    track_cover = models.URLField(max_length=1000, null=True)
+    track_filetype_id = models.BigIntegerField()
+    track_mood = models.URLField(max_length=1000, null=True)
+    track_download_counter = models.IntegerField(default=0)
+    album_title = models.CharField(max_length=1000, null=True)
+    genre_id = models.BigIntegerField()
+    genre_name = models.CharField(max_length=1000, null=True)
+    album_id = models.BigIntegerField()
+    artist_name = models.CharField(max_length=1000, null=True)
+    artist_id = models.CharField(max_length=1000, null=True)
+    album_artist_id = models.CharField(max_length=1000, null=True)
+    album_artist_name = models.CharField(max_length=1000, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'app_track_view'
 
 
 class Playlist(models.Model):
@@ -60,7 +100,8 @@ class Playlist(models.Model):
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
-    jsonExport = models.CharField(max_length=10000000, null=True)
+    jsonExportListView = models.CharField(max_length=10000000, null=True)
+    jsonExportAlbumView = models.CharField(max_length=10000000, null=True)
 
 
 class Library(models.Model):
@@ -77,9 +118,38 @@ class Shuffle(models.Model):
     tracksPlayed = models.ManyToManyField(Track)
 
 
+class Stats(models.Model):
+    user = models.ForeignKey(User)
+    track = models.ForeignKey(Track)
+    listeningPercentage = models.IntegerField(null=True)
+    playCounter = models.IntegerField(default=0)
+
+
 class PlaylistSettings(models.Model):
     playlist = models.ForeignKey(Playlist)
     user = models.ForeignKey(User)
     randomMode = models.IntegerField(default=0)
     repeatEnabled = models.IntegerField(default=0)
     viewMode = models.IntegerField()
+
+
+class History(models.Model):
+    track = models.ForeignKey(Track)
+    date = models.TimeField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.date = timezone.now()
+        return super(History, self).save(*args, **kwargs)
+
+
+class UserHistory(models.Model):
+    user = models.ForeignKey(User)
+    histories = models.ManyToManyField(History)
+
+
+class Wish(models.Model):
+    user = models.ForeignKey(User)
+    date = models.DateField(auto_now=True, null=True)
+    text = models.CharField(max_length=1000)
+    status = models.IntegerField()

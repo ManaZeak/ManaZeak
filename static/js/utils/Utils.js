@@ -1,22 +1,25 @@
 "use strict";
 
 function extendClass(parent, child) {
-    var proto = Object.create(parent.prototype);
-    for(var i in child.prototype) {
+    let proto = Object.create(parent.prototype);
+
+    for (let i in child.prototype) {
         proto[i] = child.prototype[i];
     }
+
     child.prototype = proto;
 }
 
 function precisionRound(value, precision) {
-    var multiplier = Math.pow(10, precision || 0);
+    let multiplier = Math.pow(10, precision || 0);
+
     return Math.round(value * multiplier) / multiplier;
 }
 
 
 function secondsToTimecode(time) {
     // TODO : add days
-    var transformedTime = {
+    let transformedTime = {
         d: 0,
         h: 0,
         m: 0,
@@ -35,9 +38,13 @@ function secondsToTimecode(time) {
     // Formatting output
     if (transformedTime.d > 0) {
         return transformedTime.d + " days, " + transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
-    } else if (transformedTime.h > 0) {
+    }
+
+    else if (transformedTime.h > 0) {
         return transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
-    } else {
+    }
+
+    else {
         return transformedTime.m + ":" + transformedTime.s;
     }
 }
@@ -45,7 +52,7 @@ function secondsToTimecode(time) {
 
 function sortObjectArrayBy(key, ascending, subobject) {
     return function(a, b) {
-        if(subobject != null) {
+        if (subobject != null) {
             a = a[subobject];
             b = b[subobject];
         }
@@ -55,7 +62,7 @@ function sortObjectArrayBy(key, ascending, subobject) {
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
-        var compare = 0;
+        let compare = 0;
         if (varA > varB)      { compare =  1; }
         else if (varA < varB) { compare = -1; }
 
@@ -65,26 +72,40 @@ function sortObjectArrayBy(key, ascending, subobject) {
 
 
 function getCookies() {
-    var cookies = {};
+    let cookies = {};
 
     if (document.cookie && document.cookie !== '') {
         document.cookie.split(';').forEach(function (cookie) {
-            var m = cookie.trim().match(/(\w+)=(.*)/);
-            if (m !== undefined) {
-                cookies[m[1]] = decodeURIComponent(m[2]);
-            }
+            let m = cookie.trim().match(/(\w+)=(.*)/);
+
+            if (m !== undefined) { cookies[m[1]] = decodeURIComponent(m[2]); }
         });
     }
 
     return cookies;
 }
 
-function toggleVisibilityLock(object) {
-    if(object.classList.contains("mzk-visible"))
-        removeVisibilityLock(object);
-    else
-        addVisibilityLock(object);
+
+function setCookie(cookieKey, cookieValue, expiresDay) {
+    let d = new Date();
+
+    d.setTime(d.getTime() + (expiresDay * 24 * 60 * 60 * 1000));
+
+    let expires = "expires="+ d.toUTCString();
+
+    document.cookie = cookieKey + "=" +
+                      cookieValue + ";" +
+                      expires +
+                      ";path=/";
 }
+
+
+
+function toggleVisibilityLock(object) {
+    if(object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
+    else                                         { addVisibilityLock(object);    }
+}
+
 
 function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-visible");
@@ -97,7 +118,7 @@ function removeVisibilityLock(object) {
 
 
 function getRequest(url, callback) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -111,7 +132,7 @@ function getRequest(url, callback) {
 
 
 function JSONParsedGetRequest(url, http, callback) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -127,10 +148,10 @@ function JSONParsedGetRequest(url, http, callback) {
 
 
 function JSONParsedPostRequest(url, message, callback) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
+        if (this.readyState === 4 && this.status === 200 && callback !== null) {
             callback(JSON.parse(this.responseText));
         }
     };
@@ -142,27 +163,22 @@ function JSONParsedPostRequest(url, message, callback) {
 }
 
 
-function JSONMoodbarPostRequest(url, cookies, message, callback) {
-
-}
-
-
 // Credit for this function : "Valodim"
 // https://gist.github.com/Valodim/5225460
 function renderMoodFile(file, parentDiv) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     xhr.open('GET', file, true);
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4 && this.status === 200) {
             d3.selectAll('#moodbar svg').remove();
-            var rgb = new Array(this.responseText.length / 3);
+            let rgb = new Array(this.responseText.length / 3);
 
-            for (var i = 0, len = rgb.length; i < len; ++i) {
-                var r = this.responseText.charCodeAt(i * 3)       & 0xff;
-                var g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
-                var b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
+            for (let i = 0, len = rgb.length; i < len; ++i) {
+                let r = this.responseText.charCodeAt(i * 3)       & 0xff;
+                let g = this.responseText.charCodeAt((i * 3) + 1) & 0xff;
+                let b = this.responseText.charCodeAt((i * 3) + 2) & 0xff;
 
                 // TODO : Have fun here w/ colors
 
@@ -172,7 +188,7 @@ function renderMoodFile(file, parentDiv) {
                 };
             }
 
-            var svg = d3.select(parentDiv).append("svg")
+            let svg = d3.select(parentDiv).append("svg")
                 .attr("height", "100%")
                 .attr("width", "100%")
                 .append("g");

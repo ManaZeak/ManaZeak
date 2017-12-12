@@ -3,36 +3,39 @@
  *  PlaylistBar class - handle the playlist bar                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var TopBar = function() {
-    this.moodbar = null;
-    this.playlistBar = null;
-    this.playlists = null;
-    this.selectedPlaylist = null;
-    this.entries = [];
-    this.newPlaylistButton = null;
+let TopBar = function() {
+    this.moodbar           = null;
+    this.playlistBar       = null;
+    this.playlists         = null;
+    this.selectedPlaylist  = null;
+    this.entries           = [];
 
-    this.topBar = document.createElement("div");
+    this.topBar             = document.createElement("div");
+    this.userExpander       = document.createElement("div");
+    this.moodbar            = document.createElement("div");
+    this.moodbarThumb       = document.createElement("div");
+    this.playlistBar        = document.createElement("div");
+    this.newPlaylistButton  = document.createElement("div");
 
-    this.userExpander = document.createElement("div");
-    this.moodbar = document.createElement("div");
-    this.moodbarThumb = document.createElement("div");
-    this.playlistBar = document.createElement("div");
+    this.newPlaylistButton.innerText = '+';
 
-    this.topBar.id = "topBar";
+    this.topBar.id       = "topBar";
     this.userExpander.id = "userExpander";
-    this.moodbar.id = "moodbar";
+    this.moodbar.id      = "moodbar";
     this.moodbarThumb.id = "moodbarThumb";
-    this.playlistBar.id = "playlistBar";
-
-    this.moodbarThumb.isVisible = false;
+    this.playlistBar.id  = "playlistBar";
 
     this.topBar.appendChild(this.moodbar);
     this.moodbar.appendChild(this.moodbarThumb);
     this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
+    this.playlistBar.appendChild(this.newPlaylistButton);
 
-    this.userMenu     = new UserMenu(this.userExpander);
-    this.menu = new NewLibPlayMenu();
+    this.moodbarThumb.isVisible = false;
+
+    this.userMenu = new UserMenu(this.userExpander);
+    this.wishList = new WishList(this.topBar);
+    this.newLibMenu     = null;
 };
 
 
@@ -43,9 +46,9 @@ TopBar.prototype = {
         this.playlists = playlists;
 
         this.addEntries();
-        this.addNewPlaylistButton();
         this.setSelected(selectedPlaylist.id);
         this._eventListener();
+        this._contextMenuSetup();
     },
 
 
@@ -55,14 +58,16 @@ TopBar.prototype = {
 
 
     addEntries: function() {
-        for (var i = 0; i < this.playlists.length ;++i) {
+        this.playlistBar.removeChild(this.newPlaylistButton);
+        for (let i = 0; i < this.playlists.length; ++i) {
             this.addEntry(this.playlists[i]);
         }
+        this.playlistBar.appendChild(this.newPlaylistButton);
     },
 
 
     removeEntries: function() {
-        for (var i = 0; i < this.entries.length ;++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
             this.playlistBar.removeChild(this.entries[i].entry)
         }
 
@@ -71,17 +76,8 @@ TopBar.prototype = {
     },
 
 
-    addNewPlaylistButton: function() {
-        this.newPlaylistButton = document.createElement("div");
-        this.newPlaylistButton.innerHTML = "+";
-        this.playlistBar.appendChild(this.newPlaylistButton);
-        this.newPlaylistButton.addEventListener("click", this.newLibPlay.bind(this));
-    },
-
-
     setSelected: function(id) {
-
-	    for (var i = 0; i < this.entries.length ;++i) {
+	    for (let i = 0; i < this.entries.length; ++i) {
 	        if (i == id || this.entries[i].getId() == id) {
                 this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
@@ -91,36 +87,24 @@ TopBar.prototype = {
     },
 
 
-    newLibPlay: function(e) {
-        this.menu.toggleVisibilityLock(e);
-    },
-
-
     unSelectAll: function() {
-        for (var i = 0; i < this.entries.length ;++i) {
+        for (let i = 0; i < this.entries.length; ++i) {
 		    this.entries[i].setIsSelected(false);
         }
     },
 
 
     refreshTopBar: function() {
-        if (this.newPlaylistButton) {
-            this.playlistBar.removeChild(this.newPlaylistButton);
-        }
-
-        this.newPlaylistButton.removeEventListener("click", this.newLibPlay.bind(this));
         this.removeEntries();
         this.addEntries();
-        this.addNewPlaylistButton();
         // TODO : set selected to new one
         this.setSelected(this.selectedPlaylist);
     },
 
 
     viewClicked: function(event) {
-        var target = event.target;
+        let target = event.target;
 
-        // TODO : fix when target is null => when user click outside left or right of the listview
         while(target.parentNode && target.parentNode !== this.playlistBar) {
             target = target.parentNode;
         }
@@ -129,7 +113,7 @@ TopBar.prototype = {
 		    return true;
         }
 
-        var id = target.dataset.childID;
+        let id = target.dataset.childID;
 
         if (id !== undefined) {
             this.unSelectAll();
@@ -145,10 +129,9 @@ TopBar.prototype = {
             this.moodbarThumb.isVisible = true;
             addVisibilityLock(this.moodbarThumb);
         }
-        // TODO : add thumb if not already, also, hide thumb at app start
-        var that = this;
 
-        var xhr = new XMLHttpRequest();
+        let that = this;
+        let xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
@@ -180,6 +163,13 @@ TopBar.prototype = {
     _eventListener: function() {
         this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
+    },
+
+    _contextMenuSetup: function() {
+        this.newLibMenu = new ContextMenu(this.newPlaylistButton, null, 'click');
+        this.newLibMenu.addEntry(null, 'New Library', function() {
+            window.app.requestNewLibrary();
+        });
     },
 
 

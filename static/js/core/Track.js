@@ -5,57 +5,21 @@
  *  track     : raw track incoming from db JSON                                        *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var Track = function(track) {
-
-    // Track internal attributes
-    this.ui = {
-        entry: null,
-        id: null,
-        x: 0,
-        y: 0
-    };
-    this.isSelected = false;
-
-
-    // Filling Track object
-    this.id = {
-        track: track.ID                         !== "null" ? track.ID : "",
-        album: track.ALBUM.ID                   !== "null" ? track.ALBUM.ID : "",
-        artists: this._getArtistsIDFromArtistsArray(track.ARTISTS)
-    };
-    this.title        = track.TITLE             !== "null" ? track.TITLE : "";
-    this.year         = track.YEAR              !== "null" ? track.YEAR : "";
-    this.composer     = track.COMPOSER          !== "null" ? track.COMPOSER : "";
-    this.performer    = track.PERFORMER         !== "null" ? track.PERFORMER : "";
-    this.track        = track.TRACK_NUMBER      !== "null" ? track.TRACK_NUMBER : "";
-    this.trackTotal   = track.ALBUM.TOTAL_TRACK !== "null" ? track.ALBUM.TOTAL_TRACK : "";
-    this.disc         = track.DISC_NUMBER       !== "null" ? track.DISC_NMBER : "";
-    this.discTotal    = track.ALBUM.TOTAL_DISC  !== "null" ? track.ALBUM.TOTAL_DISC : "";
-    this.bpm          = track.BPM               !== "null" ? track.BPM : "";
-    this.lyrics       = track.LYRICS            !== "null" ? track.LYRICS : "";
-    this.comment      = track.COMMENT           !== "null" ? track.COMMENT : "";
-    this.bitRate      = track.BITRATE           !== "null" ? track.BITRATE : "";
-    this.sampleRate   = track.SAMPLERATE        !== "null" ? track.SAMPLERATE : "";
-    this.duration     = track.DURATION          !== "null" ? track.DURATION : "";
-    this.size         = track.SIZE              !== "null" ? track.SIZE : "";
-    this.lastModified = track.LAST_MODIFIED     !== "null" ? track.LAST_MODIFIED : "";
-    this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
-    this.album        = track.ALBUM.TITLE       !== "null" ? track.ALBUM.TITLE : "";
-    this.genre        = track.GENRE             !== "null" ? track.GENRE : "";
-    this.fileType     = track.FILE_TYPE         !== "null" ? track.FILE_TYPE : "";
+let Track = function(track) {
+    this.updateMetadata(track);
 };
 
 
 Track.prototype = {
 
     _getArtistsIDFromArtistsArray: function(artists) {
-        if (artists === "null") {
+        if (artists === null || artists === undefined) {
             return "";
         }
 
-        var artistsID = [];
+        let artistsID = [];
 
-        for (var i = 0; i < artists.length ;++i) {
+        for (let i = 0; i < artists.length; ++i) {
             artistsID.push(artists[i].ID);
         }
 
@@ -64,25 +28,57 @@ Track.prototype = {
 
 
     _getArtistFromArtistsArray: function(artists) {
-        if (artists === "null") {
+        if (artists === null || artists === undefined) {
             return "";
         }
 
-        var artistsName = []; // Artists name array
-        var artist = ""; // Output string
+        let artistsName = []; // Artists name array
+        let artist = ""; // Output string
 
-        for (var i = 0; i < artists.length ;++i) {
+        for (let i = 0; i < artists.length; ++i) {
             artistsName.push(artists[i].NAME);
         }
 
         artistsName.sort(); // In order to get artists alphabetically ordered
 
-        for (i = 0; i < artistsName.length ;++i) {
+        for (i = 0; i < artistsName.length; ++i) {
             artist += artistsName[i];
 
             if (i < (artistsName.length - 1)) { artist += ", "; }
         }
 
         return artist;
+    },
+
+
+    updateMetadata: function(track) {
+        // Filling Track object
+        this.id = {
+            track:          track.ID ? track.ID : "",
+            album:          track.ALBUM.ID ? track.ALBUM.ID : "",
+            artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
+        };
+        this.title        = track.TITLE             ? track.TITLE : "";
+        this.year         = track.YEAR              ? track.YEAR : "";
+        this.composer     = track.COMPOSER          ? track.COMPOSER : "";
+        this.performer    = track.PERFORMER         ? track.PERFORMER : "";
+        this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER : "";
+        this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : "";
+        this.disc         = track.DISC_NUMBER       ? track.DISC_NMBER : "";
+        this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC : "";
+        this.bpm          = track.BPM               ? track.BPM : "";
+        this.lyrics       = track.LYRICS            ? track.LYRICS : "";
+        this.comment      = track.COMMENT           ? track.COMMENT : "";
+        this.bitRate      = track.BITRATE           ? track.BITRATE : "";
+        this.sampleRate   = track.SAMPLERATE        ? track.SAMPLERATE : "";
+        this.duration     = track.DURATION          ? track.DURATION : "";
+        this.size         = track.SIZE              ? track.SIZE : "";
+        this.lastModified = track.LAST_MODIFIED     ? track.LAST_MODIFIED : "";
+        this.album        = track.ALBUM.TITLE       ? track.ALBUM.TITLE : "";
+        this.genre        = track.GENRE             ? track.GENRE : "";
+        this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE : "";
+        this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
+        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
+        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
     }
 };

@@ -1,3 +1,6 @@
+$modalWidth: 600px;
+
+
 // Scan modal settings
 $scanModalHeight:   400px;
 $scanModalWidth:    600px;
@@ -30,7 +33,165 @@ $editFooterHeight:  ($editModalHeight / 10);
     align-items: center;
     justify-content: center;
 
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
+
+
+    #fetchPlaylists {
+        height: auto;
+        width: $modalWidth;
+
+        position: relative;
+
+        border: solid 1px black;
+        border-radius: 3px;
+        background: $primary-color;
+
+        -webkit-user-select: none;  /* Chrome/Safari */
+        -moz-user-select: none;     /* Firefox */
+
+        #header,
+        #content,
+        #footer {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #header,
+        #content {
+            border-bottom: solid 1px $dark-secondary-color;
+        }
+
+
+        #header,
+        #footer {
+            padding: 15px 30px;
+        }
+
+
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            h1 {
+                margin: 0;
+            }
+        }
+
+
+        #content {
+            padding: 25px 50px;
+
+            img {
+                width: 100px;
+                height: 100px;
+                margin: 16px 0;
+            }
+        }
+    }
+
+
+    #newLibrary {
+        min-height: $scanModalHeight;
+        width: $scanModalWidth;
+
+        position: relative;
+
+        border: solid 1px black;
+        border-radius: 3px;
+        background: $primary-color;
+
+        -webkit-user-select: none;  /* Chrome/Safari */
+        -moz-user-select: none;     /* Firefox */
+
+        text-align: center;
+
+        #header,
+        #content,
+        #footer {
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+
+        #header,
+        #footer {
+            padding: $verticalPadding 30px;
+        }
+
+
+        #header {
+            height: $scanHeaderHeight;
+            border-bottom: solid 1px black;
+
+
+            h1 {
+                margin: 0;
+                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
+            }
+        }
+
+
+        #content {
+            min-height: $scanContentHeight;
+            padding: $verticalPadding 50px;
+
+
+            #infoLabel {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            input[type=text] {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            #name {
+                height: 25px;
+                width: 300px;
+                margin-bottom: 20px;
+                text-align: center;
+                border-radius: 1px;
+                border: solid 1px #777;
+            }
+
+            #path {
+                height: 25px;
+                width: 300px;
+                margin-bottom: 20px;
+                text-align: center;
+                border-radius: 1px;
+                border: solid 1px #777;
+            }
+
+            #id3Label {
+                vertical-align: text-bottom;
+                margin-right: 5px;
+            }
+
+            #convert {
+                margin: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        #footer {
+            border-top: solid 1px black;
+            height: auto;
+
+
+            #scanButton {
+                width: 75px;
+            }
+        }
+    }
 
 
     #scan {
@@ -45,13 +206,13 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         -webkit-user-select: none;  /* Chrome/Safari */
         -moz-user-select: none;     /* Firefox */
-
+        cursor: not-allowed;
 
         #header,
         #content,
         #footer {
+            height: auto;
             width: 100%;
-            position: absolute;
             box-sizing: border-box;
             text-align: center;
         }
@@ -65,7 +226,6 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         #header {
             height: $scanHeaderHeight;
-            top: 0;
             border-bottom: solid 1px black;
 
 
@@ -77,8 +237,7 @@ $editFooterHeight:  ($editModalHeight / 10);
 
 
         #content {
-            top: $scanHeaderHeight;
-            height: $scanContentHeight;
+            min-height: $scanContentHeight;
             padding: $verticalPadding 50px;
 
 
@@ -92,13 +251,82 @@ $editFooterHeight:  ($editModalHeight / 10);
 
         #footer {
             border-top: solid 1px black;
-            height: $scanFooterHeight;
-            top: ($scanHeaderHeight + $scanContentHeight);
+            min-height: $scanFooterHeight;
+            height: auto;
 
 
             p {
-                line-height: ($scanFooterHeight - (2 * $verticalPadding));
                 margin: 0;
+                padding: 15px 0;
+            }
+        }
+    }
+
+
+    #newWish {
+        height: auto;
+        width: $modalWidth;
+
+        position: relative;
+
+        border: solid 1px black;
+        border-radius: 3px;
+        background: $primary-color;
+
+
+        #header,
+        #content,
+        #footer {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #header,
+        #content {
+            border-bottom: solid 1px $dark-secondary-color;
+        }
+
+
+        #header,
+        #footer {
+            padding: 15px 30px;
+        }
+
+
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            h1 {
+                margin: 0;
+            }
+        }
+
+
+        #content {
+            padding: 25px 50px;
+
+            p {
+                margin: 0;
+                padding-bottom: 25px;
+            }
+
+            input {
+                text-align: center;
+                width: 100%;
+                height: 35px;
+                background-color: $primary-text;
+                border: solid 1px $dark-secondary-color;
+                box-sizing: border-box;
+            }
+        }
+
+
+        #footer {
+            button {
+                cursor: pointer;
             }
         }
     }
@@ -193,18 +421,18 @@ $editFooterHeight:  ($editModalHeight / 10);
 
 
 .overlay {
-    cursor: not-allowed;
+
 }
 
 
 @keyframes lds-dual-ring {
     0% {
         -webkit-transform: rotate(0);
-                transform: rotate(0);
+        transform: rotate(0);
     }
     100% {
         -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -222,61 +450,8 @@ $editFooterHeight:  ($editModalHeight / 10);
     left: ($scanModalWidth / 2) - $spinnerSide;
     top: 10px;
     border-radius: 50%;
-    border: 4px solid #000;
-    border-color: #000 transparent;
+    border: 4px solid $primary-text;
+    border-color: $primary-text transparent;
     -webkit-animation: lds-dual-ring 1.3s linear infinite;
     animation: lds-dual-ring 1.3s linear infinite;
-}
-
-
-
-/* New Library menu */
-#newLibrary {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-
-    h1 {
-        margin: 0;
-        margin-bottom: 20px;
-    }
-
-    #infoLabel {
-        width: 25%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    #name {
-        height: 25px;
-        width: 25%;
-        margin-bottom: 20px;
-        text-align: center;
-        border-radius: 1px;
-        border: solid 1px #777;
-    }
-
-    #path {
-        height: 25px;
-        width: 25%;
-        margin-bottom: 20px;
-        text-align: center;
-        border-radius: 1px;
-        border: solid 1px #777;
-    }
-
-    #id3Label {
-        vertical-align: text-bottom;
-        margin-right: 5px;
-    }
-
-    #convert {
-        margin: 0;
-        margin-bottom: 20px;
-    }
-
-    #scan {
-        width: 75px;
-    }
 }

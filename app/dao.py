@@ -93,7 +93,7 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
                          track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
                          track.sampleRate, track.duration, track.discNumber, track.size,
                          albums[track.album], track.fileType, genres[track.genre], track.coverLocation,
-                         track.moodbar, track.scanned, track.playCounter, datetime.now()])
+                         track.moodbar, track.scanned, track.playCounter, datetime.now(), track.downloadCounter])
         referenceTracks[track] = counter
         counter += 1
 
@@ -107,7 +107,7 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
             columns=('id', 'location', 'title', 'year', 'composer', 'performer', 'number', 'bpm', 'lyrics', 'comment',
                      '"bitRate"', '"bitRateMode"', '"sampleRate"', 'duration', '"discNumber"', 'size', 'album_id',
                      '"fileType_id"', 'genre_id', '"coverLocation"', 'moodbar', 'scanned', '"playCounter"',
-                     '"lastModified"'),
+                     '"lastModified"', '"downloadCounter"'),
         )
 
     # Creating the csv for the link between tracks and artists

@@ -3,94 +3,95 @@
  *  VolumeBar class - handle the volume bar depending on the player's volume           *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-var VolumeBar = function(container) {
+let VolumeBar = function(container) {
 
-    this.volumeBar = {
-        wrapper:   document.createElement("DIV"),
-        container: document.createElement("DIV"),
-        current:   document.createElement("DIV"),
-        thumb:     document.createElement("DIV")
-    };
-
-    this.volumeBar.wrapper.id = "volumeBarWrapper";
-    this.volumeBar.container.id = "volumeBar";
-    this.volumeBar.current.id = "volume";
-    this.volumeBar.thumb.id = "volumeThumb";
-
-    this.ui = {
-        mute: {
-            button: document.createElement("A"),
-            image:  document.createElement("IMG")
-        }
-    };
-
-    this.ui.mute.button.id = "buttonMute";
-    this.ui.mute.image.id = "imageMute";
-
-    this.ui.mute.image.src = "/static/img/player/volume.svg";
-
-    this.ui.mute.button.appendChild(this.ui.mute.image);
-    this.volumeBar.container.appendChild(this.volumeBar.current);
-    this.volumeBar.container.appendChild(this.volumeBar.thumb);
-    this.volumeBar.wrapper.appendChild(this.volumeBar.container);
-    this.ui.mute.button.appendChild(this.volumeBar.wrapper);
-    container.appendChild(this.ui.mute.button);
-
-    this.volume = 0; // Volume value is an int between 0 and 100
-    this.isDragging = false;
-
+    this.volume       = 0; // Volume value is an int between 0 and 100
+    this.isDragging   = false;
     this.volumeLockId = -1;
 
-    this.init();
+    this._createUI(container);
+
+    this._init();
 };
 
 
 VolumeBar.prototype = {
 
-    init: function() {
+    _createUI: function(container) {
+        this.volumeBar = {
+            wrapper:   document.createElement("DIV"),
+            container: document.createElement("DIV"),
+            current:   document.createElement("DIV"),
+            thumb:     document.createElement("DIV")
+        };
+
+        this.volumeBar.wrapper.id = "volumeBarWrapper";
+        this.volumeBar.container.id = "volumeBar";
+        this.volumeBar.current.id = "volume";
+        this.volumeBar.thumb.id = "volumeThumb";
+
+        this.ui = {
+            mute: {
+                button: document.createElement("A"),
+                image:  document.createElement("IMG")
+            }
+        };
+
+        this.ui.mute.button.id = "buttonMute";
+        this.ui.mute.image.id = "imageMute";
+
+        this.ui.mute.image.src = "/static/img/player/volume.svg";
+
+        this.ui.mute.button.appendChild(this.ui.mute.image);
+        this.volumeBar.container.appendChild(this.volumeBar.current);
+        this.volumeBar.container.appendChild(this.volumeBar.thumb);
+        this.volumeBar.wrapper.appendChild(this.volumeBar.container);
+        this.ui.mute.button.appendChild(this.volumeBar.wrapper);
+        container.appendChild(this.ui.mute.button);
+    },
+
+
+    _init: function() {
         this.updateVolume(50);
         this._eventListener();
     },
 
 
     moveVolume: function(event) {
-        var boundRect = this.volumeBar.container.getBoundingClientRect();
-        var distanceToBottomInPx = boundRect.bottom - event.clientY;
-        var distanceToBottomInPr = (distanceToBottomInPx * 100) / boundRect.height;
+        let boundRect = this.volumeBar.container.getBoundingClientRect();
+        let distanceToBottomInPx = boundRect.bottom - event.clientY;
+        let distanceToBottomInPr = (distanceToBottomInPx * 100) / boundRect.height;
         // OOB protection
         if (distanceToBottomInPr > 100) { distanceToBottomInPr = 100; }
-        if (distanceToBottomInPr < 0) { distanceToBottomInPr = 0; }
+        if (distanceToBottomInPr < 0)   { distanceToBottomInPr = 0;   }
         // Style assignation
         this.volume = distanceToBottomInPr;
         this.volumeBar.current.style.height = distanceToBottomInPr + "%";
-        this.volumeBar.thumb.style.bottom = distanceToBottomInPr + "%";
+        this.volumeBar.thumb.style.bottom   = distanceToBottomInPr + "%";
     },
 
 
     updateVolume: function(volume) {
-        this.volume = volume;
+        this.volume                         = volume;
         this.volumeBar.current.style.height = volume + "%";
-        this.volumeBar.thumb.style.bottom = volume + "%";
+        this.volumeBar.thumb.style.bottom   = volume + "%";
 
-        if (volume === 0) { this.ui.mute.image.src = "/static/img/player/mute.svg"; }
-        else { this.ui.mute.image.src = "/static/img/player/volume.svg"; }
+        if (volume === 0) { this.ui.mute.image.src = "/static/img/player/mute.svg";   }
+        else              { this.ui.mute.image.src = "/static/img/player/volume.svg"; }
     },
 
 
     toggleVisibilityLock: function() {
-        if (this.isDragging) {
-            addVisibilityLock(this.volumeBar.wrapper);
-        } else {
-            removeVisibilityLock(this.volumeBar.wrapper);
-        }
+        if (this.isDragging) { addVisibilityLock(this.volumeBar.wrapper);    }
+        else                 { removeVisibilityLock(this.volumeBar.wrapper); }
     },
 
 
     delayHideVolume: function() {
-        var that = this;
+        let that = this;
 
-        clearTimeout(this.volumeLockId);
-        this.volumeLockId = setTimeout(function() {
+        window.clearTimeout(this.volumeLockId);
+        this.volumeLockId = window.setTimeout(function() {
             removeVisibilityLock(that.volumeBar.wrapper);
         }, 1500);
     },
@@ -102,11 +103,8 @@ VolumeBar.prototype = {
 
         window.app.player.setIsMuted(false);
 
-        if (!event.ctrlKey) {
-            window.app.adjustVolume(0.1);
-        } else {
-            window.app.adjustVolume(0.01);
-        }
+        if (!event.ctrlKey) { window.app.adjustVolume(0.1);  }
+        else                { window.app.adjustVolume(0.01); }
     },
 
 
@@ -115,11 +113,8 @@ VolumeBar.prototype = {
 
         window.app.player.setIsMuted(false);
 
-        if (!event.ctrlKey) {
-            window.app.adjustVolume(-0.1);
-        } else {
-            window.app.adjustVolume(-0.01);
-        }
+        if (!event.ctrlKey) { window.app.adjustVolume(-0.1);  }
+        else                { window.app.adjustVolume(-0.01); }
     },
 
 
@@ -130,7 +125,6 @@ VolumeBar.prototype = {
             window.app.setVolume(this.volume / 100);
         }
     },
-
 
 
     mouseDown: function(event) {
@@ -145,7 +139,6 @@ VolumeBar.prototype = {
     },
 
 
-    // Mouse events
     mouseUp: function() {
         if (this.isDragging) {
             this.isDragging = false;
@@ -154,18 +147,18 @@ VolumeBar.prototype = {
         }
     },
 
+
     _eventListener: function() {
-        var that = this;
+        let that = this;
 
         this.ui.mute.image.addEventListener("click", window.app.toggleMute.bind(window.app));
-
-        window.app.addListener('setVolume', function() {
-            that.updateVolume(window.app.player.getPlayer().volume * 100);
-        });
+        this.volumeBar.container.addEventListener("mousedown", that.mouseDown.bind(this));
 
         window.addEventListener("mousemove", this.mouseMove.bind(this));
         window.addEventListener("mouseup", this.mouseUp.bind(this));
-        this.volumeBar.container.addEventListener("mousedown", that.mouseDown.bind(this));
+        window.app.addListener('setVolume', function() {
+            that.updateVolume(window.app.player.getPlayer().volume * 100);
+        });
     },
 
 
