@@ -56,7 +56,7 @@ Track.prototype = {
         this.id = {
             track:          track.ID ? track.ID : "",
             album:          track.ALBUM.ID ? track.ALBUM.ID : "",
-            artists:        this._getArtistsIDFromArtistsArray(track.ARTIST)
+            artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
         };
         this.title        = track.TITLE             ? track.TITLE : "";
         this.year         = track.YEAR              ? track.YEAR : "";
@@ -74,11 +74,11 @@ Track.prototype = {
         this.duration     = track.DURATION          ? track.DURATION : "";
         this.size         = track.SIZE              ? track.SIZE : "";
         this.lastModified = track.LAST_MODIFIED     ? track.LAST_MODIFIED : "";
-        this.album        = track.ALBUM.TITLE       ? track.ALBUM : "";
+        this.album        = track.ALBUM.TITLE       ? track.ALBUM.TITLE : "";
         this.genre        = track.GENRE             ? track.GENRE : "";
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
-        this.artist       = this._getArtistFromArtistsArray(track.ARTIST);
-        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTIST);
+        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
+        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
     }
 };
