@@ -1,14 +1,12 @@
 import hashlib
 import math
 import multiprocessing
-import operator
 import os
 import threading
 from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -18,24 +16,6 @@ from mutagen.mp3 import MP3, BitrateMode
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
 from app.models import FileType, Genre, Album, Artist, Stats, Track, TrackView, Playlist
-
-
-# Render class for serving modal to client (Scan)
-class ScanModal(TemplateView):
-    template_name = 'utils/modal/scanLibrary.html'
-
-    @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
-    def dispatch(self, *args, **kwargs):
-        return super(ScanModal, self).dispatch(*args, **kwargs)
-
-
-# Render class for serving modal to client (Edit metadata)
-class EditMetadataModal(TemplateView):
-    template_name = 'utils/modal/editMetadata.html'
-
-    @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
-    def dispatch(self, *args, **kwargs):
-        return super(EditMetadataModal, self).dispatch(*args, **kwargs)
 
 
 # Split a table in 4 table of equal size
@@ -219,6 +199,7 @@ def updateTrackView(playlistId):
 
 
 def simpleJsonGenerator():
+    print("starting")
     tracks = TrackView.objects.all()
     data = []
     for track in tracks:
@@ -231,15 +212,7 @@ def simpleJsonGenerator():
                 'ID': artistId,
                 'NAME': artist,
             })
-        splicedAlbumArtist = track.album_artist_name.split(",")
-        splicedAlbumArtistId = track.album_artist_id.split(",")
-        albumArtists = []
 
-        for artistId, artist in zip(splicedAlbumArtistId, splicedAlbumArtist):
-            albumArtists.append({
-                'ID': artistId,
-                'NAME': artist
-            })
         data.append({
             'ID': track.track_id,
             'TITLE': track.track_title,
@@ -253,7 +226,6 @@ def simpleJsonGenerator():
             'ALBUM': {
                 'ID': track.album_id,
                 'TITLE': track.album_title,
-                'ARTISTS': albumArtists,
             },
             'GENRE': track.genre_name,
         })
@@ -562,11 +534,9 @@ def artistViewJsonGenerator(playlistId):
     artists = Artist.objects.filter(track__in=playlistTracks).distinct().order_by('name')
     responseJson = "["
     for artist in artists:
-        print(artist.name)
         responseJson += "{\"ID\":" + checkIfNotNoneNumber(artist.id) + ","
         responseJson += "\"ART\":\"" + checkIfNotNone(artist.name) + "\",\"AL\":["
         albums = Album.objects.filter(track__in=playlistTracks, track__artist=artist)
-        print(len(albums))
         for album in albums:
             responseJson += "{\"ID\":" + checkIfNotNoneNumber(album.id) + ","
             responseJson += "\"ALB\":\"" + checkIfNotNone(album.title) + "\",\"TR\":["
@@ -852,7 +822,6 @@ def getUserNbTrackListened(user):
     for track in tracks:
         totalListenedTrack += track.playCounter
 
-    print(totalListenedTrack)
     return totalListenedTrack
 
 

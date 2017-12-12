@@ -1,10 +1,8 @@
-import datetime
 import json
 import os
 from builtins import print
 from random import randint
 
-import time
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -21,7 +19,7 @@ from app.dao import getPlaylistExport
 from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
     Wish, Stats
-from app.utils import exportPlaylistToJson, populateDB, exportPlaylistToSimpleJson, errorCheckMessage, exportTrackInfo, \
+from app.utils import exportPlaylistToJson, populateDB, errorCheckMessage, exportTrackInfo, \
     generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
 
 
@@ -169,8 +167,6 @@ def getUserPlaylists(request):
         'PLAYLIST_IDS': playlistIds,
         'PLAYLIST_IS_LIBRARY': isLibrary,
     }
-
-    print(data)
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
 
