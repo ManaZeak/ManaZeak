@@ -220,21 +220,23 @@ def simpleJsonGenerator():
     tracks = TrackView.objects.all()
     data = []
     for track in tracks:
-        artists = []
         splicedArtistName = track.artist_name.split(",")
         splicedArtistId = track.artist_id.split(",")
-        for i in range(0, len(splicedArtistId)):
+        artists = []
+
+        for artistId, artist in zip(splicedArtistId, splicedArtistName):
             artists.append({
-                'ID': splicedArtistId[i],
-                'NAME': splicedArtistName[i],
+                'ID': artistId,
+                'NAME': artist,
             })
         splicedAlbumArtist = track.album_artist_name.split(",")
         splicedAlbumArtistId = track.album_artist_id.split(",")
         albumArtists = []
-        for i in range(0, len(splicedAlbumArtistId)):
+
+        for artistId, artist in zip(splicedAlbumArtistId, splicedAlbumArtist):
             albumArtists.append({
-                'ID': splicedAlbumArtistId[i],
-                'NAME': splicedAlbumArtist[i]
+                'ID': artistId,
+                'NAME': artist
             })
         data.append({
             'ID': track.track_id,
