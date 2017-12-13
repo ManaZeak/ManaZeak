@@ -36,6 +36,16 @@ $editFooterHeight:  ($editModalHeight / 10);
     background: rgba(0, 0, 0, 0.8);
 
 
+    #closeButton {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+
     #fetchPlaylists {
         height: auto;
         width: $modalWidth;
