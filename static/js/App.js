@@ -125,11 +125,10 @@ App.prototype = {
     requestNewLibrary: function() {
         let that = this;
 
-        while (this.mainContainer.firstChild) {
-            this.mainContainer.removeChild(this.mainContainer.firstChild);
-        }
-
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
+            while (this.mainContainer.firstChild) {
+                this.mainContainer.removeChild(this.mainContainer.firstChild);
+            }
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
             that.footBar.playlistPreview.setVisible(true);
