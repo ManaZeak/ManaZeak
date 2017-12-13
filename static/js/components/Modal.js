@@ -246,7 +246,6 @@ Modal.prototype = {
 
 
     close: function() {
-        //TODO: Use unique ID (this.id)
         document.body.removeChild(document.getElementById(this.id));
     },
 
