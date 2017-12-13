@@ -50,7 +50,7 @@ WishList.prototype = {
 
     _eventListener: function() {
         this.ui.img.addEventListener("click", function() {
-            let modal = new Modal("newWish", 42); // TODO : gen unique ID (why not in utils?)
+            let modal = new Modal("newWish"); // TODO : gen unique ID (why not in utils?)
             modal.open();
         });
     }

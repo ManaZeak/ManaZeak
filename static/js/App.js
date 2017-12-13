@@ -82,7 +82,7 @@ App.prototype = {
     _appStart: function(playlists) {
         let that = this;
         if (playlists.DONE) { // User already have playlists
-            let modal = new Modal("fetchPlaylists", 1); // TODO : gen unique ID from utils here
+            let modal = new Modal("fetchPlaylists"); // TODO : gen unique ID from utils here
             modal.open();
 
             console.log(playlists);

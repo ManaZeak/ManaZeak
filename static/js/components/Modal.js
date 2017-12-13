@@ -3,10 +3,10 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Modal = function(type, id) {
+let Modal = function(type) {
 
     this.url         = null;
-    this.id          = id;
+    this.id          = "modal-" + genUniqueID();
     this.callback    = null;
     this.canBeClosed = false;
     this.closeButton = null;
@@ -53,7 +53,7 @@ Modal.prototype = {
             footer: document.createElement("DIV")
         };
 
-        this.ui.overlay.id = "modal";
+        this.ui.overlay.id = this.id;
         this.ui.overlay.className = "overlay";
 
         this.ui.header.id = "header";
@@ -247,7 +247,8 @@ Modal.prototype = {
 
     close: function() {
         //TODO: Use unique ID (this.id)
-        document.body.removeChild(this.ui.overlay);
+        console.log(this.id);
+        document.body.removeChild(document.getElementById(this.id));
     },
 
 
@@ -267,13 +268,7 @@ Modal.prototype = {
     _eventListener: function() {
         if (this.canBeClosed) {
             this.closeButton.addEventListener("click", this.close.bind(this));
-
-            let that = this;
-            document.addEventListener("keydown", function(event) {
-                if (event.keyCode === 27) {
-                    that.close();
-                }
-            });
+            // TODO : listening esc key
         }
     }
 };

@@ -19,8 +19,7 @@ $editHeaderHeight:  ($editModalHeight / 10);
 $editContentHeight: ($editModalHeight / 10) * 8;
 $editFooterHeight:  ($editModalHeight / 10);
 
-
-#modal {
+[id*='modal-'] {
     z-index: 999;
 
     height: 100%;
