@@ -314,6 +314,20 @@ ListView.prototype = {
             that.sortBy("year", that.sort.isYearAsc);
         });
 
+        window.app.addListener('changeTrack', function(track)
+        {
+            let limit = that.entries.length;
+            for(let i = 0; i < limit; i++)
+                if(that.entries[i].track == track) {
+                    let relativeDelta = that.entries[i].entry.offsetTop + that.entries[i].entry.scrollHeight / 2;
+
+                    if(that.entries[i].entry.offsetParent != that.listView)
+                        relativeDelta -= that.listView.offsetTop;
+                    that.listView.scrollTop = relativeDelta - that.listView.clientHeight / 2;
+                    return;
+                }
+        });
+
         window.app.addListener("stopPlayback", function() {
             that.unSelectAll();
         });
