@@ -84,9 +84,7 @@ App.prototype = {
         if (playlists.DONE) { // User already have playlists
             let modal = new Modal("fetchPlaylists"); // TODO : gen unique ID from utils here
             modal.open();
-
-            console.log(playlists);
-
+            
             for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
                 that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
                     playlists.PLAYLIST_NAMES[i],

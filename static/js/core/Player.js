@@ -90,12 +90,20 @@ Player.prototype = {
 
     repeatTrack: function() {
         this.player.currentTime = 0;
+
+        if (!this.isPlaying) {
+            this.play();
+        }
     },
 
 
     _eventListener: function() {
+        let that = this;
         this.player.addEventListener("loadedmetadata", window.app.refreshUI.bind(window.app));
-        this.player.addEventListener("ended", window.app.next.bind(window.app));
+        this.player.addEventListener("ended", function() {
+            that.isPlaying = false;
+            window.app.next();
+        });
     },
 
 
