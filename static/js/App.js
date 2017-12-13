@@ -124,8 +124,8 @@ App.prototype = {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            while (this.mainContainer.firstChild) {
-                this.mainContainer.removeChild(this.mainContainer.firstChild);
+            while (that.mainContainer.firstChild) {
+                that.mainContainer.removeChild(that.mainContainer.firstChild);
             }
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
