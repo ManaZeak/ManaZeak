@@ -20,7 +20,8 @@ from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
     Wish, Stats
 from app.utils import exportPlaylistToJson, populateDB, errorCheckMessage, exportTrackInfo, \
-    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
+    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator, getUserPrefArtist, getUserNbTrackListened, \
+    getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, userNeverPlayed
 
 
 class mainView(ListView):
