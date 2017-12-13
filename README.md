@@ -51,5 +51,5 @@ Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/ap
 - Arthur Beaulieu
 - Pierre Bouniol
 - Valentin Peiro
-- Armand Vignat
 - Pierre-Balthazar Donadieu de Lavit
+- Armand Vignat
