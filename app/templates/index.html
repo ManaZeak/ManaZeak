@@ -46,6 +46,7 @@
         <script type="text/javascript" src="{% static "js/components/elements/QueuePreview.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/entries/PlaylistBarEntry.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/TopBar.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/components/Stats.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/FootBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/ProgressBar.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/ContextMenu.js" %}"></script>
@@ -57,7 +58,7 @@
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function() {
-                console.log("Init app ...")
+                console.log("Init app ...");
                 window.app = new App();
                 app.init();
                 //TODO: Move this to footbar
