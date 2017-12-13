@@ -8,6 +8,8 @@ let Modal = function(type, id) {
     this.url         = null;
     this.id          = id;
     this.callback    = null;
+    this.canBeClosed = false;
+    this.closeButton = null;
 
     this._createUI();
 
@@ -18,6 +20,7 @@ let Modal = function(type, id) {
 
         case "newLibrary":
             this._newLibraryUI();
+            this.canBeClosed = true;
             break;
 
         case "scanLibrary":
@@ -26,12 +29,15 @@ let Modal = function(type, id) {
 
         case "newWish":
             this._newWishUI();
+            this.canBeClosed = true;
             break;
 
         default:
             new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
             break;
     }
+
+    this._eventListener();
 };
 
 
@@ -153,6 +159,8 @@ Modal.prototype = {
         this.ui.content.appendChild(convert);
         this.ui.footer.appendChild(scan);
 
+        this.appendCloseButton();
+
         let that = this;
         scan.addEventListener("click", function() {
             that._checkInputs(name, path, convert);
@@ -178,6 +186,8 @@ Modal.prototype = {
         this.ui.content.appendChild(text);
         this.ui.content.appendChild(wish);
         this.ui.footer.appendChild(submit);
+
+        this.appendCloseButton();
 
         let that = this;
         submit.addEventListener("click", function(e) {
@@ -237,11 +247,33 @@ Modal.prototype = {
 
     close: function() {
         //TODO: Use unique ID (this.id)
-        document.body.removeChild(document.getElementById("modal"));
+        document.body.removeChild(this.ui.overlay);
+    },
+
+
+    appendCloseButton: function() {
+        this.closeButton = document.createElement("IMG");
+        this.closeButton.id = "closeButton";
+        this.closeButton.src = "/static/img/utils/close.svg";
+
+        this.ui.container.appendChild(this.closeButton);
     },
 
 
     setCallback: function(callback) {
         this.callback = callback;
+    },
+
+    _eventListener: function() {
+        if (this.canBeClosed) {
+            this.closeButton.addEventListener("click", this.close.bind(this));
+
+            let that = this;
+            document.addEventListener("keydown", function(event) {
+                if (event.keyCode === 27) {
+                    that.close();
+                }
+            });
+        }
     }
 };
