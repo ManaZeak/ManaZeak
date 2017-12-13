@@ -78,7 +78,7 @@ Playlist.prototype = {
     _newLibrary: function() {
         this.isLibrary = true;
 
-        this.modal = new Modal("newLibrary", this.id);
+        this.modal = new Modal("newLibrary");
         this.modal.open();
 
         let that = this;
@@ -108,7 +108,7 @@ Playlist.prototype = {
                     that.name = name;
                     that.modal.close();
                     that.modal = null;
-                    that.modal = new Modal("scanLibrary", that.id);
+                    that.modal = new Modal("scanLibrary");
                     that.modal.open();
                     that.id = response.LIBRARY_ID;
                     that._initialLibraryScan(response.LIBRARY_ID);
@@ -195,10 +195,6 @@ Playlist.prototype = {
                             }
                         }
                     );
-                }
-                else if (response.ERROR_H1 === "null") {
-                    // TODO : refresh UI to come back to Library/Playlist creation
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
