@@ -156,3 +156,25 @@ App.prototype.reverseQueue = function(reverse) {
 App.prototype.moveQueue = function(element, newPos) {
     this.queue.slide(element, newPos);
 };
+
+App.prototype.logOut = function() {
+    getRequest(
+        "logout",
+        function() {
+            location.reload();
+        }
+    );
+};
+
+
+App.prototype.displayStats = function() {
+    this.clearMainContainer();
+
+    let tmp = new Stats(this.mainContainer);
+};
+
+App.prototype.clearMainContainer = function() {
+    while (this.mainContainer.firstChild) {
+        this.mainContainer.removeChild(this.mainContainer.firstChild);
+    }
+};

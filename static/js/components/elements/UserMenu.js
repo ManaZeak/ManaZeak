@@ -7,7 +7,8 @@ let UserMenu = function(parent) {
     this.menu = document.createElement("div");
     this.menu.id = "menu";
     this.menuEntry = {
-        logout: null
+        logout: null,
+        stats: null
     };
     this.outside = document.body;
     this.parent = parent;
@@ -21,11 +22,14 @@ UserMenu.prototype = {
 
     _init: function() {
         this.parent.appendChild(this.menu);
-        this.menuEntry.logout = document.createElement("div");
-        this.menuEntry.logout.id = "logOut";
+        this.menuEntry.logout = document.createElement("DIV");
+        this.menuEntry.stats = document.createElement("DIV");
         this.menuEntry.logout.className = "menuEntry";
+        this.menuEntry.stats.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
+        this.menuEntry.stats.innerHTML = "Stats";
         this.menu.appendChild(this.menuEntry.logout);
+        this.menu.appendChild(this.menuEntry.stats);
 
 
         this._eventListener();
@@ -34,12 +38,12 @@ UserMenu.prototype = {
 
 
     logOut: function() {
-        getRequest(
-            "logout",
-            function() {
-                location.reload();
-            }
-        );
+        window.app.logOut();
+    },
+
+
+    getStats: function() {
+        window.app.displayStats();
     },
 
 
@@ -65,6 +69,7 @@ UserMenu.prototype = {
 
     _eventListener: function() {
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
+        this.menuEntry.stats.addEventListener("click", this.getStats.bind(this));
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     },
 
