@@ -873,11 +873,23 @@ def getUserPrefArtist(user):
         for track in tracks:
             counter += track.playCounter
 
-        artistCounter.append((artist.id, artist.name, counter))
+        artistCounter.append((artist.name, counter))
 
-    artistCounter.sort(key=itemgetter(2), reverse=True)
+    artistCounter.sort(key=itemgetter(1), reverse=True)
 
     return artistCounter
+
+
+def getUserPrefTracks(user):
+    tracks = Track.objects.all()
+    trackTuple = []
+
+    for track in tracks:
+        trackTuple.append((track.title, track.playCounter))
+
+    trackTuple.sort(key=itemgetter(1), reverse=True)
+
+    return trackTuple
 
 
 def userNeverPlayed(user):

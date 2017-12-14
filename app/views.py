@@ -21,7 +21,7 @@ from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, 
     Wish, Stats
 from app.utils import exportPlaylistToJson, populateDB, errorCheckMessage, exportTrackInfo, \
     generateSimilarTrackJson, updateTrackView, simpleJsonGenerator, getUserPrefArtist, getUserNbTrackListened, \
-    getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, userNeverPlayed
+    getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, userNeverPlayed, getUserPrefTracks
 
 
 class mainView(ListView):
@@ -514,32 +514,32 @@ def adminGetUserStats(request):
         return JsonResponse(errorCheckMessage(False, "permissionError"))
 
 
-
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserStats(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-    user = request.user
+    if request.method == 'GET':
+        user = request.user
 
-    nbTrackListened = getUserNbTrackListened(user)
-    nbTrackPushed = getUserNbTrackPushed(user)
-    userGenre = getUserGenre(user)
-    userGenrePercentage = getUserGenrePercentage(user)
-    prefArtists = getUserPrefArtist(user)
-    neverPlayed = userNeverPlayed(user)
+        nbTrackListened = getUserNbTrackListened(user)
+        nbTrackPushed = getUserNbTrackPushed(user)
+        userGenre = getUserGenre(user)
+        userGenrePercentage = getUserGenrePercentage(user)
+        prefArtists = getUserPrefArtist(user)
+        neverPlayed = userNeverPlayed(user)
 
-    data = {
+        data = {
             'PREF_ARTISTS': prefArtists[:10],
+            'PREF_TRACKS': getUserPrefTracks(user)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
             'USER_GENRE': userGenre,
             'USER_GENRE_PERCENTAGE': userGenrePercentage,
             'NEVER_PLAYED': neverPlayed,
-    }
+        }
 
+        print(data)
+    else:
+        data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
-
-
 
 
 def randomNextTrack(request):
@@ -725,7 +725,7 @@ def createWish(request):
             wish = Wish()
             wish.user = user
             wish.text = strip_tags(str(response['WISH']))
-            wish.status = 0 # Not done; 1 Refused; 2 Accepted
+            wish.status = 0  # Not done; 1 Refused; 2 Accepted
             wish.save()
             data = errorCheckMessage(True, None)
         else:
