@@ -170,6 +170,9 @@ TopBar.prototype = {
         this.newLibMenu.addEntry(null, 'New Library', function() {
             window.app.requestNewLibrary();
         });
+        this.newLibMenu.addEntry(null, 'New Playlist', function() {
+            window.app.requestNewPlaylist();
+        });
     },
 
 
