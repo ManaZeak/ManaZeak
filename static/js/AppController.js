@@ -140,7 +140,6 @@ App.prototype.getAllPlaylistsTracks = function(begin) {
 App.prototype.refreshUI = function() {
     //this.playlists[this.activePlaylist - 1].refreshViews();
     this.topBar.refreshTopBar();
-    this.activePlaylist.activate();
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
     this.footBar.progressBar.refreshInterval(this.player.getPlayer());
 };
