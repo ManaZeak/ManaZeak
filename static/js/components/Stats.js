@@ -64,10 +64,12 @@ Stats.prototype = {
             this.ui.prefArtists.removeChild(this.ui.prefArtists.firstChild);
         }
 
-        for (let i = 0; i < prefArtists.length - 1; ++i) { // -1 is here to ignore the last array entry which is w/ name = null
-            let entry = document.createElement("LI");
-            entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
-            this.ui.prefArtists.appendChild(entry);
+        for (let i = 0; i < prefArtists.length; ++i) {
+            if (prefArtists[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.prefArtists.appendChild(entry);
+            }
         }
     },
 
@@ -77,10 +79,13 @@ Stats.prototype = {
             this.ui.prefTracks.removeChild(this.ui.prefTracks.firstChild);
         }
 
-        for (let i = 0; i < prefTracks.length - 1; ++i) { // -1 is here to ignore the last array entry which is w/ name = null
-            let entry = document.createElement("LI");
-            entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
-            this.ui.prefTracks.appendChild(entry);
+        for (let i = 0; i < prefTracks.length; ++i) {
+            if (prefTracks[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.prefTracks.appendChild(entry);
+
+            }
         }
     }
 };
