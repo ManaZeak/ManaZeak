@@ -61,27 +61,28 @@ def initialScan(request):
 # Drop all database, used for debug
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def dropAllDB(request):
-    if request.user.is_authenticated():
-        Track.objects.all().delete()
-        Artist.objects.all().delete()
-        Album.objects.all().delete()
-        Playlist.objects.all().delete()
-        Library.objects.all().delete()
-        Genre.objects.all().delete()
-        Shuffle.objects.all().delete()
-        UserHistory.objects.all().delete()
-        Stats.objects.all().delete()
-        History.objects.all().delete()
-        data = {
-            'DROPPED': "OK",
-        }
-        return JsonResponse(data)
-    else:
-        data = {
-            'DROPPED': 'KO'
-        }
-        return JsonResponse(data)
+    if request.method == 'GET':
+        if request.user.is_authenticated():
+            if request.user.is_superuser:
+                Track.objects.all().delete()
+                Artist.objects.all().delete()
+                Album.objects.all().delete()
+                Playlist.objects.all().delete()
+                Library.objects.all().delete()
+                Genre.objects.all().delete()
+                Shuffle.objects.all().delete()
+                UserHistory.objects.all().delete()
+                Stats.objects.all().delete()
+                History.objects.all().delete()
 
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "permissionError")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 # Create a new user in database
 def createUser(request):
@@ -733,6 +734,26 @@ def createWish(request):
             data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getAdminView(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            users = User.objects.all()
+            userInfo = []
+            for user in users:
+                userInfo.append({
+                    'NAME': user.username,
+                })
+            data = dict({'RESULT': userInfo})
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

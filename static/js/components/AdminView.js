@@ -17,7 +17,7 @@ AdminView.prototype = {
 
         let that = this;
         JSONParsedGetRequest(
-            "ajax/getAdminView",
+            "ajax/getAdminView/",
             function(response) {
                 if (response.DONE) {
                     that.ui = {
