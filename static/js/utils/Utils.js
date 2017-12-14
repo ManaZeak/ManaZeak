@@ -131,18 +131,16 @@ function getRequest(url, callback) {
 }
 
 
-function JSONParsedGetRequest(url, http, callback) {
+function JSONParsedGetRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            if (http) { callback(this.responseText); }
-            else      { callback(JSON.parse(this.responseText)); }
+            callback(JSON.parse(this.responseText));
         }
     };
 
     xhr.open("GET", url, true);
-    if (http) { xhr.setRequestHeader("Content-Type", "application/json"); }
     xhr.send();
 }
 

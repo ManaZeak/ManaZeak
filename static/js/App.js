@@ -63,7 +63,6 @@ App.prototype = {
         // Loading playlists
         JSONParsedGetRequest(
             "ajax/getPlaylists/",
-            false,
             function(response) {
                 // TODO : ask ordered playlist : backend : libraries first then playlist
                 /* response = {

@@ -362,6 +362,12 @@ ListView.prototype = {
                 );
             }
         });
+
+        this.contextMenu.addEntry(null, "Add to playlist", function() {
+            if (clickedEntry !== undefined) {
+                // TODO : Add user playlist as subchoices, and effectively add track to playlist via a Django url (urls.py)
+            }
+        });
     }
 };
 

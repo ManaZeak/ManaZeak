@@ -355,7 +355,6 @@ Playlist.prototype = {
             default:
                 JSONParsedGetRequest(
                     "ajax/getLastSongPlayed/",
-                    false,
                     function(response) {
                         if (response.DONE) {
                             /* response = {

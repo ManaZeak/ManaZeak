@@ -77,7 +77,6 @@ Stats.prototype = {
         let that = this;
         JSONParsedGetRequest(
             "ajax/getUserStats/",
-            false,
             function(response) {
                 that.ui.userName.innerHTML = response.USERNAME;
                 that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
