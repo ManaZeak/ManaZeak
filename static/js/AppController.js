@@ -89,7 +89,6 @@ App.prototype.changeTrack = function(track, previous) {
     if (lastTrackPath !== null) {
         lastTrackPath = lastTrackPath.value;
     }
-console.log((this.player.getCurrentTime() * 100) / this.player.getDuration());
 
     this.footBar.progressBar.resetProgressBar();
         JSONParsedPostRequest(
