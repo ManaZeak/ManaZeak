@@ -340,7 +340,7 @@ TrackInfo.prototype = {
                                 that.tracks[i].performer = response.RESULT[i].PERFORMER;
 
                                 that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
-                                    that.tracks[i].title + "<br>" +
+                                    that.tracks[i].title + "<br><div class=\"performerIndent\"></div>" +
                                     that.tracks[i].performer;
 
                                 that.tracks[i].ui.style.opacity = 1;
