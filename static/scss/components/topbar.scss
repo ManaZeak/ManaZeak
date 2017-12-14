@@ -22,10 +22,16 @@ $topbar-height: 50px;
 
     #userExpander {
         position: absolute;
-        right: 0;
-        height: 20px;
-        width: 20px;
-        background-color: $secondary-color;
+        top: $topbar-height / 4;
+        right: $topbar-height / 4;
+        width: auto;
+        height: $topbar-height / 2;
+        cursor: pointer;
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
     }
 
     #menu {
