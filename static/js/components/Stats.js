@@ -17,17 +17,23 @@ Stats.prototype = {
             userName: document.createElement("H1"),
             totalPlayed: document.createElement("P"),
             totalPushed: document.createElement("P"),
+
+            artistsLeft: document.createElement("DIV"),
+            artistsRight: document.createElement("DIV"),
             prefArtistsLabel: document.createElement("P"),
             prefArtists: document.createElement("OL"),
-            prefTracksLabel: document.createElement("P"),
-            prefTracks: document.createElement("OL"),
             leastArtistsLabel: document.createElement("P"),
             leastArtists: document.createElement("OL"),
+
+            prefTracksLabel: document.createElement("P"),
+            prefTracks: document.createElement("OL"),
             leastTracksLabel: document.createElement("P"),
             leastTracks: document.createElement("OL")
         };
 
         this.ui.container.id = "stats";
+        this.ui.artistsLeft.id = "artists";
+        this.ui.artistsRight.id = "artists";
 
         this.ui.totalPlayed.innerHTML = "Tracks played : ";
         this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
@@ -39,12 +45,16 @@ Stats.prototype = {
         this.ui.container.appendChild(this.ui.userName);
         this.ui.container.appendChild(this.ui.totalPlayed);
         this.ui.container.appendChild(this.ui.totalPushed);
-        this.ui.container.appendChild(this.ui.prefArtistsLabel);
-        this.ui.container.appendChild(this.ui.prefArtists);
+
+        this.ui.artistsLeft.appendChild(this.ui.prefArtistsLabel);
+        this.ui.artistsLeft.appendChild(this.ui.prefArtists);
+        this.ui.artistsRight.appendChild(this.ui.leastArtistsLabel);
+        this.ui.artistsRight.appendChild(this.ui.leastArtists);
+        this.ui.container.appendChild(this.ui.artistsLeft);
+        this.ui.container.appendChild(this.ui.artistsRight);
+
         this.ui.container.appendChild(this.ui.prefTracksLabel);
         this.ui.container.appendChild(this.ui.prefTracks);
-        this.ui.container.appendChild(this.ui.leastArtistsLabel);
-        this.ui.container.appendChild(this.ui.leastArtists);
         this.ui.container.appendChild(this.ui.leastTracksLabel);
         this.ui.container.appendChild(this.ui.leastTracks);
 

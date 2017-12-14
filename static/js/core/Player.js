@@ -109,6 +109,7 @@ Player.prototype = {
 
     // Class Getters and Setters
     getPlayer: function()                 { return this.player;             },
+    getSrc: function()                    { return this.player.src;         },
     getIsPlaying: function()              { return this.isPlaying;          },
     getCurrentTime: function()            { return this.player.currentTime  },
 
