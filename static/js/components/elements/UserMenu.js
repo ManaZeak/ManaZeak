@@ -129,7 +129,8 @@ UserMenu.prototype = {
 
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
         this.menuEntry.stats.addEventListener("click", this.getStats.bind(this));
-        this.menuEntry.admin.addEventListener("click", this.getAdmin.bind(this));
+        if (this.isAdmin) { this.menuEntry.admin.addEventListener("click", this.getAdmin.bind(this)); }
+        
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     }
 };
