@@ -862,7 +862,7 @@ def getUserGenrePercentage(user):
     return genrePercentage
 
 
-def getUserPrefArtist(user):
+def getUserPrefArtist(user, order):
     artists = Artist.objects.all()
     artistCounter = []
 
@@ -875,19 +875,24 @@ def getUserPrefArtist(user):
 
         artistCounter.append((artist.name, counter))
 
-    artistCounter.sort(key=itemgetter(1), reverse=True)
+    artistCounter.sort(key=itemgetter(1), reverse=order)
 
     return artistCounter
 
 
-def getUserPrefTracks(user):
-    tracks = Track.objects.all()
+def getUserPrefTracks(user, order):
+    stats = Stats.objects.filter(user=user)
+    trackId = []
+    for stat in stats:
+        trackId.append(stat.track_id)
+
+    tracks = Track.objects.filter(id__in=trackId)
     trackTuple = []
 
     for track in tracks:
         trackTuple.append((track.title, track.playCounter))
 
-    trackTuple.sort(key=itemgetter(1), reverse=True)
+    trackTuple.sort(key=itemgetter(1), reverse=order)
 
     return trackTuple
 
