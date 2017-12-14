@@ -24,12 +24,16 @@ UserMenu.prototype = {
         this.parent.appendChild(this.menu);
         this.menuEntry.logout = document.createElement("DIV");
         this.menuEntry.stats = document.createElement("DIV");
+        this.menuEntry.admin = document.createElement("DIV");
         this.menuEntry.logout.className = "menuEntry";
         this.menuEntry.stats.className = "menuEntry";
+        this.menuEntry.admin.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
         this.menuEntry.stats.innerHTML = "Stats";
+        this.menuEntry.admin.innerHTML = "Admin";
         this.menu.appendChild(this.menuEntry.logout);
         this.menu.appendChild(this.menuEntry.stats);
+        this.menu.appendChild(this.menuEntry.admin);
 
 
         this._eventListener();
@@ -43,7 +47,11 @@ UserMenu.prototype = {
 
 
     getStats: function() {
-        window.app.displayStats();
+        window.app.displayStatsView();
+    },
+
+    getAdmin: function() {
+        window.app.displayAdminView();
     },
 
 
@@ -70,6 +78,7 @@ UserMenu.prototype = {
     _eventListener: function() {
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
         this.menuEntry.stats.addEventListener("click", this.getStats.bind(this));
+        this.menuEntry.admin.addEventListener("click", this.getAdmin.bind(this));
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     },
 
