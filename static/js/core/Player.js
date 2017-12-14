@@ -110,6 +110,7 @@ Player.prototype = {
     // Class Getters and Setters
     getPlayer: function()                 { return this.player;             },
     getIsPlaying: function()              { return this.isPlaying;          },
+    getCurrentTime: function()            { return this.player.currentTime  },
 
     setIsMuted: function(muted)           { this.isMuted = muted;           },
     setVolume: function(volume)           { this.player.volume = volume;    }

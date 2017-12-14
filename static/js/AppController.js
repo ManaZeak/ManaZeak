@@ -86,11 +86,11 @@ App.prototype.changeTrack = function(track, previous) {
     let that = this;
 
     this.footBar.progressBar.resetProgressBar();
-
-    JSONParsedPostRequest(
+        JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         JSON.stringify({
             TRACK_ID: track.id.track,
+            TRACK_PER: (this.player.getCurrentTime() * 100) / track.duration,
             PREVIOUS: previous
         }),
         function(response) {
