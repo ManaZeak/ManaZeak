@@ -308,22 +308,21 @@ def newLibrary(request):
 def newPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        try:
-            if 'NAME' in response:
-                playlist = Playlist()
-                playlist.name = strip_tags(response['NAME'])
-                playlist.user = request.user
-                playlist.save()
-                data = {
-                    'PLAYLIST_ID': playlist.id,
-                    'NAME': playlist.name,
-                }
-                return JsonResponse(data)
-        except AttributeError:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
+        if 'NAME' in response:
+            playlist = Playlist()
+            playlist.name = strip_tags(response['NAME'])
+            playlist.user = request.user
+            playlist.save()
+            data = {
+                'PLAYLIST_ID': playlist.id,
+                'NAME': playlist.name,
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
-        return JsonResponse(errorCheckMessage(False, "badRequest"))
-
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
@@ -350,6 +349,7 @@ def changeMetaData(request):
 
 # Return the link to a track with a track id
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
+# TODO: fix this method for using the good track
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
