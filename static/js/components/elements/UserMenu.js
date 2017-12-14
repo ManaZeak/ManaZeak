@@ -15,14 +15,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let UserMenu = function(container, admin) {
+let UserMenu = function(container) {
     this.ui = {
         container: document.createElement("DIV"),
         img: document.createElement("IMG")
     };
-
-    let that = this;
-    JSONParsedGetRequest("ajax/isAdmin/", function(response) { that.isAdmin = response.IS_ADMIN; });
 
     this.menu = document.createElement("DIV");
     this.menu.id = "menu";
@@ -67,17 +64,23 @@ UserMenu.prototype = {
         this.menuEntry.logout.innerHTML = "Log out";
         this.menuEntry.stats.innerHTML = "Stats";
 
-        if (this.isAdmin) {
-            this.menuEntry.admin = document.createElement("DIV");
-            this.menuEntry.admin.className = "menuEntry";
-            this.menuEntry.admin.innerHTML = "Admin";
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/isAdmin/",
+            function(response) {
+                if (response.IS_ADMIN) {
+                    that.menuEntry.admin = document.createElement("DIV");
+                    that.menuEntry.admin.className = "menuEntry";
+                    that.menuEntry.admin.innerHTML = "Admin";
+                    that.menuEntry.admin.addEventListener("click", that.getAdmin.bind(that));
 
-            this.menu.appendChild(this.menuEntry.admin);
-        }
+                    that.menu.appendChild(that.menuEntry.admin);
+                }
 
-        this.menu.appendChild(this.menuEntry.stats);
-        this.menu.appendChild(this.menuEntry.logout);
-
+                that.menu.appendChild(that.menuEntry.stats);
+                that.menu.appendChild(that.menuEntry.logout);
+            }
+        );
 
         this.ui.container.appendChild(this.menu);
         container.appendChild(this.ui.container);
@@ -123,14 +126,11 @@ UserMenu.prototype = {
     _eventListener: function() {
         let that = this;
         this.ui.img.addEventListener("click", function() {
-            console.log('Here');
             that.toggleVisibilityLock();
         });
 
         this.menuEntry.logout.addEventListener("click", this.logOut.bind(this));
         this.menuEntry.stats.addEventListener("click", this.getStats.bind(this));
-        if (this.isAdmin) { this.menuEntry.admin.addEventListener("click", this.getAdmin.bind(this)); }
-        
         this.outside.addEventListener("click", this.clickOutside.bind(this), false);
     }
 };
