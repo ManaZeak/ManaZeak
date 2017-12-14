@@ -75,9 +75,13 @@ Stats.prototype = {
 
     _fetchStats: function() {
         let that = this;
+        let modal = new Modal("fetchStats");
+        modal.open();
+
         JSONParsedGetRequest(
             "ajax/getUserStats/",
             function(response) {
+                modal.close();
                 that.ui.userName.innerHTML = response.USERNAME;
                 that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
                 that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
@@ -85,9 +89,7 @@ Stats.prototype = {
                     "% of all the music here)";
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
                 that._updatePrefTracksList(response.PREF_TRACKS);
-                console.log(response);
                 that._updateLeastArtistsList(response.LEAST_ARTISTS);
-
                 that._updateLeastTracksList(response.LEAST_TRACKS);
             }
         );

@@ -18,6 +18,10 @@ let Modal = function(type) {
             this._fetchPlaylistsUI();
             break;
 
+        case "fetchStats":
+            this._fetchStatsUI();
+            break;
+
         case "newLibrary":
             this._newLibraryUI();
             this.canBeClosed = true;
@@ -97,6 +101,33 @@ Modal.prototype = {
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(text);
     },
+
+
+
+    _fetchStatsUI: function() {
+        this.ui.container.id = "fetchPlaylists";
+        this.ui.title.innerHTML = "Crushing data";
+
+        let spinnerContainer = document.createElement("DIV");
+        let spinnerRing = document.createElement("DIV");
+        let spinnerFloatDiv = document.createElement("DIV");
+        let spinnerImage = document.createElement("IMG");
+        let text        = document.createElement("P");
+
+
+        spinnerContainer.className = "lds-css";
+        spinnerRing.className = "lds-dual-ring";
+        spinnerImage.src = "/static/img/utils/python.svg";
+        text.innerHTML = "Hold on, you're data are on the road.";
+
+        spinnerRing.appendChild(spinnerFloatDiv);
+        spinnerContainer.appendChild(spinnerRing);
+
+        this.ui.content.appendChild(spinnerContainer);
+        this.ui.content.appendChild(spinnerImage);
+        this.ui.footer.appendChild(text);
+    },
+
 
 
     _scanLibraryUI: function() {
