@@ -89,6 +89,7 @@ App.prototype.changeTrack = function(track, previous) {
     if (lastTrackPath !== null) {
         lastTrackPath = lastTrackPath.value;
     }
+console.log((this.player.getCurrentTime() * 100) / this.player.getDuration());
 
     this.footBar.progressBar.resetProgressBar();
         JSONParsedPostRequest(
@@ -96,7 +97,7 @@ App.prototype.changeTrack = function(track, previous) {
         JSON.stringify({
             TRACK_ID: track.id.track,
             LAST_TRACK_PATH: lastTrackPath,
-            TRACK_PER: (this.player.getCurrentTime() * 100) / track.duration,
+            TRACK_PER: (this.player.getCurrentTime() * 100) / this.player.getDuration(),
             PREVIOUS: previous
         }),
         function(response) {
