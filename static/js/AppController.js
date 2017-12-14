@@ -91,7 +91,7 @@ App.prototype.changeTrack = function(track, previous) {
     } else {
         lastTrackPath = "None";
     }
-console.log(lastTrackPath);
+
     this.footBar.progressBar.resetProgressBar();
         JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
