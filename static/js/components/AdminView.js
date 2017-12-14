@@ -44,7 +44,15 @@ AdminView.prototype = {
 
 
     _requestDrop: function() {
-        
+        JSONParsedGetRequest(
+            "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
+            false,
+            function(response) {
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     },
 
 

@@ -157,6 +157,7 @@ Playlist.prototype = {
                     that.id = response.PLAYLIST_ID;
 
                     that.refreshViews();
+                    window.app.refreshUI();
                 }
 
                 else {
