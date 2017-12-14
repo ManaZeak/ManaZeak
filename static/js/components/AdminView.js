@@ -12,19 +12,43 @@ AdminView.prototype = {
 
     _createUI: function(container) {
         this.ui = {
-            container: document.createElement("DIV"),
-            dropLabel: document.createElement("P"),
-            dropButton: document.createElement("BUTTON")
+            container: document.createElement("DIV")
         };
 
-        this.ui.container.id = "admin";
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/getAdminView",
+            false,
+            function(response) {
+                if (response.DONE) {
+                    that.ui = {
+                        dropLabel: document.createElement("P"),
+                        dropButton: document.createElement("BUTTON")
+                    };
 
-        this.ui.dropLabel.innerHTML = "Drop the database";
-        this.ui.dropButton.innerHTML = "DROP";
+                    that.ui.container.id = "admin";
 
-        this.ui.container.appendChild(this.ui.dropLabel);
-        this.ui.container.appendChild(this.ui.dropButton);
+                    that.ui.dropLabel.innerHTML = "Drop the database";
+                    that.ui.dropButton.innerHTML = "DROP";
+
+                    that.ui.container.appendChild(that.ui.dropLabel);
+                    that.ui.container.appendChild(that.ui.dropButton);
+
+                    that._eventListener();
+                }
+            }
+        );
 
         container.appendChild(this.ui.container);
+    },
+
+
+    _requestDrop: function() {
+        
+    },
+
+
+    _eventListener: function() {
+        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
     }
 };
