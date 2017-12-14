@@ -121,7 +121,7 @@ class Shuffle(models.Model):
 class Stats(models.Model):
     user = models.ForeignKey(User)
     track = models.ForeignKey(Track)
-    listeningPercentage = models.IntegerField(null=True)
+    listeningPercentage = models.FloatField(null=True)
     playCounter = models.IntegerField(default=0)
 
 
