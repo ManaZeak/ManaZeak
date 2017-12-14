@@ -60,7 +60,7 @@ Stats.prototype = {
             function(response) {
                 that.ui.userName.innerHTML = response.USERNAME;
                 that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
-                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +
+                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
                     Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
                     "% of all the music here)";
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
