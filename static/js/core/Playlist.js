@@ -62,7 +62,8 @@ Playlist.prototype = {
             if (this.isLibrary) { this._loadLibrary(); } // Library loading process
         }
         else {
-            if (this.isLibrary) { this._newLibrary(); } // Library creation process
+            if (this.isLibrary) { this._newLibrary();  } // Library creation process
+            else                { this._newPlaylist(); } // Playlist creation process
         }
     },
 
@@ -84,6 +85,19 @@ Playlist.prototype = {
         let that = this;
         this.modal.setCallback(function(name, path, convert) {
             that._requestNewLibrary(name.value, path.value, convert.checked);
+        })
+    },
+
+
+    _newPlaylist: function() {
+        this.isLibrary = false;
+
+        this.modal = new Modal("newPlaylist");
+        this.modal.open();
+
+        let that = this;
+        this.modal.setCallback(function(name) {
+            that._requestNewPlaylist(name.value);
         })
     },
 
@@ -122,8 +136,40 @@ Playlist.prototype = {
     },
 
 
+    _requestNewPlaylist: function(name) {
+        let that = this;
+        JSONParsedPostRequest(
+            "ajax/newPlaylist/",
+            JSON.stringify({
+                NAME: name
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE:       bool
+                 *     LIBRARY_ID: int or undefined
+                 *     ERROR_H1:   string
+                 *     ERROR_MSG:  string
+                 * } */
+                if (response.DONE) {
+                    that.name = name;
+                    that.modal.close();
+                    that.modal = null;
+                    that.id = response.PLAYLIST_ID;
+
+                    that.refreshViews();
+                    window.app.refreshUI();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    },
+
+
     _initialLibraryScan: function(libraryId) {
-        var that = this;
+        let that = this;
 
         JSONParsedPostRequest(
             "ajax/initialScan/",
@@ -309,7 +355,6 @@ Playlist.prototype = {
             default:
                 JSONParsedGetRequest(
                     "ajax/getLastSongPlayed/",
-                    false,
                     function(response) {
                         if (response.DONE) {
                             /* response = {

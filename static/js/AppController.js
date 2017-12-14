@@ -84,13 +84,21 @@ App.prototype.toggleMute = function() {
 
 App.prototype.changeTrack = function(track, previous) {
     let that = this;
+    let lastTrackPath = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
 
+    if (lastTrackPath !== null) {
+        lastTrackPath = lastTrackPath.value;
+    } else {
+        lastTrackPath = "None";
+    }
+console.log(lastTrackPath);
     this.footBar.progressBar.resetProgressBar();
-
-    JSONParsedPostRequest(
+        JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         JSON.stringify({
             TRACK_ID: track.id.track,
+            LAST_TRACK_PATH: lastTrackPath,
+            TRACK_PER: (this.player.getCurrentTime() * 100) / this.player.getDuration(),
             PREVIOUS: previous
         }),
         function(response) {
@@ -112,7 +120,6 @@ App.prototype.changeTrack = function(track, previous) {
 
 
 App.prototype.changePlaylist = function() {
-
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
 };
 
@@ -133,6 +140,7 @@ App.prototype.getAllPlaylistsTracks = function(begin) {
 App.prototype.refreshUI = function() {
     //this.playlists[this.activePlaylist - 1].refreshViews();
     this.topBar.refreshTopBar();
+    this.activePlaylist.activate();
     this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
     this.footBar.progressBar.refreshInterval(this.player.getPlayer());
 };
@@ -167,11 +175,18 @@ App.prototype.logOut = function() {
 };
 
 
-App.prototype.displayStats = function() {
+App.prototype.displayStatsView = function() {
     this.clearMainContainer();
-
+    this.topBar.unSelectAll();
     let tmp = new Stats(this.mainContainer);
 };
+
+App.prototype.displayAdminView = function() {
+    this.clearMainContainer();
+    this.topBar.unSelectAll();
+    let tmp = new AdminView(this.mainContainer);
+};
+
 
 App.prototype.clearMainContainer = function() {
     while (this.mainContainer.firstChild) {

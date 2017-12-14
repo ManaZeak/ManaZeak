@@ -63,7 +63,6 @@ App.prototype = {
         // Loading playlists
         JSONParsedGetRequest(
             "ajax/getPlaylists/",
-            false,
             function(response) {
                 // TODO : ask ordered playlist : backend : libraries first then playlist
                 /* response = {
@@ -124,9 +123,23 @@ App.prototype = {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            while (that.mainContainer.firstChild) {
-                that.mainContainer.removeChild(that.mainContainer.firstChild);
-            }
+            this.clearMainContainer();
+
+            that.playlists[0].activate();
+            that.topBar.refreshTopBar();
+            that.footBar.playlistPreview.setVisible(true);
+            that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+            that.activePlaylist = that.playlists[0];
+        }));
+    },
+
+
+    requestNewPlaylist: function() {
+        let that = this;
+
+        this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
+            this.clearMainContainer();
+
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
             that.footBar.playlistPreview.setVisible(true);

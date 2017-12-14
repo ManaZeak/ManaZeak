@@ -10,30 +10,28 @@ let TopBar = function() {
     this.selectedPlaylist  = null;
     this.entries           = [];
 
-    this.topBar             = document.createElement("div");
-    this.userExpander       = document.createElement("div");
-    this.moodbar            = document.createElement("div");
-    this.moodbarThumb       = document.createElement("div");
-    this.playlistBar        = document.createElement("div");
-    this.newPlaylistButton  = document.createElement("div");
+    this.topBar             = document.createElement("DIV");
+    this.moodbar            = document.createElement("DIV");
+    this.moodbarThumb       = document.createElement("DIV");
+    this.playlistBar        = document.createElement("DIV");
+    this.newPlaylistButton  = document.createElement("DIV");
 
     this.newPlaylistButton.innerText = '+';
 
     this.topBar.id       = "topBar";
-    this.userExpander.id = "userExpander";
     this.moodbar.id      = "moodbar";
     this.moodbarThumb.id = "moodbarThumb";
     this.playlistBar.id  = "playlistBar";
 
+
     this.topBar.appendChild(this.moodbar);
     this.moodbar.appendChild(this.moodbarThumb);
-    this.topBar.appendChild(this.userExpander);
     this.topBar.appendChild(this.playlistBar);
     this.playlistBar.appendChild(this.newPlaylistButton);
 
     this.moodbarThumb.isVisible = false;
 
-    this.userMenu = new UserMenu(this.userExpander);
+    this.userMenu = new UserMenu(this.topBar);
     this.wishList = new WishList(this.topBar);
     this.newLibMenu     = null;
 };
@@ -155,13 +153,7 @@ TopBar.prototype = {
     },
 
 
-    toggleUserMenu: function() {
-        this.userMenu.toggleVisibilityLock();
-    },
-
-
     _eventListener: function() {
-        this.userExpander.addEventListener("click", this.toggleUserMenu.bind(this));
         this.playlistBar.addEventListener("click", this.viewClicked.bind(this));
     },
 
@@ -169,6 +161,9 @@ TopBar.prototype = {
         this.newLibMenu = new ContextMenu(this.newPlaylistButton, null, 'click');
         this.newLibMenu.addEntry(null, 'New Library', function() {
             window.app.requestNewLibrary();
+        });
+        this.newLibMenu.addEntry(null, 'New Playlist', function() {
+            window.app.requestNewPlaylist();
         });
     },
 
