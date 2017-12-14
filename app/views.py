@@ -143,6 +143,7 @@ def logoutView(request):
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
     print("getting usr playlist")
+    user = request.user
     playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
     playlistNames = []
     playlistIds = []
@@ -169,6 +170,7 @@ def getUserPlaylists(request):
         'PLAYLIST_NAMES': playlistNames,
         'PLAYLIST_IDS': playlistIds,
         'PLAYLIST_IS_LIBRARY': isLibrary,
+        'IS_ADMIN': user.is_superuser,
     }
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
@@ -756,6 +758,14 @@ def getAdminView(request):
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def isAdmin(request):
+    if request.method == 'GET':
+        data = {'IS_ADMIN':request.user.is_superuser}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
