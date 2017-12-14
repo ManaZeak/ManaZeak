@@ -20,7 +20,8 @@ from app.form import UserForm
 from app.models import Playlist, Track, Artist, Album, Library, Genre, Shuffle, PlaylistSettings, UserHistory, History, \
     Wish, Stats
 from app.utils import exportPlaylistToJson, populateDB, errorCheckMessage, exportTrackInfo, \
-    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator
+    generateSimilarTrackJson, updateTrackView, simpleJsonGenerator, getUserPrefArtist, getUserNbTrackListened, \
+    getUserNbTrackPushed, getUserGenre, getUserGenrePercentage, userNeverPlayed, getUserPrefTracks
 
 
 class mainView(ListView):
@@ -60,26 +61,28 @@ def initialScan(request):
 # Drop all database, used for debug
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def dropAllDB(request):
-    if request.user.is_authenticated():
-        Track.objects.all().delete()
-        Artist.objects.all().delete()
-        Album.objects.all().delete()
-        Playlist.objects.all().delete()
-        Library.objects.all().delete()
-        Genre.objects.all().delete()
-        Shuffle.objects.all().delete()
-        UserHistory.objects.all().delete()
-        Stats.objects.all().delete()
-        History.objects.all().delete()
-        data = {
-            'DROPPED': "OK",
-        }
-        return JsonResponse(data)
+    if request.method == 'GET':
+        if request.user.is_authenticated():
+            if request.user.is_superuser:
+                Track.objects.all().delete()
+                Artist.objects.all().delete()
+                Album.objects.all().delete()
+                Playlist.objects.all().delete()
+                Library.objects.all().delete()
+                Genre.objects.all().delete()
+                Shuffle.objects.all().delete()
+                UserHistory.objects.all().delete()
+                Stats.objects.all().delete()
+                History.objects.all().delete()
+
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "permissionError")
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
-        data = {
-            'DROPPED': 'KO'
-        }
-        return JsonResponse(data)
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 # Create a new user in database
@@ -140,16 +143,11 @@ def logoutView(request):
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
     print("getting usr playlist")
+    user = request.user
     playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
     playlistNames = []
     playlistIds = []
     isLibrary = []
-
-    # Adding User playlists
-    for playlist in playlists:
-        playlistNames.append(playlist.name)
-        playlistIds.append(playlist.id)
-        isLibrary.append(False)
 
     # Adding global libraries
     libraries = Playlist.objects.filter(isLibrary=True)
@@ -157,6 +155,12 @@ def getUserPlaylists(request):
         playlistNames.append(library.name)
         playlistIds.append(library.id)
         isLibrary.append(True)
+
+    # Adding User playlists
+    for playlist in playlists:
+        playlistNames.append(playlist.name)
+        playlistIds.append(playlist.id)
+        isLibrary.append(False)
 
     if len(playlistIds) == 0:
         return JsonResponse(errorCheckMessage(False, None))
@@ -166,6 +170,7 @@ def getUserPlaylists(request):
         'PLAYLIST_NAMES': playlistNames,
         'PLAYLIST_IDS': playlistIds,
         'PLAYLIST_IS_LIBRARY': isLibrary,
+        'IS_ADMIN': user.is_superuser,
     }
     data = {**data, **errorCheckMessage(True, None)}
     return JsonResponse(data)
@@ -307,21 +312,21 @@ def newLibrary(request):
 def newPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        try:
-            if 'NAME' in response:
-                playlist = Playlist()
-                playlist.name = strip_tags(response['NAME'])
-                playlist.user = request.user
-                playlist.save()
-                data = {
-                    'ID': playlist.id,
-                    'NAME': playlist.name,
-                }
-                return JsonResponse(data)
-        except AttributeError:
-            return JsonResponse(errorCheckMessage(False, "badFormat"))
+        if 'NAME' in response:
+            playlist = Playlist()
+            playlist.name = strip_tags(response['NAME'])
+            playlist.user = request.user
+            playlist.save()
+            data = {
+                'PLAYLIST_ID': playlist.id,
+                'NAME': playlist.name,
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
-        return JsonResponse(errorCheckMessage(False, "badRequest"))
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 # Change the meta of a file inside it and in database
@@ -349,6 +354,7 @@ def changeMetaData(request):
 
 # Return the link to a track with a track id
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
+# TODO: fix this method for using the good track
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -513,32 +519,35 @@ def adminGetUserStats(request):
         return JsonResponse(errorCheckMessage(False, "permissionError"))
 
 
-
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserStats(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-    user = request.user
+    if request.method == 'GET':
+        user = request.user
 
-    nbTrackListened = getUserNbTrackListened(user)
-    nbTrackPushed = getUserNbTrackPushed(user)
-    userGenre = getUserGenre(user)
-    userGenrePercentage = getUserGenrePercentage(user)
-    prefArtists = getUserPrefArtist(user)
-    neverPlayed = userNeverPlayed(user)
+        nbTrackListened = getUserNbTrackListened(user)
+        nbTrackPushed = getUserNbTrackPushed(user)
+        userGenre = getUserGenre(user)
+        userGenrePercentage = getUserGenrePercentage(user)
+        neverPlayed = userNeverPlayed(user)
 
-    data = {
-            'PREF_ARTIST': prefArtists[:100],
+        data = {
+            'USERNAME': user.username,
+            'TOTAL_TRACK': Track.objects.all().count(),
+            'PREF_ARTISTS': getUserPrefArtist(user, True)[:10],
+            'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
+            'PREF_TRACKS': getUserPrefTracks(user, True)[:10],
+            'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
             'USER_GENRE': userGenre,
             'USER_GENRE_PERCENTAGE': userGenrePercentage,
             'NEVER_PLAYED': neverPlayed,
-    }
+        }
 
+        print(data)
+    else:
+        data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
-
-
 
 
 def randomNextTrack(request):
@@ -724,11 +733,39 @@ def createWish(request):
             wish = Wish()
             wish.user = user
             wish.text = strip_tags(str(response['WISH']))
-            wish.status = 0 # Not done; 1 Refused; 2 Accepted
+            wish.status = 0  # Not done; 1 Refused; 2 Accepted
             wish.save()
             data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def getAdminView(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            users = User.objects.all()
+            userInfo = []
+            for user in users:
+                userInfo.append({
+                    'NAME': user.username,
+                })
+            data = dict({'RESULT': userInfo})
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def isAdmin(request):
+    if request.method == 'GET':
+        data = {'IS_ADMIN':request.user.is_superuser}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

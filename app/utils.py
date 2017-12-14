@@ -195,7 +195,7 @@ def updateTrackView(playlistId):
       trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name;
     """
     with connection.cursor() as cursor:
-        cursor.execute(sql, str(playlistId))
+        cursor.execute(sql, [str(playlistId)])
 
 
 def simpleJsonGenerator():
@@ -862,7 +862,7 @@ def getUserGenrePercentage(user):
     return genrePercentage
 
 
-def getUserPrefArtist(user):
+def getUserPrefArtist(user, order):
     artists = Artist.objects.all()
     artistCounter = []
 
@@ -873,11 +873,28 @@ def getUserPrefArtist(user):
         for track in tracks:
             counter += track.playCounter
 
-        artistCounter.append((artist.id, artist.name, counter))
+        artistCounter.append((artist.name, counter))
 
-    artistCounter.sort(key=itemgetter(2), reverse=True)
+    artistCounter.sort(key=itemgetter(1), reverse=order)
 
     return artistCounter
+
+
+def getUserPrefTracks(user, order):
+    stats = Stats.objects.filter(user=user)
+    trackId = []
+    for stat in stats:
+        trackId.append(stat.track_id)
+
+    tracks = Track.objects.filter(id__in=trackId)
+    trackTuple = []
+
+    for track in tracks:
+        trackTuple.append((track.title, track.playCounter))
+
+    trackTuple.sort(key=itemgetter(1), reverse=order)
+
+    return trackTuple
 
 
 def userNeverPlayed(user):
