@@ -169,7 +169,7 @@ App.prototype.logOut = function() {
 
 App.prototype.displayStats = function() {
     this.clearMainContainer();
-
+    this.topBar.unSelectAll();
     let tmp = new Stats(this.mainContainer);
 };
 

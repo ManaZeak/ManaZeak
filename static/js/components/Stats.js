@@ -17,7 +17,9 @@ Stats.prototype = {
             totalPlayed: document.createElement("P"),
             totalPushed: document.createElement("P"),
             prefArtistsLabel: document.createElement("P"),
-            prefArtists: document.createElement("OL")
+            prefArtists: document.createElement("OL"),
+            prefTracksLabel: document.createElement("P"),
+            prefTracks: document.createElement("OL")
         };
 
         this.ui.container.id = "stats";
@@ -25,18 +27,21 @@ Stats.prototype = {
         this.ui.totalPlayed.innerHTML = "Tracks played : ";
         this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
         this.ui.prefArtistsLabel.innerHTML = "Top Artists : ";
+        this.ui.prefTracksLabel.innerHTML = "Top Tracks : ";
 
         this.ui.container.appendChild(this.ui.totalPlayed);
         this.ui.container.appendChild(this.ui.totalPushed);
         this.ui.container.appendChild(this.ui.prefArtistsLabel);
         this.ui.container.appendChild(this.ui.prefArtists);
+        this.ui.container.appendChild(this.ui.prefTracksLabel);
+        this.ui.container.appendChild(this.ui.prefTracks);
         container.appendChild(this.ui.container);
     },
 
 
     _fetchStats: function() {
         let that = this;
-        JSONParsedPostRequest(
+        JSONParsedGetRequest(
             "ajax/getUserStats/",
             false,
             function(response) {
@@ -44,8 +49,10 @@ Stats.prototype = {
                 that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
                     Math.round(((response.NB_TRACK_PUSHED +1) / window.app.activePlaylist.trackTotal) * 100) / 100 +
                     "% of all the music here)";
-                console.log(response);
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
+                that._updatePrefTracksList(response.PREF_TRACKS);
+
+                console.log(response);
             }
         );
     },
@@ -59,8 +66,21 @@ Stats.prototype = {
 
         for (let i = 0; i < prefArtists.length - 1; ++i) { // -1 is here to ignore the last array entry which is w/ name = null
             let entry = document.createElement("LI");
-            entry.innerHTML = prefArtists[i][1];
+            entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
             this.ui.prefArtists.appendChild(entry);
+        }
+    },
+
+
+    _updatePrefTracksList: function(prefTracks) {
+        while (this.ui.prefTracks.firstChild) {
+            this.ui.prefTracks.removeChild(this.ui.prefTracks.firstChild);
+        }
+
+        for (let i = 0; i < prefTracks.length - 1; ++i) { // -1 is here to ignore the last array entry which is w/ name = null
+            let entry = document.createElement("LI");
+            entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+            this.ui.prefTracks.appendChild(entry);
         }
     }
 };
