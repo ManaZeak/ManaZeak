@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^ajax/getSimilarTrack/$', views.getSimilarTrack, name='getSimilarTrack'),
     url(r'^ajax/download/$', views.getDownloadLocation, name='getDownloadLocation'),
     url(r'^ajax/submitWish/$', views.createWish, name='createWish'),
+    url(r'^ajax/isAdmin/$', views.isAdmin, name='isAdmin'),
     url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
     url(r'^debug/$', utils.artistViewJsonGenerator),
 ]
