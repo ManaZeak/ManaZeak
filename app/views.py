@@ -84,6 +84,7 @@ def dropAllDB(request):
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
 
+
 # Create a new user in database
 def createUser(request):
     if request.method == 'POST':
@@ -147,18 +148,18 @@ def getUserPlaylists(request):
     playlistIds = []
     isLibrary = []
 
-    # Adding User playlists
-    for playlist in playlists:
-        playlistNames.append(playlist.name)
-        playlistIds.append(playlist.id)
-        isLibrary.append(False)
-
     # Adding global libraries
     libraries = Playlist.objects.filter(isLibrary=True)
     for library in libraries:
         playlistNames.append(library.name)
         playlistIds.append(library.id)
         isLibrary.append(True)
+
+    # Adding User playlists
+    for playlist in playlists:
+        playlistNames.append(playlist.name)
+        playlistIds.append(playlist.id)
+        isLibrary.append(False)
 
     if len(playlistIds) == 0:
         return JsonResponse(errorCheckMessage(False, None))
@@ -324,6 +325,7 @@ def newPlaylist(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
 
 # Change the meta of a file inside it and in database
 # TODO : change JSON keys for matching convention
