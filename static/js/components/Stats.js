@@ -15,6 +15,7 @@ Stats.prototype = {
         this.ui = {
             container: document.createElement("DIV"),
             totalPlayed: document.createElement("P"),
+            totalPushed: document.createElement("P"),
             prefArtistsLabel: document.createElement("P"),
             prefArtists: document.createElement("OL")
         };
@@ -22,9 +23,11 @@ Stats.prototype = {
         this.ui.container.id = "stats";
 
         this.ui.totalPlayed.innerHTML = "Tracks played : ";
+        this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
         this.ui.prefArtistsLabel.innerHTML = "Top Artists : ";
 
         this.ui.container.appendChild(this.ui.totalPlayed);
+        this.ui.container.appendChild(this.ui.totalPushed);
         this.ui.container.appendChild(this.ui.prefArtistsLabel);
         this.ui.container.appendChild(this.ui.prefArtists);
         container.appendChild(this.ui.container);
@@ -38,6 +41,9 @@ Stats.prototype = {
             false,
             function(response) {
                 that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
+                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
+                    Math.round(((response.NB_TRACK_PUSHED +1) / window.app.activePlaylist.trackTotal) * 100) / 100 +
+                    "% of all the music here)";
                 console.log(response);
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
             }
