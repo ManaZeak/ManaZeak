@@ -37,7 +37,7 @@ $topbar-height: 50px;
     #menu {
         @extend .mzk-hidden;
         position: absolute;
-        top: 20px;
+        top: ($topbar-height / 2) + 9px;
         right: 0;
         width: 100px;
         height: auto;
@@ -58,6 +58,16 @@ $topbar-height: 50px;
         .menuEntry:hover {
             background-color: $dark-secondary-color;
         }
+
+        .menuEntry::after {
+            border: solid 5px;
+            border-color: transparent transparent $primary-text transparent;
+            content: "";
+            right: 6px;
+            position: absolute;
+            top: -10px;
+        }
+
     }
 
 
@@ -85,12 +95,10 @@ $topbar-height: 50px;
         div.playlist:focus,
         div.playlist:hover {
             box-shadow: 0 -2px blue inset;
-            //border-bottom: solid 3px blue;
         }
 
         .playlistLocked {
             box-shadow: 0 -2px blue inset;
-            //border-bottom: solid 3px blue;
         }
 
         div.library:active,
@@ -98,7 +106,6 @@ $topbar-height: 50px;
         div.library:hover,
         div.library.librarySelected {
             box-shadow: 0 -2px red inset;
-            //border-bottom: solid 3px red;
         }
     }
 
