@@ -63,7 +63,7 @@ UserMenu.prototype = {
         this.menuEntry.stats.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
         this.menuEntry.stats.innerHTML = "Stats";
-        if (windw.app.isAdmin) {
+        if (window.app.isAdmin) {
             this.menuEntry.admin = document.createElement("DIV");
             this.menuEntry.admin.className = "menuEntry";
             this.menuEntry.admin.innerHTML = "Admin";
