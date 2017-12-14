@@ -97,6 +97,11 @@
 
                 cursor: pointer;
                 opacity: 0;
+
+                .performerIndent {
+                    display: inline-block;
+                    margin-left: 40px;
+                }
             }
 
             li:active,
