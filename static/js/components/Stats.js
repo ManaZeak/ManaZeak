@@ -19,7 +19,11 @@ Stats.prototype = {
             prefArtistsLabel: document.createElement("P"),
             prefArtists: document.createElement("OL"),
             prefTracksLabel: document.createElement("P"),
-            prefTracks: document.createElement("OL")
+            prefTracks: document.createElement("OL"),
+            leastArtistsLabel: document.createElement("P"),
+            leastArtists: document.createElement("OL"),
+            leastTracksLabel: document.createElement("P"),
+            leastTracks: document.createElement("OL")
         };
 
         this.ui.container.id = "stats";
@@ -28,6 +32,8 @@ Stats.prototype = {
         this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
         this.ui.prefArtistsLabel.innerHTML = "Top Artists : ";
         this.ui.prefTracksLabel.innerHTML = "Top Tracks : ";
+        this.ui.leastArtistsLabel.innerHTML = "Flop Artists : ";
+        this.ui.leastTracksLabel.innerHTML = "Flop Tracks : ";
 
         this.ui.container.appendChild(this.ui.totalPlayed);
         this.ui.container.appendChild(this.ui.totalPushed);
@@ -35,6 +41,11 @@ Stats.prototype = {
         this.ui.container.appendChild(this.ui.prefArtists);
         this.ui.container.appendChild(this.ui.prefTracksLabel);
         this.ui.container.appendChild(this.ui.prefTracks);
+        this.ui.container.appendChild(this.ui.leastArtistsLabel);
+        this.ui.container.appendChild(this.ui.leastArtists);
+        this.ui.container.appendChild(this.ui.leastTracksLabel);
+        this.ui.container.appendChild(this.ui.leastTracks);
+
         container.appendChild(this.ui.container);
     },
 
@@ -51,6 +62,8 @@ Stats.prototype = {
                     "% of all the music here)";
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
                 that._updatePrefTracksList(response.PREF_TRACKS);
+                that._updateLeastArtistsList(response.LEAST_ARTISTS);
+                that._updateLeastTracksList(response.LEAST_TRACKS);
 
                 console.log(response);
             }
@@ -84,6 +97,37 @@ Stats.prototype = {
                 let entry = document.createElement("LI");
                 entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
                 this.ui.prefTracks.appendChild(entry);
+
+            }
+        }
+    },
+
+
+    _updateLeastArtistsList: function(leastArtists) {
+        while (this.ui.leastArtists.firstChild) {
+            this.ui.leastArtists.removeChild(this.ui.leastArtists.firstChild);
+        }
+
+        for (let i = 0; i < leastArtists.length; ++i) {
+            if (leastArtists[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = leastArtists[i][0] + " (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.leastArtists.appendChild(entry);
+            }
+        }
+    },
+
+
+    _updateLeastTracksList: function(leastTracks) {
+        while (this.ui.leastTracks.firstChild) {
+            this.ui.leastTracks.removeChild(this.ui.leastTracks.firstChild);
+        }
+
+        for (let i = 0; i < leastTracks.length; ++i) {
+            if (leastTracks[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = leastTracks[i][0] + " (" + leastTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.leastTracks.appendChild(entry);
 
             }
         }
