@@ -174,11 +174,18 @@ App.prototype.logOut = function() {
 };
 
 
-App.prototype.displayStats = function() {
+App.prototype.displayStatsView = function() {
     this.clearMainContainer();
     this.topBar.unSelectAll();
     let tmp = new Stats(this.mainContainer);
 };
+
+App.prototype.displayAdminView = function() {
+    this.clearMainContainer();
+    this.topBar.unSelectAll();
+    let tmp = new AdminView(this.mainContainer);
+};
+
 
 App.prototype.clearMainContainer = function() {
     while (this.mainContainer.firstChild) {
