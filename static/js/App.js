@@ -18,8 +18,6 @@ let App = function() {
     this.activePlaylist  = null;
     this.queue           = new Queue();
     this.cssFiles        = {};
-    this.isAdmin         = false;
-
 
     this.availableViews = {
         LIST: {
@@ -74,7 +72,6 @@ App.prototype = {
                  *     ERROR_H1:       string
                  *     ERROR_MSG:      string
                  * } */
-                that.isAdmin = response.IS_ADMIN;
                 that._appStart(response);
             }
         );
