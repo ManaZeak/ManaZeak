@@ -523,12 +523,15 @@ def getUserStats(request):
         nbTrackPushed = getUserNbTrackPushed(user)
         userGenre = getUserGenre(user)
         userGenrePercentage = getUserGenrePercentage(user)
-        prefArtists = getUserPrefArtist(user)
         neverPlayed = userNeverPlayed(user)
 
         data = {
-            'PREF_ARTISTS': prefArtists[:10],
-            'PREF_TRACKS': getUserPrefTracks(user)[:10],
+            'USERNAME': user.username,
+            'TOTAL_TRACK': Track.objects.all().count(),
+            'PREF_ARTISTS': getUserPrefArtist(user, True)[:10],
+            'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
+            'PREF_TRACKS': getUserPrefTracks(user, True)[:10],
+            'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
             'USER_GENRE': userGenre,
