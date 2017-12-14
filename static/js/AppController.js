@@ -84,12 +84,18 @@ App.prototype.toggleMute = function() {
 
 App.prototype.changeTrack = function(track, previous) {
     let that = this;
+    let lastTrackPath = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
+
+    if (lastTrackPath !== null) {
+        lastTrackPath = lastTrackPath.value;
+    }
 
     this.footBar.progressBar.resetProgressBar();
         JSONParsedPostRequest(
         "ajax/getTrackPathByID/",
         JSON.stringify({
             TRACK_ID: track.id.track,
+            LAST_TRACK_PATH: lastTrackPath,
             TRACK_PER: (this.player.getCurrentTime() * 100) / track.duration,
             PREVIOUS: previous
         }),
