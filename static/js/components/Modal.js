@@ -23,6 +23,11 @@ let Modal = function(type) {
             this.canBeClosed = true;
             break;
 
+        case "newPlaylist":
+            this._newPlaylistUI();
+            this.canBeClosed = true;
+            break;
+
         case "scanLibrary":
             this._scanLibraryUI();
             break;
@@ -163,9 +168,41 @@ Modal.prototype = {
 
         let that = this;
         scan.addEventListener("click", function() {
-            that._checkInputs(name, path, convert);
+            that._checkLibraryInputs(name, path, convert);
         });
     },
+
+
+    _newPlaylistUI: function() {
+        this.ui.container.id = "newLibrary";
+        this.ui.title.innerHTML = "New playlist";
+
+        let infoLabel   = document.createElement("P");
+        let name        = document.createElement("INPUT");
+        let create      = document.createElement("BUTTON");
+
+        infoLabel.id = "infoLabel";
+        name.id = "name";
+        create.id = "scanButton";
+
+        name.type    = "text";
+        name.placeholder = "Enter the name of the playlist";
+
+        infoLabel.innerHTML = "Please choose a name for your brand new playlist.";
+        create.innerHTML = "Create";
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(create);
+
+        this.appendCloseButton();
+
+        let that = this;
+        create.addEventListener("click", function() {
+            that._checkPlaylistInputs(name);
+        });
+    },
+
 
 
     _newWishUI: function() {
@@ -213,7 +250,20 @@ Modal.prototype = {
     },
 
 
-    _checkInputs: function(name, path, convert) {
+    _checkPlaylistInputs: function(name) {
+        if (name.value !== '') {
+            if (this.callback) {
+                this.callback(name);
+            }
+        }
+
+        else {
+            name.style.border = "solid 1px red";
+            new Notification("INFO", "Name field is empty.", "You must specify the name of your playlist.");
+        }
+    },
+
+    _checkLibraryInputs: function(name, path, convert) {
         if (name.value !== '' && path.value !== '') {
             if (this.callback) {
                 this.callback(name, path, convert);

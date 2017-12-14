@@ -124,9 +124,23 @@ App.prototype = {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            while (this.mainContainer.firstChild) {
-                this.mainContainer.removeChild(this.mainContainer.firstChild);
-            }
+            this.clearMainContainer();
+
+            that.playlists[0].activate();
+            that.topBar.refreshTopBar();
+            that.footBar.playlistPreview.setVisible(true);
+            that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
+            that.activePlaylist = that.playlists[0];
+        }));
+    },
+
+
+    requestNewPlaylist: function() {
+        let that = this;
+
+        this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
+            this.clearMainContainer();
+
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
             that.footBar.playlistPreview.setVisible(true);
