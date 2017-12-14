@@ -14,6 +14,7 @@ Stats.prototype = {
     _createUI: function(container) {
         this.ui = {
             container: document.createElement("DIV"),
+            userName: document.createElement("H1"),
             totalPlayed: document.createElement("P"),
             totalPushed: document.createElement("P"),
             prefArtistsLabel: document.createElement("P"),
@@ -35,6 +36,7 @@ Stats.prototype = {
         this.ui.leastArtistsLabel.innerHTML = "Flop Artists : ";
         this.ui.leastTracksLabel.innerHTML = "Flop Tracks : ";
 
+        this.ui.container.appendChild(this.ui.userName);
         this.ui.container.appendChild(this.ui.totalPlayed);
         this.ui.container.appendChild(this.ui.totalPushed);
         this.ui.container.appendChild(this.ui.prefArtistsLabel);
@@ -56,16 +58,17 @@ Stats.prototype = {
             "ajax/getUserStats/",
             false,
             function(response) {
+                that.ui.userName.innerHTML = response.USERNAME;
                 that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
-                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                    Math.round(((response.NB_TRACK_PUSHED +1) / window.app.activePlaylist.trackTotal) * 100) / 100 +
+                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +
+                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
                     "% of all the music here)";
                 that._updatePrefArtistsList(response.PREF_ARTISTS);
                 that._updatePrefTracksList(response.PREF_TRACKS);
-                that._updateLeastArtistsList(response.LEAST_ARTISTS);
-                that._updateLeastTracksList(response.LEAST_TRACKS);
-
                 console.log(response);
+                that._updateLeastArtistsList(response.LEAST_ARTISTS);
+
+                that._updateLeastTracksList(response.LEAST_TRACKS);
             }
         );
     },
