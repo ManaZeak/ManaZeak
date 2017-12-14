@@ -315,7 +315,7 @@ def newPlaylist(request):
                 playlist.user = request.user
                 playlist.save()
                 data = {
-                    'ID': playlist.id,
+                    'PLAYLIST_ID': playlist.id,
                     'NAME': playlist.name,
                 }
                 return JsonResponse(data)

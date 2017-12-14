@@ -195,7 +195,7 @@ def updateTrackView(playlistId):
       trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name;
     """
     with connection.cursor() as cursor:
-        cursor.execute(sql, str(playlistId))
+        cursor.execute(sql, [str(playlistId)])
 
 
 def simpleJsonGenerator():
