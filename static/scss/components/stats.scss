@@ -1,5 +1,14 @@
 #stats {
     width: 100%;
     height: 100%;
-    background-color: rgba(125, 125, 125, 0.8);
+
+    p {
+        margin: 0;
+    }
+
+    ol {
+        margin: 0;
+        padding: 0;
+        padding-left: 50px;
+    }
 }

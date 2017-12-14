@@ -529,7 +529,7 @@ def getUserStats(request):
     neverPlayed = userNeverPlayed(user)
 
     data = {
-            'PREF_ARTIST': prefArtists[:100],
+            'PREF_ARTISTS': prefArtists[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
             'USER_GENRE': userGenre,
