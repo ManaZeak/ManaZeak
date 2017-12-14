@@ -112,6 +112,7 @@ Player.prototype = {
     getSrc: function()                    { return this.player.src;         },
     getIsPlaying: function()              { return this.isPlaying;          },
     getCurrentTime: function()            { return this.player.currentTime  },
+    getDuration: function()               { return this.player.duration     },
 
     setIsMuted: function(muted)           { this.isMuted = muted;           },
     setVolume: function(volume)           { this.player.volume = volume;    }
