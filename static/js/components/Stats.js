@@ -25,6 +25,8 @@ Stats.prototype = {
             leastArtistsLabel: document.createElement("P"),
             leastArtists: document.createElement("OL"),
 
+            tracksLeft: document.createElement("DIV"),
+            tracksRight: document.createElement("DIV"),
             prefTracksLabel: document.createElement("P"),
             prefTracks: document.createElement("OL"),
             leastTracksLabel: document.createElement("P"),
@@ -32,8 +34,15 @@ Stats.prototype = {
         };
 
         this.ui.container.id = "stats";
-        this.ui.artistsLeft.id = "artists";
-        this.ui.artistsRight.id = "artists";
+        this.ui.prefArtistsLabel.id = "label";
+        this.ui.leastArtistsLabel.id = "label";
+        this.ui.prefTracksLabel.id = "label";
+        this.ui.leastTracksLabel.id = "label";
+
+        this.ui.artistsLeft.className = "col";
+        this.ui.artistsRight.className = "col";
+        this.ui.tracksLeft.className = "col";
+        this.ui.tracksRight.className = "col";
 
         this.ui.totalPlayed.innerHTML = "Tracks played : ";
         this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
@@ -52,11 +61,13 @@ Stats.prototype = {
         this.ui.artistsRight.appendChild(this.ui.leastArtists);
         this.ui.container.appendChild(this.ui.artistsLeft);
         this.ui.container.appendChild(this.ui.artistsRight);
+        this.ui.tracksLeft.appendChild(this.ui.prefTracksLabel);
 
-        this.ui.container.appendChild(this.ui.prefTracksLabel);
-        this.ui.container.appendChild(this.ui.prefTracks);
-        this.ui.container.appendChild(this.ui.leastTracksLabel);
-        this.ui.container.appendChild(this.ui.leastTracks);
+        this.ui.tracksLeft.appendChild(this.ui.prefTracks);
+        this.ui.tracksRight.appendChild(this.ui.leastTracksLabel);
+        this.ui.tracksRight.appendChild(this.ui.leastTracks);
+        this.ui.container.appendChild(this.ui.tracksLeft);
+        this.ui.container.appendChild(this.ui.tracksRight);
 
         container.appendChild(this.ui.container);
     },

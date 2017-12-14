@@ -3,14 +3,19 @@
     height: 100%;
     padding: 0 10%;
     box-sizing: border-box;
+    text-align: center;
+    overflow-y: auto;   
 
     h1 {
-        margin: 0;
-        text-align: center;
+        margin: 15px 0;
     }
 
     p {
-        margin: 0;
+        margin: 15px 0;
+    }
+
+    p#label {
+        font-weight: bold;
     }
 
     ol {
@@ -19,8 +24,8 @@
         padding-left: 50px;
     }
 
-    #artists {
-        ol {
-        }
+    .col {
+        width: 50%;
+        display: inline-block;
     }
 }
