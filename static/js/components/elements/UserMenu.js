@@ -15,11 +15,14 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let UserMenu = function(container) {
+let UserMenu = function(container, admin) {
     this.ui = {
         container: document.createElement("DIV"),
         img: document.createElement("IMG")
     };
+
+    let that = this;
+    JSONParsedGetRequest("ajax/isAdmin/", function(response) { that.isAdmin = response.IS_ADMIN; });
 
     this.menu = document.createElement("DIV");
     this.menu.id = "menu";
@@ -63,13 +66,15 @@ UserMenu.prototype = {
         this.menuEntry.stats.className = "menuEntry";
         this.menuEntry.logout.innerHTML = "Log out";
         this.menuEntry.stats.innerHTML = "Stats";
-        if (window.app.isAdmin) {
+
+        if (this.isAdmin) {
             this.menuEntry.admin = document.createElement("DIV");
             this.menuEntry.admin.className = "menuEntry";
             this.menuEntry.admin.innerHTML = "Admin";
 
             this.menu.appendChild(this.menuEntry.admin);
         }
+
         this.menu.appendChild(this.menuEntry.stats);
         this.menu.appendChild(this.menuEntry.logout);
 
