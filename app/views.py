@@ -359,26 +359,16 @@ def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         user = request.user
-        data = {}
-        if 'TRACK_ID' in response and 'PREVIOUS' in response:
+        # Checking JSON keys
+        print("response given by JS : ", response)
+        if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response and 'TRACK_PER' in response:
             trackId = strip_tags(response['TRACK_ID'])
+            # Getting the track asked
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
-                track.playCounter += 1
-                track.save()
-                user = request.user
-                if Stats.objects.filter(user=user, track=track).count() == 0:
-                    stat = Stats()
-                    stat.track = track
-                    stat.user = user
-                    stat.playCounter = 1
-                else:
-                    stat = Stats.objects.get(user=user, track=track)
-                    stat.playCounter += 1
-                stat.save()
-                print("PREVIOUS : ", response['PREVIOUS'])
+                # If we don't ask a previous track
                 if not response['PREVIOUS']:
-                    # Creating user history
+                    # Adding the current track to the history
                     history = History()
                     history.track = track
                     history.save()
@@ -391,8 +381,23 @@ def getTrackPathByID(request):
                         userHistory = UserHistory.objects.get(user=user)
                         userHistory.save()
                         userHistory.histories.add(history)
-
-                print("PATH : " + track.location)
+                    # If the previous track exists
+                    previousTrackPath = strip_tags(response['LAST_TRACK_PATH'])
+                    if Track.objects.filter(location=previousTrackPath).count() == 1:
+                        listeningPercentage = float(strip_tags(response['TRACK_PER']))
+                        previousTrack = Track.objects.get(location=previousTrackPath)
+                        # Adding to stats if the user has listened more than 15% of the song
+                        if listeningPercentage > 15:
+                            if Stats.objects.filter(user=user, track=previousTrack).count() == 0:
+                                stat = Stats()
+                                stat.track = previousTrack
+                                stat.user = user
+                                stat.playCounter = 1
+                            else:
+                                stat = Stats.objects.get(user=user, track=previousTrack)
+                                stat.playCounter += 1
+                            stat.save()
+                        # The song has been skiped too early
                 data = {
                     'PATH': track.location,
                     'COVER': track.coverLocation,
@@ -400,7 +405,6 @@ def getTrackPathByID(request):
                 data = {**data, **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
-
         else:
             data = errorCheckMessage(False, "badFormat")
         return JsonResponse(data)
