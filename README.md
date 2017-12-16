@@ -53,7 +53,7 @@ Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/ap
 - [Valentin Peiro](https://github.com/Oxydiz)
 - [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash)
 - [Armand Vignat](https://github.com/avignat)
-- [Syncrossus](https://github.com/Syncrossus)
+- [Guilhem Piat](https://github.com/Syncrossus)
 
 # Contribution
 
