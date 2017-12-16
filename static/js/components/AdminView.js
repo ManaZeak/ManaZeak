@@ -44,9 +44,8 @@ AdminView.prototype = {
 
 
     _requestDrop: function() {
-        JSONParsedPostRequest(
+        JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnW(mMfahHf9j6w6Fi3HFc",
-            null,
             function(response) {
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
