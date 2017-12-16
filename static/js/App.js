@@ -122,7 +122,7 @@ App.prototype = {
     },
 
     createDefaultViews: function() {
-        this.createAppView('mzk_stats', new Stats());
+        this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
     },
 

@@ -3,7 +3,7 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Stats = function() {
+let StatsView = function() {
 
     View.call(this, null);
     this._createUI();
@@ -12,7 +12,7 @@ let Stats = function() {
 };
 
 
-Stats.prototype = {
+StatsView.prototype = {
 
     _createUI: function() {
         this.ui = {
@@ -160,4 +160,4 @@ Stats.prototype = {
     }
 };
 
-extendClass(View, Stats);
+extendClass(View, StatsView);
