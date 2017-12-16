@@ -380,9 +380,7 @@ ListView.prototype = {
             }
         });
 
-        this.contextMenu.addEntry('playlists', "Add to playlist", function() {
-            window.app.requestNewPlaylist();
-        });
+        this.contextMenu.addEntry('playlists', "Add to playlist");
         let playlists = window.app.getPlaylists();
         for(let i = 0; i < playlists.length; i++)
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function()
@@ -390,6 +388,9 @@ ListView.prototype = {
                 if(clickedEntry !== undefined)
                     console.log(playlists[i], that.entries[clickedEntry].track);
             })
+        this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
+            window.app.requestNewPlaylist();
+        });
 
     }
 };

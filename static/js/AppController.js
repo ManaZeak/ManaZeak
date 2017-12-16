@@ -174,21 +174,22 @@ App.prototype.logOut = function() {
 };
 
 
-App.prototype.displayStatsView = function() {
-    this.clearMainContainer();
-    this.topBar.unSelectAll();
-    let tmp = new Stats(this.mainContainer);
+App.prototype.changeView = function(view) {
+    this.mainContainer.innerHTML = '';
+    this.mainContainer.appendChild(view.getContainer());
 };
 
-App.prototype.displayAdminView = function() {
-    this.clearMainContainer();
-    this.topBar.unSelectAll();
-    let tmp = new AdminView(this.mainContainer);
+App.prototype.showAppView = function(name) {
+    if(this.appViews[name])
+        this.changeView(this.appViews[name]);
 };
 
-
-App.prototype.clearMainContainer = function() {
-    while (this.mainContainer.firstChild) {
-        this.mainContainer.removeChild(this.mainContainer.firstChild);
+App.prototype.createAppView = function(name, view) {
+    if(this.appViews[name] == null)
+    {
+        this.appViews[name] = view;
+        return true;
     }
+    else
+        return false;
 };

@@ -424,7 +424,7 @@ Playlist.prototype = {
         }
 
         this.activeView = v;
-        v.show();
+        window.app.changeView(v);
     },
 
 

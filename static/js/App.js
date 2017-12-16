@@ -19,6 +19,9 @@ let App = function() {
     this.queue           = new Queue();
     this.cssFiles        = {};
 
+    this.appViews        = {};
+    this.createDefaultViews();
+
     this.availableViews = {
         LIST: {
             index: 0,
@@ -68,7 +71,7 @@ App.prototype = {
                 /* response = {
                  *     DONE:           bool
                  *     PLAYLIST_IDS:   int[] / undefined
-                 *     PLAYLIST_NAMES: string[] / undefined
+                 *     PLAYLIS-T_NAMES: string[] / undefined
                  *     ERROR_H1:       string
                  *     ERROR_MSG:      string
                  * } */
@@ -118,13 +121,16 @@ App.prototype = {
         this._keyListener();
     },
 
+    createDefaultViews: function() {
+        this.createAppView('mzk_stats', new Stats());
+        this.createAppView('mzk_admin', new AdminView());
+    },
+
 
     requestNewLibrary: function() {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            this.clearMainContainer();
-
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
             that.footBar.playlistPreview.setVisible(true);
@@ -138,8 +144,6 @@ App.prototype = {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
-            this.clearMainContainer();
-
             that.playlists[0].activate();
             that.topBar.refreshTopBar();
             that.footBar.playlistPreview.setVisible(true);

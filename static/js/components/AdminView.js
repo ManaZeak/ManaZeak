@@ -3,21 +3,20 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let AdminView = function(container) {
-    this._createUI(container);
+let AdminView = function() {
+    View.call(this, null);
+    this._createUI();
 };
 
 
 AdminView.prototype = {
 
-    _createUI: function(container) {
+    _createUI: function() {
         this.ui = {
-            container: document.createElement("DIV")
+            container: this.container
         };
 
         this.ui.container.id = "admin";
-
-        container.appendChild(this.ui.container);
 
         let that = this;
         JSONParsedGetRequest(
@@ -33,7 +32,8 @@ AdminView.prototype = {
                     that.ui.container.appendChild(that.ui.dropLabel);
                     that.ui.container.appendChild(that.ui.dropButton);
 
-                    that._eventListener();
+                    that.ui.dropButton.addEventListener("click", that._requestDrop.bind(that));
+
                 } else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                     window.app.refreshUI();
@@ -54,8 +54,6 @@ AdminView.prototype = {
         );
     },
 
-
-    _eventListener: function() {
-        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
-    }
 };
+
+extendClass(View, AdminView);

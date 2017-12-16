@@ -95,11 +95,11 @@ UserMenu.prototype = {
 
 
     getStats: function() {
-        window.app.displayStatsView();
+        window.app.showAppView('mzk_stats');
     },
 
     getAdmin: function() {
-        window.app.displayAdminView();
+        window.app.showAppView('mzk_admin');
     },
 
 

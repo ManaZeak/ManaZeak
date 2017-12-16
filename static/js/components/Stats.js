@@ -3,17 +3,20 @@
  *  Modal class - modals to use in various case in ManaZeak                            *
  *                                                                                     *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Stats = function(container) {
-    this._createUI(container);
+let Stats = function() {
+
+    View.call(this, null);
+    this._createUI();
+
     this._fetchStats();
 };
 
 
 Stats.prototype = {
 
-    _createUI: function(container) {
+    _createUI: function() {
         this.ui = {
-            container: document.createElement("DIV"),
+            container: this.container,
             userName: document.createElement("H1"),
             totalPlayed: document.createElement("P"),
             totalPushed: document.createElement("P"),
@@ -68,8 +71,6 @@ Stats.prototype = {
         this.ui.tracksRight.appendChild(this.ui.leastTracks);
         this.ui.container.appendChild(this.ui.tracksLeft);
         this.ui.container.appendChild(this.ui.tracksRight);
-
-        container.appendChild(this.ui.container);
     },
 
 
@@ -158,3 +159,5 @@ Stats.prototype = {
         }
     }
 };
+
+extendClass(View, Stats);
