@@ -42,7 +42,7 @@ let Modal = function(type) {
             break;
 
         default:
-            new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
+            new Notification("ERROR", "Can not open modals", "The given modal type doesn't exist");
             break;
     }
 
@@ -118,7 +118,7 @@ Modal.prototype = {
         spinnerContainer.className = "lds-css";
         spinnerRing.className = "lds-dual-ring";
         spinnerImage.src = "/static/img/utils/python.svg";
-        text.innerHTML = "Hold on, you're data are on the road.";
+        text.innerHTML = "Hold on, your data is on the road.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -141,11 +141,11 @@ Modal.prototype = {
         let spinnerImage = document.createElement("IMG");
         let footerText = document.createElement("P");
 
-        contentText.innerHTML = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some cofee and let the server manage its business.";
+        contentText.innerHTML = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
         spinnerContainer.className = "lds-css";
         spinnerRing.className = "lds-dual-ring";
         spinnerImage.src = "/static/img/utils/python.svg";
-        footerText.innerHTML = "On average, it take a minute to process two thousand files. Just do the math ;)";
+        footerText.innerHTML = "On average, it takes a minute to process two thousand files. Just do the math ;)";
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -181,7 +181,7 @@ Modal.prototype = {
         name.placeholder = "Enter the name of the library";
         path.placeholder = "Enter the absolute path to your library";
 
-        infoLabel.innerHTML = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
+        infoLabel.innerHTML = "Welcome! Fill the path with the one to your library, name it and let the magic begin!" +
             "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
@@ -247,8 +247,8 @@ Modal.prototype = {
         wish.type    = "text";
         wish.placeholder = "Enter your suggestion here";
         text.innerHTML = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
-            "Paste an url or write the more information you can about it, and an administrator will process your request. " +
-            "You'll be notified when the track you asked has been added to a playlist.";
+            "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
+            "You will be notified when the track you requested has been added to a playlist.";
         submit.innerHTML = "Submit";
 
         this.ui.content.appendChild(text);
@@ -275,7 +275,7 @@ Modal.prototype = {
                 that.close();
             } else {
                 wish.style.border = "solid 1px red";
-                new Notification("INFO", "Suggestion field is empty.", "You must specify a name or an url for your track.");
+                new Notification("INFO", "Suggestion field is empty.", "You must specify a name or a URL for your track.");
             }
         });
     },
@@ -315,7 +315,7 @@ Modal.prototype = {
             else {
                 path.style.border = "solid 1px red";
                 name.style.border = "solid 1px red";
-                new Notification("INFO", "Both fields are empty.", "You must fill both fields to create a new library.");
+                new Notification("INFO", "Both fields are empty.", "You must fill in both fields to create a new library.");
             }
         }
     },
