@@ -1,5 +1,8 @@
 App.prototype.togglePlay = function() {
-    this.player.togglePlay();
+    if(this.player.isEmpty())
+        this.changeTrack(this.activePlaylist.getFirstEntry(), false);
+    else
+        this.player.togglePlay();
 };
 
 
@@ -83,6 +86,9 @@ App.prototype.toggleMute = function() {
 
 
 App.prototype.changeTrack = function(track, previous) {
+    if(track == null)
+        return false;
+
     let that = this;
     let lastTrackPath = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
 
@@ -116,6 +122,7 @@ App.prototype.changeTrack = function(track, previous) {
             }
         }
     );
+    return true;
 };
 
 

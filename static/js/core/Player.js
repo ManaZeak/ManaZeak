@@ -11,6 +11,8 @@ let Player = function(cookies) {
     this.isMuted     = false;
     this.oldVolume   = 0;
 
+    this.emptyURL = '';
+
     this.init();
 };
 
@@ -19,6 +21,8 @@ Player.prototype = {
 
     init: function() {
         this.player.volume = 0.5; // TODO : init from global var in App
+        this.player.src = '';
+        this.emptyURL = this.player.src;
         this._eventListener();
     },
 
@@ -35,6 +39,11 @@ Player.prototype = {
     },
 
 
+    isEmpty: function() {
+        return this.player.src == this.emptyURL;
+    },
+
+
     togglePlay: function() {
         if (this.isPlaying) {
             this.pause();
@@ -48,6 +57,7 @@ Player.prototype = {
         this.pause();
         this.isPlaying = false;
         this.player.currentTime = 0;
+        this.player.src = "";
     },
 
 

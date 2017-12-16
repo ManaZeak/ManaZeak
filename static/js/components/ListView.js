@@ -127,6 +127,15 @@ ListView.prototype = {
         }
     },
 
+    getFirstEntry: function() {
+        if(this.entries.length > 0)
+            return this.entries[0].track;
+        else {
+            new Notification("ERROR", "Empty Playlist", "This playlist has no tracks");
+            return null;
+        }
+    },
+
 
     getNextEntry: function() {
         for (let i = 0; i < this.entries.length; ++i) {

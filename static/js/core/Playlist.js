@@ -270,6 +270,10 @@ Playlist.prototype = {
         );
     },
 
+    getFirstEntry: function() {
+        return this.activeView.getFirstEntry();
+    },
+
 
     _fillTracks: function(tracks) { // Tracks is JSON response to playlist ID
         for (let i = 0; i < tracks.RESULT.length; ++i) {
