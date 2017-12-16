@@ -87,13 +87,9 @@ ContextMenu.prototype = {
 
             addVisibilityLock(self.element);
             if (self.openCallback) { self.openCallback(event); }
-
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
         });
 
-        document.body.addEventListener('click', function() {
+        this.element.addEventListener('mzk_ctx:close', function() {
             self.element.className = "";
             self.contextMenu.close_all();
         });

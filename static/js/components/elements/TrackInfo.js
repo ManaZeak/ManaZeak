@@ -27,6 +27,9 @@ TrackInfo.prototype = {
 
 //  --------------------------------  PUBLIC METHODS  --------------------------------  //
 
+    isVisible: function() {
+        return this.ui.container.style.opacity == 1;
+    },
 
     /**
      * method : setVisible (public)
@@ -50,7 +53,6 @@ TrackInfo.prototype = {
             let that = this;
 
             this.ui.container.style.opacity = 0;
-
             window.setTimeout(function() {
                 that.ui.container.style.zIndex = -1;
             }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
@@ -208,7 +210,7 @@ TrackInfo.prototype = {
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
             that._stopInactivityTimeout();
-        });
+        }, true);
         this.ui.container.addEventListener("mouseleave", function() {
             that.locked = false;
             that.setVisible(false);

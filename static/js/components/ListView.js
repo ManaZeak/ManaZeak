@@ -237,28 +237,25 @@ ListView.prototype = {
         }
 
         let target = event.target;
-
-        if (target.dataset.childID === undefined) { return; } // Avoid right click to cause error
-
-        while (target.dataset.childID === undefined) {
+        while (target.parentNode != this.listView) {
             target = target.parentNode;
         }
 
-        if(target != this.hoveredTrack) {
-            this.hoveredTrack = target;
-            this.trackInfo.setVisible(false);
-            window.clearTimeout(this.hoveredTimeout);
+        if (target.dataset.childID !== undefined) { // Avoid right click to cause error
+            if (target != this.hoveredTrack || this.trackInfo.isVisible() == false) {
+                this.hoveredTrack = target;
+                this.trackInfo.setVisible(false);
+                window.clearTimeout(this.hoveredTimeout);
 
-            let that = this;
-
-            this.hoveredTimeout = window.setTimeout(function() {
-                let self = that;
-
-                that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
-                that.trackInfo.updateInfo(that.entries[that.hoveredTrack.dataset.childID].track, function() {
-                    self.trackInfo.setVisible(true)
-                });
-            }, 1000);
+                let that = this;
+                this.hoveredTimeout = window.setTimeout(function () {
+                    let self = that;
+                    that.trackInfo.updateGeometry(that.hoveredTrack.getBoundingClientRect(), that.header.duration.offsetWidth);
+                    that.trackInfo.updateInfo(that.entries[that.hoveredTrack.dataset.childID].track, function () {
+                        self.trackInfo.setVisible(true)
+                    });
+                }, 1000);
+            }
         }
     },
 
@@ -269,7 +266,13 @@ ListView.prototype = {
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
         };
-        this.listView.addEventListener('mouseover', this.showTrackInfo.bind(this));
+        this.listView.addEventListener('mousemove', this.showTrackInfo.bind(this), true);
+        this.listView.addEventListener('mouseleave', function(event) {
+            //We need to enqueue that event because mouseleave will get fired before trackinfo's mouseenter
+            if(event.target == that.listView)
+                window.setTimeout(that.trackInfo.setVisible.bind(that.trackInfo, false), 0);
+        });
+
         this.listView.addEventListener("click", this.viewClicked.bind(this));
         // Sorting listeners
         this.header.duration.addEventListener("click", function() {
@@ -307,6 +310,20 @@ ListView.prototype = {
         this.header.year.addEventListener("click", function() {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that.sortBy("year", that.sort.isYearAsc);
+        });
+
+        window.app.addListener('changeTrack', function(track)
+        {
+            let limit = that.entries.length;
+            for(let i = 0; i < limit; i++)
+                if(that.entries[i].track == track) {
+                    let relativeDelta = that.entries[i].entry.offsetTop + that.entries[i].entry.scrollHeight / 2;
+
+                    if(that.entries[i].entry.offsetParent != that.listView)
+                        relativeDelta -= that.listView.offsetTop;
+                    that.listView.scrollTop = relativeDelta - that.listView.clientHeight / 2;
+                    return;
+                }
         });
 
         window.app.addListener("stopPlayback", function() {

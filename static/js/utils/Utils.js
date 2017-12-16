@@ -101,6 +101,7 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
 
 
 
+//TODO: Move to Overrides
 function toggleVisibilityLock(object) {
     if(object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
     else                                         { addVisibilityLock(object);    }
@@ -109,11 +110,17 @@ function toggleVisibilityLock(object) {
 
 function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-visible");
+    object.dataset.mzkLock = 1;
 }
 
 
 function removeVisibilityLock(object) {
     object.classList.remove("mzk-visible");
+    object.dataset.mzkLock = 0;
+}
+
+function isVisibilityLocked(object) {
+    return object.dataset.mzkLock == '1';
 }
 
 

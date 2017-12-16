@@ -111,6 +111,7 @@ Controls.prototype = {
         this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
         this.ui.queueExpander.button.addEventListener("click", this.queuePreview.show.bind(this.queuePreview));
 
+        window.app.addListener('pushQueue', this.queuePreview.preview.bind(this.queuePreview));
         window.app.addListener(['togglePlay', 'stopPlayback'], this.setPlayPause.bind(this));
     }
 };

@@ -129,10 +129,6 @@ ContextMenuEntry.prototype = {
                 if (clicked.parent.multi_open_submenu) { clicked.parent.close_all(); }
 
                 clicked.element.classList.toggle("mzk-ctx-open");
-                
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                event.stopPropagation();
             }
         }, true);
     },
@@ -159,6 +155,7 @@ ContextMenuEntry.prototype = {
 
     run_callback: function () {
         if (this.callback) { this.callback.apply(null, this.callback_args); }
+        this.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
     },
 
 

@@ -44,7 +44,7 @@ TopBar.prototype = {
         this.playlists = playlists;
 
         this.addEntries();
-        this.setSelected(selectedPlaylist.id);
+        this.setSelected(selectedPlaylist.id, true);
         this._eventListener();
         this._contextMenuSetup();
     },
@@ -74,9 +74,9 @@ TopBar.prototype = {
     },
 
 
-    setSelected: function(id) {
+    setSelected: function(id, useID) {
 	    for (let i = 0; i < this.entries.length; ++i) {
-	        if (i == id || this.entries[i].getId() == id) {
+	        if ((useID != true && i == id) || (useID == true && this.entries[i].getId() == id)) {
                 this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
             }

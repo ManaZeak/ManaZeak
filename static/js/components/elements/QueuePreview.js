@@ -72,6 +72,8 @@ QueuePreview.prototype = {
         qControlsUp.innerText   = "U";
         qControlsDown.innerText = "D";
 
+        img.src = track.cover;
+
         qControlsUp.dataset.callback   = "moveUp";
         qControlsDown.dataset.callback = "moveDown";
 
@@ -92,10 +94,14 @@ QueuePreview.prototype = {
 
     show: function(event) {
         toggleVisibilityLock(this.ui.container);
+    },
 
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
+    preview: function(event) {
+        if(isVisibilityLocked(this.ui.container))
+            return;
+
+        addVisibilityLock(this.ui.container);
+        window.setTimeout(removeVisibilityLock.bind(null, this.ui.container), 2000);
     },
 
 
@@ -152,11 +158,6 @@ QueuePreview.prototype = {
                     // TODO : Switch default event
                     break;
             }
-        });
-        this.ui.container.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
         });
 
         document.body.addEventListener('click', function() {
