@@ -380,11 +380,17 @@ ListView.prototype = {
             }
         });
 
-        this.contextMenu.addEntry(null, "Add to playlist", function() {
-            if (clickedEntry !== undefined) {
-                // TODO : Add user playlist as subchoices, and effectively add track to playlist via a Django url (urls.py)
-            }
+        this.contextMenu.addEntry('playlists', "Add to playlist", function() {
+            window.app.requestNewPlaylist();
         });
+        let playlists = window.app.getPlaylists();
+        for(let i = 0; i < playlists.length; i++)
+            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function()
+            {
+                if(clickedEntry !== undefined)
+                    console.log(playlists[i], that.entries[clickedEntry].track);
+            })
+
     }
 };
 

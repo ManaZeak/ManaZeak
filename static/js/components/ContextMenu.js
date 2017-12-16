@@ -32,16 +32,28 @@ ContextMenu.prototype = {
 
 
     addEntry: function(entryPath, displayStr, callback /*, more args for the callback */) {
-        let path = entryPath;
         let context;
+        let parent = this.contextMenu;
 
-        if (Array.isArray(entryPath)) {}
+        let i, j;
+        if (Array.isArray(entryPath)) {
+            pathForward: for(i = 0; i < entryPath.length - 1; i++)
+            {
+                for(j = 0; j < parent.children.length; j++)
+                    if(parent.children[j].entryID == entryPath[i])
+                    {
+                        parent = parent.children[j];
+                        continue pathForward;
+                    }
 
-        else {
-            context = Object.create(ContextMenuEntry.prototype);
-            ContextMenuEntry.apply(context, arguments);
-            this.contextMenu.add_child(context);
+                parent = parent.add_child(new ContextMenuEntry(entryPath[i], entryPath[i]));
+            }
+            arguments[0] = entryPath[entryPath.length - 1];
         }
+
+        context = Object.create(ContextMenuEntry.prototype);
+        ContextMenuEntry.apply(context, arguments);
+        parent.add_child(context);
     },
 
 

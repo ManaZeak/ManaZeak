@@ -91,6 +91,7 @@ ContextMenuEntry.prototype = {
         other_entry.parent = this;
 
         if (this.element.parentNode) { this.element.parentNode.classList.add("mzk-ctx-submenu"); }
+        return other_entry;
     },
 
 

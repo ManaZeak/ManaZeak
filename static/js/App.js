@@ -39,10 +39,10 @@ let App = function() {
 
             this[property] = (function(pname, func) {
                 return function() {
-                    func.apply(this, arguments);
-                    for (let i = 0; i < this.listeners[pname].length; ++i) {
+                    let r = func.apply(this, arguments);
+                    for (let i = 0; i < this.listeners[pname].length; ++i)
                         this.listeners[pname][i].apply(null, arguments);
-                    }
+                    return r;
                 }
             }(property, oldFunc));
         }
@@ -159,6 +159,12 @@ App.prototype = {
         else if (this.listeners[event]) {
             this.listeners[event].push(callback);
         }
+    },
+
+    getPlaylists: function() {
+        return this.playlists.filter(function(element) {
+            return element.isLibrary != true;
+        });
     },
 
 
