@@ -36,7 +36,7 @@ let ListView = function(data) {
         isYearAsc:      false
     };
 
-    View.call(this, data);
+    PlaylistView.call(this, data);
 
 };
 
@@ -404,4 +404,4 @@ ListView.prototype = {
     }
 };
 
-extendClass(View, ListView);
+extendClass(PlaylistView, ListView);
