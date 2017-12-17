@@ -32,13 +32,12 @@ def getUserNbTrackListened(user):
 
 def getUserNbTrackPushed(user):
     totalUploadedTracks = Track.objects.filter(uploader=user).count()
-
     return totalUploadedTracks
 
 
-def getUserGenre(user):
+def getUserPrefGenre(user, numberPlayedTrack, order):
     genres = Genre.objects.all()
-    genreCounter = []
+    genreTuple = []
 
     for genre in genres:
         counter = 0
@@ -46,25 +45,10 @@ def getUserGenre(user):
         for track in tracks:
             counter += track.playCounter
 
-        genreCounter.append(counter)
+        genreTuple.append((genre.name, counter, (counter/numberPlayedTrack)*100))
 
-    return genreCounter
-
-
-def getUserGenrePercentage(user):
-    genreCounter = getUserGenre(user)
-    genrePercentage = []
-    totalGenre = 1  # At the moment protection against empty tests
-    i = 0
-
-    for i in genreCounter:
-        totalGenre = totalGenre + i
-
-    for i in genreCounter:
-        percentage = 100 * i / totalGenre
-        genrePercentage.append(percentage)
-
-    return genrePercentage
+    genreTuple.sort(key=itemgetter(1), reverse=order)
+    return genreTuple
 
 
 def getUserPrefArtist(user, order):
@@ -73,9 +57,9 @@ def getUserPrefArtist(user, order):
 
     for artist in artists:
         counter = 0
-        tracks = Stats.objects.filter(track__artist=artist, user=user)
+        stats = Stats.objects.filter(track__artist=artist, user=user)
 
-        for track in tracks:
+        for track in stats:
             counter += track.playCounter
 
         artistCounter.append((artist.name, counter))
@@ -120,8 +104,6 @@ def getUserStats(request):
 
         nbTrackListened = getUserNbTrackListened(user)
         nbTrackPushed = getUserNbTrackPushed(user)
-        userGenre = getUserGenre(user)
-        userGenrePercentage = getUserGenrePercentage(user)
         neverPlayed = userNeverPlayed(user)
 
         data = {
@@ -133,8 +115,8 @@ def getUserStats(request):
             'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
-            'USER_GENRE': userGenre,
-            'USER_GENRE_PERCENTAGE': userGenrePercentage,
+            'PREF_GENRE': getUserPrefGenre(user, nbTrackListened, True)[:10],
+            'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
             'NEVER_PLAYED': neverPlayed,
         }
     else:
@@ -145,18 +127,20 @@ def getUserStats(request):
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def adminGetUserStats(request):
     if request.method == 'GET':
-        user = request.user
+        admin = request.user
         data = []
-        if user.is_superuser:
-            for users in User.objects.all():
+        if admin.is_superuser:
+            for user in User.objects.all():
+                nbTrackListened = getUserNbTrackListened(user)
                 temp = {
-                    'USER': users.username,
-                    'PREF_ARTIST': getUserPrefArtist(users),
-                    'NB_TRACK_LISTENED': getUserNbTrackListened(users),
-                    'NB_TRACK_PUSHED': getUserNbTrackPushed(users),
-                    'USER_GENRE': getUserGenre(users),
-                    'USER_GENRE_PERCENTAGE': getUserGenrePercentage(users),
-                    'NEVER_PLAYED': userNeverPlayed(users),
+                    'USERNAME': user.username,
+                    'PREF_ARTIST': getUserPrefArtist(user, True)[:10],
+                    'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
+                    'NB_TRACK_LISTENED': nbTrackListened,
+                    'NB_TRACK_PUSHED': getUserNbTrackPushed(user),
+                    'PREF_GENRE': getUserPrefGenre(user, nbTrackListened, True)[:10],
+                    'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
+                    'NEVER_PLAYED': userNeverPlayed(user),
                 }
                 data.append(temp)
             data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
