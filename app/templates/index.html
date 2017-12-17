@@ -56,14 +56,10 @@
         <script type="text/javascript" src="{% static "js/core/Player.js" %}"></script>
         <script type="text/javascript" src="{% static "js/components/elements/Controls.js" %}"></script>
         <script type="text/javascript" src="{% static "js/App.js" %}"></script>
+
         <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log("Init app ...");
-                window.app = new App();
-                app.init();
-                //TODO: Move this to footbar
-            });
+            window.app = new App();
+            app.init();
         </script>
-        <script type="text/javascript" src="{% static "js/AppController.js" %}"></script>
     </body>
 </html>

@@ -33,6 +33,17 @@ FootBar.prototype = {
 
 
     /**
+     * method : resetUI (public)
+     * class  : FootBar
+     * desc   : Reset TrackPreview and ProgressBar. TODO : option to close PlaylistPreview also
+     **/
+    resetUI: function() {
+        this.trackPreview.resetTrackPreview();
+        this.progressBar.resetProgressBar();
+    },
+
+
+    /**
      * method : volumeDown (public)
      * class  : FootBar
      * desc   : Updates VolumeBar with volume down

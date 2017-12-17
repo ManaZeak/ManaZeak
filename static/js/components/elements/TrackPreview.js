@@ -30,11 +30,29 @@ TrackPreview.prototype = {
         this.ui.artist.innerHTML = track.artist;
         this.ui.album.innerHTML  = track.album;
         this.ui.year.innerHTML   = track.year;
-
         if (track.genre) { this.ui.year.innerHTML += "&nbsp;&nbsp;-&nbsp;&nbsp;"; }
         this.ui.genre.innerHTML  = track.genre;
 
         this._setVisible(true);
+    },
+
+
+    /**
+     * method : resetTrackPreview (public)
+     * class  : TrackPreview
+     * desc   : Reset field values and set invisible
+     **/
+    resetTrackPreview: function() {
+        this.ui.cover.src        = "";
+        this.ui.thumb.src        = "";
+        this.ui.title.innerHTML  = "";
+        this.ui.artist.innerHTML = "";
+        this.ui.album.innerHTML  = "";
+        this.ui.year.innerHTML   = "";
+        this.ui.year.innerHTML  += "";
+        this.ui.genre.innerHTML  = "";
+
+        this._setVisible(false);
     },
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -99,10 +117,10 @@ TrackPreview.prototype = {
         let that = this;
 
         window.app.addListener(["togglePlay", "changeTrack"], function() {
-            that.setVisible(true);
+            that._setVisible(true);
         });
         window.app.addListener("stopPlayback", function() {
-            that.setVisible(false);
+            that._setVisible(false);
         });
     },
 

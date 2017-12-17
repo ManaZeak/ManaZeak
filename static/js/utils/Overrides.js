@@ -10,6 +10,7 @@ Event.prototype.stop = function() {
   this.preventDefault();
 };
 
+
 (function forceStop() {
     var addEvent = Element.prototype.addEventListener;
     Element.prototype.addEventListener = function(type, handler, options)
