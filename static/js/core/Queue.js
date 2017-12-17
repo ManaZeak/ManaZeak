@@ -134,7 +134,7 @@ Queue.prototype = {
      * method : dequeue (public)
      * class  : Queue
      * desc   : Remove an element in the queue
-     * return : {object} TODO
+     * return : {object} The track to be played
      **/
     dequeue: function() {
         if (this.first == null) { return; }
@@ -213,9 +213,9 @@ Queue.prototype = {
     /**
      * method : slide (public)
      * class  : Queue
-     * desc   : TODO
-     * arg    : {int} element - TODO
-     *          {int} newPos - TODO
+     * desc   : Move the nth element to another position in the queue
+     * arg    : {int} element - the index of the track to move
+     *          {int} newPos - the new desired index
      **/
     slide: function(element, newPos) {
         let link = this.first;
