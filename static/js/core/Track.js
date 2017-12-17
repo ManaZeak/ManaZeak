@@ -9,6 +9,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 let Track = function(track) {
+
     this.updateMetadata(track);
 };
 

@@ -1,16 +1,29 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Queue class - handle the user current tracks queue                                 *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  QueueEntry (sub) Class                         *
+ *                                                 *
+ *  A track entry un the queue                     *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 let QueueEntry = function(track) {
+    
     this.next = null;
     this.previous = null;
     this.track = track;
 };
 
+
 QueueEntry.prototype = {
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : addNext (public)
+     * class  : QueueEntry
+     * desc   : TODO
+     * arg    : {type} other - TODO
+     **/
     addNext: function(other) {
         if (other == null) { return; }
 
@@ -26,6 +39,12 @@ QueueEntry.prototype = {
     },
 
 
+    /**
+     * method : addPrev (public)
+     * class  : QueueEntry
+     * desc   : TODO
+     * arg    : {type} other - TODO
+     **/
     addPrev: function(other) {
         if(other == null) { return; }
 
@@ -41,6 +60,11 @@ QueueEntry.prototype = {
     },
 
 
+    /**
+     * method : moveNext (public)
+     * class  : QueueEntry
+     * desc   : TODO
+     **/
     moveNext: function() {
         let tmp_t;
 
@@ -52,6 +76,11 @@ QueueEntry.prototype = {
     },
 
 
+    /**
+     * method : movePrev (public)
+     * class  : QueueEntry
+     * desc   : TODO
+     **/
     movePrev: function() {
         let tmp_t;
 
@@ -63,6 +92,11 @@ QueueEntry.prototype = {
     },
 
 
+    /**
+     * method : unlink (public)
+     * class  : QueueEntry
+     * desc   : TODO
+     **/
     unlink: function() {
         if (this.previous) { this.previous.next = this.next;     }
         if (this.next)     { this.next.previous = this.previous; }
@@ -70,9 +104,17 @@ QueueEntry.prototype = {
         this.previous = null;
         this.next = null;
     }
+
 };
 
-//========================================================================================
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  Queue Class                                    *
+ *                                                 *
+ *  Handle the user queue, with reorder and info   *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 let Queue = function() {
     this.first = null;
@@ -82,18 +124,17 @@ let Queue = function() {
 
 
 Queue.prototype = {
+
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
     // TODO : add text saying that queue is empty when no track is loaded. Use same size as LI item, and put text at the center, same font as Track title in LI
-    // TODO : ? Add notif when track has been added ? To discuss if useful or not
-    enqueue: function(track) {
-        let newLink = new QueueEntry(track);
+    // TODO : Add notif when track has been added - This should be a user option (enable/disable)
 
-        if (this.first == null) { this.first = newLink;       }
-        else                    { this.last.addNext(newLink); }
-
-        this.last = newLink;
-    },
-
-
+    /**
+     * method : dequeue (public)
+     * class  : Queue
+     * desc   : Remove an element in the queue
+     * return : {object} TODO
+     **/
     dequeue: function() {
         if (this.first == null) { return; }
 
@@ -119,6 +160,62 @@ Queue.prototype = {
     },
 
 
+    /**
+     * method : enqueue (public)
+     * class  : Queue
+     * desc   : Append a new track in the queue
+     * arg    : {object} track - The track to enqueue
+     **/
+    enqueue: function(track) {
+        let newLink = new QueueEntry(track);
+
+        if (this.first == null) { this.first = newLink;       }
+        else                    { this.last.addNext(newLink); }
+
+        this.last = newLink;
+    },
+
+
+    /**
+     * method : isEmpty (public)
+     * class  : Queue
+     * desc   : Check queue emptiness
+     * return : {bool}
+     **/
+    isEmpty: function() {
+        return this.first == null;
+    },
+
+
+    /**
+     * method : isReverse (public)
+     * class  : Queue
+     * desc   : Check is reverse status
+     * return : {bool}
+     **/
+    isReverse: function () {
+        return this.reverse;
+    },
+
+
+    /**
+     * method : setReverse (public)
+     * class  : Queue
+     * desc   : Set reverse status
+     * arg    : {bool} newReverse - Set reverse value
+     **/
+    setReverse: function(newReverse) {
+        this.reverse = newReverse == true;
+    },
+
+
+    /**
+     * method : slide (public)
+     * class  : Queue
+     * desc   : TODO
+     * arg    : {int} element - TODO
+     *          {int} newPos - TODO
+     **/
     slide: function(element, newPos) {
         let link = this.first;
         let diff = newPos - element;
@@ -138,20 +235,6 @@ Queue.prototype = {
                 }
             }
         }
-    },
-
-
-    isEmpty: function() {
-        return this.first == null;
-    },
-
-
-    setReverse: function(newReverse) {
-        this.reverse = newReverse == true;
-    },
-
-
-    isReverse: function () {
-        return this.reverse;
     }
+
 };
