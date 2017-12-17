@@ -24,12 +24,17 @@ let TrackInfo = function(container) {
 
 TrackInfo.prototype = {
 
-
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+    /**
+     * method : isVisible (public)
+     * class  : TrackInfo
+     * desc   : Returns true if TrackInfo is visible
+     **/
     isVisible: function() {
         return this.ui.container.style.opacity == 1;
     },
+
 
     /**
      * method : setVisible (public)
@@ -44,7 +49,7 @@ TrackInfo.prototype = {
 
         if (visible === true) {
             this.ui.container.style.opacity = 1;
-            this.ui.container.style.zIndex = 0;
+            this.ui.container.style.zIndex  = 0;
 
             this._startInactivityTimeout(5000);  // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
         }
@@ -118,9 +123,7 @@ TrackInfo.prototype = {
         );
     },
 
-
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
-
 
     /**
      * method : _createUI (private)
@@ -130,35 +133,35 @@ TrackInfo.prototype = {
      **/
     _createUI: function(container) {
         this.ui = {
-            container:         document.createElement("DIV"),
-            cover:             document.createElement("IMG"),
-            numbers:           document.createElement("P"),
+            container:            document.createElement("DIV"),
+            cover:                document.createElement("IMG"),
+            numbers:              document.createElement("P"),
 
-            trackWrapper:      document.createElement("DIV"),
-            title:             document.createElement("P"),
-            artist:            document.createElement("P"),
-            albumArtist:       document.createElement("P"),
-            composer:          document.createElement("P"),
-            performer:         document.createElement("P"),
-            genre:             document.createElement("P"),
-            album:             document.createElement("P"),
-            trackDetails:      document.createElement("P"),
+            trackWrapper:         document.createElement("DIV"),
+            title:                document.createElement("P"),
+            artist:               document.createElement("P"),
+            albumArtist:          document.createElement("P"),
+            composer:             document.createElement("P"),
+            performer:            document.createElement("P"),
+            genre:                document.createElement("P"),
+            album:                document.createElement("P"),
+            trackDetails:         document.createElement("P"),
 
-            suggestionWrapper: document.createElement("DIV"),
-            suggestionTitle:   document.createElement("P"),
-            suggestionList:    document.createElement("UL"),
+            suggestionWrapper:    document.createElement("DIV"),
+            suggestionTitle:      document.createElement("P"),
+            suggestionList:       document.createElement("UL"),
 
-            changeSuggestionType:   document.createElement("IMG")
+            changeSuggestionType: document.createElement("IMG")
         };
 
-        this.ui.container.id         = "trackInfo";
-        this.ui.trackWrapper.id      = "trackWrapper";
-        this.ui.title.id             = "title";
-        this.ui.album.id             = "album";
-        this.ui.numbers.id           = "numbers";
-        this.ui.genre.id             = "album";
-        this.ui.suggestionWrapper.id = "suggestionWrapper";
-        this.ui.suggestionTitle.id   = "title";
+        this.ui.container.id              = "trackInfo";
+        this.ui.trackWrapper.id           = "trackWrapper";
+        this.ui.title.id                  = "title";
+        this.ui.album.id                  = "album";
+        this.ui.numbers.id                = "numbers";
+        this.ui.genre.id                  = "album";
+        this.ui.suggestionWrapper.id      = "suggestionWrapper";
+        this.ui.suggestionTitle.id        = "title";
         this.ui.changeSuggestionType.src  = "";
 
         this.tracks = [];
@@ -185,16 +188,13 @@ TrackInfo.prototype = {
         this.ui.trackWrapper.appendChild(this.ui.performer);
         this.ui.trackWrapper.appendChild(this.ui.genre);
         this.ui.trackWrapper.appendChild(this.ui.trackDetails);
-
         this.ui.suggestionWrapper.appendChild(this.ui.suggestionTitle);
         this.ui.suggestionWrapper.appendChild(this.ui.suggestionList);
         this.ui.suggestionWrapper.appendChild(this.ui.changeSuggestionType);
-
         this.ui.container.appendChild(this.ui.cover);
         this.ui.container.appendChild(this.ui.numbers);
         this.ui.container.appendChild(this.ui.suggestionWrapper);
         this.ui.container.appendChild(this.ui.trackWrapper);
-
         container.appendChild(this.ui.container);
     },
 
@@ -260,6 +260,7 @@ TrackInfo.prototype = {
     _stopInactivityTimeout: function() {
         if (this.inactivityTimeoutId !== -1) { window.clearTimeout(this.inactivityTimeoutId); }
     },
+
 
     /**
      * method : _toggleChangeType (private)
@@ -353,4 +354,5 @@ TrackInfo.prototype = {
             );
         }
     }
+
 };

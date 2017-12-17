@@ -25,7 +25,7 @@ FootBar.prototype = {
     /**
      * method : delayHideVolume (public)
      * class  : FootBar
-     * desc   : Delay volume bar non visibility
+     * desc   : Delay volume bar invisibility
      **/
     delayHideVolume: function() {
         this.controls.volumeBar.delayHideVolume();
