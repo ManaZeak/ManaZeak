@@ -1,36 +1,88 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  PlaylistBar class - handle the playlist bar                                        *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  FootBar class                                  *
+ *                                                 *
+ *  Handle FootBar and every components inside     *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 let FootBar = function() {
 
-    this.footBar = document.createElement("DIV");
-
-    this.controlsContainer = document.createElement("DIV");
-    this.progressContainer = document.createElement("DIV");
-
-    this.footBar.id                  = "footBar";
-    this.controlsContainer.className = "mzk-controls-container";
-
+    this._createUI();
     this.trackPreview    = new TrackPreview(this.footBar);
     this.controls        = new Controls(this.controlsContainer);
-    this.playlistPreview = new PlaylistPreview(this.footBar);
     this.progressBar     = new ProgressBar(this.controlsContainer);
-
+    this.playlistPreview = new PlaylistPreview(this.footBar);
     this.footBar.appendChild(this.controlsContainer);
-
     this._init();
 };
 
 
 FootBar.prototype = {
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : delayHideVolume (public)
+     * class  : FootBar
+     * desc   : Delay volume bar non visibility
+     **/
+    delayHideVolume: function() {
+        this.controls.volumeBar.delayHideVolume();
+    },
+
+
+    /**
+     * method : volumeDown (public)
+     * class  : FootBar
+     * desc   : Updates VolumeBar with volume down
+     **/
+    volumeDown: function(event) {
+        this.controls.volumeBar.volumeDown(event);
+    },
+
+
+    /**
+     * method : volumeDown (public)
+     * class  : FootBar
+     * desc   : Updates VolumeBar with volume up
+     **/
+    volumeUp: function(event) {
+        this.controls.volumeBar.volumeUp(event);
+    },
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _addEntries (private)
+     * class  : FootBar
+     * desc   : Build UI elements
+     **/
+    _createUI: function() {
+        this.footBar                     = document.createElement("DIV");
+        this.controlsContainer           = document.createElement("DIV");
+        this.progressContainer           = document.createElement("DIV");
+
+        this.footBar.id                  = "footBar";
+        this.controlsContainer.className = "mzk-controls-container";
+    },
+
+
+    /**
+     * method : _init (private)
+     * class  : FootBar
+     * desc   : Listen to FootBar events
+     **/
     _init: function() {
         this._eventListener();
     },
 
 
+    /**
+     * method : _eventListener (private)
+     * class  : FootBar
+     * desc   : FootBar event listeners
+     **/
     _eventListener: function() {
         let that = this;
 
@@ -42,21 +94,8 @@ FootBar.prototype = {
         });
     },
 
-
-    volumeUp: function(event) {
-        this.controls.volumeBar.volumeUp(event);
-    },
-
-
-    volumeDown: function(event) {
-        this.controls.volumeBar.volumeDown(event);
-    },
-
-
-    delayHideVolume: function() {
-        this.controls.volumeBar.delayHideVolume();
-    },
-
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
     getFootBar: function() { return this.footBar; }
+
 };
