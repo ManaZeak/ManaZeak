@@ -18,11 +18,11 @@ let Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
     else                                  { this.rawTracks = [];        }
     if (typeof callback !== 'undefined')  { this.callback = callback;   }
     else                                  { this.callback = null;       }
-    this.modal               = null;
     this.id                  = id;
     this.name                = name;
     this.isLibrary           = isLibrary;
     this.isLoading           = isLoading;
+    this.modal               = null;
     this.shuffleMode         = 0; // 0 : off, 1 : random, 2: shuffle
     this.repeatMode          = 0; // 0 : off, 1 : one,    2: all
     this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
@@ -113,10 +113,14 @@ Playlist.prototype = {
                     if (this.repeatMode !== 0) {
                         this.currentTrack = this.activeView.getNextEntry();
                         window.app.changeTrack(this.currentTrack, false);
-                    } else {
+                    }
+
+                    else {
                         if (this.activeView.isLastEntry()) {
                             window.app.stopPlayback();
-                        } else {
+                        }
+
+                        else {
                             this.currentTrack = this.activeView.getNextEntry();
                             window.app.changeTrack(this.currentTrack, false);
                         }
@@ -190,7 +194,9 @@ Playlist.prototype = {
                             // TODO : test if track comes from the current playlist ...
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
                             window.app.changeTrack(that.currentTrack, true);
-                        } else {
+                        }
+
+                        else {
                             new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                         }
                     }
@@ -290,7 +296,7 @@ Playlist.prototype = {
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-/**
+    /**
      * method : _getTracksFromServer (private)
      * class  : Playlist
      * desc   : Ask server while track aren't fully scanned, every 0.5s
@@ -360,10 +366,10 @@ Playlist.prototype = {
      * desc   : Handle playlist instantiation depending on booleans given to constructor
      **/
     _init: function() {
-        //if (typeof rawTracks === undefined) { return; }
         if (this.isLoading) {
             if (this.isLibrary) { this._loadLibrary(); } // Library loading process
         }
+
         else {
             if (this.isLibrary) { this._newLibrary();  } // Library creation process
             else                { this._newPlaylist(); } // Playlist creation process
@@ -425,9 +431,8 @@ Playlist.prototype = {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary: function() {
-        if (this.rawTracks.length === 0) {
-            return;
-        }
+        if (this.rawTracks.length === 0) { return; }
+
         this._fillTracks(this.rawTracks);
     },
 
@@ -457,8 +462,7 @@ Playlist.prototype = {
      **/
     _newPlaylist: function() {
         this.isLibrary = false;
-
-        this.modal = new Modal("newPlaylist");
+        this.modal     = new Modal("newPlaylist");
         this.modal.open();
 
         let that = this;
@@ -493,12 +497,12 @@ Playlist.prototype = {
                  *     ERROR_MSG:  string
                  * } */
                 if (response.DONE) {
-                    that.name = name;
+                    that.name  = name;
                     that.modal.close();
                     that.modal = null;
                     that.modal = new Modal("scanLibrary");
                     that.modal.open();
-                    that.id = response.LIBRARY_ID;
+                    that.id    = response.LIBRARY_ID;
                     that._initialLibraryScan(response.LIBRARY_ID);
                 }
 
@@ -533,7 +537,6 @@ Playlist.prototype = {
                 if (response.DONE) {
                     that.name  = name;
                     that.id    = response.PLAYLIST_ID;
-
                     that.modal.close();
                     that.modal = null;
 

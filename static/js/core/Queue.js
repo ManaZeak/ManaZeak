@@ -7,10 +7,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 let QueueEntry = function(track) {
-    
-    this.next = null;
+
+    this.next     = null;
     this.previous = null;
-    this.track = track;
+    this.track    = track;
 };
 
 
@@ -31,10 +31,10 @@ QueueEntry.prototype = {
 
         if (this.next) {
             this.next.previous = other;
-            other.next = this.next;
+            other.next         = this.next;
         }
 
-        this.next = other;
+        this.next      = other;
         other.previous = this;
     },
 
@@ -46,17 +46,17 @@ QueueEntry.prototype = {
      * arg    : {type} other - TODO
      **/
     addPrev: function(other) {
-        if(other == null) { return; }
+        if (other == null) { return; }
 
         other.unlink();
 
-        if(this.previous) {
+        if (this.previous) {
             this.previous.next = other;
-            other.previous = this.previous;
+            other.previous     = this.previous;
         }
 
         this.previous = other;
-        other.next = this;
+        other.next    = this;
     },
 
 
@@ -69,8 +69,8 @@ QueueEntry.prototype = {
         let tmp_t;
 
         if (this.next) {
-            tmp_t = this.track;
-            this.track = this.next.track;
+            tmp_t           = this.track;
+            this.track      = this.next.track;
             this.next.track = tmp_t;
         }
     },
@@ -85,8 +85,8 @@ QueueEntry.prototype = {
         let tmp_t;
 
         if (this.previous) {
-            tmp_t = this.track;
-            this.track = this.previous.track;
+            tmp_t               = this.track;
+            this.track          = this.previous.track;
             this.previous.track = tmp_t;
         }
     },
@@ -102,7 +102,7 @@ QueueEntry.prototype = {
         if (this.next)     { this.next.previous = this.previous; }
 
         this.previous = null;
-        this.next = null;
+        this.next     = null;
     }
 
 };
@@ -117,8 +117,9 @@ QueueEntry.prototype = {
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 let Queue = function() {
-    this.first = null;
-    this.last = null;
+
+    this.first   = null;
+    this.last    = null;
     this.reverse = false;
 };
 
@@ -141,14 +142,14 @@ Queue.prototype = {
         let tmp;
 
         if (this.reverse == true) {
-            tmp = this.last;
+            tmp       = this.last;
             this.last = this.last.previous;
 
             if (this.last == null) { this.first = null; }
         }
 
         else {
-            tmp = this.first;
+            tmp        = this.first;
             this.first = this.first.next;
 
             if (this.first == null) { this.last = null; }
@@ -223,8 +224,8 @@ Queue.prototype = {
         for (;element-- > 0 && link != null; link = link.next) {}
 
         if (link != null) {
-            if(diff > 0) {
-                for(; diff-- > 0; link = link.next) {
+            if (diff > 0) {
+                for (; diff-- > 0; link = link.next) {
                     link.moveNext();
                 }
             }

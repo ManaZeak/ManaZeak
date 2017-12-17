@@ -40,11 +40,8 @@ Player.prototype = {
      * desc   : Switch on and off player playback depending on its current status
      **/
     togglePlay: function() {
-        if (this.isPlaying) {
-            this._pause();
-        } else {
-            this._play();
-        }
+        if (this.isPlaying) { this._pause(); }
+        else                { this._play();  }
     },
 
 

@@ -27,8 +27,8 @@ Track.prototype = {
     updateMetadata: function(track) {
         // Filling Track object
         this.id = {
-            track:          track.ID ? track.ID : "",
-            album:          track.ALBUM.ID ? track.ALBUM.ID : "",
+            track:          track.ID                ? track.ID                : "",
+            album:          track.ALBUM.ID          ? track.ALBUM.ID          : "",
             artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
         };
         this.title        = track.TITLE             ? track.TITLE             : "";
@@ -65,12 +65,9 @@ Track.prototype = {
      * return : {[int]} - The artists ID array
      **/
     _getArtistsIDFromArtistsArray: function(artists) {
-        if (artists === null || artists === undefined) {
-            return "";
-        }
+        if (artists === null || artists === undefined) { return ""; }
 
         let artistsID = [];
-
         for (let i = 0; i < artists.length; ++i) {
             artistsID.push(artists[i].ID);
         }
@@ -87,22 +84,18 @@ Track.prototype = {
      * return : {string} The Artists concated string
      **/
     _getArtistFromArtistsArray: function(artists) {
-        if (artists === null || artists === undefined) {
-            return "";
-        }
+        if (artists === null || artists === undefined) { return ""; }
 
         let artistsName = []; // Artists name array
-        let artist      = ""; // Output string
-
         for (let i = 0; i < artists.length; ++i) {
             artistsName.push(artists[i].NAME);
         }
 
         artistsName.sort(); // In order to get artists alphabetically ordered
 
+        let artist = ""; // Output string
         for (i = 0; i < artistsName.length; ++i) {
             artist += artistsName[i];
-
             if (i < (artistsName.length - 1)) { artist += ", "; }
         }
 

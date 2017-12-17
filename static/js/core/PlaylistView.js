@@ -9,6 +9,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 let PlaylistView = function(data) {
+
     View.call(this, data);
 };
 

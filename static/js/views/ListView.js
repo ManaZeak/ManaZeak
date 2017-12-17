@@ -156,13 +156,7 @@ ListView.prototype = {
 
 
     isLastEntry: function() {
-        for (let i = 0; i < this.entries.length; ++i) {
-            if (this.entries[i].getIsSelected()) {
-                break;
-            }
-        }
-
-        return i === (this.entries.length - 1);
+        return !!this.entries[this.entries.length - 1].getIsSelected();
     },
 
 
