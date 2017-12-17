@@ -110,6 +110,10 @@ MyClass.prototype = {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
+    getMyVar: function()      { return this.myVar;  },
+
+    setMyVar: function(myVar) { this.myVar = myVar; }
+
 };
 
 ```

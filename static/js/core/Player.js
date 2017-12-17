@@ -168,4 +168,5 @@ Player.prototype = {
 
     setIsMuted: function(muted) { this.isMuted = muted;           },
     setVolume: function(volume) { this.player.volume = volume;    }
+
 };
