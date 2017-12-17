@@ -57,7 +57,7 @@ PlaylistPreview.prototype = {
     updatePlaylistPreview: function() {
         // TODO : link to App.controler event
         let repeatMode = window.app.activePlaylist.getRepeatMode();
-        let shuffleMode = window.app.activePlaylist.getshuffleMode();
+        let shuffleMode = window.app.activePlaylist.getShuffleMode();
 
         switch (repeatMode) {
             case 0:

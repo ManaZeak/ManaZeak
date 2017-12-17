@@ -89,7 +89,7 @@ MyClass.prototype = {
      * class  : MyClass
      * desc   : myPublicFunction description
      * arg    : {type} arg - A function argument
-     * return : {bool} the returned value
+     * return : {type} the returned value
      **/
     myPublicFunction: function(arg) {
         // Your code here

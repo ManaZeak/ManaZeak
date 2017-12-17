@@ -117,7 +117,7 @@ App.prototype.changeTrack = function(track, previous) {
                 that.topBar.changeMoodbar(track.id.track);
                 that.player.changeSource(".." + response.PATH);
                 that.changePageTitle(response.PATH);
-                that.activePlaylist.updateView(track);
+                that.activePlaylist.setCurrentTrack(track);
                 that.togglePlay();
             }
         }
