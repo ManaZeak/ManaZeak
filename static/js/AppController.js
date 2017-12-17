@@ -1,8 +1,11 @@
 App.prototype.togglePlay = function() {
-    if(this.player.isEmpty())
+    if (this.player.isEmpty()) {
         this.changeTrack(this.activePlaylist.getFirstEntry(), false);
-    else
+    }
+
+    else {
         this.player.togglePlay();
+    }
 };
 
 
@@ -30,7 +33,9 @@ App.prototype.next = function() {
 
 
 App.prototype.previous = function() {
-    this.activePlaylist.playPreviousTrack();
+    if (!this.player.isEmpty()) {
+        this.activePlaylist.playPreviousTrack();
+    }
 };
 
 

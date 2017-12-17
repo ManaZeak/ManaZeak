@@ -1,43 +1,77 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Notification class - notifications to use in various case in ManaZeak              *
- *                                                                                     *
- *  title   : string - Title to put in notification header                             *
- *  message : string - Message to put in notification content                          *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Notification = function(type, title, message) {
-    this.notification = null;
-    this.ui = {
-        icon:           null,
-        title:          null,
-        message:        null,
-        close:          null
-    };
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  Notification class                             *
+ *                                                 *
+ *  Notifications to use in various case           *
+ *                                                 *
+ *  type    : {string} "ERROR" or "INFO"           *
+ *  title   : {string} Notification title          *
+ *  message : {string} Notification message        *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    this.duration = 3000; // Notification visible duration
-    this.interval = 1;    // Refreshing interval
+let Notification = function(type, title, message) {
+
 
     // TODO : test incoming var ...
-    this.type = type;
-    this.title   = title;
-    this.message = message;
+    // TODO : create notifController class
+    this.type         = type;
+    this.title        = title;
+    this.message      = message;
+    this.notification = null;
+    this.duration     = 3000; // Notification visible duration
+    this.interval     = 1;    // Refreshing interval
 
-    // TODO : create notifController class, restyle notif
     this._createUI();
-
     this._lifeCycle();
 };
 
 
 Notification.prototype = {
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _close (private)
+     * class  : Notification
+     * desc   : Make notification disappear
+     **/
+    _close: function() {
+        //TODO: CSS Animation instead
+        let that = this;
+        let i    = 100;
+
+        (function iterate () {
+            if (i >= 0) {
+                that.notification.style.opacity = i / 100;
+                i -= 2;
+                if (i === 0) { that.notification.parentNode.removeChild(that.notification); }
+            }
+            window.setTimeout(iterate, that.interval);
+        })();
+
+        window.clearTimeout(this.timeoutHandle);
+    },
+
+
+    /**
+     * method : _createUI (private)
+     * class  : Notification
+     * desc   : Build UI elements
+     **/
     _createUI: function() {
-        this.notification = document.createElement("div");
-        this.ui.icon      = document.createElement("img");
-        this.ui.title     = document.createElement("p");
-        this.ui.message   = document.createElement("p");
-        this.ui.close     = document.createElement("img");
+        this.ui = {
+            icon:    null,
+            title:   null,
+            message: null,
+            close:   null
+        };
+
+        this.notification           = document.createElement("div");
+        this.ui.icon                = document.createElement("img");
+        this.ui.title               = document.createElement("p");
+        this.ui.message             = document.createElement("p");
+        this.ui.close               = document.createElement("img");
 
         this.notification.className = "notificationContainer";
         this.ui.icon.className      = "icon";
@@ -47,20 +81,19 @@ Notification.prototype = {
 
         switch (this.type) {
             case "INFO":
-                this.ui.icon.src  = "/static/img/utils/notification/info.svg";
+                this.ui.icon.src    = "/static/img/utils/notification/info.svg";
                 break;
             case "ERROR":
-                this.ui.icon.src  = "/static/img/utils/notification/error.svg";
+                this.ui.icon.src    = "/static/img/utils/notification/error.svg";
                 break;
             default:
-                this.ui.icon.src  = "/static/img/utils/notification/error.svg";
+                this.ui.icon.src    = "/static/img/utils/notification/error.svg";
                 break;
         }
+        this.ui.close.src           = "/static/img/utils/notification/close.svg";
 
-        this.ui.close.src         = "/static/img/utils/notification/close.svg";
-
-        this.ui.title.innerHTML   = this.title;
-        this.ui.message.innerHTML = this.message;
+        this.ui.title.innerHTML     = this.title;
+        this.ui.message.innerHTML   = this.message;
 
         this.notification.appendChild(this.ui.icon);
         this.notification.appendChild(this.ui.title);
@@ -69,6 +102,22 @@ Notification.prototype = {
     },
 
 
+    /**
+     * method : _eventListener (private)
+     * class  : Notification
+     * desc   : Notification event listeners
+     **/
+    _eventListener: function() {
+        this.notification.addEventListener("mousemove", this._resetTimeout.bind(this));
+        this.ui.close.addEventListener("click", this._close.bind(this));
+    },
+
+
+    /**
+     * method : _lifeCycle (private)
+     * class  : Notification
+     * desc   : Launch the notification life cycle
+     **/
     _lifeCycle: function() {
         document.body.appendChild(this.notification);
         this._eventListener();
@@ -78,16 +127,15 @@ Notification.prototype = {
     },
 
 
-    _resetTimeout: function() {
-        window.clearTimeout(this.timeoutHandle);
-        this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
-    },
-
-
-    //TODO: CSS Animation instead
+    /**
+     * method : _open (private)
+     * class  : Notification
+     * desc   : Make notification appear
+     **/
     _open: function() {
+        //TODO: CSS Animation instead
         let that = this;
-        let i = 0;
+        let i    = 0;
 
         (function iterate () {
             if (i <= 100) {
@@ -98,27 +146,15 @@ Notification.prototype = {
         })();
     },
 
-    //TODO: CSS Animation instead
-    _close: function() {
-        let that = this;
-        let i = 100;
 
-        (function iterate () {
-            if (i >= 0) {
-                that.notification.style.opacity = i / 100;
-                i -= 2;
-                // Remove notification from body
-                if (i === 0) { that.notification.parentNode.removeChild(that.notification); }
-            }
-            window.setTimeout(iterate, that.interval);
-        })();
-
+    /**
+     * method : _resetTimeout (private)
+     * class  : Notification
+     * desc   : Reset notification close timeout
+     **/
+    _resetTimeout: function() {
         window.clearTimeout(this.timeoutHandle);
-    },
-
-
-    _eventListener: function() {
-        this.notification.addEventListener("mousemove", this._resetTimeout.bind(this));
-        this.ui.close.addEventListener("click", this._close.bind(this));
+        this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     }
+
 };

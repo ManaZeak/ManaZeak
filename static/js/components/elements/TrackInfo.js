@@ -202,7 +202,7 @@ TrackInfo.prototype = {
     /**
      * method : _eventListener (private)
      * class  : TrackInfo
-         * desc   : TrackInfo event listeners
+     * desc   : TrackInfo event listeners
      **/
     _eventListener: function() {
         let that = this;
