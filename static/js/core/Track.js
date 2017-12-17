@@ -61,6 +61,7 @@ Track.prototype = {
      * class  : Track
      * desc   : Extract artists IDs from JSON
      * arg    : {[object]} artists - Raw JSON array of objects
+     * return : {[int]} - The artists ID array
      **/
     _getArtistsIDFromArtistsArray: function(artists) {
         if (artists === null || artists === undefined) {
@@ -82,6 +83,7 @@ Track.prototype = {
      * class  : Track
      * desc   : Create artists string from artist's names in [object]
      * arg    : {[object]} artists - Raw JSON array of objects
+     * return : {string} The Artists concated string
      **/
     _getArtistFromArtistsArray: function(artists) {
         if (artists === null || artists === undefined) {
