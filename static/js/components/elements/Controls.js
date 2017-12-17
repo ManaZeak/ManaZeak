@@ -72,7 +72,7 @@ Controls.prototype = {
         this.ui.shuffle.image.src               = "/static/img/player/shuffle.svg";
         this.ui.next.image.src                  = "/static/img/player/next.svg";
         this.ui.previous.image.src              = "/static/img/player/previous.svg";
-        this.ui.queueExpander.image.src         = "/static/img/player/menu.svg";
+        this.ui.queueExpander.image.src         = "/static/img/player/queue.svg";
 
         this.ui.repeat.button.appendChild(this.ui.repeat.image);
         this.container.appendChild(this.ui.repeat.button);
