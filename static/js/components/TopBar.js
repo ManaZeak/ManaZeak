@@ -184,8 +184,8 @@ TopBar.prototype = {
      * method : _setSelected (private)
      * class  : TopBar
      * desc   : Set a playlist bar entry as selected
-     * arg    : {int} id - TODO
-     *        : {bool} useID - TODO
+     * arg    : {int} id - the id of the track to select
+     *        : {bool} useID - a boolean indicating whether to use the real ID of the track (true) or the index in the array (false)
      **/
     _setSelected: function(id, useID) {
         for (let i = 0; i < this.entries.length; ++i) {
@@ -214,7 +214,7 @@ TopBar.prototype = {
      * method : _viewClicked (private)
      * class  : TopBar
      * desc   : Handle clicks in TopBar
-     * arg    : {object} event - TODO
+     * arg    : {object} event - the click event
      **/
     _viewClicked: function(event) {
         let target = event.target;
