@@ -1,5 +1,5 @@
 # ManaZeak
-ManaZeak is a free software that gives you the ability to listen and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that shares it. 
+ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that share it. 
 
 # Get Started
 In order to make an instance work, run the following commands :
@@ -8,10 +8,10 @@ In order to make an instance work, run the following commands :
 
 Replace all ```/PATH/TO/LIBRARY``` in ```docker-compose.yml``` by the path of your music files, then keep going with :
 
-- $ ```docker-compose build``` (This may take a while, go grab some cofee...)
+- $ ```docker-compose build``` (This may take a while, go grab some coffee...)
 - $ ```docker-compose up -d```
 
-You can now check that all container have been launched well by using :
+You can now check that all containers have been launched correctly by using :
 - $ ```docker ps -a```
 
 Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/app](127.0.0.1/app)
@@ -28,19 +28,19 @@ Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/ap
 - Track preview and track information
 - Single track download
 - [MoodBar](https://en.wikipedia.org/wiki/Moodbar)
-- Statistic collection
+- User account system
+- User stats
 - Track suggestion
-- User system
 
-# On schedule
+# Scheduled
 - Specific AlbumView
 - Specific GenreView
 - SyncThing link
 - Playlist creation
 - Tracks/album download
-- Track adding via Drag'n'Drop
+- Track adding via Drag & Drop
 
-# Techno
+# Technologies
 - Django
 - Postgresql
 - SyncThing
