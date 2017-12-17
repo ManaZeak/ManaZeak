@@ -1,37 +1,87 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  PlaylistView - Abstract view for the playlists' views                              *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  PlaylistView class                     *
+ *                                         *
+ *  Abstract view for the playlists' views *
+ *                                         *
+ *  data : {int} Playlist ID in db         *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
+
 let PlaylistView = function(data) {
     View.call(this, data);
 };
 
+
 PlaylistView.prototype = {
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : getEntryById (public)
+     * class  : PlaylistView
+     * desc   : Return an entry for a given id
+     * arg    : {int} id - A function argument
+     * return : {object} A view entry
+     **/
     getEntryById: function(id) {
         return null;
     },
 
+
+    /**
+     * method : getFirstEntry (public)
+     * class  : PlaylistView
+     * desc   : Return the first entry in view
+     * return : {object} A view entry
+     **/
     getFirstEntry: function() {
         return null;
     },
 
 
+    /**
+     * method : getNextEntry (public)
+     * class  : PlaylistView
+     * desc   : Return the next entry in view
+     * return : {object} A view entry
+     **/
     getNextEntry: function() {
         return null;
     },
 
 
+    /**
+     * method : getPreviousEntry (public)
+     * class  : PlaylistView
+     * desc   : Return the previous entry in view
+     * return : {object} A view entry
+     **/
     getPreviousEntry: function() {
         return null;
     },
 
-    isLastEntry: function() {
+
+    /**
+     * method : isLastEntry (public)
+     * class  : PlaylistView
+     * desc   : Test if a track is the last entry in view
+     * arg    : {object} track - The track to test in view
+     * return : {bool}
+     **/
+    isLastEntry: function(track) {
         return true;
     },
 
+
+    /**
+     * method : setSelected (public)
+     * class  : PlaylistView
+     * desc   : Select an entry in view from a track object
+     * arg    : {object} track - The track to select in view
+     **/
     setSelected: function(track) {
+        // TODO : setSelected without unselecting all entries.
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
                 this.entries[i].setIsSelected(false);
@@ -43,6 +93,11 @@ PlaylistView.prototype = {
     },
 
 
+    /**
+     * method : unSelectAll (public)
+     * class  : PlaylistView
+     * desc   : Unselect all entries in view
+     **/
     unSelectAll: function() {
         this.entriesSelected = {};
 
@@ -52,6 +107,7 @@ PlaylistView.prototype = {
             }
         }
     }
+
 };
 
 extendClass(View, PlaylistView);
