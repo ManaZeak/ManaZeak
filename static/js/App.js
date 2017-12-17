@@ -58,7 +58,7 @@ let App = function() {
 App.prototype = {
 
     init: function() {
-        this.player = new Player(this.cookies);
+        this.player = new Player();
         this.footBar = new FootBar();
         document.body.appendChild(this.footBar.getFootBar());
 

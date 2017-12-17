@@ -25,7 +25,7 @@ let TrackInfo = function(container) {
 TrackInfo.prototype = {
 
 
-//  --------------------------------  PUBLIC METHODS  --------------------------------  //
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     isVisible: function() {
         return this.ui.container.style.opacity == 1;
@@ -202,7 +202,7 @@ TrackInfo.prototype = {
     /**
      * method : _eventListener (private)
      * class  : TrackInfo
-     * desc   : TrackInfo event listeners
+         * desc   : TrackInfo event listeners
      **/
     _eventListener: function() {
         let that = this;

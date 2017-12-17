@@ -89,9 +89,11 @@ MyClass.prototype = {
      * class  : MyClass
      * desc   : myPublicFunction description
      * arg    : {type} arg - A function argument
+     * return : {bool} the returned value
      **/
     myPublicFunction: function(arg) {
         // Your code here
+        return true
     },
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -104,7 +106,10 @@ MyClass.prototype = {
      **/
     _myPrivateFunction: function(arg) {
 
-    }
+    },
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
 };
 
 ```
