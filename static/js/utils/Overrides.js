@@ -1,8 +1,8 @@
-/*
-
-    This file is for overriding vanilla JS
-
- */
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  This file is for overriding vanilla JS *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
 
 Event.prototype.stop = function() {
   this.stopPropagation();
@@ -13,8 +13,7 @@ Event.prototype.stop = function() {
 
 (function forceStop() {
     var addEvent = Element.prototype.addEventListener;
-    Element.prototype.addEventListener = function(type, handler, options)
-    {
+    Element.prototype.addEventListener = function(type, handler, options) {
         addEvent.call(this, type, function(event) {
             handler.apply(this, arguments);
             event.stop();

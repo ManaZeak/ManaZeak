@@ -1,19 +1,28 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Modal class - modals to use in various case in ManaZeak                            *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  StatsView class                        *
+ *                                         *
+ *  Handle stats                           *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
+
 let StatsView = function() {
 
     View.call(this, null);
     this._createUI();
-
     this._fetchStats();
 };
 
 
 StatsView.prototype = {
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _createUI (private)
+     * class  : StatsView
+     * desc   : Build UI elements
+     **/
     _createUI: function() {
         this.ui = {
             container: this.container,
@@ -74,6 +83,11 @@ StatsView.prototype = {
     },
 
 
+    /**
+     * method : _fetchStats (private)
+     * class  : StatsView
+     * desc   : Fetch statistics from server
+     **/
     _fetchStats: function() {
         let that = this;
         let modal = new Modal("fetchStats");
@@ -97,38 +111,12 @@ StatsView.prototype = {
     },
 
 
-    // prefartists : array
-    _updatePrefArtistsList: function(prefArtists) {
-        while (this.ui.prefArtists.firstChild) {
-            this.ui.prefArtists.removeChild(this.ui.prefArtists.firstChild);
-        }
-
-        for (let i = 0; i < prefArtists.length; ++i) {
-            if (prefArtists[i][0] !== null) {
-                let entry = document.createElement("LI");
-                entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
-                this.ui.prefArtists.appendChild(entry);
-            }
-        }
-    },
-
-
-    _updatePrefTracksList: function(prefTracks) {
-        while (this.ui.prefTracks.firstChild) {
-            this.ui.prefTracks.removeChild(this.ui.prefTracks.firstChild);
-        }
-
-        for (let i = 0; i < prefTracks.length; ++i) {
-            if (prefTracks[i][0] !== null) {
-                let entry = document.createElement("LI");
-                entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
-                this.ui.prefTracks.appendChild(entry);
-
-            }
-        }
-    },
-
-
+    /**
+     * method : _updateLeastArtistsList (private)
+     * class  : StatsView
+     * desc   : Updates the flop artists list
+     * arg    : {[int][int]} leastArtists - Key/Value artists array
+     **/
     _updateLeastArtistsList: function(leastArtists) {
         while (this.ui.leastArtists.firstChild) {
             this.ui.leastArtists.removeChild(this.ui.leastArtists.firstChild);
@@ -144,6 +132,33 @@ StatsView.prototype = {
     },
 
 
+    /**
+     * method : _updateLeastArtistsList (private)
+     * class  : StatsView
+     * desc   : Updates the favorite artists list
+     * arg    : {[int][int]} prefArtists - Key/Value artists array
+     **/
+    _updatePrefArtistsList: function(prefArtists) {
+        while (this.ui.prefArtists.firstChild) {
+            this.ui.prefArtists.removeChild(this.ui.prefArtists.firstChild);
+        }
+
+        for (let i = 0; i < prefArtists.length; ++i) {
+            if (prefArtists[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.prefArtists.appendChild(entry);
+            }
+        }
+    },
+
+
+    /**
+     * method : _updateLeastArtistsList (private)
+     * class  : StatsView
+     * desc   : Updates the flop tracks list
+     * arg    : {[int][int]} leastTracks - Key/Value tracks array
+     **/
     _updateLeastTracksList: function(leastTracks) {
         while (this.ui.leastTracks.firstChild) {
             this.ui.leastTracks.removeChild(this.ui.leastTracks.firstChild);
@@ -157,7 +172,30 @@ StatsView.prototype = {
 
             }
         }
+    },
+
+
+    /**
+     * method : _updatePrefTracksList (private)
+     * class  : StatsView
+     * desc   : Updates the favorite tracks list
+     * arg    : {[int][int]} prefTracks - Key/Value tracks array
+     **/
+    _updatePrefTracksList: function(prefTracks) {
+        while (this.ui.prefTracks.firstChild) {
+            this.ui.prefTracks.removeChild(this.ui.prefTracks.firstChild);
+        }
+
+        for (let i = 0; i < prefTracks.length; ++i) {
+            if (prefTracks[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                this.ui.prefTracks.appendChild(entry);
+
+            }
+        }
     }
+
 };
 
 extendClass(View, StatsView);

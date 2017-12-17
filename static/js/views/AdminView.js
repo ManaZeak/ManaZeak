@@ -1,9 +1,13 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Modal class - modals to use in various case in ManaZeak                            *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  AdminView class                        *
+ *                                         *
+ *  Handle admin settings                  *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
+
 let AdminView = function() {
+
     View.call(this, null);
     this._createUI();
 };
@@ -11,6 +15,13 @@ let AdminView = function() {
 
 AdminView.prototype = {
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _createUI (private)
+     * class  : AdminView
+     * desc   : Build UI elements
+     **/
     _createUI: function() {
         this.ui = {
             container: this.container
@@ -23,10 +34,10 @@ AdminView.prototype = {
             "ajax/getAdminView/",
             function(response) {
                 if (response.DONE) {
-                    that.ui.dropLabel = document.createElement("P");
-                    that.ui.dropButton = document.createElement("BUTTON");
+                    that.ui.dropLabel            = document.createElement("P");
+                    that.ui.dropButton           = document.createElement("BUTTON");
 
-                    that.ui.dropLabel.innerHTML = "Drop the database";
+                    that.ui.dropLabel.innerHTML  = "Drop the database";
                     that.ui.dropButton.innerHTML = "DROP";
 
                     that.ui.container.appendChild(that.ui.dropLabel);
@@ -43,6 +54,11 @@ AdminView.prototype = {
     },
 
 
+    /**
+     * method : _requestDrop (private)
+     * class  : AdminView
+     * desc   : Send a drop db request to the server
+     **/
     _requestDrop: function() {
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnW(mMfahHf9j6w6Fi3HFc",

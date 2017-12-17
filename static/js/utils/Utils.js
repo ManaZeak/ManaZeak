@@ -1,5 +1,15 @@
-"use strict";
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  Utils function for global app          *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
 
+/**
+ * method : extendClass (public)
+ * desc   : TODO
+ * arg    : {object} parent - TODO
+ *          {object} child - TODO
+ **/
 function extendClass(parent, child) {
     let proto = Object.create(parent.prototype);
 
@@ -10,6 +20,13 @@ function extendClass(parent, child) {
     child.prototype = proto;
 }
 
+
+/**
+ * method : precisionRound (public)
+ * desc   : Round a value to a given number of decimals
+ * arg    : {float} value - The value to round
+ *          {int} precision - The amount of digits after zero
+ **/
 function precisionRound(value, precision) {
     let multiplier = Math.pow(10, precision || 0);
 
@@ -17,6 +34,11 @@ function precisionRound(value, precision) {
 }
 
 
+/**
+ * method : secondsToTimecode (public)
+ * desc   : Transforms seconds into a readable timecode
+ * arg    : {int} time - Number of seconds
+ **/
 function secondsToTimecode(time) {
     // TODO : add days
     let transformedTime = {
@@ -50,13 +72,20 @@ function secondsToTimecode(time) {
 }
 
 
+/**
+ * method : sortObjectArrayBy (public)
+ * desc   : TODO
+ * arg    : {int} key - TODO
+ *          {bool} ascending - Sort way
+ *          {object} subobject - TODO
+ **/
 function sortObjectArrayBy(key, ascending, subobject) {
     return function(a, b) {
         if (subobject != null) {
             a = a[subobject];
             b = b[subobject];
         }
-        
+
         if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
@@ -71,6 +100,10 @@ function sortObjectArrayBy(key, ascending, subobject) {
 }
 
 
+/**
+ * method : getCookies (public)
+ * desc   : Retrieve cookies from browser
+ **/
 function getCookies() {
     let cookies = {};
 
@@ -86,6 +119,13 @@ function getCookies() {
 }
 
 
+/**
+ * method : setCookie (public)
+ * desc   : Stores a cookie in browser
+ * arg    : {string} cookieKey - The cookie var name
+ *          {string} cookieValue - The cookie value
+ *          {int} expiresDay - Expiration in days
+ **/
 function setCookie(cookieKey, cookieValue, expiresDay) {
     let d = new Date();
 
@@ -94,36 +134,61 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
     let expires = "expires="+ d.toUTCString();
 
     document.cookie = cookieKey + "=" +
-                      cookieValue + ";" +
-                      expires +
-                      ";path=/";
+        cookieValue + ";" +
+        expires +
+        ";path=/";
 }
 
 
-
-//TODO: Move to Overrides
-function toggleVisibilityLock(object) {
+/**
+ * method : toggleVisibilityLock (public)
+ * desc   : Toggle a visibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
+function toggleVisibilityLock(object) { //TODO: Move to Overrides
     if(object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
     else                                         { addVisibilityLock(object);    }
 }
 
 
+/**
+ * method : addVisibilityLock (public)
+ * desc   : Add a visibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
 function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-visible");
     object.dataset.mzkLock = 1;
 }
 
 
+/**
+ * method : removeVisibilityLock (public)
+ * desc   : Remove a visibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
 function removeVisibilityLock(object) {
     object.classList.remove("mzk-visible");
     object.dataset.mzkLock = 0;
 }
 
+
+/**
+ * method : isVisibilityLocked (public)
+ * desc   : Check visibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
 function isVisibilityLocked(object) {
     return object.dataset.mzkLock == '1';
 }
 
 
+/**
+ * method : getRequest (public)
+ * desc   : Function to GET an url
+ * arg    : {string} url - The address
+ *          {function} callback
+ **/
 function getRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
@@ -138,6 +203,12 @@ function getRequest(url, callback) {
 }
 
 
+/**
+ * method : JSONParsedGetRequest (public)
+ * desc   : Function to GET an url, and JSON.parse response
+ * arg    : {string} url - The address
+ *          {function} callback
+ **/
 function JSONParsedGetRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
@@ -152,6 +223,13 @@ function JSONParsedGetRequest(url, callback) {
 }
 
 
+/**
+ * method : JSONParsedPostRequest (public)
+ * desc   : Function to POST an url, and JSON.parse response
+ * arg    : {string} url - The address
+ *          {JSON.stringify} message - Information to give to the server
+ *          {function} callback
+ **/
 function JSONParsedPostRequest(url, message, callback) {
     let xhr = new XMLHttpRequest();
 
@@ -168,9 +246,16 @@ function JSONParsedPostRequest(url, message, callback) {
 }
 
 
-// Credit for this function : "Valodim"
-// https://gist.github.com/Valodim/5225460
+/**
+ * method : renderMoodFile (public)
+ * desc   : Render a .mood file into a svg -- using d3.js library
+ * arg    : {file} file - The .mood file
+ *          {object} parentDiv - Rendered moodbar container
+ **/
 function renderMoodFile(file, parentDiv) {
+    // Credit for this function : "Valodim"
+    // https://gist.github.com/Valodim/5225460
+
     let xhr = new XMLHttpRequest();
 
     xhr.open('GET', file, true);
@@ -216,6 +301,11 @@ function renderMoodFile(file, parentDiv) {
     xhr.send();
 }
 
+
+/**
+ * method : genUniqueID (public)
+ * desc   : Generates a unique ID
+ **/
 function genUniqueID() {
-     return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substr(2, 9);
 }
