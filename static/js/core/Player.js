@@ -139,7 +139,7 @@ Player.prototype = {
 
 
     /**
-     * method : _pause (public)
+     * method : _pause (private)
      * class  : Player
      * desc   : Pause player playback
      **/
@@ -150,7 +150,7 @@ Player.prototype = {
 
 
     /**
-     * method : _play (public)
+     * method : _play (private)
      * class  : Player
      * desc   : Play player playback
      **/
