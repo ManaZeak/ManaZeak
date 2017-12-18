@@ -74,13 +74,11 @@ Nota Bene : All variables and functions must be [lowerCamelCase](https://en.wikt
 
 // Class constant var
 
-let MyClass = function() {
+class MyClass {
+    constructor() {
 
-    // Your constructor instructions
-};
-
-
-MyClass.prototype = {
+        // Your constructor instructions
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -91,10 +89,10 @@ MyClass.prototype = {
      * arg    : {type} arg - A function argument
      * return : {type} the returned value
      **/
-    myPublicFunction: function(arg) {
+    myPublicFunction(arg) {
         // Your code here
         return true
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -104,15 +102,15 @@ MyClass.prototype = {
      * desc   : _myPrivateFunction description
      * arg    : {type} arg - A function argument
      **/
-    _myPrivateFunction: function(arg) {
+    _myPrivateFunction(arg) {
 
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getMyVar: function()      { return this.myVar;  },
+    getMyVar()      { return this.myVar;  }
 
-    setMyVar: function(myVar) { this.myVar = myVar; }
+    setMyVar(myVar) { this.myVar = myVar; }
 
 };
 
