@@ -245,20 +245,18 @@ ContextMenuEntry.prototype = {
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let ContextMenu = function(parentElement, openCallback, event) {
+class ContextMenu {
+    constructor(parentElement, openCallback, event) {
 
-    this.contextMenu   = null;
-    this.parentElement = parentElement;
-    this.openCallback  = openCallback;
-    this.element       = null;
-    this.isVisible     = false;
-    this.event         = event ? event : 'contextmenu';
+        this.contextMenu   = null;
+        this.parentElement = parentElement;
+        this.openCallback  = openCallback;
+        this.element       = null;
+        this.isVisible     = false;
+        this.event         = event ? event : 'contextmenu';
 
-    this._init();
-};
-
-
-ContextMenu.prototype = {
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -267,17 +265,15 @@ ContextMenu.prototype = {
      * class  : ContextMenu
      * desc   : Add an entry to the ContextMenu
      **/
-    addEntry: function(entryPath, displayStr, callback /*, more args for the callback */) {
+    addEntry(entryPath, displayStr, callback /*, more args for the callback */) {
         let context;
         let parent = this.contextMenu;
 
         let i, j;
         if (Array.isArray(entryPath)) {
-            pathForward: for(i = 0; i < entryPath.length - 1; i++)
-            {
-                for(j = 0; j < parent.children.length; j++)
-                    if(parent.children[j].entryID == entryPath[i])
-                    {
+            pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
+                for (j = 0; j < parent.children.length; ++j)
+                    if(parent.children[j].entryID == entryPath[i]) {
                         parent = parent.children[j];
                         continue pathForward;
                     }
@@ -290,7 +286,7 @@ ContextMenu.prototype = {
         context = Object.create(ContextMenuEntry.prototype);
         ContextMenuEntry.apply(context, arguments);
         parent.addChild(context);
-    },
+    }
 
 
     /**
@@ -298,9 +294,9 @@ ContextMenu.prototype = {
      * class  : ContextMenu
      * desc   : TODO
      **/
-    reattach: function() {
+    reattach() {
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -309,7 +305,7 @@ ContextMenu.prototype = {
      * class  : ContextMenu
      * desc   : Building entries and UI
      **/
-    _init: function() {
+    _init() {
         this.contextMenu = new ContextMenuEntry("master", "", null);
         this.contextMenu.activateEventListener();
         this.element    = document.createElement('DIV');
@@ -319,7 +315,7 @@ ContextMenu.prototype = {
 
         this._eventListener();
         this._keyListener();
-    },
+    }
 
 
     /**
@@ -327,7 +323,7 @@ ContextMenu.prototype = {
      * class  : ContextMenu
      * desc   : ContextMenu event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let self = this;
 
         this.parentElement.addEventListener(this.event, function(event) {
@@ -369,7 +365,7 @@ ContextMenu.prototype = {
             self.element.className = "";
             self.contextMenu.closeAll();
         });
-    },
+    }
 
 
     /**
@@ -377,7 +373,7 @@ ContextMenu.prototype = {
      * class  : ContextMenu
      * desc   : ContextMenu key listeners
      **/
-    _keyListener: function() {
+    _keyListener() {
         let that = this;
 
         document.addEventListener("keydown", function(event) {
@@ -392,4 +388,4 @@ ContextMenu.prototype = {
         });
     }
 
-};
+}

@@ -6,56 +6,54 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let App = function() {
+class App {
+    constructor() {
 
-    this.cookies          = getCookies();
-    this.topBar           = new TopBar();
-    this.queue            = new Queue();
-    this.mainContainer    = document.createElement("DIV");
-    this.mainContainer.id = "mainContainer";
-    this.footBar          = null;
-    this.player           = null;
-    this.playlists        = [];
-    this.activePlaylist   = null;
-    this.cssFiles         = {};
-    this.appViews         = {};
-    this._createDefaultViews();
+        this.cookies          = getCookies();
+        this.topBar           = new TopBar();
+        this.queue            = new Queue();
+        this.mainContainer    = document.createElement("DIV");
+        this.mainContainer.id = "mainContainer";
+        this.footBar          = null;
+        this.player           = null;
+        this.playlists        = [];
+        this.activePlaylist   = null;
+        this.cssFiles         = {};
+        this.appViews         = {};
+        this._createDefaultViews();
 
-    this.availableViews   = {
-        LIST: {
-            index: 0,
-            class: ListView
-        },
-        ALBUM: {
-            index: 1,
-            class: null
+        this.availableViews   = {
+            LIST: {
+                index: 0,
+                class: ListView
+            },
+            ALBUM: {
+                index: 1,
+                class: null
+            }
+        };
+
+        this.listeners = {};
+        for (let property in this) {
+            if (typeof this[property] === "function") {
+                this.listeners[property] = [];
+
+                let oldFunc = this[property];
+
+                this[property] = (function(pname, func) {
+                    return function() {
+                        let r = func.apply(this, arguments);
+                        for (let i = 0; i < this.listeners[pname].length; ++i)
+                            this.listeners[pname][i].apply(null, arguments);
+                        return r;
+                    }
+                }(property, oldFunc));
+            }
         }
-    };
 
-    this.listeners = {};
-    for (let property in this) {
-        if (typeof this[property] === "function") {
-            this.listeners[property] = [];
-
-            let oldFunc = this[property];
-
-            this[property] = (function(pname, func) {
-                return function() {
-                    let r = func.apply(this, arguments);
-                    for (let i = 0; i < this.listeners[pname].length; ++i)
-                        this.listeners[pname][i].apply(null, arguments);
-                    return r;
-                }
-            }(property, oldFunc));
-        }
+        document.body.appendChild(this.topBar.getTopBar());
+        document.body.appendChild(this.mainContainer);
     }
-
-    document.body.appendChild(this.topBar.getTopBar());
-    document.body.appendChild(this.mainContainer);
-};
-
-
-App.prototype = {
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -66,7 +64,7 @@ App.prototype = {
      * arg    : {object} event - TODO
      *        : {function} callback
      **/
-    addListener: function(event, callback) {
+    addListener(event, callback) {
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i)
                 if (this.listeners[event[i]])
@@ -76,7 +74,7 @@ App.prototype = {
         else if (this.listeners[event]) {
             this.listeners[event].push(callback);
         }
-    },
+    }
 
 
     /**
@@ -85,9 +83,9 @@ App.prototype = {
      * desc   : Adjust ManaZeak volume
      * arg    : {float} amount - Value between 0 and 1
      **/
-    adjustVolume: function(amount) {
+    adjustVolume(amount) {
         this.setVolume(this.player.getPlayer().volume + amount);
-    },
+    }
 
 
     /**
@@ -96,10 +94,10 @@ App.prototype = {
      * desc   : Change page title
      * arg    : {string} path - Current track path
      **/
-    changePageTitle: function(path) {
+    changePageTitle(path) {
         // IDEA : Recontruct frrom Track attributes bc special char won't display as below ... (?/etc.)
         document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
-    },
+    }
 
 
     /**
@@ -107,9 +105,9 @@ App.prototype = {
      * class  : App
      * desc   : Update FootBar PlaylistPreview w/ activePlaylist
      **/
-    changePlaylist: function() {
+    changePlaylist() {
         this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
-    },
+    }
 
 
     /**
@@ -119,7 +117,7 @@ App.prototype = {
      * arg    : {object} track - The track to set as current
      *          {bool} previous - For server about history
      **/
-    changeTrack: function(track, previous) {
+    changeTrack(track, previous) {
         if (track == null) { return false; }
 
         let that          = this;
@@ -153,7 +151,7 @@ App.prototype = {
             }
         );
         return true;
-    },
+    }
 
 
     /**
@@ -162,10 +160,10 @@ App.prototype = {
      * desc   : Change the main view
      * arg    : {object} view - The view to set
      **/
-    changeView: function(view) {
+    changeView(view) {
         this.mainContainer.innerHTML = '';
         this.mainContainer.appendChild(view.getContainer());
-    },
+    }
 
 
     /**
@@ -175,7 +173,7 @@ App.prototype = {
      * arg    : {string} name - The view name
      *          {object} view - The View object
      **/
-    createAppView: function(name, view) {
+    createAppView(name, view) {
         if (this.appViews[name] == null) {
             this.appViews[name] = view;
             return true;
@@ -184,7 +182,7 @@ App.prototype = {
         else {
             return false;
         }
-    },
+    }
 
 
     /**
@@ -193,9 +191,9 @@ App.prototype = {
      * desc   : Fast forward playback
      * arg    : {int} amount - Time in seconds
      **/
-    fastForward: function(amount) {
+    fastForward(amount) {
         this.player.getPlayer().currentTime += amount;
-    },
+    }
 
 
     /**
@@ -204,11 +202,11 @@ App.prototype = {
      * desc   : Fetch playlists tracks
      * arg    : {int} begin - The index to begin the loop with
      **/
-    getAllPlaylistsTracks: function(begin) {
+    getAllPlaylistsTracks(begin) {
         for (let i = begin; i < this.playlists.length; ++i) {
             this.playlists[i].getPlaylistsTracks(undefined);
         }
-    },
+    }
 
 
     /**
@@ -217,11 +215,11 @@ App.prototype = {
      * desc   : Get user playlists only
      * return : {object} element
      **/
-    getPlaylists: function() {
+    getPlaylists() {
         return this.playlists.filter(function(element) {
             return element.isLibrary != true;
         });
-    },
+    }
 
 
     /**
@@ -229,7 +227,7 @@ App.prototype = {
      * class  : App
      * desc   : Init components and request user playlist from server
      **/
-    init: function() {
+    init() {
         this.player  = new Player();
         this.footBar = new FootBar();
         document.body.appendChild(this.footBar.getFootBar());
@@ -250,7 +248,7 @@ App.prototype = {
                 that._appStart(response);
             }
         );
-    },
+    }
 
 
     /**
@@ -258,14 +256,14 @@ App.prototype = {
      * class  : App
      * desc   : Log out from current user
      **/
-    logOut: function() {
+    logOut() {
         getRequest(
             "logout",
             function() {
                 location.reload();
             }
         );
-    },
+    }
 
 
     /**
@@ -274,9 +272,9 @@ App.prototype = {
      * desc   : TODO
      * arg    : {type} element - TODO
      **/
-    moveQueue: function(element, newPos) {
+    moveQueue(element, newPos) {
         this.queue.slide(element, newPos);
-    },
+    }
 
 
     /**
@@ -284,9 +282,9 @@ App.prototype = {
      * class  : App
      * desc   : Mute playback
      **/
-    mute: function() {
+    mute() {
         this.player.mute();
-    },
+    }
 
 
     /**
@@ -294,10 +292,10 @@ App.prototype = {
      * class  : App
      * desc   : Get next track
      **/
-    next: function() {
+    next() {
         if (this.queue.isEmpty() == false) { this.popQueue();                     }
         else                               { this.activePlaylist.playNextTrack(); }
-    },
+    }
 
 
     /**
@@ -305,9 +303,9 @@ App.prototype = {
      * class  : App
      * desc   : TODO
      **/
-    popQueue: function () {
+    popQueue() {
         this.changeTrack(this.queue.dequeue(), false);
-    },
+    }
 
 
     /**
@@ -315,11 +313,11 @@ App.prototype = {
      * class  : App
      * desc   : Get previous track
      **/
-    previous: function() {
+    previous() {
         if (!this.player.isEmpty()) {
             this.activePlaylist.playPreviousTrack();
         }
-    },
+    }
 
 
     /**
@@ -328,9 +326,9 @@ App.prototype = {
      * desc   : TODO
      * arg    : {object} track - The Track to push in Queue
      **/
-    pushQueue: function(track) {
+    pushQueue(track) {
         this.queue.enqueue(track);
-    },
+    }
 
 
     /**
@@ -338,12 +336,12 @@ App.prototype = {
      * class  : App
      * desc   : Refresh ManaZeak whole UI
      **/
-    refreshUI: function() {
+    refreshUI() {
         //this.playlists[this.activePlaylist - 1].refreshViews();
         this.topBar.refreshTopBar();
         this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
         this.footBar.progressBar.refreshInterval(this.player.getPlayer());
-    },
+    }
 
 
     /**
@@ -351,9 +349,9 @@ App.prototype = {
      * class  : App
      * desc   : Repeat current track
      **/
-    repeatTrack: function() {
+    repeatTrack() {
         this.player.repeatTrack();
-    },
+    }
 
 
     /**
@@ -361,7 +359,7 @@ App.prototype = {
      * class  : App
      * desc   : User requested a new playlist
      **/
-    requestNewPlaylist: function() {
+    requestNewPlaylist() {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
@@ -371,7 +369,7 @@ App.prototype = {
             that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
             that.activePlaylist = that.playlists[0];
         }));
-    },
+    }
 
 
     /**
@@ -379,7 +377,7 @@ App.prototype = {
      * class  : App
      * desc   : Admin requested a new library
      **/
-    requestNewLibrary: function() {
+    requestNewLibrary() {
         let that = this;
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
@@ -389,7 +387,7 @@ App.prototype = {
             that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
             that.activePlaylist = that.playlists[0];
         }));
-    },
+    }
 
 
     /**
@@ -398,9 +396,9 @@ App.prototype = {
      * desc   : Reverse the Queue order
      * arg    : {bool} reverse
      **/
-    reverseQueue: function(reverse) {
+    reverseQueue(reverse) {
         this.queue.setReverse(reverse);
-    },
+    }
 
 
     /**
@@ -409,9 +407,9 @@ App.prototype = {
      * desc   : Rewind playback
      * arg    : {int} amount - Time in seconds
      **/
-    rewind: function(amount) {
+    rewind(amount) {
         this.player.getPlayer().currentTime -= amount;
-    },
+    }
 
 
     /**
@@ -420,11 +418,11 @@ App.prototype = {
      * desc   : Show the given AppView
      * arg    : {string} name - AppView name
      **/
-    showAppView: function(name) {
+    showAppView(name) {
         if (this.appViews[name]) {
             this.changeView(this.appViews[name]);
         }
-    },
+    }
 
 
     /**
@@ -433,12 +431,12 @@ App.prototype = {
      * desc   : Set ManaZeak volume to a given value
      * arg    : {float} volume - Volume between 0 and 1
      **/
-    setVolume: function(volume) {
+    setVolume(volume) {
         if (volume > 1)      { volume = 1; }
         else if (volume < 0) { volume = 0; }
 
         this.player.getPlayer().volume = precisionRound(volume, 2);
-    },
+    }
 
 
     /**
@@ -446,12 +444,12 @@ App.prototype = {
      * class  : App
      * desc   : Stop ManaZeak playback
      **/
-    stopPlayback: function() {
+    stopPlayback() {
         this.changePageTitle("ManaZeak");
         this.player.stopPlayback();
         this.topBar.resetMoodbar();
         this.footBar.resetUI();
-    },
+    }
 
 
     /**
@@ -459,7 +457,7 @@ App.prototype = {
      * class  : App
      * desc   : Toggle mute on player
      **/
-    toggleMute: function() {
+    toggleMute() {
         if (this.player.isMuted) {
             this.unmute();
             this.setVolume(this.player.oldVolume);
@@ -469,7 +467,7 @@ App.prototype = {
             this.mute();
             this.setVolume(0);
         }
-    },
+    }
 
 
     /**
@@ -477,7 +475,7 @@ App.prototype = {
      * class  : App
      * desc   : Toggle play on player
      **/
-    togglePlay: function() {
+    togglePlay() {
         if (this.player.isEmpty()) {
             this.changeTrack(this.activePlaylist.getFirstEntry(), false);
         }
@@ -485,7 +483,7 @@ App.prototype = {
         else {
             this.player.togglePlay();
         }
-    },
+    }
 
 
     /**
@@ -493,9 +491,9 @@ App.prototype = {
      * class  : App
      * desc   : Toggle repeat mode on playlist
      **/
-    toggleRepeat: function() {
+    toggleRepeat() {
         this.activePlaylist.toggleRepeat();
-    },
+    }
 
 
     /**
@@ -503,9 +501,9 @@ App.prototype = {
      * class  : App
      * desc   : Toggle shuffle mode on playlist
      **/
-    toggleShuffle: function() {
+    toggleShuffle() {
         this.activePlaylist.toggleShuffle();
-    },
+    }
 
 
     /**
@@ -513,9 +511,9 @@ App.prototype = {
      * class  : App
      * desc   : Unmute playback
      **/
-    unmute: function() {
+    unmute() {
         this.player.unmute();
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -525,7 +523,7 @@ App.prototype = {
      * class  : App
      * desc   : ManaZeak start point. Fetching playlist, build UI according to those, and activate the last playlist used
      **/
-    _appStart: function(playlists) {
+    _appStart(playlists) {
         let that = this;
         if (playlists.DONE) { // User already have playlists
             let modal = new Modal("fetchPlaylists"); // TODO : gen unique ID from utils here
@@ -563,17 +561,17 @@ App.prototype = {
         }
 
         this._keyListener();
-    },
+    }
 
     /**
      * method : _createDefaultViews (private)
      * class  : App
      * desc   : Create AppViews (Stats, Admin)
      **/
-    _createDefaultViews: function() {
+    _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
-    },
+    }
 
 
     /**
@@ -581,7 +579,7 @@ App.prototype = {
      * class  : App
      * desc   : App key listeners
      **/
-    _keyListener: function() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
+    _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
         let that = this;
 
         // Key pressed event
@@ -635,7 +633,7 @@ App.prototype = {
         });
     }
 
-};
+}
 
 
 //TODO: Closure or something
