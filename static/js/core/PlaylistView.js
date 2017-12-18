@@ -8,13 +8,11 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-let PlaylistView = function(data) {
+class PlaylistView extends View {
+    constructor() {
 
-    View.call(this, data);
-};
-
-
-PlaylistView.prototype = {
+        super();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -25,9 +23,9 @@ PlaylistView.prototype = {
      * arg    : {int} id - A function argument
      * return : {object} A view entry
      **/
-    getEntryById: function(id) {
+    getEntryById(id) {
         return null;
-    },
+    }
 
 
     /**
@@ -36,9 +34,9 @@ PlaylistView.prototype = {
      * desc   : Return the first entry in view
      * return : {object} A view entry
      **/
-    getFirstEntry: function() {
+    getFirstEntry() {
         return null;
-    },
+    }
 
 
     /**
@@ -47,9 +45,9 @@ PlaylistView.prototype = {
      * desc   : Return the next entry in view
      * return : {object} A view entry
      **/
-    getNextEntry: function() {
+    getNextEntry() {
         return null;
-    },
+    }
 
 
     /**
@@ -58,9 +56,9 @@ PlaylistView.prototype = {
      * desc   : Return the previous entry in view
      * return : {object} A view entry
      **/
-    getPreviousEntry: function() {
+    getPreviousEntry() {
         return null;
-    },
+    }
 
 
     /**
@@ -70,9 +68,9 @@ PlaylistView.prototype = {
      * arg    : {object} track - The track to test in view
      * return : {bool}
      **/
-    isLastEntry: function(track) {
+    isLastEntry(track) {
         return true;
-    },
+    }
 
 
     /**
@@ -81,7 +79,7 @@ PlaylistView.prototype = {
      * desc   : Select an entry in view from a track object
      * arg    : {object} track - The track to select in view
      **/
-    setSelected: function(track) {
+    setSelected(track) {
         // TODO : setSelected without unselecting all entries.
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
@@ -91,7 +89,7 @@ PlaylistView.prototype = {
                 this.entries[i].setIsSelected(true);
             }
         }
-    },
+    }
 
 
     /**
@@ -99,7 +97,7 @@ PlaylistView.prototype = {
      * class  : PlaylistView
      * desc   : Unselect all entries in view
      **/
-    unSelectAll: function() {
+    unSelectAll() {
         this.entriesSelected = {};
 
         for (let i = 0; i < this.entries.length ;++i) {
@@ -109,6 +107,4 @@ PlaylistView.prototype = {
         }
     }
 
-};
-
-extendClass(View, PlaylistView);
+}

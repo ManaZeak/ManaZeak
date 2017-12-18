@@ -6,60 +6,58 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-let ListViewEntry = function(track, listView) {
+class ListViewEntry {
+    constructor(track, listView) {
 
-    this.track = track;
-    this.entry           = document.createElement("DIV");
+        this.track = track;
+        this.entry           = document.createElement("DIV");
 
-    let duration         = document.createElement("DIV");
-    let title            = document.createElement("DIV");
-    let artist           = document.createElement("DIV");
-    let composer         = document.createElement("DIV");
-    let performer        = document.createElement("DIV");
-    let album            = document.createElement("DIV");
-    let genre            = document.createElement("DIV");
-    let bitRate          = document.createElement("DIV");
-    let year             = document.createElement("DIV");
+        let duration         = document.createElement("DIV");
+        let title            = document.createElement("DIV");
+        let artist           = document.createElement("DIV");
+        let composer         = document.createElement("DIV");
+        let performer        = document.createElement("DIV");
+        let album            = document.createElement("DIV");
+        let genre            = document.createElement("DIV");
+        let bitRate          = document.createElement("DIV");
+        let year             = document.createElement("DIV");
 
-    this.entry.className = "trackContainer";
-    duration.className   = "col-duration";
-    title.className      = "col-title";
-    artist.className     = "col-artist";
-    composer.className   = "col-composer";
-    performer.className  = "col-performer";
-    album.className      = "col-album";
-    genre.className      = "col-genre";
-    bitRate.className    = "col-bitRate";
-    year.className       = "col-year";
+        this.entry.className = "trackContainer";
+        duration.className   = "col-duration";
+        title.className      = "col-title";
+        artist.className     = "col-artist";
+        composer.className   = "col-composer";
+        performer.className  = "col-performer";
+        album.className      = "col-album";
+        genre.className      = "col-genre";
+        bitRate.className    = "col-bitRate";
+        year.className       = "col-year";
 
-    duration.innerHTML   = secondsToTimecode(track.duration);
-    title.innerHTML      = track.title;
-    artist.innerHTML     = track.artist;
-    composer.innerHTML   = track.composer;
-    performer.innerHTML  = track.performer;
-    album.innerHTML      = track.album;
-    genre.innerHTML      = track.genre;
-    bitRate.innerHTML    = Math.round(track.bitRate / 1000) + " kbps";
-    year.innerHTML       = track.year;
+        duration.innerHTML   = secondsToTimecode(track.duration);
+        title.innerHTML      = track.title;
+        artist.innerHTML     = track.artist;
+        composer.innerHTML   = track.composer;
+        performer.innerHTML  = track.performer;
+        album.innerHTML      = track.album;
+        genre.innerHTML      = track.genre;
+        bitRate.innerHTML    = Math.round(track.bitRate / 1000) + " kbps";
+        year.innerHTML       = track.year;
 
-    this.entry.appendChild(duration);
-    this.entry.appendChild(title);
-    this.entry.appendChild(artist);
-    this.entry.appendChild(composer);
-    //this.entry.appendChild(performer);
-    this.entry.appendChild(album);
-    this.entry.appendChild(genre);
-    this.entry.appendChild(bitRate);
-    this.entry.appendChild(year);
+        this.entry.appendChild(duration);
+        this.entry.appendChild(title);
+        this.entry.appendChild(artist);
+        this.entry.appendChild(composer);
+        //this.entry.appendChild(performer);
+        this.entry.appendChild(album);
+        this.entry.appendChild(genre);
+        this.entry.appendChild(bitRate);
+        this.entry.appendChild(year);
 
-    // ListViewEntry internal attributes
-    this.isSelected = false;
+        // ListViewEntry internal attributes
+        this.isSelected = false;
 
-    this.insert(listView);
-};
-
-
-ListViewEntry.prototype = {
+        this.insert(listView);
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -69,10 +67,10 @@ ListViewEntry.prototype = {
      * desc   : Insert the entry in the list
      * return : {object} listView - The HTML container
      **/
-    insert: function(listView) {
+    insert(listView) {
         this.entry.dataset.childID = listView.children.length;
         listView.appendChild(this.entry);
-    },
+    }
 
 
     /**
@@ -81,18 +79,18 @@ ListViewEntry.prototype = {
      * desc   : Set the entry as selected/!selected
      * return : {bool} isSelected
      **/
-    setIsSelected: function(isSelected) {
+    setIsSelected(isSelected) {
         this.isSelected = isSelected;
 
         if (this.isSelected) { this.entry.classList.add("mzk-selected");    }
         else                 { this.entry.classList.remove("mzk-selected"); }
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getIsSelected: function() { return this.isSelected; }
+    getIsSelected() { return this.isSelected; }
 
-};
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * *
@@ -103,44 +101,12 @@ ListViewEntry.prototype = {
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-let ListView = function(data) {
+class ListView extends PlaylistView {
+    constructor(data) {
 
-    this.listView        = null;
-    this.entries         = [];
-    this.entriesSelected = {};
-    this.trackInfo       = null;
-    this.dblClick        = false;
-    this.contextMenu     = null;
-
-    this.header = {
-        container:      null,
-        duration:       null,
-        title:          null,
-        artist:         null,
-        composer:       null,
-        performer:      null,
-        album:          null,
-        genre:          null,
-        bitRate:        null,
-        year:           null
-    };
-    this.sort = {
-        isDurationAsc:  false,
-        isTitleAsc:     false,
-        isArtistAsc:    false,
-        isComposerAsc:  false,
-        isPerformerAsc: false,
-        isAlbumAsc:     false,
-        isGenreAsc:     false,
-        isBitRateAsc:   false,
-        isYearAsc:      false
-    };
-
-    PlaylistView.call(this, data);
-};
-
-
-ListView.prototype = {
+        super();
+        this._init(data);
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -150,9 +116,9 @@ ListView.prototype = {
      * desc   : Get data from a given playlist
      * return : {object} playlist - The playlist to retrieve data from
      **/
-    getDataFromPlaylist: function(playlist) {
+    getDataFromPlaylist(playlist) {
         return playlist.tracks;
-    },
+    }
 
 
     /**
@@ -162,13 +128,13 @@ ListView.prototype = {
      * arg    : {int} id - The ID to retrieve
      * return : {object} ListView entry
      **/
-    getEntryById: function(id) {
+    getEntryById(id) {
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].track.id.track === id) {
                 return this.entries[i].track;
             }
         }
-    },
+    }
 
 
     /**
@@ -177,7 +143,7 @@ ListView.prototype = {
      * desc   : returns the first entry of the ListView
      * return : {object} ListView first entry
      **/
-    getFirstEntry: function() {
+    getFirstEntry() {
         if (this.entries.length > 0) {
             return this.entries[0].track;
         }
@@ -186,7 +152,7 @@ ListView.prototype = {
             new Notification("ERROR", "Empty Playlist", "This playlist has no tracks");
             return null;
         }
-    },
+    }
 
 
     /**
@@ -195,13 +161,13 @@ ListView.prototype = {
      * desc   : Returns the next entry after the selected one
      * return : {object} ListView next entry
      **/
-    getNextEntry: function() {
+    getNextEntry() {
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i + 1) % this.entries.length].track;
             }
         }
-    },
+    }
 
 
     /**
@@ -210,13 +176,13 @@ ListView.prototype = {
      * desc   : Returns the previous entry before the selected one
      * return : {object} ListView previous entry
      **/
-    getPreviousEntry: function() {
+    getPreviousEntry() {
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
             }
         }
-    },
+    }
 
 
     /**
@@ -225,9 +191,9 @@ ListView.prototype = {
      * desc   : Test if selected track is the last entry in ListView
      * return : {bool} true if yes
      **/
-    isLastEntry: function() {
+    isLastEntry() {
         return !!this.entries[this.entries.length - 1].getIsSelected();
-    },
+    }
 
 
     /**
@@ -236,7 +202,7 @@ ListView.prototype = {
      * desc   : Select an entry using a Track object
      * arg    : {object} track - The track to select
      **/
-    setSelected: function(track) {
+    setSelected(track) {
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
                 this.entries[i].setIsSelected(false);
@@ -245,7 +211,7 @@ ListView.prototype = {
                 this.entries[i].setIsSelected(true);
             }
         }
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -255,11 +221,11 @@ ListView.prototype = {
      * desc   : Add entries in ListView for a given tracks collection
      * arg    : {[object]} tracks - Tracks array to display
      **/
-    _addEntries: function(tracks) {
+    _addEntries(tracks) {
         for (let i = 0; i < tracks.length; ++i) {
             this.entries.push(new ListViewEntry(tracks[i], this.listView));
         }
-    },
+    }
 
 
     /**
@@ -267,7 +233,7 @@ ListView.prototype = {
      * class  : ListView
      * desc   : TODO
      **/
-    _contextMenuSetup: function () {
+    _contextMenuSetup() {
         let that             = this;
         let clickedEntry     = undefined;
         this.contextMenu     = new ContextMenu(this.listView, function(event) {
@@ -319,7 +285,30 @@ ListView.prototype = {
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
             window.app.requestNewPlaylist();
         });
-    },
+    }
+
+
+
+    /**
+     * method : _createUI (private)
+     * class  : ListView
+     * desc   : Build UI elements
+     **/
+    _createUI(data) {
+        this.listView       = document.createElement("DIV");
+        this.listView.id    ="listView";
+
+        this._initHeader();
+        this._addEntries(data);
+        this.container.appendChild(this.header.container);
+        this.container.appendChild(this.listView);
+
+        this.trackInfo      = new TrackInfo(this.container);
+        this.hoveredTrack   = null;
+        this.hoveredTimeout = null;
+
+        this._contextMenuSetup();
+    }
 
 
     /**
@@ -327,7 +316,7 @@ ListView.prototype = {
      * class  : ListView
      * desc   : ListView event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let that = this;
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
@@ -393,7 +382,7 @@ ListView.prototype = {
         window.app.addListener("stopPlayback", function() {
             that._unSelectAll();
         });
-    },
+    }
 
 
     /**
@@ -402,21 +391,40 @@ ListView.prototype = {
      * desc   : Create view and append data to it
      * arg    : {object} data - Tracks
      **/
-    _init: function(data) {
-        this.listView       = document.createElement("DIV");
-        this.listView.id    ="listView";
+    _init(data) {
+        this.listView        = null;
+        this.entries         = [];
+        this.entriesSelected = {};
+        this.trackInfo       = null;
+        this.dblClick        = false;
+        this.contextMenu     = null;
 
-        this._initHeader();
-        this._addEntries(data);
-        this.container.appendChild(this.header.container);
-        this.container.appendChild(this.listView);
+        this.header = {
+            container:      null,
+            duration:       null,
+            title:          null,
+            artist:         null,
+            composer:       null,
+            performer:      null,
+            album:          null,
+            genre:          null,
+            bitRate:        null,
+            year:           null
+        };
+        this.sort = {
+            isDurationAsc:  false,
+            isTitleAsc:     false,
+            isArtistAsc:    false,
+            isComposerAsc:  false,
+            isPerformerAsc: false,
+            isAlbumAsc:     false,
+            isGenreAsc:     false,
+            isBitRateAsc:   false,
+            isYearAsc:      false
+        };
 
-        this.trackInfo      = new TrackInfo(this.container);
-        this.hoveredTrack   = null;
-        this.hoveredTimeout = null;
-
-        this._contextMenuSetup();
-    },
+        this._createUI(data);
+    }
 
 
     /**
@@ -424,7 +432,7 @@ ListView.prototype = {
      * class  : ListView
      * desc   : Init ListView header
      **/
-    _initHeader: function() {
+    _initHeader() {
         this.header.container             = document.createElement("DIV");
         this.header.container.className   = "columnHeader";
 
@@ -467,7 +475,7 @@ ListView.prototype = {
         this.header.container.appendChild(this.header.genre);
         this.header.container.appendChild(this.header.bitRate);
         this.header.container.appendChild(this.header.year);
-    },
+    }
 
 
     /**
@@ -476,7 +484,7 @@ ListView.prototype = {
      * desc   : Show TrackInfo on hovered track
      * arg    : {object} event - Mouse event
      **/
-    _showTrackInfo: function(event) {
+    _showTrackInfo(event) {
         if (event.target == this.listView) {
             return this.trackInfo.setVisible(false);
         }
@@ -502,7 +510,7 @@ ListView.prototype = {
                 }, 1000);
             }
         }
-    },
+    }
 
 
     /**
@@ -512,7 +520,7 @@ ListView.prototype = {
      * arg    : {string} argument - The argument to sort array by
      *          {bool} ascending - Sort way
      **/
-    _sortBy: function(argument, ascending) {
+    _sortBy(argument, ascending) {
         //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
         this.listView.innerHTML = "";
@@ -522,7 +530,7 @@ ListView.prototype = {
         }
 
         this.contextMenu.reattach();
-    },
+    }
 
 
     /**
@@ -530,7 +538,7 @@ ListView.prototype = {
      * class  : ListView
      * desc   : Unselect all entries in ListView
      **/
-    _unSelectAll: function() {
+    _unSelectAll() {
         this.entriesSelected = {};
 
         for (let i = 0; i < this.entries.length ;++i) {
@@ -538,7 +546,7 @@ ListView.prototype = {
                 this.entries[i].setIsSelected(false);
             }
         }
-    },
+    }
 
 
     /**
@@ -547,7 +555,7 @@ ListView.prototype = {
      * desc   : On ListView clicked
      * arg    : {object} event - Mouse event
      **/
-    _viewClicked: function(event) {
+    _viewClicked(event) {
         let that   = this;
         let target = event.target;
 
@@ -584,6 +592,4 @@ ListView.prototype = {
         this.entries[id].setIsSelected(newState);
     }
 
-};
-
-extendClass(PlaylistView, ListView);
+}

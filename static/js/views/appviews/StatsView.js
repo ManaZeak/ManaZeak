@@ -6,15 +6,13 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-let StatsView = function() {
+class StatsView extends View {
+    constructor() {
 
-    View.call(this, null);
-    this._createUI();
-    this._fetchStats();
-};
-
-
-StatsView.prototype = {
+        super();
+        this._createUI();
+        this._fetchStats();
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -23,7 +21,7 @@ StatsView.prototype = {
      * class  : StatsView
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.ui = {
             container: this.container,
             userName: document.createElement("H1"),
@@ -80,7 +78,7 @@ StatsView.prototype = {
         this.ui.tracksRight.appendChild(this.ui.leastTracks);
         this.ui.container.appendChild(this.ui.tracksLeft);
         this.ui.container.appendChild(this.ui.tracksRight);
-    },
+    }
 
 
     /**
@@ -88,7 +86,7 @@ StatsView.prototype = {
      * class  : StatsView
      * desc   : Fetch statistics from server
      **/
-    _fetchStats: function() {
+    _fetchStats() {
         let that = this;
         let modal = new Modal("fetchStats");
         modal.open();
@@ -108,7 +106,7 @@ StatsView.prototype = {
                 that._updateLeastTracksList(response.LEAST_TRACKS);
             }
         );
-    },
+    }
 
 
     /**
@@ -117,7 +115,7 @@ StatsView.prototype = {
      * desc   : Updates the flop artists list
      * arg    : {[int][int]} leastArtists - Key/Value artists array
      **/
-    _updateLeastArtistsList: function(leastArtists) {
+    _updateLeastArtistsList(leastArtists) {
         while (this.ui.leastArtists.firstChild) {
             this.ui.leastArtists.removeChild(this.ui.leastArtists.firstChild);
         }
@@ -129,7 +127,7 @@ StatsView.prototype = {
                 this.ui.leastArtists.appendChild(entry);
             }
         }
-    },
+    }
 
 
     /**
@@ -138,7 +136,7 @@ StatsView.prototype = {
      * desc   : Updates the favorite artists list
      * arg    : {[int][int]} prefArtists - Key/Value artists array
      **/
-    _updatePrefArtistsList: function(prefArtists) {
+    _updatePrefArtistsList(prefArtists) {
         while (this.ui.prefArtists.firstChild) {
             this.ui.prefArtists.removeChild(this.ui.prefArtists.firstChild);
         }
@@ -150,7 +148,7 @@ StatsView.prototype = {
                 this.ui.prefArtists.appendChild(entry);
             }
         }
-    },
+    }
 
 
     /**
@@ -159,7 +157,7 @@ StatsView.prototype = {
      * desc   : Updates the flop tracks list
      * arg    : {[int][int]} leastTracks - Key/Value tracks array
      **/
-    _updateLeastTracksList: function(leastTracks) {
+    _updateLeastTracksList(leastTracks) {
         while (this.ui.leastTracks.firstChild) {
             this.ui.leastTracks.removeChild(this.ui.leastTracks.firstChild);
         }
@@ -172,7 +170,7 @@ StatsView.prototype = {
 
             }
         }
-    },
+    }
 
 
     /**
@@ -181,7 +179,7 @@ StatsView.prototype = {
      * desc   : Updates the favorite tracks list
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
-    _updatePrefTracksList: function(prefTracks) {
+    _updatePrefTracksList(prefTracks) {
         while (this.ui.prefTracks.firstChild) {
             this.ui.prefTracks.removeChild(this.ui.prefTracks.firstChild);
         }
@@ -196,6 +194,4 @@ StatsView.prototype = {
         }
     }
 
-};
-
-extendClass(View, StatsView);
+}

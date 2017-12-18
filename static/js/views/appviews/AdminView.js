@@ -6,14 +6,12 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-let AdminView = function() {
+class AdminView extends View {
+    constructor() {
 
-    View.call(this, null);
-    this._createUI();
-};
-
-
-AdminView.prototype = {
+        super();
+        this._createUI();
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -22,7 +20,7 @@ AdminView.prototype = {
      * class  : AdminView
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.ui = {
             container: this.container
         };
@@ -51,7 +49,7 @@ AdminView.prototype = {
                 }
             }
         );
-    },
+    }
 
 
     /**
@@ -59,7 +57,7 @@ AdminView.prototype = {
      * class  : AdminView
      * desc   : Send a drop db request to the server
      **/
-    _requestDrop: function() {
+    _requestDrop() {
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnW(mMfahHf9j6w6Fi3HFc",
             function(response) {
@@ -68,8 +66,6 @@ AdminView.prototype = {
                 }
             }
         );
-    },
+    }
 
-};
-
-extendClass(View, AdminView);
+}
