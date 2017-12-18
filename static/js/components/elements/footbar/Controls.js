@@ -116,13 +116,19 @@ class Controls  {
         this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
         this.ui.queueExpander.button.addEventListener("click", function() {
             if (that.queuePreview.getIsLocked()) {
-                that.queuePreview.hide();
-                that.ui.queueExpander.image.src = "/static/img/player/queue.svg";
+                let self = that;
+                window.setTimeout(function() {
+                    self.queuePreview.hide();
+                    self.ui.queueExpander.image.src = "/static/img/player/queue.svg";
+                }, 50); // 50ms to avoid double click open/close instant QueuePreview
             }
 
             else {
-                that.queuePreview.lock();
-                that.ui.queueExpander.image.src = "/static/img/player/queue-locked.svg";
+                let self = that;
+                window.setTimeout(function() {
+                    self.queuePreview.lock();
+                    self.ui.queueExpander.image.src = "/static/img/player/queue-locked.svg";
+                }, 50); // 50ms to avoid double click open/close instant QueuePreview
             }
         });
 
