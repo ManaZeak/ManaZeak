@@ -34,20 +34,22 @@ class App {
         };
 
         this.listeners = {};
-        for (let property in this) {
-            if (typeof this[property] === "function") {
-                this.listeners[property] = [];
+        let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+        for (let i = 0; i < properties.length; ++i) {
+            if (typeof this[properties[i]] === "function") {
+                this.listeners[properties[i]] = [];
 
-                let oldFunc = this[property];
+                let oldFunc = this[properties[i]];
 
-                this[property] = (function(pname, func) {
+                this[properties[i]] = (function(pname, func) {
                     return function() {
                         let r = func.apply(this, arguments);
-                        for (let i = 0; i < this.listeners[pname].length; ++i)
+                        for (let i = 0; i < this.listeners[pname].length; ++i) {
                             this.listeners[pname][i].apply(null, arguments);
+                        }
                         return r;
                     }
-                }(property, oldFunc));
+                }(properties[i], oldFunc));
             }
         }
 
@@ -327,6 +329,7 @@ class App {
      * arg    : {object} track - The Track to push in Queue
      **/
     pushQueue(track) {
+        console.log(track);
         this.queue.enqueue(track);
     }
 
@@ -634,7 +637,6 @@ class App {
     }
 
 }
-
 
 //TODO: Closure or something
 let addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');

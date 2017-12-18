@@ -207,6 +207,7 @@ class QueuePreview {
 
 
         window.app.addListener('pushQueue', function(track) {
+            console.log(track);
             self._addEntry(track);
         });
         window.app.addListener('popQueue', function() {

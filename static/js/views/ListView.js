@@ -11,7 +11,6 @@ class ListViewEntry {
 
         this.track = track;
         this.entry           = document.createElement("DIV");
-
         let duration         = document.createElement("DIV");
         let title            = document.createElement("DIV");
         let artist           = document.createElement("DIV");
@@ -366,8 +365,7 @@ class ListView extends PlaylistView {
             that._sortBy("year", that.sort.isYearAsc);
         });
         window.app.addListener('changeTrack', function(track) {
-            let limit = that.entries.length;
-            for (let i = 0; i < limit; ++i)
+            for (let i = 0; i < that.entries.length; ++i)
                 if (that.entries[i].track == track) {
                     let relativeDelta = that.entries[i].entry.offsetTop + that.entries[i].entry.scrollHeight / 2;
 
