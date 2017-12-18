@@ -10,24 +10,21 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Notification = function(type, title, message) {
+class Notification {
+    constructor(type, title, message) {
 
+        // TODO : test incoming var ...
+        // TODO : create notifController class
+        this.type         = type;
+        this.title        = title;
+        this.message      = message;
+        this.notification = null;
+        this.duration     = 3000; // Notification visible duration
+        this.interval     = 1;    // Refreshing interval
 
-    // TODO : test incoming var ...
-    // TODO : create notifController class
-    this.type         = type;
-    this.title        = title;
-    this.message      = message;
-    this.notification = null;
-    this.duration     = 3000; // Notification visible duration
-    this.interval     = 1;    // Refreshing interval
-
-    this._createUI();
-    this._lifeCycle();
-};
-
-
-Notification.prototype = {
+        this._createUI();
+        this._lifeCycle();
+    };
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -36,7 +33,7 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Make notification disappear
      **/
-    _close: function() {
+    _close() {
         //TODO: CSS Animation instead
         let that = this;
         let i    = 100;
@@ -51,7 +48,7 @@ Notification.prototype = {
         })();
 
         window.clearTimeout(this.timeoutHandle);
-    },
+    }
 
 
     /**
@@ -59,7 +56,7 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.ui = {
             icon:    null,
             title:   null,
@@ -99,7 +96,7 @@ Notification.prototype = {
         this.notification.appendChild(this.ui.title);
         this.notification.appendChild(this.ui.message);
         this.notification.appendChild(this.ui.close);
-    },
+    }
 
 
     /**
@@ -107,10 +104,10 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Notification event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         this.notification.addEventListener("mousemove", this._resetTimeout.bind(this));
         this.ui.close.addEventListener("click", this._close.bind(this));
-    },
+    }
 
 
     /**
@@ -118,13 +115,13 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Launch the notification life cycle
      **/
-    _lifeCycle: function() {
+    _lifeCycle() {
         document.body.appendChild(this.notification);
         this._eventListener();
 
         this._open();
         this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
-    },
+    }
 
 
     /**
@@ -132,7 +129,7 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Make notification appear
      **/
-    _open: function() {
+    _open() {
         //TODO: CSS Animation instead
         let that = this;
         let i    = 0;
@@ -144,7 +141,7 @@ Notification.prototype = {
             }
             window.setTimeout(iterate, that.interval);
         })();
-    },
+    }
 
 
     /**
@@ -152,9 +149,9 @@ Notification.prototype = {
      * class  : Notification
      * desc   : Reset notification close timeout
      **/
-    _resetTimeout: function() {
+    _resetTimeout() {
         window.clearTimeout(this.timeoutHandle);
         this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     }
 
-};
+}

@@ -7,19 +7,17 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Player = function() {
+class Player {
+    constructor() {
 
-    this.player    = document.getElementById("audioPlayer");
-    this.isPlaying = false;
-    this.isMuted   = false;
-    this.oldVolume = 0;
-    this.emptyURL  = "";
+        this.player    = document.getElementById("audioPlayer");
+        this.isPlaying = false;
+        this.isMuted   = false;
+        this.oldVolume = 0;
+        this.emptyURL  = "";
 
-    this._init();
-};
-
-
-Player.prototype = {
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -29,9 +27,9 @@ Player.prototype = {
      * desc   : Test if player source is empty
      * return : {bool} true if src is empty
      **/
-    isEmpty: function() {
+    isEmpty() {
         return this.player.src == this.emptyURL;
-    },
+    }
 
 
     /**
@@ -39,10 +37,10 @@ Player.prototype = {
      * class  : Player
      * desc   : Switch on and off player playback depending on its current status
      **/
-    togglePlay: function() {
+    togglePlay() {
         if (this.isPlaying) { this._pause(); }
         else                { this._play();  }
-    },
+    }
 
 
     /**
@@ -50,11 +48,11 @@ Player.prototype = {
      * class  : Player
      * desc   : Stop player playback and reset player src
      **/
-    stopPlayback: function() {
+    stopPlayback() {
         this._pause();
         this.isPlaying  = false;
         this.player.src = "";
-    },
+    }
 
 
     /**
@@ -62,11 +60,11 @@ Player.prototype = {
      * class  : Player
      * desc   : Mute player and store old value
      **/
-    mute: function() {
+    mute() {
         this.isMuted       = true;
         this.oldVolume     = this.player.volume; // Store old volume for restoration on unmute
         this.player.volume = 0;
-    },
+    }
 
 
     /**
@@ -74,10 +72,10 @@ Player.prototype = {
      * class  : Player
      * desc   : Unmute player and restore old value
      **/
-    unmute: function() {
+    unmute() {
         this.isMuted       = false;
         this.player.volume = this.oldVolume;
-    },
+    }
 
 
     /**
@@ -86,10 +84,10 @@ Player.prototype = {
      * desc   : Change player source and stop playback
      * arg    : {string} url - Path to targeted track
      **/
-    changeSource: function(url) {
+    changeSource(url) {
         this.stopPlayback();
         this.player.src = url;
-    },
+    }
 
 
     /**
@@ -97,13 +95,13 @@ Player.prototype = {
      * class  : Player
      * desc   : Reset player current time and repeat the track
      **/
-    repeatTrack: function() {
+    repeatTrack() {
         this.player.currentTime = 0;
 
         if (!this.isPlaying) {
             this._play();
         }
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -112,14 +110,14 @@ Player.prototype = {
      * class  : Player
      * desc   : Player event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let that = this;
         this.player.addEventListener("loadedmetadata", window.app.refreshUI.bind(window.app));
         this.player.addEventListener("ended", function() {
             that.isPlaying = false;
             window.app.next();
         });
-    },
+    }
 
 
     /**
@@ -127,12 +125,12 @@ Player.prototype = {
      * class  : Player
      * desc   : Init player volume, set/store player empty source and listen
      **/
-    _init: function() {
+    _init() {
         this.player.volume = 0.5; // TODO : init from global var in App os user settings
         this.player.src    = '';
         this.emptyURL      = this.player.src;
         this._eventListener();
-    },
+    }
 
 
     /**
@@ -140,10 +138,10 @@ Player.prototype = {
      * class  : Player
      * desc   : Pause player playback
      **/
-    _pause: function() {
+    _pause() {
         this.isPlaying = false;
         this.player.pause();
-    },
+    }
 
 
     /**
@@ -151,19 +149,19 @@ Player.prototype = {
      * class  : Player
      * desc   : Play player playback
      **/
-    _play: function() {
+    _play() {
         this.isPlaying = true;
         this.player.play();
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getPlayer: function()       { return this.player;             },
-    getIsPlaying: function()    { return this.isPlaying;          },
-    getCurrentTime: function()  { return this.player.currentTime; },
-    getDuration: function()     { return this.player.duration;    },
+    getPlayer()       { return this.player;             }
+    getIsPlaying()    { return this.isPlaying;          }
+    getCurrentTime()  { return this.player.currentTime; }
+    getDuration()     { return this.player.duration;    }
 
-    setIsMuted: function(muted) { this.isMuted = muted;           },
-    setVolume: function(volume) { this.player.volume = volume;    }
+    setIsMuted(muted) { this.isMuted = muted;           }
+    setVolume(volume) { this.player.volume = volume;    }
 
-};
+}

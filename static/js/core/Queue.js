@@ -6,15 +6,12 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let QueueEntry = function(track) {
-
-    this.next     = null;
-    this.previous = null;
-    this.track    = track;
-};
-
-
-QueueEntry.prototype = {
+class QueueEntry {
+    constructor(track) {
+        this.next     = null;
+        this.previous = null;
+        this.track    = track;
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -24,7 +21,7 @@ QueueEntry.prototype = {
      * desc   : TODO
      * arg    : {type} other - TODO
      **/
-    addNext: function(other) {
+    addNext(other) {
         if (other == null) { return; }
 
         other.unlink();
@@ -36,7 +33,7 @@ QueueEntry.prototype = {
 
         this.next      = other;
         other.previous = this;
-    },
+    }
 
 
     /**
@@ -45,7 +42,7 @@ QueueEntry.prototype = {
      * desc   : TODO
      * arg    : {type} other - TODO
      **/
-    addPrev: function(other) {
+    addPrev(other) {
         if (other == null) { return; }
 
         other.unlink();
@@ -57,7 +54,7 @@ QueueEntry.prototype = {
 
         this.previous = other;
         other.next    = this;
-    },
+    }
 
 
     /**
@@ -65,7 +62,7 @@ QueueEntry.prototype = {
      * class  : QueueEntry
      * desc   : TODO
      **/
-    moveNext: function() {
+    moveNext() {
         let tmp_t;
 
         if (this.next) {
@@ -73,7 +70,7 @@ QueueEntry.prototype = {
             this.track      = this.next.track;
             this.next.track = tmp_t;
         }
-    },
+    }
 
 
     /**
@@ -81,7 +78,7 @@ QueueEntry.prototype = {
      * class  : QueueEntry
      * desc   : TODO
      **/
-    movePrev: function() {
+    movePrev() {
         let tmp_t;
 
         if (this.previous) {
@@ -89,7 +86,7 @@ QueueEntry.prototype = {
             this.track          = this.previous.track;
             this.previous.track = tmp_t;
         }
-    },
+    }
 
 
     /**
@@ -97,7 +94,7 @@ QueueEntry.prototype = {
      * class  : QueueEntry
      * desc   : TODO
      **/
-    unlink: function() {
+    unlink() {
         if (this.previous) { this.previous.next = this.next;     }
         if (this.next)     { this.next.previous = this.previous; }
 
@@ -105,7 +102,7 @@ QueueEntry.prototype = {
         this.next     = null;
     }
 
-};
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -116,15 +113,13 @@ QueueEntry.prototype = {
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Queue = function() {
+class Queue {
+    constructor() {
 
-    this.first   = null;
-    this.last    = null;
-    this.reverse = false;
-};
-
-
-Queue.prototype = {
+        this.first   = null;
+        this.last    = null;
+        this.reverse = false;
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
     // TODO : add text saying that queue is empty when no track is loaded. Use same size as LI item, and put text at the center, same font as Track title in LI
@@ -136,7 +131,7 @@ Queue.prototype = {
      * desc   : Remove an element in the queue
      * return : {object} The track to be played
      **/
-    dequeue: function() {
+    dequeue() {
         if (this.first == null) { return; }
 
         let tmp;
@@ -158,7 +153,7 @@ Queue.prototype = {
         tmp.unlink();
 
         return tmp.track;
-    },
+    }
 
 
     /**
@@ -167,14 +162,14 @@ Queue.prototype = {
      * desc   : Append a new track in the queue
      * arg    : {object} track - The track to enqueue
      **/
-    enqueue: function(track) {
+    enqueue(track) {
         let newLink = new QueueEntry(track);
 
         if (this.first == null) { this.first = newLink;       }
         else                    { this.last.addNext(newLink); }
 
         this.last = newLink;
-    },
+    }
 
 
     /**
@@ -183,9 +178,9 @@ Queue.prototype = {
      * desc   : Check queue emptiness
      * return : {bool}
      **/
-    isEmpty: function() {
+    isEmpty() {
         return this.first == null;
-    },
+    }
 
 
     /**
@@ -194,9 +189,9 @@ Queue.prototype = {
      * desc   : Check is reverse status
      * return : {bool}
      **/
-    isReverse: function () {
+    isReverse() {
         return this.reverse;
-    },
+    }
 
 
     /**
@@ -205,9 +200,9 @@ Queue.prototype = {
      * desc   : Set reverse status
      * arg    : {bool} newReverse - Set reverse value
      **/
-    setReverse: function(newReverse) {
+    setReverse(newReverse) {
         this.reverse = newReverse == true;
-    },
+    }
 
 
     /**
@@ -217,7 +212,7 @@ Queue.prototype = {
      * arg    : {int} element - the index of the track to move
      *          {int} newPos - the new desired index
      **/
-    slide: function(element, newPos) {
+    slide(element, newPos) {
         let link = this.first;
         let diff = newPos - element;
 
@@ -238,4 +233,4 @@ Queue.prototype = {
         }
     }
 
-};
+}

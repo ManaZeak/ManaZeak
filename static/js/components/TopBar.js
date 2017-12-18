@@ -9,23 +9,21 @@
  *  isLibrary   : {bool} Not mandatory                  *
  *                                                         * *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
-let PlaylistBarEntry = function(playlist, playlistBar, id, isLibrary) {
+class PlaylistBarEntry {
+    constructor(playlist, playlistBar, id, isLibrary) {
 
-    this.entry                 = document.createElement("div");
-    this.entry.dataset.childID = id;
-    this.entry.id              = playlist.id;
-    this.playlist              = playlist;
-    this.isLibrary             = isLibrary;
-    if (this.isLibrary) { this.entry.className = "library";  }
-    else                { this.entry.className = "playlist"; }
-    this.entry.innerHTML       = playlist.getName();
-    this.isSelected            = false;
+        this.entry                 = document.createElement("div");
+        this.entry.dataset.childID = id;
+        this.entry.id              = playlist.id;
+        this.playlist              = playlist;
+        this.isLibrary             = isLibrary;
+        if (this.isLibrary) { this.entry.className = "library";  }
+        else                { this.entry.className = "playlist"; }
+        this.entry.innerHTML       = playlist.getName();
+        this.isSelected            = false;
 
-    playlistBar.appendChild(this.entry);
-};
-
-
-PlaylistBarEntry.prototype = {
+        playlistBar.appendChild(this.entry);
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -35,19 +33,19 @@ PlaylistBarEntry.prototype = {
      * desc   : Set entry as selected/!selected
      * arg    : {bool} isSelected
      **/
-    setIsSelected: function(isSelected) {
+    setIsSelected(isSelected) {
         this.isSelected = isSelected;
 
         if (this.isSelected) { this.entry.classList.add("librarySelected");    }
         else                 { this.entry.classList.remove("librarySelected"); }
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getId: function()         { return this.entry.id;   },
-    getIsSelected: function() { return this.isSelected; }
+    getId()         { return this.entry.id;   }
+    getIsSelected() { return this.isSelected; }
 
-};
+}
 
 
 
@@ -59,16 +57,14 @@ PlaylistBarEntry.prototype = {
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let TopBar = function() {
+class TopBar {
+    constructor() {
 
-    this._createUI();
-    this.userMenu   = new UserMenu(this.topBar);
-    this.wishList   = new WishList(this.topBar);
-    this.newLibMenu = null;
-};
-
-
-TopBar.prototype = {
+        this._createUI();
+        this.userMenu   = new UserMenu(this.topBar);
+        this.wishList   = new WishList(this.topBar);
+        this.newLibMenu = null;
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -78,7 +74,7 @@ TopBar.prototype = {
      * desc   : Request the moodbar from a track ID and set it
      * arg    : {int} id - The Track ID
      **/
-    changeMoodbar: function(id) {
+    changeMoodbar(id) {
         if (!this.moodbarThumb.isVisible) {
             this.moodbarThumb.isVisible = true;
             addVisibilityLock(this.moodbarThumb);
@@ -98,7 +94,7 @@ TopBar.prototype = {
         xhr.send(JSON.stringify({
             TRACK_ID: id
         }));
-    },
+    }
 
 
     /**
@@ -108,14 +104,14 @@ TopBar.prototype = {
      * arg    : {[objects]} playlists - User playlists
      *        : {object} selectedPlaylist - The playlist to put focus on
      **/
-    init: function(playlists, selectedPlaylist) {
+    init(playlists, selectedPlaylist) {
         this.playlists = playlists;
         this._removeEntries();
         this._addEntries();
         this._setSelected(selectedPlaylist.id, true);
         this._eventListener();
         this._contextMenuSetup();
-    },
+    }
 
 
     /**
@@ -123,12 +119,12 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Refresh the TopBar components
      **/
-    refreshTopBar: function() {
+    refreshTopBar() {
         this.resetMoodbar();
         this._removeEntries();
         this._addEntries();
         this._setSelected(this.selectedPlaylist);
-    },
+    }
 
 
     /**
@@ -136,11 +132,11 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Erase moodbar content and hide moodbar thumb
      **/
-    resetMoodbar: function() {
+    resetMoodbar() {
         d3.selectAll('#moodbar svg').remove();
         this.moodbarThumb.isVisible = false;
         removeVisibilityLock(this.moodbarThumb);
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -149,7 +145,7 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Add all playlists as entries in playlist bar
      **/
-    _addEntries: function() {
+    _addEntries() {
         this.playlistBar.removeChild(this.newPlaylistButton);
 
         for (let i = 0; i < this.playlists.length; ++i) {
@@ -157,7 +153,7 @@ TopBar.prototype = {
         }
 
         this.playlistBar.appendChild(this.newPlaylistButton);
-    },
+    }
 
 
     /**
@@ -165,7 +161,7 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Setup a context menu for Add library button and listen
      **/
-    _contextMenuSetup: function() {
+    _contextMenuSetup() {
         this.newLibMenu = new ContextMenu(this.newPlaylistButton, null, 'click');
         this.newLibMenu.addEntry(null, 'New Library', function() {
             window.app.requestNewLibrary();
@@ -173,7 +169,7 @@ TopBar.prototype = {
         this.newLibMenu.addEntry(null, 'New Playlist', function() {
             window.app.requestNewPlaylist();
         });
-    },
+    }
 
 
     /**
@@ -181,7 +177,7 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.moodbar                     = null;
         this.playlistBar                 = null;
         this.playlists                   = null;
@@ -206,7 +202,7 @@ TopBar.prototype = {
         this.playlistBar.appendChild(this.newPlaylistButton);
 
         this.moodbarThumb.isVisible      = false;
-    },
+    }
 
 
     /**
@@ -214,9 +210,9 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : TopBar event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         this.playlistBar.addEventListener("click", this._viewClicked.bind(this));
-    },
+    }
 
 
     /**
@@ -224,13 +220,13 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Remove all entries in playlist bar
      **/
-    _removeEntries: function() {
+    _removeEntries() {
         for (let i = 0; i < this.entries.length; ++i) {
             this.playlistBar.removeChild(this.entries[i].entry)
         }
 
         this.entries = []; // To the GC, and beyond
-    },
+    }
 
 
     /**
@@ -240,15 +236,14 @@ TopBar.prototype = {
      * arg    : {int} id - the id of the track to select
      *        : {bool} useID - a boolean indicating whether to use the real ID of the track (true) or the index in the array (false)
      **/
-    _setSelected: function(id, useID) {
+    _setSelected(id, useID) {
         for (let i = 0; i < this.entries.length; ++i) {
             if ((useID != true && i == id) || (useID == true && this.entries[i].getId() == id)) {
                 this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
             }
         }
-
-    },
+    }
 
 
     /**
@@ -256,11 +251,11 @@ TopBar.prototype = {
      * class  : TopBar
      * desc   : Unselect every entry in playlist bar
      **/
-    _unSelectAll: function() {
+    _unSelectAll() {
         for (let i = 0; i < this.entries.length; ++i) {
             this.entries[i].setIsSelected(false);
         }
-    },
+    }
 
 
     /**
@@ -269,7 +264,7 @@ TopBar.prototype = {
      * desc   : Handle clicks in TopBar
      * arg    : {object} event - the click event
      **/
-    _viewClicked: function(event) {
+    _viewClicked(event) {
         let target = event.target;
 
         while (target.parentNode && target.parentNode !== this.playlistBar) {
@@ -287,10 +282,10 @@ TopBar.prototype = {
             this._setSelected(id);
             this.entries[id].playlist.activate();
         }
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getTopBar: function() { return this.topBar; }
+    getTopBar() { return this.topBar; }
 
-};
+}

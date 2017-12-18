@@ -8,54 +8,52 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Modal = function(type) {
+class Modal {
+    constructor(type) {
 
-    this.url         = null;
-    this.id          = "modal-" + genUniqueID();
-    this.callback    = null;
-    this.canBeClosed = false;
-    this.closeButton = null;
+        this.url         = null;
+        this.id          = "modal-" + genUniqueID();
+        this.callback    = null;
+        this.canBeClosed = false;
+        this.closeButton = null;
 
-    this._createUI();
+        this._createUI();
 
-    switch (type) {
-        case "fetchPlaylists":
-            this._fetchPlaylistsUI();
-            break;
+        switch (type) {
+            case "fetchPlaylists":
+                this._fetchPlaylistsUI();
+                break;
 
-        case "fetchStats":
-            this._fetchStatsUI();
-            break;
+            case "fetchStats":
+                this._fetchStatsUI();
+                break;
 
-        case "newLibrary":
-            this._newLibraryUI();
-            this.canBeClosed = true;
-            break;
+            case "newLibrary":
+                this._newLibraryUI();
+                this.canBeClosed = true;
+                break;
 
-        case "newPlaylist":
-            this._newPlaylistUI();
-            this.canBeClosed = true;
-            break;
+            case "newPlaylist":
+                this._newPlaylistUI();
+                this.canBeClosed = true;
+                break;
 
-        case "scanLibrary":
-            this._scanLibraryUI();
-            break;
+            case "scanLibrary":
+                this._scanLibraryUI();
+                break;
 
-        case "newWish":
-            this._newWishUI();
-            this.canBeClosed = true;
-            break;
+            case "newWish":
+                this._newWishUI();
+                this.canBeClosed = true;
+                break;
 
-        default:
-            new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
-            break;
+            default:
+                new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
+                break;
+        }
+
+        this._eventListener();
     }
-
-    this._eventListener();
-};
-
-
-Modal.prototype = {
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -64,9 +62,9 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Remove the modal from body
      **/
-    close: function() {
+    close() {
         document.body.removeChild(document.getElementById(this.id));
-    },
+    }
 
 
     /**
@@ -74,9 +72,9 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Add the modal to the body
      **/
-    open: function() {
+    open() {
         document.body.appendChild(this.ui.overlay);
-    },
+    }
 
 
     /**
@@ -85,9 +83,9 @@ Modal.prototype = {
      * desc   : Set the modal callback
      * arg    : {function} callback
      **/
-    setCallback: function(callback) {
+    setCallback(callback) {
         this.callback = callback;
-    },
+    }
 
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -97,13 +95,13 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Append a close button to modal container
      **/
-    _appendCloseButton: function() {
+    _appendCloseButton() {
         this.closeButton     = document.createElement("IMG");
         this.closeButton.id  = "closeButton";
         this.closeButton.src = "/static/img/utils/close.svg";
 
         this.ui.container.appendChild(this.closeButton);
-    },
+    }
 
 
     /**
@@ -114,7 +112,7 @@ Modal.prototype = {
      *          {string} path - Given library path
      *          {bool} convert - conversion to ID3v2
      **/
-    _checkLibraryInputs: function(name, path, convert) {
+    _checkLibraryInputs(name, path, convert) {
         if (name.value !== '' && path.value !== '') {
             if (this.callback) {
                 this.callback(name, path, convert);
@@ -138,7 +136,7 @@ Modal.prototype = {
                 new Notification("INFO", "Both fields are empty.", "You must fill both fields to create a new library.");
             }
         }
-    },
+    }
 
 
     /**
@@ -147,7 +145,7 @@ Modal.prototype = {
      * desc   : Checks user input for new playlist
      * arg    : {string} name - Given playlist name
      **/
-    _checkPlaylistInputs: function(name) {
+    _checkPlaylistInputs(name) {
         if (name.value !== '') {
             if (this.callback) {
                 this.callback(name);
@@ -158,7 +156,7 @@ Modal.prototype = {
             name.style.border = "solid 1px red";
             new Notification("INFO", "Name field is empty.", "You must specify the name of your playlist.");
         }
-    },
+    }
 
 
     /**
@@ -166,7 +164,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.ui = {
             overlay:   document.createElement("DIV"),
             container: document.createElement("DIV"),
@@ -187,7 +185,7 @@ Modal.prototype = {
         this.ui.container.appendChild(this.ui.content);
         this.ui.container.appendChild(this.ui.footer);
         this.ui.overlay.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -195,12 +193,12 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Modal event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         if (this.canBeClosed) {
             this.closeButton.addEventListener("click", this.close.bind(this));
             // TODO : listening esc key
         }
-    },
+    }
 
 
     /**
@@ -208,7 +206,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for fetchPlaylists modal
      **/
-    _fetchPlaylistsUI: function() {
+    _fetchPlaylistsUI() {
         this.ui.container.id       = "fetchPlaylists";
         this.ui.title.innerHTML    = "Fetching your playlists";
 
@@ -229,7 +227,7 @@ Modal.prototype = {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(text);
-    },
+    }
 
 
     /**
@@ -237,7 +235,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for fetchStats modal
      **/
-    _fetchStatsUI: function() {
+    _fetchStatsUI() {
         this.ui.container.id       = "fetchPlaylists";
         this.ui.title.innerHTML    = "Crushing data";
 
@@ -258,7 +256,7 @@ Modal.prototype = {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(text);
-    },
+    }
 
 
     /**
@@ -266,7 +264,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for newLibrary modal
      **/
-    _newLibraryUI: function() {
+    _newLibraryUI() {
         this.ui.container.id    = "newLibrary";
         this.ui.title.innerHTML = "New library";
 
@@ -310,7 +308,7 @@ Modal.prototype = {
         scan.addEventListener("click", function() {
             that._checkLibraryInputs(name, path, convert);
         });
-    },
+    }
 
 
     /**
@@ -318,7 +316,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for newPlaylist modal
      **/
-    _newPlaylistUI: function() {
+    _newPlaylistUI() {
         this.ui.container.id    = "newLibrary";
         this.ui.title.innerHTML = "New playlist";
 
@@ -346,7 +344,7 @@ Modal.prototype = {
         create.addEventListener("click", function() {
             that._checkPlaylistInputs(name);
         });
-    },
+    }
 
 
     /**
@@ -354,7 +352,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for newWish modal
      **/
-    _newWishUI: function() {
+    _newWishUI() {
         this.ui.container.id    = "newWish";
         this.ui.title.innerHTML = "Track suggestion";
 
@@ -398,7 +396,7 @@ Modal.prototype = {
                 new Notification("INFO", "Suggestion field is empty.", "You must specify a name or an url for your track.");
             }
         });
-    },
+    }
 
 
     /**
@@ -406,7 +404,7 @@ Modal.prototype = {
      * class  : Modal
      * desc   : Build UI elements for scanLibrary modal
      **/
-    _scanLibraryUI: function() {
+    _scanLibraryUI() {
         this.ui.container.id       = "scan";
         this.ui.title.innerHTML    = "Library scan in progress...";
 
@@ -432,4 +430,4 @@ Modal.prototype = {
         this.ui.footer.appendChild(footerText);
     }
 
-};
+}

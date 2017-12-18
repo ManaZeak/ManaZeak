@@ -6,19 +6,17 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let FootBar = function() {
+class FootBar {
+    constructor() {
 
-    this._createUI();
-    this.trackPreview    = new TrackPreview(this.footBar);
-    this.controls        = new Controls(this.controlsContainer);
-    this.progressBar     = new ProgressBar(this.controlsContainer);
-    this.playlistPreview = new PlaylistPreview(this.footBar);
-    this.footBar.appendChild(this.controlsContainer);
-    this._init();
-};
-
-
-FootBar.prototype = {
+        this._createUI();
+        this.trackPreview    = new TrackPreview(this.footBar);
+        this.controls        = new Controls(this.controlsContainer);
+        this.progressBar     = new ProgressBar(this.controlsContainer);
+        this.playlistPreview = new PlaylistPreview(this.footBar);
+        this.footBar.appendChild(this.controlsContainer);
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -27,9 +25,9 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Delay volume bar invisibility
      **/
-    delayHideVolume: function() {
+    delayHideVolume() {
         this.controls.volumeBar.delayHideVolume();
-    },
+    }
 
 
     /**
@@ -37,10 +35,10 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Reset TrackPreview and ProgressBar. TODO : option to close PlaylistPreview also
      **/
-    resetUI: function() {
+    resetUI() {
         this.trackPreview.resetTrackPreview();
         this.progressBar.resetProgressBar();
-    },
+    }
 
 
     /**
@@ -48,9 +46,9 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Updates VolumeBar with volume down
      **/
-    volumeDown: function(event) {
+    volumeDown(event) {
         this.controls.volumeBar.volumeDown(event);
-    },
+    }
 
 
     /**
@@ -58,9 +56,9 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Updates VolumeBar with volume up
      **/
-    volumeUp: function(event) {
+    volumeUp(event) {
         this.controls.volumeBar.volumeUp(event);
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -69,14 +67,14 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Build UI elements
      **/
-    _createUI: function() {
+    _createUI() {
         this.footBar                     = document.createElement("DIV");
         this.controlsContainer           = document.createElement("DIV");
         this.progressContainer           = document.createElement("DIV");
 
         this.footBar.id                  = "footBar";
         this.controlsContainer.className = "mzk-controls-container";
-    },
+    }
 
 
     /**
@@ -84,9 +82,9 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : Listen to FootBar events
      **/
-    _init: function() {
+    _init() {
         this._eventListener();
-    },
+    }
 
 
     /**
@@ -94,7 +92,7 @@ FootBar.prototype = {
      * class  : FootBar
      * desc   : FootBar event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let that = this;
 
         window.app.addListener('stopPlayback', function() {
@@ -103,10 +101,10 @@ FootBar.prototype = {
         window.app.addListener(['fastForward', 'rewind'], function() {
             that.progressBar.updateProgress(window.app.player.getPlayer());
         });
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getFootBar: function() { return this.footBar; }
+    getFootBar() { return this.footBar; }
 
-};
+}

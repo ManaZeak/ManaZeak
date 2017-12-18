@@ -11,36 +11,34 @@
  *                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Playlist = function(id, name, isLibrary, isLoading, rawTracks, callback) {
+class Playlist {
+    constructor(id, name, isLibrary, isLoading, rawTracks, callback) {
 
-    //TODO: get shuffle and repeat from server
-    if (typeof rawTracks !== 'undefined') { this.rawTracks = rawTracks; } //TODO: fix this
-    else                                  { this.rawTracks = [];        }
-    if (typeof callback !== 'undefined')  { this.callback = callback;   }
-    else                                  { this.callback = null;       }
-    this.id                  = id;
-    this.name                = name;
-    this.isLibrary           = isLibrary;
-    this.isLoading           = isLoading;
-    this.modal               = null;
-    this.shuffleMode         = 0; // 0 : off, 1 : random, 2: shuffle
-    this.repeatMode          = 0; // 0 : off, 1 : one,    2: all
-    this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
-    this.tracks              = [];
-    this.currentTrack        = 0;
-    this.trackTotal          = 0;
-    this.artistTotal         = 0; // TODO
-    this.albumTotal          = 0; // TODO
-    this.durationTotal       = 0;
-    let viewkeys             = Object.keys(window.app.availableViews);
-    this.views               = new Array(viewkeys.length).fill(null);
-    this.activeView          = window.app.availableViews[viewkeys[0]];
+        //TODO: get shuffle and repeat from server
+        if (typeof rawTracks !== 'undefined') { this.rawTracks = rawTracks; } //TODO: fix this
+        else                                  { this.rawTracks = [];        }
+        if (typeof callback !== 'undefined')  { this.callback  = callback;  }
+        else                                  { this.callback  = null;      }
+        this.id                  = id;
+        this.name                = name;
+        this.isLibrary           = isLibrary;
+        this.isLoading           = isLoading;
+        this.modal               = null;
+        this.shuffleMode         = 0; // 0 : off, 1 : random, 2: shuffle
+        this.repeatMode          = 0; // 0 : off, 1 : one,    2: all
+        this.getTracksIntervalId = -1; // Interval id for _getTracksFromServer_aux
+        this.tracks              = [];
+        this.currentTrack        = 0;
+        this.trackTotal          = 0;
+        this.artistTotal         = 0; // TODO
+        this.albumTotal          = 0; // TODO
+        this.durationTotal       = 0;
+        let viewkeys             = Object.keys(window.app.availableViews);
+        this.views               = new Array(viewkeys.length).fill(null);
+        this.activeView          = window.app.availableViews[viewkeys[0]];
 
-    this._init();
-};
-
-
-Playlist.prototype = {
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -49,10 +47,10 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Set in app the current playlist to this
      **/
-    activate: function() {
+    activate() {
         window.app.activePlaylist = this;
         this.showView(window.app.availableViews.LIST);
-    },
+    }
 
 
     /**
@@ -61,9 +59,9 @@ Playlist.prototype = {
      * desc   : Returns the first entry of active view
      * return : {object} View entry
      **/
-    getFirstEntry: function() {
+    getFirstEntry() {
         return this.activeView.getFirstEntry();
-    },
+    }
 
 
     /**
@@ -72,7 +70,7 @@ Playlist.prototype = {
      * desc   : Fetch raw tracks from server
      * arg    : {function} callback - Not mandatory
      **/
-    getPlaylistsTracks: function(callback) {
+    getPlaylistsTracks(callback) {
         let that = this;
 
         JSONParsedPostRequest(
@@ -92,7 +90,7 @@ Playlist.prototype = {
                 }
             }
         );
-    },
+    }
 
 
     /**
@@ -100,7 +98,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Play next track, according to user repeat/shuffle settings
      **/
-    playNextTrack: function() {
+    playNextTrack() {
         let that = this;
 
         if (this.repeatMode === 1) {
@@ -163,7 +161,7 @@ Playlist.prototype = {
                     break;
             }
         }
-    },
+    }
 
 
     /**
@@ -171,7 +169,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Play previous track, according to user repeat/shuffle settings
      **/
-    playPreviousTrack: function() {
+    playPreviousTrack() {
         let that = this;
 
         switch (this.shuffleMode) {
@@ -203,7 +201,7 @@ Playlist.prototype = {
                 );
                 break;
         }
-    },
+    }
 
 
     /**
@@ -211,13 +209,13 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Refresh view
      **/
-    refreshViews: function() {
+    refreshViews() {
         for (let i = 0; i < this.views.length; ++i) {
             if (this.views[i] !== null) {
                 this.views[i].init(this.views[i].getDataFromPlaylist(this));
             }
         }
-    },
+    }
 
 
     /**
@@ -226,10 +224,10 @@ Playlist.prototype = {
      * desc   : Set playlist current track
      * arg    : {object} track - The track to select
      **/
-    setCurrentTrack: function(track) {
+    setCurrentTrack(track) {
         this.currentTrack = track; // TODO : handle list sorting, search for entry in view instead
         this.activeView.setSelected(track);
-    },
+    }
 
 
     /**
@@ -238,7 +236,7 @@ Playlist.prototype = {
      * desc   : Set UI to this playlist's view
      * arg    : {object} viewType - The view type
      **/
-    showView: function(viewType) {
+    showView(viewType) {
         let v = this.views[viewType.index];
 
         if (v === null) {
@@ -248,7 +246,7 @@ Playlist.prototype = {
 
         this.activeView = v;
         window.app.changeView(v);
-    },
+    }
 
 
     /**
@@ -256,7 +254,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Change repeat mode ( 0 : off, 1 : one, 2: all ) and send info to server
      **/
-    toggleRepeat: function() {
+    toggleRepeat() {
         ++this.repeatMode;
         this.repeatMode %= 3;
 
@@ -270,7 +268,7 @@ Playlist.prototype = {
         );
 
         window.app.refreshUI();
-    },
+    }
 
 
     /**
@@ -278,7 +276,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Change shuffle mode ( 0 : off, 1 : random, 2: shuffle ) and send info to server
      **/
-    toggleShuffle: function() {
+    toggleShuffle() {
         ++this.shuffleMode;
         this.shuffleMode %= 3;
 
@@ -292,7 +290,7 @@ Playlist.prototype = {
         );
 
         window.app.refreshUI();
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -302,13 +300,13 @@ Playlist.prototype = {
      * desc   : Ask server while track aren't fully scanned, every 0.5s
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
-    _getTracksFromServer: function(playlistId) {
+    _getTracksFromServer(playlistId) {
         let that = this;
 
         this.getTracksIntervalId = window.setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
         }, 500); // One call every 0.5s
-    },
+    }
 
 
     /**
@@ -317,7 +315,7 @@ Playlist.prototype = {
      * desc   : Post call to fetch tracks afterwards
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
-    _getTracksFromServer_aux: function(playlistId) {
+    _getTracksFromServer_aux(playlistId) {
         let that = this;
 
         JSONParsedPostRequest(
@@ -357,7 +355,7 @@ Playlist.prototype = {
                 }
             }
         );
-    },
+    }
 
 
     /**
@@ -365,7 +363,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Handle playlist instantiation depending on booleans given to constructor
      **/
-    _init: function() {
+    _init() {
         if (this.isLoading) {
             if (this.isLibrary) { this._loadLibrary(); } // Library loading process
         }
@@ -374,7 +372,7 @@ Playlist.prototype = {
             if (this.isLibrary) { this._newLibrary();  } // Library creation process
             else                { this._newPlaylist(); } // Playlist creation process
         }
-    },
+    }
 
 
     /**
@@ -383,7 +381,7 @@ Playlist.prototype = {
      * desc   : Scan a new library folder
      * arg    : {int} libraryId - The library ID to scan
      **/
-    _initialLibraryScan: function(libraryId) {
+    _initialLibraryScan(libraryId) {
         let that = this;
 
         JSONParsedPostRequest(
@@ -407,7 +405,7 @@ Playlist.prototype = {
                 }
             }
         );
-    },
+    }
 
 
     /**
@@ -416,13 +414,13 @@ Playlist.prototype = {
      * desc   : Transform raw tracks into Track object
      * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
      **/
-    _fillTracks: function(tracks) { // Tracks is JSON response to playlist ID
+    _fillTracks(tracks) { // Tracks is JSON response to playlist ID
         for (let i = 0; i < tracks.RESULT.length; ++i) {
             ++this.trackTotal;
             this.durationTotal += tracks.RESULT[i].DURATION;
             this.tracks.push(new Track(tracks.RESULT[i]));
         }
-    },
+    }
 
 
     /**
@@ -430,11 +428,11 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
-    _loadLibrary: function() {
+    _loadLibrary() {
         if (this.rawTracks.length === 0) { return; }
 
         this._fillTracks(this.rawTracks);
-    },
+    }
 
 
     /**
@@ -442,7 +440,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Starts a new library sequence
      **/
-    _newLibrary: function() {
+    _newLibrary() {
         this.isLibrary = true;
 
         this.modal = new Modal("newLibrary");
@@ -452,7 +450,7 @@ Playlist.prototype = {
         this.modal.setCallback(function(name, path, convert) {
             that._requestNewLibrary(name.value, path.value, convert.checked);
         })
-    },
+    }
 
 
     /**
@@ -460,7 +458,7 @@ Playlist.prototype = {
      * class  : Playlist
      * desc   : Starts a new playlist sequence
      **/
-    _newPlaylist: function() {
+    _newPlaylist() {
         this.isLibrary = false;
         this.modal     = new Modal("newPlaylist");
         this.modal.open();
@@ -469,7 +467,7 @@ Playlist.prototype = {
         this.modal.setCallback(function(name) {
             that._requestNewPlaylist(name.value);
         })
-    },
+    }
 
 
     /**
@@ -480,7 +478,7 @@ Playlist.prototype = {
      *          {string} path - Path given by user
      *          {bool} convert - Auto conversion to ID3v2
      **/
-    _requestNewLibrary: function(name, path, convert) {
+    _requestNewLibrary(name, path, convert) {
         let that = this;
         JSONParsedPostRequest(
             "ajax/newLibrary/",
@@ -511,7 +509,7 @@ Playlist.prototype = {
                 }
             }
         );
-    },
+    }
 
 
     /**
@@ -520,7 +518,7 @@ Playlist.prototype = {
      * desc   : Send new playlist information to server
      * arg    : {string} name - Name given by user
      **/
-    _requestNewPlaylist: function(name) {
+    _requestNewPlaylist(name) {
         let that = this;
         JSONParsedPostRequest(
             "ajax/newPlaylist/",
@@ -549,14 +547,14 @@ Playlist.prototype = {
                 }
             }
         );
-    },
+    }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getId: function()          { return this.id;          },
-    getName: function()        { return this.name;        },
-    getIsLibrary: function()   { return this.isLibrary;   },
-    getShuffleMode: function() { return this.shuffleMode; },
-    getRepeatMode: function()  { return this.repeatMode;  },
+    getId()          { return this.id;          }
+    getName()        { return this.name;        }
+    getIsLibrary()   { return this.isLibrary;   }
+    getShuffleMode() { return this.shuffleMode; }
+    getRepeatMode()  { return this.repeatMode;  }
 
-};
+}
