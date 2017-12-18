@@ -1,15 +1,16 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  PlaylistPreview class - handle the playlist info container (right/footbar)         *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let PlaylistPreview = function(container) {
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  PlaylistPreview class                          *
+ *                                                 *
+ *  Handle the playlist info container             *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    this._createUI(container);
-};
+class PlaylistPreview {
+    constructor(container) {
 
-
-PlaylistPreview.prototype = {
+        this._createUI(container);
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -19,13 +20,13 @@ PlaylistPreview.prototype = {
      * desc   : Change track details
      * arg    : {object} playlist - New playlist to get info from
      **/
-    changePlaylist: function(playlist) {
+    changePlaylist(playlist) {
         this.ui.name.innerHTML     = playlist.name;
         this.ui.total.innerHTML    = playlist.trackTotal + " tracks";
         this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);
 
         this._updatePlaylistPreview();
-    },
+    }
 
 
     /**
@@ -34,9 +35,9 @@ PlaylistPreview.prototype = {
      * desc   : Change visibility status of PlaylistPreview
      * arg    : {bool} visible
      **/
-    setVisible: function(visible) {
+    setVisible(visible) {
         this.ui.container.style.opacity = visible ? 1 : 0;
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -45,7 +46,7 @@ PlaylistPreview.prototype = {
      * class  : PlaylistPreview
      * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.ui = {
             container:     document.createElement("DIV"),
             name:          document.createElement("LI"),
@@ -76,7 +77,7 @@ PlaylistPreview.prototype = {
         this.ui.container.appendChild(this.listContainer);
         this.ui.container.appendChild(this.tooltipWrapper);
         container.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -84,7 +85,7 @@ PlaylistPreview.prototype = {
      * class  : PlaylistPreview
      * desc   : Update shuffle and repeat mode from UI changes
      **/
-    _updatePlaylistPreview: function() {
+    _updatePlaylistPreview() {
         // TODO : link to App.controler event
         let repeatMode  = window.app.activePlaylist.getRepeatMode();
         let shuffleMode = window.app.activePlaylist.getShuffleMode();
@@ -126,4 +127,4 @@ PlaylistPreview.prototype = {
         }
     }
 
-};
+}

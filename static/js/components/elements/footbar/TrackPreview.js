@@ -6,14 +6,12 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let TrackPreview = function(container) {
+class TrackPreview {
+    constructor(container) {
 
-    this._createUI(container);
-    this._eventListener();
-};
-
-
-TrackPreview.prototype = {
+        this._createUI(container);
+        this._eventListener();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -23,7 +21,7 @@ TrackPreview.prototype = {
      * desc   : Change track details
      * arg    : {object} track - New track to get info from
      **/
-    changeTrack: function(track) {
+    changeTrack(track) {
         this.ui.cover.src        = track.cover;
         this.ui.thumb.src        = track.cover;
         this.ui.title.innerHTML  = track.title;
@@ -34,7 +32,7 @@ TrackPreview.prototype = {
         this.ui.genre.innerHTML  = track.genre;
 
         this._setVisible(true);
-    },
+    }
 
 
     /**
@@ -42,7 +40,7 @@ TrackPreview.prototype = {
      * class  : TrackPreview
      * desc   : Reset field values and set invisible
      **/
-    resetTrackPreview: function() {
+    resetTrackPreview() {
         this.ui.cover.src        = "";
         this.ui.thumb.src        = "";
         this.ui.title.innerHTML  = "";
@@ -53,7 +51,7 @@ TrackPreview.prototype = {
         this.ui.genre.innerHTML  = "";
 
         this._setVisible(false);
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -62,7 +60,7 @@ TrackPreview.prototype = {
      * class  : TrackPreview
      * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
 
         this.ui = {
             container:    document.createElement("DIV"),
@@ -105,7 +103,7 @@ TrackPreview.prototype = {
         this.ui.container.appendChild(this.tooltipWrapper);
         this.ui.container.appendChild(this.listContainer);
         container.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -113,7 +111,7 @@ TrackPreview.prototype = {
      * class  : TrackPreview
      * desc   : TrackPreview event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let that = this;
 
         window.app.addListener(["togglePlay", "changeTrack"], function() {
@@ -122,7 +120,7 @@ TrackPreview.prototype = {
         window.app.addListener("stopPlayback", function() {
             that._setVisible(false);
         });
-    },
+    }
 
 
     /**
@@ -131,8 +129,8 @@ TrackPreview.prototype = {
      * desc   : Change visibility status of TrackPreview
      * arg    : {bool} visible
      **/
-    _setVisible: function(visible) {
+    _setVisible(visible) {
         this.ui.container.style.opacity = visible ? 1 : 0;
     }
 
-};
+}

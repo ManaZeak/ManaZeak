@@ -10,19 +10,17 @@
 const TOTAL_SUGGESTIONS_NUMBER = 4; // Number of track to display in suggested tracks
 const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSuggestionMode in constructor)
 
-let TrackInfo = function(container) {
+class TrackInfo {
+    constructor(container) {
 
-    this.inactivityTimeoutId   = -1;    // ID for the inactivity timeout
-    this.trackSuggestionMode   = 0;     // 0: By Artists / 1: By Album / 2: By Genre
-    this.track                 = null;  // Track that triggered TrackInfo in view
-    this.locked                = false; // TrackInfo lock status
+        this.inactivityTimeoutId   = -1;    // ID for the inactivity timeout
+        this.trackSuggestionMode   = 0;     // 0: By Artists / 1: By Album / 2: By Genre
+        this.track                 = null;  // Track that triggered TrackInfo in view
+        this.locked                = false; // TrackInfo lock status
 
-    this._createUI(container);
-    this._init();
-};
-
-
-TrackInfo.prototype = {
+        this._createUI(container);
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -31,9 +29,9 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : Returns true if TrackInfo is visible
      **/
-    isVisible: function() {
+    isVisible() {
         return this.ui.container.style.opacity == 1;
-    },
+    }
 
 
     /**
@@ -42,7 +40,7 @@ TrackInfo.prototype = {
      * desc   : Set TrackInfo visibility. Must be fired in updateInfo() callback
      * arg    : {bool} visible - The visibility status to set
      **/
-    setVisible: function(visible) {
+    setVisible(visible) {
         if (this.locked === true) {
             return;
         }
@@ -62,7 +60,7 @@ TrackInfo.prototype = {
                 that.ui.container.style.zIndex = -1;
             }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
         }
-    },
+    }
 
 
     /**
@@ -72,12 +70,12 @@ TrackInfo.prototype = {
      * arg    : {object} rect - The view entry boundingRect
      *          {int}  offset - The left offset to open TrackInfo with
      **/
-    updateGeometry: function(rect, offset) {
+    updateGeometry(rect, offset) {
         this.ui.container.style.top    = (rect.top - 24) + "px";
         this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
         this.ui.container.style.height = "200px";
         this.ui.container.style.width  = "auto";
-    },
+    }
 
 
     /**
@@ -87,7 +85,7 @@ TrackInfo.prototype = {
      * arg    : {object}      track - The Track object that will be used for the update
      *          {function} callback - The function to callback (not mandatory)
      **/
-    updateInfo: function(track, callback) {
+    updateInfo(track, callback) {
         let that = this;
 
         JSONParsedPostRequest(
@@ -121,7 +119,7 @@ TrackInfo.prototype = {
 
             }
         );
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -131,7 +129,7 @@ TrackInfo.prototype = {
      * desc   : Build and append UI elements to parent
      * arg    : {object} container - The TrackInfo parent
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.ui = {
             container:            document.createElement("DIV"),
             cover:                document.createElement("IMG"),
@@ -196,7 +194,7 @@ TrackInfo.prototype = {
         this.ui.container.appendChild(this.ui.suggestionWrapper);
         this.ui.container.appendChild(this.ui.trackWrapper);
         container.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -204,7 +202,7 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : TrackInfo event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let that = this;
 
         this.ui.container.addEventListener("mouseenter", function() {
@@ -218,7 +216,7 @@ TrackInfo.prototype = {
         this.ui.changeSuggestionType.addEventListener("click", function() {
             that._toggleChangeType();
         });
-    },
+    }
 
 
     /**
@@ -226,7 +224,7 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : Init suggestions from cookies and add listeners on UI elements
      **/
-    _init: function() {
+    _init() {
         let cookies = getCookies();
 
         if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 &&
@@ -234,7 +232,7 @@ TrackInfo.prototype = {
         else                                                              { this._updateSuggestionMode(0);                                  }
 
         this._eventListener();
-    },
+    }
 
 
     /**
@@ -243,13 +241,13 @@ TrackInfo.prototype = {
      * desc   : Starts a timeout to make TrackInfo invisible after a given amount of time if not canceled by _stopInactivityTimeout
      * arg    : {bool} visible - TrackInfo visibility status to set
      **/
-    _startInactivityTimeout: function(time) {
+    _startInactivityTimeout(time) {
         let that = this;
 
         this.inactivityTimeoutId = window.setTimeout(function() {
             that.setVisible(false);
         }, time);
-    },
+    }
 
 
     /**
@@ -257,9 +255,9 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : Stops the inactivity timeout
      **/
-    _stopInactivityTimeout: function() {
+    _stopInactivityTimeout() {
         if (this.inactivityTimeoutId !== -1) { window.clearTimeout(this.inactivityTimeoutId); }
-    },
+    }
 
 
     /**
@@ -267,12 +265,12 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : Event from changeSuggestionType attribute clicked to change suggestion mode
      **/
-    _toggleChangeType: function() {
+    _toggleChangeType() {
         ++this.trackSuggestionMode;
 
         this._updateSuggestionMode();
         this._updateSuggestionTracks();
-    },
+    }
 
 
     /**
@@ -281,7 +279,7 @@ TrackInfo.prototype = {
      * desc   : Update the suggestion UI title and icon elements according to the trackSuggestionMode attribute
      * arg    : {int} value - The set value (not mandatory)
      **/
-    _updateSuggestionMode: function(value) {
+    _updateSuggestionMode(value) {
         if (value) { this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES; }
         else       { this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;        }
 
@@ -312,7 +310,7 @@ TrackInfo.prototype = {
             this.tracks[i].ui.style.opacity = 0;
             this.tracks[i].ui.innerHTML = "";
         }
-    },
+    }
 
 
     /**
@@ -320,7 +318,7 @@ TrackInfo.prototype = {
      * class  : TrackInfo
      * desc   : Fetch suggested tracks depending on trackSuggestionMode attribute and update UI
      **/
-    _updateSuggestionTracks: function() {
+    _updateSuggestionTracks() {
         let that = this;
 
         if (this.track !== null) {
@@ -355,4 +353,4 @@ TrackInfo.prototype = {
         }
     }
 
-};
+}

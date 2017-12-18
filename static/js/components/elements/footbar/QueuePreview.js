@@ -6,18 +6,16 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let QueuePreview = function(container) {
+class QueuePreview {
+    constructor(container) {
 
-    this.contextMenu = null;
-    this.reverse     = window.app.queue.isReverse();
+        this.contextMenu = null;
+        this.reverse     = window.app.queue.isReverse();
 
-    this._createUI(container);
-    this._eventListener();
-    this._contextMenuSetup();
-};
-
-
-QueuePreview.prototype = {
+        this._createUI(container);
+        this._eventListener();
+        this._contextMenuSetup();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -27,13 +25,13 @@ QueuePreview.prototype = {
      * desc   : TODO
      * arg    : {object} event - TODO
      **/
-    preview: function(event) {
+    preview(event) {
         if (isVisibilityLocked(this.ui.container))
             return;
 
         addVisibilityLock(this.ui.container);
         window.setTimeout(removeVisibilityLock.bind(null, this.ui.container), 2000);
-    },
+    }
 
 
     /**
@@ -42,9 +40,9 @@ QueuePreview.prototype = {
      * desc   : TODO
      * arg    : {object} event - TODO
      **/
-    show: function(event) {
+    show(event) {
         toggleVisibilityLock(this.ui.container);
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -53,7 +51,7 @@ QueuePreview.prototype = {
      * class  : QueuePreview
      * desc   : Add an entry in QueuePreview
      **/
-    _addEntry: function(track) {
+    _addEntry(track) {
         let li              = document.createElement("LI");
         let img             = document.createElement("IMG");
         let body            = document.createElement("DIV");
@@ -93,7 +91,7 @@ QueuePreview.prototype = {
         li.appendChild(qControls);
 
         this.ui.queueList.appendChild(li);
-    },
+    }
 
 
     /**
@@ -101,9 +99,9 @@ QueuePreview.prototype = {
      * class  : QueuePreview
      * desc   : TODO
      **/
-    _contextMenuSetup: function () {
+    _contextMenuSetup() {
 
-    },
+    }
 
 
     /**
@@ -111,7 +109,7 @@ QueuePreview.prototype = {
      * class  : QueuePreview
      * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.ui = {
             container:      document.createElement("DIV"),
             statusBar:  {
@@ -140,7 +138,7 @@ QueuePreview.prototype = {
         this.ui.container.appendChild(this.ui.statusBar.container);
 
         container.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -148,7 +146,7 @@ QueuePreview.prototype = {
      * class  : QueuePreview
      * desc   : QueuePreview event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         let self = this;
 
         let findParentLI = function(element) {
@@ -219,4 +217,4 @@ QueuePreview.prototype = {
         });
     }
 
-};
+}

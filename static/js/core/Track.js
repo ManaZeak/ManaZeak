@@ -8,13 +8,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Track = function(track) {
+class Track {
+    constructor(track) {
 
-    this.updateMetadata(track);
-};
-
-
-Track.prototype = {
+        this.updateMetadata(track);
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -24,12 +22,12 @@ Track.prototype = {
      * desc   : Update metadata contained in Track (UI) object
      * arg    : {object} track - Raw JSON track
      **/
-    updateMetadata: function(track) {
+    updateMetadata(track) {
         // Filling Track object
         this.id = {
             track:          track.ID                ? track.ID                : "",
             album:          track.ALBUM.ID          ? track.ALBUM.ID          : "",
-            artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
+            artists:        Track._getArtistsIDFromArtistsArray(track.ARTISTS)
         };
         this.title        = track.TITLE             ? track.TITLE             : "";
         this.year         = track.YEAR              ? track.YEAR              : "";
@@ -51,9 +49,9 @@ Track.prototype = {
         this.genre        = track.GENRE             ? track.GENRE             : "";
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE         : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
-        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
-        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
-    },
+        this.artist       = Track._getArtistFromArtistsArray(track.ARTISTS);
+        this.albumArtist  = Track._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -64,7 +62,7 @@ Track.prototype = {
      * arg    : {[object]} artists - Raw JSON array of objects
      * return : {[int]} - The artists ID array
      **/
-    _getArtistsIDFromArtistsArray: function(artists) {
+    static _getArtistsIDFromArtistsArray(artists) {
         if (artists === null || artists === undefined) { return ""; }
 
         let artistsID = [];
@@ -73,7 +71,7 @@ Track.prototype = {
         }
 
         return artistsID;
-    },
+    }
 
 
     /**
@@ -83,7 +81,7 @@ Track.prototype = {
      * arg    : {[object]} artists - Raw JSON array of objects
      * return : {string} The Artists concated string
      **/
-    _getArtistFromArtistsArray: function(artists) {
+    static _getArtistFromArtistsArray(artists) {
         if (artists === null || artists === undefined) { return ""; }
 
         let artistsName = []; // Artists name array
@@ -94,7 +92,7 @@ Track.prototype = {
         artistsName.sort(); // In order to get artists alphabetically ordered
 
         let artist = ""; // Output string
-        for (i = 0; i < artistsName.length; ++i) {
+        for (let i = 0; i < artistsName.length; ++i) {
             artist += artistsName[i];
             if (i < (artistsName.length - 1)) { artist += ", "; }
         }
@@ -102,4 +100,4 @@ Track.prototype = {
         return artist;
     }
 
-};
+}

@@ -7,14 +7,13 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let WishList = function(container) {
-
-    this._createUI(container);
-    this._init();
-};
+class WishList {
+    constructor(container) {
 
 
-WishList.prototype = {
+        this._createUI(container);
+        this._init();
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -23,7 +22,7 @@ WishList.prototype = {
      * class  : WishList
      * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -34,7 +33,7 @@ WishList.prototype = {
 
         this.ui.container.appendChild(this.ui.img);
         container.appendChild(this.ui.container);
-    },
+    }
 
 
     /**
@@ -42,9 +41,9 @@ WishList.prototype = {
      * class  : WishList
      * desc   : Listen to events
      **/
-    _init: function() {
+    _init() {
         this._eventListener();
-    },
+    }
 
 
     /**
@@ -52,11 +51,11 @@ WishList.prototype = {
      * class  : WishList
      * desc   : WishList event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         this.ui.img.addEventListener("click", function() {
             let modal = new Modal("newWish");
             modal.open();
         });
     }
 
-};
+}

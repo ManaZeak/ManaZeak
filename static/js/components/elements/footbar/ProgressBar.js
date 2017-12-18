@@ -7,19 +7,17 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let ProgressBar = function(container) {
+class ProgressBar {
+    constructor(container) {
 
-    this.refreshIntervalId = -1;
-    this.isDragging        = false;
-    this.isMouseOver       = false;
-    this.isInverted        = false;
+        this.refreshIntervalId = -1;
+        this.isDragging        = false;
+        this.isMouseOver       = false;
+        this.isInverted        = false;
 
-    this._createUI(container);
-    this._init();
-};
-
-
-ProgressBar.prototype = {
+        this._createUI(container);
+        this._init();
+    }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
@@ -29,14 +27,14 @@ ProgressBar.prototype = {
      * desc   : Start refresh interval on track
      * arg    : {object} track - The track to update progress from
      **/
-    refreshInterval: function (track) {
+    refreshInterval(track) {
         let that = this;
 
         this._stopRefreshInterval();
         this.refreshIntervalId = window.setInterval(function () {
             that.updateProgress(track);
         }, 50); // Firing an updateProgress every 50ms to appear smooth on moodBar
-    },
+    }
 
 
     /**
@@ -44,7 +42,7 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : Set ProgressBar to default
      **/
-    resetProgressBar: function () {
+    resetProgressBar () {
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";
         this.duration.hover.innerHTML   = "--:--";
@@ -57,7 +55,7 @@ ProgressBar.prototype = {
         }
 
         this._stopRefreshInterval();
-    },
+    }
 
 
     /**
@@ -66,7 +64,7 @@ ProgressBar.prototype = {
      * desc   : Update ProgressBar on track
      * arg    : {object} track - The track to update progress from
      **/
-    updateProgress: function (track) {
+    updateProgress(track) {
         let distanceToLeftBorder = (track.currentTime * 100) / track.duration;
         // Style assignation
         this.progressBar.current.style.width    = distanceToLeftBorder + "%";
@@ -82,7 +80,7 @@ ProgressBar.prototype = {
             this.duration.current.innerHTML     = secondsToTimecode(track.currentTime);
             this.duration.total.innerHTML       = "-" + secondsToTimecode(track.duration - track.currentTime);
         }
-    },
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -91,7 +89,7 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.container = document.createElement("DIV");
         this.progressBar = {
             container:   document.createElement("DIV"),
@@ -124,7 +122,7 @@ ProgressBar.prototype = {
         this.container.appendChild(this.progressBar.container);
         this.container.appendChild(this.duration.total);
         container.appendChild(this.container);
-    },
+    }
 
 
     /**
@@ -132,7 +130,7 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : ProgressBar event listeners
      **/
-    _eventListener: function () {
+    _eventListener() {
         let that = this;
 
         this.progressBar.container.addEventListener("mouseover", function () { that.isMouseOver = true; });
@@ -143,7 +141,7 @@ ProgressBar.prototype = {
         window.addEventListener("_mouseMove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.addEventListener("mousedown", this._mouseDown.bind(this));
-    },
+    }
 
 
     /**
@@ -151,7 +149,7 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : Creating moodbar, setting timecodes and listen
      **/
-    _init: function () {
+    _init() {
         this.moodbar.container = document.getElementById("moodbar");
         this.moodbar.thumb     = document.getElementById("moodbarThumb");
 
@@ -159,7 +157,7 @@ ProgressBar.prototype = {
         this.duration.total.innerHTML   = "--:--";
 
         this._eventListener();
-    },
+    }
 
 
     /**
@@ -167,9 +165,9 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : Invert timecodes
      **/
-    _invertTimecode: function () {
+    _invertTimecode() {
         this.isInverted = !this.isInverted;
-    },
+    }
 
 
     /**
@@ -178,7 +176,7 @@ ProgressBar.prototype = {
      * desc   : Action on mouse down event
      * arg    : {object} event - MouseEvent
      **/
-    _mouseDown: function (event) {
+    _mouseDown(event) {
         //TODO: Clean this shit up
         if (!this.isDragging && (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb")) {
             this.isDragging          = true;
@@ -196,7 +194,7 @@ ProgressBar.prototype = {
             this._moveProgress(event, window.app.player.getPlayer());
             window.app.mute();
         }
-    },
+    }
 
 
     /**
@@ -205,7 +203,7 @@ ProgressBar.prototype = {
      * desc   : Action on mouse move event
      * arg    : {object} event - MouseEvent
      **/
-    _mouseMove: function (event) {
+    _mouseMove(event) {
         if (this.isDragging) { // Updating the ProgressBar while user is moving the mouse
             this._moveProgress(event, window.app.player.getPlayer());
             addVisibilityLock(this.duration.hover);
@@ -215,7 +213,7 @@ ProgressBar.prototype = {
         else if (this.isMouseOver) {
             this._timecodeProgressHover(event, window.app.player.getPlayer());
         }
-    },
+    }
 
 
     /**
@@ -224,7 +222,7 @@ ProgressBar.prototype = {
      * desc   : Action on mouse up event
      * arg    : {object} event - MouseEvent
      **/
-    _mouseUp: function () {
+    _mouseUp() {
         if (this.isDragging) { // User released the ProgressBar thumb
             this.isDragging          = false;
             this.isDraggingOnMoodbar = false;
@@ -233,7 +231,7 @@ ProgressBar.prototype = {
             removeVisibilityLock(this.duration.hover);
             window.app.unmute();
         }
-    },
+    }
 
 
     /**
@@ -242,7 +240,7 @@ ProgressBar.prototype = {
      * desc   : Updates UI progress according to event location
      * arg    : {object} event - MouseEvent
      **/
-    _moveProgress: function (event, track) {
+    _moveProgress(event, track) {
         let boundRect = 0;
 
         if (this.isDraggingOnMoodbar) {
@@ -266,7 +264,7 @@ ProgressBar.prototype = {
             // Updating progress player -- /!\ Code under this while be trigger every sec due to setInterval() in init();
             this.updateProgress(track);
         }
-    },
+    }
 
 
     /**
@@ -274,10 +272,10 @@ ProgressBar.prototype = {
      * class  : ProgressBar
      * desc   : Clear refresh interval
      **/
-    _stopRefreshInterval: function () {
+    _stopRefreshInterval() {
         window.clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = null;
-    },
+    }
 
 
     /**
@@ -287,7 +285,7 @@ ProgressBar.prototype = {
      * arg    : {object} event - MouseEvent
      *          {object} track - The track that aggro ProgressBar
      **/
-    _timecodeProgressHover: function (event, track) {
+    _timecodeProgressHover(event, track) {
         let boundRect          = this.progressBar.container.getBoundingClientRect();
         let distanceToLeftInPx = event.clientX - boundRect.left;
         let distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
@@ -301,4 +299,4 @@ ProgressBar.prototype = {
         this.duration.hover.innerHTML  = hoveredTimecode;
     }
 
-};
+}

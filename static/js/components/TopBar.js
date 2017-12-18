@@ -286,7 +286,6 @@ TopBar.prototype = {
             this._unSelectAll();
             this._setSelected(id);
             this.entries[id].playlist.activate();
-            window.app.refreshUI();
         }
     },
 

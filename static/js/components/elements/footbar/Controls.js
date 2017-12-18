@@ -2,22 +2,20 @@
  *                                                 *
  *  Controls class                                 *
  *                                                 *
- *  Handle the playlist info container             *
+ *  Handle the player controls                     *
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let Controls = function(container) {
+class Controls  {
+    constructor(container) {
 
-    this._createUI(container);
+        this._createUI(container);
 
-    this.volumeBar    = new VolumeBar(this.container);
-    this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
+        this.volumeBar    = new VolumeBar(this.container);
+        this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
 
-    this._eventListener();
-};
-
-
-Controls.prototype = {
+        this._eventListener();
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -26,7 +24,7 @@ Controls.prototype = {
      * class  : Controls
      * desc   : Build UI elements
      **/
-    _createUI: function (container) {
+    _createUI(container) {
         this.container = document.createElement("DIV");
         this.ui = {
             play: {
@@ -100,7 +98,7 @@ Controls.prototype = {
         this.container.appendChild(this.ui.next.button);
         this.container.appendChild(this.ui.queueExpander.button);
         container.appendChild(this.container);
-    },
+    }
 
 
     /**
@@ -108,7 +106,7 @@ Controls.prototype = {
      * class  : Controls
      * desc   : Change Play/Pause button depending on player status
      **/
-    _setPlayPause: function() {
+    _setPlayPause() {
         if (window.app.player.getIsPlaying() === true) {
             this.ui.play.image.src = "/static/img/player/pause.svg";
         }
@@ -116,7 +114,7 @@ Controls.prototype = {
         else {
             this.ui.play.image.src = "/static/img/player/play.svg";
         }
-    },
+    }
 
 
     /**
@@ -124,7 +122,7 @@ Controls.prototype = {
      * class  : Controls
      * desc   : Controls event listeners
      **/
-    _eventListener: function() {
+    _eventListener() {
         this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));
         this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));
         this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));
@@ -137,4 +135,4 @@ Controls.prototype = {
         window.app.addListener(['togglePlay', 'stopPlayback'], this._setPlayPause.bind(this));
     }
 
-};
+}
