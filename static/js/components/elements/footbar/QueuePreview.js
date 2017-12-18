@@ -11,6 +11,7 @@ class QueuePreview {
 
         this.contextMenu = null;
         this.reverse     = window.app.queue.isReverse();
+        this.isLocked    = false;
 
         this._createUI(container);
         this._eventListener();
@@ -23,9 +24,8 @@ class QueuePreview {
      * method : preview (public)
      * class  : QueuePreview
      * desc   : TODO
-     * arg    : {object} event - TODO
      **/
-    preview(event) {
+    preview() {
         if (isVisibilityLocked(this.ui.container))
             return;
 
@@ -35,13 +35,24 @@ class QueuePreview {
 
 
     /**
-     * method : show (public)
+     * method : lock (public)
      * class  : QueuePreview
-     * desc   : TODO
-     * arg    : {object} event - TODO
+     * desc   : Show and lock QueuePreview
      **/
-    show(event) {
-        toggleVisibilityLock(this.ui.container);
+    lock() {
+        this.isLocked = true;
+        addVisibilityLock(this.ui.container);
+    }
+
+
+    /**
+     * method : hide (public)
+     * class  : QueuePreview
+     * desc   : Hide QueuePreview
+     **/
+    hide() {
+        this.isLocked = false;
+        removeVisibilityLock(this.ui.container);
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -200,14 +211,10 @@ class QueuePreview {
                     break;
             }
         });
-
         document.body.addEventListener('click', function() {
             removeVisibilityLock(self.ui.container);
         });
-
-
         window.app.addListener('pushQueue', function(track) {
-            console.log(track);
             self._addEntry(track);
         });
         window.app.addListener('popQueue', function() {
@@ -217,5 +224,9 @@ class QueuePreview {
             self.reverse = reverse;
         });
     }
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getIsLocked() { return this.isLocked; }
 
 }

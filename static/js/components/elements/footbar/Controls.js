@@ -102,6 +102,36 @@ class Controls  {
 
 
     /**
+     * method : _eventListener (private)
+     * class  : Controls
+     * desc   : Controls event listeners
+     **/
+    _eventListener() {
+        let that = this;
+        this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));
+        this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));
+        this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));
+        this.ui.repeat.button.addEventListener("click", window.app.toggleRepeat.bind(window.app));
+        this.ui.next.button.addEventListener("click", window.app.next.bind(window.app));
+        this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
+        this.ui.queueExpander.button.addEventListener("click", function() {
+            if (that.queuePreview.getIsLocked()) {
+                that.queuePreview.hide();
+                that.ui.queueExpander.image.src = "/static/img/player/queue.svg";
+            }
+
+            else {
+                that.queuePreview.lock();
+                that.ui.queueExpander.image.src = "/static/img/player/queue-locked.svg";
+            }
+        });
+
+        window.app.addListener('pushQueue', this.queuePreview.preview.bind(this.queuePreview));
+        window.app.addListener(['togglePlay', 'stopPlayback'], this._setPlayPause.bind(this));
+    }
+
+
+    /**
      * method : _setPlayPause (private)
      * class  : Controls
      * desc   : Change Play/Pause button depending on player status
@@ -114,25 +144,6 @@ class Controls  {
         else {
             this.ui.play.image.src = "/static/img/player/play.svg";
         }
-    }
-
-
-    /**
-     * method : _eventListener (private)
-     * class  : Controls
-     * desc   : Controls event listeners
-     **/
-    _eventListener() {
-        this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));
-        this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));
-        this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));
-        this.ui.repeat.button.addEventListener("click", window.app.toggleRepeat.bind(window.app));
-        this.ui.next.button.addEventListener("click", window.app.next.bind(window.app));
-        this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
-        this.ui.queueExpander.button.addEventListener("click", this.queuePreview.show.bind(this.queuePreview));
-
-        window.app.addListener('pushQueue', this.queuePreview.preview.bind(this.queuePreview));
-        window.app.addListener(['togglePlay', 'stopPlayback'], this._setPlayPause.bind(this));
     }
 
 }

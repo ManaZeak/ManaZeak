@@ -261,9 +261,8 @@ class ListView extends PlaylistView {
                         TRACK_ID: that.entries[clickedEntry].track.id.track
                     }),
                     function(response) {
-                        let dl = document.createElement("a");
-
-                        dl.href = response.PATH;
+                        let dl      = document.createElement("A");
+                        dl.href     = response.PATH;
                         dl.download = response.PATH.replace(/^.*[\\\/]/, '');
                         document.body.appendChild(dl);
                         dl.click();
@@ -277,7 +276,7 @@ class ListView extends PlaylistView {
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i)
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function() {
-                if(clickedEntry !== undefined) {
+                if (clickedEntry !== undefined) {
                     console.log(playlists[i], that.entries[clickedEntry].track);
                 }
             });
