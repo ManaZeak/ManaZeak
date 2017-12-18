@@ -324,7 +324,7 @@ class ListView extends PlaylistView {
         this.listView.addEventListener('mousemove', this._showTrackInfo.bind(this), true);
         this.listView.addEventListener('mouseleave', function(event) {
             //We need to enqueue that event because mouseleave will get fired before trackinfo's mouseenter
-            if(event.target == that.listView)
+            if (event.target == that.listView)
                 window.setTimeout(that.trackInfo.setVisible.bind(that.trackInfo, false), 0);
         });
         this.listView.addEventListener("click", this._viewClicked.bind(this));
@@ -424,6 +424,7 @@ class ListView extends PlaylistView {
         };
 
         this._createUI(data);
+        this._eventListener();
     }
 
 
