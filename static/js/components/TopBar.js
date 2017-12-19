@@ -80,20 +80,29 @@ class TopBar {
             addVisibilityLock(this.moodbarThumb);
         }
 
-        let that = this;
-        let xhr  = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                renderMoodFile(JSON.parse(this.responseText).MOOD, that.moodbar);
+        JSONParsedPostRequest(
+            "ajax/getMoodbarByID/",
+            JSON.stringify({
+                TRACK_ID: id
+            }),
+            function(response) {
+                renderMoodFile(JSON.parse(response).MOOD, that.moodbar);
             }
-        };
 
-        xhr.open("POST", "ajax/getMoodbarByID/", true);
-        xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
-        xhr.send(JSON.stringify({
-            TRACK_ID: id
-        }));
+        );
+        /*
+                let that = this;
+                let xhr  = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                    }
+                };
+
+                xhr.open("POST", "ajax/getMoodbarByID/", true);
+                xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
+                xhr.send();
+          */
     }
 
 

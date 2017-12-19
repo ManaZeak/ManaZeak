@@ -61,17 +61,30 @@ class UserMenu {
         JSONParsedGetRequest(
             "ajax/isAdmin/",
             function(response) {
-                if (response.IS_ADMIN) {
-                    that.menuEntry.admin = document.createElement("DIV");
-                    that.menuEntry.admin.className = "menuEntry";
-                    that.menuEntry.admin.innerHTML = "Admin";
-                    that.menuEntry.admin.addEventListener("click", that._getAdmin.bind(that));
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     IS_ADMIN  : bool
+                 * } */
+                if (response.DONE) {
+                    if (response.IS_ADMIN) {
+                        that.menuEntry.admin = document.createElement("DIV");
+                        that.menuEntry.admin.className = "menuEntry";
+                        that.menuEntry.admin.innerHTML = "Admin";
+                        that.menuEntry.admin.addEventListener("click", that._getAdmin.bind(that));
 
-                    that.menu.appendChild(that.menuEntry.admin);
+                        that.menu.appendChild(that.menuEntry.admin);
+                    }
+
+                    that.menu.appendChild(that.menuEntry.stats);
+                    that.menu.appendChild(that.menuEntry.logout);
                 }
 
-                that.menu.appendChild(that.menuEntry.stats);
-                that.menu.appendChild(that.menuEntry.logout);
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
             }
         );
 
@@ -147,8 +160,3 @@ class UserMenu {
     }
 
 }
-
-
-
-
-

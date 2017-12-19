@@ -23,6 +23,7 @@ class PlaylistPreview {
     changePlaylist(playlist) {
         this.ui.name.innerHTML     = playlist.name;
         this.ui.total.innerHTML    = playlist.trackTotal + " tracks";
+        // TODO : POST on getPlaylistInfo to add Total genre etc.
         this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);
 
         this._updatePlaylistPreview();

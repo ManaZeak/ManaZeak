@@ -261,13 +261,26 @@ class ListView extends PlaylistView {
                         TRACK_ID: that.entries[clickedEntry].track.id.track
                     }),
                     function(response) {
-                        let dl      = document.createElement("A");
-                        dl.href     = response.PATH;
-                        dl.download = response.PATH.replace(/^.*[\\\/]/, '');
-                        document.body.appendChild(dl);
-                        dl.click();
-                        document.body.removeChild(dl);
-                        dl.remove();
+                        /* response = {
+                         *     DONE      : bool
+                         *     ERROR_H1  : string
+                         *     ERROR_MSG : string
+                         *
+                         *     PATH      : string
+                         * } */
+                        if (response.DONE) {
+                            let dl      = document.createElement("A");
+                            dl.href     = response.PATH;
+                            dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                            document.body.appendChild(dl);
+                            dl.click();
+                            document.body.removeChild(dl);
+                            dl.remove();
+                        }
+
+                        else {
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                        }
                     }
                 );
             }

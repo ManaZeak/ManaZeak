@@ -28,16 +28,37 @@ class StatsView extends View {
         JSONParsedGetRequest(
             "ajax/getUserStats/",
             function(response) {
+                /* response = {
+                 *     DONE              : bool
+                 *     ERROR_H1          : string
+                 *     ERROR_MSG         : string
+                 *
+                 *     USERNAME          : string
+                 *     NB_TRACK_LISTENED : int
+                 *     NB_TRACK_PUSHED   : int
+                 *     TOTAL_TRACK       : int
+                 *     PREF_ARTISTS      : [][]
+                 *     PREF_TRACKS       : [][]
+                 *     LEAST_ARTISTS     : [][]
+                 *     LEAST_TRACKS      : [][]
+                 * } */
                 modal.close();
-                that.ui.userName.innerHTML = response.USERNAME;
-                that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
-                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
-                    "% of all the music here)";
-                that._updatePrefArtistsList(response.PREF_ARTISTS);
-                that._updatePrefTracksList(response.PREF_TRACKS);
-                that._updateLeastArtistsList(response.LEAST_ARTISTS);
-                that._updateLeastTracksList(response.LEAST_TRACKS);
+
+                if (response.DONE) {
+                    that.ui.userName.innerHTML     = response.USERNAME;
+                    that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
+                    that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
+                        Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
+                        "% of all the music here)";
+                    that._updatePrefArtistsList(response.PREF_ARTISTS);
+                    that._updatePrefTracksList(response.PREF_TRACKS);
+                    that._updateLeastArtistsList(response.LEAST_ARTISTS);
+                    that._updateLeastTracksList(response.LEAST_TRACKS);
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                }
             }
         );
     }

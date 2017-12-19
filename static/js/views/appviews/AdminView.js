@@ -31,6 +31,11 @@ class AdminView extends View {
         JSONParsedGetRequest(
             "ajax/getAdminView/",
             function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
                 if (response.DONE) {
                     that.ui.dropLabel            = document.createElement("P");
                     that.ui.dropButton           = document.createElement("BUTTON");
@@ -43,7 +48,9 @@ class AdminView extends View {
 
                     that.ui.dropButton.addEventListener("click", that._requestDrop.bind(that));
 
-                } else {
+                }
+
+                else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                     window.app.refreshUI();
                 }
@@ -59,10 +66,19 @@ class AdminView extends View {
      **/
     _requestDrop() {
         JSONParsedGetRequest(
-            "ajax/ZNCcuoa8kJL8z6xgNZKnW(mMfahHf9j6w6Fi3HFc",
+            "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
             function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+
+                else {
+                    // TODO : refresh UI
                 }
             }
         );

@@ -364,7 +364,8 @@ class Modal {
         wish.placeholder        = "Enter your suggestion here";
         text.innerHTML          = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste an url or write the more information you can about it, and an administrator will process your request. " +
-            "You'll be notified when the track you asked has been added to a playlist.";
+            "You'll be notified when the track you asked has been added to a playlist. Also, if you have any feature idea, feel free to also" +
+            "use this field.";
         submit.innerHTML        = "Submit";
 
         this.ui.content.appendChild(text);
@@ -383,6 +384,11 @@ class Modal {
                         WISH: wish.value
                     }),
                     function(response) {
+                        /* response = {
+                         *     DONE      : bool
+                         *     ERROR_H1  : string
+                         *     ERROR_MSG : string
+                         * } */
                         if (!response.DONE) {
                             new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                         }
@@ -393,7 +399,7 @@ class Modal {
 
             else {
                 wish.style.border = "solid 1px red";
-                new Notification("INFO", "Suggestion field is empty.", "You must specify a name or an url for your track.");
+                new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
             }
         });
     }

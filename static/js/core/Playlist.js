@@ -79,14 +79,26 @@ class Playlist {
                 PLAYLIST_ID: this.id
             }),
             function(response) {
-                // response = raw tracks JSON object
-                that.rawTracks = response;
-                that._fillTracks(that.rawTracks);
-                that.refreshViews();
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     RESULT      : JSON object
+                 * } */
+                if (response.DONE) {
+                    that.rawTracks = response.RESULT;
+                    that._fillTracks(that.rawTracks);
+                    that.refreshViews();
 
-                if (callback) {
-                    that.showView(that.activeView);
-                    callback();
+                    if (callback) {
+                        that.showView(that.activeView);
+                        callback();
+                    }
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -132,8 +144,21 @@ class Playlist {
                             PLAYLIST_ID: that.id
                         }),
                         function(response) {
-                            that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                            window.app.changeTrack(that.currentTrack, false);
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             *
+                             *     TRACK_ID  : int
+                             * } */
+                            if (response.DONE) {
+                                that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                                window.app.changeTrack(that.currentTrack, false);
+                            }
+
+                            else {
+                                new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                            }
                         }
                     );
                     break;
@@ -145,13 +170,27 @@ class Playlist {
                             PLAYLIST_ID: that.id
                         }),
                         function(response) {
-                            if (response.LAST) {
-                                window.app.stopPlayback();
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             *
+                             *     LAST      : bool
+                             *     TRACK_ID  : int
+                             * } */
+                            if (response.DONE) {
+                                if (response.LAST) {
+                                    window.app.stopPlayback();
+                                }
+
+                                else {
+                                    that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
+                                    window.app.changeTrack(that.currentTrack, false);
+                                }
                             }
 
                             else {
-                                that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
-                                window.app.changeTrack(that.currentTrack, false);
+                                new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                             }
                         }
                     );
@@ -182,13 +221,14 @@ class Playlist {
                 JSONParsedGetRequest(
                     "ajax/getLastSongPlayed/",
                     function(response) {
+                        /* response = {
+                         *     DONE      : bool
+                         *     ERROR_H1  : string
+                         *     ERROR_MSG : string
+                         *
+                         *     TRACK_ID  : int
+                         * } */
                         if (response.DONE) {
-                            /* response = {
-                             *     DONE:        bool
-                             *     TRACK_ID:    int
-                             *     ERROR_H1:    string
-                             *     ERROR_MSG:   string
-                             * } */
                             // TODO : test if track comes from the current playlist ...
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
                             window.app.changeTrack(that.currentTrack, true);
@@ -325,9 +365,9 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE:        bool
-                 *     ERROR_H1:    string
-                 *     ERROR_MSG:   string
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
                  * } */
                 let self = that;
                 if (response.DONE) {
@@ -340,15 +380,24 @@ class Playlist {
                             PLAYLIST_ID: playlistId
                         }),
                         function(response) {
-                            // response = raw tracks JSON object
-                            self.rawTracks = response;
-                            self._fillTracks(self.rawTracks);
-                            self.refreshViews();
-                            self.showView(self.activeView);
-                            self.modal.close();
+                            /* response = {
+                             *     DONE        : bool
+                             *     ERROR_H1    : string
+                             *     ERROR_MSG   : string
+                             *
+                             *     RESULT      : JSON object
+                             * } */
+                            if (response.DONE) {
+                                // response = raw tracks JSON object
+                                self.rawTracks = response.RESULT;
+                                self._fillTracks(self.rawTracks);
+                                self.refreshViews();
+                                self.showView(self.activeView);
+                                self.modal.close();
 
-                            if (self.callback) {
-                                self.callback();
+                                if (self.callback) {
+                                    self.callback();
+                                }
                             }
                         }
                     );
@@ -391,10 +440,11 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE:        bool
-                 *     PLAYLIST_ID: int or undefined
-                 *     ERROR_H1:    string
-                 *     ERROR_MSG:   string
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PLAYLIST_ID : int or undefined
                  * } */
                 if (response.DONE) {
                     that._getTracksFromServer(response.PLAYLIST_ID);
@@ -489,10 +539,11 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE:       bool
-                 *     LIBRARY_ID: int or undefined
-                 *     ERROR_H1:   string
-                 *     ERROR_MSG:  string
+                 *     DONE       : bool
+                 *     ERROR_H1   : string
+                 *     ERROR_MSG  : string
+                 *
+                 *     LIBRARY_ID : int or undefined
                  * } */
                 if (response.DONE) {
                     that.name  = name;
@@ -527,10 +578,11 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE:       bool
-                 *     LIBRARY_ID: int or undefined
-                 *     ERROR_H1:   string
-                 *     ERROR_MSG:  string
+                 *     DONE       : bool
+                 *     ERROR_H1   : string
+                 *     ERROR_MSG  : string
+                 *
+                 *     LIBRARY_ID : int or undefined
                  * } */
                 if (response.DONE) {
                     that.name  = name;

@@ -94,29 +94,41 @@ class TrackInfo {
                 TRACK_ID: track.id.track
             }),
             function(response) {
-                track.updateMetadata(response.RESULT);
-                that.track = track;
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     RESULT    : JSON object
+                 * } */
+                if (response.DONE) {
+                    track.updateMetadata(response.RESULT);
+                    that.track = track;
 
-                that.ui.cover.src                 = track.cover;
-                that.ui.title.innerHTML           = track.title;
-                that.ui.artist.innerHTML          = track.artist;
-                that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-                that.ui.composer.innerHTML        = "Composer : " + track.composer;
-                that.ui.performer.innerHTML       = "Performer : " + track.performer;
-                that.ui.genre.innerHTML           = "Genre : " + track.genre;
-                that.ui.album.innerHTML           = track.year + " - " + track.album;
-                that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                    track.fileType + " - " +
-                    Math.round(track.bitRate / 1000) + " kbps - " +
-                    track.sampleRate + " Hz";
+                    that.ui.cover.src                 = track.cover;
+                    that.ui.title.innerHTML           = track.title;
+                    that.ui.artist.innerHTML          = track.artist;
+                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
+                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
+                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
+                    that.ui.album.innerHTML           = track.year + " - " + track.album;
+                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                        track.fileType + " - " +
+                        Math.round(track.bitRate / 1000) + " kbps - " +
+                        track.sampleRate + " Hz";
 
-                // TODO : add total played and other interesting stats about track
-                that._updateSuggestionMode();
-                that._updateSuggestionTracks();
+                    // TODO : add total played and other interesting stats about track
+                    that._updateSuggestionMode();
+                    that._updateSuggestionTracks();
 
-                if (callback) { callback(); }
+                    if (callback) { callback(); }
+                }
 
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
             }
         );
     }
@@ -329,6 +341,13 @@ class TrackInfo {
                     MODE:     this.trackSuggestionMode
                 }),
                 function(response) {
+                    /* response = {
+                     *     DONE      : bool
+                     *     ERROR_H1  : string
+                     *     ERROR_MSG : string
+                     *
+                     *     RESULT    : []
+                     * } */
                     if (!response.DONE) {
                         that.tracks[0].ui.innerHTML = response.ERROR_H1 + "<br>" + response.ERROR_MSG;
                         that.tracks[0].ui.style.opacity = 1;

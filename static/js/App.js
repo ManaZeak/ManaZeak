@@ -138,17 +138,24 @@ class App {
                 PREVIOUS:         previous
             }),
             function(response) {
-                if (response.RESULT === "FAIL") {
-                    new Notification("ERROR", "Bad format.", response.ERROR);
-                }
-
-                else {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
                     that.footBar.trackPreview.changeTrack(track);
                     that.topBar.changeMoodbar(track.id.track);
                     that.player.changeSource(".." + response.PATH);
                     that.changePageTitle(response.PATH);
                     that.activePlaylist.setCurrentTrack(track);
                     that.togglePlay();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -243,15 +250,15 @@ class App {
         JSONParsedGetRequest(
             "ajax/getPlaylists/",
             function(response) {
-                // TODO : ask ordered playlist : backend : libraries first then playlist
                 /* response = {
-                 *     DONE:           bool
-                 *     PLAYLIST_IDS:   int[] / undefined
-                 *     PLAYLIS-T_NAMES: string[] / undefined
-                 *     ERROR_H1:       string
-                 *     ERROR_MSG:      string
+                 *     DONE           : bool
+                 *     ERROR_H1       : string
+                 *     ERROR_MSG      : string
+                 *
+                 *     PLAYLIST_IDS   : int[] / undefined
+                 *     PLAYLIST_NAMES : string[] / undefined
                  * } */
-                that._appStart(response);
+                that._appStart(response); // Response is tested in _appStart
             }
         );
     }
@@ -556,8 +563,7 @@ class App {
             });
         }
 
-        // User first connection
-        else {
+        else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
             this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
                 that.playlists[0].activate();
                 that.topBar.init(that.playlists, that.playlists[0]);
@@ -565,6 +571,10 @@ class App {
                 that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
                 // ? that.activePlaylist = that.playlists[0];
             }));
+        }
+
+        else {
+            new Notification("ERROR", playlists.ERROR_H1, playlists.ERROR_MSG);
         }
 
         this._keyListener();
