@@ -8,15 +8,17 @@ from app.models import Stats, Artist, Track, Genre
 from app.utils import errorCheckMessage
 
 
-def addToStats(track, user):
+def addToStats(track, listeningPercentage, user):
     if Stats.objects.filter(user=user, track=track).count() == 0:
         stat = Stats()
         stat.track = track
         stat.user = user
         stat.playCounter = 1
+        stat.listeningPercentage = listeningPercentage
     else:
         stat = Stats.objects.get(user=user, track=track)
         stat.playCounter += 1
+        stat.listeningPercentage += listeningPercentage
     stat.save()
 
 

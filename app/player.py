@@ -172,7 +172,7 @@ def getTrackPathByID(request):
                         if listeningPercentage > 15:
                             previousTrack.playCounter += 1
                             previousTrack.save()
-                            addToStats(previousTrack, user)
+                            addToStats(previousTrack, listeningPercentage, user)
 
                 # Returning the asked song
                 data = {
