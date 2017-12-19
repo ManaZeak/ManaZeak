@@ -73,15 +73,15 @@ def getUserPrefArtist(user, order):
     return artistCounter
 
 
-def getUserPrefTracks(user, order):
+def getUserPrefTracks(user, nbTrackListened, order):
     if order:
-        stats = Stats.objects.filter(user=user).order_by('-playCounter')
+        stats = Stats.objects.filter(user=user).order_by('-playCounter', '-listeningPercentage')
     else:
-        stats = Stats.objects.filter(user=user).order_by('playCounter')
+        stats = Stats.objects.filter(user=user).order_by('playCounter', 'listeningPercentage')
 
     trackTuple = []
     for stat in stats:
-        trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage))
+        trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage/nbTrackListened))
 
     return trackTuple
 
@@ -116,8 +116,8 @@ def getUserStats(request):
             'TOTAL_TRACK': Track.objects.all().count(),
             'PREF_ARTISTS': getUserPrefArtist(user, True)[:10],
             'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
-            'PREF_TRACKS': getUserPrefTracks(user, True)[:10],
-            'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
+            'PREF_TRACKS': getUserPrefTracks(user, nbTrackListened, True)[:10],
+            'LEAST_TRACKS': getUserPrefTracks(user, nbTrackListened, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
             'PREF_GENRES': getUserPrefGenre(user, nbTrackListened, True)[:10],

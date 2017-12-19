@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.dao import updateTrackView
-from app.models import Playlist, TrackView
+from app.models import Playlist, TrackView, Track
 from app.utils import errorCheckMessage
 
 
@@ -23,6 +23,31 @@ def newPlaylist(request):
                 'NAME': playlist.name,
             }
             data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def addTracksToPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
+            tracksId = response['TRACKS_ID']
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                tracks = Track.objects.filter(id__in=tracksId)
+                addedTrack = len(tracks)
+                for track in tracks:
+                    playlist.track.add(track)
+                data = {
+                    'ADDED_TRACKS': addedTrack,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
         else:
             data = errorCheckMessage(False, "badFormat")
     else:
