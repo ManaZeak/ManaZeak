@@ -296,14 +296,16 @@ class ListView extends PlaylistView {
                     JSONParsedPostRequest(
                         "ajax/addTracksToPlaylist/",
                         JSON.stringify({
-                            PLAYLISTS_ID: playlists[i].id,
-                            TRACK_ID: tmp
+                            PLAYLIST_ID: playlists[i].id,
+                            TRACKS_ID: tmp
                         }),
                         function(response) {
                             /* response = {
-                             *     DONE              : bool
-                             *     ERROR_H1          : string
-                             *     ERROR_MSG         : string
+                             *     DONE         : bool
+                             *     ERROR_H1     : string
+                             *     ERROR_MSG    : string
+                             *
+                             *     ADDED_TRACKS : int
                              * } */
                             if (response.DONE) {
                                 console.log(response);
