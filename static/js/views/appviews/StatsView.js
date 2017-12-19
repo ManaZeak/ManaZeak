@@ -255,7 +255,7 @@ class StatsView extends View {
         for (let i = 0; i < leastTracks.length; ++i) {
             if (leastTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = leastTracks[i][0] + " (" + leastTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                entry.innerHTML = leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 2) + "%)"; // 0 = name, 1 = counter
                 this.ui.leastTracks.appendChild(entry);
 
             }
@@ -277,7 +277,7 @@ class StatsView extends View {
         for (let i = 0; i < prefTracks.length; ++i) {
             if (prefTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = prefTracks[i][0] + " (" + prefTracks[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                entry.innerHTML = prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 2) + "%)"; // 0 = name, 1 = counter
                 this.ui.prefTracks.appendChild(entry);
 
             }
