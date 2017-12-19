@@ -11,8 +11,37 @@ class StatsView extends View {
 
         super();
         this._createUI();
-        this._fetchStats();
     }
+
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : _fetchStats (public)
+     * class  : StatsView
+     * desc   : Fetch statistics from server
+     **/
+    fetchStats() {
+        let that = this;
+        let modal = new Modal("fetchStats");
+        modal.open();
+
+        JSONParsedGetRequest(
+            "ajax/getUserStats/",
+            function(response) {
+                modal.close();
+                that.ui.userName.innerHTML = response.USERNAME;
+                that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
+                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
+                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
+                    "% of all the music here)";
+                that._updatePrefArtistsList(response.PREF_ARTISTS);
+                that._updatePrefTracksList(response.PREF_TRACKS);
+                that._updateLeastArtistsList(response.LEAST_ARTISTS);
+                that._updateLeastTracksList(response.LEAST_TRACKS);
+            }
+        );
+    }
+
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -78,34 +107,6 @@ class StatsView extends View {
         this.ui.tracksRight.appendChild(this.ui.leastTracks);
         this.ui.container.appendChild(this.ui.tracksLeft);
         this.ui.container.appendChild(this.ui.tracksRight);
-    }
-
-
-    /**
-     * method : _fetchStats (private)
-     * class  : StatsView
-     * desc   : Fetch statistics from server
-     **/
-    _fetchStats() {
-        let that = this;
-        let modal = new Modal("fetchStats");
-        modal.open();
-
-        JSONParsedGetRequest(
-            "ajax/getUserStats/",
-            function(response) {
-                modal.close();
-                that.ui.userName.innerHTML = response.USERNAME;
-                that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
-                that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
-                    "% of all the music here)";
-                that._updatePrefArtistsList(response.PREF_ARTISTS);
-                that._updatePrefTracksList(response.PREF_TRACKS);
-                that._updateLeastArtistsList(response.LEAST_ARTISTS);
-                that._updateLeastTracksList(response.LEAST_TRACKS);
-            }
-        );
     }
 
 
