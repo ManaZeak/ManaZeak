@@ -44,8 +44,10 @@ def getUserPrefGenre(user, numberPlayedTrack, order):
         tracks = Stats.objects.filter(track__genre=genre, user=user)
         for track in tracks:
             counter += track.playCounter
-
-        genreTuple.append((genre.name, counter, (counter/numberPlayedTrack)*100))
+        if numberPlayedTrack != 0:
+            genreTuple.append((genre.name, counter, (counter/numberPlayedTrack)*100))
+        else:
+            genreTuple.append((genre.name, counter, 0))
 
     genreTuple.sort(key=itemgetter(1), reverse=order)
     return genreTuple
