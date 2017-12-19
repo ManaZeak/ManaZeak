@@ -38,8 +38,10 @@ class StatsView extends View {
                  *     NB_TRACK_PUSHED   : int
                  *     TOTAL_TRACK       : int
                  *     PREF_ARTISTS      : [][]
+                 *     PREF_GENRES       : [][]
                  *     PREF_TRACKS       : [][]
                  *     LEAST_ARTISTS     : [][]
+                 *     LEAST_GENRES      : [][]
                  *     LEAST_TRACKS      : [][]
                  * } */
                 modal.close();

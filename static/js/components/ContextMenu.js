@@ -58,7 +58,7 @@ ContextMenuEntry.prototype = {
 
                 do {
                     target = target.parentNode;
-                } while(target.tagName !== 'LI');
+                } while (target.tagName !== 'LI');
             }
 
             ixArray[i] = target.dataset.parentIx;
@@ -353,7 +353,7 @@ class ContextMenu {
             let target = event.target;
 
             while (target) {
-                if(target.id) { self.element.classList.add("mzk-ctx-include-" + target.id); }
+                if (target.id) { self.element.classList.add("mzk-ctx-include-" + target.id); }
                 target = target.parentNode;
             }
 
