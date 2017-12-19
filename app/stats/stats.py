@@ -99,6 +99,7 @@ def userNeverPlayed(user):
     return neverPlayed
 
 
+# TODO : create POST request with the arg for the number of elements returned
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserStats(request):
     if request.method == 'GET':
@@ -121,6 +122,7 @@ def getUserStats(request):
             'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
             'NEVER_PLAYED': neverPlayed,
         }
+        data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

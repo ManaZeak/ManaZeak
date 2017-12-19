@@ -72,7 +72,7 @@ def getTrackDetailedInfo(request):
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
-                data = dict({'RESULT': exportTrackInfo(track)})
+                data = {**dict({'RESULT': exportTrackInfo(track)}), **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

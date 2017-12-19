@@ -465,10 +465,10 @@ class Playlist {
      * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
      **/
     _fillTracks(tracks) { // Tracks is JSON response to playlist ID
-        for (let i = 0; i < tracks.RESULT.length; ++i) {
+        for (let i = 0; i < tracks.length; ++i) {
             ++this.trackTotal;
-            this.durationTotal += tracks.RESULT[i].DURATION;
-            this.tracks.push(new Track(tracks.RESULT[i]));
+            this.durationTotal += tracks[i].DURATION;
+            this.tracks.push(new Track(tracks[i]));
         }
     }
 

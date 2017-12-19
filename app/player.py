@@ -68,15 +68,16 @@ def shuffleNextTrack(request):
                     'TRACK_ID': track.id,
                     'PATH': track.location,
                     'COVER': track.coverLocation,
-                    'END': playlistEnd,
+                    'LAST': playlistEnd,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
-            return JsonResponse(data)
-        return JsonResponse(errorCheckMessage(False, "badFormat"))
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
-        return JsonResponse(errorCheckMessage(False, "badRequest"))
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 # Get the next track when the random mode is enabled
@@ -151,7 +152,8 @@ def getTrackPathByID(request):
         response = json.loads(request.body)
         user = request.user
         # Checking JSON keys
-        if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response and 'TRACK_PER' in response:
+        if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response \
+                and 'TRACK_PER' in response:
             trackId = strip_tags(response['TRACK_ID'])
             # Getting the track asked
             if Track.objects.filter(id=trackId).count() == 1:

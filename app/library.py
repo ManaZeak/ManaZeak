@@ -46,33 +46,32 @@ def newLibrary(request):
     if request.method == 'POST':
         if request.user.is_superuser:
             response = json.loads(request.body)
-
-            try:
-                if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
-                    dirPath = response['URL']
+            if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
+                dirPath = response['URL']
+                if os.path.isdir(dirPath):
+                    # Removing / at the end of the dir path if present
+                    if dirPath.endswith("/"):
+                        dirPath = dirPath[:-1]
+                    library = Library()
+                    library.path = dirPath
+                    library.name = strip_tags(response['NAME'])
+                    library.convertID3 = response['CONVERT']
+                    library.user = request.user
+                    library.save()
+                    data = {
+                        'LIBRARY_ID': library.id,
+                        'NAME': library.name,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
                 else:
-                    return JsonResponse(errorCheckMessage(False, "badFormat"))
-                if not os.path.isdir(dirPath):
-                    return JsonResponse(errorCheckMessage(False, "dirNotFound"))
-                # Removing / at the end of the dir path if present
-                if dirPath.endswith("/"):
-                    dirPath = dirPath[:-1]
-                library = Library()
-                library.path = dirPath
-                library.name = strip_tags(response['NAME'])
-                library.convertID3 = response['CONVERT']
-                library.user = request.user
-                library.save()
-            except AttributeError:
-                return JsonResponse(errorCheckMessage(False, "badFormat"))
-            data = {
-                'LIBRARY_ID': library.id,
-                'NAME': library.name,
-            }
-            data = {**data, **errorCheckMessage(True, None)}
-            return JsonResponse(data)
-        return JsonResponse(errorCheckMessage(False, "permissionError"))
-    return JsonResponse(errorCheckMessage(False, "badRequest"))
+                    data = errorCheckMessage(False, "dirNotFound")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 # Function for check if a library has been scanned.

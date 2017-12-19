@@ -29,7 +29,10 @@ def getAdminView(request):
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def isAdmin(request):
     if request.method == 'GET':
-        data = {'IS_ADMIN':request.user.is_superuser}
+        data = {
+            'IS_ADMIN': request.user.is_superuser
+        }
+        data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
