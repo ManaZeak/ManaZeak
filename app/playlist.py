@@ -55,6 +55,31 @@ def addTracksToPlaylist(request):
     return JsonResponse(data)
 
 
+def removeTrackFromPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
+            tracksId = response['TRACKS_ID']
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                tracks = Track.objects.filter(id__in=tracksId)
+                removedTracks = len(tracks)
+                for track in tracks:
+                    playlist.track.remove(track)
+                data = {
+                    'REMOVED_TRACKS': removedTracks,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 def simplePlaylistJsonGenerator():
     tracks = TrackView.objects.all()
     data = []
