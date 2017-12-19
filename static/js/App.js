@@ -222,6 +222,17 @@ class App {
     }
 
 
+    getPlaylistFromId(id) {
+        for (let i = 0; i < this.playlists.length; ++i) {
+            if (this.playlists[i].id === id) {
+                return this.playlists[i];
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * method : getPlaylists (public)
      * class  : App

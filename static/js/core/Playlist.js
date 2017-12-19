@@ -255,8 +255,6 @@ class Playlist {
         for (let i = 0; i < this.views.length; ++i) {
             if (this.views[i] !== null) {
                 this.views[i].refreshTracks(this.tracks);
-
-//                this.views[i].init(this.views[i].getDataFromPlaylist(this));
             }
         }
     }
@@ -284,7 +282,7 @@ class Playlist {
         let v = this.views[viewType.index];
 
         if (v === null) {
-            this.views[viewType.index] = new viewType.class(viewType.class.prototype.getDataFromPlaylist(this));
+            this.views[viewType.index] = new viewType.class(viewType.class.prototype.getDataFromPlaylist(this), this.isLibrary, this.id);
             v = this.views[viewType.index];
         }
 

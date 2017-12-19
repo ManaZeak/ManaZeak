@@ -101,9 +101,11 @@ class ListViewEntry {
  * * * * * * * * * * * * * * * * * * * * * */
 
 class ListView extends PlaylistView {
-    constructor(data) {
+    constructor(data, isLibrary, id) {
 
         super();
+        this.isLibrary = isLibrary;
+        this.id        = id;
         this._init(data);
     }
 
@@ -205,9 +207,8 @@ class ListView extends PlaylistView {
         while (this.listView.firstChild) {
             this.listView.removeChild(this.listView.firstChild);
         }
-
+        this.contextMenu.reattach();
         this.entries = [];
-        this._initHeader();
         this._addEntries(tracks);
 
         this.container.appendChild(this.header.container);
@@ -255,6 +256,7 @@ class ListView extends PlaylistView {
     _contextMenuSetup() {
         let that             = this;
         let clickedEntry     = undefined;
+        this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.listView, function(event) {
             clearTimeout(that.hoveredTimeout);
             that.trackInfo.setVisible(false);
@@ -307,8 +309,8 @@ class ListView extends PlaylistView {
         });
         this.contextMenu.addEntry('playlists', "Add to playlist");
         let playlists = window.app.getPlaylists();
-        for (let i = 0; i < playlists.length; ++i)
-            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function() {
+        for (let i = 0; i < playlists.length; ++i) {
+            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
                 if (clickedEntry !== undefined) {
                     let tracksId = [];
                     tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
@@ -319,7 +321,7 @@ class ListView extends PlaylistView {
                             PLAYLIST_ID: playlists[i].id,
                             TRACKS_ID: tracksId
                         }),
-                        function(response) {
+                        function (response) {
                             /* response = {
                              *     DONE         : bool
                              *     ERROR_H1     : string
@@ -339,6 +341,44 @@ class ListView extends PlaylistView {
                     );
                 }
             });
+        }
+        if (!this.isLibrary) {
+            this.contextMenu.addEntry(null, "Remove track", function() {
+                if (clickedEntry !== undefined) {
+                    let tracksId = [];
+                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
+
+                    JSONParsedPostRequest(
+                        "ajax/removeTrackFromPlaylist/",
+                        JSON.stringify({
+                            PLAYLIST_ID: that.id,
+                            TRACKS_ID:   tracksId
+                        }),
+                        function (response) {
+                            /* response = {
+                             *     DONE           : bool
+                             *     ERROR_H1       : string
+                             *     ERROR_MSG      : string
+                             *
+                             *     REMOVED_TRACKS : int
+                             * } */
+                            if (response.DONE) {
+                                let playlist = window.app.getPlaylistFromId(that.id);
+
+                                if (playlist !== null) {
+                                    new Notification("INFO", "Track removed from " + playlist.name, that.entries[clickedEntry].track.title + " has been removed from " + playlist.name + ".");
+                                    playlist.getPlaylistsTracks();
+                                }
+                            }
+
+                            else {
+                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                            }
+                        }
+                    );
+                }
+            });
+        }
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
             window.app.requestNewPlaylist();
         });
