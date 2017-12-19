@@ -290,11 +290,14 @@ class ListView extends PlaylistView {
         for (let i = 0; i < playlists.length; ++i)
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function() {
                 if (clickedEntry !== undefined) {
+                    let tmp = [];
+                    tmp.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
+
                     JSONParsedPostRequest(
-                        "ajax/getUserStats/",
+                        "ajax/addTracksToPlaylist/",
                         JSON.stringify({
                             PLAYLISTS_ID: playlists[i].id,
-                            TRACK_ID:     that.entries[clickedEntry].track.id.track
+                            TRACK_ID: tmp
                         }),
                         function(response) {
                             /* response = {
