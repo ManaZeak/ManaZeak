@@ -290,7 +290,28 @@ class ListView extends PlaylistView {
         for (let i = 0; i < playlists.length; ++i)
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function() {
                 if (clickedEntry !== undefined) {
-                    console.log(playlists[i], that.entries[clickedEntry].track);
+                    JSONParsedPostRequest(
+                        "ajax/getUserStats/",
+                        JSON.stringify({
+                            PLAYLISTS_ID: playlists[i].id,
+                            TRACK_ID:     that.entries[clickedEntry].track.id.track
+                        }),
+                        function(response) {
+                            /* response = {
+                             *     DONE              : bool
+                             *     ERROR_H1          : string
+                             *     ERROR_MSG         : string
+                             * } */
+                            if (response.DONE) {
+                                console.log(response);
+                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].title + " has been added to your playlist.");
+                            }
+
+                            else {
+                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                            }
+                        }
+                    );
                 }
             });
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
