@@ -7,51 +7,55 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-let WishList = function(container) {
-
-    this._createUI(container);
-    this._init();
-};
+class WishList {
+    constructor(container) {
 
 
-WishList.prototype = {
-
-
-//  --------------------------------  PUBLIC METHODS  --------------------------------  //
-
-
-
-
+        this._createUI(container);
+        this._init();
+    }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-    _init: function() {
-        this._eventListener();
-    },
-
     /**
-     * method : _updateSuggestionMode (private)
-     * class  : TrackInfo
-     * desc   : Update the suggestion UI title and icon elements according to the trackSuggestionMode attribute
-     * arg    : {int} value - The set value (not mandatory)
+     * method : _createUI (private)
+     * class  : WishList
+     * desc   : Build UI elements
      **/
-    _createUI: function(container) {
+    _createUI(container) {
         this.ui = {
             container: document.createElement("DIV"),
-            img: document.createElement("IMG")
+            img:       document.createElement("IMG")
         };
 
         this.ui.container.id = "wishList";
-        this.ui.img.src = "/static/img/utils/idea.svg";
+        this.ui.img.src      = "/static/img/utils/idea.svg";
 
         this.ui.container.appendChild(this.ui.img);
         container.appendChild(this.ui.container);
-    },
+    }
 
-    _eventListener: function() {
+
+    /**
+     * method : _init (private)
+     * class  : WishList
+     * desc   : Listen to events
+     **/
+    _init() {
+        this._eventListener();
+    }
+
+
+    /**
+     * method : _eventListener (private)
+     * class  : WishList
+     * desc   : WishList event listeners
+     **/
+    _eventListener() {
         this.ui.img.addEventListener("click", function() {
-            let modal = new Modal("newWish"); // TODO : gen unique ID (why not in utils?)
+            let modal = new Modal("newWish");
             modal.open();
         });
     }
-};
+
+}

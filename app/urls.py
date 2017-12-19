@@ -1,39 +1,59 @@
 from django.conf.urls import url
 
-from app import components, utils
+from app import player, history, library, playlist, adminTools, wish
+from app.stats import stats, suggestion
+from app.track import track
 from . import views
 
 app_name = 'app'
 
 urlpatterns = [
+    # Main page
     url(r'^$', views.mainView.as_view(), name='index'),
-    url(r'^ajax/initialScan/$', views.initialScan, name='rescan'),
-    url(r'^ajax/getPlaylists/$', views.getUserPlaylists, name='getPlaylists'),
-    url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', views.dropAllDB, name='drop'),
     url(r'^signup/$', views.createUser, name='signup'),
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
-    url(r'^logout/$', views.logoutView, name='logout'),
-    url(r'^ajax/getAdminView/$', views.getAdminView, name='getAdminView'),
-    url(r'^ajax/getPlaylistTracks/$', views.loadTracksFromPlaylist, name='loadTracksFromPlaylist'),
-    url(r'^ajax/newLibrary/$', views.newLibrary, name='setLibrary'),
-    url(r'^ajax/newPlaylist/$', views.newPlaylist, name='newPlaylist'),
-    url(r'^ajax/getSimplifiedTracks/$', views.loadSimplifiedLibrary, name='simplifiedJson'),
-    url(r'^ajax/checkLibraryScanStatus/$', views.checkLibraryScanStatus, name='checkLibraryScan'),
-    url(r'^ajax/getTrackPathByID/$', views.getTrackPathByID, name='getTrackPathByID'),
-    url(r'^ajax/getMoodbarByID/$', views.getMoodbarByID, name='getMoodbarByID'),
-    url(r'^ajax/shuffleNextTrack/$', views.shuffleNextTrack, name='shuffleNextTrack'),
-    url(r'^ajax/randomNextTrack/$', views.randomNextTrack, name='randomNextTrack'),
-    url(r'^ajax/rescanLibrary/$', views.rescanLibrary, name='rescanLibrary'),
-    url(r'^ajax/toggleRandom/$', views.toggleRandom, name='toogleRandom'),
-    url(r'^ajax/getPlaylistInfo/$', views.getPlaylistInfo, name='getPlaylistInfo'),
-    url(r'^ajax/getUserStats/$', views.getUserStats, name='getUserStats'),
-    url(r'^ajax/adminGetUserStats/$', views.adminGetUserStats, name='adminGetUserStats'),
-    url(r'^ajax/getTrackDetailedInfo/$', views.getTrackDetailedInfo, name='getTrackDetailedInfo'),
-    url(r'^ajax/getLastSongPlayed/$', views.getLastSongPlayed, name='getLastSongPlayed'),
-    url(r'^ajax/getSimilarTrack/$', views.getSimilarTrack, name='getSimilarTrack'),
-    url(r'^ajax/download/$', views.getDownloadLocation, name='getDownloadLocation'),
-    url(r'^ajax/submitWish/$', views.createWish, name='createWish'),
-    url(r'^ajax/isAdmin/$', views.isAdmin, name='isAdmin'),
-    url(r'^components/newLibrary/$', components.NewLibrary.as_view(), name='newLibraryComponent'),
-    url(r'^debug/$', utils.artistViewJsonGenerator),
+
+    # Library actions
+    url(r'^ajax/initialScan/$', library.initialScan, name='rescan'),
+    url(r'^ajax/newLibrary/$', library.newLibrary, name='setLibrary'),
+    url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
+    url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
+
+    # Playlist actions
+    url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
+    url(r'^ajax/addTracksToPlaylist/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
+    url(r'^ajax/removeTrackFromPlaylist/$', playlist.removeTrackFromPlaylist, name='removeTrackFromPlaylist'),
+    url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
+    url(r'^ajax/getSimplifiedTracks/$', playlist.loadSimplifiedPlaylist, name='simplifiedJson'),
+    url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
+
+    # Player actions
+    url(r'^ajax/getTrackPathByID/$', player.getTrackPathByID, name='getTrackPathByID'),
+    url(r'^ajax/getMoodbarByID/$', player.getMoodbarByID, name='getMoodbarByID'),
+    url(r'^ajax/shuffleNextTrack/$', player.shuffleNextTrack, name='shuffleNextTrack'),
+    url(r'^ajax/randomNextTrack/$', player.randomNextTrack, name='randomNextTrack'),
+    url(r'^ajax/toggleRandom/$', player.toggleRandom, name='toggleRandom'),
+
+    # Track actions
+    url(r'^ajax/getTrackDetailedInfo/$', track.getTrackDetailedInfo, name='getTrackDetailedInfo'),
+    url(r'^ajax/download/$', track.getDownloadLocation, name='getDownloadLocation'),
+
+    # Stats actions
+    url(r'^ajax/getUserStats/$', stats.getUserStats, name='getUserStats'),
+    url(r'^ajax/adminGetUserStats/$', stats.adminGetUserStats, name='adminGetUserStats'),
+
+    # History actions
+    url(r'^ajax/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),
+
+    # Suggestions actions
+    url(r'^ajax/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
+
+    # Wish actions
+    url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
+    url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
+
+    # ADMIN actions
+    url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
+    url(r'^ajax/getAdminView/$', adminTools.getAdminView, name='getAdminView'),
+    url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
 ]

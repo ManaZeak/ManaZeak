@@ -1,0 +1,356 @@
+[1mdiff --git a/static/js/components/elements/Controls.js b/static/js/components/elements/Controls.js[m
+[1mindex 373a8f8..2e10620 100644[m
+[1m--- a/static/js/components/elements/Controls.js[m
+[1m+++ b/static/js/components/elements/Controls.js[m
+[36m@@ -1,21 +1,30 @@[m
+[31m-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *[m
+[31m- *                                                                                     *[m
+[31m- *  Controls class - handle the playlist info container (right/footbar)                *[m
+[31m- *                                                                                     *[m
+[31m- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[m
+[31m-let Controls = function(container) {[m
+[32m+[m[32m/* * * * * * * * * * * * * * * * * * * * * * * * * *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m *  Controls class                                 *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m *  Handle every controls in the footBar           *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m * * * * * * * * * * * * * * * * * * * * * * * * * */[m
+ [m
+[31m-    this._createUI(container);[m
+[32m+[m[32mlet Controls = function(container) {[m
+ [m
+[31m-    this.volumeBar    = new VolumeBar(this.container);[m
+[31m-    this.queuePreview = new QueuePreview(this.ui.queueExpander.button);[m
+[32m+[m[32m    this.volumeBar    = null;[m
+[32m+[m[32m    this.queuePreview = null;[m
+ [m
+[31m-    this._eventListener();[m
+[32m+[m[32m    this._createUI(container);[m
+[32m+[m[32m    this._init();[m
+ };[m
+ [m
+ [m
+ Controls.prototype = {[m
+[32m+[m[32m//  --------------------------------  PRIVATE METHODS  --------------------------------  //[m
+ [m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _createUI (private)[m
+[32m+[m[32m     * class  : Controls[m
+[32m+[m[32m     * desc   : Build and append UI elements to parent[m
+[32m+[m[32m     * arg    : {object} container - The Controls parent[m
+[32m+[m[32m     **/[m
+     _createUI: function (container) {[m
+         this.container = document.createElement("DIV");[m
+         this.ui = {[m
+[36m@@ -49,59 +58,45 @@[m [mControls.prototype = {[m
+             }[m
+         };[m
+ [m
+[31m-        this.container.className                = "half";[m
+[31m-        //TODO: switch to classes wherever possible[m
+[31m-        this.ui.play.button.id                  = "buttonPlay";[m
+[31m-        this.ui.play.image.id                   = "imagePlay";[m
+[31m-        this.ui.stop.button.id                  = "buttonStop";[m
+[31m-        this.ui.stop.image.id                   = "imageStop";[m
+[31m-        this.ui.repeat.button.id                = "buttonRepeat";[m
+[31m-        this.ui.repeat.image.id                 = "imageRepeat";[m
+[31m-        this.ui.shuffle.button.id               = "buttonShuffle";[m
+[31m-        this.ui.shuffle.image.id                = "imageShuffle";[m
+[31m-        this.ui.next.button.id                  = "buttonNext";[m
+[31m-        this.ui.next.image.id                   = "imageNext";[m
+[31m-        this.ui.previous.button.id              = "buttonPrevious";[m
+[31m-        this.ui.previous.image.id               = "imagePrevious";[m
+[31m-        this.ui.queueExpander.button.className  = "queueExpander";[m
+[31m-        this.ui.queueExpander.image.id          = "imageQueueExpander";[m
+[31m-[m
+[31m-        this.ui.play.image.src                  = "/static/img/player/play.svg";[m
+[31m-        this.ui.stop.image.src                  = "/static/img/player/stop.svg";[m
+[31m-        this.ui.repeat.image.src                = "/static/img/player/repeat.svg";[m
+[31m-        this.ui.shuffle.image.src               = "/static/img/player/shuffle.svg";[m
+[31m-        this.ui.next.image.src                  = "/static/img/player/next.svg";[m
+[31m-        this.ui.previous.image.src              = "/static/img/player/previous.svg";[m
+[31m-        this.ui.queueExpander.image.src         = "/static/img/player/menu.svg";[m
+[32m+[m[32m        this.container.className               = "half";[m
+[32m+[m[32m        this.ui.queueExpander.button.className = "queueExpander";[m
+[32m+[m
+[32m+[m[32m        this.ui.play.image.src                 = "/static/img/player/play.svg";[m
+[32m+[m[32m        this.ui.stop.image.src                 = "/static/img/player/stop.svg";[m
+[32m+[m[32m        this.ui.repeat.image.src               = "/static/img/player/repeat.svg";[m
+[32m+[m[32m        this.ui.shuffle.image.src              = "/static/img/player/shuffle.svg";[m
+[32m+[m[32m        this.ui.next.image.src                 = "/static/img/player/next.svg";[m
+[32m+[m[32m        this.ui.previous.image.src             = "/static/img/player/previous.svg";[m
+[32m+[m[32m        this.ui.queueExpander.image.src        = "/static/img/player/menu.svg";[m
+ [m
+         this.ui.repeat.button.appendChild(this.ui.repeat.image);[m
+[31m-        this.container.appendChild(this.ui.repeat.button);[m
+         this.ui.shuffle.button.appendChild(this.ui.shuffle.image);[m
+[31m-        this.container.appendChild(this.ui.shuffle.button);[m
+         this.ui.previous.button.appendChild(this.ui.previous.image);[m
+[31m-        this.container.appendChild(this.ui.previous.button);[m
+         this.ui.play.button.appendChild(this.ui.play.image);[m
+[31m-        this.container.appendChild(this.ui.play.button);[m
+         this.ui.stop.button.appendChild(this.ui.stop.image);[m
+[31m-        this.container.appendChild(this.ui.stop.button);[m
+         this.ui.next.button.appendChild(this.ui.next.image);[m
+[31m-        this.container.appendChild(this.ui.next.button);[m
+         this.ui.queueExpander.button.appendChild(this.ui.queueExpander.image);[m
+[31m-        this.container.appendChild(this.ui.queueExpander.button);[m
+ [m
+[31m-        container.appendChild(this.container);[m
+[31m-    },[m
+[32m+[m[32m        this.container.appendChild(this.ui.repeat.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.shuffle.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.previous.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.play.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.stop.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.next.button);[m
+[32m+[m[32m        this.container.appendChild(this.ui.queueExpander.button);[m
+ [m
+[32m+[m[32m        this.volumeBar    = new VolumeBar(this.container);[m
+[32m+[m[32m        this.queuePreview = new QueuePreview(this.ui.queueExpander.button);[m
+ [m
+[31m-    setPlayPause: function() {[m
+[31m-        if (window.app.player.getIsPlaying() === true) {[m
+[31m-            this.ui.play.image.src = "/static/img/player/pause.svg";[m
+[31m-        } else {[m
+[31m-            this.ui.play.image.src = "/static/img/player/play.svg";[m
+[31m-        }[m
+[32m+[m[32m        container.appendChild(this.container);[m
+     },[m
+ [m
+ [m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _eventListener (private)[m
+[32m+[m[32m     * class  : Controls[m
+[32m+[m[32m     * desc   : Controls event listeners[m
+[32m+[m[32m     **/[m
+     _eventListener: function() {[m
+         this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));[m
+         this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));[m
+[36m@@ -111,6 +106,27 @@[m [mControls.prototype = {[m
+         this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));[m
+         this.ui.queueExpander.button.addEventListener("click", this.queuePreview.show.bind(this.queuePreview));[m
+ [m
+[31m-        window.app.addListener(['togglePlay', 'stopPlayback'], this.setPlayPause.bind(this));[m
+[32m+[m[32m        window.app.addListener(['togglePlay', 'stopPlayback'], this._setPlayPause.bind(this));[m
+[32m+[m[32m    },[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _init (private)[m
+[32m+[m[32m     * class  : Controls[m
+[32m+[m[32m     * desc   : Call controls listeners when UI has been created[m
+[32m+[m[32m     **/[m
+[32m+[m[32m    _init: function() {[m
+[32m+[m[32m        this._eventListener();[m
+[32m+[m[32m    },[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _setPlayPause (private)[m
+[32m+[m[32m     * class  : Controls[m
+[32m+[m[32m     * desc   : Update Play/Pause button depending on the player status[m
+[32m+[m[32m     **/[m
+[32m+[m[32m    _setPlayPause: function() {[m
+[32m+[m[32m        if (window.app.player.getIsPlaying() === true) { this.ui.play.image.src = "/static/img/player/pause.svg"; }[m
+[32m+[m[32m        else                                           { this.ui.play.image.src = "/static/img/player/play.svg";  }[m
+     }[m
+ };[m
+[1mdiff --git a/static/js/components/elements/PlaylistPreview.js b/static/js/components/elements/PlaylistPreview.js[m
+[1mindex b3669a5..31832d8 100644[m
+[1m--- a/static/js/components/elements/PlaylistPreview.js[m
+[1m+++ b/static/js/components/elements/PlaylistPreview.js[m
+[36m@@ -1,63 +1,102 @@[m
+[31m-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *[m
+[31m- *                                                                                     *[m
+[31m- *  PlaylistPreview class - handle the playlist info container (right/footbar)         *[m
+[31m- *                                                                                     *[m
+[31m- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[m
+[32m+[m[32m/* * * * * * * * * * * * * * * * * * * * * * * * * *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m *  PlaylistPreview class                          *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m *  Handle the playlist info container             *[m
+[32m+[m[32m *                                                 *[m
+[32m+[m[32m * * * * * * * * * * * * * * * * * * * * * * * * * */[m
+[32m+[m
+ let PlaylistPreview = function(container) {[m
+ [m
+[31m-    this.ui = {[m
+[31m-        container:     document.createElement("DIV"),[m
+[31m-        name:          document.createElement("LI"),[m
+[31m-        total:         document.createElement("LI"),[m
+[31m-        duration:      document.createElement("LI"),[m
+[31m-        repeatShuffle: document.createElement("LI"),[m
+[31m-        repeat:        document.createElement("SPAN"),[m
+[31m-        genre:         document.createElement("SPAN"),[m
+[31m-        shuffle:       document.createElement("SPAN")[m
+[31m-    };[m
+[31m-[m
+[31m-    this.tooltipWrapper = document.createElement("DIV");[m
+[31m-    this.listContainer  = document.createElement("UL");[m
+[31m-[m
+[31m-    this.tooltipWrapper.className = "tooltipWrapper";[m
+[31m-[m
+[31m-    this.ui.container.id          = "playlistPreview";[m
+[31m-    this.ui.name.id               = "playlistPreviewName";[m
+[31m-    this.ui.total.id              = "playlistPreviewTotal";[m
+[31m-    this.ui.duration.id           = "playlistPreviewDuration";[m
+[31m-    this.ui.repeat.id             = "playlistPreviewRepeat";[m
+[31m-    this.ui.shuffle.id            = "playlistPreviewShuffle";[m
+[31m-[m
+[31m-    this.ui.repeatShuffle.appendChild(this.ui.repeat);[m
+[31m-    this.ui.repeatShuffle.appendChild(this.ui.shuffle);[m
+[31m-[m
+[31m-    this.listContainer.appendChild(this.ui.name);[m
+[31m-    this.listContainer.appendChild(this.ui.total);[m
+[31m-    this.listContainer.appendChild(this.ui.duration);[m
+[31m-    this.listContainer.appendChild(this.ui.repeatShuffle);[m
+[31m-[m
+[31m-    this.ui.container.appendChild(this.listContainer);[m
+[31m-    this.ui.container.appendChild(this.tooltipWrapper);[m
+[31m-[m
+[31m-    container.appendChild(this.ui.container);[m
+[32m+[m[32m    this._createUI(container);[m
+ };[m
+ [m
+ [m
+ PlaylistPreview.prototype = {[m
+[31m-[m
+[32m+[m[32m//  --------------------------------  PUBLIC METHODS  ---------------------------------  //[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : changePlaylist (public)[m
+[32m+[m[32m     * class  : PlaylistPreview[m
+[32m+[m[32m     * desc   : Change information according do given playlist[m
+[32m+[m[32m     * arg    : {object} playlist - The playlist to show information of[m
+[32m+[m[32m     **/[m
+     changePlaylist: function(playlist) {[m
+         this.ui.name.innerHTML     = playlist.name;[m
+         this.ui.total.innerHTML    = playlist.trackTotal + " tracks";[m
+         this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);[m
+ [m
+[31m-        this.updatePlaylistPreview();[m
+[32m+[m[32m        this._updatePlaybackMode(playlist);[m
+[32m+[m[32m    },[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : setVisible (public)[m
+[32m+[m[32m     * class  : PlaylistPreview[m
+[32m+[m[32m     * desc   : Set PlaylistPreview visibility.[m
+[32m+[m[32m     * arg    : {bool} visible - The visibility status to set[m
+[32m+[m[32m     **/[m
+[32m+[m[32m    setVisible: function(visible) {[m
+[32m+[m[32m        this.ui.container.style.opacity = visible ? 1 : 0;[m
+     },[m
+ [m
+ [m
+[31m-    updatePlaylistPreview: function() {[m
+[32m+[m[32m//  --------------------------------  PRIVATE METHODS  --------------------------------  //[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _createUI (private)[m
+[32m+[m[32m     * class  : PlaylistPreview[m
+[32m+[m[32m     * desc   : Build and append UI elements to parent[m
+[32m+[m[32m     * arg    : {object} container - The PlaylistPreview parent[m
+[32m+[m[32m     **/[m
+[32m+[m[32m    _createUI: function(container) {[m
+[32m+[m[32m        this.ui = {[m
+[32m+[m[32m            container:     document.createElement("DIV"),[m
+[32m+[m[32m            name:          document.createElement("LI"),[m
+[32m+[m[32m            total:         document.createElement("LI"),[m
+[32m+[m[32m            duration:      document.createElement("LI"),[m
+[32m+[m[32m            repeatShuffle: document.createElement("LI"),[m
+[32m+[m[32m            repeat:        document.createElement("SPAN"),[m
+[32m+[m[32m            genre:         document.createElement("SPAN"),[m
+[32m+[m[32m            shuffle:       document.createElement("SPAN")[m
+[32m+[m[32m        };[m
+[32m+[m[32m        this.tooltipWrapper = document.createElement("DIV");[m
+[32m+[m[32m        this.listContainer  = document.createElement("UL");[m
+[32m+[m
+[32m+[m[32m        this.tooltipWrapper.className = "tooltipWrapper";[m
+[32m+[m
+[32m+[m[32m        this.ui.container.id          = "playlistPreview";[m
+[32m+[m[32m        this.ui.name.id               = "playlistPreviewName";[m
+[32m+[m[32m        this.ui.total.id              = "playlistPreviewTotal";[m
+[32m+[m[32m        this.ui.duration.id           = "playlistPreviewDuration";[m
+[32m+[m[32m        this.ui.repeat.id             = "playlistPreviewRepeat";[m
+[32m+[m[32m        this.ui.shuffle.id            = "playlistPreviewShuffle";[m
+[32m+[m
+[32m+[m[32m        this.ui.repeatShuffle.appendChild(this.ui.repeat);[m
+[32m+[m[32m        this.ui.repeatShuffle.appendChild(this.ui.shuffle);[m
+[32m+[m
+[32m+[m[32m        this.listContainer.appendChild(this.ui.name);[m
+[32m+[m[32m        this.listContainer.appendChild(this.ui.total);[m
+[32m+[m[32m        this.listContainer.appendChild(this.ui.duration);[m
+[32m+[m[32m        this.listContainer.appendChild(this.ui.repeatShuffle);[m
+[32m+[m
+[32m+[m[32m        this.ui.container.appendChild(this.listContainer);[m
+[32m+[m[32m        this.ui.container.appendChild(this.tooltipWrapper);[m
+[32m+[m
+[32m+[m[32m        container.appendChild(this.ui.container);[m
+[32m+[m[32m    },[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : _updatePlaybackMode (private)[m
+[32m+[m[32m     * class  : PlaylistPreview[m
+[32m+[m[32m     * desc   : Set the playback mode (repeat and shuffle) according to current playlist status[m
+[32m+[m[32m     * arg    : {object} playlist - The playlist to show information of[m
+[32m+[m[32m     **/[m
+[32m+[m[32m    _updatePlaybackMode: function(playlist) {[m
+         // TODO : link to App.controler event[m
+[31m-        let repeatMode = window.app.activePlaylist.getRepeatMode();[m
+[31m-        let shuffleMode = window.app.activePlaylist.getshuffleMode();[m
+[32m+[m[32m        let repeatMode  = playlist.getRepeatMode();[m
+[32m+[m[32m        let shuffleMode = playlist.getshuffleMode();[m
+ [m
+         switch (repeatMode) {[m
+             case 0:[m
+[36m@@ -94,10 +133,5 @@[m [mPlaylistPreview.prototype = {[m
+                 // TODO : Switch default event[m
+                 break;[m
+         }[m
+[31m-    },[m
+[31m-[m
+[31m-[m
+[31m-    setVisible: function(visible) {[m
+[31m-        this.ui.container.style.opacity = visible ? 1 : 0;[m
+     }[m
+ };[m
+[1mdiff --git a/static/js/components/elements/TrackInfo.js b/static/js/components/elements/TrackInfo.js[m
+[1mindex e87d84c..780dc9b 100644[m
+[1m--- a/static/js/components/elements/TrackInfo.js[m
+[1m+++ b/static/js/components/elements/TrackInfo.js[m
+[36m@@ -23,14 +23,18 @@[m [mlet TrackInfo = function(container) {[m
+ [m
+ [m
+ TrackInfo.prototype = {[m
+[32m+[m[32m//  --------------------------------  PUBLIC METHODS  ---------------------------------  //[m
+ [m
+[31m-[m
+[31m-//  --------------------------------  PUBLIC METHODS  --------------------------------  //[m
+[31m-[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * method : isVisible (public)[m
+[32m+[m[32m     * class  : TrackInfo[m
+[32m+[m[32m     * desc   : Get TrackInfo visibility.[m
+[32m+[m[32m     **/[m
+     isVisible: function() {[m
+         return this.ui.container.style.opacity == 1;[m
+     },[m
+ [m
+[32m+[m
+     /**[m
+      * method : setVisible (public)[m
+      * class  : TrackInfo[m
+[36m@@ -121,7 +125,6 @@[m [mTrackInfo.prototype = {[m
+ [m
+ //  --------------------------------  PRIVATE METHODS  --------------------------------  //[m
+ [m
+[31m-[m
+     /**[m
+      * method : _createUI (private)[m
+      * class  : TrackInfo[m
