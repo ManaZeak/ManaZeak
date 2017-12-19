@@ -51,8 +51,10 @@ class StatsView extends View {
                         Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
                         "% of all the music here)";
                     that._updatePrefArtistsList(response.PREF_ARTISTS);
+                    that._updatePrefGenresList(response.PREF_GENRES);
                     that._updatePrefTracksList(response.PREF_TRACKS);
                     that._updateLeastArtistsList(response.LEAST_ARTISTS);
+                    that._updateLeastGenresList(response.LEAST_GENRES);
                     that._updateLeastTracksList(response.LEAST_TRACKS);
                 }
 
@@ -85,6 +87,13 @@ class StatsView extends View {
             leastArtistsLabel: document.createElement("P"),
             leastArtists: document.createElement("OL"),
 
+            genresLeft: document.createElement("DIV"),
+            genresRight: document.createElement("DIV"),
+            prefGenresLabel: document.createElement("P"),
+            prefGenres: document.createElement("OL"),
+            leastGenresLabel: document.createElement("P"),
+            leastGenres: document.createElement("OL"),
+
             tracksLeft: document.createElement("DIV"),
             tracksRight: document.createElement("DIV"),
             prefTracksLabel: document.createElement("P"),
@@ -96,19 +105,25 @@ class StatsView extends View {
         this.ui.container.id = "stats";
         this.ui.prefArtistsLabel.id = "label";
         this.ui.leastArtistsLabel.id = "label";
+        this.ui.prefGenresLabel.id = "label";
+        this.ui.leastGenresLabel.id = "label";
         this.ui.prefTracksLabel.id = "label";
         this.ui.leastTracksLabel.id = "label";
 
         this.ui.artistsLeft.className = "col";
         this.ui.artistsRight.className = "col";
+        this.ui.genresLeft.className = "col";
+        this.ui.genresRight.className = "col";
         this.ui.tracksLeft.className = "col";
         this.ui.tracksRight.className = "col";
 
         this.ui.totalPlayed.innerHTML = "Tracks played : ";
         this.ui.totalPushed.innerHTML = "Tracks uploaded : ";
         this.ui.prefArtistsLabel.innerHTML = "Top Artists : ";
+        this.ui.prefGenresLabel.innerHTML = "Top Genres : ";
         this.ui.prefTracksLabel.innerHTML = "Top Tracks : ";
         this.ui.leastArtistsLabel.innerHTML = "Flop Artists : ";
+        this.ui.leastGenresLabel.innerHTML = "Flop Genres : ";
         this.ui.leastTracksLabel.innerHTML = "Flop Tracks : ";
 
         this.ui.container.appendChild(this.ui.userName);
@@ -122,6 +137,13 @@ class StatsView extends View {
         this.ui.container.appendChild(this.ui.artistsLeft);
         this.ui.container.appendChild(this.ui.artistsRight);
         this.ui.tracksLeft.appendChild(this.ui.prefTracksLabel);
+
+        this.ui.genresLeft.appendChild(this.ui.prefGenresLabel);
+        this.ui.genresLeft.appendChild(this.ui.prefGenres);
+        this.ui.genresRight.appendChild(this.ui.leastGenresLabel);
+        this.ui.genresRight.appendChild(this.ui.leastGenres);
+        this.ui.container.appendChild(this.ui.genresLeft);
+        this.ui.container.appendChild(this.ui.genresRight);
 
         this.ui.tracksLeft.appendChild(this.ui.prefTracks);
         this.ui.tracksRight.appendChild(this.ui.leastTracksLabel);
@@ -168,6 +190,50 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
                 entry.innerHTML = prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
                 this.ui.prefArtists.appendChild(entry);
+            }
+        }
+    }
+
+
+    /**
+     * method : _updateLeastGenresList (private)
+     * class  : StatsView
+     * desc   : Updates the flop tracks list
+     * arg    : {[][]} leastGenres - Key/Value tracks array
+     **/
+    _updateLeastGenresList(leastGenres) {
+        while (this.ui.leastGenres.firstChild) {
+            this.ui.leastGenres.removeChild(this.ui.leastGenres.firstChild);
+        }
+
+        for (let i = 0; i < leastGenres.length; ++i) {
+            if (leastGenres[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + leastGenres[i][2] + "%)"; // 0 = name, 1 = counter
+                this.ui.leastGenres.appendChild(entry);
+
+            }
+        }
+    }
+
+
+    /**
+     * method : _updatePrefGenresList (private)
+     * class  : StatsView
+     * desc   : Updates the favorite tracks list
+     * arg    : {[int][int]} prefTracks - Key/Value tracks array
+     **/
+    _updatePrefGenresList(prefGenres) {
+        while (this.ui.prefGenres.firstChild) {
+            this.ui.prefGenres.removeChild(this.ui.prefGenres.firstChild);
+        }
+
+        for (let i = 0; i < prefGenres.length; ++i) {
+            if (prefGenres[i][0] !== null) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + prefGenres[i][2] + "%)"; // 0 = name, 1 = counter
+                this.ui.prefGenres.appendChild(entry);
+
             }
         }
     }
