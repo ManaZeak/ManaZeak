@@ -309,7 +309,8 @@ class ListView extends PlaylistView {
                              * } */
                             if (response.DONE) {
                                 console.log(response);
-                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].title + " has been added to your playlist.");
+                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].track.title + " has been added to " +  + playlists[i].name + ".");
+                                // TODO : fetch new tracks on target playlist
                             }
 
                             else {
