@@ -118,8 +118,8 @@ def getUserStats(request):
             'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
-            'PREF_GENRE': getUserPrefGenre(user, nbTrackListened, True)[:10],
-            'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
+            'PREF_GENRES': getUserPrefGenre(user, nbTrackListened, True)[:10],
+            'LEAST_GENRES': getUserPrefGenre(user, nbTrackListened, False)[:10],
             'NEVER_PLAYED': neverPlayed,
         }
         data = {**data, **errorCheckMessage(True, None)}
