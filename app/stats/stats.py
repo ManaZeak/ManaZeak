@@ -81,7 +81,7 @@ def getUserPrefTracks(user, order):
 
     trackTuple = []
     for stat in stats:
-        trackTuple.append((stat.track.title, stat.playCounter))
+        trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage))
 
     return trackTuple
 
