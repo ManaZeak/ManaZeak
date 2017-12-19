@@ -555,11 +555,10 @@ class App {
             this.topBar.init(this.playlists, this.playlists[0]);
             this.playlists[0].getPlaylistsTracks(function() {
                 modal.close();
-                that.playlists[0].activate();
                 that.changePlaylist();
                 that.footBar.playlistPreview.setVisible(true);
                 // TODO : replace begin arg to the active playlists, to avoid loading it
-                that.getAllPlaylistsTracks(1); // 1 stand for the begining of the loop in playlists
+                that.getAllPlaylistsTracks(1); // 1 stand for the beginning of the loop in playlists
             });
         }
 

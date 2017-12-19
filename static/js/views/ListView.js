@@ -196,6 +196,26 @@ class ListView extends PlaylistView {
 
 
     /**
+     * method : refreshTracks (public)
+     * class  : ListView
+     * desc   : Refresh ListView entries (+ column header)
+     * arg    : {[object]} tracks - Tracks array
+     **/
+    refreshTracks(tracks) {
+        while (this.listView.firstChild) {
+            this.listView.removeChild(this.listView.firstChild);
+        }
+
+        this.entries = [];
+        this._initHeader();
+        this._addEntries(tracks);
+
+        this.container.appendChild(this.header.container);
+        this.container.appendChild(this.listView);
+    }
+
+
+    /**
      * method : setSelected (public)
      * class  : ListView
      * desc   : Select an entry using a Track object
@@ -290,14 +310,14 @@ class ListView extends PlaylistView {
         for (let i = 0; i < playlists.length; ++i)
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function() {
                 if (clickedEntry !== undefined) {
-                    let tmp = [];
-                    tmp.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
+                    let tracksId = [];
+                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
 
                     JSONParsedPostRequest(
                         "ajax/addTracksToPlaylist/",
                         JSON.stringify({
                             PLAYLIST_ID: playlists[i].id,
-                            TRACKS_ID: tmp
+                            TRACKS_ID: tracksId
                         }),
                         function(response) {
                             /* response = {
@@ -308,9 +328,8 @@ class ListView extends PlaylistView {
                              *     ADDED_TRACKS : int
                              * } */
                             if (response.DONE) {
-                                console.log(response);
-                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].track.title + " has been added to " +  + playlists[i].name + ".");
-                                // TODO : fetch new tracks on target playlist
+                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].track.title + " has been added to " + playlists[i].name + ".");
+                                playlists[i].getPlaylistsTracks();
                             }
 
                             else {

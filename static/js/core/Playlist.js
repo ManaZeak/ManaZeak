@@ -71,6 +71,7 @@ class Playlist {
      * arg    : {function} callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
+        this._clearTracks();
         let that = this;
 
         JSONParsedPostRequest(
@@ -87,12 +88,13 @@ class Playlist {
                  *     RESULT      : JSON object
                  * } */
                 if (response.DONE) {
+                    // TODO : get total track, album and artist of playlist
                     that.rawTracks = response.RESULT;
                     that._fillTracks(that.rawTracks);
                     that.refreshViews();
 
                     if (callback) {
-                        that.showView(that.activeView);
+                        that.activate();
                         callback();
                     }
                 }
@@ -252,7 +254,9 @@ class Playlist {
     refreshViews() {
         for (let i = 0; i < this.views.length; ++i) {
             if (this.views[i] !== null) {
-                this.views[i].init(this.views[i].getDataFromPlaylist(this));
+                this.views[i].refreshTracks(this.tracks);
+
+//                this.views[i].init(this.views[i].getDataFromPlaylist(this));
             }
         }
     }
@@ -335,6 +339,19 @@ class Playlist {
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
+     * method : _clearTracks (private)
+     * class  : Playlist
+     * desc   : Remove all track and reset tracks, artists and album count
+     **/
+    _clearTracks() {
+        this.tracks      = [];
+        this.trackTotal  = 0;
+        this.artistTotal = 0;
+        this.albumTotal  = 0;
+    }
+
+
+    /**
      * method : _getTracksFromServer (private)
      * class  : Playlist
      * desc   : Ask server while track aren't fully scanned, every 0.5s
@@ -414,12 +431,13 @@ class Playlist {
      **/
     _init() {
         if (this.isLoading) {
-            if (this.isLibrary) { this._loadLibrary(); } // Library loading process
+            if (this.isLibrary) { this._loadLibrary();  } // Library loading process
+            else                { this._loadPlaylist(); } // Playlist loading process
         }
 
         else {
-            if (this.isLibrary) { this._newLibrary();  } // Library creation process
-            else                { this._newPlaylist(); } // Playlist creation process
+            if (this.isLibrary) { this._newLibrary();   } // Library creation process
+            else                { this._newPlaylist();  } // Playlist creation process
         }
     }
 
@@ -479,6 +497,18 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary() {
+        if (this.rawTracks.length === 0) { return; }
+
+        this._fillTracks(this.rawTracks);
+    }
+
+
+    /**
+     * method : _loadLibrary (private)
+     * class  : Playlist
+     * desc   : Order _fillTracks if one sent rawTrack at instantiation
+     **/
+    _loadPlaylist() {
         if (this.rawTracks.length === 0) { return; }
 
         this._fillTracks(this.rawTracks);
@@ -606,7 +636,9 @@ class Playlist {
     getId()          { return this.id;          }
     getName()        { return this.name;        }
     getIsLibrary()   { return this.isLibrary;   }
-    getShuffleMode() { return this.shuffleMode; }
     getRepeatMode()  { return this.repeatMode;  }
+    getShuffleMode() { return this.shuffleMode; }
+    getTracks()      { return this.tracks;      }
+    getViews()       { return this.views;       }
 
 }
