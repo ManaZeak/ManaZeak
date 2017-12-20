@@ -36,8 +36,15 @@ class PlaylistBarEntry {
     setIsSelected(isSelected) {
         this.isSelected = isSelected;
 
-        if (this.isSelected) { this.entry.classList.add("librarySelected");    }
-        else                 { this.entry.classList.remove("librarySelected"); }
+        if (this.isLibrary) {
+            if (this.isSelected) { this.entry.classList.add("librarySelected");    }
+            else                 { this.entry.classList.remove("librarySelected"); }
+        }
+
+        else {
+            if (this.isSelected) { this.entry.classList.add("playlistSelected");    }
+            else                 { this.entry.classList.remove("playlistSelected"); }
+        }
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
@@ -118,6 +125,7 @@ class TopBar {
     refreshTopBar() {
         this._removeEntries();
         this._addEntries();
+        this._unSelectAll();
         this._setSelected(this.selectedPlaylist);
     }
 
@@ -228,7 +236,7 @@ class TopBar {
      * method : _setSelected (private)
      * class  : TopBar
      * desc   : Set a playlist bar entry as selected
-     * arg    : {int} id - the id of the track to select
+     * arg    : {int} id - the id of the playlist to select
      *        : {bool} useID - a boolean indicating whether to use the real ID of the track (true) or the index in the array (false)
      **/
     _setSelected(id, useID) {
@@ -236,6 +244,7 @@ class TopBar {
             if ((useID != true && i == id) || (useID == true && this.entries[i].getId() == id)) {
                 this.selectedPlaylist = i;
                 this.entries[i].setIsSelected(true);
+                return;
             }
         }
     }

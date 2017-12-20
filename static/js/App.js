@@ -10,6 +10,7 @@ class App {
     constructor() {
 
         this.cookies          = getCookies();
+        this.user             = new User();
         this.topBar           = new TopBar();
         this.queue            = new Queue();
         this.mainContainer    = document.createElement("DIV");

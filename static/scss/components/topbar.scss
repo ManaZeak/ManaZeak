@@ -81,7 +81,7 @@ $topbar-height: 50px;
         div {
             display: inline-block;
             margin: 0;
-            padding: 0 15px;
+            padding: 0 25px;
             line-height: 30px;
             cursor: pointer;
             font-size: 0.9em;
@@ -93,13 +93,11 @@ $topbar-height: 50px;
 
         div.playlist:active,
         div.playlist:focus,
-        div.playlist:hover {
+        div.playlist:hover,
+        div.playlist.playlistSelected {
             box-shadow: 0 -2px blue inset;
         }
 
-        .playlistLocked {
-            box-shadow: 0 -2px blue inset;
-        }
 
         div.library:active,
         div.library:focus,
