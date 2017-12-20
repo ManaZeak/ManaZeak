@@ -357,17 +357,14 @@ class App {
 
 
     /**
-     * method : refreshUI (public)
+     * method : refreshFootBar (public)
      * class  : App
-     * desc   : Refresh ManaZeak whole UI
+     * desc   : Refresh ManaZeak FootBar
      **/
-    refreshUI() {
-        //this.playlists[this.activePlaylist - 1].refreshViews();
-        this.topBar.refreshTopBar();
-        this.footBar.playlistPreview.changePlaylist(this.activePlaylist); // TODO : get Lib/Play image/icon
+    refreshFootBar() {
+        this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
         this.footBar.progressBar.refreshInterval(this.player.getPlayer());
     }
-
 
     /**
      * method : repeatTrack (public)

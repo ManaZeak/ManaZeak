@@ -292,6 +292,7 @@ class ListView extends PlaylistView {
                          * } */
                         if (response.DONE) {
                             let dl      = document.createElement("A");
+
                             dl.href     = response.PATH;
                             dl.download = response.PATH.replace(/^.*[\\\/]/, '');
                             document.body.appendChild(dl);

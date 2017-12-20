@@ -309,7 +309,7 @@ class Playlist {
             null
         );
 
-        window.app.refreshUI();
+        window.app.refreshFootBar();
     }
 
 
@@ -331,7 +331,7 @@ class Playlist {
             null
         );
 
-        window.app.refreshUI();
+        window.app.refreshFootBar();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -619,7 +619,7 @@ class Playlist {
                     that.modal = null;
 
                     that.refreshViews();
-                    window.app.refreshUI();
+                    //window.app.refreshUI();
                 }
 
                 else {

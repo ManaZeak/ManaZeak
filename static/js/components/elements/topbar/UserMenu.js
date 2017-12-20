@@ -83,6 +83,7 @@ class UserMenu {
                 }
 
                 else {
+                    console.log("Boge lane");
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
