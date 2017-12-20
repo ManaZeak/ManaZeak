@@ -1,55 +1,68 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  QueueView class - classical queue (pre)view                                        *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let QueuePreview = function(container) {
-    this.contextMenu = null;
-    this.reverse = window.app.queue.isReverse();
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  QueueView class                                *
+ *                                                 *
+ *  Classical queue (pre)view                      *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    this._createUI(container);
+class QueuePreview {
+    constructor(container) {
 
-    this._eventListener();
-    this._contextMenuSetup();
+        this.contextMenu = null;
+        this.reverse     = window.app.queue.isReverse();
+        this.isLocked    = false;
 
-};
+        this._createUI(container);
+        this._eventListener();
+        this._contextMenuSetup();
+    }
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
-QueuePreview.prototype = {
+    /**
+     * method : preview (public)
+     * class  : QueuePreview
+     * desc   : TODO
+     **/
+    preview() {
+        if (isVisibilityLocked(this.ui.container))
+            return;
 
-    _createUI: function(container) {
-        this.ui = {
-            container:      document.createElement("DIV"),
-            statusBar:  {
-                container:  document.createElement("DIV"),
-                trackCount: document.createElement("SPAN"),
-                reverseBox: document.createElement("INPUT"),
-                reverseLbl: document.createElement("LABEL")
-            },
-            queueList:      document.createElement("UL")
-        };
-
-        this.ui.container.className             = "mzk-queue-preview";
-        this.ui.statusBar.container.className   = "mzk-queue-status";
-        this.ui.queueList.className             = "mzk-queue-list";
-
-        this.ui.statusBar.trackCount.innerText  = "0 tracks";
-        this.ui.statusBar.reverseLbl.innerText  = "Reverse Play:";
-        this.ui.statusBar.reverseBox.type       = "checkbox";
-        this.ui.statusBar.reverseBox.value      = this.reverse;
-
-        this.ui.statusBar.container.appendChild(this.ui.statusBar.trackCount);
-        this.ui.statusBar.container.appendChild(this.ui.statusBar.reverseLbl);
-        this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseBox);
-
-        this.ui.container.appendChild(this.ui.queueList);
-        this.ui.container.appendChild(this.ui.statusBar.container);
-
-        container.appendChild(this.ui.container);
-    },
+        addVisibilityLock(this.ui.container);
+        window.setTimeout(removeVisibilityLock.bind(null, this.ui.container), 2000);
+    }
 
 
-    addEntry: function(track) {
+    /**
+     * method : lock (public)
+     * class  : QueuePreview
+     * desc   : Show and lock QueuePreview
+     **/
+    lock() {
+        this.isLocked = true;
+        addVisibilityLock(this.ui.container);
+    }
+
+
+    /**
+     * method : hide (public)
+     * class  : QueuePreview
+     * desc   : Hide QueuePreview
+     **/
+    hide() {
+        this.isLocked = false;
+        removeVisibilityLock(this.ui.container);
+    }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _addEntry (private)
+     * class  : QueuePreview
+     * desc   : Add an entry in QueuePreview
+     **/
+    _addEntry(track) {
         let li              = document.createElement("LI");
         let img             = document.createElement("IMG");
         let body            = document.createElement("DIV");
@@ -72,6 +85,8 @@ QueuePreview.prototype = {
         qControlsUp.innerText   = "U";
         qControlsDown.innerText = "D";
 
+        img.src = track.cover;
+
         qControlsUp.dataset.callback   = "moveUp";
         qControlsDown.dataset.callback = "moveDown";
 
@@ -87,19 +102,62 @@ QueuePreview.prototype = {
         li.appendChild(qControls);
 
         this.ui.queueList.appendChild(li);
-    },
+    }
 
 
-    show: function(event) {
-        toggleVisibilityLock(this.ui.container);
+    /**
+     * method : _contextMenuSetup (private)
+     * class  : QueuePreview
+     * desc   : TODO
+     **/
+    _contextMenuSetup() {
 
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-    },
+    }
 
 
-    _eventListener: function() {
+    /**
+     * method : _createUI (private)
+     * class  : QueuePreview
+     * desc   : Build UI elements
+     **/
+    _createUI(container) {
+        this.ui = {
+            container:      document.createElement("DIV"),
+            statusBar:  {
+                container:  document.createElement("DIV"),
+                trackCount: document.createElement("SPAN"),
+                reverseBox: document.createElement("INPUT"),
+                reverseLbl: document.createElement("LABEL")
+            },
+            queueList:      document.createElement("UL")
+        };
+
+        this.ui.container.className            = "mzk-queue-preview";
+        this.ui.statusBar.container.className  = "mzk-queue-status";
+        this.ui.queueList.className            = "mzk-queue-list";
+
+        this.ui.statusBar.trackCount.innerText = "0 tracks";
+        this.ui.statusBar.reverseLbl.innerText = "Reverse Play:";
+        this.ui.statusBar.reverseBox.type      = "checkbox";
+        this.ui.statusBar.reverseBox.value     = this.reverse;
+
+        this.ui.statusBar.container.appendChild(this.ui.statusBar.trackCount);
+        this.ui.statusBar.container.appendChild(this.ui.statusBar.reverseLbl);
+        this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseBox);
+
+        this.ui.container.appendChild(this.ui.queueList);
+        this.ui.container.appendChild(this.ui.statusBar.container);
+
+        container.appendChild(this.ui.container);
+    }
+
+
+    /**
+     * method : _eventListener (private)
+     * class  : QueuePreview
+     * desc   : QueuePreview event listeners
+     **/
+    _eventListener() {
         let self = this;
 
         let findParentLI = function(element) {
@@ -153,19 +211,11 @@ QueuePreview.prototype = {
                     break;
             }
         });
-        this.ui.container.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-        });
-
         document.body.addEventListener('click', function() {
             removeVisibilityLock(self.ui.container);
         });
-
-
         window.app.addListener('pushQueue', function(track) {
-            self.addEntry(track);
+            self._addEntry(track);
         });
         window.app.addListener('popQueue', function() {
             self.ui.queueList.removeChild(self.reverse ? self.ui.queueList.lastChild : self.ui.queueList.firstChild);
@@ -173,10 +223,10 @@ QueuePreview.prototype = {
         window.app.addListener('reverseQueue', function(reverse) {
             self.reverse = reverse;
         });
-    },
-
-
-    _contextMenuSetup: function () {
-
     }
-};
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getIsLocked() { return this.isLocked; }
+
+}

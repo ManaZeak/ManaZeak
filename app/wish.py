@@ -25,3 +25,31 @@ def createWish(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+def getWishes(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if 'ALL' in response:
+            allWishes = bool(strip_tags(response['ALL']))
+
+            if user.is_superuser and allWishes:
+                wishes = Wish.objects.all()
+            else:
+                wishes = Wish.objects.filter(user=user)
+
+            data = []
+            for wish in wishes:
+                data = {
+                    'DATE': wish.date,
+                    'TEXT': wish.text,
+                    'USER': wish.user.username,
+                    'STATUS': wish.status,
+                }
+            data = dict({'RESULT': data})
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)

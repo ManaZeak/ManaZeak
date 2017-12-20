@@ -21,6 +21,8 @@ urlpatterns = [
 
     # Playlist actions
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
+    url(r'^ajax/addTracksToPlaylist/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
+    url(r'^ajax/removeTrackFromPlaylist/$', playlist.removeTrackFromPlaylist, name='removeTrackFromPlaylist'),
     url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
     url(r'^ajax/getSimplifiedTracks/$', playlist.loadSimplifiedPlaylist, name='simplifiedJson'),
     url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
@@ -48,6 +50,7 @@ urlpatterns = [
 
     # Wish actions
     url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
+    url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
 
     # ADMIN actions
     url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),

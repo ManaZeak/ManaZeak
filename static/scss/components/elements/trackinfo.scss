@@ -10,6 +10,8 @@
     transition: opacity 0.1s ease-in-out;
     box-sizing: border-box;
 
+    z-index: 999;
+
     img {
         width: 150px;
         height: 150px;

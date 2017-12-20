@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.dao import updateTrackView
-from app.models import Playlist, TrackView
+from app.models import Playlist, TrackView, Track
 from app.utils import errorCheckMessage
 
 
@@ -23,6 +23,56 @@ def newPlaylist(request):
                 'NAME': playlist.name,
             }
             data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def addTracksToPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
+            tracksId = response['TRACKS_ID']
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                tracks = Track.objects.filter(id__in=tracksId)
+                addedTrack = len(tracks)
+                for track in tracks:
+                    playlist.track.add(track)
+                data = {
+                    'ADDED_TRACKS': addedTrack,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def removeTrackFromPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
+            tracksId = response['TRACKS_ID']
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                tracks = Track.objects.filter(id__in=tracksId)
+                removedTracks = len(tracks)
+                for track in tracks:
+                    playlist.track.remove(track)
+                data = {
+                    'REMOVED_TRACKS': removedTracks,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
         else:
             data = errorCheckMessage(False, "badFormat")
     else:
@@ -73,7 +123,7 @@ def loadSimplifiedPlaylist(request):
             if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
                 updateTrackView(playlist.id)
-                data = dict({'RESULT': simplePlaylistJsonGenerator()})
+                data = {**dict({'RESULT': simplePlaylistJsonGenerator()}), **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
@@ -119,35 +169,37 @@ def getPlaylistInfo(request):
 # Return all the id of the user playlists
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
-    print("getting usr playlist")
-    user = request.user
-    playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
-    playlistNames = []
-    playlistIds = []
-    isLibrary = []
+    if request.method == 'GET':
+        user = request.user
+        playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
+        playlistNames = []
+        playlistIds = []
+        isLibrary = []
 
-    # Adding global libraries
-    libraries = Playlist.objects.filter(isLibrary=True)
-    for library in libraries:
-        playlistNames.append(library.name)
-        playlistIds.append(library.id)
-        isLibrary.append(True)
+        # Adding global libraries
+        libraries = Playlist.objects.filter(isLibrary=True)
+        for library in libraries:
+            playlistNames.append(library.name)
+            playlistIds.append(library.id)
+            isLibrary.append(True)
 
-    # Adding User playlists
-    for playlist in playlists:
-        playlistNames.append(playlist.name)
-        playlistIds.append(playlist.id)
-        isLibrary.append(False)
+        # Adding User playlists
+        for playlist in playlists:
+            playlistNames.append(playlist.name)
+            playlistIds.append(playlist.id)
+            isLibrary.append(False)
 
-    if len(playlistIds) == 0:
-        return JsonResponse(errorCheckMessage(False, None))
-
-    data = {
-        'NUMBER': len(playlistNames),
-        'PLAYLIST_NAMES': playlistNames,
-        'PLAYLIST_IDS': playlistIds,
-        'PLAYLIST_IS_LIBRARY': isLibrary,
-        'IS_ADMIN': user.is_superuser,
-    }
-    data = {**data, **errorCheckMessage(True, None)}
+        if len(playlistIds) == 0:
+            data = errorCheckMessage(False, None)
+        else:
+            data = {
+                'NUMBER': len(playlistNames),
+                'PLAYLIST_NAMES': playlistNames,
+                'PLAYLIST_IDS': playlistIds,
+                'PLAYLIST_IS_LIBRARY': isLibrary,
+                'IS_ADMIN': user.is_superuser,
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+    else:
+        data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

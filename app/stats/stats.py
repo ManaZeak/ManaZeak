@@ -8,15 +8,17 @@ from app.models import Stats, Artist, Track, Genre
 from app.utils import errorCheckMessage
 
 
-def addToStats(track, user):
+def addToStats(track, listeningPercentage, user):
     if Stats.objects.filter(user=user, track=track).count() == 0:
         stat = Stats()
         stat.track = track
         stat.user = user
         stat.playCounter = 1
+        stat.listeningPercentage = listeningPercentage
     else:
         stat = Stats.objects.get(user=user, track=track)
         stat.playCounter += 1
+        stat.listeningPercentage += listeningPercentage
     stat.save()
 
 
@@ -44,8 +46,10 @@ def getUserPrefGenre(user, numberPlayedTrack, order):
         tracks = Stats.objects.filter(track__genre=genre, user=user)
         for track in tracks:
             counter += track.playCounter
-
-        genreTuple.append((genre.name, counter, (counter/numberPlayedTrack)*100))
+        if numberPlayedTrack != 0:
+            genreTuple.append((genre.name, counter, (counter/numberPlayedTrack)*100))
+        else:
+            genreTuple.append((genre.name, counter, 0))
 
     genreTuple.sort(key=itemgetter(1), reverse=order)
     return genreTuple
@@ -69,15 +73,18 @@ def getUserPrefArtist(user, order):
     return artistCounter
 
 
-def getUserPrefTracks(user, order):
+def getUserPrefTracks(user, nbTrackListened, order):
     if order:
-        stats = Stats.objects.filter(user=user).order_by('-playCounter')
+        stats = Stats.objects.filter(user=user).order_by('-playCounter', '-listeningPercentage')
     else:
-        stats = Stats.objects.filter(user=user).order_by('playCounter')
+        stats = Stats.objects.filter(user=user).order_by('playCounter', 'listeningPercentage')
 
     trackTuple = []
     for stat in stats:
-        trackTuple.append((stat.track.title, stat.playCounter))
+        if stat.listeningPercentage is not None:
+            trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage/nbTrackListened))
+        else:
+            trackTuple.append((stat.track.title, stat.playCounter, 0))
 
     return trackTuple
 
@@ -97,6 +104,7 @@ def userNeverPlayed(user):
     return neverPlayed
 
 
+# TODO : create POST request with the arg for the number of elements returned
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserStats(request):
     if request.method == 'GET':
@@ -111,14 +119,15 @@ def getUserStats(request):
             'TOTAL_TRACK': Track.objects.all().count(),
             'PREF_ARTISTS': getUserPrefArtist(user, True)[:10],
             'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
-            'PREF_TRACKS': getUserPrefTracks(user, True)[:10],
-            'LEAST_TRACKS': getUserPrefTracks(user, False)[:10],
+            'PREF_TRACKS': getUserPrefTracks(user, nbTrackListened, True)[:10],
+            'LEAST_TRACKS': getUserPrefTracks(user, nbTrackListened, False)[:10],
             'NB_TRACK_LISTENED': nbTrackListened,
             'NB_TRACK_PUSHED': nbTrackPushed,
-            'PREF_GENRE': getUserPrefGenre(user, nbTrackListened, True)[:10],
-            'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
+            'PREF_GENRES': getUserPrefGenre(user, nbTrackListened, True)[:10],
+            'LEAST_GENRES': getUserPrefGenre(user, nbTrackListened, False)[:10],
             'NEVER_PLAYED': neverPlayed,
         }
+        data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

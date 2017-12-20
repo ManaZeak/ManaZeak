@@ -1,118 +1,167 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Player class - handle song streaming client side, and std action on it             *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Player = function(cookies) {
-    this.cookies = cookies;
-    this.player = document.getElementById("audioPlayer");
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  Player class                                   *
+ *                                                 *
+ *  Handle song streaming client side,             *
+ *  and std action on it                           *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    this.isPlaying   = false;
-    this.isMuted     = false;
-    this.oldVolume   = 0;
+class Player {
+    constructor() {
 
-    this.init();
-};
-
-
-Player.prototype = {
-
-    init: function() {
-        this.player.volume = 0.5; // TODO : init from global var in App
-        this._eventListener();
-    },
-
-
-    play: function() {
-        this.isPlaying = true;
-        this.player.play();
-    },
-
-
-    pause: function() {
+        this.player    = document.getElementById("audioPlayer");
         this.isPlaying = false;
-        this.player.pause();
-    },
+        this.isMuted   = false;
+        this.oldVolume = 0;
+        this.emptyURL  = "";
+
+        this._init();
+    }
+
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : isEmpty (public)
+     * class  : Player
+     * desc   : Test if player source is empty
+     * return : {bool} true if src is empty
+     **/
+    isEmpty() {
+        return this.player.src == this.emptyURL;
+    }
 
 
-    togglePlay: function() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
-        }
-    },
+    /**
+     * method : togglePlay (public)
+     * class  : Player
+     * desc   : Switch on and off player playback depending on its current status
+     **/
+    togglePlay() {
+        if (this.isPlaying) { this._pause(); }
+        else                { this._play();  }
+    }
 
 
-    stopPlayback: function() {
-        this.pause();
-        this.isPlaying = false;
-        this.player.currentTime = 0;
-    },
+    /**
+     * method : stopPlayback (public)
+     * class  : Player
+     * desc   : Stop player playback and reset player src
+     **/
+    stopPlayback() {
+        this._pause();
+        this.isPlaying  = false;
+        this.player.src = "";
+    }
 
 
-    fastForward: function(event) {
-        if (event.ctrlKey) {
-            window.app.fastForward(30);
-        } else {
-            window.app.fastForward(10);
-        }
-    },
-
-
-    rewind: function(event) {
-        if (event.ctrlKey) {
-            window.app.rewind(30);
-        } else {
-            window.app.rewind(10);
-        }
-    },
-
-
-    mute: function() {
-        this.isMuted = true;
-        this.oldVolume = this.player.volume;
+    /**
+     * method : mute (public)
+     * class  : Player
+     * desc   : Mute player and store old value
+     **/
+    mute() {
+        this.isMuted       = true;
+        this.oldVolume     = this.player.volume; // Store old volume for restoration on unmute
         this.player.volume = 0;
-    },
+    }
 
 
-    unmute: function() {
-        this.isMuted = false;
+    /**
+     * method : unmute (public)
+     * class  : Player
+     * desc   : Unmute player and restore old value
+     **/
+    unmute() {
+        this.isMuted       = false;
         this.player.volume = this.oldVolume;
-    },
+    }
 
 
-    changeTrack: function(url) {
+    /**
+     * method : changeSource (public)
+     * class  : Player
+     * desc   : Change player source and stop playback
+     * arg    : {string} url - Path to targeted track
+     **/
+    changeSource(url) {
         this.stopPlayback();
         this.player.src = url;
-    },
+    }
 
 
-    repeatTrack: function() {
+    /**
+     * method : repeatTrack (public)
+     * class  : Player
+     * desc   : Reset player current time and repeat the track
+     **/
+    repeatTrack() {
         this.player.currentTime = 0;
 
         if (!this.isPlaying) {
-            this.play();
+            this._play();
         }
-    },
+    }
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-    _eventListener: function() {
+    /**
+     * method : _eventListener (private)
+     * class  : Player
+     * desc   : Player event listeners
+     **/
+    _eventListener() {
         let that = this;
         this.player.addEventListener("loadedmetadata", window.app.refreshUI.bind(window.app));
         this.player.addEventListener("ended", function() {
             that.isPlaying = false;
             window.app.next();
         });
-    },
+    }
 
 
-    // Class Getters and Setters
-    getPlayer: function()                 { return this.player;             },
-    getIsPlaying: function()              { return this.isPlaying;          },
-    getCurrentTime: function()            { return this.player.currentTime  },
-    getDuration: function()               { return this.player.duration     },
+    /**
+     * method : _init (private)
+     * class  : Player
+     * desc   : Init player volume, set/store player empty source and listen
+     **/
+    _init() {
+        this.player.volume = 0.5; // TODO : init from global var in App os user settings
+        this.player.src    = '';
+        this.emptyURL      = this.player.src;
+        this._eventListener();
+    }
 
-    setIsMuted: function(muted)           { this.isMuted = muted;           },
-    setVolume: function(volume)           { this.player.volume = volume;    }
-};
+
+    /**
+     * method : _pause (private)
+     * class  : Player
+     * desc   : Pause player playback
+     **/
+    _pause() {
+        this.isPlaying = false;
+        this.player.pause();
+    }
+
+
+    /**
+     * method : _play (private)
+     * class  : Player
+     * desc   : Play player playback
+     **/
+    _play() {
+        this.isPlaying = true;
+        this.player.play();
+    }
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getPlayer()       { return this.player;             }
+    getIsPlaying()    { return this.isPlaying;          }
+    getCurrentTime()  { return this.player.currentTime; }
+    getDuration()     { return this.player.duration;    }
+
+    setIsMuted(muted) { this.isMuted = muted;           }
+    setVolume(volume) { this.player.volume = volume;    }
+
+}

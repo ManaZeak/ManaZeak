@@ -1,45 +1,47 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  ListView class - classical list view                                               *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let View = function(data) {
+/* * * * * * * * * * * * * * * * * * * * * *
+ *                                         *
+ *  View class                             *
+ *                                         *
+ *  Parent class for every view displayed  *
+ *  in mainContainer                       *
+ *                                         *
+ *  data : {object} data                   *
+ *                                         *
+ * * * * * * * * * * * * * * * * * * * * * */
 
-    this.pageContainer = document.getElementById("mainContainer");
-    this.container = document.createElement("DIV");
+class View {
+    constructor() {
 
-    this.init(data);
-};
-
-View.prototype = {
-
-    init: function(data) {
+        this.container = document.createElement("DIV");
         this.container.innerHTML = "";
-        this._init(data);
-        this._eventListener();
-    },
-
-
-    show: function() {
-        this.pageContainer.innerHTML = "";
-        this.pageContainer.appendChild(this.container);
-
-        // TODO : dirty work here, put this somewhere else
-        if (this.listView.scrollHeight > this.listView.clientHeight) {
-            this.header.container.className += " columnHeaderOffset";
-        }
-    },
-
-
-    getDataFromPlaylist: function(playlist) {
-        return null;
-    },
-
-
-    _init: function(data) {
-    },
-
-
-    _eventListener: function() {
     }
-};
+
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : getDataFromPlaylist (public)
+     * class  : View
+     * desc   : Get data from playlist
+     * arg    : {object} playlist - The playlist to get data from
+     **/
+    getDataFromPlaylist(playlist) {
+        return null;
+    }
+
+
+    /**
+     * method : getContainer (public)
+     * class  : View
+     * desc   : Returns the HTML of the view
+     * return : {object} - The view container
+     **/
+    getContainer() {
+        return this.container;
+    }
+
+
+    _init(data) {
+
+    }
+
+}
