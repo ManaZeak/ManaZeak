@@ -106,6 +106,9 @@ class ListView extends PlaylistView {
         super();
         this.isLibrary = isLibrary;
         this.id        = id;
+        // The index of the last track on which the view was centered
+        this.lastTrackCenter = 0;
+        this.isActive = false;
         this._init(data);
     }
 
@@ -464,19 +467,16 @@ class ListView extends PlaylistView {
             that.sort.isYearAsc = !that.sort.isYearAsc;
             that._sortBy("year", that.sort.isYearAsc);
         });
+
         window.app.addListener('changeTrack', function(track) {
-            for (let i = 0; i < that.entries.length; ++i)
-                if (that.entries[i].track == track) {
-                    let relativeDelta = that.entries[i].entry.offsetTop + that.entries[i].entry.scrollHeight / 2;
-
-                    if (that.entries[i].entry.offsetParent != that.listView) {
-                        relativeDelta -= that.listView.offsetTop;
-                    }
-
-                    that.listView.scrollTop = relativeDelta - that.listView.clientHeight / 2;
-                    return;
-                }
+            that._centerOnTrack(track, false);
         });
+        window.app.addListener('changeView', function(view) {
+            that.isActive = view == that;
+           if(that.isActive)
+               that._centerOnTrack(that.lastTrackCenter, true);
+        });
+
         window.app.addListener("stopPlayback", function() {
             that._unSelectAll();
         });
@@ -645,6 +645,35 @@ class ListView extends PlaylistView {
                 this.entries[i].setIsSelected(false);
             }
         }
+    }
+
+
+    /**
+     * method : _centerOnTrack (private)
+     * class  : ListView
+     * desc   : Center the listview on a track
+     * arg    : {bool} useIndex - whether to treat track as an object or an integer
+     *          {object} track - The track on which to center
+     *          OR
+     *          {integer} track - The index of the track on which to center
+     **/
+    _centerOnTrack(track, useIndex) {
+        let i = track;
+        if (useIndex !== true)
+            for (i = 0; i < this.entries.length; ++i)
+                if (this.entries[i].track == track)
+                    break;
+        if(i >= this.entries.length)
+            return;
+
+        let relativeDelta = this.entries[i].entry.offsetTop + this.entries[i].entry.scrollHeight / 2;
+        if (this.entries[i].entry.offsetParent != this.listView)
+            relativeDelta -= this.listView.offsetTop;
+
+        if(this.isActive)
+            this.lastTrackCenter = i;
+        this.listView.scrollTop = relativeDelta - this.listView.clientHeight / 2;
+
     }
 
 
