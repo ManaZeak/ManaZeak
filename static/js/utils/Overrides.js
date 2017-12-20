@@ -16,7 +16,8 @@ Event.prototype.stop = function() {
     Element.prototype.addEventListener = function(type, handler, options) {
         addEvent.call(this, type, function(event) {
             handler.apply(this, arguments);
-            event.stop();
+            if(options !== true)
+                event.stop();
         }, options);
     }
 }());
