@@ -136,7 +136,7 @@ class ProgressBar {
         this.progressBar.container.addEventListener("mouseleave", function () { that.isMouseOver = false; });
         this.duration.current.addEventListener("click", this._invertTimecode.bind(this));
         this.duration.total.addEventListener("click", this._invertTimecode.bind(this));
-        window.addEventListener("_mouseMove", this._mouseMove.bind(this));
+        window.addEventListener("mousemove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.addEventListener("mousedown", this._mouseDown.bind(this));
     }

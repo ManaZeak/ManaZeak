@@ -117,7 +117,7 @@ class VolumeBar {
         this.volumeBar.container.addEventListener("mousedown", that._mouseDown.bind(this));
 
         window.addEventListener("mousemove", this._mouseMove.bind(this));
-        window.addEventListener("mouseUp", this._mouseUp.bind(this));
+        window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.app.addListener("setVolume", function() {
             that._updateVolume(window.app.player.getPlayer().volume * 100);
         });
