@@ -47,12 +47,6 @@ class AdminView extends View {
                     that.ui.container.appendChild(that.ui.dropButton);
 
                     that.ui.dropButton.addEventListener("click", that._requestDrop.bind(that));
-
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                    window.app.refreshUI();
                 }
             }
         );

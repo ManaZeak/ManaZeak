@@ -112,7 +112,7 @@ class Player {
      **/
     _eventListener() {
         let that = this;
-        this.player.addEventListener("loadedmetadata", window.app.refreshUI.bind(window.app));
+        this.player.addEventListener("loadedmetadata", window.app.refreshFootBar.bind(window.app));
         this.player.addEventListener("ended", function() {
             that.isPlaying = false;
             window.app.next();
