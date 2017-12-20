@@ -91,6 +91,7 @@ class Playlist {
                     // TODO : get total track, album and artist of playlist
                     that.rawTracks = response.RESULT;
                     that._fillTracks(that.rawTracks);
+                    console.log(that.tracks);
                     that.refreshViews();
 
                     if (callback) {

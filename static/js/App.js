@@ -11,8 +11,6 @@ class App {
 
         this.cookies          = getCookies();
         this.user             = new User();
-        this.topBar           = new TopBar();
-        this.queue            = new Queue();
         this.mainContainer    = document.createElement("DIV");
         this.mainContainer.id = "mainContainer";
         this.footBar          = null;
@@ -54,7 +52,6 @@ class App {
             }
         }
 
-        document.body.appendChild(this.topBar.getTopBar());
         document.body.appendChild(this.mainContainer);
     }
 
@@ -253,8 +250,11 @@ class App {
      * desc   : Init components and request user playlist from server
      **/
     init() {
+        this.queue   = new Queue();
         this.player  = new Player();
+        this.topBar  = new TopBar();
         this.footBar = new FootBar();
+        document.body.appendChild(this.topBar.getTopBar());
         document.body.appendChild(this.footBar.getFootBar());
 
         let that = this;
