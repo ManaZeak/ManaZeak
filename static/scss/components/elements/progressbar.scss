@@ -50,11 +50,8 @@
     margin-left: 0;
     position: absolute;
     top: 0;
-    opacity: 0;
     width: 5px;
     z-index: 999;
-
-    transition: opacity 0.15s ease;
 }
 
 #progressTimecodeHover {

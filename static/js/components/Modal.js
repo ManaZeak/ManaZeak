@@ -1,51 +1,3 @@
-<<<<<<< HEAD
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                                     *
- *  Modal class - modals to use in various case in ManaZeak                            *
- *                                                                                     *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-let Modal = function(type) {
-
-    this.url         = null;
-    this.id          = "modal-" + genUniqueID();
-    this.callback    = null;
-    this.canBeClosed = false;
-    this.closeButton = null;
-
-    this._createUI();
-
-    switch (type) {
-        case "fetchPlaylists":
-            this._fetchPlaylistsUI();
-            break;
-
-        case "fetchStats":
-            this._fetchStatsUI();
-            break;
-
-        case "newLibrary":
-            this._newLibraryUI();
-            this.canBeClosed = true;
-            break;
-
-        case "newPlaylist":
-            this._newPlaylistUI();
-            this.canBeClosed = true;
-            break;
-
-        case "scanLibrary":
-            this._scanLibraryUI();
-            break;
-
-        case "newWish":
-            this._newWishUI();
-            this.canBeClosed = true;
-            break;
-
-        default:
-            new Notification("ERROR", "Can not open modals", "The given modal type doesn't exist");
-            break;
-=======
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                 *
  *  Modal class                                    *
@@ -101,7 +53,6 @@ class Modal {
         }
 
         this._eventListener();
->>>>>>> UI
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -266,15 +217,9 @@ class Modal {
         let text                   = document.createElement("P");
 
         spinnerContainer.className = "lds-css";
-<<<<<<< HEAD
-        spinnerRing.className = "lds-dual-ring";
-        spinnerImage.src = "/static/img/utils/python.svg";
-        text.innerHTML = "Hold on, your data is on the road.";
-=======
         spinnerRing.className      = "lds-dual-ring";
         spinnerImage.src           = "/static/img/utils/python.svg";
         text.innerHTML             = "Currently fetching your libraries and playlists, please wait.";
->>>>>>> UI
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -300,18 +245,10 @@ class Modal {
         let spinnerImage           = document.createElement("IMG");
         let text                   = document.createElement("P");
 
-<<<<<<< HEAD
-        contentText.innerHTML = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
-        spinnerContainer.className = "lds-css";
-        spinnerRing.className = "lds-dual-ring";
-        spinnerImage.src = "/static/img/utils/python.svg";
-        footerText.innerHTML = "On average, it takes a minute to process two thousand files. Just do the math ;)";
-=======
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
         spinnerImage.src           = "/static/img/utils/python.svg";
         text.innerHTML             = "Hold on, you're data are on the road.";
->>>>>>> UI
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -331,29 +268,6 @@ class Modal {
         this.ui.container.id    = "newLibrary";
         this.ui.title.innerHTML = "New library";
 
-<<<<<<< HEAD
-        let infoLabel   = document.createElement("P");
-        let name        = document.createElement("INPUT");
-        let path        = document.createElement("INPUT");
-        let convertLabel = document.createElement("SPAN");
-        let convert     = document.createElement("INPUT");
-        let scan        = document.createElement("BUTTON");
-
-        infoLabel.id = "infoLabel";
-        name.id = "name";
-        path.id = "path";
-        convertLabel.id = "id3Label";
-        convert.id = "convert";
-        scan.id = "scanButton";
-
-        name.type    = "text";
-        path.type    = "text";
-        convert.type = "checkbox";
-        name.placeholder = "Enter the name of the library";
-        path.placeholder = "Enter the absolute path to your library";
-
-        infoLabel.innerHTML = "Welcome! Fill the path with the one to your library, name it and let the magic begin!" +
-=======
         let infoLabel           = document.createElement("P");
         let name                = document.createElement("INPUT");
         let path                = document.createElement("INPUT");
@@ -375,7 +289,6 @@ class Modal {
         path.placeholder        = "Enter the absolute path to your library";
 
         infoLabel.innerHTML     = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
->>>>>>> UI
             "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
@@ -447,22 +360,13 @@ class Modal {
         let wish                = document.createElement("INPUT");
         let submit              = document.createElement("BUTTON");
 
-<<<<<<< HEAD
-        wish.type    = "text";
-        wish.placeholder = "Enter your suggestion here";
-        text.innerHTML = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
-            "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
-            "You will be notified when the track you requested has been added to a playlist.";
-        submit.innerHTML = "Submit";
-=======
         wish.type               = "text";
         wish.placeholder        = "Enter your suggestion here";
         text.innerHTML          = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
-            "Paste an url or write the more information you can about it, and an administrator will process your request. " +
-            "You'll be notified when the track you asked has been added to a playlist. Also, if you have any feature idea, feel free to also" +
+            "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
+            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to also" +
             "use this field.";
         submit.innerHTML        = "Submit";
->>>>>>> UI
 
         this.ui.content.appendChild(text);
         this.ui.content.appendChild(wish);
@@ -491,57 +395,11 @@ class Modal {
                     }
                 );
                 that.close();
-<<<<<<< HEAD
-            } else {
-                wish.style.border = "solid 1px red";
-                new Notification("INFO", "Suggestion field is empty.", "You must specify a name or a URL for your track.");
-            }
-        });
-    },
-
-
-    _checkPlaylistInputs: function(name) {
-        if (name.value !== '') {
-            if (this.callback) {
-                this.callback(name);
-            }
-        }
-
-        else {
-            name.style.border = "solid 1px red";
-            new Notification("INFO", "Name field is empty.", "You must specify the name of your playlist.");
-        }
-    },
-
-    _checkLibraryInputs: function(name, path, convert) {
-        if (name.value !== '' && path.value !== '') {
-            if (this.callback) {
-                this.callback(name, path, convert);
-            }
-        }
-
-        else {
-            if (name.value !== '') {
-                path.style.border = "solid 1px red";
-                new Notification("INFO", "Path field is empty.", "You must specify the path of your library.");
-            }
-
-            else if (path.value !== '') {
-                name.style.border = "solid 1px red";
-                new Notification("INFO", "Name field is empty.", "You must give your library a name.");
-            }
-
-            else {
-                path.style.border = "solid 1px red";
-                name.style.border = "solid 1px red";
-                new Notification("INFO", "Both fields are empty.", "You must fill in both fields to create a new library.");
-=======
             }
 
             else {
                 wish.style.border = "solid 1px red";
                 new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
->>>>>>> UI
             }
         });
     }

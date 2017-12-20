@@ -43,9 +43,9 @@ class ProgressBar {
      * desc   : Set ProgressBar to default
      **/
     resetProgressBar () {
-        this.duration.current.innerHTML = "--:--";
-        this.duration.total.innerHTML   = "--:--";
-        this.duration.hover.innerHTML   = "--:--";
+        this.duration.current.innerHTML         = "--:--";
+        this.duration.total.innerHTML           = "--:--";
+        this.duration.hover.innerHTML           = "--:--";
 
         this.progressBar.current.style.width    = 0 + "%";
         this.progressBar.thumb.style.marginLeft = 0 + "%";
@@ -65,7 +65,7 @@ class ProgressBar {
      * arg    : {object} track - The track to update progress from
      **/
     updateProgress(track) {
-        let distanceToLeftBorder = (track.currentTime * 100) / track.duration;
+        let distanceToLeftBorder                = (track.currentTime * 100) / track.duration;
         // Style assignation
         this.progressBar.current.style.width    = distanceToLeftBorder + "%";
         this.progressBar.thumb.style.marginLeft = distanceToLeftBorder + "%";
@@ -132,12 +132,10 @@ class ProgressBar {
      **/
     _eventListener() {
         let that = this;
-
         this.progressBar.container.addEventListener("mouseover", function () { that.isMouseOver = true; });
         this.progressBar.container.addEventListener("mouseleave", function () { that.isMouseOver = false; });
         this.duration.current.addEventListener("click", this._invertTimecode.bind(this));
         this.duration.total.addEventListener("click", this._invertTimecode.bind(this));
-
         window.addEventListener("_mouseMove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.addEventListener("mousedown", this._mouseDown.bind(this));
@@ -150,8 +148,8 @@ class ProgressBar {
      * desc   : Creating moodbar, setting timecodes and listen
      **/
     _init() {
-        this.moodbar.container = document.getElementById("moodbar");
-        this.moodbar.thumb     = document.getElementById("moodbarThumb");
+        this.moodbar.container          = document.getElementById("moodbar");
+        this.moodbar.thumb              = document.getElementById("moodbarThumb");
 
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";

@@ -1,14 +1,14 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                 *
- *  PlaylistBarEntry sub class                     *
- *                                                 *
- *                                                         *
- *  playlist    : {int} Playlist ID in db                   *
- *  playlistBar : {bool} true => new library, false => load *
- *  id          : {int} Playlist tracks                *
- *  isLibrary   : {bool} Not mandatory                  *
- *                                                         * *                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                           *
+ *  PlaylistBarEntry sub class                               *
+ *                                                           *
+ *                                                           *
+ *  playlist    : {int} Playlist ID in db                    *
+ *  playlistBar : {bool} true => new library, false => load  *
+ *  id          : {int} Playlist tracks                      *
+ *  isLibrary   : {bool} Not mandatory                       *
+ *                                                           *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class PlaylistBarEntry {
     constructor(playlist, playlistBar, id, isLibrary) {
 
@@ -75,11 +75,6 @@ class TopBar {
      * arg    : {int} id - The Track ID
      **/
     changeMoodbar(id) {
-        if (!this.moodbarThumb.isVisible) {
-            this.moodbarThumb.isVisible = true;
-            addVisibilityLock(this.moodbarThumb);
-        }
-
         let that = this;
         JSONParsedPostRequest(
             "ajax/getMoodbarByID/",
@@ -87,6 +82,10 @@ class TopBar {
                 TRACK_ID: id
             }),
             function(response) {
+                if (!that.moodbarThumb.isVisible) {
+                    that.moodbarThumb.isVisible = true;
+                    addVisibilityLock(that.moodbarThumb);
+                }
                 renderMoodFile(response.MOOD, that.moodbar);
             }
 
@@ -117,7 +116,6 @@ class TopBar {
      * desc   : Refresh the TopBar components
      **/
     refreshTopBar() {
-        this.resetMoodbar();
         this._removeEntries();
         this._addEntries();
         this._setSelected(this.selectedPlaylist);

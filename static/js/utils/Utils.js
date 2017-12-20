@@ -146,8 +146,8 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
  * arg    : {object} object - The HTML object to toggle
  **/
 function toggleVisibilityLock(object) { //TODO: Move to Overrides
-    if(object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
-    else                                         { addVisibilityLock(object);    }
+    if (object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
+    else                                          { addVisibilityLock(object);    }
 }
 
 
