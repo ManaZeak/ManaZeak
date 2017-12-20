@@ -421,6 +421,7 @@ class ListView extends PlaylistView {
         };
         this.listView.addEventListener('mousemove', this._showTrackInfo.bind(this), true);
         this.listView.addEventListener('mouseleave', function(event) {
+            window.clearTimeout(that.hoveredTimeout);
             //We need to enqueue that event because mouseleave will get fired before trackinfo's mouseenter
             if (event.target == that.listView)
                 window.setTimeout(that.trackInfo.setVisible.bind(that.trackInfo, false), 0);
