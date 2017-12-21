@@ -15,7 +15,6 @@ class Modal {
         this.url         = null;
         this.id          = "modal-" + genUniqueID();
         this.callback    = null;
-        this.canBeClosed = false;
         this.closeButton = null;
 
         this._createUI();
@@ -35,12 +34,14 @@ class Modal {
 
             case "newLibrary":
                 this._newLibraryUI();
-                this.canBeClosed = true;
                 break;
 
             case "newPlaylist":
                 this._newPlaylistUI();
-                this.canBeClosed = true;
+                break;
+
+            case "renamePlaylist":
+                this._renamePlaylistUI();
                 break;
 
             case "scanLibrary":
@@ -49,7 +50,6 @@ class Modal {
 
             case "newWish":
                 this._newWishUI();
-                this.canBeClosed = true;
                 break;
 
             default:
@@ -465,6 +465,55 @@ class Modal {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(footerText);
+    }
+
+
+    /**
+     * method : _deletePlaylistUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for delete playlist modal
+     **/
+    _renamePlaylistUI() {
+        this.ui.container.id    = "deletePlaylist";
+        this.ui.title.innerHTML = "Remove " + this.data.name;
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("INPUT");
+        let cancel              = document.createElement("BUTTON");
+        let rename              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+        cancel.id               = "cancelButton";
+        rename.id                  = "deleteButton";
+
+        name.type               = "text";
+        name.placeholder        = "Enter the name of the playlist";
+
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        cancel.innerHTML        = "Cancel";
+        rename.innerHTML           = "Delete";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(rename);
+
+        this.setCallback(function(name) {
+            window.app.renamePlaylist(that.data.id, name.value);
+            that.close();
+        });
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
+        rename.addEventListener("click", function() {
+            that._checkPlaylistInputs(name);
+        });
     }
 
 }

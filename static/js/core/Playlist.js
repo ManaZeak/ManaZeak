@@ -637,4 +637,6 @@ class Playlist {
     getTracks()      { return this.tracks;      }
     getViews()       { return this.views;       }
 
+    setName(name)    { this.name = name;        }
+
 }

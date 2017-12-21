@@ -69,7 +69,11 @@ class PlaylistBarEntry {
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
         this.contextMenu.addEntry(null, "Rename", function() {
-                console.log('Rename');
+            that.modal = new Modal("renamePlaylist", {
+                name: that.playlist.name,
+                id:   that.playlist.id
+            });
+            that.modal.open();
         });
         this.contextMenu.addEntry(null, "Delete", function() {
             that.modal = new Modal("deletePlaylist", {

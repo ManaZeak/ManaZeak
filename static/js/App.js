@@ -418,6 +418,43 @@ class App {
     }
 
 
+    renamePlaylist(id, name) {
+        let that = this;
+        JSONParsedPostRequest(
+            "ajax/renamePlaylist/",
+            JSON.stringify({
+                PLAYLIST_ID: id,
+                NAME:        name
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    for (let i = 0; i < that.playlists.length; ++i) { // Renaming from playlists Array
+                        if (that.playlists[i].id === id) {
+                            console.log(name);
+                            that.playlists[i].setName(name);
+                            break;
+                        }
+                    }
+                    that.playlists[0].activate(); // TODO : test if there is still some playlists
+                    that.refreshTopBar();
+                    that.refreshFootBar();
+                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
     /**
      * method : repeatTrack (public)
      * class  : App
