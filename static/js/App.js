@@ -95,7 +95,7 @@ class App {
      * arg    : {string} path - Current track path
      **/
     changePageTitle(path) {
-        // IDEA : Recontruct frrom Track attributes bc special char won't display as below ... (?/etc.)
+        // IDEA : Recontruct from Track attributes bc special char won't display as below ... (?/etc.)
         document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
     }
 
@@ -196,6 +196,12 @@ class App {
     }
 
 
+    /**
+     * method : deletePlaylist (public)
+     * class  : App
+     * desc   : Ask server to delete a playlist from a given ID
+     * arg    : {int} id - The playlist ID
+     **/
     deletePlaylist(id) {
         let that = this;
         JSONParsedPostRequest(
@@ -221,7 +227,6 @@ class App {
                     that.playlists[0].activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
-                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
                 }
 
                 else {
@@ -256,6 +261,12 @@ class App {
     }
 
 
+    /**
+     * method : getPlaylistFromId (public)
+     * class  : App
+     * desc   : Returns a playlist from a given ID
+     * arg    : {int} id - The playlist to get from an ID
+     **/
     getPlaylistFromId(id) {
         for (let i = 0; i < this.playlists.length; ++i) {
             if (this.playlists[i].id === id) {
@@ -418,6 +429,13 @@ class App {
     }
 
 
+    /**
+     * method : renamePlaylist (public)
+     * class  : App
+     * desc   : Renames a playlist/library from its ID
+     * arg    : {int} id - The playlist's ID to rename
+     *        : {string} name - The name to give to the playlist
+     **/
     renamePlaylist(id, name) {
         let that = this;
         JSONParsedPostRequest(

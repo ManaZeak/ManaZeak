@@ -247,17 +247,17 @@ ContextMenuEntry.prototype = {
 };
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                 *
- *  ContextMenu class                              *
- *                                                 *
- *  Handle the context menu on right click         *
- *                                                 *
- *  parentElement : {element} the container hoisting the menu       *
- *  openCallback  : {function} A function to run when the menu is opened                    *
- *  event         : {string} The trigger event     *
- *                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                       *
+ *  ContextMenu class                                                    *
+ *                                                                       *
+ *  Handle the context menu on right click                               *
+ *                                                                       *
+ *  parentElement : {object} the container hoisting the menu             *
+ *  openCallback  : {function} A function to run when the menu is opened *
+ *  event         : {string} The trigger event                           *
+ *                                                                       *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class ContextMenu {
     constructor(parentElement, openCallback, event) {
