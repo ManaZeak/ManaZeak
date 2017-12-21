@@ -401,7 +401,6 @@ class App {
      * arg    : {object} track - The Track to push in Queue
      **/
     pushQueue(track) {
-        console.log(track);
         this.queue.enqueue(track);
     }
 
@@ -457,7 +456,6 @@ class App {
                 if (response.DONE) {
                     for (let i = 0; i < that.playlists.length; ++i) { // Renaming from playlists Array
                         if (that.playlists[i].id === id) {
-                            console.log(name);
                             that.playlists[i].setName(name);
                             break;
                         }

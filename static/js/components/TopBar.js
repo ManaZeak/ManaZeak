@@ -91,14 +91,6 @@ class PlaylistBarEntry {
         this.options.id    = "gear";
         this.entry.appendChild(this.options);
         this._contextMenuSetup();
-        this._eventListener();
-    }
-
-
-    _eventListener() {
-        this.options.addEventListener("click", function() {
-            console.log(this);
-        });
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //

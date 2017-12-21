@@ -130,7 +130,6 @@ class Notification {
      * desc   : Make notification appear
      **/
     _open() {
-        console.trace();
         //TODO: CSS Animation instead
         let that = this;
         let i    = 0;
