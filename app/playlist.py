@@ -36,12 +36,33 @@ def deletePlaylist(request):
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
             user = request.user
-            playlistId = response['PLAYLIST_ID']
+            playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 Playlist.objects.get(id=playlistId, user=user).delete()
                 data = errorCheckMessage(True, None)
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "permissionError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def renamePlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'NAME' in response:
+            user = request.user
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId, user=user)
+                playlist.name = strip_tags(response['NAME'])
+                playlist.save()
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "permissionError")
         else:
             data = errorCheckMessage(False, "badFormat")
     else:
