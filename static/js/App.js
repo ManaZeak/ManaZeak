@@ -66,9 +66,11 @@ class App {
      **/
     addListener(event, callback) {
         if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i)
-                if (this.listeners[event[i]])
+            for (let i = 0; i < event.length; ++i) {
+                if (this.listeners[event[i]]) {
                     this.listeners[event[i]].push(callback);
+                }
+            }
         }
 
         else if (this.listeners[event]) {

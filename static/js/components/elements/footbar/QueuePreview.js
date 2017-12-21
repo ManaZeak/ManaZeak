@@ -182,7 +182,7 @@ class QueuePreview {
                     if (li !== null || li !== undefined) {
                         sib = li.previousSibling;
 
-                        if(sib !== null || li !== undefined) {
+                        if (sib !== null || li !== undefined) {
                             for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib);
@@ -193,10 +193,10 @@ class QueuePreview {
 
                 case 'moveDown':
                     li = findParentLI(event.target);
-                    if(li !== null || li !== undefined) {
+                    if (li !== null || li !== undefined) {
                         sib = li.nextSibling;
 
-                        if(sib !== null || li !== undefined) {
+                        if (sib !== null || li !== undefined) {
                             for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib.nextSibling);

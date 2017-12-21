@@ -395,8 +395,8 @@ class Modal {
         wish.placeholder        = "Enter your suggestion here";
         text.innerHTML          = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
-            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to also" +
-            "use this field.";
+            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill " +
+            "this field (hard to say isn't it?).";
         submit.innerHTML        = "Submit";
 
         this.ui.content.appendChild(text);
@@ -433,38 +433,6 @@ class Modal {
                 new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
             }
         });
-    }
-
-
-    /**
-     * method : _scanLibraryUI (private)
-     * class  : Modal
-     * desc   : Build UI elements for scanLibrary modal
-     **/
-    _scanLibraryUI() {
-        this.ui.container.id       = "scan";
-        this.ui.title.innerHTML    = "Library scan in progress...";
-
-        let contentText            = document.createElement("P");
-        let spinnerContainer       = document.createElement("DIV");
-        let spinnerRing            = document.createElement("DIV");
-        let spinnerFloatDiv        = document.createElement("DIV");
-        let spinnerImage           = document.createElement("IMG");
-        let footerText             = document.createElement("P");
-
-        contentText.innerHTML      = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
-        spinnerContainer.className = "lds-css";
-        spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
-        footerText.innerHTML       = "On average, it take a minute to process two thousand files. Just do the math ;)";
-
-        spinnerRing.appendChild(spinnerFloatDiv);
-        spinnerContainer.appendChild(spinnerRing);
-
-        this.ui.content.appendChild(contentText);
-        this.ui.content.appendChild(spinnerContainer);
-        this.ui.content.appendChild(spinnerImage);
-        this.ui.footer.appendChild(footerText);
     }
 
 
@@ -514,6 +482,38 @@ class Modal {
         rename.addEventListener("click", function() {
             that._checkPlaylistInputs(name);
         });
+    }
+
+
+    /**
+     * method : _scanLibraryUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for scanLibrary modal
+     **/
+    _scanLibraryUI() {
+        this.ui.container.id       = "scan";
+        this.ui.title.innerHTML    = "Library scan in progress...";
+
+        let contentText            = document.createElement("P");
+        let spinnerContainer       = document.createElement("DIV");
+        let spinnerRing            = document.createElement("DIV");
+        let spinnerFloatDiv        = document.createElement("DIV");
+        let spinnerImage           = document.createElement("IMG");
+        let footerText             = document.createElement("P");
+
+        contentText.innerHTML      = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
+        spinnerContainer.className = "lds-css";
+        spinnerRing.className      = "lds-dual-ring";
+        spinnerImage.src           = "/static/img/utils/python.svg";
+        footerText.innerHTML       = "On average, it take a minute to process two thousand files. Just do the math ;)";
+
+        spinnerRing.appendChild(spinnerFloatDiv);
+        spinnerContainer.appendChild(spinnerRing);
+
+        this.ui.content.appendChild(contentText);
+        this.ui.content.appendChild(spinnerContainer);
+        this.ui.content.appendChild(spinnerImage);
+        this.ui.footer.appendChild(footerText);
     }
 
 }

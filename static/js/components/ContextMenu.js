@@ -48,7 +48,7 @@ ContextMenuEntry.prototype = {
 
         document.body.addEventListener('click', function(event) {
             let target = event.target;
-            while(target && target != self.element)
+            while (target && target != self.element)
                 target = target.parentNode;
 
             if(target != self.element)
@@ -67,7 +67,7 @@ ContextMenuEntry.prototype = {
 
                 do {
                     target = target.parentNode;
-                } while(target.tagName !== 'LI');
+                } while (target.tagName !== 'LI');
             }
 
             ixArray[i] = target.dataset.parentIx;
