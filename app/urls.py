@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
     url(r'^ajax/addTracksToPlaylist/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
     url(r'^ajax/removeTrackFromPlaylist/$', playlist.removeTrackFromPlaylist, name='removeTrackFromPlaylist'),
+    url(r'^ajax/deletePlaylist/$', playlist.deletePlaylist, name='deletePlaylist'),
     url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
     url(r'^ajax/getSimplifiedTracks/$', playlist.loadSimplifiedPlaylist, name='simplifiedJson'),
     url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
