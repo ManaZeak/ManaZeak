@@ -9,17 +9,21 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Modal {
-    constructor(type) {
+    constructor(type, data) {
 
+        this.data        = data;
         this.url         = null;
         this.id          = "modal-" + genUniqueID();
         this.callback    = null;
-        this.canBeClosed = false;
         this.closeButton = null;
 
         this._createUI();
 
         switch (type) {
+            case "deletePlaylist":
+                this._deletePlaylistUI();
+                break;
+
             case "fetchPlaylists":
                 this._fetchPlaylistsUI();
                 break;
@@ -30,12 +34,14 @@ class Modal {
 
             case "newLibrary":
                 this._newLibraryUI();
-                this.canBeClosed = true;
                 break;
 
             case "newPlaylist":
                 this._newPlaylistUI();
-                this.canBeClosed = true;
+                break;
+
+            case "renamePlaylist":
+                this._renamePlaylistUI();
                 break;
 
             case "scanLibrary":
@@ -44,15 +50,12 @@ class Modal {
 
             case "newWish":
                 this._newWishUI();
-                this.canBeClosed = true;
                 break;
 
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
         }
-
-        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -99,6 +102,8 @@ class Modal {
         this.closeButton     = document.createElement("IMG");
         this.closeButton.id  = "closeButton";
         this.closeButton.src = "/static/img/utils/close.svg";
+
+        this.closeButton.addEventListener("click", this.close.bind(this));
 
         this.ui.container.appendChild(this.closeButton);
     }
@@ -189,15 +194,41 @@ class Modal {
 
 
     /**
-     * method : _eventListener (private)
+     * method : _deletePlaylistUI (private)
      * class  : Modal
-     * desc   : Modal event listeners
+     * desc   : Build UI elements for delete playlist modal
      **/
-    _eventListener() {
-        if (this.canBeClosed) {
-            this.closeButton.addEventListener("click", this.close.bind(this));
-            // TODO : listening esc key
-        }
+    _deletePlaylistUI() {
+        this.ui.container.id    = "deletePlaylist";
+        this.ui.title.innerHTML = "Remove " + this.data.name;
+
+        let infoLabel           = document.createElement("P");
+        let cancel              = document.createElement("BUTTON");
+        let del                 = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        cancel.id               = "cancelButton";
+        del.id                  = "deleteButton";
+
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        cancel.innerHTML        = "Cancel";
+        del.innerHTML           = "Delete";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(del);
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
+        del.addEventListener("click", function() {
+            window.app.deletePlaylist(that.data.id);
+            that.close();
+        });
     }
 
 
@@ -434,6 +465,55 @@ class Modal {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(footerText);
+    }
+
+
+    /**
+     * method : _deletePlaylistUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for delete playlist modal
+     **/
+    _renamePlaylistUI() {
+        this.ui.container.id    = "deletePlaylist";
+        this.ui.title.innerHTML = "Remove " + this.data.name;
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("INPUT");
+        let cancel              = document.createElement("BUTTON");
+        let rename              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+        cancel.id               = "cancelButton";
+        rename.id                  = "deleteButton";
+
+        name.type               = "text";
+        name.placeholder        = "Enter the name of the playlist";
+
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        cancel.innerHTML        = "Cancel";
+        rename.innerHTML           = "Delete";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(rename);
+
+        this.setCallback(function(name) {
+            window.app.renamePlaylist(that.data.id, name.value);
+            that.close();
+        });
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
+        rename.addEventListener("click", function() {
+            that._checkPlaylistInputs(name);
+        });
     }
 
 }

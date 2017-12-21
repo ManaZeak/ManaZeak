@@ -617,9 +617,7 @@ class Playlist {
                     that.id    = response.PLAYLIST_ID;
                     that.modal.close();
                     that.modal = null;
-
-                    that.refreshViews();
-                    //window.app.refreshUI();
+                    if (that.callback) { that.callback(); }
                 }
 
                 else {
@@ -638,5 +636,7 @@ class Playlist {
     getShuffleMode() { return this.shuffleMode; }
     getTracks()      { return this.tracks;      }
     getViews()       { return this.views;       }
+
+    setName(name)    { this.name = name;        }
 
 }

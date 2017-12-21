@@ -12,15 +12,25 @@
 class PlaylistBarEntry {
     constructor(playlist, playlistBar, id, isLibrary) {
 
-        this.entry                 = document.createElement("div");
+        this.entry                 = document.createElement("DIV");
         this.entry.dataset.childID = id;
         this.entry.id              = playlist.id;
         this.playlist              = playlist;
         this.isLibrary             = isLibrary;
+        this.entry.innerHTML       = playlist.getName();
         if (this.isLibrary) { this.entry.className = "library";  }
         else                { this.entry.className = "playlist"; }
-        this.entry.innerHTML       = playlist.getName();
         this.isSelected            = false;
+
+        if (this.isLibrary) {
+            if (window.app.user.getIsAdmin()) {
+                this._createOptionButton();
+            }
+        }
+
+        else {
+            this._createOptionButton();
+        }
 
         playlistBar.appendChild(this.entry);
     }
@@ -45,6 +55,50 @@ class PlaylistBarEntry {
             if (this.isSelected) { this.entry.classList.add("playlistSelected");    }
             else                 { this.entry.classList.remove("playlistSelected"); }
         }
+    }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+/**
+     * method : _contextMenuSetup (private)
+     * class  : ListView
+     * desc   : TODO
+     **/
+    _contextMenuSetup() {
+        let that             = this;
+        this.contextMenu     = null;
+        this.contextMenu     = new ContextMenu(this.options, null, 'click');
+        this.contextMenu.addEntry(null, "Rename", function() {
+            that.modal = new Modal("renamePlaylist", {
+                name: that.playlist.name,
+                id:   that.playlist.id
+            });
+            that.modal.open();
+        });
+        this.contextMenu.addEntry(null, "Delete", function() {
+            that.modal = new Modal("deletePlaylist", {
+                name: that.playlist.name,
+                id:   that.playlist.id
+            });
+            that.modal.open();
+        });
+    }
+
+
+    _createOptionButton() {
+        // TODO : add admin options, or library options
+        this.options       = document.createElement("A");
+        this.options.id    = "gear";
+        this.entry.appendChild(this.options);
+        this._contextMenuSetup();
+        this._eventListener();
+    }
+
+
+    _eventListener() {
+        this.options.addEventListener("click", function() {
+            console.log(this);
+        });
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
@@ -114,6 +168,8 @@ class TopBar {
         this._setSelected(selectedPlaylist.id, true);
         this._eventListener();
         this._contextMenuSetup();
+
+        window.app.footBar.setMoodbarProgress();
     }
 
 
@@ -281,7 +337,7 @@ class TopBar {
 
         let id = target.dataset.childID;
 
-        if (id !== undefined) {
+        if (id !== undefined && id !== "gear") {
             this._unSelectAll();
             this._setSelected(id);
             this.entries[id].playlist.activate();

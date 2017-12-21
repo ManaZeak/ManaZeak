@@ -30,6 +30,10 @@ class PlaylistPreview {
     }
 
 
+    getIsVisible() {
+        return !!(this.ui.container.style.opacity = 1);
+    }
+
     /**
      * method : setVisible (public)
      * class  : PlaylistPreview

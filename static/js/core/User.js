@@ -10,33 +10,17 @@ class User {
     constructor() {
 
         this.isAdmin = false;
-        this._init();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : updateMetadata (public)
-     * class  : Track
-     * desc   : Update metadata contained in Track (UI) object
-     * arg    : {object} track - Raw JSON track
+     * method : getIsAdmin (public)
+     * class  : User
+     * desc   : Get info from server and stores it locally
+     * arg    : {function} callback
      **/
-
-//  --------------------------------  PRIVATE METHODS  --------------------------------  //
-
-    /**
-     * method : _getArtistsIDFromArtistsArray (private)
-     * class  : Track
-     * desc   : Extract artists IDs from JSON
-     * arg    : {[object]} artists - Raw JSON array of objects
-     * return : {[int]} - The artists ID array
-     **/
-    _init() {
-        this._getIsAdmin();
-    }
-
-
-    _getIsAdmin() {
+    updateIsAdmin(callback) {
         let that = this;
         JSONParsedGetRequest(
             "ajax/isAdmin/",
@@ -48,15 +32,25 @@ class User {
                  *
                  *     IS_ADMIN  : bool
                  * } */
-                if (response.DONE) {
-                    that.isAdmin = !!response.IS_ADMIN;
+                if (response.DONE && response.IS_ADMIN) {
+                    that.isAdmin = true;
+                    callback(true);
                 }
 
                 else {
                     that.isAdmin = false;
+                    callback(false);
                 }
             }
         );
     }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getIsAdmin() { return this.isAdmin; }
 
 }

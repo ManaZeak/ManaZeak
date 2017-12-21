@@ -41,10 +41,19 @@ ContextMenuEntry.prototype = {
     /**
      * method : activateEventListener (public)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : activates the event listeners for the entire menu system
      **/
     activateEventListener: function () { //Call this on the root
         let self = this;
+
+        document.body.addEventListener('click', function(event) {
+            let target = event.target;
+            while(target && target != self.element)
+                target = target.parentNode;
+
+            if(target != self.element)
+                self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
+        }, true);
 
         this.element.addEventListener("click", function (event) {
             if (event.target.tagName !== 'LI') { return true; }
@@ -85,7 +94,10 @@ ContextMenuEntry.prototype = {
     /**
      * method : addChild (public)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : add a subentry to this menu
+     * arg    : {object} other_entry - the ContextMenuEntry to add
+     *          {string} before_ID   - the ID of the element before which to add
+     *          {bool}   after       - add after the ID instead of before
      **/
     addChild: function (other_entry, before_ID, after) {
         //Create the child element
@@ -117,7 +129,7 @@ ContextMenuEntry.prototype = {
     /**
      * method : closeAll (public)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : close the menu and its submenus
      **/
     closeAll: function() {
         this.children.forEach(function(child) {
@@ -130,7 +142,8 @@ ContextMenuEntry.prototype = {
     /**
      * method : seMultiOpenSubmenu (public)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : set the boolean that allow for multiple submenus to be opened
+     * arg    : {bool} allow - whether to allow or forbid multiple open submenus
      **/
     seMultiOpenSubmenu: function(allow) {
         this.multiOpenSubmenu = allow;
@@ -141,7 +154,8 @@ ContextMenuEntry.prototype = {
     /**
      * method : setVisibleAreas (public)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : hides the entry unless the menu was opened on a child node of a node whose id is contained in the array
+     * arg    : {array/string} array_of_IDs - the IDs to allow
      **/
     setVisibleAreas: function(array_of_IDs) {
         if (this.entryID === null || this.entryID !== undefined) {
@@ -169,7 +183,7 @@ ContextMenuEntry.prototype = {
     /**
      * method : _checkStylesheet (private)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : setup the stylesheet needed for the setVisibleAreas function
      **/
     _checkStylesheet: function() {
         if (window.app.cssFiles.contextMenu) { return; }
@@ -188,8 +202,8 @@ ContextMenuEntry.prototype = {
     /**
      * method : _findChildByID (private)
      * class  : ContextMenuEntry
-     * desc   : TODO
-     * arg    : {int} childID - TODO
+     * desc   : find a direct child from its ID
+     * arg    : {string} childID - the ID of the child
      **/
     _findChildByID: function(childID) {
         if (childID === null || childID === undefined) { return null; }
@@ -205,7 +219,7 @@ ContextMenuEntry.prototype = {
     /**
      * method : _init (private)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : creates the DOM element
      **/
     _init: function () {
         this.element = document.createElement("UL");
@@ -217,7 +231,7 @@ ContextMenuEntry.prototype = {
     /**
      * method : _runCallback (private)
      * class  : ContextMenuEntry
-     * desc   : TODO
+     * desc   : run the callback associated with the entry
      **/
     _runCallback: function () {
         if (this.callback) {
@@ -239,9 +253,9 @@ ContextMenuEntry.prototype = {
  *                                                 *
  *  Handle the context menu on right click         *
  *                                                 *
- *  parentElement : {type} TODO                    *
- *  openCallback  : {type} TODO                    *
- *  event         : {type} TODO                    *
+ *  parentElement : {element} the container hoisting the menu       *
+ *  openCallback  : {function} A function to run when the menu is opened                    *
+ *  event         : {string} The trigger event     *
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -292,7 +306,7 @@ class ContextMenu {
     /**
      * method : reattach (public)
      * class  : ContextMenu
-     * desc   : TODO
+     * desc   : (re-)add the context menu to its parent
      **/
     reattach() {
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);

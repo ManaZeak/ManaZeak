@@ -58,36 +58,20 @@ class UserMenu {
         this.menuEntry.stats.innerHTML  = "Stats";
 
         let that = this;
-        JSONParsedGetRequest(
-            "ajax/isAdmin/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     IS_ADMIN  : bool
-                 * } */
-                if (response.DONE) {
-                    if (response.IS_ADMIN) {
-                        that.menuEntry.admin = document.createElement("DIV");
-                        that.menuEntry.admin.className = "menuEntry";
-                        that.menuEntry.admin.innerHTML = "Admin";
-                        that.menuEntry.admin.addEventListener("click", that._getAdmin.bind(that));
+        window.app.user.updateIsAdmin(function(is) {
+            if (is) {
+                that.menuEntry.admin = document.createElement("DIV");
+                that.menuEntry.admin.className = "menuEntry";
+                that.menuEntry.admin.innerHTML = "Admin";
+                that.menuEntry.admin.addEventListener("click", that._getAdmin.bind(that));
 
-                        that.menu.appendChild(that.menuEntry.admin);
-                    }
-
-                    that.menu.appendChild(that.menuEntry.stats);
-                    that.menu.appendChild(that.menuEntry.logout);
-                }
-
-                else {
-                    console.log("Boge lane");
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
+                that.menu.appendChild(that.menuEntry.admin);
             }
-        );
+
+            that.menu.appendChild(that.menuEntry.stats);
+            that.menu.appendChild(that.menuEntry.logout);
+
+        });
 
         this.ui.container.appendChild(this.menu);
         container.appendChild(this.ui.container);
