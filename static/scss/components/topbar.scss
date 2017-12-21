@@ -78,7 +78,7 @@ $topbar-height: 50px;
         top: 20px;
         text-align: center;
 
-        div {
+        div { // TODO : replace padding to var, and in gear etc according.
             display: inline-block;
             margin: 0;
             padding: 0 25px;
@@ -89,6 +89,23 @@ $topbar-height: 50px;
             box-sizing: border-box;
 
             transition: 0.2s ease;
+
+            a#gear {
+                position: absolute;
+                display : inline-block;
+                opacity: 0;
+                width: 10px;
+                height: 10px;
+                background: url("/static/img/playlist/gear.svg");
+                margin-left: 10px;
+                margin-top: 7.5px;
+
+                transition: 0.2s ease;
+            }
+        }
+
+        div:hover a#gear {
+            opacity: 1;
         }
 
         div.playlist:active,

@@ -20,7 +20,7 @@ class User {
      * desc   : Get info from server and stores it locally
      * arg    : {function} callback
      **/
-    getIsAdmin(callback) {
+    updateIsAdmin(callback) {
         let that = this;
         JSONParsedGetRequest(
             "ajax/isAdmin/",
@@ -50,5 +50,7 @@ class User {
 
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getIsAdmin() { return this.isAdmin; }
 
 }

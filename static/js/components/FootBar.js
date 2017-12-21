@@ -41,6 +41,10 @@ class FootBar {
     }
 
 
+    setMoodbarProgress() {
+        this.progressBar.setMoodbarProgress();
+    }
+
     /**
      * method : volumeDown (public)
      * class  : FootBar

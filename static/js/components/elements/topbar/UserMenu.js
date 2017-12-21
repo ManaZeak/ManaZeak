@@ -58,7 +58,7 @@ class UserMenu {
         this.menuEntry.stats.innerHTML  = "Stats";
 
         let that = this;
-        window.app.user.getIsAdmin(function(is) {
+        window.app.user.updateIsAdmin(function(is) {
             if (is) {
                 that.menuEntry.admin = document.createElement("DIV");
                 that.menuEntry.admin.className = "menuEntry";

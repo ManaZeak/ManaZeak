@@ -250,9 +250,9 @@ class App {
      * desc   : Init components and request user playlist from server
      **/
     init() {
+        this.topBar  = new TopBar();
         this.queue   = new Queue();
         this.player  = new Player();
-        this.topBar  = new TopBar();
         this.footBar = new FootBar();
         document.body.appendChild(this.topBar.getTopBar());
         document.body.appendChild(this.footBar.getFootBar());

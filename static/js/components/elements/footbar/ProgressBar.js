@@ -58,6 +58,12 @@ class ProgressBar {
     }
 
 
+    setMoodbarProgress() {
+        this.moodbar.container = document.getElementById("moodbar");
+        this.moodbar.thumb     = document.getElementById("moodbarThumb");
+    }
+
+
     /**
      * method : updateProgress (public)
      * class  : ProgressBar
@@ -69,7 +75,7 @@ class ProgressBar {
         // Style assignation
         this.progressBar.current.style.width    = distanceToLeftBorder + "%";
         this.progressBar.thumb.style.marginLeft = distanceToLeftBorder + "%";
-        this.moodbar.thumb.style.marginLeft     = distanceToLeftBorder + "%";
+        document.getElementById("moodbarThumb").style.marginLeft     = distanceToLeftBorder + "%";
 
         if (!this.isInverted) {
             this.duration.current.innerHTML     = secondsToTimecode(track.currentTime);
@@ -148,9 +154,6 @@ class ProgressBar {
      * desc   : Creating moodbar, setting timecodes and listen
      **/
     _init() {
-        this.moodbar.container          = document.getElementById("moodbar");
-        this.moodbar.thumb              = document.getElementById("moodbarThumb");
-
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";
 
