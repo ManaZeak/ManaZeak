@@ -24,19 +24,12 @@ class PlaylistBarEntry {
 
         if (this.isLibrary) {
             if (window.app.user.getIsAdmin()) {
-                this.options       = document.createElement("A");
-                this.options.id    = "gear";
-                this.entry.appendChild(this.options);
-                this._eventListener();
-                // TODO : add admin options, or library options
+                this._createOptionButton();
             }
         }
 
         else {
-            this.options           = document.createElement("A");
-            this.options.id        = "gear";
-            this.entry.appendChild(this.options);
-            this._eventListener();
+            this._createOptionButton();
         }
 
         playlistBar.appendChild(this.entry);
@@ -65,6 +58,38 @@ class PlaylistBarEntry {
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+/**
+     * method : _contextMenuSetup (private)
+     * class  : ListView
+     * desc   : TODO
+     **/
+    _contextMenuSetup() {
+        let that             = this;
+        this.contextMenu     = null;
+        this.contextMenu     = new ContextMenu(this.options, null, 'click');
+        this.contextMenu.addEntry(null, "Rename", function() {
+                console.log('Rename');
+        });
+        this.contextMenu.addEntry(null, "Delete", function() {
+            that.modal = new Modal("deletePlaylist", {
+                name: that.playlist.name,
+                id:   that.playlist.id
+            });
+            that.modal.open();
+        });
+    }
+
+
+    _createOptionButton() {
+        // TODO : add admin options, or library options
+        this.options       = document.createElement("A");
+        this.options.id    = "gear";
+        this.entry.appendChild(this.options);
+        this._contextMenuSetup();
+        this._eventListener();
+    }
+
 
     _eventListener() {
         this.options.addEventListener("click", function() {

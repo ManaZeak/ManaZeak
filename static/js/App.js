@@ -196,6 +196,42 @@ class App {
     }
 
 
+    deletePlaylist(id) {
+        let that = this;
+        JSONParsedPostRequest(
+            "ajax/deletePlaylist/",
+            JSON.stringify({
+                PLAYLIST_ID: id,
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    for (let i = 0; i < that.playlists.length; ++i) { // Removing from playlists Array
+                        if (that.playlists[i].id === id) {
+                            that.playlists.splice(i, 1);
+                            break;
+                        }
+                    }
+                    that.playlists[0].activate(); // TODO : test if there is still some playlists
+                    that.refreshTopBar();
+                    that.refreshFootBar();
+                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : fastForward (public)
      * class  : App
@@ -363,9 +399,24 @@ class App {
      * desc   : Refresh ManaZeak FootBar
      **/
     refreshFootBar() {
+        if (!this.footBar.playlistPreview.getIsVisible()) {
+            this.footBar.playlistPreview.setVisible(true);
+        }
+
         this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
         this.footBar.progressBar.refreshInterval(this.player.getPlayer());
     }
+
+
+    /**
+     * method : refreshTopBar (public)
+     * class  : App
+     * desc   : Refresh ManaZeak TopBar
+     **/
+    refreshTopBar() {
+        this.topBar.refreshTopBar();
+    }
+
 
     /**
      * method : repeatTrack (public)
@@ -387,10 +438,8 @@ class App {
 
         this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
             that.playlists[0].activate();
-            that.topBar.refreshTopBar();
-            that.footBar.playlistPreview.setVisible(true);
-            that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-            that.activePlaylist = that.playlists[0];
+            that.refreshTopBar();
+            that.refreshFootBar();
         }));
     }
 
@@ -405,10 +454,8 @@ class App {
 
         this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
             that.playlists[0].activate();
-            that.topBar.refreshTopBar();
-            that.footBar.playlistPreview.setVisible(true);
-            that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-            that.activePlaylist = that.playlists[0];
+            that.refreshTopBar();
+            that.refreshFootBar();
         }));
     }
 
