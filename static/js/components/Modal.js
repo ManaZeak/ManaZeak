@@ -453,7 +453,7 @@ class Modal {
         infoLabel.id            = "infoLabel";
         name.id                 = "name";
         cancel.id               = "cancelButton";
-        rename.id                  = "deleteButton";
+        rename.id               = "deleteButton";
 
         name.type               = "text";
         name.placeholder        = "Enter the name of the playlist";
@@ -461,7 +461,7 @@ class Modal {
         infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
             ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
-        rename.innerHTML           = "Delete";
+        rename.innerHTML        = "Delete";
 
         this._appendCloseButton();
 

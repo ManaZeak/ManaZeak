@@ -644,6 +644,19 @@ class App {
      * desc   : Toggle repeat mode on playlist
      **/
     toggleRepeat() {
+        switch(this.activePlaylist.getRepeatMode()) {
+            case 0:
+                new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
+                break;
+            case 1:
+                new Notification("INFO", "Change repeat mode", "Repeat one - The current track will be repeated for ever.");
+                break;
+            case 2:
+                new Notification("INFO", "Change repeat mode", "Repeat all - Repeat your playlist for ever.");
+                break;
+            default:
+                break;
+        }
         this.activePlaylist.toggleRepeat();
     }
 
@@ -654,6 +667,19 @@ class App {
      * desc   : Toggle shuffle mode on playlist
      **/
     toggleShuffle() {
+        switch(this.activePlaylist.getShuffleMode()) {
+            case 0:
+                new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
+                break;
+            case 1:
+                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
+                break;
+            case 2:
+                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
+                break;
+            default:
+                break;
+        }
         this.activePlaylist.toggleShuffle();
     }
 
