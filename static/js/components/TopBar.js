@@ -114,8 +114,9 @@ class TopBar {
     constructor() {
 
         this._createUI();
-        this.userMenu   = new UserMenu(this.topBar);
+        this.partyMode  = new PartyMode(this.topBar);
         this.wishList   = new WishList(this.topBar);
+        this.userMenu   = new UserMenu(this.topBar);
         this.newLibMenu = null;
     }
 

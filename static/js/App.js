@@ -148,7 +148,7 @@ class App {
                 if (response.DONE) {
                     that.footBar.trackPreview.changeTrack(track);
                     that.topBar.changeMoodbar(track.id.track);
-                    that.player.changeSource(".." + response.PATH);
+                    that.player.changeSource(".." + response.PATH, track.id.track);
                     that.changePageTitle(response.PATH);
                     that.activePlaylist.setCurrentTrack(track);
                     that.togglePlay();
@@ -170,8 +170,16 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-        this.mainContainer.innerHTML = '';
-        this.mainContainer.appendChild(view.getContainer());
+
+        if (view.getContainer().id === "party") {
+            view.setIsEnabled(true);
+            document.body.appendChild(view.getContainer());
+        }
+
+        else {
+            this.mainContainer.innerHTML = '';
+            this.mainContainer.appendChild(view.getContainer());
+        }
 
         if (view.getContainer().id === "stats") { // TODO : find a better way
             view.fetchStats();
@@ -293,6 +301,13 @@ class App {
     }
 
 
+    hidePageContent() {
+        addInvisibilityLock(this.footBar.getFootBar());
+        addInvisibilityLock(this.mainContainer);
+        addInvisibilityLock(this.topBar.getTopBar());
+    }
+
+
     /**
      * method : init (public)
      * class  : App
@@ -367,6 +382,11 @@ class App {
      * desc   : Get next track
      **/
     next() {
+        if (this.appViews["mzk_party"].getIsEnabled()) {
+            console.log("DEAZ");
+            return;
+        }
+
         if (this.queue.isEmpty() == false) { this.popQueue();                     }
         else                               { this.activePlaylist.playNextTrack(); }
     }
@@ -512,6 +532,13 @@ class App {
             that.refreshTopBar();
             that.refreshFootBar();
         }));
+    }
+
+
+    restorePageContent() {
+        removeInvisibilityLock(this.footBar.getFootBar());
+        removeInvisibilityLock(this.mainContainer);
+        removeInvisibilityLock(this.topBar.getTopBar());
     }
 
 
@@ -698,6 +725,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_party', new PartyView());
     }
 
 

@@ -406,9 +406,9 @@ class Modal {
         this._appendCloseButton();
 
         let that = this;
-        submit.addEventListener("click", function(e) {
+        submit.addEventListener("click", function() {
             if (wish.value !== '') {
-                e.target.removeEventListener("click", arguments.callee);
+                // TODO : remove event listener on submit
                 JSONParsedPostRequest(
                     "ajax/submitWish/",
                     JSON.stringify({
