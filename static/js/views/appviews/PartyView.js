@@ -88,7 +88,7 @@ class PartyView extends View {
         this.ui.sparksLayer4.id          = "snow-layer";
 
         this.ui.trackContainer.id        = "trackContainer";
-        this.ui.trackCover.src           = "/static/img/utils/idea.svg";
+        this.ui.trackCover.src           = "/static/img/utils/defaultcover.svg";
 
         this.ui.trackInfoContainer.id    = "partyTrackInfo";
         this.ui.trackTitle.id            = "a";
@@ -106,12 +106,6 @@ class PartyView extends View {
         this.ui.previous.src             = "/static/img/player/previous.svg";
         this.ui.play.src                 = "/static/img/player/play.svg";
         this.ui.next.src                 = "/static/img/player/next.svg";
-
-        this.ui.trackTitle.innerHTML     = "The End Has No End";
-        this.ui.trackArtist.innerHTML    = "b";
-        this.ui.trackComposer.innerHTML  = "c";
-        this.ui.trackYearAlbum.innerHTML = "d";
-        this.ui.trackGenre.innerHTML     = "e";
 
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer1);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer2);
