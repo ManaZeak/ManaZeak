@@ -287,12 +287,12 @@ class ContextMenu {
         if (Array.isArray(entryPath)) {
             pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
                 for (j = 0; j < parent.children.length; ++j)
-                    if(parent.children[j].entryID == entryPath[i]) {
+                    if (parent.children[j].entryID == entryPath[i]) {
                         parent = parent.children[j];
                         continue pathForward;
                     }
 
-                parent = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
+                parent   = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
             }
             arguments[0] = entryPath[entryPath.length - 1];
         }
@@ -312,6 +312,12 @@ class ContextMenu {
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
     }
 
+
+    setInvisible() {
+        removeVisibilityLock(this.element);
+    }
+
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
@@ -322,8 +328,8 @@ class ContextMenu {
     _init() {
         this.contextMenu = new ContextMenuEntry("master", "", null);
         this.contextMenu.activateEventListener();
-        this.element    = document.createElement('DIV');
-        this.element.id = "mzk-ctx-wrap";
+        this.element     = document.createElement('DIV');
+        this.element.id  = "mzk-ctx-wrap";
         this.element.appendChild(this.contextMenu.element);
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
 

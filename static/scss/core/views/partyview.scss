@@ -135,7 +135,6 @@
         background: url("/static/img/utils/partyview/bg-medium.png");
         animation-duration: 50s;
         animation-name: rise;
-        transform: rotate(90deg);
     }
 
     #close {
@@ -226,7 +225,7 @@
 
 @keyframes rise {
     0% {
-        transform: translateY(1000px) rotate(90deg);
+        transform: translateY(1000px) rotate(360deg);
     }
 }
 
