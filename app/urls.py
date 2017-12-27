@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^$', views.mainView.as_view(), name='index'),
     url(r'^signup/$', views.createUser, name='signup'),
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
+    url(r'^logout/$', views.logoutView, name='logout'),
 
     # Library actions
     url(r'^ajax/initialScan/$', library.initialScan, name='rescan'),
