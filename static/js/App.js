@@ -66,9 +66,11 @@ class App {
      **/
     addListener(event, callback) {
         if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i)
-                if (this.listeners[event[i]])
+            for (let i = 0; i < event.length; ++i) {
+                if (this.listeners[event[i]]) {
                     this.listeners[event[i]].push(callback);
+                }
+            }
         }
 
         else if (this.listeners[event]) {
@@ -95,7 +97,7 @@ class App {
      * arg    : {string} path - Current track path
      **/
     changePageTitle(path) {
-        // IDEA : Recontruct frrom Track attributes bc special char won't display as below ... (?/etc.)
+        // IDEA : Recontruct from Track attributes bc special char won't display as below ... (?/etc.)
         document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
     }
 
@@ -146,7 +148,7 @@ class App {
                 if (response.DONE) {
                     that.footBar.trackPreview.changeTrack(track);
                     that.topBar.changeMoodbar(track.id.track);
-                    that.player.changeSource(".." + response.PATH);
+                    that.player.changeSource(".." + response.PATH, track.id.track);
                     that.changePageTitle(response.PATH);
                     that.activePlaylist.setCurrentTrack(track);
                     that.togglePlay();
@@ -168,8 +170,16 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-        this.mainContainer.innerHTML = '';
-        this.mainContainer.appendChild(view.getContainer());
+
+        if (view.getContainer().id === "party") {
+            view.setIsEnabled(true);
+            document.body.appendChild(view.getContainer());
+        }
+
+        else {
+            this.mainContainer.innerHTML = '';
+            this.mainContainer.appendChild(view.getContainer());
+        }
 
         if (view.getContainer().id === "stats") { // TODO : find a better way
             view.fetchStats();
@@ -196,6 +206,12 @@ class App {
     }
 
 
+    /**
+     * method : deletePlaylist (public)
+     * class  : App
+     * desc   : Ask server to delete a playlist from a given ID
+     * arg    : {int} id - The playlist ID
+     **/
     deletePlaylist(id) {
         let that = this;
         JSONParsedPostRequest(
@@ -221,7 +237,6 @@ class App {
                     that.playlists[0].activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
-                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
                 }
 
                 else {
@@ -256,6 +271,12 @@ class App {
     }
 
 
+    /**
+     * method : getPlaylistFromId (public)
+     * class  : App
+     * desc   : Returns a playlist from a given ID
+     * arg    : {int} id - The playlist to get from an ID
+     **/
     getPlaylistFromId(id) {
         for (let i = 0; i < this.playlists.length; ++i) {
             if (this.playlists[i].id === id) {
@@ -277,6 +298,13 @@ class App {
         return this.playlists.filter(function(element) {
             return element.isLibrary != true;
         });
+    }
+
+
+    hidePageContent() {
+        addInvisibilityLock(this.footBar.getFootBar());
+        addInvisibilityLock(this.mainContainer);
+        addInvisibilityLock(this.topBar.getTopBar());
     }
 
 
@@ -354,6 +382,11 @@ class App {
      * desc   : Get next track
      **/
     next() {
+        if (this.appViews["mzk_party"].getIsEnabled()) {
+            console.log("DEAZ");
+            return;
+        }
+
         if (this.queue.isEmpty() == false) { this.popQueue();                     }
         else                               { this.activePlaylist.playNextTrack(); }
     }
@@ -388,7 +421,6 @@ class App {
      * arg    : {object} track - The Track to push in Queue
      **/
     pushQueue(track) {
-        console.log(track);
         this.queue.enqueue(track);
     }
 
@@ -418,6 +450,13 @@ class App {
     }
 
 
+    /**
+     * method : renamePlaylist (public)
+     * class  : App
+     * desc   : Renames a playlist/library from its ID
+     * arg    : {int} id - The playlist's ID to rename
+     *        : {string} name - The name to give to the playlist
+     **/
     renamePlaylist(id, name) {
         let that = this;
         JSONParsedPostRequest(
@@ -437,7 +476,6 @@ class App {
                 if (response.DONE) {
                     for (let i = 0; i < that.playlists.length; ++i) { // Renaming from playlists Array
                         if (that.playlists[i].id === id) {
-                            console.log(name);
                             that.playlists[i].setName(name);
                             break;
                         }
@@ -494,6 +532,13 @@ class App {
             that.refreshTopBar();
             that.refreshFootBar();
         }));
+    }
+
+
+    restorePageContent() {
+        removeInvisibilityLock(this.footBar.getFootBar());
+        removeInvisibilityLock(this.mainContainer);
+        removeInvisibilityLock(this.topBar.getTopBar());
     }
 
 
@@ -599,6 +644,19 @@ class App {
      * desc   : Toggle repeat mode on playlist
      **/
     toggleRepeat() {
+        switch(this.activePlaylist.getRepeatMode()) {
+            case 0:
+                new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
+                break;
+            case 1:
+                new Notification("INFO", "Change repeat mode", "Repeat one - The current track will be repeated for ever.");
+                break;
+            case 2:
+                new Notification("INFO", "Change repeat mode", "Repeat all - Repeat your playlist for ever.");
+                break;
+            default:
+                break;
+        }
         this.activePlaylist.toggleRepeat();
     }
 
@@ -609,6 +667,19 @@ class App {
      * desc   : Toggle shuffle mode on playlist
      **/
     toggleShuffle() {
+        switch(this.activePlaylist.getShuffleMode()) {
+            case 0:
+                new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
+                break;
+            case 1:
+                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
+                break;
+            case 2:
+                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
+                break;
+            default:
+                break;
+        }
         this.activePlaylist.toggleShuffle();
     }
 
@@ -680,6 +751,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_party', new PartyView());
     }
 
 

@@ -48,7 +48,7 @@ ContextMenuEntry.prototype = {
 
         document.body.addEventListener('click', function(event) {
             let target = event.target;
-            while(target && target != self.element)
+            while (target && target != self.element)
                 target = target.parentNode;
 
             if(target != self.element)
@@ -67,7 +67,7 @@ ContextMenuEntry.prototype = {
 
                 do {
                     target = target.parentNode;
-                } while(target.tagName !== 'LI');
+                } while (target.tagName !== 'LI');
             }
 
             ixArray[i] = target.dataset.parentIx;
@@ -247,17 +247,17 @@ ContextMenuEntry.prototype = {
 };
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                 *
- *  ContextMenu class                              *
- *                                                 *
- *  Handle the context menu on right click         *
- *                                                 *
- *  parentElement : {element} the container hoisting the menu       *
- *  openCallback  : {function} A function to run when the menu is opened                    *
- *  event         : {string} The trigger event     *
- *                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                       *
+ *  ContextMenu class                                                    *
+ *                                                                       *
+ *  Handle the context menu on right click                               *
+ *                                                                       *
+ *  parentElement : {object} the container hoisting the menu             *
+ *  openCallback  : {function} A function to run when the menu is opened *
+ *  event         : {string} The trigger event                           *
+ *                                                                       *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class ContextMenu {
     constructor(parentElement, openCallback, event) {
@@ -287,12 +287,12 @@ class ContextMenu {
         if (Array.isArray(entryPath)) {
             pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
                 for (j = 0; j < parent.children.length; ++j)
-                    if(parent.children[j].entryID == entryPath[i]) {
+                    if (parent.children[j].entryID == entryPath[i]) {
                         parent = parent.children[j];
                         continue pathForward;
                     }
 
-                parent = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
+                parent   = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
             }
             arguments[0] = entryPath[entryPath.length - 1];
         }
@@ -312,6 +312,12 @@ class ContextMenu {
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
     }
 
+
+    setInvisible() {
+        removeVisibilityLock(this.element);
+    }
+
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
@@ -322,8 +328,8 @@ class ContextMenu {
     _init() {
         this.contextMenu = new ContextMenuEntry("master", "", null);
         this.contextMenu.activateEventListener();
-        this.element    = document.createElement('DIV');
-        this.element.id = "mzk-ctx-wrap";
+        this.element     = document.createElement('DIV');
+        this.element.id  = "mzk-ctx-wrap";
         this.element.appendChild(this.contextMenu.element);
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
 

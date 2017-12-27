@@ -174,6 +174,38 @@ function removeVisibilityLock(object) {
 
 
 /**
+ * method : toggleInvisibilityLock (public)
+ * desc   : Toggle a visibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
+function toggleInvisibilityLock(object) { //TODO: Move to Overrides
+    if (object.classList.contains("mzk-visible")) { removeInvisibilityLock(object); }
+    else                                          { addInvisibilityLock(object);    }
+}
+
+
+/**
+ * method : addInvisibilityLock (public)
+ * desc   : Add a invisibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
+function addInvisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
+    object.classList.add("mzk-hidden");
+    object.dataset.mzkLock = 1;
+}
+
+
+/**
+ * method : removeInvisibilityLock (public)
+ * desc   : Remove a invisibility lock on an element
+ * arg    : {object} object - The HTML object to toggle
+ **/
+function removeInvisibilityLock(object) {
+    object.classList.remove("mzk-hidden");
+    object.dataset.mzkLock = 0;
+}
+
+/**
  * method : isVisibilityLocked (public)
  * desc   : Check visibility lock on an element
  * arg    : {object} object - The HTML object to toggle

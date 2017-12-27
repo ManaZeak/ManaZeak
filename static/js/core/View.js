@@ -12,7 +12,7 @@
 class View {
     constructor() {
 
-        this.container = document.createElement("DIV");
+        this.container           = document.createElement("DIV");
         this.container.innerHTML = "";
     }
 

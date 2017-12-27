@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.list import ListView
@@ -41,7 +43,7 @@ def createUser(request):
             print(admin)
             user.save()
             login(request, user)
-            return render(request, 'index.html')  # TODO : fix URL
+            return HttpResponseRedirect(reverse('app:index'))
     else:
         form = UserCreationForm()
     return render(request, 'user/signup.html', {'form': form})

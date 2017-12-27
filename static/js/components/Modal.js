@@ -395,8 +395,8 @@ class Modal {
         wish.placeholder        = "Enter your suggestion here";
         text.innerHTML          = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
-            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to also" +
-            "use this field.";
+            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill " +
+            "this field (hard to say isn't it?).";
         submit.innerHTML        = "Submit";
 
         this.ui.content.appendChild(text);
@@ -406,9 +406,9 @@ class Modal {
         this._appendCloseButton();
 
         let that = this;
-        submit.addEventListener("click", function(e) {
+        submit.addEventListener("click", function() {
             if (wish.value !== '') {
-                e.target.removeEventListener("click", arguments.callee);
+                // TODO : remove event listener on submit
                 JSONParsedPostRequest(
                     "ajax/submitWish/",
                     JSON.stringify({
@@ -432,6 +432,55 @@ class Modal {
                 wish.style.border = "solid 1px red";
                 new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
             }
+        });
+    }
+
+
+    /**
+     * method : _deletePlaylistUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for delete playlist modal
+     **/
+    _renamePlaylistUI() {
+        this.ui.container.id    = "deletePlaylist";
+        this.ui.title.innerHTML = "Remove " + this.data.name;
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("INPUT");
+        let cancel              = document.createElement("BUTTON");
+        let rename              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+        cancel.id               = "cancelButton";
+        rename.id               = "deleteButton";
+
+        name.type               = "text";
+        name.placeholder        = "Enter the name of the playlist";
+
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        cancel.innerHTML        = "Cancel";
+        rename.innerHTML        = "Delete";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(rename);
+
+        this.setCallback(function(name) {
+            window.app.renamePlaylist(that.data.id, name.value);
+            that.close();
+        });
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
+        rename.addEventListener("click", function() {
+            that._checkPlaylistInputs(name);
         });
     }
 
@@ -465,55 +514,6 @@ class Modal {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(footerText);
-    }
-
-
-    /**
-     * method : _deletePlaylistUI (private)
-     * class  : Modal
-     * desc   : Build UI elements for delete playlist modal
-     **/
-    _renamePlaylistUI() {
-        this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Remove " + this.data.name;
-
-        let infoLabel           = document.createElement("P");
-        let name                = document.createElement("INPUT");
-        let cancel              = document.createElement("BUTTON");
-        let rename              = document.createElement("BUTTON");
-
-        infoLabel.id            = "infoLabel";
-        name.id                 = "name";
-        cancel.id               = "cancelButton";
-        rename.id                  = "deleteButton";
-
-        name.type               = "text";
-        name.placeholder        = "Enter the name of the playlist";
-
-        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
-        cancel.innerHTML        = "Cancel";
-        rename.innerHTML           = "Delete";
-
-        this._appendCloseButton();
-
-        this.ui.content.appendChild(infoLabel);
-        this.ui.content.appendChild(name);
-        this.ui.footer.appendChild(cancel);
-        this.ui.footer.appendChild(rename);
-
-        this.setCallback(function(name) {
-            window.app.renamePlaylist(that.data.id, name.value);
-            that.close();
-        });
-
-        let that = this;
-        cancel.addEventListener("click", function() {
-            that.close();
-        });
-        rename.addEventListener("click", function() {
-            that._checkPlaylistInputs(name);
-        });
     }
 
 }

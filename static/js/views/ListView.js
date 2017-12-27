@@ -473,7 +473,7 @@ class ListView extends PlaylistView {
         });
         window.app.addListener('changeView', function(view) {
             that.isActive = view == that;
-           if(that.isActive)
+           if (that.isActive)
                that._centerOnTrack(that.lastTrackCenter, true);
         });
 
@@ -663,14 +663,14 @@ class ListView extends PlaylistView {
             for (i = 0; i < this.entries.length; ++i)
                 if (this.entries[i].track == track)
                     break;
-        if(i >= this.entries.length)
+        if (i >= this.entries.length)
             return;
 
         let relativeDelta = this.entries[i].entry.offsetTop + this.entries[i].entry.scrollHeight / 2;
         if (this.entries[i].entry.offsetParent != this.listView)
             relativeDelta -= this.listView.offsetTop;
 
-        if(this.isActive)
+        if (this.isActive)
             this.lastTrackCenter = i;
         this.listView.scrollTop = relativeDelta - this.listView.clientHeight / 2;
 

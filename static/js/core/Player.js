@@ -15,6 +15,7 @@ class Player {
         this.isMuted   = false;
         this.oldVolume = 0;
         this.emptyURL  = "";
+        this.trackId   = 0;
 
         this._init();
     }
@@ -84,9 +85,15 @@ class Player {
      * desc   : Change player source and stop playback
      * arg    : {string} url - Path to targeted track
      **/
-    changeSource(url) {
+    changeSource(url, id) {
+        this.trackId = id;
         this.stopPlayback();
         this.player.src = url;
+    }
+
+
+    getSourceID() {
+        return this.trackId;
     }
 
 

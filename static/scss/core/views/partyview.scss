@@ -1,0 +1,255 @@
+#party {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    display: flex;
+    overflow: hidden;
+    color: white;
+    background-color: black;
+
+    -moz-animation: party-fadeIn 0.3s linear;
+    -webkit-animation: party-fadeIn 0.3s linear;
+    animation: party-fadeIn 0.3s linear;
+
+
+    #trackContainer {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        padding-left: 10%;
+
+        img {
+            width: 350px;
+            height: 350px;
+
+            -moz-animation: fade 40s linear infinite;
+            -webkit-animation: fade 40s linear infinite;
+            animation: fade 40s linear infinite;
+
+            animation-delay: 0.2s;
+
+            box-shadow: 0 0 30px #fff;
+        }
+
+        #partyTrackInfo {
+            display: inline-block;
+            margin-left: 60px;
+
+            h1,
+            h2,
+            h3 {
+                text-align: left;
+                margin: 0;
+            }
+
+            #a,
+            #b {
+                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+            }
+
+            #c,
+            #d {
+                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+
+                animation-delay: 0.1s;
+            }
+
+            #e {
+                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+
+                animation-delay: 0.2s;
+            }
+
+            #b,
+            #d {
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+
+    #snow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        overflow: hidden;
+    }
+
+    #snow-layer {
+        left: -100px;
+        right: -100px;
+
+        -moz-animation: wind 14s ease-in-out infinite alternate;
+        -webkit-animation: wind 14s ease-in-out infinite alternate;
+        animation: wind 14s ease-in-out infinite alternate;
+
+        perspective: 100px;
+    }
+
+    #snow-layer::after {
+        content: '';
+        position: absolute;
+        left: -100px;
+        right: -100px;
+        top: -1000px;
+        background: url("/static/img/utils/partyview/bg-light.png");
+        height: 2000px;
+
+        -moz-animation: rise-closeup 40s linear infinite;
+        -webkit-animation: rise-closeup 40s linear infinite;
+        animation: rise-closeup 40s linear infinite;
+
+
+        transform: translateZ(30px);
+    }
+
+
+    #snow-layer:nth-child(1) {
+        animation-duration: 25s;
+        animation-name: wing-deux;
+    }
+
+    #snow-layer:nth-child(1)::after {
+        background: url("/static/img/utils/partyview/bg-blur.png");
+        transform: translateZ(0px);
+        animation-duration: 60s;
+        animation-name: rise-blur;
+    }
+
+    #snow-layer:nth-child(2) {
+        animation-duration: 10s;
+    }
+
+    #snow-layer:nth-child(2)::after {
+        background: url("/static/img/utils/partyview/bg-medium.png");
+        animation-duration: 50s;
+        animation-name: rise;
+    }
+
+    #close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #previous,
+    #play,
+    #next { // TODO : replace px with $var
+        position: absolute;
+        bottom: 25px;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+    }
+
+    #previous {
+        left: 25px;
+    }
+
+    #play {
+        left: 80px;
+    }
+
+    #next {
+        left: 135px;
+    }
+}
+
+
+@keyframes party-fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes in {
+    0% {
+        transform: translateX(-200%);
+        opacity: 0;
+    }
+
+    2% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
+    95% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(300%);
+        opacity: 0;
+    }
+}
+
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    3% {
+        opacity: 1;
+    }
+
+    97% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes rise {
+    0% {
+        transform: translateY(1000px) rotate(360deg);
+    }
+}
+
+
+@keyframes rise-blur {
+    0% {
+        transform: translateY(1000px) translateZ(0px);
+    }
+}
+
+@keyframes rise-closeup {
+    0% {
+        transform: translateY(1000px) translateZ(30px);
+    }
+}
+
+@keyframes wind {
+    100% {
+        transform: translateX(40px);
+    }
+}
+
+@keyframes wind-deux {
+    100% {
+        transform: translateX(-50px);
+    }
+}

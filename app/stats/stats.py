@@ -82,7 +82,7 @@ def getUserPrefTracks(user, nbTrackListened, order):
     trackTuple = []
     for stat in stats:
         if stat.listeningPercentage is not None:
-            trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage/nbTrackListened))
+            trackTuple.append((stat.track.title, stat.playCounter, stat.listeningPercentage/stat.playCounter))
         else:
             trackTuple.append((stat.track.title, stat.playCounter, 0))
 

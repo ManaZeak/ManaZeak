@@ -211,7 +211,7 @@ class StatsView extends View {
         for (let i = 0; i < leastGenres.length; ++i) {
             if (leastGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + leastGenres[i][2] + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 this.ui.leastGenres.appendChild(entry);
 
             }
@@ -233,7 +233,7 @@ class StatsView extends View {
         for (let i = 0; i < prefGenres.length; ++i) {
             if (prefGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + prefGenres[i][2] + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 this.ui.prefGenres.appendChild(entry);
 
             }

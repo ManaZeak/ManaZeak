@@ -59,7 +59,7 @@ class PlaylistBarEntry {
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-/**
+    /**
      * method : _contextMenuSetup (private)
      * class  : ListView
      * desc   : TODO
@@ -86,19 +86,17 @@ class PlaylistBarEntry {
 
 
     _createOptionButton() {
+        let that = this;
         // TODO : add admin options, or library options
         this.options       = document.createElement("A");
         this.options.id    = "gear";
+        this.options.addEventListener("mouseleave", function() {
+            if (that.contextMenu) {
+                that.contextMenu.setInvisible();
+            }
+        });
         this.entry.appendChild(this.options);
         this._contextMenuSetup();
-        this._eventListener();
-    }
-
-
-    _eventListener() {
-        this.options.addEventListener("click", function() {
-            console.log(this);
-        });
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
@@ -122,8 +120,9 @@ class TopBar {
     constructor() {
 
         this._createUI();
-        this.userMenu   = new UserMenu(this.topBar);
+//        this.partyMode  = new PartyMode(this.topBar);
         this.wishList   = new WishList(this.topBar);
+        this.userMenu   = new UserMenu(this.topBar);
         this.newLibMenu = null;
     }
 
