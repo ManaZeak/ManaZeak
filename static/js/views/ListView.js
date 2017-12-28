@@ -468,16 +468,16 @@ class ListView extends PlaylistView {
             that._sortBy("year", that.sort.isYearAsc);
         });
 
-        window.app.addListener('changeTrack', function(track) {
+        window.app.listen('changeTrack', function(track) {
             that._centerOnTrack(track, false);
         });
-        window.app.addListener('changeView', function(view) {
+        window.app.listen('changeView', function(view) {
             that.isActive = view == that;
            if (that.isActive)
                that._centerOnTrack(that.lastTrackCenter, true);
         });
 
-        window.app.addListener("stopPlayback", function() {
+        window.app.listen("stopPlayback", function() {
             that._unSelectAll();
         });
     }
