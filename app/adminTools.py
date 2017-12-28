@@ -4,9 +4,27 @@ import os
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.utils.html import strip_tags
 
-from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History
+from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
+    AdminOptions
 from app.utils import errorCheckMessage
+
+
+def getAdminOptions():
+    # If a abnormal number of admin options
+    if AdminOptions.objects.all().count() > 1:
+        AdminOptions.objects.all().delete()
+
+    # If no admin options exists
+    if AdminOptions.objects.all().count() == 0:
+        adminOptions = AdminOptions()
+        adminOptions.save()
+
+    # If a normal number of admin options exists
+    else:
+        adminOptions = AdminOptions.objects.all().first()
+    return adminOptions
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
@@ -14,6 +32,7 @@ def getAdminView(request):
     if request.method == 'GET':
         admin = request.user
         if admin.is_superuser:
+            adminOptions = getAdminOptions()
             users = User.objects.all()
             userInfo = []
             for user in users:
@@ -21,7 +40,30 @@ def getAdminView(request):
                     'NAME': user.username,
                 })
             data = dict({'RESULT': userInfo})
+            data = {**data, **{'SYNC_KEY': adminOptions.syncthingKey}}
             data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def changeAdminOptions(request):
+    if request.method == 'POST':
+        admin = request.user
+        if admin.is_superuser:
+            response = json.loads(request)
+            if 'SYNC_KEY' in response:
+                adminOptions = getAdminOptions()
+                syncKey = strip_tags(response['SYNC_KEY'])
+                if syncKey != adminOptions.syncthingKey:
+                    adminOptions.syncthingKey = syncKey
+                    adminOptions.save()
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "badFormat")
         else:
             data = errorCheckMessage(False, "permissionError")
     else:
