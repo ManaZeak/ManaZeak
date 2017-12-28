@@ -214,15 +214,15 @@ class QueuePreview {
         document.body.addEventListener('click', function() {
             removeVisibilityLock(that.ui.container);
         });
-        window.app.addListener('pushQueue', function(track) {
+        window.app.listen('pushQueue', function(track) {
             that._addEntry(track);
             that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
         });
-        window.app.addListener('popQueue', function() {
+        window.app.listen('popQueue', function() {
             that.ui.queueList.removeChild(that.reverse ? that.ui.queueList.lastChild : that.ui.queueList.firstChild);
             that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
         });
-        window.app.addListener('reverseQueue', function(reverse) {
+        window.app.listen('reverseQueue', function(reverse) {
             that.reverse = reverse;
         });
     }
