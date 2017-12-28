@@ -132,8 +132,8 @@ class Controls  {
             }
         });
 
-        window.app.addListener('pushQueue', this.queuePreview.preview.bind(this.queuePreview));
-        window.app.addListener(['togglePlay', 'stopPlayback'], this._setPlayPause.bind(this));
+        window.app.listen('pushQueue', this.queuePreview.preview, this.queuePreview);
+        window.app.listen(['togglePlay', 'stopPlayback'], this._setPlayPause, this);
     }
 
 

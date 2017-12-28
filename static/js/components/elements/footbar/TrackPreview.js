@@ -114,10 +114,10 @@ class TrackPreview {
     _eventListener() {
         let that = this;
 
-        window.app.addListener(["togglePlay", "changeTrack"], function() {
+        window.app.listen(["togglePlay", "changeTrack"], function() {
             that._setVisible(true);
         });
-        window.app.addListener("stopPlayback", function() {
+        window.app.listen("stopPlayback", function() {
             that._setVisible(false);
         });
     }

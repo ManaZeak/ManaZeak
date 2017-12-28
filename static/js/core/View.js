@@ -20,7 +20,7 @@ class View {
 
     /**
      * method : getDataFromPlaylist (public)
-     * class  : View
+     * class  : Viewa
      * desc   : Get data from playlist
      * arg    : {object} playlist - The playlist to get data from
      **/

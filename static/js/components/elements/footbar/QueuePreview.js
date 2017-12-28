@@ -214,13 +214,13 @@ class QueuePreview {
         document.body.addEventListener('click', function() {
             removeVisibilityLock(self.ui.container);
         });
-        window.app.addListener('pushQueue', function(track) {
+        window.app.listen('pushQueue', function(track) {
             self._addEntry(track);
         });
-        window.app.addListener('popQueue', function() {
+        window.app.listen('popQueue', function() {
             self.ui.queueList.removeChild(self.reverse ? self.ui.queueList.lastChild : self.ui.queueList.firstChild);
         });
-        window.app.addListener('reverseQueue', function(reverse) {
+        window.app.listen('reverseQueue', function(reverse) {
             self.reverse = reverse;
         });
     }

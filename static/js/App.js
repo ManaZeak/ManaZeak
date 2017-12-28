@@ -33,6 +33,9 @@ class App {
         };
 
         this.listeners = {};
+        this.test = function() {
+            arguments[0] = 'TEST';
+        };
         let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
         for (let i = 0; i < properties.length; ++i) {
             if (typeof this[properties[i]] === "function") {
@@ -43,8 +46,9 @@ class App {
                 this[properties[i]] = (function(pname, func) {
                     return function() {
                         let r = func.apply(this, arguments);
+                        this.test.apply(null,arguments);
                         for (let i = 0; i < this.listeners[pname].length; ++i) {
-                            this.listeners[pname][i].apply(null, arguments);
+                            this.listeners[pname][i].runCallback(arguments);
                         }
                         return r;
                     }
@@ -58,23 +62,23 @@ class App {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : addListener (public)
+     * method : listen (public)
      * class  : App
      * desc   : Add listener on an App function
-     * arg    : {object} event - TODO
+     * arg    : {string} event - the function to listen to
      *        : {function} callback
      **/
-    addListener(event, callback) {
+    listen(event, callback, thisArg) {
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
                 if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(callback);
+                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
                 }
             }
         }
 
         else if (this.listeners[event]) {
-            this.listeners[event].push(callback);
+            this.listeners[event].push(new AppListener('', '', callback, thisArg));
         }
     }
 
@@ -129,13 +133,14 @@ class App {
         else                        { lastTrackPath = "None";              }
 
         this.footBar.progressBar.resetProgressBar();
+        let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
             "ajax/getTrackPathByID/",
             JSON.stringify({
                 TRACK_ID:        track.id.track,
                 LAST_TRACK_PATH: lastTrackPath,
-                TRACK_PER:       (this.player.getCurrentTime() * 100) / this.player.getDuration(),
-                PREVIOUS:         previous
+                TRACK_PER:       isNaN(duration_played) ? 0 : duration_played,
+                PREVIOUS:        previous
             }),
             function(response) {
                 /* response = {
@@ -814,10 +819,4 @@ class App {
         });
     }
 
-}
-
-//TODO: Closure or something
-let addonSrcs = document.querySelectorAll('script[data-script-type="appAddon"]');
-for (let i = 0; i < addonSrcs.length; ++i) {
-    addonSrcs[i].src = addonSrcs[i].dataset.src;
 }
