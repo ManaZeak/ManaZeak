@@ -88,6 +88,7 @@ class Playlist {
                  *     RESULT      : JSON object
                  * } */
                 if (response.DONE) {
+                    console.log(response);
                     // TODO : get total track, album and artist of playlist
                     that.rawTracks = response.RESULT;
                     that._fillTracks(that.rawTracks);

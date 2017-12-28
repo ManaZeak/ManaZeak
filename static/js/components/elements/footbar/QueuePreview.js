@@ -158,7 +158,7 @@ class QueuePreview {
      * desc   : QueuePreview event listeners
      **/
     _eventListener() {
-        let self = this;
+        let that = this;
 
         let findParentLI = function(element) {
             while (element.tagName !== 'UL' && element.tagName !== 'LI') {
@@ -170,7 +170,7 @@ class QueuePreview {
         };
 
         this.ui.statusBar.reverseBox.addEventListener('click', function() {
-            window.app.reverseQueue(!self.reverse);
+            window.app.reverseQueue(!that.reverse);
         });
         this.ui.queueList.addEventListener('click', function(event) {
             let li, sib;
@@ -185,7 +185,7 @@ class QueuePreview {
                         if (sib !== null || li !== undefined) {
                             for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
 
-                            self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib);
+                            that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib);
                             window.app.moveQueue(i, i -1);
                         }
                     }
@@ -199,7 +199,7 @@ class QueuePreview {
                         if (sib !== null || li !== undefined) {
                             for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
 
-                            self.ui.queueList.insertBefore(self.ui.queueList.removeChild(li), sib.nextSibling);
+                            that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib.nextSibling);
                             window.app.moveQueue(i, i + 1);
                         }
 
@@ -212,16 +212,18 @@ class QueuePreview {
             }
         });
         document.body.addEventListener('click', function() {
-            removeVisibilityLock(self.ui.container);
+            removeVisibilityLock(that.ui.container);
         });
         window.app.addListener('pushQueue', function(track) {
-            self._addEntry(track);
+            that._addEntry(track);
+            that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
         });
         window.app.addListener('popQueue', function() {
-            self.ui.queueList.removeChild(self.reverse ? self.ui.queueList.lastChild : self.ui.queueList.firstChild);
+            that.ui.queueList.removeChild(that.reverse ? that.ui.queueList.lastChild : that.ui.queueList.firstChild);
+            that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
         });
         window.app.addListener('reverseQueue', function(reverse) {
-            self.reverse = reverse;
+            that.reverse = reverse;
         });
     }
 

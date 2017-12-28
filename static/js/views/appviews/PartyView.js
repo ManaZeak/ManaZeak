@@ -81,6 +81,7 @@ class PartyView extends View {
 
         this.ui.container.id             = "party";
 
+        // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
         this.ui.sparksContainer.id       = "snow";
         this.ui.sparksLayer1.id          = "snow-layer";
         this.ui.sparksLayer2.id          = "snow-layer";
