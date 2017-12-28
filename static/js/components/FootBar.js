@@ -99,10 +99,10 @@ class FootBar {
     _eventListener() {
         let that = this;
 
-        window.app.addListener('stopPlayback', function() {
+        window.app.listen('stopPlayback', function() {
             that.progressBar.resetProgressBar();
         });
-        window.app.addListener(['fastForward', 'rewind'], function() {
+        window.app.listen(['fastForward', 'rewind'], function() {
             that.progressBar.updateProgress(window.app.player.getPlayer());
         });
     }
