@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.models import Track
+from app.track.track import exportTrackInfo
 from app.utils import errorCheckMessage
 
 
@@ -13,12 +14,7 @@ def generateSimilarTrackJson(selectedTracks):
         return None
     data = []
     for track in selectedTracks:
-        data.append({
-            'ID': track.id,
-            'DURATION': track.duration,
-            'TITLE': track.title,
-            'PERFORMER': track.performer,
-        })
+        data.append(exportTrackInfo(track))
     return dict({'RESULT': data})
 
 
@@ -27,7 +23,7 @@ def getSimilarTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         selectedTracks = []
-        if 'TRACK_ID' in response and 'MODE' in response and 'PLAYLIST':
+        if 'TRACK_ID' in response and 'MODE' in response:
             trackId = strip_tags(response['TRACK_ID'])
             if Track.objects.filter(id=trackId).count() == 1:
                 track = Track.objects.get(id=trackId)
@@ -72,6 +68,7 @@ def getSimilarTrack(request):
                         break
 
                 # Returning results
+                print(generateSimilarTrackJson(selectedTracks))
                 return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
             else:
                 data = errorCheckMessage(False, "dbError")
