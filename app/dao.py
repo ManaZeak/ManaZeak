@@ -319,7 +319,7 @@ def updateTrackView(playlistId):
         ) request
     GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
      trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
-      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name;
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name, albumTitle,trck_num;
     """
     with connection.cursor() as cursor:
         cursor.execute(sql, [str(playlistId)])
