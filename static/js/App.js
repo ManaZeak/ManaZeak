@@ -441,7 +441,10 @@ class App {
         }
 
         this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
-        this.footBar.progressBar.refreshInterval(this.player.getPlayer());
+
+        if (!this.player.isEmpty()) {
+            this.footBar.progressBar.refreshInterval(this.player.getPlayer());
+        }
     }
 
 
@@ -649,6 +652,7 @@ class App {
      * desc   : Toggle repeat mode on playlist
      **/
     toggleRepeat() {
+        this.activePlaylist.toggleRepeat();
         switch(this.activePlaylist.getRepeatMode()) {
             case 0:
                 new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
@@ -662,7 +666,6 @@ class App {
             default:
                 break;
         }
-        this.activePlaylist.toggleRepeat();
     }
 
 
@@ -672,20 +675,20 @@ class App {
      * desc   : Toggle shuffle mode on playlist
      **/
     toggleShuffle() {
+        this.activePlaylist.toggleShuffle();
         switch(this.activePlaylist.getShuffleMode()) {
             case 0:
                 new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
                 break;
             case 1:
-                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
+                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
                 break;
             case 2:
-                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
+                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
                 break;
             default:
                 break;
         }
-        this.activePlaylist.toggleShuffle();
     }
 
 
