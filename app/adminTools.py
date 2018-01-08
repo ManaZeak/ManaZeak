@@ -113,7 +113,7 @@ def syncthingRescan(request):
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
-def changeAdminOptions(request):
+def changeSyncthingAPIKey(request):
     if request.method == 'POST':
         admin = request.user
         if admin.is_superuser:
