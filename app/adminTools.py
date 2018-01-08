@@ -117,7 +117,7 @@ def changeSyncthingAPIKey(request):
     if request.method == 'POST':
         admin = request.user
         if admin.is_superuser:
-            response = json.loads(request)
+            response = json.loads(request.body)
             if 'SYNC_KEY' in response:
                 adminOptions = getAdminOptions()
                 syncKey = strip_tags(response['SYNC_KEY'])
