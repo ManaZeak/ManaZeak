@@ -1,6 +1,7 @@
 import json
 import os
 
+import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -78,6 +79,23 @@ def removeUserById(request):
                     data = errorCheckMessage(False, "dbError")
             else:
                 data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def syncthingRescan(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            headers = {'X-API-Key': AdminOptions.objects.all().first().syncthingKey}
+            req = requests.post('http://st:8384/rest/db/scan', headers=headers)
+            if req.status_code == 200:
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "syncthingError")
         else:
             data = errorCheckMessage(False, "permissionError")
     else:

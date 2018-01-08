@@ -108,6 +108,10 @@ def errorCheckMessage(isDone, error):
         errorTitle = "No results were found"
         errorMessage = "Can't find any track with the same album"
 
+    elif error == "syncthingError":
+        errorTitle = "Fail to communicate with syncthing"
+        errorMessage = "Check if syncthing is running correctly"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",
