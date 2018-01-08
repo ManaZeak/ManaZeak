@@ -68,7 +68,6 @@ def getSimilarTrack(request):
                         break
 
                 # Returning results
-                print(generateSimilarTrackJson(selectedTracks))
                 return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
             else:
                 data = errorCheckMessage(False, "dbError")

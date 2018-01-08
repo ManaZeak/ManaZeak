@@ -58,6 +58,8 @@ urlpatterns = [
     # ADMIN actions
     url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
     url(r'^ajax/getAdminView/$', adminTools.getAdminView, name='getAdminView'),
-    url(r'ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
+    url(r'^ajax/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),
+    url(r'^ajax/removeUserById/$', adminTools.removeUserById, name='removeUserById'),
+    url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
 ]

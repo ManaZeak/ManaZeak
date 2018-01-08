@@ -39,8 +39,17 @@ def getAdminView(request):
             for user in users:
                 userInfo.append({
                     'NAME': user.username,
+                    'ADMIN': user.is_superuser,
+                    'ID': user.id,
                 })
-            data = dict({'RESULT': userInfo})
+            data = dict({'USER': userInfo})
+            libraryInfo = []
+            for library in Library.objects.all():
+                libraryInfo.append({
+                    'NAME': library.name,
+                    'ID': library.id,
+                })
+            data = {**data, **dict({'LIBRARIES': libraryInfo})}
             data = {**data, **{'SYNC_KEY': adminOptions.syncthingKey}}
             data = {**data, **errorCheckMessage(True, None)}
         else:
