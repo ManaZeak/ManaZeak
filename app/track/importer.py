@@ -145,7 +145,7 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
             with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                 img.write(pictures[0].data)
-        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
+        track.coverLocation = md5Name.hexdigest() + ".jpg"
 
     if 'TITLE' in audioFile:
         trackTitle = processVorbisTag(audioFile['TITLE'])
