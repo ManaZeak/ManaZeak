@@ -10,16 +10,20 @@ class AdminView extends View {
     constructor() {
 
         super();
+
         this.info = null;
         this._init();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
+    /**
+     * method : _clearPageSpace (private)
+     * class  : AdminView
+     * desc   : Clear the UI content div from all its child
+     **/
     _clearPageSpace() {
-        while (this.ui.content.firstChild) {
-            this.ui.content.removeChild(this.ui.content.firstChild);
-        }
+        this.ui.content.innerHTML = "";
     }
 
 
@@ -30,35 +34,29 @@ class AdminView extends View {
      **/
     _createUI() {
         this.ui = {
-            container: this.container,
-            menu:      document.createElement("DIV"),
-            menuTitle: document.createElement("H1"),
+            container:    this.container,
+            menu:         document.createElement("DIV"),
+            menuTitle:    document.createElement("H1"),
 
-            menuList:  document.createElement("UL"),
-            menuDB:    document.createElement("LI"),
-            menuUser:  document.createElement("LI"),
-            menuLib:   document.createElement("LI"),
-            menuSC:    document.createElement("LI"),
+            menuList:     document.createElement("UL"),
+            menuDB:       document.createElement("LI"),
+            menuUser:     document.createElement("LI"),
+            menuLib:      document.createElement("LI"),
+            menuSC:       document.createElement("LI"),
 
-            content:   document.createElement("DIV"),
+            content:      document.createElement("DIV"),
             contentTitle: document.createElement("H1"),
-            syncthing: document.createElement("IFRAME")
         };
 
-        this.ui.container.id = "admin";
-        this.ui.menu.id      = "leftMenu";
+        this.ui.container.id        = "admin";
+        this.ui.menu.id             = "leftMenu";
+        this.ui.content.id          = "content";
+
         this.ui.menuTitle.innerHTML = "Admin";
-
-        this.ui.menuDB.innerHTML = "Database";
-        this.ui.menuUser.innerHTML = "Users";
-        this.ui.menuLib.innerHTML = "Libraries";
-        this.ui.menuSC.innerHTML = "SyncThing";
-
-        this.ui.content.id   = "content";
-        //       this.ui.syncthing.id = "content";
-
-        //this.ui.syncthing.src = "http://manazeak.org/app";
-        //this.ui.syncthing.frameBorder = 0;
+        this.ui.menuDB.innerHTML    = "Database";
+        this.ui.menuUser.innerHTML  = "Users";
+        this.ui.menuLib.innerHTML   = "Libraries";
+        this.ui.menuSC.innerHTML    = "SyncThing";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuUser);
@@ -75,6 +73,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _eventListener (private)
+     * class  : AdminView
+     * desc   : AdminView event listeners
+     **/
     _eventListener() {
         this.ui.menuDB.addEventListener("click", this._requestDBPage.bind(this));
         this.ui.menuUser.addEventListener("click", this._requestUsersPage.bind(this));
@@ -83,6 +86,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _init (private)
+     * class  : AdminView
+     * desc   : Create view to DB page by default
+     **/
     _init() {
         let that = this;
         JSONParsedGetRequest(
@@ -102,19 +110,22 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _requestDBPage (private)
+     * class  : AdminView
+     * desc   : Display the database management page
+     **/
     _requestDBPage() {
         this._clearPageSpace();
-
         this.ui.contentTitle.innerHTML = "Database";
 
-        this.ui.dropLabel            = document.createElement("P");
-        this.ui.dropButton           = document.createElement("BUTTON");
+        this.ui.dropLabel              = document.createElement("P");
+        this.ui.dropButton             = document.createElement("BUTTON");
         this.ui.rmMoodLabel            = document.createElement("P");
         this.ui.rmMoodButton           = document.createElement("BUTTON");
 
-
-        this.ui.dropLabel.innerHTML  = "Drop the database";
-        this.ui.dropButton.innerHTML = "DROP";
+        this.ui.dropLabel.innerHTML    = "Drop the database";
+        this.ui.dropButton.innerHTML   = "DROP";
         this.ui.rmMoodLabel.innerHTML  = "Remove all moodbar from server"; // TODO : warn user that moodbar will auto gen later
         this.ui.rmMoodButton.innerHTML = "REMOVE ALL";
 
@@ -129,39 +140,43 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _requestUsersPage (private)
+     * class  : AdminView
+     * desc   : Display the users management page
+     **/
     _requestUsersPage() {
         this._clearPageSpace();
-
         this.ui.contentTitle.innerHTML = "Users";
 
         let list = document.createElement("UL");
 
         for (let i = 0; i < this.info.USER.length; ++i) {
-            let admin = this.info.USER[i].ADMIN ? "Admin" : "User";
-            let element = document.createElement("LI");
+            let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
+            let element       = document.createElement("LI");
             element.innerHTML = this.info.USER[i].NAME + " (ID: " + this.info.USER[i].ID + ") <br>" + admin;
-
             list.appendChild(element);
         }
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(list);
-
-        console.log(this.info);
     }
 
 
+    /**
+     * method : _requestLibrariesPage (private)
+     * class  : AdminView
+     * desc   : Display the libraries management page
+     **/
     _requestLibrariesPage() {
         this._clearPageSpace();
-
         this.ui.contentTitle.innerHTML = "Libraries";
 
         let list = document.createElement("UL");
 
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
-            let element = document.createElement("LI");
+            let element       = document.createElement("LI");
             element.innerHTML = this.info.LIBRARIES[i].NAME + " (ID: " + this.info.LIBRARIES[i].ID + ")";
-
             list.appendChild(element);
         }
 
@@ -170,22 +185,26 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _requestSCPage (private)
+     * class  : AdminView
+     * desc   : Display the SyncThing management page
+     **/
     _requestSCPage() {
         this._clearPageSpace();
-
         this.ui.contentTitle.innerHTML = "SyncThing";
 
         this.ui.apiKeyLabel            = document.createElement("P");
-        this.ui.apiKeyField           = document.createElement("INPUT");
+        this.ui.apiKeyField            = document.createElement("INPUT");
         this.ui.apiKeyButton           = document.createElement("BUTTON");
         this.ui.rescanLabel            = document.createElement("P");
         this.ui.rescanButton           = document.createElement("BUTTON");
 
-        this.ui.apiKeyLabel.innerHTML  = "SyncThing API key";
-        this.ui.apiKeyField.type = "text";
-        this.ui.apiKeyField.value = this.info.SYNC_KEY;
-        this.ui.apiKeyButton.innerHTML = "SUBMIT";
+        this.ui.apiKeyField.type       = "text";
+        this.ui.apiKeyField.value      = this.info.SYNC_KEY;
 
+        this.ui.apiKeyLabel.innerHTML  = "SyncThing API key";
+        this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanLabel.innerHTML  = "Rescan SyncThing folders";
         this.ui.rescanButton.innerHTML = "RESCAN";
 
@@ -230,7 +249,7 @@ class AdminView extends View {
     /**
      * method : _rescanSC (private)
      * class  : AdminView
-     * desc   : Send a rescan syncthing folders
+     * desc   : Rescan syncthing folders
      **/
     _rescanSC() {
         JSONParsedGetRequest(
@@ -252,12 +271,11 @@ class AdminView extends View {
         );
     }
 
-
-
+    
     /**
-     * method : _rescanSC (private)
+     * method : _removeMoodbar (private)
      * class  : AdminView
-     * desc   : Send a rescan syncthing folders
+     * desc   : Remove all moodbar from server
      **/
     _removeMoodbar() {
         JSONParsedGetRequest(
@@ -281,9 +299,9 @@ class AdminView extends View {
 
 
     /**
-     * method : _rescanSC (private)
+     * method : _submitAPIKey (private)
      * class  : AdminView
-     * desc   : Send a rescan syncthing folders
+     * desc   : Submit the SyncThing API key
      **/
     _submitAPIKey() {
         JSONParsedPostRequest(
@@ -307,4 +325,5 @@ class AdminView extends View {
             }
         );
     }
+
 }
