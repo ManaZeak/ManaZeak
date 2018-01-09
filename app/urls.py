@@ -62,5 +62,6 @@ urlpatterns = [
     url(r'^ajax/removeUserById/$', adminTools.removeUserById, name='removeUserById'),
     url(r'^ajax/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),
     url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
+    url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
 ]

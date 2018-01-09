@@ -2,13 +2,16 @@ import json
 import os
 
 import requests
+from django import db
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.utils.html import strip_tags
+from multiprocessing import Process
 
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions
+from app.track.importer import regenerateCover
 from app.utils import errorCheckMessage
 
 
@@ -59,6 +62,7 @@ def getAdminView(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def removeAllMoods(request):
     if request.method == 'GET':
         admin = request.user
@@ -74,6 +78,7 @@ def removeAllMoods(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def removeUserById(request):
     if request.method == 'POST':
         admin = request.user
@@ -95,6 +100,7 @@ def removeUserById(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def syncthingRescan(request):
     if request.method == 'GET':
         admin = request.user
@@ -132,6 +138,34 @@ def changeSyncthingAPIKey(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def regenerateCovers(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            # Deleting all covers
+            moodbars = "/ManaZeak/static/img/covers"
+            for mood in os.listdir(moodbars):
+                os.remove(os.path.join(moodbars, mood))
+
+            # Recreating covers
+            scanThread = Process(target=regenerateCoverProcess)
+            db.connections.close_all()
+            scanThread.start()
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def regenerateCoverProcess():
+    tracks = Track.objects.all()
+    for track in tracks:
+        regenerateCover(track)
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
