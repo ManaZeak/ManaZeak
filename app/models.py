@@ -132,7 +132,7 @@ class PlaylistSettings(models.Model):
 
 class History(models.Model):
     track = models.ForeignKey(Track)
-    date = models.TimeField()
+    date = models.DateTimeField(null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
