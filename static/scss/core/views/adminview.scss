@@ -11,10 +11,38 @@
 #leftMenu {
     height: 100%;
     width: 200px;
-    background-color: #0e0f14;
+    background-color: $dark-secondary-color;
+
+    h2 {
+        padding-left: 10px;
+    }
+    
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        li:active,
+        li:focus,
+        li:hover {
+            background-color: $dark-primary-color;
+        }
+
+        .selected {
+            color: red;
+        }
+    }
 }
 
 #content {
     height: 100%;
     width: calc(100% - 200px);
+
+    padding: 25px;
+    box-sizing: border-box;
 }

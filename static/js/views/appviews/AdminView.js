@@ -24,6 +24,7 @@ class AdminView extends View {
      **/
     _clearPageSpace() {
         this.ui.content.innerHTML = "";
+        this._unselectAllMenuEntries();
     }
 
 
@@ -36,7 +37,7 @@ class AdminView extends View {
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
-            menuTitle:    document.createElement("H1"),
+            menuTitle:    document.createElement("H2"),
 
             menuList:     document.createElement("UL"),
             menuDB:       document.createElement("LI"),
@@ -52,7 +53,7 @@ class AdminView extends View {
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
 
-        this.ui.menuTitle.innerHTML = "Admin";
+        this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
         this.ui.menuUser.innerHTML  = "Users";
         this.ui.menuLib.innerHTML   = "Libraries";
@@ -117,6 +118,7 @@ class AdminView extends View {
      **/
     _requestDBPage() {
         this._clearPageSpace();
+        this.ui.menuDB.className   = "selected";
         this.ui.contentTitle.innerHTML = "Database";
 
         this.ui.dropLabel              = document.createElement("P");
@@ -147,6 +149,7 @@ class AdminView extends View {
      **/
     _requestUsersPage() {
         this._clearPageSpace();
+        this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "Users";
 
         let list = document.createElement("UL");
@@ -170,6 +173,7 @@ class AdminView extends View {
      **/
     _requestLibrariesPage() {
         this._clearPageSpace();
+        this.ui.menuLib.className   = "selected";
         this.ui.contentTitle.innerHTML = "Libraries";
 
         let list = document.createElement("UL");
@@ -192,6 +196,7 @@ class AdminView extends View {
      **/
     _requestSCPage() {
         this._clearPageSpace();
+        this.ui.menuSC.className   = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing";
 
         this.ui.apiKeyLabel            = document.createElement("P");
@@ -271,7 +276,7 @@ class AdminView extends View {
         );
     }
 
-    
+
     /**
      * method : _removeMoodbar (private)
      * class  : AdminView
@@ -324,6 +329,14 @@ class AdminView extends View {
                 }
             }
         );
+    }
+
+
+    _unselectAllMenuEntries() {
+        this.ui.menuDB.className   = "";
+        this.ui.menuUser.className = "";
+        this.ui.menuLib.className  = "";
+        this.ui.menuSC.className   = "";
     }
 
 }
