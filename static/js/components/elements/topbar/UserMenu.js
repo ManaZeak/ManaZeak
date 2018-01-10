@@ -16,8 +16,9 @@ class UserMenu {
         this.menu      = document.createElement("DIV");
         this.menu.id   = "menu";
         this.menuEntry = {
-            logout: null,
-            stats:  null
+            logout:   null,
+            stats:    null,
+            settings: null
         };
         this.outside   = document.body;
         this.isVisible = false;
@@ -45,17 +46,20 @@ class UserMenu {
      * desc   : Build UI Elements
      **/
     _createUI(container) {
-        this.ui.container.id            = "userExpander";
-        this.ui.img.src                 = "/static/img/utils/user.svg";
+        this.ui.container.id              = "userExpander";
+        this.ui.img.src                   = "/static/img/utils/user.svg";
 
         this.ui.container.appendChild(this.ui.img);
 
-        this.menuEntry.logout           = document.createElement("DIV");
-        this.menuEntry.stats            = document.createElement("DIV");
-        this.menuEntry.logout.className = "menuEntry";
-        this.menuEntry.stats.className  = "menuEntry";
-        this.menuEntry.logout.innerHTML = "Log out";
-        this.menuEntry.stats.innerHTML  = "Stats";
+        this.menuEntry.logout             = document.createElement("DIV");
+        this.menuEntry.stats              = document.createElement("DIV");
+        this.menuEntry.settings           = document.createElement("DIV");
+        this.menuEntry.logout.className   = "menuEntry";
+        this.menuEntry.stats.className    = "menuEntry";
+        this.menuEntry.settings.className  = "menuEntry";
+        this.menuEntry.logout.innerHTML   = "Log out";
+        this.menuEntry.stats.innerHTML    = "Stats";
+        this.menuEntry.settings.innerHTML = "Settings";
 
         let that = this;
         window.app.user.updateIsAdmin(function(is) {
@@ -68,6 +72,7 @@ class UserMenu {
                 that.menu.appendChild(that.menuEntry.admin);
             }
 
+            that.menu.appendChild(that.menuEntry.settings);
             that.menu.appendChild(that.menuEntry.stats);
             that.menu.appendChild(that.menuEntry.logout);
 
@@ -92,6 +97,7 @@ class UserMenu {
         });
         this.menuEntry.logout.addEventListener("click", this._logOut.bind(this));
         this.menuEntry.stats.addEventListener("click", this._getStats.bind(this));
+        this.menuEntry.settings.addEventListener("click", this._getSettings.bind(this));
         this.outside.addEventListener("click", this._clickOutside.bind(this), false);
     }
 
@@ -106,6 +112,18 @@ class UserMenu {
         removeVisibilityLock(this.menu);
         window.app.topBar.unSelectAll();
         window.app.showAppView('mzk_admin');
+    }
+
+
+    /**
+     * method : _getAdmin (private)
+     * class  : UserMenu
+     * desc   : request Admin View
+     **/
+    _getSettings() {
+        removeVisibilityLock(this.menu);
+        window.app.topBar.unSelectAll();
+        window.app.showAppView('mzk_settings');
     }
 
 

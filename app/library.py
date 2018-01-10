@@ -208,7 +208,7 @@ def deleteAllLibrary(request):
         if admin.is_superuser:
             libraries = Library.objects.all()
             for library in libraries:
-                library.playlist.track.delete()
+                library.playlist.track.all().delete()
                 library.playlist.delete()
                 library.delete()
             data = errorCheckMessage(True, None)

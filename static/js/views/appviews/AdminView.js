@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * *
- *                                         *
+ *                                 *
  *  AdminView class                        *
  *                                         *
  *  Handle admin settings                  *
@@ -151,6 +151,35 @@ class AdminView extends View {
     }
 
 
+    _requestDeleteLibraries() { // TODO : put the code below in APP
+        JSONParsedGetRequest(
+            "ajax/deleteAllLibrary/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
+                        window.app.playlists.splice(j, 1);
+                    }
+
+                    window.app.refreshTopBar();
+                    window.app.refreshFootBar();
+                    that._updateAdminInfo();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : _requestUsersPage (private)
      * class  : AdminView
@@ -212,6 +241,15 @@ class AdminView extends View {
         this.ui.menuLib.className      = "selected";
         this.ui.contentTitle.innerHTML = "Libraries management";
 
+        this.ui.rmLibLabel             = document.createElement("P");
+        this.ui.rmLibButton            = document.createElement("BUTTON");
+
+        this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
+            "<br>" +
+            "In case of. Warning, this command apply to every user in ManaZeak.<br>" +
+            "This command will erase all libraries in the database.";
+        this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
+
         let list = document.createElement("UL");
 
         let that = this;
@@ -263,7 +301,11 @@ class AdminView extends View {
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rmLibLabel);
+        this.ui.content.appendChild(this.ui.rmLibButton);
         this.ui.content.appendChild(list);
+
+        this.ui.rmLibButton.addEventListener("click", this._requestDeleteLibraries.bind(this));
     }
 
 
@@ -295,9 +337,11 @@ class AdminView extends View {
             "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
             "<br>" +
-            "This command will perform a rescan on each SyncThing folder that are declared in it.";
+            "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
+            "This command will perform a rescan on each SyncThing folder.";
         this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
             "<br>" +
+            "If none of the hereby command can't help you there" +
             "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";
