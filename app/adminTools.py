@@ -58,6 +58,7 @@ def getAdminView(request):
             for library in Library.objects.all():
                 libraryInfo.append({
                     'NAME': library.name,
+                    'PATH': library.path,
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}

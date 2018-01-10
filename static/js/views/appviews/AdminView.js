@@ -229,9 +229,9 @@ class AdminView extends View {
             rm.src            = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
                 JSONParsedPostRequest(
-                    "ajax/deletePlaylist/",
+                    "ajax/deleteLibrary/",
                     JSON.stringify({
-                        PLAYLIST_ID: that.info.LIBRARIES[i].ID,
+                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
                     }),
                     function(response) {
                         /* response = {

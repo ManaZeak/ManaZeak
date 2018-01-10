@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^ajax/newLibrary/$', library.newLibrary, name='setLibrary'),
     url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
+    url(r'^ajax/deleteLibrary/$', library.deleteLibrary, name='deleteLibrary'),
 
     # Playlist actions
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),

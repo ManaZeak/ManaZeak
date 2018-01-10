@@ -114,6 +114,7 @@ def rescanLibrary(request):
                     playlist.isLibrary = True
                     playlist.save()
                     library.playlist = playlist
+                    library.save()
 
                     # Scan library
                     data = scanLibrary(library, playlist, library.convertID3)
@@ -164,7 +165,7 @@ def scanLibrary(library, playlist, convert):
         return errorCheckMessage(False, "emptyLibrary")
 
     print("Indexed all files")
-    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath,))
+    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
     print("Launched scan thread")
     scanThread.start()
@@ -173,6 +174,30 @@ def scanLibrary(library, playlist, convert):
     }
     data = {**data, **errorCheckMessage(True, None)}
     return data
+
+
+def deleteLibrary(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        admin = request.user
+        if admin.is_superuser:
+            if 'LIBRARY_ID' in response:
+                libraryId = strip_tags(response['LIBRARY_ID'])
+                if Library.objects.filter(id=libraryId).count() == 1:
+                    library = Library.objects.get(id=libraryId)
+
+                    library.playlist.delete()
+                    library.delete()
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
@@ -247,10 +272,12 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
 
 
 # Scan a library.
-def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath):
+def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, library):
     importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
+    library.playlist = playlist
+    library.save()
 
 
 class ImportBulkThread(threading.Thread):
