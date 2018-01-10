@@ -176,6 +176,7 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def deleteLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -185,7 +186,7 @@ def deleteLibrary(request):
                 libraryId = strip_tags(response['LIBRARY_ID'])
                 if Library.objects.filter(id=libraryId).count() == 1:
                     library = Library.objects.get(id=libraryId)
-
+                    library.playlist.track.delete()
                     library.playlist.delete()
                     library.delete()
                     data = errorCheckMessage(True, None)
@@ -193,6 +194,24 @@ def deleteLibrary(request):
                     data = errorCheckMessage(False, "dbError")
             else:
                 data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def deleteAllLibrary(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            libraries = Library.objects.all()
+            for library in libraries:
+                library.playlist.track.delete()
+                library.playlist.delete()
+                library.delete()
+            data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "permissionError")
     else:
