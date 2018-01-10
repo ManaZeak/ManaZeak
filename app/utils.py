@@ -112,6 +112,10 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Fail to communicate with syncthing"
         errorMessage = "Check if syncthing is running correctly"
 
+    elif error == "userDeleteError":
+        errorTitle = "Can't delete this user"
+        errorMessage = "You can't delete your own account if you are admin"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",

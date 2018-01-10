@@ -86,11 +86,14 @@ def removeUserById(request):
             response = json.loads(request.body)
             if 'USER_ID' in response:
                 userId = strip_tags(response['USER_ID'])
-                if User.objects.filter(id=userId).count() == 1:
-                    User.objects.get(id=userId).delete()
-                    data = errorCheckMessage(True, None)
+                if userId == admin.id:
+                    if User.objects.filter(id=userId).count() == 1:
+                        User.objects.get(id=userId).delete()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "dbError")
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "userDeleteError")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:
