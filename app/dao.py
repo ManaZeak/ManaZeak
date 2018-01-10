@@ -240,23 +240,6 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
-# TODO: choose column of export
-def getPlaylistExport(playlistId):
-    sql = "COPY (SELECT * FROM \"app_playlist_track\" INNER JOIN \"app_track\" ON" + \
-          " track_id =  \"app_track\".id WHERE playlist_id = {0}) TO STDOUT".format(playlistId)
-
-    # Creating virtual file
-    virtualFile = io.StringIO()
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_expert(sql, virtualFile)
-    tmp = virtualFile.getvalue()
-    virtualFile.close()
-    return tmp
-
-
 # Export the all the DB tracks to a view
 def updateTrackView(playlistId):
     sql = """DROP VIEW IF EXISTS public.app_track_view RESTRICT;"""

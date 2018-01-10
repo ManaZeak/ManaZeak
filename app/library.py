@@ -175,8 +175,7 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
-# TODO : RENAME to more clear name
-def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):
+def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
     tracks = []
     albumReference = {}
     tracksInfo = []
@@ -191,9 +190,6 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     flacFileReference = FileType.objects.get(name="flac")
 
     print("Started scanning MP3 file")
-
-    # TODO: Create general file processor
-
     threads = []
     # MP3 file processor
     if len(mp3Files) != 0:
@@ -252,7 +248,7 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
 
 # Scan a library.
 def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath):
-    addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlist.id)
+    importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
 
