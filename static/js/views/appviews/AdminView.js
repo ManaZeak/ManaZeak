@@ -11,7 +11,8 @@ class AdminView extends View {
 
         super();
 
-        this.info = null;
+        this.info  = null;
+        this.modal = null;
         this._init();
     }
 
@@ -118,24 +119,42 @@ class AdminView extends View {
      **/
     _requestDBPage() {
         this._clearPageSpace();
-        this.ui.menuDB.className   = "selected";
-        this.ui.contentTitle.innerHTML = "Database";
+        this.ui.menuDB.className        = "selected";
+        this.ui.contentTitle.innerHTML  = "Database management";
 
-        this.ui.dropLabel              = document.createElement("P");
-        this.ui.dropButton             = document.createElement("BUTTON");
-        this.ui.rmMoodLabel            = document.createElement("P");
-        this.ui.rmMoodButton           = document.createElement("BUTTON");
+        this.ui.rmMoodLabel             = document.createElement("P");
+        this.ui.rmMoodButton            = document.createElement("BUTTON");
+        this.ui.rmCoverLabel            = document.createElement("P");
+        this.ui.rmCoverButton           = document.createElement("BUTTON");
+        this.ui.dropLabel               = document.createElement("P");
+        this.ui.dropButton              = document.createElement("BUTTON");
 
-        this.ui.dropLabel.innerHTML    = "Drop the database";
-        this.ui.dropButton.innerHTML   = "DROP";
-        this.ui.rmMoodLabel.innerHTML  = "Remove all moodbar from server"; // TODO : warn user that moodbar will auto gen later
-        this.ui.rmMoodButton.innerHTML = "REMOVE ALL";
+        this.ui.rmCoverLabel.innerHTML  = "<b>Re-extract all covers from tracks</b><br>" +
+                                          "<br>" +
+                                          "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
+                                          "This command will erase existing covers and re-extract them for all tracks stored in the database.";
+        this.ui.rmMoodLabel.innerHTML   = "<b>Remove all moodbars from server</b><br>" +
+                                          "<br>" +
+                                          "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
+                                          "<code>.mood</code> file (if it doesn't exists already).<br>" +
+                                          "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
+                                          "ManaZeak re-generate those <code>.mood</code> files.";
+        this.ui.dropLabel.innerHTML     = "<b>Drop database</b><br>" +
+                                          "<br>" +
+                                          "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
+                                          "This command will delete everything in the database except users.";
+        this.ui.rmMoodButton.innerHTML  = "REMOVE ALL MOODBARS";
+        this.ui.rmCoverButton.innerHTML = "RE-EXTRACT ALL COVERS";
+        this.ui.dropButton.innerHTML    = "DROP DATABASE";
 
         this.ui.content.appendChild(this.ui.contentTitle);
-        this.ui.content.appendChild(this.ui.dropLabel);
-        this.ui.content.appendChild(this.ui.dropButton);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rmCoverLabel);
+        this.ui.content.appendChild(this.ui.rmCoverButton);
         this.ui.content.appendChild(this.ui.rmMoodLabel);
         this.ui.content.appendChild(this.ui.rmMoodButton);
+        this.ui.content.appendChild(this.ui.dropLabel);
+        this.ui.content.appendChild(this.ui.dropButton);
 
         this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
         this.ui.rmMoodButton.addEventListener("click", this._removeMoodbar.bind(this));
@@ -150,18 +169,19 @@ class AdminView extends View {
     _requestUsersPage() {
         this._clearPageSpace();
         this.ui.menuUser.className   = "selected";
-        this.ui.contentTitle.innerHTML = "Users";
+        this.ui.contentTitle.innerHTML = "User management";
 
         let list = document.createElement("UL");
 
         for (let i = 0; i < this.info.USER.length; ++i) {
             let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element       = document.createElement("LI");
-            element.innerHTML = this.info.USER[i].NAME + " (ID: " + this.info.USER[i].ID + ") <br>" + admin;
+            element.innerHTML = this.info.USER[i].NAME + " (ID: " + this.info.USER[i].ID + ") <br>Status: " + admin;
             list.appendChild(element);
         }
 
         this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(list);
     }
 
@@ -174,7 +194,7 @@ class AdminView extends View {
     _requestLibrariesPage() {
         this._clearPageSpace();
         this.ui.menuLib.className   = "selected";
-        this.ui.contentTitle.innerHTML = "Libraries";
+        this.ui.contentTitle.innerHTML = "Libraries management";
 
         let list = document.createElement("UL");
 
@@ -185,6 +205,7 @@ class AdminView extends View {
         }
 
         this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(list);
     }
 
@@ -197,31 +218,50 @@ class AdminView extends View {
     _requestSCPage() {
         this._clearPageSpace();
         this.ui.menuSC.className   = "selected";
-        this.ui.contentTitle.innerHTML = "SyncThing";
+        this.ui.contentTitle.innerHTML = "SyncThing management";
 
         this.ui.apiKeyLabel            = document.createElement("P");
         this.ui.apiKeyField            = document.createElement("INPUT");
         this.ui.apiKeyButton           = document.createElement("BUTTON");
         this.ui.rescanLabel            = document.createElement("P");
         this.ui.rescanButton           = document.createElement("BUTTON");
+        this.ui.openSCLabel            = document.createElement("P");
+        this.ui.openSCButton           = document.createElement("BUTTON");
 
         this.ui.apiKeyField.type       = "text";
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
 
-        this.ui.apiKeyLabel.innerHTML  = "SyncThing API key";
+        this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
+                                         "<br>" +
+                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
+                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
+        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
+                                         "<br>" +
+                                         "This command will perform a rescan on each SyncThing folder that are declared in it.";
+        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
+                                         "<br>" +
+                                         "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
-        this.ui.rescanLabel.innerHTML  = "Rescan SyncThing folders";
         this.ui.rescanButton.innerHTML = "RESCAN";
+        this.ui.openSCButton.innerHTML = "OPEN";
 
         this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.apiKeyLabel);
         this.ui.content.appendChild(this.ui.apiKeyField);
         this.ui.content.appendChild(this.ui.apiKeyButton);
         this.ui.content.appendChild(this.ui.rescanLabel);
         this.ui.content.appendChild(this.ui.rescanButton);
+        this.ui.content.appendChild(this.ui.openSCLabel);
+        this.ui.content.appendChild(this.ui.openSCButton);
 
+        let that = this;
         this.ui.apiKeyButton.addEventListener("click", this._submitAPIKey.bind(this));
         this.ui.rescanButton.addEventListener("click", this._rescanSC.bind(this));
+        this.ui.openSCButton.addEventListener("click", function() {
+            that.modal = new Modal("openSyncThing");
+            that.modal.open();
+        });
     }
 
 
@@ -231,6 +271,7 @@ class AdminView extends View {
      * desc   : Send a drop db request to the server
      **/
     _requestDrop() {
+        // TODO : put modal on drop action to confirm ?
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
             function(response) {
