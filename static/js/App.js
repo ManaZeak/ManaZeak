@@ -251,7 +251,6 @@ class App {
                 }
 
                 else {
-                    console.trace();
                     callback();
                 }
             }
@@ -417,7 +416,6 @@ class App {
      **/
     next() {
         if (this.appViews["mzk_party"].getIsEnabled()) {
-            console.log("DEAZ");
             return;
         }
 

@@ -453,7 +453,6 @@ class Modal {
         content.src             = "//127.0.0.1:8384/";
 
         content.onload = function() {
-            console.log("DONE");
         };
 
         this.ui.content.appendChild(content);
