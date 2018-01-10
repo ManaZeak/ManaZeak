@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, library, playlist, adminTools, wish
+from app import player, history, library, playlist, adminTools, wish, userSettings
 from app.stats import stats, suggestion
 from app.track import track
 from . import views
@@ -56,6 +56,9 @@ urlpatterns = [
     # Wish actions
     url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
     url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
+
+    # USER actions
+    url(r'^ajax/getUserSettings/$', userSettings.getUserSettings, name='getUserSettings'),
 
     # ADMIN actions
     url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
