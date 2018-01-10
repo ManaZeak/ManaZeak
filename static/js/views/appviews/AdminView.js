@@ -167,7 +167,6 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
-        console.log("try catch");
         this._clearPageSpace();
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
@@ -200,7 +199,7 @@ class AdminView extends View {
                 });
             });
             element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br>" +
-                                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
+                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
             element.appendChild(rm);
             list.appendChild(element);
         }
@@ -223,31 +222,61 @@ class AdminView extends View {
 
         let list = document.createElement("UL");
 
+        let that = this;
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
             let element       = document.createElement("LI");
             let rm            = document.createElement("IMG");
             rm.src            = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
-                window.app.deletePlaylist(that.info.LIBRARIES[i].ID, function() {
-                    let self = that;
-                    JSONParsedGetRequest(
-                        "ajax/getAdminView/",
-                        function(response) {
-                            /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
-                             * } */
-                            if (response.DONE) {
-                                self.info = response;
-                                self._requestLibrariesPage();
+                JSONParsedPostRequest(
+                    "ajax/deletePlaylist/",
+                    JSON.stringify({
+                        PLAYLIST_ID: that.info.LIBRARIES[i].ID,
+                    }),
+                    function(response) {
+                        /* response = {
+                         *     DONE        : bool
+                         *     ERROR_H1    : string
+                         *     ERROR_MSG   : string
+                         *
+                         *     PATH        : string
+                         * } */
+                        if (response.DONE) {
+                            for (let i = 0; i < window.app.playlists.length; ++i) { // Removing from playlists Array
+                                if (window.app.playlists[i].id === that.info.LIBRARIES[i].ID) {
+                                    window.app.playlists.splice(i, 1);
+                                    break;
+                                }
                             }
+                            window.app.refreshTopBar();
+                            window.app.refreshFootBar();
+
+                            let self = that;
+                            JSONParsedGetRequest(
+                                "ajax/getAdminView/",
+                                function(response) {
+                                    console.log("Here");
+                                    /* response = {
+                                     *     DONE      : bool
+                                     *     ERROR_H1  : string
+                                     *     ERROR_MSG : string
+                                     * } */
+                                    if (response.DONE) {
+                                        self.info = response;
+                                        self._requestLibrariesPage();
+                                    }
+                                }
+                            );
                         }
-                    );
-                });
+
+                        else {
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                        }
+                    }
+                );
             });
             element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b><br>" +
-                                "Path: " + this.info.LIBRARIES[i].PATH;
+                "Path: " + this.info.LIBRARIES[i].PATH;
             element.appendChild(rm);
             list.appendChild(element);
         }
