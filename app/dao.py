@@ -240,6 +240,63 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
+def getPlaylistTracks(playlistId):
+    sql = """SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
+          track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play,
+          trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
+          string_agg(DISTINCT artistName, ',') AS art_name,
+          string_agg(DISTINCT art_id::TEXT, ',') AS art_id,
+          string_agg(DISTINCT album_artist_id::TEXT, ',') AS alb_art,
+          string_agg(DISTINCT album_artist_name, ',') AS alb_art_name
+        FROM (
+              SELECT * FROM
+                (
+                  SELECT
+                    app_track.id                AS trck_id,
+                    app_track.location          AS trk_loc,
+                    app_track.title             AS trck_tit,
+                    app_track.year              AS trck_year,
+                    app_track.composer          AS trck_comp,
+                    app_track.performer         AS trk_perf,
+                    app_track.number            AS trck_num,
+                    app_track.bpm               AS trk_bpm,
+                    app_track.lyrics            AS trck_lyr,
+                    app_track.comment           AS trck_com,
+                    app_track."bitRate"         AS track_bit_rate,
+                    app_track."bitRateMode"     AS trck_bitmode,
+                    app_track."sampleRate"      AS trck_sampRate,
+                    app_track.duration          AS trck_dur,
+                    app_track."discNumber"      AS trck_dnum,
+                    app_track.size              AS trck_siz,
+                    app_track."lastModified"    AS trck_lastM,
+                    app_track."coverLocation"   AS trck_cov,
+                    app_track."playCounter"     AS trck_play,
+                    app_track.moodbar           AS trck_mood,
+                    app_track."downloadCounter" AS trck_dl,
+                    *
+                  FROM app_track
+                    INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
+                                  INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
+                    INNER JOIN (SELECT
+                                  name AS genreName,
+                                  id   AS gen_id
+                                FROM app_genre) a2 ON app_track.genre_id = gen_id
+                    INNER JOIN (SELECT
+                                  name          AS artistName,
+                                  app_artist.id AS art_id
+                                FROM app_artist) a4 INNER JOIN app_track_artist a3 ON art_id = a3.artist_id
+                      ON app_track.id = a3.track_id
+                ) test
+              INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
+              WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
+        ) request
+    GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
+     trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name, albumTitle,trck_num;"""
+    with connection.cursor() as cursor:
+        cursor.execute(sql, [str(playlistId)])
+        return cursor.fetchall()
+
 # Export the all the DB tracks to a view
 def updateTrackView(playlistId):
     sql = """DROP VIEW IF EXISTS public.app_track_view RESTRICT;"""

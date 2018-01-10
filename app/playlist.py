@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import updateTrackView
+from app.dao import updateTrackView, getPlaylistTracks
 from app.models import Playlist, TrackView, Track
 from app.utils import errorCheckMessage
 
@@ -164,6 +164,65 @@ def loadSimplifiedPlaylist(request):
                 playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
                 updateTrackView(playlist.id)
                 data = {**dict({'RESULT': simplePlaylistJsonGenerator()}), **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def lazyJsonGenerator(row):
+    splicedArtistName = row[25].split(",")
+    splicedArtistId = row[26].split(",")
+    artists = []
+
+    for artistId, artist in zip(splicedArtistId, splicedArtistName):
+        artists.append({
+            'ID': artistId,
+            'NAME': artist,
+        })
+
+    data = {
+        'ID': row[0],
+        'TITLE': row[2],
+        'YEAR': row[3],
+        'COMPOSER': row[4],
+        'PERFORMER': row[5],
+        'BITRATE': row[10],
+        'DURATION': row[13],
+        'COVER': row[17],
+        'ARTISTS': artists,
+        'GENRE': row[23],
+        'ALBUM': {
+            'ID': row[24],
+            'TITLE': row[21],
+        },
+    }
+    return data
+
+
+# Give 300 tracks of a playlist with an offset (REQ_NUMBER)
+def lazyLoadingSimplifiedPlaylist(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'REQ_NUMBER' in response and 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            reqNumber = strip_tags(response['REQ_NUMBER'])
+            reqNumber *= 300
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                # Checking if the user is asking possible tracks
+                if playlist.track.all().count() > reqNumber:
+                    trackSet = getPlaylistTracks(playlistId)[reqNumber:reqNumber+300]
+                    data = []
+                    for row in trackSet:
+                        data.append(lazyJsonGenerator(row))
+                    data = dict({'RESULT': data})
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, None)
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

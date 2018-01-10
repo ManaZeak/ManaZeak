@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^ajax/renamePlaylist/$', playlist.renamePlaylist, name='renamePlaylist'),
     url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
     url(r'^ajax/getSimplifiedTracks/$', playlist.loadSimplifiedPlaylist, name='simplifiedJson'),
+    url(r'^ajax/lazyLoadingSimplifiedPlaylist/$', playlist.lazyLoadingSimplifiedPlaylist, name='lazyLoading'),
     url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
 
     # Player actions
