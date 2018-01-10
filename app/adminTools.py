@@ -59,6 +59,7 @@ def getAdminView(request):
                 libraryInfo.append({
                     'NAME': library.name,
                     'PATH': library.path,
+                    'NUMBER_TRACK': library.playlist.track.all().count(),
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
