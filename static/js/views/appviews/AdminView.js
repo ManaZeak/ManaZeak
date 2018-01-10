@@ -166,6 +166,7 @@ class AdminView extends View {
                 if (response.DONE) {
                     window.app.playlists = [];
                     window.app.topBar.playlists = [];
+                    that.ui.rmLibButton.blur();
 
                     window.app.refreshTopBar();
                     window.app.refreshFootBar();
@@ -246,7 +247,7 @@ class AdminView extends View {
 
         this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
             "<br>" +
-            "In case of. Warning, this command apply to every user in ManaZeak.<br>" +
+            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
             "This command will erase all libraries in the database.";
         this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
 
@@ -374,6 +375,7 @@ class AdminView extends View {
      **/
     _requestDrop() {
         // TODO : put modal on drop action to confirm ?
+        let that = this;
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
             function(response) {
@@ -387,6 +389,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.dropButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -400,6 +403,7 @@ class AdminView extends View {
      * desc   : Rescan syncthing folders
      **/
     _rescanSC() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/syncthingRescan",
             function(response) {
@@ -413,6 +417,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rescanButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -426,6 +431,7 @@ class AdminView extends View {
      * desc   : Remove all moodbar from server
      **/
     _removeMoodbar() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/removeAllMoods/",
             function(response) {
@@ -439,6 +445,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rmMoodButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -452,6 +459,7 @@ class AdminView extends View {
      * desc   : Submit the SyncThing API key
      **/
     _submitAPIKey() {
+        let that = this;
         JSONParsedPostRequest(
             "ajax/changeSyncthingAPIKey/",
             JSON.stringify({
@@ -468,6 +476,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.apiKeyButton.blur();
                     // TODO : refresh UI
                 }
             }
