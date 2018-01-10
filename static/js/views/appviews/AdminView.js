@@ -130,19 +130,19 @@ class AdminView extends View {
         this.ui.dropButton              = document.createElement("BUTTON");
 
         this.ui.rmCoverLabel.innerHTML  = "<b>Re-extract all covers from tracks</b><br>" +
-                                          "<br>" +
-                                          "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
-                                          "This command will erase existing covers and re-extract them for all tracks stored in the database.";
+            "<br>" +
+            "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
+            "This command will erase existing covers and re-extract them for all tracks stored in the database.";
         this.ui.rmMoodLabel.innerHTML   = "<b>Remove all moodbars from server</b><br>" +
-                                          "<br>" +
-                                          "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
-                                          "<code>.mood</code> file (if it doesn't exists already).<br>" +
-                                          "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
-                                          "ManaZeak re-generate those <code>.mood</code> files.";
+            "<br>" +
+            "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
+            "<code>.mood</code> file (if it doesn't exists already).<br>" +
+            "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
+            "ManaZeak re-generate those <code>.mood</code> files.";
         this.ui.dropLabel.innerHTML     = "<b>Drop database</b><br>" +
-                                          "<br>" +
-                                          "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
-                                          "This command will delete everything in the database except users.";
+            "<br>" +
+            "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
+            "This command will delete everything in the database except users.";
         this.ui.rmMoodButton.innerHTML  = "REMOVE ALL MOODBARS";
         this.ui.rmCoverButton.innerHTML = "RE-EXTRACT ALL COVERS";
         this.ui.dropButton.innerHTML    = "DROP DATABASE";
@@ -167,16 +167,41 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
+        console.log("try catch");
         this._clearPageSpace();
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
         let list = document.createElement("UL");
 
+        let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
             let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element       = document.createElement("LI");
-            element.innerHTML = this.info.USER[i].NAME + " (ID: " + this.info.USER[i].ID + ") <br>Status: " + admin;
+            let rm            = document.createElement("IMG");
+            rm.src            = "/static/img/utils/trash.svg";
+            rm.addEventListener("click", function() {
+                window.app.deleteUser(that.info.USER[i].ID, function() {
+                    let self = that;
+                    JSONParsedGetRequest(
+                        "ajax/getAdminView/",
+                        function(response) {
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             * } */
+                            if (response.DONE) {
+                                self.info = response;
+                                self._requestUsersPage();
+                            }
+                        }
+                    );
+                });
+            });
+            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br>" +
+                                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
+            element.appendChild(rm);
             list.appendChild(element);
         }
 
@@ -193,14 +218,37 @@ class AdminView extends View {
      **/
     _requestLibrariesPage() {
         this._clearPageSpace();
-        this.ui.menuLib.className   = "selected";
+        this.ui.menuLib.className      = "selected";
         this.ui.contentTitle.innerHTML = "Libraries management";
 
         let list = document.createElement("UL");
 
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
             let element       = document.createElement("LI");
-            element.innerHTML = this.info.LIBRARIES[i].NAME + " (ID: " + this.info.LIBRARIES[i].ID + ")";
+            let rm            = document.createElement("IMG");
+            rm.src            = "/static/img/utils/trash.svg";
+            rm.addEventListener("click", function() {
+                window.app.deletePlaylist(that.info.LIBRARIES[i].ID, function() {
+                    let self = that;
+                    JSONParsedGetRequest(
+                        "ajax/getAdminView/",
+                        function(response) {
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             * } */
+                            if (response.DONE) {
+                                self.info = response;
+                                self._requestLibrariesPage();
+                            }
+                        }
+                    );
+                });
+            });
+            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b><br>" +
+                                "Path: " + this.info.LIBRARIES[i].PATH;
+            element.appendChild(rm);
             list.appendChild(element);
         }
 
@@ -232,15 +280,15 @@ class AdminView extends View {
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
 
         this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
-                                         "<br>" +
-                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
-                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
+            "<br>" +
+            "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
+            "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
-                                         "<br>" +
-                                         "This command will perform a rescan on each SyncThing folder that are declared in it.";
+            "<br>" +
+            "This command will perform a rescan on each SyncThing folder that are declared in it.";
         this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
-                                         "<br>" +
-                                         "This command will open the SyncThing instance right here, in a modal.";
+            "<br>" +
+            "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";
         this.ui.openSCButton.innerHTML = "OPEN";

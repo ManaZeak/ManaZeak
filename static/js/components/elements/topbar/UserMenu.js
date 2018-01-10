@@ -103,6 +103,8 @@ class UserMenu {
      * desc   : request Admin View
      **/
     _getAdmin() {
+        removeVisibilityLock(this.menu);
+        window.app.topBar.unSelectAll();
         window.app.showAppView('mzk_admin');
     }
 
@@ -113,6 +115,8 @@ class UserMenu {
      * desc   : request Stats View
      **/
     _getStats() {
+        removeVisibilityLock(this.menu);
+        window.app.topBar.unSelectAll();
         window.app.showAppView('mzk_stats');
     }
 
