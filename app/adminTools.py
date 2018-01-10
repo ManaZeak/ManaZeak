@@ -37,12 +37,13 @@ def getAdminView(request):
         admin = request.user
         if admin.is_superuser:
             adminOptions = getAdminOptions()
-            users = User.objects.all()
+            users = User.objects.all().order_by('date_joined')
             userInfo = []
             for user in users:
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
+                    'JOINED': user.date_joined,
                     'ID': user.id,
                 })
             data = dict({'USER': userInfo})
@@ -86,7 +87,7 @@ def removeUserById(request):
             response = json.loads(request.body)
             if 'USER_ID' in response:
                 userId = strip_tags(response['USER_ID'])
-                if userId == admin.id:
+                if userId != admin.id:
                     if User.objects.filter(id=userId).count() == 1:
                         User.objects.get(id=userId).delete()
                         data = errorCheckMessage(True, None)
