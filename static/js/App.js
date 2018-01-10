@@ -57,6 +57,7 @@ class App {
         }
 
         document.body.appendChild(this.mainContainer);
+        new DragDrop(this.mainContainer);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
