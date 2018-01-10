@@ -43,7 +43,7 @@ def getAdminView(request):
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
-                    'JOINED': user.date_joined,
+                    'JOINED': str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) + "/" + str(user.date_joined.year),
                     'ID': user.id,
                 })
             data = dict({'USER': userInfo})
