@@ -152,6 +152,7 @@ class AdminView extends View {
 
 
     _requestDeleteLibraries() { // TODO : put the code below in APP
+        let that = this;
         JSONParsedGetRequest(
             "ajax/deleteAllLibrary/",
             function(response) {
@@ -163,9 +164,9 @@ class AdminView extends View {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
-                        window.app.playlists.splice(j, 1);
-                    }
+                    window.app.playlists = [];
+                    window.app.topBar.playlists = [];
+                    that.ui.rmLibButton.
 
                     window.app.refreshTopBar();
                     window.app.refreshFootBar();
