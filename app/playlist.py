@@ -220,9 +220,9 @@ def lazyLoadingSimplifiedPlaylist(request):
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
                     data = dict({'RESULT': data})
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(False, None)}
                 else:
-                    data = errorCheckMessage(False, None)
+                    data = errorCheckMessage(True, None)
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
