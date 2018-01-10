@@ -153,7 +153,6 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-
         if (view.getContainer().id === "party") {
             view.setIsEnabled(true);
             document.body.appendChild(view.getContainer());

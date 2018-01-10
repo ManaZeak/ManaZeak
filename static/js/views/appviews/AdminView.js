@@ -95,20 +95,9 @@ class AdminView extends View {
      **/
     _init() {
         let that = this;
-        JSONParsedGetRequest(
-            "ajax/getAdminView/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 * } */
-                if (response.DONE) {
-                    that.info = response;
-                    that._createUI();
-                }
-            }
-        );
+        this._updateAdminInfo(function() {
+            that._createUI();
+        });
     }
 
 
@@ -118,6 +107,7 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuDB.className        = "selected";
         this.ui.contentTitle.innerHTML  = "Database management";
@@ -167,6 +157,7 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
@@ -216,6 +207,7 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuLib.className      = "selected";
         this.ui.contentTitle.innerHTML = "Libraries management";
@@ -242,9 +234,9 @@ class AdminView extends View {
                          *     PATH        : string
                          * } */
                         if (response.DONE) {
-                            for (let i = 0; i < window.app.playlists.length; ++i) { // Removing from playlists Array
-                                if (window.app.playlists[i].id === that.info.LIBRARIES[i].ID) {
-                                    window.app.playlists.splice(i, 1);
+                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
+                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
+                                    window.app.playlists.splice(j, 1);
                                     break;
                                 }
                             }
@@ -252,21 +244,9 @@ class AdminView extends View {
                             window.app.refreshFootBar();
 
                             let self = that;
-                            JSONParsedGetRequest(
-                                "ajax/getAdminView/",
-                                function(response) {
-                                    console.log("Here");
-                                    /* response = {
-                                     *     DONE      : bool
-                                     *     ERROR_H1  : string
-                                     *     ERROR_MSG : string
-                                     * } */
-                                    if (response.DONE) {
-                                        self.info = response;
-                                        self._requestLibrariesPage();
-                                    }
-                                }
-                            );
+                            that._updateAdminInfo(function() {
+                                self._requestLibrariesPage();
+                            });
                         }
 
                         else {
@@ -275,7 +255,7 @@ class AdminView extends View {
                     }
                 );
             });
-            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b><br>" +
+            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
                 "Path: " + this.info.LIBRARIES[i].PATH;
             element.appendChild(rm);
             list.appendChild(element);
@@ -293,6 +273,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuSC.className   = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
@@ -455,6 +436,32 @@ class AdminView extends View {
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
+    }
+
+
+    _updateAdminInfo(callback) {
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/getAdminView/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (response.DONE) {
+                    that.info = response;
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 }
