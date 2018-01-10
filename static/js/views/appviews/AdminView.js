@@ -166,7 +166,6 @@ class AdminView extends View {
                 if (response.DONE) {
                     window.app.playlists = [];
                     window.app.topBar.playlists = [];
-                    that.ui.rmLibButton.
 
                     window.app.refreshTopBar();
                     window.app.refreshFootBar();
