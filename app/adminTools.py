@@ -40,10 +40,17 @@ def getAdminView(request):
             users = User.objects.all().order_by('date_joined')
             userInfo = []
             for user in users:
+                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) +\
+                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" +\
+                             str(user.date_joined.minute)
+                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) +\
+                             "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" +\
+                             str(user.last_login.minute)
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
-                    'JOINED': str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) + "/" + str(user.date_joined.year),
+                    'JOINED': dateJoined,
+                    'LAST_LOGIN': lastLogin,
                     'ID': user.id,
                 })
             data = dict({'USER': userInfo})
@@ -87,7 +94,7 @@ def removeUserById(request):
             response = json.loads(request.body)
             if 'USER_ID' in response:
                 userId = strip_tags(response['USER_ID'])
-                if userId != admin.id:
+                if int(userId) != admin.id:
                     if User.objects.filter(id=userId).count() == 1:
                         User.objects.get(id=userId).delete()
                         data = errorCheckMessage(True, None)
