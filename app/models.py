@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 
@@ -133,7 +132,7 @@ class PlaylistSettings(models.Model):
 
 class History(models.Model):
     track = models.ForeignKey(Track)
-    date = models.TimeField()
+    date = models.DateTimeField(null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -151,3 +150,7 @@ class Wish(models.Model):
     date = models.DateField(auto_now=True, null=True)
     text = models.CharField(max_length=1000)
     status = models.IntegerField()
+
+
+class AdminOptions(models.Model):
+    syncthingKey = models.CharField(max_length=100, null=True)

@@ -240,23 +240,6 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
-# TODO: choose column of export
-def getPlaylistExport(playlistId):
-    sql = "COPY (SELECT * FROM \"app_playlist_track\" INNER JOIN \"app_track\" ON" + \
-          " track_id =  \"app_track\".id WHERE playlist_id = {0}) TO STDOUT".format(playlistId)
-
-    # Creating virtual file
-    virtualFile = io.StringIO()
-
-    virtualFile.seek(0)
-    # Import the csv into the database
-    with closing(connection.cursor()) as cursor:
-        cursor.copy_expert(sql, virtualFile)
-    tmp = virtualFile.getvalue()
-    virtualFile.close()
-    return tmp
-
-
 # Export the all the DB tracks to a view
 def updateTrackView(playlistId):
     sql = """DROP VIEW IF EXISTS public.app_track_view RESTRICT;"""
@@ -319,7 +302,7 @@ def updateTrackView(playlistId):
         ) request
     GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
      trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
-      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name;
+      trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name, albumTitle,trck_num;
     """
     with connection.cursor() as cursor:
         cursor.execute(sql, [str(playlistId)])

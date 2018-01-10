@@ -522,6 +522,25 @@ $editFooterHeight:  ($editModalHeight / 10);
         }
     }
 
+    #openSyncThing {
+        border: solid 1px black;
+        border-radius: 3px;
+        position: relative;
+        min-height: 90%;
+        background: $primary-color;
+        width: 90%;
+
+        #content {
+            box-sizing: border-box;
+            text-align: center;
+            width: 100%;
+            top: 0;
+            padding: 0;
+            height: 100%;
+            position: absolute;
+        }
+    }
+
 }
 
 

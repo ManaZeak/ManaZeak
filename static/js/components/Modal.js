@@ -52,6 +52,10 @@ class Modal {
                 this._newWishUI();
                 break;
 
+            case "openSyncThing":
+                this._openSyncThing();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -436,6 +440,25 @@ class Modal {
     }
 
 
+    _openSyncThing() {
+        this._appendCloseButton();
+
+        let content             = document.createElement("IFRAME");
+        this.ui.container.id    = "openSyncThing";
+
+        content.frameBorder     = 0;
+        content.height          = "100%";
+        content.width           = "100%";
+        //content.src             = "http://everynoise.com/engenremap.html";
+        content.src             = "//127.0.0.1:8384/";
+
+        content.onload = function() {
+        };
+
+        this.ui.content.appendChild(content);
+    }
+
+
     /**
      * method : _deletePlaylistUI (private)
      * class  : Modal
@@ -443,7 +466,7 @@ class Modal {
      **/
     _renamePlaylistUI() {
         this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Remove " + this.data.name;
+        this.ui.title.innerHTML = "Rename " + this.data.name;
 
         let infoLabel           = document.createElement("P");
         let name                = document.createElement("INPUT");

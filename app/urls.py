@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^ajax/newLibrary/$', library.newLibrary, name='setLibrary'),
     url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
+    url(r'^ajax/deleteLibrary/$', library.deleteLibrary, name='deleteLibrary'),
 
     # Playlist actions
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
@@ -58,5 +59,10 @@ urlpatterns = [
     # ADMIN actions
     url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
     url(r'^ajax/getAdminView/$', adminTools.getAdminView, name='getAdminView'),
+    url(r'^ajax/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),
+    url(r'^ajax/removeUserById/$', adminTools.removeUserById, name='removeUserById'),
+    url(r'^ajax/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),
+    url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
+    url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
 ]

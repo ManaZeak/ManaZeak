@@ -6,13 +6,14 @@ from datetime import datetime
 from hashlib import md5
 from multiprocessing import Pool
 from os.path import join
-from shlex import quote 
-from time import sleep
+from shlex import quote
+import time
 
 LIBRARY_FOLDER = '/library'
 MOODBAR_FOLDER = '/moodbar/static'
 MAX_PROCESSES = 3
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 def generate_moodbar(file):
     filename_md5 = md5(file.encode("ascii", "ignore")).hexdigest()
@@ -51,7 +52,7 @@ def main():
 
     # Execute the scan and wait 3600 seconds (1h) before scanning again
     while True:
-        sleep(3600)
+        time.sleep(3600)
         scan()
 
 
