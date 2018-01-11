@@ -58,10 +58,10 @@ class Playlist {
             let self = this;
             let timer = window.setInterval(function() {
                 if(self.lazyLoadOK == true) {
-                    clearInterval(timer);
                     self.modal.close();
                     self.modal = null;
                     self.activate();
+                    clearInterval(timer);
                 }
             }, 100);
         } else {
