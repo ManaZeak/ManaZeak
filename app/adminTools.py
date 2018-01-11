@@ -37,12 +37,20 @@ def getAdminView(request):
         admin = request.user
         if admin.is_superuser:
             adminOptions = getAdminOptions()
-            users = User.objects.all()
+            users = User.objects.all().order_by('date_joined')
             userInfo = []
             for user in users:
+                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) +\
+                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" +\
+                             str(user.date_joined.minute)
+                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) +\
+                             "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" +\
+                             str(user.last_login.minute)
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
+                    'JOINED': dateJoined,
+                    'LAST_LOGIN': lastLogin,
                     'ID': user.id,
                 })
             data = dict({'USER': userInfo})
@@ -50,6 +58,8 @@ def getAdminView(request):
             for library in Library.objects.all():
                 libraryInfo.append({
                     'NAME': library.name,
+                    'PATH': library.path,
+                    'NUMBER_TRACK': library.playlist.track.all().count(),
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
@@ -86,11 +96,14 @@ def removeUserById(request):
             response = json.loads(request.body)
             if 'USER_ID' in response:
                 userId = strip_tags(response['USER_ID'])
-                if User.objects.filter(id=userId).count() == 1:
-                    User.objects.get(id=userId).delete()
-                    data = errorCheckMessage(True, None)
+                if int(userId) != admin.id:
+                    if User.objects.filter(id=userId).count() == 1:
+                        User.objects.get(id=userId).delete()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "dbError")
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "userDeleteError")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:

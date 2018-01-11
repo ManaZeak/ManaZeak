@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * *
- *                                         *
+ *                                 *
  *  AdminView class                        *
  *                                         *
  *  Handle admin settings                  *
@@ -95,20 +95,9 @@ class AdminView extends View {
      **/
     _init() {
         let that = this;
-        JSONParsedGetRequest(
-            "ajax/getAdminView/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 * } */
-                if (response.DONE) {
-                    that.info = response;
-                    that._createUI();
-                }
-            }
-        );
+        this._updateAdminInfo(function() {
+            that._createUI();
+        });
     }
 
 
@@ -118,6 +107,7 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuDB.className        = "selected";
         this.ui.contentTitle.innerHTML  = "Database management";
@@ -130,19 +120,19 @@ class AdminView extends View {
         this.ui.dropButton              = document.createElement("BUTTON");
 
         this.ui.rmCoverLabel.innerHTML  = "<b>Re-extract all covers from tracks</b><br>" +
-                                          "<br>" +
-                                          "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
-                                          "This command will erase existing covers and re-extract them for all tracks stored in the database.";
+            "<br>" +
+            "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
+            "This command will erase existing covers and re-extract them for all tracks stored in the database.";
         this.ui.rmMoodLabel.innerHTML   = "<b>Remove all moodbars from server</b><br>" +
-                                          "<br>" +
-                                          "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
-                                          "<code>.mood</code> file (if it doesn't exists already).<br>" +
-                                          "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
-                                          "ManaZeak re-generate those <code>.mood</code> files.";
+            "<br>" +
+            "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
+            "<code>.mood</code> file (if it doesn't exists already).<br>" +
+            "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
+            "ManaZeak re-generate those <code>.mood</code> files.";
         this.ui.dropLabel.innerHTML     = "<b>Drop database</b><br>" +
-                                          "<br>" +
-                                          "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
-                                          "This command will delete everything in the database except users.";
+            "<br>" +
+            "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
+            "This command will delete everything in the database except users.";
         this.ui.rmMoodButton.innerHTML  = "REMOVE ALL MOODBARS";
         this.ui.rmCoverButton.innerHTML = "RE-EXTRACT ALL COVERS";
         this.ui.dropButton.innerHTML    = "DROP DATABASE";
@@ -161,22 +151,77 @@ class AdminView extends View {
     }
 
 
+    _requestDeleteLibraries() { // TODO : put the code below in APP
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/deleteAllLibrary/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    window.app.playlists = [];
+                    window.app.topBar.playlists = [];
+                    that.ui.rmLibButton.blur();
+
+                    window.app.refreshTopBar();
+                    window.app.refreshFootBar();
+                    that._updateAdminInfo();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : _requestUsersPage (private)
      * class  : AdminView
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
         let list = document.createElement("UL");
 
+        let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
             let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element       = document.createElement("LI");
-            element.innerHTML = this.info.USER[i].NAME + " (ID: " + this.info.USER[i].ID + ") <br>Status: " + admin;
+            let rm            = document.createElement("IMG");
+            rm.src            = "/static/img/utils/trash.svg";
+            rm.addEventListener("click", function() {
+                window.app.deleteUser(that.info.USER[i].ID, function() {
+                    let self = that;
+                    JSONParsedGetRequest(
+                        "ajax/getAdminView/",
+                        function(response) {
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             * } */
+                            if (response.DONE) {
+                                self.info = response;
+                                self._requestUsersPage();
+                            }
+                        }
+                    );
+                });
+            });
+            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br>" +
+                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
+            element.appendChild(rm);
             list.appendChild(element);
         }
 
@@ -192,21 +237,76 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuLib.className   = "selected";
+        this.ui.menuLib.className      = "selected";
         this.ui.contentTitle.innerHTML = "Libraries management";
+
+        this.ui.rmLibLabel             = document.createElement("P");
+        this.ui.rmLibButton            = document.createElement("BUTTON");
+
+        this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
+            "<br>" +
+            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
+            "This command will erase all libraries in the database.";
+        this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
 
         let list = document.createElement("UL");
 
+        let that = this;
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
             let element       = document.createElement("LI");
-            element.innerHTML = this.info.LIBRARIES[i].NAME + " (ID: " + this.info.LIBRARIES[i].ID + ")";
+            let rm            = document.createElement("IMG");
+            rm.src            = "/static/img/utils/trash.svg";
+            rm.addEventListener("click", function() {
+                JSONParsedPostRequest(
+                    "ajax/deleteLibrary/",
+                    JSON.stringify({
+                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
+                    }),
+                    function(response) {
+                        /* response = {
+                         *     DONE        : bool
+                         *     ERROR_H1    : string
+                         *     ERROR_MSG   : string
+                         *
+                         *     PATH        : string
+                         * } */
+                        if (response.DONE) {
+                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
+                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
+                                    window.app.playlists.splice(j, 1);
+                                    break;
+                                }
+                            }
+                            window.app.refreshTopBar();
+                            window.app.refreshFootBar();
+
+                            let self = that;
+                            that._updateAdminInfo(function() {
+                                self._requestLibrariesPage();
+                            });
+                        }
+
+                        else {
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                        }
+                    }
+                );
+            });
+            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
+                "Path: " + this.info.LIBRARIES[i].PATH;
+            element.appendChild(rm);
             list.appendChild(element);
         }
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rmLibLabel);
+        this.ui.content.appendChild(this.ui.rmLibButton);
         this.ui.content.appendChild(list);
+
+        this.ui.rmLibButton.addEventListener("click", this._requestDeleteLibraries.bind(this));
     }
 
 
@@ -216,6 +316,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
+        this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuSC.className   = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
@@ -232,15 +333,17 @@ class AdminView extends View {
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
 
         this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
-                                         "<br>" +
-                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
-                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
+            "<br>" +
+            "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
+            "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
-                                         "<br>" +
-                                         "This command will perform a rescan on each SyncThing folder that are declared in it.";
+            "<br>" +
+            "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
+            "This command will perform a rescan on each SyncThing folder.";
         this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
-                                         "<br>" +
-                                         "This command will open the SyncThing instance right here, in a modal.";
+            "<br>" +
+            "If none of the hereby command can't help you there" +
+            "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";
         this.ui.openSCButton.innerHTML = "OPEN";
@@ -272,6 +375,7 @@ class AdminView extends View {
      **/
     _requestDrop() {
         // TODO : put modal on drop action to confirm ?
+        let that = this;
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
             function(response) {
@@ -285,6 +389,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.dropButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -298,6 +403,7 @@ class AdminView extends View {
      * desc   : Rescan syncthing folders
      **/
     _rescanSC() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/syncthingRescan",
             function(response) {
@@ -311,6 +417,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rescanButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -324,6 +431,7 @@ class AdminView extends View {
      * desc   : Remove all moodbar from server
      **/
     _removeMoodbar() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/removeAllMoods/",
             function(response) {
@@ -337,6 +445,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rmMoodButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -350,6 +459,7 @@ class AdminView extends View {
      * desc   : Submit the SyncThing API key
      **/
     _submitAPIKey() {
+        let that = this;
         JSONParsedPostRequest(
             "ajax/changeSyncthingAPIKey/",
             JSON.stringify({
@@ -366,6 +476,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.apiKeyButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -378,6 +489,32 @@ class AdminView extends View {
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
+    }
+
+
+    _updateAdminInfo(callback) {
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/getAdminView/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (response.DONE) {
+                    that.info = response;
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 }

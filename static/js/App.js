@@ -62,28 +62,6 @@ class App {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : listen (public)
-     * class  : App
-     * desc   : Add listener on an App function
-     * arg    : {string} event - the function to listen to
-     *        : {function} callback
-     **/
-    listen(event, callback, thisArg) {
-        if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i) {
-                if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
-                }
-            }
-        }
-
-        else if (this.listeners[event]) {
-            this.listeners[event].push(new AppListener('', '', callback, thisArg));
-        }
-    }
-
-
-    /**
      * method : adjustVolume (public)
      * class  : App
      * desc   : Adjust ManaZeak volume
@@ -175,7 +153,6 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-
         if (view.getContainer().id === "party") {
             view.setIsEnabled(true);
             document.body.appendChild(view.getContainer());
@@ -216,8 +193,9 @@ class App {
      * class  : App
      * desc   : Ask server to delete a playlist from a given ID
      * arg    : {int} id - The playlist ID
+     * arg    : {function} callback - Not mandatory
      **/
-    deletePlaylist(id) {
+    deletePlaylist(id, callback) {
         let that = this;
         JSONParsedPostRequest(
             "ajax/deletePlaylist/",
@@ -242,10 +220,38 @@ class App {
                     that.playlists[0].activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
+
+                    if (callback) {
+                        callback();
+                    }
                 }
 
                 else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    deleteUser(id, callback) {
+        JSONParsedPostRequest(
+            "ajax/removeUserById/",
+            JSON.stringify({
+                USER_ID: id
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+
+                else {
+                    callback();
                 }
             }
         );
@@ -346,6 +352,28 @@ class App {
 
 
     /**
+     * method : listen (public)
+     * class  : App
+     * desc   : Add listener on an App function
+     * arg    : {string} event - the function to listen to
+     *        : {function} callback
+     **/
+    listen(event, callback, thisArg) {
+        if (Array.isArray(event)) {
+            for (let i = 0; i < event.length; ++i) {
+                if (this.listeners[event[i]]) {
+                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
+                }
+            }
+        }
+
+        else if (this.listeners[event]) {
+            this.listeners[event].push(new AppListener('', '', callback, thisArg));
+        }
+    }
+
+
+    /**
      * method : logOut (public)
      * class  : App
      * desc   : Log out from current user
@@ -388,7 +416,6 @@ class App {
      **/
     next() {
         if (this.appViews["mzk_party"].getIsEnabled()) {
-            console.log("DEAZ");
             return;
         }
 
@@ -759,6 +786,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_settings', new SettingsView());
         this.createAppView('mzk_party', new PartyView());
     }
 

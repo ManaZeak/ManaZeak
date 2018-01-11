@@ -52,6 +52,29 @@
 
     hr {
         margin-bottom: 40px;
+        border-color: $primary-text;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+            padding: 10px 20px;
+            position: relative;
+            background-color: $dark-primary-color;
+            border-radius: 5px;
+            margin-bottom: 15px;
+
+            img {
+                position: absolute;
+                right: 25px;
+                top: 12.5px;
+                height: calc(100% - 25px);
+                width: auto;
+                cursor: pointer;
+            }
+        }
     }
 
     button,
