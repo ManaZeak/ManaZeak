@@ -329,6 +329,7 @@ class Playlist {
      **/
     _clearTracks() {
         this.tracks      = [];
+        this.durationTotal = 0;
         this.trackTotal  = 0;
         this.artistTotal = 0;
         this.albumTotal  = 0;
@@ -481,6 +482,7 @@ class Playlist {
                  *     PLAYLIST_ID : int or undefined
                  * } */
                 if (response.DONE) {
+                    that.id = response.PLAYLIST_ID;
                     that._getTracksFromServer(response.PLAYLIST_ID);
                 }
 
