@@ -209,20 +209,24 @@ def lazyLoadingSimplifiedPlaylist(request):
         response = json.loads(request.body)
         if 'REQ_NUMBER' in response and 'PLAYLIST_ID' in response:
             playlistId = strip_tags(response['PLAYLIST_ID'])
-            reqNumber = strip_tags(response['REQ_NUMBER'])
-            reqNumber *= 300
+            try:
+                reqNumber = int(strip_tags(response['REQ_NUMBER']))
+            except ValueError:
+                return JsonResponse(errorCheckMessage(False, "badFormat"))
+            nbTracks = 300
+            reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlistId)[reqNumber:reqNumber+300]
+                    trackSet = getPlaylistTracks(playlistId)[reqNumber:reqNumber+nbTracks]
                     data = []
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
                     data = dict({'RESULT': data})
-                    data = {**data, **errorCheckMessage(False, None)}
+                    data = {**data, **errorCheckMessage(True, None)}
                 else:
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(False, None)
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
