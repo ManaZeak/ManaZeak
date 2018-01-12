@@ -154,3 +154,15 @@ class Wish(models.Model):
 
 class AdminOptions(models.Model):
     syncthingKey = models.CharField(max_length=100, null=True)
+    inviteCodeEnabled = models.BooleanField(default=False)
+
+
+class InviteCode(models.Model):
+    user = models.ForeignKey(User)
+    code = models.CharField(max_length=33)
+
+
+class UserPreferences(models.Model):
+    points = models.IntegerField(default=0)
+    inviteCode = models.ForeignKey(InviteCode, null=True)
+    user = models.ForeignKey(User, null=True)

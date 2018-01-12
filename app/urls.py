@@ -69,4 +69,8 @@ urlpatterns = [
     url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
     url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
+
+    # InviteCode section
+    url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
+    url(r'^ajax/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
 ]
