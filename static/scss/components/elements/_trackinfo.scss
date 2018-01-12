@@ -1,55 +1,52 @@
 #trackInfo {
-    width: 0;
-    height: 0;
-    position: absolute;
     background-color: $secondary-color;
-    opacity: 0;
     border: solid 1px $dark-secondary-color;
     border-radius: 3px;
-
-    transition: opacity 0.1s ease-in-out;
     box-sizing: border-box;
-
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    transition: opacity 0.1s ease-in-out;
+    width: 0;
     z-index: 999;
 
     img {
-        width: 150px;
         height: 150px;
-        margin-top: 25px;
         margin-left: 25px;
         margin-right: 25px;
+        margin-top: 25px;
+        width: 150px;
     }
 
     #numbers {
+        bottom: 0;
+        font-size: 0.8em;
+        left: 0;
+        line-height: 1.7em;
         margin: 0;
         padding: 0;
         position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 200px;
         text-align: center;
-        font-size: 0.8em;
-        line-height: 1.7em;
+        width: 200px;
     }
 
     #trackWrapper {
+        border-right: solid 1px $dark-primary-color;
         display: inline-block;
+        float: right;
         font-size: 0.8em;
-        top: 0;
-        width: auto;
+        padding-right: 25px;
         max-width: 340px;
         min-width: 240px;
-        margin-top: 26px;
         margin-right: 25px;
-        padding-right: 25px;
-        border-right: solid 1px $dark-primary-color;
-        float: right;
+        margin-top: 26px;
+        top: 0;
+        width: auto;
 
         p {
             margin: 0;
-            padding: 1px 0;
-
             overflow: hidden;
+            padding: 1px 0;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
@@ -65,13 +62,13 @@
     }
 
     #suggestionWrapper {
-        max-width: 300px;
-        min-width: 200px;
-        width: auto;
-        height: auto;
         float: right;
         font-size: 0.7em;
+        height: auto;
+        max-width: 300px;
         margin-right: 45px;
+        min-width: 200px;
+        width: auto;
 
         #title {
             font-size: 1.3em;
@@ -84,21 +81,18 @@
 
         ul {
             list-style-type: none;
-            padding: 0;
             margin: 0;
-
-            -webkit-user-select: none;  /* Chrome/Safari */
-            -moz-user-select: none;     /* Firefox */
+            padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
 
             li {
-                padding: 5px 10px;
-
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-
                 cursor: pointer;
                 opacity: 0;
+                overflow: hidden;
+                padding: 5px 10px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
 
                 .performerIndent {
                     display: inline-block;
@@ -114,16 +108,15 @@
         }
 
         img {
-            position: absolute;
-            width: 25px;
+            cursor: pointer;
             height: 25px;
-            top: 0;
-            right: 0;
             margin-left: 0;
             margin-top: 10px;
             margin-right: 10px;
-
-            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 25px;
         }
     }
 }
