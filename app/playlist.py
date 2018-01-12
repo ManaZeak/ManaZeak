@@ -1,10 +1,11 @@
+from datetime import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import updateTrackView, getPlaylistTracks
+from app.dao import updateTrackView, getPlaylistTracks, createViewForLazy, deleteView
 from app.models import Playlist, TrackView, Track
 from app.utils import errorCheckMessage
 
@@ -204,6 +205,7 @@ def lazyJsonGenerator(row):
 
 
 # Give 300 tracks of a playlist with an offset (REQ_NUMBER)
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def lazyLoadingSimplifiedPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -217,15 +219,24 @@ def lazyLoadingSimplifiedPlaylist(request):
             reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
+                # Checking if it's the first request for creating the view
+                user = request.user
+                if reqNumber == 0:
+                    # Checking if the user can display the asked playlist
+                    if playlist.user == user or playlist.isLibrary:
+                        createViewForLazy(user.id, playlist.id)
+                    else:
+                        return JsonResponse(errorCheckMessage(False, "permissionError"))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlistId)[reqNumber:reqNumber+nbTracks]
+                    trackSet = getPlaylistTracks(playlistId, user.id, reqNumber, reqNumber+nbTracks)
                     data = []
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
                     data = dict({'RESULT': data})
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
+                    deleteView(user.id, playlist.id)
                     data = errorCheckMessage(False, None)
             else:
                 data = errorCheckMessage(False, "dbError")
