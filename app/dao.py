@@ -243,6 +243,10 @@ def addGenreBulk(genres):
 
 def deleteView(userId, playlistId):
     viewName = hashlib.md5(str(userId).encode("ascii", "ignore")+str(playlistId).encode("ascii", "ignore")).hexdigest()
+    indexName = "index"+viewName
+    sql = """DROP INDEX IF EXISTS "%s";""" % indexName
+    with connection.cursor() as cursor:
+        cursor.execute(sql)
     sql = """DROP MATERIALIZED VIEW IF EXISTS "%s" RESTRICT;""" % viewName
     with connection.cursor() as cursor:
         cursor.execute(sql)
@@ -316,8 +320,8 @@ def createViewForLazy(userId, playlistId):
     with connection.cursor() as cursor:
         cursor.execute(sql, [str(playlistId)])
     sql = """
-        CREATE INDEX ON "%s" (local_id);
-        """ % viewName
+        CREATE INDEX "%s" ON "%s" (local_id);
+        """ % ("index"+viewName, viewName)
     with connection.cursor() as cursor:
         cursor.execute(sql)
 
