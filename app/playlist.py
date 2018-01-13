@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import updateTrackView, getPlaylistTracks, createViewForLazy, deleteView
-from app.models import Playlist, TrackView, Track
+from app.dao import getPlaylistTracks, createViewForLazy, deleteView
+from app.models import Playlist, Track
 from app.utils import errorCheckMessage
 
 
@@ -112,59 +112,6 @@ def removeTrackFromPlaylist(request):
                     'REMOVED_TRACKS': removedTracks,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
-            else:
-                data = errorCheckMessage(False, "dbError")
-        else:
-            data = errorCheckMessage(False, "badFormat")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
-def simplePlaylistJsonGenerator():
-    tracks = TrackView.objects.all()
-    data = []
-    for track in tracks:
-        splicedArtistName = track.artist_name.split(",")
-        splicedArtistId = track.artist_id.split(",")
-        artists = []
-
-        for artistId, artist in zip(splicedArtistId, splicedArtistName):
-            artists.append({
-                'ID': artistId,
-                'NAME': artist,
-            })
-
-        data.append({
-            'ID': track.track_id,
-            'TITLE': track.track_title,
-            'YEAR': track.track_year,
-            'COMPOSER': track.track_composer,
-            'PERFORMER': track.track_performer,
-            'DURATION': track.track_duration,
-            'BITRATE': track.track_bitrate,
-            'COVER': track.track_cover,
-            'ARTISTS': artists,
-            'ALBUM': {
-                'ID': track.album_id,
-                'TITLE': track.album_title,
-            },
-            'GENRE': track.genre_name,
-        })
-    return data
-
-
-# Load a library by returning simplified json
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
-def loadSimplifiedPlaylist(request):
-    if request.method == 'POST':
-        print("Getting json export of the library")
-        response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                updateTrackView(playlist.id)
-                data = {**dict({'RESULT': simplePlaylistJsonGenerator()}), **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
