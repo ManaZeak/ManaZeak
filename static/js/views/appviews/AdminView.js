@@ -562,10 +562,6 @@ class AdminView extends View {
                         callback();
                     }
                 }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
             }
         );
     }
