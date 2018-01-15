@@ -47,7 +47,7 @@ class DragDrop {
                     reader.addEventListener('loadend', function(event) {
                         JSONParsedPostRequest('ajax/fileUpload/', JSON.stringify({
                             NAME: f.name,
-                            CONTENT: event.srcElement.result
+                            CONTENT: event.target.result
                         }), function() {
                             new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
                         });
