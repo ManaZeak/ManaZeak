@@ -41,12 +41,20 @@ class DragDrop {
             for(let i = 0; i < files.length; i++) {
                 f = files[i];
                 if(f.type == 'audio/flac' || f.type == 'audio/ogg' || (f.type == 'audio/mpeg' || f.type == 'audio/mp3')) {
-                    JSONParsedPostRequest('ajax/fileUpload/', JSON.stringify({
-                        NAME: f.name,
-                        CONTENT: f
-                    }, function(k, v) { return v; }), function() {
-                        new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
-                    }, true);
+
+                    let reader = new FileReader();
+                    // This fires after the blob has been read/loaded.
+                    reader.addEventListener('loadend', function(event) {
+                        JSONParsedPostRequest('ajax/fileUpload/', JSON.stringify({
+                            NAME: f.name,
+                            CONTENT: event.srcElement.result
+                        }), function() {
+                            new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
+                        });
+                    });
+
+                    // Start reading the blob as text.
+                    reader.readAsDataURL(f);
                 } else {
                     new Notification('ERROR', 'Unsupported file format', 'The MIME format ' + f.type + ' for the file ' + f.name + ' is not supported.<br/><br/>Supported MIME formats are audio/flac, audio/ogg and audio/mpeg');
                 }

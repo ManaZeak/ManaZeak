@@ -1,3 +1,4 @@
+import base64
 import json
 
 from django.http import JsonResponse
@@ -10,10 +11,10 @@ def handleUploadedFile(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'CONTENT' in response and 'NAME' in response:
-            print(response['CONTENT'])
             name = strip_tags(response['NAME'])
             with open(name, 'wb+') as destination:
-                destination.write(response['CONTENT'])
+                #split the header with MIME type
+                destination.write(base64.b64decode(str(response['CONTENT'].split(",")[1])))
             data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "badFormat")
