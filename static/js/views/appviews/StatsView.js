@@ -184,7 +184,7 @@ class StatsView extends View {
                 }
 
                 else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -240,7 +240,7 @@ class StatsView extends View {
                 }
 
                 else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -296,7 +296,7 @@ class StatsView extends View {
                 }
 
                 else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
