@@ -35,5 +35,5 @@ def createUserInviteCode(user):
     inviteCode.user = user
     inviteCode.code = hashlib.md5(
         str(user.id).encode("ascii", "ignore") + str(user.username).encode("ascii", "ignore") +
-        str(user.date_joined).encode("ascii", "ignore")).hexdigest()
+        str(user.date_joined).encode("ascii", "ignore")).hexdigest().upper()
     inviteCode.save()

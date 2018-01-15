@@ -51,15 +51,18 @@ class UserMenu {
 
         this.ui.container.appendChild(this.ui.img);
 
-        this.menuEntry.logout             = document.createElement("DIV");
-        this.menuEntry.stats              = document.createElement("DIV");
-        this.menuEntry.settings           = document.createElement("DIV");
-        this.menuEntry.logout.className   = "menuEntry";
-        this.menuEntry.stats.className    = "menuEntry";
-        this.menuEntry.settings.className  = "menuEntry";
-        this.menuEntry.logout.innerHTML   = "Log out";
-        this.menuEntry.stats.innerHTML    = "Stats";
-        this.menuEntry.settings.innerHTML = "Settings";
+        this.menuEntry.logout               = document.createElement("DIV");
+        this.menuEntry.stats                = document.createElement("DIV");
+        this.menuEntry.settings             = document.createElement("DIV");
+        this.menuEntry.inviteCode           = document.createElement("DIV");
+        this.menuEntry.logout.className     = "menuEntry";
+        this.menuEntry.stats.className      = "menuEntry";
+        this.menuEntry.settings.className   = "menuEntry";
+        this.menuEntry.inviteCode.className = "menuEntry";
+        this.menuEntry.logout.innerHTML     = "Log out";
+        this.menuEntry.stats.innerHTML      = "Stats";
+        this.menuEntry.settings.innerHTML   = "Settings";
+        this.menuEntry.inviteCode.innerHTML = "Invite Code";
 
         let that = this;
         window.app.user.updateIsAdmin(function(is) {
@@ -72,6 +75,7 @@ class UserMenu {
                 that.menu.appendChild(that.menuEntry.admin);
             }
 
+            that.menu.appendChild(that.menuEntry.inviteCode);
             that.menu.appendChild(that.menuEntry.settings);
             that.menu.appendChild(that.menuEntry.stats);
             that.menu.appendChild(that.menuEntry.logout);
@@ -82,6 +86,12 @@ class UserMenu {
         container.appendChild(this.ui.container);
 
         this._eventListener();
+    }
+
+
+    _displayInviteCode() {
+        let modal = new Modal("inviteCode", null);
+        modal.open();
     }
 
 
@@ -98,6 +108,7 @@ class UserMenu {
         this.menuEntry.logout.addEventListener("click", this._logOut.bind(this));
         this.menuEntry.stats.addEventListener("click", this._getStats.bind(this));
         this.menuEntry.settings.addEventListener("click", this._getSettings.bind(this));
+        this.menuEntry.inviteCode.addEventListener("click", this._displayInviteCode.bind(this));
         this.outside.addEventListener("click", this._clickOutside.bind(this), false);
     }
 

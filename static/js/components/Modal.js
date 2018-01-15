@@ -56,6 +56,10 @@ class Modal {
                 this._openSyncThing();
                 break;
 
+            case "inviteCode":
+                this._inviteCodeUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -291,6 +295,34 @@ class Modal {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(text);
+    }
+
+
+    _inviteCodeUI() {
+        this.ui.container.id    = "inviteCode";
+        this.ui.title.innerHTML = "Invitation code";
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("H3");
+        let cancel              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+
+        cancel.innerHTML        = "Close";
+        name.innerHTML          = window.app.user.getInviteCode();
+        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak.";
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+
+        this._appendCloseButton();
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
     }
 
 
