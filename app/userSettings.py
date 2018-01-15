@@ -13,12 +13,13 @@ def getUserSettings(request):
         user = request.user
         if UserPreferences.objects.filter(user=user).count() == 1:
             userPref = UserPreferences.objects.get(user=user)
+            inviteCode = InviteCode.objects.get(user=user)
             data = {
-                'MANACOIN': userPref.points
+                'INVITE_CODE': inviteCode.code,
             }
             if userPref.inviteCode is not None:
                 tmp = {
-                    'INVITE_CODE': userPref.inviteCode.code,
+                    'GODFATHER_CODE': userPref.inviteCode.code,
                 }
                 data = {**data, **tmp}
             data = {**data, **errorCheckMessage(True, None)}
