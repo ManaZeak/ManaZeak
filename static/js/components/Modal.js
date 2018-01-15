@@ -311,7 +311,7 @@ class Modal {
 
         cancel.innerHTML        = "Close";
         name.innerHTML          = window.app.user.getInviteCode();
-        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak.";
+        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet.";
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);

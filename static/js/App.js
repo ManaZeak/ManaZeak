@@ -162,10 +162,6 @@ class App {
             this.mainContainer.innerHTML = '';
             this.mainContainer.appendChild(view.getContainer());
         }
-
-        if (view.getContainer().id === "stats") { // TODO : find a better way
-            view.fetchStats();
-        }
     }
 
 

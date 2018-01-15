@@ -1,4 +1,4 @@
-#admin {
+#stats {
     display: flex;
     height: 100%;
     left: 0;
@@ -37,6 +37,7 @@
         }
     }
 
+
     #content {
         box-sizing: border-box;
         height: 100%;
@@ -44,16 +45,23 @@
         width: calc(100% - 200px);
 
         h1 {
-            margin-top: 0;
+            margin: 15px 0;
         }
 
-        hr {
-            border-color: $primary-text;
-            margin-bottom: 40px;
+        p {
+            margin: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        p#label {
+            font-weight: bold;
         }
 
         ul {
             list-style: none;
+            margin: 0 25px;
+            margin-bottom: 25px;
             padding: 0;
 
             li {
@@ -74,43 +82,9 @@
             }
         }
 
-        button,
-        input {
-            margin-bottom: 30px;
+        .col {
+            display: inline-block;
+            width: 50%;
         }
-
-        button {
-            background: none;
-            border: solid 1px $primary-text;
-            color: $primary-text;
-            cursor: pointer;
-            padding: 7px 20px;
-            transition: 0.3s ease;
-        }
-
-        button:active,
-        button:focus,
-        button:hover {
-            border-color: red;
-            color: red;
-        }
-
-        input {
-            background: none;
-            border: solid 0 transparent;
-            border-bottom: solid 1px $primary-text;
-            color: $primary-text;
-            margin-right: 15px;
-            padding: 7px 0;
-            transition: 0.3s ease;
-            width: 260px;
-        }
-
-        input:active,
-        input:focus,
-        input:hover {
-            border-color: red;
-        }
-
     }
 }
