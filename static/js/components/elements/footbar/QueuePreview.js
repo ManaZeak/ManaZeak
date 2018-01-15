@@ -171,6 +171,7 @@ class QueuePreview {
 
         this.ui.statusBar.reverseBox.addEventListener('click', function() {
             window.app.reverseQueue(!that.reverse);
+            that.ui.statusBar.reverseBox.checked ^= true;
         });
         this.ui.queueList.addEventListener('click', function(event) {
             let li, sib;

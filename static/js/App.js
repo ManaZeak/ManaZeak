@@ -33,9 +33,6 @@ class App {
         };
 
         this.listeners = {};
-        this.test = function() {
-            arguments[0] = 'TEST';
-        };
         let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
         for (let i = 0; i < properties.length; ++i) {
             if (typeof this[properties[i]] === "function") {
@@ -46,7 +43,6 @@ class App {
                 this[properties[i]] = (function(pname, func) {
                     return function() {
                         let r = func.apply(this, arguments);
-                        this.test.apply(null,arguments);
                         for (let i = 0; i < this.listeners[pname].length; ++i) {
                             this.listeners[pname][i].runCallback(arguments);
                         }
@@ -362,13 +358,13 @@ class App {
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
                 if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
+                    this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
                 }
             }
         }
 
         else if (this.listeners[event]) {
-            this.listeners[event].push(new AppListener('', '', callback, thisArg));
+            this.listeners[event].push(new MzkListener('', '', callback, thisArg));
         }
     }
 
