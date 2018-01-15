@@ -41,7 +41,7 @@ class DragDrop {
             for(let i = 0; i < files.length; i++) {
                 f = files[i];
                 if(f.type == 'audio/flac' || f.type == 'audio/ogg' || (f.type == 'audio/mpeg' || f.type == 'audio/mp3')) {
-                    JSONParsedPostRequest('ajax/fileUpload', files[i], function() {
+                    JSONParsedPostRequest('ajax/fileUpload/', files[i], function() {
                         new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
                     }, true);
                 } else {
