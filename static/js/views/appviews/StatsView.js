@@ -154,9 +154,6 @@ class StatsView extends View {
         artistsLeft.className          = "col";
         artistsRight.className         = "col";
 
-        prefArtistsLabel.innerHTML     = "Top Artists";
-        leastArtistsLabel.innerHTML    = "Flop Artists";
-
         artistsLeft.appendChild(prefArtistsLabel);
         artistsLeft.appendChild(prefArtists);
         artistsRight.appendChild(leastArtistsLabel);
@@ -179,8 +176,19 @@ class StatsView extends View {
                  *     LEAST_ARTISTS     : [][]
                  * } */
                 if (response.DONE) {
-                    that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
-                    that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
+                    if (response.ERROR_H1 === null) {
+                        prefArtistsLabel.innerHTML     = "";
+                        leastArtistsLabel.innerHTML    = "";
+                        that.ui.contentTitle.innerHTML = "No stats yet to display about artists. Use ManaZeak before going there!";
+                    }
+
+                    else {
+                        prefArtistsLabel.innerHTML     = "Top Artists";
+                        leastArtistsLabel.innerHTML    = "Flop Artists";
+
+                        that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
+                        that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
+                    }
                 }
 
                 else {
@@ -209,9 +217,6 @@ class StatsView extends View {
         genresLeft.className           = "col";
         genresRight.className          = "col";
 
-        prefGenresLabel.innerHTML      = "Top Genres";
-        leastGenresLabel.innerHTML     = "Flop Genres";
-
         genresLeft.appendChild(prefGenresLabel);
         genresLeft.appendChild(prefGenres);
         genresRight.appendChild(leastGenresLabel);
@@ -235,8 +240,19 @@ class StatsView extends View {
                  *     LEAST_GENRES     : [][]
                  * } */
                 if (response.DONE) {
-                    that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
-                    that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
+                    if (response.ERROR_H1 === null) {
+                        prefGenresLabel.innerHTML      = "";
+                        leastGenresLabel.innerHTML     = "";
+                        that.ui.contentTitle.innerHTML = "No stats yet to display about genres. Use ManaZeak before going there!";
+                    }
+
+                    else {
+                        prefGenresLabel.innerHTML      = "Top Genres";
+                        leastGenresLabel.innerHTML     = "Flop Genres";
+
+                        that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
+                        that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
+                    }
                 }
 
                 else {
@@ -265,9 +281,6 @@ class StatsView extends View {
         tracksLeft.className           = "col";
         tracksRight.className          = "col";
 
-        prefTracksLabel.innerHTML      = "Top Tracks";
-        leastTracksLabel.innerHTML     = "Flop Tracks";
-
         tracksLeft.appendChild(prefTracksLabel);
         tracksLeft.appendChild(prefTracks);
         tracksRight.appendChild(leastTracksLabel);
@@ -291,8 +304,19 @@ class StatsView extends View {
                  *     LEAST_TRACKS     : [][]
                  * } */
                 if (response.DONE) {
-                    that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
-                    that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
+                    if (response.ERROR_H1 === null) {
+                        prefTracksLabel.innerHTML      = "";
+                        leastTracksLabel.innerHTML     = "";
+                        that.ui.contentTitle.innerHTML = "No stats yet to display about tracks. Use ManaZeak before going there!";
+                    }
+
+                    else {
+                        prefTracksLabel.innerHTML      = "Top Tracks";
+                        leastTracksLabel.innerHTML     = "Flop Tracks";
+
+                        that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
+                        that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
+                    }
                 }
 
                 else {
