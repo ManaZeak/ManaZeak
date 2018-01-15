@@ -24,7 +24,6 @@ class Notification {
 
         this._createUI();
         this._lifeCycle();
-        console.trace();
     };
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

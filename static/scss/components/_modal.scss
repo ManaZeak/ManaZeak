@@ -513,11 +513,15 @@ $editFooterHeight:  ($editModalHeight / 10);
             }
 
             input {
+                background: none;
+                border: solid 1px $primary-text;
+                color: $primary-text;
+                cursor: pointer;
+                padding: 7px 20px;
+
                 text-align: center;
                 width: 100%;
                 height: 35px;
-                background-color: $primary-text;
-                border: solid 1px $dark-secondary-color;
                 box-sizing: border-box;
             }
         }
