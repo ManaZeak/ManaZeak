@@ -176,7 +176,7 @@ class StatsView extends View {
                  *     LEAST_ARTISTS     : [][]
                  * } */
                 if (response.DONE) {
-                    if (response.ERROR_H1 === null) {
+                    if (response.ERROR_H1 !== "null") {
                         prefArtistsLabel.innerHTML     = "";
                         leastArtistsLabel.innerHTML    = "";
                         that.ui.contentTitle.innerHTML = "No stats yet to display about artists. Use ManaZeak before going there!";
@@ -240,7 +240,7 @@ class StatsView extends View {
                  *     LEAST_GENRES     : [][]
                  * } */
                 if (response.DONE) {
-                    if (response.ERROR_H1 === null) {
+                    if (response.ERROR_H1 !== "null") {
                         prefGenresLabel.innerHTML      = "";
                         leastGenresLabel.innerHTML     = "";
                         that.ui.contentTitle.innerHTML = "No stats yet to display about genres. Use ManaZeak before going there!";
@@ -304,13 +304,14 @@ class StatsView extends View {
                  *     LEAST_TRACKS     : [][]
                  * } */
                 if (response.DONE) {
-                    if (response.ERROR_H1 === null) {
+                    if (response.ERROR_H1 !== "null") {
                         prefTracksLabel.innerHTML      = "";
                         leastTracksLabel.innerHTML     = "";
                         that.ui.contentTitle.innerHTML = "No stats yet to display about tracks. Use ManaZeak before going there!";
                     }
 
                     else {
+                        console.log(response);
                         prefTracksLabel.innerHTML      = "Top Tracks";
                         leastTracksLabel.innerHTML     = "Flop Tracks";
 
@@ -379,7 +380,7 @@ class StatsView extends View {
         for (let i = 0; i < leastGenres.length; ++i) {
             if (leastGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = i + ". " + leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 ui.appendChild(entry);
             }
         }
@@ -393,10 +394,11 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefGenresList(prefGenres, ui) {
+        console.log(prefGenres);
         for (let i = 0; i < prefGenres.length; ++i) {
             if (prefGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = i + ". " + prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 ui.appendChild(entry);
             }
         }
@@ -410,10 +412,11 @@ class StatsView extends View {
      * arg    : {[int][int]} leastTracks - Key/Value tracks array
      **/
     _updateLeastTracksList(leastTracks, ui) {
+        console.log(leastTracks);
         for (let i = 0; i < leastTracks.length; ++i) {
             if (leastTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = i + ". " + leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 ui.appendChild(entry);
 
             }
@@ -431,7 +434,7 @@ class StatsView extends View {
         for (let i = 0; i < prefTracks.length; ++i) {
             if (prefTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                entry.innerHTML = i + ". " + prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 ui.appendChild(entry);
 
             }
