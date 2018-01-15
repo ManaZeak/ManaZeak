@@ -58,7 +58,7 @@ class TrackInfo {
             this.ui.container.style.opacity = 0;
             window.setTimeout(function() {
                 that.ui.container.style.zIndex = -1;
-            }, 100); // 100ms bc of transition time in #TrackInfo - trackinfo.scss
+            }, 100); // 100ms bc of transition time in #TrackInfo - _trackinfo.scss
         }
     }
 

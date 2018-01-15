@@ -782,6 +782,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_settings', new SettingsView());
         this.createAppView('mzk_party', new PartyView());
     }
 

@@ -1,6 +1,5 @@
 // Tools building
-@import "mixins";
-@import "colors";
+@import "elements/mixins";
+@import "elements/colors";
 @import "../components/modal";
-@import "tooltip";
-@import "global";
+@import "elements/global";

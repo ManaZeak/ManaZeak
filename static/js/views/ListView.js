@@ -210,9 +210,9 @@ class ListView extends PlaylistView {
         while (this.listView.firstChild) {
             this.listView.removeChild(this.listView.firstChild);
         }
-        this.contextMenu.reattach();
         this.entries = [];
         this._addEntries(tracks);
+        this.contextMenu.reattach();
 
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);

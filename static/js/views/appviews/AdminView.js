@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * *
- *                                         *
+ *                                 *
  *  AdminView class                        *
  *                                         *
  *  Handle admin settings                  *
@@ -151,6 +151,36 @@ class AdminView extends View {
     }
 
 
+    _requestDeleteLibraries() { // TODO : put the code below in APP
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/deleteAllLibrary/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    window.app.playlists = [];
+                    window.app.topBar.playlists = [];
+                    that.ui.rmLibButton.blur();
+
+                    window.app.refreshTopBar();
+                    window.app.refreshFootBar();
+                    that._updateAdminInfo();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : _requestUsersPage (private)
      * class  : AdminView
@@ -162,6 +192,10 @@ class AdminView extends View {
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
+
+        let sponsoringLabel = document.createElement("P");
+        let sponsoringSpan = document.createElement("SPAN");
+        let sponsoring = document.createElement("BUTTON");
         let list = document.createElement("UL");
 
         let that = this;
@@ -172,7 +206,7 @@ class AdminView extends View {
             rm.src            = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
                 window.app.deleteUser(that.info.USER[i].ID, function() {
-                    let self = that;
+                    let that = this;
                     JSONParsedGetRequest(
                         "ajax/getAdminView/",
                         function(response) {
@@ -182,8 +216,8 @@ class AdminView extends View {
                              *     ERROR_MSG : string
                              * } */
                             if (response.DONE) {
-                                self.info = response;
-                                self._requestUsersPage();
+                                that.info = response;
+                                that._requestUsersPage();
                             }
                         }
                     );
@@ -195,9 +229,22 @@ class AdminView extends View {
             list.appendChild(element);
         }
 
+        let status = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
+        sponsoringLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
+            "<br>" +
+            "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
+            "This command will add a field in the sign up form that is mandatory. Sponsoring current status : " + status;
+        sponsoring.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
+
+        sponsoringSpan.appendChild(sponsoring);
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(sponsoringLabel);
+        this.ui.content.appendChild(sponsoringSpan);
         this.ui.content.appendChild(list);
+
+        sponsoring.addEventListener("click", this._toggleInviteMode.bind(this));
     }
 
 
@@ -211,6 +258,15 @@ class AdminView extends View {
         this._clearPageSpace();
         this.ui.menuLib.className      = "selected";
         this.ui.contentTitle.innerHTML = "Libraries management";
+
+        this.ui.rmLibLabel             = document.createElement("P");
+        this.ui.rmLibButton            = document.createElement("BUTTON");
+
+        this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
+            "<br>" +
+            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
+            "This command will erase all libraries in the database.";
+        this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
 
         let list = document.createElement("UL");
 
@@ -263,7 +319,11 @@ class AdminView extends View {
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rmLibLabel);
+        this.ui.content.appendChild(this.ui.rmLibButton);
         this.ui.content.appendChild(list);
+
+        this.ui.rmLibButton.addEventListener("click", this._requestDeleteLibraries.bind(this));
     }
 
 
@@ -295,9 +355,11 @@ class AdminView extends View {
             "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
             "<br>" +
-            "This command will perform a rescan on each SyncThing folder that are declared in it.";
+            "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
+            "This command will perform a rescan on each SyncThing folder.";
         this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
             "<br>" +
+            "If none of the hereby command can't help you there" +
             "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";
@@ -330,6 +392,7 @@ class AdminView extends View {
      **/
     _requestDrop() {
         // TODO : put modal on drop action to confirm ?
+        let that = this;
         JSONParsedGetRequest(
             "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
             function(response) {
@@ -343,6 +406,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.dropButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -356,6 +420,7 @@ class AdminView extends View {
      * desc   : Rescan syncthing folders
      **/
     _rescanSC() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/syncthingRescan",
             function(response) {
@@ -369,6 +434,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rescanButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -382,6 +448,7 @@ class AdminView extends View {
      * desc   : Remove all moodbar from server
      **/
     _removeMoodbar() {
+        let that = this;
         JSONParsedGetRequest(
             "ajax/removeAllMoods/",
             function(response) {
@@ -395,6 +462,7 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.rmMoodButton.blur();
                     // TODO : refresh UI
                 }
             }
@@ -408,6 +476,7 @@ class AdminView extends View {
      * desc   : Submit the SyncThing API key
      **/
     _submitAPIKey() {
+        let that = this;
         JSONParsedPostRequest(
             "ajax/changeSyncthingAPIKey/",
             JSON.stringify({
@@ -424,7 +493,44 @@ class AdminView extends View {
                 }
 
                 else {
+                    that.ui.apiKeyButton.blur();
                     // TODO : refresh UI
+                }
+            }
+        );
+    }
+
+
+    _toggleInviteMode() {
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/toggleInvite/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (response.DONE) {
+                    let self = that;
+                    JSONParsedGetRequest(
+                        "ajax/getAdminView/",
+                        function(response) {
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             * } */
+                            if (response.DONE) {
+                                self.info = response;
+                                self._requestUsersPage();
+                            }
+                        }
+                    );
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );

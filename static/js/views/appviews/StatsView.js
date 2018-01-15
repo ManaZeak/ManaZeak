@@ -47,9 +47,9 @@ class StatsView extends View {
                 modal.close();
 
                 if (response.DONE) {
-                    that.ui.userName.innerHTML     = response.USERNAME;
-                    that.ui.totalPlayed.innerHTML += response.NB_TRACK_LISTENED;
-                    that.ui.totalPushed.innerHTML += response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
+                    that.ui.userName.innerHTML    = response.USERNAME;
+                    that.ui.totalPlayed.innerHTML = "Tracks played : " + response.NB_TRACK_LISTENED;
+                    that.ui.totalPushed.innerHTML = "Tracks uploaded : " + response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
                         Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
                         "% of all the music here)";
                     that._updatePrefArtistsList(response.PREF_ARTISTS);

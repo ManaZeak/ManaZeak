@@ -1,11 +1,12 @@
+from datetime import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import updateTrackView
-from app.models import Playlist, TrackView, Track
+from app.dao import getPlaylistTracks, createViewForLazy, deleteView
+from app.models import Playlist, Track
 from app.utils import errorCheckMessage
 
 
@@ -120,50 +121,70 @@ def removeTrackFromPlaylist(request):
     return JsonResponse(data)
 
 
-def simplePlaylistJsonGenerator():
-    tracks = TrackView.objects.all()
-    data = []
-    for track in tracks:
-        splicedArtistName = track.artist_name.split(",")
-        splicedArtistId = track.artist_id.split(",")
-        artists = []
+def lazyJsonGenerator(row):
+    splicedArtistName = row[25].split(",")
+    splicedArtistId = row[26].split(",")
+    artists = []
 
-        for artistId, artist in zip(splicedArtistId, splicedArtistName):
-            artists.append({
-                'ID': artistId,
-                'NAME': artist,
-            })
-
-        data.append({
-            'ID': track.track_id,
-            'TITLE': track.track_title,
-            'YEAR': track.track_year,
-            'COMPOSER': track.track_composer,
-            'PERFORMER': track.track_performer,
-            'DURATION': track.track_duration,
-            'BITRATE': track.track_bitrate,
-            'COVER': track.track_cover,
-            'ARTISTS': artists,
-            'ALBUM': {
-                'ID': track.album_id,
-                'TITLE': track.album_title,
-            },
-            'GENRE': track.genre_name,
+    for artistId, artist in zip(splicedArtistId, splicedArtistName):
+        artists.append({
+            'ID': artistId,
+            'NAME': artist,
         })
+
+    data = {
+        'ID': row[0],
+        'TITLE': row[2],
+        'YEAR': row[3],
+        'COMPOSER': row[4],
+        'PERFORMER': row[5],
+        'BITRATE': row[10],
+        'DURATION': row[13],
+        'COVER': row[17],
+        'ARTISTS': artists,
+        'GENRE': row[23],
+        'ALBUM': {
+            'ID': row[24],
+            'TITLE': row[21],
+        },
+    }
     return data
 
 
-# Load a library by returning simplified json
+# Give 300 tracks of a playlist with an offset (REQ_NUMBER)
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
-def loadSimplifiedPlaylist(request):
+def lazyLoadingSimplifiedPlaylist(request):
     if request.method == 'POST':
-        print("Getting json export of the library")
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                updateTrackView(playlist.id)
-                data = {**dict({'RESULT': simplePlaylistJsonGenerator()}), **errorCheckMessage(True, None)}
+        if 'REQ_NUMBER' in response and 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            try:
+                reqNumber = int(strip_tags(response['REQ_NUMBER']))
+            except ValueError:
+                return JsonResponse(errorCheckMessage(False, "badFormat"))
+            nbTracks = 300
+            reqNumber *= nbTracks
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                # Checking if it's the first request for creating the view
+                user = request.user
+                if reqNumber == 0:
+                    # Checking if the user can display the asked playlist
+                    if playlist.user == user or playlist.isLibrary:
+                        createViewForLazy(user.id, playlist.id)
+                    else:
+                        return JsonResponse(errorCheckMessage(False, "permissionError"))
+                # Checking if the user is asking possible tracks
+                if playlist.track.all().count() > reqNumber:
+                    trackSet = getPlaylistTracks(playlistId, user.id, reqNumber, reqNumber+nbTracks)
+                    data = []
+                    for row in trackSet:
+                        data.append(lazyJsonGenerator(row))
+                    data = dict({'RESULT': data})
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    deleteView(user.id, playlist.id)
+                    data = errorCheckMessage(False, None)
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
