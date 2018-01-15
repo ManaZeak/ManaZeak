@@ -238,6 +238,7 @@ def toggleInvite(request):
     if request.method == 'GET':
         adminOptions = getAdminOptions()
         adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
+        adminOptions.save()
         data = {
             'INVITE': adminOptions.inviteCodeEnabled
         }

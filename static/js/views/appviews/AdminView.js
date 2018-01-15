@@ -192,6 +192,10 @@ class AdminView extends View {
         this.ui.menuUser.className   = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
+
+        let godFatherLabel = document.createElement("P");
+        let godFatherSpan = document.createElement("SPAN");
+        let godFather = document.createElement("BUTTON");
         let list = document.createElement("UL");
 
         let that = this;
@@ -202,7 +206,7 @@ class AdminView extends View {
             rm.src            = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
                 window.app.deleteUser(that.info.USER[i].ID, function() {
-                    let self = that;
+                    let that = this;
                     JSONParsedGetRequest(
                         "ajax/getAdminView/",
                         function(response) {
@@ -212,8 +216,8 @@ class AdminView extends View {
                              *     ERROR_MSG : string
                              * } */
                             if (response.DONE) {
-                                self.info = response;
-                                self._requestUsersPage();
+                                that.info = response;
+                                that._requestUsersPage();
                             }
                         }
                     );
@@ -225,9 +229,21 @@ class AdminView extends View {
             list.appendChild(element);
         }
 
+        godFatherLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
+            "<br>" +
+            "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
+            "This command will add a field in the sign up form that is mandatory.";
+        godFather.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
+
+        godFatherSpan.appendChild(godFather);
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(godFatherLabel);
+        this.ui.content.appendChild(godFatherSpan);
         this.ui.content.appendChild(list);
+
+        godFather.addEventListener("click", this._toggleInviteMode.bind(this));
     }
 
 
@@ -478,6 +494,42 @@ class AdminView extends View {
                 else {
                     that.ui.apiKeyButton.blur();
                     // TODO : refresh UI
+                }
+            }
+        );
+    }
+
+
+    _toggleInviteMode() {
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/toggleInvite/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (response.DONE) {
+                    let self = that;
+                    JSONParsedGetRequest(
+                        "ajax/getAdminView/",
+                        function(response) {
+                            /* response = {
+                             *     DONE      : bool
+                             *     ERROR_H1  : string
+                             *     ERROR_MSG : string
+                             * } */
+                            if (response.DONE) {
+                                self.info = response;
+                                self._requestUsersPage();
+                            }
+                        }
+                    );
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
