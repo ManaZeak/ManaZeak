@@ -14,9 +14,13 @@ def getUserSettings(request):
         if UserPreferences.objects.filter(user=user).count() == 1:
             userPref = UserPreferences.objects.get(user=user)
             data = {
-                'INVITE_CODE': userPref.inviteCode.code,
-                'MANACOIN': userPref.points,
+                'MANACOIN': userPref.points
             }
+            if userPref.inviteCode is not None:
+                tmp = {
+                    'INVITE_CODE': userPref.inviteCode.code,
+                }
+                data = {**data, **tmp}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "dbError")
