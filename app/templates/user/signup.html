@@ -12,24 +12,24 @@
 </head>
 {% block body %}
     {% load staticfiles %}
-<body>
+    <body>
     <div id="login">
-       <h1>ManaZeak</h1>
+        <h1>ManaZeak</h1>
         {% if form.has_errors %}
             <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
-            <p>Use this form to sign up, and begin to use ManaZeak</p>       <!-- TODO proper redirection w/ url -->
+        <p>Use this form to sign up, and begin to use ManaZeak</p>       <!-- TODO proper redirection w/ url -->
 
-            <form action="" method="POST" name="signup">
-                <p><label for="id_username">Username:</label>
+        <form id="signupForm" action="" method="POST" name="signup">
+            <p><label for="id_username">Username:</label>
                 {{ form.username }}</p>
-                <p><label for="id_password">Password:</label>
+            <p><label for="id_password">Password:</label>
                 {{ form.password1 }}</p>
-                {{ form.password2 }}
-                <input type="hidden" name="next" value="/" />
-                <input type="submit" value="register" id="button" />
-                {% csrf_token %}
-            </form>
+            {{ form.password2 }}
+            <input type="hidden" name="next" value="/" />
+            <input type="submit" value="register" id="button" />
+            {% csrf_token %}
+        </form>
 
         <div id="error"> <!-- TODO : make invisible by default -->
             {{ form.errors }}
@@ -38,11 +38,36 @@
     </div>
 
     <script>
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                let response = JSON.parse(this.responseText);
+
+                //if (response.INVITE === true) {
+                    let p = document.createElement("P");
+                    let label = document.createElement("LABEL");
+                    let input = document.createElement("INPUT");
+
+                    label.innerHTML = "Godfather:";
+                    input.type = "text";
+
+                    p.appendChild(label);
+                    p.appendChild(input);
+console.log("There");
+                    document.getElementById("signupForm").insertBefore(p, document.getElementById("signupForm").firstChild);
+                //}
+            }
+        };
+
+        xhr.open("GET", "../ajax/isInviteEnabled/", true);
+        xhr.send();
+
         document.addEventListener("keydown", function(event) {
             if (event.keyCode === 18) {
                 document.signup.submit();
             }
         });
     </script>
-</body>
+    </body>
 {% endblock %}
