@@ -36,17 +36,16 @@ def createUser(request):
         form = UserCreationForm(request.POST)
         isAdmin = False
         if form.is_valid():
-            form.save()
             invite = None
             # Checking if user invite is enabled
             if getAdminOptions().inviteCodeEnabled:
                 inviteCode = form.data.get('godFather')
-                if InviteCode.objects.filter(code__contains=inviteCode).count() == 1:
+                if InviteCode.objects.filter(code=inviteCode).count() == 1:
                     invite = InviteCode.objects.get(code=inviteCode)
                 else:
-                    form = UserCreationForm()
                     return render(request, 'user/signup.html', {'form': form})
 
+            form.save()
             # Special condition for the first user to be administrator
             if User.objects.all().count() == 1:
                 isAdmin = True
