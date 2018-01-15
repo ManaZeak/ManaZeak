@@ -46,6 +46,9 @@ urlpatterns = [
     # Stats actions
     url(r'^ajax/getUserStats/$', stats.getUserStats, name='getUserStats'),
     url(r'^ajax/adminGetUserStats/$', stats.adminGetUserStats, name='adminGetUserStats'),
+    url(r'^stats/getUserPrefArtists/$', stats.getUserPrefArtists, name='getUserPrefArtists'),
+    url(r'^stats/getUserPrefGenres/$', stats.getUserPrefGenres, name='getUserPrefGenres'),
+    url(r'^stats/getUserPrefTracks/$', stats.getUserPrefTracks, name='getUserPrefTracks'),
 
     # History actions
     url(r'^ajax/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),

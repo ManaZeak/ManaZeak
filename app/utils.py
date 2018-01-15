@@ -116,6 +116,10 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Can't delete this user"
         errorMessage = "You can't delete your own account if you are admin"
 
+    elif error == "noStats":
+        errorTitle = "Can't display stats"
+        errorMessage = "Use the application for generating stats"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",
