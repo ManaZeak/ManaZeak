@@ -193,9 +193,9 @@ class AdminView extends View {
         this.ui.contentTitle.innerHTML = "User management";
 
 
-        let godFatherLabel = document.createElement("P");
-        let godFatherSpan = document.createElement("SPAN");
-        let godFather = document.createElement("BUTTON");
+        let sponsoringLabel = document.createElement("P");
+        let sponsoringSpan = document.createElement("SPAN");
+        let sponsoring = document.createElement("BUTTON");
         let list = document.createElement("UL");
 
         let that = this;
@@ -229,21 +229,22 @@ class AdminView extends View {
             list.appendChild(element);
         }
 
-        godFatherLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
+        let status = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
+        sponsoringLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
             "<br>" +
             "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
-            "This command will add a field in the sign up form that is mandatory.";
-        godFather.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+            "This command will add a field in the sign up form that is mandatory. Sponsoring current status : " + status;
+        sponsoring.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
-        godFatherSpan.appendChild(godFather);
+        sponsoringSpan.appendChild(sponsoring);
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
-        this.ui.content.appendChild(godFatherLabel);
-        this.ui.content.appendChild(godFatherSpan);
+        this.ui.content.appendChild(sponsoringLabel);
+        this.ui.content.appendChild(sponsoringSpan);
         this.ui.content.appendChild(list);
 
-        godFather.addEventListener("click", this._toggleInviteMode.bind(this));
+        sponsoring.addEventListener("click", this._toggleInviteMode.bind(this));
     }
 
 
