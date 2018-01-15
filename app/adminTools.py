@@ -63,7 +63,10 @@ def getAdminView(request):
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
-            data = {**data, **{'SYNC_KEY': adminOptions.syncthingKey}}
+            data = {**data, **{
+                'SYNC_KEY': adminOptions.syncthingKey,
+                'INVITE_ENABLED': adminOptions.inviteCodeEnabled,
+            }}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
