@@ -7,7 +7,8 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
-from app.utils import processVorbisTag
+from app.models import FileType
+from app.utils import processVorbisTag, errorCheckMessage
 
 
 def createMP3Track(filePath, convert, fileTypeId, coverPath):
@@ -145,7 +146,7 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
             with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                 img.write(pictures[0].data)
-        track.coverLocation = "../static/img/covers/" + md5Name.hexdigest() + ".jpg"
+        track.coverLocation = md5Name.hexdigest() + ".jpg"
 
     if 'TITLE' in audioFile:
         trackTitle = processVorbisTag(audioFile['TITLE'])
@@ -186,6 +187,42 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         track.album = albumTitle.replace('\n', '')
 
     return track
+
+
+def regenerateCover(track):
+    if FileType.objects.filter(name="mp3").count() == 1 and FileType.objects.filter(name="flac").count() == 1:
+        mp3Type = FileType.objects.get(name="mp3")
+        flacType = FileType.objects.get(name="flac")
+        coverPath = "/ManaZeak/static/img/covers/"
+        track.coverLocation = ""
+        if track.fileType == mp3Type:
+            try:
+                audioTag = ID3(track.location)
+            except ID3NoHeaderError:
+                audioTag = ID3()
+            if 'APIC:' in audioTag:
+                front = audioTag['APIC:'].data
+                # Creating md5 hash for the cover
+                md5Name = hashlib.md5()
+                md5Name.update(front)
+                # Check if the cover already exists and save it
+                if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
+                    with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
+                        img.write(front)
+                track.coverLocation = md5Name.hexdigest() + ".jpg"
+        elif track.fileType == flacType:
+            audioFile = FLAC(track.location)
+            pictures = audioFile.pictures
+            if len(pictures) != 0:
+                # Creating md5 hash for the cover
+                md5Name = hashlib.md5()
+                md5Name.update(pictures[0].data)
+                # Check if the cover already exists and save it
+                if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
+                    with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
+                        img.write(pictures[0].data)
+                track.coverLocation = md5Name.hexdigest() + ".jpg"
+        track.save()
 
 
 class LocalTrack:

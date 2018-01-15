@@ -180,7 +180,7 @@ class TopBar {
     refreshTopBar() {
         this._removeEntries();
         this._addEntries();
-        this._unSelectAll();
+        this.unSelectAll();
         this._setSelected(this.selectedPlaylist);
     }
 
@@ -194,6 +194,18 @@ class TopBar {
         d3.selectAll('#moodbar svg').remove();
         this.moodbarThumb.isVisible = false;
         removeVisibilityLock(this.moodbarThumb);
+    }
+
+
+    /**
+     * method : unSelectAll (private)
+     * class  : TopBar
+     * desc   : Unselect every entry in playlist bar
+     **/
+    unSelectAll() {
+        for (let i = 0; i < this.entries.length; ++i) {
+            this.entries[i].setIsSelected(false);
+        }
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -306,18 +318,6 @@ class TopBar {
 
 
     /**
-     * method : _unSelectAll (private)
-     * class  : TopBar
-     * desc   : Unselect every entry in playlist bar
-     **/
-    _unSelectAll() {
-        for (let i = 0; i < this.entries.length; ++i) {
-            this.entries[i].setIsSelected(false);
-        }
-    }
-
-
-    /**
      * method : _viewClicked (private)
      * class  : TopBar
      * desc   : Handle clicks in TopBar
@@ -337,7 +337,7 @@ class TopBar {
         let id = target.dataset.childID;
 
         if (id !== undefined && id !== "gear") {
-            this._unSelectAll();
+            this.unSelectAll();
             this._setSelected(id);
             this.entries[id].playlist.activate();
         }

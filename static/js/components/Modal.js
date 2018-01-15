@@ -52,6 +52,14 @@ class Modal {
                 this._newWishUI();
                 break;
 
+            case "openSyncThing":
+                this._openSyncThing();
+                break;
+
+            case "inviteCode":
+                this._inviteCodeUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -290,6 +298,34 @@ class Modal {
     }
 
 
+    _inviteCodeUI() {
+        this.ui.container.id    = "inviteCode";
+        this.ui.title.innerHTML = "Invitation code";
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("H3");
+        let cancel              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+
+        cancel.innerHTML        = "Close";
+        name.innerHTML          = window.app.user.getInviteCode();
+        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet.";
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+
+        this._appendCloseButton();
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
+    }
+
+
     /**
      * method : _newLibraryUI (private)
      * class  : Modal
@@ -436,6 +472,25 @@ class Modal {
     }
 
 
+    _openSyncThing() {
+        this._appendCloseButton();
+
+        let content             = document.createElement("IFRAME");
+        this.ui.container.id    = "openSyncThing";
+
+        content.frameBorder     = 0;
+        content.height          = "100%";
+        content.width           = "100%";
+        //content.src             = "http://everynoise.com/engenremap.html";
+        content.src             = "//127.0.0.1:8384/";
+
+        content.onload = function() {
+        };
+
+        this.ui.content.appendChild(content);
+    }
+
+
     /**
      * method : _deletePlaylistUI (private)
      * class  : Modal
@@ -443,7 +498,7 @@ class Modal {
      **/
     _renamePlaylistUI() {
         this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Remove " + this.data.name;
+        this.ui.title.innerHTML = "Rename " + this.data.name;
 
         let infoLabel           = document.createElement("P");
         let name                = document.createElement("INPUT");

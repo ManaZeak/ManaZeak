@@ -1,6 +1,6 @@
 @import 'utils/tools';
 @import 'components/topbar';
-@import 'components/stats';
+@import 'core/views/statsview';
 @import 'components/dragdrop';
 @import 'components/elements/trackinfo';
 @import 'components/elements/progressbar';
@@ -9,34 +9,33 @@
 @import 'components/notification';
 @import 'core/views/listview';
 @import 'core/views/partyview';
+@import 'core/views/adminview';
 @import 'components/footbar';
 
 html, body {
+    color: $primary-text;
+    font-family: Helvetica, serif;
     height: 100%;
     margin: 0;
     overflow: hidden;
     padding: 0;
     width: 100%;
-
-    color: $primary-text;
-    font-family: Helvetica, serif;
 }
 
 #spectrumContainer {
-    width: 30%;
+    background-color: chartreuse;
+    bottom: 0;
     height: 200%;
     position: absolute;
     right: 0;
-    bottom: 0;
-    background-color: chartreuse;
+    width: 30%;
 }
 
 #mainContainer {
-    width: 100%;
-    height: calc(100% - 130px);
-    top: 50px;
-    position: absolute;
-
     background: $primary-color;
+    height: calc(100% - 130px);
+    position: absolute;
+    top: 50px;
+    width: 100%;
 }
 

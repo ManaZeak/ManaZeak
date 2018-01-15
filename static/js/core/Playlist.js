@@ -37,6 +37,8 @@ class Playlist {
         this.views               = new Array(viewkeys.length).fill(null);
         this.activeView          = window.app.availableViews[viewkeys[0]];
 
+        this.lazyLoadOK          = true;
+
         this._init();
     }
 
@@ -48,8 +50,24 @@ class Playlist {
      * desc   : Set in app the current playlist to this
      **/
     activate() {
-        window.app.activePlaylist = this;
-        this.showView(window.app.availableViews.LIST);
+
+        if(this.lazyLoadOK == false)
+        {
+            this.modal = new Modal('fetchPlaylists', null);
+            this.modal.open();
+            let self = this;
+            let timer = window.setInterval(function() {
+                if(self.lazyLoadOK == true) {
+                    self.modal.close();
+                    self.modal = null;
+                    self.activate();
+                    clearInterval(timer);
+                }
+            }, 100);
+        } else {
+            window.app.activePlaylist = this;
+            this.showView(window.app.availableViews.LIST);
+        }
     }
 
 
@@ -71,40 +89,7 @@ class Playlist {
      * arg    : {function} callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
-        this._clearTracks();
-        let that = this;
-
-        JSONParsedPostRequest(
-            "ajax/getSimplifiedTracks/",
-            JSON.stringify({
-                PLAYLIST_ID: this.id
-            }),
-            function(response) {
-                /* response = {
-                 *     DONE        : bool
-                 *     ERROR_H1    : string
-                 *     ERROR_MSG   : string
-                 *
-                 *     RESULT      : JSON object
-                 * } */
-                if (response.DONE) {
-                    console.log(response);
-                    // TODO : get total track, album and artist of playlist
-                    that.rawTracks = response.RESULT;
-                    that._fillTracks(that.rawTracks);
-                    that.refreshViews();
-
-                    if (callback) {
-                        that.activate();
-                        callback();
-                    }
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
-            }
-        );
+        this._getTracksLazy(0, callback);
     }
 
 
@@ -344,9 +329,63 @@ class Playlist {
      **/
     _clearTracks() {
         this.tracks      = [];
+        this.durationTotal = 0;
         this.trackTotal  = 0;
         this.artistTotal = 0;
         this.albumTotal  = 0;
+    }
+
+
+    /**
+     * method : _getTracksLazy (public)
+     * class  : Playlist
+     * desc   : Fetch raw tracks from server using the lazy loading
+     * arg    : {integer} step - Must start at 0
+     *          {function} callback - Not mandatory
+     **/
+    _getTracksLazy(step, callback) {
+        let that = this;
+        if(step == 0) {
+            this.lazyLoadOK = false;
+            this.rawTracks = [];
+            this._clearTracks();
+        }
+
+        JSONParsedPostRequest(
+            "ajax/lazyLoadingSimplifiedPlaylist/",
+            JSON.stringify({
+                PLAYLIST_ID: this.id,
+                REQ_NUMBER: step
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     RESULT      : JSON object
+                 * } */
+                if (response.DONE) {
+                    that.rawTracks = that.rawTracks.concat(response.RESULT);
+                    that._getTracksLazy(step + 1, callback);
+                }
+
+                else {
+                    //Successfully loaded all
+                    if(response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) {
+                        that._fillTracks(that.rawTracks);
+                        that.refreshViews();
+                        that.lazyLoadOK = true;
+
+                        if (callback) {
+                            that.activate();
+                            callback();
+                        }
+                    } else
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 
@@ -390,33 +429,12 @@ class Playlist {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
 
-                    JSONParsedPostRequest(
-                        "ajax/getSimplifiedTracks/",
-                        JSON.stringify({
-                            PLAYLIST_ID: playlistId
-                        }),
-                        function(response) {
-                            /* response = {
-                             *     DONE        : bool
-                             *     ERROR_H1    : string
-                             *     ERROR_MSG   : string
-                             *
-                             *     RESULT      : JSON object
-                             * } */
-                            if (response.DONE) {
-                                // response = raw tracks JSON object
-                                self.rawTracks = response.RESULT;
-                                self._fillTracks(self.rawTracks);
-                                self.refreshViews();
-                                self.showView(self.activeView);
-                                self.modal.close();
-
-                                if (self.callback) {
-                                    self.callback();
-                                }
-                            }
-                        }
-                    );
+                    that.getPlaylistsTracks(function() {
+                        self.showView(window.app.availableViews.LIST);
+                        self.modal.close();
+                        if(self.callback)
+                            self.callback();
+                    });
                 }
             }
         );
@@ -464,6 +482,7 @@ class Playlist {
                  *     PLAYLIST_ID : int or undefined
                  * } */
                 if (response.DONE) {
+                    that.id = response.PLAYLIST_ID;
                     that._getTracksFromServer(response.PLAYLIST_ID);
                 }
 

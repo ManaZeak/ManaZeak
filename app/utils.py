@@ -108,6 +108,18 @@ def errorCheckMessage(isDone, error):
         errorTitle = "No results were found"
         errorMessage = "Can't find any track with the same album"
 
+    elif error == "syncthingError":
+        errorTitle = "Fail to communicate with syncthing"
+        errorMessage = "Check if syncthing is running correctly"
+
+    elif error == "userDeleteError":
+        errorTitle = "Can't delete this user"
+        errorMessage = "You can't delete your own account if you are admin"
+
+    elif error == "noStats":
+        errorTitle = "Can't display stats"
+        errorMessage = "Use the application for generating stats"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",

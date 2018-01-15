@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * *
  *                                         *
- *  AppListener class                      *
+ *  MzkListener class                      *
  *                                         *
  *  Class for handling app event listeners *
  *                                         *
@@ -8,7 +8,7 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class AppListener {
+class MzkListener {
     constructor(name, description, callback, thisArg) {
         this.name = name;
         this.desc = description;
@@ -21,7 +21,7 @@ class AppListener {
 
     /**
      * method : setActive (public)
-     * class  : AppListener
+     * class  : MzkListener
      * desc   : Set whether the callback should be run
      * arg    : {bool} active - the new state
      **/
@@ -32,7 +32,7 @@ class AppListener {
 
     /**
      * method : runCallback (public)
-     * class  : AppListener
+     * class  : MzkListener
      * desc   : Run the callback
      * arg    : {array} args - the arguments to be applied to the callback
      **/

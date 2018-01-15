@@ -13,30 +13,28 @@
     &:hover > #progressTimecodeHover {
         @extend .mzk-visible;
     }
-}
 
-#progressBar #progress {
-    background-color: $accent-color;
-    border-radius: 4px;
-    height: 100%;
-    width: 0;
+    #progress {
+        background-color: $accent-color;
+        border-radius: 4px;
+        height: 100%;
+        transition: background-color 0.15s ease;
+        width: 0;
+    }
 
-    transition: background-color 0.15s ease;
-}
-
-#progressBar #progressThumb {
-    background-color: $white;
-    border: solid 1px $dark-secondary-color;
-    border-radius: 5px;
-    height: 10px;
-    left: -6px;
-    margin-left: 0;
-    position: absolute;
-    top: -4px;
-    opacity: 0;
-    width: 10px;
-
-    transition: opacity 0.15s ease;
+    #progressThumb {
+        background-color: $white;
+        border: solid 1px $dark-secondary-color;
+        border-radius: 5px;
+        height: 10px;
+        left: -6px;
+        margin-left: 0;
+        position: absolute;
+        top: -4px;
+        transition: opacity 0.15s ease;
+        opacity: 0;
+        width: 10px;
+    }
 }
 
 #moodbar #moodbarThumb {
@@ -44,8 +42,8 @@
     background-color: $white;
     border: solid 1px $dark-secondary-color;
     border-radius: 1px;
-    height: 16px;
     box-sizing: border-box;
+    height: 16px;
     left: -5px;
     margin-left: 0;
     position: absolute;
@@ -58,18 +56,18 @@
     @extend .mzk-hidden;
     background-color: $primary-text;
     border: solid 1px $dark-secondary-color;
-    color: $dark-secondary-color;
-    box-sizing: border-box;
     border-radius: 3px;
     bottom: 10px;
-    left: 0;
+    box-sizing: border-box;
+    color: $dark-secondary-color;
+    font-size: 0.7em;
     height: 20px;
+    left: 0;
     line-height: 20px;
+    pointer-events: none; /* Disable hover effect from parent */
     position: absolute;
     text-align: center;
     width: 60px;
-    pointer-events: none; /* Disable hover effect from parent */
-    font-size: 0.7em;
     z-index: 2;
 }
 

@@ -33,9 +33,6 @@ class App {
         };
 
         this.listeners = {};
-        this.test = function() {
-            arguments[0] = 'TEST';
-        };
         let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
         for (let i = 0; i < properties.length; ++i) {
             if (typeof this[properties[i]] === "function") {
@@ -46,7 +43,6 @@ class App {
                 this[properties[i]] = (function(pname, func) {
                     return function() {
                         let r = func.apply(this, arguments);
-                        this.test.apply(null,arguments);
                         for (let i = 0; i < this.listeners[pname].length; ++i) {
                             this.listeners[pname][i].runCallback(arguments);
                         }
@@ -61,28 +57,6 @@ class App {
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : listen (public)
-     * class  : App
-     * desc   : Add listener on an App function
-     * arg    : {string} event - the function to listen to
-     *        : {function} callback
-     **/
-    listen(event, callback, thisArg) {
-        if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i) {
-                if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
-                }
-            }
-        }
-
-        else if (this.listeners[event]) {
-            this.listeners[event].push(new AppListener('', '', callback, thisArg));
-        }
-    }
-
 
     /**
      * method : adjustVolume (public)
@@ -176,7 +150,6 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-
         if (view.getContainer().id === "party") {
             view.setIsEnabled(true);
             document.body.appendChild(view.getContainer());
@@ -185,10 +158,6 @@ class App {
         else {
             this.mainContainer.innerHTML = '';
             this.mainContainer.appendChild(view.getContainer());
-        }
-
-        if (view.getContainer().id === "stats") { // TODO : find a better way
-            view.fetchStats();
         }
     }
 
@@ -217,8 +186,9 @@ class App {
      * class  : App
      * desc   : Ask server to delete a playlist from a given ID
      * arg    : {int} id - The playlist ID
+     * arg    : {function} callback - Not mandatory
      **/
-    deletePlaylist(id) {
+    deletePlaylist(id, callback) {
         let that = this;
         JSONParsedPostRequest(
             "ajax/deletePlaylist/",
@@ -243,10 +213,38 @@ class App {
                     that.playlists[0].activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
+
+                    if (callback) {
+                        callback();
+                    }
                 }
 
                 else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    deleteUser(id, callback) {
+        JSONParsedPostRequest(
+            "ajax/removeUserById/",
+            JSON.stringify({
+                USER_ID: id
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+
+                else {
+                    callback();
                 }
             }
         );
@@ -347,6 +345,28 @@ class App {
 
 
     /**
+     * method : listen (public)
+     * class  : App
+     * desc   : Add listener on an App function
+     * arg    : {string} event - the function to listen to
+     *        : {function} callback
+     **/
+    listen(event, callback, thisArg) {
+        if (Array.isArray(event)) {
+            for (let i = 0; i < event.length; ++i) {
+                if (this.listeners[event[i]]) {
+                    this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
+                }
+            }
+        }
+
+        else if (this.listeners[event]) {
+            this.listeners[event].push(new MzkListener('', '', callback, thisArg));
+        }
+    }
+
+
+    /**
      * method : logOut (public)
      * class  : App
      * desc   : Log out from current user
@@ -389,7 +409,6 @@ class App {
      **/
     next() {
         if (this.appViews["mzk_party"].getIsEnabled()) {
-            console.log("DEAZ");
             return;
         }
 
@@ -442,7 +461,10 @@ class App {
         }
 
         this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
-        this.footBar.progressBar.refreshInterval(this.player.getPlayer());
+
+        if (!this.player.isEmpty()) {
+            this.footBar.progressBar.refreshInterval(this.player.getPlayer());
+        }
     }
 
 
@@ -650,6 +672,7 @@ class App {
      * desc   : Toggle repeat mode on playlist
      **/
     toggleRepeat() {
+        this.activePlaylist.toggleRepeat();
         switch(this.activePlaylist.getRepeatMode()) {
             case 0:
                 new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
@@ -663,7 +686,6 @@ class App {
             default:
                 break;
         }
-        this.activePlaylist.toggleRepeat();
     }
 
 
@@ -673,20 +695,20 @@ class App {
      * desc   : Toggle shuffle mode on playlist
      **/
     toggleShuffle() {
+        this.activePlaylist.toggleShuffle();
         switch(this.activePlaylist.getShuffleMode()) {
             case 0:
                 new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
                 break;
             case 1:
-                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
+                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
                 break;
             case 2:
-                new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
+                new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
                 break;
             default:
                 break;
         }
-        this.activePlaylist.toggleShuffle();
     }
 
 
@@ -757,6 +779,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_settings', new SettingsView());
         this.createAppView('mzk_party', new PartyView());
     }
 

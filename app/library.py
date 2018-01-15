@@ -114,6 +114,7 @@ def rescanLibrary(request):
                     playlist.isLibrary = True
                     playlist.save()
                     library.playlist = playlist
+                    library.save()
 
                     # Scan library
                     data = scanLibrary(library, playlist, library.convertID3)
@@ -164,7 +165,7 @@ def scanLibrary(library, playlist, convert):
         return errorCheckMessage(False, "emptyLibrary")
 
     print("Indexed all files")
-    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath,))
+    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
     print("Launched scan thread")
     scanThread.start()
@@ -175,8 +176,50 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
-# TODO : RENAME to more clear name
-def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlistId):
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def deleteLibrary(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        admin = request.user
+        if admin.is_superuser:
+            if 'LIBRARY_ID' in response:
+                libraryId = strip_tags(response['LIBRARY_ID'])
+                if Library.objects.filter(id=libraryId).count() == 1:
+                    library = Library.objects.get(id=libraryId)
+                    library.playlist.track.delete()
+                    library.playlist.delete()
+                    library.delete()
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def deleteAllLibrary(request):
+    if request.method == 'GET':
+        admin = request.user
+        if admin.is_superuser:
+            libraries = Library.objects.all()
+            for library in libraries:
+                library.playlist.track.all().delete()
+                library.playlist.delete()
+                library.delete()
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
     tracks = []
     albumReference = {}
     tracksInfo = []
@@ -191,9 +234,6 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
     flacFileReference = FileType.objects.get(name="flac")
 
     print("Started scanning MP3 file")
-
-    # TODO: Create general file processor
-
     threads = []
     # MP3 file processor
     if len(mp3Files) != 0:
@@ -251,10 +291,12 @@ def addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playl
 
 
 # Scan a library.
-def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath):
-    addAllGenreAndAlbumAndArtists(mp3Files, flacFiles, coverPath, convert, playlist.id)
+def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, library):
+    importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
+    library.playlist = playlist
+    library.save()
 
 
 class ImportBulkThread(threading.Thread):
