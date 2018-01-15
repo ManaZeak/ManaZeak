@@ -154,8 +154,8 @@ class StatsView extends View {
         artistsLeft.className          = "col";
         artistsRight.className         = "col";
 
-        prefArtistsLabel.innerHTML     = "Top Artists :";
-        leastArtistsLabel.innerHTML    = "Flop Artists :";
+        prefArtistsLabel.innerHTML     = "Top Artists";
+        leastArtistsLabel.innerHTML    = "Flop Artists";
 
         artistsLeft.appendChild(prefArtistsLabel);
         artistsLeft.appendChild(prefArtists);
@@ -209,8 +209,8 @@ class StatsView extends View {
         genresLeft.className           = "col";
         genresRight.className          = "col";
 
-        prefGenresLabel.innerHTML      = "Top Genres :";
-        leastGenresLabel.innerHTML     = "Flop Genres :";
+        prefGenresLabel.innerHTML      = "Top Genres";
+        leastGenresLabel.innerHTML     = "Flop Genres";
 
         genresLeft.appendChild(prefGenresLabel);
         genresLeft.appendChild(prefGenres);
@@ -231,8 +231,8 @@ class StatsView extends View {
                  *     ERROR_H1          : string
                  *     ERROR_MSG         : string
                  *
-                 *     PREF_ARTISTS      : [][]
-                 *     LEAST_ARTISTS     : [][]
+                 *     PREF_GENRES      : [][]
+                 *     LEAST_GENRES     : [][]
                  * } */
                 if (response.DONE) {
                     that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
@@ -265,8 +265,8 @@ class StatsView extends View {
         tracksLeft.className           = "col";
         tracksRight.className          = "col";
 
-        prefTracksLabel.innerHTML      = "Top Tracks :";
-        leastTracksLabel.innerHTML     = "Flop Tracks :";
+        prefTracksLabel.innerHTML      = "Top Tracks";
+        leastTracksLabel.innerHTML     = "Flop Tracks";
 
         tracksLeft.appendChild(prefTracksLabel);
         tracksLeft.appendChild(prefTracks);

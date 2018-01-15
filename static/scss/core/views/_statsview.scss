@@ -45,7 +45,12 @@
         width: calc(100% - 200px);
 
         h1 {
-            margin: 15px 0;
+            margin-top: 0;
+        }
+
+        hr {
+            border-color: $primary-text;
+            margin-bottom: 40px;
         }
 
         p {
