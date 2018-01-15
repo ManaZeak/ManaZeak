@@ -224,7 +224,7 @@ class StatsView extends View {
         let that = this;
 
         JSONParsedGetRequest(
-            "ajax/getUserPrefGenres/",
+            "stats/getUserPrefGenres/",
             function(response) {
                 /* response = {
                  *     DONE              : bool
@@ -280,7 +280,7 @@ class StatsView extends View {
         let that = this;
 
         JSONParsedGetRequest(
-            "ajax/getUserPrefTracks/",
+            "stats/getUserPrefTracks/",
             function(response) {
                 /* response = {
                  *     DONE              : bool
