@@ -359,7 +359,7 @@ class AdminView extends View {
             "This command will perform a rescan on each SyncThing folder.";
         this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
             "<br>" +
-            "If none of the hereby command can't help you there" +
+            "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
             "This command will open the SyncThing instance right here, in a modal.";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";

@@ -72,7 +72,6 @@ class User {
                 if (response.DONE) {
                     that.godFatherCode  = response.GODFATHER_CODE;
                     that.inviteCode     = response.INVITE_CODE;
-                    console.log(that);
                 }
 
                 else {

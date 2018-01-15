@@ -47,7 +47,6 @@ class TrackPreview {
         this.ui.artist.innerHTML = "";
         this.ui.album.innerHTML  = "";
         this.ui.year.innerHTML   = "";
-        this.ui.year.innerHTML  += "";
         this.ui.genre.innerHTML  = "";
 
         this._setVisible(false);
@@ -112,8 +111,17 @@ class TrackPreview {
      * desc   : TrackPreview event listeners
      **/
     _eventListener() {
-        let that = this;
+        this.ui.cover.addEventListener("click", function() {
+            let modal = new Modal("cover", {
+                src: that.ui.cover.src,
+                artist: that.ui.artist.innerHTML,
+                album: that.ui.album.innerHTML,
+                year: that.ui.year.innerHTML
+            });
+            modal.open();
+        });
 
+        let that = this;
         window.app.listen(["togglePlay", "changeTrack"], function() {
             that._setVisible(true);
         });

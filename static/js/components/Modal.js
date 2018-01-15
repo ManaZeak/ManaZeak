@@ -60,6 +60,10 @@ class Modal {
                 this._inviteCodeUI();
                 break;
 
+            case "cover":
+                this._coverUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -169,6 +173,23 @@ class Modal {
             name.style.border = "solid 1px red";
             new Notification("INFO", "Name field is empty.", "You must specify the name of your playlist.");
         }
+    }
+
+
+    _coverUI() {
+        this.ui.container.id       = "cover";
+
+        let info = document.createElement("H1");
+        let cover           = document.createElement("IMG");
+        let year = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year; // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+
+        info.innerHTML = this.data.artist + " - " + this.data.album + " (" + year + ")";
+        cover.src           = this.data.src;
+
+        this.ui.content.appendChild(info);
+        this.ui.content.appendChild(cover);
+
+        this._appendCloseButton();
     }
 
 
@@ -473,8 +494,6 @@ class Modal {
 
 
     _openSyncThing() {
-        this._appendCloseButton();
-
         let content             = document.createElement("IFRAME");
         this.ui.container.id    = "openSyncThing";
 
@@ -488,6 +507,8 @@ class Modal {
         };
 
         this.ui.content.appendChild(content);
+
+        this._appendCloseButton();
     }
 
 
