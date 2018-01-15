@@ -263,7 +263,7 @@ function JSONParsedGetRequest(url, callback) {
  *          {function} callback
  *          {bool} raw_data - if true, send as raw data. Default is JSON
  **/
-function JSONParsedPostRequest(url, message, callback, raw_data) {
+function JSONParsedPostRequest(url, message, callback) {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -274,7 +274,6 @@ function JSONParsedPostRequest(url, message, callback, raw_data) {
 
     xhr.open("POST", url, true);
     xhr.setRequestHeader('X-CSRFToken', window.app.cookies['csrftoken']);
-    if(raw_data !== true)
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(message);
 }
