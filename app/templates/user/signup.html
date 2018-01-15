@@ -44,19 +44,20 @@
             if (this.readyState === 4 && this.status === 200) {
                 let response = JSON.parse(this.responseText);
 
-                //if (response.INVITE === true) {
+                if (response.INVITE === true) {
                     let p = document.createElement("P");
                     let label = document.createElement("LABEL");
                     let input = document.createElement("INPUT");
 
                     label.innerHTML = "Godfather:";
                     input.type = "text";
+                    input.setAttribute("name", "godFather");
 
                     p.appendChild(label);
                     p.appendChild(input);
 console.log("There");
                     document.getElementById("signupForm").insertBefore(p, document.getElementById("signupForm").firstChild);
-                //}
+                }
             }
         };
 

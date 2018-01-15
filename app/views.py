@@ -40,14 +40,12 @@ def createUser(request):
             invite = None
             # Checking if user invite is enabled
             if getAdminOptions().inviteCodeEnabled:
-                response = json.loads(request.body)
-                if 'INVITE_CODE' in response:
-                    inviteCode = strip_tags(response['INVITE_CODE'])
-                    if InviteCode.objects.filter(code=inviteCode) == 1:
-                        invite = InviteCode.objects.get(code=inviteCode)
-                    else:
-                        form = UserCreationForm()
-                        return render(request, 'user/signup.html', {'form': form})
+                inviteCode = form.data.get('godFather')
+                if InviteCode.objects.filter(code__contains=inviteCode).count() == 1:
+                    invite = InviteCode.objects.get(code=inviteCode)
+                else:
+                    form = UserCreationForm()
+                    return render(request, 'user/signup.html', {'form': form})
 
             # Special condition for the first user to be administrator
             if User.objects.all().count() == 1:
