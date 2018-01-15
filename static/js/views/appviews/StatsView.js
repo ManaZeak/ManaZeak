@@ -342,11 +342,19 @@ class StatsView extends View {
      * arg    : {[int][int]} leastArtists - Key/Value artists array
      **/
     _updateLeastArtistsList(leastArtists, ui) {
-
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastArtists.length; ++i) {
             if (leastArtists[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML =  i + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+
+                if (leastArtists[i][0] !== "") {
+                    entry.innerHTML =  counter + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML =  counter + ". Untagged artist (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                }
+                ++counter;
                 ui.appendChild(entry);
             }
         }
@@ -360,10 +368,20 @@ class StatsView extends View {
      * arg    : {[int][int]} prefArtists - Key/Value artists array
      **/
     _updatePrefArtistsList(prefArtists, ui) {
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefArtists.length; ++i) {
             if (prefArtists[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = i + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+
+                if (prefArtists[i][0] !== "") {
+                    entry.innerHTML = counter + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML = counter + ". Untagged artist (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                }
+
+                ++counter;
                 ui.appendChild(entry);
             }
         }
@@ -377,10 +395,20 @@ class StatsView extends View {
      * arg    : {[][]} leastGenres - Key/Value tracks array
      **/
     _updateLeastGenresList(leastGenres, ui) {
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastGenres.length; ++i) {
             if (leastGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = i + ". " + leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+
+                if (leastGenres[i][0] !== "") {
+                    entry.innerHTML = counter + ". " + leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML = counter + ". Untagged genre (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                ++counter;
                 ui.appendChild(entry);
             }
         }
@@ -394,11 +422,20 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefGenresList(prefGenres, ui) {
-        console.log(prefGenres);
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefGenres.length; ++i) {
             if (prefGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = i + ". " + prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+
+                if (prefGenres[i][0] !== "") {
+                    entry.innerHTML = counter + ". " + prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML = counter + ". Untagged genre (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                ++counter;
                 ui.appendChild(entry);
             }
         }
@@ -412,11 +449,20 @@ class StatsView extends View {
      * arg    : {[int][int]} leastTracks - Key/Value tracks array
      **/
     _updateLeastTracksList(leastTracks, ui) {
-        console.log(leastTracks);
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastTracks.length; ++i) {
             if (leastTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = i + ". " + leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+
+                if (leastTracks[i][0]) {
+                    entry.innerHTML = counter + ". " + leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML = counter + ". Untagged track (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                ++counter;
                 ui.appendChild(entry);
 
             }
@@ -431,10 +477,19 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefTracksList(prefTracks, ui) {
+        let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefTracks.length; ++i) {
             if (prefTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
-                entry.innerHTML = i + ". " + prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+
+                if (prefTracks[i][0] !== "") {
+                    entry.innerHTML = counter + ". " + prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+
+                else {
+                    entry.innerHTML = counter + ". Untagged track (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                }
+                ++counter;
                 ui.appendChild(entry);
 
             }
