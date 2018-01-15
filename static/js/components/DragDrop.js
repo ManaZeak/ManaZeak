@@ -44,7 +44,7 @@ class DragDrop {
                     JSONParsedPostRequest('ajax/fileUpload/', JSON.stringify({
                         NAME: f.name,
                         CONTENT: f
-                    }), function() {
+                    }, function(k, v) { return v; }), function() {
                         new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
                     }, true);
                 } else {

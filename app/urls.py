@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, library, playlist, adminTools, wish, userSettings
+from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload
 from app.stats import stats, suggestion
 from app.track import track
 from . import views
@@ -76,4 +76,7 @@ urlpatterns = [
     # InviteCode section
     url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
     url(r'^ajax/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
+
+    # File upload
+    url(r'^ajax/fileUpload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
 ]
