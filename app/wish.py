@@ -27,6 +27,7 @@ def createWish(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getWishes(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -42,6 +43,7 @@ def getWishes(request):
             data = []
             for wish in wishes:
                 data.append({
+                    'WISH_ID': wish.id,
                     'DATE': wish.date,
                     'TEXT': wish.text,
                     'USER': wish.user.username,
@@ -51,6 +53,39 @@ def getWishes(request):
             data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def setWishStatus(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        admin = request.user
+        if admin.is_superuser:
+            if 'WISH_ID' in response and 'STATUS' in response:
+                wishId = response['WISH_ID']
+                if Wish.objects.filter(id=wishId).count() == 1:
+                    wish = Wish.objects.get(id=wishId)
+                    status = strip_tags(response['STATUS'])
+                    try:
+                        status = int(status)
+                    except ValueError:
+                        return JsonResponse(errorCheckMessage(False, "valueError"))
+
+                    if status in range(0, 3):
+                        wish.status = status
+                        wish.save()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "valueError")
+                else:
+                    data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badRequest")
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

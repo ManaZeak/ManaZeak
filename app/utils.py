@@ -126,7 +126,11 @@ def errorCheckMessage(isDone, error):
 
     elif error == "fileExists":
         errorTitle = "File already exists"
-        errorMessage = "The file you want to upload exists already."
+        errorMessage = "The file you want to upload exists already"
+
+    elif error == "valueError":
+        errorTitle = "Wrong value"
+        errorMessage = "The value wasn't expected"
 
     return {
         'DONE': isDone,

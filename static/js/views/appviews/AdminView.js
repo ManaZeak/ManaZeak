@@ -403,25 +403,20 @@ class AdminView extends View {
         let list = document.createElement("UL");
 
         let that = this;
-        for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
-            let element       = document.createElement("LI");
-            let rm            = document.createElement("IMG");
-            rm.src            = "/static/img/utils/trash.svg";
-            rm.addEventListener("click", function() {
-                JSONParsedPostRequest(
-                    "ajax/deleteLibrary/",
-                    JSON.stringify({
-                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE        : bool
-                         *     ERROR_H1    : string
-                         *     ERROR_MSG   : string
-                         *
-                         *     PATH        : string
-                         * } */
-                        if (response.DONE) {
+        JSONParsedPostRequest(
+            "ajax/getWishes/",
+            JSON.stringify({
+                ALL: true
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {/*
                             for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
                                 if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
                                     window.app.playlists.splice(j, 1);
@@ -435,25 +430,87 @@ class AdminView extends View {
                             that._updateAdminInfo(function() {
                                 self._requestLibrariesPage();
                             });
+                        */
+                    for (let i = 0; i < response.RESULT.length; ++i) {
+                        let element       = document.createElement("LI");
+                        let status = document.createElement("IMG");
+                        let accept = document.createElement("BUTTON");
+                        let refuse = document.createElement("BUTTON");
+
+                        element.id = "wishEntry";
+                        accept.id = "accept";
+                        refuse.id = "refuse";
+
+                        element.innerHTML = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
+                                            "<b>" + response.RESULT[i].TEXT + "</b><br>";
+                        accept.innerHTML = "ACCEPT";
+                        refuse.innerHTML = "REFUSE";
+
+                        switch (response.RESULT[i].STATUS) {
+                            case 0:
+                                status.src = "/static/img/utils/adminview/pending.svg";
+                                break;
+                            case 1:
+                                status.src = "/static/img/utils/adminview/refused.svg";
+                                break;
+                            case 2:
+                                status.src = "/static/img/utils/adminview/accepted.svg";
+                                break;
                         }
 
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
+                        let that = this;
+                        accept.addEventListener("click", function() {
+                            that._updateWishStatus(response.RESULT[i].WISH_ID, 2);
+                        });
+                        refuse.addEventListener("click", function() {
+                            that._updateWishStatus(response.RESULT[i].WISH_ID, 1);
+                        });
+
+                        element.appendChild(status);
+                        element.appendChild(accept);
+                        element.appendChild(refuse);
+                        list.appendChild(element);
                     }
-                );
-            });
-            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
-                "Path: " + this.info.LIBRARIES[i].PATH;
-            element.appendChild(rm);
-            list.appendChild(element);
-        }
 
-        this.ui.content.appendChild(this.ui.contentTitle);
-        this.ui.content.appendChild(document.createElement("HR"));
-        this.ui.content.appendChild(list);
+                    that.ui.content.appendChild(that.ui.contentTitle);
+                    that.ui.content.appendChild(document.createElement("HR"));
+                    that.ui.content.appendChild(list);
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
+
+    _updateWishStatus(wishID, status) {
+        let that = this;
+        JSONParsedPostRequest(
+            "ajax/setWishStatus/",
+            JSON.stringify({
+                WISH_ID: wishID,
+                STATUS: status
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+                    that._requestWishPage();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
 
     /**
      * method : _requestDrop (private)
