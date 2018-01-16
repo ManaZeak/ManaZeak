@@ -318,7 +318,17 @@ class ContextMenu {
     }
 
 
+    /**
+     * method : getRoot
+     * class  : ContextMenu
+     * desc   : Return the root of the menu
+     **/
+    getRoot() {
+        return this.contextMenu;
+    }
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
 
     /**
      * method : _init (private)
@@ -386,7 +396,6 @@ class ContextMenu {
             self.contextMenu.closeAll();
         });
     }
-
 
     /**
      * method : _keyListener (private)
