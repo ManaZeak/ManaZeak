@@ -156,6 +156,18 @@ def changeSyncthingAPIKey(request):
     return JsonResponse(data)
 
 
+# WIP
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def changeBufferPath(request):
+    if request.method == 'POST':
+        admin = request.user
+        if admin.is_superuser:
+            response = json.loads(request.body)
+            if 'BUFFER_PATH' in response:
+                adminOptions = getAdminOptions()
+                bufferPath = strip_tags(response['BUFFER_PATH'])
+
+
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':

@@ -47,7 +47,7 @@ def getWishes(request):
                     'USER': wish.user.username,
                     'STATUS': wish.status,
                 }
-            data = dict({'RESULT': data})
+            data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
     else:
