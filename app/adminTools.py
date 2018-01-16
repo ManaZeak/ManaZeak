@@ -50,7 +50,7 @@ def getAdminView(request):
                 userPreferences = UserPreferences.objects.get(user=user)
                 inviteCode = InviteCode.objects.get(user=user)
                 godfather = {
-                    'GODFATHER': "JESUS",
+                    'GODFATHER': "Jesus",
                 }
                 if userPreferences.inviteCode is not None:
                     godfather = {
