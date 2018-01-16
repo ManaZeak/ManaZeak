@@ -19,11 +19,18 @@ def getUserSettings(request):
                 'DATE_JOINED': timeCodeToString(user.date_joined),
                 'LAST_LOGIN': timeCodeToString(user.last_login),
                 'INVITE_CODE': inviteCode.code,
+                'IS_ADMIN': user.is_superuser,
+                'MANACOIN': userPref.points,
             }
             if userPref.inviteCode is not None:
                 data = {**data, **{
                     'GODFATHER_CODE': userPref.inviteCode.code,
                     'GODFATHER_NAME': userPref.inviteCode.user.username,
+                }}
+            else:
+                data = {**data, **{
+                    'GODFATHER_CODE': "Jesus",
+                    'GODFATHER_NAME': "Christ",
                 }}
             data = {**data, **errorCheckMessage(True, None)}
         else:
