@@ -11,6 +11,7 @@ from multiprocessing import Process
 
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions
+from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.utils import errorCheckMessage
 
@@ -60,6 +61,7 @@ def getAdminView(request):
                     'NAME': library.name,
                     'PATH': library.path,
                     'NUMBER_TRACK': library.playlist.track.all().count(),
+                    'TOTAL_DURATION': getTotalLength(library.playlist),
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
