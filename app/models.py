@@ -119,7 +119,7 @@ class Wish(models.Model):
 class AdminOptions(models.Model):
     syncthingKey = models.CharField(max_length=100, null=True)
     inviteCodeEnabled = models.BooleanField(default=False)
-    bufferPath = models.FilePathField(max_length=1000)
+    bufferPath = models.FilePathField(max_length=1000, null=True)
 
 
 class InviteCode(models.Model):

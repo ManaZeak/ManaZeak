@@ -161,7 +161,7 @@ def lazyLoadingSimplifiedPlaylist(request):
             try:
                 reqNumber = int(strip_tags(response['REQ_NUMBER']))
             except ValueError:
-                return JsonResponse(errorCheckMessage(False, "badFormat"))
+                return JsonResponse(errorCheckMessage(False, "valueError"))
             nbTracks = 300
             reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:

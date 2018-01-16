@@ -62,13 +62,14 @@
                 margin-bottom: 15px;
                 padding: 10px 20px;
                 position: relative;
+                min-height: 55px;
 
                 img {
                     cursor: pointer;
-                    height: calc(100% - 25px);
+                    height: 35px;
                     position: absolute;
-                    right: 25px;
-                    top: 12.5px;
+                    right: 10px;
+                    top: 10px;
                     width: auto;
                 }
             }
@@ -112,5 +113,28 @@
             border-color: red;
         }
 
+
+        #wishEntry {
+            button {
+                margin-bottom: 5px;
+                margin-top: 10px;
+                margin-right: 20px;
+            }
+
+            img {
+                cursor: inherit;
+            }
+
+            #accept:active,
+            #accept:focus,
+            #accept:hover {
+                border-color: green !important;
+                color: green;
+            }
+
+            #refuse {
+
+            }
+        }
     }
 }
