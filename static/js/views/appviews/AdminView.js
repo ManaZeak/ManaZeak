@@ -237,7 +237,7 @@ class AdminView extends View {
         sponsoringLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
             "<br>" +
             "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
-            "This command will add a field in the sign up form that is mandatory. Sponsoring current status : " + status;
+            "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
         sponsoring.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
@@ -315,8 +315,9 @@ class AdminView extends View {
                     }
                 );
             });
-            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
-                "Path: " + this.info.LIBRARIES[i].PATH;
+            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
+                                this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
+
             element.appendChild(rm);
             list.appendChild(element);
         }
