@@ -124,10 +124,6 @@
                 margin-right: 20px;
             }
 
-            img {
-                cursor: inherit;
-            }
-
             #accept:active,
             #accept:focus,
             #accept:hover {
@@ -135,8 +131,8 @@
                 color: green;
             }
 
-            #refuse {
-
+            #accept {
+                right: 55px;
             }
         }
     }

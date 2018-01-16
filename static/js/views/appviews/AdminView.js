@@ -60,7 +60,7 @@ class AdminView extends View {
         this.ui.menuUser.innerHTML  = "Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
-        this.ui.menuWish.innerHTML    = "Suggestions";
+        this.ui.menuWish.innerHTML    = "Wishes";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuLib);
@@ -419,7 +419,7 @@ class AdminView extends View {
         this._updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuWish.className   = "selected";
-        this.ui.contentTitle.innerHTML = "Suggestions management";
+        this.ui.contentTitle.innerHTML = "Wishes management";
 
         let list = document.createElement("UL");
 
@@ -454,9 +454,8 @@ class AdminView extends View {
                         */
                     for (let i = 0; i < response.RESULT.length; ++i) {
                         let element       = document.createElement("LI");
-                        let status = document.createElement("IMG");
-                        let accept = document.createElement("BUTTON");
-                        let refuse = document.createElement("BUTTON");
+                        let accept = document.createElement("IMG");
+                        let refuse = document.createElement("IMG");
 
                         element.id = "wishEntry";
                         accept.id = "accept";
@@ -464,18 +463,19 @@ class AdminView extends View {
 
                         element.innerHTML = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
                                             "<b>" + response.RESULT[i].TEXT + "</b><br>";
-                        accept.innerHTML = "ACCEPT";
-                        refuse.innerHTML = "REFUSE";
 
                         switch (response.RESULT[i].STATUS) {
                             case 0:
-                                status.src = "/static/img/utils/adminview/pending.svg";
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
                                 break;
                             case 1:
-                                status.src = "/static/img/utils/adminview/refused.svg";
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
                                 break;
                             case 2:
-                                status.src = "/static/img/utils/adminview/accepted.svg";
+                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
                                 break;
                         }
 
@@ -487,7 +487,6 @@ class AdminView extends View {
                             self._updateWishStatus(response.RESULT[i].WISH_ID, 1);
                         });
 
-                        element.appendChild(status);
                         element.appendChild(accept);
                         element.appendChild(refuse);
                         list.appendChild(element);
