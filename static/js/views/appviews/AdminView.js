@@ -458,12 +458,12 @@ class AdminView extends View {
                                 break;
                         }
 
-                        let that = this;
+                        let self = that;
                         accept.addEventListener("click", function() {
-                            that._updateWishStatus(response.RESULT[i].WISH_ID, 2);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 2);
                         });
                         refuse.addEventListener("click", function() {
-                            that._updateWishStatus(response.RESULT[i].WISH_ID, 1);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 1);
                         });
 
                         element.appendChild(status);
