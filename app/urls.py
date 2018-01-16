@@ -60,7 +60,7 @@ urlpatterns = [
     url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
     url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
     url(r'^ajax/setWishStatus/$', wish.setWishStatus, name='setWishStatus'),
-    
+
     # USER actions
     url(r'^ajax/getUserSettings/$', userSettings.getUserSettings, name='getUserSettings'),
 
