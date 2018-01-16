@@ -226,7 +226,7 @@ class AdminView extends View {
                         }
                     );
                 });
-            });console.log(this.info.USER);
+            });
             element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
                                 "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
                                 "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER + "<br>" +

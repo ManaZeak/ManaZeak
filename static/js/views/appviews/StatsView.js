@@ -311,7 +311,6 @@ class StatsView extends View {
                     }
 
                     else {
-                        console.log(response);
                         prefTracksLabel.innerHTML      = "Top Tracks";
                         leastTracksLabel.innerHTML     = "Flop Tracks";
 
