@@ -83,11 +83,13 @@ ContextMenuEntry.prototype = {
 
             //Else expand it
             else {
-                if (clicked.parent.multiOpenSubmenu) { clicked.parent.closeAll(); }
+                if (clicked.parent.multiOpenSubmenu) {
+                    clicked.parent.closeAll();
+                }
 
                 clicked.element.classList.toggle("mzk-ctx-open");
             }
-        }, true);
+        });
     },
 
 
