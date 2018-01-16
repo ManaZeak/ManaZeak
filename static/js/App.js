@@ -6,8 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class App {
+class App extends MzkObject {
     constructor() {
+        super();
 
         this.cookies          = getCookies();
         this.user             = new User();
@@ -16,7 +17,7 @@ class App {
         this.mainContainer.id = "mainContainer";
         this.footBar          = null;
         this.player           = null;
-        this.playlists        = [];
+        this.playlists        = new PlaylistCollection();
         this.activePlaylist   = null;
         this.cssFiles         = {};
         this.appViews         = {};
@@ -32,26 +33,6 @@ class App {
                 class: null
             }
         };
-
-        this.listeners = {};
-        let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-        for (let i = 0; i < properties.length; ++i) {
-            if (typeof this[properties[i]] === "function") {
-                this.listeners[properties[i]] = [];
-
-                let oldFunc = this[properties[i]];
-
-                this[properties[i]] = (function(pname, func) {
-                    return function() {
-                        let r = func.apply(this, arguments);
-                        for (let i = 0; i < this.listeners[pname].length; ++i) {
-                            this.listeners[pname][i].runCallback(arguments);
-                        }
-                        return r;
-                    }
-                }(properties[i], oldFunc));
-            }
-        }
 
         document.body.appendChild(this.mainContainer);
     }
@@ -204,13 +185,8 @@ class App {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    for (let i = 0; i < that.playlists.length; ++i) { // Removing from playlists Array
-                        if (that.playlists[i].id === id) {
-                            that.playlists.splice(i, 1);
-                            break;
-                        }
-                    }
-                    that.playlists[0].activate(); // TODO : test if there is still some playlists
+                    that.playlists.remove(id);
+                    that.playlists.getDefault().activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
 
@@ -261,20 +237,6 @@ class App {
         this.player.getPlayer().currentTime += amount;
     }
 
-
-    /**
-     * method : getAllPlaylistsTracks (public)
-     * class  : App
-     * desc   : Fetch playlists tracks
-     * arg    : {int} begin - The index to begin the loop with
-     **/
-    getAllPlaylistsTracks(begin) {
-        for (let i = begin; i < this.playlists.length; ++i) {
-            this.playlists[i].getPlaylistsTracks(undefined);
-        }
-    }
-
-
     /**
      * method : getPlaylistFromId (public)
      * class  : App
@@ -282,13 +244,7 @@ class App {
      * arg    : {int} id - The playlist to get from an ID
      **/
     getPlaylistFromId(id) {
-        for (let i = 0; i < this.playlists.length; ++i) {
-            if (this.playlists[i].id === id) {
-                return this.playlists[i];
-            }
-        }
-
-        return null;
+        this.playlists.remove(id);
     }
 
 
@@ -299,8 +255,8 @@ class App {
      * return : {object} element
      **/
     getPlaylists() {
-        return this.playlists.filter(function(element) {
-            return element.isLibrary != true;
+        return this.playlists.filter(function() {
+            return this.getIsLibrary();
         });
     }
 
@@ -341,28 +297,6 @@ class App {
                 that._appStart(response); // Response is tested in _appStart
             }
         );
-    }
-
-
-    /**
-     * method : listen (public)
-     * class  : App
-     * desc   : Add listener on an App function
-     * arg    : {string} event - the function to listen to
-     *        : {function} callback
-     **/
-    listen(event, callback, thisArg) {
-        if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i) {
-                if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
-                }
-            }
-        }
-
-        else if (this.listeners[event]) {
-            this.listeners[event].push(new MzkListener('', '', callback, thisArg));
-        }
     }
 
 
@@ -502,13 +436,11 @@ class App {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    for (let i = 0; i < that.playlists.length; ++i) { // Renaming from playlists Array
-                        if (that.playlists[i].id === id) {
-                            that.playlists[i].setName(name);
-                            break;
-                        }
+                    let target = that.playlists.get(id);
+                    if(target != null) {
+                        target.setName(name);
+                        that.playlists.getDefault().activate(); // TODO : test if there is still some playlists
                     }
-                    that.playlists[0].activate(); // TODO : test if there is still some playlists
                     that.refreshTopBar();
                     that.refreshFootBar();
                     // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
@@ -539,8 +471,8 @@ class App {
     requestNewPlaylist() {
         let that = this;
 
-        this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
-            that.playlists[0].activate();
+        this.playlists.add(new Playlist(0, null, false, false, undefined, function() {
+            that.playlists.getDefault().activate();
             that.refreshTopBar();
             that.refreshFootBar();
         }));
@@ -555,8 +487,8 @@ class App {
     requestNewLibrary() {
         let that = this;
 
-        this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            that.playlists[0].activate();
+        this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
+            that.playlists.getDefault().activate();
             that.refreshTopBar();
             that.refreshFootBar();
         }));
@@ -736,7 +668,7 @@ class App {
             modal.open();
 
             for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
-                that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
+                that.playlists.add(new Playlist(playlists.PLAYLIST_IDS[i],
                     playlists.PLAYLIST_NAMES[i],
                     playlists.PLAYLIST_IS_LIBRARY[i],
                     true,
@@ -744,23 +676,26 @@ class App {
                     undefined));
             }
 
-            this.topBar.init(this.playlists, this.playlists[0]);
-            this.playlists[0].getPlaylistsTracks(function() {
+            let defPlaylist = this.playlists.getDefault();
+            this.topBar.init(this.playlists.filter(function() {return true;}), defPlaylist);
+            defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
                 that.changePlaylist();
                 that.footBar.playlistPreview.setVisible(true);
                 // TODO : replace begin arg to the active playlists, to avoid loading it
-                that.getAllPlaylistsTracks(1); // 1 stand for the beginning of the loop in playlists
+                that.playlists.forEach(function() {
+                    this.getPlaylistsTracks();
+                }, false);
             });
         }
 
         else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
-            this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-                that.playlists[0].activate();
-                that.topBar.init(that.playlists, that.playlists[0]);
+            this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
+                let defPlaylist = that.playlists.getDefault();
+                that.topBar.init(that.playlists.filter(function() {return true;}), defPlaylist);
                 that.footBar.playlistPreview.setVisible(true);
-                that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-                // ? that.activePlaylist = that.playlists[0];
+                that.footBar.playlistPreview.changePlaylist(defPlaylist); // TODO : get Lib/Play image/icon
+                // ? that.activePlaylist = defPlaylist;
             }));
         }
 

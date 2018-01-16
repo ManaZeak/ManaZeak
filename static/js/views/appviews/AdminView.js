@@ -168,8 +168,7 @@ class AdminView extends View {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    window.app.playlists = [];
-                    window.app.topBar.playlists = [];
+                    window.app.playlists.clear();
                     that.ui.rmLibButton.blur();
 
                     window.app.refreshTopBar();
