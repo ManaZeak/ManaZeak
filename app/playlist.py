@@ -227,6 +227,14 @@ def getPlaylistInfo(request):
     return JsonResponse(data)
 
 
+def getTotalLength(playlist):
+    tracks = playlist.track.all()
+    totalDuration = 0
+    for track in tracks:
+        totalDuration += track.duration
+    return totalDuration
+
+
 # Return all the id of the user playlists
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserPlaylists(request):
