@@ -11,6 +11,7 @@ class App {
 
         this.cookies          = getCookies();
         this.user             = new User();
+        this.dragdrop         = new DragDrop(document.body);
         this.mainContainer    = document.createElement("DIV");
         this.mainContainer.id = "mainContainer";
         this.footBar          = null;
@@ -53,7 +54,6 @@ class App {
         }
 
         document.body.appendChild(this.mainContainer);
-        new DragDrop(this.mainContainer);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
