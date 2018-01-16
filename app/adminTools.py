@@ -13,7 +13,7 @@ from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, 
     AdminOptions, UserPreferences, InviteCode
 from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, timeCodeToString
 
 
 def getAdminOptions():
@@ -41,12 +41,8 @@ def getAdminView(request):
             users = User.objects.all().order_by('date_joined')
             userInfo = []
             for user in users:
-                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) + \
-                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" + \
-                             str(user.date_joined.minute)
-                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) + \
-                            "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" + \
-                            str(user.last_login.minute)
+                dateJoined = timeCodeToString(user.date_joined)
+                lastLogin = timeCodeToString(user.last_login)
                 userPreferences = UserPreferences.objects.get(user=user)
                 inviteCode = InviteCode.objects.get(user=user)
                 godfather = {

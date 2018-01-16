@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from app.models import InviteCode, UserPreferences
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, timeCodeToString
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
@@ -15,13 +15,16 @@ def getUserSettings(request):
             userPref = UserPreferences.objects.get(user=user)
             inviteCode = InviteCode.objects.get(user=user)
             data = {
+                'USER_NAME': user.username,
+                'DATE_JOINED': timeCodeToString(user.date_joined),
+                'LAST_LOGIN': timeCodeToString(user.last_login),
                 'INVITE_CODE': inviteCode.code,
             }
             if userPref.inviteCode is not None:
-                tmp = {
+                data = {**data, **{
                     'GODFATHER_CODE': userPref.inviteCode.code,
-                }
-                data = {**data, **tmp}
+                    'GODFATHER_NAME': userPref.inviteCode.user.username,
+                }}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "dbError")

@@ -139,6 +139,12 @@ def errorCheckMessage(isDone, error):
     }
 
 
+def timeCodeToString(timestamp):
+    return str(timestamp.day).zfill(2) + "/" + str(timestamp.month).zfill(2) + \
+           "/" + str(timestamp.year) + " - " + str(timestamp.hour) + ":" + \
+           str(timestamp.minute)
+
+
 # Create the file type entry
 def populateDB():
     if FileType.objects.all().count() == 0:
