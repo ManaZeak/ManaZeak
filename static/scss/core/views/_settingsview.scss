@@ -1,0 +1,143 @@
+#settings {
+    display: flex;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    #leftMenu {
+        background-color: $dark-secondary-color;
+        height: 100%;
+        width: 200px;
+
+        h2 {
+            padding-left: 10px;
+            margin-top: 30px;
+            margin-bottom: 26px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                cursor: pointer;
+                padding: 10px 20px;
+            }
+
+            li:active,
+            li:focus,
+            li:hover {
+                background-color: $dark-primary-color;
+            }
+
+            .selected {
+                color: red;
+            }
+        }
+    }
+
+    #content {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 25px;
+        overflow-y: auto;
+        width: calc(100% - 200px);
+
+        h1 {
+            margin-top: 0;
+        }
+
+        hr {
+            border-color: $primary-text;
+            margin-bottom: 40px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                background-color: $dark-primary-color;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                padding: 10px 20px;
+                position: relative;
+                min-height: 38px;
+
+                img {
+                    cursor: pointer;
+                    height: 35px;
+                    position: absolute;
+                    right: 10px;
+                    top: 10px;
+                    width: auto;
+                }
+            }
+        }
+
+        button,
+        input {
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: none;
+            border: solid 1px $primary-text;
+            color: $primary-text;
+            cursor: pointer;
+            padding: 7px 20px;
+            transition: 0.3s ease;
+        }
+
+        button:active,
+        button:focus,
+        button:hover {
+            border-color: red;
+            color: red;
+        }
+
+        input {
+            background: none;
+            border: solid 0 transparent;
+            border-bottom: solid 1px $primary-text;
+            color: $primary-text;
+            margin-right: 15px;
+            padding: 7px 0;
+            transition: 0.3s ease;
+            width: 260px;
+        }
+
+        input:active,
+        input:focus,
+        input:hover {
+            border-color: red;
+        }
+
+
+        #wishEntry {
+            button {
+                margin-bottom: 5px;
+                margin-top: 10px;
+                margin-right: 20px;
+            }
+
+            img {
+                cursor: inherit;
+            }
+
+            #accept:active,
+            #accept:focus,
+            #accept:hover {
+                border-color: green !important;
+                color: green;
+            }
+
+            #refuse {
+
+            }
+        }
+    }
+}

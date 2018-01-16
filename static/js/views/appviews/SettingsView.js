@@ -46,7 +46,7 @@ class SettingsView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "admin";
+        this.ui.container.id        = "settings";
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
 
@@ -81,10 +81,7 @@ class SettingsView extends View {
      * desc   : Create view to DB page by default
      **/
     _init() {
-        let that = this;
-        this._updateSettingsInfo(function() {
-            that._createUI();
-        });
+        this._createUI();
     }
 
 
@@ -99,8 +96,25 @@ class SettingsView extends View {
         this.ui.menuGen.className        = "selected";
         this.ui.contentTitle.innerHTML  = "General settings";
 
-        this.ui.content.appendChild(this.ui.contentTitle);
-        this.ui.content.appendChild(document.createElement("HR"));
+        let that = this;
+        this._updateSettingsInfo(function() {
+                console.log(that.info);
+                let userInfo = document.createElement("P");
+                let admin         = that.info.IS_ADMIN ? "Admin" : "User";
+
+
+                that.ui.contentTitle.innerHTML  = "General settings";
+                userInfo.innerHTML = "<b>" + that.info.USER_NAME + "</b> (" + admin + ") <br><br>" +
+                                "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + that.info.INVITE_CODE + "<br>" +
+                                "Godfather:&nbsp;&nbsp;" + that.info.GODFATHER_NAME + " (" + that.info.GODFATHER_CODE + ")<br>" +
+                                "ManaCoin: " + that.info.MANACOIN + "<br><br>" +
+                                "Joined on: " + that.info.DATE_JOINED + "<br>" +
+                                "Last login: " + that.info.LAST_LOGIN;
+
+                that.ui.content.appendChild(that.ui.contentTitle);
+                that.ui.content.appendChild(document.createElement("HR"));
+                that.ui.content.appendChild(userInfo);
+        });
     }
 
 
