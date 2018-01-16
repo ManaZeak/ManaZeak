@@ -481,10 +481,16 @@ class AdminView extends View {
 
                         let self = that;
                         accept.addEventListener("click", function() {
-                            self._updateWishStatus(response.RESULT[i].WISH_ID, 2);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 2, function() {
+                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
+                            });
                         });
                         refuse.addEventListener("click", function() {
-                            self._updateWishStatus(response.RESULT[i].WISH_ID, 1);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 1, function() {
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
+                            });
                         });
 
                         element.appendChild(accept);
@@ -505,7 +511,7 @@ class AdminView extends View {
     }
 
 
-    _updateWishStatus(wishID, status) {
+    _updateWishStatus(wishID, status, callback) {
         let that = this;
         JSONParsedPostRequest(
             "ajax/setWishStatus/",
@@ -522,7 +528,13 @@ class AdminView extends View {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    that._requestWishPage();
+                    if (callback) {
+                        callback();
+                    }
+
+                    else {
+                        that._requestWishPage();
+                    }
                 }
 
                 else {
