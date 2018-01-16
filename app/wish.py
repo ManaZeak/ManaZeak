@@ -41,12 +41,13 @@ def getWishes(request):
 
             data = []
             for wish in wishes:
-                data = {
+                data.append({
                     'DATE': wish.date,
                     'TEXT': wish.text,
                     'USER': wish.user.username,
                     'STATUS': wish.status,
-                }
+                })
+
             data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
