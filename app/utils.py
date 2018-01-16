@@ -120,6 +120,14 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Can't display stats"
         errorMessage = "Use the application for generating stats"
 
+    elif error == "badFileName":
+        errorTitle = "The filename is invalid"
+        errorMessage = "Change the filename if you want to upload it"
+
+    elif error == "fileExists":
+        errorTitle = "File already exists"
+        errorMessage = "The file you want to upload exists already."
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",

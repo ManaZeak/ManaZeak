@@ -144,7 +144,7 @@ class Playlist {
                                 window.app.changeTrack(that.currentTrack, false);
                             }
 
-                            else {
+                                else {
                                 new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                             }
                         }
