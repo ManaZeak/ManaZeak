@@ -45,6 +45,7 @@ class AdminView extends View {
             menuUser:     document.createElement("LI"),
             menuLib:      document.createElement("LI"),
             menuSC:       document.createElement("LI"),
+            menuWish:     document.createElement("LI"),
 
             content:      document.createElement("DIV"),
             contentTitle: document.createElement("H1"),
@@ -59,11 +60,13 @@ class AdminView extends View {
         this.ui.menuUser.innerHTML  = "Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
+        this.ui.menuWish.innerHTML    = "Suggestions";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
-        this.ui.menuList.appendChild(this.ui.menuUser);
         this.ui.menuList.appendChild(this.ui.menuLib);
+        this.ui.menuList.appendChild(this.ui.menuWish);
         this.ui.menuList.appendChild(this.ui.menuSC);
+        this.ui.menuList.appendChild(this.ui.menuUser);
 
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
@@ -85,6 +88,7 @@ class AdminView extends View {
         this.ui.menuUser.addEventListener("click", this._requestUsersPage.bind(this));
         this.ui.menuLib.addEventListener("click", this._requestLibrariesPage.bind(this));
         this.ui.menuSC.addEventListener("click", this._requestSCPage.bind(this));
+        this.ui.menuWish.addEventListener("click", this._requestWishPage.bind(this));
     }
 
 
@@ -386,6 +390,72 @@ class AdminView extends View {
 
 
     /**
+     * method : _requestSCPage (private)
+     * class  : AdminView
+     * desc   : Display the SyncThing management page
+     **/
+    _requestWishPage() {
+        this._updateAdminInfo();
+        this._clearPageSpace();
+        this.ui.menuWish.className   = "selected";
+        this.ui.contentTitle.innerHTML = "Suggestions management";
+
+        let list = document.createElement("UL");
+
+        let that = this;
+        for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
+            let element       = document.createElement("LI");
+            let rm            = document.createElement("IMG");
+            rm.src            = "/static/img/utils/trash.svg";
+            rm.addEventListener("click", function() {
+                JSONParsedPostRequest(
+                    "ajax/deleteLibrary/",
+                    JSON.stringify({
+                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
+                    }),
+                    function(response) {
+                        /* response = {
+                         *     DONE        : bool
+                         *     ERROR_H1    : string
+                         *     ERROR_MSG   : string
+                         *
+                         *     PATH        : string
+                         * } */
+                        if (response.DONE) {
+                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
+                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
+                                    window.app.playlists.splice(j, 1);
+                                    break;
+                                }
+                            }
+                            window.app.refreshTopBar();
+                            window.app.refreshFootBar();
+
+                            let self = that;
+                            that._updateAdminInfo(function() {
+                                self._requestLibrariesPage();
+                            });
+                        }
+
+                        else {
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                        }
+                    }
+                );
+            });
+            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
+                "Path: " + this.info.LIBRARIES[i].PATH;
+            element.appendChild(rm);
+            list.appendChild(element);
+        }
+
+        this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(list);
+    }
+
+
+    /**
      * method : _requestDrop (private)
      * class  : AdminView
      * desc   : Send a drop db request to the server
@@ -542,6 +612,7 @@ class AdminView extends View {
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
+        this.ui.menuWish.className   = "";
     }
 
 
