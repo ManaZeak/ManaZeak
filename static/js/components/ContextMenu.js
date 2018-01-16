@@ -53,7 +53,7 @@ ContextMenuEntry.prototype = {
 
             if(target != self.element)
                 self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
-        }, true);
+        });
 
         this.element.addEventListener("click", function (event) {
             if (event.target.tagName !== 'LI') { return true; }
@@ -83,11 +83,13 @@ ContextMenuEntry.prototype = {
 
             //Else expand it
             else {
-                if (clicked.parent.multiOpenSubmenu) { clicked.parent.closeAll(); }
+                if (clicked.parent.multiOpenSubmenu) {
+                    clicked.parent.closeAll();
+                }
 
                 clicked.element.classList.toggle("mzk-ctx-open");
             }
-        }, true);
+        });
     },
 
 
@@ -318,7 +320,17 @@ class ContextMenu {
     }
 
 
+    /**
+     * method : getRoot
+     * class  : ContextMenu
+     * desc   : Return the root of the menu
+     **/
+    getRoot() {
+        return this.contextMenu;
+    }
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
 
     /**
      * method : _init (private)
@@ -386,7 +398,6 @@ class ContextMenu {
             self.contextMenu.closeAll();
         });
     }
-
 
     /**
      * method : _keyListener (private)

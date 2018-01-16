@@ -116,6 +116,22 @@ def errorCheckMessage(isDone, error):
         errorTitle = "Can't delete this user"
         errorMessage = "You can't delete your own account if you are admin"
 
+    elif error == "noStats":
+        errorTitle = "Can't display stats"
+        errorMessage = "Use the application for generating stats"
+
+    elif error == "badFileName":
+        errorTitle = "The filename is invalid"
+        errorMessage = "Change the filename if you want to upload it"
+
+    elif error == "fileExists":
+        errorTitle = "File already exists"
+        errorMessage = "The file you want to upload exists already"
+
+    elif error == "valueError":
+        errorTitle = "Wrong value"
+        errorMessage = "The value wasn't expected"
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",

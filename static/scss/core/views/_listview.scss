@@ -2,10 +2,10 @@
 $listView-padding: 0 10%;
 
 
-@media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled
+@media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled (yet)
     #listView, .columnHeader {
-        padding: 0 20px !important;
         font-size: 0.8em !important;
+        padding: 0 20px !important;
     }
 
     .col-title {
@@ -35,42 +35,40 @@ $listView-padding: 0 10%;
 
 /* listview */
 #listView {
-    width: 100%;
-    height: calc(100% - 35px);
-    top: 35px;
-    position: absolute;
-    padding: $listView-padding;
-    overflow-y: auto;
     box-sizing: border-box;
-
+    height: calc(100% - 35px);
+    overflow-y: auto;
+    padding: $listView-padding;
+    position: absolute;
+    top: 35px;
+    width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */
 }
 
 .columnHeader {
-    width: 100%;
-    height: 35px;
-    line-height: 35px;
+    box-sizing: border-box;
+    cursor: pointer;
     font-size: 0.9em;
     font-weight: bold;
+    height: 35px;
+    line-height: 35px;
     padding: $listView-padding;
-    cursor: pointer;
     position: absolute;
-    box-sizing: border-box;
     top: 0;
-
+    width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */
 }
 
 .trackContainer {
-    width: 100%;
+    cursor: pointer;
+    font-size: 0.8em;
     height: 1.3em;
     line-height: 1.46em;
-    font-size: 0.8em;
-    padding-top: 5px;
     padding-bottom: 5px;
-    cursor: pointer;
+    padding-top: 5px;
+    width: 100%;
 
     &.mzk-selected {
         background-color: $secondary-color;
@@ -79,21 +77,21 @@ $listView-padding: 0 10%;
 
 
 [class*='col-'] {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 1px;
-    text-align: left;
-    padding-left: 8px;
-    padding-right: 8px;
     box-sizing: border-box;
-    white-space: nowrap;
     display: inline-block;
     float: left;
+    min-height: 1px;
+    overflow: hidden;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .col-duration {
-    width: 5%;
     text-align: right;
+    width: 5%;
 }
 
 .col-title {
@@ -121,8 +119,8 @@ $listView-padding: 0 10%;
 }
 
 .col-bitRate {
-    width: 5%;
     text-align: right;
+    width: 5%;
 }
 
 .col-year {

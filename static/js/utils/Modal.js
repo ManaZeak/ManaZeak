@@ -56,6 +56,14 @@ class Modal {
                 this._openSyncThing();
                 break;
 
+            case "inviteCode":
+                this._inviteCodeUI();
+                break;
+
+            case "cover":
+                this._coverUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -165,6 +173,23 @@ class Modal {
             name.style.border = "solid 1px red";
             new Notification("INFO", "Name field is empty.", "You must specify the name of your playlist.");
         }
+    }
+
+
+    _coverUI() {
+        this.ui.container.id       = "cover";
+
+        let info = document.createElement("H1");
+        let cover           = document.createElement("IMG");
+        let year = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year; // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+
+        info.innerHTML = this.data.artist + " - " + this.data.album + " (" + year + ")";
+        cover.src           = this.data.src;
+
+        this.ui.content.appendChild(info);
+        this.ui.content.appendChild(cover);
+
+        this._appendCloseButton();
     }
 
 
@@ -291,6 +316,34 @@ class Modal {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(text);
+    }
+
+
+    _inviteCodeUI() {
+        this.ui.container.id    = "inviteCode";
+        this.ui.title.innerHTML = "Invitation code";
+
+        let infoLabel           = document.createElement("P");
+        let name                = document.createElement("H3");
+        let cancel              = document.createElement("BUTTON");
+
+        infoLabel.id            = "infoLabel";
+        name.id                 = "name";
+
+        cancel.innerHTML        = "Close";
+        name.innerHTML          = window.app.user.getInviteCode();
+        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet.";
+
+        this.ui.content.appendChild(infoLabel);
+        this.ui.content.appendChild(name);
+        this.ui.footer.appendChild(cancel);
+
+        this._appendCloseButton();
+
+        let that = this;
+        cancel.addEventListener("click", function() {
+            that.close();
+        });
     }
 
 
@@ -441,8 +494,6 @@ class Modal {
 
 
     _openSyncThing() {
-        this._appendCloseButton();
-
         let content             = document.createElement("IFRAME");
         this.ui.container.id    = "openSyncThing";
 
@@ -456,6 +507,8 @@ class Modal {
         };
 
         this.ui.content.appendChild(content);
+
+        this._appendCloseButton();
     }
 
 

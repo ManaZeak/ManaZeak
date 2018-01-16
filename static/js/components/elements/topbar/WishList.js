@@ -6,7 +6,7 @@
  *  triggered on hover over a view entry           *
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+// TODO : add a list of the user's suggestions (link in modal ?)
 class WishList {
     constructor(container) {
 

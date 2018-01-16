@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, library, playlist, adminTools, wish
+from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload
 from app.stats import stats, suggestion
 from app.track import track
 from . import views
@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
     url(r'^ajax/deleteLibrary/$', library.deleteLibrary, name='deleteLibrary'),
+    url(r'^ajax/deleteAllLibrary/$', library.deleteAllLibrary, name='deleteAllLibrary'),
 
     # Playlist actions
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
@@ -28,7 +29,7 @@ urlpatterns = [
     url(r'^ajax/deletePlaylist/$', playlist.deletePlaylist, name='deletePlaylist'),
     url(r'^ajax/renamePlaylist/$', playlist.renamePlaylist, name='renamePlaylist'),
     url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
-    url(r'^ajax/getSimplifiedTracks/$', playlist.loadSimplifiedPlaylist, name='simplifiedJson'),
+    url(r'^ajax/lazyLoadingSimplifiedPlaylist/$', playlist.lazyLoadingSimplifiedPlaylist, name='lazyLoading'),
     url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
 
     # Player actions
@@ -45,6 +46,9 @@ urlpatterns = [
     # Stats actions
     url(r'^ajax/getUserStats/$', stats.getUserStats, name='getUserStats'),
     url(r'^ajax/adminGetUserStats/$', stats.adminGetUserStats, name='adminGetUserStats'),
+    url(r'^stats/getUserPrefArtists/$', stats.getUserPrefArtists, name='getUserPrefArtists'),
+    url(r'^stats/getUserPrefGenres/$', stats.getUserPrefGenres, name='getUserPrefGenres'),
+    url(r'^stats/getUserPrefTracks/$', stats.getUserPrefTracks, name='getUserPrefTracks'),
 
     # History actions
     url(r'^ajax/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),
@@ -55,6 +59,10 @@ urlpatterns = [
     # Wish actions
     url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
     url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
+    url(r'^ajax/setWishStatus/$', wish.setWishStatus, name='setWishStatus'),
+
+    # USER actions
+    url(r'^ajax/getUserSettings/$', userSettings.getUserSettings, name='getUserSettings'),
 
     # ADMIN actions
     url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
@@ -65,4 +73,11 @@ urlpatterns = [
     url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
     url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
+
+    # InviteCode section
+    url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
+    url(r'^ajax/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
+
+    # File upload
+    url(r'^ajax/fileUpload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
 ]

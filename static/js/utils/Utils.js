@@ -261,6 +261,7 @@ function JSONParsedGetRequest(url, callback) {
  * arg    : {string} url - The address
  *          {JSON.stringify} message - Information to give to the server
  *          {function} callback
+ *          {bool} raw_data - if true, send as raw data. Default is JSON
  **/
 function JSONParsedPostRequest(url, message, callback) {
     let xhr = new XMLHttpRequest();

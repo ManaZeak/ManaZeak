@@ -1,31 +1,30 @@
 @import "../utils/tools";
 
 html, body {
+    color: $primary-text;
+    font-family: Helvetica, serif;
     height: 100%;
     margin: 0;
     overflow: hidden;
     padding: 0;
     width: 100%;
-
-    color: $primary-text;
-    font-family: Helvetica, serif;
 }
 
 
 #login {
+    background-color: $primary-color;
+    color: $primary-text;
+    height: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
     position: absolute;
-    color: $primary-text;
-    background-color: $primary-color;
     text-align: center;
+    width: 100%;
 
     h1 {
         font-size: 2.8em;
-        margin-top: 100px;
         margin-bottom: 0;
+        margin-top: 100px;
     }
 
     p {
@@ -39,16 +38,15 @@ html, body {
     }
 
     form {
+        background-color: $secondary-color;
+        box-sizing: border-box;
         display: table;
-        width: auto;
         height: auto;
         margin-left: auto;
         margin-right: auto;
         padding: 25px;
-        box-sizing: border-box;
         text-align: center;
-
-        background-color: $secondary-color;
+        width: auto;
 
         @include box-shadow(0px, 0px, 5px, 1px, $dark-secondary-color);
     }
@@ -56,42 +54,41 @@ html, body {
 
     input,
     button {
+        display: block;
         margin-left: auto;
         margin-right: auto;
-        display: block;
     }
 
     button,
     #button {
-        margin-top: 25px;
+        background-color: inherit;
         border: solid 1px $primary-text;
         color: $primary-text;
-        background-color: inherit;
-        padding: 6px 25px;
         cursor: pointer;
+        padding: 6px 25px;
+        margin-top: 25px;
     }
 
     input {
-        margin-top: 5px;
-        text-align: center;
-        color: $primary-text;
         background-color: inherit;
         border: none;
         border-bottom: solid 1px $primary-text;
+        color: $primary-text;
+        margin-top: 5px;
+        text-align: center;
     }
 
     #error {
-        position: absolute;
-        top: 25px;
-        left: 25px;
         background-color: $dark-primary-color;
-        text-align: left;
+        left: 25px;
         padding: 15px 25px;
-        
-        
+        position: absolute;
+        text-align: left;
+        top: 25px;
+
         ul {
-            padding: 0;
             list-style: none;
+            padding: 0;
 
             li {
                 ul {

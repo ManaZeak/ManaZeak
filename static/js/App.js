@@ -11,6 +11,7 @@ class App {
 
         this.cookies          = getCookies();
         this.user             = new User();
+        this.dragdrop         = new DragDrop(document.body);
         this.mainContainer    = document.createElement("DIV");
         this.mainContainer.id = "mainContainer";
         this.footBar          = null;
@@ -33,9 +34,6 @@ class App {
         };
 
         this.listeners = {};
-        this.test = function() {
-            arguments[0] = 'TEST';
-        };
         let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
         for (let i = 0; i < properties.length; ++i) {
             if (typeof this[properties[i]] === "function") {
@@ -46,7 +44,6 @@ class App {
                 this[properties[i]] = (function(pname, func) {
                     return function() {
                         let r = func.apply(this, arguments);
-                        this.test.apply(null,arguments);
                         for (let i = 0; i < this.listeners[pname].length; ++i) {
                             this.listeners[pname][i].runCallback(arguments);
                         }
@@ -161,10 +158,6 @@ class App {
         else {
             this.mainContainer.innerHTML = '';
             this.mainContainer.appendChild(view.getContainer());
-        }
-
-        if (view.getContainer().id === "stats") { // TODO : find a better way
-            view.fetchStats();
         }
     }
 
@@ -362,13 +355,13 @@ class App {
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
                 if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new AppListener('', '', callback, thisArg));
+                    this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
                 }
             }
         }
 
         else if (this.listeners[event]) {
-            this.listeners[event].push(new AppListener('', '', callback, thisArg));
+            this.listeners[event].push(new MzkListener('', '', callback, thisArg));
         }
     }
 
@@ -786,6 +779,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
+        this.createAppView('mzk_settings', new SettingsView());
         this.createAppView('mzk_party', new PartyView());
     }
 

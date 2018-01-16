@@ -57,42 +57,6 @@ class Track(models.Model):
     uploader = models.ForeignKey(User, null=True)
 
 
-class TrackView(models.Model):
-    track_id = models.BigIntegerField(primary_key=True)
-    track_location = models.FilePathField(max_length=1000)
-    track_title = models.CharField(max_length=1000)
-    track_year = models.IntegerField(null=True)
-    track_composer = models.CharField(max_length=1000, null=True)
-    track_performer = models.CharField(max_length=1000, null=True)
-    track_number = models.IntegerField(null=True)
-    track_bpm = models.IntegerField(null=True)
-    track_lyrics = models.CharField(max_length=42000, null=True)
-    track_comment = models.CharField(max_length=10000, null=True)
-    track_bitrate = models.IntegerField(null=True)
-    track_bitratemode = models.IntegerField(null=True)
-    track_samplerate = models.IntegerField(null=True)
-    track_duration = models.FloatField(null=True)
-    track_discnumber = models.IntegerField(null=True)
-    track_size = models.IntegerField(null=True)
-    track_lastmodified = models.DateField(auto_now=True, null=True)
-    track_cover = models.URLField(max_length=1000, null=True)
-    track_filetype_id = models.BigIntegerField()
-    track_mood = models.URLField(max_length=1000, null=True)
-    track_download_counter = models.IntegerField(default=0)
-    album_title = models.CharField(max_length=1000, null=True)
-    genre_id = models.BigIntegerField()
-    genre_name = models.CharField(max_length=1000, null=True)
-    album_id = models.BigIntegerField()
-    artist_name = models.CharField(max_length=1000, null=True)
-    artist_id = models.CharField(max_length=1000, null=True)
-    album_artist_id = models.CharField(max_length=1000, null=True)
-    album_artist_name = models.CharField(max_length=1000, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'app_track_view'
-
-
 class Playlist(models.Model):
     name = models.CharField(max_length=1000)
     user = models.ForeignKey(User)
@@ -154,3 +118,16 @@ class Wish(models.Model):
 
 class AdminOptions(models.Model):
     syncthingKey = models.CharField(max_length=100, null=True)
+    inviteCodeEnabled = models.BooleanField(default=False)
+    bufferPath = models.FilePathField(max_length=1000, null=True)
+
+
+class InviteCode(models.Model):
+    user = models.ForeignKey(User)
+    code = models.CharField(max_length=33)
+
+
+class UserPreferences(models.Model):
+    points = models.IntegerField(default=0)
+    inviteCode = models.ForeignKey(InviteCode, null=True)
+    user = models.ForeignKey(User, null=True)

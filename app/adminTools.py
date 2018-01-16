@@ -40,12 +40,12 @@ def getAdminView(request):
             users = User.objects.all().order_by('date_joined')
             userInfo = []
             for user in users:
-                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) +\
-                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" +\
+                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) + \
+                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" + \
                              str(user.date_joined.minute)
-                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) +\
-                             "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" +\
-                             str(user.last_login.minute)
+                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) + \
+                            "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" + \
+                            str(user.last_login.minute)
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
@@ -63,7 +63,11 @@ def getAdminView(request):
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
-            data = {**data, **{'SYNC_KEY': adminOptions.syncthingKey}}
+            data = {**data, **{
+                'SYNC_KEY': adminOptions.syncthingKey,
+                'BUFFER_PATH': adminOptions.bufferPath,
+                'INVITE_ENABLED': adminOptions.inviteCodeEnabled,
+            }}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
@@ -153,6 +157,18 @@ def changeSyncthingAPIKey(request):
     return JsonResponse(data)
 
 
+# WIP
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
+def changeBufferPath(request):
+    if request.method == 'POST':
+        admin = request.user
+        if admin.is_superuser:
+            response = json.loads(request.body)
+            if 'BUFFER_PATH' in response:
+                adminOptions = getAdminOptions()
+                bufferPath = strip_tags(response['BUFFER_PATH'])
+
+
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':
@@ -215,6 +231,31 @@ def dropAllDB(request):
                 data = errorCheckMessage(False, "permissionError")
         else:
             data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def isInviteEnabled(request):
+    if request.method == 'GET':
+        data = {
+            'INVITE': getAdminOptions().inviteCodeEnabled
+        }
+        data = {**data, **errorCheckMessage(True, None)}
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def toggleInvite(request):
+    if request.method == 'GET':
+        adminOptions = getAdminOptions()
+        adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
+        adminOptions.save()
+        data = {
+            'INVITE': adminOptions.inviteCodeEnabled
+        }
+        data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
