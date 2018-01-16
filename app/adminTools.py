@@ -49,16 +49,20 @@ def getAdminView(request):
                             str(user.last_login.minute)
                 userPreferences = UserPreferences.objects.get(user=user)
                 inviteCode = InviteCode.objects.get(user=user)
-                userInfo.append({
+                godfather = {}
+                if userPreferences.inviteCode is None:
+                    godfather = {
+                        'GODFATHER': userPreferences.inviteCode.user.username,
+                    }
+                userInfo.append({**{
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
                     'JOINED': dateJoined,
                     'LAST_LOGIN': lastLogin,
                     'ID': user.id,
-                    'GODFATHER': userPreferences.inviteCode.user.username,
                     'INVITE_CODE': inviteCode.code,
                     'MANACOIN': userPreferences.points,
-                })
+                }, **godfather})
             data = dict({'USER': userInfo})
             libraryInfo = []
             for library in Library.objects.all():
