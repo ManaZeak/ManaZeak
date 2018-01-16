@@ -350,6 +350,9 @@ class AdminView extends View {
         this.ui.apiKeyLabel            = document.createElement("P");
         this.ui.apiKeyField            = document.createElement("INPUT");
         this.ui.apiKeyButton           = document.createElement("BUTTON");
+        this.ui.bufferLabel            = document.createElement("P");
+        this.ui.bufferField            = document.createElement("INPUT");
+        this.ui.bufferButton           = document.createElement("BUTTON");
         this.ui.rescanLabel            = document.createElement("P");
         this.ui.rescanButton           = document.createElement("BUTTON");
         this.ui.openSCLabel            = document.createElement("P");
@@ -358,10 +361,17 @@ class AdminView extends View {
         this.ui.apiKeyField.type       = "text";
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
 
+        this.ui.apiKeyField.type       = "text";
+        this.ui.bufferField.value      = this.info.BUFFER_PATH;
+
         this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
             "<br>" +
             "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
             "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
+        this.ui.bufferLabel.innerHTML  = "<b>Buffer path</b><br>" +
+            "<br>" +
+            "The buffer folder is the one selected to upload file in.<br>" +
+            "Please fill the following field with the buffer path.";
         this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
             "<br>" +
             "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
@@ -370,7 +380,9 @@ class AdminView extends View {
             "<br>" +
             "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
             "This command will open the SyncThing instance right here, in a modal.";
+
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
+        this.ui.bufferButton.innerHTML = "SUBMIT";
         this.ui.rescanButton.innerHTML = "RESCAN";
         this.ui.openSCButton.innerHTML = "OPEN";
 
@@ -379,6 +391,9 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.apiKeyLabel);
         this.ui.content.appendChild(this.ui.apiKeyField);
         this.ui.content.appendChild(this.ui.apiKeyButton);
+        this.ui.content.appendChild(this.ui.bufferLabel);
+        this.ui.content.appendChild(this.ui.bufferField);
+        this.ui.content.appendChild(this.ui.bufferButton);
         this.ui.content.appendChild(this.ui.rescanLabel);
         this.ui.content.appendChild(this.ui.rescanButton);
         this.ui.content.appendChild(this.ui.openSCLabel);
@@ -386,6 +401,7 @@ class AdminView extends View {
 
         let that = this;
         this.ui.apiKeyButton.addEventListener("click", this._submitAPIKey.bind(this));
+        this.ui.bufferButton.addEventListener("click", this._submitBufferPath.bind(this));
         this.ui.rescanButton.addEventListener("click", this._rescanSC.bind(this));
         this.ui.openSCButton.addEventListener("click", function() {
             that.modal = new Modal("openSyncThing");
@@ -631,6 +647,39 @@ class AdminView extends View {
             }
         );
     }
+
+
+
+    /**
+     * method : _submitAPIKey (private)
+     * class  : AdminView
+     * desc   : Submit the SyncThing API key
+     **/
+    _submitBufferPath() {
+        let that = this;
+        JSONParsedPostRequest(
+            "ajax/changeBufferPath/",
+            JSON.stringify({
+                BUFFER_PATH: this.ui.bufferField.value // TODO : Warning, value must be tested
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+
+                else {
+                    that.ui.bufferButton.blur();
+                    // TODO : refresh UI
+                }
+            }
+        );
+    }
+
 
 
     _toggleInviteMode() {
