@@ -10,7 +10,7 @@ from django.utils.html import strip_tags
 from multiprocessing import Process
 
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
-    AdminOptions
+    AdminOptions, UserPreferences, InviteCode
 from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.utils import errorCheckMessage
@@ -47,12 +47,17 @@ def getAdminView(request):
                 lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) + \
                             "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" + \
                             str(user.last_login.minute)
+                userPreferences = UserPreferences.objects.get(user=user)
+                inviteCode = InviteCode.objects.get(user=user)
                 userInfo.append({
                     'NAME': user.username,
                     'ADMIN': user.is_superuser,
                     'JOINED': dateJoined,
                     'LAST_LOGIN': lastLogin,
                     'ID': user.id,
+                    'GODFATHER': userPreferences.inviteCode.user.username,
+                    'INVITE_CODE': inviteCode.code,
+                    'MANACOIN': userPreferences.points,
                 })
             data = dict({'USER': userInfo})
             libraryInfo = []
