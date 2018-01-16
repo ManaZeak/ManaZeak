@@ -180,6 +180,16 @@ def changeBufferPath(request):
             if 'BUFFER_PATH' in response:
                 adminOptions = getAdminOptions()
                 bufferPath = strip_tags(response['BUFFER_PATH'])
+                adminOptions.bufferPath = bufferPath
+                adminOptions.save()
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
