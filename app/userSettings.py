@@ -29,8 +29,8 @@ def getUserSettings(request):
                 }}
             else:
                 data = {**data, **{
-                    'GODFATHER_CODE': "Jesus",
-                    'GODFATHER_NAME': "Christ",
+                    'GODFATHER_CODE': "Christ",
+                    'GODFATHER_NAME': "Jesus",
                 }}
             data = {**data, **errorCheckMessage(True, None)}
         else:
