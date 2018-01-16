@@ -226,9 +226,13 @@ class AdminView extends View {
                         }
                     );
                 });
-            });
-            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br>" +
-                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
+            });console.log(this.info.USER);
+            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+                                "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
+                                "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER + "<br>" +
+                                "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
+                                "Joined on: " + this.info.USER[i].JOINED + "<br>" +
+                                "Last login: " + this.info.USER[i].LAST_LOGIN;
             element.appendChild(rm);
             list.appendChild(element);
         }

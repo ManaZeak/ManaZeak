@@ -41,6 +41,7 @@
         box-sizing: border-box;
         height: 100%;
         padding: 25px;
+        overflow-y: auto;
         width: calc(100% - 200px);
 
         h1 {
