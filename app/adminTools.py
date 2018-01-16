@@ -65,6 +65,7 @@ def getAdminView(request):
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
             data = {**data, **{
                 'SYNC_KEY': adminOptions.syncthingKey,
+                'BUFFER_PATH': adminOptions.bufferPath,
                 'INVITE_ENABLED': adminOptions.inviteCodeEnabled,
             }}
             data = {**data, **errorCheckMessage(True, None)}

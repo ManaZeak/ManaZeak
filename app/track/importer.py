@@ -8,7 +8,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.models import FileType
-from app.utils import processVorbisTag, errorCheckMessage
+from app.utils import processVorbisTag
 
 
 def createMP3Track(filePath, convert, fileTypeId, coverPath):
@@ -223,6 +223,20 @@ def regenerateCover(track):
                         img.write(pictures[0].data)
                 track.coverLocation = md5Name.hexdigest() + ".jpg"
         track.save()
+
+
+def setUploader(path, userName):
+    # Saving uploader for mp3 file since flac has no comment field
+    if path.endswith('.mp3'):
+        # Check if the file has a tag header
+        try:
+            audioTag = ID3(path)
+        except ID3NoHeaderError:
+            audioTag = ID3()
+        if 'COMM' not in audioTag:
+            audioTag.add('COMM')
+        audioTag['COMM'].text[0] = "Uploaded by : " + userName
+        audioTag.save()
 
 
 class LocalTrack:
