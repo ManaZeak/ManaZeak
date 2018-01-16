@@ -36,9 +36,9 @@ def getWishes(request):
             allWishes = bool(strip_tags(response['ALL']))
 
             if user.is_superuser and allWishes:
-                wishes = Wish.objects.all().order_by('-date')
+                wishes = Wish.objects.all().order_by('-id')
             else:
-                wishes = Wish.objects.filter(user=user).order_by('-date')
+                wishes = Wish.objects.filter(user=user).order_by('-id')
 
             data = []
             for wish in wishes:
