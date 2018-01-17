@@ -186,7 +186,7 @@ def deleteLibrary(request):
                 libraryId = strip_tags(response['LIBRARY_ID'])
                 if Library.objects.filter(id=libraryId).count() == 1:
                     library = Library.objects.get(id=libraryId)
-                    library.playlist.track.delete()
+                    library.playlist.track.all().delete()
                     library.playlist.delete()
                     library.delete()
                     data = errorCheckMessage(True, None)
