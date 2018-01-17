@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class PlaylistPreview {
+
     constructor(container) {
 
         this._createUI(container);
@@ -30,9 +31,15 @@ class PlaylistPreview {
     }
 
 
+    /**
+     * method : getIsVisible (public)
+     * class  : PlaylistPreview
+     * desc   : Returns the playlist preview opacity value as a bool
+     **/
     getIsVisible() {
         return !!(this.ui.container.style.opacity = 1);
     }
+
 
     /**
      * method : setVisible (public)
@@ -50,6 +57,7 @@ class PlaylistPreview {
      * method : _createUI (private)
      * class  : PlaylistPreview
      * desc   : Build UI elements
+     * arg    : {object} container - The PlaylistPreview container
      **/
     _createUI(container) {
         this.ui = {

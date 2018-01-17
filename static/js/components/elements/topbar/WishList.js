@@ -8,11 +8,11 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 // TODO : add a list of the user's suggestions (link in modal ?)
 class WishList {
+
     constructor(container) {
 
-
         this._createUI(container);
-        this._init();
+        this._eventListener();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -21,6 +21,7 @@ class WishList {
      * method : _createUI (private)
      * class  : WishList
      * desc   : Build UI elements
+     * arg    : {object} container - The WishList container
      **/
     _createUI(container) {
         this.ui = {
@@ -33,16 +34,6 @@ class WishList {
 
         this.ui.container.appendChild(this.ui.img);
         container.appendChild(this.ui.container);
-    }
-
-
-    /**
-     * method : _init (private)
-     * class  : WishList
-     * desc   : Listen to events
-     **/
-    _init() {
-        this._eventListener();
     }
 
 

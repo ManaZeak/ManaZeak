@@ -9,6 +9,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class PlaylistView extends View {
+
     constructor() {
 
         super();

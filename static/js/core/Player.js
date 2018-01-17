@@ -8,6 +8,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Player {
+
     constructor() {
 
         this.player    = document.getElementById("audioPlayer");
@@ -23,6 +24,20 @@ class Player {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
+     * method : changeSource (public)
+     * class  : Player
+     * desc   : Change player source and stop playback
+     * arg    : {string} url - Path to targeted track
+     *        : {int}     id - The associated ID
+     **/
+    changeSource(url, id) {
+        this.trackId = id;
+        this.stopPlayback();
+        this.player.src = url;
+    }
+
+
+    /**
      * method : isEmpty (public)
      * class  : Player
      * desc   : Test if player source is empty
@@ -30,29 +45,6 @@ class Player {
      **/
     isEmpty() {
         return this.player.src == this.emptyURL;
-    }
-
-
-    /**
-     * method : togglePlay (public)
-     * class  : Player
-     * desc   : Switch on and off player playback depending on its current status
-     **/
-    togglePlay() {
-        if (this.isPlaying) { this._pause(); }
-        else                { this._play();  }
-    }
-
-
-    /**
-     * method : stopPlayback (public)
-     * class  : Player
-     * desc   : Stop player playback and reset player src
-     **/
-    stopPlayback() {
-        this._pause();
-        this.isPlaying  = false;
-        this.player.src = "";
     }
 
 
@@ -69,35 +61,6 @@ class Player {
 
 
     /**
-     * method : unmute (public)
-     * class  : Player
-     * desc   : Unmute player and restore old value
-     **/
-    unmute() {
-        this.isMuted       = false;
-        this.player.volume = this.oldVolume;
-    }
-
-
-    /**
-     * method : changeSource (public)
-     * class  : Player
-     * desc   : Change player source and stop playback
-     * arg    : {string} url - Path to targeted track
-     **/
-    changeSource(url, id) {
-        this.trackId = id;
-        this.stopPlayback();
-        this.player.src = url;
-    }
-
-
-    getSourceID() {
-        return this.trackId;
-    }
-
-
-    /**
      * method : repeatTrack (public)
      * class  : Player
      * desc   : Reset player current time and repeat the track
@@ -108,6 +71,40 @@ class Player {
         if (!this.isPlaying) {
             this._play();
         }
+    }
+
+
+    /**
+     * method : stopPlayback (public)
+     * class  : Player
+     * desc   : Stop player playback and reset player src
+     **/
+    stopPlayback() {
+        this._pause();
+        this.isPlaying  = false;
+        this.player.src = "";
+    }
+
+
+    /**
+     * method : togglePlay (public)
+     * class  : Player
+     * desc   : Switch on and off player playback depending on its current status
+     **/
+    togglePlay() {
+        if (this.isPlaying) { this._pause(); }
+        else                { this._play();  }
+    }
+
+
+    /**
+     * method : unmute (public)
+     * class  : Player
+     * desc   : Unmute player and restore old value
+     **/
+    unmute() {
+        this.isMuted       = false;
+        this.player.volume = this.oldVolume;
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -167,6 +164,7 @@ class Player {
     getIsPlaying()    { return this.isPlaying;          }
     getCurrentTime()  { return this.player.currentTime; }
     getDuration()     { return this.player.duration;    }
+    getSourceID()     { return this.trackId;            }
 
     setIsMuted(muted) { this.isMuted = muted;           }
     setVolume(volume) { this.player.volume = volume;    }

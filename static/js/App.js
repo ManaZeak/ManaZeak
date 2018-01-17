@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class App {
+
     constructor() {
 
         this.cookies          = getCookies();
@@ -227,6 +228,13 @@ class App {
     }
 
 
+    /**
+     * method : deleteUser (public)
+     * class  : App
+     * desc   : Remove a user from DB via its ID
+     * arg    : {int} id - The user ID to delete
+     *        : {function} callback - The function to callback - Mandatory
+     **/
     deleteUser(id, callback) {
         JSONParsedPostRequest(
             "ajax/removeUserById/",
@@ -305,6 +313,11 @@ class App {
     }
 
 
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Hide any content in mainContainer
+     **/
     hidePageContent() {
         addInvisibilityLock(this.footBar.getFootBar());
         addInvisibilityLock(this.mainContainer);
@@ -521,6 +534,7 @@ class App {
         );
     }
 
+
     /**
      * method : repeatTrack (public)
      * class  : App
@@ -563,6 +577,11 @@ class App {
     }
 
 
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Restore any content in mainContainer
+     **/
     restorePageContent() {
         removeInvisibilityLock(this.footBar.getFootBar());
         removeInvisibilityLock(this.mainContainer);
@@ -770,6 +789,7 @@ class App {
 
         this._keyListener();
     }
+
 
     /**
      * method : _createDefaultViews (private)

@@ -10,6 +10,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// TODO : change this subclass to new notation @Oxydiz
 const NB_OF_NAMED_ARGS = 3; // /!\ IMPORTANT - CHANGE THIS IF YOU ADD/REMOVE ARGUMENTS FROM THIS CONSTRUCTOR /!\
 
 let ContextMenuEntry = function (entryID, displayString, callback/*, MORE ARGUMENTS HERE*/) {
@@ -262,6 +263,7 @@ ContextMenuEntry.prototype = {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class ContextMenu {
+
     constructor(parentElement, openCallback, event) {
 
         this.contextMenu   = null;
@@ -279,7 +281,10 @@ class ContextMenu {
     /**
      * method : addEntry (public)
      * class  : ContextMenu
-     * desc   : Add an entry to the ContextMenu
+     * desc   : Add an entry to the
+     * arg    : {string} entryPath - TODO
+     *        : {} displayString - TODO
+     *        : {function} callback - The function to callback - Not Mandatory
      **/
     addEntry(entryPath, displayStr, callback /*, more args for the callback */) {
         let context;
@@ -308,47 +313,23 @@ class ContextMenu {
     /**
      * method : reattach (public)
      * class  : ContextMenu
-     * desc   : (re-)add the context menu to its parent
+     * desc   : (re)add the context menu to its parent
      **/
     reattach() {
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
     }
 
 
+    /**
+     * method : setInvisible (public)
+     * class  : ContextMenu
+     * desc   : Set ContextMenu invisible
+     **/
     setInvisible() {
         removeVisibilityLock(this.element);
     }
 
-
-    /**
-     * method : getRoot
-     * class  : ContextMenu
-     * desc   : Return the root of the menu
-     **/
-    getRoot() {
-        return this.contextMenu;
-    }
-
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
-
-
-    /**
-     * method : _init (private)
-     * class  : ContextMenu
-     * desc   : Building entries and UI
-     **/
-    _init() {
-        this.contextMenu = new ContextMenuEntry("master", "", null);
-        this.contextMenu.activateEventListener();
-        this.element     = document.createElement('DIV');
-        this.element.id  = "mzk-ctx-wrap";
-        this.element.appendChild(this.contextMenu.element);
-        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
-
-        this._eventListener();
-        this._keyListener();
-    }
-
 
     /**
      * method : _eventListener (private)
@@ -399,6 +380,25 @@ class ContextMenu {
         });
     }
 
+
+    /**
+     * method : _init (private)
+     * class  : ContextMenu
+     * desc   : Building entries and UI
+     **/
+    _init() {
+        this.contextMenu = new ContextMenuEntry("master", "", null);
+        this.contextMenu.activateEventListener();
+        this.element     = document.createElement('DIV');
+        this.element.id  = "mzk-ctx-wrap";
+        this.element.appendChild(this.contextMenu.element);
+        this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
+
+        this._eventListener();
+        this._keyListener();
+    }
+
+
     /**
      * method : _keyListener (private)
      * class  : ContextMenu
@@ -418,5 +418,9 @@ class ContextMenu {
             }
         });
     }
+
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
+
+    getContextMenu() { return this.contextMenu; }
 
 }

@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class ListViewEntry {
+
     constructor(track, listView) {
 
         this.track = track;
@@ -101,6 +102,7 @@ class ListViewEntry {
  * * * * * * * * * * * * * * * * * * * * * */
 
 class ListView extends PlaylistView {
+
     constructor(data, isLibrary, id) {
 
         super();
@@ -387,7 +389,6 @@ class ListView extends PlaylistView {
             window.app.requestNewPlaylist();
         });
     }
-
 
 
     /**

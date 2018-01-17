@@ -4,20 +4,33 @@
  *                                         *
  *  Class for handling app event listeners *
  *                                         *
- *                                         *
- *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
 class MzkListener {
+
     constructor(name, description, callback, thisArg) {
-        this.name = name;
-        this.desc = description;
+
+        this.name     = name;
+        this.desc     = description;
         this.callback = callback;
-        this.thisArg = thisArg;
-        this.active = true;
+        this.thisArg  = thisArg;
+        this.active   = true;
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : runCallback (public)
+     * class  : MzkListener
+     * desc   : Run the callback
+     * arg    : {array} args - the arguments to be applied to the callback
+     **/
+    runCallback(args) {
+        if (this.active == true) {
+            this.callback.apply(this.thisArg, args);
+        }
+    }
+
 
     /**
      * method : setActive (public)
@@ -27,18 +40,6 @@ class MzkListener {
      **/
     setActive(active) {
         this.active = active;
-    }
-
-
-    /**
-     * method : runCallback (public)
-     * class  : MzkListener
-     * desc   : Run the callback
-     * arg    : {array} args - the arguments to be applied to the callback
-     **/
-    runCallback(args) {
-        if(this.active == true)
-            this.callback.apply(this.thisArg, args);
     }
 
 }

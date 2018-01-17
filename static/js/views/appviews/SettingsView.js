@@ -7,19 +7,20 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class SettingsView extends View {
+
     constructor() {
 
         super();
 
         this.info  = null;
-        this._init();
+        this._createUI();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
      * method : _clearPageSpace (private)
-     * class  : AdminView
+     * class  : SettingsView
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
@@ -30,7 +31,7 @@ class SettingsView extends View {
 
     /**
      * method : _createUI (private)
-     * class  : AdminView
+     * class  : SettingsView
      * desc   : Build UI elements
      **/
     _createUI() {
@@ -67,8 +68,8 @@ class SettingsView extends View {
 
     /**
      * method : _eventListener (private)
-     * class  : AdminView
-     * desc   : AdminView event listeners
+     * class  : SettingsView
+     * desc   : SettingsView event listeners
      **/
     _eventListener() {
         this.ui.menuGen.addEventListener("click", this._requestGeneralPage.bind(this));
@@ -76,19 +77,9 @@ class SettingsView extends View {
 
 
     /**
-     * method : _init (private)
-     * class  : AdminView
-     * desc   : Create view to DB page by default
-     **/
-    _init() {
-        this._createUI();
-    }
-
-
-    /**
      * method : _requestGeneralPage (private)
      * class  : SettingsView
-     * desc   :
+     * desc   : Display the general page
      **/
     _requestGeneralPage() {
         this._updateSettingsInfo();
@@ -117,11 +108,21 @@ class SettingsView extends View {
     }
 
 
+    /**
+     * method : _requestGeneralPage (private)
+     * class  : SettingsView
+     * desc   : Unselect every entry in the left menu
+     **/
     _unselectAllMenuEntries() {
         this.ui.menuGen.className   = "";
     }
 
 
+    /**
+     * method : _requestGeneralPage (private)
+     * class  : SettingsView
+     * desc   : Updates settings information
+     **/
     _updateSettingsInfo(callback) {
         let that = this;
         JSONParsedGetRequest(

@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class AdminView extends View {
+
     constructor() {
 
         super();
@@ -155,6 +156,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _requestDeleteLibraries (private)
+     * class  : AdminView
+     * desc   : Request to delete all library
+     **/
     _requestDeleteLibraries() { // TODO : put the code below in APP
         let that = this;
         JSONParsedGetRequest(
@@ -511,6 +517,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _requestSCPage (private)
+     * class  : AdminView
+     * desc   : Update the vote on a given wish
+     **/
     _updateWishStatus(wishID, status, callback) {
         let that = this;
         JSONParsedPostRequest(
@@ -543,6 +554,7 @@ class AdminView extends View {
             }
         );
     }
+
 
     /**
      * method : _requestDrop (private)
@@ -660,7 +672,6 @@ class AdminView extends View {
     }
 
 
-
     /**
      * method : _submitAPIKey (private)
      * class  : AdminView
@@ -692,7 +703,11 @@ class AdminView extends View {
     }
 
 
-
+    /**
+     * method : _toggleInviteMode (private)
+     * class  : AdminView
+     * desc   : Toggle user sponsoring in app
+     **/
     _toggleInviteMode() {
         let that = this;
         JSONParsedGetRequest(
@@ -729,6 +744,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _unselectAllMenuEntries (private)
+     * class  : AdminView
+     * desc   : Unselect every entry in the left menu
+     **/
     _unselectAllMenuEntries() {
         this.ui.menuDB.className   = "";
         this.ui.menuUser.className = "";
@@ -738,6 +758,11 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _updateAdminInfo (private)
+     * class  : AdminView
+     * desc   : Updates admin information
+     **/
     _updateAdminInfo(callback) {
         let that = this;
         JSONParsedGetRequest(

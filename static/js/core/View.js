@@ -10,6 +10,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class View {
+
     constructor() {
 
         this.container           = document.createElement("DIV");
@@ -17,17 +18,6 @@ class View {
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : getDataFromPlaylist (public)
-     * class  : Viewa
-     * desc   : Get data from playlist
-     * arg    : {object} playlist - The playlist to get data from
-     **/
-    getDataFromPlaylist(playlist) {
-        return null;
-    }
-
 
     /**
      * method : getContainer (public)
@@ -39,6 +29,18 @@ class View {
         return this.container;
     }
 
+
+    /**
+     * method : getDataFromPlaylist (public)
+     * class  : Viewa
+     * desc   : Get data from playlist
+     * arg    : {object} playlist - The playlist to get data from
+     **/
+    getDataFromPlaylist(playlist) {
+        return null;
+    }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     _init(data) {
 

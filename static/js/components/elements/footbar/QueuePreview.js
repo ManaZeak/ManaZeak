@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class QueuePreview {
+
     constructor(container) {
 
         this.contextMenu = null;
@@ -21,16 +22,13 @@ class QueuePreview {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : preview (public)
+     * method : hide (public)
      * class  : QueuePreview
-     * desc   : TODO
+     * desc   : Hide QueuePreview
      **/
-    preview() {
-        if (isVisibilityLocked(this.ui.container))
-            return;
-
-        addVisibilityLock(this.ui.container);
-        window.setTimeout(removeVisibilityLock.bind(null, this.ui.container), 2000);
+    hide() {
+        this.isLocked = false;
+        removeVisibilityLock(this.ui.container);
     }
 
 
@@ -46,13 +44,17 @@ class QueuePreview {
 
 
     /**
-     * method : hide (public)
+     * method : preview (public)
      * class  : QueuePreview
-     * desc   : Hide QueuePreview
+     * desc   : Shows a queue preview of 2 seconds
      **/
-    hide() {
-        this.isLocked = false;
-        removeVisibilityLock(this.ui.container);
+    preview() {
+        if (isVisibilityLocked(this.ui.container)) {
+            return;
+        }
+
+        addVisibilityLock(this.ui.container);
+        window.setTimeout(removeVisibilityLock.bind(null, this.ui.container), 2000);
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -61,6 +63,7 @@ class QueuePreview {
      * method : _addEntry (private)
      * class  : QueuePreview
      * desc   : Add an entry in QueuePreview
+     * arg    : {object} track - The track to add as an entry
      **/
     _addEntry(track) {
         let li              = document.createElement("LI");
@@ -119,6 +122,7 @@ class QueuePreview {
      * method : _createUI (private)
      * class  : QueuePreview
      * desc   : Build UI elements
+     * arg    : {object} container - The QueuePreview container
      **/
     _createUI(container) {
         this.ui = {

@@ -7,10 +7,11 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class User {
+
     constructor() {
 
-        this.isAdmin = false;
-        this.inviteCode = 0;
+        this.isAdmin       = false;
+        this.inviteCode    = 0;
         this.godFatherCode = 0;
         this._getUserInfo();
     }
@@ -86,4 +87,5 @@ class User {
 
     getIsAdmin() { return this.isAdmin; }
     getInviteCode() { return this.inviteCode; }
+
 }

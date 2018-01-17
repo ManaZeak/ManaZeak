@@ -7,7 +7,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class QueueEntry {
+
     constructor(track) {
+
         this.next     = null;
         this.previous = null;
         this.track    = track;
@@ -114,6 +116,7 @@ class QueueEntry {
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Queue {
+
     constructor() {
 
         this.first   = null;

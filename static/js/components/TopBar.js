@@ -10,6 +10,7 @@
  *                                                           *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class PlaylistBarEntry {
+
     constructor(playlist, playlistBar, id, isLibrary) {
 
         this.entry                 = document.createElement("DIV");
@@ -61,7 +62,7 @@ class PlaylistBarEntry {
 
     /**
      * method : _contextMenuSetup (private)
-     * class  : ListView
+     * class  : PlaylistBarEntry
      * desc   : TODO
      **/
     _contextMenuSetup() {
@@ -85,6 +86,11 @@ class PlaylistBarEntry {
     }
 
 
+    /**
+     * method : _contextMenuSetup (private)
+     * class  : PlaylistBarEntry
+     * desc   : TODO
+     **/
     _createOptionButton() {
         let that = this;
         // TODO : add admin options, or library options
@@ -107,7 +113,6 @@ class PlaylistBarEntry {
 }
 
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                 *
  *  TopBar class                                   *
@@ -117,6 +122,7 @@ class PlaylistBarEntry {
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class TopBar {
+
     constructor() {
 
         this._createUI();
@@ -326,7 +332,7 @@ class TopBar {
      * method : _viewClicked (private)
      * class  : TopBar
      * desc   : Handle clicks in TopBar
-     * arg    : {object} event - the click event
+     * arg    : {object} event - Mouse event
      **/
     _viewClicked(event) {
         let target = event.target;

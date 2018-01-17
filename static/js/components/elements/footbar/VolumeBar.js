@@ -8,6 +8,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class VolumeBar {
+
     constructor(container) {
 
         this.volume       = 0; // Volume value is an int between 0 and 100
@@ -36,26 +37,10 @@ class VolumeBar {
 
 
     /**
-     * method : volumeUp (public)
-     * class  : VolumeBar
-     * desc   : Raise volume
-     * arg    : {object} event
-     **/
-    volumeUp(event) {
-        addVisibilityLock(this.volumeBar.wrapper);
-
-        window.app.player.setIsMuted(false);
-
-        if (!event.ctrlKey) { window.app.adjustVolume(0.1);  }
-        else                { window.app.adjustVolume(0.01); }
-    }
-
-
-    /**
      * method : volumeDown (public)
      * class  : VolumeBar
-     * desc   : Down volume
-     * arg    : {object} event
+     * desc   : Down volume on keyboard input
+     * arg    : {object} event - Keyboard event
      **/
     volumeDown(event) {
         addVisibilityLock(this.volumeBar.wrapper);
@@ -66,12 +51,29 @@ class VolumeBar {
         else                { window.app.adjustVolume(-0.01); }
     }
 
+
+    /**
+     * method : volumeUp (public)
+     * class  : VolumeBar
+     * desc   : Raise volume on keyboard input
+     * arg    : {object} event - Keyboard event
+     **/
+    volumeUp(event) {
+        addVisibilityLock(this.volumeBar.wrapper);
+
+        window.app.player.setIsMuted(false);
+
+        if (!event.ctrlKey) { window.app.adjustVolume(0.1);  }
+        else                { window.app.adjustVolume(0.01); }
+    }
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
      * method : _createUI (private)
      * class  : VolumeBar
      * desc   : Build UI elements
+     * arg    : {object} container - The VolumeBar container
      **/
     _createUI(container) {
         this.ui = {
@@ -172,7 +174,6 @@ class VolumeBar {
      * method : _mouseUp (private)
      * class  : VolumeBar
      * desc   : Action on mouse up event
-     * arg    : {object} event - MouseEvent
      **/
     _mouseUp() {
         if (this.isDragging) {
@@ -206,7 +207,7 @@ class VolumeBar {
     /**
      * method : _toggleVisibilityLock (private)
      * class  : VolumeBar
-     * desc   : Enable/disable the visibility lock on VolumeBar
+     * desc   : Toggles the visibility lock on VolumeBar
      **/
     _toggleVisibilityLock() {
         if (this.isDragging) { addVisibilityLock(this.volumeBar.wrapper);    }

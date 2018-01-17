@@ -1,17 +1,17 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                                       *
- *  DragDrop class                                                       *
- *                                                                       *
- *  Handle the drag and drop of music files                              *
- *                                                                       *
- *  parentElement : {object} the container hoisting the menu             *
- *  openCallback  : {function} A function to run when the menu is opened *
- *  event         : {string} The trigger event                           *
- *                                                                       *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                       *
+ *  DragDrop class                                       *
+ *                                                       *
+ *  Handle the drag and drop of music files              *
+ *                                                       *
+ *  element : {object} TODO   *
+ *                                                       *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class DragDrop {
+
     constructor(element) {
+
       this.element = element;
       this.element.classList.add('mzk-dragdrop');
       //this.wrapper = document.createElement('DIV');
@@ -24,8 +24,15 @@ class DragDrop {
       this._eventListener();
     }
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _eventListener (private)
+     * class  : DragDrop
+     * desc   : DragDrop event listeners
+     **/
     _eventListener() {
-        var self = this;
+        let self = this;
         this.element.addEventListener('dragenter', function(event) {
            self.element.classList.add('mzk-dragdrop-show');
         });
@@ -61,4 +68,5 @@ class DragDrop {
             }
         });
     }
+
 }

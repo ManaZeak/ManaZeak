@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class TrackPreview {
+
     constructor(container) {
 
         this._createUI(container);
@@ -58,9 +59,9 @@ class TrackPreview {
      * method : _createUI (private)
      * class  : TrackPreview
      * desc   : Build UI elements
+     * arg    : {object} container - The TrackPreview container
      **/
     _createUI(container) {
-
         this.ui = {
             container:    document.createElement("DIV"),
             thumb:        document.createElement("IMG"),

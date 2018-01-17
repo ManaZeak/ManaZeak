@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class PartyView extends View {
+
     constructor() {
 
         super();
@@ -15,7 +16,13 @@ class PartyView extends View {
         this._eventListener();
     }
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+    /**
+     * method : _createUI (public)
+     * class  : PartyView
+     * desc   : Returns container while fetching details about current track in player
+     **/
     getContainer() {
         this._setPlayPause();
 
@@ -130,10 +137,11 @@ class PartyView extends View {
         this.ui.container.appendChild(this.ui.next);
     }
 
+
     /**
      * method : _eventListener (private)
      * class  : PartyView
-     * desc   : TODO
+     * desc   : PartyView event listeners
      **/
     _eventListener() {
         let that = this;
@@ -151,9 +159,10 @@ class PartyView extends View {
         });
     }
 
+
     /**
      * method : _setPlayPause (private)
-     * class  : Controls
+     * class  : PartyView
      * desc   : Change Play/Pause button depending on player status
      **/
     _setPlayPause() {
@@ -167,6 +176,11 @@ class PartyView extends View {
     }
 
 
+    /**
+     * method : _setCurrentTrack (private)
+     * class  : PartyView
+     * desc   : Change current track in view
+     **/
     _setCurrentTrack(track) {
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
@@ -177,6 +191,7 @@ class PartyView extends View {
         this.ui.trackCover.src           = track.cover;
     }
 
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
     getIsEnabled()       { return this.isEnabled;    }
     setIsEnabled(enabled) { this.isEnabled = enabled; }

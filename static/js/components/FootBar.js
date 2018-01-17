@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class FootBar {
+
     constructor() {
 
         this._createUI();
@@ -15,7 +16,7 @@ class FootBar {
         this.progressBar     = new ProgressBar(this.controlsContainer);
         this.playlistPreview = new PlaylistPreview(this.footBar);
         this.footBar.appendChild(this.controlsContainer);
-        this._init();
+        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -41,14 +42,21 @@ class FootBar {
     }
 
 
+    /**
+     * method : setMoodbarProgress (public)
+     * class  : FootBar
+     * desc   : Set moodbar progress UI attribute to ProgressBar
+     **/
     setMoodbarProgress() {
         this.progressBar.setMoodbarProgress();
     }
+
 
     /**
      * method : volumeDown (public)
      * class  : FootBar
      * desc   : Updates VolumeBar with volume down
+     * arg    : {object} event - Keyboard event
      **/
     volumeDown(event) {
         this.controls.volumeBar.volumeDown(event);
@@ -59,6 +67,7 @@ class FootBar {
      * method : volumeDown (public)
      * class  : FootBar
      * desc   : Updates VolumeBar with volume up
+     * arg    : {object} event - Keyboard event
      **/
     volumeUp(event) {
         this.controls.volumeBar.volumeUp(event);
@@ -78,16 +87,6 @@ class FootBar {
 
         this.footBar.id                  = "footBar";
         this.controlsContainer.className = "mzk-controls-container";
-    }
-
-
-    /**
-     * method : _init (private)
-     * class  : FootBar
-     * desc   : Listen to FootBar events
-     **/
-    _init() {
-        this._eventListener();
     }
 
 
