@@ -226,8 +226,17 @@ class VolumeBar {
         this.volumeBar.current.style.height        = volume + "%";
         this.volumeBar.thumb.style.bottom          = volume + "%";
 
-        if (volume === 0) { this.ui.mute.image.src = "/static/img/player/mute.svg";   }
-        else              { this.ui.mute.image.src = "/static/img/player/volume.svg"; }
+        if (volume === 0) {
+            this.ui.mute.image.src = "/static/img/player/mute.svg";
+        }
+
+        else if (volume > 0 && volume < 66) {
+            this.ui.mute.image.src = "/static/img/player/volume-half.svg";
+        }
+
+        else {
+            this.ui.mute.image.src = "/static/img/player/volume.svg";
+        }
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
