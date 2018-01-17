@@ -171,7 +171,7 @@ class AdminView extends View {
                     window.app.playlists.clear();
                     that.ui.rmLibButton.blur();
 
-                    window.app.refreshTopBar();
+                    //window.app.refreshTopBar();
                     window.app.refreshFootBar();
                     that._updateAdminInfo();
                 }
@@ -299,7 +299,7 @@ class AdminView extends View {
                                     break;
                                 }
                             }
-                            window.app.refreshTopBar();
+                            //window.app.refreshTopBar();
                             window.app.refreshFootBar();
 
                             let self = that;
@@ -427,7 +427,7 @@ class AdminView extends View {
                                     break;
                                 }
                             }
-                            window.app.refreshTopBar();
+                            //window.app.refreshTopBar();
                             window.app.refreshFootBar();
 
                             let self = that;

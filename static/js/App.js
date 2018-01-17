@@ -63,12 +63,27 @@ class App extends MzkObject {
 
 
     /**
+     * method : getActivePlaylistID (public)
+     * class  : App
+     * desc   : Returns the ID of the active playlist
+     *
+     **/
+    getActivePlaylistID() {
+        return this.activePlaylist ? this.activePlaylist.id : null;
+    }
+
+
+    /**
      * method : changePlaylist (public)
      * class  : App
      * desc   : Update FootBar PlaylistPreview w/ activePlaylist
      **/
-    changePlaylist() {
-        this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
+    changePlaylist(playlistID) {
+        this.activePlaylist = this.playlists.get(playlistID);
+        if(this.activePlaylist) {
+            this.activePlaylist.activate();
+            this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
+        }
     }
 
 
@@ -107,6 +122,7 @@ class App extends MzkObject {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
+                    //TODO turn this into listeners
                     that.footBar.trackPreview.changeTrack(track);
                     that.topBar.changeMoodbar(track.id.track);
                     that.player.changeSource(".." + response.PATH, track.id.track);
@@ -187,7 +203,6 @@ class App extends MzkObject {
                 if (response.DONE) {
                     that.playlists.remove(id);
                     that.playlists.getDefault().activate(); // TODO : test if there is still some playlists
-                    that.refreshTopBar();
                     that.refreshFootBar();
 
                     if (callback) {
@@ -403,16 +418,6 @@ class App extends MzkObject {
 
 
     /**
-     * method : refreshTopBar (public)
-     * class  : App
-     * desc   : Refresh ManaZeak TopBar
-     **/
-    refreshTopBar() {
-        this.topBar.refreshTopBar();
-    }
-
-
-    /**
      * method : renamePlaylist (public)
      * class  : App
      * desc   : Renames a playlist/library from its ID
@@ -436,12 +441,7 @@ class App extends MzkObject {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    let target = that.playlists.get(id);
-                    if(target != null) {
-                        target.setName(name);
-                        that.playlists.getDefault().activate(); // TODO : test if there is still some playlists
-                    }
-                    that.refreshTopBar();
+                    that.playlists.rename(id, name);
                     that.refreshFootBar();
                     // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
                 }
@@ -471,11 +471,11 @@ class App extends MzkObject {
     requestNewPlaylist() {
         let that = this;
 
-        this.playlists.add(new Playlist(0, null, false, false, undefined, function() {
-            that.playlists.getDefault().activate();
-            that.refreshTopBar();
+        let np = new Playlist(0, null, false, false, undefined, function() {
+            that.playlists.add(np);
             that.refreshFootBar();
-        }));
+            that.changePlaylist(np.id);
+        });
     }
 
 
@@ -487,11 +487,11 @@ class App extends MzkObject {
     requestNewLibrary() {
         let that = this;
 
-        this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
-            that.playlists.getDefault().activate();
-            that.refreshTopBar();
+        let nl = new Playlist(0, null, true, false, undefined, function() {
+            that.playlists.add(nl);
             that.refreshFootBar();
-        }));
+            that.changePlaylist(nl.id);
+        });
     }
 
 
@@ -677,10 +677,10 @@ class App extends MzkObject {
             }
 
             let defPlaylist = this.playlists.getDefault();
-            this.topBar.init(this.playlists.filter(function() {return true;}), defPlaylist);
+            this.topBar.init();
             defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
-                that.changePlaylist();
+                that.changePlaylist(that.playlists.getDefault().id);
                 that.footBar.playlistPreview.setVisible(true);
                 // TODO : replace begin arg to the active playlists, to avoid loading it
                 that.playlists.forEach(function() {
@@ -692,7 +692,7 @@ class App extends MzkObject {
         else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
             this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
                 let defPlaylist = that.playlists.getDefault();
-                that.topBar.init(that.playlists.filter(function() {return true;}), defPlaylist);
+                that.topBar.init();
                 that.footBar.playlistPreview.setVisible(true);
                 that.footBar.playlistPreview.changePlaylist(defPlaylist); // TODO : get Lib/Play image/icon
                 // ? that.activePlaylist = defPlaylist;
