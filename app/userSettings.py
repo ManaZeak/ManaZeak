@@ -5,6 +5,7 @@ from django.http import JsonResponse
 
 from app.models import InviteCode, UserPreferences
 from app.utils import errorCheckMessage, timeCodeToString
+from app.wallet import calculateCurrentAvailableCash
 
 
 # Return the user's information
@@ -21,7 +22,7 @@ def getUserSettings(request):
                 'LAST_LOGIN': timeCodeToString(user.last_login),
                 'INVITE_CODE': inviteCode.code,
                 'IS_ADMIN': user.is_superuser,
-                'MANACOIN': userPref.points,
+                'MANACOIN': calculateCurrentAvailableCash(userPref.wallet),
             }
             if userPref.inviteCode is not None:
                 data = {**data, **{

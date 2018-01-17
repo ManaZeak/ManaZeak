@@ -14,6 +14,7 @@ from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, 
 from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.utils import errorCheckMessage, timeCodeToString
+from app.wallet import calculateCurrentAvailableCash
 
 
 def getAdminOptions():
@@ -62,7 +63,7 @@ def getAdminView(request):
                     'LAST_LOGIN': lastLogin,
                     'ID': user.id,
                     'INVITE_CODE': inviteCode.code,
-                    'MANACOIN': userPreferences.points,
+                    'MANACOIN': calculateCurrentAvailableCash(userPreferences.wallet),
                 }, **godfather})
             data = dict({'USER': userInfo})
 
