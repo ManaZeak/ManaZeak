@@ -7,9 +7,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class ProgressBar {
+class ProgressBar extends MzkObject {
     constructor(container) {
-
+        super();
         this.refreshIntervalId = -1;
         this.isDragging        = false;
         this.isMouseOver       = false;
@@ -145,6 +145,12 @@ class ProgressBar {
         window.addEventListener("mousemove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.addEventListener("mousedown", this._mouseDown.bind(this));
+
+        window.app.listen('playerLoadedMetadata', function() {
+            that.refreshInterval(window.app.player.getPlayer());
+        });
+        window.app.listen('changeTrack', this.resetProgressBar.bind(this));
+        window.app.listen('changeView', this.setMoodbarProgress.bind(this));
     }
 
 

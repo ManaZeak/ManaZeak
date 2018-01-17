@@ -172,7 +172,7 @@ class AdminView extends View {
                     that.ui.rmLibButton.blur();
 
                     //window.app.refreshTopBar();
-                    window.app.refreshFootBar();
+                    //window.app.refreshFootBar();
                     that._updateAdminInfo();
                 }
 
@@ -300,7 +300,7 @@ class AdminView extends View {
                                 }
                             }
                             //window.app.refreshTopBar();
-                            window.app.refreshFootBar();
+                            //window.app.refreshFootBar();
 
                             let self = that;
                             that._updateAdminInfo(function() {
@@ -428,7 +428,7 @@ class AdminView extends View {
                                 }
                             }
                             //window.app.refreshTopBar();
-                            window.app.refreshFootBar();
+                            //window.app.refreshFootBar();
 
                             let self = that;
                             that._updateAdminInfo(function() {

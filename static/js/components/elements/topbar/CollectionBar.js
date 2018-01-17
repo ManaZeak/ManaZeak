@@ -141,7 +141,9 @@ class CollectionBar extends MzkObject {
 
         this.element        = document.createElement('DIV');
         this.libsContainer  = document.createElement('DIV');
+        this.libsContainer.className = 'no-padding';
         this.playContainer  = document.createElement('DIV');
+        this.playContainer.className = 'no-padding';
         this.newButton      = document.createElement("DIV");
         this.newButton.innerText = '+';
 
@@ -175,7 +177,9 @@ class CollectionBar extends MzkObject {
             else
                 self.entries.push(new PlaylistCollectionEntry(this, self.playContainer));
         });
-        self.setSelected(window.app.getActivePlaylistID());
+        let activePlaylist = window.app.getActivePlaylist();
+        if(activePlaylist)
+            self.setSelected(activePlaylist.id);
     }
 
 

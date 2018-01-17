@@ -294,8 +294,6 @@ class Playlist {
             }),
             null
         );
-
-        window.app.refreshFootBar();
     }
 
 
@@ -316,8 +314,6 @@ class Playlist {
             }),
             null
         );
-
-        window.app.refreshFootBar();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

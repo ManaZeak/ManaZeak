@@ -6,10 +6,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class TopBar {
+class TopBar extends MzkObject {
     constructor() {
-
+        super();
         this._createUI();
+        this._eventListener();
         this.partyMode     = new PartyMode(this.topBar);
         this.wishList      = new WishList(this.topBar);
         this.userMenu      = new UserMenu(this.topBar);
@@ -41,16 +42,6 @@ class TopBar {
             }
 
         );
-    }
-
-
-    /**
-     * method : init (public)
-     * class  : TopBar
-     * desc   : Init the footbar moodbar
-     **/
-    init() {
-        window.app.footBar.setMoodbarProgress();
     }
 
 
@@ -92,6 +83,19 @@ class TopBar {
         this.moodbarThumb.isVisible      = false;
     }
 
+
+    /**
+     * method : _eventListener (private)
+     * class  : TopBar
+     * desc   : Event handlers
+     **/
+    _eventListener() {
+        var that = this;
+        window.app.listen('stopPlayback', this.resetMoodbar.bind(this));
+        window.app.listen('changeTrack', function(track) {
+            that.changeMoodbar(track.id.track);
+        });
+    }
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
     getTopBar() { return this.topBar; }

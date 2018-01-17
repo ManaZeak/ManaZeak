@@ -15,6 +15,7 @@ class App extends MzkObject {
         this.dragdrop         = new DragDrop(document.body);
         this.mainContainer    = document.createElement("DIV");
         this.mainContainer.id = "mainContainer";
+        this.topBar           = null;
         this.footBar          = null;
         this.player           = null;
         this.playlists        = new PlaylistCollection();
@@ -63,27 +64,29 @@ class App extends MzkObject {
 
 
     /**
-     * method : getActivePlaylistID (public)
+     * method : getActivePlaylist (public)
      * class  : App
-     * desc   : Returns the ID of the active playlist
+     * desc   : Returns the active playlist
      *
      **/
-    getActivePlaylistID() {
-        return this.activePlaylist ? this.activePlaylist.id : null;
+    getActivePlaylist() {
+        return this.activePlaylist ? this.activePlaylist : null;
     }
 
 
     /**
      * method : changePlaylist (public)
      * class  : App
-     * desc   : Update FootBar PlaylistPreview w/ activePlaylist
+     * desc   : Change the active playlist
      **/
     changePlaylist(playlistID) {
-        this.activePlaylist = this.playlists.get(playlistID);
-        if(this.activePlaylist) {
+        let newActive = this.playlists.get(playlistID);
+        if(newActive) {
+            this.activePlaylist = newActive;
             this.activePlaylist.activate();
-            this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
+            return true;
         }
+        return false;
     }
 
 
@@ -103,7 +106,6 @@ class App extends MzkObject {
         if (lastTrackPath !== null) { lastTrackPath = lastTrackPath.value; }
         else                        { lastTrackPath = "None";              }
 
-        this.footBar.progressBar.resetProgressBar();
         let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
             "ajax/getTrackPathByID/",
@@ -122,9 +124,6 @@ class App extends MzkObject {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    //TODO turn this into listeners
-                    that.footBar.trackPreview.changeTrack(track);
-                    that.topBar.changeMoodbar(track.id.track);
                     that.player.changeSource(".." + response.PATH, track.id.track);
                     that.changePageTitle(response.PATH);
                     that.activePlaylist.setCurrentTrack(track);
@@ -202,8 +201,7 @@ class App extends MzkObject {
                  * } */
                 if (response.DONE) {
                     that.playlists.remove(id);
-                    that.playlists.getDefault().activate(); // TODO : test if there is still some playlists
-                    that.refreshFootBar();
+                    that.changePlaylist(that.playlists.getDefault().id); // TODO : test if there is still some playlists
 
                     if (callback) {
                         callback();
@@ -365,6 +363,13 @@ class App extends MzkObject {
         else                               { this.activePlaylist.playNextTrack(); }
     }
 
+    /**
+     * method : playerLoadedMetadata
+     * class  : App
+     * desc   : fired when the player has loaded the file metadata
+     **/
+    playerLoadedMetadata() {}
+
 
     /**
      * method : popQueue (public)
@@ -400,24 +405,6 @@ class App extends MzkObject {
 
 
     /**
-     * method : refreshFootBar (public)
-     * class  : App
-     * desc   : Refresh ManaZeak FootBar
-     **/
-    refreshFootBar() {
-        if (!this.footBar.playlistPreview.getIsVisible()) {
-            this.footBar.playlistPreview.setVisible(true);
-        }
-
-        this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
-
-        if (!this.player.isEmpty()) {
-            this.footBar.progressBar.refreshInterval(this.player.getPlayer());
-        }
-    }
-
-
-    /**
      * method : renamePlaylist (public)
      * class  : App
      * desc   : Renames a playlist/library from its ID
@@ -442,8 +429,6 @@ class App extends MzkObject {
                  * } */
                 if (response.DONE) {
                     that.playlists.rename(id, name);
-                    that.refreshFootBar();
-                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
                 }
 
                 else {
@@ -473,7 +458,6 @@ class App extends MzkObject {
 
         let np = new Playlist(0, null, false, false, undefined, function() {
             that.playlists.add(np);
-            that.refreshFootBar();
             that.changePlaylist(np.id);
         });
     }
@@ -489,7 +473,6 @@ class App extends MzkObject {
 
         let nl = new Playlist(0, null, true, false, undefined, function() {
             that.playlists.add(nl);
-            that.refreshFootBar();
             that.changePlaylist(nl.id);
         });
     }
@@ -559,8 +542,6 @@ class App extends MzkObject {
     stopPlayback() {
         this.changePageTitle("ManaZeak");
         this.player.stopPlayback();
-        this.topBar.resetMoodbar();
-        this.footBar.resetUI();
     }
 
 
@@ -677,11 +658,9 @@ class App extends MzkObject {
             }
 
             let defPlaylist = this.playlists.getDefault();
-            this.topBar.init();
             defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
                 that.changePlaylist(that.playlists.getDefault().id);
-                that.footBar.playlistPreview.setVisible(true);
                 // TODO : replace begin arg to the active playlists, to avoid loading it
                 that.playlists.forEach(function() {
                     this.getPlaylistsTracks();
@@ -692,9 +671,6 @@ class App extends MzkObject {
         else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
             this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
                 let defPlaylist = that.playlists.getDefault();
-                that.topBar.init();
-                that.footBar.playlistPreview.setVisible(true);
-                that.footBar.playlistPreview.changePlaylist(defPlaylist); // TODO : get Lib/Play image/icon
                 // ? that.activePlaylist = defPlaylist;
             }));
         }

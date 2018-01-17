@@ -6,9 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class TrackPreview {
+class TrackPreview extends MzkObject {
     constructor(container) {
-
+        super();
         this._createUI(container);
         this._eventListener();
     }
@@ -122,7 +122,10 @@ class TrackPreview {
         });
 
         let that = this;
-        window.app.listen(["togglePlay", "changeTrack"], function() {
+        window.app.listen('changeTrack', function(track) {
+            that.changeTrack(track);
+        });
+        window.app.listen("togglePlay", function() {
             that._setVisible(true);
         });
         window.app.listen("stopPlayback", function() {

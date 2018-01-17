@@ -110,8 +110,11 @@ $topbar-height: 50px;
             font-size: 0.9em;
             line-height: 30px;
             margin: 0;
-            padding: 0 25px;
             transition: 0.2s ease;
+
+            &:not(.no-padding) {
+                padding: 0 25px;
+            }
 
             a#gear {
                 background: url("/static/img/playlist/gear.svg");

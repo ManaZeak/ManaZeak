@@ -6,10 +6,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class PlaylistPreview {
+class PlaylistPreview extends MzkObject {
     constructor(container) {
-
+        super();
         this._createUI(container);
+        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -82,6 +83,20 @@ class PlaylistPreview {
         this.ui.container.appendChild(this.listContainer);
         this.ui.container.appendChild(this.tooltipWrapper);
         container.appendChild(this.ui.container);
+    }
+
+    /**
+     * method : _eventListener (private)
+     * class  : PlaylistCollection
+     * desc   : PlaylistCollection event listeners
+     **/
+    _eventListener() {
+        var self = this;
+        window.app.listen(['rename', 'changePlaylist'], function() {
+            self.changePlaylist(window.app.getActivePlaylist());
+            self.setVisible(true);
+        });
+        window.app.listen(['toggleRepeat', 'toggleShuffle'], this._updatePlaylistPreview.bind(this));
     }
 
 

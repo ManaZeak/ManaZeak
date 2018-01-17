@@ -6,9 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class FootBar {
+class FootBar extends MzkObject {
     constructor() {
-
+        super();
         this._createUI();
         this.trackPreview    = new TrackPreview(this.footBar);
         this.controls        = new Controls(this.controlsContainer);
@@ -40,10 +40,6 @@ class FootBar {
         this.progressBar.resetProgressBar();
     }
 
-
-    setMoodbarProgress() {
-        this.progressBar.setMoodbarProgress();
-    }
 
     /**
      * method : volumeDown (public)
@@ -99,9 +95,7 @@ class FootBar {
     _eventListener() {
         let that = this;
 
-        window.app.listen('stopPlayback', function() {
-            that.progressBar.resetProgressBar();
-        });
+        window.app.listen('stopPlayback', this.resetUI.bind(this));
         window.app.listen(['fastForward', 'rewind'], function() {
             that.progressBar.updateProgress(window.app.player.getPlayer());
         });
