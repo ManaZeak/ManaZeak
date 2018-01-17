@@ -11,6 +11,7 @@ from app.models import FileType
 from app.utils import processVorbisTag
 
 
+# Read a file and put the metadata information into memory
 def createMP3Track(filePath, convert, fileTypeId, coverPath):
     track = LocalTrack()
 
@@ -119,6 +120,7 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     return track
 
 
+# Read a file and put the metadata information into memory
 def createFLACTrack(filePath, fileTypeId, coverPath):
     track = LocalTrack()
 
@@ -189,6 +191,7 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     return track
 
 
+# Generate only the cover from a track
 def regenerateCover(track):
     if FileType.objects.filter(name="mp3").count() == 1 and FileType.objects.filter(name="flac").count() == 1:
         mp3Type = FileType.objects.get(name="mp3")
@@ -225,6 +228,7 @@ def regenerateCover(track):
         track.save()
 
 
+# Tag a file in the comment section with the uploader name
 def setUploader(path, userName):
     # Saving uploader for mp3 file since flac has no comment field
     if path.endswith('.mp3'):
@@ -237,6 +241,7 @@ def setUploader(path, userName):
             audioTag.add('COMM')
         audioTag['COMM'].text[0] = "Uploaded by : " + userName
         audioTag.save()
+    # TODO : also process flac
 
 
 class LocalTrack:

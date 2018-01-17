@@ -9,6 +9,7 @@ from app.track.track import exportTrackInfo
 from app.utils import errorCheckMessage
 
 
+# Generate json for a list of tracks with detailed information
 def generateSimilarTrackJson(selectedTracks):
     if len(selectedTracks) == 0:
         return None
@@ -18,6 +19,7 @@ def generateSimilarTrackJson(selectedTracks):
     return dict({'RESULT': data})
 
 
+# From a track read the tags and fetch similar tracks
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getSimilarTrack(request):
     if request.method == 'POST':

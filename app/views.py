@@ -1,6 +1,3 @@
-import json
-from builtins import print
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -9,17 +6,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
 from app.adminTools import getAdminOptions
 from app.form import UserForm
-from app.models import Playlist, AdminOptions, InviteCode, UserPreferences
+from app.models import Playlist, InviteCode, UserPreferences
 from app.userSettings import createUserInviteCode
 from app.utils import populateDB
 
 
+# Main container
 class mainView(ListView):
     template_name = 'index.html'
     queryset = Playlist

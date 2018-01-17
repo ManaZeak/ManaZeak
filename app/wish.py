@@ -8,6 +8,7 @@ from app.models import Wish
 from app.utils import errorCheckMessage
 
 
+# Create a wish in the database
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def createWish(request):
     if request.method == 'POST':
@@ -27,6 +28,7 @@ def createWish(request):
     return JsonResponse(data)
 
 
+# Get all wishes or get only those of the user
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getWishes(request):
     if request.method == 'POST':
@@ -58,6 +60,7 @@ def getWishes(request):
     return JsonResponse(data)
 
 
+# Change a wish status
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def setWishStatus(request):
     if request.method == 'POST':
@@ -78,6 +81,7 @@ def setWishStatus(request):
                         wish.status = status
                         wish.save()
                         data = errorCheckMessage(True, None)
+                        # TODO : Add notification logging for user
                     else:
                         data = errorCheckMessage(False, "valueError")
                 else:

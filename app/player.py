@@ -46,7 +46,6 @@ def shuffleSoundSelector(shuffle):
     return -1
 
 
-# TODO : refactor shuffle and random to group them in one function
 # Get the next track when the shuffle mode is enabled
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def shuffleNextTrack(request):

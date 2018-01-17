@@ -32,6 +32,7 @@ def getAdminOptions():
     return adminOptions
 
 
+# Get all the information needed for the admin view
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getAdminView(request):
     if request.method == 'GET':
@@ -40,6 +41,8 @@ def getAdminView(request):
             adminOptions = getAdminOptions()
             users = User.objects.all().order_by('date_joined')
             userInfo = []
+
+            # User information
             for user in users:
                 dateJoined = timeCodeToString(user.date_joined)
                 lastLogin = timeCodeToString(user.last_login)
@@ -62,6 +65,8 @@ def getAdminView(request):
                     'MANACOIN': userPreferences.points,
                 }, **godfather})
             data = dict({'USER': userInfo})
+
+            # Library information
             libraryInfo = []
             for library in Library.objects.all():
                 libraryInfo.append({
@@ -72,6 +77,8 @@ def getAdminView(request):
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
+
+            # Global options
             data = {**data, **{
                 'SYNC_KEY': adminOptions.syncthingKey,
                 'BUFFER_PATH': adminOptions.bufferPath,
@@ -85,6 +92,7 @@ def getAdminView(request):
     return JsonResponse(data)
 
 
+# Delete all moodbars in the moodbar folder.
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def removeAllMoods(request):
     if request.method == 'GET':
@@ -101,6 +109,7 @@ def removeAllMoods(request):
     return JsonResponse(data)
 
 
+# Delete a user from an ID
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def removeUserById(request):
     if request.method == 'POST':
@@ -108,15 +117,18 @@ def removeUserById(request):
         if admin.is_superuser:
             response = json.loads(request.body)
             if 'USER_ID' in response:
-                userId = strip_tags(response['USER_ID'])
-                if int(userId) != admin.id:
-                    if User.objects.filter(id=userId).count() == 1:
-                        User.objects.get(id=userId).delete()
-                        data = errorCheckMessage(True, None)
+                try:
+                    userId = int(strip_tags(response['USER_ID']))
+                    if userId != admin.id:
+                        if User.objects.filter(id=userId).count() == 1:
+                            User.objects.get(id=userId).delete()
+                            data = errorCheckMessage(True, None)
+                        else:
+                            data = errorCheckMessage(False, "dbError")
                     else:
-                        data = errorCheckMessage(False, "dbError")
-                else:
-                    data = errorCheckMessage(False, "userDeleteError")
+                        data = errorCheckMessage(False, "userDeleteError")
+                except ValueError:
+                    data = errorCheckMessage(False, "valueError")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:
@@ -126,6 +138,7 @@ def removeUserById(request):
     return JsonResponse(data)
 
 
+# Force a syncthing rescan
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def syncthingRescan(request):
     if request.method == 'GET':
@@ -144,6 +157,7 @@ def syncthingRescan(request):
     return JsonResponse(data)
 
 
+# Change the syncthing API key in the database
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def changeSyncthingAPIKey(request):
     if request.method == 'POST':
@@ -166,7 +180,7 @@ def changeSyncthingAPIKey(request):
     return JsonResponse(data)
 
 
-# WIP
+# Change the buffer path in the database
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def changeBufferPath(request):
     if request.method == 'POST':
@@ -176,9 +190,12 @@ def changeBufferPath(request):
             if 'BUFFER_PATH' in response:
                 adminOptions = getAdminOptions()
                 bufferPath = strip_tags(response['BUFFER_PATH'])
-                adminOptions.bufferPath = bufferPath
-                adminOptions.save()
-                data = errorCheckMessage(True, None)
+                if os.path.isdir(bufferPath):
+                    adminOptions.bufferPath = bufferPath
+                    adminOptions.save()
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dirNotFound")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:
@@ -188,6 +205,7 @@ def changeBufferPath(request):
     return JsonResponse(data)
 
 
+# Delete all covers and launch a rescan for covers
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':
@@ -210,12 +228,14 @@ def regenerateCovers(request):
     return JsonResponse(data)
 
 
+# Process for handling regeneration
 def regenerateCoverProcess():
     tracks = Track.objects.all()
     for track in tracks:
         regenerateCover(track)
 
 
+# Return the status of a user
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def isAdmin(request):
     if request.method == 'GET':
@@ -228,12 +248,13 @@ def isAdmin(request):
     return JsonResponse(data)
 
 
-# Drop all database, used for debug
+# Drop all database
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def dropAllDB(request):
     if request.method == 'GET':
-        if request.user.is_authenticated():
-            if request.user.is_superuser:
+        user = request.user
+        if user.is_authenticated():
+            if user.is_superuser:
                 Track.objects.all().delete()
                 Artist.objects.all().delete()
                 Album.objects.all().delete()
@@ -266,20 +287,27 @@ def isInviteEnabled(request):
     return JsonResponse(data)
 
 
+# Enable or disable the invitation mode
+@login_required(redirect_field_name='user/login.html', login_url='app:login')
 def toggleInvite(request):
     if request.method == 'GET':
-        adminOptions = getAdminOptions()
-        adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
-        adminOptions.save()
-        data = {
-            'INVITE': adminOptions.inviteCodeEnabled
-        }
-        data = {**data, **errorCheckMessage(True, None)}
+        user = request.user
+        if user.is_superuser:
+            adminOptions = getAdminOptions()
+            adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
+            adminOptions.save()
+            data = {
+                'INVITE': adminOptions.inviteCodeEnabled
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
 
 
+# Check if the tagging has been done correctly
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def checkNamingConventionArtistsOnPlaylist(request):
     data = {}

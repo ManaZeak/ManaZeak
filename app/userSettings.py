@@ -7,6 +7,7 @@ from app.models import InviteCode, UserPreferences
 from app.utils import errorCheckMessage, timeCodeToString
 
 
+# Return the user's information
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def getUserSettings(request):
     if request.method == 'GET':
@@ -40,10 +41,12 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
+# Create an invite code for a user
 def createUserInviteCode(user):
     inviteCode = InviteCode()
     inviteCode.user = user
     inviteCode.code = hashlib.md5(
-        str(user.id).encode("ascii", "ignore") + str(user.username).encode("ascii", "ignore") +
+        str(user.id).encode("ascii", "ignore") +
+        str(user.username).encode("ascii", "ignore") +
         str(user.date_joined).encode("ascii", "ignore")).hexdigest().upper()
     inviteCode.save()
