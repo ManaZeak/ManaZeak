@@ -5,35 +5,23 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>ManaZeak</title> <!-- TODO : display and animate track metadata -->
+        <meta name="description" content="ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. Check out our repo : https://github.com/Squadella/ManaZeak">
+        <title>ManaZeak</title>
         <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
     </head>
     <body>
-        <!-- <p>Ctrl + M : mute</p>
-        <p>&rarr; : fastforward 10s</p>
-        <p>Ctrl + &rarr; : fastforward 30s</p>
-        <p>&larr; : rewind 10s</p>
-        <p>Ctrl + &larr; : rewind 30s</p>
-        <p>&uarr; : ++volume 1</p>
-        <p>Ctrl + &uarr; : ++volume 10</p>
-        <p>&darr; : --volume 1</p>
-        <p>Ctrl + &darr; : --volume 10</p>
-        <p>Ctrl + q : toggle queue</p>
-        <p>Space : Play/Pause</p> -->
-
         <audio id="audioPlayer">
             <source src="" type="audio/ogg">
              Your browser does not support the audio element.
         </audio>
 
-        <!-- Add absolute path in js TODO : to something about deaz ... -->
+        <!-- TODO something about deaz ... -->
         <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Overrides.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Utils.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Modal.js" %}"></script>
         <script type="text/javascript" src="{% static "js/utils/Notification.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/Track.js" %}"></script>
-        <!-- Attention au loading -->
         <script type="text/javascript" src="{% static "js/core/MzkListener.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/MzkObject.js" %}"></script>
         <script type="text/javascript" src="{% static "js/core/User.js" %}"></script>
@@ -66,7 +54,7 @@
 
         <script type="text/javascript">
             window.app = new App();
-            app.init();
+            window.app.init();
         </script>
     </body>
 </html>

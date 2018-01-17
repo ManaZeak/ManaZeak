@@ -40,7 +40,7 @@ def createUser(request):
                 if InviteCode.objects.filter(code=inviteCode).count() == 1:
                     invite = InviteCode.objects.get(code=inviteCode)
                 else:
-                    return render(request, 'user/signup.html', {'form': form})
+                    return render(request, 'user/templates/signup.html', {'form': form})
 
             form.save()
             # Special condition for the first user to be administrator
@@ -68,7 +68,7 @@ def createUser(request):
             return HttpResponseRedirect(reverse('app:index'))
     else:
         form = UserCreationForm()
-    return render(request, 'user/signup.html', {'form': form})
+    return render(request, 'user/templates/signup.html', {'form': form})
 
 
 # Render the user form login views
@@ -99,4 +99,4 @@ class UserFormLogin(View):
 @login_required(redirect_field_name='user/login.html', login_url='app:login')
 def logoutView(request):
     logout(request)
-    return render(request, 'user/login.html')
+    return render(request, 'user/templates/login.html')

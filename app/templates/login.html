@@ -21,7 +21,7 @@
     <div id="login">
        <h1>ManaZeak</h1>
         {% if user.is_active %}
-            <p>Authenticated already. Go back to <a href="../">ManaZeak</a></p> <!-- TODO proper redirection w/ url -->
+            <p>Authenticated already. Go back to <a href="">ManaZeak</a></p> <!-- TODO proper redirection w/ url -->
         {% else %}
         {% if form.has_errors %}
             <p>Your username and password didn't match. Please try again.</p>
