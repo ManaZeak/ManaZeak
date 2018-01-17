@@ -1,12 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * * *
  *                                 *
- *  AdminView class                        *
+ *  UserView class                        *
  *                                         *
  *  Handle admin settings                  *
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class SettingsView extends View {
+class UserView extends View {
 
     constructor() {
 
@@ -20,7 +20,7 @@ class SettingsView extends View {
 
     /**
      * method : _clearPageSpace (private)
-     * class  : SettingsView
+     * class  : UserView
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
@@ -31,7 +31,7 @@ class SettingsView extends View {
 
     /**
      * method : _createUI (private)
-     * class  : SettingsView
+     * class  : UserView
      * desc   : Build UI elements
      **/
     _createUI() {
@@ -47,11 +47,11 @@ class SettingsView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "settings";
+        this.ui.container.id        = "user";
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
 
-        this.ui.menuTitle.innerHTML = "Settings";
+        this.ui.menuTitle.innerHTML = "User";
         this.ui.menuGen.innerHTML    = "General";
 
         this.ui.menuList.appendChild(this.ui.menuGen);
@@ -68,8 +68,8 @@ class SettingsView extends View {
 
     /**
      * method : _eventListener (private)
-     * class  : SettingsView
-     * desc   : SettingsView event listeners
+     * class  : UserView
+     * desc   : UserView event listeners
      **/
     _eventListener() {
         this.ui.menuGen.addEventListener("click", this._requestGeneralPage.bind(this));
@@ -78,7 +78,7 @@ class SettingsView extends View {
 
     /**
      * method : _requestGeneralPage (private)
-     * class  : SettingsView
+     * class  : UserView
      * desc   : Display the general page
      **/
     _requestGeneralPage() {
@@ -110,7 +110,7 @@ class SettingsView extends View {
 
     /**
      * method : _requestGeneralPage (private)
-     * class  : SettingsView
+     * class  : UserView
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
@@ -120,7 +120,7 @@ class SettingsView extends View {
 
     /**
      * method : _requestGeneralPage (private)
-     * class  : SettingsView
+     * class  : UserView
      * desc   : Updates settings information
      **/
     _updateSettingsInfo(callback) {

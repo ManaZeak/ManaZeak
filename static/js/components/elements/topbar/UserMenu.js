@@ -51,7 +51,7 @@ class UserMenu {
         this.contextMenu.addEntry('invite', 'Invite Code', function() {
             new Modal('inviteCode', null).open();
         });
-        this.contextMenu.addEntry('settings', 'Settings', function() {
+        this.contextMenu.addEntry('settings', 'Username', function() { // TODO : replace w/ username
             window.app.showAppView('mzk_settings');
         });
         this.contextMenu.addEntry('stats', 'Stats', function() {
