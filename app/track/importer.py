@@ -98,7 +98,7 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     if len(audioTag.getall('TXXX')) != 0:
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
-                totalDisc = strip_tags(txxx.text[0]).rstrip()
+                track.totalDisc = strip_tags(txxx.text[0]).rstrip()
 
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
@@ -164,6 +164,15 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         trackNumber = processVorbisTag(audioFile['TRACKNUMBER'])
         if not trackNumber == "":
             track.number = trackNumber
+
+    if 'TOTALTRACK' in audioFile:
+        track.totalTrack = processVorbisTag(audioFile['TOTALTRACK'])
+
+    if 'BPM' in audioFile:
+        track.bpm = processVorbisTag(audioFile['BPM'])
+
+    if 'LYRICS' in audioFile:
+        track.lyrics = processVorbisTag(audioFile['LYRICS'])
 
     if 'COMPOSER' in audioFile:
         trackComposer = processVorbisTag(audioFile['COMPOSER'])
@@ -249,6 +258,7 @@ class LocalTrack:
         self.location = self.coverLocation = self.title = self.composer = self.performer = self.lyrics = self.comment \
             = self.album = self.genre = self.moodbar = ""
         self.year = self.fileType = self.number = self.bpm = self.bitRate = self.bitRateMode = self.sampleRate \
-            = self.duration = self.discNumber = self.size = self.playCounter = self.downloadCounter = 0
+            = self.duration = self.discNumber = self.size = self.playCounter = self.downloadCounter = self.totalDisc = \
+            self.totalTrack = 0
         self.artist = []
         self.scanned = False

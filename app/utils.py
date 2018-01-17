@@ -127,6 +127,10 @@ def errorCheckMessage(isDone, error):
         errorTitle = "The drag and drop hasn't been setup"
         errorMessage = "The administrator didn't configured correctly the buffer folder"
 
+    elif error == "formatError":
+        errorTitle = "The format provided doesn't have support"
+        errorMessage = "We don't supports this extension."
+
     return {
         'DONE': isDone,
         'ERROR_H1': "" + errorTitle + "",
