@@ -130,6 +130,7 @@ class PlaylistCollection extends MzkObject {
     getDefault() {
         for(let i in this.bank)
             return this.bank[i];
+        return null;
     }
 
 

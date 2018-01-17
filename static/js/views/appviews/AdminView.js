@@ -175,10 +175,8 @@ class AdminView extends View {
                  * } */
                 if (response.DONE) {
                     window.app.playlists.clear();
+                    window.app.changePlaylist();
                     that.ui.rmLibButton.blur();
-
-                    //window.app.refreshTopBar();
-                    //window.app.refreshFootBar();
                     that._updateAdminInfo();
                 }
 
@@ -288,11 +286,12 @@ class AdminView extends View {
             let element       = document.createElement("LI");
             let rm            = document.createElement("IMG");
             rm.src            = "/static/img/utils/trash.svg";
+            let deletedID     = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
                 JSONParsedPostRequest(
                     "ajax/deleteLibrary/",
                     JSON.stringify({
-                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
+                        LIBRARY_ID: deletedID
                     }),
                     function(response) {
                         /* response = {
@@ -303,15 +302,11 @@ class AdminView extends View {
                          *     PATH        : string
                          * } */
                         if (response.DONE) {
-                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
-                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
-                                    window.app.playlists.splice(j, 1);
-                                    break;
-                                }
+                            window.app.playlists.remove(deletedID);
+                            if(window.app.getActivePlaylist().id == deletedID) {
+                                let def = window.app.playlists.getDefault();
+                                window.app.changePlaylist(def ? def.id : null);
                             }
-                            //window.app.refreshTopBar();
-                            //window.app.refreshFootBar();
-
                             let self = that;
                             that._updateAdminInfo(function() {
                                 self._requestLibrariesPage();
@@ -449,8 +444,6 @@ class AdminView extends View {
                                     break;
                                 }
                             }
-                            //window.app.refreshTopBar();
-                            //window.app.refreshFootBar();
 
                             let self = that;
                             that._updateAdminInfo(function() {

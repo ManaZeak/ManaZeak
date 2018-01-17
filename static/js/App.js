@@ -80,12 +80,13 @@ class App extends MzkObject {
      * desc   : Change the active playlist
      **/
     changePlaylist(playlistID) {
-        let newActive = this.playlists.get(playlistID);
+        let newActive = playlistID != null ? this.playlists.get(playlistID) : this.playlists.getDefault();
         if(newActive) {
             this.activePlaylist = newActive;
             this.activePlaylist.activate();
             return true;
         }
+        this.activePlaylist = null;
         return false;
     }
 
@@ -687,10 +688,7 @@ class App extends MzkObject {
         }
 
         else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
-            this.playlists.add(new Playlist(0, null, true, false, undefined, function() {
-                let defPlaylist = that.playlists.getDefault();
-                // ? that.activePlaylist = defPlaylist;
-            }));
+            this.requestNewLibrary();
         }
 
         else {

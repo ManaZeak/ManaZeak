@@ -100,8 +100,12 @@ class PlaylistPreview extends MzkObject {
     _eventListener() {
         var self = this;
         window.app.listen(['rename', 'changePlaylist'], function() {
-            self.changePlaylist(window.app.getActivePlaylist());
-            self.setVisible(true);
+            let ap = window.app.getActivePlaylist();
+            if(ap != null) {
+                self.changePlaylist(ap);
+                self.setVisible(true);
+            } else
+                self.setVisible(false);
         });
         window.app.listen(['toggleRepeat', 'toggleShuffle'], this._updatePlaylistPreview.bind(this));
     }
