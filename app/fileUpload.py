@@ -13,7 +13,7 @@ from app.utils import errorCheckMessage
 
 
 # Handle the file upload
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def handleUploadedFile(request):
     if request.method == 'POST':
         user = request.user

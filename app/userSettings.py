@@ -9,7 +9,7 @@ from app.wallet import calculateCurrentAvailableCash
 
 
 # Return the user's information
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserSettings(request):
     if request.method == 'GET':
         user = request.user

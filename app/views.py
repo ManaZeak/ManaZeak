@@ -75,7 +75,7 @@ def createUser(request):
 # Render the user form login views
 class UserFormLogin(View):
     form_class = UserForm
-    template_name = 'user/login.html'
+    template_name = 'login.html'
 
     # Display the blank form
     def get(self, request):
@@ -97,7 +97,7 @@ class UserFormLogin(View):
 
 
 # Log out the user
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def logoutView(request):
     logout(request)
     return render(request, 'login.html')

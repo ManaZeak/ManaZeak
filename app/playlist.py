@@ -10,7 +10,7 @@ from app.utils import errorCheckMessage
 
 
 # Create an empty playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def newPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -32,7 +32,7 @@ def newPlaylist(request):
 
 
 # Delete a user's playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deletePlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -52,7 +52,7 @@ def deletePlaylist(request):
 
 
 # Rename user's playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def renamePlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -74,7 +74,7 @@ def renamePlaylist(request):
 
 
 # Add a track to a user playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def addTracksToPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -104,7 +104,7 @@ def addTracksToPlaylist(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def removeTrackFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -136,7 +136,7 @@ def removeTrackFromPlaylist(request):
 
 # TODO : test for the best value for the number of element in the JSON
 # Give 300 tracks of a playlist with an offset (REQ_NUMBER)
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def lazyLoadingSimplifiedPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -179,7 +179,7 @@ def lazyLoadingSimplifiedPlaylist(request):
 
 
 # Send basic data about the playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getPlaylistInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -221,7 +221,7 @@ def getTotalLength(playlist):
 
 
 # Return all the id of the user playlists
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPlaylists(request):
     if request.method == 'GET':
         user = request.user

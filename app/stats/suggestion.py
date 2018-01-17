@@ -20,7 +20,7 @@ def generateSimilarTrackJson(selectedTracks):
 
 
 # From a track read the tags and fetch similar tracks
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getSimilarTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)

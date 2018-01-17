@@ -17,7 +17,7 @@ from app.utils import errorCheckMessage, splitTableCustom
 
 
 # Perform the initial scan for a library
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
@@ -41,7 +41,7 @@ def initialScan(request):
 
 
 # Create a new library can only be done while being a superuser.
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def newLibrary(request):
     if request.method == 'POST':
         if request.user.is_superuser:
@@ -75,7 +75,7 @@ def newLibrary(request):
 
 
 # Function for check if a library has been scanned.
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -93,7 +93,7 @@ def checkLibraryScanStatus(request):
 
 
 # Drop a library and index all the tracks
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def rescanLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -176,7 +176,7 @@ def scanLibrary(library, playlist, convert):
 
 
 # Delete a library in the application
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -202,7 +202,7 @@ def deleteLibrary(request):
 
 
 # Delete all the libraries and the related elements
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteAllLibrary(request):
     if request.method == 'GET':
         admin = request.user

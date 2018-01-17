@@ -47,7 +47,7 @@ def shuffleSoundSelector(shuffle):
 
 
 # Get the next track when the shuffle mode is enabled
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -110,7 +110,7 @@ def randomNextTrack(request):
 
 
 # Change the mode of getting the next track
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def toggleRandom(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -145,7 +145,7 @@ def toggleRandom(request):
 
 
 # Return the link to a track with a track id
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getTrackPathByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -189,7 +189,7 @@ def getTrackPathByID(request):
 
 
 # Return the mood file with a given track id
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getMoodbarByID(request):
     if request.method == 'POST':
         response = json.loads(request.body)

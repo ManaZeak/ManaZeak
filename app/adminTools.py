@@ -34,7 +34,7 @@ def getAdminOptions():
 
 
 # Get all the information needed for the admin view
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getAdminView(request):
     if request.method == 'GET':
         admin = request.user
@@ -94,7 +94,7 @@ def getAdminView(request):
 
 
 # Delete all moodbars in the moodbar folder.
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def removeAllMoods(request):
     if request.method == 'GET':
         admin = request.user
@@ -111,7 +111,7 @@ def removeAllMoods(request):
 
 
 # Delete a user from an ID
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def removeUserById(request):
     if request.method == 'POST':
         admin = request.user
@@ -140,7 +140,7 @@ def removeUserById(request):
 
 
 # Force a syncthing rescan
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def syncthingRescan(request):
     if request.method == 'GET':
         admin = request.user
@@ -159,7 +159,7 @@ def syncthingRescan(request):
 
 
 # Change the syncthing API key in the database
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeSyncthingAPIKey(request):
     if request.method == 'POST':
         admin = request.user
@@ -182,7 +182,7 @@ def changeSyncthingAPIKey(request):
 
 
 # Change the buffer path in the database
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeBufferPath(request):
     if request.method == 'POST':
         admin = request.user
@@ -207,7 +207,7 @@ def changeBufferPath(request):
 
 
 # Delete all covers and launch a rescan for covers
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':
         admin = request.user
@@ -237,7 +237,7 @@ def regenerateCoverProcess():
 
 
 # Return the status of a user
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def isAdmin(request):
     if request.method == 'GET':
         data = {
@@ -250,7 +250,7 @@ def isAdmin(request):
 
 
 # Drop all database
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def dropAllDB(request):
     if request.method == 'GET':
         user = request.user
@@ -289,7 +289,7 @@ def isInviteEnabled(request):
 
 
 # Enable or disable the invitation mode
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def toggleInvite(request):
     if request.method == 'GET':
         user = request.user
@@ -309,7 +309,7 @@ def toggleInvite(request):
 
 
 # Check if the tagging has been done correctly
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def checkNamingConventionArtistsOnPlaylist(request):
     data = {}
     if request.method == 'POST':

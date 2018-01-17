@@ -64,7 +64,7 @@ def exportTrackInfo(track):
 
 
 # Get all the information about a track
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getTrackDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -83,7 +83,7 @@ def getTrackDetailedInfo(request):
 
 
 # Download the given song
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getDownloadLocation(request):
     if request.method == 'POST':
         response = json.loads(request.body)

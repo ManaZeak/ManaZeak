@@ -22,7 +22,7 @@ def addToHistory(track, user):
 
 
 # Get the last song played by a user
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getLastSongPlayed(request):
     if request.method == 'GET':
         user = request.user

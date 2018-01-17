@@ -9,7 +9,7 @@ from app.utils import errorCheckMessage
 
 
 # Create a wish in the database
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def createWish(request):
     if request.method == 'POST':
         user = request.user
@@ -29,7 +29,7 @@ def createWish(request):
 
 
 # Get all wishes or get only those of the user
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getWishes(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -61,7 +61,7 @@ def getWishes(request):
 
 
 # Change a wish status
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def setWishStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)

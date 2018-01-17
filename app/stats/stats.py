@@ -42,7 +42,7 @@ def getUserNbTrackPushed(user):
 
 
 # Return the user's favorite genre
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefGenres(request):
     if request.method == 'GET':
         genres = Genre.objects.all()
@@ -76,7 +76,7 @@ def getUserPrefGenres(request):
 
 
 # Return the user favorite artists
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefArtists(request):
     if request.method == 'GET':
         user = request.user
@@ -109,7 +109,7 @@ def getUserPrefArtists(request):
 
 
 # Return the user favorite tracks
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefTracks(request):
     if request.method == 'GET':
         user = request.user
@@ -158,7 +158,7 @@ def userNeverPlayed(user):
 
 
 # Return all the user stats
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserStats(request):
     if request.method == 'GET':
         user = request.user
@@ -183,7 +183,7 @@ def getUserStats(request):
 
 
 # Get the stats for all users
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def adminGetUserStats(request):
     if request.method == 'GET':
         admin = request.user
