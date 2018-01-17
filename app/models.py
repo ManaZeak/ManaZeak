@@ -127,7 +127,13 @@ class InviteCode(models.Model):
     code = models.CharField(max_length=33)
 
 
+class Wallet(models.Model):
+    income = models.IntegerField(default=0)
+    expense = models.IntegerField(default=0)
+    loss = models.IntegerField(default=0)
+
+
 class UserPreferences(models.Model):
-    points = models.IntegerField(default=0)
     inviteCode = models.ForeignKey(InviteCode, null=True)
+    wallet = models.ForeignKey(Wallet, null=True)
     user = models.ForeignKey(User, null=True)

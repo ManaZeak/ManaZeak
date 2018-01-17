@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 
 from app.adminTools import getAdminOptions
 from app.form import UserForm
-from app.models import Playlist, InviteCode, UserPreferences
+from app.models import Playlist, InviteCode, UserPreferences, Wallet
 from app.userSettings import createUserInviteCode
 from app.utils import populateDB
 
@@ -57,6 +57,8 @@ def createUser(request):
             # Setting the user preferences
             userPref = UserPreferences()
             userPref.user = user
+            userPref.wallet = Wallet()
+            userPref.wallet.save()
             if invite is not None:
                 userPref.inviteCode = invite
             userPref.save()
