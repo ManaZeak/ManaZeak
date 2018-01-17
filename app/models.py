@@ -119,7 +119,7 @@ class Wish(models.Model):
 class AdminOptions(models.Model):
     syncthingKey = models.CharField(max_length=100, null=True)
     inviteCodeEnabled = models.BooleanField(default=False)
-    bufferPath = models.FilePathField(max_length=1000)
+    bufferPath = models.FilePathField(max_length=1000, null=True)
 
 
 class InviteCode(models.Model):
@@ -127,7 +127,13 @@ class InviteCode(models.Model):
     code = models.CharField(max_length=33)
 
 
+class Wallet(models.Model):
+    income = models.IntegerField(default=0)
+    expense = models.IntegerField(default=0)
+    loss = models.IntegerField(default=0)
+
+
 class UserPreferences(models.Model):
-    points = models.IntegerField(default=0)
     inviteCode = models.ForeignKey(InviteCode, null=True)
+    wallet = models.ForeignKey(Wallet, null=True)
     user = models.ForeignKey(User, null=True)

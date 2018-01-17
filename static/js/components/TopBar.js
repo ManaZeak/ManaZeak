@@ -34,11 +34,16 @@ class TopBar extends MzkObject {
                 TRACK_ID: id
             }),
             function(response) {
-                if (!that.moodbarThumb.isVisible) {
+                let error = false;
+                renderMoodFile(response.MOOD, that.moodbar, function() { // Callback is here in case of 404 on the moodBar
+                    that.resetMoodbar();
+                    error = true;
+                });
+
+                if (!that.moodbarThumb.isVisible && !error) {
                     that.moodbarThumb.isVisible = true;
                     addVisibilityLock(that.moodbarThumb);
                 }
-                renderMoodFile(response.MOOD, that.moodbar);
             }
 
         );

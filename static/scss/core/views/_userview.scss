@@ -1,4 +1,4 @@
-#admin {
+#user {
     display: flex;
     height: 100%;
     left: 0;
@@ -124,6 +124,10 @@
                 margin-right: 20px;
             }
 
+            img {
+                cursor: inherit;
+            }
+
             #accept:active,
             #accept:focus,
             #accept:hover {
@@ -131,8 +135,8 @@
                 color: green;
             }
 
-            #accept {
-                right: 55px;
+            #refuse {
+
             }
         }
     }

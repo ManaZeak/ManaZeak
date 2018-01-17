@@ -9,6 +9,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Modal {
+
     constructor(type, data) {
 
         this.data        = data;
@@ -176,15 +177,21 @@ class Modal {
     }
 
 
+    /**
+     * method : _coverUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for cover modal
+     **/
     _coverUI() {
-        this.ui.container.id       = "cover";
+        this.ui.container.id = "cover";
 
-        let info = document.createElement("H1");
-        let cover           = document.createElement("IMG");
-        let year = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year; // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+        let info             = document.createElement("H1");
+        let cover            = document.createElement("IMG");
+        // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+        let year             = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year;
 
-        info.innerHTML = this.data.artist + " - " + this.data.album + " (" + year + ")";
-        cover.src           = this.data.src;
+        info.innerHTML       = this.data.artist + " - " + this.data.album + " (" + year + ")";
+        cover.src            = this.data.src;
 
         this.ui.content.appendChild(info);
         this.ui.content.appendChild(cover);
@@ -240,7 +247,7 @@ class Modal {
         del.id                  = "deleteButton";
 
         infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+                                  ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
         del.innerHTML           = "Delete";
 
@@ -319,6 +326,11 @@ class Modal {
     }
 
 
+    /**
+     * method : _inviteCodeUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for display user'sfetchPlaylists invite code modal
+     **/
     _inviteCodeUI() {
         this.ui.container.id    = "inviteCode";
         this.ui.title.innerHTML = "Invitation code";
@@ -493,6 +505,11 @@ class Modal {
     }
 
 
+    /**
+     * method : _openSyncThing (private)
+     * class  : Modal
+     * desc   : Build UI elements for SyncThing IFRAME modal
+     **/
     _openSyncThing() {
         let content             = document.createElement("IFRAME");
         this.ui.container.id    = "openSyncThing";

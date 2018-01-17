@@ -11,12 +11,13 @@ const TOTAL_SUGGESTIONS_NUMBER = 4; // Number of track to display in suggested t
 const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSuggestionMode in constructor)
 
 class TrackInfo {
+
     constructor(container) {
 
-        this.inactivityTimeoutId   = -1;    // ID for the inactivity timeout
-        this.trackSuggestionMode   = 0;     // 0: By Artists / 1: By Album / 2: By Genre
-        this.track                 = null;  // Track that triggered TrackInfo in view
-        this.locked                = false; // TrackInfo lock status
+        this.inactivityTimeoutId = -1;    // ID for the inactivity timeout
+        this.trackSuggestionMode = 0;     // 0: By Artists / 1: By Album / 2: By Genre
+        this.track               = null;  // Track that triggered TrackInfo in view
+        this.locked              = false; // TrackInfo lock status
 
         this._createUI(container);
         this._init();
@@ -139,7 +140,7 @@ class TrackInfo {
      * method : _createUI (private)
      * class  : TrackInfo
      * desc   : Build and append UI elements to parent
-     * arg    : {object} container - The TrackInfo parent
+     * arg    : {object} container - The TrackInfo container
      **/
     _createUI(container) {
         this.ui = {

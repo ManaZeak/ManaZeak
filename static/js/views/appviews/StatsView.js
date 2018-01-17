@@ -7,10 +7,12 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class StatsView extends View {
+
     constructor() {
 
         super();
-        this._init();
+
+        this._createUI();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -72,7 +74,7 @@ class StatsView extends View {
 
     /**
      * method : _clearPageSpace (private)
-     * class  : AdminView
+     * class  : StatsView
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
@@ -124,6 +126,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _eventListener (private)
+     * class  : StatsView
+     * desc   : StatsView event listeners
+     **/
     _eventListener() {
         this.ui.menuArtist.addEventListener("click", this._requestArtistPage.bind(this));
         this.ui.menuTrack.addEventListener("click", this._requestTrackPage.bind(this));
@@ -131,11 +138,11 @@ class StatsView extends View {
     }
 
 
-    _init() {
-        this._createUI();
-    }
-
-
+    /**
+     * method : _requestArtistPage (private)
+     * class  : StatsView
+     * desc   : Display the artists page
+     **/
     _requestArtistPage() {
         this._clearPageSpace();
 
@@ -199,6 +206,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _requestGenrePage (private)
+     * class  : StatsView
+     * desc   : Display the genres page
+     **/
     _requestGenrePage() {
         this._clearPageSpace();
 
@@ -263,6 +275,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _requestTrackPage (private)
+     * class  : StatsView
+     * desc   : Display the tracks page
+     **/
     _requestTrackPage() {
         this._clearPageSpace();
 
@@ -311,7 +328,6 @@ class StatsView extends View {
                     }
 
                     else {
-                        console.log(response);
                         prefTracksLabel.innerHTML      = "Top Tracks";
                         leastTracksLabel.innerHTML     = "Flop Tracks";
 
@@ -328,6 +344,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _unselectAllMenuEntries (private)
+     * class  : StatsView
+     * desc   : Unselect every entry in the left menu
+     **/
     _unselectAllMenuEntries() {
         this.ui.menuArtist.className = "";
         this.ui.menuTrack.className  = "";

@@ -5,6 +5,7 @@ from app.models import History, UserHistory
 from app.utils import errorCheckMessage
 
 
+# Add a song to history
 def addToHistory(track, user):
     history = History()
     history.track = track
@@ -20,7 +21,8 @@ def addToHistory(track, user):
         userHistory.histories.add(history)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Get the last song played by a user
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getLastSongPlayed(request):
     if request.method == 'GET':
         user = request.user

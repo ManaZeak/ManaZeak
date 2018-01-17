@@ -59,6 +59,7 @@ urlpatterns = [
     # Wish actions
     url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
     url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
+    url(r'^ajax/setWishStatus/$', wish.setWishStatus, name='setWishStatus'),
 
     # USER actions
     url(r'^ajax/getUserSettings/$', userSettings.getUserSettings, name='getUserSettings'),
@@ -72,6 +73,7 @@ urlpatterns = [
     url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
     url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
+    url(r'^ajax/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
 
     # InviteCode section
     url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),

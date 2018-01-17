@@ -17,7 +17,7 @@ from app.utils import errorCheckMessage, splitTableCustom
 
 
 # Perform the initial scan for a library
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
@@ -41,7 +41,7 @@ def initialScan(request):
 
 
 # Create a new library can only be done while being a superuser.
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def newLibrary(request):
     if request.method == 'POST':
         if request.user.is_superuser:
@@ -75,7 +75,7 @@ def newLibrary(request):
 
 
 # Function for check if a library has been scanned.
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -93,7 +93,7 @@ def checkLibraryScanStatus(request):
 
 
 # Drop a library and index all the tracks
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def rescanLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -129,10 +129,11 @@ def rescanLibrary(request):
     return JsonResponse(data)
 
 
+# Index all the file and start the import
 def scanLibrary(library, playlist, convert):
     failedItems = []
     coverPath = "/ManaZeak/static/img/covers/"
-    print("started scanning library")
+    print("started scanning library: " + library.name)
     if not os.path.isdir(coverPath):
         try:
             os.makedirs(coverPath)
@@ -151,7 +152,7 @@ def scanLibrary(library, playlist, convert):
                 pass
 
             elif file.lower().endswith('.flac'):
-                flacFiles.append(root + "/" + file)
+                flacFiles.append(os.path.join(root, file))
 
             elif file.lower().endswith('.wav'):
                 # TODO: implement
@@ -164,10 +165,8 @@ def scanLibrary(library, playlist, convert):
     if len(mp3Files) == 0 and len(flacFiles) == 0:
         return errorCheckMessage(False, "emptyLibrary")
 
-    print("Indexed all files")
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
-    print("Launched scan thread")
     scanThread.start()
     data = {
         'PLAYLIST_ID': playlist.id,
@@ -176,7 +175,8 @@ def scanLibrary(library, playlist, convert):
     return data
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Delete a library in the application
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteLibrary(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -201,7 +201,8 @@ def deleteLibrary(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Delete all the libraries and the related elements
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteAllLibrary(request):
     if request.method == 'GET':
         admin = request.user
@@ -219,6 +220,16 @@ def deleteAllLibrary(request):
     return JsonResponse(data)
 
 
+# Handler for importing the library
+def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, library):
+    importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
+    playlist.isScanned = True
+    playlist.save()
+    library.playlist = playlist
+    library.save()
+
+
+# Create thread for importing the library into db
 def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
     tracks = []
     albumReference = {}
@@ -248,6 +259,7 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
             thread = ImportBulkThread(0, mp3, convert, mp3FileReference, coverPath)
             threads.append(thread)
             thread.start()
+    # FLAC file processor
     if len(flacFiles) != 0:
         procNumber = multiprocessing.cpu_count()
         while len(flacFiles) < procNumber:
@@ -288,15 +300,6 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
 
     print("Finished import")
-
-
-# Scan a library.
-def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, library):
-    importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
-    playlist.isScanned = True
-    playlist.save()
-    library.playlist = playlist
-    library.save()
 
 
 class ImportBulkThread(threading.Thread):

@@ -11,6 +11,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Notification {
+
     constructor(type, title, message) {
 
         // TODO : test incoming var ...

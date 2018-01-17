@@ -15,7 +15,7 @@ class FootBar extends MzkObject {
         this.progressBar     = new ProgressBar(this.controlsContainer);
         this.playlistPreview = new PlaylistPreview(this.footBar);
         this.footBar.appendChild(this.controlsContainer);
-        this._init();
+        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -45,6 +45,7 @@ class FootBar extends MzkObject {
      * method : volumeDown (public)
      * class  : FootBar
      * desc   : Updates VolumeBar with volume down
+     * arg    : {object} event - Keyboard event
      **/
     volumeDown(event) {
         this.controls.volumeBar.volumeDown(event);
@@ -55,6 +56,7 @@ class FootBar extends MzkObject {
      * method : volumeDown (public)
      * class  : FootBar
      * desc   : Updates VolumeBar with volume up
+     * arg    : {object} event - Keyboard event
      **/
     volumeUp(event) {
         this.controls.volumeBar.volumeUp(event);
@@ -74,16 +76,6 @@ class FootBar extends MzkObject {
 
         this.footBar.id                  = "footBar";
         this.controlsContainer.className = "mzk-controls-container";
-    }
-
-
-    /**
-     * method : _init (private)
-     * class  : FootBar
-     * desc   : Listen to FootBar events
-     **/
-    _init() {
-        this._eventListener();
     }
 
 

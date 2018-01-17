@@ -9,6 +9,7 @@ from app.models import Stats, Artist, Track, Genre
 from app.utils import errorCheckMessage
 
 
+# Add track to stats for a user
 def addToStats(track, listeningPercentage, user):
     if Stats.objects.filter(user=user, track=track).count() == 0:
         stat = Stats()
@@ -23,6 +24,7 @@ def addToStats(track, listeningPercentage, user):
     stat.save()
 
 
+# Return the number of tracks played by a user
 def getUserNbTrackListened(user):
     tracks = Stats.objects.filter(user=user)
     totalListenedTrack = 0
@@ -33,12 +35,14 @@ def getUserNbTrackListened(user):
     return totalListenedTrack
 
 
+# Get the number of tracks that a user uploaded
 def getUserNbTrackPushed(user):
     totalUploadedTracks = Track.objects.filter(uploader=user).count()
     return totalUploadedTracks
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Return the user's favorite genre
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefGenres(request):
     if request.method == 'GET':
         genres = Genre.objects.all()
@@ -71,7 +75,8 @@ def getUserPrefGenres(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Return the user favorite artists
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefArtists(request):
     if request.method == 'GET':
         user = request.user
@@ -103,7 +108,8 @@ def getUserPrefArtists(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Return the user favorite tracks
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefTracks(request):
     if request.method == 'GET':
         user = request.user
@@ -135,6 +141,7 @@ def getUserPrefTracks(request):
     return JsonResponse(data)
 
 
+# Tracks that never have been played
 def userNeverPlayed(user):
     stats = Stats.objects.filter(user=user)
     playedArtistId = set()
@@ -150,8 +157,8 @@ def userNeverPlayed(user):
     return neverPlayed
 
 
-# TODO : create POST request with the arg for the number of elements returned
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Return all the user stats
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserStats(request):
     if request.method == 'GET':
         user = request.user
@@ -175,7 +182,8 @@ def getUserStats(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Get the stats for all users
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def adminGetUserStats(request):
     if request.method == 'GET':
         admin = request.user

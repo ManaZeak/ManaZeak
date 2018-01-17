@@ -9,6 +9,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Track {
+
     constructor(track) {
 
         this.updateMetadata(track);

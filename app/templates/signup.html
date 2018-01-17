@@ -12,13 +12,16 @@
 </head>
 {% block body %}
     {% load staticfiles %}
+    <a href="https://github.com/Squadella/ManaZeak" target="_blank">
+        <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
+    </a>
     <body>
     <div id="login">
         <h1>ManaZeak</h1>
         {% if form.has_errors %}
             <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
-        <p>Use this form to sign up, and begin to use ManaZeak</p>       <!-- TODO proper redirection w/ url -->
+        <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
 
         <form id="signupForm" action="" method="POST" name="signup">
             <p><label for="id_username">Username:</label>

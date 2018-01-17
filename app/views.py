@@ -1,6 +1,3 @@
-import json
-from builtins import print
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -9,17 +6,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.html import strip_tags
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
 from app.adminTools import getAdminOptions
 from app.form import UserForm
-from app.models import Playlist, AdminOptions, InviteCode, UserPreferences
+from app.models import Playlist, InviteCode, UserPreferences, Wallet
 from app.userSettings import createUserInviteCode
 from app.utils import populateDB
 
 
+# Main container
 class mainView(ListView):
     template_name = 'index.html'
     queryset = Playlist
@@ -43,7 +40,7 @@ def createUser(request):
                 if InviteCode.objects.filter(code=inviteCode).count() == 1:
                     invite = InviteCode.objects.get(code=inviteCode)
                 else:
-                    return render(request, 'user/signup.html', {'form': form})
+                    return render(request, 'signup.html', {'form': form})
 
             form.save()
             # Special condition for the first user to be administrator
@@ -60,6 +57,9 @@ def createUser(request):
             # Setting the user preferences
             userPref = UserPreferences()
             userPref.user = user
+            wallet = Wallet()
+            wallet.save()
+            userPref.wallet = wallet
             if invite is not None:
                 userPref.inviteCode = invite
             userPref.save()
@@ -69,13 +69,13 @@ def createUser(request):
             return HttpResponseRedirect(reverse('app:index'))
     else:
         form = UserCreationForm()
-    return render(request, 'user/signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 # Render the user form login views
 class UserFormLogin(View):
     form_class = UserForm
-    template_name = 'user/login.html'
+    template_name = 'login.html'
 
     # Display the blank form
     def get(self, request):
@@ -97,7 +97,7 @@ class UserFormLogin(View):
 
 
 # Log out the user
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def logoutView(request):
     logout(request)
-    return render(request, 'user/login.html')
+    return render(request, 'login.html')

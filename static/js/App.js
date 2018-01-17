@@ -216,6 +216,13 @@ class App extends MzkObject {
     }
 
 
+    /**
+     * method : deleteUser (public)
+     * class  : App
+     * desc   : Remove a user from DB via its ID
+     * arg    : {int} id - The user ID to delete
+     *        : {function} callback - The function to callback - Mandatory
+     **/
     deleteUser(id, callback) {
         JSONParsedPostRequest(
             "ajax/removeUserById/",
@@ -274,6 +281,11 @@ class App extends MzkObject {
     }
 
 
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Hide any content in mainContainer
+     **/
     hidePageContent() {
         addInvisibilityLock(this.footBar.getFootBar());
         addInvisibilityLock(this.mainContainer);
@@ -438,6 +450,7 @@ class App extends MzkObject {
         );
     }
 
+
     /**
      * method : repeatTrack (public)
      * class  : App
@@ -478,6 +491,11 @@ class App extends MzkObject {
     }
 
 
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Restore any content in mainContainer
+     **/
     restorePageContent() {
         removeInvisibilityLock(this.footBar.getFootBar());
         removeInvisibilityLock(this.mainContainer);
@@ -682,6 +700,7 @@ class App extends MzkObject {
         this._keyListener();
     }
 
+
     /**
      * method : _createDefaultViews (private)
      * class  : App
@@ -690,7 +709,7 @@ class App extends MzkObject {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
-        this.createAppView('mzk_settings', new SettingsView());
+        this.createAppView('mzk_settings', new UserView());
         this.createAppView('mzk_party', new PartyView());
     }
 

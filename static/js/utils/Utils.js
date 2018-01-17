@@ -285,7 +285,7 @@ function JSONParsedPostRequest(url, message, callback) {
  * arg    : {file} file - The .mood file
  *          {object} parentDiv - Rendered moodbar container
  **/
-function renderMoodFile(file, parentDiv) {
+function renderMoodFile(file, parentDiv, callback) {
     // Credit for this function : "Valodim"
     // https://gist.github.com/Valodim/5225460
 
@@ -329,6 +329,10 @@ function renderMoodFile(file, parentDiv) {
                 .attr("y", 0)
                 .attr("width", "100%")
                 .attr("height", "100%")
+        }
+
+        else if (this.status === 404 && callback) {
+            callback();
         }
     };
     xhr.send();

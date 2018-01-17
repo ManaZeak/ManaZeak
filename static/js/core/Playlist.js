@@ -12,6 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Playlist {
+
     constructor(id, name, isLibrary, isLoading, rawTracks, callback) {
 
         //TODO: get shuffle and repeat from server
@@ -50,9 +51,7 @@ class Playlist {
      * desc   : Set in app the current playlist to this
      **/
     activate() {
-
-        if(this.lazyLoadOK == false)
-        {
+        if (this.lazyLoadOK == false) {
             this.modal = new Modal('fetchPlaylists', null);
             this.modal.open();
             let self = this;
@@ -64,7 +63,9 @@ class Playlist {
                     clearInterval(timer);
                 }
             }, 100);
-        } else {
+        }
+
+        else {
             window.app.activePlaylist = this;
             this.showView(window.app.availableViews.LIST);
         }
@@ -86,7 +87,7 @@ class Playlist {
      * method : getPlaylistsTracks (public)
      * class  : Playlist
      * desc   : Fetch raw tracks from server
-     * arg    : {function} callback - Not mandatory
+     * arg    : {function} callback - The function to callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
         this._getTracksLazy(0, callback);
@@ -324,11 +325,26 @@ class Playlist {
      * desc   : Remove all track and reset tracks, artists and album count
      **/
     _clearTracks() {
-        this.tracks      = [];
+        this.tracks        = [];
         this.durationTotal = 0;
-        this.trackTotal  = 0;
-        this.artistTotal = 0;
-        this.albumTotal  = 0;
+        this.trackTotal    = 0;
+        this.artistTotal   = 0;
+        this.albumTotal    = 0;
+    }
+
+
+    /**
+     * method : _fillTracks (private)
+     * class  : Playlist
+     * desc   : Transform raw tracks into Track object
+     * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
+     **/
+    _fillTracks(tracks) { // Tracks is JSON response to playlist ID
+        for (let i = 0; i < tracks.length; ++i) {
+            ++this.trackTotal;
+            this.durationTotal += tracks[i].DURATION;
+            this.tracks.push(new Track(tracks[i]));
+        }
     }
 
 
@@ -341,7 +357,7 @@ class Playlist {
      **/
     _getTracksLazy(step, callback) {
         let that = this;
-        if(step == 0) {
+        if (step == 0) {
             this.lazyLoadOK = false;
             this.rawTracks = [];
             this._clearTracks();
@@ -368,7 +384,7 @@ class Playlist {
 
                 else {
                     //Successfully loaded all
-                    if(response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) {
+                    if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) {
                         that._fillTracks(that.rawTracks);
                         that.refreshViews();
                         that.lazyLoadOK = true;
@@ -487,21 +503,6 @@ class Playlist {
                 }
             }
         );
-    }
-
-
-    /**
-     * method : _fillTracks (private)
-     * class  : Playlist
-     * desc   : Transform raw tracks into Track object
-     * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
-     **/
-    _fillTracks(tracks) { // Tracks is JSON response to playlist ID
-        for (let i = 0; i < tracks.length; ++i) {
-            ++this.trackTotal;
-            this.durationTotal += tracks[i].DURATION;
-            this.tracks.push(new Track(tracks[i]));
-        }
     }
 
 
@@ -650,8 +651,6 @@ class Playlist {
     getIsLibrary()   { return this.isLibrary;   }
     getRepeatMode()  { return this.repeatMode;  }
     getShuffleMode() { return this.shuffleMode; }
-    getTracks()      { return this.tracks;      }
-    getViews()       { return this.views;       }
 
     setName(name)    { this.name = name;        }
 

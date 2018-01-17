@@ -3,7 +3,7 @@
  *  ProgressBar class                              *
  *                                                 *
  *  Handle the progress bar depending on current   *
- *  track                                          *
+ *  track in player                                *
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -58,6 +58,11 @@ class ProgressBar extends MzkObject {
     }
 
 
+    /**
+     * method : setMoodbarProgress (public)
+     * class  : ProgressBar
+     * desc   : Set moodbar container/thumb
+     **/
     setMoodbarProgress() {
         this.moodbar.container = document.getElementById("moodbar");
         this.moodbar.thumb     = document.getElementById("moodbarThumb");
@@ -72,10 +77,9 @@ class ProgressBar extends MzkObject {
      **/
     updateProgress(track) {
         let distanceToLeftBorder                = (track.currentTime * 100) / track.duration;
-        // Style assignation
         this.progressBar.current.style.width    = distanceToLeftBorder + "%";
         this.progressBar.thumb.style.marginLeft = distanceToLeftBorder + "%";
-        document.getElementById("moodbarThumb").style.marginLeft     = distanceToLeftBorder + "%";
+        this.moodbar.thumb.style.marginLeft     = distanceToLeftBorder + "%";
 
         if (!this.isInverted) {
             this.duration.current.innerHTML     = secondsToTimecode(track.currentTime);
@@ -94,6 +98,7 @@ class ProgressBar extends MzkObject {
      * method : _createUI (private)
      * class  : ProgressBar
      * desc   : Build UI elements
+     * arg    : {object} container - The ProgressBar container
      **/
     _createUI(container) {
         this.container = document.createElement("DIV");
@@ -227,7 +232,6 @@ class ProgressBar extends MzkObject {
      * method : _mouseUp (private)
      * class  : ProgressBar
      * desc   : Action on mouse up event
-     * arg    : {object} event - MouseEvent
      **/
     _mouseUp() {
         if (this.isDragging) { // User released the ProgressBar thumb
@@ -246,13 +250,16 @@ class ProgressBar extends MzkObject {
      * class  : ProgressBar
      * desc   : Updates UI progress according to event location
      * arg    : {object} event - MouseEvent
+     *        : {object} track - The current track in player to update
      **/
     _moveProgress(event, track) {
         let boundRect = 0;
 
         if (this.isDraggingOnMoodbar) {
             boundRect = this.moodbar.container.getBoundingClientRect();
-        } else {
+        }
+
+        else {
             boundRect = this.progressBar.container.getBoundingClientRect();
         }
 

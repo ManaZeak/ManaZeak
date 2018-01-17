@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Controls  {
+
     constructor(container) {
 
         this._createUI(container);
@@ -23,6 +24,7 @@ class Controls  {
      * method : _createUI (private)
      * class  : Controls
      * desc   : Build UI elements
+     * arg    : {object} container - The Controls container
      **/
     _createUI(container) {
         this.container = document.createElement("DIV");
