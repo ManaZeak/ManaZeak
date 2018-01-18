@@ -347,7 +347,7 @@ class App extends MzkObject {
      **/
     getPlaylists() {
         return this.playlists.filter(function() {
-            return this.getIsLibrary();
+            return this.getIsLibrary() == false;
         });
     }
 

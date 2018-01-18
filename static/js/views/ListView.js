@@ -322,6 +322,8 @@ class ListView extends PlaylistView {
                 window.app.downloadTracksZip(tracks);
             }
         });
+
+        //TODO: move this to app and clean up
         this.contextMenu.addEntry('playlists', "Add to playlist");
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i) {

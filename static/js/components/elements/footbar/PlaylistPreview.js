@@ -99,7 +99,7 @@ class PlaylistPreview extends MzkObject {
      **/
     _eventListener() {
         var self = this;
-        window.app.listen(['rename', 'changePlaylist'], function() {
+        window.app.listen(['renamePlaylist', 'changePlaylist'], function() {
             let ap = window.app.getActivePlaylist();
             if(ap != null) {
                 self.changePlaylist(ap);
