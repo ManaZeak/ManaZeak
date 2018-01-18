@@ -168,7 +168,7 @@ def getTrackPathByID(request):
                         listeningPercentage = float(strip_tags(response['TRACK_PER']))
                         previousTrack = Track.objects.get(location=previousTrackPath)
                         # Adding to stats if the user has listened more than 15% of the song
-                        if listeningPercentage > 15:
+                        if listeningPercentage > 5:
                             previousTrack.playCounter += 1
                             previousTrack.save()
                             addToStats(previousTrack, listeningPercentage, user)
