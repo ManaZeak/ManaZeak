@@ -272,7 +272,7 @@ class ListView extends PlaylistView {
                 target       = target.parentNode;
             }
 
-            if (target.parentNode != null) { clickedEntry = target.dataset.childID; }
+            if (target.parentNode != null) { this.selector.add(target.dataset.childID); clickedEntry = target.dataset.childID; }
             else                           { clickedEntry = undefined;              }
         });
 
