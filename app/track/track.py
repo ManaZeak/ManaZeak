@@ -1,5 +1,8 @@
+import hashlib
 import json
+import zipfile
 
+import os
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
@@ -99,6 +102,46 @@ def getDownloadLocation(request):
                 data = {**data, **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Download a zip of different song
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def multiTrackDownload(request):
+    if request.method == "POST":
+        response = json.loads(request.body)
+        if 'IDS' in response:
+            trackIds = response['IDS']
+            # TODO : create admin option max number of sound to download
+            if len(trackIds) > 50:
+                return JsonResponse(errorCheckMessage(False, ""))
+            locations = []
+
+            # Getting tracks requested by the user
+            for trackId in trackIds:
+                if Track.objects.filter(id=trackId).count() == 1:
+                    track = Track.objects.get(id=trackId)
+                    locations.append(track.location)
+            archiveName = hashlib.md5("".join(tmp) for tmp in locations)
+
+            # Checking if the output folder for the zip exists
+            if not os.path.isdir("/static/zip"):
+                try:
+                    os.makedirs("/static/zip")
+                except OSError:
+                    return JsonResponse(errorCheckMessage(False, "dirCreationError"))
+
+            # Creating archive
+            archiveName = os.path.join("/static/zip", archiveName)
+            archive = zipfile.ZipFile(archiveName)
+            for location in locations:
+                archive.write(location, os.path.basename(location), compress_type=zipfile.ZIP_DEFLATED)
+
+            data = {**{'PATH': archive, }, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
     else:

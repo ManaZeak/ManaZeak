@@ -129,7 +129,15 @@ def errorCheckMessage(isDone, error):
 
     elif error == "formatError":
         errorTitle = "The format provided doesn't have support"
-        errorMessage = "We don't supports this extension."
+        errorMessage = "We don't supports this extension"
+
+    elif error == "downloadLimit":
+        errorTitle = "You maximum download limit reached"
+        errorMessage = "Select less tracks and try again"
+
+    elif error == "dirCreationError":
+        errorTitle = "Can't create a folder"
+        errorMessage = "The application can't create a folder contact the administrator"
 
     return {
         'DONE': isDone,
