@@ -788,6 +788,10 @@ class App extends MzkObject {
      * desc   : App key listeners
      **/
     _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
+        //let maestro = new ShortcutMaestro();
+        //maestro.registerShortcut(new Shortcut('keydown', 'Space', function() { window.app.togglePlay(); }), this);
+
+        //return;
         let that = this;
 
         // Key pressed event
