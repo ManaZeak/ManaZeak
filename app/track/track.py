@@ -62,6 +62,7 @@ def exportTrackInfo(track):
         'COVER': track.coverLocation,
         'ARTISTS': artists,
         'ALBUM': album,
+        'PLAY_COUNTER': track.playCounter,
     }
     return data
 
