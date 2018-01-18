@@ -273,7 +273,7 @@ class Modal {
 
 
     _editTagUI() {
-        let tmp = new EditTag(this.ui.container);
+        let tmp = new EditTag(this.ui.container, this.data);
     }
 
 

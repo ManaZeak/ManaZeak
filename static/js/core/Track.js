@@ -52,6 +52,7 @@ class Track {
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
         this.artist       = Track._getArtistFromArtistsArray(track.ARTISTS);
         this.albumArtist  = Track._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
+        this.playCount    = track.PLAY_COUNTER      ? track.PLAY_COUNTER      : 0;
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

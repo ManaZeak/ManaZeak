@@ -272,8 +272,14 @@ class ListView extends PlaylistView {
                 target       = target.parentNode;
             }
 
-            if (target.parentNode != null) { this.selector.add(target.dataset.childID); clickedEntry = target.dataset.childID; }
-            else                           { clickedEntry = undefined;              }
+            if (target.parentNode != null) {
+                that.selector.add(target.dataset.childID);
+                clickedEntry = target.dataset.childID;
+            }
+
+            else {
+                clickedEntry = undefined;
+            }
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
@@ -283,8 +289,32 @@ class ListView extends PlaylistView {
         });
         this.contextMenu.addEntry(null, "Edit tags", function() {
             if (clickedEntry !== undefined) {
-                let tmp = new Modal("editTag", null);
-                tmp.open();
+
+                JSONParsedPostRequest(
+                    "ajax/getTrackDetailedInfo/",
+                    JSON.stringify({
+                        TRACK_ID: that.entries[that.selector.get()[0]].track.id.track
+                    }),
+                    function(response) {
+                        /* response = {
+                         *     DONE      : bool
+                         *     ERROR_H1  : string
+                         *     ERROR_MSG : string
+                         *
+                         *     RESULT    : JSON object
+                         * } */
+                        if (response.DONE) {
+                            that.entries[that.selector.get()[0]].track.updateMetadata(response.RESULT);
+
+                            let tmp = new Modal("editTag", that.entries[that.selector.get()[0]]);
+                            tmp.open();
+                        }
+
+                        else {
+                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                        }
+                    }
+                );
             }
         });
         this.contextMenu.addEntry(null, "Download track", function() {

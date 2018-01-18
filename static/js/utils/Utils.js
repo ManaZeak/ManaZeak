@@ -59,7 +59,7 @@ function secondsToTimecode(time) {
     transformedTime.s = transformedTime.s < 10 ? "0" + transformedTime.s : transformedTime.s;
     // Formatting output
     if (transformedTime.d > 0) {
-        return transformedTime.d + " days, " + transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
+        return transformedTime.d + "d " + transformedTime.h + "h " + transformedTime.m + "m " + transformedTime.s + "s";
     }
 
     else if (transformedTime.h > 0) {
@@ -69,6 +69,21 @@ function secondsToTimecode(time) {
     else {
         return transformedTime.m + ":" + transformedTime.s;
     }
+}
+
+
+function rawSizeToReadableSize(size) {
+    let readable = 0;
+
+    if (size / 1000000 < 1) {
+        readable = precisionRound(size / 1000, 2) + " Ko";
+    }
+
+    else {
+        readable = precisionRound(size / 1000000, 2) + " Mo";
+    }
+
+    return readable;
 }
 
 
