@@ -111,6 +111,7 @@ class ListView extends PlaylistView {
         // The index of the last track on which the view was centered
         this.lastTrackCenter = 0;
         this.isActive = false;
+        this.selector = new MultiSelect();
         this._init(data);
     }
 
@@ -431,42 +432,20 @@ class ListView extends PlaylistView {
                 window.setTimeout(that.trackInfo.setVisible.bind(that.trackInfo, false), 0);
         });
         this.listView.addEventListener("click", this._viewClicked.bind(this));
+
         // Sorting listeners
-        this.header.duration.addEventListener("click", function() {
-            that.sort.isDurationAsc = !that.sort.isDurationAsc;
-            that._sortBy("duration", that.sort.isDurationAsc);
-        });
-        this.header.title.addEventListener("click", function() {
-            that.sort.isTitleAsc = !that.sort.isTitleAsc;
-            that._sortBy("title", that.sort.isTitleAsc);
-        });
-        this.header.artist.addEventListener("click", function() {
-            that.sort.isArtistAsc = !that.sort.isArtistAsc;
-            that._sortBy("artist", that.sort.isArtistAsc);
-        });
-        this.header.composer.addEventListener("click", function() {
-            that.sort.isComposerAsc = !that.sort.isComposerAsc;
-            that._sortBy("composer", that.sort.isComposerAsc);
-        });
-        this.header.performer.addEventListener("click", function() {
-            that.sort.isPerformerAsc = !that.sort.isPerformerAsc;
-            that._sortBy("performer", that.sort.isPerformerAsc);
-        });
-        this.header.album.addEventListener("click", function() {
-            that.sort.isAlbumAsc = !that.sort.isAlbumAsc;
-            that._sortBy("album", that.sort.isAlbumAsc);
-        });
-        this.header.genre.addEventListener("click", function() {
-            that.sort.isGenreAsc = !that.sort.isGenreAsc;
-            that._sortBy("genre", that.sort.isGenreAsc);
-        });
-        this.header.bitRate.addEventListener("click", function() {
-            that.sort.isBiteRateAsc = !that.sort.isBiteRateAsc;
-            that._sortBy("bitRate", that.sort.isBiteRateAsc);
-        });
-        this.header.year.addEventListener("click", function() {
-            that.sort.isYearAsc = !that.sort.isYearAsc;
-            that._sortBy("year", that.sort.isYearAsc);
+        this.header.container.addEventListener('click', function(event) {
+            if(event.target == that.header.container)
+                return;
+            let target = event.target;
+            while(target.parentNode != that.header.container)
+                target = target.parentNode;
+
+            let sorter = that.sort[target.dataset.sorter];
+            if(sorter) {
+                sorter.isAsc ^= true;
+                that._sortBy(target.dataset.sorter, sorter.isAsc);
+            }
         });
 
         window.app.listen('changeTrack', function(track) {
@@ -481,6 +460,8 @@ class ListView extends PlaylistView {
         window.app.listen("stopPlayback", function() {
             that._unSelectAll();
         });
+
+        this.selector.listen('clear', this._unSelectAll.bind(this));
     }
 
 
@@ -493,7 +474,6 @@ class ListView extends PlaylistView {
     _init(data) {
         this.listView        = null;
         this.entries         = [];
-        this.entriesSelected = {};
         this.trackInfo       = null;
         this.dblClick        = false;
         this.contextMenu     = null;
@@ -511,15 +491,15 @@ class ListView extends PlaylistView {
             year:           null
         };
         this.sort = {
-            isDurationAsc:  false,
-            isTitleAsc:     false,
-            isArtistAsc:    false,
-            isComposerAsc:  false,
-            isPerformerAsc: false,
-            isAlbumAsc:     false,
-            isGenreAsc:     false,
-            isBitRateAsc:   false,
-            isYearAsc:      false
+            duration:   { isAsc:    false },
+            title:      { isAsc:    false },
+            artist:     { isAsc:    false },
+            composer:   { isAsc:    false },
+            performer:  { isAsc:    false },
+            album:      { isAsc:    false },
+            genre:      { isAsc:    false },
+            bitRate:    { isAsc:    false },
+            year:       { isAsc:    false }
         };
 
         this._createUI(data);
@@ -565,6 +545,16 @@ class ListView extends PlaylistView {
         this.header.genre.innerHTML       = "Genre";
         this.header.bitRate.innerHTML     = "BitRate";
         this.header.year.innerHTML        = "Year";
+
+        this.header.duration.dataset.sorter    = "duration";
+        this.header.title.dataset.sorter       = "title";
+        this.header.artist.dataset.sorter      = "artist";
+        this.header.composer.dataset.sorter    = "composer";
+        this.header.performer.dataset.sorter   = "performer";
+        this.header.album.dataset.sorter       = "album";
+        this.header.genre.dataset.sorter       = "genre";
+        this.header.bitRate.dataset.sorter     = "bitRate";
+        this.header.year.dataset.sorter        = "year";
 
         this.header.container.appendChild(this.header.duration);
         this.header.container.appendChild(this.header.title);
@@ -639,8 +629,6 @@ class ListView extends PlaylistView {
      * desc   : Unselect all entries in ListView
      **/
     _unSelectAll() {
-        this.entriesSelected = {};
-
         for (let i = 0; i < this.entries.length ;++i) {
             if (this.entries[i].getIsSelected()) {
                 this.entries[i].setIsSelected(false);
@@ -713,12 +701,7 @@ class ListView extends PlaylistView {
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 500);
 
-        let newState = !this.entriesSelected[id];
-
-        if (!event.ctrlKey && newState === true) { this._unSelectAll(); }
-
-        this.entriesSelected[id] = newState;
-        this.entries[id].setIsSelected(newState);
+        this.entries[id].setIsSelected(this.selector.add(id, event.ctrlKey));
     }
 
 }
