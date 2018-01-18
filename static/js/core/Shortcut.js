@@ -104,16 +104,17 @@ class ShortcutMaestro extends MzkObject {
 
     _relay(event) {
         let fireable = this.shortcuts[event.type][event.code];
-        if(fireable != null)
-            for(let i = 0; i < fireable.length; ++i)
-                if(this._canRun(fireable[i]))
+        if(fireable != null) {
+            event.stop();
+            for (let i = 0; i < fireable.length; ++i)
+                if (this._canRun(fireable[i], event))
                     fireable[i].short.run();
-
+        }
     }
 
-    _canRun(shortcutCapsule) {
+    _canRun(shortcutCapsule, event) {
         let blocked = this.stack.length == 0 ? false : this.stack[this.stack.length - 1] != shortcutCapsule.src;
-        return !blocked && shortcutCapsule.short.modifiersOK();
+        return !blocked && shortcutCapsule.short.modifiersOK(event);
     }
 
 }

@@ -58,4 +58,12 @@ class MzkObject {
         }
     }
 
+    addShortcut(shortcut) {
+        window.app.getShortcutMaestro().registerShortcut(shortcut, this);
+    }
+
+    removeShortcut(shortcut) {
+        window.app.getShortcutMaestro().registerShortcut(shortcut, this);
+    }
+
 }

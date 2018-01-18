@@ -24,6 +24,8 @@ class App extends MzkObject {
         this.appViews         = {};
         this._createDefaultViews();
 
+        this.shortcutMaestro = new ShortcutMaestro();
+
         this.availableViews   = {
             LIST: {
                 index: 0,
@@ -349,6 +351,17 @@ class App extends MzkObject {
         return this.playlists.filter(function() {
             return this.getIsLibrary() == false;
         });
+    }
+
+
+    /**
+     * method : getShortcutMaestro (public)
+     * class  : App
+     * desc   : Get the shortcut maestro
+     * return : {object} element
+     **/
+    getShortcutMaestro() {
+        return this.shortcutMaestro;
     }
 
 
@@ -788,11 +801,16 @@ class App extends MzkObject {
      * desc   : App key listeners
      **/
     _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
-        //let maestro = new ShortcutMaestro();
-        //maestro.registerShortcut(new Shortcut('keydown', 'Space', function() { window.app.togglePlay(); }), this);
 
-        //return;
         let that = this;
+        this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(30); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
+
+        //TODO: Sound control
+        return;
 
         // Key pressed event
         document.addEventListener("keydown", function(event) {

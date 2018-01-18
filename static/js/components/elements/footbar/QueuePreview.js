@@ -6,16 +6,18 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class QueuePreview {
+class QueuePreview extends MzkObject {
 
     constructor(container) {
 
+        super();
         this.contextMenu = null;
         this.reverse     = window.app.queue.isReverse();
         this.isLocked    = false;
 
         this._createUI(container);
         this._eventListener();
+        this._keyListener();
         this._contextMenuSetup();
     }
 
@@ -155,6 +157,21 @@ class QueuePreview {
         container.appendChild(this.ui.container);
     }
 
+
+    /**
+     * method : _keyListener (private)
+     * class  : QueuePreview
+     * desc   : QueuePreview key event listeners
+     **/
+    _keyListener() {
+        let that = this;
+        this.addShortcut(new Shortcut('keydown', 'KeyA', function() {
+            if(that.isLocked)
+                that.hide();
+            else
+                that.lock();
+        }));
+    }
 
     /**
      * method : _eventListener (private)
