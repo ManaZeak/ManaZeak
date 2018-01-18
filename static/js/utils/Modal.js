@@ -65,6 +65,10 @@ class Modal {
                 this._coverUI();
                 break;
 
+            case "editTag":
+                this._editTagUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -265,6 +269,11 @@ class Modal {
             window.app.deletePlaylist(that.data.id);
             that.close();
         });
+    }
+
+
+    _editTagUI() {
+        let tmp = new EditTag(this.ui.container);
     }
 
 

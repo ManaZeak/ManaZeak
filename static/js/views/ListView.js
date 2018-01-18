@@ -280,6 +280,12 @@ class ListView extends PlaylistView {
                 window.app.pushQueue(that.entries[clickedEntry].track);
             }
         });
+        this.contextMenu.addEntry(null, "Edit tags", function() {
+            if (clickedEntry !== undefined) {
+                let tmp = new Modal("editTag", null);
+                tmp.open();
+            }
+        });
         this.contextMenu.addEntry(null, "Download track", function() {
             if (clickedEntry !== undefined) {
                 JSONParsedPostRequest(
@@ -474,8 +480,8 @@ class ListView extends PlaylistView {
         });
         window.app.listen('changeView', function(view) {
             that.isActive = view == that;
-           if (that.isActive)
-               that._centerOnTrack(that.lastTrackCenter, true);
+            if (that.isActive)
+                that._centerOnTrack(that.lastTrackCenter, true);
         });
 
         window.app.listen("stopPlayback", function() {
