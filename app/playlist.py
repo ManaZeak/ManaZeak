@@ -84,15 +84,18 @@ def addTracksToPlaylist(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                if playlist.user == user:
-                    tracks = Track.objects.filter(id__in=tracksId)
-                    addedTrack = len(tracks)
-                    for track in tracks:
-                        playlist.track.add(track)
-                    data = {
-                        'ADDED_TRACKS': addedTrack,
-                    }
-                    data = {**data, **errorCheckMessage(True, None)}
+                if not playlist.isLibrary:
+                    if playlist.user == user:
+                        tracks = Track.objects.filter(id__in=tracksId)
+                        addedTrack = len(tracks)
+                        for track in tracks:
+                            playlist.track.add(track)
+                        data = {
+                            'ADDED_TRACKS': addedTrack,
+                        }
+                        data = {**data, **errorCheckMessage(True, None)}
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
                 else:
                     data = errorCheckMessage(False, "permissionError")
             else:
