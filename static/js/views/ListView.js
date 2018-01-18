@@ -261,7 +261,6 @@ class ListView extends PlaylistView {
      **/
     _contextMenuSetup() {
         let that             = this;
-        let clickedEntry     = undefined;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.listView, function(event) {
             clearTimeout(that.hoveredTimeout);
@@ -272,13 +271,13 @@ class ListView extends PlaylistView {
                 target       = target.parentNode;
             }
 
-            if (target.parentNode != null) { this.selector.add(target.dataset.childID); clickedEntry = target.dataset.childID; }
-            else                           { clickedEntry = undefined;              }
+            that._addIDToSelect(target.dataset.childID, event);
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
-            if (clickedEntry !== undefined) {
-                window.app.pushQueue(that.entries[clickedEntry].track);
+            let selected = that.selector.get();
+            for(let i = 0; i < selected.length; ++i) {
+                window.app.pushQueue(that.entries[selected[i]].track);
             }
         });
         this.contextMenu.addEntry(null, "Edit tags", function() {
@@ -288,36 +287,15 @@ class ListView extends PlaylistView {
             }
         });
         this.contextMenu.addEntry(null, "Download track", function() {
-            if (clickedEntry !== undefined) {
-                JSONParsedPostRequest(
-                    "ajax/download/",
-                    JSON.stringify({
-                        TRACK_ID: that.entries[clickedEntry].track.id.track
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE      : bool
-                         *     ERROR_H1  : string
-                         *     ERROR_MSG : string
-                         *
-                         *     PATH      : string
-                         * } */
-                        if (response.DONE) {
-                            let dl      = document.createElement("A");
-
-                            dl.href     = response.PATH;
-                            dl.download = response.PATH.replace(/^.*[\\\/]/, '');
-                            document.body.appendChild(dl);
-                            dl.click();
-                            document.body.removeChild(dl);
-                            dl.remove();
-                        }
-
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
-                    }
-                );
+            let nbTracks = that.selector.getSize();
+            if(nbTracks == 1)
+                window.app.downloadTrack(that.entries[that.selector.get()[0]].track);
+            else if(nbTracks > 0) {
+                let tracks = new Array(nbTracks);
+                let ids = that.selector.get();
+                for(let i = 0; i < nbTracks; ++i)
+                    tracks[i] = that.entries[ids[i]].track;
+                window.app.downloadTracksZip(tracks);
             }
         });
         this.contextMenu.addEntry('playlists', "Add to playlist");
@@ -692,13 +670,6 @@ class ListView extends PlaylistView {
         }
 
         let id = target.dataset.childID;
-
-        // Clicked outside of the entries
-        if (id === undefined || id === null) {
-            this._unSelectAll();
-            return true;
-        }
-
         if (this.dblClick) {
             window.app.changeTrack(this.entries[id].track, false);
             return;
@@ -706,6 +677,17 @@ class ListView extends PlaylistView {
 
         this.dblClick = true;
         window.setTimeout(function() { that.dblClick = false; }, 500);
+
+        this._addIDToSelect(id, event);
+    }
+
+    _addIDToSelect(id, event) {
+
+        // Clicked outside of the entries
+        if (id === undefined || id === null) {
+            this._unSelectAll();
+            return true;
+        }
 
         this.entries[id].setIsSelected(this.selector.add(id, event.ctrlKey));
     }

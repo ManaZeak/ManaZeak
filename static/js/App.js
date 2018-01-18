@@ -247,6 +247,76 @@ class App extends MzkObject {
         );
     }
 
+    /**
+     *
+     **/
+    downloadTrack(track) {
+        JSONParsedPostRequest(
+            "ajax/download/",
+            JSON.stringify({
+                TRACK_ID: track.id.track
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *    ERROR_MSG : string
+                 *
+                 *     PATH      : string
+                 * } */
+                if (response.DONE) {
+                    let dl = document.createElement("A");
+
+                    dl.href = response.PATH;
+                    dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                    document.body.appendChild(dl);
+                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                    document.body.removeChild(dl);
+                    //TODO: What is ZEAZZZZ ???!!!
+                    dl.remove();
+                } else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+    /**
+     *
+     **/
+    downloadTracksZip(tracks) {
+        let ids = new Array(tracks.length);
+        for(let i = 0; i < tracks.length; ++i)
+            ids[i] = tracks[i].id.track;
+        JSONParsedPostRequest(
+            "ajax/multiTrackDownload/",
+            JSON.stringify({
+                IDS: ids
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *    ERROR_MSG : string
+                 *
+                 *     PATH      : string
+                 * } */
+                if (response.DONE) {
+                    let dl = document.createElement("A");
+
+                    dl.href = response.PATH;
+                    dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                    document.body.appendChild(dl);
+                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                    document.body.removeChild(dl);
+                    //TODO: What is ZEAZZZZ ???!!!
+                    dl.remove();
+                } else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
 
     /**
      * method : fastForward (public)
