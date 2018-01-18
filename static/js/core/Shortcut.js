@@ -96,6 +96,16 @@ class ShortcutMaestro extends MzkObject {
                     this.shortcuts[type][key].splice(i, 1);
     }
 
+    lock(sourceObject) {
+        this.stack.push(sourceObject);
+    }
+
+    unlock(sourceObject) {
+        for(let i = this.stack.length; i >= 0; --i)
+            if(this.stack[i] == sourceObject)
+                this.stack.splice(i, 1);
+    }
+
     _eventListener() {
         document.addEventListener('keydown', this._relay.bind(this));
         document.addEventListener('keyup', this._relay.bind(this));
@@ -104,12 +114,10 @@ class ShortcutMaestro extends MzkObject {
 
     _relay(event) {
         let fireable = this.shortcuts[event.type][event.code];
-        if(fireable != null) {
-            event.stop();
+        if(fireable != null)
             for (let i = 0; i < fireable.length; ++i)
                 if (this._canRun(fireable[i], event))
                     fireable[i].short.run();
-        }
     }
 
     _canRun(shortcutCapsule, event) {

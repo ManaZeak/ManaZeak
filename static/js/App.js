@@ -804,9 +804,11 @@ class App extends MzkObject {
 
         let that = this;
         this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
+        this.addShortcut(new Shortcut('keydown', 'Semicolon', function() { that.toggleMute(); }));
         this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(10); }, false));
         this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(30); }, true));
         this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
         this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
 
         //TODO: Sound control
