@@ -23,21 +23,21 @@ class EditTag {
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
             JSON.stringify({
-                ID: this.send,
-                TITLE: this.ui.cTitleInput.value,
-                YEAR: this.ui.rYearNumber.value,
-                COMPOSER: this.ui.tagComposerField.value,
-                PERFORMER: this.ui.tagPerformerField.value,
-                TRACK_NUMBER: this.ui.rYearNumber.value,
+                TRACKS_ID:         this.send,
+                TITLE:             this.ui.cTitleInput.value,
+                YEAR:              this.ui.rYearNumber.value,
+                COMPOSER:          this.ui.tagComposerField.value,
+                PERFORMER:         this.ui.tagPerformerField.value,
+                TRACK_NUMBER:      this.ui.rYearNumber.value,
                 ALBUM_TRACK_TOTAL: this.ui.rTrackTotal.value,
-                DISC_NUMBER: this.ui.rDiscNumber.value,
-                ALBUM_TOTAL_DISC: this.ui.rDiscTotal.value,
-                LYRICS: this.ui.lyrField.value,
-                COMMENT: this.ui.comField.value,
-                ALBUM_TITLE: this.ui.tagAlbumField.value,
-                GENRE: this.ui.tagGenreField.value,
-                ARTISTS: this.ui.cArtistInput.value,
-                ALBUM_ARTISTS: this.ui.tagAlbumArtistsField.value
+                DISC_NUMBER:       this.ui.rDiscNumber.value,
+                ALBUM_TOTAL_DISC:  this.ui.rDiscTotal.value,
+                LYRICS:            this.ui.lyrField.value,
+                COMMENT:           this.ui.comField.value,
+                ALBUM_TITLE:       this.ui.tagAlbumField.value,
+                GENRE:             this.ui.tagGenreField.value,
+                ARTISTS:           this.ui.cArtistInput.value,
+                ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
             }),
             function(response) {
                 /* response = {
