@@ -173,22 +173,28 @@ def updateFileMetadata(track, tags):
 
 
 #
-def changeTrackMetadata(request):
+def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
         tags = Information()
         if user.is_superuser:
             if 'TRACK_ID' in response:
-                trackId = strip_tags(response['TRACK_ID'])
-                if Track.objects.filter(id=trackId).count() == 1:
-                    track = Track.objects.get(id=trackId)
-                    # Updating database information
-                    updateDBInfo(response, track, tags)
-                    # Changing tags in the file
-                    data = updateFileMetadata(track, tags)
-                else:
-                    data = errorCheckMessage(False, "dbError")
+                trackIds = response['TRACK_ID']
+                data = {}
+                for trackId in trackIds:
+                    trackId = checkIntValueError(trackId)
+                    if trackId is not None:
+                        if Track.objects.filter(id=trackId).count() == 1:
+                            track = Track.objects.get(id=trackId)
+                            # Updating database information
+                            updateDBInfo(response, track, tags)
+                            # Changing tags in the file
+                            data = updateFileMetadata(track, tags)
+                        else:
+                            data = errorCheckMessage(False, "dbError")
+                    else:
+                        data = errorCheckMessage(False, "valueError")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:

@@ -41,7 +41,7 @@ urlpatterns = [
 
     # Track actions
     url(r'^ajax/getTrackDetailedInfo/$', track.getTrackDetailedInfo, name='getTrackDetailedInfo'),
-    url(r'^ajax/changeTrackMetadata/$', editor.changeTrackMetadata, name='changeTrackMetadata'),
+    url(r'^ajax/changeTracksMetadata/$', editor.changeTracksMetadata, name='changeTracksMetadata'),
     url(r'^ajax/download/$', track.getDownloadLocation, name='getDownloadLocation'),
     url(r'^ajax/multiTrackDownload/$', track.multiTrackDownload, name='multiTrackDownload'),
 
