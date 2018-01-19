@@ -65,14 +65,15 @@ class EditTag {
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
+        this._updateFields(this.data.track);
 
         container.appendChild(this.ui.container);
     }
 
 
     _updateFields(track) {
-        this.saveState(); // Saving tag before changing track
-
+        //this.saveState(); // Saving tag before changing track
+console.log(track);
         this.ui.lCover                     = track.cover;
         this.ui.cTitleInput.value          = track.title;
         this.ui.rYearNumber.value          = track.year;
@@ -88,6 +89,14 @@ class EditTag {
         this.ui.tagGenreField.value        = track.genre;
         this.ui.cArtistInput.value         = track.artist;
         this.ui.tagAlbumArtistsField.value = track.albumArtist;
+
+        this.ui.lineOne.innerHTML          = secondsToTimecode(track.duration) + " - " +
+                                             rawSizeToReadableSize(track.size) + " - " +
+                                             track.fileType + " - " +
+                                             Math.round(track.bitRate / 1000) + " kbps - " +
+                                             track.sampleRate + " Hz";
+        this.ui.lineTwo.innerHTML          = "This track has been played " + track.playCount + " times (" +
+                                             secondsToTimecode(track.playCount * track.duration) + ")";
     }
 
 
@@ -221,66 +230,53 @@ class EditTag {
         // Head ------------------------------------------
         this.ui.head.className                 = "head";
         this.ui.lContainer.className           = "img-container";
-        this.ui.lCover.src                     = this.data.track.cover;
         this.ui.cContainer.className           = "art-tit-container";
         this.ui.cTitleLabel.innerHTML          = "Title :";
         this.ui.cTitleInput.name               = "title";
         this.ui.cTitleInput.type               = "text";
-        this.ui.cTitleInput.value              = this.data.track.title;
         this.ui.cArtistLabel.className         = "space-up";
         this.ui.cArtistLabel.innerHTML         = "Artist :";
         this.ui.cArtistInput.name              = "artist";
         this.ui.cArtistInput.type              = "text";
-        this.ui.cArtistInput.value             = this.data.track.artist;
         this.ui.rContainer.className           = "numbs-year-container";
         this.ui.rWrapper.className             = "item-wrapper";
         this.ui.rTrackContainer.className      = "item";
         this.ui.rTrackLabel.innerHTML          = "Track # : ";
         this.ui.rTrackNumber.name              = "track-number";
         this.ui.rTrackNumber.type              = "text";
-        this.ui.rTrackNumber.value             = this.data.track.track;
         this.ui.rTrackSeparator.innerHTML      = "/";
         this.ui.rTrackTotal.name               = "track-total";
         this.ui.rTrackTotal.type               = "text";
-        this.ui.rTrackTotal.value              = this.data.track.trackTotal;
         this.ui.rDiscContainer.className       = "item";
         this.ui.rDiscLabel.innerHTML           = "Disc # : ";
         this.ui.rDiscNumber.name               = "disc-number";
         this.ui.rDiscNumber.type               = "text";
-        this.ui.rDiscNumber.value              = this.data.track.disc;
         this.ui.rDiscSeparator.innerHTML       = "/";
         this.ui.rDiscTotal.name                = "disc-number";
         this.ui.rDiscTotal.type                = "text";
-        this.ui.rDiscTotal.value               = this.data.track.discTotal;
         this.ui.rYearContainer.className       = "item";
         this.ui.rYearLabel.innerHTML           = "Year : ";
         this.ui.rYearNumber.name               = "year";
         this.ui.rYearNumber.type               = "text";
         this.ui.rYearNumber.className          = "year";
-        this.ui.rYearNumber.value              = this.data.track.year;
         // Tags ------------------------------------------
         this.ui.tags.className                 = "tags";
         this.ui.tagWrapper.className           = "tags-wrapper";
         this.ui.tagAlbumLabel.innerHTML        = "Album :";
         this.ui.tagAlbumField.name             = "album";
         this.ui.tagAlbumField.type             = "text";
-        this.ui.tagAlbumField.value            = this.data.track.album;
         this.ui.tagAlbumArtistsLabel.innerHTML = "Album artists :";
         this.ui.tagAlbumArtistsField.name      = "album-artists";
         this.ui.tagAlbumArtistsField.type      = "text";
-        this.ui.tagAlbumArtistsField.value     = this.data.track.albumArtist;
         this.ui.tagComposerLabel.innerHTML     = "Composer :";
         this.ui.tagComposerField.name          = "composer";
         this.ui.tagComposerField.type          = "text";
-        this.ui.tagComposerField.value         = this.data.track.composer;
         this.ui.tagPerformerLabel.innerHTML    = "Performer :";
         this.ui.tagPerformerField.name         = "performer";
         this.ui.tagPerformerField.type         = "text";
-        this.ui.tagPerformerField.value        = this.data.track.performer;
         this.ui.tagGenreLabel.innerHTML        = "Genre :";
         this.ui.tagGenreField.name             = "genre";
         this.ui.tagGenreField.type             = "text";
-        this.ui.tagGenreField.value            = this.data.track.genre;
         this.ui.tagGenreField.className        = "no-margin";
         // Coms ------------------------------------------
         this.ui.coms.className                 = "coms";
@@ -289,23 +285,14 @@ class EditTag {
         this.ui.comField.name                  = "comment";
         this.ui.comField.row                   = "8";
         this.ui.comField.cols                  = "80";
-        this.ui.comField.value                 = this.data.track.comment;
         this.ui.lyrElement.className           = "element";
         this.ui.lyrLabel.innerHTML             = "Lyrics :";
         this.ui.lyrField.name                  = "lyrics";
         this.ui.lyrField.row                   = "8";
         this.ui.lyrField.cols                  = "80";
-        this.ui.lyrField.value                 = this.data.track.lyrics;
         this.ui.lyrField.className             = "center";
         // Info ------------------------------------------
         this.ui.info.className                 = "info";
-        this.ui.lineOne.innerHTML              = secondsToTimecode(this.data.track.duration) + " - " +
-                                                 rawSizeToReadableSize(this.data.track.size) + " - " +
-                                                 this.data.track.fileType + " - " +
-                                                 Math.round(this.data.track.bitRate / 1000) + " kbps - " +
-                                                 this.data.track.sampleRate + " Hz";
-        this.ui.lineTwo.innerHTML              = "This track has been played " + this.data.track.playCount + " times (" +
-                                                 secondsToTimecode(this.data.track.playCount * this.data.track.duration) + ")";
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
