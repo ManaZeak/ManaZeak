@@ -1,4 +1,5 @@
 import json
+from cgitb import text
 
 from django.http import JsonResponse
 from django.utils.html import strip_tags
@@ -21,21 +22,31 @@ def checkIntValueError(string):
 
 # All the information about a track
 class Information:
-    def __int__(self):
-        self.trackTitle = self.trackArtist = self.trackPerformer = self.trackComposer = self.trackYear =\
-            self.trackNumber = self.trackBPM = self.trackLyrics = self.trackGenre = self.albumTitle = \
-            self.albumArtist = self.albumTotalDisc = self.albumTotalTrack = None
+    trackTitle = None
+    trackArtist = None
+    trackPerformer = None
+    trackComposer = None
+    trackYear = None
+    trackNumber = None
+    trackBPM = None
+    trackLyrics = None
+    trackGenre = None
+    albumTitle = None
+    albumArtist = None
+    albumTotalDisc = None
+    albumTotalTrack = None
 
 
 # Update the track into the database
-def updateDBInfo(response, track, tags):
+def updateDBInfo(response, track):
+    tags = Information()
     # Changing tags in the database
-    if 'TRACK_TITLE' in response:
-        tags.trackTitle = strip_tags(response['TRACK_TITLE']).lstrip().rstrip()
+    if 'TITLE' in response:
+        tags.trackTitle = strip_tags(response['TITLE']).lstrip().rstrip()
         track.title = tags.trackTitle
 
-    if 'TRACK_ARTIST' in response:
-        tags.trackArtist = strip_tags(response['TRACK_ARTIST']).lstrip().rstrip().split(',')
+    if 'ARTISTS' in response:
+        tags.trackArtist = strip_tags(response['ARTISTS']).lstrip().rstrip().split(',')
         artists = []
         for artist in tags.trackArtist:
             if Artist.objects.filter(name=artist).count() == 0:
@@ -43,30 +54,30 @@ def updateDBInfo(response, track, tags):
                 newArtist.name = artist
                 newArtist.save()
             artists.append(Artist.objects.get(name=artist))
-        track.artist.remove()
+        track.artist.clear()
         for artist in artists:
             track.artist.add(artist)
 
-    if 'TRACK_PERFORMER' in response:
-        track.performer = strip_tags(response['TRACK_PERFORMER']).lstrip().rstrip()
+    if 'PERFORMER' in response:
+        track.performer = strip_tags(response['PERFORMER']).lstrip().rstrip()
 
-    if 'TRACK_COMPOSER' in response:
-        track.composer = strip_tags(response['TRACK_COMPOSER']).lstrip().rstrip()
+    if 'COMPOSER' in response:
+        track.composer = strip_tags(response['COMPOSER']).lstrip().rstrip()
 
-    if 'TRACK_YEAR' in response:
-        track.year = checkIntValueError(response['TRACK_YEAR'])
+    if 'YEAR' in response:
+        track.year = checkIntValueError(response['YEAR'])
 
     if 'TRACK_NUMBER' in response:
-        track.number = checkIntValueError(response['TRACK_YEAR'])
+        track.number = checkIntValueError(response['TRACK_NUMBER'])
 
-    if 'TRACK_BPM' in response:
-        track.bpm = checkIntValueError(response['TRACK_BPM'])
+    if 'BPM' in response:
+        track.bpm = checkIntValueError(response['BPM'])
 
-    if 'TRACK_LYRICS' in response:
-        track.lyrics = strip_tags(response['TRACK_LYRICS']).lstrip().rstrip()
+    if 'LYRICS' in response:
+        track.lyrics = strip_tags(response['LYRICS']).lstrip().rstrip()
 
-    if 'TRACK_GENRE' in response:
-        tags.trackGenre = strip_tags(response['TRACK_GENRE']).lstrip().rstrip()
+    if 'GENRE' in response:
+        tags.trackGenre = strip_tags(response['GENRE']).lstrip().rstrip()
         if Genre.objects.filter(name=tags.trackGenre).count() == 0:
             genre = Genre()
             genre.name = tags.trackGenre
@@ -74,67 +85,71 @@ def updateDBInfo(response, track, tags):
         genre = Genre.objects.get(name=tags.trackGenre)
         track.genre = genre
 
-    if 'ALBUM_TITLE' in response and 'ALBUM_ARTIST' in response:
+    if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response:
         tags.albumTitle = strip_tags(response['ALBUM_TITLE']).lstrip().rstrip()
-        tags.albumArtist = strip_tags(response['ALBUM_ARTIST']).lstrip().rstrip().split(',')
+        tags.albumArtist = strip_tags(response['ALBUM_ARTISTS']).lstrip().rstrip().split(',')
         if Album.objects.filter(title=tags.albumTitle).count() == 0:
             album = Album()
             album.title = tags.albumTitle
-            album.artist.remove()
-            for artist in tags.albumArtist:
-                if Artist.objects.filter(name=artist).count() == 0:
-                    newArtist = Artist()
-                    newArtist.name = artist
-                    newArtist.save()
-                album.artist.add(Artist.objects.get(name=artist))
+            album.save()
+        album = Album.objects.get(title=tags.albumTitle)
+        album.artist.clear()
+        for artist in tags.albumArtist:
+            if Artist.objects.filter(name=artist).count() == 0:
+                newArtist = Artist()
+                newArtist.name = artist
+                newArtist.save()
+            album.artist.add(Artist.objects.get(name=artist))
 
-            if 'ALBUM_TOTAL_DISC' in response:
-                tags.albumTotalDisc = checkIntValueError(response['ALBUM_TOTAL_DISC'])
-                album.totalDisc = tags.albumTotalDisc
+        if 'ALBUM_TOTAL_DISC' in response:
+            tags.albumTotalDisc = checkIntValueError(response['ALBUM_TOTAL_DISC'])
+            album.totalDisc = tags.albumTotalDisc
 
-            if 'ALBUM_TOTAL_TRACK' in response:
-                tags.albumTotalTrack = checkIntValueError(response['ALBUM_TOTAL_DISC'])
-                album.totalTrack = tags.albumTotalTrack
+        if 'ALBUM_TOTAL_TRACK' in response:
+            tags.albumTotalTrack = checkIntValueError(response['ALBUM_TOTAL_TRACK'])
+            album.totalTrack = tags.albumTotalTrack
 
         album = Album.objects.get(title=tags.albumTitle)
         track.album = album
     track.save()
+    return tags
 
 
 # Update the file information locally
 def updateFileMetadata(track, tags):
     if track.location.endswith(".mp3"):
         # Check if the file has a tag header
+        print(tags)
         audioTag = ID3()
         if tags.trackTitle is not None:
-            audioTag.add(TIT2(tags.trackTitle))
+            audioTag.add(TIT2(text=tags.trackTitle))
         if tags.trackYear is not None:
-            audioTag.add(TDRC(tags.trackYear))
+            audioTag.add(TDRC(text=tags.trackYear))
         if tags.trackArtist is not None:
-            audioTag.add(TPE1(tags.trackArtist))
+            audioTag.add(TPE1(text=tags.trackArtist))
         if tags.trackPerformer is not None:
-            audioTag.add(TOPE(tags.trackPerformer))
+            audioTag.add(TOPE(text=tags.trackPerformer))
         if tags.trackComposer is not None:
-            audioTag.add(TCOM(tags.trackComposer))
+            audioTag.add(TCOM(text=tags.trackComposer))
         if tags.trackNumber is not None:
             if tags.albumTotalTrack is not None:
-                audioTag.add(TRCK(tags.trackNumber + "/" + tags.albumTotalTrack))
+                audioTag.add(TRCK(text=tags.trackNumber + "/" + tags.albumTotalTrack))
             else:
-                audioTag.add(TRCK(tags.trackNumber))
+                audioTag.add(TRCK(text=tags.trackNumber))
         if tags.trackBPM is not None:
-            audioTag.add(TBPM(tags.trackBPM))
+            audioTag.add(TBPM(text=tags.trackBPM))
         if tags.trackLyrics is not None:
-            audioTag.add(USLT(tags.trackLyrics))
+            audioTag.add(USLT(text=tags.trackLyrics))
         if tags.trackGenre is not None:
-            audioTag.add(TCON(tags.trackGenre))
+            audioTag.add(TCON(text=tags.trackGenre))
         if tags.albumTitle is not None:
-            audioTag.add(TALB(tags.albumTitle))
+            audioTag.add(TALB(text=tags.albumTitle))
         if tags.albumArtist is not None:
-            audioTag.add(TPE1(tags.albumArtist))
+            audioTag.add(TPE1(text=tags.albumArtist))
         if tags.albumTotalDisc is not None:
             # TODO : find tag for total disc
             pass
-        audioTag.save()
+        audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     elif track.location.endswith(".flac"):
         audioTag = FLAC()
@@ -165,7 +180,7 @@ def updateFileMetadata(track, tags):
         if tags.albumTotalDisc is not None:
             # TODO : find tag for total disc
             pass
-        audioTag.save()
+        audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     else:
         data = errorCheckMessage(False, "formatError")
@@ -177,10 +192,9 @@ def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        tags = Information()
         if user.is_superuser:
-            if 'TRACK_ID' in response:
-                trackIds = response['TRACK_ID']
+            if 'TRACKS_ID' in response:
+                trackIds = response['TRACKS_ID']
                 data = {}
                 for trackId in trackIds:
                     trackId = checkIntValueError(trackId)
@@ -188,7 +202,7 @@ def changeTracksMetadata(request):
                         if Track.objects.filter(id=trackId).count() == 1:
                             track = Track.objects.get(id=trackId)
                             # Updating database information
-                            updateDBInfo(response, track, tags)
+                            tags = updateDBInfo(response, track)
                             # Changing tags in the file
                             data = updateFileMetadata(track, tags)
                         else:
@@ -202,4 +216,3 @@ def changeTracksMetadata(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
-
