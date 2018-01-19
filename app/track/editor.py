@@ -10,6 +10,7 @@ from app.models import Track, Artist, Album, Genre
 from app.utils import errorCheckMessage
 
 
+# Check if the value can be converted to int
 def checkIntValueError(string):
     try:
         value = int(strip_tags(string).lstrip().rstrip())
@@ -18,6 +19,7 @@ def checkIntValueError(string):
     return value
 
 
+# All the information about a track
 class Information:
     def __int__(self):
         self.trackTitle = self.trackArtist = self.trackPerformer = self.trackComposer = self.trackYear =\
@@ -25,6 +27,7 @@ class Information:
             self.albumArtist = self.albumTotalDisc = self.albumTotalTrack = None
 
 
+# Update the track into the database
 def updateDBInfo(response, track, tags):
     # Changing tags in the database
     if 'TRACK_TITLE' in response:
@@ -98,6 +101,7 @@ def updateDBInfo(response, track, tags):
     track.save()
 
 
+# Update the file information locally
 def updateFileMetadata(track, tags):
     if track.location.endswith(".mp3"):
         # Check if the file has a tag header
@@ -168,6 +172,7 @@ def updateFileMetadata(track, tags):
     return data
 
 
+#
 def changeTrackMetadata(request):
     if request.method == 'POST':
         user = request.user

@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload
 from app.stats import stats, suggestion
-from app.track import track
+from app.track import track, editor
 from . import views
 
 app_name = 'app'
@@ -41,6 +41,7 @@ urlpatterns = [
 
     # Track actions
     url(r'^ajax/getTrackDetailedInfo/$', track.getTrackDetailedInfo, name='getTrackDetailedInfo'),
+    url(r'^ajax/changeTrackMetadata/$', editor.changeTrackMetadata, name='changeTrackMetadata'),
     url(r'^ajax/download/$', track.getDownloadLocation, name='getDownloadLocation'),
     url(r'^ajax/multiTrackDownload/$', track.multiTrackDownload, name='multiTrackDownload'),
 
