@@ -281,34 +281,31 @@ class ListView extends PlaylistView {
             }
         });
         this.contextMenu.addEntry(null, "Edit tags", function() {
-            //if (clickedEntry !== undefined) {
+            JSONParsedPostRequest(
+                "ajax/getTrackDetailedInfo/",
+                JSON.stringify({
+                    TRACK_ID: that.entries[that.selector.get()[0]].track.id.track
+                }),
+                function(response) {
+                    /* response = {
+                     *     DONE      : bool
+                     *     ERROR_H1  : string
+                     *     ERROR_MSG : string
+                     *
+                     *     RESULT    : JSON object
+                     * } */
+                    if (response.DONE) {
+                        that.entries[that.selector.get()[0]].track.updateMetadata(response.RESULT);
 
-                JSONParsedPostRequest(
-                    "ajax/getTrackDetailedInfo/",
-                    JSON.stringify({
-                        TRACK_ID: that.entries[that.selector.get()[0]].track.id.track
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE      : bool
-                         *     ERROR_H1  : string
-                         *     ERROR_MSG : string
-                         *
-                         *     RESULT    : JSON object
-                         * } */
-                        if (response.DONE) {
-                            that.entries[that.selector.get()[0]].track.updateMetadata(response.RESULT);
-
-                            let tmp = new Modal("editTag", that.entries[that.selector.get()[0]]);
-                            tmp.open();
-                        }
-
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
+                        let tmp = new Modal("editTag", that.entries[that.selector.get()[0]]);
+                        tmp.open();
                     }
-                );
-            //}
+
+                    else {
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
+                }
+            );
         });
         this.contextMenu.addEntry(null, "Download track", function() {
             let nbTracks = that.selector.getSize();

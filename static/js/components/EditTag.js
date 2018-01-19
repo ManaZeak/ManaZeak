@@ -20,6 +20,7 @@ class EditTag {
     saveState() {
         this.send.push(this.data.track.id.track); // TODO : Push only if not already in there
 
+        let that = this;
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
             JSON.stringify({
@@ -47,16 +48,31 @@ class EditTag {
                  *
                  *     PATH      : string
                  * } */
-                if (!response.DONE) {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                if (response.DONE) {
+                    that.send = [];
+                }
 
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
     }
 
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-    updateFields(track) {
+    _createUI(container) {
+        this._uiCreateVar();
+        this._uiSetVar();
+        this._uiAppendVar();
+
+        container.appendChild(this.ui.container);
+    }
+
+
+    _updateFields(track) {
+        this.saveState(); // Saving tag before changing track
+
         this.ui.cTitleInput.value          = track.title;
         this.ui.rYearNumber.value          = track.year;
         this.ui.tagComposerField.value     = track.composer;
@@ -71,22 +87,6 @@ class EditTag {
         this.ui.tagGenreField.value        = track.genre;
         this.ui.cArtistInput.value         = track.artist;
         this.ui.tagAlbumArtistsField.value = track.albumArtist;
-    }
-
-//  --------------------------------  PRIVATE METHODS  --------------------------------  //
-
-    /**
-     * method : _createUI (private)
-     * class  : VolumeBar
-     * desc   : Build UI elements
-     * arg    : {object} container - The VolumeBar container
-     **/
-    _createUI(container) {
-        this._uiCreateVar();
-        this._uiSetVar();
-        this._uiAppendVar();
-
-        container.appendChild(this.ui.container);
     }
 
 
@@ -220,7 +220,7 @@ class EditTag {
         // Head ------------------------------------------
         this.ui.head.className                 = "head";
         this.ui.lContainer.className           = "img-container";
-        this.ui.lCover.src                     = "/static/img/utils/export.png";
+        this.ui.lCover.src                     = this.data.track.cover;
         this.ui.cContainer.className           = "art-tit-container";
         this.ui.cTitleLabel.innerHTML          = "Title :";
         this.ui.cTitleInput.name               = "title";
