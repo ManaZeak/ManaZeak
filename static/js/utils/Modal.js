@@ -17,6 +17,7 @@ class Modal {
         this.id          = "modal-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
+        this.editTag     = null;
 
         this._createUI();
 
@@ -273,7 +274,31 @@ class Modal {
 
 
     _editTagUI() {
-        let tmp = new EditTag(this.ui.container, this.data);
+        this.editTag = new EditTag(this.ui.container, this.data);
+
+        let ui = {
+            foot:                             document.createElement("DIV"),
+                close:                        document.createElement("BUTTON"),
+                save:                         document.createElement("BUTTON")
+        };
+
+        ui.foot.className                            = "foot";
+            ui.close.innerHTML                       = "Close";
+            ui.save.innerHTML                        = "Save";
+
+        ui.foot.appendChild(ui.close);
+        ui.foot.appendChild(ui.save);
+
+        let that = this;
+        ui.close.addEventListener("click", function() {
+            that.close();
+        });
+        ui.save.addEventListener("click", function() {
+           that.editTag.saveState();
+           that.close();
+        });
+
+        this.editTag.getContainer().appendChild(ui.foot);
     }
 
 

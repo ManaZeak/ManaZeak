@@ -281,7 +281,7 @@ class ListView extends PlaylistView {
             }
         });
         this.contextMenu.addEntry(null, "Edit tags", function() {
-            if (clickedEntry !== undefined) {
+            //if (clickedEntry !== undefined) {
 
                 JSONParsedPostRequest(
                     "ajax/getTrackDetailedInfo/",
@@ -308,7 +308,7 @@ class ListView extends PlaylistView {
                         }
                     }
                 );
-            }
+            //}
         });
         this.contextMenu.addEntry(null, "Download track", function() {
             let nbTracks = that.selector.getSize();
