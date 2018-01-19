@@ -152,9 +152,9 @@ def updateFileMetadata(track, tags):
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     elif track.location.endswith(".flac"):
-        audioTag = FLAC()
+        audioTag = FLAC(track.location)
         if tags.trackTitle is not None:
-            audioTag['TITLE'] = tags.trackTitle
+            audioTag["TITLE"] = tags.trackTitle
         if tags.trackYear is not None:
             audioTag['DATE'] = tags.trackYear
         if tags.trackArtist is not None:
@@ -166,7 +166,7 @@ def updateFileMetadata(track, tags):
         if tags.trackNumber is not None:
             audioTag['TRACKNUMBER'] = tags.trackNumber
         if tags.albumTotalTrack is not None:
-            audioTag['TOTALTRACK'] = tags.albumTotalTrack
+            audioTag['TOTALTRACK'] = str(tags.albumTotalTrack)
         if tags.trackBPM is not None:
             audioTag['BPM'] = tags.trackBPM
         if tags.trackLyrics is not None:
