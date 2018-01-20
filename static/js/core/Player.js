@@ -167,6 +167,29 @@ class Player {
     getSourceID()     { return this.trackId;            }
 
     setIsMuted(muted) { this.isMuted = muted;           }
-    setVolume(volume) { this.player.volume = volume;    }
+
+
+    /**
+     * method : getVolume (public)
+     * class  : Player
+     * desc   : return the current volume
+     **/
+    getVolume() {
+        return this.player.volume;
+    }
+
+
+    /**
+     * method : setVolume (public)
+     * class  : Player
+     * desc   : Set Player volume to a given value
+     * arg    : {float} volume - Volume between 0 and 1
+     **/
+    setVolume(volume) {
+        if (volume > 1)      { volume = 1; }
+        else if (volume < 0) { volume = 0; }
+
+        this.player.volume = precisionRound(volume, 2);
+    }
 
 }

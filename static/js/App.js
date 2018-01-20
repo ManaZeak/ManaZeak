@@ -24,6 +24,8 @@ class App extends MzkObject {
         this.appViews         = {};
         this._createDefaultViews();
 
+        this.shortcutMaestro = new ShortcutMaestro();
+
         this.availableViews   = {
             LIST: {
                 index: 0,
@@ -71,6 +73,16 @@ class App extends MzkObject {
      **/
     getActivePlaylist() {
         return this.activePlaylist ? this.activePlaylist : null;
+    }
+
+
+    /**
+     * method : getVolume (public)
+     * class  : App
+     * desc   : return the current volume
+     **/
+    getVolume() {
+        return this.player.getVolume();
     }
 
 
@@ -353,6 +365,17 @@ class App extends MzkObject {
 
 
     /**
+     * method : getShortcutMaestro (public)
+     * class  : App
+     * desc   : Get the shortcut maestro
+     * return : {object} element
+     **/
+    getShortcutMaestro() {
+        return this.shortcutMaestro;
+    }
+
+
+    /**
      * method : hidePageContent (public)
      * class  : App
      * desc   : Hide any content in mainContainer
@@ -616,10 +639,7 @@ class App extends MzkObject {
      * arg    : {float} volume - Volume between 0 and 1
      **/
     setVolume(volume) {
-        if (volume > 1)      { volume = 1; }
-        else if (volume < 0) { volume = 0; }
-
-        this.player.getPlayer().volume = precisionRound(volume, 2);
+        this.player.setVolume(volume);
     }
 
 
@@ -788,57 +808,18 @@ class App extends MzkObject {
      * desc   : App key listeners
      **/
     _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
-        let that = this;
 
-        // Key pressed event
-        document.addEventListener("keydown", function(event) {
-            switch (event.keyCode) {
-                case 32: // Space player
-                    that.togglePlay();
-                    break;
-                case 37: // Left arrow
-                    if (event.ctrlKey)
-                        that.rewind(30);
-                    else
-                        that.rewind(10);
-                    break;
-                case 38: // Up arrow
-                    that.footBar.volumeUp(event);
-                    break;
-                case 39: // Right arrow
-                    if (event.ctrlKey)
-                        that.fastForward(30);
-                    else
-                        that.fastForward(10);
-                    break;
-                case 40: // Down arrow
-                    that.footBar.volumeDown(event);
-                    break;
-                case 77: // m key (w/ ctrl)
-                    if (event.ctrlKey)
-                        that.toggleMute(event);
-                    break;
-                case 81:
-                    if (event.ctrlKey)
-                        that.toggleQueue(event);
-                    break;
-                default:
-                    break;
-            }
-        });
-        // Key released event
-        document.addEventListener("keyup", function(event) {
-            switch (event.keyCode) {
-                case 38: // Up arrow
-                    that.footBar.delayHideVolume();
-                    break;
-                case 40: // Down arrow
-                    that.footBar.delayHideVolume();
-                    break;
-                default:
-                    break;
-            }
-        });
+        let that = this;
+        this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
+        this.addShortcut(new Shortcut('keydown', 'Semicolon', function() { that.toggleMute(); }));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(30); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.1); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.01); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.1); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.01); }, true));
     }
 
 }

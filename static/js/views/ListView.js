@@ -271,7 +271,8 @@ class ListView extends PlaylistView {
                 target       = target.parentNode;
             }
 
-            that._addIDToSelect(target.dataset.childID, event);
+            if(that.entries[target.dataset.childID].getIsSelected() == false)
+                that._addIDToSelect(target.dataset.childID, event);
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
@@ -482,7 +483,7 @@ class ListView extends PlaylistView {
         this.listView        = null;
         this.entries         = [];
         this.trackInfo       = null;
-        this.dblClick        = false;
+        this.dblClick        = null;
         this.contextMenu     = null;
 
         this.header = {
@@ -693,13 +694,13 @@ class ListView extends PlaylistView {
         }
 
         let id = target.dataset.childID;
-        if (this.dblClick) {
+        if (this.dblClick == id) {
             window.app.changeTrack(this.entries[id].track, false);
             return;
         }
 
-        this.dblClick = true;
-        window.setTimeout(function() { that.dblClick = false; }, 500);
+        this.dblClick = id;
+        window.setTimeout(function() { that.dblClick = null; }, 500);
 
         this._addIDToSelect(id, event);
     }

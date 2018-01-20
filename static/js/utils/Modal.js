@@ -8,10 +8,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Modal {
+class Modal extends MzkObject {
 
     constructor(type, data) {
 
+        super();
         this.data        = data;
         this.url         = null;
         this.id          = "modal-" + genUniqueID();
@@ -85,6 +86,7 @@ class Modal {
      **/
     close() {
         document.body.removeChild(document.getElementById(this.id));
+        this.unlockShortcurts();
     }
 
 
@@ -94,6 +96,7 @@ class Modal {
      * desc   : Add the modal to the body
      **/
     open() {
+        this.lockShortcuts();
         document.body.appendChild(this.ui.overlay);
     }
 
