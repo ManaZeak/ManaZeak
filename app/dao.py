@@ -10,7 +10,7 @@ from app.models import Album, Artist, Genre
 
 
 # Import album into the database in bulk mode
-def addAlbumBulk(albums, artists):
+def addAlbumBulk(albums, artists, totalTrack):
     albumReference = {"": Album.objects.get(title=None)}
     newAlbums = {}
     albumSet = set()
@@ -41,7 +41,7 @@ def addAlbumBulk(albums, artists):
     writer = csv.writer(virtualFile, delimiter='\t')
     for album in albums:
         newAlbums[album] = firstId[0] + counter
-        writer.writerow([firstId[0] + counter, album])
+        writer.writerow([firstId[0] + counter, album, totalTrack[album]])
         counter += 1
 
     virtualFile.seek(0)
@@ -51,7 +51,7 @@ def addAlbumBulk(albums, artists):
             file=virtualFile,
             table='"app_album"',
             sep='\t',
-            columns=('id', 'title'),
+            columns=('id', 'title', '"totalTrack"'),
         )
 
     # Creating the csv for the link between artist and album

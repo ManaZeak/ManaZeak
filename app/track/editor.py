@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3
-from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB
+from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX
 
 from app.models import Track, Artist, Album, Genre
 from app.utils import errorCheckMessage
@@ -34,7 +34,10 @@ class Information:
     albumTitle = None
     albumArtist = None
     albumTotalDisc = None
+    albumDiscNumber = None
     albumTotalTrack = None
+    comment = None
+    lyrics = None
 
 
 # Update the track into the database
@@ -59,22 +62,31 @@ def updateDBInfo(response, track):
             track.artist.add(artist)
 
     if 'PERFORMER' in response:
-        track.performer = strip_tags(response['PERFORMER']).lstrip().rstrip()
+        tags.trackPerformer = strip_tags(response['PERFORMER']).lstrip().rstrip()
+        track.performer = tags.trackPerformer
 
     if 'COMPOSER' in response:
-        track.composer = strip_tags(response['COMPOSER']).lstrip().rstrip()
+        tags.trackComposer = strip_tags(response['COMPOSER']).lstrip().rstrip()
+        track.composer = tags.trackComposer
 
     if 'YEAR' in response:
-        track.year = checkIntValueError(response['YEAR'])
+        tags.trackYear = checkIntValueError(response['YEAR'])
+        track.year = tags.trackYear
 
     if 'TRACK_NUMBER' in response:
-        track.number = checkIntValueError(response['TRACK_NUMBER'])
+        tags.trackNumber = checkIntValueError(response['TRACK_NUMBER'])
+        track.number = tags.trackNumber
 
     if 'BPM' in response:
         track.bpm = checkIntValueError(response['BPM'])
 
     if 'LYRICS' in response:
-        track.lyrics = strip_tags(response['LYRICS']).lstrip().rstrip()
+        tags.lyrics = strip_tags(response['LYRICS']).lstrip().rstrip()
+        track.lyrics = tags.lyrics
+
+    if 'COMMENT' in response:
+        tags.comment = strip_tags(response['COMMENT']).lstrip().rstrip()
+        track.comment = tags.comment
 
     if 'GENRE' in response:
         tags.trackGenre = strip_tags(response['GENRE']).lstrip().rstrip()
@@ -85,6 +97,7 @@ def updateDBInfo(response, track):
         genre = Genre.objects.get(name=tags.trackGenre)
         track.genre = genre
 
+    print("resp", response)
     if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response:
         tags.albumTitle = strip_tags(response['ALBUM_TITLE']).lstrip().rstrip()
         tags.albumArtist = strip_tags(response['ALBUM_ARTISTS']).lstrip().rstrip().split(',')
@@ -105,11 +118,14 @@ def updateDBInfo(response, track):
             tags.albumTotalDisc = checkIntValueError(response['ALBUM_TOTAL_DISC'])
             album.totalDisc = tags.albumTotalDisc
 
+        if 'DISC_NUMBER' in response:
+            tags.albumDiscNumber = checkIntValueError(response['DISC_NUMBER'])
+            track.discNumber = tags.albumDiscNumber
+
         if 'ALBUM_TOTAL_TRACK' in response:
             tags.albumTotalTrack = checkIntValueError(response['ALBUM_TOTAL_TRACK'])
             album.totalTrack = tags.albumTotalTrack
-
-        album = Album.objects.get(title=tags.albumTitle)
+        album.save()
         track.album = album
     track.save()
     return tags
@@ -124,7 +140,7 @@ def updateFileMetadata(track, tags):
         if tags.trackTitle is not None:
             audioTag.add(TIT2(text=tags.trackTitle))
         if tags.trackYear is not None:
-            audioTag.add(TDRC(text=tags.trackYear))
+            audioTag.add(TDRC(text=str(tags.trackYear)))
         if tags.trackArtist is not None:
             audioTag.add(TPE1(text=tags.trackArtist))
         if tags.trackPerformer is not None:
@@ -133,7 +149,8 @@ def updateFileMetadata(track, tags):
             audioTag.add(TCOM(text=tags.trackComposer))
         if tags.trackNumber is not None:
             if tags.albumTotalTrack is not None:
-                audioTag.add(TRCK(text=tags.trackNumber + "/" + tags.albumTotalTrack))
+                audioTag.add(TRCK(text=str(tags.trackNumber) + "/" + str(tags.albumTotalTrack)))
+                print(audioTag)
             else:
                 audioTag.add(TRCK(text=tags.trackNumber))
         if tags.trackBPM is not None:
@@ -147,8 +164,13 @@ def updateFileMetadata(track, tags):
         if tags.albumArtist is not None:
             audioTag.add(TPE1(text=tags.albumArtist))
         if tags.albumTotalDisc is not None:
-            # TODO : find tag for total disc
+            audioTag.add(TXXX(desc="TOTALDISCS", text=[tags.albumTotalDisc]))
+        if tags.comment is not None:
+            audioTag.add(COMM(text=tags.comment))
+        if tags.albumDiscNumber is not None:
+            # Not implemented in mutagen
             pass
+
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     elif track.location.endswith(".flac"):

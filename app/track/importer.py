@@ -100,6 +100,10 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
             if txxx.desc == 'TOTALDISCS':
                 track.totalDisc = strip_tags(txxx.text[0]).rstrip()
 
+    if 'TPOS' in audioTag:
+        if not audioTag['TPOS'].text[0] == "":
+            track.discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
         genreName = strip_tags(audioTag['TCON'].text[0]).rstrip()
