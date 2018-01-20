@@ -23,11 +23,13 @@ class FootBar extends MzkObject {
     /**
      * method : resetUI (public)
      * class  : FootBar
-     * desc   : Reset TrackPreview and ProgressBar. TODO : option to close PlaylistPreview also
+     * desc   : Reset TrackPreview and ProgressBar.
      **/
-    resetUI() {
+    resetUI(hidePreview) {
         this.trackPreview.resetTrackPreview();
         this.progressBar.resetProgressBar();
+        if(hidePreview)
+            this.playlistPreview.setVisible(false);
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

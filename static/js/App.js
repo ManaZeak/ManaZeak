@@ -846,7 +846,6 @@ class App extends MzkObject {
             defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
                 that.changePlaylist(that.playlists.getDefault().id);
-                // TODO : replace begin arg to the active playlists, to avoid loading it
                 that.playlists.forEach(function() {
                     this.getPlaylistsTracks();
                 }, false);
@@ -883,7 +882,7 @@ class App extends MzkObject {
      * class  : App
      * desc   : App key listeners
      **/
-    _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
+    _keyListener() {
 
         let that = this;
         this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));

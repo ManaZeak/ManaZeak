@@ -117,7 +117,6 @@ class PlaylistPreview extends MzkObject {
      * desc   : Update shuffle and repeat mode from UI changes
      **/
     _updatePlaylistPreview() {
-        // TODO : link to App.controler event
         let repeatMode  = window.app.activePlaylist.getRepeatMode();
         let shuffleMode = window.app.activePlaylist.getShuffleMode();
 

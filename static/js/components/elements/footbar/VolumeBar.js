@@ -127,7 +127,6 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseDown(event) {
-        //TODO: fix this
         if (!this.isDragging &&
             (event.target.id === "volume" || event.target.id === "volumeBar" || event.target.id === "volumeThumb")) {
             this.isDragging = true;

@@ -204,6 +204,16 @@
                 justify-content: space-between;
                 padding: 5px;
                 padding-left: 15px;
+                height: 64px;
+
+                &.mzk-queue-empty {
+
+                    justify-content: center;
+
+                    &:not(:last-child) {
+                        display: none;
+                    }
+                }
 
                 & > img {
                     height: auto;

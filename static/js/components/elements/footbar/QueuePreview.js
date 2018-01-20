@@ -135,17 +135,22 @@ class QueuePreview extends MzkObject {
                 reverseBox: document.createElement("INPUT"),
                 reverseLbl: document.createElement("LABEL")
             },
-            queueList:      document.createElement("UL")
+            queueList:      document.createElement("UL"),
+            queueEmpty:     document.createElement("LI")
         };
 
         this.ui.container.className            = "mzk-queue-preview";
         this.ui.statusBar.container.className  = "mzk-queue-status";
         this.ui.queueList.className            = "mzk-queue-list";
+        this.ui.queueEmpty.className           = "mzk-queue-empty";
 
         this.ui.statusBar.trackCount.innerText = "0 tracks";
         this.ui.statusBar.reverseLbl.innerText = "Reverse Play:";
         this.ui.statusBar.reverseBox.type      = "checkbox";
         this.ui.statusBar.reverseBox.value     = this.reverse;
+
+        this.ui.queueEmpty.innerHTML = "The Queue is empty";
+        this.ui.queueList.appendChild(this.ui.queueEmpty);
 
         this.ui.statusBar.container.appendChild(this.ui.statusBar.trackCount);
         this.ui.statusBar.container.appendChild(this.ui.statusBar.reverseLbl);
@@ -229,7 +234,6 @@ class QueuePreview extends MzkObject {
                     break;
 
                 default:
-                    // TODO : Switch default event
                     break;
             }
         });
@@ -238,11 +242,11 @@ class QueuePreview extends MzkObject {
         });
         window.app.listen('pushQueue', function(track) {
             that._addEntry(track);
-            that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
+            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + " tracks";
         });
         window.app.listen('popQueue', function() {
-            that.ui.queueList.removeChild(that.reverse ? that.ui.queueList.lastChild : that.ui.queueList.firstChild);
-            that.ui.statusBar.trackCount.innerText = that.ui.queueList.childNodes.length + " tracks";
+            that.ui.queueList.removeChild(that.reverse ? that.ui.queueList.lastChild : that.ui.queueList.firstChild.nextSibling);
+            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + " tracks";
         });
         window.app.listen('reverseQueue', function(reverse) {
             that.reverse = reverse;

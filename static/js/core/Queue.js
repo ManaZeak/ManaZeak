@@ -20,8 +20,8 @@ class QueueEntry {
     /**
      * method : addNext (public)
      * class  : QueueEntry
-     * desc   : TODO
-     * arg    : {type} other - TODO
+     * desc   : append a new QueueEntry after this one
+     * arg    : {type} other - the new entry
      **/
     addNext(other) {
         if (other == null) { return; }
@@ -41,8 +41,8 @@ class QueueEntry {
     /**
      * method : addPrev (public)
      * class  : QueueEntry
-     * desc   : TODO
-     * arg    : {type} other - TODO
+     * desc   : append a new QueueEntry before this one
+     * arg    : {type} other - the new entry
      **/
     addPrev(other) {
         if (other == null) { return; }
@@ -62,7 +62,7 @@ class QueueEntry {
     /**
      * method : moveNext (public)
      * class  : QueueEntry
-     * desc   : TODO
+     * desc   : change positions with the next QueueEntry if there is one
      **/
     moveNext() {
         let tmp_t;
@@ -78,7 +78,7 @@ class QueueEntry {
     /**
      * method : movePrev (public)
      * class  : QueueEntry
-     * desc   : TODO
+     * desc   : change positions with the previous QueueEntry if there is one
      **/
     movePrev() {
         let tmp_t;
@@ -94,7 +94,7 @@ class QueueEntry {
     /**
      * method : unlink (public)
      * class  : QueueEntry
-     * desc   : TODO
+     * desc   : remove this entry from the list
      **/
     unlink() {
         if (this.previous) { this.previous.next = this.next;     }
@@ -115,18 +115,18 @@ class QueueEntry {
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Queue {
+class Queue extends MzkObject {
 
-    constructor() {
+    constructor(showNotificationOnAdd) {
 
+        super();
         this.first   = null;
         this.last    = null;
         this.reverse = false;
+        this.notif   = showNotificationOnAdd;
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-    // TODO : add text saying that queue is empty when no track is loaded. Use same size as LI item, and put text at the center, same font as Track title in LI
-    // TODO : Add notif when track has been added - This should be a user option (enable/disable)
 
     /**
      * method : dequeue (public)
@@ -172,6 +172,9 @@ class Queue {
         else                    { this.last.addNext(newLink); }
 
         this.last = newLink;
+
+        if(this.notif)
+            new Notification('INFO', 'Track added to Queue', track.title + 'was added to the queue');
     }
 
 
