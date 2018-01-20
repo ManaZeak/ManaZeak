@@ -281,6 +281,8 @@ class ListView extends PlaylistView {
                 window.app.pushQueue(that.entries[selected[i]].track);
             }
         });
+
+        //TODO: move to App
         this.contextMenu.addEntry(null, "Edit tags", function() {
             JSONParsedPostRequest(
                 "ajax/getTrackDetailedInfo/",
@@ -308,6 +310,7 @@ class ListView extends PlaylistView {
                 }
             );
         });
+
         this.contextMenu.addEntry(null, "Download track", function() {
             let nbTracks = that.selector.getSize();
             if(nbTracks == 1)
@@ -321,82 +324,32 @@ class ListView extends PlaylistView {
             }
         });
 
-        //TODO: move this to app and clean up
+
         this.contextMenu.addEntry('playlists', "Add to playlist");
+
+        //TODO: Add and remove playlists on the fly (listen to window.app.playlists)
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i) {
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
-                if (clickedEntry !== undefined) {
-                    let tracksId = [];
-                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
-
-                    JSONParsedPostRequest(
-                        "ajax/addTracksToPlaylist/",
-                        JSON.stringify({
-                            PLAYLIST_ID: playlists[i].id,
-                            TRACKS_ID: tracksId
-                        }),
-                        function (response) {
-                            /* response = {
-                             *     DONE         : bool
-                             *     ERROR_H1     : string
-                             *     ERROR_MSG    : string
-                             *
-                             *     ADDED_TRACKS : int
-                             * } */
-                            if (response.DONE) {
-                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].track.title + " has been added to " + playlists[i].name + ".");
-                                playlists[i].getPlaylistsTracks();
-                            }
-
-                            else {
-                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                            }
-                        }
-                    );
-                }
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; t++)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.addTracksToPlaylist(playlists[i], tracks);
             });
         }
-        if (!this.isLibrary) {
-            this.contextMenu.addEntry(null, "Remove track", function() {
-                if (clickedEntry !== undefined) {
-                    let tracksId = [];
-                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
 
-                    JSONParsedPostRequest(
-                        "ajax/removeTrackFromPlaylist/",
-                        JSON.stringify({
-                            PLAYLIST_ID: that.id,
-                            TRACKS_ID:   tracksId
-                        }),
-                        function (response) {
-                            /* response = {
-                             *     DONE           : bool
-                             *     ERROR_H1       : string
-                             *     ERROR_MSG      : string
-                             *
-                             *     REMOVED_TRACKS : int
-                             * } */
-                            if (response.DONE) {
-                                let playlist = window.app.getPlaylistFromId(that.id);
-
-                                if (playlist !== null) {
-                                    new Notification("INFO", "Track removed from " + playlist.name, that.entries[clickedEntry].track.title + " has been removed from " + playlist.name + ".");
-                                    playlist.getPlaylistsTracks();
-                                }
-                            }
-
-                            else {
-                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                            }
-                        }
-                    );
-                }
-            });
-        }
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
             window.app.requestNewPlaylist();
         });
+
+        if (!this.isLibrary) {
+            this.contextMenu.addEntry(null, "Remove track", function() {
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; t++)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.removeTracksFromPlaylist(window.app.playlists.get(that.id), tracks);
+            });
+        }
     }
 
 

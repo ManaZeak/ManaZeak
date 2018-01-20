@@ -52,6 +52,44 @@ class App extends MzkObject {
         this.setVolume(this.player.getPlayer().volume + amount);
     }
 
+    /**
+     * method : addTracksToPlaylist (public)
+     * class  : App
+     * desc   : Add tracks to a playlist, including server-side
+     * arg    : {object} playlist
+     *          {array}  tracks
+     **/
+    addTracksToPlaylist(playlist, tracks) {
+
+        let ids = new Array(tracks.length);
+        let names = '';
+        for(let i = 0; i < tracks.length; i++) {
+            ids[i] = tracks[i].id.track;
+            names += tracks[i].title + ',';
+        }
+        JSONParsedPostRequest(
+            "ajax/addTracksToPlaylist/",
+            JSON.stringify({
+                PLAYLIST_ID: playlist.id,
+                TRACKS_ID: ids
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE         : bool
+                 *     ERROR_H1     : string
+                 *     ERROR_MSG    : string
+                 *
+                 *     ADDED_TRACKS : int
+                 * } */
+                if (response.DONE) {
+                    new Notification("INFO", "Tracks added to " + playlist.name, names + " have been added to " + playlist.name + ".");
+                        playlist.getPlaylistsTracks();
+                } else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                }
+            });
+    }
+
 
     /**
      * method : changePageTitle (public)
@@ -507,6 +545,44 @@ class App extends MzkObject {
      **/
     pushQueue(track) {
         this.queue.enqueue(track);
+    }
+
+    /**
+     * method : removeTracksFromPlaylist (public)
+     * class  : App
+     * desc   : Request tracks to be deleted from the playlist
+     * arg    : {object} Playlist
+     *          {array}  tracks;
+     */
+    removeTracksFromPlaylist(playlist, tracks) {
+
+        let ids = new Array(tracks.length);
+        let names = '';
+        for(let i = 0; i < tracks.length; i++) {
+            ids[i] = tracks[i].id.track;
+            names += tracks[i].title + ',';
+        }
+        JSONParsedPostRequest(
+            "ajax/removeTrackFromPlaylist/",
+            JSON.stringify({
+                PLAYLIST_ID: playlist.id,
+                TRACKS_ID:   ids
+            }),
+            function (response) {
+                /* response = {
+                             *     DONE           : bool
+                             *     ERROR_H1       : string
+                             *     ERROR_MSG      : string
+                             *
+                             *     REMOVED_TRACKS : int
+                             * } */
+                if (response.DONE) {
+                    new Notification("INFO", "Tracks removed from " + playlist.name, names + " have been removed from " + playlist.name + ".");
+                        playlist.getPlaylistsTracks();
+                } else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                }
+            });
     }
 
 
