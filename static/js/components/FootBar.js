@@ -21,16 +21,6 @@ class FootBar extends MzkObject {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : delayHideVolume (public)
-     * class  : FootBar
-     * desc   : Delay volume bar invisibility
-     **/
-    delayHideVolume() {
-        this.controls.volumeBar.delayHideVolume();
-    }
-
-
-    /**
      * method : resetUI (public)
      * class  : FootBar
      * desc   : Reset TrackPreview and ProgressBar. TODO : option to close PlaylistPreview also
@@ -38,28 +28,6 @@ class FootBar extends MzkObject {
     resetUI() {
         this.trackPreview.resetTrackPreview();
         this.progressBar.resetProgressBar();
-    }
-
-
-    /**
-     * method : volumeDown (public)
-     * class  : FootBar
-     * desc   : Updates VolumeBar with volume down
-     * arg    : {object} event - Keyboard event
-     **/
-    volumeDown(event) {
-        this.controls.volumeBar.volumeDown(event);
-    }
-
-
-    /**
-     * method : volumeDown (public)
-     * class  : FootBar
-     * desc   : Updates VolumeBar with volume up
-     * arg    : {object} event - Keyboard event
-     **/
-    volumeUp(event) {
-        this.controls.volumeBar.volumeUp(event);
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

@@ -7,11 +7,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class VolumeBar {
+class VolumeBar extends MzkObject {
 
     constructor(container) {
 
-        this.volume       = 0; // Volume value is an int between 0 and 100
+        super();
         this.isDragging   = false;
         this.volumeLockId = -1;
 
@@ -30,41 +30,10 @@ class VolumeBar {
         let that = this;
 
         window.clearTimeout(this.volumeLockId);
+        addVisibilityLock(that.volumeBar.wrapper);
         this.volumeLockId = window.setTimeout(function() {
             removeVisibilityLock(that.volumeBar.wrapper);
         }, 1500);
-    }
-
-
-    /**
-     * method : volumeDown (public)
-     * class  : VolumeBar
-     * desc   : Down volume on keyboard input
-     * arg    : {object} event - Keyboard event
-     **/
-    volumeDown(event) {
-        addVisibilityLock(this.volumeBar.wrapper);
-
-        window.app.player.setIsMuted(false);
-
-        if (!event.ctrlKey) { window.app.adjustVolume(-0.1);  }
-        else                { window.app.adjustVolume(-0.01); }
-    }
-
-
-    /**
-     * method : volumeUp (public)
-     * class  : VolumeBar
-     * desc   : Raise volume on keyboard input
-     * arg    : {object} event - Keyboard event
-     **/
-    volumeUp(event) {
-        addVisibilityLock(this.volumeBar.wrapper);
-
-        window.app.player.setIsMuted(false);
-
-        if (!event.ctrlKey) { window.app.adjustVolume(0.1);  }
-        else                { window.app.adjustVolume(0.01); }
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -120,9 +89,22 @@ class VolumeBar {
 
         window.addEventListener("mousemove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
-        window.app.listen("setVolume", function() {
-            that._updateVolume(window.app.player.getPlayer().volume * 100);
+
+        window.app.listen('setVolume', function() {
+            that._updateVolume(window.app.getVolume());
         });
+    }
+
+
+    /**
+     * method : _eventListener (private)
+     * class  : VolumeBar
+     * desc   : VolumeBar event listeners
+     **/
+    _keyListener() {
+        let that = this;
+        this.addShortcut(new Shortcut('keyup', 'ArrowUp', function() { that.delayHideVolume(); }));
+        this.addShortcut(new Shortcut('keyup', 'ArrowDown', function() { that.delayHideVolume(); }));
     }
 
 
@@ -132,8 +114,9 @@ class VolumeBar {
      * desc   : Init default volume, set/store player empty source and listen
      **/
     _init() {
-        this._updateVolume(50); // TODO : init from global var in App os user settings
+        this._updateVolume(window.app.getVolume());
         this._eventListener();
+        this._keyListener();
     }
 
 
@@ -149,8 +132,7 @@ class VolumeBar {
             (event.target.id === "volume" || event.target.id === "volumeBar" || event.target.id === "volumeThumb")) {
             this.isDragging = true;
             this._moveVolume(event);
-            this._toggleVisibilityLock();
-            window.app.setVolume(this.volume / 100);
+            toggleVisibilityLock(this.volumeBar.wrapper);
         }
     }
 
@@ -163,9 +145,7 @@ class VolumeBar {
      **/
     _mouseMove(event) {
         if (this.isDragging) {
-            this._toggleVisibilityLock();
             this._moveVolume(event);
-            window.app.setVolume(this.volume / 100);
         }
     }
 
@@ -178,8 +158,7 @@ class VolumeBar {
     _mouseUp() {
         if (this.isDragging) {
             this.isDragging = false;
-            this._toggleVisibilityLock();
-            this._updateVolume(this.volume);
+            toggleVisibilityLock(this.volumeBar.wrapper);
         }
     }
 
@@ -197,23 +176,11 @@ class VolumeBar {
         // OOB protection
         if (distanceToBottomInPr > 100) { distanceToBottomInPr = 100; }
         if (distanceToBottomInPr < 0)   { distanceToBottomInPr = 0;   }
-        // Style assignation
-        this.volume                         = distanceToBottomInPr;
-        this.volumeBar.current.style.height = distanceToBottomInPr + "%";
-        this.volumeBar.thumb.style.bottom   = distanceToBottomInPr + "%";
+
+        this.volumeBar.current.style.height        = distanceToBottomInPr + "%";
+        this.volumeBar.thumb.style.bottom          = distanceToBottomInPr + "%";
+        window.app.setVolume(distanceToBottomInPr / 100);
     }
-
-
-    /**
-     * method : _toggleVisibilityLock (private)
-     * class  : VolumeBar
-     * desc   : Toggles the visibility lock on VolumeBar
-     **/
-    _toggleVisibilityLock() {
-        if (this.isDragging) { addVisibilityLock(this.volumeBar.wrapper);    }
-        else                 { removeVisibilityLock(this.volumeBar.wrapper); }
-    }
-
 
     /**
      * method : _updateVolume (private)
@@ -222,7 +189,7 @@ class VolumeBar {
      * arg    : {int} volume - The volume to set
      **/
     _updateVolume(volume) {
-        this.volume                                = volume;
+        volume *= 100;
         this.volumeBar.current.style.height        = volume + "%";
         this.volumeBar.thumb.style.bottom          = volume + "%";
 
@@ -238,9 +205,4 @@ class VolumeBar {
             this.ui.mute.image.src = "/static/img/player/volume.svg";
         }
     }
-
-//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
-
-    setVolume(volume) { this.volume = volume; }
-
 }
