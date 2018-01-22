@@ -6,13 +6,50 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+class EditTagEntry {
+    constructor(container, track) {
+        this.entry = document.createElement("P");
+        this.track = track;
+        this.entry.innerHTML = track.fileName;
+        this.entry.dataset.childID = container.children.length;
+
+        container.appendChild(this.entry);
+    }
+
+
+    /**
+     * method : setIsSelected (public)
+     * class  : ListViewEntry
+     * desc   : Set the entry as selected/!selected
+     * return : {bool} isSelected
+     **/
+    setIsSelected(isSelected) {
+        this.isSelected = isSelected;
+
+        if (this.isSelected) { this.entry.classList.add("mzk-selected");    }
+        else                 { this.entry.classList.remove("mzk-selected"); }
+    }
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                 *
+ *  EditTag class                                  *
+ *                                                 *
+ *  Handle the edit tag modal                      *
+ *                                                 *
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 class EditTag {
 
     constructor(container, data) {
 
         this.data = data;
         this.send = [];
+        this.entries = [];
+        this.selector = new MultiSelect();
+
         this._createUI(container);
+        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -67,17 +104,37 @@ class EditTag {
         this._updateFields(this.data[0]); // Initializing modal with first track value
 
         if (this.data.length > 1) {
-            for (let i = 0; i < this.data.length ;++i) {
-                let entry = document.createElement("P");
-                entry.innerHTML = this.data[i].fileName;
-                this.ui.list.appendChild(entry);
-            }
+            this.entries = new Array(this.data.length);
+            for (let i = 0; i < this.data.length ;++i)
+                this.entries[i] = new EditTagEntry(this.ui.list, this.data[i]);
 
             container.style = "display: flex;";
             container.appendChild(this.ui.list);
         }
 
         container.appendChild(this.ui.container);
+    }
+
+    _eventListener() {
+        let that = this;
+
+        this.selector.listen('clear', function() {
+            for(let i = 0; i < that.entries.length; ++i)
+                that.entries[i].setIsSelected(false);
+        });
+
+        this.ui.list.addEventListener('click', function(event) {
+            if(event.target == that.ui.list)
+                return;
+            let target = event.target;
+            while(target.parentNode != that.ui.list)
+                target = target.parentNode;
+
+            let ix = target.dataset.childID;
+            that.entries[ix].setIsSelected(that.selector.add(ix, event.ctrlKey));
+
+            //TODO:Do something with zeaz
+        });
     }
 
 
