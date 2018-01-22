@@ -102,12 +102,13 @@
                         display: inline-block;
                         width: 19px;
                         height: 1em;
+                        margin: 0 3px;
                         background: transparent;
                         text-align: center;
                     }
 
                     .year {
-                        width: 43px !important;
+                        width: 49px !important;
                     }
                 }
             }
@@ -167,14 +168,15 @@
                 padding: 5px;
                 background: transparent;
                 border-radius: 2px;
-                border: solid 1px transparent;
+//                border: solid 1px transparent;
+                border: solid 1px $primary-text !important;
                 transition: 0.2s ease;
             }
 
             textarea:active,
             textarea:hover,
             textarea:focus {
-                border: solid 1px $primary-text !important;
+                border: solid 1px $accent-color !important;
             }
 
             .center {
@@ -219,7 +221,8 @@
 
     input {
         border: 0;
-        border-bottom: solid 1px transparent;
+        border-bottom: solid 1px $primary-text !important;
+//        border-bottom: solid 1px transparent;
         transition: 0.2s ease;
         color: $primary-text;
     }
@@ -227,6 +230,6 @@
     input:active,
     input:hover,
     input:focus {
-        border-bottom: solid 1px $primary-text !important;
+        border-bottom: solid 1px $accent-color !important;
     }
 }
