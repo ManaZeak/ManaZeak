@@ -247,7 +247,7 @@ class Modal extends MzkObject {
      **/
     _deletePlaylistUI() {
         this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Remove " + this.data.name;
+        this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
         let cancel              = document.createElement("BUTTON");
@@ -257,7 +257,7 @@ class Modal extends MzkObject {
         cancel.id               = "cancelButton";
         del.id                  = "deleteButton";
 
-        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.playlist.name +
                                   ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
         del.innerHTML           = "Delete";
@@ -273,7 +273,7 @@ class Modal extends MzkObject {
             that.close();
         });
         del.addEventListener("click", function() {
-            window.app.deletePlaylist(that.data.id);
+            window.app.deletePlaylist(that.data.playlist);
             that.close();
         });
     }

@@ -235,12 +235,12 @@ class App extends MzkObject {
      * arg    : {int} id - The playlist ID
      * arg    : {function} callback - Not mandatory
      **/
-    deletePlaylist(id, callback) {
+    deletePlaylist(playlist, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/deletePlaylist/",
+            "ajax/deleteCollection/",
             JSON.stringify({
-                PLAYLIST_ID: id,
+                ID: playlist.id
             }),
             function(response) {
                 /* response = {
@@ -251,7 +251,7 @@ class App extends MzkObject {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    that.playlists.remove(id);
+                    that.playlists.remove(playlist.id);
                     that.changePlaylist(that.playlists.getDefault().id); // TODO : test if there is still some playlists
 
                     if (callback) {
@@ -385,7 +385,7 @@ class App extends MzkObject {
      * arg    : {int} id - The playlist to get from an ID
      **/
     getPlaylistFromId(id) {
-        this.playlists.remove(id);
+        this.playlists.get(id);
     }
 
 
@@ -406,7 +406,6 @@ class App extends MzkObject {
      * method : getShortcutMaestro (public)
      * class  : App
      * desc   : Get the shortcut maestro
-     * return : {object} element
      **/
     getShortcutMaestro() {
         return this.shortcutMaestro;

@@ -92,8 +92,7 @@ class PlaylistCollectionEntry {
         });
         this.contextMenu.addEntry(null, "Delete", function() {
             that.modal = new Modal("deletePlaylist", {
-                name: that.playlist.name,
-                id:   that.playlist.id
+                playlist: that.playlist
             });
             that.modal.open();
         });

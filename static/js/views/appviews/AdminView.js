@@ -288,36 +288,11 @@ class AdminView extends View {
             rm.src            = "/static/img/utils/trash.svg";
             let deletedID     = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
-                JSONParsedPostRequest(
-                    "ajax/deleteLibrary/",
-                    JSON.stringify({
-                        LIBRARY_ID: deletedID
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE        : bool
-                         *     ERROR_H1    : string
-                         *     ERROR_MSG   : string
-                         *
-                         *     PATH        : string
-                         * } */
-                        if (response.DONE) {
-                            window.app.playlists.remove(deletedID);
-                            if(window.app.getActivePlaylist().id == deletedID) {
-                                let def = window.app.playlists.getDefault();
-                                window.app.changePlaylist(def ? def.id : null);
-                            }
-                            let self = that;
-                            that._updateAdminInfo(function() {
-                                self._requestLibrariesPage();
-                            });
-                        }
-
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
-                    }
-                );
+                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
+                    that._updateAdminInfo(function() {
+                        that._requestLibrariesPage();
+                    });
+                });
             });
             element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
                                 this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
