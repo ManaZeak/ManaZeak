@@ -252,7 +252,13 @@ class App extends MzkObject {
                  * } */
                 if (response.DONE) {
                     that.playlists.remove(playlist.id);
-                    that.changePlaylist(that.playlists.getDefault().id); // TODO : test if there is still some playlists
+                    let nextPlaylist = that.playlists.getDefault();
+                    if(nextPlaylist != null)
+                        that.changePlaylist(nextPlaylist.id);
+                    else {
+                        that.mainContainer.innerHTML = '';
+                        that.requestNewLibrary();
+                    }
 
                     if (callback) {
                         callback();
