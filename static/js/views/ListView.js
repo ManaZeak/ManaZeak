@@ -69,7 +69,21 @@ class ListViewEntry {
      **/
     insert(listView) {
         this.entry.dataset.childID = listView.children.length;
+
+        if (this.entry.dataset.childID % 2 === 0) {
+            this.entry.classList.add("evenLin");
+        }
+
         listView.appendChild(this.entry);
+    }
+
+
+    setBackground(seed) {
+        this.entry.classList.remove("evenLin");
+
+        if (seed % 2 === 0) {
+            this.entry.classList.add("evenLin");
+        }
     }
 
 
@@ -421,6 +435,7 @@ class ListView extends PlaylistView {
             if(sorter) {
                 sorter.isAsc ^= true;
                 that._sortBy(target.dataset.sorter, sorter.isAsc);
+                that._resetEntriesBackground();
             }
         });
 
@@ -542,6 +557,14 @@ class ListView extends PlaylistView {
         this.header.container.appendChild(this.header.bitRate);
         this.header.container.appendChild(this.header.year);
     }
+
+
+    _resetEntriesBackground() {
+        for (let i = 0; i < this.entries.length; ++i) {
+            this.entries[i].setBackground(i);
+        }
+    }
+
 
 
     /**

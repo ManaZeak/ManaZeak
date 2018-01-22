@@ -47,6 +47,7 @@ $listView-padding: 0 10%;
 }
 
 .columnHeader {
+    border-bottom: solid 1px $dark-primary-color;
     box-sizing: border-box;
     cursor: pointer;
     font-size: 0.9em;
@@ -132,3 +133,7 @@ $listView-padding: 0 10%;
     width: calc(100% - 20px) !important;
 }
 
+
+.evenLin {
+    background-color: $listview-even-lin;
+}
