@@ -133,7 +133,6 @@ def updateDBInfo(response, track):
 def updateFileMetadata(track, tags):
     if track.location.endswith(".mp3"):
         # Check if the file has a tag header
-        print(tags)
         audioTag = ID3()
         if tags.trackTitle is not None:
             audioTag.add(TIT2(text=tags.trackTitle))
@@ -148,7 +147,6 @@ def updateFileMetadata(track, tags):
         if tags.trackNumber is not None:
             if tags.albumTotalTrack is not None:
                 audioTag.add(TRCK(text=str(tags.trackNumber) + "/" + str(tags.albumTotalTrack)))
-                print(audioTag)
             else:
                 audioTag.add(TRCK(text=tags.trackNumber))
         if tags.trackBPM is not None:
