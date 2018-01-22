@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 from multiprocessing import Process
 
+from app.library import deleteLibrary
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode
 from app.playlist import getTotalLength
@@ -303,6 +304,39 @@ def toggleInvite(request):
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def deleteCollection(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if 'ID' in response:
+            playlistId = strip_tags(response['ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                if playlist.isLibrary:
+                    if user.is_superuser:
+                        if Library.objects.filter(playlist=playlist).count() == 1:
+                            deleteLibrary(Library.objects.get(playlist=playlist))
+                            data = errorCheckMessage(True, None)
+                        else:
+                            data = errorCheckMessage(False, "dbError")
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
+                else:
+                    if playlist.user == user:
+                        playlist.delete()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
