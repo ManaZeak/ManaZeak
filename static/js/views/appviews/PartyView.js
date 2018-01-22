@@ -41,7 +41,7 @@ class PartyView extends View {
                  *     RESULT    : JSON object
                  * } */
                 if (response.DONE) {
-                    that._setCurrentTrack(new Track(response.RESULT));
+                    that._setCurrentTrack(new Track(response.RESULT[0]));
                 }
 
                 else {

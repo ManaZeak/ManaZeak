@@ -55,12 +55,10 @@ class EditTag {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     saveState() {
-        // TODO : get selected item and their track ID
-        let that = this;
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
             JSON.stringify({
-                TRACKS_ID:         [],
+                TRACKS_ID:         this.selector.get(),
                 TITLE:             this.ui.cTitleInput.value,
                 YEAR:              this.ui.rYearNumber.value,
                 COMPOSER:          this.ui.tagComposerField.value,
@@ -84,11 +82,7 @@ class EditTag {
                  *
                  *     PATH      : string
                  * } */
-                if (response.DONE) {
-
-                }
-
-                else {
+                if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
@@ -124,22 +118,25 @@ class EditTag {
         });
 
         this.ui.list.addEventListener('click', function(event) {
-            if(event.target == that.ui.list)
+            if (event.target == that.ui.list) {
                 return;
+            }
+
             let target = event.target;
-            while(target.parentNode != that.ui.list)
+            while (target.parentNode != that.ui.list) {
                 target = target.parentNode;
+            }
 
             let ix = target.dataset.childID;
             that.entries[ix].setIsSelected(that.selector.add(ix, event.ctrlKey));
 
-            //TODO:Do something with zeaz
+            that.saveState(); // Saving tag before changing track
+            that._updateFields(that.entries[ix].track);
         });
     }
 
 
     _updateFields(track) {
-        //this.saveState(); // Saving tag before changing track
         this.ui.lCover                     = track.cover;
         this.ui.cTitleInput.value          = track.title;
         this.ui.rYearNumber.value          = track.year;

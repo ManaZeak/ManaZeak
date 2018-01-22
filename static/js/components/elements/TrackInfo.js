@@ -103,7 +103,7 @@ class TrackInfo {
                  *     RESULT    : JSON object
                  * } */
                 if (response.DONE) {
-                    track.updateMetadata(response.RESULT);
+                    track.updateMetadata(response.RESULT[0]);
                     that.track = track;
 
                     that.ui.cover.src                 = track.cover;

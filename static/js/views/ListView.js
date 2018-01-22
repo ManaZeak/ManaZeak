@@ -307,7 +307,6 @@ class ListView extends PlaylistView {
                      *     RESULT    : JSON object
                      * } */
                     if (response.DONE) {
-                        console.log(response);
                         for (let i = 0; i < response.RESULT.length ;++i) {
                             that.entries[ids[i]].track.updateMetadata(response.RESULT[i]);
                         }
