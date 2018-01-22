@@ -95,16 +95,22 @@ class EditTag {
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
+
         this._updateFields(this.data[0]); // Initializing modal with first track value
 
         if (this.data.length > 1) {
             this.entries = new Array(this.data.length);
-            for (let i = 0; i < this.data.length ;++i)
+
+            for (let i = 0; i < this.data.length ;++i) {
                 this.entries[i] = new EditTagEntry(this.ui.list, this.data[i]);
+            }
+
 
             container.style = "display: flex;";
             container.appendChild(this.ui.list);
+            this.ui.container.style += "display: inline;";
         }
+        if (this.entries.length > 0) this.entries[0].setIsSelected(true);
 
         container.appendChild(this.ui.container);
     }
