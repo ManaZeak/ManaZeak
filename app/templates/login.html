@@ -16,9 +16,8 @@
     <a href="https://github.com/Squadella/ManaZeak" target="_blank">
         <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
     </a>
-
     <div id="login">
-       <h1>ManaZeak</h1>
+        <img src="/static/img/manazeak-text.svg">
         {% if user.is_active %}
             <p>Authenticated already. Go back to <a href="{% url 'app:index' %}">ManaZeak</a></p>
         {% else %}
@@ -34,7 +33,7 @@
                 <input id="id_password" maxlength="30" name="password" type="password">
                 <button type="submit">Submit</button>
             </form>
-
+            <img src="/static/img/manazeak.svg" class="mzk-logo">
         <div id="error"> <!-- TODO : make invisible by default -->
             {{ form.errors }}
             {{ form.non_field_errors }}
