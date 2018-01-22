@@ -68,7 +68,7 @@ class EditTag {
 
         if (this.data.length > 1) {
             for (let i = 0; i < this.data.length ;++i) {
-                let entry = document.createElement("LI");
+                let entry = document.createElement("P");
                 entry.innerHTML = this.data[i].fileName;
                 this.ui.list.appendChild(entry);
             }
@@ -175,7 +175,7 @@ class EditTag {
         this.ui = {
             container:            document.createElement("DIV"),
             // List --------------------------
-            list:                 document.createElement("UL"),
+            list:                 document.createElement("DIV"),
             // Head --------------------------
             head:                 document.createElement("DIV"),
             lContainer:           document.createElement("DIV"),

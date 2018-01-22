@@ -2,14 +2,22 @@
     background-color: $primary-color;
     width: 250px;
     height: 600px;
-    list-style: none;
     border-right: solid 1px $dark-primary-color;
     box-sizing: border-box;
     margin: 0;
-    padding: 15px;
+    padding: 15px 0;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: auto;
+
+    p {
+        padding: 0 15px;
+        margin: 0;
+    }
 }
 
 .editTag {
+    display: inline;
     position: relative;
     width: 600px;
     height: 600px;
