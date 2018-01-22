@@ -3,6 +3,8 @@ import json
 import zipfile
 
 import os
+
+import zlib
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
@@ -131,7 +133,10 @@ def multiTrackDownload(request):
                 if Track.objects.filter(id=trackId).count() == 1:
                     track = Track.objects.get(id=trackId)
                     locations.append(track.location)
-            archiveName = hashlib.md5("".join(tmp) for tmp in locations)
+            tmp = ""
+            for loc in locations:
+                tmp += loc
+            archiveName = "ManaZeak-" + str(zlib.crc32(tmp.encode("ascii", "ignore"))) + ".zip"
 
             # Checking if the output folder for the zip exists
             if not os.path.isdir("/static/zip"):
@@ -142,11 +147,11 @@ def multiTrackDownload(request):
 
             # Creating archive
             archiveName = os.path.join("/static/zip", archiveName)
-            archive = zipfile.ZipFile(archiveName)
+            archive = zipfile.ZipFile(archiveName, 'w', zipfile.ZIP_DEFLATED)
             for location in locations:
                 archive.write(location, os.path.basename(location), compress_type=zipfile.ZIP_DEFLATED)
 
-            data = {**{'PATH': archive, }, **errorCheckMessage(True, None)}
+            data = {**{'PATH': archiveName, }, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
     else:

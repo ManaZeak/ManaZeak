@@ -176,29 +176,11 @@ def scanLibrary(library, playlist, convert):
 
 
 # Delete a library in the application
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def deleteLibrary(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        admin = request.user
-        if admin.is_superuser:
-            if 'LIBRARY_ID' in response:
-                libraryId = strip_tags(response['LIBRARY_ID'])
-                if Library.objects.filter(id=libraryId).count() == 1:
-                    library = Library.objects.get(id=libraryId)
-                    library.playlist.track.all().delete()
-                    library.playlist.delete()
-                    library.delete()
-                    data = errorCheckMessage(True, None)
-                else:
-                    data = errorCheckMessage(False, "dbError")
-            else:
-                data = errorCheckMessage(False, "badFormat")
-        else:
-            data = errorCheckMessage(False, "permissionError")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
+def deleteLibrary(library):
+    library.playlist.track.all().delete()
+    library.playlist.delete()
+    library.delete()
+    return errorCheckMessage(True, None)
 
 
 # Delete all the libraries and the related elements

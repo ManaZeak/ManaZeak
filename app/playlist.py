@@ -31,30 +31,6 @@ def newPlaylist(request):
     return JsonResponse(data)
 
 
-# Delete a user's playlist
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def deletePlaylist(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            user = request.user
-            playlistId = strip_tags(response['PLAYLIST_ID'])
-            if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
-                playlist = Playlist.objects.get(id=playlistId, user=user)
-                if playlist.isLibrary:
-                    data = errorCheckMessage(False, "permissionError")
-                else:
-                    playlist.delete()
-                    data = errorCheckMessage(True, None)
-            else:
-                data = errorCheckMessage(False, "permissionError")
-        else:
-            data = errorCheckMessage(False, "badFormat")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
 # Rename user's playlist
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def renamePlaylist(request):

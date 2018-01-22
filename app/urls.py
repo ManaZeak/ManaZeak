@@ -19,14 +19,12 @@ urlpatterns = [
     url(r'^ajax/newLibrary/$', library.newLibrary, name='setLibrary'),
     url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
     url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
-    url(r'^ajax/deleteLibrary/$', library.deleteLibrary, name='deleteLibrary'),
     url(r'^ajax/deleteAllLibrary/$', library.deleteAllLibrary, name='deleteAllLibrary'),
 
     # Playlist actions
     url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
     url(r'^ajax/addTracksToPlaylist/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
     url(r'^ajax/removeTrackFromPlaylist/$', playlist.removeTrackFromPlaylist, name='removeTrackFromPlaylist'),
-    url(r'^ajax/deletePlaylist/$', playlist.deletePlaylist, name='deletePlaylist'),
     url(r'^ajax/renamePlaylist/$', playlist.renamePlaylist, name='renamePlaylist'),
     url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
     url(r'^ajax/lazyLoadingSimplifiedPlaylist/$', playlist.lazyLoadingSimplifiedPlaylist, name='lazyLoading'),
@@ -76,6 +74,7 @@ urlpatterns = [
     url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
     url(r'^ajax/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
+    url(r'^ajax/deleteCollection/$', adminTools.deleteCollection, name='deleteCollection'),
 
     # InviteCode section
     url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
