@@ -40,8 +40,12 @@ def deletePlaylist(request):
             user = request.user
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
-                Playlist.objects.get(id=playlistId, user=user).delete()
-                data = errorCheckMessage(True, None)
+                playlist = Playlist.objects.get(id=playlistId, user=user)
+                if playlist.isLibrary:
+                    data = errorCheckMessage(False, "permissionError")
+                else:
+                    playlist.delete()
+                    data = errorCheckMessage(True, None)
             else:
                 data = errorCheckMessage(False, "permissionError")
         else:
