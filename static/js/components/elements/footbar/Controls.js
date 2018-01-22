@@ -110,12 +110,12 @@ class Controls  {
      **/
     _eventListener() {
         let that = this;
-        this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));
-        this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));
-        this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));
-        this.ui.repeat.button.addEventListener("click", window.app.toggleRepeat.bind(window.app));
-        this.ui.next.button.addEventListener("click", window.app.next.bind(window.app));
-        this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
+        this.ui.play.button.addEventListener("click", function() { window.app.togglePlay(); });
+        this.ui.stop.button.addEventListener("click", function() { window.app.stopPlayback(); });
+        this.ui.shuffle.button.addEventListener("click", function() { window.app.toggleShuffle(); });
+        this.ui.repeat.button.addEventListener("click", function() { window.app.toggleRepeat(); });
+        this.ui.next.button.addEventListener("click", function() { window.app.next(); });
+        this.ui.previous.button.addEventListener("click", function() { window.app.previous(); });
         this.ui.queueExpander.button.addEventListener("click", function() {
             if (that.queuePreview.getIsLocked()) {
                 let self = that;
@@ -134,8 +134,12 @@ class Controls  {
             }
         });
 
-        window.app.listen('pushQueue', this.queuePreview.preview, this.queuePreview);
-        window.app.listen(['togglePlay', 'stopPlayback'], this._setPlayPause, this);
+        window.app.listen('pushQueue', function() {
+            that.queuePreview.preview();
+        });
+        window.app.listen(['togglePlay', 'stopPlayback'], function() {
+            that._setPlayPause();
+        });
     }
 
 

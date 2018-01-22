@@ -124,7 +124,10 @@ class Modal extends MzkObject {
         this.closeButton.id  = "closeButton";
         this.closeButton.src = "/static/img/utils/close.svg";
 
-        this.closeButton.addEventListener("click", this.close.bind(this));
+        let that = this;
+        this.closeButton.addEventListener("click", function() {
+            that.close();
+        });
 
         this.ui.container.appendChild(this.closeButton);
     }

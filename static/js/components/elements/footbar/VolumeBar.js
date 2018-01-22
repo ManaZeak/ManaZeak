@@ -84,7 +84,9 @@ class VolumeBar extends MzkObject {
     _eventListener() {
         let that = this;
 
-        this.ui.mute.image.addEventListener("click", window.app.toggleMute.bind(window.app));
+        this.ui.mute.image.addEventListener("click", function() {
+            window.app.toggleMute();
+        });
         this.volumeBar.container.addEventListener("mousedown", that._mouseDown.bind(this));
 
         window.addEventListener("mousemove", this._mouseMove.bind(this));

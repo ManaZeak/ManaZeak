@@ -57,7 +57,9 @@ class FootBar extends MzkObject {
     _eventListener() {
         let that = this;
 
-        window.app.listen('stopPlayback', this.resetUI.bind(this));
+        window.app.listen('stopPlayback', function() {
+            that.resetUI();
+        });
         window.app.listen(['fastForward', 'rewind'], function() {
             that.progressBar.updateProgress(window.app.player.getPlayer());
         });

@@ -154,8 +154,12 @@ class ProgressBar extends MzkObject {
         window.app.listen('playerLoadedMetadata', function() {
             that.refreshInterval(window.app.player.getPlayer());
         });
-        window.app.listen('changeTrack', this.resetProgressBar.bind(this));
-        window.app.listen('changeView', this.setMoodbarProgress.bind(this));
+        window.app.listen('changeTrack', function() {
+            that.resetProgressBar();
+        });
+        window.app.listen('changeView', function() {
+            that.setMoodbarProgress();
+        });
     }
 
 
