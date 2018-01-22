@@ -55,10 +55,22 @@ class EditTag {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     saveState() {
+        let send = [];
+
+        if (this.data.length > 1) {
+            for (let i = 0; i < this.selector.get().length ;++i) {
+                send.push(this.entries[this.selector.get()[i]].track.id.track);
+            }
+        }
+
+        else { // One track to edit
+            send.push(this.data[0].id.track);
+        }
+
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
             JSON.stringify({
-                TRACKS_ID:         this.selector.get(),
+                TRACKS_ID:         send,
                 TITLE:             this.ui.cTitleInput.value,
                 YEAR:              this.ui.rYearNumber.value,
                 COMPOSER:          this.ui.tagComposerField.value,
@@ -128,6 +140,10 @@ class EditTag {
                 return;
             }
 
+            if (!event.ctrlKey) {
+                that.saveState(); // Saving tag before changing track
+            }
+
             let target = event.target;
             while (target.parentNode != that.ui.list) {
                 target = target.parentNode;
@@ -136,7 +152,6 @@ class EditTag {
             let ix = target.dataset.childID;
             that.entries[ix].setIsSelected(that.selector.add(ix, event.ctrlKey));
 
-            that.saveState(); // Saving tag before changing track
             that._updateFields(that.entries[ix].track);
         });
     }
@@ -160,12 +175,12 @@ class EditTag {
         this.ui.tagAlbumArtistsField.value = track.albumArtist;
 
         this.ui.lineOne.innerHTML          = secondsToTimecode(track.duration) + " - " +
-                                             rawSizeToReadableSize(track.size) + " - " +
-                                             track.fileType + " - " +
-                                             Math.round(track.bitRate / 1000) + " kbps - " +
-                                             track.sampleRate + " Hz";
+            rawSizeToReadableSize(track.size) + " - " +
+            track.fileType + " - " +
+            Math.round(track.bitRate / 1000) + " kbps - " +
+            track.sampleRate + " Hz";
         this.ui.lineTwo.innerHTML          = "This track has been played " + track.playCount + " times (" +
-                                             secondsToTimecode(track.playCount * track.duration) + ")";
+            secondsToTimecode(track.playCount * track.duration) + ")";
     }
 
 
