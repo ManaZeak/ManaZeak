@@ -47,7 +47,6 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         audioTag.update_to_v24()
         audioTag.save()
 
-    print(audioTag)
     # --- COVER ---
     if 'APIC:' in audioTag:
         front = audioTag['APIC:'].data
@@ -89,18 +88,18 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
             track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0]).rstrip()))
 
     if 'COMM' in audioTag:
-        if not audioTag['COMM'].text[0] == "":
-            track.comment = strip_tags(audioTag['COMM'].text[0]).rstrip()
+        if not audioTag['COMM'].text == "":
+            track.comment = strip_tags(audioTag['COMM'].text).rstrip()
     elif 'COMM::XXX' in audioTag:
-        if not audioTag['COMM::XXX'].text[0] == "":
+        if not audioTag['COMM::XXX'].text == "":
             track.comment = strip_tags(audioTag['COMM::XXX'].text[0]).rstrip()
 
     if 'USLT' in audioTag:
-        if not audioTag['USLT'].text[0] == "":
-            track.lyrics = strip_tags(audioTag['USLT'].text[0]).rstrip()
+        if not audioTag['USLT'].text == "":
+            track.lyrics = strip_tags(audioTag['USLT'].text).rstrip()
 
     if 'USLT::XXX' in audioTag:
-        if not audioTag['USLT::XXX'].text[0] == "":
+        if not audioTag['USLT::XXX'].text == "":
             track.lyrics = strip_tags(audioTag['USLT::XXX'].text).rstrip()
 
     if len(audioTag.getall('TXXX')) != 0:

@@ -17,22 +17,21 @@
     </a>
     <body>
     <div id="login">
-        <h1>ManaZeak</h1>
-        {% if form.has_errors %}
-            <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
+        <img src="/static/img/manazeak-text.svg">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
 
         <form id="signupForm" action="" method="POST" name="signup">
             <p><label for="id_username">Username:</label>
-                {{ form.username }}</p>
+            {{ form.username }}</p>
             <p><label for="id_password">Password:</label>
-                {{ form.password1 }}</p>
-            {{ form.password2 }}
+            {{ form.password1 }}</p>
+            <p><label>Repeat password:</label>
+            {{ form.password2 }}</p>
             <input type="hidden" name="next" value="/" />
             <input type="submit" value="register" id="button" />
             {% csrf_token %}
         </form>
+        <img src="/static/img/manazeak.svg" class="mzk-logo">
 
         <div id="error"> <!-- TODO : make invisible by default -->
             {{ form.errors }}

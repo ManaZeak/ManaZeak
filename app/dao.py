@@ -92,11 +92,16 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
     for track in tracks:
-        writer.writerow([counter, track.location, track.title, track.year, track.composer, track.performer,
-                         track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
-                         track.sampleRate, track.duration, track.discNumber, track.size,
-                         albums[track.album], track.fileType, genres[track.genre], track.coverLocation,
-                         track.moodbar, track.scanned, track.playCounter, datetime.now(), track.downloadCounter])
+        writer.writerow([counter, track.location, track.title.replace('\n', '\\n').replace('\r', ''), track.year,
+                         track.composer.replace('\n', '\\n').replace('\r', ''),
+                         track.performer.replace('\n', '\\n').replace('\r', ''),
+                         track.number, track.bpm, track.lyrics.replace('\n', "\\n").replace('\r', ''),
+                         track.comment.replace('\n', '\\n').replace('\r', ''), track.bitRate, track.bitRateMode,
+                         track.sampleRate, track.duration, track.discNumber, track.size, albums[track.album],
+                         track.fileType, genres[track.genre],
+                         track.coverLocation.replace('\n', '\\n').replace('\r', ''),
+                         track.moodbar.replace('\n', '\\n').replace('\r', ''), track.scanned, track.playCounter,
+                         datetime.now(), track.downloadCounter])
         referenceTracks[track] = counter
         counter += 1
 
