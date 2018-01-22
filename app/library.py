@@ -237,6 +237,7 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
     artists = set()
     albums = {}
     albumsTotalTracks = {}
+    albumsTotalDisc = {}
     genres = set()
 
     # Adding default values
@@ -286,6 +287,7 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
             albumArtist += artist + ","
         albumArtist = albumArtist[:-1]
         albumsTotalTracks[track.album] = track.totalTrack
+        albumsTotalDisc[track.album] = track.totalDisc
         genres.add(track.genre)
         if track.album in albums:
             for artist in albumArtist.split(","):
@@ -293,12 +295,11 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
                     albums[track.album] += "," + artist
         else:
             albums[track.album] = albumArtist
-    print(albumsTotalTracks)
     print("Starting adding tracks to database")
     # Analyse the genre found and add the missing genre to the base
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
-    albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks)
+    albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
 
     print("Finished import")

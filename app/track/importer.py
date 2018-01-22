@@ -47,6 +47,7 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         audioTag.update_to_v24()
         audioTag.save()
 
+    print(audioTag)
     # --- COVER ---
     if 'APIC:' in audioTag:
         front = audioTag['APIC:'].data
@@ -90,15 +91,24 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
     if 'COMM' in audioTag:
         if not audioTag['COMM'].text[0] == "":
             track.comment = strip_tags(audioTag['COMM'].text[0]).rstrip()
+    elif 'COMM::XXX' in audioTag:
+        if not audioTag['COMM::XXX'].text[0] == "":
+            track.comment = strip_tags(audioTag['COMM::XXX'].text[0]).rstrip()
 
     if 'USLT' in audioTag:
         if not audioTag['USLT'].text[0] == "":
-            track.lyrics = strip_tags(audioTag['USLT'].text[0])
+            track.lyrics = strip_tags(audioTag['USLT'].text[0]).rstrip()
+
+    if 'USLT::XXX' in audioTag:
+        if not audioTag['USLT::XXX'].text[0] == "":
+            track.lyrics = strip_tags(audioTag['USLT::XXX'].text).rstrip()
 
     if len(audioTag.getall('TXXX')) != 0:
         for txxx in audioTag.getall('TXXX'):
             if txxx.desc == 'TOTALDISCS':
                 track.totalDisc = strip_tags(txxx.text[0]).rstrip()
+            elif txxx.desc == 'USLT' or txxx.desc == 'USLT::XXX':
+                track.lyrics = strip_tags(txxx.text[0]).rstrip()
 
     if 'TPOS' in audioTag:
         if not audioTag['TPOS'].text[0] == "":
@@ -168,6 +178,20 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         trackNumber = processVorbisTag(audioFile['TRACKNUMBER'])
         if not trackNumber == "":
             track.number = trackNumber
+
+    if 'DISCNUMBER' in audioFile:
+        discNumber = processVorbisTag(audioFile['DISCNUMBER'])
+        if not discNumber == "":
+            track.discNumber = discNumber
+
+    if 'COMMENT' in audioFile:
+        trackComment = processVorbisTag(audioFile['COMMENT'])
+        track.comment = trackComment
+
+    if 'TOTALDISC' in audioFile:
+        albumTotalDisc = processVorbisTag(audioFile['TOTALDISC'])
+        if not albumTotalDisc == "":
+            track.totalDisc = albumTotalDisc
 
     if 'TOTALTRACK' in audioFile:
         track.totalTrack = processVorbisTag(audioFile['TOTALTRACK'])

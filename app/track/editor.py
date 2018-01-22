@@ -28,7 +28,6 @@ class Information:
     trackYear = None
     trackNumber = None
     trackBPM = None
-    trackLyrics = None
     trackGenre = None
     albumTitle = None
     albumArtist = None
@@ -154,8 +153,8 @@ def updateFileMetadata(track, tags):
                 audioTag.add(TRCK(text=tags.trackNumber))
         if tags.trackBPM is not None:
             audioTag.add(TBPM(text=tags.trackBPM))
-        if tags.trackLyrics is not None:
-            audioTag.add(USLT(text=tags.trackLyrics))
+        if tags.lyrics is not None:
+            audioTag.add(USLT(text=tags.lyrics))
         if tags.trackGenre is not None:
             audioTag.add(TCON(text=tags.trackGenre))
         if tags.albumTitle is not None:
@@ -175,7 +174,7 @@ def updateFileMetadata(track, tags):
         if tags.trackTitle is not None:
             audioTag["TITLE"] = tags.trackTitle
         if tags.trackYear is not None:
-            audioTag['DATE'] = tags.trackYear
+            audioTag['DATE'] = str(tags.trackYear)
         if tags.trackArtist is not None:
             audioTag['ARTIST'] = tags.trackArtist
         if tags.trackPerformer is not None:
@@ -183,13 +182,13 @@ def updateFileMetadata(track, tags):
         if tags.trackComposer is not None:
             audioTag['COMPOSER'] = tags.trackComposer
         if tags.trackNumber is not None:
-            audioTag['TRACKNUMBER'] = tags.trackNumber
+            audioTag['TRACKNUMBER'] = str(tags.trackNumber)
         if tags.albumTotalTrack is not None:
             audioTag['TOTALTRACK'] = str(tags.albumTotalTrack)
         if tags.trackBPM is not None:
             audioTag['BPM'] = tags.trackBPM
-        if tags.trackLyrics is not None:
-            audioTag['LYRICS'] = tags.trackLyrics
+        if tags.lyrics is not None:
+            audioTag['LYRICS'] = tags.lyrics
         if tags.trackGenre is not None:
             audioTag['GENRE'] = tags.trackGenre
         if tags.albumTitle is not None:
@@ -197,8 +196,11 @@ def updateFileMetadata(track, tags):
         if tags.albumArtist is not None:
             audioTag['ARTIST'] = tags.albumArtist
         if tags.albumTotalDisc is not None:
-            # TODO : find tag for total disc
-            pass
+            audioTag['TOTALDISC'] = str(tags.albumTotalDisc)
+        if tags.albumDiscNumber is not None:
+            audioTag['DISCNUMBER'] = str(tags.albumDiscNumber)
+        if tags.comment is not None:
+            audioTag['COMMENT'] = str(tags.comment)
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     else:
