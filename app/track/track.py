@@ -63,6 +63,7 @@ def exportTrackInfo(track):
         'ARTISTS': artists,
         'ALBUM': album,
         'PLAY_COUNTER': track.playCounter,
+        'FILENAME': os.path.basename(track.location)
     }
     return data
 
