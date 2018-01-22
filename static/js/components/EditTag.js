@@ -158,7 +158,7 @@ class EditTag {
 
 
     _updateFields(track) {
-        this.ui.lCover                     = track.cover;
+        this.ui.lCover.src                 = track.cover;
         this.ui.cTitleInput.value          = track.title;
         this.ui.rYearNumber.value          = track.year;
         this.ui.tagComposerField.value     = track.composer;
