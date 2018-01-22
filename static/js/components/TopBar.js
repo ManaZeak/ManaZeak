@@ -96,7 +96,9 @@ class TopBar extends MzkObject {
      **/
     _eventListener() {
         var that = this;
-        window.app.listen('stopPlayback', this.resetMoodbar.bind(this));
+        window.app.listen('stopPlayback', function() {
+            that.resetMoodbar();
+        });
         window.app.listen('changeTrack', function(track) {
             that.changeMoodbar(track.id.track);
         });

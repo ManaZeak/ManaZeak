@@ -116,7 +116,9 @@ class Player {
      **/
     _eventListener() {
         let that = this;
-        this.player.addEventListener("loadedmetadata", window.app.playerLoadedMetadata.bind(window.app));
+        this.player.addEventListener("loadedmetadata", function() {
+            window.app.playerLoadedMetadata();
+        });
         this.player.addEventListener("ended", function() {
             that.isPlaying = false;
             window.app.next();

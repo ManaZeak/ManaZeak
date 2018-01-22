@@ -11,27 +11,6 @@ class MzkObject {
     constructor() {
 
         this.listeners = {};
-        let isPrivate = function(propName) {
-            return propName[0] == '_';
-        };
-
-        let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-        for (let i = 0; i < properties.length; ++i) {
-            if (typeof this[properties[i]] === "function" && isPrivate(properties[i]) == false) {
-                this.listeners[properties[i]] = [];
-
-                let oldFunc = this[properties[i]];
-                this[properties[i]] = (function(pname, func) {
-                    return function() {
-                        let r = func.apply(this, arguments);
-                        for (let i = 0; i < this.listeners[pname].length; ++i) {
-                            this.listeners[pname][i].runCallback(arguments);
-                        }
-                        return r;
-                    }
-                }(properties[i], oldFunc));
-            }
-        }
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -45,15 +24,16 @@ class MzkObject {
      *        : {} thisArg - TODO
      **/
     listen(event, callback, thisArg) {
+
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
-                if (this.listeners[event[i]]) {
+                if (this.listeners[event[i]] || this._hijackMethod(event[i]) == true) {
                     this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
                 }
             }
         }
 
-        else if (this.listeners[event]) {
+        else if (this.listeners[event] || this._hijackMethod(event) == true) {
             this.listeners[event].push(new MzkListener('', '', callback, thisArg));
         }
     }
@@ -63,7 +43,7 @@ class MzkObject {
     }
 
     removeShortcut(shortcut) {
-        window.app.getShortcutMaestro().registerShortcut(shortcut, this);
+        window.app.getShortcutMaestro().unregisterShortcut(shortcut, this);
     }
 
     lockShortcuts() {
@@ -74,4 +54,28 @@ class MzkObject {
         window.app.getShortcutMaestro().unlock(this);
     }
 
+    /**
+     * method : _hijackMethod (private)
+     * class  : MzkObject
+     * desc   : Surround a method with the event handling code
+     * arg    : {string} method - the name of the function to 'hijack'
+     **/
+    _hijackMethod(method) {
+        if (typeof this[method] === "function" && method[0] !== '_') {
+            this.listeners[method] = [];
+
+            let oldFunc = this[method];
+            this[method] = (function (pname, func) {
+                return function () {
+                    let r = func.apply(this, arguments);
+                    for (let i = 0; i < this.listeners[pname].length; ++i) {
+                        this.listeners[pname][i].runCallback(arguments);
+                    }
+                    return r;
+                }
+            }(method, oldFunc));
+            return true;
+        }
+        return false;
+    }
 }

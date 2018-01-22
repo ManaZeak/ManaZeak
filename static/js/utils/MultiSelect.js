@@ -47,7 +47,12 @@ class MultiSelect extends MzkObject {
         }
 
         if(this.maxSize - this.size > this.purgeThreshhold)
-            window.setTimeout(this.purge.bind(this), 0);
+        {
+            let that = this;
+            window.setTimeout(function() {
+                that.purge();
+            }, 0);
+        }
 
         return this.selection[value];
     }

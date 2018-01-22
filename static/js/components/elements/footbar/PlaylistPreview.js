@@ -107,7 +107,9 @@ class PlaylistPreview extends MzkObject {
             } else
                 self.setVisible(false);
         });
-        window.app.listen(['toggleRepeat', 'toggleShuffle'], this._updatePlaylistPreview.bind(this));
+        window.app.listen(['toggleRepeat', 'toggleShuffle'], function() {
+            self._updatePlaylistPreview();
+        });
     }
 
 
