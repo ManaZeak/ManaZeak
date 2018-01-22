@@ -36,7 +36,7 @@ class Track {
         this.performer    = track.PERFORMER         ? track.PERFORMER         : "";
         this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER      : "";
         this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : "";
-        this.disc         = track.DISC_NUMBER       ? track.DISC_NMBER        : "";
+        this.disc         = track.DISC_NUMBER       ? track.DISC_NUMBER        : "";
         this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC  : "";
         this.bpm          = track.BPM               ? track.BPM               : "";
         this.lyrics       = track.LYRICS            ? track.LYRICS            : "";
