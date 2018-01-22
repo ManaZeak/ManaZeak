@@ -111,13 +111,13 @@ def addTracksToPlaylist(request):
 def removeTrackFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        user = response.user
+        user = request.user
         if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
             tracksId = response['TRACKS_ID']
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                if user == playlist.user:
+                if user == playlist.user and not playlist.isLibrary:
                     tracks = Track.objects.filter(id__in=tracksId)
                     removedTracks = len(tracks)
                     for track in tracks:
