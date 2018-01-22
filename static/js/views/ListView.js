@@ -284,10 +284,19 @@ class ListView extends PlaylistView {
 
         //TODO: move to App
         this.contextMenu.addEntry(null, "Edit tags", function() {
+            let ids = that.selector.get();
+            let tracksID = new Array(ids.length);
+            let tracks   = new Array(ids.length);
+
+            for(let i = 0; i < ids.length; ++i) {
+                tracksID[i] = that.entries[ids[i]].track.id.track;
+                tracks[i]   = that.entries[ids[i]].track;
+            }
+
             JSONParsedPostRequest(
-                "ajax/getTrackDetailedInfo/",
+                "ajax/getTracksDetailedInfo/",
                 JSON.stringify({
-                    TRACK_ID: that.entries[that.selector.get()[0]].track.id.track
+                    TRACK_ID: tracksID
                 }),
                 function(response) {
                     /* response = {
@@ -298,9 +307,12 @@ class ListView extends PlaylistView {
                      *     RESULT    : JSON object
                      * } */
                     if (response.DONE) {
-                        that.entries[that.selector.get()[0]].track.updateMetadata(response.RESULT);
+                        console.log(response);
+                        for (let i = 0; i < response.RESULT.length ;++i) {
+                            that.entries[ids[i]].track.updateMetadata(response.RESULT[i]);
+                        }
 
-                        let tmp = new Modal("editTag", that.entries[that.selector.get()[0]]);
+                        let tmp = new Modal("editTag", tracks);
                         tmp.open();
                     }
 

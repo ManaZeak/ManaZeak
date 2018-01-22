@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^ajax/toggleRandom/$', player.toggleRandom, name='toggleRandom'),
 
     # Track actions
-    url(r'^ajax/getTrackDetailedInfo/$', track.getTrackDetailedInfo, name='getTrackDetailedInfo'),
+    url(r'^ajax/getTracksDetailedInfo/$', track.getTracksDetailedInfo, name='getTracksDetailedInfo'),
     url(r'^ajax/changeTracksMetadata/$', editor.changeTracksMetadata, name='changeTracksMetadata'),
     url(r'^ajax/download/$', track.getDownloadLocation, name='getDownloadLocation'),
     url(r'^ajax/multiTrackDownload/$', track.multiTrackDownload, name='multiTrackDownload'),

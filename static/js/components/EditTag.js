@@ -18,13 +18,12 @@ class EditTag {
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     saveState() {
-        this.send.push(this.data.track.id.track); // TODO : Push only if not already in there
-
+        // TODO : get selected item and their track ID
         let that = this;
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
             JSON.stringify({
-                TRACKS_ID:         this.send,
+                TRACKS_ID:         [],
                 TITLE:             this.ui.cTitleInput.value,
                 YEAR:              this.ui.rYearNumber.value,
                 COMPOSER:          this.ui.tagComposerField.value,
@@ -49,7 +48,7 @@ class EditTag {
                  *     PATH      : string
                  * } */
                 if (response.DONE) {
-                    that.send = [];
+
                 }
 
                 else {
@@ -65,7 +64,18 @@ class EditTag {
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
-        this._updateFields(this.data.track);
+        this._updateFields(this.data[0]); // Initializing modal with first track value
+
+        if (this.data.length > 1) {
+            for (let i = 0; i < this.data.length ;++i) {
+                let entry = document.createElement("LI");
+                entry.innerHTML = this.data[i].fileName;
+                this.ui.list.appendChild(entry);
+            }
+
+            container.style = "display: flex;";
+            container.appendChild(this.ui.list);
+        }
 
         container.appendChild(this.ui.container);
     }
@@ -73,7 +83,6 @@ class EditTag {
 
     _updateFields(track) {
         //this.saveState(); // Saving tag before changing track
-console.log(track);
         this.ui.lCover                     = track.cover;
         this.ui.cTitleInput.value          = track.title;
         this.ui.rYearNumber.value          = track.year;
@@ -158,12 +167,15 @@ console.log(track);
         this.ui.container.appendChild(this.ui.tags);
         this.ui.container.appendChild(this.ui.coms);
         this.ui.container.appendChild(this.ui.info);
+
     }
 
 
     _uiCreateVar() {
         this.ui = {
             container:            document.createElement("DIV"),
+            // List --------------------------
+            list:                 document.createElement("UL"),
             // Head --------------------------
             head:                 document.createElement("DIV"),
             lContainer:           document.createElement("DIV"),
@@ -227,6 +239,8 @@ console.log(track);
 
     _uiSetVar() {
         this.ui.container.className            = "editTag";
+        // List ------------------------------------------
+        this.ui.list.className            = "list";
         // Head ------------------------------------------
         this.ui.head.className                 = "head";
         this.ui.lContainer.className           = "img-container";

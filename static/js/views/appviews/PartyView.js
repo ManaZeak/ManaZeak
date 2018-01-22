@@ -28,9 +28,9 @@ class PartyView extends View {
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo/",
+            "ajax/getTracksDetailedInfo/",
             JSON.stringify({
-                TRACK_ID: window.app.player.getSourceID()
+                TRACK_ID: [window.app.player.getSourceID()]
             }),
             function(response) {
                 /* response = {

@@ -53,6 +53,7 @@ class Track {
         this.artist       = Track._getArtistFromArtistsArray(track.ARTISTS);
         this.albumArtist  = Track._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
         this.playCount    = track.PLAY_COUNTER      ? track.PLAY_COUNTER      : 0;
+        this.fileName     = track.FILENAME          ? track.FILENAME          : "";
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

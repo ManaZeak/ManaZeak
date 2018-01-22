@@ -90,9 +90,9 @@ class TrackInfo {
         let that = this;
 
         JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo/",
+            "ajax/getTracksDetailedInfo/",
             JSON.stringify({
-                TRACK_ID: track.id.track
+                TRACK_ID: [track.id.track]
             }),
             function(response) {
                 /* response = {

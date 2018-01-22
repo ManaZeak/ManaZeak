@@ -1,6 +1,18 @@
+.list {
+    background-color: $primary-color;
+    width: 250px;
+    height: 600px;
+    list-style: none;
+    border-right: solid 1px $dark-primary-color;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 15px;
+}
+
 .editTag {
+    position: relative;
     width: 600px;
-    height: auto;
+    height: 600px;
     background-color: $primary-color;
 
     .head {

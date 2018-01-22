@@ -69,16 +69,19 @@ def exportTrackInfo(track):
 
 # Get all the information about a track
 @login_required(redirect_field_name='login.html', login_url='app:login')
-def getTrackDetailedInfo(request):
+def getTracksDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         if 'TRACK_ID' in response:
-            trackId = strip_tags(response['TRACK_ID'])
-            if Track.objects.filter(id=trackId).count() == 1:
-                track = Track.objects.get(id=trackId)
-                data = {**dict({'RESULT': exportTrackInfo(track)}), **errorCheckMessage(True, None)}
-            else:
-                data = errorCheckMessage(False, "dbError")
+            trackIds = response['TRACK_ID']
+            trackInfo = []
+            for trackId in trackIds:
+                if Track.objects.filter(id=trackId).count() == 1:
+                    trackInfo.append(exportTrackInfo(Track.objects.get(id=trackId)))
+                else:
+                    data = errorCheckMessage(False, "dbError")
+                    return JsonResponse(data)
+            data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
     else:
