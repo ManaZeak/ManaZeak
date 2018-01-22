@@ -1,11 +1,10 @@
 import json
-from cgitb import text
 
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3
-from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX
+from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS
 
 from app.models import Track, Artist, Album, Genre
 from app.utils import errorCheckMessage
@@ -168,9 +167,7 @@ def updateFileMetadata(track, tags):
         if tags.comment is not None:
             audioTag.add(COMM(text=tags.comment))
         if tags.albumDiscNumber is not None:
-            # Not implemented in mutagen
-            pass
-
+            audioTag.add(TPOS(text=str(tags.albumDiscNumber)))
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     elif track.location.endswith(".flac"):
