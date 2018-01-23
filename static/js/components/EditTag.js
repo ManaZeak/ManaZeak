@@ -7,15 +7,17 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class EditTagEntry {
+
     constructor(container, track) {
-        this.entry = document.createElement("P");
-        this.track = track;
-        this.entry.innerHTML = track.fileName;
+        this.entry                 = document.createElement("P");
+        this.track                 = track;
+        this.entry.innerHTML       = track.fileName;
         this.entry.dataset.childID = container.children.length;
 
         container.appendChild(this.entry);
     }
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
      * method : setIsSelected (public)
@@ -26,10 +28,17 @@ class EditTagEntry {
     setIsSelected(isSelected) {
         this.isSelected = isSelected;
 
-        if (this.isSelected) { this.entry.classList.add("mzk-selected");    }
-        else                 { this.entry.classList.remove("mzk-selected"); }
+        if (this.isSelected) {
+            this.entry.classList.add("mzk-selected");
+        }
+
+        else {
+            this.entry.classList.remove("mzk-selected");
+        }
     }
+
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                 *
@@ -42,18 +51,21 @@ class EditTagEntry {
 class EditTag {
 
     constructor(container, data) {
-
-        this.data = data;
-        this.send = [];
-        this.entries = [];
+        this.data     = data;
+        this.send     = [];
+        this.entries  = [];
         this.selector = new MultiSelect();
-
         this._createUI(container);
         this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+    /**
+     * method : saveState (public)
+     * class  : EditTag
+     * desc   : Sending modal info to backend
+     **/
     saveState() {
         let send = [];
 
@@ -103,11 +115,16 @@ class EditTag {
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
+    /**
+     * method : _createUI (private)
+     * class  : EditTag
+     * desc   : Build UI elements
+     * arg    : {object} container - The EditTag container
+     **/
     _createUI(container) {
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
-
         this._updateFields(this.data[0]); // Initializing modal with first track value
 
         if (this.data.length > 1) {
@@ -117,24 +134,28 @@ class EditTag {
                 this.entries[i] = new EditTagEntry(this.ui.list, this.data[i]);
             }
 
-
             container.style = "display: flex;";
             container.appendChild(this.ui.list);
             this.ui.container.style += "display: inline;";
+            this.entries[0].setIsSelected(true);
         }
-        if (this.entries.length > 0) this.entries[0].setIsSelected(true);
 
         container.appendChild(this.ui.container);
     }
 
+
+    /**
+     * method : _eventListener (private)
+     * class  : EditTag
+     * desc   : EditTag event listeners
+     **/
     _eventListener() {
         let that = this;
-
         this.selector.listen('clear', function() {
-            for(let i = 0; i < that.entries.length; ++i)
+            for (let i = 0; i < that.entries.length; ++i) {
                 that.entries[i].setIsSelected(false);
+            }
         });
-
         this.ui.list.addEventListener('click', function(event) {
             if (event.target == that.ui.list) {
                 return;
@@ -149,41 +170,18 @@ class EditTag {
                 target = target.parentNode;
             }
 
-            let ix = target.dataset.childID;
+            let ix     = target.dataset.childID;
             that.entries[ix].setIsSelected(that.selector.add(ix, event.ctrlKey));
-
             that._updateFields(that.entries[ix].track);
         });
     }
 
 
-    _updateFields(track) {
-        this.ui.lCover.src                 = track.cover;
-        this.ui.cTitleInput.value          = track.title;
-        this.ui.rYearNumber.value          = track.year;
-        this.ui.tagComposerField.value     = track.composer;
-        this.ui.tagPerformerField.value    = track.performer;
-        this.ui.rTrackNumber.value         = track.track;
-        this.ui.rTrackTotal.value          = track.trackTotal;
-        this.ui.rDiscNumber.value          = track.disc;
-        this.ui.rDiscTotal.value           = track.discTotal;
-        this.ui.lyrField.value             = track.lyrics;
-        this.ui.comField.value             = track.comment;
-        this.ui.tagAlbumField.value        = track.album;
-        this.ui.tagGenreField.value        = track.genre;
-        this.ui.cArtistInput.value         = track.artist;
-        this.ui.tagAlbumArtistsField.value = track.albumArtist;
-
-        this.ui.lineOne.innerHTML          = secondsToTimecode(track.duration) + " - " +
-            rawSizeToReadableSize(track.size) + " - " +
-            track.fileType + " - " +
-            Math.round(track.bitRate / 1000) + " kbps - " +
-            track.sampleRate + " Hz";
-        this.ui.lineTwo.innerHTML          = "This track has been played " + track.playCount + " times (" +
-            secondsToTimecode(track.playCount * track.duration) + ")";
-    }
-
-
+    /**
+     * method : _uiAppendVar (private)
+     * class  : EditTag
+     * desc   : Append UI elements, building final UI
+     **/
     _uiAppendVar() {
         // Head --------------------------------------------------
         this.ui.cForm.appendChild(this.ui.cTitleLabel);
@@ -242,10 +240,14 @@ class EditTag {
         this.ui.container.appendChild(this.ui.tags);
         this.ui.container.appendChild(this.ui.coms);
         this.ui.container.appendChild(this.ui.info);
-
     }
 
 
+    /**
+     * method : _uiCreateVar (private)
+     * class  : EditTag
+     * desc   : Creating UI elements
+     **/
     _uiCreateVar() {
         this.ui = {
             container:            document.createElement("DIV"),
@@ -312,10 +314,15 @@ class EditTag {
     }
 
 
+    /**
+     * method : _uiSetVar (private)
+     * class  : EditTag
+     * desc   : Set UI elements
+     **/
     _uiSetVar() {
         this.ui.container.className            = "editTag";
         // List ------------------------------------------
-        this.ui.list.className            = "list";
+        this.ui.list.className                 = "list";
         // Head ------------------------------------------
         this.ui.head.className                 = "head";
         this.ui.lContainer.className           = "img-container";
@@ -382,6 +389,38 @@ class EditTag {
         this.ui.lyrField.className             = "center";
         // Info ------------------------------------------
         this.ui.info.className                 = "info";
+    }
+
+
+    /**
+     * method : _updateFields (private)
+     * class  : EditTag
+     * desc   : Update every fields in edit modal
+     * arg    : {object} track - The track to take data from
+     **/
+    _updateFields(track) {
+        this.ui.lCover.src                 = track.cover;
+        this.ui.cTitleInput.value          = track.title;
+        this.ui.rYearNumber.value          = track.year;
+        this.ui.tagComposerField.value     = track.composer;
+        this.ui.tagPerformerField.value    = track.performer;
+        this.ui.rTrackNumber.value         = track.track;
+        this.ui.rTrackTotal.value          = track.trackTotal;
+        this.ui.rDiscNumber.value          = track.disc;
+        this.ui.rDiscTotal.value           = track.discTotal;
+        this.ui.lyrField.value             = track.lyrics;
+        this.ui.comField.value             = track.comment;
+        this.ui.tagAlbumField.value        = track.album;
+        this.ui.tagGenreField.value        = track.genre;
+        this.ui.cArtistInput.value         = track.artist;
+        this.ui.tagAlbumArtistsField.value = track.albumArtist;
+        this.ui.lineOne.innerHTML          = secondsToTimecode(track.duration) + " - " +
+                                             rawSizeToReadableSize(track.size) + " - " +
+                                             track.fileType + " - " +
+                                             Math.round(track.bitRate / 1000) + " kbps - " +
+                                             track.sampleRate + " Hz";
+        this.ui.lineTwo.innerHTML          = "This track has been played " + track.playCount + " times (" +
+                                             secondsToTimecode(track.playCount * track.duration) + ")";
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //

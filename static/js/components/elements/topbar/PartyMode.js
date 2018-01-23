@@ -9,7 +9,6 @@
 class PartyMode {
 
     constructor(container) {
-
         this._createUI(container);
         this._eventListener();
     }
@@ -32,6 +31,7 @@ class PartyMode {
         this.ui.img.src      = "/static/img/utils/party.svg";
 
         this.ui.container.appendChild(this.ui.img);
+
         container.appendChild(this.ui.container);
     }
 
@@ -39,7 +39,7 @@ class PartyMode {
     /**
      * method : _eventListener (private)
      * class  : PartyMode
-     * desc   : WishList event listeners
+     * desc   : PartyMode event listeners
      **/
     _eventListener() {
         this.ui.img.addEventListener("click", function() {

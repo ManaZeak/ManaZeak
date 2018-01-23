@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class TopBar extends MzkObject {
+
     constructor() {
         super();
         this._createUI();
@@ -70,7 +71,6 @@ class TopBar extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
-
         this.topBar                      = document.createElement("DIV");
         this.moodbar                     = document.createElement("DIV");
         this.moodbarThumb                = document.createElement("DIV");
@@ -80,22 +80,21 @@ class TopBar extends MzkObject {
         this.moodbar.id                  = "moodbar";
         this.moodbarThumb.id             = "moodbarThumb";
         this.playlistBar.id              = "playlistBar";
+        this.moodbarThumb.isVisible      = false;
 
         this.topBar.appendChild(this.moodbar);
         this.moodbar.appendChild(this.moodbarThumb);
         this.topBar.appendChild(this.playlistBar);
-
-        this.moodbarThumb.isVisible      = false;
     }
 
 
     /**
      * method : _eventListener (private)
      * class  : TopBar
-     * desc   : Event handlers
+     * desc   : TopBar event listeners
      **/
     _eventListener() {
-        var that = this;
+        let that = this;
         window.app.listen('stopPlayback', function() {
             that.resetMoodbar();
         });
@@ -103,6 +102,7 @@ class TopBar extends MzkObject {
             that.changeMoodbar(track.id.track);
         });
     }
+
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
     getTopBar() { return this.topBar; }

@@ -9,12 +9,9 @@
 class Controls  {
 
     constructor(container) {
-
         this._createUI(container);
-
         this.volumeBar    = new VolumeBar(this.container);
         this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
-
         this._eventListener();
     }
 
@@ -28,34 +25,34 @@ class Controls  {
      **/
     _createUI(container) {
         this.container = document.createElement("DIV");
-        this.ui = {
+        this.ui        = {
             play: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             stop: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             repeat: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             shuffle: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             next: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             previous: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             queueExpander: {
-                button: document.createElement("DIV"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("DIV"),
+                image:   document.createElement("IMG")
             }
         };
 
@@ -75,7 +72,6 @@ class Controls  {
         this.ui.previous.image.id              = "imagePrevious";
         this.ui.queueExpander.button.className = "queueExpander";
         this.ui.queueExpander.image.id         = "imageQueueExpander";
-
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";
@@ -99,6 +95,7 @@ class Controls  {
         this.container.appendChild(this.ui.stop.button);
         this.container.appendChild(this.ui.next.button);
         this.container.appendChild(this.ui.queueExpander.button);
+
         container.appendChild(this.container);
     }
 
@@ -133,7 +130,6 @@ class Controls  {
                 }, 50); // 50ms to avoid double click open/close instant QueuePreview
             }
         });
-
         window.app.listen('pushQueue', function() {
             that.queuePreview.preview();
         });
@@ -146,7 +142,7 @@ class Controls  {
     /**
      * method : _setPlayPause (private)
      * class  : Controls
-     * desc   : Change Play/Pause button depending on player status
+     * desc   : Change Play/Pause image source depending on player status
      **/
     _setPlayPause() {
         if (window.app.player.getIsPlaying() === true) {

@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class FootBar extends MzkObject {
+
     constructor() {
         super();
         this._createUI();
@@ -28,14 +29,15 @@ class FootBar extends MzkObject {
     resetUI(hidePreview) {
         this.trackPreview.resetTrackPreview();
         this.progressBar.resetProgressBar();
-        if(hidePreview)
+        if (hidePreview) {
             this.playlistPreview.setVisible(false);
+        }
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
-     * method : _addEntries (private)
+     * method : _createUI (private)
      * class  : FootBar
      * desc   : Build UI elements
      **/
@@ -56,7 +58,6 @@ class FootBar extends MzkObject {
      **/
     _eventListener() {
         let that = this;
-
         window.app.listen('stopPlayback', function() {
             that.resetUI();
         });

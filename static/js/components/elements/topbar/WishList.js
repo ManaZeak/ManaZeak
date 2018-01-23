@@ -10,7 +10,6 @@
 class WishList {
 
     constructor(container) {
-
         this._createUI(container);
         this._eventListener();
     }

@@ -9,9 +9,7 @@
 class UserMenu {
 
     constructor(container) {
-
         this.contextMenu = null;
-
         this._createUI(container);
         this._setupContextMenu();
     }
@@ -35,6 +33,7 @@ class UserMenu {
         this.ui.img.src      = "/static/img/utils/user.svg";
 
         this.ui.container.appendChild(this.ui.img);
+
         container.appendChild(this.ui.container);
     }
 
@@ -45,7 +44,7 @@ class UserMenu {
      * desc   : UserMenu context menu
      **/
     _setupContextMenu() {
-        let that = this;
+        let that         = this;
         this.contextMenu = new ContextMenu(this.ui.container, null, 'click');
 
         this.contextMenu.addEntry('invite', 'Invite Code', function() {
@@ -60,7 +59,6 @@ class UserMenu {
         this.contextMenu.addEntry('logout', 'Log out', function() {
             window.app.logOut();
         });
-
         window.app.user.updateIsAdmin(function(is) {
             if (is) {
                 let adm = new ContextMenuEntry('admin', 'Admin', function() {

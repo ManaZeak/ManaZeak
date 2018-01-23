@@ -7,6 +7,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class TrackPreview extends MzkObject {
+
     constructor(container) {
         super();
         this._createUI(container);
@@ -22,14 +23,16 @@ class TrackPreview extends MzkObject {
      * arg    : {object} track - New track to get info from
      **/
     changeTrack(track) {
-        this.ui.cover.src        = track.cover;
-        this.ui.thumb.src        = track.cover;
-        this.ui.title.innerHTML  = track.title;
-        this.ui.artist.innerHTML = track.artist;
-        this.ui.album.innerHTML  = track.album;
-        this.ui.year.innerHTML   = track.year;
-        if (track.genre) { this.ui.year.innerHTML += "&nbsp;&nbsp;-&nbsp;&nbsp;"; }
-        this.ui.genre.innerHTML  = track.genre;
+        this.ui.cover.src           = track.cover;
+        this.ui.thumb.src           = track.cover;
+        this.ui.title.innerHTML     = track.title;
+        this.ui.artist.innerHTML    = track.artist;
+        this.ui.album.innerHTML     = track.album;
+        this.ui.year.innerHTML      = track.year;
+        if (track.genre) {
+            this.ui.year.innerHTML += "&nbsp;&nbsp;-&nbsp;&nbsp;";
+        }
+        this.ui.genre.innerHTML     = track.genre;
 
         this._setVisible(true);
     }
@@ -48,7 +51,6 @@ class TrackPreview extends MzkObject {
         this.ui.album.innerHTML  = "";
         this.ui.year.innerHTML   = "";
         this.ui.genre.innerHTML  = "";
-
         this._setVisible(false);
     }
 
@@ -62,16 +64,16 @@ class TrackPreview extends MzkObject {
      **/
     _createUI(container) {
         this.ui = {
-            container:    document.createElement("DIV"),
-            thumb:        document.createElement("IMG"),
-            cover:        document.createElement("IMG"),
-            title:        document.createElement("LI"),
-            artist:       document.createElement("LI"),
-            album:        document.createElement("LI"),
-            genreYear:    document.createElement("LI"),
-            year:         document.createElement("SPAN"),
-            genre:        document.createElement("SPAN"),
-            thumbTooltip: document.createElement("SPAN")
+            container:                   document.createElement("DIV"),
+            thumb:                       document.createElement("IMG"),
+            cover:                       document.createElement("IMG"),
+            title:                       document.createElement("LI"),
+            artist:                      document.createElement("LI"),
+            album:                       document.createElement("LI"),
+            genreYear:                   document.createElement("LI"),
+            year:                        document.createElement("SPAN"),
+            genre:                       document.createElement("SPAN"),
+            thumbTooltip:                document.createElement("SPAN")
         };
         this.tooltipWrapper            = document.createElement("DIV");
         this.listContainer             = document.createElement("UL");
@@ -86,7 +88,6 @@ class TrackPreview extends MzkObject {
         this.ui.album.id               = "trackPreviewAlbum";
         this.ui.year.id                = "trackPreviewYear";
         this.ui.genre.id               = "trackPreviewGenre";
-
         this.ui.cover.src              = "/static/img/utils/defaultcover.svg";
         this.ui.thumb.src              = "/static/img/utils/defaultcover.svg";
 
@@ -101,6 +102,7 @@ class TrackPreview extends MzkObject {
         this.listContainer.appendChild(this.ui.genreYear);
         this.ui.container.appendChild(this.tooltipWrapper);
         this.ui.container.appendChild(this.listContainer);
+
         container.appendChild(this.ui.container);
     }
 
@@ -113,14 +115,13 @@ class TrackPreview extends MzkObject {
     _eventListener() {
         this.ui.cover.addEventListener("click", function() {
             let modal = new Modal("cover", {
-                src: that.ui.cover.src,
+                src:    that.ui.cover.src,
                 artist: that.ui.artist.innerHTML,
-                album: that.ui.album.innerHTML,
-                year: that.ui.year.innerHTML
+                album:  that.ui.album.innerHTML,
+                year:   that.ui.year.innerHTML
             });
             modal.open();
         });
-
         let that = this;
         window.app.listen('changeTrack', function(track) {
             that.changeTrack(track);

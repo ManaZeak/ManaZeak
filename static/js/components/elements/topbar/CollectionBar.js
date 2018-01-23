@@ -10,21 +10,24 @@
  *                                                           *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 class PlaylistCollectionEntry {
-    //TODO: free the listeners
-    constructor(playlist, container) {
 
+    constructor(playlist, container) {
+        //TODO: free the listeners
         this.isLibrary             = playlist.getIsLibrary();
         this.playlist              = playlist;
-
         this.entry                 = document.createElement("DIV");
         this.entry.dataset.childID = playlist.id;
-
         this.label                 = document.createElement('SPAN');
         this.label.innerHTML       = playlist.getName();
-        this.entry.appendChild(this.label);
 
-        if (this.isLibrary) { this.entry.className = "library";  }
-        else                { this.entry.className = "playlist"; }
+        if (this.isLibrary) {
+            this.entry.className   = "library";
+        }
+
+        else {
+            this.entry.className   = "playlist";
+        }
+
         this.isSelected            = false;
 
         if (this.isLibrary) {
@@ -37,10 +40,22 @@ class PlaylistCollectionEntry {
             this._createOptionButton();
         }
 
+        this.entry.appendChild(this.label);
         container.appendChild(this.entry);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : rename
+     * class  : CollectionBarEntry
+     * desc   : Rename an entry
+     * arg    : {string} name
+     **/
+    rename(name) {
+        this.label.innerHTML = name;
+    }
+
 
     /**
      * method : setIsSelected (public)
@@ -52,24 +67,24 @@ class PlaylistCollectionEntry {
         this.isSelected = isSelected;
 
         if (this.isLibrary) {
-            if (this.isSelected) { this.entry.classList.add("librarySelected");    }
-            else                 { this.entry.classList.remove("librarySelected"); }
+            if (this.isSelected) {
+                this.entry.classList.add("librarySelected");
+            }
+
+            else {
+                this.entry.classList.remove("librarySelected");
+            }
         }
 
         else {
-            if (this.isSelected) { this.entry.classList.add("playlistSelected");    }
-            else                 { this.entry.classList.remove("playlistSelected"); }
-        }
-    }
+            if (this.isSelected) {
+                this.entry.classList.add("playlistSelected");
+            }
 
-    /**
-     * method : rename
-     * class  : CollectionBarEntry
-     * desc   : Rename an entry
-     * arg    : {string} name
-     **/
-    rename(name) {
-        this.label.innerHTML = name;
+            else {
+                this.entry.classList.remove("playlistSelected");
+            }
+        }
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -84,14 +99,14 @@ class PlaylistCollectionEntry {
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
         this.contextMenu.addEntry(null, "Rename", function() {
-            that.modal = new Modal("renamePlaylist", {
+            that.modal       = new Modal("renamePlaylist", {
                 name: that.playlist.name,
                 id:   that.playlist.id
             });
             that.modal.open();
         });
         this.contextMenu.addEntry(null, "Delete", function() {
-            that.modal = new Modal("deletePlaylist", {
+            that.modal       = new Modal("deletePlaylist", {
                 playlist: that.playlist
             });
             that.modal.open();
@@ -99,8 +114,14 @@ class PlaylistCollectionEntry {
     }
 
 
+
+    /**
+     * method : _createOptionButton (private)
+     * class  : ListView
+     * desc   : Append option button to entry
+     **/
     _createOptionButton() {
-        let that = this;
+        let that           = this;
         // TODO : add admin options, or library options
         this.options       = document.createElement("A");
         this.options.id    = "gear";
@@ -115,7 +136,6 @@ class PlaylistCollectionEntry {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getEntry()      { return this.entry; }
     getID()         { return this.entry.dataset.childID;   }
     getIsSelected() { return this.isSelected; }
 
@@ -131,29 +151,16 @@ class PlaylistCollectionEntry {
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class CollectionBar extends MzkObject {
+
     constructor(collection, container) {
-
         super();
-        this.collection     = collection;
-        this.entries        = [];
+        this.collection = collection;
+        this.entries    = [];
         this.newLibMenu = null;
-
-        this.element        = document.createElement('DIV');
-        this.libsContainer  = document.createElement('DIV');
-        this.libsContainer.className = 'no-padding';
-        this.playContainer  = document.createElement('DIV');
-        this.playContainer.className = 'no-padding';
-        this.newButton      = document.createElement("DIV");
-        this.newButton.innerText = '+';
-
-        this.element.appendChild(this.libsContainer);
-        this.element.appendChild(this.playContainer);
-        this.element.appendChild(this.newButton);
-
+        this._createUI(container);
         this._eventListener();
         this._contextMenuSetup();
         this.refresh();
-        container.appendChild(this.element);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -161,35 +168,27 @@ class CollectionBar extends MzkObject {
 
     /**
      * method : refresh (private)
-     * class  : PlaylistCollection
+     * class  : CollectionBar
      * desc   : Refresh the display from the collection
      **/
     refresh() {
         this.libsContainer.innerHTML = '';
         this.playContainer.innerHTML = '';
-        this.entries = [];
+        this.entries                 = [];
 
-        var self = this;
+        let that = this;
         this.collection.forEach(function() {
-            if(this.getIsLibrary() == true)
-                self.entries.push(new PlaylistCollectionEntry(this, self.libsContainer));
-            else
-                self.entries.push(new PlaylistCollectionEntry(this, self.playContainer));
+            if (this.getIsLibrary() === true) {
+                that.entries.push(new PlaylistCollectionEntry(this, that.libsContainer));
+            }
+
+            else {
+                that.entries.push(new PlaylistCollectionEntry(this, that.playContainer));
+            }
         });
-        let activePlaylist = window.app.getActivePlaylist();
-        if(activePlaylist)
-            self.setSelected(activePlaylist.id);
-    }
-
-
-    /**
-     * method : unSelectAll (private)
-     * class  : CollectionBar
-     * desc   : Unselect every entry in playlist bar
-     **/
-    unSelectAll() {
-        for (let i = 0; i < this.entries.length; ++i) {
-            this.entries[i].setIsSelected(false);
+        let activePlaylist           = window.app.getActivePlaylist();
+        if (activePlaylist) {
+            that.setSelected(activePlaylist.id);
         }
     }
 
@@ -209,48 +208,19 @@ class CollectionBar extends MzkObject {
         }
     }
 
-//  --------------------------------  PRIVATE METHODS  ---------------------------------  //
 
     /**
-     * method : _eventListener (private)
-     * class  : PlaylistCollection
-     * desc   : PlaylistCollection event listeners
+     * method : unSelectAll (public)
+     * class  : CollectionBar
+     * desc   : Unselect every entry in playlist bar
      **/
-    _eventListener() {
-
-        var self = this;
-        this.collection.listen(['add', 'remove', 'clear'], function() {
-            self.refresh();
-        });
-        this.collection.listen('rename', function(id, name) {
-            for(let i = 0; i < self.entries.length; ++i)
-                if(self.entries[i].getID() == id) {
-                    self.entries[i].rename(name);
-                    return;
-                }
-        });
-
-        window.app.listen('changePlaylist', function(id) {
-            self.unSelectAll();
-            self.setSelected(id);
-        });
-
-        this.element.addEventListener('click', function(event) {
-
-            let target = event.target;
-            while (target.dataset.childID == null && target != self.element) {
-                target = target.parentNode;
-            }
-
-            if (target == self.element) {
-                return true;
-            }
-
-            window.app.changePlaylist(target.dataset.childID);
-        });
-
+    unSelectAll() {
+        for (let i = 0; i < this.entries.length; ++i) {
+            this.entries[i].setIsSelected(false);
+        }
     }
 
+//  --------------------------------  PRIVATE METHODS  ---------------------------------  //
 
     /**
      * method : _contextMenuSetup (private)
@@ -264,6 +234,66 @@ class CollectionBar extends MzkObject {
         });
         this.newLibMenu.addEntry(null, 'New Playlist', function() {
             window.app.requestNewPlaylist();
+        });
+    }
+
+
+    /**
+     * method : _createUI (private)
+     * class  : CollectionBar
+     * desc   : Build UI elements
+     * arg    : {object} container - The CollectionBar container
+     **/
+    _createUI(container) {
+        this.element                 = document.createElement('DIV');
+        this.libsContainer           = document.createElement('DIV');
+        this.playContainer           = document.createElement('DIV');
+        this.newButton               = document.createElement("DIV");
+
+        this.libsContainer.className = 'no-padding';
+        this.playContainer.className = 'no-padding';
+        this.newButton.innerText     = '+';
+
+        this.element.appendChild(this.libsContainer);
+        this.element.appendChild(this.playContainer);
+        this.element.appendChild(this.newButton);
+
+        container.appendChild(this.element);
+    }
+
+
+    /**
+     * method : _eventListener (private)
+     * class  : CollectionBar
+     * desc   : CollectionBar event listeners
+     **/
+    _eventListener() {
+        let that = this;
+        this.collection.listen(['add', 'remove', 'clear'], function() {
+            that.refresh();
+        });
+        this.collection.listen('rename', function(id, name) {
+            for (let i = 0; i < that.entries.length; ++i)
+                if (that.entries[i].getID() == id) {
+                    that.entries[i].rename(name);
+                    return;
+                }
+        });
+        this.element.addEventListener('click', function(event) {
+            let target = event.target;
+            while (target.dataset.childID == null && target != self.element) {
+                target = target.parentNode;
+            }
+
+            if (target == self.element) {
+                return true;
+            }
+
+            window.app.changePlaylist(target.dataset.childID);
+        });
+        window.app.listen('changePlaylist', function(id) {
+            that.unSelectAll();
+            that.setSelected(id);
         });
     }
 

@@ -8,13 +8,13 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class ProgressBar extends MzkObject {
+
     constructor(container) {
         super();
         this.refreshIntervalId = -1;
         this.isDragging        = false;
         this.isMouseOver       = false;
         this.isInverted        = false;
-
         this._createUI(container);
         this._init();
     }
@@ -101,21 +101,21 @@ class ProgressBar extends MzkObject {
      * arg    : {object} container - The ProgressBar container
      **/
     _createUI(container) {
-        this.container = document.createElement("DIV");
+        this.container   = document.createElement("DIV");
         this.progressBar = {
-            container:   document.createElement("DIV"),
-            current:     document.createElement("DIV"),
-            thumb:       document.createElement("DIV")
+            container:     document.createElement("DIV"),
+            current:       document.createElement("DIV"),
+            thumb:         document.createElement("DIV")
         };
-        this.duration = {
-            current:     document.createElement("SPAN"),
-            total:       document.createElement("SPAN"),
-            hover:       document.createElement("DIV")
+        this.duration    = {
+            current:       document.createElement("SPAN"),
+            total:         document.createElement("SPAN"),
+            hover:         document.createElement("DIV")
         };
 
-        this.moodbar = {
-            container:   null,
-            thumb:       null
+        this.moodbar     = {
+            container:     null,
+            thumb:         null
         };
 
         this.container.id             = "progressBarWrapper";
@@ -132,6 +132,7 @@ class ProgressBar extends MzkObject {
         this.container.appendChild(this.duration.current);
         this.container.appendChild(this.progressBar.container);
         this.container.appendChild(this.duration.total);
+
         container.appendChild(this.container);
     }
 
@@ -150,7 +151,6 @@ class ProgressBar extends MzkObject {
         window.addEventListener("mousemove", this._mouseMove.bind(this));
         window.addEventListener("mouseup", this._mouseUp.bind(this));
         window.addEventListener("mousedown", this._mouseDown.bind(this));
-
         window.app.listen('playerLoadedMetadata', function() {
             that.refreshInterval(window.app.player.getPlayer());
         });
@@ -171,7 +171,6 @@ class ProgressBar extends MzkObject {
     _init() {
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";
-
         this._eventListener();
     }
 
@@ -196,7 +195,6 @@ class ProgressBar extends MzkObject {
         //TODO: Clean this shit up
         if (!this.isDragging && (event.target.id === "progress" || event.target.id === "progressBar" || event.target.id === "progressThumb")) {
             this.isDragging          = true;
-
             this._stopRefreshInterval();
             this._moveProgress(event, window.app.player.getPlayer());
             window.app.mute();
@@ -205,7 +203,6 @@ class ProgressBar extends MzkObject {
         else if (!this.isDragging && (event.target.id === "moodbar" || event.target.tagName === "rect" || event.target.id === "moodbarThumb")) {
             this.isDragging          = true;
             this.isDraggingOnMoodbar = true;
-
             this._stopRefreshInterval();
             this._moveProgress(event, window.app.player.getPlayer());
             window.app.mute();
@@ -250,7 +247,7 @@ class ProgressBar extends MzkObject {
 
 
     /**
-     * method : _moveVolume (private)
+     * method : _moveProgress (private)
      * class  : ProgressBar
      * desc   : Updates UI progress according to event location
      * arg    : {object} event - MouseEvent
@@ -304,14 +301,14 @@ class ProgressBar extends MzkObject {
      *          {object} track - The track that aggro ProgressBar
      **/
     _timecodeProgressHover(event, track) {
-        let boundRect          = this.progressBar.container.getBoundingClientRect();
-        let distanceToLeftInPx = event.clientX - boundRect.left;
-        let distanceToLeftInPr = (distanceToLeftInPx * 100) / boundRect.width;
+        let boundRect                  = this.progressBar.container.getBoundingClientRect();
+        let distanceToLeftInPx         = event.clientX - boundRect.left;
+        let distanceToLeftInPr         = (distanceToLeftInPx * 100) / boundRect.width;
         // Avoid OOB
         if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
         if (distanceToLeftInPr < 0)   { distanceToLeftInPr = 0;   }
 
-        let hoveredTimecode = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
+        let hoveredTimecode            = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
         // We must convert back InPr to InPx ( distInPx = (boundRect.width * distanceToLeftInPr / 100) ) bc pixel size must be capped to progressBar bounds
         this.duration.hover.style.left = ((((boundRect.width * distanceToLeftInPr) / 100) - 30) * 100) / boundRect.width + "%";
         this.duration.hover.innerHTML  = hoveredTimecode;
