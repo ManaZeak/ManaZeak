@@ -12,7 +12,6 @@
 class View {
 
     constructor() {
-
         this.container           = document.createElement("DIV");
         this.container.innerHTML = "";
     }
@@ -32,7 +31,7 @@ class View {
 
     /**
      * method : getDataFromPlaylist (public)
-     * class  : Viewa
+     * class  : View
      * desc   : Get data from playlist
      * arg    : {object} playlist - The playlist to get data from
      **/
@@ -42,6 +41,12 @@ class View {
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
+    /**
+     * method : _init (private)
+     * class  : View
+     * desc   : Init view
+     * arg    : {object} data - Data to pass in view
+     **/
     _init(data) {
 
     }

@@ -13,13 +13,21 @@
 
 class Playlist {
 
-    constructor(id, name, isLibrary, isLoading, rawTracks, callback) {
+    constructor(id, name, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
+        if (typeof rawTracks !== 'undefined') { //TODO: fix this
+            this.rawTracks       = rawTracks;
+        }
+        else {
+            this.rawTracks       = [];
+        }
 
-        //TODO: get shuffle and repeat from server
-        if (typeof rawTracks !== 'undefined') { this.rawTracks = rawTracks; } //TODO: fix this
-        else                                  { this.rawTracks = [];        }
-        if (typeof callback !== 'undefined')  { this.callback  = callback;  }
-        else                                  { this.callback  = null;      }
+        if (typeof callback !== 'undefined') {
+            this.callback        = callback;
+        }
+        else {
+            this.callback        = null;
+        }
+
         this.id                  = id;
         this.name                = name;
         this.isLibrary           = isLibrary;
@@ -37,9 +45,7 @@ class Playlist {
         let viewkeys             = Object.keys(window.app.availableViews);
         this.views               = new Array(viewkeys.length).fill(null);
         this.activeView          = window.app.availableViews[viewkeys[0]];
-
         this.lazyLoadOK          = true;
-
         this._init();
     }
 
@@ -54,12 +60,12 @@ class Playlist {
         if (this.lazyLoadOK == false) {
             this.modal = new Modal('fetchPlaylists', null);
             this.modal.open();
-            let self = this;
-            let timer = window.setInterval(function() {
-                if(self.lazyLoadOK == true) {
-                    self.modal.close();
-                    self.modal = null;
-                    self.activate();
+            let that   = this;
+            let timer  = window.setInterval(function() {
+                if (that.lazyLoadOK == true) {
+                    that.modal.close();
+                    that.modal = null;
+                    that.activate();
                     clearInterval(timer);
                 }
             }, 100);
@@ -101,7 +107,6 @@ class Playlist {
      **/
     playNextTrack() {
         let that = this;
-
         if (this.repeatMode === 1) {
             window.app.repeatTrack();
         }
@@ -199,7 +204,6 @@ class Playlist {
      **/
     playPreviousTrack() {
         let that = this;
-
         switch (this.shuffleMode) {
             case 0: // Shuffle off
                 this.currentTrack = this.activeView.getPreviousEntry();
@@ -356,18 +360,18 @@ class Playlist {
      *          {function} callback - Not mandatory
      **/
     _getTracksLazy(step, callback) {
-        let that = this;
         if (step == 0) {
             this.lazyLoadOK = false;
-            this.rawTracks = [];
+            this.rawTracks  = [];
             this._clearTracks();
         }
 
+        let that = this;
         JSONParsedPostRequest(
             "ajax/lazyLoadingSimplifiedPlaylist/",
             JSON.stringify({
                 PLAYLIST_ID: this.id,
-                REQ_NUMBER: step
+                REQ_NUMBER:  step
             }),
             function(response) {
                 /* response = {
@@ -393,8 +397,11 @@ class Playlist {
                             that.activate();
                             callback();
                         }
-                    } else
+                    }
+
+                    else {
                         new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
                 }
             }
         );
@@ -409,7 +416,6 @@ class Playlist {
      **/
     _getTracksFromServer(playlistId) {
         let that = this;
-
         this.getTracksIntervalId = window.setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
         }, 500); // One call every 0.5s
@@ -424,7 +430,6 @@ class Playlist {
      **/
     _getTracksFromServer_aux(playlistId) {
         let that = this;
-
         JSONParsedPostRequest(
             "ajax/checkLibraryScanStatus/",
             JSON.stringify({
@@ -436,16 +441,17 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
-                let self = that;
                 if (response.DONE) {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
 
+                    let self = that;
                     that.getPlaylistsTracks(function() {
                         self.showView(window.app.availableViews.LIST);
                         self.modal.close();
-                        if(self.callback)
+                        if (self.callback) {
                             self.callback();
+                        }
                     });
                 }
             }
@@ -460,13 +466,23 @@ class Playlist {
      **/
     _init() {
         if (this.isLoading) {
-            if (this.isLibrary) { this._loadLibrary();  } // Library loading process
-            else                { this._loadPlaylist(); } // Playlist loading process
+            if (this.isLibrary) { // Library loading process
+                this._loadLibrary();
+            }
+
+            else { // Playlist loading process
+                this._loadPlaylist();
+            }
         }
 
         else {
-            if (this.isLibrary) { this._newLibrary();   } // Library creation process
-            else                { this._newPlaylist();  } // Playlist creation process
+            if (this.isLibrary) { // Library creation process
+                this._newLibrary();
+            }
+
+            else { // Playlist creation process
+                this._newPlaylist();
+            }
         }
     }
 
@@ -479,7 +495,6 @@ class Playlist {
      **/
     _initialLibraryScan(libraryId) {
         let that = this;
-
         JSONParsedPostRequest(
             "ajax/initialScan/",
             JSON.stringify({
@@ -512,7 +527,9 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary() {
-        if (this.rawTracks.length === 0) { return; }
+        if (this.rawTracks.length === 0) {
+            return;
+        }
 
         this._fillTracks(this.rawTracks);
     }
@@ -524,7 +541,9 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadPlaylist() {
-        if (this.rawTracks.length === 0) { return; }
+        if (this.rawTracks.length === 0) {
+            return;
+        }
 
         this._fillTracks(this.rawTracks);
     }
@@ -537,8 +556,7 @@ class Playlist {
      **/
     _newLibrary() {
         this.isLibrary = true;
-
-        this.modal = new Modal("newLibrary");
+        this.modal     = new Modal("newLibrary");
         this.modal.open();
 
         let that = this;
@@ -646,7 +664,6 @@ class Playlist {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getId()          { return this.id;          }
     getName()        { return this.name;        }
     getIsLibrary()   { return this.isLibrary;   }
     getRepeatMode()  { return this.repeatMode;  }

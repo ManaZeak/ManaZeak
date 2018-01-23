@@ -9,7 +9,6 @@
 class MzkListener {
 
     constructor(name, description, callback, thisArg) {
-
         this.name     = name;
         this.desc     = description;
         this.callback = callback;

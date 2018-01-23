@@ -11,7 +11,6 @@
 class PlaylistView extends View {
 
     constructor() {
-
         super();
     }
 
@@ -88,22 +87,6 @@ class PlaylistView extends View {
             }
             if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
                 this.entries[i].setIsSelected(true);
-            }
-        }
-    }
-
-
-    /**
-     * method : unSelectAll (public)
-     * class  : PlaylistView
-     * desc   : Unselect all entries in view
-     **/
-    unSelectAll() {
-        this.entriesSelected = {};
-
-        for (let i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].getIsSelected()) {
-                this.entries[i].setIsSelected(false);
             }
         }
     }

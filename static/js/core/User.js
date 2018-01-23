@@ -9,7 +9,6 @@
 class User {
 
     constructor() {
-
         this.isAdmin       = false;
         this.inviteCode    = 0;
         this.godFatherCode = 0;
@@ -71,8 +70,8 @@ class User {
                  *     IS_ADMIN  : bool
                  * } */
                 if (response.DONE) {
-                    that.godFatherCode  = response.GODFATHER_CODE;
-                    that.inviteCode     = response.INVITE_CODE;
+                    that.godFatherCode = response.GODFATHER_CODE;
+                    that.inviteCode    = response.INVITE_CODE;
                 }
 
                 else {

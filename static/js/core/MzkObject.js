@@ -9,7 +9,6 @@
 class MzkObject {
 
     constructor() {
-
         this.listeners = {};
     }
 
@@ -24,7 +23,6 @@ class MzkObject {
      *        : {} thisArg - TODO
      **/
     listen(event, callback, thisArg) {
-
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
                 if (this.listeners[event[i]] || this._hijackMethod(event[i]) == true) {
@@ -38,21 +36,49 @@ class MzkObject {
         }
     }
 
+
+    /**
+     * method : addShortcut (public)
+     * class  : MzkObject
+     * desc   : TODO
+     * arg    : {TODO} shortcut - TODO
+     **/
     addShortcut(shortcut) {
         window.app.getShortcutMaestro().registerShortcut(shortcut, this);
     }
 
+
+    /**
+     * method : removeShortcut (public)
+     * class  : MzkObject
+     * desc   : TODO
+     * arg    : {TODO} shortcut - TODO
+     **/
     removeShortcut(shortcut) {
         window.app.getShortcutMaestro().unregisterShortcut(shortcut, this);
     }
 
+
+    /**
+     * method : lockShortcuts (public)
+     * class  : MzkObject
+     * desc   : TODO
+     **/
     lockShortcuts() {
         window.app.getShortcutMaestro().lock(this);
     }
 
-    unlockShortcurts() {
+
+    /**
+     * method : unlockShortcuts (public)
+     * class  : MzkObject
+     * desc   : TODO
+     **/
+    unlockShortcuts() {
         window.app.getShortcutMaestro().unlock(this);
     }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
      * method : _hijackMethod (private)
@@ -78,4 +104,5 @@ class MzkObject {
         }
         return false;
     }
+
 }

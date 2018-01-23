@@ -10,14 +10,12 @@
 class Player {
 
     constructor() {
-
         this.player    = document.getElementById("audioPlayer");
         this.isPlaying = false;
         this.isMuted   = false;
         this.oldVolume = 0;
         this.emptyURL  = "";
         this.trackId   = 0;
-
         this._init();
     }
 
@@ -31,7 +29,7 @@ class Player {
      *        : {int}     id - The associated ID
      **/
     changeSource(url, id) {
-        this.trackId = id;
+        this.trackId    = id;
         this.stopPlayback();
         this.player.src = url;
     }
@@ -75,6 +73,25 @@ class Player {
 
 
     /**
+     * method : setVolume (public)
+     * class  : Player
+     * desc   : Set Player volume to a given value
+     * arg    : {float} volume - Volume between 0 and 1
+     **/
+    setVolume(volume) {
+        if (volume > 1) {
+            volume         = 1;
+        }
+
+        else if (volume < 0) {
+            volume         = 0;
+        }
+
+        this.player.volume = precisionRound(volume, 2);
+    }
+
+
+    /**
      * method : stopPlayback (public)
      * class  : Player
      * desc   : Stop player playback and reset player src
@@ -92,8 +109,13 @@ class Player {
      * desc   : Switch on and off player playback depending on its current status
      **/
     togglePlay() {
-        if (this.isPlaying) { this._pause(); }
-        else                { this._play();  }
+        if (this.isPlaying) {
+            this._pause();
+        }
+
+        else {
+            this._play();
+        }
     }
 
 
@@ -167,31 +189,6 @@ class Player {
     getCurrentTime()  { return this.player.currentTime; }
     getDuration()     { return this.player.duration;    }
     getSourceID()     { return this.trackId;            }
-
-    setIsMuted(muted) { this.isMuted = muted;           }
-
-
-    /**
-     * method : getVolume (public)
-     * class  : Player
-     * desc   : return the current volume
-     **/
-    getVolume() {
-        return this.player.volume;
-    }
-
-
-    /**
-     * method : setVolume (public)
-     * class  : Player
-     * desc   : Set Player volume to a given value
-     * arg    : {float} volume - Volume between 0 and 1
-     **/
-    setVolume(volume) {
-        if (volume > 1)      { volume = 1; }
-        else if (volume < 0) { volume = 0; }
-
-        this.player.volume = precisionRound(volume, 2);
-    }
+    getVolume()       { return this.player.volume;      }
 
 }

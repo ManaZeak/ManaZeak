@@ -7,16 +7,14 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class PlaylistCollection extends MzkObject {
-    constructor() {
 
+    constructor() {
         super();
         this.bank = {};
         this.size = 0;
-
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
 
     /**
      * method : add (public)
@@ -25,14 +23,17 @@ class PlaylistCollection extends MzkObject {
      * arg    : {object} playlist
      **/
     add(playlist) {
-        if(this.get(playlist.id) == null) {
+        if (this.get(playlist.id) == null) {
             this.bank[playlist.id] = playlist;
-            this.size++;
+            ++this.size;
             return true;
         }
-        else
+
+        else {
             return false;
+        }
     }
+
 
     /**
      * method : remove(public)
@@ -41,14 +42,17 @@ class PlaylistCollection extends MzkObject {
      * arg    : {inter} playlistID
      **/
     remove(playlistID) {
-        if(this.get(playlistID) != null) {
+        if (this.get(playlistID) != null) {
             delete this.bank[playlistID];
-            this.size--;
+            --this.size;
             return true;
         }
-        else
+
+        else {
             return false;
+        }
     }
+
 
     /**
      * method : rename(public)
@@ -58,18 +62,21 @@ class PlaylistCollection extends MzkObject {
      *          {string} name
      **/
     rename(playlistID, name) {
-        if(this.get(playlistID) != null) {
+        if (this.get(playlistID) != null) {
             this.bank[playlistID].setName(name);
             return true;
         }
-        else
+
+        else {
             return false;
+        }
     }
+
 
     /**
      * method : clear(public)
      * class  : PlaylistCollection
-     * desc   : clear the collection
+     * desc   : Clear the collection
      **/
     clear() {
         this.bank = {};
@@ -85,9 +92,11 @@ class PlaylistCollection extends MzkObject {
      * arg    : {boolean} includeDefault - whether to call on the default playlist
      **/
     forEach(callback, includeDefault) {
-        for(var i in this.bank)
-            if(includeDefault != false || this.bank[i] != this.getDefault())
+        for (let i in this.bank) {
+            if (includeDefault != false || this.bank[i] != this.getDefault()) {
                 callback.call(this.bank[i]);
+            }
+        }
     }
 
 
@@ -99,12 +108,13 @@ class PlaylistCollection extends MzkObject {
      **/
     filter(filterFct) {
         let result = new Array(this.size);
-        let j = 0;
-        for(let i in this.bank)
-            if(filterFct.call(this.bank[i]) == true) {
+        let j      = 0;
+        for (let i in this.bank) {
+            if (filterFct.call(this.bank[i]) == true) {
                 result[j] = this.bank[i];
                 ++j;
             }
+        }
 
         result.length = j;
         return result;
@@ -128,11 +138,11 @@ class PlaylistCollection extends MzkObject {
      * desc   : Get the default playlist from the collection
      **/
     getDefault() {
-        for(let i in this.bank)
+        for (let i in this.bank) {
             return this.bank[i];
+        }
+
         return null;
     }
 
-
-//  --------------------------------  PRIVATE METHODS  ---------------------------------  //
 }

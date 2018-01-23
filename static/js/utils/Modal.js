@@ -86,7 +86,7 @@ class Modal extends MzkObject {
      **/
     close() {
         document.body.removeChild(document.getElementById(this.id));
-        this.unlockShortcurts();
+        this.unlockShortcuts();
     }
 
 

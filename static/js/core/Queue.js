@@ -9,7 +9,6 @@
 class QueueEntry {
 
     constructor(track) {
-
         this.next     = null;
         this.previous = null;
         this.track    = track;
@@ -24,7 +23,9 @@ class QueueEntry {
      * arg    : {type} other - the new entry
      **/
     addNext(other) {
-        if (other == null) { return; }
+        if (other == null) {
+            return;
+        }
 
         other.unlink();
 
@@ -33,8 +34,8 @@ class QueueEntry {
             other.next         = this.next;
         }
 
-        this.next      = other;
-        other.previous = this;
+        this.next              = other;
+        other.previous         = this;
     }
 
 
@@ -45,7 +46,9 @@ class QueueEntry {
      * arg    : {type} other - the new entry
      **/
     addPrev(other) {
-        if (other == null) { return; }
+        if (other == null) {
+            return;
+        }
 
         other.unlink();
 
@@ -54,8 +57,8 @@ class QueueEntry {
             other.previous     = this.previous;
         }
 
-        this.previous = other;
-        other.next    = this;
+        this.previous          = other;
+        other.next             = this;
     }
 
 
@@ -97,11 +100,16 @@ class QueueEntry {
      * desc   : remove this entry from the list
      **/
     unlink() {
-        if (this.previous) { this.previous.next = this.next;     }
-        if (this.next)     { this.next.previous = this.previous; }
+        if (this.previous) {
+            this.previous.next = this.next;
+        }
 
-        this.previous = null;
-        this.next     = null;
+        if (this.next) {
+            this.next.previous = this.previous;
+        }
+
+        this.previous          = null;
+        this.next              = null;
     }
 
 }
@@ -118,7 +126,6 @@ class QueueEntry {
 class Queue extends MzkObject {
 
     constructor(showNotificationOnAdd) {
-
         super();
         this.first   = null;
         this.last    = null;
@@ -135,22 +142,28 @@ class Queue extends MzkObject {
      * return : {object} The track to be played
      **/
     dequeue() {
-        if (this.first == null) { return; }
+        if (this.first == null) {
+            return;
+        }
 
         let tmp;
 
         if (this.reverse == true) {
-            tmp       = this.last;
-            this.last = this.last.previous;
+            tmp            = this.last;
+            this.last      = this.last.previous;
 
-            if (this.last == null) { this.first = null; }
+            if (this.last == null) {
+                this.first = null;
+            }
         }
 
         else {
-            tmp        = this.first;
-            this.first = this.first.next;
+            tmp            = this.first;
+            this.first     = this.first.next;
 
-            if (this.first == null) { this.last = null; }
+            if (this.first == null) {
+                this.last  = null;
+            }
         }
 
         tmp.unlink();
@@ -166,15 +179,21 @@ class Queue extends MzkObject {
      * arg    : {object} track - The track to enqueue
      **/
     enqueue(track) {
-        let newLink = new QueueEntry(track);
+        let newLink    = new QueueEntry(track);
 
-        if (this.first == null) { this.first = newLink;       }
-        else                    { this.last.addNext(newLink); }
+        if (this.first == null) {
+            this.first = newLink;
+        }
 
-        this.last = newLink;
+        else {
+            this.last.addNext(newLink);
+        }
 
-        if(this.notif)
+        this.last      = newLink;
+
+        if (this.notif) {
             new Notification('INFO', 'Track added to Queue', track.title + 'was added to the queue');
+        }
     }
 
 
@@ -222,17 +241,17 @@ class Queue extends MzkObject {
         let link = this.first;
         let diff = newPos - element;
 
-        for (;element-- > 0 && link != null; link = link.next) {}
+        for (; --element > 0 && link != null; link = link.next) {}
 
         if (link != null) {
             if (diff > 0) {
-                for (; diff-- > 0; link = link.next) {
+                for (; --diff > 0; link = link.next) {
                     link.moveNext();
                 }
             }
 
             else {
-                for (; diff++ < 0; link = link.previous) {
+                for (; ++diff < 0; link = link.previous) {
                     link.movePrev();
                 }
             }
