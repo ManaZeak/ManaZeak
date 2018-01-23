@@ -1,14 +1,28 @@
+<div style="text-align:center; margin-bottom: 25px;">
+    <img src ="http://manazeak.org/static/img/manazeak.svg" style="width: 50%" />
+</div>
+
 # ManaZeak
-ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that share it.
 
-The main goal of this application is to share your musical library with a selection of chosen friends, that can edit tracks afterwards and more. It is collaboration oriented since an inside coin system is about to get in, with reward and scoreboard!
+ManaZeak is a free software that gives you the ability to listen to and edit your musical library and to share it with friends, from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked with [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that share it.
 
-# Get Started
+## Get Started
+
+#### Dependencies
+
+To install, refer to your distribution package manager.
+
+- ```docker```
+- ```docker-compose```
+
+#### Installation
+
+
 In order to make an instance work, run the following commands :
 - ```$ git clone https://github.com/Squadella/ManaZeak```
-- ```$ cp docker-compose.yml.example docker-compose.yml```
+- ```$ cd ManaZeak; cp docker-compose.yml.example docker-compose.yml```
 
-Replace all ```/PATH/TO/LIBRARY``` in ```docker-compose.yml``` by the path of your musical collection root directory. Also, replace ``PATH/TO/DB_DATA`` with the path you want ManaZeak to save its database (please don't ``./db_data`` ...). Then keep going with :
+Open the newly created  ```docker-compose.yml``` and replace all ```/PATH/TO/LIBRARY``` inside it with the path of your musical collection root directory (absolute path). Also, replace ``/PATH/TO/DB_DATA`` with the path you want ManaZeak to save its database in (absolute path, please don't ``./db_data``). Then keep going with :
 
 - ```$ docker-compose build``` (This may take a while, go grab some coffee...)
 - ```$ docker-compose up -d```
@@ -16,13 +30,23 @@ Replace all ```/PATH/TO/LIBRARY``` in ```docker-compose.yml``` by the path of yo
 You can now check that all containers have been launched correctly by using :
 - ```$ docker ps -a```
 
-Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/app](127.0.0.1/app). When declaring your libraries in ManaZeak, don't forget to prefix your path with ```/library/```
+Finally, if everything is OK with [Docker](https://github.com/docker), grab a browser and go to [127.0.0.1/](127.0.0.1/) (or a production address, but keep in mind that this is an experimental  software).
 
-# Features
+#### Setup
+- You can now create an user : it will be an admin acount.
+- You have to declare your libraries from this admin acount.
+- It's cooked, go check the admin panel to tune the app!
+
+**NB**: *When declaring your libraries in ManaZeak, don't forget to prefix your path with ```/library/```. Those declared libraries will be declared for every user (already registered or new ones) in the app.*
+
+## Features
+
+#### Already in
+
 - Basic player (Play/Pause/Stop/Volume/Repeat/Random/Shuffle/Queue)
 - Drag & Drop (to suggest new file on the instance)
 - File support : MPEG3, OGG, FLAC
-- Link with SyncThing (to allow remote synchronisation)
+- Link with [SyncThing](https://github.com/syncthing/syncthing) (to allow remote synchronisation)
 - Metadata edition (because tagging is life)
 - [MoodBar](https://en.wikipedia.org/wiki/Moodbar) (a way to have a unique visual of an audio file)
 - Playlist management (create/rename/delete)
@@ -30,26 +54,32 @@ Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/ap
 - Track suggestion (based on internal statistic)
 - User account system (optional sponsoring setting)
 - User stats (to know better you musical habits)
-- Views (list/party)
+- Views :
+    - list (standard list view with tracks metadata);
+    - party (more minimalist view).
 
-# Scheduled
+#### Scheduled
+
+- Milestone
 - File support : WAV
 - ManaCoin intern system
 - ManaGotIt (Automatic player that suggests tracks according to some criteria)
-- Views (Album, Genre (Like a Top 100 for each genre))
+- Views :
+    - album (more visual for discographies);
+    - genre (a Top 100 for each genre, with a short description)).
 
-# Technologies
-- Django
-- Postgresql
-- SyncThing
-- Docker
-- d3.js (for [MoodBars](https://en.wikipedia.org/wiki/Moodbar))
+## Technologies
+- [d3.js](https://github.com/d3/d3)
+- [Django](https://github.com/django/django)
+- [Docker](https://github.com/docker)
+- [Postgresql](https://github.com/postgres/postgres)
+- [SyncThing](https://github.com/syncthing/syncthing)
 
-# Contributors
-- [Arthur Beaulieu](https://github.com/ArthurBeaulieu)
-- [Pierre Bouniol](https://github.com/Squadella)
-- [Valentin Peiro](https://github.com/Oxydiz)
-- [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash)
-- [Armand Vignat](https://github.com/avignat)
-- [Guilhem Piat](https://github.com/Syncrossus)
-- [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
+## Contributors
+- [Arthur Beaulieu](https://github.com/ArthurBeaulieu) (front)
+- [Pierre Bouniol](https://github.com/Squadella) (back)
+- [Valentin Peiro](https://github.com/Oxydiz) (front)
+- [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) (docker)
+- [Armand Vignat](https://github.com/avignat) (docker)
+- [Guilhem Piat](https://github.com/Syncrossus) (translation)
+- [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin) (logo)

@@ -9,7 +9,7 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: rootroot
         volumes:
-            - PATH/TO/DB_DATA:/var/lib/postgresql/data
+            - /PATH/TO/DB_DATA:/var/lib/postgresql/data
 
     web:
         build:
