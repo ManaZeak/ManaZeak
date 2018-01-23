@@ -133,7 +133,7 @@ class Playlist {
 
                 case 1: // Random
                     JSONParsedPostRequest(
-                        "ajax/randomNextTrack/",
+                        "player/randomNext/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
                         }),
@@ -159,21 +159,21 @@ class Playlist {
 
                 case 2: // Shuffle on
                     JSONParsedPostRequest(
-                        "ajax/shuffleNextTrack/",
+                        "player/shuffleNext/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
                         }),
                         function(response) {
                             /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
+                             *     DONE       : bool
+                             *     ERROR_H1   : string
+                             *     ERROR_MSG  : string
                              *
-                             *     LAST      : bool
-                             *     TRACK_ID  : int
+                             *     IS_LAST    : bool
+                             *     TRACK_ID   : int
                              * } */
                             if (response.DONE) {
-                                if (response.LAST) {
+                                if (response.IS_LAST) {
                                     window.app.stopPlayback();
                                 }
 
@@ -212,7 +212,7 @@ class Playlist {
 
             default:
                 JSONParsedGetRequest(
-                    "ajax/getLastSongPlayed/",
+                    "history/getLastSongPlayed/",
                     function(response) {
                         /* response = {
                          *     DONE      : bool
@@ -312,12 +312,21 @@ class Playlist {
         this.shuffleMode %= 3;
 
         JSONParsedPostRequest(
-            "ajax/toggleRandom/",
+            "player/toggleRandomMode/",
             JSON.stringify({
                 PLAYLIST_ID: this.id,
                 RANDOM_MODE: this.shuffleMode
             }),
-            null
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
         );
     }
 
@@ -368,10 +377,10 @@ class Playlist {
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/lazyLoadingSimplifiedPlaylist/",
+            "playlist/simplifiedLazyLoading/",
             JSON.stringify({
-                PLAYLIST_ID: this.id,
-                REQ_NUMBER:  step
+                PLAYLIST_ID:    this.id,
+                REQUEST_NUMBER: step
             }),
             function(response) {
                 /* response = {
@@ -379,7 +388,22 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     RESULT      : JSON object
+                 *     RESULT: [
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         BITRATE:
+                 *         DURATION:
+                 *         COVER:
+                 *         ARTISTS:
+                 *         GENRE:
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *         }
+                 *     ]
                  * } */
                 if (response.DONE) {
                     that.rawTracks = that.rawTracks.concat(response.RESULT);
@@ -387,8 +411,7 @@ class Playlist {
                 }
 
                 else {
-                    //Successfully loaded all
-                    if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) {
+                    if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) { // Successfully loaded all
                         that._fillTracks(that.rawTracks);
                         that.refreshViews();
                         that.lazyLoadOK = true;
@@ -431,7 +454,7 @@ class Playlist {
     _getTracksFromServer_aux(playlistId) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/checkLibraryScanStatus/",
+            "library/checkScanStatus/",
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -496,7 +519,7 @@ class Playlist {
     _initialLibraryScan(libraryId) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/initialScan/",
+            "library/initialScan/",
             JSON.stringify({
                 LIBRARY_ID: libraryId
             }),
@@ -594,7 +617,7 @@ class Playlist {
     _requestNewLibrary(name, path, convert) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/newLibrary/",
+            "library/new/",
             JSON.stringify({
                 URL:     path,
                 NAME:    name,
@@ -602,14 +625,15 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE       : bool
-                 *     ERROR_H1   : string
-                 *     ERROR_MSG  : string
+                 *     DONE         : bool
+                 *     ERROR_H1     : string
+                 *     ERROR_MSG    : string
                  *
-                 *     LIBRARY_ID : int or undefined
+                 *     LIBRARY_ID   : int or undefined
+                 *     LIBRARY_NAME : string
                  * } */
                 if (response.DONE) {
-                    that.name  = name;
+                    that.name  = response.LIBRARY_NAME;
                     that.modal.close();
                     that.modal = null;
                     that.modal = new Modal("scanLibrary");
@@ -635,20 +659,21 @@ class Playlist {
     _requestNewPlaylist(name) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/newPlaylist/",
+            "playlist/new/",
             JSON.stringify({
-                NAME: name
+                PLAYLIST_NAME: name
             }),
             function(response) {
                 /* response = {
-                 *     DONE       : bool
-                 *     ERROR_H1   : string
-                 *     ERROR_MSG  : string
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
                  *
-                 *     LIBRARY_ID : int or undefined
+                 *     PLAYLIST_ID   : int or undefined
+                 *     PLAYLIST_NAME : string
                  * } */
                 if (response.DONE) {
-                    that.name  = name;
+                    that.name  = response.PLAYLIST_NAME;
                     that.id    = response.PLAYLIST_ID;
                     that.modal.close();
                     that.modal = null;

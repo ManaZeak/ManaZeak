@@ -100,20 +100,21 @@ class EditTag {
             ARTISTS:           this.ui.cArtistInput.value,
             ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
         };
-        for(let f in fields)
-            if(fields[f] != this.keepStr)
+
+        for (let f in fields) {
+            if (fields[f] != this.keepStr) {
                 reqArgs[f] = fields[f];
+            }
+        }
 
         JSONParsedPostRequest(
-            "ajax/changeTracksMetadata/",
+            "track/changeMetadata/",
             JSON.stringify(reqArgs),
             function(response) {
                 /* response = {
                  *     DONE      : bool
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
-                 *
-                 *     PATH      : string
                  * } */
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);

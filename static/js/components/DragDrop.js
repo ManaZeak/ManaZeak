@@ -51,13 +51,16 @@ class DragDrop {
                     let reader = new FileReader();
                     // This fires after the blob has been read/loaded.
                     reader.addEventListener('loadend', function(event) {
-                        JSONParsedPostRequest('ajax/fileUpload/',
+                        JSONParsedPostRequest(
+                            "file/upload/",
                             JSON.stringify({
-                                NAME:    f.name,
-                                CONTENT: event.target.result
+                                FILENAME: f.name,
+                                CONTENT:  event.target.result
                             }),
-                            function() {
-                                new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
+                            function(response) {
+                                if (!response.DONE) {
+                                    new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
+                                }
                             }
                         );
                     });

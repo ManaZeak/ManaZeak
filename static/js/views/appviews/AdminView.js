@@ -148,8 +148,27 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.dropLabel);
         this.ui.content.appendChild(this.ui.dropButton);
 
-        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
         this.ui.rmMoodButton.addEventListener("click", this._removeMoodbar.bind(this));
+        this.ui.rmCoverButton.addEventListener("click", this._regenCover.bind(this));
+        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
+    }
+
+
+    _regenCover() {
+        let that = this;
+        JSONParsedGetRequest(
+            "admin/regenerateCovers/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 
@@ -161,14 +180,12 @@ class AdminView extends View {
     _requestDeleteLibraries() { // TODO : put the code below in APP
         let that = this;
         JSONParsedGetRequest(
-            "ajax/deleteAllLibrary/",
+            "library/deleteAll/",
             function(response) {
                 /* response = {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     PATH        : string
                  * } */
                 if (response.DONE) {
                     window.app.playlists.clear();
@@ -241,12 +258,33 @@ class AdminView extends View {
                 window.app.deleteUser(that.info.USER[i].ID, function() {
                     let that = this;
                     JSONParsedGetRequest(
-                        "ajax/getAdminView/",
-                        function(response) {
+                        "admin/getView/",
+                        function(response) { // TODO : fetch those info from getUserInfo
                             /* response = {
                              *     DONE      : bool
                              *     ERROR_H1  : string
                              *     ERROR_MSG : string
+                             *
+                             *     USER: {
+                             *         GODFATHER_NAME:
+                             *         NAME:
+                             *         IS_ADMIN:
+                             *         JOINED:
+                             *         LAST_LOGIN:
+                             *         USER_ID:
+                             *         INVITE_CODE:
+                             *         MANACOIN:
+                             *     }
+                             *     LIBRARIES: {
+                             *         NAME:
+                             *         PATH:
+                             *         NUMBER_TRACK:
+                             *         TOTAL_DURATION:
+                             *         ID:
+                             *     }
+                             *     SYNC_KEY:
+                             *     BUFFER_PATH:
+                             *     INVITE_ENABLED:
                              * } */
                             if (response.DONE) {
                                 that.info = response;
@@ -258,7 +296,7 @@ class AdminView extends View {
             });
             element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
                                          "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
-                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + "<br>" +
                                          "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
                                          "Joined on: " + this.info.USER[i].JOINED + "<br>" +
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
@@ -438,7 +476,7 @@ class AdminView extends View {
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getWishes/",
+            "wish/get/",
             JSON.stringify({
                 ALL: true
             }),
@@ -448,7 +486,13 @@ class AdminView extends View {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     PATH        : string
+                 *     RESULT: {
+                 *         WISH_ID:
+                 *         DATE:
+                 *         TEXT:
+                 *         USERNAME:
+                 *         STATUS:
+                 *     }
                  * } */
                 if (response.DONE) {
                     for (let i = 0; i < response.RESULT.length; ++i) {
@@ -518,7 +562,7 @@ class AdminView extends View {
     _updateWishStatus(wishID, status, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/setWishStatus/",
+            "wish/setStatus/",
             JSON.stringify({
                 WISH_ID: wishID,
                 STATUS:  status
@@ -528,8 +572,6 @@ class AdminView extends View {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     PATH        : string
                  * } */
                 if (response.DONE) {
                     if (callback) {
@@ -558,7 +600,7 @@ class AdminView extends View {
         // TODO : put modal on drop action to confirm ?
         let that = this;
         JSONParsedGetRequest(
-            "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
+            "admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -586,7 +628,7 @@ class AdminView extends View {
     _rescanSC() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/syncthingRescan",
+            "admin/syncthingRescan",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -614,7 +656,7 @@ class AdminView extends View {
     _removeMoodbar() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/removeAllMoods/",
+            "admin/removeAllMoods/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -642,7 +684,7 @@ class AdminView extends View {
     _submitAPIKey() {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/changeSyncthingAPIKey/",
+            "admin/changeSyncthingAPIKey/",
             JSON.stringify({
                 SYNC_KEY: this.ui.apiKeyField.value // TODO : Warning, value must be tested
             }),
@@ -673,7 +715,7 @@ class AdminView extends View {
     _submitBufferPath() {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/changeBufferPath/",
+            "admin/changeBufferPath/",
             JSON.stringify({
                 BUFFER_PATH: this.ui.bufferField.value // TODO : Warning, value must be tested
             }),
@@ -704,7 +746,7 @@ class AdminView extends View {
     _toggleInviteMode() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/toggleInvite/",
+            "admin/toggleInvite/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -714,12 +756,33 @@ class AdminView extends View {
                 if (response.DONE) {
                     let self = that;
                     JSONParsedGetRequest(
-                        "ajax/getAdminView/",
+                        "admin/getView/",
                         function(response) {
                             /* response = {
                              *     DONE      : bool
                              *     ERROR_H1  : string
                              *     ERROR_MSG : string
+                             *
+                             *     USER: {
+                             *         GODFATHER_NAME:
+                             *         NAME:
+                             *         IS_ADMIN:
+                             *         JOINED:
+                             *         LAST_LOGIN:
+                             *         USER_ID:
+                             *         INVITE_CODE:
+                             *         MANACOIN:
+                             *     }
+                             *     LIBRARIES: {
+                             *         NAME:
+                             *         PATH:
+                             *         NUMBER_TRACK:
+                             *         TOTAL_DURATION:
+                             *         ID:
+                             *     }
+                             *     SYNC_KEY:
+                             *     BUFFER_PATH:
+                             *     INVITE_ENABLED:
                              * } */
                             if (response.DONE) {
                                 self.info = response;
@@ -759,12 +822,33 @@ class AdminView extends View {
     _updateAdminInfo(callback) {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/getAdminView/",
+            "admin/getView/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
+                 *
+                 *     USER: {
+                 *         GODFATHER_NAME:
+                 *         NAME:
+                 *         IS_ADMIN:
+                 *         JOINED:
+                 *         LAST_LOGIN:
+                 *         USER_ID:
+                 *         INVITE_CODE:
+                 *         MANACOIN:
+                 *     }
+                 *     LIBRARIES: {
+                 *         NAME:
+                 *         PATH:
+                 *         NUMBER_TRACK:
+                 *         TOTAL_DURATION:
+                 *         ID:
+                 *     }
+                 *     SYNC_KEY:
+                 *     BUFFER_PATH:
+                 *     INVITE_ENABLED:
                  * } */
                 if (response.DONE) {
                     that.info = response;

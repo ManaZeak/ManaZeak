@@ -120,13 +120,22 @@ class UserView extends View {
      **/
     _updateSettingsInfo(callback) {
         let that = this;
-        JSONParsedGetRequest(
-            "ajax/getUserSettings/",
+        JSONParsedGetRequest( // TODO : user the function in User class
+            "user/getSettings/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
+                 *
+                 *     USERNAME:
+                 *     DATE_JOINED:
+                 *     LAST_LOGIN:
+                 *     INVITE_CODE:
+                 *     IS_ADMIN:
+                 *     MANACOIN:
+                 *     GODFATHER_CODE:
+                 *     GODFATHER_NAME:
                  * } */
                 if (response.DONE) {
                     that.info = response;

@@ -87,7 +87,7 @@ class TrackInfo {
     updateInfo(track, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getTracksDetailedInfo/",
+            "track/getDetailedInfo/",
             JSON.stringify({
                 TRACK_ID: [track.id.track]
             }),
@@ -97,7 +97,42 @@ class TrackInfo {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  *
-                 *     RESULT    : JSON object
+                 *     RESULT    : {
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         TRACK_NUMBER:
+                 *         BPM:
+                 *         LYRICS:
+                 *         COMMENT:
+                 *         BITRATE:
+                 *         SAMPLERATE:
+                 *         DURATION:
+                 *         GENRE:
+                 *         FILE_TYPE:
+                 *         DISC_NUMBER:
+                 *         SIZE:
+                 *         LAST_MODIFIED:
+                 *         COVER:
+                 *         ARTISTS: {
+                 *            ID:
+                 *            NAME:
+                 *         }
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *             TOTAL_DISC:
+                 *             TOTAL_TRACK:
+                 *             ARTISTS: {
+                 *                 ID:
+                 *                 NAME:
+                 *             }
+                 *         }
+                 *         PLAY_COUNTER:
+                 *         FILE_NAME:
+                 *     }
                  * } */
                 if (response.DONE) {
                     track.updateMetadata(response.RESULT[0]);
@@ -338,10 +373,10 @@ class TrackInfo {
         let that = this;
         if (this.track !== null) {
             JSONParsedPostRequest(
-                "ajax/getSimilarTrack/",
+                "suggestions/getSimilarTrack/",
                 JSON.stringify({
-                    TRACK_ID: this.track.id.track,
-                    MODE:     this.trackSuggestionMode
+                    TRACK_ID:        this.track.id.track,
+                    SUGGESTION_MODE: this.trackSuggestionMode
                 }),
                 function(response) {
                     /* response = {
@@ -349,7 +384,41 @@ class TrackInfo {
                      *     ERROR_H1  : string
                      *     ERROR_MSG : string
                      *
-                     *     RESULT    : []
+                     *     RESULT    : {
+                     *         ID:
+                     *         TITLE:
+                     *         YEAR:
+                     *         COMPOSER:
+                     *         PERFORMER:
+                     *         TRACK_NUMBER:
+                     *         BPM:
+                     *         LYRICS:
+                     *         COMMENT:
+                     *         BITRATE:
+                     *         SAMPLERATE:
+                     *         DURATION:
+                     *         GENRE:
+                     *         FILE_TYPE:
+                     *         DISC_NUMBER:
+                     *         SIZE:
+                     *         LAST_MODIFIED:
+                     *         COVER:
+                     *         ARTISTS: {
+                     *            ID:
+                     *            NAME:
+                     *         }
+                     *         ALBUM: {
+                     *             ID:
+                     *             TITLE:
+                     *             TOTAL_DISC:
+                     *             TOTAL_TRACK:
+                     *             ARTISTS: {
+                     *                 ID:
+                     *                 NAME:
+                     *             }
+                     *         }
+                     *         PLAY_COUNTER:
+                     *         FILE_NAME:
                      * } */
                     if (!response.DONE) {
                         that.tracks[0].ui.innerHTML             = response.ERROR_H1 + "<br>" + response.ERROR_MSG;

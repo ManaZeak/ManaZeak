@@ -518,7 +518,7 @@ class Modal extends MzkObject {
             if (wish.value !== '') {
                 // TODO : remove event listener on submit
                 JSONParsedPostRequest(
-                    "ajax/submitWish/",
+                    "wish/submit/",
                     JSON.stringify({
                         WISH: wish.value
                     }),

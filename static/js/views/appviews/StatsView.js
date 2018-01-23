@@ -13,61 +13,6 @@ class StatsView extends View {
         this._createUI();
     }
 
-//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : _fetchStats (public)
-     * class  : StatsView
-     * desc   : Fetch statistics from server
-     **/
-    fetchStats() {
-        let modal = new Modal("fetchStats");
-        modal.open();
-
-        let that = this;
-        JSONParsedGetRequest(
-            "ajax/getUserStats/",
-            function(response) {
-                /* response = {
-                 *     DONE              : bool
-                 *     ERROR_H1          : string
-                 *     ERROR_MSG         : string
-                 *
-                 *     USERNAME          : string
-                 *     NB_TRACK_LISTENED : int
-                 *     NB_TRACK_PUSHED   : int
-                 *     TOTAL_TRACK       : int
-                 *     PREF_ARTISTS      : [][]
-                 *     PREF_GENRES       : [][]
-                 *     PREF_TRACKS       : [][]
-                 *     LEAST_ARTISTS     : [][]
-                 *     LEAST_GENRES      : [][]
-                 *     LEAST_TRACKS      : [][]
-                 * } */
-                modal.close();
-
-                if (response.DONE) {
-                    that.ui.userName.innerHTML    = response.USERNAME;
-                    that.ui.totalPlayed.innerHTML = "Tracks played : " + response.NB_TRACK_LISTENED;
-                    that.ui.totalPushed.innerHTML = "Tracks uploaded : " + response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                                                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
-                                                    "% of all the music here)";
-                    that._updatePrefArtistsList(response.PREF_ARTISTS);
-                    that._updatePrefGenresList(response.PREF_GENRES);
-                    that._updatePrefTracksList(response.PREF_TRACKS);
-                    that._updateLeastArtistsList(response.LEAST_ARTISTS);
-                    that._updateLeastGenresList(response.LEAST_GENRES);
-                    that._updateLeastTracksList(response.LEAST_TRACKS);
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                }
-            }
-        );
-    }
-
-
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**

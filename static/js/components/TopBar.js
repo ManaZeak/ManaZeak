@@ -30,13 +30,20 @@ class TopBar extends MzkObject {
     changeMoodbar(id) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getMoodbarByID/",
+            "track/getMoodbar/",
             JSON.stringify({
                 TRACK_ID: id
             }),
             function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     TRACK_MOOD  : string
+                 * } */
                 let error = false;
-                renderMoodFile(response.MOOD, that.moodbar, function() { // Callback is here in case of 404 on the moodBar
+                renderMoodFile(response.TRACK_MOOD, that.moodbar, function() { // Callback is here in case of 404 on the moodBar
                     that.resetMoodbar();
                     error = true;
                 });

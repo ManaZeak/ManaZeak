@@ -55,18 +55,16 @@ class App extends MzkObject {
         }
 
         JSONParsedPostRequest(
-            "ajax/addTracksToPlaylist/",
+            "playlist/addTracks/",
             JSON.stringify({
                 PLAYLIST_ID: playlist.id,
-                TRACKS_ID: ids
+                TRACKS_ID:   ids
             }),
             function (response) {
                 /* response = {
                  *     DONE         : bool
                  *     ERROR_H1     : string
                  *     ERROR_MSG    : string
-                 *
-                 *     ADDED_TRACKS : int
                  * } */
                 if (response.DONE) {
                     new Notification("INFO", "Tracks added to " + playlist.name, names + " have been added to " + playlist.name + ".");
@@ -165,12 +163,12 @@ class App extends MzkObject {
 
         let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
-            "ajax/getTrackPathByID/",
+            "track/getPath/",
             JSON.stringify({
-                TRACK_ID:        track.id.track,
-                LAST_TRACK_PATH: lastTrackPath,
-                TRACK_PER:       isNaN(duration_played) ? 0 : duration_played,
-                PREVIOUS:        previous
+                TRACK_ID:         track.id.track,
+                LAST_TRACK_PATH:  lastTrackPath,
+                TRACK_PERCENTAGE: isNaN(duration_played) ? 0 : duration_played,
+                PREVIOUS:         previous
             }),
             function(response) {
                 /* response = {
@@ -178,11 +176,11 @@ class App extends MzkObject {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     PATH        : string
+                 *     TRACK_PATH  : string
                  * } */
                 if (response.DONE) {
-                    that.player.changeSource(".." + response.PATH, track.id.track);
-                    that.changePageTitle(response.PATH);
+                    that.player.changeSource(".." + response.TRACK_PATH, track.id.track);
+                    that.changePageTitle(response.TRACK_PATH);
                     that.activePlaylist.setCurrentTrack(track);
                     that.togglePlay();
                 }
@@ -245,17 +243,15 @@ class App extends MzkObject {
     deletePlaylist(playlist, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/deleteCollection/",
+            "collection/delete/",
             JSON.stringify({
-                ID: playlist.id
+                PLAYLIST_ID: playlist.id
             }),
             function(response) {
                 /* response = {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     PATH        : string
                  * } */
                 if (response.DONE) {
                     that.playlists.remove(playlist.id);
@@ -291,7 +287,7 @@ class App extends MzkObject {
      **/
     deleteUser(id, callback) {
         JSONParsedPostRequest(
-            "ajax/removeUserById/",
+            "admin/removeUserById/",
             JSON.stringify({
                 USER_ID: id
             }),
@@ -321,22 +317,22 @@ class App extends MzkObject {
      **/
     downloadTrack(track) {
         JSONParsedPostRequest(
-            "ajax/download/",
+            "track/download/",
             JSON.stringify({
                 TRACK_ID: track.id.track
             }),
             function (response) {
                 /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *    ERROR_MSG : string
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
                  *
-                 *     PATH      : string
+                 *     DOWNLOAD_PATH : string
                  * } */
                 if (response.DONE) {
                     let dl      = document.createElement("A");
-                    dl.href     = response.PATH;
-                    dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                    dl.href     = response.DOWNLOAD_PATH;
+                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
                     document.body.appendChild(dl);
                     dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
                     document.body.removeChild(dl);
@@ -365,22 +361,22 @@ class App extends MzkObject {
         }
 
         JSONParsedPostRequest(
-            "ajax/multiTrackDownload/",
+            "track/multiDownload/",
             JSON.stringify({
-                IDS: ids
+                TRACKS_ID: ids
             }),
             function (response) {
                 /* response = {
                  *     DONE      : bool
                  *     ERROR_H1  : string
-                 *    ERROR_MSG : string
+                 *     ERROR_MSG : string
                  *
-                 *     PATH      : string
+                 *     DOWNLOAD_PATH      : string
                  * } */
                 if (response.DONE) {
                     let dl      = document.createElement("A");
-                    dl.href     = response.PATH;
-                    dl.download = response.PATH.replace(/^.*[\\\/]/, '');
+                    dl.href     = response.DOWNLOAD_PATH;
+                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
                     document.body.appendChild(dl);
                     dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
                     document.body.removeChild(dl);
@@ -468,15 +464,16 @@ class App extends MzkObject {
 
         let that = this;
         JSONParsedGetRequest( // Loading playlists
-            "ajax/getPlaylists/",
+            "playlist/fetchAll/",
             function(response) {
                 /* response = {
-                 *     DONE           : bool
-                 *     ERROR_H1       : string
-                 *     ERROR_MSG      : string
+                 *     DONE                : bool
+                 *     ERROR_H1            : string
+                 *     ERROR_MSG           : string
                  *
-                 *     PLAYLIST_IDS   : int[] / undefined
-                 *     PLAYLIST_NAMES : string[] / undefined
+                 *     PLAYLIST_IDS        : int[] / undefined
+                 *     PLAYLIST_NAMES      : string[] / undefined
+                 *     PLAYLIST_IS_LIBRARY : bool[] / undefined
                  * } */
                 that._appStart(response); // Response is tested in _appStart
             }
@@ -598,19 +595,17 @@ class App extends MzkObject {
         }
 
         JSONParsedPostRequest(
-            "ajax/removeTrackFromPlaylist/",
+            "playlist/removeTracks/",
             JSON.stringify({
                 PLAYLIST_ID: playlist.id,
                 TRACKS_ID:   ids
             }),
             function (response) {
                 /* response = {
-                             *     DONE           : bool
-                             *     ERROR_H1       : string
-                             *     ERROR_MSG      : string
-                             *
-                             *     REMOVED_TRACKS : int
-                             * } */
+                 *     DONE           : bool
+                 *     ERROR_H1       : string
+                 *     ERROR_MSG      : string
+                 * } */
                 if (response.DONE) {
                     new Notification("INFO", "Tracks removed from " + playlist.name, names + " have been removed from " + playlist.name + ".");
                     playlist.getPlaylistsTracks();
@@ -633,21 +628,22 @@ class App extends MzkObject {
     renamePlaylist(id, name) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/renamePlaylist/",
+            "playlist/rename/",
             JSON.stringify({
-                PLAYLIST_ID: id,
-                NAME:        name
+                PLAYLIST_ID:   id,
+                PLAYLIST_NAME: name
             }),
             function(response) {
                 /* response = {
-                 *     DONE        : bool
-                 *     ERROR_H1    : string
-                 *     ERROR_MSG   : string
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
                  *
-                 *     PATH        : string
+                 *     PLAYLIST_ID   : string
+                 *     PLAYLIST_NAME : string
                  * } */
                 if (response.DONE) {
-                    that.playlists.rename(id, name);
+                    that.playlists.rename(response.PLAYLIST_ID, response.PLAYLIST_NAME);
                 }
 
                 else {

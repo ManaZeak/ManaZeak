@@ -27,7 +27,7 @@ class PartyView extends View {
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getTracksDetailedInfo/",
+            "track/getDetailedInfo/",
             JSON.stringify({
                 TRACK_ID: [window.app.player.getSourceID()]
             }),
@@ -37,7 +37,42 @@ class PartyView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  *
-                 *     RESULT    : JSON object
+                 *     RESULT    : {
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         TRACK_NUMBER:
+                 *         BPM:
+                 *         LYRICS:
+                 *         COMMENT:
+                 *         BITRATE:
+                 *         SAMPLERATE:
+                 *         DURATION:
+                 *         GENRE:
+                 *         FILE_TYPE:
+                 *         DISC_NUMBER:
+                 *         SIZE:
+                 *         LAST_MODIFIED:
+                 *         COVER:
+                 *         ARTISTS: {
+                 *            ID:
+                 *            NAME:
+                 *         }
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *             TOTAL_DISC:
+                 *             TOTAL_TRACK:
+                 *             ARTISTS: {
+                 *                 ID:
+                 *                 NAME:
+                 *             }
+                 *         }
+                 *         PLAY_COUNTER:
+                 *         FILE_NAME:
+                 *     }
                  * } */
                 if (response.DONE) {
                     that._setCurrentTrack(new Track(response.RESULT[0]));
