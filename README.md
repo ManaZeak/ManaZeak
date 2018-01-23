@@ -8,7 +8,7 @@ In order to make an instance work, run the following commands :
 - ```$ git clone https://github.com/Squadella/ManaZeak```
 - ```$ cp docker-compose.yml.example docker-compose.yml```
 
-Replace all ```/PATH/TO/LIBRARY``` in ```docker-compose.yml``` by the path of your music files, then keep going with :
+Replace all ```/PATH/TO/LIBRARY``` in ```docker-compose.yml``` by the path of your musical collection root directory. Also, replace ``PATH/TO/DB_DATA`` with the path you want ManaZeak to save its database (please don't ``./db_data`` ...). Then keep going with :
 
 - ```$ docker-compose build``` (This may take a while, go grab some coffee...)
 - ```$ docker-compose up -d```
