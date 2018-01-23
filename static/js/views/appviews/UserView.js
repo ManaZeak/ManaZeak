@@ -89,7 +89,7 @@ class UserView extends View {
 
             let admin                      = that.info.IS_ADMIN ? "Admin" : "User";
             that.ui.contentTitle.innerHTML = "General settings";
-            userInfo.innerHTML             = "<b>" + that.info.USER_NAME + "</b> (" + admin + ") <br><br>" +
+            userInfo.innerHTML             = "<b>" + that.info.USERNAME + "</b> (" + admin + ") <br><br>" +
                                              "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + that.info.INVITE_CODE + "<br>" +
                                              "Godfather:&nbsp;&nbsp;" + that.info.GODFATHER_NAME + " (" + that.info.GODFATHER_CODE + ")<br>" +
                                              "ManaCoin: " + that.info.MANACOIN + "<br><br>" +

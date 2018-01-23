@@ -504,7 +504,7 @@ class AdminView extends View {
                         accept.id          = "accept";
                         refuse.id          = "refuse";
 
-                        element.innerHTML  = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
+                        element.innerHTML  = response.RESULT[i].USERNAME + ", " + response.RESULT[i].DATE + ":<br>" +
                                              "<b>" + response.RESULT[i].TEXT + "</b><br>";
 
                         switch (response.RESULT[i].STATUS) {
@@ -745,6 +745,8 @@ class AdminView extends View {
      **/
     _toggleInviteMode() {
         let that = this;
+
+
         JSONParsedGetRequest(
             "admin/toggleInvite/",
             function(response) {
@@ -754,42 +756,7 @@ class AdminView extends View {
                  *     ERROR_MSG : string
                  * } */
                 if (response.DONE) {
-                    let self = that;
-                    JSONParsedGetRequest(
-                        "admin/getView/",
-                        function(response) {
-                            /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
-                             *
-                             *     USER: {
-                             *         GODFATHER_NAME:
-                             *         NAME:
-                             *         IS_ADMIN:
-                             *         JOINED:
-                             *         LAST_LOGIN:
-                             *         USER_ID:
-                             *         INVITE_CODE:
-                             *         MANACOIN:
-                             *     }
-                             *     LIBRARIES: {
-                             *         NAME:
-                             *         PATH:
-                             *         NUMBER_TRACK:
-                             *         TOTAL_DURATION:
-                             *         ID:
-                             *     }
-                             *     SYNC_KEY:
-                             *     BUFFER_PATH:
-                             *     INVITE_ENABLED:
-                             * } */
-                            if (response.DONE) {
-                                self.info = response;
-                                self._requestUsersPage();
-                            }
-                        }
-                    );
+                    that._requestUsersPage();
                 }
 
                 else {
