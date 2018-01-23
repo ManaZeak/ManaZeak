@@ -17,7 +17,7 @@ def getUserSettings(request):
             userPref = UserPreferences.objects.get(user=user)
             inviteCode = InviteCode.objects.get(user=user)
             data = {
-                'USER_NAME': user.username,
+                'USERNAME': user.username,
                 'DATE_JOINED': timeCodeToString(user.date_joined),
                 'LAST_LOGIN': timeCodeToString(user.last_login),
                 'INVITE_CODE': inviteCode.code,

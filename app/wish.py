@@ -48,7 +48,7 @@ def getWishes(request):
                     'WISH_ID': wish.id,
                     'DATE': wish.date,
                     'TEXT': wish.text,
-                    'USER': wish.user.username,
+                    'USERNAME': wish.user.username,
                     'STATUS': wish.status,
                 })
 

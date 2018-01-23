@@ -60,7 +60,7 @@ def newLibrary(request):
                     library.save()
                     data = {
                         'LIBRARY_ID': library.id,
-                        'NAME': library.name,
+                        'LIBRARY_NAME': library.name,
                     }
                     data = {**data, **errorCheckMessage(True, None)}
                 else:

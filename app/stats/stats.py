@@ -125,7 +125,8 @@ def getUserPrefTracks(request):
                 trackTuplePref.append((stat.track.title, stat.playCounter, 0))
         for stat in statsLeast:
             if stat.listeningPercentage is not None:
-                trackTupleLeast.append((stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
+                trackTupleLeast.append(
+                    (stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
             else:
                 trackTupleLeast.append((stat.track.title, stat.playCounter, 0))
         if len(trackTuplePref) == 0:
@@ -157,31 +158,6 @@ def userNeverPlayed(user):
     return neverPlayed
 
 
-# Return all the user stats
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def getUserStats(request):
-    if request.method == 'GET':
-        user = request.user
-
-        nbTrackListened = getUserNbTrackListened(user)
-        nbTrackPushed = getUserNbTrackPushed(user)
-        neverPlayed = userNeverPlayed(user)
-
-        data = {
-            'USERNAME': user.username,
-            'TOTAL_TRACK': Track.objects.all().count(),
-            'PREF_TRACKS': getUserPrefTracks(user, nbTrackListened, True)[:10],
-            'LEAST_TRACKS': getUserPrefTracks(user, nbTrackListened, False)[:10],
-            'NB_TRACK_LISTENED': nbTrackListened,
-            'NB_TRACK_PUSHED': nbTrackPushed,
-            'NEVER_PLAYED': neverPlayed,
-        }
-        data = {**data, **errorCheckMessage(True, None)}
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
 # Get the stats for all users
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def adminGetUserStats(request):
@@ -193,12 +169,12 @@ def adminGetUserStats(request):
                 nbTrackListened = getUserNbTrackListened(user)
                 temp = {
                     'USERNAME': user.username,
-                    'PREF_ARTIST': getUserPrefArtist(user, True)[:10],
-                    'LEAST_ARTISTS': getUserPrefArtist(user, False)[:10],
+                    'PREF_ARTIST': getUserPrefArtists(user, True)[:10],
+                    'LEAST_ARTISTS': getUserPrefArtists(user, False)[:10],
                     'NB_TRACK_LISTENED': nbTrackListened,
                     'NB_TRACK_PUSHED': getUserNbTrackPushed(user),
-                    'PREF_GENRE': getUserPrefGenre(user, nbTrackListened, True)[:10],
-                    'LEAST_GENRE': getUserPrefGenre(user, nbTrackListened, False)[:10],
+                    'PREF_GENRE': getUserPrefGenres(user, nbTrackListened, True)[:10],
+                    'LEAST_GENRE': getUserPrefGenres(user, nbTrackListened, False)[:10],
                     'NEVER_PLAYED': userNeverPlayed(user),
                 }
                 data.append(temp)

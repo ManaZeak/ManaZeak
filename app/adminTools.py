@@ -51,18 +51,18 @@ def getAdminView(request):
                 userPreferences = UserPreferences.objects.get(user=user)
                 inviteCode = InviteCode.objects.get(user=user)
                 godfather = {
-                    'GODFATHER': "Jesus",
+                    'GODFATHER_NAME': "Jesus",
                 }
                 if userPreferences.inviteCode is not None:
                     godfather = {
-                        'GODFATHER': userPreferences.inviteCode.user.username,
+                        'GODFATHER_NAME': userPreferences.inviteCode.user.username,
                     }
                 userInfo.append({**{
                     'NAME': user.username,
-                    'ADMIN': user.is_superuser,
+                    'IS_ADMIN': user.is_superuser,
                     'JOINED': dateJoined,
                     'LAST_LOGIN': lastLogin,
-                    'ID': user.id,
+                    'USER_ID': user.id,
                     'INVITE_CODE': inviteCode.code,
                     'MANACOIN': calculateCurrentAvailableCash(userPreferences.wallet),
                 }, **godfather})
@@ -113,7 +113,7 @@ def removeAllMoods(request):
 
 # Delete a user from an ID
 @login_required(redirect_field_name='login.html', login_url='app:login')
-def removeUserById(request):
+def removeUser(request):
     if request.method == 'POST':
         admin = request.user
         if admin.is_superuser:
@@ -314,8 +314,8 @@ def deleteCollection(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         user = request.user
-        if 'ID' in response:
-            playlistId = strip_tags(response['ID'])
+        if 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
                 if playlist.isLibrary:

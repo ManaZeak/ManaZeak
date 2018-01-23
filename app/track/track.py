@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
+from app.history import addToHistory
 from app.models import Track
+from app.stats.stats import addToStats
 from app.utils import errorCheckMessage
 
 
@@ -92,6 +94,71 @@ def getTracksDetailedInfo(request):
     return JsonResponse(data)
 
 
+# Return the link to a track with a track id
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def getTrackPath(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        # Checking JSON keys
+        if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response \
+                and 'TRACK_PERCENTAGE' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            # Getting the track asked
+            if Track.objects.filter(id=trackId).count() == 1:
+                track = Track.objects.get(id=trackId)
+                # If we don't ask a previous track
+                if not bool(response['PREVIOUS']):
+                    # Adding the current track to the history
+                    addToHistory(track, user)
+                    # Removing the first 2 chars
+                    previousTrackPath = strip_tags(response['LAST_TRACK_PATH'])[2:]
+                    # If the previous track exists
+                    if Track.objects.filter(location=previousTrackPath).count() == 1:
+                        listeningPercentage = float(strip_tags(response['TRACK_PERCENTAGE']))
+                        previousTrack = Track.objects.get(location=previousTrackPath)
+                        # Adding to stats if the user has listened more than 15% of the song
+                        if listeningPercentage > 5:
+                            previousTrack.playCounter += 1
+                            previousTrack.save()
+                            addToStats(previousTrack, listeningPercentage, user)
+
+                # Returning the asked song
+                data = {
+                    'TRACK_PATH': track.location,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Return the mood file with a given track id
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def getMoodbar(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'TRACK_ID' in response:
+            trackID = response['TRACK_ID']
+            if Track.objects.filter(id=trackID).count() == 1:
+                track = Track.objects.get(id=trackID)
+                data = {
+                    'MOOD': track.moodbar,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 # Download the given song
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getDownloadLocation(request):
@@ -104,7 +171,7 @@ def getDownloadLocation(request):
                 track.downloadCounter += 1
                 track.save()
                 data = {
-                    'PATH': track.location,
+                    'DOWNLOAD_PATH': track.location,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
@@ -121,7 +188,7 @@ def getDownloadLocation(request):
 def multiTrackDownload(request):
     if request.method == "POST":
         response = json.loads(request.body)
-        if 'IDS' in response:
+        if 'TRACKS_ID' in response:
             trackIds = response['IDS']
             # TODO : create admin option max number of sound to download
             if len(trackIds) > 50:
@@ -151,7 +218,7 @@ def multiTrackDownload(request):
             for location in locations:
                 archive.write(location, os.path.basename(location), compress_type=zipfile.ZIP_DEFLATED)
 
-            data = {**{'PATH': archiveName, }, **errorCheckMessage(True, None)}
+            data = {**{'DOWNLOAD_PATH': archiveName, }, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "badFormat")
     else:

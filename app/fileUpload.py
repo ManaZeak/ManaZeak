@@ -18,8 +18,8 @@ def handleUploadedFile(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        if 'CONTENT' in response and 'NAME' in response:
-            name = strip_tags(response['NAME'])
+        if 'CONTENT' in response and 'FILENAME' in response:
+            name = strip_tags(response['FILENAME'])
             if '/' not in name and '\\' not in name:
                 adminOptions = getAdminOptions()
                 if not os.path.exists(adminOptions.bufferPath):
