@@ -16,7 +16,7 @@ def newPlaylist(request):
         response = json.loads(request.body)
         if 'PLAYLIST_NAME' in response:
             playlist = Playlist()
-            playlist.name = strip_tags(response['NAME'])
+            playlist.name = strip_tags(response['PLAYLIST_NAME'])
             playlist.user = request.user
             playlist.save()
             data = {

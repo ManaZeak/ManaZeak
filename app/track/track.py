@@ -147,7 +147,7 @@ def getMoodbar(request):
             if Track.objects.filter(id=trackID).count() == 1:
                 track = Track.objects.get(id=trackID)
                 data = {
-                    'MOOD': track.moodbar,
+                    'TRACK_MOOD': track.moodbar,
                 }
                 data = {**data, **errorCheckMessage(True, None)}
             else:
