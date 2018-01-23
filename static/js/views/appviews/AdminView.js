@@ -189,6 +189,35 @@ class AdminView extends View {
 
 
     /**
+     * method : _requestDeleteLibraries (private)
+     * class  : AdminView
+     * desc   : Request to delete all library
+     **/
+    _requestRescanLibraries() {
+        let that = this;
+        JSONParsedGetRequest(
+            "ajax/rescanAllLibraries/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     PATH        : string
+                 * } */
+                if (response.DONE) {
+
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
      * method : _requestUsersPage (private)
      * class  : AdminView
      * desc   : Display the users management page
@@ -267,17 +296,24 @@ class AdminView extends View {
     _requestLibrariesPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuLib.className      = "selected";
-        this.ui.contentTitle.innerHTML = "Libraries management";
+        this.ui.menuLib.className         = "selected";
+        this.ui.contentTitle.innerHTML    = "Libraries management";
 
-        this.ui.rmLibLabel             = document.createElement("P");
-        this.ui.rmLibButton            = document.createElement("BUTTON");
+        this.ui.rescanLibLabel            = document.createElement("P");
+        this.ui.rescanLibButton           = document.createElement("BUTTON");
+        this.ui.rmLibLabel                = document.createElement("P");
+        this.ui.rmLibButton               = document.createElement("BUTTON");
 
-        this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
+        this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
+            "<br>" +
+            "After you made modification on files located in a library folder, use this command to perform a rescan.<br>" +
+            "This command will rescan all libraries in the database.";
+        this.ui.rescanLibButton.innerHTML = "RESCAN ALL LIBRARIES";
+        this.ui.rmLibLabel.innerHTML      = "<b>Remove libraries</b><br>" +
             "<br>" +
             "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
             "This command will erase all libraries in the database.";
-        this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
+        this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
 
         let list = document.createElement("UL");
 
@@ -303,11 +339,18 @@ class AdminView extends View {
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rescanLibLabel);
+        this.ui.content.appendChild(this.ui.rescanLibButton);
         this.ui.content.appendChild(this.ui.rmLibLabel);
         this.ui.content.appendChild(this.ui.rmLibButton);
         this.ui.content.appendChild(list);
 
-        this.ui.rmLibButton.addEventListener("click", this._requestDeleteLibraries.bind(this));
+        this.ui.rescanLibButton.addEventListener("click", function() {
+            that._requestRescanLibraries();
+        });
+        this.ui.rmLibButton.addEventListener("click", function() {
+            that._requestDeleteLibraries();
+        });
     }
 
 
@@ -721,7 +764,7 @@ class AdminView extends View {
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
-        this.ui.menuWish.className   = "";
+        this.ui.menuWish.className = "";
     }
 
 
