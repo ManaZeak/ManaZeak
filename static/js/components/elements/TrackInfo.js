@@ -73,7 +73,7 @@ class TrackInfo {
         this.ui.container.style.top    = (rect.top - 24) + "px";
         this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
         this.ui.container.style.height = "200px";
-        this.ui.container.style.width  = "760px";
+        this.ui.container.style.width  = "auto";
     }
 
 
