@@ -9,9 +9,7 @@
 class UserView extends View {
 
     constructor() {
-
         super();
-
         this.info  = null;
         this._createUI();
     }
@@ -50,12 +48,10 @@ class UserView extends View {
         this.ui.container.id        = "user";
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
-
         this.ui.menuTitle.innerHTML = "User";
-        this.ui.menuGen.innerHTML    = "General";
+        this.ui.menuGen.innerHTML   = "General";
 
         this.ui.menuList.appendChild(this.ui.menuGen);
-
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
         this.ui.container.appendChild(this.ui.menu);
@@ -84,22 +80,21 @@ class UserView extends View {
     _requestGeneralPage() {
         this._updateSettingsInfo();
         this._clearPageSpace();
-        this.ui.menuGen.className        = "selected";
-        this.ui.contentTitle.innerHTML  = "General settings";
+        this.ui.menuGen.className          = "selected";
+        this.ui.contentTitle.innerHTML     = "General settings";
 
         let that = this;
         this._updateSettingsInfo(function() {
-            let userInfo = document.createElement("P");
-            let admin         = that.info.IS_ADMIN ? "Admin" : "User";
+            let userInfo                   = document.createElement("P");
 
-
-            that.ui.contentTitle.innerHTML  = "General settings";
-            userInfo.innerHTML = "<b>" + that.info.USER_NAME + "</b> (" + admin + ") <br><br>" +
-                "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + that.info.INVITE_CODE + "<br>" +
-                "Godfather:&nbsp;&nbsp;" + that.info.GODFATHER_NAME + " (" + that.info.GODFATHER_CODE + ")<br>" +
-                "ManaCoin: " + that.info.MANACOIN + "<br><br>" +
-                "Joined on: " + that.info.DATE_JOINED + "<br>" +
-                "Last login: " + that.info.LAST_LOGIN;
+            let admin                      = that.info.IS_ADMIN ? "Admin" : "User";
+            that.ui.contentTitle.innerHTML = "General settings";
+            userInfo.innerHTML             = "<b>" + that.info.USER_NAME + "</b> (" + admin + ") <br><br>" +
+                                             "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + that.info.INVITE_CODE + "<br>" +
+                                             "Godfather:&nbsp;&nbsp;" + that.info.GODFATHER_NAME + " (" + that.info.GODFATHER_CODE + ")<br>" +
+                                             "ManaCoin: " + that.info.MANACOIN + "<br><br>" +
+                                             "Joined on: " + that.info.DATE_JOINED + "<br>" +
+                                             "Last login: " + that.info.LAST_LOGIN;
 
             that.ui.content.appendChild(that.ui.contentTitle);
             that.ui.content.appendChild(document.createElement("HR"));
@@ -114,7 +109,7 @@ class UserView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
-        this.ui.menuGen.className   = "";
+        this.ui.menuGen.className = "";
     }
 
 

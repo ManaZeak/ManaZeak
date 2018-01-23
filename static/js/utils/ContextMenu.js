@@ -46,32 +46,34 @@ ContextMenuEntry.prototype = {
      **/
     activateEventListener: function () { //Call this on the root
         let self = this;
-
         document.body.addEventListener('click', function(event) {
             let target = event.target;
-            while (target && target != self.element)
+            while (target && target != self.element) {
                 target = target.parentNode;
+            }
 
-            if(target != self.element)
+            if (target != self.element) {
                 self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
+            }
         }, true);
-
         this.element.addEventListener("click", function (event) {
-            if (event.target.tagName !== 'LI') { return true; }
+            if (event.target.tagName !== 'LI') {
+                return true;
+            }
 
             let target  = event.target;
             let ixArray = new Array(10);
             let i       = 0;
 
             while (target.parentNode !== self.element) {
-                ixArray[i++] = target.dataset.parentIx;
+                ixArray[++i] = target.dataset.parentIx;
 
                 do {
                     target = target.parentNode;
                 } while (target.tagName !== 'LI');
             }
 
-            ixArray[i] = target.dataset.parentIx;
+            ixArray[i]  = target.dataset.parentIx;
 
             let clicked = self;
 
@@ -79,11 +81,11 @@ ContextMenuEntry.prototype = {
                 clicked = clicked.children[ixArray[i]];
             }
 
-            //If the entry is a leaf then run its action
-            if (clicked.children.length === 0) { clicked._runCallback(); }
+            if (clicked.children.length === 0) { // If the entry is a leaf then run its action
+                clicked._runCallback();
+            }
 
-            //Else expand it
-            else {
+            else { // Else expand it
                 if (clicked.parent.multiOpenSubmenu) {
                     clicked.parent.closeAll();
                 }
@@ -165,20 +167,20 @@ ContextMenuEntry.prototype = {
             return;
         }
 
-        let menu_selector = "#mzk-ctx-wrap";
-        let this_selector = " #mzk-ctx-li-" + this.entryID;
-        let hide_css      = "{ display: none; visibility: hidden; }";
-        let show_css      = "{ display: block; visibility: visible; }";
-        let sheet         = window.app.cssFiles.contextMenu;
+        let menu_selector  = "#mzk-ctx-wrap";
+        let this_selector  = " #mzk-ctx-li-" + this.entryID;
+        let hide_css       = "{ display: none; visibility: hidden; }";
+        let show_css       = "{ display: block; visibility: visible; }";
+        let sheet          = window.app.cssFiles.contextMenu;
 
-        this.hideRule     = sheet.insertRule(menu_selector + this_selector + hide_css);
-        let show_selector = ".mzk-ctx-void";
+        this.hideRule      = sheet.insertRule(menu_selector + this_selector + hide_css);
+        let show_selector  = ".mzk-ctx-void";
 
         for (let i = 0; i < array_of_IDs.length; ++i) {
             show_selector += "," + menu_selector + ".mzk-ctx-include-" + array_of_IDs[i] + this_selector;
         }
 
-        this.showRule     = sheet.insertRule(show_selector + show_css);
+        this.showRule      = sheet.insertRule(show_selector + show_css);
     },
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -189,14 +191,14 @@ ContextMenuEntry.prototype = {
      * desc   : setup the stylesheet needed for the setVisibleAreas function
      **/
     _checkStylesheet: function() {
-        if (window.app.cssFiles.contextMenu) { return; }
+        if (window.app.cssFiles.contextMenu) {
+            return;
+        }
 
         let el = document.createElement("STYLE");
         // Webkit hack to enable the stylesheet
         el.appendChild(document.createTextNode(""));
-
         let styleSheetIx = document.styleSheets.length;
-
         document.head.appendChild(el);
         window.app.cssFiles.contextMenu = document.styleSheets[styleSheetIx];
     },
@@ -209,10 +211,14 @@ ContextMenuEntry.prototype = {
      * arg    : {string} childID - the ID of the child
      **/
     _findChildByID: function(childID) {
-        if (childID === null || childID === undefined) { return null; }
+        if (childID === null || childID === undefined) {
+            return null;
+        }
 
         for (let i = 0; i < this.children.length; ++i) {
-            if (this.children[i].entryID === childID) { return this.children[i]; }
+            if (this.children[i].entryID === childID) {
+                return this.children[i];
+            }
         }
 
         return null;
@@ -227,7 +233,9 @@ ContextMenuEntry.prototype = {
     _init: function () {
         this.element = document.createElement("UL");
 
-        if (this.entryID) { this.element.id = "mzk-ctx-ul-" + this.entryID; }
+        if (this.entryID) {
+            this.element.id = "mzk-ctx-ul-" + this.entryID;
+        }
     },
 
 
@@ -265,14 +273,12 @@ ContextMenuEntry.prototype = {
 class ContextMenu {
 
     constructor(parentElement, openCallback, event) {
-
         this.contextMenu   = null;
         this.parentElement = parentElement;
         this.openCallback  = openCallback;
         this.element       = null;
         this.isVisible     = false;
         this.event         = event ? event : 'contextmenu';
-
         this._init();
     }
 
@@ -337,46 +343,50 @@ class ContextMenu {
      * desc   : ContextMenu event listeners
      **/
     _eventListener() {
-        let self = this;
-
+        let that = this;
         this.parentElement.addEventListener(this.event, function(event) {
             if (event.pageY <= document.documentElement.clientHeight / 2) {
-                self.element.style.bottom = "unset";
-                self.element.style.top    = event.pageY + "px";
+                that.element.style.bottom = "unset";
+                that.element.style.top    = event.pageY + "px";
             }
 
             else {
-                self.element.style.top    = "unset";
-                self.element.style.bottom = (document.documentElement.clientHeight - event.pageY) + "px";
+                that.element.style.top    = "unset";
+                that.element.style.bottom = (document.documentElement.clientHeight - event.pageY) + "px";
             }
 
             if (event.pageX <= document.documentElement.clientWidth / 2) {
-                self.element.style.right = "unset";
-                self.element.style.left  = event.pageX + "px";
+                that.element.style.right = "unset";
+                that.element.style.left  = event.pageX + "px";
             }
 
             else {
-                self.element.style.left  = "unset";
-                self.element.style.right = (document.documentElement.clientWidth - event.pageX) + "px";
+                that.element.style.left  = "unset";
+                that.element.style.right = (document.documentElement.clientWidth - event.pageX) + "px";
             }
 
-            self.contextMenu.closeAll();
-            self.element.className = "";
+            that.contextMenu.closeAll();
+            that.element.className = "";
 
             let target = event.target;
 
             while (target) {
-                if(target.id) { self.element.classList.add("mzk-ctx-include-" + target.id); }
+                if (target.id) {
+                    that.element.classList.add("mzk-ctx-include-" + target.id);
+                }
+
                 target = target.parentNode;
             }
 
-            addVisibilityLock(self.element);
-            if (self.openCallback) { self.openCallback(event); }
+            addVisibilityLock(that.element);
+            if (that.openCallback) {
+                that.openCallback(event);
+            }
         });
 
         this.element.addEventListener('mzk_ctx:close', function() {
-            self.element.className = "";
-            self.contextMenu.closeAll();
+            that.element.className = "";
+            that.contextMenu.closeAll();
         });
     }
 
@@ -393,7 +403,6 @@ class ContextMenu {
         this.element.id  = "mzk-ctx-wrap";
         this.element.appendChild(this.contextMenu.element);
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
-
         this._eventListener();
         this._keyListener();
     }
@@ -406,8 +415,7 @@ class ContextMenu {
      **/
     _keyListener() {
         let that = this;
-
-        document.addEventListener("keydown", function(event) {
+        document.addEventListener("keydown", function(event) { // TODO : put this in Shortcut
             switch (event.keyCode) {
                 case 27: // Esc
                     if (that.isVisible) { that.toggleVisibilityLock(); }

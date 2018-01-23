@@ -9,9 +9,7 @@
 class AdminView extends View {
 
     constructor() {
-
         super();
-
         this.info  = null;
         this.modal = null;
         this._init();
@@ -55,7 +53,6 @@ class AdminView extends View {
         this.ui.container.id        = "admin";
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
-
         this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
         this.ui.menuUser.innerHTML  = "Users";
@@ -189,9 +186,9 @@ class AdminView extends View {
 
 
     /**
-     * method : _requestDeleteLibraries (private)
+     * method : _requestRescanLibraries (private)
      * class  : AdminView
-     * desc   : Request to delete all library
+     * desc   : Request to rescan all library
      **/
     _requestRescanLibraries() {
         let that = this;
@@ -206,7 +203,7 @@ class AdminView extends View {
                  *     PATH        : string
                  * } */
                 if (response.DONE) {
-
+                    // TODO
                 }
 
                 else {
@@ -225,21 +222,21 @@ class AdminView extends View {
     _requestUsersPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuUser.className   = "selected";
+        this.ui.menuUser.className     = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
 
-        let sponsoringLabel = document.createElement("P");
-        let sponsoringSpan = document.createElement("SPAN");
-        let sponsoring = document.createElement("BUTTON");
-        let list = document.createElement("UL");
+        let sponsoringLabel            = document.createElement("P");
+        let sponsoringSpan             = document.createElement("SPAN");
+        let sponsoring                 = document.createElement("BUTTON");
+        let list                       = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
-            let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
-            let element       = document.createElement("LI");
-            let rm            = document.createElement("IMG");
-            rm.src            = "/static/img/utils/trash.svg";
+            let admin                  = this.info.USER[i].ADMIN ? "Admin" : "User";
+            let element                = document.createElement("LI");
+            let rm                     = document.createElement("IMG");
+            rm.src                     = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
                 window.app.deleteUser(that.info.USER[i].ID, function() {
                     let that = this;
@@ -259,22 +256,23 @@ class AdminView extends View {
                     );
                 });
             });
-            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
-                                "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
-                                "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER + "<br>" +
-                                "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
-                                "Joined on: " + this.info.USER[i].JOINED + "<br>" +
-                                "Last login: " + this.info.USER[i].LAST_LOGIN;
+            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER + "<br>" +
+                                         "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
+                                         "Joined on: " + this.info.USER[i].JOINED + "<br>" +
+                                         "Last login: " + this.info.USER[i].LAST_LOGIN;
+
             element.appendChild(rm);
             list.appendChild(element);
         }
 
-        let status = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
-        sponsoringLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
-            "<br>" +
-            "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
-            "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
-        sponsoring.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
+        sponsoringLabel.innerHTML      = "<b>Sponsoring option on subscribe</b><br>" +
+                                         "<br>" +
+                                         "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
+                                         "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
+        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -305,24 +303,24 @@ class AdminView extends View {
         this.ui.rmLibButton               = document.createElement("BUTTON");
 
         this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
-            "<br>" +
-            "After you made modification on files located in a library folder, use this command to perform a rescan.<br>" +
-            "This command will rescan all libraries in the database.";
+                                            "<br>" +
+                                            "After you made modification on files located in a library folder, use this command to perform a rescan.<br>" +
+                                            "This command will rescan all libraries in the database.";
         this.ui.rescanLibButton.innerHTML = "RESCAN ALL LIBRARIES";
         this.ui.rmLibLabel.innerHTML      = "<b>Remove libraries</b><br>" +
-            "<br>" +
-            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
-            "This command will erase all libraries in the database.";
+                                            "<br>" +
+                                            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
+                                            "This command will erase all libraries in the database.";
         this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
 
-        let list = document.createElement("UL");
+        let list                          = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
-            let element       = document.createElement("LI");
-            let rm            = document.createElement("IMG");
-            rm.src            = "/static/img/utils/trash.svg";
-            let deletedID     = that.info.LIBRARIES[i].ID;
+            let element                   = document.createElement("LI");
+            let rm                        = document.createElement("IMG");
+            rm.src                        = "/static/img/utils/trash.svg";
+            let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
                     that._updateAdminInfo(function() {
@@ -330,8 +328,8 @@ class AdminView extends View {
                     });
                 });
             });
-            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
-                                this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
+            element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
+                                            this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
 
             element.appendChild(rm);
             list.appendChild(element);
@@ -362,7 +360,7 @@ class AdminView extends View {
     _requestSCPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuSC.className   = "selected";
+        this.ui.menuSC.className       = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
 
         this.ui.apiKeyLabel            = document.createElement("P");
@@ -378,30 +376,27 @@ class AdminView extends View {
 
         this.ui.apiKeyField.type       = "text";
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
-
         this.ui.apiKeyField.type       = "text";
         this.ui.bufferField.value      = this.info.BUFFER_PATH;
-
         this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
-            "<br>" +
-            "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
-            "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
-        this.ui.bufferLabel.innerHTML  = "<b>Buffer path</b><br>" +
-            "<br>" +
-            "The buffer folder is the one selected to upload file in.<br>" +
-            "Please fill the following field with the buffer path.";
-        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
-            "<br>" +
-            "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
-            "This command will perform a rescan on each SyncThing folder.";
-        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
-            "<br>" +
-            "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
-            "This command will open the SyncThing instance right here, in a modal.";
-
+                                         "<br>" +
+                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
+                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
+        this.ui.bufferLabel.innerHTML  = "<b>Buffer path</b><br>" +
+                                         "<br>" +
+                                         "The buffer folder is the one selected to upload file in.<br>" +
+                                         "Please fill the following field with the buffer path.";
         this.ui.bufferButton.innerHTML = "SUBMIT";
+        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
+                                         "<br>" +
+                                         "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
+                                         "This command will perform a rescan on each SyncThing folder.";
         this.ui.rescanButton.innerHTML = "RESCAN";
+        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
+                                         "<br>" +
+                                         "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
+                                         "This command will open the SyncThing instance right here, in a modal.";
         this.ui.openSCButton.innerHTML = "OPEN";
 
         this.ui.content.appendChild(this.ui.contentTitle);
@@ -436,10 +431,10 @@ class AdminView extends View {
     _requestWishPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuWish.className   = "selected";
+        this.ui.menuWish.className     = "selected";
         this.ui.contentTitle.innerHTML = "Wishes management";
 
-        let list = document.createElement("UL");
+        let list                       = document.createElement("UL");
 
         let that = this;
         JSONParsedPostRequest(
@@ -455,30 +450,18 @@ class AdminView extends View {
                  *
                  *     PATH        : string
                  * } */
-                if (response.DONE) {/*
-                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
-                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
-                                    window.app.playlists.splice(j, 1);
-                                    break;
-                                }
-                            }
-
-                            let self = that;
-                            that._updateAdminInfo(function() {
-                                self._requestLibrariesPage();
-                            });
-                        */
+                if (response.DONE) {
                     for (let i = 0; i < response.RESULT.length; ++i) {
-                        let element       = document.createElement("LI");
-                        let accept = document.createElement("IMG");
-                        let refuse = document.createElement("IMG");
+                        let element        = document.createElement("LI");
+                        let accept         = document.createElement("IMG");
+                        let refuse         = document.createElement("IMG");
 
-                        element.id = "wishEntry";
-                        accept.id = "accept";
-                        refuse.id = "refuse";
+                        element.id         = "wishEntry";
+                        accept.id          = "accept";
+                        refuse.id          = "refuse";
 
-                        element.innerHTML = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
-                                            "<b>" + response.RESULT[i].TEXT + "</b><br>";
+                        element.innerHTML  = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
+                                             "<b>" + response.RESULT[i].TEXT + "</b><br>";
 
                         switch (response.RESULT[i].STATUS) {
                             case 0:
@@ -538,7 +521,7 @@ class AdminView extends View {
             "ajax/setWishStatus/",
             JSON.stringify({
                 WISH_ID: wishID,
-                STATUS: status
+                STATUS:  status
             }),
             function(response) {
                 /* response = {

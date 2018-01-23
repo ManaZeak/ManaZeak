@@ -9,9 +9,7 @@
 class StatsView extends View {
 
     constructor() {
-
         super();
-
         this._createUI();
     }
 
@@ -23,10 +21,10 @@ class StatsView extends View {
      * desc   : Fetch statistics from server
      **/
     fetchStats() {
-        let that = this;
         let modal = new Modal("fetchStats");
         modal.open();
 
+        let that = this;
         JSONParsedGetRequest(
             "ajax/getUserStats/",
             function(response) {
@@ -52,8 +50,8 @@ class StatsView extends View {
                     that.ui.userName.innerHTML    = response.USERNAME;
                     that.ui.totalPlayed.innerHTML = "Tracks played : " + response.NB_TRACK_LISTENED;
                     that.ui.totalPushed.innerHTML = "Tracks uploaded : " + response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                        Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
-                        "% of all the music here)";
+                                                    Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
+                                                    "% of all the music here)";
                     that._updatePrefArtistsList(response.PREF_ARTISTS);
                     that._updatePrefGenresList(response.PREF_GENRES);
                     that._updatePrefTracksList(response.PREF_TRACKS);
@@ -106,16 +104,14 @@ class StatsView extends View {
         this.ui.container.id          = "stats";
         this.ui.menu.id               = "leftMenu";
         this.ui.content.id            = "content";
-
         this.ui.menuTitle.innerHTML   = "Statistics";
-        this.ui.menuArtist.innerHTML = "Artist";
-        this.ui.menuTrack.innerHTML  = "Track";
-        this.ui.menuGenre.innerHTML  = "Genre";
+        this.ui.menuArtist.innerHTML  = "Artist";
+        this.ui.menuTrack.innerHTML   = "Track";
+        this.ui.menuGenre.innerHTML   = "Genre";
 
         this.ui.menuList.appendChild(this.ui.menuArtist);
         this.ui.menuList.appendChild(this.ui.menuTrack);
         this.ui.menuList.appendChild(this.ui.menuGenre);
-
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
         this.ui.container.appendChild(this.ui.menu);
@@ -192,7 +188,6 @@ class StatsView extends View {
                     else {
                         prefArtistsLabel.innerHTML     = "Top Artists";
                         leastArtistsLabel.innerHTML    = "Flop Artists";
-
                         that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
                         that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
                     }
@@ -239,7 +234,6 @@ class StatsView extends View {
         this.ui.content.appendChild(genresRight);
 
         let that = this;
-
         JSONParsedGetRequest(
             "stats/getUserPrefGenres/",
             function(response) {
@@ -261,7 +255,6 @@ class StatsView extends View {
                     else {
                         prefGenresLabel.innerHTML      = "Top Genres";
                         leastGenresLabel.innerHTML     = "Flop Genres";
-
                         that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
                         that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
                     }
@@ -330,7 +323,6 @@ class StatsView extends View {
                     else {
                         prefTracksLabel.innerHTML      = "Top Tracks";
                         leastTracksLabel.innerHTML     = "Flop Tracks";
-
                         that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
                         that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
                     }
@@ -375,6 +367,7 @@ class StatsView extends View {
                 else {
                     entry.innerHTML =  counter + ". Untagged artist (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
                 }
+
                 ++counter;
                 ui.appendChild(entry);
             }

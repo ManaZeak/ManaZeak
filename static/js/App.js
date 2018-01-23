@@ -7,9 +7,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class App extends MzkObject {
+
     constructor() {
         super();
-
         this.cookies          = getCookies();
         this.user             = new User();
         this.dragdrop         = new DragDrop(document.body);
@@ -23,9 +23,7 @@ class App extends MzkObject {
         this.cssFiles         = {};
         this.appViews         = {};
         this._createDefaultViews();
-
-        this.shortcutMaestro = new ShortcutMaestro();
-
+        this.shortcutMaestro  = new ShortcutMaestro();
         this.availableViews   = {
             LIST: {
                 index: 0,
@@ -36,21 +34,10 @@ class App extends MzkObject {
                 class: null
             }
         };
-
         document.body.appendChild(this.mainContainer);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : adjustVolume (public)
-     * class  : App
-     * desc   : Adjust ManaZeak volume
-     * arg    : {float} amount - Value between 0 and 1
-     **/
-    adjustVolume(amount) {
-        this.setVolume(this.player.getPlayer().volume + amount);
-    }
 
     /**
      * method : addTracksToPlaylist (public)
@@ -60,13 +47,13 @@ class App extends MzkObject {
      *          {array}  tracks
      **/
     addTracksToPlaylist(playlist, tracks) {
-
-        let ids = new Array(tracks.length);
-        let names = '';
-        for(let i = 0; i < tracks.length; i++) {
+        let ids    = new Array(tracks.length);
+        let names  = '';
+        for (let i = 0; i < tracks.length; ++i) {
             ids[i] = tracks[i].id.track;
             names += tracks[i].title + ',';
         }
+
         JSONParsedPostRequest(
             "ajax/addTracksToPlaylist/",
             JSON.stringify({
@@ -83,11 +70,23 @@ class App extends MzkObject {
                  * } */
                 if (response.DONE) {
                     new Notification("INFO", "Tracks added to " + playlist.name, names + " have been added to " + playlist.name + ".");
-                        playlist.getPlaylistsTracks();
+                    playlist.getPlaylistsTracks();
                 } else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
                 }
-            });
+            }
+        );
+    }
+
+
+    /**
+     * method : adjustVolume (public)
+     * class  : App
+     * desc   : Adjust ManaZeak volume
+     * arg    : {float} amount - Value between 0 and 1
+     **/
+    adjustVolume(amount) {
+        this.setVolume(this.player.getPlayer().volume + amount);
     }
 
 
@@ -131,7 +130,7 @@ class App extends MzkObject {
      **/
     changePlaylist(playlistID) {
         let newActive = playlistID != null ? this.playlists.get(playlistID) : this.playlists.getDefault();
-        if(newActive) {
+        if (newActive) {
             this.activePlaylist = newActive;
             this.activePlaylist.activate();
             return true;
@@ -149,13 +148,20 @@ class App extends MzkObject {
      *          {bool} previous - For server about history
      **/
     changeTrack(track, previous) {
-        if (track == null) { return false; }
+        if (track == null) {
+            return false;
+        }
 
-        let that          = this;
-        let lastTrackPath = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
+        let that            = this;
+        let lastTrackPath   = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
 
-        if (lastTrackPath !== null) { lastTrackPath = lastTrackPath.value; }
-        else                        { lastTrackPath = "None";              }
+        if (lastTrackPath !== null) {
+            lastTrackPath   = lastTrackPath.value;
+        }
+
+        else {
+            lastTrackPath   = "None";
+        }
 
         let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
@@ -186,6 +192,7 @@ class App extends MzkObject {
                 }
             }
         );
+
         return true;
     }
 
@@ -253,8 +260,10 @@ class App extends MzkObject {
                 if (response.DONE) {
                     that.playlists.remove(playlist.id);
                     let nextPlaylist = that.playlists.getDefault();
-                    if(nextPlaylist != null)
+                    if (nextPlaylist != null) {
                         that.changePlaylist(nextPlaylist.id);
+                    }
+
                     else {
                         that.mainContainer.innerHTML = '';
                         that.requestNewLibrary();
@@ -303,8 +312,12 @@ class App extends MzkObject {
         );
     }
 
+
     /**
-     *
+     * method : downloadTrack (public)
+     * class  : App
+     * desc   : Download a single track
+     * arg    : {object} track - The track to download
      **/
     downloadTrack(track) {
         JSONParsedPostRequest(
@@ -321,29 +334,36 @@ class App extends MzkObject {
                  *     PATH      : string
                  * } */
                 if (response.DONE) {
-                    let dl = document.createElement("A");
-
-                    dl.href = response.PATH;
+                    let dl      = document.createElement("A");
+                    dl.href     = response.PATH;
                     dl.download = response.PATH.replace(/^.*[\\\/]/, '');
                     document.body.appendChild(dl);
                     dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
                     document.body.removeChild(dl);
                     //TODO: What is ZEAZZZZ ???!!!
                     dl.remove();
-                } else {
+                }
+
+                else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
     }
 
+
     /**
-     *
+     * method : downloadTracksZip (public)
+     * class  : App
+     * desc   : Download mutliple tracks
+     * arg    : {[object]} tracks - The tracks to download
      **/
     downloadTracksZip(tracks) {
-        let ids = new Array(tracks.length);
-        for(let i = 0; i < tracks.length; ++i)
+        let ids    = new Array(tracks.length);
+        for (let i = 0; i < tracks.length; ++i) {
             ids[i] = tracks[i].id.track;
+        }
+
         JSONParsedPostRequest(
             "ajax/multiTrackDownload/",
             JSON.stringify({
@@ -358,21 +378,23 @@ class App extends MzkObject {
                  *     PATH      : string
                  * } */
                 if (response.DONE) {
-                    let dl = document.createElement("A");
-
-                    dl.href = response.PATH;
+                    let dl      = document.createElement("A");
+                    dl.href     = response.PATH;
                     dl.download = response.PATH.replace(/^.*[\\\/]/, '');
                     document.body.appendChild(dl);
                     dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
                     document.body.removeChild(dl);
                     //TODO: What is ZEAZZZZ ???!!!
                     dl.remove();
-                } else {
+                }
+
+                else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
     }
+
 
     /**
      * method : fastForward (public)
@@ -383,6 +405,7 @@ class App extends MzkObject {
     fastForward(amount) {
         this.player.getPlayer().currentTime += amount;
     }
+
 
     /**
      * method : getPlaylistFromId (public)
@@ -444,8 +467,7 @@ class App extends MzkObject {
         document.body.appendChild(this.footBar.getFootBar());
 
         let that = this;
-        // Loading playlists
-        JSONParsedGetRequest(
+        JSONParsedGetRequest( // Loading playlists
             "ajax/getPlaylists/",
             function(response) {
                 /* response = {
@@ -508,16 +530,24 @@ class App extends MzkObject {
             return;
         }
 
-        if (this.queue.isEmpty() == false) { this.popQueue();                     }
-        else                               { this.activePlaylist.playNextTrack(); }
+        if (this.queue.isEmpty() == false) {
+            this.popQueue();
+        }
+
+        else {
+            this.activePlaylist.playNextTrack();
+        }
     }
+
 
     /**
      * method : playerLoadedMetadata
      * class  : App
      * desc   : fired when the player has loaded the file metadata
      **/
-    playerLoadedMetadata() {}
+    playerLoadedMetadata() {
+
+    }
 
 
     /**
@@ -560,13 +590,13 @@ class App extends MzkObject {
      *          {array}  tracks;
      */
     removeTracksFromPlaylist(playlist, tracks) {
-
-        let ids = new Array(tracks.length);
-        let names = '';
-        for(let i = 0; i < tracks.length; i++) {
+        let ids    = new Array(tracks.length);
+        let names  = '';
+        for (let i = 0; i < tracks.length;0++i ) {
             ids[i] = tracks[i].id.track;
             names += tracks[i].title + ',';
         }
+
         JSONParsedPostRequest(
             "ajax/removeTrackFromPlaylist/",
             JSON.stringify({
@@ -583,8 +613,10 @@ class App extends MzkObject {
                              * } */
                 if (response.DONE) {
                     new Notification("INFO", "Tracks removed from " + playlist.name, names + " have been removed from " + playlist.name + ".");
-                        playlist.getPlaylistsTracks();
-                } else {
+                    playlist.getPlaylistsTracks();
+                }
+
+                else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
                 }
             });
@@ -643,7 +675,6 @@ class App extends MzkObject {
      **/
     requestNewPlaylist() {
         let that = this;
-
         let np = new Playlist(0, null, false, false, undefined, function() {
             that.playlists.add(np);
             that.changePlaylist(np.id);
@@ -658,7 +689,6 @@ class App extends MzkObject {
      **/
     requestNewLibrary() {
         let that = this;
-
         let nl = new Playlist(0, null, true, false, undefined, function() {
             that.playlists.add(nl);
             that.changePlaylist(nl.id);
@@ -780,12 +810,15 @@ class App extends MzkObject {
             case 0:
                 new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
                 break;
+
             case 1:
                 new Notification("INFO", "Change repeat mode", "Repeat one - The current track will be repeated for ever.");
                 break;
+
             case 2:
                 new Notification("INFO", "Change repeat mode", "Repeat all - Repeat your playlist for ever.");
                 break;
+
             default:
                 break;
         }
@@ -803,12 +836,15 @@ class App extends MzkObject {
             case 0:
                 new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
                 break;
+
             case 1:
                 new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
                 break;
+
             case 2:
                 new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
                 break;
+
             default:
                 break;
         }
@@ -888,7 +924,6 @@ class App extends MzkObject {
      * desc   : App key listeners
      **/
     _keyListener() {
-
         let that = this;
         this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
         this.addShortcut(new Shortcut('keydown', 'Semicolon', function() { that.toggleMute(); }));

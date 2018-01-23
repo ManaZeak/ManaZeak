@@ -29,7 +29,6 @@ function extendClass(parent, child) {
  **/
 function precisionRound(value, precision) {
     let multiplier = Math.pow(10, precision || 0);
-
     return Math.round(value * multiplier) / multiplier;
 }
 
@@ -72,10 +71,15 @@ function secondsToTimecode(time) {
 }
 
 
+/**
+ * method : rawSizeToReadableSize (public)
+ * desc   : Transforms a byte integer into a readable value in octet
+ * arg    : {int} size - Size in byte to convert
+ **/
 function rawSizeToReadableSize(size) {
     let readable = 0;
 
-    if (size / 1000000 < 1) {
+    if (size / 1000000 < 1) { // TODO : true division to make here (1024 or smthg like theaz)
         readable = precisionRound(size / 1000, 2) + " Ko";
     }
 
@@ -101,14 +105,21 @@ function sortObjectArrayBy(key, ascending, subobject) {
             b = b[subobject];
         }
 
-        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            return 0;
+        }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         let compare = 0;
-        if (varA > varB)      { compare =  1; }
-        else if (varA < varB) { compare = -1; }
+        if (varA > varB)      {
+            compare =  1;
+        }
+
+        else if (varA < varB) {
+            compare = -1;
+        }
 
         return (!ascending ? (compare * -1) : compare);
     };
@@ -126,7 +137,9 @@ function getCookies() {
         document.cookie.split(';').forEach(function (cookie) {
             let m = cookie.trim().match(/(\w+)=(.*)/);
 
-            if (m !== undefined) { cookies[m[1]] = decodeURIComponent(m[2]); }
+            if (m !== undefined) {
+                cookies[m[1]] = decodeURIComponent(m[2]);
+            }
         });
     }
 
@@ -161,8 +174,13 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
  * arg    : {object} object - The HTML object to toggle
  **/
 function toggleVisibilityLock(object) { //TODO: Move to Overrides
-    if (object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
-    else                                          { addVisibilityLock(object);    }
+    if (object.classList.contains("mzk-visible")) {
+        removeVisibilityLock(object);
+    }
+
+    else {
+        addVisibilityLock(object);
+    }
 }
 
 
@@ -194,8 +212,13 @@ function removeVisibilityLock(object) {
  * arg    : {object} object - The HTML object to toggle
  **/
 function toggleInvisibilityLock(object) { //TODO: Move to Overrides
-    if (object.classList.contains("mzk-visible")) { removeInvisibilityLock(object); }
-    else                                          { addInvisibilityLock(object);    }
+    if (object.classList.contains("mzk-visible")) {
+        removeInvisibilityLock(object);
+    }
+
+    else {
+        addInvisibilityLock(object);
+    }
 }
 
 
@@ -219,6 +242,7 @@ function removeInvisibilityLock(object) {
     object.classList.remove("mzk-hidden");
     object.dataset.mzkLock = 0;
 }
+
 
 /**
  * method : isVisibilityLocked (public)
@@ -303,7 +327,6 @@ function JSONParsedPostRequest(url, message, callback) {
 function renderMoodFile(file, parentDiv, callback) {
     // Credit for this function : "Valodim"
     // https://gist.github.com/Valodim/5225460
-
     let xhr = new XMLHttpRequest();
 
     xhr.open('GET', file, true);

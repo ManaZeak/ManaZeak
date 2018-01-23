@@ -11,7 +11,6 @@
 class Modal extends MzkObject {
 
     constructor(type, data) {
-
         super();
         this.data        = data;
         this.url         = null;
@@ -283,14 +282,14 @@ class Modal extends MzkObject {
         this.editTag = new EditTag(this.ui.container, this.data);
 
         let ui = {
-            foot:                             document.createElement("DIV"),
-                close:                        document.createElement("BUTTON"),
-                save:                         document.createElement("BUTTON")
+            foot:      document.createElement("DIV"),
+                close: document.createElement("BUTTON"),
+                save:  document.createElement("BUTTON")
         };
 
-        ui.foot.className                            = "foot";
-            ui.close.innerHTML                       = "Close";
-            ui.save.innerHTML                        = "Save";
+        ui.foot.className      = "foot";
+            ui.close.innerHTML = "Close";
+            ui.save.innerHTML  = "Save";
 
         ui.foot.appendChild(ui.close);
         ui.foot.appendChild(ui.save);

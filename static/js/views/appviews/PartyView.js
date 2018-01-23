@@ -9,7 +9,6 @@
 class PartyView extends View {
 
     constructor() {
-
         super();
         this.isEnabled = false;
         this._createUI();
@@ -62,7 +61,7 @@ class PartyView extends View {
      **/
     _createUI() {
         this.ui = {
-            container: this.container,
+            container:          this.container,
 
             sparksContainer:    document.createElement("DIV"),
             sparksLayer1:       document.createElement("DIV"),
@@ -87,7 +86,6 @@ class PartyView extends View {
         };
 
         this.ui.container.id             = "party";
-
         // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
         this.ui.sparksContainer.id       = "snow";
         this.ui.sparksLayer1.id          = "snow-layer";
@@ -182,13 +180,12 @@ class PartyView extends View {
      * desc   : Change current track in view
      **/
     _setCurrentTrack(track) {
+        this.ui.trackCover.src           = track.cover;
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
         this.ui.trackComposer.innerHTML  = track.composer;
         this.ui.trackYearAlbum.innerHTML = track.year + " - " + track.album;
         this.ui.trackGenre.innerHTML     = track.genre;
-
-        this.ui.trackCover.src           = track.cover;
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
