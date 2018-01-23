@@ -19,6 +19,7 @@ class PlaylistCollectionEntry {
         this.entry.dataset.childID = playlist.id;
         this.label                 = document.createElement('SPAN');
         this.label.innerHTML       = playlist.getName();
+        this.entry.appendChild(this.label);
 
         if (this.isLibrary) {
             this.entry.className   = "library";
@@ -40,7 +41,6 @@ class PlaylistCollectionEntry {
             this._createOptionButton();
         }
 
-        this.entry.appendChild(this.label);
         container.appendChild(this.entry);
     }
 

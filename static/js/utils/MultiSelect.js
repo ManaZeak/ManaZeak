@@ -105,11 +105,9 @@ class MultiSelect extends MzkObject {
     get() {
         let result = new Array(this.size);
         let ix = 0;
-        for (let i in this.selection) {
-            if (this.selection[i]) {
-                result[++ix] = i;
-            }
-        }
+        for (let i in this.selection)
+            if (this.selection[i])
+                result[ix++] = i;
 
         return result;
     }

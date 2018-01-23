@@ -129,8 +129,10 @@ $topbar-height: 50px;
             }
         }
 
-        div:hover a#gear {
-            opacity: 1;
+        div.playlist, div.library {
+            &:hover a#gear {
+                opacity: 1;
+            }
         }
 
         div.playlist:active,
