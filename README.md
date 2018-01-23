@@ -21,20 +21,22 @@ Finally, if everything is OK with Docker, grab a browser and go to [127.0.0.1/ap
 # Features
 - Basic player (Play/Pause/Stop/Volume/Repeat/Random/Shuffle/Queue)
 - Drag & Drop (to suggest new file on the instance)
+- File support : MPEG3, OGG, FLAC
 - Link with SyncThing (to allow remote synchronisation)
 - Metadata edition (because tagging is life)
 - [MoodBar](https://en.wikipedia.org/wiki/Moodbar) (a way to have a unique visual of an audio file)
 - Playlist management (create/rename/delete)
 - Track(s) downloading (if you want a sweet local array of musical genius)
 - Track suggestion (based on internal statistic)
-- User account system (optionnal sponsoring setting)
+- User account system (optional sponsoring setting)
 - User stats (to know better you musical habits)
 - Views (list/party)
 
 # Scheduled
-- Specific AlbumView
-- Specific GenreView (Like a Top 100 for each genre)
+- File support : WAV
 - ManaCoin intern system
+- ManaGotIt (Automatic player that suggests tracks according to some criteria)
+- Views (Album, Genre (Like a Top 100 for each genre))
 
 # Technologies
 - Django

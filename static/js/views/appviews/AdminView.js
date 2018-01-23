@@ -210,7 +210,7 @@ class AdminView extends View {
     _requestRescanLibraries() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/rescanAllLibraries/",
+            "library/rescanAll/",
             function(response) {
                 /* response = {
                  *     DONE        : bool
@@ -219,11 +219,7 @@ class AdminView extends View {
                  *
                  *     PATH        : string
                  * } */
-                if (response.DONE) {
-                    // TODO
-                }
-
-                else {
+                if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
