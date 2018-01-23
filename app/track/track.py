@@ -189,7 +189,7 @@ def multiTrackDownload(request):
     if request.method == "POST":
         response = json.loads(request.body)
         if 'TRACKS_ID' in response:
-            trackIds = response['IDS']
+            trackIds = response['TRACKS_ID']
             # TODO : create admin option max number of sound to download
             if len(trackIds) > 50:
                 return JsonResponse(errorCheckMessage(False, ""))
