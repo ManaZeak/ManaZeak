@@ -12,7 +12,7 @@ from multiprocessing import Process
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
 from app.models import Library, Playlist, FileType, Album
-from app.track.importer import createMP3Track, createFLACTrack
+from app.track.importer import createMP3Track, createVorbisTrack
 from app.utils import errorCheckMessage, splitTableCustom
 
 
@@ -142,14 +142,14 @@ def scanLibrary(library, playlist, convert):
 
     mp3Files = []
     flacFiles = []
+    oggFiles = []
     for root, dirs, files in os.walk(library.path):
         for file in files:
             if file.lower().endswith('.mp3'):
                 mp3Files.append(os.path.join(root, file))
 
             elif file.lower().endswith('.ogg'):
-                # TODO: implement
-                pass
+                oggFiles.append(os.path.join(root, file))
 
             elif file.lower().endswith('.flac'):
                 flacFiles.append(os.path.join(root, file))
@@ -162,10 +162,10 @@ def scanLibrary(library, playlist, convert):
                 failedItems.append(file)
 
     # TODO, change when implement other file types
-    if len(mp3Files) == 0 and len(flacFiles) == 0:
+    if len(mp3Files) == 0 and len(flacFiles) == 0 and len(oggFiles) == 0:
         return errorCheckMessage(False, "emptyLibrary")
 
-    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, playlist, convert, coverPath, library))
+    scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, oggFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
     scanThread.start()
     data = {
@@ -203,8 +203,8 @@ def deleteAllLibrary(request):
 
 
 # Handler for importing the library
-def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, library):
-    importLibrary(mp3Files, flacFiles, coverPath, convert, playlist.id)
+def scanLibraryProcess(mp3Files, flacFiles, oggFiles, playlist, convert, coverPath, library):
+    importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlist.id)
     playlist.isScanned = True
     playlist.save()
     library.playlist = playlist
@@ -212,7 +212,7 @@ def scanLibraryProcess(mp3Files, flacFiles, playlist, convert, coverPath, librar
 
 
 # Create thread for importing the library into db
-def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
+def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId):
     tracks = []
     albumReference = {}
     tracksInfo = []
@@ -227,6 +227,7 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
 
     mp3FileReference = FileType.objects.get(name="mp3")
     flacFileReference = FileType.objects.get(name="flac")
+    oggFileReference = FileType.objects.get(name="ogg")
 
     print("Started scanning MP3 file")
     threads = []
@@ -253,6 +254,18 @@ def importLibrary(mp3Files, flacFiles, coverPath, convert, playlistId):
         splicedFLAC = splitTableCustom(flacFiles, multiprocessing.cpu_count())
         for flac in splicedFLAC:
             thread = ImportBulkThread(1, flac, convert, flacFileReference, coverPath)
+            threads.append(thread)
+            thread.start()
+    # OGG file processor
+    if len(oggFiles) != 0:
+        procNumber = multiprocessing.cpu_count()
+        while len(oggFiles) < procNumber:
+            procNumber -= 1
+            if procNumber == 0:
+                return
+        splicedOGG = splitTableCustom(oggFiles, multiprocessing.cpu_count())
+        for ogg in splicedOGG:
+            thread = ImportBulkThread(1, ogg, convert, oggFileReference, coverPath)
             threads.append(thread)
             thread.start()
 
@@ -302,6 +315,6 @@ class ImportBulkThread(threading.Thread):
         if self.fileType == 0:  # MP3 files
             for file in self.files:
                 self.tracks.append(createMP3Track(file, self.convert, self.fileReference, self.coverPath))
-        elif self.fileType == 1:  # FLAC files
+        elif self.fileType == 1:  # Vorbis files
             for file in self.files:
-                self.tracks.append(createFLACTrack(file, self.fileReference, self.coverPath))
+                self.tracks.append(createVorbisTrack(file, self.fileReference, self.coverPath))

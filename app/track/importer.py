@@ -6,6 +6,7 @@ from django.utils.html import strip_tags
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
+from mutagen.oggvorbis import OggVorbis
 
 from app.models import FileType
 from app.utils import processVorbisTag
@@ -134,11 +135,17 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
 
 
 # Read a file and put the metadata information into memory
-def createFLACTrack(filePath, fileTypeId, coverPath):
+def createVorbisTrack(filePath, fileTypeId, coverPath):
     track = LocalTrack()
+    ogg = False
+
+    if filePath.endswith('.flac'):
+        audioFile = FLAC(filePath)
+    else:
+        audioFile = OggVorbis(filePath)
+        ogg = True
 
     # --- FILE INFORMATION ---
-    audioFile = FLAC(filePath)
     track.location = filePath
     track.size = os.path.getsize(filePath)
     track.bitRate = audioFile.info.bitrate
@@ -152,15 +159,28 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
     track.moodbar = "../static/mood/" + md5 + ".mood"
 
     # --- COVER ---
-    pictures = audioFile.pictures
-    if len(pictures) != 0:
+    if not ogg:
+        picture = audioFile.pictures
+        picture = picture[0].data
+        pictureName = picture
+    else:
+        picture = None
+        # TODO : fix cover import for ogg files.
+        pass
+        if 'METADATA_BLOCK_PICTURE' in audioFile:
+            picture = audioFile['METADATA_BLOCK_PICTURE'][0]
+            print(picture)
+            pictureName = str(audioFile['METADATA_BLOCK_PICTURE']).encode("ascii", "ignore")
+        else:
+            picture = pictureName = ""
+    if len(picture) != 0:
         # Creating md5 hash for the cover
         md5Name = hashlib.md5()
-        md5Name.update(pictures[0].data)
+        md5Name.update(pictureName)
         # Check if the cover already exists and save it
         if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
             with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
-                img.write(pictures[0].data)
+                img.write(picture)
         track.coverLocation = md5Name.hexdigest() + ".jpg"
 
     if 'TITLE' in audioFile:
@@ -224,6 +244,8 @@ def createFLACTrack(filePath, fileTypeId, coverPath):
         albumTitle = processVorbisTag(audioFile['ALBUM'])
         track.album = albumTitle.replace('\n', '')
 
+    if ogg:
+        print(track)
     return track
 
 
@@ -277,7 +299,10 @@ def setUploader(path, userName):
             audioTag.add('COMM')
         audioTag['COMM'].text[0] = "Uploaded by : " + userName
         audioTag.save()
-    # TODO : also process flac
+    if path.endswith('.flac'):
+        audioTag = FLAC(path)
+        audioTag['COMMENT'] = "Uploaded by : " + userName
+        audioTag.save()
 
 
 class LocalTrack:
