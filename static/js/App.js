@@ -592,7 +592,7 @@ class App extends MzkObject {
     removeTracksFromPlaylist(playlist, tracks) {
         let ids    = new Array(tracks.length);
         let names  = '';
-        for (let i = 0; i < tracks.length;0++i ) {
+        for (let i = 0; i < tracks.length; ++i ) {
             ids[i] = tracks[i].id.track;
             names += tracks[i].title + ',';
         }
