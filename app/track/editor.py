@@ -42,11 +42,11 @@ class Information:
 def updateDBInfo(response, track):
     tags = Information()
     # Changing tags in the database
-    if 'TITLE' in response:
+    if 'TITLE' in response and response['TITLE'] != '':
         tags.trackTitle = strip_tags(response['TITLE']).lstrip().rstrip()
         track.title = tags.trackTitle
 
-    if 'ARTISTS' in response:
+    if 'ARTISTS' in response and response['ARTISTS'] != '':
         tags.trackArtist = strip_tags(response['ARTISTS']).lstrip().rstrip().split(',')
         artists = []
         for artist in tags.trackArtist:
@@ -59,34 +59,34 @@ def updateDBInfo(response, track):
         for artist in artists:
             track.artist.add(artist)
 
-    if 'PERFORMER' in response:
+    if 'PERFORMER' in response and response['PERFORMER'] != '':
         tags.trackPerformer = strip_tags(response['PERFORMER']).lstrip().rstrip()
         track.performer = tags.trackPerformer
 
-    if 'COMPOSER' in response:
+    if 'COMPOSER' in response and response['COMPOSER'] != '':
         tags.trackComposer = strip_tags(response['COMPOSER']).lstrip().rstrip()
         track.composer = tags.trackComposer
 
-    if 'YEAR' in response:
+    if 'YEAR' in response and response['YEAR'] != '':
         tags.trackYear = checkIntValueError(response['YEAR'])
         track.year = tags.trackYear
 
-    if 'TRACK_NUMBER' in response:
+    if 'TRACK_NUMBER' in response and response['TRACK_NUMBER'] != '':
         tags.trackNumber = checkIntValueError(response['TRACK_NUMBER'])
         track.number = tags.trackNumber
 
-    if 'BPM' in response:
+    if 'BPM' in response and response['BPM'] != '':
         track.bpm = checkIntValueError(response['BPM'])
 
-    if 'LYRICS' in response:
+    if 'LYRICS' in response and response['LYRICS'] != '':
         tags.lyrics = strip_tags(response['LYRICS']).lstrip().rstrip()
         track.lyrics = tags.lyrics
 
-    if 'COMMENT' in response:
+    if 'COMMENT' in response and response['COMMENT'] != '':
         tags.comment = strip_tags(response['COMMENT']).lstrip().rstrip()
         track.comment = tags.comment
 
-    if 'GENRE' in response:
+    if 'GENRE' in response and response['GENRE'] != '':
         tags.trackGenre = strip_tags(response['GENRE']).lstrip().rstrip()
         if Genre.objects.filter(name=tags.trackGenre).count() == 0:
             genre = Genre()
@@ -95,8 +95,8 @@ def updateDBInfo(response, track):
         genre = Genre.objects.get(name=tags.trackGenre)
         track.genre = genre
 
-    print("resp", response)
-    if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response:
+    if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response and response['ALBUM_TITLE'] != '' \
+            and response['ALBUM_ARTISTS'] != '':
         tags.albumTitle = strip_tags(response['ALBUM_TITLE']).lstrip().rstrip()
         tags.albumArtist = strip_tags(response['ALBUM_ARTISTS']).lstrip().rstrip().split(',')
         if Album.objects.filter(title=tags.albumTitle).count() == 0:
@@ -112,15 +112,15 @@ def updateDBInfo(response, track):
                 newArtist.save()
             album.artist.add(Artist.objects.get(name=artist))
 
-        if 'ALBUM_TOTAL_DISC' in response:
+        if 'ALBUM_TOTAL_DISC' in response and response['ALBUM_TOTAL_DISC'] != '':
             tags.albumTotalDisc = checkIntValueError(response['ALBUM_TOTAL_DISC'])
             album.totalDisc = tags.albumTotalDisc
 
-        if 'DISC_NUMBER' in response:
+        if 'DISC_NUMBER' in response and response['DISC_NUMBER'] != '':
             tags.albumDiscNumber = checkIntValueError(response['DISC_NUMBER'])
             track.discNumber = tags.albumDiscNumber
 
-        if 'ALBUM_TOTAL_TRACK' in response:
+        if 'ALBUM_TOTAL_TRACK' in response and response['ALBUM_TOTAL_TRACK'] != '':
             tags.albumTotalTrack = checkIntValueError(response['ALBUM_TOTAL_TRACK'])
             album.totalTrack = tags.albumTotalTrack
         album.save()
@@ -148,9 +148,9 @@ def updateFileMetadata(track, tags):
             if tags.albumTotalTrack is not None:
                 audioTag.add(TRCK(text=str(tags.trackNumber) + "/" + str(tags.albumTotalTrack)))
             else:
-                audioTag.add(TRCK(text=tags.trackNumber))
+                audioTag.add(TRCK(text=str(tags.trackNumber)))
         if tags.trackBPM is not None:
-            audioTag.add(TBPM(text=tags.trackBPM))
+            audioTag.add(TBPM(text=str(tags.trackBPM)))
         if tags.lyrics is not None:
             audioTag.add(USLT(text=tags.lyrics))
         if tags.trackGenre is not None:
