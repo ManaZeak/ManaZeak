@@ -55,8 +55,12 @@ class EditTag {
         this.send     = [];
         this.entries  = [];
         this.selector = new MultiSelect();
+        this.keepStr  = '< keep >';
+
         this._createUI(container);
         this._eventListener();
+
+        this.selector.add(0); // Initializing modal with first track value
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -79,25 +83,30 @@ class EditTag {
             send.push(this.data[0].id.track);
         }
 
+        let reqArgs = { TRACKS_ID: send };
+        let fields = {
+            TITLE:             this.ui.cTitleInput.value,
+            YEAR:              this.ui.rYearNumber.value,
+            COMPOSER:          this.ui.tagComposerField.value,
+            PERFORMER:         this.ui.tagPerformerField.value,
+            TRACK_NUMBER:      this.ui.rTrackNumber.value,
+            ALBUM_TOTAL_TRACK: this.ui.rTrackTotal.value,
+            DISC_NUMBER:       this.ui.rDiscNumber.value,
+            ALBUM_TOTAL_DISC:  this.ui.rDiscTotal.value,
+            LYRICS:            this.ui.lyrField.value,
+            COMMENT:           this.ui.comField.value,
+            ALBUM_TITLE:       this.ui.tagAlbumField.value,
+            GENRE:             this.ui.tagGenreField.value,
+            ARTISTS:           this.ui.cArtistInput.value,
+            ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
+        };
+        for(let f in fields)
+            if(fields[f] != this.keepStr)
+                reqArgs[f] = fields[f];
+
         JSONParsedPostRequest(
             "ajax/changeTracksMetadata/",
-            JSON.stringify({
-                TRACKS_ID:         send,
-                TITLE:             this.ui.cTitleInput.value,
-                YEAR:              this.ui.rYearNumber.value,
-                COMPOSER:          this.ui.tagComposerField.value,
-                PERFORMER:         this.ui.tagPerformerField.value,
-                TRACK_NUMBER:      this.ui.rTrackNumber.value,
-                ALBUM_TOTAL_TRACK: this.ui.rTrackTotal.value,
-                DISC_NUMBER:       this.ui.rDiscNumber.value,
-                ALBUM_TOTAL_DISC:  this.ui.rDiscTotal.value,
-                LYRICS:            this.ui.lyrField.value,
-                COMMENT:           this.ui.comField.value,
-                ALBUM_TITLE:       this.ui.tagAlbumField.value,
-                GENRE:             this.ui.tagGenreField.value,
-                ARTISTS:           this.ui.cArtistInput.value,
-                ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
-            }),
+            JSON.stringify(reqArgs),
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -125,7 +134,6 @@ class EditTag {
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
-        this._updateFields(this.data[0]); // Initializing modal with first track value
 
         if (this.data.length > 1) {
             this.entries = new Array(this.data.length);
@@ -156,6 +164,10 @@ class EditTag {
                 that.entries[i].setIsSelected(false);
             }
         });
+        this.selector.listen('add', function() {
+            that._updateFields();
+        });
+
         this.ui.list.addEventListener('click', function(event) {
             if (event.target == that.ui.list) {
                 return;
@@ -172,7 +184,6 @@ class EditTag {
 
             let ix     = target.dataset.childID;
             that.entries[ix].setIsSelected(that.selector.add(ix, event.ctrlKey));
-            that._updateFields(that.entries[ix].track);
         });
     }
 
@@ -398,29 +409,80 @@ class EditTag {
      * desc   : Update every fields in edit modal
      * arg    : {object} track - The track to take data from
      **/
-    _updateFields(track) {
-        this.ui.lCover.src                 = track.cover;
-        this.ui.cTitleInput.value          = track.title;
-        this.ui.rYearNumber.value          = track.year;
-        this.ui.tagComposerField.value     = track.composer;
-        this.ui.tagPerformerField.value    = track.performer;
-        this.ui.rTrackNumber.value         = track.track;
-        this.ui.rTrackTotal.value          = track.trackTotal;
-        this.ui.rDiscNumber.value          = track.disc;
-        this.ui.rDiscTotal.value           = track.discTotal;
-        this.ui.lyrField.value             = track.lyrics;
-        this.ui.comField.value             = track.comment;
-        this.ui.tagAlbumField.value        = track.album;
-        this.ui.tagGenreField.value        = track.genre;
-        this.ui.cArtistInput.value         = track.artist;
-        this.ui.tagAlbumArtistsField.value = track.albumArtist;
-        this.ui.lineOne.innerHTML          = secondsToTimecode(track.duration) + " - " +
-                                             rawSizeToReadableSize(track.size) + " - " +
-                                             track.fileType + " - " +
-                                             Math.round(track.bitRate / 1000) + " kbps - " +
-                                             track.sampleRate + " Hz";
-        this.ui.lineTwo.innerHTML          = "This track has been played " + track.playCount + " times (" +
-                                             secondsToTimecode(track.playCount * track.duration) + ")";
+    _updateFields() {
+
+        let tracks = this.selector.get();
+        let tmp;
+
+        let fields = {
+            cover: '',
+            title: '',
+            year: '',
+            composer: '',
+            performer: '',
+            track: '',
+            trackTotal: '',
+            disc: '',
+            discTotal: '',
+            lyrics: '',
+            comment: '',
+            album: '',
+            genre: '',
+            artist: '',
+            albumArtist: ''
+        };
+
+        if(tracks[0])
+        {
+            tmp = this.entries[tracks[0]].track;
+
+            for(let f in fields)
+                fields[f] = tmp[f];
+
+            //Show these infos when there is only one track selected;
+            if(tracks.length == 1) {
+                this.ui.lineOne.innerHTML = secondsToTimecode(tmp.duration) + " - " +
+                                            rawSizeToReadableSize(tmp.size) + " - " +
+                                            tmp.fileType + " - " +
+                                            Math.round(tmp.bitRate / 1000) + " kbps - " +
+                                            tmp.sampleRate + " Hz";
+                this.ui.lineTwo.innerHTML = "This track has been played " + tmp.playCount + " times (" +
+                                            secondsToTimecode(tmp.playCount * tmp.duration) + ")";
+                this.ui.lineOne.classList.remove('multiple');
+                this.ui.lineTwo.classList.remove('multiple');
+            } else {
+                this.ui.lineOne.classList.add('multiple');
+                this.ui.lineTwo.classList.add('multiple');
+            }
+        }
+
+        for(let i = 1; i < tracks.length; ++i) {
+            tmp = this.entries[tracks[i]].track;
+
+            for(let f in fields)
+                if(fields[f] != tmp[f])
+                    fields[f] = this.keepStr;
+        }
+
+        if(fields.cover == this.keepStr) //TODO: default image for <keep>
+            this.ui.lCover.src                 = 'FEAX_ZEAZ_PLEAZ';
+        else
+            this.ui.lCover.src                 = fields.cover;
+
+        this.ui.cTitleInput.value          = fields.title;
+        this.ui.rYearNumber.value          = fields.year;
+        this.ui.tagComposerField.value     = fields.composer;
+        this.ui.tagPerformerField.value    = fields.performer;
+        this.ui.rTrackNumber.value         = fields.track;
+        this.ui.rTrackTotal.value          = fields.trackTotal;
+        this.ui.rDiscNumber.value          = fields.disc;
+        this.ui.rDiscTotal.value           = fields.discTotal;
+        this.ui.lyrField.value             = fields.lyrics;
+        this.ui.comField.value             = fields.comment;
+        this.ui.tagAlbumField.value        = fields.album;
+        this.ui.tagGenreField.value        = fields.genre;
+        this.ui.cArtistInput.value         = fields.artist;
+        this.ui.tagAlbumArtistsField.value = fields.albumArtist;
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //

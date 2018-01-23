@@ -188,9 +188,18 @@
 
     .info {
         text-align: center;
-        height: auto;
+        height: 30px;
         width: 100%;
         padding: 5px 0;
+
+        & > p {
+            opacity: 1;
+            transition: opacity 0.2s;
+
+            &.multiple {
+                opacity: 0;
+            }
+        }
     }
 
 
