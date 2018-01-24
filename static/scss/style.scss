@@ -42,6 +42,14 @@ html, body {
 
     & > .mzk-view-hide {
         z-index: -1;
+        height: 0 !important;
+    }
+
+    .mzk-view-hide .columnHeader {
+        height: 0;
+        line-height: 0;
+        border-bottom: 0;
+        padding: 0;
+        opacity: 0;
     }
 }
-

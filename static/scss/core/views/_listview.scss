@@ -36,11 +36,9 @@ $listView-padding: 0 5%;
 /* listview */
 #listView {
     box-sizing: border-box;
-    height: calc(100% - 35px);
+    max-height: calc(100% - 35px);
     overflow-y: auto;
     padding: $listView-padding;
-    position: absolute;
-    top: 35px;
     width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */
@@ -55,8 +53,6 @@ $listView-padding: 0 5%;
     height: 35px;
     line-height: 35px;
     padding: $listView-padding;
-    position: absolute;
-    top: 0;
     width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */

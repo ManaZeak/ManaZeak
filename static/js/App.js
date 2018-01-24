@@ -208,13 +208,15 @@ class App extends MzkObject {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-        for(let i = 0; i < this.mainContainer.children.length; ++i)
+        for (let i = 0; i < this.mainContainer.children.length; ++i) {
             this.mainContainer.children[i].classList.add('mzk-view-hide');
+        }
 
         let container = view.getContainer();
         container.classList.remove('mzk-view-hide');
-        if(container.parentNode != this.mainContainer)
+        if (container.parentNode != this.mainContainer) {
             this.mainContainer.appendChild(container);
+        }
     }
 
 
