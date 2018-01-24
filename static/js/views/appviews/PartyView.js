@@ -10,7 +10,6 @@ class PartyView extends View {
 
     constructor() {
         super();
-        this.isEnabled = false;
         this._createUI();
         this._eventListener();
     }
@@ -180,7 +179,6 @@ class PartyView extends View {
         let that = this;
         this.ui.close.addEventListener("click", function() {
             document.body.removeChild(that.ui.container);
-            that.isEnabled = false;
             window.app.restorePageContent();
         });
         this.ui.play.addEventListener("click", function() {
@@ -224,8 +222,5 @@ class PartyView extends View {
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
-
-    getIsEnabled()       { return this.isEnabled;    }
-    setIsEnabled(enabled) { this.isEnabled = enabled; }
 
 }

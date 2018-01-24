@@ -201,7 +201,6 @@ class App extends MzkObject {
         return true;
     }
 
-
     /**
      * method : changeView (public)
      * class  : App
@@ -209,15 +208,13 @@ class App extends MzkObject {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-        if (view.getContainer().id === "party") {
-            view.setIsEnabled(true);
-            document.body.appendChild(view.getContainer());
-        }
+        for(let i = 0; i < this.mainContainer.children.length; ++i)
+            this.mainContainer.children[i].classList.add('mzk-view-hide');
 
-        else {
-            this.mainContainer.innerHTML = '';
-            this.mainContainer.appendChild(view.getContainer());
-        }
+        let container = view.getContainer();
+        container.classList.remove('mzk-view-hide');
+        if(container.parentNode != this.mainContainer)
+            this.mainContainer.appendChild(container);
     }
 
 
@@ -530,10 +527,6 @@ class App extends MzkObject {
      * desc   : Get next track
      **/
     next() {
-        if (this.appViews["mzk_party"].getIsEnabled()) {
-            return;
-        }
-
         if (this.queue.isEmpty() == false) {
             this.popQueue();
         }

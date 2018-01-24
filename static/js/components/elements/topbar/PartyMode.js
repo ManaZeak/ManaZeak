@@ -43,7 +43,7 @@ class PartyMode {
      **/
     _eventListener() {
         this.ui.img.addEventListener("click", function() {
-            window.app.hidePageContent();
+            //window.app.hidePageContent();
             window.app.showAppView("mzk_party");
         });
     }

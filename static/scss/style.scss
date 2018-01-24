@@ -39,5 +39,9 @@ html, body {
     position: absolute;
     top: 50px;
     width: 100%;
+
+    & > .mzk-view-hide {
+        z-index: -1;
+    }
 }
 
