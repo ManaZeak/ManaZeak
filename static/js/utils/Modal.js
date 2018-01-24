@@ -324,7 +324,7 @@ class Modal extends MzkObject {
 
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         text.innerHTML             = "Currently fetching your libraries and playlists, please wait.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
@@ -353,7 +353,7 @@ class Modal extends MzkObject {
 
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         text.innerHTML             = "Hold on, you're data are on the road.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
@@ -636,7 +636,7 @@ class Modal extends MzkObject {
         contentText.innerHTML      = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         footerText.innerHTML       = "On average, it take a minute to process two thousand files. Just do the math ;)";
 
         spinnerRing.appendChild(spinnerFloatDiv);

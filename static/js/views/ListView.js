@@ -446,13 +446,19 @@ class ListView extends PlaylistView {
      * desc   : Build UI elements
      **/
     _createUI(data) {
-        this.listView       = document.createElement("DIV");
-        this.listView.id    ="listView";
+        this.listView               = document.createElement("DIV");
+        this.listView.id            = "listView";
+        this.container.id           = "listViewWrapper";
+        this.container.style.height = "100%";
 
         this._initHeader();
         this._addEntries(data);
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
+
+        if (this.entries.length * 26 > screen.height) { // TODO : Value to adjust
+            this.header.container.classList.add("columnHeaderOffset");
+        }
 
         this.trackInfo      = new TrackInfo(this.container);
         this.hoveredTrack   = null;
@@ -567,7 +573,6 @@ class ListView extends PlaylistView {
         this.header.title                    = document.createElement("DIV");
         this.header.artist                   = document.createElement("DIV");
         this.header.composer                 = document.createElement("DIV");
-        this.header.performer                = document.createElement("DIV");
         this.header.album                    = document.createElement("DIV");
         this.header.genre                    = document.createElement("DIV");
         this.header.bitRate                  = document.createElement("DIV");
@@ -578,7 +583,6 @@ class ListView extends PlaylistView {
         this.header.title.className          = "col-title";
         this.header.artist.className         = "col-artist";
         this.header.composer.className       = "col-composer";
-        this.header.performer.className      = "col-performer";
         this.header.album.className          = "col-album";
         this.header.genre.className          = "col-genre";
         this.header.bitRate.className        = "col-bitRate";
@@ -587,7 +591,6 @@ class ListView extends PlaylistView {
         this.header.title.innerHTML          = "Title";
         this.header.artist.innerHTML         = "Artist";
         this.header.composer.innerHTML       = "Composer";
-        this.header.performer.innerHTML      = "Performer";
         this.header.album.innerHTML          = "Album";
         this.header.genre.innerHTML          = "Genre";
         this.header.bitRate.innerHTML        = "BitRate";
@@ -596,7 +599,6 @@ class ListView extends PlaylistView {
         this.header.title.dataset.sorter     = "title";
         this.header.artist.dataset.sorter    = "artist";
         this.header.composer.dataset.sorter  = "composer";
-        this.header.performer.dataset.sorter = "performer";
         this.header.album.dataset.sorter     = "album";
         this.header.genre.dataset.sorter     = "genre";
         this.header.bitRate.dataset.sorter   = "bitRate";
@@ -606,7 +608,6 @@ class ListView extends PlaylistView {
         this.header.container.appendChild(this.header.title);
         this.header.container.appendChild(this.header.artist);
         this.header.container.appendChild(this.header.composer);
-        //this.header.container.appendChild(this.header.performer);
         this.header.container.appendChild(this.header.album);
         this.header.container.appendChild(this.header.genre);
         this.header.container.appendChild(this.header.bitRate);
