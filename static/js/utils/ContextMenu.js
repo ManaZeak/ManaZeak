@@ -66,7 +66,7 @@ ContextMenuEntry.prototype = {
             let i       = 0;
 
             while (target.parentNode !== self.element) {
-                ixArray[++i] = target.dataset.parentIx;
+                ixArray[i++] = target.dataset.parentIx;
 
                 do {
                     target = target.parentNode;

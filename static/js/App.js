@@ -10,15 +10,6 @@ class App extends MzkObject {
 
     constructor() {
         super();
-
-let cssRule =
-    "color: rgb(249, 162, 34);" +
-    "font-size: 60px;" +
-    "font-weight: bold;" +
-    "text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
-    "filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
-console.log("%cHello World", cssRule);
-
         this.cookies          = getCookies();
         this.user             = new User();
         this.dragdrop         = new DragDrop(document.body);
@@ -44,6 +35,13 @@ console.log("%cHello World", cssRule);
             }
         };
         document.body.appendChild(this.mainContainer);
+
+        let cssRule = "color: rgb(249, 162, 34);" +
+                      "font-size: 60px;" +
+                      "font-weight: bold;" +
+                      "text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
+                      "filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
+        console.log("%cHello World", cssRule);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
