@@ -40,16 +40,14 @@ html, body {
     top: 50px;
     width: 100%;
 
-    & > .mzk-view-hide {
-        z-index: -1;
-        height: 0 !important;
+    & > .mzk-view {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+
+        &.mzk-view-hide {
+            z-index: -1;
+        }
     }
 
-    .mzk-view-hide .columnHeader {
-        height: 0;
-        line-height: 0;
-        border-bottom: 0;
-        padding: 0;
-        opacity: 0;
-    }
 }

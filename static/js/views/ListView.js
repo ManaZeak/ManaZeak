@@ -449,7 +449,6 @@ class ListView extends PlaylistView {
         this.listView               = document.createElement("DIV");
         this.listView.id            = "listView";
         this.container.id           = "listViewWrapper";
-        this.container.style.height = "100%";
 
         this._initHeader();
         this._addEntries(data);
