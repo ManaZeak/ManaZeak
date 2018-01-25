@@ -57,11 +57,14 @@ ContextMenuEntry.prototype = {
             }
         }, true);
         this.element.addEventListener("click", function (event) {
-            if (event.target.tagName !== 'LI') {
-                return true;
-            }
 
-            let target  = event.target;
+            let target = event.target;
+            while(target.tagName != 'LI')
+                if(target == self.element)
+                    return true;
+                else
+                    target = target.parentNode;
+
             let ixArray = new Array(10);
             let i       = 0;
 
@@ -111,7 +114,7 @@ ContextMenuEntry.prototype = {
 
         if (other_entry.entryID) { li.id = "mzk-ctx-li-" + other_entry.entryID; }
 
-        li.textContent      = other_entry.displayString;
+        li.innerHTML      = '<span class="mzk-ctx-label">' + other_entry.displayString + '</span>';
         li.appendChild(other_entry.element);
 
         //Find where to insert it
