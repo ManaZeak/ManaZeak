@@ -5,6 +5,10 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 Event.prototype.stop = function() {
+    if(this.target.nodeName == 'A') {
+        console.log("Manazeak's default event stop was prevented because it was called on a <a> element.")
+        return;
+    }
     this.stopPropagation();
     this.stopImmediatePropagation();
     this.preventDefault();

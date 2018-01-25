@@ -13,46 +13,41 @@ class ListViewEntry {
         this.isSelected      = false;
 
         this.entry           = document.createElement("DIV");
-        let duration         = document.createElement("DIV");
-        let title            = document.createElement("DIV");
-        let artist           = document.createElement("DIV");
-        let composer         = document.createElement("DIV");
-        let performer        = document.createElement("DIV");
-        let album            = document.createElement("DIV");
-        let genre            = document.createElement("DIV");
-        let bitRate          = document.createElement("DIV");
-        let year             = document.createElement("DIV");
+        this.info = {
+            duration: document.createElement("DIV"),
+            title: document.createElement("DIV"),
+            artist: document.createElement("DIV"),
+            composer: document.createElement("DIV"),
+            performer: document.createElement("DIV"),
+            album: document.createElement("DIV"),
+            genre: document.createElement("DIV"),
+            bitRate: document.createElement("DIV"),
+            year: document.createElement("DIV")
+        };
 
         this.entry.className = "trackContainer";
-        duration.className   = "col-duration";
-        title.className      = "col-title";
-        artist.className     = "col-artist";
-        composer.className   = "col-composer";
-        performer.className  = "col-performer";
-        album.className      = "col-album";
-        genre.className      = "col-genre";
-        bitRate.className    = "col-bitRate";
-        year.className       = "col-year";
-        duration.innerHTML   = secondsToTimecode(track.duration);
-        title.innerHTML      = track.title;
-        artist.innerHTML     = track.artist;
-        composer.innerHTML   = track.composer;
-        performer.innerHTML  = track.performer;
-        album.innerHTML      = track.album;
-        genre.innerHTML      = track.genre;
-        bitRate.innerHTML    = Math.round(track.bitRate / 1000) + " kbps";
-        year.innerHTML       = track.year;
+        this.info.duration.className   = "col-duration";
+        this.info.title.className      = "col-title";
+        this.info.artist.className     = "col-artist";
+        this.info.composer.className   = "col-composer";
+        this.info.performer.className  = "col-performer";
+        this.info.album.className      = "col-album";
+        this.info.genre.className      = "col-genre";
+        this.info.bitRate.className    = "col-bitRate";
+        this.info.year.className       = "col-year";
 
-        this.entry.appendChild(duration);
-        this.entry.appendChild(title);
-        this.entry.appendChild(artist);
-        this.entry.appendChild(composer);
-        //this.entry.appendChild(performer);
-        this.entry.appendChild(album);
-        this.entry.appendChild(genre);
-        this.entry.appendChild(bitRate);
-        this.entry.appendChild(year);
+        this.entry.appendChild(this.info.duration);
+        this.entry.appendChild(this.info.title);
+        this.entry.appendChild(this.info.artist);
+        this.entry.appendChild(this.info.composer);
+        //this.entry.appendChild(this.info.performer);
+        this.entry.appendChild(this.info.album);
+        this.entry.appendChild(this.info.genre);
+        this.entry.appendChild(this.info.bitRate);
+        this.entry.appendChild(this.info.year);
 
+        this._setInfo();
+        this._eventListener();
         this.insert(listView);
     }
 
@@ -106,6 +101,34 @@ class ListViewEntry {
         else {
             this.entry.classList.remove("mzk-selected");
         }
+    }
+
+//  -------------------------------  PRIVATE METHODS  ---------------------------------  //
+
+    /**
+     * TODO
+     */
+    _eventListener() {
+        let that = this;
+        this.track.listen('updateMetadata', function() {
+            that._setInfo();
+        });
+    }
+
+    /**
+     * TODO remove zeaz and implement a track bank
+     * @returns {boolean|*}
+     */
+    _setInfo() {
+        this.info.duration.innerHTML   = secondsToTimecode(this.track.duration);
+        this.info.title.innerHTML      = this.track.title;
+        this.info.artist.innerHTML     = this.track.artist;
+        this.info.composer.innerHTML   = this.track.composer;
+        this.info.performer.innerHTML  = this.track.performer;
+        this.info.album.innerHTML      = this.track.album;
+        this.info.genre.innerHTML      = this.track.genre;
+        this.info.bitRate.innerHTML    = Math.round(this.track.bitRate / 1000) + " kbps";
+        this.info.year.innerHTML       = this.track.year;
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
@@ -323,79 +346,17 @@ class ListView extends PlaylistView {
             }
         });
 
-        //TODO: move to App
         this.contextMenu.addEntry(null, "Edit tags", function() {
             let ids          = that.selector.get();
-            let tracksID     = new Array(ids.length);
             let tracks       = new Array(ids.length);
 
             for(let i = 0; i < ids.length; ++i) {
-                tracksID[i]  = that.entries[ids[i]].track.id.track;
                 tracks[i]    = that.entries[ids[i]].track;
             }
 
-            JSONParsedPostRequest(
-                "track/getDetailedInfo/",
-                JSON.stringify({
-                    TRACK_ID: tracksID
-                }),
-                function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     RESULT    : {
-                 *         ID:
-                 *         TITLE:
-                 *         YEAR:
-                 *         COMPOSER:
-                 *         PERFORMER:
-                 *         TRACK_NUMBER:
-                 *         BPM:
-                 *         LYRICS:
-                 *         COMMENT:
-                 *         BITRATE:
-                 *         SAMPLERATE:
-                 *         DURATION:
-                 *         GENRE:
-                 *         FILE_TYPE:
-                 *         DISC_NUMBER:
-                 *         SIZE:
-                 *         LAST_MODIFIED:
-                 *         COVER:
-                 *         ARTISTS: {
-                 *            ID:
-                 *            NAME:
-                 *         }
-                 *         ALBUM: {
-                 *             ID:
-                 *             TITLE:
-                 *             TOTAL_DISC:
-                 *             TOTAL_TRACK:
-                 *             ARTISTS: {
-                 *                 ID:
-                 *                 NAME:
-                 *             }
-                 *         }
-                 *         PLAY_COUNTER:
-                 *         FILE_NAME:
-                 *     }
-                 * } */
-                    if (response.DONE) {
-                        for (let i = 0; i < response.RESULT.length ;++i) {
-                            that.entries[ids[i]].track.updateMetadata(response.RESULT[i]);
-                        }
-
-                        let tmp = new Modal("editTag", tracks);
-                        tmp.open();
-                    }
-
-                    else {
-                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                    }
-                }
-            );
+            window.app.updateTracksInfo(tracks, function() {
+                new Modal("editTag", tracks).open();
+            })
         });
 
         this.contextMenu.addEntry(null, "Download track", function() {

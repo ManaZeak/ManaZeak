@@ -8,9 +8,10 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Track {
+class Track extends MzkObject{
 
     constructor(track) {
+        super();
         this.updateMetadata(track);
     }
 
