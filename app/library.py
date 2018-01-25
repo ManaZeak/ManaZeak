@@ -92,38 +92,58 @@ def checkLibraryScanStatus(request):
     return JsonResponse(data)
 
 
+def rescanLibrary(library, user):
+    # Check if the library is not used somewhere else
+    if library.playlist.isScanned:
+        # Delete all the old tracks
+        library.playlist.delete()
+
+        # Recreating playlist
+        playlist = Playlist()
+        playlist.name = library.name
+        playlist.user = user
+        playlist.isLibrary = True
+        playlist.save()
+        library.playlist = playlist
+        library.save()
+
+        # Scan library
+        data = scanLibrary(library, playlist, library.convertID3)
+    else:
+        data = errorCheckMessage(False, "rescanError")
+    return data
+
+
 # Drop a library and index all the tracks
 @login_required(redirect_field_name='login.html', login_url='app:login')
-def rescanLibrary(request):
+def rescanLibraryRequest(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        user = request.user
         if 'LIBRARY_ID' in response:
             library = strip_tags(response['LIBRARY_ID'])
             if Library.objects.filter(id=library).count() == 1:
                 library = Library.objects.get(id=library)
-
-                # Check if the library is not used somewhere else
-                if library.playlist.isScanned:
-                    # Delete all the old tracks
-                    library.playlist.delete()
-
-                    # Recreating playlist
-                    playlist = Playlist()
-                    playlist.name = library.name
-                    playlist.user = request.user
-                    playlist.isLibrary = True
-                    playlist.save()
-                    library.playlist = playlist
-                    library.save()
-
-                    # Scan library
-                    data = scanLibrary(library, playlist, library.convertID3)
-                else:
-                    data = errorCheckMessage(False, "rescanError")
+                data = rescanLibrary(library, user)
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
             data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+def rescanAllLibraries(request):
+    if request.method == 'GET':
+        user = request.user
+        if user.is_superuser:
+            libraries = Library.objects.all()
+            for library in libraries:
+                rescanLibrary(library, user)
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

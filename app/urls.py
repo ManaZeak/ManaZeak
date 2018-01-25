@@ -21,7 +21,8 @@ urlpatterns = [
     url(r'^library/initialScan/$', library.initialScan, name='initialScan'),
     url(r'^library/new/$', library.newLibrary, name='setLibrary'),
     url(r'^library/checkScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
-    url(r'^library/rescan/$', library.rescanLibrary, name='rescanLibrary'),
+    url(r'^library/rescan/$', library.rescanLibraryRequest, name='rescanLibrary'),
+    url(r'^library/rescanAll/$', library.rescanAllLibraries, name='rescanAllLibraries'),
     url(r'^library/deleteAll/$', library.deleteAllLibrary, name='deleteAllLibrary'),
 
     # Playlist actions
