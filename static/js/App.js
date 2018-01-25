@@ -35,13 +35,7 @@ class App extends MzkObject {
             }
         };
         document.body.appendChild(this.mainContainer);
-
-        let cssRule = "color: rgb(249, 162, 34);" +
-                      "font-size: 60px;" +
-                      "font-weight: bold;" +
-                      "text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
-                      "filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
-        console.log("%cHello World", cssRule);
+        this._consoleWelcome();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -900,6 +894,23 @@ class App extends MzkObject {
         }
 
         this._keyListener();
+    }
+
+
+    _consoleWelcome() {
+        let cssRuleTitle  = "color: rgb(44, 44, 48);" +
+                            "font-size: 3em;" +
+                            "font-weight: bold;" +
+                            "margin: 20px 0;" +
+                            "text-shadow: 1px 1px 5px rgb(44, 44, 48);";
+        let cssRuleHidden = "color: rgb(255, 255, 255);";
+        setTimeout(console.log.bind(console, "%cManaZeak console", cssRuleTitle)); // Hiding source in console
+        setTimeout(console.log.bind(console, "Hello there!\n" +
+                                             "\nIf you don't know why you are here, you may close this window, and keep using ManaZeak." +
+                                             "\nOtherwise, keep in mind that using this console may result in a non working app, at least on your side. "));
+        setTimeout(console.log.bind(console, "%cCongratulation, you found the first key for the achievement TOAST. Here it is : ba6f7979ab2cb9096d050b7f850d50ff", cssRuleHidden));
+        setTimeout(console.log.bind(console, "To know more about ManaZeak, visit https://github.com/Squadella/ManaZeak"));
+        setTimeout(console.log.bind(console, "\n-----------"));
     }
 
 
