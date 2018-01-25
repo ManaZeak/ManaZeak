@@ -119,7 +119,6 @@ db_data
 *.mood
 
 node_modules/
-package-lock.json
 static/js/dist/manazeak.bundle.js
 moodbar/moodbar-0.1.2
 
