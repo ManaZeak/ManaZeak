@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^logout/$', views.logoutView, name='logout'),
 
     # Collection actions
-    url(r'^admin/deleteCollection/$', adminTools.deleteCollection, name='deleteCollection'),
+    url(r'^collection/delete/$', adminTools.deleteCollection, name='deleteCollection'),
 
     # Library actions
     url(r'^library/initialScan/$', library.initialScan, name='initialScan'),
