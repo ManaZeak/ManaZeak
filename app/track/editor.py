@@ -95,36 +95,38 @@ def updateDBInfo(response, track):
         genre = Genre.objects.get(name=tags.trackGenre)
         track.genre = genre
 
-    if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response and response['ALBUM_TITLE'] != '' \
-            and response['ALBUM_ARTISTS'] != '':
-        tags.albumTitle = strip_tags(response['ALBUM_TITLE']).lstrip().rstrip()
-        tags.albumArtist = strip_tags(response['ALBUM_ARTISTS']).lstrip().rstrip().split(',')
-        if Album.objects.filter(title=tags.albumTitle).count() == 0:
-            album = Album()
-            album.title = tags.albumTitle
+    if 'DISC_NUMBER' in response and response['DISC_NUMBER'] != '':
+        tags.albumDiscNumber = checkIntValueError(response['DISC_NUMBER'])
+        track.discNumber = tags.albumDiscNumber
+
+    if 'ALBUM' in response:
+        response = response['ALBUM']
+        if 'TITLE' in response and 'ARTISTS' in response and response['TITLE'] != '' \
+                and response['ARTISTS'] != '':
+            tags.albumTitle = strip_tags(response['TITLE']).lstrip().rstrip()
+            tags.albumArtist = strip_tags(response['ARTISTS']).lstrip().rstrip().split(',')
+            if Album.objects.filter(title=tags.albumTitle).count() == 0:
+                album = Album()
+                album.title = tags.albumTitle
+                album.save()
+            album = Album.objects.get(title=tags.albumTitle)
+            album.artist.clear()
+            for artist in tags.albumArtist:
+                if Artist.objects.filter(name=artist).count() == 0:
+                    newArtist = Artist()
+                    newArtist.name = artist
+                    newArtist.save()
+                album.artist.add(Artist.objects.get(name=artist))
+
+            if 'TOTAL_DISC' in response and response['TOTAL_DISC'] != '':
+                tags.albumTotalDisc = checkIntValueError(response['TOTAL_DISC'])
+                album.totalDisc = tags.albumTotalDisc
+
+            if 'TOTAL_TRACK' in response and response['TOTAL_TRACK'] != '':
+                tags.albumTotalTrack = checkIntValueError(response['TOTAL_TRACK'])
+                album.totalTrack = tags.albumTotalTrack
             album.save()
-        album = Album.objects.get(title=tags.albumTitle)
-        album.artist.clear()
-        for artist in tags.albumArtist:
-            if Artist.objects.filter(name=artist).count() == 0:
-                newArtist = Artist()
-                newArtist.name = artist
-                newArtist.save()
-            album.artist.add(Artist.objects.get(name=artist))
-
-        if 'ALBUM_TOTAL_DISC' in response and response['ALBUM_TOTAL_DISC'] != '':
-            tags.albumTotalDisc = checkIntValueError(response['ALBUM_TOTAL_DISC'])
-            album.totalDisc = tags.albumTotalDisc
-
-        if 'DISC_NUMBER' in response and response['DISC_NUMBER'] != '':
-            tags.albumDiscNumber = checkIntValueError(response['DISC_NUMBER'])
-            track.discNumber = tags.albumDiscNumber
-
-        if 'ALBUM_TOTAL_TRACK' in response and response['ALBUM_TOTAL_TRACK'] != '':
-            tags.albumTotalTrack = checkIntValueError(response['ALBUM_TOTAL_TRACK'])
-            album.totalTrack = tags.albumTotalTrack
-        album.save()
-        track.album = album
+            track.album = album
     track.save()
     return tags
 
