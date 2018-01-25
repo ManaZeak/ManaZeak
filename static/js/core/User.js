@@ -6,6 +6,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedGetRequest } from '../utils/Utils.js'
+
 class User {
 
     constructor() {
@@ -96,3 +98,5 @@ class User {
     getInviteCode() { return this.inviteCode; }
 
 }
+
+export default User

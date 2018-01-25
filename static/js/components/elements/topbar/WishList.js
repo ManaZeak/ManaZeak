@@ -7,6 +7,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 // TODO : add a list of the user's suggestions (link in modal ?)
+import Modal from '../../../utils/Modal.js'
+
 class WishList {
 
     constructor(container) {
@@ -49,3 +51,5 @@ class WishList {
     }
 
 }
+
+export default WishList

@@ -42,3 +42,5 @@ class MzkListener {
     }
 
 }
+
+export default MzkListener

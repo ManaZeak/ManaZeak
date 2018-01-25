@@ -7,6 +7,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { secondsToTimecode, JSONParsedPostRequest, setCookie, getCookies } from '../../utils/Utils.js'
+
+
 const TOTAL_SUGGESTIONS_NUMBER = 4; // Number of track to display in suggested tracks
 const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSuggestionMode in constructor)
 
@@ -445,3 +448,5 @@ class TrackInfo {
     }
 
 }
+
+export default TrackInfo

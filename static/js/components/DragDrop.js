@@ -8,6 +8,8 @@
  *                                                       *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest } from '../utils/Utils.js'
+
 class DragDrop {
 
     constructor(element) {
@@ -74,3 +76,5 @@ class DragDrop {
     }
 
 }
+
+export default DragDrop

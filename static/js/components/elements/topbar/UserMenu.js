@@ -6,6 +6,10 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import Modal from '../../../utils/Modal.js'
+import ContextMenu from '../../../utils/ContextMenu.js'
+import ContextMenuEntry from '../../../utils/ContextMenuEntry.js'
+
 class UserMenu {
 
     constructor(container) {
@@ -70,3 +74,5 @@ class UserMenu {
     }
 
 }
+
+export default UserMenu

@@ -6,6 +6,10 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { removeVisibilityLock, addVisibilityLock, isVisibilityLocked } from '../../../utils/Utils.js'
+import Shortcut from '../../../utils/Shortcut.js'
+import MzkObject from '../../../core/MzkObject.js'
+
 class QueuePreview extends MzkObject {
 
     constructor(container) {
@@ -254,3 +258,5 @@ class QueuePreview extends MzkObject {
     getIsLocked() { return this.isLocked; }
 
 }
+
+export default QueuePreview

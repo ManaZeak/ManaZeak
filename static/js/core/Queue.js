@@ -123,6 +123,9 @@ class QueueEntry {
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import Notification from '../utils/Notification.js'
+import MzkObject from './MzkObject.js'
+
 class Queue extends MzkObject {
 
     constructor(showNotificationOnAdd) {
@@ -259,3 +262,5 @@ class Queue extends MzkObject {
     }
 
 }
+
+export default Queue

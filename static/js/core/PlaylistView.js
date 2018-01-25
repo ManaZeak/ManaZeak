@@ -8,6 +8,8 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import View from './View.js'
+
 class PlaylistView extends View {
 
     constructor() {
@@ -92,3 +94,5 @@ class PlaylistView extends View {
     }
 
 }
+
+export default PlaylistView

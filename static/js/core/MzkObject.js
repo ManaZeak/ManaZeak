@@ -6,6 +6,8 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import MzkListener from './MzkListener.js'
+
 class MzkObject {
 
     constructor() {
@@ -106,3 +108,5 @@ class MzkObject {
     }
 
 }
+
+export default MzkObject

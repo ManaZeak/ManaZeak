@@ -6,47 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class EditTagEntry {
-
-    constructor(container, track) {
-        this.entry                 = document.createElement("P");
-        this.track                 = track;
-        this.entry.innerHTML       = track.fileName;
-        this.entry.dataset.childID = container.children.length;
-
-        container.appendChild(this.entry);
-    }
-
-//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : setIsSelected (public)
-     * class  : ListViewEntry
-     * desc   : Set the entry as selected/!selected
-     * return : {bool} isSelected
-     **/
-    setIsSelected(isSelected) {
-        this.isSelected = isSelected;
-
-        if (this.isSelected) {
-            this.entry.classList.add("mzk-selected");
-        }
-
-        else {
-            this.entry.classList.remove("mzk-selected");
-        }
-    }
-
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
- *                                                 *
- *  EditTag class                                  *
- *                                                 *
- *  Handle the edit tag modal                      *
- *                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * */
+import { secondsToTimecode, JSONParsedPostRequest, rawSizeToReadableSize } from '../utils/Utils.js'
+import MultiSelect from '../utils/MultiSelect.js'
+import EditTagEntry from './entries/EditTagEntry.js'
 
 class EditTag {
 
@@ -433,15 +395,15 @@ class EditTag {
             albumArtist: ''
         };
 
-        if(tracks[0])
-        {
+        if (tracks[0]) {
             tmp = this.entries[tracks[0]].track;
 
-            for(let f in fields)
+            for (let f in fields) {
                 fields[f] = tmp[f];
+            }
 
             //Show these infos when there is only one track selected;
-            if(tracks.length == 1) {
+            if (tracks.length == 1) {
                 this.ui.lineOne.innerHTML = secondsToTimecode(tmp.duration) + " - " +
                                             rawSizeToReadableSize(tmp.size) + " - " +
                                             tmp.fileType + " - " +
@@ -491,3 +453,5 @@ class EditTag {
     getContainer() { return this.ui.container; }
 
 }
+
+export default EditTag

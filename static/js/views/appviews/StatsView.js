@@ -6,6 +6,10 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedGetRequest, precisionRound } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import View from '../../core/View.js'
+
 class StatsView extends View {
 
     constructor() {
@@ -456,3 +460,5 @@ class StatsView extends View {
     }
 
 }
+
+export default StatsView

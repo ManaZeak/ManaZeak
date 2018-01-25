@@ -7,6 +7,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { precisionRound } from '../utils/Utils.js'
+
 class Player {
 
     constructor() {
@@ -194,3 +196,5 @@ class Player {
     getVolume()       { return this.player.volume;      }
 
 }
+
+export default Player

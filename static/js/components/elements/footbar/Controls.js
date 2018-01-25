@@ -6,6 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import VolumeBar from './VolumeBar.js'
+import QueuePreview from './QueuePreview.js'
+
 class Controls  {
 
     constructor(container) {
@@ -155,3 +158,5 @@ class Controls  {
     }
 
 }
+
+export default Controls

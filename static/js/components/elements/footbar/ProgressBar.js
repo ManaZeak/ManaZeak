@@ -7,6 +7,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { secondsToTimecode, addVisibilityLock, removeVisibilityLock } from '../../../utils/Utils.js'
+import MzkObject from '../../../core/MzkObject.js'
+
 class ProgressBar extends MzkObject {
 
     constructor(container) {
@@ -315,3 +318,5 @@ class ProgressBar extends MzkObject {
     }
 
 }
+
+export default ProgressBar

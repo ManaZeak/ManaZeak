@@ -6,6 +6,10 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedGetRequest } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import View from '../../core/View.js'
+
 class UserView extends View {
 
     constructor() {
@@ -153,3 +157,5 @@ class UserView extends View {
     }
 
 }
+
+export default UserView

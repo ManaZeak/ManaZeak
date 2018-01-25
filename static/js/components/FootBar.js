@@ -6,6 +6,12 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import TrackPreview from './elements/footbar/TrackPreview.js'
+import Controls from './elements/footbar/Controls.js'
+import ProgressBar from './elements/footbar/ProgressBar.js'
+import PlaylistPreview from './elements/footbar/PlaylistPreview.js'
+import MzkObject from '../core/MzkObject.js'
+
 class FootBar extends MzkObject {
 
     constructor() {
@@ -71,3 +77,5 @@ class FootBar extends MzkObject {
     getFootBar() { return this.footBar; }
 
 }
+
+export default FootBar

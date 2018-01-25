@@ -6,6 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import MzkObject from '../../../core/MzkObject.js'
+import Modal from '../../../utils/Modal.js'
+
 class TrackPreview extends MzkObject {
 
     constructor(container) {
@@ -146,3 +149,5 @@ class TrackPreview extends MzkObject {
     }
 
 }
+
+export default TrackPreview
