@@ -10,13 +10,16 @@
 class Player {
 
     constructor() {
-        this.player    = document.getElementById("audioPlayer");
+        this.player    = document.createElement("AUDIO");
+
         this.isPlaying = false;
         this.isMuted   = false;
         this.oldVolume = 0;
         this.emptyURL  = "";
         this.trackId   = 0;
         this._init();
+
+        document.body.insertBefore(this.player, document.body.firstChild);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -155,8 +158,7 @@ class Player {
      **/
     _init() {
         this.player.volume = 0.5; // TODO : init from global var in App os user settings
-        this.player.src    = '';
-        this.emptyURL      = this.player.src;
+        this.emptyURL      = '';
         this._eventListener();
     }
 
