@@ -29,13 +29,10 @@ module.exports = {
         // ]
     },
     resolve: {
-        // options for resolving module requests
-        // (does not apply to resolving to loaders)
         modules: [
             "node_modules",
             path.resolve(__dirname, "static/js")
         ],
-        // directories where to look for modules
         extensions: [".js"]
     }
 };
