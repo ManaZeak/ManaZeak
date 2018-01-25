@@ -139,7 +139,7 @@ def simplifiedLazyLoadingPlaylist(request):
                         return JsonResponse(errorCheckMessage(False, "permissionError"))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlistId, user.id, reqNumber, reqNumber + nbTracks)
+                    trackSet = getPlaylistTracks(playlistId, user.id, nbTracks, reqNumber)
                     data = []
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))

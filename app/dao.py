@@ -374,5 +374,5 @@ def getPlaylistTracks(playlistId, userId, limit, offset):
     viewName = hashlib.md5(str(userId).encode("ascii", "ignore") + str(playlistId).encode("ascii", "ignore")).hexdigest()
     sql = """SELECT * FROM "%s" WHERE local_id > %s LIMIT %s;""" % (viewName, '%s', '%s')
     with connection.cursor() as cursor:
-        cursor.execute(sql, (limit, offset))
+        cursor.execute(sql, (offset, limit))
         return cursor.fetchall()
