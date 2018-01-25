@@ -694,9 +694,7 @@ class App extends MzkObject {
      * desc   : Restore any content in mainContainer
      **/
     restorePageContent() {
-        removeInvisibilityLock(this.footBar.getFootBar());
-        removeInvisibilityLock(this.mainContainer);
-        removeInvisibilityLock(this.topBar.getTopBar());
+        this.activePlaylist.activate();
     }
 
 
