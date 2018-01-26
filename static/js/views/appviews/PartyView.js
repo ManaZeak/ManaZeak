@@ -6,6 +6,11 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import Track from '../../core/Track.js'
+import View from '../../core/View.js'
+
 class PartyView extends View {
 
     constructor() {
@@ -223,3 +228,5 @@ class PartyView extends View {
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
 }
+
+export default PartyView

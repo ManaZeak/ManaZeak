@@ -9,6 +9,10 @@
  *  isLibrary   : {bool} Not mandatory                       *
  *                                                           *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+import Modal from '../../../utils/Modal.js'
+import ContextMenu from '../../../utils/ContextMenu.js'
+
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
@@ -141,7 +145,6 @@ class PlaylistCollectionEntry {
 
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                 *
  *  CollectionBar class                            *
@@ -149,6 +152,8 @@ class PlaylistCollectionEntry {
  *  PlaylistCollection display                     *
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+import MzkObject from '../../../core/MzkObject.js'
 
 class CollectionBar extends MzkObject {
 
@@ -298,3 +303,5 @@ class CollectionBar extends MzkObject {
     }
 
 }
+
+export default CollectionBar

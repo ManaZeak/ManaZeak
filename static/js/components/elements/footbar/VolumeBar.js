@@ -7,6 +7,10 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { addVisibilityLock, removeVisibilityLock, toggleVisibilityLock } from '../../../utils/Utils.js'
+import MzkObject from '../../../core/MzkObject.js'
+import Shortcut from '../../../utils/Shortcut.js'
+
 class VolumeBar extends MzkObject {
 
     constructor(container) {
@@ -204,3 +208,5 @@ class VolumeBar extends MzkObject {
     }
 
 }
+
+export default VolumeBar

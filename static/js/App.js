@@ -6,6 +6,26 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { getCookies, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import FootBar  from './components/FootBar.js'
+import MzkObject from './core/MzkObject.js'
+import TopBar   from './components/TopBar.js'
+import User     from './core/User.js'
+import DragDrop from './components/DragDrop.js'
+import PlaylistCollection from './core/PlaylistCollection.js'
+import ShortcutMaestro from './utils/ShortcutMaestro.js'
+import Shortcut from './utils/Shortcut.js'
+import Queue    from './core/Queue.js'
+import Player   from './core/Player.js'
+import StatsView from './views/appviews/StatsView.js'
+import AdminView from './views/appviews/AdminView.js'
+import UserView from './views/appviews/UserView.js'
+import PartyView from './views/appviews/PartyView.js'
+import ListView from './views/ListView.js'
+import Playlist from './core/Playlist.js'
+import Notification from './utils/Notification.js'
+import Modal from './utils/Modal.js'
+
 class App extends MzkObject {
 
     constructor() {
@@ -61,7 +81,7 @@ class App extends MzkObject {
                 PLAYLIST_ID: playlist.id,
                 TRACKS_ID:   ids
             }),
-            function (response) {
+            (response) => {
                 /* response = {
                  *     DONE         : bool
                  *     ERROR_H1     : string
@@ -1018,3 +1038,5 @@ class App extends MzkObject {
     }
 
 }
+
+export default App

@@ -14,6 +14,7 @@ To install, refer to your distribution package manager.
 
 - ```docker```
 - ```docker-compose```
+- ```npm```
 
 #### Installation
 
@@ -30,7 +31,11 @@ Open the newly created  ```docker-compose.yml``` and replace all ```/PATH/TO/LIB
 You can now check that all containers have been launched correctly by using :
 - ```$ docker ps -a```
 
-Finally, if everything is OK with [Docker](https://github.com/docker), grab a browser and go to [127.0.0.1/](127.0.0.1/) (or a production address, but keep in mind that this is an experimental  software).
+Then, you must build the assets with [Webpack](https://github.com/webpack/webpack) :
+- ```npm install```
+- ```npm run prod``` (If you want to watch any changes on the files, use ``npm run dev``)
+
+Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/) (or a production address, but keep in mind that this is an experimental  software).
 
 #### Setup
 - You can now create an user : it will be an admin acount.
@@ -74,6 +79,7 @@ Finally, if everything is OK with [Docker](https://github.com/docker), grab a br
 - [Docker](https://github.com/docker)
 - [Postgresql](https://github.com/postgres/postgres)
 - [SyncThing](https://github.com/syncthing/syncthing)
+- [Webpack](https://github.com/webpack/webpack)
 
 ## Contributors
 - [Arthur Beaulieu](https://github.com/ArthurBeaulieu) (front)

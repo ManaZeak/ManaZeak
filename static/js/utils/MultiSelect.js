@@ -10,6 +10,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import MzkObject from '../core/MzkObject.js'
+
 class MultiSelect extends MzkObject {
 
     constructor(purgeThreshold) {
@@ -138,3 +140,5 @@ class MultiSelect extends MzkObject {
     }
 
 }
+
+export default MultiSelect

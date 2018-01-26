@@ -11,6 +11,11 @@
  *                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest, JSONParsedGetRequest } from '../utils/Utils.js'
+import Notification from '../utils/Notification.js'
+import Track from './Track.js'
+import Modal from '../utils/Modal.js'
+
 class Playlist {
 
     constructor(id, name, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
@@ -697,3 +702,5 @@ class Playlist {
     setName(name)    { this.name = name;        }
 
 }
+
+export default Playlist

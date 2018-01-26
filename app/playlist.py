@@ -36,12 +36,12 @@ def newPlaylist(request):
 def renamePlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response and 'NAME' in response:
+        if 'PLAYLIST_ID' in response and 'PLAYLIST_NAME' in response:
             user = request.user
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId, user=user)
-                playlist.name = strip_tags(response['NAME'])
+                playlist.name = strip_tags(response['PLAYLIST_NAME'])
                 playlist.save()
                 data = {
                     'PLAYLIST_ID': playlist.id,

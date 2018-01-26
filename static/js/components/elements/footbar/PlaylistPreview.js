@@ -6,6 +6,9 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { secondsToTimecode } from '../../../utils/Utils.js'
+import MzkObject from '../../../core/MzkObject.js'
+
 class PlaylistPreview extends MzkObject {
 
     constructor(container) {
@@ -155,3 +158,5 @@ class PlaylistPreview extends MzkObject {
     }
 
 }
+
+export default PlaylistPreview

@@ -8,6 +8,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import MzkObject from './MzkObject.js'
+
 class Track extends MzkObject{
 
     constructor(track) {
@@ -103,3 +105,5 @@ class Track extends MzkObject{
     }
 
 }
+
+export default Track

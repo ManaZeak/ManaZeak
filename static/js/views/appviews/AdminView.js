@@ -6,6 +6,10 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest, JSONParsedGetRequest, secondsToTimecode } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import View from '../../core/View.js'
+
 class AdminView extends View {
 
     constructor() {
@@ -825,3 +829,5 @@ class AdminView extends View {
     }
 
 }
+
+export default AdminView

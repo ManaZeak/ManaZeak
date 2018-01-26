@@ -8,6 +8,11 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest, genUniqueID } from './Utils.js'
+import MzkObject from '../core/MzkObject.js'
+import Notification from './Notification.js'
+import EditTag from '../components/EditTag.js'
+
 class Modal extends MzkObject {
 
     constructor(type, data) {
@@ -649,3 +654,5 @@ class Modal extends MzkObject {
     }
 
 }
+
+export default Modal

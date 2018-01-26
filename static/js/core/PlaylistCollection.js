@@ -6,6 +6,8 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import MzkObject from './MzkObject.js'
+
 class PlaylistCollection extends MzkObject {
 
     constructor() {
@@ -146,3 +148,5 @@ class PlaylistCollection extends MzkObject {
     }
 
 }
+
+export default PlaylistCollection
