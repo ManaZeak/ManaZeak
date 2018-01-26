@@ -8,9 +8,12 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Track {
-    constructor(track) {
+import MzkObject from './MzkObject.js'
 
+class Track extends MzkObject{
+
+    constructor(track) {
+        super();
         this.updateMetadata(track);
     }
 
@@ -23,11 +26,10 @@ class Track {
      * arg    : {object} track - Raw JSON track
      **/
     updateMetadata(track) {
-        // Filling Track object
         this.id = {
             track:          track.ID                ? track.ID                : "",
             album:          track.ALBUM.ID          ? track.ALBUM.ID          : "",
-            artists:        Track._getArtistsIDFromArtistsArray(track.ARTISTS)
+            artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
         };
         this.title        = track.TITLE             ? track.TITLE             : "";
         this.year         = track.YEAR              ? track.YEAR              : "";
@@ -35,7 +37,7 @@ class Track {
         this.performer    = track.PERFORMER         ? track.PERFORMER         : "";
         this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER      : "";
         this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : "";
-        this.disc         = track.DISC_NUMBER       ? track.DISC_NMBER        : "";
+        this.disc         = track.DISC_NUMBER       ? track.DISC_NUMBER        : "";
         this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC  : "";
         this.bpm          = track.BPM               ? track.BPM               : "";
         this.lyrics       = track.LYRICS            ? track.LYRICS            : "";
@@ -49,8 +51,10 @@ class Track {
         this.genre        = track.GENRE             ? track.GENRE             : "";
         this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE         : "";
         this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
-        this.artist       = Track._getArtistFromArtistsArray(track.ARTISTS);
-        this.albumArtist  = Track._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
+        this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
+        this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
+        this.playCount    = track.PLAY_COUNTER      ? track.PLAY_COUNTER      : 0;
+        this.fileName     = track.FILENAME          ? track.FILENAME          : "";
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -62,7 +66,7 @@ class Track {
      * arg    : {[object]} artists - Raw JSON array of objects
      * return : {[int]} - The artists ID array
      **/
-    static _getArtistsIDFromArtistsArray(artists) {
+    _getArtistsIDFromArtistsArray(artists) {
         if (artists === null || artists === undefined) { return ""; }
 
         let artistsID = [];
@@ -81,7 +85,7 @@ class Track {
      * arg    : {[object]} artists - Raw JSON array of objects
      * return : {string} The Artists concated string
      **/
-    static _getArtistFromArtistsArray(artists) {
+    _getArtistFromArtistsArray(artists) {
         if (artists === null || artists === undefined) { return ""; }
 
         let artistsName = []; // Artists name array
@@ -101,3 +105,5 @@ class Track {
     }
 
 }
+
+export default Track

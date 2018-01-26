@@ -13,6 +13,8 @@
 
         h2 {
             padding-left: 10px;
+            margin-top: 30px;
+            margin-bottom: 26px;
         }
 
         ul {
@@ -41,6 +43,7 @@
         box-sizing: border-box;
         height: 100%;
         padding: 25px;
+        overflow-y: auto;
         width: calc(100% - 200px);
 
         h1 {
@@ -62,7 +65,7 @@
                 margin-bottom: 15px;
                 padding: 10px 20px;
                 position: relative;
-                min-height: 55px;
+                min-height: 38px;
 
                 img {
                     cursor: pointer;
@@ -121,10 +124,6 @@
                 margin-right: 20px;
             }
 
-            img {
-                cursor: inherit;
-            }
-
             #accept:active,
             #accept:focus,
             #accept:hover {
@@ -132,8 +131,8 @@
                 color: green;
             }
 
-            #refuse {
-
+            #accept {
+                right: 55px;
             }
         }
     }

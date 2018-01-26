@@ -9,7 +9,8 @@ from django.db import connection
 from app.models import Album, Artist, Genre
 
 
-def addAlbumBulk(albums, artists):
+# Import album into the database in bulk mode
+def addAlbumBulk(albums, artists, totalTrack, totalDisc):
     albumReference = {"": Album.objects.get(title=None)}
     newAlbums = {}
     albumSet = set()
@@ -40,7 +41,7 @@ def addAlbumBulk(albums, artists):
     writer = csv.writer(virtualFile, delimiter='\t')
     for album in albums:
         newAlbums[album] = firstId[0] + counter
-        writer.writerow([firstId[0] + counter, album])
+        writer.writerow([firstId[0] + counter, album, totalTrack[album], totalDisc[album]])
         counter += 1
 
     virtualFile.seek(0)
@@ -50,7 +51,7 @@ def addAlbumBulk(albums, artists):
             file=virtualFile,
             table='"app_album"',
             sep='\t',
-            columns=('id', 'title'),
+            columns=('id', 'title', '"totalTrack"', '"totalDisc"'),
         )
 
     # Creating the csv for the link between artist and album
@@ -75,6 +76,7 @@ def addAlbumBulk(albums, artists):
     return {**albumReference, **newAlbums}
 
 
+# Import track into the database in bulk mode
 def addTrackBulk(tracks, artists, albums, genres, playlistId):
     referenceTracks = {}
 
@@ -90,11 +92,16 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
     virtualFile = io.StringIO()
     writer = csv.writer(virtualFile, delimiter='\t')
     for track in tracks:
-        writer.writerow([counter, track.location, track.title, track.year, track.composer, track.performer,
-                         track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
-                         track.sampleRate, track.duration, track.discNumber, track.size,
-                         albums[track.album], track.fileType, genres[track.genre], track.coverLocation,
-                         track.moodbar, track.scanned, track.playCounter, datetime.now(), track.downloadCounter])
+        writer.writerow([counter, track.location, track.title.replace('\n', '\\n').replace('\r', ''), track.year,
+                         track.composer.replace('\n', '\\n').replace('\r', ''),
+                         track.performer.replace('\n', '\\n').replace('\r', ''),
+                         track.number, track.bpm, track.lyrics.replace('\n', "\\n").replace('\r', ''),
+                         track.comment.replace('\n', '\\n').replace('\r', ''), track.bitRate, track.bitRateMode,
+                         track.sampleRate, track.duration, track.discNumber, track.size, albums[track.album],
+                         track.fileType, genres[track.genre],
+                         track.coverLocation.replace('\n', '\\n').replace('\r', ''),
+                         track.moodbar.replace('\n', '\\n').replace('\r', ''), track.scanned, track.playCounter,
+                         datetime.now(), track.downloadCounter])
         referenceTracks[track] = counter
         counter += 1
 
@@ -241,6 +248,7 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
+# Delete index and view after finished using it
 def deleteView(userId, playlistId):
     viewName = hashlib.md5(str(userId).encode("ascii", "ignore")+str(playlistId).encode("ascii", "ignore")).hexdigest()
     indexName = "index"+viewName
@@ -252,6 +260,7 @@ def deleteView(userId, playlistId):
         cursor.execute(sql)
 
 
+# Creation of a view for each playlist with an index
 def createViewForLazy(userId, playlistId):
     # Creating the hash for the view name
     viewName = hashlib.md5(str(userId).encode("ascii", "ignore")+str(playlistId).encode("ascii", "ignore")).hexdigest()
@@ -262,11 +271,12 @@ def createViewForLazy(userId, playlistId):
             CREATE MATERIALIZED VIEW "%s" (track_id, track_location, track_title, track_year, track_composer,
             track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,
             track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified, track_cover,
-            track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, album_id, artist_name,
-            artist_id, album_artist_id, album_artist_name)
-              AS SELECT *, row_number() OVER() AS local_id FROM (SELECT trck_id, trk_loc, trck_tit, trck_year, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
-              track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov, trck_play,
-              trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
+            track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, album_id,
+             artist_name, artist_id, album_artist_id, album_artist_name)
+              AS SELECT *, row_number() OVER() AS local_id FROM (SELECT trck_id, trk_loc, trck_tit, trck_year,
+              trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
+              track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov,
+              trck_play, trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
               string_agg(DISTINCT artistName, ',') AS art_name,
               string_agg(DISTINCT art_id::TEXT, ',') AS art_id,
               string_agg(DISTINCT album_artist_id::TEXT, ',') AS alb_art,
@@ -298,8 +308,9 @@ def createViewForLazy(userId, playlistId):
                         app_track."downloadCounter" AS trck_dl,
                         *
                       FROM app_track
-                        INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
-                                      INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
+                        INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, 
+                        app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
+                        INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
                         INNER JOIN (SELECT
                                       name AS genreName,
                                       id   AS gen_id
@@ -310,7 +321,8 @@ def createViewForLazy(userId, playlistId):
                                     FROM app_artist) a4 INNER JOIN app_track_artist a3 ON art_id = a3.artist_id
                           ON app_track.id = a3.track_id
                     ) test
-                  INNER JOIN (SELECT * FROM app_playlist INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
+                  INNER JOIN (SELECT * FROM app_playlist 
+                  INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
                   WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
             ) request
         GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
@@ -326,9 +338,41 @@ def createViewForLazy(userId, playlistId):
         cursor.execute(sql)
 
 
+# Parse the raw sql query
+def lazyJsonGenerator(row):
+    splicedArtistName = row[25].split(",")
+    splicedArtistId = row[26].split(",")
+    artists = []
+
+    for artistId, artist in zip(splicedArtistId, splicedArtistName):
+        artists.append({
+            'ID': artistId,
+            'NAME': artist,
+        })
+
+    data = {
+        'ID': row[0],
+        'TITLE': row[2],
+        'YEAR': row[3],
+        'COMPOSER': row[4],
+        'PERFORMER': row[5],
+        'BITRATE': row[10],
+        'DURATION': row[13],
+        'COVER': row[17],
+        'ARTISTS': artists,
+        'GENRE': row[23],
+        'ALBUM': {
+            'ID': row[24],
+            'TITLE': row[21],
+        },
+    }
+    return data
+
+
+# Return a queryset of tracks from a view
 def getPlaylistTracks(playlistId, userId, limit, offset):
     viewName = hashlib.md5(str(userId).encode("ascii", "ignore") + str(playlistId).encode("ascii", "ignore")).hexdigest()
     sql = """SELECT * FROM "%s" WHERE local_id > %s LIMIT %s;""" % (viewName, '%s', '%s')
     with connection.cursor() as cursor:
-        cursor.execute(sql, (limit, offset))
+        cursor.execute(sql, (offset, limit))
         return cursor.fetchall()

@@ -8,7 +8,8 @@ from app.models import Wish
 from app.utils import errorCheckMessage
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Create a wish in the database
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def createWish(request):
     if request.method == 'POST':
         user = request.user
@@ -27,7 +28,8 @@ def createWish(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Get all wishes or get only those of the user
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getWishes(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -46,7 +48,7 @@ def getWishes(request):
                     'WISH_ID': wish.id,
                     'DATE': wish.date,
                     'TEXT': wish.text,
-                    'USER': wish.user.username,
+                    'USERNAME': wish.user.username,
                     'STATUS': wish.status,
                 })
 
@@ -58,7 +60,8 @@ def getWishes(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Change a wish status
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def setWishStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -78,6 +81,7 @@ def setWishStatus(request):
                         wish.status = status
                         wish.save()
                         data = errorCheckMessage(True, None)
+                        # TODO : Add notification logging for user
                     else:
                         data = errorCheckMessage(False, "valueError")
                 else:

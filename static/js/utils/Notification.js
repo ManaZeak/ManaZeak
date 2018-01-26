@@ -11,8 +11,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Notification {
-    constructor(type, title, message) {
 
+    constructor(type, title, message) {
         // TODO : test incoming var ...
         // TODO : create notifController class
         this.type         = type;
@@ -21,7 +21,6 @@ class Notification {
         this.notification = null;
         this.duration     = 3000; // Notification visible duration
         this.interval     = 1;    // Refreshing interval
-
         this._createUI();
         this._lifeCycle();
     };
@@ -58,17 +57,12 @@ class Notification {
      **/
     _createUI() {
         this.ui = {
-            icon:    null,
-            title:   null,
-            message: null,
-            close:   null
+            icon:           document.createElement("IMG"),
+            title:          document.createElement("P"),
+            message:        document.createElement("P"),
+            close:          document.createElement("IMG")
         };
-
-        this.notification           = document.createElement("div");
-        this.ui.icon                = document.createElement("img");
-        this.ui.title               = document.createElement("p");
-        this.ui.message             = document.createElement("p");
-        this.ui.close               = document.createElement("img");
+        this.notification = document.createElement("DIV");
 
         this.notification.className = "notificationContainer";
         this.ui.icon.className      = "icon";
@@ -80,15 +74,17 @@ class Notification {
             case "INFO":
                 this.ui.icon.src    = "/static/img/utils/notification/info.svg";
                 break;
+
             case "ERROR":
                 this.ui.icon.src    = "/static/img/utils/notification/error.svg";
                 break;
+
             default:
                 this.ui.icon.src    = "/static/img/utils/notification/error.svg";
                 break;
         }
-        this.ui.close.src           = "/static/img/utils/notification/close.svg";
 
+        this.ui.close.src           = "/static/img/utils/notification/close.svg";
         this.ui.title.innerHTML     = this.title;
         this.ui.message.innerHTML   = this.message;
 
@@ -118,7 +114,6 @@ class Notification {
     _lifeCycle() {
         document.body.appendChild(this.notification);
         this._eventListener();
-
         this._open();
         this.timeoutHandle = window.setTimeout(this._close.bind(this), this.duration);
     }
@@ -155,3 +150,5 @@ class Notification {
     }
 
 }
+
+export default Notification

@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload
 from app.stats import stats, suggestion
-from app.track import track
+from app.track import track, editor
 from . import views
 
 app_name = 'app'
@@ -14,70 +14,74 @@ urlpatterns = [
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),
     url(r'^logout/$', views.logoutView, name='logout'),
 
+    # Collection actions
+    url(r'^collection/delete/$', adminTools.deleteCollection, name='deleteCollection'),
+
     # Library actions
-    url(r'^ajax/initialScan/$', library.initialScan, name='rescan'),
-    url(r'^ajax/newLibrary/$', library.newLibrary, name='setLibrary'),
-    url(r'^ajax/checkLibraryScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
-    url(r'^ajax/rescanLibrary/$', library.rescanLibrary, name='rescanLibrary'),
-    url(r'^ajax/deleteLibrary/$', library.deleteLibrary, name='deleteLibrary'),
-    url(r'^ajax/deleteAllLibrary/$', library.deleteAllLibrary, name='deleteAllLibrary'),
+    url(r'^library/initialScan/$', library.initialScan, name='initialScan'),
+    url(r'^library/new/$', library.newLibrary, name='setLibrary'),
+    url(r'^library/checkScanStatus/$', library.checkLibraryScanStatus, name='checkLibraryScan'),
+    url(r'^library/rescan/$', library.rescanLibraryRequest, name='rescanLibrary'),
+    url(r'^library/rescanAll/$', library.rescanAllLibraries, name='rescanAllLibraries'),
+    url(r'^library/deleteAll/$', library.deleteAllLibrary, name='deleteAllLibrary'),
 
     # Playlist actions
-    url(r'^ajax/newPlaylist/$', playlist.newPlaylist, name='newPlaylist'),
-    url(r'^ajax/addTracksToPlaylist/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
-    url(r'^ajax/removeTrackFromPlaylist/$', playlist.removeTrackFromPlaylist, name='removeTrackFromPlaylist'),
-    url(r'^ajax/deletePlaylist/$', playlist.deletePlaylist, name='deletePlaylist'),
-    url(r'^ajax/renamePlaylist/$', playlist.renamePlaylist, name='renamePlaylist'),
-    url(r'^ajax/getPlaylists/$', playlist.getUserPlaylists, name='getPlaylists'),
-    url(r'^ajax/lazyLoadingSimplifiedPlaylist/$', playlist.lazyLoadingSimplifiedPlaylist, name='lazyLoading'),
-    url(r'^ajax/getPlaylistInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),
+    url(r'^playlist/new/$', playlist.newPlaylist, name='newPlaylist'),
+    url(r'^playlist/addTracks/$', playlist.addTracksToPlaylist, name='addTracksToPlaylist'),
+    url(r'^playlist/removeTracks/$', playlist.removeTracksFromPlaylist, name='removeTrackFromPlaylist'),
+    url(r'^playlist/rename/$', playlist.renamePlaylist, name='renamePlaylist'),
+    url(r'^playlist/fetchAll/$', playlist.getUserPlaylists, name='getPlaylists'),
+    url(r'^playlist/simplifiedLazyLoading/$', playlist.simplifiedLazyLoadingPlaylist, name='lazyLoading'),
+    url(r'^playlist/getInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),  # Use this in front
 
     # Player actions
-    url(r'^ajax/getTrackPathByID/$', player.getTrackPathByID, name='getTrackPathByID'),
-    url(r'^ajax/getMoodbarByID/$', player.getMoodbarByID, name='getMoodbarByID'),
-    url(r'^ajax/shuffleNextTrack/$', player.shuffleNextTrack, name='shuffleNextTrack'),
-    url(r'^ajax/randomNextTrack/$', player.randomNextTrack, name='randomNextTrack'),
-    url(r'^ajax/toggleRandom/$', player.toggleRandom, name='toggleRandom'),
+    url(r'^player/shuffleNext/$', player.shuffleNextTrack, name='shuffleNextTrack'),
+    url(r'^player/randomNext/$', player.randomNextTrack, name='randomNextTrack'),
+    url(r'^player/toggleRandomMode/$', player.toggleRandom, name='toggleRandom'),
 
     # Track actions
-    url(r'^ajax/getTrackDetailedInfo/$', track.getTrackDetailedInfo, name='getTrackDetailedInfo'),
-    url(r'^ajax/download/$', track.getDownloadLocation, name='getDownloadLocation'),
+    url(r'^track/getPath/$', track.getTrackPath, name='getTrackPathByID'),
+    url(r'^track/getMoodbar/$', track.getMoodbar, name='getMoodbarByID'),
+    url(r'^track/getDetailedInfo/$', track.getTracksDetailedInfo, name='getTracksDetailedInfo'),
+    url(r'^track/changeMetadata/$', editor.changeTracksMetadata, name='changeTracksMetadata'),
+    url(r'^track/download/$', track.getDownloadLocation, name='getDownloadLocation'),
+    url(r'^track/multiDownload/$', track.multiTrackDownload, name='multiTrackDownload'),
 
     # Stats actions
-    url(r'^ajax/getUserStats/$', stats.getUserStats, name='getUserStats'),
-    url(r'^ajax/adminGetUserStats/$', stats.adminGetUserStats, name='adminGetUserStats'),
+    url(r'^stats/adminGetUserStats/$', stats.adminGetUserStats, name='adminGetUserStats'),  # TODO : Implement in front
     url(r'^stats/getUserPrefArtists/$', stats.getUserPrefArtists, name='getUserPrefArtists'),
     url(r'^stats/getUserPrefGenres/$', stats.getUserPrefGenres, name='getUserPrefGenres'),
     url(r'^stats/getUserPrefTracks/$', stats.getUserPrefTracks, name='getUserPrefTracks'),
 
     # History actions
-    url(r'^ajax/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),
+    url(r'^history/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),
 
     # Suggestions actions
-    url(r'^ajax/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
+    url(r'^suggestions/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
 
     # Wish actions
-    url(r'^ajax/submitWish/$', wish.createWish, name='createWish'),
-    url(r'^ajax/getWishes/$', wish.getWishes, name='getWishes'),
-    url(r'^ajax/setWishStatus/$', wish.setWishStatus, name='setWishStatus'),
+    url(r'^wish/submit/$', wish.createWish, name='createWish'),
+    url(r'^wish/get/$', wish.getWishes, name='getWishes'),
+    url(r'^wish/setStatus/$', wish.setWishStatus, name='setWishStatus'),
 
     # USER actions
-    url(r'^ajax/getUserSettings/$', userSettings.getUserSettings, name='getUserSettings'),
+    url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
 
     # ADMIN actions
-    url(r'^ajax/isAdmin/$', adminTools.isAdmin, name='isAdmin'),
-    url(r'^ajax/getAdminView/$', adminTools.getAdminView, name='getAdminView'),
-    url(r'^ajax/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),
-    url(r'^ajax/removeUserById/$', adminTools.removeUserById, name='removeUserById'),
-    url(r'^ajax/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),
-    url(r'^ajax/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
-    url(r'^ajax/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
-    url(r'^ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
+    url(r'^admin/isAdmin/$', adminTools.isAdmin, name='isAdmin'),  # TODO : remove in front
+    url(r'^admin/getView/$', adminTools.getAdminView, name='getAdminView'),
+    url(r'^admin/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),
+    url(r'^admin/removeUser/$', adminTools.removeUser, name='removeUserById'),
+    url(r'^admin/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),
+    url(r'^admin/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
+    url(r'^admin/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
+    url(r'^admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
+    url(r'^admin/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
 
     # InviteCode section
-    url(r'^ajax/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
-    url(r'^ajax/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
+    url(r'^admin/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
+    url(r'^admin/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
 
     # File upload
-    url(r'^ajax/fileUpload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
+    url(r'^file/upload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
 ]

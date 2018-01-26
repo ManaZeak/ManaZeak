@@ -9,10 +9,13 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 from multiprocessing import Process
 
+from app.library import deleteLibrary
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
-    AdminOptions
+    AdminOptions, UserPreferences, InviteCode
+from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, timeCodeToString
+from app.wallet import calculateCurrentAvailableCash
 
 
 def getAdminOptions():
@@ -31,7 +34,8 @@ def getAdminOptions():
     return adminOptions
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Get all the information needed for the admin view
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getAdminView(request):
     if request.method == 'GET':
         admin = request.user
@@ -39,30 +43,44 @@ def getAdminView(request):
             adminOptions = getAdminOptions()
             users = User.objects.all().order_by('date_joined')
             userInfo = []
+
+            # User information
             for user in users:
-                dateJoined = str(user.date_joined.day).zfill(2) + "/" + str(user.date_joined.month).zfill(2) + \
-                             "/" + str(user.date_joined.year) + " - " + str(user.date_joined.hour) + ":" + \
-                             str(user.date_joined.minute)
-                lastLogin = str(user.last_login.day).zfill(2) + "/" + str(user.last_login.month).zfill(2) + \
-                            "/" + str(user.last_login.year) + " - " + str(user.last_login.hour) + ":" + \
-                            str(user.last_login.minute)
-                userInfo.append({
+                dateJoined = timeCodeToString(user.date_joined)
+                lastLogin = timeCodeToString(user.last_login)
+                userPreferences = UserPreferences.objects.get(user=user)
+                inviteCode = InviteCode.objects.get(user=user)
+                godfather = {
+                    'GODFATHER_NAME': "Jesus",
+                }
+                if userPreferences.inviteCode is not None:
+                    godfather = {
+                        'GODFATHER_NAME': userPreferences.inviteCode.user.username,
+                    }
+                userInfo.append({**{
                     'NAME': user.username,
-                    'ADMIN': user.is_superuser,
+                    'IS_ADMIN': user.is_superuser,
                     'JOINED': dateJoined,
                     'LAST_LOGIN': lastLogin,
-                    'ID': user.id,
-                })
+                    'USER_ID': user.id,
+                    'INVITE_CODE': inviteCode.code,
+                    'MANACOIN': calculateCurrentAvailableCash(userPreferences.wallet),
+                }, **godfather})
             data = dict({'USER': userInfo})
+
+            # Library information
             libraryInfo = []
             for library in Library.objects.all():
                 libraryInfo.append({
                     'NAME': library.name,
                     'PATH': library.path,
                     'NUMBER_TRACK': library.playlist.track.all().count(),
+                    'TOTAL_DURATION': getTotalLength(library.playlist),
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
+
+            # Global options
             data = {**data, **{
                 'SYNC_KEY': adminOptions.syncthingKey,
                 'BUFFER_PATH': adminOptions.bufferPath,
@@ -76,7 +94,8 @@ def getAdminView(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Delete all moodbars in the moodbar folder.
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def removeAllMoods(request):
     if request.method == 'GET':
         admin = request.user
@@ -92,22 +111,26 @@ def removeAllMoods(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
-def removeUserById(request):
+# Delete a user from an ID
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def removeUser(request):
     if request.method == 'POST':
         admin = request.user
         if admin.is_superuser:
             response = json.loads(request.body)
             if 'USER_ID' in response:
-                userId = strip_tags(response['USER_ID'])
-                if int(userId) != admin.id:
-                    if User.objects.filter(id=userId).count() == 1:
-                        User.objects.get(id=userId).delete()
-                        data = errorCheckMessage(True, None)
+                try:
+                    userId = int(strip_tags(response['USER_ID']))
+                    if userId != admin.id:
+                        if User.objects.filter(id=userId).count() == 1:
+                            User.objects.get(id=userId).delete()
+                            data = errorCheckMessage(True, None)
+                        else:
+                            data = errorCheckMessage(False, "dbError")
                     else:
-                        data = errorCheckMessage(False, "dbError")
-                else:
-                    data = errorCheckMessage(False, "userDeleteError")
+                        data = errorCheckMessage(False, "userDeleteError")
+                except ValueError:
+                    data = errorCheckMessage(False, "valueError")
             else:
                 data = errorCheckMessage(False, "badFormat")
         else:
@@ -117,7 +140,8 @@ def removeUserById(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Force a syncthing rescan
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def syncthingRescan(request):
     if request.method == 'GET':
         admin = request.user
@@ -135,7 +159,8 @@ def syncthingRescan(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Change the syncthing API key in the database
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeSyncthingAPIKey(request):
     if request.method == 'POST':
         admin = request.user
@@ -157,8 +182,8 @@ def changeSyncthingAPIKey(request):
     return JsonResponse(data)
 
 
-# WIP
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Change the buffer path in the database
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeBufferPath(request):
     if request.method == 'POST':
         admin = request.user
@@ -167,9 +192,23 @@ def changeBufferPath(request):
             if 'BUFFER_PATH' in response:
                 adminOptions = getAdminOptions()
                 bufferPath = strip_tags(response['BUFFER_PATH'])
+                if os.path.isdir(bufferPath):
+                    adminOptions.bufferPath = bufferPath
+                    adminOptions.save()
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dirNotFound")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Delete all covers and launch a rescan for covers
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':
         admin = request.user
@@ -191,13 +230,15 @@ def regenerateCovers(request):
     return JsonResponse(data)
 
 
+# Process for handling regeneration
 def regenerateCoverProcess():
     tracks = Track.objects.all()
     for track in tracks:
         regenerateCover(track)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Return the status of a user
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def isAdmin(request):
     if request.method == 'GET':
         data = {
@@ -209,12 +250,13 @@ def isAdmin(request):
     return JsonResponse(data)
 
 
-# Drop all database, used for debug
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Drop all database
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def dropAllDB(request):
     if request.method == 'GET':
-        if request.user.is_authenticated():
-            if request.user.is_superuser:
+        user = request.user
+        if user.is_authenticated():
+            if user.is_superuser:
                 Track.objects.all().delete()
                 Artist.objects.all().delete()
                 Album.objects.all().delete()
@@ -247,21 +289,61 @@ def isInviteEnabled(request):
     return JsonResponse(data)
 
 
+# Enable or disable the invitation mode
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def toggleInvite(request):
     if request.method == 'GET':
-        adminOptions = getAdminOptions()
-        adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
-        adminOptions.save()
-        data = {
-            'INVITE': adminOptions.inviteCodeEnabled
-        }
-        data = {**data, **errorCheckMessage(True, None)}
+        user = request.user
+        if user.is_superuser:
+            adminOptions = getAdminOptions()
+            adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
+            adminOptions.save()
+            data = {
+                'INVITE': adminOptions.inviteCodeEnabled
+            }
+            data = {**data, **errorCheckMessage(True, None)}
+        else:
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def deleteCollection(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if 'PLAYLIST_ID' in response:
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                if playlist.isLibrary:
+                    if user.is_superuser:
+                        if Library.objects.filter(playlist=playlist).count() == 1:
+                            deleteLibrary(Library.objects.get(playlist=playlist))
+                            data = errorCheckMessage(True, None)
+                        else:
+                            data = errorCheckMessage(False, "dbError")
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
+                else:
+                    if playlist.user == user:
+                        playlist.delete()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Check if the tagging has been done correctly
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def checkNamingConventionArtistsOnPlaylist(request):
     data = {}
     if request.method == 'POST':

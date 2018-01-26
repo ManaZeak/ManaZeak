@@ -18,17 +18,31 @@ $menu-indentation: 20px;
         list-style: none;
         margin: 0;
         padding: 0;
+        background-color: $primary-color;
 
         & > li {
             padding-left: $menu-indentation;
             text-align: left;
+            padding-top: 5px;
+            padding-bottom: 5px;
 
             &::after, &::before {
                 content: "";
                 display: block;
-                height: 6px;
                 margin-left: -$menu-indentation;
                 width: calc(100% + #{$menu-indentation});
+            }
+
+            & > span.mzk-ctx-label {
+                &::after, &::before {
+                    content: "";
+                    display: block;
+                    height: 6px;
+                }
+            }
+
+            &:hover {
+                background-color: $dark-secondary-color;
             }
 
             &:not(:first-child).mzk-ctx-submenu::before {
@@ -53,9 +67,6 @@ $menu-indentation: 20px;
                 }
             }
 
-        }
-        & > li:hover {
-            background-color: $dark-secondary-color;
         }
     }
 }

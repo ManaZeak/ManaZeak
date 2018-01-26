@@ -1,27 +1,27 @@
-from datetime import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, deleteView
+from app.dao import getPlaylistTracks, createViewForLazy, deleteView, lazyJsonGenerator
 from app.models import Playlist, Track
 from app.utils import errorCheckMessage
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Create an empty playlist
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def newPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'NAME' in response:
+        if 'PLAYLIST_NAME' in response:
             playlist = Playlist()
-            playlist.name = strip_tags(response['NAME'])
+            playlist.name = strip_tags(response['PLAYLIST_NAME'])
             playlist.user = request.user
             playlist.save()
             data = {
                 'PLAYLIST_ID': playlist.id,
-                'NAME': playlist.name,
+                'PLAYLIST_NAME': playlist.name,
             }
             data = {**data, **errorCheckMessage(True, None)}
         else:
@@ -31,37 +31,23 @@ def newPlaylist(request):
     return JsonResponse(data)
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
-def deletePlaylist(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            user = request.user
-            playlistId = strip_tags(response['PLAYLIST_ID'])
-            if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
-                Playlist.objects.get(id=playlistId, user=user).delete()
-                data = errorCheckMessage(True, None)
-            else:
-                data = errorCheckMessage(False, "permissionError")
-        else:
-            data = errorCheckMessage(False, "badFormat")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Rename user's playlist
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def renamePlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response and 'NAME' in response:
+        if 'PLAYLIST_ID' in response and 'PLAYLIST_NAME' in response:
             user = request.user
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId, user=user)
-                playlist.name = strip_tags(response['NAME'])
+                playlist.name = strip_tags(response['PLAYLIST_NAME'])
                 playlist.save()
-                data = errorCheckMessage(True, None)
+                data = {
+                    'PLAYLIST_ID': playlist.id,
+                    'PLAYLIST_NAME': playlist.name,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
             else:
                 data = errorCheckMessage(False, "permissionError")
         else:
@@ -71,22 +57,27 @@ def renamePlaylist(request):
     return JsonResponse(data)
 
 
+# Add a track to a user playlist
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def addTracksToPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        user = request.user
         if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
             tracksId = response['TRACKS_ID']
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                tracks = Track.objects.filter(id__in=tracksId)
-                addedTrack = len(tracks)
-                for track in tracks:
-                    playlist.track.add(track)
-                data = {
-                    'ADDED_TRACKS': addedTrack,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+                if not playlist.isLibrary:
+                    if playlist.user == user:
+                        tracks = Track.objects.filter(id__in=tracksId)
+                        for track in tracks:
+                            playlist.track.add(track)
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "permissionError")
+                else:
+                    data = errorCheckMessage(False, "permissionError")
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
@@ -96,22 +87,23 @@ def addTracksToPlaylist(request):
     return JsonResponse(data)
 
 
-def removeTrackFromPlaylist(request):
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def removeTracksFromPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
+        user = request.user
         if 'PLAYLIST_ID' in response and 'TRACKS_ID' in response:
             tracksId = response['TRACKS_ID']
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                tracks = Track.objects.filter(id__in=tracksId)
-                removedTracks = len(tracks)
-                for track in tracks:
-                    playlist.track.remove(track)
-                data = {
-                    'REMOVED_TRACKS': removedTracks,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+                if user == playlist.user and not playlist.isLibrary:
+                    tracks = Track.objects.filter(id__in=tracksId)
+                    for track in tracks:
+                        playlist.track.remove(track)
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "permissionError")
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
@@ -121,45 +113,16 @@ def removeTrackFromPlaylist(request):
     return JsonResponse(data)
 
 
-def lazyJsonGenerator(row):
-    splicedArtistName = row[25].split(",")
-    splicedArtistId = row[26].split(",")
-    artists = []
-
-    for artistId, artist in zip(splicedArtistId, splicedArtistName):
-        artists.append({
-            'ID': artistId,
-            'NAME': artist,
-        })
-
-    data = {
-        'ID': row[0],
-        'TITLE': row[2],
-        'YEAR': row[3],
-        'COMPOSER': row[4],
-        'PERFORMER': row[5],
-        'BITRATE': row[10],
-        'DURATION': row[13],
-        'COVER': row[17],
-        'ARTISTS': artists,
-        'GENRE': row[23],
-        'ALBUM': {
-            'ID': row[24],
-            'TITLE': row[21],
-        },
-    }
-    return data
-
-
+# TODO : test for the best value for the number of element in the JSON
 # Give 300 tracks of a playlist with an offset (REQ_NUMBER)
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
-def lazyLoadingSimplifiedPlaylist(request):
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def simplifiedLazyLoadingPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'REQ_NUMBER' in response and 'PLAYLIST_ID' in response:
+        if 'REQUEST_NUMBER' in response and 'PLAYLIST_ID' in response:
             playlistId = strip_tags(response['PLAYLIST_ID'])
             try:
-                reqNumber = int(strip_tags(response['REQ_NUMBER']))
+                reqNumber = int(strip_tags(response['REQUEST_NUMBER']))
             except ValueError:
                 return JsonResponse(errorCheckMessage(False, "valueError"))
             nbTracks = 300
@@ -176,7 +139,7 @@ def lazyLoadingSimplifiedPlaylist(request):
                         return JsonResponse(errorCheckMessage(False, "permissionError"))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlistId, user.id, reqNumber, reqNumber+nbTracks)
+                    trackSet = getPlaylistTracks(playlistId, user.id, nbTracks, reqNumber)
                     data = []
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
@@ -195,7 +158,7 @@ def lazyLoadingSimplifiedPlaylist(request):
 
 
 # Send basic data about the playlist
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getPlaylistInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -227,12 +190,21 @@ def getPlaylistInfo(request):
     return JsonResponse(data)
 
 
+# Return the time length of a playlist
+def getTotalLength(playlist):
+    tracks = playlist.track.all()
+    totalDuration = 0
+    for track in tracks:
+        totalDuration += track.duration
+    return totalDuration
+
+
 # Return all the id of the user playlists
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPlaylists(request):
     if request.method == 'GET':
         user = request.user
-        playlists = Playlist.objects.filter(user=request.user, isLibrary=False)
+        playlists = Playlist.objects.filter(user=user, isLibrary=False)
         playlistNames = []
         playlistIds = []
         isLibrary = []
@@ -253,12 +225,12 @@ def getUserPlaylists(request):
         if len(playlistIds) == 0:
             data = errorCheckMessage(False, None)
         else:
+            # TODO : use JS0N convention
             data = {
                 'NUMBER': len(playlistNames),
                 'PLAYLIST_NAMES': playlistNames,
                 'PLAYLIST_IDS': playlistIds,
                 'PLAYLIST_IS_LIBRARY': isLibrary,
-                'IS_ADMIN': user.is_superuser,
             }
             data = {**data, **errorCheckMessage(True, None)}
     else:

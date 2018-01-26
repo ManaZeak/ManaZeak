@@ -6,73 +6,22 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedGetRequest, precisionRound } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import View from '../../core/View.js'
+
 class StatsView extends View {
+
     constructor() {
-
         super();
-        this._init();
+        this._createUI();
     }
-
-//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : _fetchStats (public)
-     * class  : StatsView
-     * desc   : Fetch statistics from server
-     **/
-    fetchStats() {
-        let that = this;
-        let modal = new Modal("fetchStats");
-        modal.open();
-
-        JSONParsedGetRequest(
-            "ajax/getUserStats/",
-            function(response) {
-                /* response = {
-                 *     DONE              : bool
-                 *     ERROR_H1          : string
-                 *     ERROR_MSG         : string
-                 *
-                 *     USERNAME          : string
-                 *     NB_TRACK_LISTENED : int
-                 *     NB_TRACK_PUSHED   : int
-                 *     TOTAL_TRACK       : int
-                 *     PREF_ARTISTS      : [][]
-                 *     PREF_GENRES       : [][]
-                 *     PREF_TRACKS       : [][]
-                 *     LEAST_ARTISTS     : [][]
-                 *     LEAST_GENRES      : [][]
-                 *     LEAST_TRACKS      : [][]
-                 * } */
-                modal.close();
-
-                if (response.DONE) {
-                    that.ui.userName.innerHTML    = response.USERNAME;
-                    that.ui.totalPlayed.innerHTML = "Tracks played : " + response.NB_TRACK_LISTENED;
-                    that.ui.totalPushed.innerHTML = "Tracks uploaded : " + response.NB_TRACK_PUSHED + " (" +  // TODO : get from serv toptal track on serv
-                        Math.round(((response.NB_TRACK_PUSHED) / response.TOTAL_TRACK) * 100) / 100 +
-                        "% of all the music here)";
-                    that._updatePrefArtistsList(response.PREF_ARTISTS);
-                    that._updatePrefGenresList(response.PREF_GENRES);
-                    that._updatePrefTracksList(response.PREF_TRACKS);
-                    that._updateLeastArtistsList(response.LEAST_ARTISTS);
-                    that._updateLeastGenresList(response.LEAST_GENRES);
-                    that._updateLeastTracksList(response.LEAST_TRACKS);
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                }
-            }
-        );
-    }
-
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
      * method : _clearPageSpace (private)
-     * class  : AdminView
+     * class  : StatsView
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
@@ -104,16 +53,14 @@ class StatsView extends View {
         this.ui.container.id          = "stats";
         this.ui.menu.id               = "leftMenu";
         this.ui.content.id            = "content";
-
         this.ui.menuTitle.innerHTML   = "Statistics";
-        this.ui.menuArtist.innerHTML = "Artist";
-        this.ui.menuTrack.innerHTML  = "Track";
-        this.ui.menuGenre.innerHTML  = "Genre";
+        this.ui.menuArtist.innerHTML  = "Artist";
+        this.ui.menuTrack.innerHTML   = "Track";
+        this.ui.menuGenre.innerHTML   = "Genre";
 
         this.ui.menuList.appendChild(this.ui.menuArtist);
         this.ui.menuList.appendChild(this.ui.menuTrack);
         this.ui.menuList.appendChild(this.ui.menuGenre);
-
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
         this.ui.container.appendChild(this.ui.menu);
@@ -124,6 +71,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _eventListener (private)
+     * class  : StatsView
+     * desc   : StatsView event listeners
+     **/
     _eventListener() {
         this.ui.menuArtist.addEventListener("click", this._requestArtistPage.bind(this));
         this.ui.menuTrack.addEventListener("click", this._requestTrackPage.bind(this));
@@ -131,11 +83,11 @@ class StatsView extends View {
     }
 
 
-    _init() {
-        this._createUI();
-    }
-
-
+    /**
+     * method : _requestArtistPage (private)
+     * class  : StatsView
+     * desc   : Display the artists page
+     **/
     _requestArtistPage() {
         this._clearPageSpace();
 
@@ -185,7 +137,6 @@ class StatsView extends View {
                     else {
                         prefArtistsLabel.innerHTML     = "Top Artists";
                         leastArtistsLabel.innerHTML    = "Flop Artists";
-
                         that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
                         that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
                     }
@@ -199,6 +150,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _requestGenrePage (private)
+     * class  : StatsView
+     * desc   : Display the genres page
+     **/
     _requestGenrePage() {
         this._clearPageSpace();
 
@@ -227,7 +183,6 @@ class StatsView extends View {
         this.ui.content.appendChild(genresRight);
 
         let that = this;
-
         JSONParsedGetRequest(
             "stats/getUserPrefGenres/",
             function(response) {
@@ -249,7 +204,6 @@ class StatsView extends View {
                     else {
                         prefGenresLabel.innerHTML      = "Top Genres";
                         leastGenresLabel.innerHTML     = "Flop Genres";
-
                         that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
                         that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
                     }
@@ -263,6 +217,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _requestTrackPage (private)
+     * class  : StatsView
+     * desc   : Display the tracks page
+     **/
     _requestTrackPage() {
         this._clearPageSpace();
 
@@ -311,10 +270,8 @@ class StatsView extends View {
                     }
 
                     else {
-                        console.log(response);
                         prefTracksLabel.innerHTML      = "Top Tracks";
                         leastTracksLabel.innerHTML     = "Flop Tracks";
-
                         that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
                         that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
                     }
@@ -328,6 +285,11 @@ class StatsView extends View {
     }
 
 
+    /**
+     * method : _unselectAllMenuEntries (private)
+     * class  : StatsView
+     * desc   : Unselect every entry in the left menu
+     **/
     _unselectAllMenuEntries() {
         this.ui.menuArtist.className = "";
         this.ui.menuTrack.className  = "";
@@ -354,6 +316,7 @@ class StatsView extends View {
                 else {
                     entry.innerHTML =  counter + ". Untagged artist (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
                 }
+
                 ++counter;
                 ui.appendChild(entry);
             }
@@ -497,3 +460,5 @@ class StatsView extends View {
     }
 
 }
+
+export default StatsView

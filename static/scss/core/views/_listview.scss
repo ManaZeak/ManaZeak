@@ -1,5 +1,5 @@
 
-$listView-padding: 0 10%;
+$listView-padding: 0 5%;
 
 
 @media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled (yet)
@@ -36,17 +36,16 @@ $listView-padding: 0 10%;
 /* listview */
 #listView {
     box-sizing: border-box;
-    height: calc(100% - 35px);
+    max-height: calc(100% - 35px);
     overflow-y: auto;
     padding: $listView-padding;
-    position: absolute;
-    top: 35px;
     width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */
 }
 
 .columnHeader {
+    border-bottom: solid 1px $dark-primary-color;
     box-sizing: border-box;
     cursor: pointer;
     font-size: 0.9em;
@@ -54,8 +53,6 @@ $listView-padding: 0 10%;
     height: 35px;
     line-height: 35px;
     padding: $listView-padding;
-    position: absolute;
-    top: 0;
     width: 100%;
     -webkit-user-select: none;  /* Chrome/Safari */
     -moz-user-select: none;     /* Firefox */
@@ -127,8 +124,12 @@ $listView-padding: 0 10%;
     width: 3.5%;
 }
 
-// Must be aplied when a vertical scrollBar is active
+// Must be applied when a vertical scrollBar is active
 .columnHeaderOffset {
     width: calc(100% - 20px) !important;
 }
 
+
+.evenLin {
+    background-color: $listview-even-lin;
+}

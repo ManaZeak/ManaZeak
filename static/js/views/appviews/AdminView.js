@@ -6,11 +6,14 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+import { JSONParsedPostRequest, JSONParsedGetRequest, secondsToTimecode } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import View from '../../core/View.js'
+
 class AdminView extends View {
+
     constructor() {
-
         super();
-
         this.info  = null;
         this.modal = null;
         this._init();
@@ -54,13 +57,12 @@ class AdminView extends View {
         this.ui.container.id        = "admin";
         this.ui.menu.id             = "leftMenu";
         this.ui.content.id          = "content";
-
         this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
         this.ui.menuUser.innerHTML  = "Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
-        this.ui.menuWish.innerHTML    = "Suggestions";
+        this.ui.menuWish.innerHTML    = "Wishes";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuLib);
@@ -150,15 +152,69 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.dropLabel);
         this.ui.content.appendChild(this.ui.dropButton);
 
-        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
         this.ui.rmMoodButton.addEventListener("click", this._removeMoodbar.bind(this));
+        this.ui.rmCoverButton.addEventListener("click", this._regenCover.bind(this));
+        this.ui.dropButton.addEventListener("click", this._requestDrop.bind(this));
     }
 
 
+    _regenCover() {
+        let that = this;
+        JSONParsedGetRequest(
+            "admin/regenerateCovers/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
+     * method : _requestDeleteLibraries (private)
+     * class  : AdminView
+     * desc   : Request to delete all library
+     **/
     _requestDeleteLibraries() { // TODO : put the code below in APP
         let that = this;
         JSONParsedGetRequest(
-            "ajax/deleteAllLibrary/",
+            "library/deleteAll/",
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (response.DONE) {
+                    window.app.playlists.clear();
+                    window.app.changePlaylist();
+                    that.ui.rmLibButton.blur();
+                    that._updateAdminInfo();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
+     * method : _requestRescanLibraries (private)
+     * class  : AdminView
+     * desc   : Request to rescan all library
+     **/
+    _requestRescanLibraries() {
+        let that = this;
+        JSONParsedGetRequest(
+            "library/rescanAll/",
             function(response) {
                 /* response = {
                  *     DONE        : bool
@@ -167,17 +223,7 @@ class AdminView extends View {
                  *
                  *     PATH        : string
                  * } */
-                if (response.DONE) {
-                    window.app.playlists = [];
-                    window.app.topBar.playlists = [];
-                    that.ui.rmLibButton.blur();
-
-                    window.app.refreshTopBar();
-                    window.app.refreshFootBar();
-                    that._updateAdminInfo();
-                }
-
-                else {
+                if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
@@ -193,31 +239,52 @@ class AdminView extends View {
     _requestUsersPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuUser.className   = "selected";
+        this.ui.menuUser.className     = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
 
-        let sponsoringLabel = document.createElement("P");
-        let sponsoringSpan = document.createElement("SPAN");
-        let sponsoring = document.createElement("BUTTON");
-        let list = document.createElement("UL");
+        let sponsoringLabel            = document.createElement("P");
+        let sponsoringSpan             = document.createElement("SPAN");
+        let sponsoring                 = document.createElement("BUTTON");
+        let list                       = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
-            let admin         = this.info.USER[i].ADMIN ? "Admin" : "User";
-            let element       = document.createElement("LI");
-            let rm            = document.createElement("IMG");
-            rm.src            = "/static/img/utils/trash.svg";
+            let admin                  = this.info.USER[i].ADMIN ? "Admin" : "User";
+            let element                = document.createElement("LI");
+            let rm                     = document.createElement("IMG");
+            rm.src                     = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
                 window.app.deleteUser(that.info.USER[i].ID, function() {
                     let that = this;
                     JSONParsedGetRequest(
-                        "ajax/getAdminView/",
-                        function(response) {
+                        "admin/getView/",
+                        function(response) { // TODO : fetch those info from getUserInfo
                             /* response = {
                              *     DONE      : bool
                              *     ERROR_H1  : string
                              *     ERROR_MSG : string
+                             *
+                             *     USER: {
+                             *         GODFATHER_NAME:
+                             *         NAME:
+                             *         IS_ADMIN:
+                             *         JOINED:
+                             *         LAST_LOGIN:
+                             *         USER_ID:
+                             *         INVITE_CODE:
+                             *         MANACOIN:
+                             *     }
+                             *     LIBRARIES: {
+                             *         NAME:
+                             *         PATH:
+                             *         NUMBER_TRACK:
+                             *         TOTAL_DURATION:
+                             *         ID:
+                             *     }
+                             *     SYNC_KEY:
+                             *     BUFFER_PATH:
+                             *     INVITE_ENABLED:
                              * } */
                             if (response.DONE) {
                                 that.info = response;
@@ -227,18 +294,23 @@ class AdminView extends View {
                     );
                 });
             });
-            element.innerHTML = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br>" +
-                "Joined ManaZeak: " + this.info.USER[i].JOINED + " - Last login: " + this.info.USER[i].LAST_LOGIN;
+            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + "<br>" +
+                                         "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
+                                         "Joined on: " + this.info.USER[i].JOINED + "<br>" +
+                                         "Last login: " + this.info.USER[i].LAST_LOGIN;
+
             element.appendChild(rm);
             list.appendChild(element);
         }
 
-        let status = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
-        sponsoringLabel.innerHTML = "<b>Sponsoring option on subscribe</b><br>" +
-            "<br>" +
-            "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
-            "This command will add a field in the sign up form that is mandatory. Sponsoring current status : " + status;
-        sponsoring.innerHTML = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
+        sponsoringLabel.innerHTML      = "<b>Sponsoring option on subscribe</b><br>" +
+                                         "<br>" +
+                                         "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
+                                         "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
+        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -260,74 +332,61 @@ class AdminView extends View {
     _requestLibrariesPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuLib.className      = "selected";
-        this.ui.contentTitle.innerHTML = "Libraries management";
+        this.ui.menuLib.className         = "selected";
+        this.ui.contentTitle.innerHTML    = "Libraries management";
 
-        this.ui.rmLibLabel             = document.createElement("P");
-        this.ui.rmLibButton            = document.createElement("BUTTON");
+        this.ui.rescanLibLabel            = document.createElement("P");
+        this.ui.rescanLibButton           = document.createElement("BUTTON");
+        this.ui.rmLibLabel                = document.createElement("P");
+        this.ui.rmLibButton               = document.createElement("BUTTON");
 
-        this.ui.rmLibLabel.innerHTML  = "<b>Remove every libraries</b><br>" +
-            "<br>" +
-            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
-            "This command will erase all libraries in the database.";
-        this.ui.rmLibButton.innerHTML  = "REMOVE ALL LIBRARIES";
+        this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
+                                            "<br>" +
+                                            "After you made modification on files located in a library folder, use this command to perform a rescan.<br>" +
+                                            "This command will rescan all libraries in the database.";
+        this.ui.rescanLibButton.innerHTML = "RESCAN ALL LIBRARIES";
+        this.ui.rmLibLabel.innerHTML      = "<b>Remove libraries</b><br>" +
+                                            "<br>" +
+                                            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
+                                            "This command will erase all libraries in the database.";
+        this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
 
-        let list = document.createElement("UL");
+        let list                          = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
-            let element       = document.createElement("LI");
-            let rm            = document.createElement("IMG");
-            rm.src            = "/static/img/utils/trash.svg";
+            let element                   = document.createElement("LI");
+            let rm                        = document.createElement("IMG");
+            rm.src                        = "/static/img/utils/trash.svg";
+            let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
-                JSONParsedPostRequest(
-                    "ajax/deleteLibrary/",
-                    JSON.stringify({
-                        LIBRARY_ID: that.info.LIBRARIES[i].ID,
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE        : bool
-                         *     ERROR_H1    : string
-                         *     ERROR_MSG   : string
-                         *
-                         *     PATH        : string
-                         * } */
-                        if (response.DONE) {
-                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
-                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
-                                    window.app.playlists.splice(j, 1);
-                                    break;
-                                }
-                            }
-                            window.app.refreshTopBar();
-                            window.app.refreshFootBar();
-
-                            let self = that;
-                            that._updateAdminInfo(function() {
-                                self._requestLibrariesPage();
-                            });
-                        }
-
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
-                    }
-                );
+                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
+                    that._updateAdminInfo(function() {
+                        that._requestLibrariesPage();
+                    });
+                });
             });
-            element.innerHTML = "<b>" + this.info.LIBRARIES[i].NAME + "</b> (" + this.info.LIBRARIES[i].NUMBER_TRACK + " tracks)<br>" +
-                "Path: " + this.info.LIBRARIES[i].PATH;
+            element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
+                                            this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
+
             element.appendChild(rm);
             list.appendChild(element);
         }
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rescanLibLabel);
+        this.ui.content.appendChild(this.ui.rescanLibButton);
         this.ui.content.appendChild(this.ui.rmLibLabel);
         this.ui.content.appendChild(this.ui.rmLibButton);
         this.ui.content.appendChild(list);
 
-        this.ui.rmLibButton.addEventListener("click", this._requestDeleteLibraries.bind(this));
+        this.ui.rescanLibButton.addEventListener("click", function() {
+            that._requestRescanLibraries();
+        });
+        this.ui.rmLibButton.addEventListener("click", function() {
+            that._requestDeleteLibraries();
+        });
     }
 
 
@@ -339,12 +398,15 @@ class AdminView extends View {
     _requestSCPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuSC.className   = "selected";
+        this.ui.menuSC.className       = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
 
         this.ui.apiKeyLabel            = document.createElement("P");
         this.ui.apiKeyField            = document.createElement("INPUT");
         this.ui.apiKeyButton           = document.createElement("BUTTON");
+        this.ui.bufferLabel            = document.createElement("P");
+        this.ui.bufferField            = document.createElement("INPUT");
+        this.ui.bufferButton           = document.createElement("BUTTON");
         this.ui.rescanLabel            = document.createElement("P");
         this.ui.rescanButton           = document.createElement("BUTTON");
         this.ui.openSCLabel            = document.createElement("P");
@@ -352,21 +414,27 @@ class AdminView extends View {
 
         this.ui.apiKeyField.type       = "text";
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
-
+        this.ui.apiKeyField.type       = "text";
+        this.ui.bufferField.value      = this.info.BUFFER_PATH;
         this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
-            "<br>" +
-            "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
-            "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
-        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
-            "<br>" +
-            "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
-            "This command will perform a rescan on each SyncThing folder.";
-        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
-            "<br>" +
-            "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
-            "This command will open the SyncThing instance right here, in a modal.";
+                                         "<br>" +
+                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
+                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
         this.ui.apiKeyButton.innerHTML = "SUBMIT";
+        this.ui.bufferLabel.innerHTML  = "<b>Buffer path</b><br>" +
+                                         "<br>" +
+                                         "The buffer folder is the one selected to upload file in.<br>" +
+                                         "Please fill the following field with the buffer path.";
+        this.ui.bufferButton.innerHTML = "SUBMIT";
+        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
+                                         "<br>" +
+                                         "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
+                                         "This command will perform a rescan on each SyncThing folder.";
         this.ui.rescanButton.innerHTML = "RESCAN";
+        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
+                                         "<br>" +
+                                         "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
+                                         "This command will open the SyncThing instance right here, in a modal.";
         this.ui.openSCButton.innerHTML = "OPEN";
 
         this.ui.content.appendChild(this.ui.contentTitle);
@@ -374,6 +442,9 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.apiKeyLabel);
         this.ui.content.appendChild(this.ui.apiKeyField);
         this.ui.content.appendChild(this.ui.apiKeyButton);
+        this.ui.content.appendChild(this.ui.bufferLabel);
+        this.ui.content.appendChild(this.ui.bufferField);
+        this.ui.content.appendChild(this.ui.bufferButton);
         this.ui.content.appendChild(this.ui.rescanLabel);
         this.ui.content.appendChild(this.ui.rescanButton);
         this.ui.content.appendChild(this.ui.openSCLabel);
@@ -381,6 +452,7 @@ class AdminView extends View {
 
         let that = this;
         this.ui.apiKeyButton.addEventListener("click", this._submitAPIKey.bind(this));
+        this.ui.bufferButton.addEventListener("click", this._submitBufferPath.bind(this));
         this.ui.rescanButton.addEventListener("click", this._rescanSC.bind(this));
         this.ui.openSCButton.addEventListener("click", function() {
             that.modal = new Modal("openSyncThing");
@@ -397,14 +469,14 @@ class AdminView extends View {
     _requestWishPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuWish.className   = "selected";
-        this.ui.contentTitle.innerHTML = "Suggestions management";
+        this.ui.menuWish.className     = "selected";
+        this.ui.contentTitle.innerHTML = "Wishes management";
 
-        let list = document.createElement("UL");
+        let list                       = document.createElement("UL");
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getWishes/",
+            "wish/get/",
             JSON.stringify({
                 ALL: true
             }),
@@ -414,59 +486,56 @@ class AdminView extends View {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     PATH        : string
+                 *     RESULT: {
+                 *         WISH_ID:
+                 *         DATE:
+                 *         TEXT:
+                 *         USERNAME:
+                 *         STATUS:
+                 *     }
                  * } */
-                if (response.DONE) {/*
-                            for (let j = 0; j < window.app.playlists.length; ++j) { // Removing from playlists Array
-                                if (window.app.playlists[j].id === that.info.LIBRARIES[i].ID) {
-                                    window.app.playlists.splice(j, 1);
-                                    break;
-                                }
-                            }
-                            window.app.refreshTopBar();
-                            window.app.refreshFootBar();
-
-                            let self = that;
-                            that._updateAdminInfo(function() {
-                                self._requestLibrariesPage();
-                            });
-                        */
+                if (response.DONE) {
                     for (let i = 0; i < response.RESULT.length; ++i) {
-                        let element       = document.createElement("LI");
-                        let status = document.createElement("IMG");
-                        let accept = document.createElement("BUTTON");
-                        let refuse = document.createElement("BUTTON");
+                        let element        = document.createElement("LI");
+                        let accept         = document.createElement("IMG");
+                        let refuse         = document.createElement("IMG");
 
-                        element.id = "wishEntry";
-                        accept.id = "accept";
-                        refuse.id = "refuse";
+                        element.id         = "wishEntry";
+                        accept.id          = "accept";
+                        refuse.id          = "refuse";
 
-                        element.innerHTML = response.RESULT[i].USER + ", " + response.RESULT[i].DATE + ":<br>" +
-                                            "<b>" + response.RESULT[i].TEXT + "</b><br>";
-                        accept.innerHTML = "ACCEPT";
-                        refuse.innerHTML = "REFUSE";
+                        element.innerHTML  = response.RESULT[i].USERNAME + ", " + response.RESULT[i].DATE + ":<br>" +
+                                             "<b>" + response.RESULT[i].TEXT + "</b><br>";
 
                         switch (response.RESULT[i].STATUS) {
                             case 0:
-                                status.src = "/static/img/utils/adminview/pending.svg";
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
                                 break;
                             case 1:
-                                status.src = "/static/img/utils/adminview/refused.svg";
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
                                 break;
                             case 2:
-                                status.src = "/static/img/utils/adminview/accepted.svg";
+                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
                                 break;
                         }
 
                         let self = that;
                         accept.addEventListener("click", function() {
-                            self._updateWishStatus(response.RESULT[i].WISH_ID, 2);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 2, function() {
+                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
+                                refuse.src = "/static/img/utils/adminview/refused.svg";
+                            });
                         });
                         refuse.addEventListener("click", function() {
-                            self._updateWishStatus(response.RESULT[i].WISH_ID, 1);
+                            self._updateWishStatus(response.RESULT[i].WISH_ID, 1, function() {
+                                accept.src = "/static/img/utils/adminview/accepted.svg";
+                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
+                            });
                         });
 
-                        element.appendChild(status);
                         element.appendChild(accept);
                         element.appendChild(refuse);
                         list.appendChild(element);
@@ -485,24 +554,33 @@ class AdminView extends View {
     }
 
 
-    _updateWishStatus(wishID, status) {
+    /**
+     * method : _requestSCPage (private)
+     * class  : AdminView
+     * desc   : Update the vote on a given wish
+     **/
+    _updateWishStatus(wishID, status, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/setWishStatus/",
+            "wish/setStatus/",
             JSON.stringify({
                 WISH_ID: wishID,
-                STATUS: status
+                STATUS:  status
             }),
             function(response) {
                 /* response = {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    that._requestWishPage();
+                    if (callback) {
+                        callback();
+                    }
+
+                    else {
+                        that._requestWishPage();
+                    }
                 }
 
                 else {
@@ -511,6 +589,7 @@ class AdminView extends View {
             }
         );
     }
+
 
     /**
      * method : _requestDrop (private)
@@ -521,7 +600,7 @@ class AdminView extends View {
         // TODO : put modal on drop action to confirm ?
         let that = this;
         JSONParsedGetRequest(
-            "ajax/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc",
+            "admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -549,7 +628,7 @@ class AdminView extends View {
     _rescanSC() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/syncthingRescan",
+            "admin/syncthingRescan",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -577,7 +656,7 @@ class AdminView extends View {
     _removeMoodbar() {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/removeAllMoods/",
+            "admin/removeAllMoods/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -605,7 +684,7 @@ class AdminView extends View {
     _submitAPIKey() {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/changeSyncthingAPIKey/",
+            "admin/changeSyncthingAPIKey/",
             JSON.stringify({
                 SYNC_KEY: this.ui.apiKeyField.value // TODO : Warning, value must be tested
             }),
@@ -628,10 +707,48 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _submitAPIKey (private)
+     * class  : AdminView
+     * desc   : Submit the SyncThing API key
+     **/
+    _submitBufferPath() {
+        let that = this;
+        JSONParsedPostRequest(
+            "admin/changeBufferPath/",
+            JSON.stringify({
+                BUFFER_PATH: this.ui.bufferField.value // TODO : Warning, value must be tested
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+
+                else {
+                    that.ui.bufferButton.blur();
+                    // TODO : refresh UI
+                }
+            }
+        );
+    }
+
+
+    /**
+     * method : _toggleInviteMode (private)
+     * class  : AdminView
+     * desc   : Toggle user sponsoring in app
+     **/
     _toggleInviteMode() {
         let that = this;
+
+
         JSONParsedGetRequest(
-            "ajax/toggleInvite/",
+            "admin/toggleInvite/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -639,21 +756,7 @@ class AdminView extends View {
                  *     ERROR_MSG : string
                  * } */
                 if (response.DONE) {
-                    let self = that;
-                    JSONParsedGetRequest(
-                        "ajax/getAdminView/",
-                        function(response) {
-                            /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
-                             * } */
-                            if (response.DONE) {
-                                self.info = response;
-                                self._requestUsersPage();
-                            }
-                        }
-                    );
+                    that._requestUsersPage();
                 }
 
                 else {
@@ -664,24 +767,55 @@ class AdminView extends View {
     }
 
 
+    /**
+     * method : _unselectAllMenuEntries (private)
+     * class  : AdminView
+     * desc   : Unselect every entry in the left menu
+     **/
     _unselectAllMenuEntries() {
         this.ui.menuDB.className   = "";
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
-        this.ui.menuWish.className   = "";
+        this.ui.menuWish.className = "";
     }
 
 
+    /**
+     * method : _updateAdminInfo (private)
+     * class  : AdminView
+     * desc   : Updates admin information
+     **/
     _updateAdminInfo(callback) {
         let that = this;
         JSONParsedGetRequest(
-            "ajax/getAdminView/",
+            "admin/getView/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
+                 *
+                 *     USER: {
+                 *         GODFATHER_NAME:
+                 *         NAME:
+                 *         IS_ADMIN:
+                 *         JOINED:
+                 *         LAST_LOGIN:
+                 *         USER_ID:
+                 *         INVITE_CODE:
+                 *         MANACOIN:
+                 *     }
+                 *     LIBRARIES: {
+                 *         NAME:
+                 *         PATH:
+                 *         NUMBER_TRACK:
+                 *         TOTAL_DURATION:
+                 *         ID:
+                 *     }
+                 *     SYNC_KEY:
+                 *     BUFFER_PATH:
+                 *     INVITE_ENABLED:
                  * } */
                 if (response.DONE) {
                     that.info = response;
@@ -695,3 +829,5 @@ class AdminView extends View {
     }
 
 }
+
+export default AdminView

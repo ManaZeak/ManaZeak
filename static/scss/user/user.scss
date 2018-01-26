@@ -1,6 +1,7 @@
 @import "../utils/tools";
 
 html, body {
+    background-color: $primary-color;
     color: $primary-text;
     font-family: Helvetica, serif;
     height: 100%;
@@ -8,23 +9,22 @@ html, body {
     overflow: hidden;
     padding: 0;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 
 #login {
-    background-color: $primary-color;
-    color: $primary-text;
-    height: 100%;
+    height: auto;
     margin: 0;
     padding: 0;
-    position: absolute;
     text-align: center;
     width: 100%;
+    z-index: 2;
 
-    h1 {
-        font-size: 2.8em;
-        margin-bottom: 0;
-        margin-top: 100px;
+    img {
+        height: 60px;
+        margin-bottom: 25px;
     }
 
     p {
@@ -47,6 +47,10 @@ html, body {
         padding: 25px;
         text-align: center;
         width: auto;
+
+        p {
+            margin-top: 0;
+        }
 
         @include box-shadow(0px, 0px, 5px, 1px, $dark-secondary-color);
     }
@@ -96,6 +100,15 @@ html, body {
                 }
             }
         }
+    }
+
+
+    .mzk-logo {
+        width: 475px;
+        height: auto;
+        z-index: 1;
+        margin-top: 50px;
+        margin-bottom: 0;
     }
 }
 

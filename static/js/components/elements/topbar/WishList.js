@@ -7,12 +7,13 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 // TODO : add a list of the user's suggestions (link in modal ?)
+import Modal from '../../../utils/Modal.js'
+
 class WishList {
+
     constructor(container) {
-
-
         this._createUI(container);
-        this._init();
+        this._eventListener();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -21,6 +22,7 @@ class WishList {
      * method : _createUI (private)
      * class  : WishList
      * desc   : Build UI elements
+     * arg    : {object} container - The WishList container
      **/
     _createUI(container) {
         this.ui = {
@@ -37,16 +39,6 @@ class WishList {
 
 
     /**
-     * method : _init (private)
-     * class  : WishList
-     * desc   : Listen to events
-     **/
-    _init() {
-        this._eventListener();
-    }
-
-
-    /**
      * method : _eventListener (private)
      * class  : WishList
      * desc   : WishList event listeners
@@ -59,3 +51,5 @@ class WishList {
     }
 
 }
+
+export default WishList

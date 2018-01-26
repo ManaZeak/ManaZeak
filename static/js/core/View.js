@@ -10,24 +10,14 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 class View {
-    constructor() {
 
+    constructor() {
         this.container           = document.createElement("DIV");
+        this.container.className = "mzk-view";
         this.container.innerHTML = "";
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : getDataFromPlaylist (public)
-     * class  : Viewa
-     * desc   : Get data from playlist
-     * arg    : {object} playlist - The playlist to get data from
-     **/
-    getDataFromPlaylist(playlist) {
-        return null;
-    }
-
 
     /**
      * method : getContainer (public)
@@ -40,8 +30,28 @@ class View {
     }
 
 
+    /**
+     * method : getDataFromPlaylist (public)
+     * class  : View
+     * desc   : Get data from playlist
+     * arg    : {object} playlist - The playlist to get data from
+     **/
+    getDataFromPlaylist(playlist) {
+        return null;
+    }
+
+//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+    /**
+     * method : _init (private)
+     * class  : View
+     * desc   : Init view
+     * arg    : {object} data - Data to pass in view
+     **/
     _init(data) {
 
     }
 
 }
+
+export default View

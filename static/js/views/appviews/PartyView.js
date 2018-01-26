@@ -6,24 +6,34 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class PartyView extends View {
-    constructor() {
+import { JSONParsedPostRequest } from '../../utils/Utils.js'
+import Notification from '../../utils/Notification.js'
+import Track from '../../core/Track.js'
+import View from '../../core/View.js'
 
+class PartyView extends View {
+
+    constructor() {
         super();
-        this.isEnabled = false;
         this._createUI();
         this._eventListener();
     }
 
+//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+    /**
+     * method : _createUI (public)
+     * class  : PartyView
+     * desc   : Returns container while fetching details about current track in player
+     **/
     getContainer() {
         this._setPlayPause();
 
         let that = this;
         JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo/",
+            "track/getDetailedInfo/",
             JSON.stringify({
-                TRACK_ID: window.app.player.getSourceID()
+                TRACK_ID: [window.app.player.getSourceID()]
             }),
             function(response) {
                 /* response = {
@@ -31,10 +41,45 @@ class PartyView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  *
-                 *     RESULT    : JSON object
+                 *     RESULT    : {
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         TRACK_NUMBER:
+                 *         BPM:
+                 *         LYRICS:
+                 *         COMMENT:
+                 *         BITRATE:
+                 *         SAMPLERATE:
+                 *         DURATION:
+                 *         GENRE:
+                 *         FILE_TYPE:
+                 *         DISC_NUMBER:
+                 *         SIZE:
+                 *         LAST_MODIFIED:
+                 *         COVER:
+                 *         ARTISTS: {
+                 *            ID:
+                 *            NAME:
+                 *         }
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *             TOTAL_DISC:
+                 *             TOTAL_TRACK:
+                 *             ARTISTS: {
+                 *                 ID:
+                 *                 NAME:
+                 *             }
+                 *         }
+                 *         PLAY_COUNTER:
+                 *         FILE_NAME:
+                 *     }
                  * } */
                 if (response.DONE) {
-                    that._setCurrentTrack(new Track(response.RESULT));
+                    that._setCurrentTrack(new Track(response.RESULT[0]));
                 }
 
                 else {
@@ -55,7 +100,7 @@ class PartyView extends View {
      **/
     _createUI() {
         this.ui = {
-            container: this.container,
+            container:          this.container,
 
             sparksContainer:    document.createElement("DIV"),
             sparksLayer1:       document.createElement("DIV"),
@@ -80,7 +125,6 @@ class PartyView extends View {
         };
 
         this.ui.container.id             = "party";
-
         // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
         this.ui.sparksContainer.id       = "snow";
         this.ui.sparksLayer1.id          = "snow-layer";
@@ -130,16 +174,15 @@ class PartyView extends View {
         this.ui.container.appendChild(this.ui.next);
     }
 
+
     /**
      * method : _eventListener (private)
      * class  : PartyView
-     * desc   : TODO
+     * desc   : PartyView event listeners
      **/
     _eventListener() {
         let that = this;
         this.ui.close.addEventListener("click", function() {
-            document.body.removeChild(that.ui.container);
-            that.isEnabled = false;
             window.app.restorePageContent();
         });
         this.ui.play.addEventListener("click", function() {
@@ -151,9 +194,10 @@ class PartyView extends View {
         });
     }
 
+
     /**
      * method : _setPlayPause (private)
-     * class  : Controls
+     * class  : PartyView
      * desc   : Change Play/Pause button depending on player status
      **/
     _setPlayPause() {
@@ -167,18 +211,22 @@ class PartyView extends View {
     }
 
 
+    /**
+     * method : _setCurrentTrack (private)
+     * class  : PartyView
+     * desc   : Change current track in view
+     **/
     _setCurrentTrack(track) {
+        this.ui.trackCover.src           = track.cover;
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
         this.ui.trackComposer.innerHTML  = track.composer;
         this.ui.trackYearAlbum.innerHTML = track.year + " - " + track.album;
         this.ui.trackGenre.innerHTML     = track.genre;
-
-        this.ui.trackCover.src           = track.cover;
     }
 
-
-    getIsEnabled()       { return this.isEnabled;    }
-    setIsEnabled(enabled) { this.isEnabled = enabled; }
+//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
 }
+
+export default PartyView

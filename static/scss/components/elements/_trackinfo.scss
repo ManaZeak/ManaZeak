@@ -36,12 +36,10 @@
         float: right;
         font-size: 0.8em;
         padding-right: 25px;
-        max-width: 340px;
-        min-width: 240px;
+        width: 340px;
         margin-right: 25px;
         margin-top: 26px;
         top: 0;
-        width: auto;
 
         p {
             margin: 0;
@@ -65,10 +63,8 @@
         float: right;
         font-size: 0.7em;
         height: auto;
-        max-width: 300px;
+        width: 300px;
         margin-right: 45px;
-        min-width: 200px;
-        width: auto;
         max-height: 100%;
         display: flex;
         flex-direction: column;

@@ -6,22 +6,44 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class App {
-    constructor() {
+import { getCookies, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import FootBar  from './components/FootBar.js'
+import MzkObject from './core/MzkObject.js'
+import TopBar   from './components/TopBar.js'
+import User     from './core/User.js'
+import DragDrop from './components/DragDrop.js'
+import PlaylistCollection from './core/PlaylistCollection.js'
+import ShortcutMaestro from './utils/ShortcutMaestro.js'
+import Shortcut from './utils/Shortcut.js'
+import Queue    from './core/Queue.js'
+import Player   from './core/Player.js'
+import StatsView from './views/appviews/StatsView.js'
+import AdminView from './views/appviews/AdminView.js'
+import UserView from './views/appviews/UserView.js'
+import PartyView from './views/appviews/PartyView.js'
+import ListView from './views/ListView.js'
+import Playlist from './core/Playlist.js'
+import Notification from './utils/Notification.js'
+import Modal from './utils/Modal.js'
 
+class App extends MzkObject {
+
+    constructor() {
+        super();
         this.cookies          = getCookies();
         this.user             = new User();
         this.dragdrop         = new DragDrop(document.body);
         this.mainContainer    = document.createElement("DIV");
         this.mainContainer.id = "mainContainer";
+        this.topBar           = null;
         this.footBar          = null;
         this.player           = null;
-        this.playlists        = [];
+        this.playlists        = new PlaylistCollection();
         this.activePlaylist   = null;
         this.cssFiles         = {};
         this.appViews         = {};
         this._createDefaultViews();
-
+        this.shortcutMaestro  = new ShortcutMaestro();
         this.availableViews   = {
             LIST: {
                 index: 0,
@@ -32,31 +54,49 @@ class App {
                 class: null
             }
         };
-
-        this.listeners = {};
-        let properties = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-        for (let i = 0; i < properties.length; ++i) {
-            if (typeof this[properties[i]] === "function") {
-                this.listeners[properties[i]] = [];
-
-                let oldFunc = this[properties[i]];
-
-                this[properties[i]] = (function(pname, func) {
-                    return function() {
-                        let r = func.apply(this, arguments);
-                        for (let i = 0; i < this.listeners[pname].length; ++i) {
-                            this.listeners[pname][i].runCallback(arguments);
-                        }
-                        return r;
-                    }
-                }(properties[i], oldFunc));
-            }
-        }
-
         document.body.appendChild(this.mainContainer);
+        this._consoleWelcome();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+    /**
+     * method : addTracksToPlaylist (public)
+     * class  : App
+     * desc   : Add tracks to a playlist, including server-side
+     * arg    : {object} playlist
+     *          {array}  tracks
+     **/
+    addTracksToPlaylist(playlist, tracks) {
+        let ids    = new Array(tracks.length);
+        let names  = '';
+        for (let i = 0; i < tracks.length; ++i) {
+            ids[i] = tracks[i].id.track;
+            names += tracks[i].title + ',';
+        }
+
+        JSONParsedPostRequest(
+            "playlist/addTracks/",
+            JSON.stringify({
+                PLAYLIST_ID: playlist.id,
+                TRACKS_ID:   ids
+            }),
+            (response) => {
+                /* response = {
+                 *     DONE         : bool
+                 *     ERROR_H1     : string
+                 *     ERROR_MSG    : string
+                 * } */
+                if (response.DONE) {
+                    new Notification("INFO", "Tracks added to " + playlist.name, names + " have been added to " + playlist.name + ".");
+                    playlist.getPlaylistsTracks();
+                } else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                }
+            }
+        );
+    }
+
 
     /**
      * method : adjustVolume (public)
@@ -82,12 +122,40 @@ class App {
 
 
     /**
+     * method : getActivePlaylist (public)
+     * class  : App
+     * desc   : Returns the active playlist
+     *
+     **/
+    getActivePlaylist() {
+        return this.activePlaylist ? this.activePlaylist : null;
+    }
+
+
+    /**
+     * method : getVolume (public)
+     * class  : App
+     * desc   : return the current volume
+     **/
+    getVolume() {
+        return this.player.getVolume();
+    }
+
+
+    /**
      * method : changePlaylist (public)
      * class  : App
-     * desc   : Update FootBar PlaylistPreview w/ activePlaylist
+     * desc   : Change the active playlist
      **/
-    changePlaylist() {
-        this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
+    changePlaylist(playlistID) {
+        let newActive = playlistID != null ? this.playlists.get(playlistID) : this.playlists.getDefault();
+        if (newActive) {
+            this.activePlaylist = newActive;
+            this.activePlaylist.activate();
+            return true;
+        }
+        this.activePlaylist = null;
+        return false;
     }
 
 
@@ -99,23 +167,29 @@ class App {
      *          {bool} previous - For server about history
      **/
     changeTrack(track, previous) {
-        if (track == null) { return false; }
+        if (track == null) {
+            return false;
+        }
 
-        let that          = this;
-        let lastTrackPath = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
+        let that            = this;
+        let lastTrackPath   = this.player.player.attributes.getNamedItem("src"); // To update statistic on the previous track
 
-        if (lastTrackPath !== null) { lastTrackPath = lastTrackPath.value; }
-        else                        { lastTrackPath = "None";              }
+        if (lastTrackPath !== null) {
+            lastTrackPath   = lastTrackPath.value;
+        }
 
-        this.footBar.progressBar.resetProgressBar();
+        else {
+            lastTrackPath   = "None";
+        }
+
         let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
-            "ajax/getTrackPathByID/",
+            "track/getPath/",
             JSON.stringify({
-                TRACK_ID:        track.id.track,
-                LAST_TRACK_PATH: lastTrackPath,
-                TRACK_PER:       isNaN(duration_played) ? 0 : duration_played,
-                PREVIOUS:        previous
+                TRACK_ID:         track.id.track,
+                LAST_TRACK_PATH:  lastTrackPath,
+                TRACK_PERCENTAGE: isNaN(duration_played) ? 0 : duration_played,
+                PREVIOUS:         previous
             }),
             function(response) {
                 /* response = {
@@ -123,13 +197,11 @@ class App {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     PATH        : string
+                 *     TRACK_PATH  : string
                  * } */
                 if (response.DONE) {
-                    that.footBar.trackPreview.changeTrack(track);
-                    that.topBar.changeMoodbar(track.id.track);
-                    that.player.changeSource(".." + response.PATH, track.id.track);
-                    that.changePageTitle(response.PATH);
+                    that.player.changeSource(".." + response.TRACK_PATH, track.id.track);
+                    that.changePageTitle(response.TRACK_PATH);
                     that.activePlaylist.setCurrentTrack(track);
                     that.togglePlay();
                 }
@@ -139,9 +211,9 @@ class App {
                 }
             }
         );
+
         return true;
     }
-
 
     /**
      * method : changeView (public)
@@ -150,14 +222,14 @@ class App {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
-        if (view.getContainer().id === "party") {
-            view.setIsEnabled(true);
-            document.body.appendChild(view.getContainer());
+        for (let i = 0; i < this.mainContainer.children.length; ++i) {
+            this.mainContainer.children[i].classList.add('mzk-view-hide');
         }
 
-        else {
-            this.mainContainer.innerHTML = '';
-            this.mainContainer.appendChild(view.getContainer());
+        let container = view.getContainer();
+        container.classList.remove('mzk-view-hide');
+        if (container.parentNode != this.mainContainer) {
+            this.mainContainer.appendChild(container);
         }
     }
 
@@ -188,31 +260,30 @@ class App {
      * arg    : {int} id - The playlist ID
      * arg    : {function} callback - Not mandatory
      **/
-    deletePlaylist(id, callback) {
+    deletePlaylist(playlist, callback) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/deletePlaylist/",
+            "collection/delete/",
             JSON.stringify({
-                PLAYLIST_ID: id,
+                PLAYLIST_ID: playlist.id
             }),
             function(response) {
                 /* response = {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     PATH        : string
                  * } */
                 if (response.DONE) {
-                    for (let i = 0; i < that.playlists.length; ++i) { // Removing from playlists Array
-                        if (that.playlists[i].id === id) {
-                            that.playlists.splice(i, 1);
-                            break;
-                        }
+                    that.playlists.remove(playlist.id);
+                    let nextPlaylist = that.playlists.getDefault();
+                    if (nextPlaylist != null) {
+                        that.changePlaylist(nextPlaylist.id);
                     }
-                    that.playlists[0].activate(); // TODO : test if there is still some playlists
-                    that.refreshTopBar();
-                    that.refreshFootBar();
+
+                    else {
+                        that.mainContainer.innerHTML = '';
+                        that.requestNewLibrary();
+                    }
 
                     if (callback) {
                         callback();
@@ -227,9 +298,16 @@ class App {
     }
 
 
+    /**
+     * method : deleteUser (public)
+     * class  : App
+     * desc   : Remove a user from DB via its ID
+     * arg    : {int} id - The user ID to delete
+     *        : {function} callback - The function to callback - Mandatory
+     **/
     deleteUser(id, callback) {
         JSONParsedPostRequest(
-            "ajax/removeUserById/",
+            "admin/removeUserById/",
             JSON.stringify({
                 USER_ID: id
             }),
@@ -252,6 +330,89 @@ class App {
 
 
     /**
+     * method : downloadTrack (public)
+     * class  : App
+     * desc   : Download a single track
+     * arg    : {object} track - The track to download
+     **/
+    downloadTrack(track) {
+        JSONParsedPostRequest(
+            "track/download/",
+            JSON.stringify({
+                TRACK_ID: track.id.track
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
+                 *
+                 *     DOWNLOAD_PATH : string
+                 * } */
+                if (response.DONE) {
+                    let dl      = document.createElement("A");
+                    dl.href     = response.DOWNLOAD_PATH;
+                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
+                    document.body.appendChild(dl);
+                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                    document.body.removeChild(dl);
+                    //TODO: What is ZEAZZZZ ???!!!
+                    dl.remove();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
+     * method : downloadTracksZip (public)
+     * class  : App
+     * desc   : Download mutliple tracks
+     * arg    : {[object]} tracks - The tracks to download
+     **/
+    downloadTracksZip(tracks) {
+        let ids    = new Array(tracks.length);
+        for (let i = 0; i < tracks.length; ++i) {
+            ids[i] = tracks[i].id.track;
+        }
+
+        JSONParsedPostRequest(
+            "track/multiDownload/",
+            JSON.stringify({
+                TRACKS_ID: ids
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     DOWNLOAD_PATH      : string
+                 * } */
+                if (response.DONE) {
+                    let dl      = document.createElement("A");
+                    dl.href     = response.DOWNLOAD_PATH;
+                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
+                    document.body.appendChild(dl);
+                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                    document.body.removeChild(dl);
+                    //TODO: What is ZEAZZZZ ???!!!
+                    dl.remove();
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
      * method : fastForward (public)
      * class  : App
      * desc   : Fast forward playback
@@ -263,32 +424,13 @@ class App {
 
 
     /**
-     * method : getAllPlaylistsTracks (public)
-     * class  : App
-     * desc   : Fetch playlists tracks
-     * arg    : {int} begin - The index to begin the loop with
-     **/
-    getAllPlaylistsTracks(begin) {
-        for (let i = begin; i < this.playlists.length; ++i) {
-            this.playlists[i].getPlaylistsTracks(undefined);
-        }
-    }
-
-
-    /**
      * method : getPlaylistFromId (public)
      * class  : App
      * desc   : Returns a playlist from a given ID
      * arg    : {int} id - The playlist to get from an ID
      **/
     getPlaylistFromId(id) {
-        for (let i = 0; i < this.playlists.length; ++i) {
-            if (this.playlists[i].id === id) {
-                return this.playlists[i];
-            }
-        }
-
-        return null;
+        this.playlists.get(id);
     }
 
 
@@ -299,12 +441,27 @@ class App {
      * return : {object} element
      **/
     getPlaylists() {
-        return this.playlists.filter(function(element) {
-            return element.isLibrary != true;
+        return this.playlists.filter(function() {
+            return this.getIsLibrary() == false;
         });
     }
 
 
+    /**
+     * method : getShortcutMaestro (public)
+     * class  : App
+     * desc   : Get the shortcut maestro
+     **/
+    getShortcutMaestro() {
+        return this.shortcutMaestro;
+    }
+
+
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Hide any content in mainContainer
+     **/
     hidePageContent() {
         addInvisibilityLock(this.footBar.getFootBar());
         addInvisibilityLock(this.mainContainer);
@@ -326,43 +483,21 @@ class App {
         document.body.appendChild(this.footBar.getFootBar());
 
         let that = this;
-        // Loading playlists
-        JSONParsedGetRequest(
-            "ajax/getPlaylists/",
+        JSONParsedGetRequest( // Loading playlists
+            "playlist/fetchAll/",
             function(response) {
                 /* response = {
-                 *     DONE           : bool
-                 *     ERROR_H1       : string
-                 *     ERROR_MSG      : string
+                 *     DONE                : bool
+                 *     ERROR_H1            : string
+                 *     ERROR_MSG           : string
                  *
-                 *     PLAYLIST_IDS   : int[] / undefined
-                 *     PLAYLIST_NAMES : string[] / undefined
+                 *     PLAYLIST_IDS        : int[] / undefined
+                 *     PLAYLIST_NAMES      : string[] / undefined
+                 *     PLAYLIST_IS_LIBRARY : bool[] / undefined
                  * } */
                 that._appStart(response); // Response is tested in _appStart
             }
         );
-    }
-
-
-    /**
-     * method : listen (public)
-     * class  : App
-     * desc   : Add listener on an App function
-     * arg    : {string} event - the function to listen to
-     *        : {function} callback
-     **/
-    listen(event, callback, thisArg) {
-        if (Array.isArray(event)) {
-            for (let i = 0; i < event.length; ++i) {
-                if (this.listeners[event[i]]) {
-                    this.listeners[event[i]].push(new MzkListener('', '', callback, thisArg));
-                }
-            }
-        }
-
-        else if (this.listeners[event]) {
-            this.listeners[event].push(new MzkListener('', '', callback, thisArg));
-        }
     }
 
 
@@ -408,12 +543,23 @@ class App {
      * desc   : Get next track
      **/
     next() {
-        if (this.appViews["mzk_party"].getIsEnabled()) {
-            return;
+        if (this.queue.isEmpty() == false) {
+            this.popQueue();
         }
 
-        if (this.queue.isEmpty() == false) { this.popQueue();                     }
-        else                               { this.activePlaylist.playNextTrack(); }
+        else {
+            this.activePlaylist.playNextTrack();
+        }
+    }
+
+
+    /**
+     * method : playerLoadedMetadata
+     * class  : App
+     * desc   : fired when the player has loaded the file metadata
+     **/
+    playerLoadedMetadata() {
+
     }
 
 
@@ -449,32 +595,42 @@ class App {
         this.queue.enqueue(track);
     }
 
-
     /**
-     * method : refreshFootBar (public)
+     * method : removeTracksFromPlaylist (public)
      * class  : App
-     * desc   : Refresh ManaZeak FootBar
-     **/
-    refreshFootBar() {
-        if (!this.footBar.playlistPreview.getIsVisible()) {
-            this.footBar.playlistPreview.setVisible(true);
+     * desc   : Request tracks to be deleted from the playlist
+     * arg    : {object} Playlist
+     *          {array}  tracks;
+     */
+    removeTracksFromPlaylist(playlist, tracks) {
+        let ids    = new Array(tracks.length);
+        let names  = '';
+        for (let i = 0; i < tracks.length; ++i ) {
+            ids[i] = tracks[i].id.track;
+            names += tracks[i].title + ',';
         }
 
-        this.footBar.playlistPreview.changePlaylist(this.activePlaylist);
+        JSONParsedPostRequest(
+            "playlist/removeTracks/",
+            JSON.stringify({
+                PLAYLIST_ID: playlist.id,
+                TRACKS_ID:   ids
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE           : bool
+                 *     ERROR_H1       : string
+                 *     ERROR_MSG      : string
+                 * } */
+                if (response.DONE) {
+                    new Notification("INFO", "Tracks removed from " + playlist.name, names + " have been removed from " + playlist.name + ".");
+                    playlist.getPlaylistsTracks();
+                }
 
-        if (!this.player.isEmpty()) {
-            this.footBar.progressBar.refreshInterval(this.player.getPlayer());
-        }
-    }
-
-
-    /**
-     * method : refreshTopBar (public)
-     * class  : App
-     * desc   : Refresh ManaZeak TopBar
-     **/
-    refreshTopBar() {
-        this.topBar.refreshTopBar();
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
+                }
+            });
     }
 
 
@@ -488,30 +644,22 @@ class App {
     renamePlaylist(id, name) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/renamePlaylist/",
+            "playlist/rename/",
             JSON.stringify({
-                PLAYLIST_ID: id,
-                NAME:        name
+                PLAYLIST_ID:   id,
+                PLAYLIST_NAME: name
             }),
             function(response) {
                 /* response = {
-                 *     DONE        : bool
-                 *     ERROR_H1    : string
-                 *     ERROR_MSG   : string
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
                  *
-                 *     PATH        : string
+                 *     PLAYLIST_ID   : string
+                 *     PLAYLIST_NAME : string
                  * } */
                 if (response.DONE) {
-                    for (let i = 0; i < that.playlists.length; ++i) { // Renaming from playlists Array
-                        if (that.playlists[i].id === id) {
-                            that.playlists[i].setName(name);
-                            break;
-                        }
-                    }
-                    that.playlists[0].activate(); // TODO : test if there is still some playlists
-                    that.refreshTopBar();
-                    that.refreshFootBar();
-                    // TODO : delete playlist from this.playlists, refresh topBar, refreshFootbar, change active playlist
+                    that.playlists.rename(response.PLAYLIST_ID, response.PLAYLIST_NAME);
                 }
 
                 else {
@@ -520,6 +668,7 @@ class App {
             }
         );
     }
+
 
     /**
      * method : repeatTrack (public)
@@ -538,12 +687,10 @@ class App {
      **/
     requestNewPlaylist() {
         let that = this;
-
-        this.playlists.push(new Playlist(0, null, false, false, undefined, function() {
-            that.playlists[0].activate();
-            that.refreshTopBar();
-            that.refreshFootBar();
-        }));
+        let np = new Playlist(0, null, false, false, undefined, function() {
+            that.playlists.add(np);
+            that.changePlaylist(np.id);
+        });
     }
 
 
@@ -554,19 +701,20 @@ class App {
      **/
     requestNewLibrary() {
         let that = this;
-
-        this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-            that.playlists[0].activate();
-            that.refreshTopBar();
-            that.refreshFootBar();
-        }));
+        let nl = new Playlist(0, null, true, false, undefined, function() {
+            that.playlists.add(nl);
+            that.changePlaylist(nl.id);
+        });
     }
 
 
+    /**
+     * method : hidePageContent (public)
+     * class  : App
+     * desc   : Restore any content in mainContainer
+     **/
     restorePageContent() {
-        removeInvisibilityLock(this.footBar.getFootBar());
-        removeInvisibilityLock(this.mainContainer);
-        removeInvisibilityLock(this.topBar.getTopBar());
+        this.activePlaylist.activate();
     }
 
 
@@ -612,10 +760,7 @@ class App {
      * arg    : {float} volume - Volume between 0 and 1
      **/
     setVolume(volume) {
-        if (volume > 1)      { volume = 1; }
-        else if (volume < 0) { volume = 0; }
-
-        this.player.getPlayer().volume = precisionRound(volume, 2);
+        this.player.setVolume(volume);
     }
 
 
@@ -627,8 +772,6 @@ class App {
     stopPlayback() {
         this.changePageTitle("ManaZeak");
         this.player.stopPlayback();
-        this.topBar.resetMoodbar();
-        this.footBar.resetUI();
     }
 
 
@@ -677,12 +820,15 @@ class App {
             case 0:
                 new Notification("INFO", "Change repeat mode", "Repeat off - Playback will stop by the end of your playlist.");
                 break;
+
             case 1:
                 new Notification("INFO", "Change repeat mode", "Repeat one - The current track will be repeated for ever.");
                 break;
+
             case 2:
                 new Notification("INFO", "Change repeat mode", "Repeat all - Repeat your playlist for ever.");
                 break;
+
             default:
                 break;
         }
@@ -700,12 +846,15 @@ class App {
             case 0:
                 new Notification("INFO", "Change shuffle mode", "Shuffle off - Playback will follow your current view order.");
                 break;
+
             case 1:
                 new Notification("INFO", "Change shuffle mode", "Random on - Random With track repetition");
                 break;
+
             case 2:
                 new Notification("INFO", "Change shuffle mode", "Shuffle on - Random with no track repetition");
                 break;
+
             default:
                 break;
         }
@@ -719,6 +868,79 @@ class App {
      **/
     unmute() {
         this.player.unmute();
+    }
+
+
+    /**
+     * method : updateTracksInfo (public)
+     * class  : App
+     * desc   : Update a track metadata
+     * arg    : {array}      tracks- The Track object that will be used for the update
+     *          {function} callback - The function to callback (not mandatory)
+     **/
+    updateTracksInfo(tracks, callback) {
+        let ids = new Array(tracks.length);
+        for(let i = 0; i < tracks.length; ++i)
+            ids[i] = tracks[i].id.track;
+        JSONParsedPostRequest(
+            "track/getDetailedInfo/",
+            JSON.stringify({
+                TRACK_ID: ids
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     RESULT    : {
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         TRACK_NUMBER:
+                 *         BPM:
+                 *         LYRICS:
+                 *         COMMENT:
+                 *         BITRATE:
+                 *         SAMPLERATE:
+                 *         DURATION:
+                 *         GENRE:
+                 *         FILE_TYPE:
+                 *         DISC_NUMBER:
+                 *         SIZE:
+                 *         LAST_MODIFIED:
+                 *         COVER:
+                 *         ARTISTS: {
+                 *            ID:
+                 *            NAME:
+                 *         }
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *             TOTAL_DISC:
+                 *             TOTAL_TRACK:
+                 *             ARTISTS: {
+                 *                 ID:
+                 *                 NAME:
+                 *             }
+                 *         }
+                 *         PLAY_COUNTER:
+                 *         FILE_NAME:
+                 *     }
+                 * } */
+                if (response.DONE) {
+                    for(let i = 0; i < tracks.length; ++i)
+                        tracks[i].updateMetadata(response.RESULT[i]);
+                    if (callback) { callback(); }
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -736,7 +958,7 @@ class App {
             modal.open();
 
             for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
-                that.playlists.push(new Playlist(playlists.PLAYLIST_IDS[i],
+                that.playlists.add(new Playlist(playlists.PLAYLIST_IDS[i],
                     playlists.PLAYLIST_NAMES[i],
                     playlists.PLAYLIST_IS_LIBRARY[i],
                     true,
@@ -744,24 +966,18 @@ class App {
                     undefined));
             }
 
-            this.topBar.init(this.playlists, this.playlists[0]);
-            this.playlists[0].getPlaylistsTracks(function() {
+            let defPlaylist = this.playlists.getDefault();
+            defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
-                that.changePlaylist();
-                that.footBar.playlistPreview.setVisible(true);
-                // TODO : replace begin arg to the active playlists, to avoid loading it
-                that.getAllPlaylistsTracks(1); // 1 stand for the beginning of the loop in playlists
+                that.changePlaylist(that.playlists.getDefault().id);
+                that.playlists.forEach(function() {
+                    this.getPlaylistsTracks();
+                }, false);
             });
         }
 
         else if (playlists.ERROR_H1 === "null" && playlists.ERROR_MSG === "null") { // User first connection
-            this.playlists.push(new Playlist(0, null, true, false, undefined, function() {
-                that.playlists[0].activate();
-                that.topBar.init(that.playlists, that.playlists[0]);
-                that.footBar.playlistPreview.setVisible(true);
-                that.footBar.playlistPreview.changePlaylist(that.playlists[0]); // TODO : get Lib/Play image/icon
-                // ? that.activePlaylist = that.playlists[0];
-            }));
+            this.requestNewLibrary();
         }
 
         else {
@@ -771,6 +987,24 @@ class App {
         this._keyListener();
     }
 
+
+    _consoleWelcome() {
+        let cssRuleTitle  = "color: rgb(44, 44, 48);" +
+                            "font-size: 3em;" +
+                            "font-weight: bold;" +
+                            "margin: 20px 0;" +
+                            "text-shadow: 1px 1px 5px rgb(44, 44, 48);";
+        let cssRuleHidden = "color: rgb(255, 255, 255);";
+        setTimeout(console.log.bind(console, "%cManaZeak console", cssRuleTitle)); // Hiding source in console
+        setTimeout(console.log.bind(console, "Hello there!\n" +
+                                             "\nIf you don't know why you are here, you may close this window, and keep using ManaZeak." +
+                                             "\nOtherwise, keep in mind that using this console may result in a non working app, at least on your side. "));
+        setTimeout(console.log.bind(console, "%cCongratulation, you found the first key for the achievement TOAST. Here it is : ba6f7979ab2cb9096d050b7f850d50ff", cssRuleHidden));
+        setTimeout(console.log.bind(console, "To know more about ManaZeak, visit https://github.com/Squadella/ManaZeak"));
+        setTimeout(console.log.bind(console, "\n-----------"));
+    }
+
+
     /**
      * method : _createDefaultViews (private)
      * class  : App
@@ -779,7 +1013,7 @@ class App {
     _createDefaultViews() {
         this.createAppView('mzk_stats', new StatsView());
         this.createAppView('mzk_admin', new AdminView());
-        this.createAppView('mzk_settings', new SettingsView());
+        this.createAppView('mzk_settings', new UserView());
         this.createAppView('mzk_party', new PartyView());
     }
 
@@ -789,58 +1023,20 @@ class App {
      * class  : App
      * desc   : App key listeners
      **/
-    _keyListener() { // TODO : put this someday in a Shortcut class (in Utils maybe ?)
+    _keyListener() {
         let that = this;
-
-        // Key pressed event
-        document.addEventListener("keydown", function(event) {
-            switch (event.keyCode) {
-                case 32: // Space player
-                    that.togglePlay();
-                    break;
-                case 37: // Left arrow
-                    if (event.ctrlKey)
-                        that.rewind(30);
-                    else
-                        that.rewind(10);
-                    break;
-                case 38: // Up arrow
-                    that.footBar.volumeUp(event);
-                    break;
-                case 39: // Right arrow
-                    if (event.ctrlKey)
-                        that.fastForward(30);
-                    else
-                        that.fastForward(10);
-                    break;
-                case 40: // Down arrow
-                    that.footBar.volumeDown(event);
-                    break;
-                case 77: // m key (w/ ctrl)
-                    if (event.ctrlKey)
-                        that.toggleMute(event);
-                    break;
-                case 81:
-                    if (event.ctrlKey)
-                        that.toggleQueue(event);
-                    break;
-                default:
-                    break;
-            }
-        });
-        // Key released event
-        document.addEventListener("keyup", function(event) {
-            switch (event.keyCode) {
-                case 38: // Up arrow
-                    that.footBar.delayHideVolume();
-                    break;
-                case 40: // Down arrow
-                    that.footBar.delayHideVolume();
-                    break;
-                default:
-                    break;
-            }
-        });
+        this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
+        this.addShortcut(new Shortcut('keydown', 'Semicolon', function() { that.toggleMute(); }));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(30); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.1); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.01); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.1); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.01); }, true));
     }
 
 }
+
+export default App

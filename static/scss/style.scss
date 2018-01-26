@@ -2,6 +2,7 @@
 @import 'components/topbar';
 @import 'core/views/statsview';
 @import 'components/dragdrop';
+@import 'components/editTag';
 @import 'components/elements/trackinfo';
 @import 'components/elements/progressbar';
 @import 'components/elements/volumebar';
@@ -9,6 +10,7 @@
 @import 'components/notification';
 @import 'core/views/listview';
 @import 'core/views/partyview';
+@import 'core/views/userview';
 @import 'core/views/adminview';
 @import 'components/footbar';
 
@@ -37,5 +39,15 @@ html, body {
     position: absolute;
     top: 50px;
     width: 100%;
-}
 
+    & > .mzk-view {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+
+        &.mzk-view-hide {
+            z-index: -1;
+        }
+    }
+
+}

@@ -6,10 +6,15 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class PlaylistPreview {
-    constructor(container) {
+import { secondsToTimecode } from '../../../utils/Utils.js'
+import MzkObject from '../../../core/MzkObject.js'
 
+class PlaylistPreview extends MzkObject {
+
+    constructor(container) {
+        super();
         this._createUI(container);
+        this._eventListener();
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -21,18 +26,13 @@ class PlaylistPreview {
      * arg    : {object} playlist - New playlist to get info from
      **/
     changePlaylist(playlist) {
+        // TODO : POST on getPlaylistInfo to add Total genre etc.
         this.ui.name.innerHTML     = playlist.name;
         this.ui.total.innerHTML    = playlist.trackTotal + " tracks";
-        // TODO : POST on getPlaylistInfo to add Total genre etc.
         this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);
-
         this._updatePlaylistPreview();
     }
 
-
-    getIsVisible() {
-        return !!(this.ui.container.style.opacity = 1);
-    }
 
     /**
      * method : setVisible (public)
@@ -50,17 +50,18 @@ class PlaylistPreview {
      * method : _createUI (private)
      * class  : PlaylistPreview
      * desc   : Build UI elements
+     * arg    : {object} container - The PlaylistPreview container
      **/
     _createUI(container) {
         this.ui = {
-            container:     document.createElement("DIV"),
-            name:          document.createElement("LI"),
-            total:         document.createElement("LI"),
-            duration:      document.createElement("LI"),
-            repeatShuffle: document.createElement("LI"),
-            repeat:        document.createElement("SPAN"),
-            genre:         document.createElement("SPAN"),
-            shuffle:       document.createElement("SPAN")
+            container:                  document.createElement("DIV"),
+            name:                       document.createElement("LI"),
+            total:                      document.createElement("LI"),
+            duration:                   document.createElement("LI"),
+            repeatShuffle:              document.createElement("LI"),
+            repeat:                     document.createElement("SPAN"),
+            genre:                      document.createElement("SPAN"),
+            shuffle:                    document.createElement("SPAN")
         };
         this.tooltipWrapper           = document.createElement("DIV");
         this.listContainer            = document.createElement("UL");
@@ -81,17 +82,41 @@ class PlaylistPreview {
         this.listContainer.appendChild(this.ui.repeatShuffle);
         this.ui.container.appendChild(this.listContainer);
         this.ui.container.appendChild(this.tooltipWrapper);
+
         container.appendChild(this.ui.container);
+    }
+
+
+    /**
+     * method : _eventListener (private)
+     * class  : PlaylistPreview
+     * desc   : PlaylistPreview event listeners
+     **/
+    _eventListener() {
+        let that = this;
+        window.app.listen(['renamePlaylist', 'changePlaylist'], function() {
+            let activePlaylist = window.app.getActivePlaylist();
+            if (activePlaylist != null) {
+                that.changePlaylist(activePlaylist);
+                that.setVisible(true);
+            }
+
+            else {
+                that.setVisible(false);
+            }
+        });
+        window.app.listen(['toggleRepeat', 'toggleShuffle'], function() {
+            that._updatePlaylistPreview();
+        });
     }
 
 
     /**
      * method : _updatePlaylistPreview (private)
      * class  : PlaylistPreview
-     * desc   : Update shuffle and repeat mode from UI changes
+     * desc   : Update shuffle and repeat mode
      **/
     _updatePlaylistPreview() {
-        // TODO : link to App.controler event
         let repeatMode  = window.app.activePlaylist.getRepeatMode();
         let shuffleMode = window.app.activePlaylist.getShuffleMode();
 
@@ -109,7 +134,7 @@ class PlaylistPreview {
                 break;
 
             default:
-                // TODO : Switch default event
+                new Notification("ERROR", "Unknown repeat mode value", "Something went wrong with the repeat mode value.");
                 break;
         }
 
@@ -127,9 +152,11 @@ class PlaylistPreview {
                 break;
 
             default:
-                // TODO : Switch default event
+                new Notification("ERROR", "Unknown shuffle mode value", "Something went wrong with the shuffle mode value.");
                 break;
         }
     }
 
 }
+
+export default PlaylistPreview

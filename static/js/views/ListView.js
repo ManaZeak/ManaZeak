@@ -1,114 +1,29 @@
 /* * * * * * * * * * * * * * * * * * * * * *
  *                                         *
- *  ListViewEntry sub class                *
- *                                         *
- *  A list view entry                      *
- *                                         *
- * * * * * * * * * * * * * * * * * * * * * */
-
-class ListViewEntry {
-    constructor(track, listView) {
-
-        this.track = track;
-        this.entry           = document.createElement("DIV");
-        let duration         = document.createElement("DIV");
-        let title            = document.createElement("DIV");
-        let artist           = document.createElement("DIV");
-        let composer         = document.createElement("DIV");
-        let performer        = document.createElement("DIV");
-        let album            = document.createElement("DIV");
-        let genre            = document.createElement("DIV");
-        let bitRate          = document.createElement("DIV");
-        let year             = document.createElement("DIV");
-
-        this.entry.className = "trackContainer";
-        duration.className   = "col-duration";
-        title.className      = "col-title";
-        artist.className     = "col-artist";
-        composer.className   = "col-composer";
-        performer.className  = "col-performer";
-        album.className      = "col-album";
-        genre.className      = "col-genre";
-        bitRate.className    = "col-bitRate";
-        year.className       = "col-year";
-
-        duration.innerHTML   = secondsToTimecode(track.duration);
-        title.innerHTML      = track.title;
-        artist.innerHTML     = track.artist;
-        composer.innerHTML   = track.composer;
-        performer.innerHTML  = track.performer;
-        album.innerHTML      = track.album;
-        genre.innerHTML      = track.genre;
-        bitRate.innerHTML    = Math.round(track.bitRate / 1000) + " kbps";
-        year.innerHTML       = track.year;
-
-        this.entry.appendChild(duration);
-        this.entry.appendChild(title);
-        this.entry.appendChild(artist);
-        this.entry.appendChild(composer);
-        //this.entry.appendChild(performer);
-        this.entry.appendChild(album);
-        this.entry.appendChild(genre);
-        this.entry.appendChild(bitRate);
-        this.entry.appendChild(year);
-
-        // ListViewEntry internal attributes
-        this.isSelected = false;
-
-        this.insert(listView);
-    }
-
-//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-    /**
-     * method : insert (public)
-     * class  : ListViewEntry
-     * desc   : Insert the entry in the list
-     * return : {object} listView - The HTML container
-     **/
-    insert(listView) {
-        this.entry.dataset.childID = listView.children.length;
-        listView.appendChild(this.entry);
-    }
-
-
-    /**
-     * method : setIsSelected (public)
-     * class  : ListViewEntry
-     * desc   : Set the entry as selected/!selected
-     * return : {bool} isSelected
-     **/
-    setIsSelected(isSelected) {
-        this.isSelected = isSelected;
-
-        if (this.isSelected) { this.entry.classList.add("mzk-selected");    }
-        else                 { this.entry.classList.remove("mzk-selected"); }
-    }
-
-//  ------------------------------  GETTERS / SETTERS  --------------------------------  //
-
-    getIsSelected() { return this.isSelected; }
-
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * *
- *                                         *
  *  ListView class                         *
  *                                         *
  *  Classical list view                    *
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class ListView extends PlaylistView {
-    constructor(data, isLibrary, id) {
+import { JSONParsedPostRequest, sortObjectArrayBy } from '../utils/Utils.js'
+import ListViewEntry from './entries/ListViewEntry.js'
+import PlaylistView from '../core/PlaylistView.js'
+import MultiSelect from '../utils/MultiSelect.js'
+import TrackInfo from '../components/elements/TrackInfo.js'
+import ContextMenu from '../utils/ContextMenu.js'
+import Modal from '../utils/Modal.js'
 
+class ListView extends PlaylistView {
+
+    constructor(data, isLibrary, id) {
         super();
         this.isLibrary = isLibrary;
         this.id        = id;
         // The index of the last track on which the view was centered
         this.lastTrackCenter = 0;
         this.isActive = false;
+        this.selector = new MultiSelect();
         this._init(data);
     }
 
@@ -210,6 +125,7 @@ class ListView extends PlaylistView {
         while (this.listView.firstChild) {
             this.listView.removeChild(this.listView.firstChild);
         }
+
         this.entries = [];
         this._addEntries(tracks);
         this.contextMenu.reattach();
@@ -230,6 +146,7 @@ class ListView extends PlaylistView {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
                 this.entries[i].setIsSelected(false);
             }
+
             if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
                 this.entries[i].setIsSelected(true);
             }
@@ -252,13 +169,30 @@ class ListView extends PlaylistView {
 
 
     /**
+     * method : _addIDToSelect (private)
+     * class  : ListView
+     * desc   : TODO
+     * arg    : {int} id - TODO
+     *          {object} event - TODO
+     **/
+    _addIDToSelect(id, event) {
+        // Clicked outside of the entries
+        if (id === undefined || id === null) {
+            this._unSelectAll();
+            return true;
+        }
+
+        this.entries[id].setIsSelected(this.selector.add(id, event.ctrlKey));
+    }
+
+
+    /**
      * method : _contextMenuSetup (private)
      * class  : ListView
      * desc   : TODO
      **/
     _contextMenuSetup() {
         let that             = this;
-        let clickedEntry     = undefined;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.listView, function(event) {
             clearTimeout(that.hoveredTimeout);
@@ -269,125 +203,70 @@ class ListView extends PlaylistView {
                 target       = target.parentNode;
             }
 
-            if (target.parentNode != null) { clickedEntry = target.dataset.childID; }
-            else                           { clickedEntry = undefined;              }
+            if(that.entries[target.dataset.childID].getIsSelected() == false)
+                that._addIDToSelect(target.dataset.childID, event);
         });
 
         this.contextMenu.addEntry(null, "Add to Queue", function() {
-            if (clickedEntry !== undefined) {
-                window.app.pushQueue(that.entries[clickedEntry].track);
+            let selected     = that.selector.get();
+            for(let i = 0; i < selected.length; ++i) {
+                window.app.pushQueue(that.entries[selected[i]].track);
             }
         });
+
+        this.contextMenu.addEntry(null, "Edit tags", function() {
+            let ids          = that.selector.get();
+            let tracks       = new Array(ids.length);
+
+            for(let i = 0; i < ids.length; ++i) {
+                tracks[i]    = that.entries[ids[i]].track;
+            }
+
+            window.app.updateTracksInfo(tracks, function() {
+                new Modal("editTag", tracks).open();
+            })
+        });
+
         this.contextMenu.addEntry(null, "Download track", function() {
-            if (clickedEntry !== undefined) {
-                JSONParsedPostRequest(
-                    "ajax/download/",
-                    JSON.stringify({
-                        TRACK_ID: that.entries[clickedEntry].track.id.track
-                    }),
-                    function(response) {
-                        /* response = {
-                         *     DONE      : bool
-                         *     ERROR_H1  : string
-                         *     ERROR_MSG : string
-                         *
-                         *     PATH      : string
-                         * } */
-                        if (response.DONE) {
-                            let dl      = document.createElement("A");
-
-                            dl.href     = response.PATH;
-                            dl.download = response.PATH.replace(/^.*[\\\/]/, '');
-                            document.body.appendChild(dl);
-                            dl.click();
-                            document.body.removeChild(dl);
-                            dl.remove();
-                        }
-
-                        else {
-                            new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                        }
-                    }
-                );
+            let nbTracks = that.selector.getSize();
+            if(nbTracks == 1)
+                window.app.downloadTrack(that.entries[that.selector.get()[0]].track);
+            else if(nbTracks > 0) {
+                let tracks = new Array(nbTracks);
+                let ids = that.selector.get();
+                for(let i = 0; i < nbTracks; ++i)
+                    tracks[i] = that.entries[ids[i]].track;
+                window.app.downloadTracksZip(tracks);
             }
         });
+
+
         this.contextMenu.addEntry('playlists', "Add to playlist");
+
+        //TODO: Add and remove playlists on the fly (listen to window.app.playlists)
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i) {
             this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
-                if (clickedEntry !== undefined) {
-                    let tracksId = [];
-                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
-
-                    JSONParsedPostRequest(
-                        "ajax/addTracksToPlaylist/",
-                        JSON.stringify({
-                            PLAYLIST_ID: playlists[i].id,
-                            TRACKS_ID: tracksId
-                        }),
-                        function (response) {
-                            /* response = {
-                             *     DONE         : bool
-                             *     ERROR_H1     : string
-                             *     ERROR_MSG    : string
-                             *
-                             *     ADDED_TRACKS : int
-                             * } */
-                            if (response.DONE) {
-                                new Notification("INFO", "Track added to " + playlists[i].name, that.entries[clickedEntry].track.title + " has been added to " + playlists[i].name + ".");
-                                playlists[i].getPlaylistsTracks();
-                            }
-
-                            else {
-                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                            }
-                        }
-                    );
-                }
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; t++)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.addTracksToPlaylist(playlists[i], tracks);
             });
         }
-        if (!this.isLibrary) {
-            this.contextMenu.addEntry(null, "Remove track", function() {
-                if (clickedEntry !== undefined) {
-                    let tracksId = [];
-                    tracksId.push(that.entries[clickedEntry].track.id.track); // TODO : get all selected Tracks
 
-                    JSONParsedPostRequest(
-                        "ajax/removeTrackFromPlaylist/",
-                        JSON.stringify({
-                            PLAYLIST_ID: that.id,
-                            TRACKS_ID:   tracksId
-                        }),
-                        function (response) {
-                            /* response = {
-                             *     DONE           : bool
-                             *     ERROR_H1       : string
-                             *     ERROR_MSG      : string
-                             *
-                             *     REMOVED_TRACKS : int
-                             * } */
-                            if (response.DONE) {
-                                let playlist = window.app.getPlaylistFromId(that.id);
-
-                                if (playlist !== null) {
-                                    new Notification("INFO", "Track removed from " + playlist.name, that.entries[clickedEntry].track.title + " has been removed from " + playlist.name + ".");
-                                    playlist.getPlaylistsTracks();
-                                }
-                            }
-
-                            else {
-                                new Notification("ERROR", response.ERROR_H1, response.ERROR.MSG);
-                            }
-                        }
-                    );
-                }
-            });
-        }
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
             window.app.requestNewPlaylist();
         });
-    }
 
+        if (!this.isLibrary) {
+            this.contextMenu.addEntry(null, "Remove track", function() {
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; t++)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.removeTracksFromPlaylist(window.app.playlists.get(that.id), tracks);
+            });
+        }
+    }
 
 
     /**
@@ -396,13 +275,18 @@ class ListView extends PlaylistView {
      * desc   : Build UI elements
      **/
     _createUI(data) {
-        this.listView       = document.createElement("DIV");
-        this.listView.id    ="listView";
+        this.listView               = document.createElement("DIV");
+        this.listView.id            = "listView";
+        this.container.id           = "listViewWrapper";
 
         this._initHeader();
         this._addEntries(data);
         this.container.appendChild(this.header.container);
         this.container.appendChild(this.listView);
+
+        if (this.entries.length * 26 > screen.height) { // TODO : Value to adjust
+            this.header.container.classList.add("columnHeaderOffset");
+        }
 
         this.trackInfo      = new TrackInfo(this.container);
         this.hoveredTrack   = null;
@@ -422,64 +306,47 @@ class ListView extends PlaylistView {
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
         };
-        this.listView.addEventListener('mousemove', this._showTrackInfo.bind(this), true);
+        this.listView.addEventListener('mousemove', function(event) {
+            that._showTrackInfo(event);
+        }, true);
         this.listView.addEventListener('mouseleave', function(event) {
             window.clearTimeout(that.hoveredTimeout);
-            //We need to enqueue that event because mouseleave will get fired before trackinfo's mouseenter
+            // We need to enqueue that event because mouseleave will get fired before trackinfo's mouseenter
             if (event.target == that.listView)
-                window.setTimeout(that.trackInfo.setVisible.bind(that.trackInfo, false), 0);
+                window.setTimeout(function() {
+                    that.trackInfo.setVisible(false);
+                }, 0);
         });
         this.listView.addEventListener("click", this._viewClicked.bind(this));
-        // Sorting listeners
-        this.header.duration.addEventListener("click", function() {
-            that.sort.isDurationAsc = !that.sort.isDurationAsc;
-            that._sortBy("duration", that.sort.isDurationAsc);
-        });
-        this.header.title.addEventListener("click", function() {
-            that.sort.isTitleAsc = !that.sort.isTitleAsc;
-            that._sortBy("title", that.sort.isTitleAsc);
-        });
-        this.header.artist.addEventListener("click", function() {
-            that.sort.isArtistAsc = !that.sort.isArtistAsc;
-            that._sortBy("artist", that.sort.isArtistAsc);
-        });
-        this.header.composer.addEventListener("click", function() {
-            that.sort.isComposerAsc = !that.sort.isComposerAsc;
-            that._sortBy("composer", that.sort.isComposerAsc);
-        });
-        this.header.performer.addEventListener("click", function() {
-            that.sort.isPerformerAsc = !that.sort.isPerformerAsc;
-            that._sortBy("performer", that.sort.isPerformerAsc);
-        });
-        this.header.album.addEventListener("click", function() {
-            that.sort.isAlbumAsc = !that.sort.isAlbumAsc;
-            that._sortBy("album", that.sort.isAlbumAsc);
-        });
-        this.header.genre.addEventListener("click", function() {
-            that.sort.isGenreAsc = !that.sort.isGenreAsc;
-            that._sortBy("genre", that.sort.isGenreAsc);
-        });
-        this.header.bitRate.addEventListener("click", function() {
-            that.sort.isBiteRateAsc = !that.sort.isBiteRateAsc;
-            that._sortBy("bitRate", that.sort.isBiteRateAsc);
-        });
-        this.header.year.addEventListener("click", function() {
-            that.sort.isYearAsc = !that.sort.isYearAsc;
-            that._sortBy("year", that.sort.isYearAsc);
-        });
 
+        // Sorting listeners
+        this.header.container.addEventListener('click', function(event) {
+            if(event.target == that.header.container)
+                return;
+            let target = event.target;
+            while(target.parentNode != that.header.container)
+                target = target.parentNode;
+
+            let sorter = that.sort[target.dataset.sorter];
+            if(sorter) {
+                sorter.isAsc ^= true;
+                that._sortBy(target.dataset.sorter, sorter.isAsc);
+                that._resetEntriesBackground();
+            }
+        });
         window.app.listen('changeTrack', function(track) {
             that._centerOnTrack(track, false);
         });
         window.app.listen('changeView', function(view) {
             that.isActive = view == that;
-           if (that.isActive)
-               that._centerOnTrack(that.lastTrackCenter, true);
+            if (that.isActive)
+                that._centerOnTrack(that.lastTrackCenter, true);
         });
 
         window.app.listen("stopPlayback", function() {
             that._unSelectAll();
         });
+        this.selector.listen('clear', this._unSelectAll.bind(this));
     }
 
 
@@ -492,11 +359,9 @@ class ListView extends PlaylistView {
     _init(data) {
         this.listView        = null;
         this.entries         = [];
-        this.entriesSelected = {};
         this.trackInfo       = null;
-        this.dblClick        = false;
+        this.dblClick        = null;
         this.contextMenu     = null;
-
         this.header = {
             container:      null,
             duration:       null,
@@ -510,17 +375,16 @@ class ListView extends PlaylistView {
             year:           null
         };
         this.sort = {
-            isDurationAsc:  false,
-            isTitleAsc:     false,
-            isArtistAsc:    false,
-            isComposerAsc:  false,
-            isPerformerAsc: false,
-            isAlbumAsc:     false,
-            isGenreAsc:     false,
-            isBitRateAsc:   false,
-            isYearAsc:      false
+            duration:   { isAsc:    false },
+            title:      { isAsc:    false },
+            artist:     { isAsc:    false },
+            composer:   { isAsc:    false },
+            performer:  { isAsc:    false },
+            album:      { isAsc:    false },
+            genre:      { isAsc:    false },
+            bitRate:    { isAsc:    false },
+            year:       { isAsc:    false }
         };
-
         this._createUI(data);
         this._eventListener();
     }
@@ -532,48 +396,62 @@ class ListView extends PlaylistView {
      * desc   : Init ListView header
      **/
     _initHeader() {
-        this.header.container             = document.createElement("DIV");
-        this.header.container.className   = "columnHeader";
+        this.header.container                = document.createElement("DIV");
+        this.header.duration                 = document.createElement("DIV");
+        this.header.title                    = document.createElement("DIV");
+        this.header.artist                   = document.createElement("DIV");
+        this.header.composer                 = document.createElement("DIV");
+        this.header.album                    = document.createElement("DIV");
+        this.header.genre                    = document.createElement("DIV");
+        this.header.bitRate                  = document.createElement("DIV");
+        this.header.year                     = document.createElement("DIV");
 
-        this.header.duration              = document.createElement("DIV");
-        this.header.title                 = document.createElement("DIV");
-        this.header.artist                = document.createElement("DIV");
-        this.header.composer              = document.createElement("DIV");
-        this.header.performer             = document.createElement("DIV");
-        this.header.album                 = document.createElement("DIV");
-        this.header.genre                 = document.createElement("DIV");
-        this.header.bitRate               = document.createElement("DIV");
-        this.header.year                  = document.createElement("DIV");
-
-        this.header.duration.className    = "col-duration";
-        this.header.title.className       = "col-title";
-        this.header.artist.className      = "col-artist";
-        this.header.composer.className    = "col-composer";
-        this.header.performer.className   = "col-performer";
-        this.header.album.className       = "col-album";
-        this.header.genre.className       = "col-genre";
-        this.header.bitRate.className     = "col-bitRate";
-        this.header.year.className        = "col-year";
-
-        this.header.duration.innerHTML    = "Duration";
-        this.header.title.innerHTML       = "Title";
-        this.header.artist.innerHTML      = "Artist";
-        this.header.composer.innerHTML    = "Composer";
-        this.header.performer.innerHTML   = "Performer";
-        this.header.album.innerHTML       = "Album";
-        this.header.genre.innerHTML       = "Genre";
-        this.header.bitRate.innerHTML     = "BitRate";
-        this.header.year.innerHTML        = "Year";
+        this.header.container.className      = "columnHeader";
+        this.header.duration.className       = "col-duration";
+        this.header.title.className          = "col-title";
+        this.header.artist.className         = "col-artist";
+        this.header.composer.className       = "col-composer";
+        this.header.album.className          = "col-album";
+        this.header.genre.className          = "col-genre";
+        this.header.bitRate.className        = "col-bitRate";
+        this.header.year.className           = "col-year";
+        this.header.duration.innerHTML       = "Duration";
+        this.header.title.innerHTML          = "Title";
+        this.header.artist.innerHTML         = "Artist";
+        this.header.composer.innerHTML       = "Composer";
+        this.header.album.innerHTML          = "Album";
+        this.header.genre.innerHTML          = "Genre";
+        this.header.bitRate.innerHTML        = "BitRate";
+        this.header.year.innerHTML           = "Year";
+        this.header.duration.dataset.sorter  = "duration";
+        this.header.title.dataset.sorter     = "title";
+        this.header.artist.dataset.sorter    = "artist";
+        this.header.composer.dataset.sorter  = "composer";
+        this.header.album.dataset.sorter     = "album";
+        this.header.genre.dataset.sorter     = "genre";
+        this.header.bitRate.dataset.sorter   = "bitRate";
+        this.header.year.dataset.sorter      = "year";
 
         this.header.container.appendChild(this.header.duration);
         this.header.container.appendChild(this.header.title);
         this.header.container.appendChild(this.header.artist);
         this.header.container.appendChild(this.header.composer);
-        //this.header.container.appendChild(this.header.performer);
         this.header.container.appendChild(this.header.album);
         this.header.container.appendChild(this.header.genre);
         this.header.container.appendChild(this.header.bitRate);
         this.header.container.appendChild(this.header.year);
+    }
+
+
+    /**
+     * method : _resetEntriesBackground (private)
+     * class  : ListView
+     * desc   : Reset entries background alternance
+     **/
+    _resetEntriesBackground() {
+        for (let i = 0; i < this.entries.length; ++i) {
+            this.entries[i].setBackground(i);
+        }
     }
 
 
@@ -638,8 +516,6 @@ class ListView extends PlaylistView {
      * desc   : Unselect all entries in ListView
      **/
     _unSelectAll() {
-        this.entriesSelected = {};
-
         for (let i = 0; i < this.entries.length ;++i) {
             if (this.entries[i].getIsSelected()) {
                 this.entries[i].setIsSelected(false);
@@ -659,21 +535,29 @@ class ListView extends PlaylistView {
      **/
     _centerOnTrack(track, useIndex) {
         let i = track;
-        if (useIndex !== true)
-            for (i = 0; i < this.entries.length; ++i)
-                if (this.entries[i].track == track)
+        if (useIndex !== true) {
+            for (i = 0; i < this.entries.length; ++i) {
+                if (this.entries[i].track == track) {
                     break;
-        if (i >= this.entries.length)
+                }
+            }
+        }
+
+        if (i >= this.entries.length) {
             return;
+        }
 
         let relativeDelta = this.entries[i].entry.offsetTop + this.entries[i].entry.scrollHeight / 2;
-        if (this.entries[i].entry.offsetParent != this.listView)
+
+        if (this.entries[i].entry.offsetParent != this.listView) {
             relativeDelta -= this.listView.offsetTop;
+        }
 
-        if (this.isActive)
+        if (this.isActive) {
             this.lastTrackCenter = i;
-        this.listView.scrollTop = relativeDelta - this.listView.clientHeight / 2;
+        }
 
+        this.listView.scrollTop = relativeDelta - this.listView.clientHeight / 2;
     }
 
 
@@ -697,27 +581,19 @@ class ListView extends PlaylistView {
         }
 
         let id = target.dataset.childID;
-
-        // Clicked outside of the entries
-        if (id === undefined || id === null) {
-            this._unSelectAll();
-            return true;
-        }
-
-        if (this.dblClick) {
+        if (this.dblClick == id) {
             window.app.changeTrack(this.entries[id].track, false);
             return;
         }
 
-        this.dblClick = true;
-        window.setTimeout(function() { that.dblClick = false; }, 500);
+        this.dblClick = id;
+        window.setTimeout(function() {
+            that.dblClick = null;
+        }, 500);
 
-        let newState = !this.entriesSelected[id];
-
-        if (!event.ctrlKey && newState === true) { this._unSelectAll(); }
-
-        this.entriesSelected[id] = newState;
-        this.entries[id].setIsSelected(newState);
+        this._addIDToSelect(id, event);
     }
 
 }
+
+export default ListView

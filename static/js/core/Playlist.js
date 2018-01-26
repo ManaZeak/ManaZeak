@@ -11,14 +11,28 @@
  *                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Playlist {
-    constructor(id, name, isLibrary, isLoading, rawTracks, callback) {
+import { JSONParsedPostRequest, JSONParsedGetRequest } from '../utils/Utils.js'
+import Notification from '../utils/Notification.js'
+import Track from './Track.js'
+import Modal from '../utils/Modal.js'
 
-        //TODO: get shuffle and repeat from server
-        if (typeof rawTracks !== 'undefined') { this.rawTracks = rawTracks; } //TODO: fix this
-        else                                  { this.rawTracks = [];        }
-        if (typeof callback !== 'undefined')  { this.callback  = callback;  }
-        else                                  { this.callback  = null;      }
+class Playlist {
+
+    constructor(id, name, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
+        if (typeof rawTracks !== 'undefined') { //TODO: fix this
+            this.rawTracks       = rawTracks;
+        }
+        else {
+            this.rawTracks       = [];
+        }
+
+        if (typeof callback !== 'undefined') {
+            this.callback        = callback;
+        }
+        else {
+            this.callback        = null;
+        }
+
         this.id                  = id;
         this.name                = name;
         this.isLibrary           = isLibrary;
@@ -36,9 +50,7 @@ class Playlist {
         let viewkeys             = Object.keys(window.app.availableViews);
         this.views               = new Array(viewkeys.length).fill(null);
         this.activeView          = window.app.availableViews[viewkeys[0]];
-
         this.lazyLoadOK          = true;
-
         this._init();
     }
 
@@ -50,21 +62,21 @@ class Playlist {
      * desc   : Set in app the current playlist to this
      **/
     activate() {
-
-        if(this.lazyLoadOK == false)
-        {
+        if (this.lazyLoadOK == false) {
             this.modal = new Modal('fetchPlaylists', null);
             this.modal.open();
-            let self = this;
-            let timer = window.setInterval(function() {
-                if(self.lazyLoadOK == true) {
-                    self.modal.close();
-                    self.modal = null;
-                    self.activate();
+            let that   = this;
+            let timer  = window.setInterval(function() {
+                if (that.lazyLoadOK == true) {
+                    that.modal.close();
+                    that.modal = null;
+                    that.activate();
                     clearInterval(timer);
                 }
             }, 100);
-        } else {
+        }
+
+        else {
             window.app.activePlaylist = this;
             this.showView(window.app.availableViews.LIST);
         }
@@ -86,7 +98,7 @@ class Playlist {
      * method : getPlaylistsTracks (public)
      * class  : Playlist
      * desc   : Fetch raw tracks from server
-     * arg    : {function} callback - Not mandatory
+     * arg    : {function} callback - The function to callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
         this._getTracksLazy(0, callback);
@@ -100,7 +112,6 @@ class Playlist {
      **/
     playNextTrack() {
         let that = this;
-
         if (this.repeatMode === 1) {
             window.app.repeatTrack();
         }
@@ -127,7 +138,7 @@ class Playlist {
 
                 case 1: // Random
                     JSONParsedPostRequest(
-                        "ajax/randomNextTrack/",
+                        "player/randomNext/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
                         }),
@@ -153,21 +164,21 @@ class Playlist {
 
                 case 2: // Shuffle on
                     JSONParsedPostRequest(
-                        "ajax/shuffleNextTrack/",
+                        "player/shuffleNext/",
                         JSON.stringify({
                             PLAYLIST_ID: that.id
                         }),
                         function(response) {
                             /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
+                             *     DONE       : bool
+                             *     ERROR_H1   : string
+                             *     ERROR_MSG  : string
                              *
-                             *     LAST      : bool
-                             *     TRACK_ID  : int
+                             *     IS_LAST    : bool
+                             *     TRACK_ID   : int
                              * } */
                             if (response.DONE) {
-                                if (response.LAST) {
+                                if (response.IS_LAST) {
                                     window.app.stopPlayback();
                                 }
 
@@ -198,7 +209,6 @@ class Playlist {
      **/
     playPreviousTrack() {
         let that = this;
-
         switch (this.shuffleMode) {
             case 0: // Shuffle off
                 this.currentTrack = this.activeView.getPreviousEntry();
@@ -207,7 +217,7 @@ class Playlist {
 
             default:
                 JSONParsedGetRequest(
-                    "ajax/getLastSongPlayed/",
+                    "history/getLastSongPlayed/",
                     function(response) {
                         /* response = {
                          *     DONE      : bool
@@ -294,8 +304,6 @@ class Playlist {
             }),
             null
         );
-
-        window.app.refreshFootBar();
     }
 
 
@@ -309,15 +317,22 @@ class Playlist {
         this.shuffleMode %= 3;
 
         JSONParsedPostRequest(
-            "ajax/toggleRandom/",
+            "player/toggleRandomMode/",
             JSON.stringify({
                 PLAYLIST_ID: this.id,
                 RANDOM_MODE: this.shuffleMode
             }),
-            null
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
         );
-
-        window.app.refreshFootBar();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -328,11 +343,26 @@ class Playlist {
      * desc   : Remove all track and reset tracks, artists and album count
      **/
     _clearTracks() {
-        this.tracks      = [];
+        this.tracks        = [];
         this.durationTotal = 0;
-        this.trackTotal  = 0;
-        this.artistTotal = 0;
-        this.albumTotal  = 0;
+        this.trackTotal    = 0;
+        this.artistTotal   = 0;
+        this.albumTotal    = 0;
+    }
+
+
+    /**
+     * method : _fillTracks (private)
+     * class  : Playlist
+     * desc   : Transform raw tracks into Track object
+     * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
+     **/
+    _fillTracks(tracks) { // Tracks is JSON response to playlist ID
+        for (let i = 0; i < tracks.length; ++i) {
+            ++this.trackTotal;
+            this.durationTotal += tracks[i].DURATION;
+            this.tracks.push(new Track(tracks[i]));
+        }
     }
 
 
@@ -344,18 +374,18 @@ class Playlist {
      *          {function} callback - Not mandatory
      **/
     _getTracksLazy(step, callback) {
-        let that = this;
-        if(step == 0) {
+        if (step == 0) {
             this.lazyLoadOK = false;
-            this.rawTracks = [];
+            this.rawTracks  = [];
             this._clearTracks();
         }
 
+        let that = this;
         JSONParsedPostRequest(
-            "ajax/lazyLoadingSimplifiedPlaylist/",
+            "playlist/simplifiedLazyLoading/",
             JSON.stringify({
-                PLAYLIST_ID: this.id,
-                REQ_NUMBER: step
+                PLAYLIST_ID:    this.id,
+                REQUEST_NUMBER: step
             }),
             function(response) {
                 /* response = {
@@ -363,7 +393,22 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  *
-                 *     RESULT      : JSON object
+                 *     RESULT: [
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         BITRATE:
+                 *         DURATION:
+                 *         COVER:
+                 *         ARTISTS:
+                 *         GENRE:
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *         }
+                 *     ]
                  * } */
                 if (response.DONE) {
                     that.rawTracks = that.rawTracks.concat(response.RESULT);
@@ -371,8 +416,7 @@ class Playlist {
                 }
 
                 else {
-                    //Successfully loaded all
-                    if(response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) {
+                    if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) { // Successfully loaded all
                         that._fillTracks(that.rawTracks);
                         that.refreshViews();
                         that.lazyLoadOK = true;
@@ -381,8 +425,11 @@ class Playlist {
                             that.activate();
                             callback();
                         }
-                    } else
+                    }
+
+                    else {
                         new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
                 }
             }
         );
@@ -397,7 +444,6 @@ class Playlist {
      **/
     _getTracksFromServer(playlistId) {
         let that = this;
-
         this.getTracksIntervalId = window.setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
         }, 500); // One call every 0.5s
@@ -412,9 +458,8 @@ class Playlist {
      **/
     _getTracksFromServer_aux(playlistId) {
         let that = this;
-
         JSONParsedPostRequest(
-            "ajax/checkLibraryScanStatus/",
+            "library/checkScanStatus/",
             JSON.stringify({
                 PLAYLIST_ID: playlistId
             }),
@@ -424,16 +469,17 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
-                let self = that;
                 if (response.DONE) {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
 
+                    let self = that;
                     that.getPlaylistsTracks(function() {
                         self.showView(window.app.availableViews.LIST);
                         self.modal.close();
-                        if(self.callback)
+                        if (self.callback) {
                             self.callback();
+                        }
                     });
                 }
             }
@@ -448,13 +494,23 @@ class Playlist {
      **/
     _init() {
         if (this.isLoading) {
-            if (this.isLibrary) { this._loadLibrary();  } // Library loading process
-            else                { this._loadPlaylist(); } // Playlist loading process
+            if (this.isLibrary) { // Library loading process
+                this._loadLibrary();
+            }
+
+            else { // Playlist loading process
+                this._loadPlaylist();
+            }
         }
 
         else {
-            if (this.isLibrary) { this._newLibrary();   } // Library creation process
-            else                { this._newPlaylist();  } // Playlist creation process
+            if (this.isLibrary) { // Library creation process
+                this._newLibrary();
+            }
+
+            else { // Playlist creation process
+                this._newPlaylist();
+            }
         }
     }
 
@@ -467,9 +523,8 @@ class Playlist {
      **/
     _initialLibraryScan(libraryId) {
         let that = this;
-
         JSONParsedPostRequest(
-            "ajax/initialScan/",
+            "library/initialScan/",
             JSON.stringify({
                 LIBRARY_ID: libraryId
             }),
@@ -495,27 +550,14 @@ class Playlist {
 
 
     /**
-     * method : _fillTracks (private)
-     * class  : Playlist
-     * desc   : Transform raw tracks into Track object
-     * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
-     **/
-    _fillTracks(tracks) { // Tracks is JSON response to playlist ID
-        for (let i = 0; i < tracks.length; ++i) {
-            ++this.trackTotal;
-            this.durationTotal += tracks[i].DURATION;
-            this.tracks.push(new Track(tracks[i]));
-        }
-    }
-
-
-    /**
      * method : _loadLibrary (private)
      * class  : Playlist
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary() {
-        if (this.rawTracks.length === 0) { return; }
+        if (this.rawTracks.length === 0) {
+            return;
+        }
 
         this._fillTracks(this.rawTracks);
     }
@@ -527,7 +569,9 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadPlaylist() {
-        if (this.rawTracks.length === 0) { return; }
+        if (this.rawTracks.length === 0) {
+            return;
+        }
 
         this._fillTracks(this.rawTracks);
     }
@@ -540,8 +584,7 @@ class Playlist {
      **/
     _newLibrary() {
         this.isLibrary = true;
-
-        this.modal = new Modal("newLibrary");
+        this.modal     = new Modal("newLibrary");
         this.modal.open();
 
         let that = this;
@@ -579,7 +622,7 @@ class Playlist {
     _requestNewLibrary(name, path, convert) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/newLibrary/",
+            "library/new/",
             JSON.stringify({
                 URL:     path,
                 NAME:    name,
@@ -587,14 +630,15 @@ class Playlist {
             }),
             function(response) {
                 /* response = {
-                 *     DONE       : bool
-                 *     ERROR_H1   : string
-                 *     ERROR_MSG  : string
+                 *     DONE         : bool
+                 *     ERROR_H1     : string
+                 *     ERROR_MSG    : string
                  *
-                 *     LIBRARY_ID : int or undefined
+                 *     LIBRARY_ID   : int or undefined
+                 *     LIBRARY_NAME : string
                  * } */
                 if (response.DONE) {
-                    that.name  = name;
+                    that.name  = response.LIBRARY_NAME;
                     that.modal.close();
                     that.modal = null;
                     that.modal = new Modal("scanLibrary");
@@ -620,20 +664,21 @@ class Playlist {
     _requestNewPlaylist(name) {
         let that = this;
         JSONParsedPostRequest(
-            "ajax/newPlaylist/",
+            "playlist/new/",
             JSON.stringify({
-                NAME: name
+                PLAYLIST_NAME: name
             }),
             function(response) {
                 /* response = {
-                 *     DONE       : bool
-                 *     ERROR_H1   : string
-                 *     ERROR_MSG  : string
+                 *     DONE          : bool
+                 *     ERROR_H1      : string
+                 *     ERROR_MSG     : string
                  *
-                 *     LIBRARY_ID : int or undefined
+                 *     PLAYLIST_ID   : int or undefined
+                 *     PLAYLIST_NAME : string
                  * } */
                 if (response.DONE) {
-                    that.name  = name;
+                    that.name  = response.PLAYLIST_NAME;
                     that.id    = response.PLAYLIST_ID;
                     that.modal.close();
                     that.modal = null;
@@ -649,14 +694,13 @@ class Playlist {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
-    getId()          { return this.id;          }
     getName()        { return this.name;        }
     getIsLibrary()   { return this.isLibrary;   }
     getRepeatMode()  { return this.repeatMode;  }
     getShuffleMode() { return this.shuffleMode; }
-    getTracks()      { return this.tracks;      }
-    getViews()       { return this.views;       }
 
     setName(name)    { this.name = name;        }
 
 }
+
+export default Playlist

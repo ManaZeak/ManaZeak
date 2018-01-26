@@ -10,7 +10,7 @@
         float: left;
         height: 100%;
         opacity: 0;
-        padding-left: 50px;
+        padding-left: 20px;
         position: relative;
         width: 30%;
 
@@ -204,6 +204,16 @@
                 justify-content: space-between;
                 padding: 5px;
                 padding-left: 15px;
+                height: 64px;
+
+                &.mzk-queue-empty {
+
+                    justify-content: center;
+
+                    &:not(:last-child) {
+                        display: none;
+                    }
+                }
 
                 & > img {
                     height: auto;
@@ -274,7 +284,7 @@
         float: right;
         height: 100%;
         opacity: 0;
-        padding-right: 50px;
+        padding-right: 20px;
         position: relative;
         text-align: right;
         width: 30%;

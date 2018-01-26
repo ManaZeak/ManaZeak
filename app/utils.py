@@ -23,28 +23,19 @@ def splitTableCustom(table, number):
         yield table[i:i + chunkSize]
 
 
-# Check if an attribute is existing or not
-def checkIfNotNone(trackAttribute):
-    if trackAttribute is not None and trackAttribute != "":
-        result = trackAttribute.replace('"', '\\"')
-        return result
-    else:
-        return ""
-
-
-# Check if an attribute is existing or not and add "" around it
-def checkIfNotNoneNumber(trackAttribute):
-    if trackAttribute is not None:
-        return str(trackAttribute)
-    else:
-        return "\"\""
-
-
+# Format for vorbis tags
 def processVorbisTag(tag):
     tag = strip_tags(tag)
     tag = tag[2:]
     tag = tag[:-2]
     return tag
+
+
+# Return a readable time code for a time code
+def timeCodeToString(timestamp):
+    return str(timestamp.day).zfill(2) + "/" + str(timestamp.month).zfill(2) + \
+           "/" + str(timestamp.year) + " - " + str(timestamp.hour) + ":" + \
+           str(timestamp.minute)
 
 
 # Generate the base of any status message
@@ -131,6 +122,22 @@ def errorCheckMessage(isDone, error):
     elif error == "valueError":
         errorTitle = "Wrong value"
         errorMessage = "The value wasn't expected"
+
+    elif error == "dNdError":
+        errorTitle = "The drag and drop hasn't been setup"
+        errorMessage = "The administrator didn't configured correctly the buffer folder"
+
+    elif error == "formatError":
+        errorTitle = "The format provided doesn't have support"
+        errorMessage = "We don't supports this extension"
+
+    elif error == "downloadLimit":
+        errorTitle = "You maximum download limit reached"
+        errorMessage = "Select less tracks and try again"
+
+    elif error == "dirCreationError":
+        errorTitle = "Can't create a folder"
+        errorMessage = "The application can't create a folder contact the administrator"
 
     return {
         'DONE': isDone,

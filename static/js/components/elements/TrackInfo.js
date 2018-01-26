@@ -7,17 +7,19 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import { secondsToTimecode, JSONParsedPostRequest, setCookie, getCookies } from '../../utils/Utils.js'
+
+
 const TOTAL_SUGGESTIONS_NUMBER = 4; // Number of track to display in suggested tracks
 const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSuggestionMode in constructor)
 
 class TrackInfo {
+
     constructor(container) {
-
-        this.inactivityTimeoutId   = -1;    // ID for the inactivity timeout
-        this.trackSuggestionMode   = 0;     // 0: By Artists / 1: By Album / 2: By Genre
-        this.track                 = null;  // Track that triggered TrackInfo in view
-        this.locked                = false; // TrackInfo lock status
-
+        this.inactivityTimeoutId = -1;    // ID for the inactivity timeout
+        this.trackSuggestionMode = 0;     // 0: By Artists / 1: By Album / 2: By Genre
+        this.track               = null;  // Track that triggered TrackInfo in view
+        this.locked              = false; // TrackInfo lock status
         this._createUI(container);
         this._init();
     }
@@ -46,8 +48,8 @@ class TrackInfo {
         }
 
         if (visible === true) {
-            this.ui.container.style.opacity = 1;
-            this.ui.container.style.zIndex  = 0;
+            this.ui.container.style.opacity    = 1;
+            this.ui.container.style.zIndex     = 0;
 
             this._startInactivityTimeout(5000);  // If mouse doesn't move for 5 seconds outside the TrackInfo container, it's closed.
         }
@@ -55,7 +57,7 @@ class TrackInfo {
         else {
             let that = this;
 
-            this.ui.container.style.opacity = 0;
+            this.ui.container.style.opacity    = 0;
             window.setTimeout(function() {
                 that.ui.container.style.zIndex = -1;
             }, 100); // 100ms bc of transition time in #TrackInfo - _trackinfo.scss
@@ -87,50 +89,26 @@ class TrackInfo {
      **/
     updateInfo(track, callback) {
         let that = this;
-
-        JSONParsedPostRequest(
-            "ajax/getTrackDetailedInfo/",
-            JSON.stringify({
-                TRACK_ID: track.id.track
-            }),
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     RESULT    : JSON object
-                 * } */
-                if (response.DONE) {
-                    track.updateMetadata(response.RESULT);
-                    that.track = track;
-
-                    that.ui.cover.src                 = track.cover;
-                    that.ui.title.innerHTML           = track.title;
-                    that.ui.artist.innerHTML          = track.artist;
-                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
-                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
-                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
-                    that.ui.album.innerHTML           = track.year + " - " + track.album;
-                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                        track.fileType + " - " +
-                        Math.round(track.bitRate / 1000) + " kbps - " +
-                        track.sampleRate + " Hz";
-
-                    // TODO : add total played and other interesting stats about track
-                    that._updateSuggestionMode();
-                    that._updateSuggestionTracks();
-
-                    if (callback) { callback(); }
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
-            }
-        );
+        window.app.updateTracksInfo([track], function() {
+            that.track                        = track;
+            that.ui.cover.src                 = track.cover;
+            that.ui.title.innerHTML           = track.title;
+            that.ui.artist.innerHTML          = track.artist;
+            that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+            that.ui.composer.innerHTML        = "Composer : " + track.composer;
+            that.ui.performer.innerHTML       = "Performer : " + track.performer;
+            that.ui.genre.innerHTML           = "Genre : " + track.genre;
+            that.ui.album.innerHTML           = track.year + " - " + track.album;
+            that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+            that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                                                    track.fileType + " - " +
+                                                    Math.round(track.bitRate / 1000) + " kbps - " +
+                                                    track.sampleRate + " Hz";
+            // TODO : add total played and other interesting stats about track
+            that._updateSuggestionMode();
+            that._updateSuggestionTracks();
+            callback();
+        });
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -139,7 +117,7 @@ class TrackInfo {
      * method : _createUI (private)
      * class  : TrackInfo
      * desc   : Build and append UI elements to parent
-     * arg    : {object} container - The TrackInfo parent
+     * arg    : {object} container - The TrackInfo container
      **/
     _createUI(container) {
         this.ui = {
@@ -216,7 +194,6 @@ class TrackInfo {
      **/
     _eventListener() {
         let that = this;
-
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
             that._stopInactivityTimeout();
@@ -239,9 +216,13 @@ class TrackInfo {
     _init() {
         let cookies = getCookies();
 
-        if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 &&
-            cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) { this._updateSuggestionMode(cookies.TRACK_INFO_SUGGESTION_MODE); }
-        else                                                              { this._updateSuggestionMode(0);                                  }
+        if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 && cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) {
+            this._updateSuggestionMode(cookies.TRACK_INFO_SUGGESTION_MODE);
+        }
+
+        else {
+            this._updateSuggestionMode(0);
+        }
 
         this._eventListener();
     }
@@ -255,7 +236,6 @@ class TrackInfo {
      **/
     _startInactivityTimeout(time) {
         let that = this;
-
         this.inactivityTimeoutId = window.setTimeout(function() {
             that.setVisible(false);
         }, time);
@@ -268,7 +248,9 @@ class TrackInfo {
      * desc   : Stops the inactivity timeout
      **/
     _stopInactivityTimeout() {
-        if (this.inactivityTimeoutId !== -1) { window.clearTimeout(this.inactivityTimeoutId); }
+        if (this.inactivityTimeoutId !== -1) {
+            window.clearTimeout(this.inactivityTimeoutId);
+        }
     }
 
 
@@ -279,7 +261,6 @@ class TrackInfo {
      **/
     _toggleChangeType() {
         ++this.trackSuggestionMode;
-
         this._updateSuggestionMode();
         this._updateSuggestionTracks();
     }
@@ -292,8 +273,13 @@ class TrackInfo {
      * arg    : {int} value - The set value (not mandatory)
      **/
     _updateSuggestionMode(value) {
-        if (value) { this.trackSuggestionMode = value % TOTAL_SUGGESTIONS_MODES; }
-        else       { this.trackSuggestionMode %= TOTAL_SUGGESTIONS_MODES;        }
+        if (value) {
+            this.trackSuggestionMode              = value % TOTAL_SUGGESTIONS_MODES;
+        }
+
+        else {
+            this.trackSuggestionMode             %= TOTAL_SUGGESTIONS_MODES;
+        }
 
         setCookie("TRACK_INFO_SUGGESTION_MODE", this.trackSuggestionMode, 20);
 
@@ -320,7 +306,7 @@ class TrackInfo {
 
         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
             this.tracks[i].ui.style.opacity = 0;
-            this.tracks[i].ui.innerHTML = "";
+            this.tracks[i].ui.innerHTML     = "";
         }
     }
 
@@ -332,13 +318,12 @@ class TrackInfo {
      **/
     _updateSuggestionTracks() {
         let that = this;
-
         if (this.track !== null) {
             JSONParsedPostRequest(
-                "ajax/getSimilarTrack/",
-                JSON.stringify({ // TODO : send total_ to avoid oob
-                    TRACK_ID: this.track.id.track,
-                    MODE:     this.trackSuggestionMode
+                "suggestions/getSimilarTrack/",
+                JSON.stringify({
+                    TRACK_ID:        this.track.id.track,
+                    SUGGESTION_MODE: this.trackSuggestionMode
                 }),
                 function(response) {
                     /* response = {
@@ -346,23 +331,57 @@ class TrackInfo {
                      *     ERROR_H1  : string
                      *     ERROR_MSG : string
                      *
-                     *     RESULT    : []
+                     *     RESULT    : {
+                     *         ID:
+                     *         TITLE:
+                     *         YEAR:
+                     *         COMPOSER:
+                     *         PERFORMER:
+                     *         TRACK_NUMBER:
+                     *         BPM:
+                     *         LYRICS:
+                     *         COMMENT:
+                     *         BITRATE:
+                     *         SAMPLERATE:
+                     *         DURATION:
+                     *         GENRE:
+                     *         FILE_TYPE:
+                     *         DISC_NUMBER:
+                     *         SIZE:
+                     *         LAST_MODIFIED:
+                     *         COVER:
+                     *         ARTISTS: {
+                     *            ID:
+                     *            NAME:
+                     *         }
+                     *         ALBUM: {
+                     *             ID:
+                     *             TITLE:
+                     *             TOTAL_DISC:
+                     *             TOTAL_TRACK:
+                     *             ARTISTS: {
+                     *                 ID:
+                     *                 NAME:
+                     *             }
+                     *         }
+                     *         PLAY_COUNTER:
+                     *         FILE_NAME:
                      * } */
                     if (!response.DONE) {
-                        that.tracks[0].ui.innerHTML = response.ERROR_H1 + "<br>" + response.ERROR_MSG;
-                        that.tracks[0].ui.style.opacity = 1;
-                    } else {
+                        that.tracks[0].ui.innerHTML             = response.ERROR_H1 + "<br>" + response.ERROR_MSG;
+                        that.tracks[0].ui.style.opacity         = 1;
+                    }
+
+                    else {
                         for (let i = 0; i < TOTAL_SUGGESTIONS_NUMBER; ++i) {
                             if (response.RESULT[i]) {
-                                that.tracks[i].id        = response.RESULT[i].ID;
-                                that.tracks[i].duration  = response.RESULT[i].DURATION;
-                                that.tracks[i].title     = response.RESULT[i].TITLE;
-                                that.tracks[i].performer = response.RESULT[i].PERFORMER;
-
-                                that.tracks[i].ui.innerHTML = secondsToTimecode(that.tracks[i].duration) + " - " +
-                                    that.tracks[i].title + "<br><div class=\"performerIndent\"></div>" +
-                                    that.tracks[i].performer;
-
+                                that.tracks[i].id               = response.RESULT[i].ID;
+                                that.tracks[i].duration         = response.RESULT[i].DURATION;
+                                that.tracks[i].title            = response.RESULT[i].TITLE;
+                                that.tracks[i].performer        = response.RESULT[i].PERFORMER;
+                                that.tracks[i].ui.innerHTML     = secondsToTimecode(that.tracks[i].duration) + " - " +
+                                                                  that.tracks[i].title + "<br><div class=\"performerIndent\"></div>" +
+                                                                  that.tracks[i].performer;
                                 that.tracks[i].ui.style.opacity = 1;
                             }
                         }
@@ -373,3 +392,5 @@ class TrackInfo {
     }
 
 }
+
+export default TrackInfo

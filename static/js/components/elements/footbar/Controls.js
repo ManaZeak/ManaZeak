@@ -6,14 +6,15 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+import VolumeBar from './VolumeBar.js'
+import QueuePreview from './QueuePreview.js'
+
 class Controls  {
+
     constructor(container) {
-
         this._createUI(container);
-
         this.volumeBar    = new VolumeBar(this.container);
         this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
-
         this._eventListener();
     }
 
@@ -23,37 +24,38 @@ class Controls  {
      * method : _createUI (private)
      * class  : Controls
      * desc   : Build UI elements
+     * arg    : {object} container - The Controls container
      **/
     _createUI(container) {
         this.container = document.createElement("DIV");
-        this.ui = {
+        this.ui        = {
             play: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             stop: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             repeat: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             shuffle: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             next: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             previous: {
-                button: document.createElement("A"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("A"),
+                image:   document.createElement("IMG")
             },
             queueExpander: {
-                button: document.createElement("DIV"),
-                image:  document.createElement("IMG")
+                button:  document.createElement("DIV"),
+                image:   document.createElement("IMG")
             }
         };
 
@@ -73,7 +75,6 @@ class Controls  {
         this.ui.previous.image.id              = "imagePrevious";
         this.ui.queueExpander.button.className = "queueExpander";
         this.ui.queueExpander.image.id         = "imageQueueExpander";
-
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";
@@ -97,6 +98,7 @@ class Controls  {
         this.container.appendChild(this.ui.stop.button);
         this.container.appendChild(this.ui.next.button);
         this.container.appendChild(this.ui.queueExpander.button);
+
         container.appendChild(this.container);
     }
 
@@ -108,12 +110,12 @@ class Controls  {
      **/
     _eventListener() {
         let that = this;
-        this.ui.play.button.addEventListener("click", window.app.togglePlay.bind(window.app));
-        this.ui.stop.button.addEventListener("click", window.app.stopPlayback.bind(window.app));
-        this.ui.shuffle.button.addEventListener("click", window.app.toggleShuffle.bind(window.app));
-        this.ui.repeat.button.addEventListener("click", window.app.toggleRepeat.bind(window.app));
-        this.ui.next.button.addEventListener("click", window.app.next.bind(window.app));
-        this.ui.previous.button.addEventListener("click", window.app.previous.bind(window.app));
+        this.ui.play.button.addEventListener("click", function() { window.app.togglePlay(); });
+        this.ui.stop.button.addEventListener("click", function() { window.app.stopPlayback(); });
+        this.ui.shuffle.button.addEventListener("click", function() { window.app.toggleShuffle(); });
+        this.ui.repeat.button.addEventListener("click", function() { window.app.toggleRepeat(); });
+        this.ui.next.button.addEventListener("click", function() { window.app.next(); });
+        this.ui.previous.button.addEventListener("click", function() { window.app.previous(); });
         this.ui.queueExpander.button.addEventListener("click", function() {
             if (that.queuePreview.getIsLocked()) {
                 let self = that;
@@ -131,16 +133,19 @@ class Controls  {
                 }, 50); // 50ms to avoid double click open/close instant QueuePreview
             }
         });
-
-        window.app.listen('pushQueue', this.queuePreview.preview, this.queuePreview);
-        window.app.listen(['togglePlay', 'stopPlayback'], this._setPlayPause, this);
+        window.app.listen('pushQueue', function() {
+            that.queuePreview.preview();
+        });
+        window.app.listen(['togglePlay', 'stopPlayback'], function() {
+            that._setPlayPause();
+        });
     }
 
 
     /**
      * method : _setPlayPause (private)
      * class  : Controls
-     * desc   : Change Play/Pause button depending on player status
+     * desc   : Change Play/Pause image source depending on player status
      **/
     _setPlayPause() {
         if (window.app.player.getIsPlaying() === true) {
@@ -153,3 +158,5 @@ class Controls  {
     }
 
 }
+
+export default Controls

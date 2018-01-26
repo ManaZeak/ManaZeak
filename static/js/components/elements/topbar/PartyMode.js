@@ -7,11 +7,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class PartyMode {
+
     constructor(container) {
-
-
         this._createUI(container);
-        this._init();
+        this._eventListener();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -20,6 +19,7 @@ class PartyMode {
      * method : _createUI (private)
      * class  : PartyMode
      * desc   : Build UI elements
+     * arg    : {object} container - The PartyMode container
      **/
     _createUI(container) {
         this.ui = {
@@ -31,30 +31,22 @@ class PartyMode {
         this.ui.img.src      = "/static/img/utils/party.svg";
 
         this.ui.container.appendChild(this.ui.img);
+
         container.appendChild(this.ui.container);
-    }
-
-
-    /**
-     * method : _init (private)
-     * class  : PartyMode
-     * desc   : Listen to events
-     **/
-    _init() {
-        this._eventListener();
     }
 
 
     /**
      * method : _eventListener (private)
      * class  : PartyMode
-     * desc   : WishList event listeners
+     * desc   : PartyMode event listeners
      **/
     _eventListener() {
         this.ui.img.addEventListener("click", function() {
-            window.app.hidePageContent();
             window.app.showAppView("mzk_party");
         });
     }
 
 }
+
+export default PartyMode

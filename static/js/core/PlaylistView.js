@@ -8,9 +8,11 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class PlaylistView extends View {
-    constructor() {
+import View from './View.js'
 
+class PlaylistView extends View {
+
+    constructor() {
         super();
     }
 
@@ -91,20 +93,6 @@ class PlaylistView extends View {
         }
     }
 
-
-    /**
-     * method : unSelectAll (public)
-     * class  : PlaylistView
-     * desc   : Unselect all entries in view
-     **/
-    unSelectAll() {
-        this.entriesSelected = {};
-
-        for (let i = 0; i < this.entries.length ;++i) {
-            if (this.entries[i].getIsSelected()) {
-                this.entries[i].setIsSelected(false);
-            }
-        }
-    }
-
 }
+
+export default PlaylistView

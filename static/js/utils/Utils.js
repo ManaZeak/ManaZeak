@@ -4,13 +4,15 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
+"use strict";
+
 /**
  * method : extendClass (public)
  * desc   : TODO
  * arg    : {object} parent - TODO
  *          {object} child - TODO
  **/
-function extendClass(parent, child) {
+export function extendClass(parent, child) {
     let proto = Object.create(parent.prototype);
 
     for (let i in child.prototype) {
@@ -27,9 +29,8 @@ function extendClass(parent, child) {
  * arg    : {float} value - The value to round
  *          {int} precision - The amount of digits after zero
  **/
-function precisionRound(value, precision) {
+export function precisionRound(value, precision) {
     let multiplier = Math.pow(10, precision || 0);
-
     return Math.round(value * multiplier) / multiplier;
 }
 
@@ -39,7 +40,7 @@ function precisionRound(value, precision) {
  * desc   : Transforms seconds into a readable timecode
  * arg    : {int} time - Number of seconds
  **/
-function secondsToTimecode(time) {
+export function secondsToTimecode(time) {
     // TODO : add days
     let transformedTime = {
         d: 0,
@@ -59,7 +60,7 @@ function secondsToTimecode(time) {
     transformedTime.s = transformedTime.s < 10 ? "0" + transformedTime.s : transformedTime.s;
     // Formatting output
     if (transformedTime.d > 0) {
-        return transformedTime.d + " days, " + transformedTime.h + ":" + transformedTime.m + ":" + transformedTime.s;
+        return transformedTime.d + "d " + transformedTime.h + "h " + transformedTime.m + "m " + transformedTime.s + "s";
     }
 
     else if (transformedTime.h > 0) {
@@ -73,27 +74,54 @@ function secondsToTimecode(time) {
 
 
 /**
+ * method : rawSizeToReadableSize (public)
+ * desc   : Transforms a byte integer into a readable value in octet
+ * arg    : {int} size - Size in byte to convert
+ **/
+export function rawSizeToReadableSize(size) {
+    let readable = 0;
+
+    if (size / 1000000 < 1) { // TODO : true division to make here (1024 or smthg like theaz)
+        readable = precisionRound(size / 1000, 2) + " Ko";
+    }
+
+    else {
+        readable = precisionRound(size / 1000000, 2) + " Mo";
+    }
+
+    return readable;
+}
+
+
+/**
  * method : sortObjectArrayBy (public)
  * desc   : TODO
  * arg    : {int} key - TODO
  *          {bool} ascending - Sort way
  *          {object} subobject - TODO
  **/
-function sortObjectArrayBy(key, ascending, subobject) {
+export function sortObjectArrayBy(key, ascending, subobject) {
     return function(a, b) {
         if (subobject != null) {
             a = a[subobject];
             b = b[subobject];
         }
 
-        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) { return 0; }
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            return 0;
+        }
 
         const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
         const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
 
         let compare = 0;
-        if (varA > varB)      { compare =  1; }
-        else if (varA < varB) { compare = -1; }
+        if (varA > varB)      {
+            compare =  1;
+        }
+
+        else if (varA < varB) {
+            compare = -1;
+        }
 
         return (!ascending ? (compare * -1) : compare);
     };
@@ -104,14 +132,16 @@ function sortObjectArrayBy(key, ascending, subobject) {
  * method : getCookies (public)
  * desc   : Retrieve cookies from browser
  **/
-function getCookies() {
+export function getCookies() {
     let cookies = {};
 
     if (document.cookie && document.cookie !== '') {
         document.cookie.split(';').forEach(function (cookie) {
             let m = cookie.trim().match(/(\w+)=(.*)/);
 
-            if (m !== undefined) { cookies[m[1]] = decodeURIComponent(m[2]); }
+            if (m !== undefined) {
+                cookies[m[1]] = decodeURIComponent(m[2]);
+            }
         });
     }
 
@@ -126,7 +156,7 @@ function getCookies() {
  *          {string} cookieValue - The cookie value
  *          {int} expiresDay - Expiration in days
  **/
-function setCookie(cookieKey, cookieValue, expiresDay) {
+export function setCookie(cookieKey, cookieValue, expiresDay) {
     let d = new Date();
 
     d.setTime(d.getTime() + (expiresDay * 24 * 60 * 60 * 1000));
@@ -145,9 +175,14 @@ function setCookie(cookieKey, cookieValue, expiresDay) {
  * desc   : Toggle a visibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function toggleVisibilityLock(object) { //TODO: Move to Overrides
-    if (object.classList.contains("mzk-visible")) { removeVisibilityLock(object); }
-    else                                          { addVisibilityLock(object);    }
+export function toggleVisibilityLock(object) { //TODO: Move to Overrides
+    if (object.classList.contains("mzk-visible")) {
+        removeVisibilityLock(object);
+    }
+
+    else {
+        addVisibilityLock(object);
+    }
 }
 
 
@@ -156,7 +191,7 @@ function toggleVisibilityLock(object) { //TODO: Move to Overrides
  * desc   : Add a visibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
+export function addVisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-visible");
     object.dataset.mzkLock = 1;
 }
@@ -167,7 +202,7 @@ function addVisibilityLock(object) { // TODO : rename to addClass -> modify moda
  * desc   : Remove a visibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function removeVisibilityLock(object) {
+export function removeVisibilityLock(object) {
     object.classList.remove("mzk-visible");
     object.dataset.mzkLock = 0;
 }
@@ -178,9 +213,14 @@ function removeVisibilityLock(object) {
  * desc   : Toggle a visibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function toggleInvisibilityLock(object) { //TODO: Move to Overrides
-    if (object.classList.contains("mzk-visible")) { removeInvisibilityLock(object); }
-    else                                          { addInvisibilityLock(object);    }
+export function toggleInvisibilityLock(object) { //TODO: Move to Overrides
+    if (object.classList.contains("mzk-visible")) {
+        removeInvisibilityLock(object);
+    }
+
+    else {
+        addInvisibilityLock(object);
+    }
 }
 
 
@@ -189,7 +229,7 @@ function toggleInvisibilityLock(object) { //TODO: Move to Overrides
  * desc   : Add a invisibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function addInvisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
+export function addInvisibilityLock(object) { // TODO : rename to addClass -> modify modal accordingly
     object.classList.add("mzk-hidden");
     object.dataset.mzkLock = 1;
 }
@@ -200,17 +240,18 @@ function addInvisibilityLock(object) { // TODO : rename to addClass -> modify mo
  * desc   : Remove a invisibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function removeInvisibilityLock(object) {
+export function removeInvisibilityLock(object) {
     object.classList.remove("mzk-hidden");
     object.dataset.mzkLock = 0;
 }
+
 
 /**
  * method : isVisibilityLocked (public)
  * desc   : Check visibility lock on an element
  * arg    : {object} object - The HTML object to toggle
  **/
-function isVisibilityLocked(object) {
+export function isVisibilityLocked(object) {
     return object.dataset.mzkLock == '1';
 }
 
@@ -221,7 +262,7 @@ function isVisibilityLocked(object) {
  * arg    : {string} url - The address
  *          {function} callback
  **/
-function getRequest(url, callback) {
+export function getRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -241,7 +282,7 @@ function getRequest(url, callback) {
  * arg    : {string} url - The address
  *          {function} callback
  **/
-function JSONParsedGetRequest(url, callback) {
+export function JSONParsedGetRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -263,7 +304,7 @@ function JSONParsedGetRequest(url, callback) {
  *          {function} callback
  *          {bool} raw_data - if true, send as raw data. Default is JSON
  **/
-function JSONParsedPostRequest(url, message, callback) {
+export function JSONParsedPostRequest(url, message, callback) {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -285,10 +326,9 @@ function JSONParsedPostRequest(url, message, callback) {
  * arg    : {file} file - The .mood file
  *          {object} parentDiv - Rendered moodbar container
  **/
-function renderMoodFile(file, parentDiv) {
+export function renderMoodFile(file, parentDiv, callback) {
     // Credit for this function : "Valodim"
     // https://gist.github.com/Valodim/5225460
-
     let xhr = new XMLHttpRequest();
 
     xhr.open('GET', file, true);
@@ -330,6 +370,10 @@ function renderMoodFile(file, parentDiv) {
                 .attr("width", "100%")
                 .attr("height", "100%")
         }
+
+        else if (this.status === 404 && callback) {
+            callback();
+        }
     };
     xhr.send();
 }
@@ -339,6 +383,6 @@ function renderMoodFile(file, parentDiv) {
  * method : genUniqueID (public)
  * desc   : Generates a unique ID
  **/
-function genUniqueID() {
+export function genUniqueID() {
     return Math.random().toString(36).substr(2, 9);
 }

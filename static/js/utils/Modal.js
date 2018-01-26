@@ -8,14 +8,21 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Modal {
-    constructor(type, data) {
+import { JSONParsedPostRequest, genUniqueID } from './Utils.js'
+import MzkObject from '../core/MzkObject.js'
+import Notification from './Notification.js'
+import EditTag from '../components/EditTag.js'
 
+class Modal extends MzkObject {
+
+    constructor(type, data) {
+        super();
         this.data        = data;
         this.url         = null;
         this.id          = "modal-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
+        this.editTag     = null;
 
         this._createUI();
 
@@ -64,6 +71,10 @@ class Modal {
                 this._coverUI();
                 break;
 
+            case "editTag":
+                this._editTagUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -79,6 +90,7 @@ class Modal {
      **/
     close() {
         document.body.removeChild(document.getElementById(this.id));
+        this.unlockShortcuts();
     }
 
 
@@ -88,6 +100,7 @@ class Modal {
      * desc   : Add the modal to the body
      **/
     open() {
+        this.lockShortcuts();
         document.body.appendChild(this.ui.overlay);
     }
 
@@ -115,7 +128,10 @@ class Modal {
         this.closeButton.id  = "closeButton";
         this.closeButton.src = "/static/img/utils/close.svg";
 
-        this.closeButton.addEventListener("click", this.close.bind(this));
+        let that = this;
+        this.closeButton.addEventListener("click", function() {
+            that.close();
+        });
 
         this.ui.container.appendChild(this.closeButton);
     }
@@ -176,15 +192,21 @@ class Modal {
     }
 
 
+    /**
+     * method : _coverUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for cover modal
+     **/
     _coverUI() {
-        this.ui.container.id       = "cover";
+        this.ui.container.id = "cover";
 
-        let info = document.createElement("H1");
-        let cover           = document.createElement("IMG");
-        let year = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year; // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+        let info             = document.createElement("H1");
+        let cover            = document.createElement("IMG");
+        // Avoiding '-' symbol since info comes from innerHTML in TrackPreview
+        let year             = this.data.year.length === 29 ? this.data.year.slice(0, -25) : this.data.year;
 
-        info.innerHTML = this.data.artist + " - " + this.data.album + " (" + year + ")";
-        cover.src           = this.data.src;
+        info.innerHTML       = this.data.artist + " - " + this.data.album + " (" + year + ")";
+        cover.src            = this.data.src;
 
         this.ui.content.appendChild(info);
         this.ui.content.appendChild(cover);
@@ -229,7 +251,7 @@ class Modal {
      **/
     _deletePlaylistUI() {
         this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Remove " + this.data.name;
+        this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
         let cancel              = document.createElement("BUTTON");
@@ -239,8 +261,8 @@ class Modal {
         cancel.id               = "cancelButton";
         del.id                  = "deleteButton";
 
-        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.playlist.name +
+                                  ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
         del.innerHTML           = "Delete";
 
@@ -255,9 +277,38 @@ class Modal {
             that.close();
         });
         del.addEventListener("click", function() {
-            window.app.deletePlaylist(that.data.id);
+            window.app.deletePlaylist(that.data.playlist);
             that.close();
         });
+    }
+
+
+    _editTagUI() {
+        this.editTag = new EditTag(this.ui.container, this.data);
+
+        let ui = {
+            foot:      document.createElement("DIV"),
+                close: document.createElement("BUTTON"),
+                save:  document.createElement("BUTTON")
+        };
+
+        ui.foot.className      = "foot";
+            ui.close.innerHTML = "Close";
+            ui.save.innerHTML  = "Save";
+
+        ui.foot.appendChild(ui.close);
+        ui.foot.appendChild(ui.save);
+
+        let that = this;
+        ui.close.addEventListener("click", function() {
+            that.close();
+        });
+        ui.save.addEventListener("click", function() {
+           that.editTag.saveState();
+           that.close();
+        });
+
+        this.editTag.getContainer().appendChild(ui.foot);
     }
 
 
@@ -278,7 +329,7 @@ class Modal {
 
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         text.innerHTML             = "Currently fetching your libraries and playlists, please wait.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
@@ -307,7 +358,7 @@ class Modal {
 
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         text.innerHTML             = "Hold on, you're data are on the road.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
@@ -319,6 +370,11 @@ class Modal {
     }
 
 
+    /**
+     * method : _inviteCodeUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for display user'sfetchPlaylists invite code modal
+     **/
     _inviteCodeUI() {
         this.ui.container.id    = "inviteCode";
         this.ui.title.innerHTML = "Invitation code";
@@ -467,7 +523,7 @@ class Modal {
             if (wish.value !== '') {
                 // TODO : remove event listener on submit
                 JSONParsedPostRequest(
-                    "ajax/submitWish/",
+                    "wish/submit/",
                     JSON.stringify({
                         WISH: wish.value
                     }),
@@ -493,6 +549,11 @@ class Modal {
     }
 
 
+    /**
+     * method : _openSyncThing (private)
+     * class  : Modal
+     * desc   : Build UI elements for SyncThing IFRAME modal
+     **/
     _openSyncThing() {
         let content             = document.createElement("IFRAME");
         this.ui.container.id    = "openSyncThing";
@@ -580,7 +641,7 @@ class Modal {
         contentText.innerHTML      = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
         spinnerContainer.className = "lds-css";
         spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/utils/python.svg";
+        spinnerImage.src           = "/static/img/manazeak.svg";
         footerText.innerHTML       = "On average, it take a minute to process two thousand files. Just do the math ;)";
 
         spinnerRing.appendChild(spinnerFloatDiv);
@@ -593,3 +654,5 @@ class Modal {
     }
 
 }
+
+export default Modal

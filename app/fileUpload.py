@@ -12,17 +12,21 @@ from app.track.importer import setUploader
 from app.utils import errorCheckMessage
 
 
-@login_required(redirect_field_name='user/login.html', login_url='app:login')
+# Handle the file upload
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def handleUploadedFile(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        if 'CONTENT' in response and 'NAME' in response:
-            name = strip_tags(response['NAME'])
+        if 'CONTENT' in response and 'FILENAME' in response:
+            name = strip_tags(response['FILENAME'])
             if '/' not in name and '\\' not in name:
                 adminOptions = getAdminOptions()
                 if not os.path.exists(adminOptions.bufferPath):
-                    os.makedirs(adminOptions.bufferPath)
+                    try:
+                        os.makedirs(adminOptions.bufferPath)
+                    except os.error:
+                        return JsonResponse(errorCheckMessage(False, "dNdError"))
                 filePath = os.path.join(adminOptions.bufferPath, name)
                 if not os.path.isfile(filePath):
                     with open(filePath, 'wb+') as destination:
