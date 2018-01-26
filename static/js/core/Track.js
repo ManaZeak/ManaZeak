@@ -8,9 +8,12 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class Track {
+import MzkObject from './MzkObject.js'
+
+class Track extends MzkObject{
 
     constructor(track) {
+        super();
         this.updateMetadata(track);
     }
 

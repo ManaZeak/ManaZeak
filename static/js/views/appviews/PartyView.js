@@ -183,7 +183,6 @@ class PartyView extends View {
     _eventListener() {
         let that = this;
         this.ui.close.addEventListener("click", function() {
-            document.body.removeChild(that.ui.container);
             window.app.restorePageContent();
         });
         this.ui.play.addEventListener("click", function() {

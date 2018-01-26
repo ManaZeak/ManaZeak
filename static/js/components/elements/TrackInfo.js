@@ -89,82 +89,26 @@ class TrackInfo {
      **/
     updateInfo(track, callback) {
         let that = this;
-        JSONParsedPostRequest(
-            "track/getDetailedInfo/",
-            JSON.stringify({
-                TRACK_ID: [track.id.track]
-            }),
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     RESULT    : {
-                 *         ID:
-                 *         TITLE:
-                 *         YEAR:
-                 *         COMPOSER:
-                 *         PERFORMER:
-                 *         TRACK_NUMBER:
-                 *         BPM:
-                 *         LYRICS:
-                 *         COMMENT:
-                 *         BITRATE:
-                 *         SAMPLERATE:
-                 *         DURATION:
-                 *         GENRE:
-                 *         FILE_TYPE:
-                 *         DISC_NUMBER:
-                 *         SIZE:
-                 *         LAST_MODIFIED:
-                 *         COVER:
-                 *         ARTISTS: {
-                 *            ID:
-                 *            NAME:
-                 *         }
-                 *         ALBUM: {
-                 *             ID:
-                 *             TITLE:
-                 *             TOTAL_DISC:
-                 *             TOTAL_TRACK:
-                 *             ARTISTS: {
-                 *                 ID:
-                 *                 NAME:
-                 *             }
-                 *         }
-                 *         PLAY_COUNTER:
-                 *         FILE_NAME:
-                 *     }
-                 * } */
-                if (response.DONE) {
-                    track.updateMetadata(response.RESULT[0]);
-                    that.track                        = track;
-                    that.ui.cover.src                 = track.cover;
-                    that.ui.title.innerHTML           = track.title;
-                    that.ui.artist.innerHTML          = track.artist;
-                    that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-                    that.ui.composer.innerHTML        = "Composer : " + track.composer;
-                    that.ui.performer.innerHTML       = "Performer : " + track.performer;
-                    that.ui.genre.innerHTML           = "Genre : " + track.genre;
-                    that.ui.album.innerHTML           = track.year + " - " + track.album;
-                    that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
-                    that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
-                                                        track.fileType + " - " +
-                                                        Math.round(track.bitRate / 1000) + " kbps - " +
-                                                        track.sampleRate + " Hz";
-                    // TODO : add total played and other interesting stats about track
-                    that._updateSuggestionMode();
-                    that._updateSuggestionTracks();
-
-                    if (callback) { callback(); }
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
-            }
-        );
+        window.app.updateTracksInfo([track], function() {
+            that.track                        = track;
+            that.ui.cover.src                 = track.cover;
+            that.ui.title.innerHTML           = track.title;
+            that.ui.artist.innerHTML          = track.artist;
+            that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
+            that.ui.composer.innerHTML        = "Composer : " + track.composer;
+            that.ui.performer.innerHTML       = "Performer : " + track.performer;
+            that.ui.genre.innerHTML           = "Genre : " + track.genre;
+            that.ui.album.innerHTML           = track.year + " - " + track.album;
+            that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+            that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
+                                                    track.fileType + " - " +
+                                                    Math.round(track.bitRate / 1000) + " kbps - " +
+                                                    track.sampleRate + " Hz";
+            // TODO : add total played and other interesting stats about track
+            that._updateSuggestionMode();
+            that._updateSuggestionTracks();
+            callback();
+        });
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //

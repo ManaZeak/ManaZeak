@@ -34,15 +34,18 @@ class EditTag {
      **/
     saveState() {
         let send = [];
+        let tracks = [];
 
         if (this.data.length > 1) {
             for (let i = 0; i < this.selector.get().length ;++i) {
                 send.push(this.entries[this.selector.get()[i]].track.id.track);
+                tracks.push(this.entries[this.selector.get()[i]].track);
             }
         }
 
         else { // One track to edit
             send.push(this.data[0].id.track);
+            tracks.push(this.data[0]);
         }
 
         let reqArgs = { TRACKS_ID: send };
@@ -78,7 +81,9 @@ class EditTag {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
-                if (!response.DONE) {
+                if (response.DONE) {
+                    window.app.updateTracksInfo(tracks);
+                } else {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
@@ -98,18 +103,18 @@ class EditTag {
         this._uiSetVar();
         this._uiAppendVar();
 
-        if (this.data.length > 1) {
-            this.entries = new Array(this.data.length);
+        this.entries = new Array(this.data.length);
 
-            for (let i = 0; i < this.data.length ;++i) {
-                this.entries[i] = new EditTagEntry(this.ui.list, this.data[i]);
-            }
+        for (let i = 0; i < this.data.length ;++i) {
+            this.entries[i] = new EditTagEntry(this.ui.list, this.data[i]);
+        }
 
+        if(this.data.length > 1) {
             container.style = "display: flex;";
             container.appendChild(this.ui.list);
             this.ui.container.style += "display: inline;";
-            this.entries[0].setIsSelected(true);
         }
+        this.entries[0].setIsSelected(true);
 
         container.appendChild(this.ui.container);
     }

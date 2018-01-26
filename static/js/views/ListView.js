@@ -214,79 +214,17 @@ class ListView extends PlaylistView {
             }
         });
 
-        //TODO: move to App
         this.contextMenu.addEntry(null, "Edit tags", function() {
             let ids          = that.selector.get();
-            let tracksID     = new Array(ids.length);
             let tracks       = new Array(ids.length);
 
             for(let i = 0; i < ids.length; ++i) {
-                tracksID[i]  = that.entries[ids[i]].track.id.track;
                 tracks[i]    = that.entries[ids[i]].track;
             }
 
-            JSONParsedPostRequest(
-                "track/getDetailedInfo/",
-                JSON.stringify({
-                    TRACK_ID: tracksID
-                }),
-                function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     RESULT    : {
-                 *         ID:
-                 *         TITLE:
-                 *         YEAR:
-                 *         COMPOSER:
-                 *         PERFORMER:
-                 *         TRACK_NUMBER:
-                 *         BPM:
-                 *         LYRICS:
-                 *         COMMENT:
-                 *         BITRATE:
-                 *         SAMPLERATE:
-                 *         DURATION:
-                 *         GENRE:
-                 *         FILE_TYPE:
-                 *         DISC_NUMBER:
-                 *         SIZE:
-                 *         LAST_MODIFIED:
-                 *         COVER:
-                 *         ARTISTS: {
-                 *            ID:
-                 *            NAME:
-                 *         }
-                 *         ALBUM: {
-                 *             ID:
-                 *             TITLE:
-                 *             TOTAL_DISC:
-                 *             TOTAL_TRACK:
-                 *             ARTISTS: {
-                 *                 ID:
-                 *                 NAME:
-                 *             }
-                 *         }
-                 *         PLAY_COUNTER:
-                 *         FILE_NAME:
-                 *     }
-                 * } */
-                    if (response.DONE) {
-                        for (let i = 0; i < response.RESULT.length ;++i) {
-                            that.entries[ids[i]].track.updateMetadata(response.RESULT[i]);
-                        }
-
-                        let tmp = new Modal("editTag", tracks);
-                        tmp.open();
-                    }
-
-                    else {
-                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                    }
-                }
-            );
+            window.app.updateTracksInfo(tracks, function() {
+                new Modal("editTag", tracks).open();
+            })
         });
 
         this.contextMenu.addEntry(null, "Download track", function() {
@@ -340,7 +278,6 @@ class ListView extends PlaylistView {
         this.listView               = document.createElement("DIV");
         this.listView.id            = "listView";
         this.container.id           = "listViewWrapper";
-        this.container.style.height = "100%";
 
         this._initHeader();
         this._addEntries(data);

@@ -13,6 +13,7 @@ class View {
 
     constructor() {
         this.container           = document.createElement("DIV");
+        this.container.className = "mzk-view";
         this.container.innerHTML = "";
     }
 

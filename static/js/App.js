@@ -714,9 +714,7 @@ class App extends MzkObject {
      * desc   : Restore any content in mainContainer
      **/
     restorePageContent() {
-        removeInvisibilityLock(this.footBar.getFootBar());
-        removeInvisibilityLock(this.mainContainer);
-        removeInvisibilityLock(this.topBar.getTopBar());
+        this.activePlaylist.activate();
     }
 
 
@@ -870,6 +868,79 @@ class App extends MzkObject {
      **/
     unmute() {
         this.player.unmute();
+    }
+
+
+    /**
+     * method : updateTracksInfo (public)
+     * class  : App
+     * desc   : Update a track metadata
+     * arg    : {array}      tracks- The Track object that will be used for the update
+     *          {function} callback - The function to callback (not mandatory)
+     **/
+    updateTracksInfo(tracks, callback) {
+        let ids = new Array(tracks.length);
+        for(let i = 0; i < tracks.length; ++i)
+            ids[i] = tracks[i].id.track;
+        JSONParsedPostRequest(
+            "track/getDetailedInfo/",
+            JSON.stringify({
+                TRACK_ID: ids
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     RESULT    : {
+                 *         ID:
+                 *         TITLE:
+                 *         YEAR:
+                 *         COMPOSER:
+                 *         PERFORMER:
+                 *         TRACK_NUMBER:
+                 *         BPM:
+                 *         LYRICS:
+                 *         COMMENT:
+                 *         BITRATE:
+                 *         SAMPLERATE:
+                 *         DURATION:
+                 *         GENRE:
+                 *         FILE_TYPE:
+                 *         DISC_NUMBER:
+                 *         SIZE:
+                 *         LAST_MODIFIED:
+                 *         COVER:
+                 *         ARTISTS: {
+                 *            ID:
+                 *            NAME:
+                 *         }
+                 *         ALBUM: {
+                 *             ID:
+                 *             TITLE:
+                 *             TOTAL_DISC:
+                 *             TOTAL_TRACK:
+                 *             ARTISTS: {
+                 *                 ID:
+                 *                 NAME:
+                 *             }
+                 *         }
+                 *         PLAY_COUNTER:
+                 *         FILE_NAME:
+                 *     }
+                 * } */
+                if (response.DONE) {
+                    for(let i = 0; i < tracks.length; ++i)
+                        tracks[i].updateMetadata(response.RESULT[i]);
+                    if (callback) { callback(); }
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
