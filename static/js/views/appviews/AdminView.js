@@ -288,6 +288,7 @@ class AdminView extends View {
                              *     BUFFER_PATH:
                              *     INVITE_ENABLED:
                              * } */
+                            console.log(response);
                             if (response.DONE) {
                                 that.info = response;
                                 that._requestUsersPage();
