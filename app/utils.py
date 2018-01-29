@@ -168,7 +168,16 @@ def populateDB():
         Permissions(name="Login", code="LOGI").save()
         Permissions(name="Music listening", code="PLAY").save()
         Permissions(name="Wish creation", code="WISH").save()
-        Permissions(name="Tag submission", code="")
+        Permissions(name="Tag submission", code="TAGS").save()
+        Permissions(name="Upload file", code='UPFI').save()
+        Permissions(name="Sponsor right", code='SPON').save()
+        Permissions(name="Stats access", code='STAT').save()
+        Permissions(name="Child stats access", code="STCH").save()
+        Permissions(name="Family stat access", code="STAF").save()
+        Permissions(name="Wish review", code="WISR").save()
+        Permissions(name="Access to library stats", code="STAL").save()
+        Permissions(name="Change genre description", code="DESC").save()
+
         Permissions(name="Tag edition", code="TAGE").save()
     if Groups.objects.all().count() == 0:
         print("Creating the defaults groups")

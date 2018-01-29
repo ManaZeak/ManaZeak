@@ -87,7 +87,7 @@ def getAdminView(request):
                 'INVITE_ENABLED': adminOptions.inviteCodeEnabled,
             }}
             groupInfo = []
-            for group in Groups.objects.all():
+            for group in Groups.objects.all().order_by("-rank"):
                 groupInfo.append({
                     'ID': group.id,
                     'NAME': group.name
