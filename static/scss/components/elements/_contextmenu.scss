@@ -23,8 +23,6 @@ $menu-indentation: 20px;
         & > li {
             padding-left: $menu-indentation;
             text-align: left;
-            padding-top: 5px;
-            padding-bottom: 5px;
 
             &::after, &::before {
                 content: "";

@@ -45,10 +45,13 @@ class ContextMenuEntry {
     activateEventListener() { //Call this on the root
         let self = this;
         document.body.addEventListener('click', function(event) {
+
             let target = event.target;
-            while (target && target != self.element) {
-                target = target.parentNode;
-            }
+            while(target.tagName != 'LI')
+                if(target == self.element)
+                    return true;
+                else
+                    target = target.parentNode;
 
             if (target != self.element) {
                 self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
@@ -109,7 +112,7 @@ class ContextMenuEntry {
 
         if (other_entry.entryID) { li.id = "mzk-ctx-li-" + other_entry.entryID; }
 
-        li.textContent      = other_entry.displayString;
+        li.innerHTML      = '<span class="mzk-ctx-label">' + other_entry.displayString + '</span>';
         li.appendChild(other_entry.element);
 
         //Find where to insert it
