@@ -192,8 +192,8 @@ class QueuePreview extends MzkObject {
                 element = element.parentNode;
 
                 if (element.tagName === 'LI') { return element; }
-                else                          { return null;    }
             }
+            return null;
         };
         this.ui.statusBar.reverseBox.addEventListener('click', function() {
             window.app.reverseQueue(!that.reverse);
@@ -206,11 +206,11 @@ class QueuePreview extends MzkObject {
                 case 'moveUp':
                     li = findParentLI(event.target);
 
-                    if (li !== null || li !== undefined) {
+                    if (li != null) {
                         sib = li.previousSibling;
 
-                        if (sib !== null || li !== undefined) {
-                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+                        if (sib != null) {
+                            for (var i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib);
                             window.app.moveQueue(i, i -1);
@@ -220,11 +220,11 @@ class QueuePreview extends MzkObject {
 
                 case 'moveDown':
                     li = findParentLI(event.target);
-                    if (li !== null || li !== undefined) {
+                    if (li != null) {
                         sib = li.nextSibling;
 
-                        if (sib !== null || li !== undefined) {
-                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+                        if (sib != null) {
+                            for (var i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib.nextSibling);
                             window.app.moveQueue(i, i + 1);
