@@ -62,6 +62,30 @@ class ContextMenu {
         parent.addChild(new (ContextMenuEntry.bind.apply(ContextMenuEntry, finalArgs))());
     }
 
+    /**
+     * method : removeEntry (public)
+     * class  : ContextMenu
+     * desc   : Add an entry to the
+     * arg    : {string} entryPath - TODO
+     **/
+    removeEntry(entryPath) {
+        let parent = this.contextMenu;
+        let i, j;
+        if (Array.isArray(entryPath)) {
+            pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
+                for (j = 0; j < parent.children.length; ++j)
+                    if (parent.children[j].entryID == entryPath[i]) {
+                        parent = parent.children[j];
+                        continue pathForward;
+                    }
+                return false;
+            }
+            entryPath = entryPath[entryPath.length - 1];
+        }
+
+        return parent.removeChild(entryPath);
+    }
+
 
     /**
      * method : reattach (public)

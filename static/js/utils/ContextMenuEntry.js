@@ -47,22 +47,23 @@ class ContextMenuEntry {
         document.body.addEventListener('click', function(event) {
 
             let target = event.target;
-            while(target.tagName != 'LI')
-                if(target == self.element)
-                    return true;
-                else
-                    target = target.parentNode;
+            while (target && target != self.element) {
+                target = target.parentNode;
+            }
 
             if (target != self.element) {
                 self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
             }
         }, true);
         this.element.addEventListener("click", function (event) {
-            if (event.target.tagName !== 'LI') {
-                return true;
-            }
 
-            let target  = event.target;
+            let target = event.target;
+            while(target.tagName != 'LI')
+                if(target == self.element)
+                    return true;
+                else
+                    target = target.parentNode;
+
             let ixArray = new Array(10);
             let i       = 0;
 
@@ -129,6 +130,24 @@ class ContextMenuEntry {
 
         if (this.element.parentNode) { this.element.parentNode.classList.add("mzk-ctx-submenu"); }
         return other_entry;
+    }
+
+
+    /**
+     * method : removeChild (public)
+     * class  : ContextMenuEntry
+     * desc   : remove a subentry from this menu
+     * arg    : {object} other_entry - the ContextMenuEntry to remove
+     **/
+    removeChild(otherID) {
+        for(let i = 0; i < this.children.length; ++i)
+            if(this.children[i].entryID == otherID) {
+                let child = this.children[i];
+                this.element.removeChild(child.element.parentNode);
+                this.children.splice(i, 1);
+                return child;
+            }
+        return null;
     }
 
 

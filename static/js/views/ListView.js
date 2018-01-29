@@ -246,13 +246,36 @@ class ListView extends PlaylistView {
         //TODO: Add and remove playlists on the fly (listen to window.app.playlists)
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i) {
-            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
+            this.contextMenu.addEntry(['playlists', playlists[i].id], playlists[i].name, function () {
                 let tracks = that.selector.get();
-                for(let t = 0; t < tracks.length; t++)
+                for(let t = 0; t < tracks.length; ++t)
                     tracks[t] = that.entries[tracks[t]].track;
                 window.app.addTracksToPlaylist(playlists[i], tracks);
             });
         }
+
+        window.app.playlists.listen('add', function(playlist) {
+            if(playlist.getIsLibrary() == false)
+                that.contextMenu.addEntry(['playlists', playlist.id], playlist.name, function() {
+                    let tracks = that.selector.get();
+                    for(let t = 0; t < tracks.length; ++t)
+                        tracks[t] = that.entries[tracks[t]].track;
+                    window.app.addTracksToPlaylist(playlist, tracks);
+                })
+        });
+
+        window.app.playslists.listen('rename', function() {
+            //TODO
+        });
+
+        window.app.playlists.listen('remove', function(playlistID) {
+            that.contextMenu.removeEntry(['playlists', playlistID]);
+        });
+
+        window.app.playlists.listen('clear', function() {
+            that.contextMenu.removeEntry('playlists');
+            //TODO: recreate zeaz
+        });
 
         this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
             window.app.requestNewPlaylist();
