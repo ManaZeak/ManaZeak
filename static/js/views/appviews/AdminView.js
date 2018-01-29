@@ -242,11 +242,13 @@ class AdminView extends View {
         this.ui.menuUser.className     = "selected";
         this.ui.contentTitle.innerHTML = "User management";
 
-
         let sponsoringLabel            = document.createElement("P");
         let sponsoringSpan             = document.createElement("SPAN");
         let sponsoring                 = document.createElement("BUTTON");
-        let list                       = document.createElement("UL");
+        let groupListTitle             = document.createElement("P");
+        let groupList                  = document.createElement("UL");
+        let userListTitle              = document.createElement("P");
+        let userList                   = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
@@ -302,7 +304,7 @@ class AdminView extends View {
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
 
             element.appendChild(rm);
-            list.appendChild(element);
+            userList.appendChild(element);
         }
 
         let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
@@ -311,6 +313,8 @@ class AdminView extends View {
                                          "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
                                          "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
         sponsoring.innerHTML           = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        groupListTitle.innerHTML       = "<b>Group list</b>";
+        userListTitle.innerHTML        = "<b>ManaZeak user list</b>";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -318,7 +322,12 @@ class AdminView extends View {
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(sponsoringLabel);
         this.ui.content.appendChild(sponsoringSpan);
-        this.ui.content.appendChild(list);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(groupListTitle);
+        this.ui.content.appendChild(groupList);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(userListTitle);
+        this.ui.content.appendChild(userList);
 
         sponsoring.addEventListener("click", this._toggleInviteMode.bind(this));
     }
