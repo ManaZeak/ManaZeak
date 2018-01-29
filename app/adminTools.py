@@ -11,7 +11,7 @@ from multiprocessing import Process
 
 from app.library import deleteLibrary
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
-    AdminOptions, UserPreferences, InviteCode
+    AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.utils import errorCheckMessage, timeCodeToString
@@ -86,6 +86,13 @@ def getAdminView(request):
                 'BUFFER_PATH': adminOptions.bufferPath,
                 'INVITE_ENABLED': adminOptions.inviteCodeEnabled,
             }}
+            groupInfo = []
+            for group in Groups.objects.all():
+                groupInfo.append({
+                    'ID': group.id,
+                    'NAME': group.name
+                })
+            data = {**data, **dict({'GROUPS': groupInfo})}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
@@ -267,6 +274,9 @@ def dropAllDB(request):
                 UserHistory.objects.all().delete()
                 Stats.objects.all().delete()
                 History.objects.all().delete()
+                Permissions.objects.all().delete()
+                Groups.objects.all().delete()
+                UserPreferences.objects.all().delete()
 
                 data = errorCheckMessage(True, None)
             else:

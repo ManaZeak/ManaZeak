@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 
-from app.models import FileType, Genre, Album, Artist
+from app.models import FileType, Genre, Album, Artist, Permissions, Groups
 
 
 # Split a table in 4 table of equal size
@@ -163,3 +163,17 @@ def populateDB():
     if Genre.objects.all().count() == 0:
         print("Created default genre")
         Genre(name=None).save()
+    if Permissions.objects.all().count() == 0:
+        print("Creating default permission")
+        Permissions(name="Login", code="LOGI").save()
+        Permissions(name="Music listening", code="PLAY").save()
+        Permissions(name="Wish creation", code="WISH").save()
+        Permissions(name="Tag submission", code="")
+        Permissions(name="Tag edition", code="TAGE").save()
+    if Groups.objects.all().count() == 0:
+        print("Creating the defaults groups")
+        Groups(name="Naab", rank=0).save()
+        Groups(name="User", rank=1).save()
+        Groups(name="Moderator", rank=2).save()
+        Groups(name="Admin", rank=3).save()
+        Groups(name="Root", rank=4).save()
