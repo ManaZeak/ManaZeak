@@ -97,7 +97,7 @@ class UserView extends View {
         this.ui.rescanLibButton.innerHTML = "DELETE MY ACCOUNT";
 
         this.ui.rescanLibButton.addEventListener("click", function() {
-            JSONParsedGetRequest( // TODO : user the function in User class
+            JSONParsedGetRequest(
                 "user/delete/",
                 function(response) {
                     /* response = {
@@ -105,7 +105,11 @@ class UserView extends View {
                      *     ERROR_H1  : string
                      *     ERROR_MSG : string
                      * } */
-                    if (!response.DONE) {
+                    if (response.DONE) {
+                        window.location.reload();
+                    }
+
+                    else {
                         new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                     }
                 }
