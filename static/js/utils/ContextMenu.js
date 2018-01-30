@@ -118,6 +118,17 @@ class ContextMenu {
 
 
     /**
+     * method : close (public)
+     * class  : ContextMenu
+     * desc   : close the menu
+     **/
+    close() {
+        this.element.className = "";
+        this.contextMenu.closeAll();
+    }
+
+
+    /**
      * method : setInvisible (public)
      * class  : ContextMenu
      * desc   : Set ContextMenu invisible
@@ -135,7 +146,26 @@ class ContextMenu {
      **/
     _eventListener() {
         let that = this;
+        document.body.addEventListener('click', function(event) {
+
+            let target = event.target;
+            while (target && target != that.contextMenu.element) {
+                target = target.parentNode;
+            }
+
+            if (target != that.contextMenu.element) {
+                that.close();
+                window.app.activeContextMenu = null;
+            }
+        }, true);
+
         this.parentElement.addEventListener(this.event, function(event) {
+
+            //Close current menu if necessary
+            if(window.app.activeContextMenu)
+                window.app.activeContextMenu.close();
+            window.app.activeContextMenu = that;
+
             if (event.pageY <= document.documentElement.clientHeight / 2) {
                 that.element.style.bottom = "unset";
                 that.element.style.top    = event.pageY + "px";
@@ -173,11 +203,6 @@ class ContextMenu {
             if (that.openCallback) {
                 that.openCallback(event);
             }
-        });
-
-        this.element.addEventListener('mzk_ctx:close', function() {
-            that.element.className = "";
-            that.contextMenu.closeAll();
         });
     }
 
