@@ -9,10 +9,10 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 from multiprocessing import Process
 
-from app.library import deleteLibrary
+from app.collection.library import deleteLibrary
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
-from app.playlist import getTotalLength
+from app.collection.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.user import deleteLinkedEntities
 from app.utils import errorCheckMessage, timeCodeToString
