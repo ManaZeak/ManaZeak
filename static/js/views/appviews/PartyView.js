@@ -150,7 +150,7 @@ class PartyView extends View {
         this.ui.play.id                  = "play";
         this.ui.next.id                  = "next";
 
-        this.ui.close.src                = "/static/img/utils/idea.svg"; // TODO : add ManaZeak log + tooltip
+        this.ui.close.src                = "/static/img/utils/partyview/close.svg"; // TODO : add ManaZeak log + tooltip
         this.ui.previous.src             = "/static/img/player/previous.svg";
         this.ui.play.src                 = "/static/img/player/play.svg";
         this.ui.next.src                 = "/static/img/player/next.svg";
