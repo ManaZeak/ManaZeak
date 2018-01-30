@@ -348,7 +348,6 @@ class AdminView extends View {
             rm.src                        = "/static/img/utils/trash.svg";
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
-                console.log(that.info.LIBRARIES[i].ID);
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
                     that._updateAdminInfo(function() {
                         that._requestLibrariesPage();
@@ -361,7 +360,7 @@ class AdminView extends View {
             element.appendChild(rm);
             list.appendChild(element);
         }
-console.log(this.ui.libListLabel);
+
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.rescanLibLabel);

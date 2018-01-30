@@ -306,7 +306,6 @@ class App extends MzkObject {
      *        : {function} callback - The function to callback - Mandatory
      **/
     deleteUser(id, callback) {
-        console.log(id);
         JSONParsedPostRequest(
             "admin/removeUser/",
             JSON.stringify({
