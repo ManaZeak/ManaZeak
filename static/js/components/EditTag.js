@@ -63,7 +63,8 @@ class EditTag {
             ALBUM_TITLE:       this.ui.tagAlbumField.value,
             GENRE:             this.ui.tagGenreField.value,
             ARTISTS:           this.ui.cArtistInput.value,
-            ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
+            ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value,
+            COVER:             this.ui.lCover.value
         };
 
         for (let f in fields) {
@@ -134,6 +135,28 @@ class EditTag {
         });
         this.selector.listen('add', function() {
             that._updateFields();
+        });
+
+        let fileinput = document.createElement('INPUT');
+        fileinput.type = 'file';
+        fileinput.accept = 'image/png,image/jpeg,image/jpg';
+        fileinput.onchange = function() {
+            if(fileinput.files[0])
+            {
+                let reader = new FileReader();
+                // This fires after the blob has been read/loaded.
+                reader.addEventListener('loadend', function(event) {
+                    that.ui.lCover.src   = event.target.result;
+                    that.ui.lCover.value = event.target.result;
+                });
+                // Start reading the blob as text.
+                reader.readAsDataURL(fileinput.files[0]);
+            }
+            fileinput.value = null;
+        };
+
+        this.ui.lContainer.addEventListener('click', function() {
+            fileinput.click();
         });
 
         this.ui.list.addEventListener('click', function(event) {
