@@ -214,6 +214,8 @@ def deleteAllLibrary(request):
                 library.playlist.track.all().delete()
                 library.playlist.delete()
                 library.delete()
+            for playlist in Playlist.objects.all():
+                playlist.delete()
             data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "permissionError")

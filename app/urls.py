@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
-from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload, user
+from app import player, history, adminTools, wish, userSettings, fileUpload, user
+from app.collection import playlist, library
 from app.stats import stats, suggestion
 from app.track import track, editor
 from . import views
