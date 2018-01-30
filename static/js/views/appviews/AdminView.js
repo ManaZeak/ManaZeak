@@ -288,7 +288,6 @@ class AdminView extends View {
                              *     BUFFER_PATH:
                              *     INVITE_ENABLED:
                              * } */
-                            console.log(response);
                             if (response.DONE) {
                                 that.info = response;
                                 that._requestUsersPage();
@@ -306,6 +305,14 @@ class AdminView extends View {
 
             element.appendChild(rm);
             userList.appendChild(element);
+        }
+
+        for (let i = 0; i < this.info.GROUPS.length; ++i) {
+            let element                = document.createElement("LI");
+
+            element.innerHTML = this.info.GROUPS[i].NAME;
+
+            groupList.appendChild(element);
         }
 
         let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
