@@ -192,6 +192,13 @@ class PartyView extends View {
         this.ui.next.addEventListener("click", function() {
             window.app.next();
         });
+        this.ui.previous.addEventListener("click", function() {
+            window.app.previous();
+        });
+        window.app.listen("changeTrack", function(track) {
+            that._setCurrentTrack(track);
+        });
+
     }
 
 
