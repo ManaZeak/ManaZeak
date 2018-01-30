@@ -244,7 +244,12 @@ class ListView extends PlaylistView {
         this.contextMenu.addEntry('playlists', "Add to playlist");
 
         this.contextMenu.addEntry(['playlists', 'new'], "New playlist", function() {
-            window.app.requestNewPlaylist();
+            window.app.requestNewPlaylist(function(newPlaylist) {
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; ++t)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.addTracksToPlaylist(newPlaylist, tracks);
+            });
         });
 
         window.app.playlists.listen('add', function(playlist) {

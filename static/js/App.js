@@ -685,11 +685,13 @@ class App extends MzkObject {
      * class  : App
      * desc   : User requested a new playlist
      **/
-    requestNewPlaylist() {
+    requestNewPlaylist(callback) {
         let that = this;
         let np = new Playlist(0, null, false, false, undefined, function() {
             that.playlists.add(np);
             that.changePlaylist(np.id);
+            if(callback)
+                callback(np);
         });
     }
 
@@ -699,11 +701,13 @@ class App extends MzkObject {
      * class  : App
      * desc   : Admin requested a new library
      **/
-    requestNewLibrary() {
+    requestNewLibrary(callback) {
         let that = this;
         let nl = new Playlist(0, null, true, false, undefined, function() {
             that.playlists.add(nl);
             that.changePlaylist(nl.id);
+            if(callback)
+                callback(nl);
         });
     }
 
