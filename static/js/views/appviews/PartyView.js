@@ -101,6 +101,7 @@ class PartyView extends View {
     _createUI() {
         this.ui = {
             container:          this.container,
+            mzkLogo:           document.createElement("IMG"),
 
             sparksContainer:    document.createElement("DIV"),
             sparksLayer1:       document.createElement("DIV"),
@@ -125,6 +126,7 @@ class PartyView extends View {
         };
 
         this.ui.container.id             = "party";
+        this.ui.mzkLogo.id               = "logo";
         // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
         this.ui.sparksContainer.id       = "snow";
         this.ui.sparksLayer1.id          = "snow-layer";
@@ -133,6 +135,7 @@ class PartyView extends View {
         this.ui.sparksLayer4.id          = "snow-layer";
 
         this.ui.trackContainer.id        = "trackContainer";
+        this.ui.mzkLogo.src              = "/static/img/manazeak.svg";
         this.ui.trackCover.src           = "/static/img/utils/defaultcover.svg";
 
         this.ui.trackInfoContainer.id    = "partyTrackInfo";
@@ -166,6 +169,7 @@ class PartyView extends View {
         this.ui.trackContainer.appendChild(this.ui.trackCover);
         this.ui.trackContainer.appendChild(this.ui.trackInfoContainer);
 
+        this.ui.container.appendChild(this.ui.mzkLogo);
         this.ui.container.appendChild(this.ui.sparksContainer);
         this.ui.container.appendChild(this.ui.trackContainer);
         this.ui.container.appendChild(this.ui.close);

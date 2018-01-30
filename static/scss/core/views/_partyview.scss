@@ -15,6 +15,14 @@
     z-index: 42;
 
 
+    #logo {
+        position: absolute;
+        right: 25px;
+        bottom: 25px;
+        width: 250px;
+    }
+
+
     #trackContainer {
         align-items: center;
         display: inline-flex;
