@@ -663,6 +663,51 @@ class Modal extends MzkObject {
     _editGroupUI() {
         this.ui.container.id       = "scan";
         this.ui.title.innerHTML    = "Edit Group";
+
+        let nameTitle           = document.createElement("DIV");
+        let name                = document.createElement("INPUT");
+        let cancel              = document.createElement("BUTTON");
+        let save                = document.createElement("BUTTON");
+        let permsTitle          = document.createElement("DIV");
+        let boxContainer        = document.createElement("DIV");
+
+        name.id                 = "name";
+        cancel.id               = "cancelButton";
+        save.id                 = "saveButton";
+        boxContainer.id         = "boxContainer";
+        nameTitle.className     = "mzk-modal-title";
+        permsTitle.className    = "mzk-modal-title";
+
+        name.type               = "text";
+        name.value              = this.data.NAME;
+        cancel.innerHTML        = "Cancel";
+        save.innerHTML          = "Save";
+        nameTitle.innerHTML     = "Group Name";
+        permsTitle.innerHTML    = "Permissions";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(nameTitle);
+        this.ui.content.appendChild(name);
+        this.ui.content.appendChild(permsTitle);
+        this.ui.content.appendChild(boxContainer);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(save);
+
+        this.data.PERMISSIONS = { "login" : true, "submitTags": false, "dropDatabase": false, "createLibrary": true};
+
+        for(let i in this.data.PERMISSIONS) {
+            let box     = document.createElement('INPUT');
+            box.type    = 'checkbox';
+            box.checked = this.data.PERMISSIONS[i] == true;
+            box.value   = i;
+
+            let boxLbl  = document.createElement("LABEL");
+            boxLbl.appendChild(box);
+            boxLbl.innerHTML += i;
+
+            boxContainer.appendChild(boxLbl);
+        }
     }
 
 }

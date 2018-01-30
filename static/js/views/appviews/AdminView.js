@@ -280,11 +280,11 @@ class AdminView extends View {
         for (let i = 0; i < this.info.GROUPS.length; ++i) {
             let element                = document.createElement("LI");
             let mod                    = document.createElement("IMG");
-            mod.src                    = "/static/img/utils/trash.svg";
+            mod.src                    = "/static/img/utils/edit.svg";
             element.innerHTML = this.info.GROUPS[i].NAME;
 
             mod.addEventListener('click', function() {
-                new Modal('editGroup').open();
+                new Modal('editGroup', that.info.GROUPS[i]).open();
             });
 
             element.appendChild(mod);
@@ -368,7 +368,7 @@ class AdminView extends View {
             element.appendChild(rm);
             list.appendChild(element);
         }
-        
+
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.rescanLibLabel);
