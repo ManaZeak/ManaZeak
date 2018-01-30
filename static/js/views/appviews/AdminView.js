@@ -257,43 +257,12 @@ class AdminView extends View {
             let rm                     = document.createElement("IMG");
             rm.src                     = "/static/img/utils/trash.svg";
             rm.addEventListener("click", function() {
-                window.app.deleteUser(that.info.USER[i].ID, function() {
-                    let that = this;
-                    JSONParsedGetRequest(
-                        "admin/getView/",
-                        function(response) { // TODO : fetch those info from getUserInfo
-                            /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
-                             *
-                             *     USER: {
-                             *         GODFATHER_NAME:
-                             *         NAME:
-                             *         IS_ADMIN:
-                             *         JOINED:
-                             *         LAST_LOGIN:
-                             *         USER_ID:
-                             *         INVITE_CODE:
-                             *         MANACOIN:
-                             *     }
-                             *     LIBRARIES: {
-                             *         NAME:
-                             *         PATH:
-                             *         NUMBER_TRACK:
-                             *         TOTAL_DURATION:
-                             *         ID:
-                             *     }
-                             *     SYNC_KEY:
-                             *     BUFFER_PATH:
-                             *     INVITE_ENABLED:
-                             * } */
-                            if (response.DONE) {
-                                that.info = response;
-                                that._requestUsersPage();
-                            }
-                        }
-                    );
+                let self = that;
+                window.app.deleteUser(that.info.USER[i].USER_ID, function() {
+                    let own = self;
+                    self._updateAdminInfo(function() {
+                        own._requestUsersPage();
+                    });
                 });
             });
             element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
