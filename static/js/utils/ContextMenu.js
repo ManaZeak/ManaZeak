@@ -34,9 +34,9 @@ class ContextMenu {
      * arg    : {string} entryPath - TODO
      *        : {} displayString - TODO
      *        : {function} callback - The function to callback - Not Mandatory
+     *        : TODO
      **/
-    addEntry(entryPath, displayStr, callback /*, more args for the callback */) {
-        let context;
+    addEntry(entryPath, displayStr, callback, beforeID, after) {
         let parent = this.contextMenu;
 
         let i, j;
@@ -48,18 +48,62 @@ class ContextMenu {
                         continue pathForward;
                     }
 
-                parent   = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
+                parent = parent.addChild(new ContextMenuEntry(entryPath[i], entryPath[i]));
             }
-            arguments[0] = entryPath[entryPath.length - 1];
+            entryPath = entryPath[entryPath.length - 1];
         }
 
-        //Simulate unshift on arguments
-        let finalArgs = new Array(arguments.length);
-        for(let i = 0; i < arguments.length; ++i)
-            finalArgs[i + 1] = arguments[i];
+        parent.addChild(new ContextMenuEntry(entryPath, displayStr, callback), beforeID, after);
+    }
 
-        //Bind arguments array to the new constructor and call it
-        parent.addChild(new (ContextMenuEntry.bind.apply(ContextMenuEntry, finalArgs))());
+
+    /**
+     * method : getEntry (public)
+     * class  : ContextMenu
+     * desc   : Add an entry to the
+     * arg    : {string} entryPath - TODO
+     **/
+    getEntry(entryPath) {
+        let parent = this.contextMenu;
+        let i, j;
+        if (Array.isArray(entryPath)) {
+            pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
+                for (j = 0; j < parent.children.length; ++j)
+                    if (parent.children[j].entryID == entryPath[i]) {
+                        parent = parent.children[j];
+                        continue pathForward;
+                    }
+                return false;
+            }
+            entryPath = entryPath[entryPath.length - 1];
+        }
+
+        return parent.findChildByID(entryPath);
+    }
+
+
+    /**
+     * method : removeEntry (public)
+     * class  : ContextMenu
+     * desc   : Add an entry to the
+     * arg    : {string} entryPath - TODO
+     **/
+    removeEntry(entryPath) {
+        let parent = this.contextMenu;
+        let i, j;
+        if (Array.isArray(entryPath)) {
+            pathForward: for (i = 0; i < entryPath.length - 1; ++i) {
+                for (j = 0; j < parent.children.length; ++j)
+                    if (parent.children[j].entryID == entryPath[i]) {
+                        parent = parent.children[j];
+                        continue pathForward;
+                    }
+                return false;
+            }
+            entryPath = entryPath[entryPath.length - 1];
+        }
+
+        return parent.removeChild(entryPath);
     }
 
 

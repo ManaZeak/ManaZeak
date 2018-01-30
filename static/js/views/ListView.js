@@ -243,19 +243,49 @@ class ListView extends PlaylistView {
 
         this.contextMenu.addEntry('playlists', "Add to playlist");
 
-        //TODO: Add and remove playlists on the fly (listen to window.app.playlists)
+        this.contextMenu.addEntry(['playlists', 'new'], "New playlist", function() {
+            window.app.requestNewPlaylist(function(newPlaylist) {
+                let tracks = that.selector.get();
+                for(let t = 0; t < tracks.length; ++t)
+                    tracks[t] = that.entries[tracks[t]].track;
+                window.app.addTracksToPlaylist(newPlaylist, tracks);
+            });
+        });
+
+        window.app.playlists.listen('add', function(playlist) {
+            if(playlist.getIsLibrary() == false)
+                that.contextMenu.addEntry(['playlists', playlist.id], playlist.name, function() {
+                    let tracks = that.selector.get();
+                    for(let t = 0; t < tracks.length; ++t)
+                        tracks[t] = that.entries[tracks[t]].track;
+                    window.app.addTracksToPlaylist(playlist, tracks);
+                }, 'new');
+        });
+
+        //Add all playlists that were already loaded
         let playlists = window.app.getPlaylists();
         for (let i = 0; i < playlists.length; ++i) {
-            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
+            this.contextMenu.addEntry(['playlists', playlists[i].id], playlists[i].name, function () {
                 let tracks = that.selector.get();
-                for(let t = 0; t < tracks.length; t++)
+                for(let t = 0; t < tracks.length; ++t)
                     tracks[t] = that.entries[tracks[t]].track;
                 window.app.addTracksToPlaylist(playlists[i], tracks);
-            });
+            }, 'new');
         }
 
-        this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
-            window.app.requestNewPlaylist();
+        window.app.playlists.listen('rename', function(playlistID, name) {
+            that.contextMenu.getEntry(['playlists', playlistID]).setDisplayString(name);
+        });
+
+        window.app.playlists.listen('remove', function(playlistID) {
+            that.contextMenu.removeEntry(['playlists', playlistID]);
+        });
+
+        window.app.playlists.listen('clear', function() {
+            let playMenu = that.contextMenu.getEntry('playlists');
+            for(let i = 0; i < playMenu.children.length; i++)
+                if(playMenu.children[i].getID() != 'new')
+                    playMenu.removeEntry(playMenu.children[i].getID());
         });
 
         if (!this.isLibrary) {
