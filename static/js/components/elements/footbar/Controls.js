@@ -139,6 +139,28 @@ class Controls  {
         window.app.listen(['togglePlay', 'stopPlayback'], function() {
             that._setPlayPause();
         });
+        window.app.listen("toggleShuffle", function() {
+            let shuffleMode = window.app.activePlaylist.getShuffleMode();
+
+            if (shuffleMode === 0) {
+                that.ui.shuffle.image.src = "/static/img/player/shuffle.svg";
+            }
+
+            else {
+                that.ui.shuffle.image.src = "/static/img/player/shuffle-on.svg";
+            }
+        });
+        window.app.listen("toggleRepeat", function() {
+            let repeatMode = window.app.activePlaylist.getRepeatMode();
+
+            if (repeatMode === 0) {
+                that.ui.repeat.image.src = "/static/img/player/repeat.svg";
+            }
+
+            else {
+                that.ui.repeat.image.src = "/static/img/player/repeat-on.svg";
+            }
+        });
     }
 
 

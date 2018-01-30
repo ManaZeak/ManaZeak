@@ -42,7 +42,6 @@ class App extends MzkObject {
         this.activePlaylist   = null;
         this.cssFiles         = {};
         this.appViews         = {};
-        this._createDefaultViews();
         this.shortcutMaestro  = new ShortcutMaestro();
         this.availableViews   = {
             LIST: {
@@ -475,6 +474,8 @@ class App extends MzkObject {
      * desc   : Init components and request user playlist from server
      **/
     init() {
+        this._createDefaultViews();
+
         this.topBar  = new TopBar();
         this.queue   = new Queue();
         this.player  = new Player();

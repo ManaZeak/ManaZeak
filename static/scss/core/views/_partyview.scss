@@ -15,6 +15,14 @@
     z-index: 42;
 
 
+    #logo {
+        position: absolute;
+        right: 25px;
+        bottom: 25px;
+        width: 250px;
+    }
+
+
     #trackContainer {
         align-items: center;
         display: inline-flex;
@@ -45,25 +53,23 @@
 
             #a,
             #b {
-                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -moz-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
             }
 
             #c,
             #d {
-                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                animation-delay: 0.1s;
-                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -moz-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
 
             }
 
             #e {
-                animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                animation-delay: 0.2s;
-                -moz-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-                -webkit-animation: in 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.2s infinite;
+                -moz-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
             }
 
             #b,
@@ -173,7 +179,7 @@
 }
 
 
-@keyframes in {
+@keyframes text-moving {
     0% {
         opacity: 0;
         transform: translateX(-200%);

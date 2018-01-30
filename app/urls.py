@@ -67,6 +67,9 @@ urlpatterns = [
     # USER actions
     url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
 
+    # Group actions
+    url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),
+
     # ADMIN actions
     url(r'^admin/isAdmin/$', adminTools.isAdmin, name='isAdmin'),  # TODO : remove in front
     url(r'^admin/getView/$', adminTools.getAdminView, name='getAdminView'),
