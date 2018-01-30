@@ -431,7 +431,7 @@ class App extends MzkObject {
      * arg    : {int} id - The playlist to get from an ID
      **/
     getPlaylistFromId(id) {
-        this.playlists.get(id);
+        return this.playlists.get(id);
     }
 
 
