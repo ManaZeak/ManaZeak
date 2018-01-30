@@ -43,7 +43,6 @@ class App extends MzkObject {
         this.activeContextMenu = null;
         this.cssFiles          = {};
         this.appViews          = {};
-        this._createDefaultViews();
         this.shortcutMaestro   = new ShortcutMaestro();
         this.availableViews    = {
             LIST: {
