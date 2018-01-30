@@ -45,17 +45,6 @@ class ContextMenuEntry {
      **/
     activateEventListener() { //Call this on the root
         let self = this;
-        document.body.addEventListener('click', function(event) {
-
-            let target = event.target;
-            while (target && target != self.element) {
-                target = target.parentNode;
-            }
-
-            if (target != self.element) {
-                self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
-            }
-        }, true);
         this.element.addEventListener("click", function (event) {
 
             let target = event.target;
@@ -283,7 +272,8 @@ class ContextMenuEntry {
             });
             this.callback.apply(null, this.callbackArgs);
         }
-        this.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
+        window.app.activeContextMenu.close();
+        window.app.activeContextMenu = null;
     }
 
     //====================================== GETTERS ===================================================

@@ -30,21 +30,22 @@ class App extends MzkObject {
 
     constructor() {
         super();
-        this.cookies          = getCookies();
-        this.user             = new User();
-        this.dragdrop         = new DragDrop(document.body);
-        this.mainContainer    = document.createElement("DIV");
-        this.mainContainer.id = "mainContainer";
-        this.topBar           = null;
-        this.footBar          = null;
-        this.player           = null;
-        this.playlists        = new PlaylistCollection();
-        this.activePlaylist   = null;
-        this.cssFiles         = {};
-        this.appViews         = {};
+        this.cookies           = getCookies();
+        this.user              = new User();
+        this.dragdrop          = new DragDrop(document.body);
+        this.mainContainer     = document.createElement("DIV");
+        this.mainContainer.id  = "mainContainer";
+        this.topBar            = null;
+        this.footBar           = null;
+        this.player            = null;
+        this.playlists         = new PlaylistCollection();
+        this.activePlaylist    = null;
+        this.activeContextMenu = null;
+        this.cssFiles          = {};
+        this.appViews          = {};
         this._createDefaultViews();
-        this.shortcutMaestro  = new ShortcutMaestro();
-        this.availableViews   = {
+        this.shortcutMaestro   = new ShortcutMaestro();
+        this.availableViews    = {
             LIST: {
                 index: 0,
                 class: ListView
