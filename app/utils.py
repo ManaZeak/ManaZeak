@@ -177,8 +177,15 @@ def populateDB():
         Permissions(name="Wish review", code="WISR").save()
         Permissions(name="Access to library stats", code="STAL").save()
         Permissions(name="Change genre description", code="DESC").save()
-
         Permissions(name="Tag edition", code="TAGE").save()
+        Permissions(name="Upload aproval", code="TAGA").save()
+        Permissions(name="All stats", code="STAA").save()
+        Permissions(name="Access to adminView", code="ADMV").save()
+        Permissions(name="Edit user group", code="GRPE").save()
+        Permissions(name="Access to whole family tree", code="FTAL").save()
+        Permissions(name="Grant admin privileges", code="GAPR").save()
+        Permissions(name="Coin gift", code="COIN").save()
+        
     if Groups.objects.all().count() == 0:
         print("Creating the defaults groups")
         Groups(name="Naab", rank=0).save()
