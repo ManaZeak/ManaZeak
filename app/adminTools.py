@@ -320,6 +320,30 @@ def toggleInvite(request):
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
+def editGroup(request):
+    if request.method == 'POST':
+        user = request.user
+        if user.is_superuser:
+            response = json.loads(request.body)
+            # TODO: Add permission edition
+            if 'GROUP_ID' in response and 'GROUP_NAME' in response:
+                groupId = strip_tags(response['GROUP_ID'])
+                if Groups.objects.filter(id=groupId).count() == 1:
+                    group = Groups.objects.get(id=groupId)
+                    group.name = strip_tags(response['GROUP_NAME'])
+                    data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteCollection(request):
     if request.method == 'POST':
         response = json.loads(request.body)
