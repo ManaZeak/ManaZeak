@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload
+from app import player, history, library, playlist, adminTools, wish, userSettings, fileUpload, user
 from app.stats import stats, suggestion
 from app.track import track, editor
 from . import views
@@ -66,6 +66,7 @@ urlpatterns = [
 
     # USER actions
     url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
+    url(r'^user/deleteUser/$', user.deleteUser, name='deleteUser'),
 
     # Group actions
     url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),

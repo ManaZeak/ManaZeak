@@ -14,6 +14,7 @@ from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, 
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.playlist import getTotalLength
 from app.track.importer import regenerateCover
+from app.user import deleteLinkedEntities
 from app.utils import errorCheckMessage, timeCodeToString
 from app.wallet import calculateCurrentAvailableCash
 
@@ -130,7 +131,9 @@ def removeUser(request):
                     userId = int(strip_tags(response['USER_ID']))
                     if userId != admin.id:
                         if User.objects.filter(id=userId).count() == 1:
-                            User.objects.get(id=userId).delete()
+                            user = User.objects.get(id=userId)
+                            deleteLinkedEntities(user)
+                            user.delete()
                             data = errorCheckMessage(True, None)
                         else:
                             data = errorCheckMessage(False, "dbError")
