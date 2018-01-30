@@ -356,6 +356,7 @@ class AdminView extends View {
         this.ui.rescanLibButton           = document.createElement("BUTTON");
         this.ui.rmLibLabel                = document.createElement("P");
         this.ui.rmLibButton               = document.createElement("BUTTON");
+        this.ui.libListLabel              = document.createElement("P");
 
         this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
                                             "<br>" +
@@ -367,6 +368,7 @@ class AdminView extends View {
                                             "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
                                             "This command will erase all libraries in the database.";
         this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
+        this.ui.libListLabel.innerHTML    = "<b>Library list</b>";
 
         let list                          = document.createElement("UL");
 
@@ -389,13 +391,15 @@ class AdminView extends View {
             element.appendChild(rm);
             list.appendChild(element);
         }
-
+console.log(this.ui.libListLabel);
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.rescanLibLabel);
         this.ui.content.appendChild(this.ui.rescanLibButton);
         this.ui.content.appendChild(this.ui.rmLibLabel);
         this.ui.content.appendChild(this.ui.rmLibButton);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.libListLabel);
         this.ui.content.appendChild(list);
 
         this.ui.rescanLibButton.addEventListener("click", function() {

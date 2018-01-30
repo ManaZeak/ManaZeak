@@ -307,7 +307,7 @@ class App extends MzkObject {
      **/
     deleteUser(id, callback) {
         JSONParsedPostRequest(
-            "admin/removeUserById/",
+            "admin/removeUser/",
             JSON.stringify({
                 USER_ID: id
             }),
