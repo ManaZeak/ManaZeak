@@ -9,6 +9,7 @@
 import { JSONParsedPostRequest, JSONParsedGetRequest, secondsToTimecode } from '../../utils/Utils.js'
 import Notification from '../../utils/Notification.js'
 import View from '../../core/View.js'
+import Modal from '../../utils/Modal.js'
 
 class AdminView extends View {
 
@@ -278,9 +279,15 @@ class AdminView extends View {
 
         for (let i = 0; i < this.info.GROUPS.length; ++i) {
             let element                = document.createElement("LI");
-
+            let mod                    = document.createElement("IMG");
+            mod.src                    = "/static/img/utils/trash.svg";
             element.innerHTML = this.info.GROUPS[i].NAME;
 
+            mod.addEventListener('click', function() {
+                new Modal('editGroup').open();
+            });
+
+            element.appendChild(mod);
             groupList.appendChild(element);
         }
 
@@ -348,6 +355,7 @@ class AdminView extends View {
             rm.src                        = "/static/img/utils/trash.svg";
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
+                console.log(that.info.LIBRARIES[i].ID);
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
                     that._updateAdminInfo(function() {
                         that._requestLibrariesPage();
@@ -360,7 +368,7 @@ class AdminView extends View {
             element.appendChild(rm);
             list.appendChild(element);
         }
-
+        
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.rescanLibLabel);

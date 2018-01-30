@@ -75,6 +75,8 @@ class Modal extends MzkObject {
                 this._editTagUI();
                 break;
 
+            case "editGroup":
+                this._editGroupUI();
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -651,6 +653,16 @@ class Modal extends MzkObject {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(footerText);
+    }
+
+    /**
+     * method : _editGroupUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for edit group modal
+     */
+    _editGroupUI() {
+        this.ui.container.id       = "scan";
+        this.ui.title.innerHTML    = "Edit Group";
     }
 
 }
