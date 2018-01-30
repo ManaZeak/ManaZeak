@@ -66,7 +66,7 @@ urlpatterns = [
 
     # USER actions
     url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
-    url(r'^user/deleteUser/$', user.deleteUser, name='deleteUser'),
+    url(r'^user/delete/$', user.deleteUser, name='deleteUser'),
 
     # Group actions
     url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),

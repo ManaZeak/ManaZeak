@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 
 from app.adminTools import getAdminOptions
 from app.form import UserForm
-from app.models import Playlist, InviteCode, UserPreferences, Wallet
+from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
 from app.userSettings import createUserInviteCode
 from app.utils import populateDB
 
@@ -57,6 +57,10 @@ def createUser(request):
             # Setting the user preferences
             userPref = UserPreferences()
             userPref.user = user
+            if isAdmin:
+                userPref.group = Groups.objects.get(rank=5)
+            else:
+                userPref.group = Groups.objects.get(rank=1)
             wallet = Wallet()
             wallet.save()
             userPref.wallet = wallet

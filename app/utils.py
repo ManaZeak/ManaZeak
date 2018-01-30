@@ -173,12 +173,12 @@ def populateDB():
         Permissions(name="Sponsor right", code='SPON').save()
         Permissions(name="Stats access", code='STAT').save()
         Permissions(name="Child stats access", code="STCH").save()
-        Permissions(name="Family stat access", code="STAF").save()
+        Permissions(name="Family stat access", code="STFA").save()
         Permissions(name="Wish review", code="WISR").save()
         Permissions(name="Access to library stats", code="STAL").save()
         Permissions(name="Change genre description", code="DESC").save()
         Permissions(name="Tag edition", code="TAGE").save()
-        Permissions(name="Upload aproval", code="TAGA").save()
+        Permissions(name="Upload aproval", code="UPAP").save()
         Permissions(name="All stats", code="STAA").save()
         Permissions(name="Access to adminView", code="ADMV").save()
         Permissions(name="Edit user group", code="GRPE").save()
@@ -187,9 +187,40 @@ def populateDB():
         Permissions(name="Coin gift", code="COIN").save()
         
     if Groups.objects.all().count() == 0:
+        Groups(name="Banned", rank=0).save()
         print("Creating the defaults groups")
-        Groups(name="Naab", rank=0).save()
-        Groups(name="User", rank=1).save()
-        Groups(name="Moderator", rank=2).save()
-        Groups(name="Admin", rank=3).save()
-        Groups(name="Root", rank=4).save()
+        Groups(name="Naab", rank=1).save()
+        Groups(name="User", rank=2).save()
+        Groups(name="Moderator", rank=3).save()
+        Groups(name="Admin", rank=4).save()
+        Groups(name="Root", rank=5).save()
+        for group in Groups.objects.all():
+            fillDefaultPermission(group)
+
+
+def fillDefaultPermission(group):
+    if group.rank > 0:
+        group.permissions.add(Permissions.objects.get(code="LOGI"))
+        group.permissions.add(Permissions.objects.get(code="PLAY"))
+    if group.rank > 1:
+        group.permissions.add(Permissions.objects.get(code="WISH"))
+        group.permissions.add(Permissions.objects.get(code="TAGS"))
+        group.permissions.add(Permissions.objects.get(code="UPFI"))
+        group.permissions.add(Permissions.objects.get(code="SPON"))
+        group.permissions.add(Permissions.objects.get(code="STAT"))
+    if group.rank > 2:
+        group.permissions.add(Permissions.objects.get(code="STCH"))
+        group.permissions.add(Permissions.objects.get(code="STFA"))
+        group.permissions.add(Permissions.objects.get(code="WISR"))
+        group.permissions.add(Permissions.objects.get(code="STAL"))
+    if group.rank > 3:
+        group.permissions.add(Permissions.objects.get(code="DESC"))
+        group.permissions.add(Permissions.objects.get(code="TAGE"))
+        group.permissions.add(Permissions.objects.get(code="UPAP"))
+        group.permissions.add(Permissions.objects.get(code="STAA"))
+        group.permissions.add(Permissions.objects.get(code="ADMV"))
+        group.permissions.add(Permissions.objects.get(code="GRPE"))
+        group.permissions.add(Permissions.objects.get(code="FTAL"))
+    if group.rank > 4:
+        group.permissions.add(Permissions.objects.get(code="GAPR"))
+        group.permissions.add(Permissions.objects.get(code="COIN"))

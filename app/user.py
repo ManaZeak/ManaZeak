@@ -10,6 +10,7 @@ def deleteUser(request):
     if request.method == 'GET':
         user = request.user
         deleteLinkedEntities(user)
+        user.delete()
         data = errorCheckMessage(True, None)
     else:
         data = errorCheckMessage(False, "badRequest")
