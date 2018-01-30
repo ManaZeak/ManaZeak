@@ -119,8 +119,8 @@ class ContextMenuEntry {
         //Find where to insert it
         let childRef        = this._findChildByID(before_ID);
         if (childRef) {
-            if (after === false) { childRef = childRef.element.parentNode;             }
-            else                 { childRef = childRef.element.parentNode.nextSibling; }
+            if (after === true)  { childRef = childRef.element.parentNode.nextSibling; }
+            else                 { childRef = childRef.element.parentNode;             }
         }
 
         //Insert it and add the cross references
