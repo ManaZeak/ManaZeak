@@ -268,8 +268,8 @@ class ListView extends PlaylistView {
             }, 'new');
         }
 
-        window.app.playlists.listen('rename', function() {
-            //TODO
+        window.app.playlists.listen('rename', function(playlistID, name) {
+            that.contextMenu.getEntry(['playlists', playlistID]).setDisplayString(name);
         });
 
         window.app.playlists.listen('remove', function(playlistID) {
@@ -277,8 +277,10 @@ class ListView extends PlaylistView {
         });
 
         window.app.playlists.listen('clear', function() {
-            that.contextMenu.removeEntry('playlists');
-            //TODO: recreate zeaz
+            let playMenu = that.contextMenu.getEntry('playlists');
+            for(let i = 0; i < playMenu.children.length; i++)
+                if(playMenu.children[i].getID() != 'new')
+                    playMenu.removeEntry(playMenu.children[i].getID());
         });
 
         if (!this.isLibrary) {
