@@ -1,17 +1,17 @@
 @import 'utils/tools';
 @import 'components/topbar';
-@import 'core/views/statsview';
-@import 'components/dragdrop';
-@import 'components/editTag';
+@import 'views/statsview';
+@import 'utils/dragdrop';
+@import 'modals/content/editTag';
 @import 'components/elements/trackinfo';
 @import 'components/elements/progressbar';
 @import 'components/elements/volumebar';
-@import 'components/elements/contextmenu';
-@import 'components/notification';
-@import 'core/views/listview';
-@import 'core/views/partyview';
-@import 'core/views/userview';
-@import 'core/views/adminview';
+@import 'utils/contextmenu';
+@import 'utils/notification';
+@import 'views/listview';
+@import 'views/partyview';
+@import 'views/userview';
+@import 'views/adminview';
 @import 'components/footbar';
 
 html, body {
