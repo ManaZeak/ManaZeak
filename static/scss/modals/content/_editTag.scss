@@ -1,4 +1,7 @@
 &.mzk-modal-edit-tag {
+
+    width: auto;
+
     .mzk-modal-header,
     .mzk-modal-footer {
         display: none;
@@ -14,10 +17,8 @@
         border-right:     solid 1px $dark-primary-color;
         box-sizing:       border-box;
         font-size:        0.8em;
-        height:           600px;
         margin:           0;
         overflow:         auto;
-        padding:          15px 0;
         width:            250px;
         white-space:      nowrap;
 
@@ -36,7 +37,7 @@
         background-color: $primary-color;
         height:           600px;
         position:         relative;
-        width:            600px;
+        width:            $modalWidth;
 
         .mzk-head {
             display: flex;
