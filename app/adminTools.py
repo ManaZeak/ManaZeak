@@ -345,13 +345,13 @@ def editGroup(request):
                         if permission.code not in response['PERMISSIONS']:
                             return JsonResponse(errorCheckMessage(False, "badFormat"))
                     for permission in permissions:
-                        perm = response['PERMISSIONS'][permission]
+                        perm = response['PERMISSIONS'][permission.code]
                         if perm:
-                            if group.permissions.filter(code=permission).count() == 0:
-                                group.permissions.add(Permissions.objects.get(code=permission))
+                            if group.permissions.filter(code=permission.code).count() == 0:
+                                group.permissions.add(Permissions.objects.get(code=permission.code))
                         else:
-                            if group.permissions.filter(code=permission).count() == 1:
-                                group.permissions.remove(Permissions.objects.get(code=permission))
+                            if group.permissions.filter(code=permission.code).count() == 1:
+                                group.permissions.remove(Permissions.objects.get(code=permission.code))
                     data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "dbError")
