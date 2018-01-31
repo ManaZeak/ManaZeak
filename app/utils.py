@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 
-from app.models import FileType, Genre, Album, Artist, Permissions, Groups
+from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences
 
 
 # Split a table in 4 table of equal size
@@ -146,7 +146,16 @@ def errorCheckMessage(isDone, error):
     }
 
 
-# Create the file type entry
+def checkPermission(requirements, user):
+    userPref = UserPreferences.objects.get(user=user)
+    permissions = userPref.group.permissions
+    if permissions.filter(code__in=requirements).count() == len(requirements):
+        return True
+    else:
+        return False
+
+
+# Create the default entries into the database
 def populateDB():
     if FileType.objects.all().count() == 0:
         print("Created files types")
@@ -167,6 +176,8 @@ def populateDB():
         print("Creating default permission")
         Permissions(name="Login", code="LOGI").save()
         Permissions(name="Music listening", code="PLAY").save()
+        Permissions(name="Playlist management", code="PLST").save()
+        Permissions(name="Download", code="DOWN").save()
         Permissions(name="Wish creation", code="WISH").save()
         Permissions(name="Tag submission", code="TAGS").save()
         Permissions(name="Upload file", code='UPFI').save()
@@ -183,9 +194,10 @@ def populateDB():
         Permissions(name="Access to adminView", code="ADMV").save()
         Permissions(name="Edit user group", code="GRPE").save()
         Permissions(name="Access to whole family tree", code="FTAL").save()
+        Permissions(name="Library management", code="LIBR").save()
         Permissions(name="Grant admin privileges", code="GAPR").save()
         Permissions(name="Coin gift", code="COIN").save()
-        
+
     if Groups.objects.all().count() == 0:
         Groups(name="Banned", rank=0).save()
         print("Creating the defaults groups")
@@ -202,6 +214,8 @@ def fillDefaultPermission(group):
     if group.rank > 0:
         group.permissions.add(Permissions.objects.get(code="LOGI"))
         group.permissions.add(Permissions.objects.get(code="PLAY"))
+        group.permissions.add(Permissions.objects.get(code="PLST"))
+        group.permissions.add(Permissions.objects.get(code="DOWN"))
     if group.rank > 1:
         group.permissions.add(Permissions.objects.get(code="WISH"))
         group.permissions.add(Permissions.objects.get(code="TAGS"))
@@ -221,6 +235,7 @@ def fillDefaultPermission(group):
         group.permissions.add(Permissions.objects.get(code="ADMV"))
         group.permissions.add(Permissions.objects.get(code="GRPE"))
         group.permissions.add(Permissions.objects.get(code="FTAL"))
+        group.permissions.add(Permissions.objects.get(code="LIBR"))
     if group.rank > 4:
         group.permissions.add(Permissions.objects.get(code="GAPR"))
         group.permissions.add(Permissions.objects.get(code="COIN"))

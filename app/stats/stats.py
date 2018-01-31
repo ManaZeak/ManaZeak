@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 from app.models import Stats, Artist, Track, Genre
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Add track to stats for a user
@@ -45,31 +45,35 @@ def getUserNbTrackPushed(user):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPrefGenres(request):
     if request.method == 'GET':
-        genres = Genre.objects.all()
-        genreTuple = []
         user = request.user
-        numberPlayedTrack = getUserNbTrackListened(user)
-        for genre in genres:
-            counter = 0
-            tracks = Stats.objects.filter(track__genre=genre, user=user)
-            for track in tracks:
-                counter += track.playCounter
-            if numberPlayedTrack != 0:
-                genreTuple.append((genre.name, counter, (counter / numberPlayedTrack) * 100))
-            else:
-                genreTuple.append((genre.name, counter, 0))
+        if checkPermission(["STAT"], user):
+            genres = Genre.objects.all()
+            genreTuple = []
+            user = request.user
+            numberPlayedTrack = getUserNbTrackListened(user)
+            for genre in genres:
+                counter = 0
+                tracks = Stats.objects.filter(track__genre=genre, user=user)
+                for track in tracks:
+                    counter += track.playCounter
+                if numberPlayedTrack != 0:
+                    genreTuple.append((genre.name, counter, (counter / numberPlayedTrack) * 100))
+                else:
+                    genreTuple.append((genre.name, counter, 0))
 
-        genreTuple.sort(key=itemgetter(1), reverse=True)
-        prefGenres = copy.deepcopy(genreTuple)
-        genreTuple.sort(key=itemgetter(1), reverse=False)
-        if len(prefGenres) == 0:
-            data = errorCheckMessage(True, "noStats")
+            genreTuple.sort(key=itemgetter(1), reverse=True)
+            prefGenres = copy.deepcopy(genreTuple)
+            genreTuple.sort(key=itemgetter(1), reverse=False)
+            if len(prefGenres) == 0:
+                data = errorCheckMessage(True, "noStats")
+            else:
+                data = {
+                    'PREF_GENRES': prefGenres[:25],
+                    'LEAST_GENRES': genreTuple[:25],
+                }
+                data = {**data, **errorCheckMessage(True, None)}
         else:
-            data = {
-                'PREF_GENRES': prefGenres[:25],
-                'LEAST_GENRES': genreTuple[:25],
-            }
-            data = {**data, **errorCheckMessage(True, None)}
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "")
     return JsonResponse(data)
@@ -80,29 +84,33 @@ def getUserPrefGenres(request):
 def getUserPrefArtists(request):
     if request.method == 'GET':
         user = request.user
-        artists = Artist.objects.all()
-        artistCounter = []
+        if checkPermission(["STAT"], user):
+            user = request.user
+            artists = Artist.objects.all()
+            artistCounter = []
 
-        for artist in artists:
-            counter = 0
-            stats = Stats.objects.filter(track__artist=artist, user=user)
+            for artist in artists:
+                counter = 0
+                stats = Stats.objects.filter(track__artist=artist, user=user)
 
-            for track in stats:
-                counter += track.playCounter
+                for track in stats:
+                    counter += track.playCounter
 
-            artistCounter.append((artist.name, counter))
+                artistCounter.append((artist.name, counter))
 
-        artistCounter.sort(key=itemgetter(1), reverse=True)
-        prefArtists = copy.deepcopy(artistCounter)
-        artistCounter.sort(key=itemgetter(1), reverse=False)
-        if len(prefArtists) == 0:
-            data = errorCheckMessage(True, "noStats")
+            artistCounter.sort(key=itemgetter(1), reverse=True)
+            prefArtists = copy.deepcopy(artistCounter)
+            artistCounter.sort(key=itemgetter(1), reverse=False)
+            if len(prefArtists) == 0:
+                data = errorCheckMessage(True, "noStats")
+            else:
+                data = {
+                    'PREF_ARTISTS': prefArtists[:25],
+                    'LEAST_ARTISTS': artistCounter[:25],
+                }
+                data = {**data, **errorCheckMessage(True, None)}
         else:
-            data = {
-                'PREF_ARTISTS': prefArtists[:25],
-                'LEAST_ARTISTS': artistCounter[:25],
-            }
-            data = {**data, **errorCheckMessage(True, None)}
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -113,30 +121,33 @@ def getUserPrefArtists(request):
 def getUserPrefTracks(request):
     if request.method == 'GET':
         user = request.user
-        statsPref = Stats.objects.filter(user=user).order_by('-playCounter', '-listeningPercentage')
-        statsLeast = Stats.objects.filter(user=user).order_by('playCounter', 'listeningPercentage')
+        if checkPermission(["STAT"], user):
+            statsPref = Stats.objects.filter(user=user).order_by('-playCounter', '-listeningPercentage')
+            statsLeast = Stats.objects.filter(user=user).order_by('playCounter', 'listeningPercentage')
 
-        trackTuplePref = []
-        trackTupleLeast = []
-        for stat in statsPref:
-            if stat.listeningPercentage is not None:
-                trackTuplePref.append((stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
+            trackTuplePref = []
+            trackTupleLeast = []
+            for stat in statsPref:
+                if stat.listeningPercentage is not None:
+                    trackTuplePref.append((stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
+                else:
+                    trackTuplePref.append((stat.track.title, stat.playCounter, 0))
+            for stat in statsLeast:
+                if stat.listeningPercentage is not None:
+                    trackTupleLeast.append(
+                        (stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
+                else:
+                    trackTupleLeast.append((stat.track.title, stat.playCounter, 0))
+            if len(trackTuplePref) == 0:
+                data = errorCheckMessage(True, "noStats")
             else:
-                trackTuplePref.append((stat.track.title, stat.playCounter, 0))
-        for stat in statsLeast:
-            if stat.listeningPercentage is not None:
-                trackTupleLeast.append(
-                    (stat.track.title, stat.playCounter, stat.listeningPercentage / stat.playCounter))
-            else:
-                trackTupleLeast.append((stat.track.title, stat.playCounter, 0))
-        if len(trackTuplePref) == 0:
-            data = errorCheckMessage(True, "noStats")
+                data = {
+                    'PREF_TRACKS': trackTuplePref[:25],
+                    'LEAST_TRACKS': trackTupleLeast[:25],
+                }
+                data = {**data, **errorCheckMessage(True, None)}
         else:
-            data = {
-                'PREF_TRACKS': trackTuplePref[:25],
-                'LEAST_TRACKS': trackTupleLeast[:25],
-            }
-            data = {**data, **errorCheckMessage(True, None)}
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -162,9 +173,9 @@ def userNeverPlayed(user):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def adminGetUserStats(request):
     if request.method == 'GET':
-        admin = request.user
+        user = request.user
         data = []
-        if admin.is_superuser:
+        if checkPermission(["STAA"], user):
             for user in User.objects.all():
                 nbTrackListened = getUserNbTrackListened(user)
                 temp = {

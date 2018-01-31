@@ -13,7 +13,7 @@ from app.adminTools import getAdminOptions
 from app.form import UserForm
 from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
 from app.userSettings import createUserInviteCode
-from app.utils import populateDB
+from app.utils import populateDB, checkPermission
 
 
 # Main container
@@ -94,9 +94,10 @@ class UserFormLogin(View):
         password = form.data['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('app:index')
+            if checkPermission(["LOGI"], user):
+                if user.is_active:
+                    login(request, user)
+                    return redirect('app:index')
 
         return render(request, self.template_name, {'form': form})
 
