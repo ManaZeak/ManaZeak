@@ -96,11 +96,13 @@ def getAdminView(request):
                 groupInfo.append({
                     'ID': group.id,
                     'NAME': group.name,
-                    'PERMISSION': permissions,
+                    'PERMISSIONS': permissions,
                 })
             data = {**data, **dict({'GROUPS': groupInfo})}
+            tmp = {}
             for permission in Permissions.objects.all():
-                data = {**data, **dict({permission.name: permission.code})}
+                tmp = {**tmp, **dict({permission.code: permission.name})}
+            data = {**data, **dict({'PERMISSIONS': tmp})}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
@@ -345,6 +347,14 @@ def editGroup(request):
                     for permission in permissions:
                         if permission.code not in response:
                             return errorCheckMessage(False, "badFormat")
+                    for permission in permissions:
+                        perm = response[permission]
+                        if perm:
+                            if group.permissions.filter(code=permission).count() == 0:
+                                group.permissions.add(Permissions.objects.get(code=permission))
+                        else:
+                            if group.permissions.filter(code=permission).count() == 1:
+                                group.permissions.remove(Permissions.objects.get(code=permission))
                     data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "dbError")
