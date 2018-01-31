@@ -1,0 +1,14 @@
+
+
+#wishList {
+    cursor: pointer;
+    height: $topbar-height / 2;
+    left: $topbar-height;
+    position: absolute;
+    top: $topbar-height / 4;
+    width: auto;
+
+    img {
+        height: 100%;
+    }
+}
