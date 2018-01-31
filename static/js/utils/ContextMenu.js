@@ -155,15 +155,12 @@ class ContextMenu {
 
             if (target != that.contextMenu.element) {
                 that.close();
-                window.app.activeContextMenu = null;
             }
         }, true);
 
         this.parentElement.addEventListener(this.event, function(event) {
 
-            //Close current menu if necessary
-            if(window.app.activeContextMenu)
-                window.app.activeContextMenu.close();
+            window.app.closeActiveMenu();
             window.app.activeContextMenu = that;
 
             if (event.pageY <= document.documentElement.clientHeight / 2) {

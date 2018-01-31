@@ -272,8 +272,7 @@ class ContextMenuEntry {
             });
             this.callback.apply(null, this.callbackArgs);
         }
-        window.app.activeContextMenu.close();
-        window.app.activeContextMenu = null;
+        window.app.closeActiveMenu();
     }
 
     //====================================== GETTERS ===================================================

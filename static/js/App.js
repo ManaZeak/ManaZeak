@@ -233,6 +233,17 @@ class App extends MzkObject {
         }
     }
 
+    /**
+     * method : closeActiveMenu (public)
+     * class  : App
+     * desc   : Close the active menu
+     */
+    closeActiveMenu() {
+        if(this.activeContextMenu)
+            this.activeContextMenu.close();
+        this.activeContextMenu = null;
+    }
+
 
     /**
      * method : createAppView (public)
