@@ -68,8 +68,8 @@ def getUserPrefGenres(request):
                 data = errorCheckMessage(True, "noStats")
             else:
                 data = {
-                    'PREF_GENRES': prefGenres[:25],
-                    'LEAST_GENRES': genreTuple[:25],
+                    'PREF_GENRES': prefGenres[:100],
+                    'LEAST_GENRES': genreTuple[:100],
                 }
                 data = {**data, **errorCheckMessage(True, None)}
         else:
@@ -105,8 +105,8 @@ def getUserPrefArtists(request):
                 data = errorCheckMessage(True, "noStats")
             else:
                 data = {
-                    'PREF_ARTISTS': prefArtists[:25],
-                    'LEAST_ARTISTS': artistCounter[:25],
+                    'PREF_ARTISTS': prefArtists[:100],
+                    'LEAST_ARTISTS': artistCounter[:100],
                 }
                 data = {**data, **errorCheckMessage(True, None)}
         else:
@@ -142,8 +142,8 @@ def getUserPrefTracks(request):
                 data = errorCheckMessage(True, "noStats")
             else:
                 data = {
-                    'PREF_TRACKS': trackTuplePref[:25],
-                    'LEAST_TRACKS': trackTupleLeast[:25],
+                    'PREF_TRACKS': trackTuplePref[:100],
+                    'LEAST_TRACKS': trackTupleLeast[:100],
                 }
                 data = {**data, **errorCheckMessage(True, None)}
         else:
