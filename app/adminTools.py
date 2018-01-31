@@ -340,6 +340,7 @@ def editGroup(request):
                 if Groups.objects.filter(id=groupId).count() == 1:
                     group = Groups.objects.get(id=groupId)
                     group.name = strip_tags(response['GROUP_NAME'])
+                    group.save()
                     permissions = Permissions.objects.all()
                     for permission in permissions:
                         if permission.code not in response['PERMISSIONS']:
