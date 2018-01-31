@@ -286,7 +286,6 @@ def dropAllDB(request):
                 History.objects.all().delete()
                 Permissions.objects.all().delete()
                 Groups.objects.all().delete()
-                UserPreferences.objects.all().delete()
 
                 data = errorCheckMessage(True, None)
             else:
@@ -344,7 +343,7 @@ def editGroup(request):
                     permissions = Permissions.objects.all()
                     for permission in permissions:
                         if permission.code not in response:
-                            return errorCheckMessage(False, "badFormat")
+                            return JsonResponse(errorCheckMessage(False, "badFormat"))
                     for permission in permissions:
                         perm = response[permission]
                         if perm:
