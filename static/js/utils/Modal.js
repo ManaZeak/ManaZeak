@@ -302,7 +302,7 @@ class Modal extends MzkObject {
                 save:  document.createElement("BUTTON")
         };
 
-        ui.foot.className      = "foot";
+        ui.foot.className      = "mzk-foot";
             ui.close.innerHTML = "Close";
             ui.save.innerHTML  = "Save";
 
@@ -775,10 +775,10 @@ class Modal extends MzkObject {
                 selected = li;
             }
 
-            li.addEventListener('click', function(event) {
+            li.addEventListener('click', function() {
                 if(selected)
                     selected.className = "";
-                selected = event.target;
+                selected = li;
                 selected.className = "mzk-selected";
             });
 
