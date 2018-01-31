@@ -1,13 +1,13 @@
 @import 'utils/tools';
 @import 'components/topbar';
 @import 'views/statsview';
-@import 'utils/dragdrop';
+@import 'utils/modules/dragdrop';
 @import 'modals/content/editTag';
 @import 'components/elements/trackinfo';
 @import 'components/elements/footbar/progressbar';
 @import 'components/elements/footbar/volumebar';
-@import 'utils/contextmenu';
-@import 'utils/notification';
+@import 'utils/modules/contextmenu';
+@import 'utils/modules/notification';
 @import 'views/listview';
 @import 'views/partyview';
 @import 'views/userview';

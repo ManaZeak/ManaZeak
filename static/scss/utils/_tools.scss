@@ -1,5 +1,3 @@
 // Tools building
-@import "mixins";
-@import "colors";
-@import "../modals/modal";
-@import "global";
+@import "modules/global";
+@import "modules/mixins";

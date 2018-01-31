@@ -1,0 +1,33 @@
+//=================================== VISIBILITY LOCK ===================================
+
+$primary-color:        rgba(44, 44, 48, 1);
+$secondary-color:      rgba(31, 33, 39, 1);
+$dark-primary-color:   rgba(64, 64, 72, 1);
+$dark-secondary-color: rgba(14, 15, 20, 1);
+
+$primary-text:         rgba(170, 170, 190, 1);
+$white:                rgba(255, 255, 255, 1);
+
+$listview-even-lin:     rgba(41, 41, 45, 1);
+
+$accent-color:         rgba(255, 0, 0, 1);
+$anti-accent-color:    rgba(0, 0, 255, 1);
+
+
+.mzk-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s 0.3s,
+    opacity 0.3s ease;
+
+    //We need to beat hidden's specificity because of how @extend works
+    &.mzk-visible {
+        @extend .mzk-visible;
+    }
+}
+
+.mzk-visible {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    visibility: visible;
+}

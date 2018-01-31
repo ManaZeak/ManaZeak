@@ -51,4 +51,26 @@
     div.library.librarySelected {
         box-shadow: 0 -2px red inset;
     }
+
+    #newLibPlay {
+        @extend .mzk-hidden;
+        background-color: $primary-color;
+        border: solid 1px $dark-secondary-color;
+        border-radius: 2px;
+        font-size: 0.9em;
+        height: auto;
+        position: absolute;
+        width: 150px;
+        z-index: 999;
+
+        p {
+            cursor: pointer;
+            margin: 0;
+            padding: 5px 15px;
+        }
+
+        p:hover {
+            background-color: $dark-secondary-color;
+        }
+    }
 }
