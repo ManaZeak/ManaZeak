@@ -5,35 +5,26 @@
 @import 'views/views';
 
 html, body {
-    color: $primary-text;
+    color:       $primary-text;
     font-family: Helvetica, serif;
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-    padding: 0;
-    width: 100%;
-}
-
-#spectrumContainer {
-    background-color: chartreuse;
-    bottom: 0;
-    height: 200%;
-    position: absolute;
-    right: 0;
-    width: 30%;
+    height:      100%;
+    margin:      0;
+    overflow:    hidden;
+    padding:     0;
+    width:       100%;
 }
 
 #mainContainer {
     background: $primary-color;
-    height: calc(100% - 130px);
-    position: absolute;
-    top: 50px;
-    width: 100%;
+    height:     calc(100% - 130px);
+    position:   absolute;
+    top:        $topbar-height;
+    width:      100%;
 
     & > .mzk-view {
+        height:   100%;
         position: absolute;
-        height: 100%;
-        width: 100%;
+        width:    100%;
 
         &.mzk-view-hide {
             z-index: -1;
