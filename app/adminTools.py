@@ -103,8 +103,7 @@ def getAdminView(request):
             permissions = []
             for permission in Permissions.objects.all():
                 permissions.append({
-                    'NAME': permission.name,
-                    'CODE': permission.code,
+                    permission.name: permission.code,
                 })
             data = {**data, **dict({'PERMISSIONS': permissions})}
             data = {**data, **errorCheckMessage(True, None)}
@@ -342,11 +341,12 @@ def editGroup(request):
         if checkPermission(["GRPE"], user):
             response = json.loads(request.body)
             # TODO: Add permission edition
-            if 'GROUP_ID' in response and 'GROUP_NAME' in response:
+            if 'GROUP_ID' in response and 'GROUP_NAME' in response and 'PERMISSIONS':
                 groupId = strip_tags(response['GROUP_ID'])
                 if Groups.objects.filter(id=groupId).count() == 1:
                     group = Groups.objects.get(id=groupId)
                     group.name = strip_tags(response['GROUP_NAME'])
+
                     data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "dbError")
