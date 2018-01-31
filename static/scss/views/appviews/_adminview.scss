@@ -102,6 +102,7 @@
         input {
             background:    none;
             border:        solid 0 transparent;
+            display: inline-block;
             border-bottom: solid 1px $primary-text;
             color:         $primary-text;
             margin-right:  15px;
