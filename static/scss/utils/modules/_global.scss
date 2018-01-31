@@ -1,8 +1,9 @@
 // Sizes
 $topbar-height: 50px;
-$footbar-height: 80px;
 
-$footbar-padding: 20px;
+$app-padding: 10px;
+$app-margin: 10px;
+$footbar-padding: $app-padding;
 
 // Colors
 $primary-color:        rgba(44, 44, 48, 1);

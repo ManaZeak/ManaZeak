@@ -1,12 +1,9 @@
-$controls-height: 50px;
-$progress-height: $footbar-height - $controls-height;
-
 .mzk-controls-container {
     height: 100%;
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    width: 40%;
+    width: $footbar-controls-width;
     -webkit-user-select: none;
     -moz-user-select: none;
 

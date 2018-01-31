@@ -1,3 +1,9 @@
+$footbar-height: 80px;
+$footbar-controls-width: 40%;
+$footbar-info-width: 30%;
+$controls-height: 50px;
+$progress-height: $footbar-height - $controls-height;
+
 #footBar {
     @import './elements/footbar/controls';
     @import './elements/footbar/playlistpreview';
