@@ -253,7 +253,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _deletePlaylistUI() {
-        this.ui.container.className = "mzk-modal-deleteplaylist";
+        this.ui.container.className = "mzk-modal-delete-playlist";
         this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
@@ -287,7 +287,7 @@ class Modal extends MzkObject {
 
 
     _editTagUI() {
-        this.ui.container.className = "mzk-modal-edittag";
+        this.ui.container.className = "mzk-modal-edit-tag";
         this.editTag = new EditTag(this.ui.content, this.data);
 
         let ui = {
@@ -322,7 +322,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchPlaylists modal
      **/
     _fetchPlaylistsUI() {
-        this.ui.container.className = "mzk-modal-fetchplaylists";
+        this.ui.container.className = "mzk-modal-fetch-playlists";
         this.ui.title.innerHTML     = "Fetching your playlists";
 
         let spinnerContainer        = document.createElement("DIV");
@@ -351,7 +351,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchStats modal
      **/
     _fetchStatsUI() {
-        this.ui.container.className = "mzk-modal-fetchplaylists";
+        this.ui.container.className = "mzk-modal-fetch-playlists";
         this.ui.title.innerHTML     = "Crushing data";
 
         let spinnerContainer        = document.createElement("DIV");
@@ -380,7 +380,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for display user'sfetchPlaylists invite code modal
      **/
     _inviteCodeUI() {
-        this.ui.container.className = "mzk-modal-invitecode";
+        this.ui.container.className = "mzk-modal-invite-code";
         this.ui.title.innerHTML     = "Invitation code";
 
         let infoLabel           = document.createElement("P");
@@ -413,7 +413,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newLibrary modal
      **/
     _newLibraryUI() {
-        this.ui.container.className = "mzk-modal-newlibrary";
+        this.ui.container.className = "mzk-modal-new-library";
         this.ui.title.innerHTML     = "New library";
 
         let infoLabel               = document.createElement("P");
@@ -465,7 +465,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newPlaylist modal
      **/
     _newPlaylistUI() {
-        this.ui.container.className = "mzk-modal-newlibrary";
+        this.ui.container.className = "mzk-modal-new-library";
         this.ui.title.innerHTML     = "New playlist";
 
         let infoLabel               = document.createElement("P");
@@ -501,7 +501,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newWish modal
      **/
     _newWishUI() {
-        this.ui.container.className = "mzk-modal-newwish";
+        this.ui.container.className = "mzk-modal-new-wish";
         this.ui.title.innerHTML     = "Track suggestion";
 
         let text                    = document.createElement("P");
@@ -560,7 +560,7 @@ class Modal extends MzkObject {
      **/
     _openSyncThing() {
         let content                 = document.createElement("IFRAME");
-        this.ui.container.className = "mzk-modal-opensyncthing";
+        this.ui.container.className = "mzk-modal-open-syncthing";
 
         content.frameBorder         = 0;
         content.height              = "100%";
@@ -583,7 +583,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _renamePlaylistUI() {
-        this.ui.container.className = "mzk-modal-deleteplaylist";
+        this.ui.container.className = "mzk-modal-delete-playlist";
         this.ui.title.innerHTML     = "Rename " + this.data.name;
 
         let infoLabel               = document.createElement("P");
@@ -632,7 +632,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for scanLibrary modal
      **/
     _scanLibraryUI() {
-        this.ui.container.className = "mzk-modal-scanlibrary";
+        this.ui.container.className = "mzk-modal-scan-library";
         this.ui.title.innerHTML     = "Library scan in progress...";
 
         let contentText             = document.createElement("P");
@@ -663,7 +663,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for edit group modal
      */
     _editGroupUI() {
-        this.ui.container.className = "mzk-modal-editgroup";
+        this.ui.container.className = "mzk-modal-edit-group";
         this.ui.title.innerHTML     = "Edit Group";
 
         let nameTitle               = document.createElement("DIV");
