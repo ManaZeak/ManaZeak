@@ -52,7 +52,7 @@ class FootBar extends MzkObject {
         this.controlsContainer           = document.createElement("DIV");
         this.progressContainer           = document.createElement("DIV");
 
-        this.footBar.id                  = "footBar";
+        this.footBar.className           = "mzk-footbar";
         this.controlsContainer.className = "mzk-controls-container";
     }
 

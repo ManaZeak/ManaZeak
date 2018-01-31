@@ -1,38 +1,40 @@
+$controls-icon-width: 30px;
+$controls-height:     50px;
+$progress-height:     $footbar-height - $controls-height;
+
 .mzk-controls-container {
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: $footbar-controls-width;
+    height:              100%;
+    margin-left:         auto;
+    margin-right:        auto;
+    position:            relative;
+    width:               $footbar-controls-width;
     -webkit-user-select: none;
-    -moz-user-select: none;
+    -moz-user-select:    none;
 
     .mzk-controls {
-        height: $controls-height;
-        width: 100%;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        img {
-            height: 30px;
-            margin-left: 3px;
-            margin-right: 3px;
-            width: 30px;
-        }
+        align-items:         center;
+        display:             flex;
+        height:              $controls-height;
+        justify-content:     center;
+        width:               100%;
 
         a {
             cursor: pointer;
-            height: 30px;
+            height: $controls-icon-width;
+        }
+
+        img {
+            height:       $controls-icon-width;
+            margin-left:  $controls-icon-width / 10;
+            margin-right: $controls-icon-width / 10;
+            width:        $controls-icon-width;
         }
 
         .mzk-queue-expander {
-            cursor: pointer;
-            height: 30px;
+            cursor:   pointer;
+            height:   $controls-icon-width;
             position: absolute;
-            right: 0;
+            right:    0;
 
             &:hover .mzk-queue-preview {
                 @extend .mzk-visible;

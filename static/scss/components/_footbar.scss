@@ -1,18 +1,17 @@
-$footbar-height: 80px;
+$footbar-height:         80px;
+$footbar-info-width:     30%;
 $footbar-controls-width: 40%;
-$footbar-info-width: 30%;
-$controls-height: 50px;
-$progress-height: $footbar-height - $controls-height;
+$footbar-padding:        2 * $app-padding;
 
-#footBar {
+.mzk-footbar {
     @import './elements/footbar/controls';
     @import './elements/footbar/playlistpreview';
     @import './elements/footbar/queuepreview';
     @import './elements/footbar/trackpreview';
 
     background-color: $secondary-color;
-    bottom: 0;
-    height: $footbar-height;
-    position: absolute;
-    width: 100%;
+    bottom:           0;
+    height:           $footbar-height;
+    position:         absolute;
+    width:            100%;
 }

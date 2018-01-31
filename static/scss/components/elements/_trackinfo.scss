@@ -1,56 +1,60 @@
+$track-info-margin:  25px;
+$track-info-padding: 15px;
+
 .mzk-track-info {
     background-color: $secondary-color;
-    border: solid 1px $dark-secondary-color;
-    border-radius: 3px;
-    box-sizing: border-box;
-    height: 0;
-    opacity: 0;
-    position: absolute;
-    transition: opacity 0.1s ease-in-out;
-    width: 0;
-    z-index: 999;
+    border:           solid 1px $dark-secondary-color;
+    border-radius:    $border-radius;
+    box-sizing:       border-box;
+    height:           0;
+    opacity:          0;
+    position:         absolute;
+    transition:       opacity 0.1s ease-in-out;
+    width:            0;
+    z-index:          999;
 
     img {
-        height: 150px;
-        margin-left: 25px;
-        margin-right: 25px;
-        margin-top: 25px;
-        width: 150px;
+        height:       150px;
+        margin-left:  $track-info-margin;
+        margin-right: $track-info-margin;
+        margin-top:   $track-info-margin;
+        width:        150px;
     }
 
     .mzk-numbers {
-        bottom: 0;
-        font-size: 0.8em;
-        left: 0;
+        bottom:      0;
+        font-size:   0.8em;
+        left:        0;
         line-height: 1.7em;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        text-align: center;
-        width: 200px;
+        margin:      0;
+        padding:     0;
+        position:    absolute;
+        text-align:  center;
+        width:       200px;
     }
 
     .mzk-track-wrapper {
-        border-right: solid 1px $dark-primary-color;
-        display: inline-block;
-        float: right;
-        font-size: 0.8em;
+        border-right:  solid 1px $dark-primary-color;
+        box-sizing:    border-box;
+        display:       inline-block;
+        float:         right;
+        font-size:     0.8em;
         padding-right: 25px;
-        width: 340px;
-        margin-right: 25px;
-        margin-top: 26px;
-        top: 0;
+        width:         340px;
+        margin-right:  $track-info-margin;
+        margin-top:    $track-info-margin;
+        top:           0;
 
         p {
-            margin: 0;
-            overflow: hidden;
-            padding: 1px 0;
+            margin:        0;
+            overflow:      hidden;
+            padding:       1px 0;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space:   nowrap;
         }
 
         .mzk-title {
-            font-size: 1.1em;
+            font-size:   1.1em;
             font-weight: bold;
         }
 
@@ -60,42 +64,42 @@
     }
 
     .mzk-suggestion-wrapper {
-        float: right;
-        font-size: 0.7em;
-        height: auto;
-        width: 300px;
-        margin-right: 45px;
-        max-height: 100%;
-        display: flex;
+        float:          right;
+        font-size:      0.7em;
+        height:         auto;
+        width:          300px;
+        margin-right:   45px;
+        max-height:     100%;
+        display:        flex;
         flex-direction: column;
 
         .mzk-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            line-height: 1.3em;
-            margin: 0;
+            font-size:     1.3em;
+            font-weight:   bold;
+            line-height:   1.3em;
+            margin:        0;
             margin-bottom: 10px;
-            margin-top: 15px;
+            margin-top:    15px;
         }
 
         ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+            list-style-type:     none;
+            margin:              0;
+            padding:             0;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            overflow: auto;
+            -moz-user-select:    none;
+            overflow:            auto;
 
             li {
-                cursor: pointer;
-                opacity: 0;
-                overflow: hidden;
-                padding: 5px 10px;
+                cursor:        pointer;
+                opacity:       0;
+                overflow:      hidden;
+                padding:       5px 10px;
                 text-overflow: ellipsis;
-                white-space: nowrap;
+                white-space:   nowrap;
 
                 .mzk-performer-indent {
-                    display: inline-block;
+                    display:     inline-block;
                     margin-left: 40px;
                 }
             }
@@ -108,15 +112,15 @@
         }
 
         img {
-            cursor: pointer;
-            height: 25px;
-            margin-left: 0;
-            margin-top: 10px;
+            cursor:       pointer;
+            height:       25px;
+            margin-left:  0;
+            margin-top:   10px;
             margin-right: 10px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 25px;
+            position:     absolute;
+            right:        0;
+            top:          0;
+            width:        25px;
         }
     }
 }
