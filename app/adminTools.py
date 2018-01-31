@@ -342,10 +342,10 @@ def editGroup(request):
                     group.name = strip_tags(response['GROUP_NAME'])
                     permissions = Permissions.objects.all()
                     for permission in permissions:
-                        if permission.code not in response:
+                        if permission.code not in response['PERMISSIONS']:
                             return JsonResponse(errorCheckMessage(False, "badFormat"))
                     for permission in permissions:
-                        perm = response[permission]
+                        perm = response['PERMISSIONS'][permission]
                         if perm:
                             if group.permissions.filter(code=permission).count() == 0:
                                 group.permissions.add(Permissions.objects.get(code=permission))
