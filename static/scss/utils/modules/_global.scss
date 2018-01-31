@@ -1,5 +1,10 @@
-//=================================== VISIBILITY LOCK ===================================
+// Sizes
+$topbar-height: 50px;
+$footbar-height: 80px;
 
+$footbar-padding: 20px;
+
+// Colors
 $primary-color:        rgba(44, 44, 48, 1);
 $secondary-color:      rgba(31, 33, 39, 1);
 $dark-primary-color:   rgba(64, 64, 72, 1);
@@ -12,7 +17,6 @@ $listview-even-lin:     rgba(41, 41, 45, 1);
 
 $accent-color:         rgba(255, 0, 0, 1);
 $anti-accent-color:    rgba(0, 0, 255, 1);
-
 
 .mzk-hidden {
     opacity: 0;

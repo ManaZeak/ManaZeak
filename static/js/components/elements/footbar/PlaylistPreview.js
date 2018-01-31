@@ -65,12 +65,7 @@ class PlaylistPreview extends MzkObject {
         };
         this.listContainer            = document.createElement("UL");
 
-        this.ui.container.id          = "playlistPreview";
-        this.ui.name.id               = "playlistPreviewName";
-        this.ui.total.id              = "playlistPreviewTotal";
-        this.ui.duration.id           = "playlistPreviewDuration";
-        this.ui.repeat.id             = "playlistPreviewRepeat";
-        this.ui.shuffle.id            = "playlistPreviewShuffle";
+        this.ui.container.className   = "mzk-playlist-review";
 
         this.ui.repeatShuffle.appendChild(this.ui.repeat);
         this.ui.repeatShuffle.appendChild(this.ui.shuffle);

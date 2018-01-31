@@ -43,7 +43,10 @@
 }
 
 #progressBarWrapper {
-    padding-top: 10px;
+    height: $progress-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .pointer {
         cursor: pointer;

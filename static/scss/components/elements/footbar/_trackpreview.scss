@@ -1,11 +1,13 @@
-#trackPreview {
+.mzk-track-preview {
     box-sizing: border-box;
     float: left;
     height: 100%;
     opacity: 0;
-    padding-left: 20px;
-    position: relative;
+    padding-left: $footbar-padding;
     width: 30%;
+    display: flex;
+    align-items: center;
+
 
     img {
         cursor: pointer;
@@ -15,7 +17,6 @@
     }
 
     ul {
-        display: inline-block;
         list-style: none;
         font-size: 0.8em;
         margin: 0;
@@ -28,18 +29,16 @@
     }
 
 
-    .tooltipWrapper {
+    div {
         height: 100%;
-        display: inline-block;
-        position: relative;
 
-        .tooltipTrackCover {
+        span {
             @extend .mzk-hidden;
             background-color: rgba(0, 0, 0, 1);
             border-radius: 3px;
             bottom: 85px;
             height: 500px;
-            left: 0;
+            left: $footbar-padding;
             position: absolute;
             text-align: center;
             width: 500px;
@@ -54,27 +53,7 @@
             }
         }
 
-        .tooltipPlaylistCover {
-            @extend .mzk-hidden;
-            background-color: rgba(0, 0, 0, 1);
-            border-radius: 3px;
-            bottom: 85px;
-            height: 500px;
-            position: absolute;
-            right: 0;
-            text-align: center;
-            width: 500px;
-            z-index: 1;
-
-            img {
-                border-radius: 3px;
-                box-sizing: border-box;
-                height: 500px !important;
-                width: 500px !important;
-            }
-        }
-
-        .tooltipTrackCover::after {
+        span::after {
             border: solid 5px;
             border-color: $secondary-color transparent transparent transparent;
             content: "";
@@ -83,18 +62,9 @@
             top: 100%;
         }
 
-        .tooltipPlaylistCover::after {
-            border: solid 5px;
-            border-color: rgba(0, 0, 0, 1) transparent transparent transparent;
-            content: "";
-            position: absolute;
-            top: 100%;
-            right: 32px;
-        }
     }
 
-    .tooltipWrapper:hover .tooltipTrackCover,
-    .tooltipWrapper:hover .tooltipPlaylistCover {
+    div:hover span {
         @extend .mzk-visible;
     }
 }

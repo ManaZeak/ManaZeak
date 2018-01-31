@@ -1,7 +1,6 @@
 /*      --------        Volume Slider        --------        */
 #buttonMute {
     position: relative;
-    display: inline-block;
 
     //Show volume bar on hover
     &:hover #volumeBarWrapper {
@@ -10,7 +9,7 @@
 }
 
 #volumeBarWrapper {
-    @extend .mzk-hidden;
+    @extend .mzk-visible;
     background-color: $secondary-color;
     border: solid 1px $dark-secondary-color;
     box-sizing: border-box;

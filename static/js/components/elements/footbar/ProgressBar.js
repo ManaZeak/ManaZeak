@@ -174,6 +174,7 @@ class ProgressBar extends MzkObject {
     _init() {
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";
+        this.duration.hover.innerHTML   = "--:--";
         this._eventListener();
     }
 
@@ -310,11 +311,16 @@ class ProgressBar extends MzkObject {
         // Avoid OOB
         if (distanceToLeftInPr > 100) { distanceToLeftInPr = 100; }
         if (distanceToLeftInPr < 0)   { distanceToLeftInPr = 0;   }
-
-        let hoveredTimecode            = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
         // We must convert back InPr to InPx ( distInPx = (boundRect.width * distanceToLeftInPr / 100) ) bc pixel size must be capped to progressBar bounds
         this.duration.hover.style.left = ((((boundRect.width * distanceToLeftInPr) / 100) - 30) * 100) / boundRect.width + "%";
-        this.duration.hover.innerHTML  = hoveredTimecode;
+
+        if (track.src !== "") {
+            this.duration.hover.innerHTML  = secondsToTimecode((track.duration * distanceToLeftInPr) / 100);
+        }
+
+        else {
+            this.duration.hover.innerHTML  = "--:--";
+        }
     }
 
 }

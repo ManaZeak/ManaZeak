@@ -1,6 +1,7 @@
+$controls-height: 50px;
+$progress-height: $footbar-height - $controls-height;
+
 .mzk-controls-container {
-    box-sizing: border-box;
-    display: inline-block;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -9,49 +10,55 @@
     -webkit-user-select: none;
     -moz-user-select: none;
 
-    .half {
-        height: 50%;
+    .controls {
+        height: $controls-height;
         text-align: center;
         width: 100%;
         -webkit-user-select: none;
         -moz-user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
             height: 30px;
             margin-left: 3px;
             margin-right: 3px;
-            margin-top: 13px;
             width: 30px;
         }
 
         a {
             cursor: pointer;
+            height: 30px;
         }
 
         .main {
             height: 40px;
             width: 40px;
         }
-    }
 
-    // QUEUE
-    .queueExpander {
-        cursor: pointer;
-        height: 35px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 35px;
+        // QUEUE
+        div {
+            cursor: pointer;
+            height: 35px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 35px;
 
-        &:hover .mzk-queue-preview {
-            @extend .mzk-visible;
+            &:hover .mzk-queue-preview {
+                @extend .mzk-visible;
+            }
+        }
+
+        div img {
+            height: 25px !important;
+            margin-right: 5px !important;
+            //margin-top: 5px !important;
+            width: 25px !important;
         }
     }
 
-    .queueExpander img {
-        height: 25px !important;
-        margin-right: 5px !important;
-        margin-top: 5px !important;
-        width: 25px !important;
-    }
+    @import './progressbar';
+    @import './volumebar';
 }

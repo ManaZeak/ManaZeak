@@ -1,13 +1,12 @@
-@import './elements/footbar/trackpreview';
-@import './elements/footbar/playlistpreview';
-@import './elements/footbar/controls';
-@import './elements/footbar/progressbar';
-@import './elements/footbar/queuepreview';
-
 #footBar {
+    @import './elements/footbar/controls';
+    @import './elements/footbar/playlistpreview';
+    @import './elements/footbar/queuepreview';
+    @import './elements/footbar/trackpreview';
+
     background-color: $secondary-color;
     bottom: 0;
-    height: 80px;
+    height: $footbar-height;
     position: absolute;
     width: 100%;
 }
