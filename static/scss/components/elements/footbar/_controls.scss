@@ -10,9 +10,8 @@ $progress-height: $footbar-height - $controls-height;
     -webkit-user-select: none;
     -moz-user-select: none;
 
-    .controls {
+    .mzk-controls {
         height: $controls-height;
-        text-align: center;
         width: 100%;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -32,30 +31,15 @@ $progress-height: $footbar-height - $controls-height;
             height: 30px;
         }
 
-        .main {
-            height: 40px;
-            width: 40px;
-        }
-
-        // QUEUE
-        div {
+        .mzk-queue-expander {
             cursor: pointer;
-            height: 35px;
+            height: 30px;
             position: absolute;
             right: 0;
-            top: 0;
-            width: 35px;
 
             &:hover .mzk-queue-preview {
                 @extend .mzk-visible;
             }
-        }
-
-        div img {
-            height: 25px !important;
-            margin-right: 5px !important;
-            //margin-top: 5px !important;
-            width: 25px !important;
         }
     }
 

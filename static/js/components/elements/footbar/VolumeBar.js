@@ -60,12 +60,11 @@ class VolumeBar extends MzkObject {
             thumb:      document.createElement("DIV")
         };
 
-        this.volumeBar.wrapper.id   = "volumeBarWrapper";
-        this.volumeBar.container.id = "volumeBar";
-        this.volumeBar.current.id   = "volume";
-        this.volumeBar.thumb.id     = "volumeThumb";
-        this.ui.mute.button.id      = "buttonMute";
-        this.ui.mute.image.id       = "imageMute";
+        this.ui.mute.button.className      = "mzk-volume-bar-expander";
+        this.volumeBar.wrapper.className   = "mzk-volume-bar-wrapper";
+        this.volumeBar.container.className = "mzk-volume-bar";
+        this.volumeBar.current.className   = "mzk-volume-col";
+        this.volumeBar.thumb.className     = "mzk-volume-thumb";
         this.ui.mute.image.src      = "/static/img/player/volume.svg";
 
         this.ui.mute.button.appendChild(this.ui.mute.image);
@@ -129,7 +128,7 @@ class VolumeBar extends MzkObject {
      **/
     _mouseDown(event) {
         if (!this.isDragging &&
-            (event.target.id === "volume" || event.target.id === "volumeBar" || event.target.id === "volumeThumb")) {
+            (event.target.classList.contains("mzk-volume-col") || event.target.classList.contains("mzk-volume-bar") || event.target.classList.contains("mzk-volume-thumb"))) {
             this.isDragging = true;
             this._moveVolume(event);
             toggleVisibilityLock(this.volumeBar.wrapper);

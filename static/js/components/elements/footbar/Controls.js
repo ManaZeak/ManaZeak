@@ -13,8 +13,8 @@ class Controls  {
 
     constructor(container) {
         this._createUI(container);
-        this.volumeBar    = new VolumeBar(this.container);
         this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
+        this.volumeBar    = new VolumeBar(this.container);
         this._eventListener();
     }
 
@@ -59,8 +59,9 @@ class Controls  {
             }
         };
 
-        this.container.className               = "controls";
+        this.container.className               = "mzk-controls";
         //TODO: switch to classes wherever possible
+        this.ui.queueExpander.button.className = "mzk-queue-expander";
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";

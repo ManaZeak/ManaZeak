@@ -1,78 +1,75 @@
-/*      --------        Volume Slider        --------        */
-#buttonMute {
+.mzk-volume-bar-expander {
     position: relative;
 
-    //Show volume bar on hover
-    &:hover #volumeBarWrapper {
+    .mzk-volume-bar-wrapper {
+        @extend .mzk-hidden;
+        background-color: $secondary-color;
+        border: solid 1px $dark-secondary-color;
+        box-sizing: border-box;
+        border-radius: 3px;
+        bottom: 45px;
+        height: 140px;
+        left: 3px;
+        position: absolute;
+        text-align: center;
+        width: 30px;
+    }
+
+    .mzk-volume-bar-wrapper::after {
+        border: solid 5px;
+        border-color: $dark-secondary-color transparent transparent transparent;
+        content: "";
+        left: 10px;
+        margin-top: 1px;
+        position: absolute;
+        top: 100%;
+    }
+
+    .mzk-volume-bar {
+        background-color: $primary-text;
+        border: solid 1px $dark-secondary-color;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        height: 85%;
+        margin: 10px 0;
+        position: relative;
+        width: 4px;
+
+        .mzk-volume-col {
+            background-color: rgb(255, 0, 0);
+            border-radius: 4px;
+            bottom: 0;
+            height: 0;
+            position: absolute;
+            transition: background-color 0.15s ease;
+            width: 100%;
+        }
+
+        .mzk-volume-thumb {
+            background-color: $white;
+            border: solid 1px $dark-secondary-color;
+            border-radius: 5px;
+            bottom: 0;
+            height: 10px;
+            left: -4px;
+            margin-bottom: -4px;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 0.15s ease;
+            width: 10px;
+        }
+    }
+
+    .mzk-volume-bar:hover > .mzk-volume-thumb {
+        opacity: 1;
+    }
+
+    .mzk-volume-bar:hover > .mzk-volume-col {
+        background-color: $anti-accent-color;
+    }
+
+    &:hover .mzk-volume-bar-wrapper {
         @extend .mzk-visible;
     }
-}
-
-#volumeBarWrapper {
-    @extend .mzk-visible;
-    background-color: $secondary-color;
-    border: solid 1px $dark-secondary-color;
-    box-sizing: border-box;
-    border-radius: 3px;
-    bottom: 45px;
-    height: 140px;
-    left: 3px;
-    position: absolute;
-    text-align: center;
-    width: 30px;
-    z-index: 1;
-}
-
-#buttonMute #volumeBarWrapper::after {
-    border: solid 5px;
-    border-color: $dark-secondary-color transparent transparent transparent;
-    content: "";
-    left: 10px;
-    margin-top: 1px;
-    position: absolute;
-    top: 100%;
-}
-
-#volumeBar {
-    background-color: $primary-text;
-    border: solid 1px $dark-secondary-color;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 85%;
-    margin: 10px 0;
-    position: relative;
-    width: 4px;
-
-    #volume {
-        background-color: rgb(255, 0, 0);
-        border-radius: 4px;
-        bottom: 0;
-        height: 0;
-        position: absolute;
-        transition: background-color 0.15s ease;
-        width: 100%;
-    }
-
-    #volumeThumb {
-        background-color: $white;
-        border: solid 1px $dark-secondary-color;
-        border-radius: 5px;
-        bottom: 0;
-        height: 10px;
-        left: -4px;
-        margin-bottom: -4px;
-        opacity: 0;
-        position: absolute;
-        transition: opacity 0.15s ease;
-        width: 10px;
-    }
-}
-
-#volumeBar:hover > #volumeThumb {
-    opacity: 1;
-}
-
-#volumeBar:hover > #volume {
-    background-color: $anti-accent-color;
 }

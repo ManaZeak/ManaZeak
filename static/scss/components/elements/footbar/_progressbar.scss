@@ -1,81 +1,78 @@
-#progressBar {
-    background-color: $primary-text;
-    border: solid 1px $dark-secondary-color;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    height: 4px;
-    margin: 0 10px;
-    position: relative;
-    width: 85%;
-
-    &:hover > #progressTimecodeHover {
-        @extend .mzk-visible;
-    }
-
-    #progress {
-        background-color: $accent-color;
-        border-radius: 4px;
-        height: 100%;
-        transition: background-color 0.15s ease;
-        width: 0;
-    }
-
-    #progressThumb {
-        background-color: $white;
-        border: solid 1px $dark-secondary-color;
-        border-radius: 5px;
-        height: 10px;
-        left: -6px;
-        margin-left: 0;
-        position: absolute;
-        top: -4px;
-        transition: opacity 0.15s ease;
-        opacity: 0;
-        width: 10px;
-    }
-}
-
-
-#currentDuration,
-#totalDuration {
-    font-size: 0.7em;
-}
-
-#progressBarWrapper {
+.mzk-progress-bar-wrapper {
     height: $progress-height;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .pointer {
-        cursor: pointer;
+
+    .mzk-current-duration,
+    .mzk-total-duration {
+        font-size: 0.7em;
     }
-}
 
-#progressTimecodeHover {
-    @extend .mzk-hidden;
-    background-color: $primary-text;
-    border: solid 1px $dark-secondary-color;
-    border-radius: 3px;
-    bottom: 10px;
-    box-sizing: border-box;
-    color: $dark-secondary-color;
-    font-size: 0.7em;
-    height: 20px;
-    left: 0;
-    line-height: 20px;
-    pointer-events: none; /* Disable hover effect from parent */
-    position: absolute;
-    text-align: center;
-    width: 60px;
-    z-index: 2;
-}
+    .mzk-progress-bar {
+        background-color: $primary-text;
+        border: solid 1px $dark-secondary-color;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        height: 4px;
+        margin: 0 10px;
+        position: relative;
+        width: 85%;
 
-#progressBar:hover > #progress {
-    background-color: $anti-accent-color;
-}
+        &:hover > .mzk-progress-timecode-hover {
+            @extend .mzk-visible;
+        }
 
-#progressBar:hover > #progressThumb {
-    opacity: 1;
+        .mzk-progress-lin {
+            background-color: $accent-color;
+            border-radius: 4px;
+            height: 100%;
+            transition: background-color 0.15s ease;
+            width: 0;
+        }
+
+        .mzk-progress-thumb {
+            background-color: $white;
+            border: solid 1px $dark-secondary-color;
+            border-radius: 5px;
+            height: 10px;
+            left: -6px;
+            margin-left: 0;
+            position: absolute;
+            top: -4px;
+            transition: opacity 0.15s ease;
+            opacity: 0;
+            width: 10px;
+        }
+
+        .mzk-progress-timecode-hover {
+            @extend .mzk-hidden;
+            background-color: $primary-text;
+            border: solid 1px $dark-secondary-color;
+            border-radius: 3px;
+            bottom: 10px;
+            box-sizing: border-box;
+            color: $dark-secondary-color;
+            font-size: 0.7em;
+            height: 20px;
+            left: 0;
+            line-height: 20px;
+            pointer-events: none; /* Disable hover effect from parent */
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            z-index: 2;
+        }
+
+    }
+
+    .mzk-progress-bar:hover > .mzk-progress-lin {
+        background-color: $anti-accent-color;
+    }
+
+    .mzk-progress-bar:hover > .mzk-progress-thumb {
+        opacity: 1;
+    }
 }
