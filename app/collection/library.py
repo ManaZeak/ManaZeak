@@ -13,7 +13,7 @@ from multiprocessing import Process
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
 from app.models import Library, Playlist, FileType, Album
 from app.track.importer import createMP3Track, createVorbisTrack
-from app.utils import errorCheckMessage, splitTableCustom
+from app.utils import errorCheckMessage, splitTableCustom, checkPermission
 
 
 # Perform the initial scan for a library
@@ -22,19 +22,20 @@ def initialScan(request):
     print("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'LIBRARY_ID' in response:
-            library = Library.objects.get(id=response['LIBRARY_ID'])
-            if os.path.isdir(library.path):
-                playlist = Playlist()
-                playlist.name = library.name
-                playlist.user = request.user
-                playlist.isLibrary = True
-                playlist.save()
-                data = scanLibrary(library, playlist, library.convertID3)
+        user = request.user
+        if checkPermission(["LIBR"], user):
+            if 'LIBRARY_ID' in response:
+                library = Library.objects.get(id=response['LIBRARY_ID'])
+                if os.path.isdir(library.path):
+                    playlist = library.playlist
+                    print(playlist.name)
+                    data = scanLibrary(library, playlist, library.convertID3)
+                else:
+                    data = errorCheckMessage(False, "dirNotFound")
             else:
-                data = errorCheckMessage(False, "dirNotFound")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -44,7 +45,8 @@ def initialScan(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def newLibrary(request):
     if request.method == 'POST':
-        if request.user.is_superuser:
+        user = request.user
+        if checkPermission(["LIBR"], user):
             response = json.loads(request.body)
             if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
                 dirPath = response['URL']
@@ -54,13 +56,16 @@ def newLibrary(request):
                         dirPath = dirPath[:-1]
                     library = Library()
                     library.path = dirPath
-                    library.name = strip_tags(response['NAME'])
                     library.convertID3 = response['CONVERT']
-                    library.user = request.user
+                    playlist = Playlist()
+                    playlist.user = user
+                    playlist.isLibrary = True
+                    playlist.name = strip_tags(response['NAME'])
+                    playlist.save()
+                    library.playlist = playlist
                     library.save()
                     data = {
                         'LIBRARY_ID': library.id,
-                        'LIBRARY_NAME': library.name,
                     }
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
@@ -79,14 +84,18 @@ def newLibrary(request):
 def checkLibraryScanStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
-                playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                data = errorCheckMessage(playlist.isScanned, None)
+        user = request.user
+        if checkPermission(["LIBR"], user):
+            if 'PLAYLIST_ID' in response:
+                if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
+                    playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
+                    data = errorCheckMessage(playlist.isScanned, None)
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -96,11 +105,12 @@ def rescanLibrary(library, user):
     # Check if the library is not used somewhere else
     if library.playlist.isScanned:
         # Delete all the old tracks
+        name = library.playlist.name
         library.playlist.delete()
 
         # Recreating playlist
         playlist = Playlist()
-        playlist.name = library.name
+        playlist.name = name
         playlist.user = user
         playlist.isLibrary = True
         playlist.save()
@@ -120,15 +130,18 @@ def rescanLibraryRequest(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         user = request.user
-        if 'LIBRARY_ID' in response:
-            library = strip_tags(response['LIBRARY_ID'])
-            if Library.objects.filter(id=library).count() == 1:
-                library = Library.objects.get(id=library)
-                data = rescanLibrary(library, user)
+        if checkPermission(["LIBR"], user):
+            if 'LIBRARY_ID' in response:
+                library = strip_tags(response['LIBRARY_ID'])
+                if Library.objects.filter(id=library).count() == 1:
+                    library = Library.objects.get(id=library)
+                    data = rescanLibrary(library, user)
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -137,7 +150,7 @@ def rescanLibraryRequest(request):
 def rescanAllLibraries(request):
     if request.method == 'GET':
         user = request.user
-        if user.is_superuser:
+        if checkPermission(["LIBR"], user):
             libraries = Library.objects.all()
             for library in libraries:
                 rescanLibrary(library, user)
@@ -153,7 +166,6 @@ def rescanAllLibraries(request):
 def scanLibrary(library, playlist, convert):
     failedItems = []
     coverPath = "/ManaZeak/static/img/covers/"
-    print("started scanning library: " + library.name)
     if not os.path.isdir(coverPath):
         try:
             os.makedirs(coverPath)
@@ -207,8 +219,8 @@ def deleteLibrary(library):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteAllLibrary(request):
     if request.method == 'GET':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["LIBR"], user):
             libraries = Library.objects.all()
             for library in libraries:
                 library.playlist.track.all().delete()

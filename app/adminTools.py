@@ -15,7 +15,7 @@ from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, 
 from app.collection.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.user import deleteLinkedEntities
-from app.utils import errorCheckMessage, timeCodeToString
+from app.utils import errorCheckMessage, timeCodeToString, checkPermission
 from app.wallet import calculateCurrentAvailableCash
 
 
@@ -39,8 +39,8 @@ def getAdminOptions():
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getAdminView(request):
     if request.method == 'GET':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             adminOptions = getAdminOptions()
             users = User.objects.all().order_by('date_joined')
             userInfo = []
@@ -73,14 +73,13 @@ def getAdminView(request):
             libraryInfo = []
             for library in Library.objects.all():
                 libraryInfo.append({
-                    'NAME': library.name,
+                    'NAME': library.playlist.name,
                     'PATH': library.path,
                     'NUMBER_TRACK': library.playlist.track.all().count(),
                     'TOTAL_DURATION': getTotalLength(library.playlist),
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
-
             # Global options
             data = {**data, **{
                 'SYNC_KEY': adminOptions.syncthingKey,
@@ -89,11 +88,19 @@ def getAdminView(request):
             }}
             groupInfo = []
             for group in Groups.objects.all().order_by("-rank"):
+                permissions = []
+                for permission in group.permissions.all():
+                    permissions.append(permission.code)
                 groupInfo.append({
                     'ID': group.id,
-                    'NAME': group.name
+                    'NAME': group.name,
+                    'PERMISSIONS': permissions,
                 })
             data = {**data, **dict({'GROUPS': groupInfo})}
+            tmp = {}
+            for permission in Permissions.objects.all():
+                tmp = {**tmp, **dict({permission.code: permission.name})}
+            data = {**data, **dict({'PERMISSIONS': tmp})}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
@@ -106,8 +113,8 @@ def getAdminView(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def removeAllMoods(request):
     if request.method == 'GET':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             moodbars = "/ManaZeak/static/mood/"
             for mood in os.listdir(moodbars):
                 os.remove(os.path.join(moodbars, mood))
@@ -123,13 +130,13 @@ def removeAllMoods(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def removeUser(request):
     if request.method == 'POST':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             response = json.loads(request.body)
             if 'USER_ID' in response:
                 try:
                     userId = int(strip_tags(response['USER_ID']))
-                    if userId != admin.id:
+                    if userId != user.id:
                         if User.objects.filter(id=userId).count() == 1:
                             user = User.objects.get(id=userId)
                             deleteLinkedEntities(user)
@@ -154,8 +161,8 @@ def removeUser(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def syncthingRescan(request):
     if request.method == 'GET':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             headers = {'X-API-Key': AdminOptions.objects.all().first().syncthingKey}
             req = requests.post('http://st:8384/rest/db/scan', headers=headers)
             if req.status_code == 200:
@@ -173,8 +180,8 @@ def syncthingRescan(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeSyncthingAPIKey(request):
     if request.method == 'POST':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             response = json.loads(request.body)
             if 'SYNC_KEY' in response:
                 adminOptions = getAdminOptions()
@@ -196,8 +203,8 @@ def changeSyncthingAPIKey(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeBufferPath(request):
     if request.method == 'POST':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             response = json.loads(request.body)
             if 'BUFFER_PATH' in response:
                 adminOptions = getAdminOptions()
@@ -221,8 +228,8 @@ def changeBufferPath(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def regenerateCovers(request):
     if request.method == 'GET':
-        admin = request.user
-        if admin.is_superuser:
+        user = request.user
+        if checkPermission(["ADMV"], user):
             # Deleting all covers
             moodbars = "/ManaZeak/static/img/covers"
             for mood in os.listdir(moodbars):
@@ -265,7 +272,7 @@ def isAdmin(request):
 def dropAllDB(request):
     if request.method == 'GET':
         user = request.user
-        if user.is_authenticated():
+        if checkPermission(["ADMV"], user):
             if user.is_superuser:
                 Track.objects.all().delete()
                 Artist.objects.all().delete()
@@ -277,9 +284,6 @@ def dropAllDB(request):
                 UserHistory.objects.all().delete()
                 Stats.objects.all().delete()
                 History.objects.all().delete()
-                Permissions.objects.all().delete()
-                Groups.objects.all().delete()
-                UserPreferences.objects.all().delete()
 
                 data = errorCheckMessage(True, None)
             else:
@@ -307,7 +311,7 @@ def isInviteEnabled(request):
 def toggleInvite(request):
     if request.method == 'GET':
         user = request.user
-        if user.is_superuser:
+        if checkPermission(["ADMV"], user):
             adminOptions = getAdminOptions()
             adminOptions.inviteCodeEnabled = not adminOptions.inviteCodeEnabled
             adminOptions.save()
@@ -326,14 +330,27 @@ def toggleInvite(request):
 def editGroup(request):
     if request.method == 'POST':
         user = request.user
-        if user.is_superuser:
+        if checkPermission(["GRPE"], user):
             response = json.loads(request.body)
             # TODO: Add permission edition
-            if 'GROUP_ID' in response and 'GROUP_NAME' in response:
+            if 'GROUP_ID' in response and 'GROUP_NAME' in response and 'PERMISSIONS':
                 groupId = strip_tags(response['GROUP_ID'])
                 if Groups.objects.filter(id=groupId).count() == 1:
                     group = Groups.objects.get(id=groupId)
                     group.name = strip_tags(response['GROUP_NAME'])
+                    group.save()
+                    permissions = Permissions.objects.all()
+                    for permission in permissions:
+                        if permission.code not in response['PERMISSIONS']:
+                            return JsonResponse(errorCheckMessage(False, "badFormat"))
+                    for permission in permissions:
+                        perm = response['PERMISSIONS'][permission.code]
+                        if perm:
+                            if group.permissions.filter(code=permission.code).count() == 0:
+                                group.permissions.add(Permissions.objects.get(code=permission.code))
+                        else:
+                            if group.permissions.filter(code=permission.code).count() == 1:
+                                group.permissions.remove(Permissions.objects.get(code=permission.code))
                     data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "dbError")
@@ -346,6 +363,7 @@ def editGroup(request):
     return JsonResponse(data)
 
 
+# Delete a library or a playlist depending of what has been send
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def deleteCollection(request):
     if request.method == 'POST':
@@ -355,8 +373,10 @@ def deleteCollection(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
+
+                # Library deletion
                 if playlist.isLibrary:
-                    if user.is_superuser:
+                    if checkPermission(["LIBR"], user):
                         if Library.objects.filter(playlist=playlist).count() == 1:
                             deleteLibrary(Library.objects.get(playlist=playlist))
                             data = errorCheckMessage(True, None)
@@ -364,12 +384,15 @@ def deleteCollection(request):
                             data = errorCheckMessage(False, "dbError")
                     else:
                         data = errorCheckMessage(False, "permissionError")
+
+                # Playlist deletion
                 else:
-                    if playlist.user == user:
+                    if playlist.user == user and checkPermission(["PLST"], user):
                         playlist.delete()
                         data = errorCheckMessage(True, None)
                     else:
                         data = errorCheckMessage(False, "permissionError")
+
             else:
                 data = errorCheckMessage(False, "dbError")
         else:

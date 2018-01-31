@@ -10,7 +10,7 @@ from mutagen.id3 import ID3
 from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
 from app.models import Track, Artist, Album, Genre
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Check if the value can be converted to int
@@ -235,7 +235,7 @@ def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        if user.is_superuser:
+        if checkPermission(["TAGE"], user):
             if 'TRACKS_ID' in response:
                 trackIds = response['TRACKS_ID']
                 data = {}
