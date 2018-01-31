@@ -306,8 +306,7 @@ class ListView extends PlaylistView {
      **/
     _createUI(data) {
         this.listView               = document.createElement("DIV");
-        this.listView.id            = "listView";
-        this.container.id           = "listViewWrapper";
+        this.listView.className     = "mzk-listview";
 
         this._initHeader();
         this._addEntries(data);
@@ -315,7 +314,7 @@ class ListView extends PlaylistView {
         this.container.appendChild(this.listView);
 
         if (this.entries.length * 26 > screen.height) { // TODO : Value to adjust
-            this.header.container.classList.add("columnHeaderOffset");
+            this.header.container.classList.add("mzk-column-header-offset");
         }
 
         this.trackInfo      = new TrackInfo(this.container);
@@ -398,7 +397,6 @@ class ListView extends PlaylistView {
             title:          null,
             artist:         null,
             composer:       null,
-            performer:      null,
             album:          null,
             genre:          null,
             bitRate:        null,
@@ -409,7 +407,6 @@ class ListView extends PlaylistView {
             title:      { isAsc:    false },
             artist:     { isAsc:    false },
             composer:   { isAsc:    false },
-            performer:  { isAsc:    false },
             album:      { isAsc:    false },
             genre:      { isAsc:    false },
             bitRate:    { isAsc:    false },
@@ -436,15 +433,15 @@ class ListView extends PlaylistView {
         this.header.bitRate                  = document.createElement("DIV");
         this.header.year                     = document.createElement("DIV");
 
-        this.header.container.className      = "columnHeader";
-        this.header.duration.className       = "col-duration";
-        this.header.title.className          = "col-title";
-        this.header.artist.className         = "col-artist";
-        this.header.composer.className       = "col-composer";
-        this.header.album.className          = "col-album";
-        this.header.genre.className          = "col-genre";
-        this.header.bitRate.className        = "col-bitRate";
-        this.header.year.className           = "col-year";
+        this.header.container.className      = "mzk-column-header";
+        this.header.duration.className       = "mzk-col-duration";
+        this.header.title.className          = "mzk-col-title";
+        this.header.artist.className         = "mzk-col-artist";
+        this.header.composer.className       = "mzk-col-composer";
+        this.header.album.className          = "mzk-col-album";
+        this.header.genre.className          = "mzk-col-genre";
+        this.header.bitRate.className        = "mzk-col-bitRate";
+        this.header.year.className           = "mzk-col-year";
         this.header.duration.innerHTML       = "Duration";
         this.header.title.innerHTML          = "Title";
         this.header.artist.innerHTML         = "Artist";

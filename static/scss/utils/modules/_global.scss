@@ -1,69 +1,59 @@
-// Sizes
-$topbar-height: 50px;
-
-$border-radius: 3px;
-
-$app-padding: 10px;
-$app-margin: 10px;
+$topbar-height:   50px;
+$border-radius:   3px;
+$app-padding:     10px;
+$app-margin:      10px;
 $footbar-padding: $app-padding;
 
-// Colors
 $primary-color:        rgba(44, 44, 48, 1);
 $secondary-color:      rgba(31, 33, 39, 1);
 $dark-primary-color:   rgba(64, 64, 72, 1);
 $dark-secondary-color: rgba(14, 15, 20, 1);
-
 $primary-text:         rgba(170, 170, 190, 1);
 $white:                rgba(255, 255, 255, 1);
-
 $listview-even-lin:     rgba(41, 41, 45, 1);
-
 $accent-color:         rgba(255, 0, 0, 1);
 $anti-accent-color:    rgba(0, 0, 255, 1);
 
 input[type=text] {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-
-  height: 25px;
-  width: 300px;
-  margin-bottom: 20px;
-  text-align: center;
-  border-radius: 1px;
-  border: solid 1px #777;
+    display:       block;
+    margin-left:   auto;
+    margin-right:  auto;
+    height:        25px;
+    width:         300px;
+    margin-bottom: 20px;
+    text-align:    center;
+    border-radius: 1px;
+    border:        solid 1px #777;
 }
 
 button {
-  margin: 10px 15px;
-  background: transparent;
-  color: $primary-text;
-  border: solid 1px $primary-text;
-  padding: 5px 20px;
-  border-radius: 3px;
-  cursor: pointer;
+    background:    transparent;
+    border:        solid 1px $primary-text;
+    border-radius: 3px;
+    color:         $primary-text;
+    cursor:        pointer;
+    margin:        10px 15px;
+    padding:       5px 20px;
+    transition:    0.1s ease;
 
-  transition: 0.1s ease;
-
-  &:hover {
-    box-shadow: 0 0 2px $dark-primary-color;
-  }
+    &:hover {
+        box-shadow: 0 0 2px $dark-primary-color;
+    }
 }
 
 .mzk-hidden {
-  opacity: 0;
-  visibility: hidden;
-  transition: visibility 0s 0.3s,
-  opacity 0.3s ease;
+    opacity:    0;
+    visibility: hidden;
+    transition: visibility 0s 0.3s,
+                opacity 0.3s ease;
 
-  //We need to beat hidden's specificity because of how @extend works
-  &.mzk-visible {
-    @extend .mzk-visible;
-  }
+    &.mzk-visible {
+        @extend .mzk-visible;
+    }
 }
 
 .mzk-visible {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-  visibility: visible;
+    opacity:    1;
+    transition: opacity 0.3s ease;
+    visibility: visible;
 }

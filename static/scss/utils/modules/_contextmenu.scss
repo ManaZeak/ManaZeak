@@ -3,39 +3,39 @@ $menu-indentation: 20px;
 #mzk-ctx-wrap {
     @extend .mzk-hidden;
     background-color: $primary-color;
-    border: solid 1px $dark-secondary-color;
-    font-size: 0.9em;
-    height: auto;
-    min-width: 140px;
-    position: fixed;
-    z-index: 42000;
-    // Overriding PlaylistBar entry options
-    line-height: 1em !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    border:           solid 1px $dark-secondary-color;
+    border-radius:    $border-radius;
+    font-size:        0.9em;
+    height:           auto;
+    line-height:      1em !important;
+    min-width:        140px;
+    margin:           0 !important;
+    padding:          0 !important;
+    position:         fixed;
+    z-index:          42000;
 
     ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
         background-color: $primary-color;
+        list-style:       none;
+        margin:           0;
+        padding:          0;
 
         & > li {
             padding-left: $menu-indentation;
-            text-align: left;
+            text-align:   left;
 
             &::after, &::before {
-                content: "";
-                display: block;
-                margin-left: -$menu-indentation;
-                width: calc(100% + #{$menu-indentation});
+                content:     "";
+                display:     block;
+                margin-left: - $menu-indentation;
+                width:       calc(100% + #{$menu-indentation});
             }
 
             & > span.mzk-ctx-label {
                 &::after, &::before {
                     content: "";
                     display: block;
-                    height: 6px;
+                    height:  6px;
                 }
             }
 
@@ -61,10 +61,9 @@ $menu-indentation: 20px;
             &.mzk-ctx-submenu {
                 ul:not(.mzk-ctx-open) {
                     display: none;
-                    height: 0;
+                    height:  0;
                 }
             }
-
         }
     }
 }
