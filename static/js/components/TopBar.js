@@ -24,6 +24,7 @@ class TopBar extends MzkObject {
         if (window.app.user.hasPermission("WISH")) {
             this.wishList      = new WishList(this.topBar);
         }
+
         this.userMenu      = new UserMenu(this.topBar);
         this.collectionBar = new CollectionBar(window.app.playlists, this.playlistBar);
         this.newLibMenu    = null;

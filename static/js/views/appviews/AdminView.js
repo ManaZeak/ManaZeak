@@ -109,16 +109,16 @@ class AdminView extends View {
 
         this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
-        this.ui.menuUser.innerHTML  = "Users";
+        this.ui.menuUser.innerHTML  = "Groups / Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
         this.ui.menuWish.innerHTML  = "Wishes";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
+        this.ui.menuList.appendChild(this.ui.menuUser);
         this.ui.menuList.appendChild(this.ui.menuLib);
         this.ui.menuList.appendChild(this.ui.menuWish);
         this.ui.menuList.appendChild(this.ui.menuSC);
-        this.ui.menuList.appendChild(this.ui.menuUser);
 
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
@@ -290,7 +290,7 @@ class AdminView extends View {
         this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuUser.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "User management";
+        this.ui.contentTitle.innerHTML = "Group / User management";
 
         let sponsoringLabel            = document.createElement("P");
         let sponsoringSpan             = document.createElement("SPAN");
@@ -315,9 +315,9 @@ class AdminView extends View {
                     });
                 });
             });
-            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
-                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
-                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + "<br>" +
+            element.innerHTML          = "<b>" + window.app.user.getUsername() + "</b> (" + admin + ") <br><br>" +
+                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + window.app.user.getInviteCode() + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + window.app.user.getGodFatherName() + " (" + window.app.user.getGodFatherCode() + ")<br>" +
                                          "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
                                          "Joined on: " + this.info.USER[i].JOINED + "<br>" +
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
@@ -801,8 +801,6 @@ class AdminView extends View {
      **/
     _toggleInviteMode() {
         let that = this;
-
-
         JSONParsedGetRequest(
             "admin/toggleInvite/",
             function(response) {
@@ -835,6 +833,7 @@ class AdminView extends View {
         this.ui.menuSC.className   = "";
         this.ui.menuWish.className = "";
     }
+
 }
 
 export default AdminView

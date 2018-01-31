@@ -122,9 +122,12 @@ class User {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
+    getID() { return this.id; }
     getIsAdmin() { return this.isAdmin; }
     getUsername()    { return this.username; }
-    getInviteCode() { if (this.hasPermission("SPON")) { return this.inviteCode; }}
+    getInviteCode() { if (this.hasPermission("SPON")) { return this.inviteCode; } else { return "--"; }}
+    getGodFatherCode() { return this.godFatherCode; }
+    getGodFatherName() { return this.godFatherName; }
 
 }
 
