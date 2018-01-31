@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <title>ManaZeak signup</title>
-    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/user.scss" %}">
+    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user.scss" %}">
 </head>
 {% block body %}
     {% load staticfiles %}
@@ -19,7 +19,6 @@
     <div id="login">
         <img src="/static/img/manazeak-text.svg">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
-
         <form id="signupForm" action="" method="POST" name="signup">
             <p><label for="id_username">Username:</label>
             {{ form.username }}</p>
@@ -32,11 +31,7 @@
             {% csrf_token %}
         </form>
         <img src="/static/img/manazeak.svg" class="mzk-logo">
-
-        <div id="error"> <!-- TODO : make invisible by default -->
-            {{ form.errors }}
-            {{ form.non_field_errors }}
-        </div>
+        <div id="error">{{ form.errors }}{{ form.non_field_errors }}</div>
     </div>
 
     <script>
@@ -66,11 +61,11 @@
         xhr.open("GET", "../admin/isInviteEnabled/", true);
         xhr.send();
 
-        document.addEventListener("keydown", function(event) {
+/*        document.addEventListener("keydown", function(event) {
             if (event.keyCode === 18) {
                 document.signup.submit();
             }
-        });
+        });*/
     </script>
     </body>
 {% endblock %}

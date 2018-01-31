@@ -1,0 +1,34 @@
+$dnd-animation-length: 0.25s;
+
+.mzk-dragdrop {
+    &::after {
+        align-items:     center;
+        background:      rgba(255, 255, 255, 0.2);
+        border: dashed   $border-radius * 2;
+        border-radius:   $border-radius * 2;
+        bottom:          $app-padding;
+        content:         "Drop your music here";
+        display:         flex;
+        justify-content: center;
+        left:            $app-padding;
+        opacity:         0;
+        position:        absolute;
+        right:           $app-padding;
+        top:             $app-padding;
+        transition:      opacity $dnd-animation-length, z-index 0s $dnd-animation-length;
+        z-index:         -1;
+    }
+
+    &.mzk-dragdrop-show {
+        & > * {
+            filter:         blur(3px);
+            pointer-events: none;
+        }
+
+        &::after {
+            opacity:    1;
+            transition: opacity $dnd-animation-length;
+            z-index:    1;
+        }
+    }
+}

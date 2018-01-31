@@ -27,16 +27,16 @@ class ListViewEntry {
             year: document.createElement("DIV")
         };
 
-        this.entry.className = "trackContainer";
-        this.info.duration.className   = "col-duration";
-        this.info.title.className      = "col-title";
-        this.info.artist.className     = "col-artist";
-        this.info.composer.className   = "col-composer";
-        this.info.performer.className  = "col-performer";
-        this.info.album.className      = "col-album";
-        this.info.genre.className      = "col-genre";
-        this.info.bitRate.className    = "col-bitRate";
-        this.info.year.className       = "col-year";
+        this.entry.className           = "mzk-track-container";
+        this.info.duration.className   = "mzk-col-duration";
+        this.info.title.className      = "mzk-col-title";
+        this.info.artist.className     = "mzk-col-artist";
+        this.info.composer.className   = "mzk-col-composer";
+        this.info.performer.className  = "mzk-col-performer";
+        this.info.album.className      = "mzk-col-album";
+        this.info.genre.className      = "mzk-col-genre";
+        this.info.bitRate.className    = "mzk-col-bitRate";
+        this.info.year.className       = "mzk-col-year";
 
         this.entry.appendChild(this.info.duration);
         this.entry.appendChild(this.info.title);
@@ -49,7 +49,6 @@ class ListViewEntry {
         this.entry.appendChild(this.info.year);
 
         this._setInfo();
-        this._eventListener();
         this.insert(listView);
     }
 
@@ -65,7 +64,7 @@ class ListViewEntry {
         this.entry.dataset.childID = listView.children.length;
 
         if (this.entry.dataset.childID % 2 === 0) {
-            this.entry.classList.add("evenLin");
+            this.entry.classList.add("mzk-even-lin");
         }
 
         listView.appendChild(this.entry);
@@ -79,10 +78,10 @@ class ListViewEntry {
      * arg    : {int} seed - The value to test is even
      **/
     setBackground(seed) {
-        this.entry.classList.remove("evenLin");
+        this.entry.classList.remove("mzk-even-lin");
 
         if (seed % 2 === 0) {
-            this.entry.classList.add("evenLin");
+            this.entry.classList.add("mzk-even-lin");
         }
     }
 

@@ -50,13 +50,13 @@ class StatsView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id          = "stats";
-        this.ui.menu.id               = "leftMenu";
-        this.ui.content.id            = "content";
-        this.ui.menuTitle.innerHTML   = "Statistics";
-        this.ui.menuArtist.innerHTML  = "Artist";
-        this.ui.menuTrack.innerHTML   = "Track";
-        this.ui.menuGenre.innerHTML   = "Genre";
+        this.ui.container.classList.add("mzk-statsview");
+        this.ui.menu.className       = "mzk-left-menu";
+        this.ui.content.className    = "mzk-content";
+        this.ui.menuTitle.innerHTML  = "Statistics";
+        this.ui.menuArtist.innerHTML = "Artist";
+        this.ui.menuTrack.innerHTML  = "Track";
+        this.ui.menuGenre.innerHTML  = "Genre";
 
         this.ui.menuList.appendChild(this.ui.menuArtist);
         this.ui.menuList.appendChild(this.ui.menuTrack);
@@ -91,7 +91,7 @@ class StatsView extends View {
     _requestArtistPage() {
         this._clearPageSpace();
 
-        this.ui.menuArtist.className   = "selected";
+        this.ui.menuArtist.className   = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Artists statistic";
 
         let artistsLeft                = document.createElement("DIV");
@@ -101,10 +101,10 @@ class StatsView extends View {
         let leastArtistsLabel          = document.createElement("P");
         let leastArtists               = document.createElement("UL");
 
-        prefArtistsLabel.id            = "label";
-        leastArtistsLabel.id           = "label";
-        artistsLeft.className          = "col";
-        artistsRight.className         = "col";
+        prefArtistsLabel.className     = "mzk-label";
+        leastArtistsLabel.className    = "mzk-label";
+        artistsLeft.className          = "mzk-col";
+        artistsRight.className         = "mzk-col";
 
         artistsLeft.appendChild(prefArtistsLabel);
         artistsLeft.appendChild(prefArtists);
@@ -158,7 +158,7 @@ class StatsView extends View {
     _requestGenrePage() {
         this._clearPageSpace();
 
-        this.ui.menuGenre.className    = "selected";
+        this.ui.menuGenre.className    = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Genres statistic";
 
         let genresLeft                 = document.createElement("DIV");
@@ -168,10 +168,10 @@ class StatsView extends View {
         let leastGenresLabel           = document.createElement("P");
         let leastGenres                = document.createElement("UL");
 
-        prefGenresLabel.id             = "label";
-        leastGenresLabel.id            = "label";
-        genresLeft.className           = "col";
-        genresRight.className          = "col";
+        prefGenresLabel.className      = "mzk-label";
+        leastGenresLabel.className     = "mzk-label";
+        genresLeft.className           = "mzk-col";
+        genresRight.className          = "mzk-col";
 
         genresLeft.appendChild(prefGenresLabel);
         genresLeft.appendChild(prefGenres);
@@ -225,7 +225,7 @@ class StatsView extends View {
     _requestTrackPage() {
         this._clearPageSpace();
 
-        this.ui.menuTrack.className    = "selected";
+        this.ui.menuTrack.className    = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Tracks statistic";
 
         let tracksLeft                 = document.createElement("DIV");
@@ -235,10 +235,10 @@ class StatsView extends View {
         let leastTracksLabel           = document.createElement("P");
         let leastTracks                = document.createElement("UL");
 
-        prefTracksLabel.id             = "label";
-        leastTracksLabel.id            = "label";
-        tracksLeft.className           = "col";
-        tracksRight.className          = "col";
+        prefTracksLabel.className      = "mzk-label";
+        leastTracksLabel.className     = "mzk-label";
+        tracksLeft.className           = "mzk-col";
+        tracksRight.className          = "mzk-col";
 
         tracksLeft.appendChild(prefTracksLabel);
         tracksLeft.appendChild(prefTracks);

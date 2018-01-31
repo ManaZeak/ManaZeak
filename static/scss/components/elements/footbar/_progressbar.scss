@@ -1,0 +1,76 @@
+.mzk-progress-bar-wrapper {
+    align-items:     center;
+    display:         flex;
+    height:          $progress-height;
+    justify-content: center;
+
+    .mzk-current-duration,
+    .mzk-total-duration {
+        font-size: 0.7em;
+    }
+
+    .mzk-progress-bar {
+        background-color: $primary-text;
+        border:           solid 1px $dark-secondary-color;
+        border-radius:    $border-radius;
+        cursor:           pointer;
+        display:          inline-block;
+        height:           $border-radius;
+        margin:           0 $app-margin;
+        position:         relative;
+        width:            85%;
+
+        &:hover > .mzk-progress-timecode-hover {
+            @extend .mzk-visible;
+        }
+
+        .mzk-progress-lin {
+            background-color: $accent-color;
+            border-radius:    $border-radius;
+            height:           100%;
+            transition:       background-color 0.15s ease;
+            width:            0;
+        }
+
+        .mzk-progress-thumb {
+            background-color: $white;
+            border:           solid 1px $dark-secondary-color;
+            border-radius:    $border-radius * 2;
+            height:           10px;
+            left:             -6px;
+            margin-left:      0;
+            position:         absolute;
+            top:              -4px;
+            transition:       opacity 0.15s ease;
+            opacity:          0;
+            width:            10px;
+        }
+
+        .mzk-progress-timecode-hover {
+            @extend .mzk-hidden;
+            background-color: $primary-text;
+            border:           solid 1px $dark-secondary-color;
+            border-radius:    3px;
+            bottom:           10px;
+            box-sizing:       border-box;
+            color:            $dark-secondary-color;
+            font-size:        0.7em;
+            height:           20px;
+            left:             0;
+            line-height:      20px;
+            pointer-events:   none; /* Disable hover effect from parent */
+            position:         absolute;
+            text-align:       center;
+            width:            60px;
+            z-index:          2;
+        }
+    }
+
+    .mzk-progress-bar:hover > .mzk-progress-lin {
+        background-color: $anti-accent-color;
+    }
+
+    .mzk-progress-bar:hover > .mzk-progress-thumb {
+        opacity: 1;
+    }
+}

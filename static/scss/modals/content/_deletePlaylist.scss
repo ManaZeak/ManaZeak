@@ -1,0 +1,18 @@
+&.mzk-modal-delete-playlist {
+    .mzk-modal-content {
+        #infoLabel {
+            margin-left:  auto;
+            margin-right: auto;
+        }
+    }
+
+    .mzk-modal-footer {
+        #cancelButton:hover {
+            border: solid 1px green;
+        }
+
+        #deleteButton:hover {
+            border: solid 1px red;
+        }
+    }
+}

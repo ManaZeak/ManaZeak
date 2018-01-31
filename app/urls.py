@@ -66,6 +66,7 @@ urlpatterns = [
     url(r'^wish/setStatus/$', wish.setWishStatus, name='setWishStatus'),
 
     # USER actions
+    url(r'^user/getInformation/$', user.getUserInformation, name='getUserInformation'),
     url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
     url(r'^user/delete/$', user.deleteUser, name='deleteUser'),
 

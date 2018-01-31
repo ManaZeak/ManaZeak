@@ -335,7 +335,7 @@ export function renderMoodFile(file, parentDiv, callback) {
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4 && this.status === 200) {
-            d3.selectAll('#moodbar svg').remove();
+            d3.selectAll('.mzk-moodbar svg').remove();
             let rgb = new Array(this.responseText.length / 3);
 
             for (let i = 0, len = rgb.length; i < len; ++i) {

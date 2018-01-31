@@ -7,13 +7,19 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import { JSONParsedGetRequest } from '../utils/Utils.js'
+import Notification from '../utils/Notification.js'
 
 class User {
 
     constructor() {
+        this.id            = -1;
         this.isAdmin       = false;
-        this.inviteCode    = 0;
-        this.godFatherCode = 0;
+        this.username      = "";
+        this.groupName     = "";
+        this.groupID       = -1;
+        this.inviteCode    = -1;
+        this.godFatherCode = -1;
+        this.godFatherName = "";
         this._getUserInfo();
     }
 
@@ -25,7 +31,7 @@ class User {
      * desc   : Get info from server and stores it locally
      * arg    : {function} callback
      **/
-    updateIsAdmin(callback) {
+    updateIsAdmin(callback) { // TODO remove when new system OK
         let that = this;
         JSONParsedGetRequest(
             "admin/isAdmin/",
@@ -62,7 +68,7 @@ class User {
     _getUserInfo() {
         let that = this;
         JSONParsedGetRequest(
-            "user/getSettings/",
+            "user/getInformation/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -79,13 +85,18 @@ class User {
                  *     GODFATHER_NAME:
                  * } */
                 if (response.DONE) {
-                    // TODO : store all values
-                    that.godFatherCode = response.GODFATHER_CODE;
+                    that.id            = response.USER_ID;
+                    that.isAdmin       = response.IS_ADMIN;
+                    that.username      = response.USERNAME;
+                    that.groupName     = response.GROUP_NAME;
+                    that.groupID       = response.GROUP_ID;
                     that.inviteCode    = response.INVITE_CODE;
+                    that.godFatherCode = response.GODFATHER_CODE;
+                    that.godFatherName = response.GODFATHER_NAME;
                 }
 
                 else {
-
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );

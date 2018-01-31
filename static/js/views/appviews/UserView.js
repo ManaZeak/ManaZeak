@@ -49,9 +49,9 @@ class UserView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "user";
-        this.ui.menu.id             = "leftMenu";
-        this.ui.content.id          = "content";
+        this.ui.container.classList.add("mzk-user-view");
+        this.ui.menu.className      = "mzk-left-menu";
+        this.ui.content.className   = "mzk-content";
         this.ui.menuTitle.innerHTML = "User";
         this.ui.menuGen.innerHTML   = "General";
 
@@ -84,7 +84,7 @@ class UserView extends View {
     _requestGeneralPage() {
         this._updateSettingsInfo();
         this._clearPageSpace();
-        this.ui.menuGen.className          = "selected";
+        this.ui.menuGen.className          = "mzk-selected";
         this.ui.contentTitle.innerHTML     = "General settings";
 
         this.ui.rescanLibLabel            = document.createElement("P");

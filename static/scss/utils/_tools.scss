@@ -1,5 +1,5 @@
-// Tools building
-@import "elements/mixins";
-@import "elements/colors";
-@import "../components/modal";
-@import "elements/global";
+@import "modules/global"; // Called first bc it contains all mzk scss vars
+@import "modules/contextmenu";
+@import "modules/dragdrop";
+@import "modules/mixins";
+@import "modules/notification";

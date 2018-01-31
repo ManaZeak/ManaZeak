@@ -50,8 +50,8 @@ class TopBar extends MzkObject {
                  *     TRACK_MOOD  : string
                  * } */
                 let error = false;
+                that.resetMoodbar();
                 renderMoodFile(response.TRACK_MOOD, that.moodbar, function() { // Callback is here in case of 404 on the moodBar
-                    that.resetMoodbar();
                     error = true;
                 });
 
@@ -71,7 +71,7 @@ class TopBar extends MzkObject {
      * desc   : Erase moodbar content and hide moodbar thumb
      **/
     resetMoodbar() {
-        d3.selectAll('#moodbar svg').remove();
+        d3.selectAll('.mzk-moodbar svg').remove();
         this.moodbarThumb.isVisible = false;
         removeVisibilityLock(this.moodbarThumb);
     }
@@ -90,11 +90,15 @@ class TopBar extends MzkObject {
         this.moodbarThumb                = document.createElement("DIV");
         this.playlistBar                 = document.createElement("DIV");
 
-        this.topBar.id                   = "topBar";
-        this.moodbar.id                  = "moodbar";
-        this.moodbarThumb.id             = "moodbarThumb";
-        this.playlistBar.id              = "playlistBar";
+        this.topBar.className            = "mzk-topbar";
+        this.moodbar.className           = "mzk-moodbar";
+        this.moodbarThumb.className      = "mzk-moodbar-thumb";
+        this.playlistBar.className       = "mzk-collection-bar";
         this.moodbarThumb.isVisible      = false;
+
+        //TODO : remove this when moodbar.js is OK
+        this.moodbar.id           = "moodbar";
+        this.moodbarThumb.id      = "moodbarThumb";
 
         this.topBar.appendChild(this.moodbar);
         this.moodbar.appendChild(this.moodbarThumb);

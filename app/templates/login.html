@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <title>ManaZeak login</title>
-    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user/user.scss" %}">
+    <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user.scss" %}">
 </head>
 {% block body %}
     {% load staticfiles %}
@@ -21,9 +21,6 @@
         {% if user.is_active %}
             <p>Authenticated already. Go back to <a href="{% url 'app:index' %}">ManaZeak</a></p>
         {% else %}
-        {% if form.has_errors %}
-            <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
             <p>Please login below, or <a href="{% url 'app:signup' %}">sign up</a></p>
             <form action="" method="post" enctype="multipart/form-data" name="login">
                 {% csrf_token %}
@@ -34,19 +31,16 @@
                 <button type="submit">Submit</button>
             </form>
             <img src="/static/img/manazeak.svg" class="mzk-logo">
-        <div id="error"> <!-- TODO : make invisible by default -->
-            {{ form.errors }}
-            {{ form.non_field_errors }}
-        </div>
+            <div id="error">{{ form.errors }}{{ form.non_field_errors }}</div>
         {% endif %}
     </div>
 
     <script>
-        document.addEventListener("keydown", function(event) {
+/*        document.addEventListener("keydown", function(event) {
             if (event.keyCode === 18) {
                 document.login.submit();
             }
         });
-    </script>
+*/    </script>
 </body>
 {% endblock %}

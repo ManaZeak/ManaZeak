@@ -13,8 +13,8 @@ class Controls  {
 
     constructor(container) {
         this._createUI(container);
-        this.volumeBar    = new VolumeBar(this.container);
         this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
+        this.volumeBar    = new VolumeBar(this.container);
         this._eventListener();
     }
 
@@ -59,22 +59,9 @@ class Controls  {
             }
         };
 
-        this.container.className               = "half";
+        this.container.className               = "mzk-controls";
         //TODO: switch to classes wherever possible
-        this.ui.play.button.id                 = "buttonPlay";
-        this.ui.play.image.id                  = "imagePlay";
-        this.ui.stop.button.id                 = "buttonStop";
-        this.ui.stop.image.id                  = "imageStop";
-        this.ui.repeat.button.id               = "buttonRepeat";
-        this.ui.repeat.image.id                = "imageRepeat";
-        this.ui.shuffle.button.id              = "buttonShuffle";
-        this.ui.shuffle.image.id               = "imageShuffle";
-        this.ui.next.button.id                 = "buttonNext";
-        this.ui.next.image.id                  = "imageNext";
-        this.ui.previous.button.id             = "buttonPrevious";
-        this.ui.previous.image.id              = "imagePrevious";
-        this.ui.queueExpander.button.className = "queueExpander";
-        this.ui.queueExpander.image.id         = "imageQueueExpander";
+        this.ui.queueExpander.button.className = "mzk-queue-expander";
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";

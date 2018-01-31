@@ -1,0 +1,43 @@
+&.mzk-modal-new-library {
+    .mzk-modal-content {
+        #infoLabel {
+            margin-left:  auto;
+            margin-right: auto;
+        }
+
+        #name {
+            border: solid  1px #777;
+            border-radius: 1px;
+            height:        25px;
+            margin-bottom: 20px;
+            text-align:    center;
+            width:         300px;
+        }
+
+        #path {
+            border: solid  1px #777;
+            border-radius: 1px;
+            height:        25px;
+            margin-bottom: 20px;
+            text-align:    center;
+            width:         300px;
+        }
+
+        #id3Label {
+            margin-right:   5px;
+            vertical-align: text-bottom;
+        }
+
+        #convert {
+            margin:        0;
+            margin-bottom: 20px;
+        }
+    }
+
+    .mzk-modal-footer {
+        #scanButton {
+            width: 75px;
+        }
+    }
+}
+

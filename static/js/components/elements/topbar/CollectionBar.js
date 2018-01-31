@@ -26,11 +26,11 @@ class PlaylistCollectionEntry {
         this.entry.appendChild(this.label);
 
         if (this.isLibrary) {
-            this.entry.className   = "library";
+            this.entry.className   = "mzk-library";
         }
 
         else {
-            this.entry.className   = "playlist";
+            this.entry.className   = "mzk-playlist";
         }
 
         this.isSelected            = false;
@@ -72,21 +72,21 @@ class PlaylistCollectionEntry {
 
         if (this.isLibrary) {
             if (this.isSelected) {
-                this.entry.classList.add("librarySelected");
+                this.entry.classList.add("mzk-library-selected");
             }
 
             else {
-                this.entry.classList.remove("librarySelected");
+                this.entry.classList.remove("mzk-library-selected");
             }
         }
 
         else {
             if (this.isSelected) {
-                this.entry.classList.add("playlistSelected");
+                this.entry.classList.add("mzk-playlist-selected");
             }
 
             else {
-                this.entry.classList.remove("playlistSelected");
+                this.entry.classList.remove("mzk-playlist-selected");
             }
         }
     }
@@ -125,10 +125,10 @@ class PlaylistCollectionEntry {
      * desc   : Append option button to entry
      **/
     _createOptionButton() {
-        let that           = this;
+        let that               = this;
         // TODO : add admin options, or library options
-        this.options       = document.createElement("A");
-        this.options.id    = "gear";
+        this.options           = document.createElement("A");
+        this.options.className = "mzk-gear";
         this.options.addEventListener("mouseleave", function() {
             if (that.contextMenu) {
                 that.contextMenu.setInvisible();
@@ -255,8 +255,8 @@ class CollectionBar extends MzkObject {
         this.playContainer           = document.createElement('DIV');
         this.newButton               = document.createElement("DIV");
 
-        this.libsContainer.className = 'no-padding';
-        this.playContainer.className = 'no-padding';
+        this.libsContainer.className = 'mzk-no-padding';
+        this.playContainer.className = 'mzk-no-padding';
         this.newButton.innerText     = '+';
 
         this.element.appendChild(this.libsContainer);

@@ -117,7 +117,12 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
 
     if 'TPOS' in audioTag:
         if not audioTag['TPOS'].text[0] == "":
-            track.discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+            discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+            try:
+                discNumber = int(discNumber)
+            except ValueError:
+                discNumber = 0
+            track.discNumber = discNumber
 
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
@@ -206,6 +211,10 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
     if 'DISCNUMBER' in audioFile:
         discNumber = processVorbisTag(audioFile['DISCNUMBER'])
         if not discNumber == "":
+            try:
+                discNumber = int(discNumber)
+            except ValueError:
+                discNumber = 0
             track.discNumber = discNumber
 
     if 'COMMENT' in audioFile:
