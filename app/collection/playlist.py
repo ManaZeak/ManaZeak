@@ -221,7 +221,6 @@ def getUserPlaylists(request):
         libraries = Playlist.objects.filter(isLibrary=True)
         for library in libraries:
             playlistNames.append(library.name)
-            print("zeazl", library.name)
             playlistIds.append(library.id)
             isLibrary.append(True)
 

@@ -53,10 +53,12 @@ def getAdminView(request):
                 inviteCode = InviteCode.objects.get(user=user)
                 godfather = {
                     'GODFATHER_NAME': "Jesus",
+                    "GODFATHER_CODE": "Christ",
                 }
                 if userPreferences.inviteCode is not None:
                     godfather = {
                         'GODFATHER_NAME': userPreferences.inviteCode.user.username,
+                        'GODFATHER_CODE': userPreferences.inviteCode.code,
                     }
                 userInfo.append({**{
                     'NAME': user.username,
@@ -67,6 +69,7 @@ def getAdminView(request):
                     'INVITE_CODE': inviteCode.code,
                     'MANACOIN': calculateCurrentAvailableCash(userPreferences.wallet),
                     'GROUP_ID': userPreferences.group.id,
+                    'GROUP_NAME': userPreferences.group.name,
                 }, **godfather})
             data = dict({'USER': userInfo})
 
@@ -353,6 +356,35 @@ def editGroup(request):
                             if group.permissions.filter(code=permission.code).count() == 1:
                                 group.permissions.remove(Permissions.objects.get(code=permission.code))
                     data = errorCheckMessage(True, None)
+                else:
+                    data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def editUserGroup(request):
+    if request.method == 'POST':
+        user = request.user
+        response = json.loads(request.body)
+        if checkPermission(["GAPR"], user):
+            if 'GROUP_ID' in response and 'USER_ID' in response:
+                userId = strip_tags(response['USER_ID'])
+                groupId = strip_tags(response['GROUP_ID'])
+                if User.objects.filter(id=userId).count() == 1:
+                    user = User.objects.get(id=userId)
+                    userPref = UserPreferences.objects.get(user=user)
+                    if Groups.objects.filter(id=groupId).count() == 1:
+                        userPref.group = Groups.objects.get(id=groupId)
+                        userPref.save()
+                        data = errorCheckMessage(True, None)
+                    else:
+                        data = errorCheckMessage(False, "dbError")
                 else:
                     data = errorCheckMessage(False, "dbError")
             else:

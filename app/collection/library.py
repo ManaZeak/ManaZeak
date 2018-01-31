@@ -28,7 +28,6 @@ def initialScan(request):
                 library = Library.objects.get(id=response['LIBRARY_ID'])
                 if os.path.isdir(library.path):
                     playlist = library.playlist
-                    print(playlist.name)
                     data = scanLibrary(library, playlist, library.convertID3)
                 else:
                     data = errorCheckMessage(False, "dirNotFound")

@@ -72,6 +72,7 @@ urlpatterns = [
 
     # Group actions
     url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),
+    url(r'^admin/editUserGroup/$', adminTools.editUserGroup, name='editUserGroup'),
 
     # ADMIN actions
     url(r'^admin/isAdmin/$', adminTools.isAdmin, name='isAdmin'),  # TODO : remove in front

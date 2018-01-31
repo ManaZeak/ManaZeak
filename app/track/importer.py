@@ -179,7 +179,6 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         pass
         if 'METADATA_BLOCK_PICTURE' in audioFile:
             picture = audioFile['METADATA_BLOCK_PICTURE'][0]
-            print(picture)
             pictureName = str(audioFile['METADATA_BLOCK_PICTURE']).encode("ascii", "ignore")
         else:
             picture = pictureName = ""
@@ -259,7 +258,7 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         track.album = albumTitle.replace('\n', '')
 
     if ogg:
-        print(track)
+        pass
     return track
 
 
