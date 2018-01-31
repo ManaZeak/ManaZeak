@@ -786,6 +786,9 @@ class Modal extends MzkObject {
         }
 
         let that = this;
+        cancel.addEventListener('click', function() {
+            that.close();
+        });
         save.addEventListener('click', function() {
             window.app.changeUserGroup(that.data.USER.USER_ID, selected.value, that.data.USER.NAME);
             that.close();
