@@ -55,15 +55,16 @@ class AdminView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "admin";
-        this.ui.menu.id             = "leftMenu";
-        this.ui.content.id          = "content";
+        this.ui.container.classList.add("mzk-adminview");
+        this.ui.menu.className      = "mzk-left-menu";
+        this.ui.content.className   = "mzk-admin-content";
+
         this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
         this.ui.menuUser.innerHTML  = "Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
-        this.ui.menuWish.innerHTML    = "Wishes";
+        this.ui.menuWish.innerHTML  = "Wishes";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuLib);
@@ -116,7 +117,7 @@ class AdminView extends View {
     _requestDBPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuDB.className        = "selected";
+        this.ui.menuDB.className        = "mzk-selected";
         this.ui.contentTitle.innerHTML  = "Database management";
 
         this.ui.rmMoodLabel             = document.createElement("P");
@@ -240,7 +241,7 @@ class AdminView extends View {
     _requestUsersPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuUser.className     = "selected";
+        this.ui.menuUser.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML = "User management";
 
         let sponsoringLabel            = document.createElement("P");
@@ -325,7 +326,7 @@ class AdminView extends View {
     _requestLibrariesPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuLib.className         = "selected";
+        this.ui.menuLib.className         = "mzk-selected";
         this.ui.contentTitle.innerHTML    = "Libraries management";
 
         this.ui.rescanLibLabel            = document.createElement("P");
@@ -396,7 +397,7 @@ class AdminView extends View {
     _requestSCPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuSC.className       = "selected";
+        this.ui.menuSC.className       = "mzk-selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
 
         this.ui.apiKeyLabel            = document.createElement("P");
@@ -467,7 +468,7 @@ class AdminView extends View {
     _requestWishPage() {
         this._updateAdminInfo();
         this._clearPageSpace();
-        this.ui.menuWish.className     = "selected";
+        this.ui.menuWish.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Wishes management";
 
         let list                       = document.createElement("UL");
@@ -498,9 +499,8 @@ class AdminView extends View {
                         let accept         = document.createElement("IMG");
                         let refuse         = document.createElement("IMG");
 
-                        element.id         = "wishEntry";
-                        accept.id          = "accept";
-                        refuse.id          = "refuse";
+                        element.className  = "mzk-wish-entry";
+                        accept.className   = "mzk-accept";
 
                         element.innerHTML  = response.RESULT[i].USERNAME + ", " + response.RESULT[i].DATE + ":<br>" +
                                              "<b>" + response.RESULT[i].TEXT + "</b><br>";
