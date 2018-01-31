@@ -45,7 +45,8 @@ def renamePlaylist(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId, user=user)
-                if checkPermission(["PLST"], user) and playlist.isLibrary:
+                if (checkPermission(["PLST"], user) and not playlist.isLibrary) \
+                        or (playlist.isLibrary and checkPermission(["LIBR"], user)):
                     playlist.name = strip_tags(response['PLAYLIST_NAME'])
                     playlist.save()
                     data = {
