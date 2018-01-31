@@ -77,6 +77,12 @@ class Modal extends MzkObject {
 
             case "editGroup":
                 this._editGroupUI();
+                break;
+
+            case "chooseGroup":
+                this._chooseGroupUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -724,6 +730,64 @@ class Modal extends MzkObject {
                 rights[boxContainer.children[i].firstChild.value] = boxContainer.children[i].firstChild.checked == true;
 
             window.app.changeGroup(that.data.GROUP.ID, name.value, rights);
+            that.close();
+        });
+    }
+
+    /**
+     * method : _chooseGroupUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for choose group modal
+     */
+    _chooseGroupUI() {
+        this.ui.container.className = "mzk-modal-choose-group";
+        this.ui.title.innerHTML     = "Choose group for " + this.data.USER.NAME;
+
+        let cancel                  = document.createElement("BUTTON");
+        let save                    = document.createElement("BUTTON");
+        let groupsTitle             = document.createElement("DIV");
+        let groupsContainer         = document.createElement("UL");
+
+        cancel.id                   = "cancelButton";
+        save.id                     = "saveButton";
+        groupsContainer.className   = "mzk-modal-groups-container";
+        groupsTitle.className       = "mzk-modal-title";
+
+        cancel.innerHTML            = "Cancel";
+        save.innerHTML              = "Save";
+        groupsTitle.innerHTML       = "Available groups";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(groupsTitle);
+        this.ui.content.appendChild(groupsContainer);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(save);
+
+        let selected = null;
+        let nbPerm = Object.keys(this.data.PERMISSIONS).length;
+        for(let i = 0; i < this.data.GROUPS.length; ++i) {
+            let li = document.createElement("LI");
+            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + " permissions)";
+            li.value     = this.data.GROUPS[i].ID;
+            if(li.value == this.data.USER.GROUP_ID) {
+                li.className = "mzk-selected";
+                selected = li;
+            }
+
+            li.addEventListener('click', function(event) {
+                if(selected)
+                    selected.className = "";
+                selected = event.target;
+                selected.className = "mzk-selected";
+            });
+
+            groupsContainer.appendChild(li);
+        }
+
+        let that = this;
+        save.addEventListener('click', function() {
+            window.app.changeUserGroup(that.data.USER.USER_ID, selected.value, that.data.USER.NAME);
             that.close();
         });
     }

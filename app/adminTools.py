@@ -66,6 +66,7 @@ def getAdminView(request):
                     'USER_ID': user.id,
                     'INVITE_CODE': inviteCode.code,
                     'MANACOIN': calculateCurrentAvailableCash(userPreferences.wallet),
+                    'GROUP_ID': userPreferences.group.id,
                 }, **godfather})
             data = dict({'USER': userInfo})
 

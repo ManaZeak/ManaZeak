@@ -75,6 +75,10 @@
                     right:    10px;
                     top:      10px;
                     width:    auto;
+
+                    & + img {
+                        margin-right: 35px + $app-margin;
+                    }
                 }
             }
         }

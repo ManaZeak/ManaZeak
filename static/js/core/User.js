@@ -21,7 +21,7 @@ class User {
         this.inviteCode    = -1;
         this.godFatherCode = -1;
         this.godFatherName = "";
-        this._getUserInfo(callback);
+        this.getUserInfo(callback);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -36,38 +36,6 @@ class User {
         return this.permissions.includes(permissionCode);
     }
 
-
-    /**
-     * method : getIsAdmin (public)
-     * class  : User
-     * desc   : Get info from server and stores it locally
-     * arg    : {function} callback
-     **/
-    updateIsAdmin(callback) { // TODO remove when new system OK
-        let that = this;
-        JSONParsedGetRequest(
-            "admin/isAdmin/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     IS_ADMIN  : bool
-                 * } */
-                if (response.DONE && response.IS_ADMIN) {
-                    that.isAdmin = true;
-                    callback(true);
-                }
-
-                else {
-                    that.isAdmin = false;
-                    callback(false);
-                }
-            }
-        );
-    }
-
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
 
@@ -77,7 +45,7 @@ class User {
      * desc   : Get info from server and stores it locally
      * arg    : {function} callback
      **/
-    _getUserInfo(callback) {
+    getUserInfo(callback) {
         let that = this;
         JSONParsedGetRequest(
             "user/getInformation/",

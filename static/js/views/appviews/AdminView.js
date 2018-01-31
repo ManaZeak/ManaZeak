@@ -304,8 +304,17 @@ class AdminView extends View {
         for (let i = 0; i < this.info.USER.length; ++i) {
             let admin                  = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element                = document.createElement("LI");
+            let grant                  = document.createElement("IMG");
             let rm                     = document.createElement("IMG");
+            grant.src                  = "/static/img/utils/edit.svg";
             rm.src                     = "/static/img/utils/trash.svg";
+            grant.addEventListener('click', function() {
+                new Modal('chooseGroup', {
+                    USER: that.info.USER[i],
+                    GROUPS: that.info.GROUPS,
+                    PERMISSIONS: that.info.PERMISSIONS
+                }).open();
+            });
             rm.addEventListener("click", function() {
                 let self = that;
                 window.app.deleteUser(that.info.USER[i].USER_ID, function() {
@@ -323,6 +332,9 @@ class AdminView extends View {
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
 
             element.appendChild(rm);
+            if(window.app.user.hasPermission("GAPR")) {
+                element.appendChild(grant);
+            }
             userList.appendChild(element);
         }
 
