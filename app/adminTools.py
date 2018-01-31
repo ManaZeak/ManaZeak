@@ -80,7 +80,6 @@ def getAdminView(request):
                     'ID': library.id,
                 })
             data = {**data, **dict({'LIBRARIES': libraryInfo})}
-
             # Global options
             data = {**data, **{
                 'SYNC_KEY': adminOptions.syncthingKey,
@@ -89,11 +88,25 @@ def getAdminView(request):
             }}
             groupInfo = []
             for group in Groups.objects.all().order_by("-rank"):
+                permissions = []
+                for permission in group.permissions:
+                    permissions.append({
+                        'NAME': permission.name,
+                        'CODE': permission.code,
+                    })
                 groupInfo.append({
                     'ID': group.id,
-                    'NAME': group.name
+                    'NAME': group.name,
+                    'PERMISSION': permissions,
                 })
             data = {**data, **dict({'GROUPS': groupInfo})}
+            permissions = []
+            for permission in Permissions.objects.all():
+                permissions.append({
+                    'NAME': permission.name,
+                    'CODE': permission.code,
+                })
+            data = {**data, **dict({'PERMISSIONS': permissions})}
             data = {**data, **errorCheckMessage(True, None)}
         else:
             data = errorCheckMessage(False, "permissionError")
