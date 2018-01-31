@@ -1,0 +1,29 @@
+&.mzk-modal-choose-group {
+
+  .mzk-modal-content {
+
+    .mzk-modal-title {
+      font-size: 1.5em;
+      padding-bottom: $app-padding;
+    }
+
+    .mzk-modal-groups-container {
+      border: black solid 1px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      width: 100%;
+
+      li {
+
+        padding: 2px $app-padding;
+
+        &.mzk-selected {
+          background-color: $dark-primary-color;
+        }
+      }
+    }
+
+  }
+
+}

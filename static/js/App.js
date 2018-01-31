@@ -155,7 +155,7 @@ class App extends MzkObject {
      *        : {object} rights
      **/
     changeGroup(groupID, name, rights) {
-        if (!window.app.user.hasPermission("GRPE")) {
+        if (!this.user.hasPermission("GRPE")) {
             return;
         }
 
@@ -163,21 +163,59 @@ class App extends MzkObject {
         JSONParsedPostRequest(
             "admin/editGroup/",
             JSON.stringify({
-                GROUP_ID:    groupID,
-                GROUP_NAME:  name,
+                GROUP_ID: groupID,
+                GROUP_NAME: name,
                 PERMISSIONS: rights
             }),
-            function(response) {
+            function (response) {
                 /* response = {
                  *     DONE        : bool
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
-                 *
-                 *     TRACK_PATH  : string
                  * } */
                 if (response.DONE) {
                     that.appViews['mzk_admin'].updateAdminInfo();
                     new Notification("ERROR", "Permissions updated", "Successfully updated permissions for group " + name);
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
+     * method : changeUserGroup(public)
+     * class  : App
+     * desc   : Change the group rights
+     * arg    : {integer} userID
+     *        : {integer} groupID
+     *        : {string} userName
+     **/
+    changeUserGroup(userID, groupID, userName) {
+        if (!this.user.hasPermission("GAPR")) {
+            return;
+        }
+
+        let that = this;
+        JSONParsedPostRequest(
+            "admin/editUserGroup/",
+            JSON.stringify({
+                USER_ID: userID,
+                GROUP_ID: groupID
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (response.DONE) {
+                    that.user.getUserInfo();
+                    that.appViews['mzk_admin'].updateAdminInfo();
+                    new Notification("ERROR", "User updated", "Successfully changed group for user " + userName);
                 }
 
                 else {
