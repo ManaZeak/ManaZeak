@@ -1,0 +1,29 @@
+#playlistPreview {
+    box-sizing: border-box;
+    float: right;
+    height: 100%;
+    opacity: 0;
+    padding-right: 20px;
+    position: relative;
+    text-align: right;
+    width: 30%;
+
+    img {
+        cursor: pointer;
+        height: 80px;
+        width: 80px;
+    }
+
+    ul {
+        display: inline-block;
+        font-size: 0.8em;
+        list-style: none;
+        margin: 0;
+        padding-right: 0;
+        vertical-align: 66%;
+    }
+
+    li {
+        padding: 1px 0;
+    }
+}
