@@ -301,8 +301,8 @@ class AdminView extends View {
         let userList                   = document.createElement("UL");
 
         let that = this;
+        console.log(this.info);
         for (let i = 0; i < this.info.USER.length; ++i) {
-            let admin                  = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element                = document.createElement("LI");
             let grant                  = document.createElement("IMG");
             let rm                     = document.createElement("IMG");
@@ -324,7 +324,7 @@ class AdminView extends View {
                     });
                 });
             });
-            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + this.info.USER[i].GROUP_NAME + ") <br><br>" +
                                          "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
                                          "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
                                          "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
