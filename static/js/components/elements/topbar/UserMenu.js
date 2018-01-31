@@ -51,6 +51,12 @@ class UserMenu {
         let that         = this;
         this.contextMenu = new ContextMenu(this.ui.container, null, 'click');
 
+        if (window.app.user.hasPermission("ADMV")) {
+            let adm = new ContextMenuEntry('admin', 'Admin', function() {
+                window.app.showAppView('mzk_admin');
+            });
+            that.contextMenu.getContextMenu().addChild(adm, 'invite', false);
+        }
         if (window.app.user.hasPermission("SPON")) {
             this.contextMenu.addEntry('invite', 'Invite Code', function() {
                 new Modal('inviteCode', null).open();
@@ -67,13 +73,6 @@ class UserMenu {
         this.contextMenu.addEntry('logout', 'Log out', function() {
             window.app.logOut();
         });
-
-        if (window.app.user.hasPermission("ADMV")) {
-            let adm = new ContextMenuEntry('admin', 'Admin', function() {
-                window.app.showAppView('mzk_admin');
-            });
-            that.contextMenu.getContextMenu().addChild(adm, 'invite', false);
-        }
     }
 
 }
