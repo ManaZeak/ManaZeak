@@ -14,7 +14,7 @@ html, body {
     width:       100%;
 }
 
-#mainContainer {
+.mzk-main-container {
     background: $primary-color;
     height:     calc(100% - 130px);
     position:   absolute;
