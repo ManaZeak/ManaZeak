@@ -1,8 +1,8 @@
 @import 'utils/tools';
+@import 'modals/modal';
 @import 'components/topbar';
 @import 'components/footbar';
 @import 'views/views';
-@import 'modals/content/editTag';
 
 html, body {
     color: $primary-text;
