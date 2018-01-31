@@ -1,12 +1,12 @@
 &.mzk-modal-new-wish {
-    #content {
+    .mzk-modal-content {
         p {
             margin:         0;
             padding-bottom: 25px;
         }
     }
 
-    #footer {
+    .mzk-modal-footer {
         button {
             cursor: pointer;
         }

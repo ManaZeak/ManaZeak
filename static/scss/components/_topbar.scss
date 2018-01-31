@@ -1,11 +1,5 @@
 $topbar-height: 50px;
 
-@import './elements/topbar/moodbar';
-@import './elements/topbar/wishlist';
-@import './elements/topbar/partymode';
-@import './elements/topbar/usermenu';
-@import './elements/topbar/collectionbar';
-
 .mzk-topbar {
     background-color:    $secondary-color;
     height:              $topbar-height;
@@ -13,4 +7,10 @@ $topbar-height: 50px;
     width:               100%;
     -webkit-user-select: none;
     -moz-user-select:    none;
+
+    @import './elements/topbar/moodbar';
+    @import './elements/topbar/wishlist';
+    @import './elements/topbar/partymode';
+    @import './elements/topbar/usermenu';
+    @import './elements/topbar/collectionbar';
 }

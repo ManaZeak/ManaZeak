@@ -4,14 +4,14 @@ $footbar-controls-width: 40%;
 $footbar-padding:        2 * $app-padding;
 
 .mzk-footbar {
-    @import './elements/footbar/controls';
-    @import './elements/footbar/playlistpreview';
-    @import './elements/footbar/queuepreview';
-    @import './elements/footbar/trackpreview';
-
     background-color: $secondary-color;
     bottom:           0;
     height:           $footbar-height;
     position:         absolute;
     width:            100%;
+
+    @import './elements/footbar/controls';
+    @import './elements/footbar/playlistpreview';
+    @import './elements/footbar/queuepreview';
+    @import './elements/footbar/trackpreview';
 }
