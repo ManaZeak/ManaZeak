@@ -5,10 +5,17 @@
  * * * * * * * * * * * * * * * * * * * * * */
 
 Event.prototype.stop = function() {
-    if(this.target.nodeName == 'A') {
+    let target = this.target;
+
+    if(target.nodeName == 'LABEL')
+        target = target.firstChild;
+
+    if(target.nodeName == 'A') {
         console.log("Manazeak's default event stop was prevented because it was called on a <a> element.")
         return;
-    }
+    } else if(target.nodeName == 'INPUT' && target.type == 'checkbox')
+        return;
+
     this.stopPropagation();
     this.stopImmediatePropagation();
     this.preventDefault();

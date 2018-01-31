@@ -284,7 +284,10 @@ class AdminView extends View {
             element.innerHTML = this.info.GROUPS[i].NAME;
 
             mod.addEventListener('click', function() {
-                new Modal('editGroup', that.info.GROUPS[i]).open();
+                new Modal('editGroup', {
+                    GROUP: that.info.GROUPS[i],
+                    PERMISSIONS: that.info.PERMISSIONS
+                }).open();
             });
 
             element.appendChild(mod);

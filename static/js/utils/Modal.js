@@ -676,12 +676,12 @@ class Modal extends MzkObject {
         name.id                     = "name";
         cancel.id                   = "cancelButton";
         save.id                     = "saveButton";
-        boxContainer.id             = "boxContainer";
+        boxContainer.className      = "mzk-modal-box-container";
         nameTitle.className         = "mzk-modal-title";
         permsTitle.className        = "mzk-modal-title";
 
         name.type                   = "text";
-        name.value                  = this.data.NAME;
+        name.value                  = this.data.GROUP.NAME;
         cancel.innerHTML            = "Cancel";
         save.innerHTML              = "Save";
         nameTitle.innerHTML         = "Group Name";
@@ -696,20 +696,35 @@ class Modal extends MzkObject {
         this.ui.footer.appendChild(cancel);
         this.ui.footer.appendChild(save);
 
-        this.data.PERMISSIONS = { "login" : true, "submitTags": false, "dropDatabase": false, "createLibrary": true};
-
         for(let i in this.data.PERMISSIONS) {
             let box     = document.createElement('INPUT');
             box.type    = 'checkbox';
-            box.checked = this.data.PERMISSIONS[i] == true;
             box.value   = i;
 
             let boxLbl  = document.createElement("LABEL");
             boxLbl.appendChild(box);
-            boxLbl.innerHTML += i;
+            boxLbl.innerHTML += this.data.PERMISSIONS[i];
 
             boxContainer.appendChild(boxLbl);
         }
+
+        for(let i = 0; i < this.data.GROUP.PERMISSIONS.length; ++i) {
+            for(let j = 0; j < boxContainer.children.length; ++j)
+                if(boxContainer.children[j].firstChild.value == this.data.GROUP.PERMISSIONS[i])
+                    boxContainer.children[j].firstChild.click();
+        }
+
+        let that = this;
+        cancel.addEventListener('click', function() {
+            that.close();
+        });
+        save.addEventListener('click', function() {
+            let rights = {};
+            for(let i = 0; i < boxContainer.children.length; ++i)
+                rights[boxContainer.children[i].firstChild.value] = boxContainer.children[i].firstChild.checked == true;
+
+            window.app.changeGroup(that.data.GROUP.ID, name.value, rights);
+        });
     }
 
 }

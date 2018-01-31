@@ -143,6 +143,41 @@ class App extends MzkObject {
 
 
     /**
+     * method : changeGroupRights (public)
+     * class  : App
+     * desc   : Change the group rights
+     * arg    : {string} groupID
+     *        : {object} rights
+     **/
+    changeGroup(groupID, name, rights) {
+        JSONParsedPostRequest(
+            "admin/editGroup/",
+            JSON.stringify({
+                GROUP_ID:    groupID,
+                GROUP_NAME:  name,
+                PERMISSIONS: rights
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 *
+                 *     TRACK_PATH  : string
+                 * } */
+                if (response.DONE) {
+                    console.log('OUI');
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
+    /**
      * method : changePlaylist (public)
      * class  : App
      * desc   : Change the active playlist
