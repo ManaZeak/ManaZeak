@@ -90,7 +90,7 @@ def getAdminView(request):
             for group in Groups.objects.all().order_by("-rank"):
                 permissions = []
                 for permission in group.permissions.all():
-                    permissions.append({permission.code})
+                    permissions.append(permission.code)
                 groupInfo.append({
                     'ID': group.id,
                     'NAME': group.name,
