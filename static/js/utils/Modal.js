@@ -711,7 +711,7 @@ class Modal extends MzkObject {
         for(let i = 0; i < this.data.GROUP.PERMISSIONS.length; ++i) {
             for(let j = 0; j < boxContainer.children.length; ++j)
                 if(boxContainer.children[j].firstChild.value == this.data.GROUP.PERMISSIONS[i])
-                    boxContainer.children[j].firstChild.click();
+                    boxContainer.children[j].firstChild.checked = true;
         }
 
         let that = this;
