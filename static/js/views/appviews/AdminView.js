@@ -301,7 +301,6 @@ class AdminView extends View {
         let userList                   = document.createElement("UL");
 
         let that = this;
-        console.log(this.info);
         for (let i = 0; i < this.info.USER.length; ++i) {
             let element                = document.createElement("LI");
             let grant                  = document.createElement("IMG");
@@ -342,7 +341,8 @@ class AdminView extends View {
             let element                = document.createElement("LI");
             let mod                    = document.createElement("IMG");
             mod.src                    = "/static/img/utils/edit.svg";
-            element.innerHTML = this.info.GROUPS[i].NAME;
+            element.innerHTML = "<b>" + this.info.GROUPS[i].NAME + "</b><br>" +
+                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + " permissions)";
 
             mod.addEventListener('click', function() {
                 new Modal('editGroup', {
