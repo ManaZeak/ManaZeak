@@ -27,11 +27,8 @@ def initialScan(request):
             if 'LIBRARY_ID' in response:
                 library = Library.objects.get(id=response['LIBRARY_ID'])
                 if os.path.isdir(library.path):
-                    playlist = Playlist()
-                    playlist.name = library.name
-                    playlist.user = request.user
-                    playlist.isLibrary = True
-                    playlist.save()
+                    playlist = library.playlist
+                    print(playlist.name)
                     data = scanLibrary(library, playlist, library.convertID3)
                 else:
                     data = errorCheckMessage(False, "dirNotFound")
@@ -59,13 +56,16 @@ def newLibrary(request):
                         dirPath = dirPath[:-1]
                     library = Library()
                     library.path = dirPath
-                    library.name = strip_tags(response['NAME'])
                     library.convertID3 = response['CONVERT']
-                    library.user = request.user
+                    playlist = Playlist()
+                    playlist.user = user
+                    playlist.isLibrary = True
+                    playlist.name = strip_tags(response['NAME'])
+                    playlist.save()
+                    library.playlist = playlist
                     library.save()
                     data = {
                         'LIBRARY_ID': library.id,
-                        'LIBRARY_NAME': library.name,
                     }
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
@@ -105,11 +105,12 @@ def rescanLibrary(library, user):
     # Check if the library is not used somewhere else
     if library.playlist.isScanned:
         # Delete all the old tracks
+        name = library.playlist.name
         library.playlist.delete()
 
         # Recreating playlist
         playlist = Playlist()
-        playlist.name = library.name
+        playlist.name = name
         playlist.user = user
         playlist.isLibrary = True
         playlist.save()
@@ -165,7 +166,6 @@ def rescanAllLibraries(request):
 def scanLibrary(library, playlist, convert):
     failedItems = []
     coverPath = "/ManaZeak/static/img/covers/"
-    print("started scanning library: " + library.name)
     if not os.path.isdir(coverPath):
         try:
             os.makedirs(coverPath)

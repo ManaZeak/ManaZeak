@@ -73,7 +73,7 @@ def getAdminView(request):
             libraryInfo = []
             for library in Library.objects.all():
                 libraryInfo.append({
-                    'NAME': library.name,
+                    'NAME': library.playlist.name,
                     'PATH': library.path,
                     'NUMBER_TRACK': library.playlist.track.all().count(),
                     'TOTAL_DURATION': getTotalLength(library.playlist),
@@ -284,8 +284,6 @@ def dropAllDB(request):
                 UserHistory.objects.all().delete()
                 Stats.objects.all().delete()
                 History.objects.all().delete()
-                Permissions.objects.all().delete()
-                Groups.objects.all().delete()
 
                 data = errorCheckMessage(True, None)
             else:
