@@ -17,6 +17,8 @@ class AdminView extends View {
         super();
         this.info  = null;
         this.modal = null;
+        this.currentPage = null;
+
         this._init();
     }
 
@@ -59,6 +61,8 @@ class AdminView extends View {
                  * } */
                 if (response.DONE) {
                     that.info = response;
+                    if(that.currentPage)
+                        that.currentPage();
 
                     if (callback) {
                         callback();
@@ -163,7 +167,7 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
-        this.updateAdminInfo();
+        this.currentPage = this._requestDBPage;
         this._clearPageSpace();
         this.ui.menuDB.className        = "mzk-selected";
         this.ui.contentTitle.innerHTML  = "Database management";
@@ -287,7 +291,7 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
-        this.updateAdminInfo();
+        this.currentPage = this._requestUsersPage;
         this._clearPageSpace();
         this.ui.menuUser.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Group / User management";
@@ -315,13 +319,7 @@ class AdminView extends View {
                 }).open();
             });
             rm.addEventListener("click", function() {
-                let self = that;
-                window.app.deleteUser(that.info.USER[i].USER_ID, function() {
-                    let own = self;
-                    self.updateAdminInfo(function() {
-                        own._requestUsersPage();
-                    });
-                });
+                window.app.deleteUser(that.info.USER[i].USER_ID);
             });
             element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + this.info.USER[i].GROUP_NAME + ") <br><br>" +
                                          "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
@@ -394,7 +392,7 @@ class AdminView extends View {
             return;
         }
 
-        this.updateAdminInfo();
+        this.currentPage = this._requestLibrariesPage;
         this._clearPageSpace();
         this.ui.menuLib.className         = "mzk-selected";
         this.ui.contentTitle.innerHTML    = "Libraries management";
@@ -427,11 +425,7 @@ class AdminView extends View {
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
                 console.log(that.info.LIBRARIES[i].ID);
-                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
-                    that.updateAdminInfo(function() {
-                        that._requestLibrariesPage();
-                   });
-                });
+                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID));
             });
             element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
                                             this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
@@ -465,7 +459,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
-        this.updateAdminInfo();
+        this.currentPage = this._requestSCPage;
         this._clearPageSpace();
         this.ui.menuSC.className       = "mzk-selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
@@ -536,7 +530,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestWishPage() {
-        this.updateAdminInfo();
+        this.currentPage = this._requestWishPage;
         this._clearPageSpace();
         this.ui.menuWish.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Wishes management";

@@ -377,6 +377,7 @@ class App extends MzkObject {
                  *     ERROR_MSG   : string
                  * } */
                 if (response.DONE) {
+                    that.appViews['mzk_admin'].updateAdminInfo();
                     that.playlists.remove(playlist.id);
                     let nextPlaylist = that.playlists.getDefault();
                     if (nextPlaylist != null) {
@@ -409,6 +410,7 @@ class App extends MzkObject {
      *        : {function} callback - The function to callback - Mandatory
      **/
     deleteUser(id, callback) {
+        let that = this;
         JSONParsedPostRequest(
             "admin/removeUser/",
             JSON.stringify({
@@ -421,6 +423,7 @@ class App extends MzkObject {
                  *     ERROR_MSG : string
                  * } */
                 if (!response.DONE) {
+                    that.appViews['mzk_admin'].updateAdminInfo();
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
 
@@ -780,6 +783,7 @@ class App extends MzkObject {
                  *     PLAYLIST_NAME : string
                  * } */
                 if (response.DONE) {
+                    that.appViews['mzk_admin'].updateAdminInfo();
                     that.playlists.rename(response.PLAYLIST_ID, response.PLAYLIST_NAME);
                 }
 
@@ -817,6 +821,7 @@ class App extends MzkObject {
             that.changePlaylist(np.id);
             if(callback)
                 callback(np);
+            that.appViews['mzk_admin'].updateAdminInfo();
         });
     }
 
@@ -837,6 +842,7 @@ class App extends MzkObject {
             that.changePlaylist(nl.id);
             if(callback)
                 callback(nl);
+            that.appViews['mzk_admin'].updateAdminInfo();
         });
     }
 

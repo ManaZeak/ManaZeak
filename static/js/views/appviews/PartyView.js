@@ -125,7 +125,7 @@ class PartyView extends View {
             next:               document.createElement("IMG"),
         };
 
-        this.ui.container.className          = "mzk-partyview";
+        this.ui.container.classList.add("mzk-partyview");
         this.ui.mzkLogo.className            = "mzk-logo";
         // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
         this.ui.sparksContainer.className    = "mzk-star";
