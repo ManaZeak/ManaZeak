@@ -1,13 +1,8 @@
 @import 'utils/tools';
 @import 'components/topbar';
 @import 'components/footbar';
-@import 'views/statsview';
+@import 'views/views';
 @import 'modals/content/editTag';
-@import 'components/elements/trackinfo';
-@import 'views/listview';
-@import 'views/partyview';
-@import 'views/userview';
-@import 'views/adminview';
 
 html, body {
     color: $primary-text;
