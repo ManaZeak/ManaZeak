@@ -42,6 +42,21 @@ $listView-padding: 0 5%;
     width:               100%;
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select:    none; /* Firefox */
+
+    .mzk-track-container {
+        cursor:         pointer;
+        font-size:      0.8em;
+        height:         1.3em;
+        line-height:    1.46em;
+        padding-bottom: 5px;
+        padding-top:    5px;
+        width:          100%;
+
+        &.mzk-selected {
+            background-color: $secondary-color;
+        }
+    }
+
 }
 
 .mzk-column-header-offset {
@@ -56,20 +71,6 @@ $listView-padding: 0 5%;
     width:               100%;
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select:    none; /* Firefox */
-}
-
-.mzk-track-container {
-    cursor:         pointer;
-    font-size:      0.8em;
-    height:         1.3em;
-    line-height:    1.46em;
-    padding-bottom: 5px;
-    padding-top:    5px;
-    width:          100%;
-
-    &.mzk-selected {
-        background-color: $secondary-color;
-    }
 }
 
 [class*='mzk-col-'] {

@@ -1,4 +1,4 @@
-import "modules/global"; // Called first bc it contains all mzk scss vars
+@import "modules/global"; // Called first bc it contains all mzk scss vars
 @import "modules/contextmenu";
 @import "modules/dragdrop";
 @import "modules/mixins";
