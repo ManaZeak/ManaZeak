@@ -288,7 +288,7 @@ class Modal extends MzkObject {
 
     _editTagUI() {
         this.ui.container.className = "mzk-modal-edittag";
-        this.editTag = new EditTag(this.ui.container, this.data);
+        this.editTag = new EditTag(this.ui.content, this.data);
 
         let ui = {
             foot:      document.createElement("DIV"),

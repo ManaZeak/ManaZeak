@@ -1,4 +1,15 @@
 &.mzk-modal-edittag {
+
+  .mzk-modal-header,
+  .mzk-modal-footer {
+    display: none;
+  }
+
+  .mzk-modal-content {
+    padding: calc(2 * #{$modalVerticalPadding}) 0;
+    text-align: start;
+  }
+
   .list {
     background-color: $primary-color;
     width: 250px;

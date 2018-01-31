@@ -6,14 +6,6 @@ $modalVerticalPadding: 10px;
 
 $spinnerSide: 110px;
 
-
-// Edit modal settings
-$editModalHeight:   600px;
-$editModalWidth:    800px;
-$editHeaderHeight:  ($editModalHeight / 10);
-$editContentHeight: ($editModalHeight / 10) * 8;
-$editFooterHeight:  ($editModalHeight / 10);
-
 [id*='mzk-modal-wrapper-'] {
   z-index: 999;
 
