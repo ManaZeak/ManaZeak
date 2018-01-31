@@ -1,18 +1,18 @@
 &.mzk-modal-scan-library {
-  cursor: not-allowed;
+    cursor: not-allowed;
 
-  .mzk-modal-content {
-    img {
-      width: 100px;
-      height: 100px;
-      margin: 16px 0;
+    .mzk-modal-content {
+        img {
+            height: 100px;
+            margin: 16px 0;
+            width:  100px;
+        }
     }
-  }
 
-  #footer {
-    p {
-      margin: 0;
-      padding: 15px 0;
+    #footer {
+        p {
+            margin:  0;
+            padding: 15px 0;
+        }
     }
-  }
 }

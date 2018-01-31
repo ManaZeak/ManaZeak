@@ -48,7 +48,6 @@
     }
 }
 
-
 @keyframes rise {
     0% {
         transform: translateY(1000px) rotate(360deg);
@@ -77,4 +76,15 @@
     100% {
         transform: translateX(-50px);
     }
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

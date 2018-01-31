@@ -1,12 +1,11 @@
 &.mzk-modal-open-syncthing {
-
-  .mzk-modal-content {
-    box-sizing: border-box;
-    text-align: center;
-    width: 100%;
-    top: 0;
-    padding: 0;
-    height: 100%;
-    position: absolute;
-  }
+    .mzk-modal-content {
+        box-sizing: border-box;
+        height:     100%;
+        padding:    0;
+        position:   absolute;
+        text-align: center;
+        top:        0;
+        width:      100%;
+    }
 }
