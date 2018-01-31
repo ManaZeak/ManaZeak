@@ -1,17 +1,3 @@
-@import "content/cover";
-@import "content/deletePlaylist";
-@import "content/editGroup";
-@import "content/editTag";
-@import "content/fetchPlaylists";
-@import "content/fetchStats";
-@import "content/inviteCode";
-@import "content/newLibrary";
-@import "content/newPlaylists";
-@import "content/newWish";
-@import "content/openSyncThing";
-@import "content/renamePlaylist";
-@import "content/scanLibrary";
-
 $modalWidth: 600px;
 
 
@@ -34,699 +20,73 @@ $editContentHeight: ($editModalHeight / 10) * 8;
 $editFooterHeight:  ($editModalHeight / 10);
 
 [id*='mzk-modal-'] {
-    z-index: 999;
-
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: rgba(0, 0, 0, 0.8);
-
-
-    #closeButton {
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-
-    #inviteCode {
-        width: $scanModalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-        text-align: center;
-
-        #header,
-        #content,
-        #footer {
-            height: auto;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-
-        #header,
-        #footer {
-            padding: $verticalPadding 30px;
-        }
-
-
-        #header {
-            height: $scanHeaderHeight;
-            border-bottom: solid 1px black;
-
-
-            h1 {
-                margin: 0;
-                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-            }
-        }
-
-
-        #content {
-            padding: $verticalPadding 50px;
-
-
-            #infoLabel {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-
-            input[type=text] {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-
-                height: 25px;
-                width: 300px;
-                margin-bottom: 20px;
-                text-align: center;
-                border-radius: 1px;
-                border: solid 1px #777;
-            }
-        }
-
-        #footer {
-            border-top: solid 1px black;
-            height: auto;
-
-
-            button {
-                margin: 10px 15px;
-                background: transparent;
-                color: $primary-text;
-                border: solid 1px $primary-text;
-                padding: 5px 20px;
-                border-radius: 3px;
-                cursor: pointer;
-
-                transition: 0.1s ease;
-            }
-
-            button:hover {
-                box-shadow: 0 0 2px $dark-primary-color;
-            }
-
-            #cancelButton:hover {
-                border: solid 1px green;
-            }
-
-            #deleteButton:hover {
-                border: solid 1px red;
-            }
-        }
-    }
-
-
-    #deletePlaylist {
-        width: $scanModalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-        -webkit-user-select: none;  /* Chrome/Safari */
-        -moz-user-select: none;     /* Firefox */
-
-        text-align: center;
-
-        #header,
-        #content,
-        #footer {
-            height: auto;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-
-        #header,
-        #footer {
-            padding: $verticalPadding 30px;
-        }
-
-
-        #header {
-            height: $scanHeaderHeight;
-            border-bottom: solid 1px black;
-
-
-            h1 {
-                margin: 0;
-                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-            }
-        }
-
-
-        #content {
-            padding: $verticalPadding 50px;
-
-
-            #infoLabel {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-
-            input[type=text] {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-
-                height: 25px;
-                width: 300px;
-                margin-bottom: 20px;
-                text-align: center;
-                border-radius: 1px;
-                border: solid 1px #777;
-            }
-        }
-
-        #footer {
-            border-top: solid 1px black;
-            height: auto;
-
-
-            button {
-                margin: 10px 15px;
-                background: transparent;
-                color: $primary-text;
-                border: solid 1px $primary-text;
-                padding: 5px 20px;
-                border-radius: 3px;
-                cursor: pointer;
-
-                transition: 0.1s ease;
-            }
-
-            button:hover {
-                box-shadow: 0 0 2px $dark-primary-color;
-            }
-
-            #cancelButton:hover {
-                border: solid 1px green;
-            }
-
-            #deleteButton:hover {
-                border: solid 1px red;
-            }
-        }
-    }
-
-    #fetchPlaylists {
-        height: auto;
-        width: $modalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-        -webkit-user-select: none;  /* Chrome/Safari */
-        -moz-user-select: none;     /* Firefox */
-
-        #header,
-        #content,
-        #footer {
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        #header,
-        #content {
-            border-bottom: solid 1px $dark-secondary-color;
-        }
-
-
-        #header,
-        #footer {
-            padding: 15px 30px;
-        }
-
-
-        #header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            h1 {
-                margin: 0;
-            }
-        }
-
-
-        #content {
-            padding: 25px 50px;
-
-            img {
-                width: 100px;
-                height: 100px;
-                margin: 16px 0;
-            }
-        }
-    }
-
-
-    #newLibrary {
-        width: $scanModalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-        -webkit-user-select: none;  /* Chrome/Safari */
-        -moz-user-select: none;     /* Firefox */
-
-        text-align: center;
-
-        #header,
-        #content,
-        #footer {
-            height: auto;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-
-        #header,
-        #footer {
-            padding: $verticalPadding 30px;
-        }
-
-
-        #header {
-            height: $scanHeaderHeight;
-            border-bottom: solid 1px black;
-
-
-            h1 {
-                margin: 0;
-                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-            }
-        }
-
-
-        #content {
-            padding: $verticalPadding 50px;
-
-
-            #infoLabel {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-
-            input[type=text] {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-
-            #name {
-                height: 25px;
-                width: 300px;
-                margin-bottom: 20px;
-                text-align: center;
-                border-radius: 1px;
-                border: solid 1px #777;
-            }
-
-            #path {
-                height: 25px;
-                width: 300px;
-                margin-bottom: 20px;
-                text-align: center;
-                border-radius: 1px;
-                border: solid 1px #777;
-            }
-
-            #id3Label {
-                vertical-align: text-bottom;
-                margin-right: 5px;
-            }
-
-            #convert {
-                margin: 0;
-                margin-bottom: 20px;
-            }
-        }
-
-        #footer {
-            border-top: solid 1px black;
-            height: auto;
-
-
-            #scanButton {
-                width: 75px;
-            }
-        }
-    }
-
-
-    #scan {
-        min-height: $scanModalHeight;
-        width: $scanModalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-        -webkit-user-select: none;  /* Chrome/Safari */
-        -moz-user-select: none;     /* Firefox */
-        cursor: not-allowed;
-
-        #header,
-        #content,
-        #footer {
-            height: auto;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-
-        #header,
-        #footer {
-            padding: $verticalPadding 30px;
-        }
-
-
-        #header {
-            height: $scanHeaderHeight;
-            border-bottom: solid 1px black;
-
-
-            h1 {
-                margin: 0;
-                line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-            }
-        }
-
-
-        #content {
-            min-height: $scanContentHeight;
-            padding: $verticalPadding 50px;
-
-
-            img {
-                width: 100px;
-                height: 100px;
-                margin: 16px 0;
-            }
-        }
-
-
-        #footer {
-            border-top: solid 1px black;
-            min-height: $scanFooterHeight;
-            height: auto;
-
-
-            p {
-                margin: 0;
-                padding: 15px 0;
-            }
-        }
-    }
-
-
-    #newWish {
-        height: auto;
-        width: $modalWidth;
-
-        position: relative;
-
-        border: solid 1px black;
-        border-radius: 3px;
-        background: $primary-color;
-
-
-        #header,
-        #content,
-        #footer {
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        #header,
-        #content {
-            border-bottom: solid 1px $dark-secondary-color;
-        }
-
-
-        #header,
-        #footer {
-            padding: 15px 30px;
-        }
-
-
-        #header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            h1 {
-                margin: 0;
-            }
-        }
-
-
-        #content {
-            padding: 25px 50px;
-
-            p {
-                margin: 0;
-                padding-bottom: 25px;
-            }
-
-            input {
-                background: none;
-                border: solid 1px $primary-text;
-                color: $primary-text;
-                cursor: pointer;
-                padding: 7px 20px;
-
-                text-align: center;
-                width: 100%;
-                height: 35px;
-                box-sizing: border-box;
-            }
-        }
-
-
-        #footer {
-            button {
-                cursor: pointer;
-            }
-        }
-    }
-
-
-    #edit {
-        border: solid 1px black;
-        border-radius: 3px;
-        position: relative;
-        min-height: $editModalHeight;
-        background: #fff;
-        width: $editModalWidth;
-
-
-        #header,
-        #content,
-        #footer {
-            box-sizing: border-box;
-            position: absolute;
-            text-align: center;
-            width: 100%;
-        }
-
-
-        #header {
-            border-bottom: solid 1px black;
-            top: 0;
-            height: $editHeaderHeight;
-            padding: $verticalPadding 30px;
-
-
-            h1 {
-                line-height: ($editHeaderHeight - (2 * $verticalPadding));
-                margin: 0;
-            }
-        }
-
-
-        #content {
-            top: $editHeaderHeight;
-            height: $editContentHeight;
-            position: relative;
-
-
-            #trackListContainer {
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-                display: inline-block;
-                width: 225px;
-            }
-
-
-            #inputContainer {
-                float: right;
-                position: relative;
-                height: 100%;
-                display: inline-block;
-                width: calc(100% - 225px);
-            }
-
-
-            .inputStandAlone {
-                width: 100% !important;
-            }
-        }
-
-
-        #footer {
-            border-top: solid 1px black;
-            text-align: right;
-            height: $editFooterHeight;
-            top: ($editHeaderHeight + $editContentHeight);
-            padding: $verticalPadding;
-
-
-            .button {
-                display: inline-block;
-                border: solid 1px black;
-                border-radius: 2px;
-                cursor: pointer;
-                box-sizing: border-box;
-                height: 40px;
-                line-height: 40px;
-                padding: 0 25px;
-                margin-left: 5px;
-            }
-        }
-    }
-
-    #openSyncThing {
-        border: solid 1px black;
-        border-radius: 3px;
-        position: relative;
-        min-height: 90%;
-        background: $primary-color;
-        width: 90%;
-
-        #content {
-            box-sizing: border-box;
-            text-align: center;
-            width: 100%;
-            top: 0;
-            padding: 0;
-            height: 100%;
-            position: absolute;
-        }
-    }
-
-
-    #cover {
-        border: solid 1px black;
-        border-radius: 3px;
-        position: relative;
-        min-height: 100%;
-        width: 100%;
-
-        h1 {
-            position: absolute;
-            height: 25px;
-            top: 10px;
-            margin: 0;
-            line-height: 25px;
-            font-size: 25px;
-            text-shadow: black 1px 1px 5px;
-        }
-
-        #content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            box-sizing: border-box;
-            text-align: center;
-            width: 100%;
-            top: 0;
-            padding: 0;
-            height: 100%;
-            position: absolute;
-
-            img {
-                height: 90%;
-                background-color: $primary-color;
-                box-shadow: 0 0 30px #fff;
-            }
-        }
-    }
-}
-
-
-.overlay {
+  z-index: 999;
+
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.8);
+
+
+  .mzk-modal-closebutton {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  @import "content/cover";
+  @import "content/deletePlaylist";
+  @import "content/editGroup";
+  @import "content/editTag";
+  @import "content/fetchPlaylists";
+  @import "content/fetchStats";
+  @import "content/inviteCode";
+  @import "content/newLibrary";
+  @import "content/newPlaylists";
+  @import "content/newWish";
+  @import "content/openSyncThing";
+  @import "content/renamePlaylist";
+  @import "content/scanLibrary";
 
 }
-
 
 @keyframes lds-dual-ring {
-    0% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 
 .lds-dual-ring {
-    position: relative;
+  position: relative;
 }
 
 
 .lds-dual-ring div {
-    z-index: 9999;
-    position: absolute;
-    width: $spinnerSide;
-    height: $spinnerSide;
-    left: ($scanModalWidth / 2) - $spinnerSide;
-    top: 10px;
-    border-radius: 50%;
-    border: 4px solid $primary-text;
-    border-color: $primary-text transparent;
-    -webkit-animation: lds-dual-ring 1.3s linear infinite;
-    animation: lds-dual-ring 1.3s linear infinite;
+  z-index: 9999;
+  position: absolute;
+  width: $spinnerSide;
+  height: $spinnerSide;
+  left: ($scanModalWidth / 2) - $spinnerSide;
+  top: 10px;
+  border-radius: 50%;
+  border: 4px solid $primary-text;
+  border-color: $primary-text transparent;
+  -webkit-animation: lds-dual-ring 1.3s linear infinite;
+  animation: lds-dual-ring 1.3s linear infinite;
 }

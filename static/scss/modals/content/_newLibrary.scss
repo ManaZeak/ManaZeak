@@ -1,0 +1,98 @@
+.mzk-modal-newlibrary {
+  width: $scanModalWidth;
+
+  position: relative;
+
+  border: solid 1px black;
+  border-radius: 3px;
+  background: $primary-color;
+
+  -webkit-user-select: none;  /* Chrome/Safari */
+  -moz-user-select: none;     /* Firefox */
+
+  text-align: center;
+
+  #header,
+  #content,
+  #footer {
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+
+  #header,
+  #footer {
+    padding: $verticalPadding 30px;
+  }
+
+
+  #header {
+    height: $scanHeaderHeight;
+    border-bottom: solid 1px black;
+
+
+    h1 {
+      margin: 0;
+      line-height: ($scanHeaderHeight - (2 * $verticalPadding));
+    }
+  }
+
+
+  #content {
+    padding: $verticalPadding 50px;
+
+
+    #infoLabel {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
+    input[type=text] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
+    #name {
+      height: 25px;
+      width: 300px;
+      margin-bottom: 20px;
+      text-align: center;
+      border-radius: 1px;
+      border: solid 1px #777;
+    }
+
+    #path {
+      height: 25px;
+      width: 300px;
+      margin-bottom: 20px;
+      text-align: center;
+      border-radius: 1px;
+      border: solid 1px #777;
+    }
+
+    #id3Label {
+      vertical-align: text-bottom;
+      margin-right: 5px;
+    }
+
+    #convert {
+      margin: 0;
+      margin-bottom: 20px;
+    }
+  }
+
+  #footer {
+    border-top: solid 1px black;
+    height: auto;
+
+
+    #scanButton {
+      width: 75px;
+    }
+  }
+}
