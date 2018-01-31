@@ -1,3 +1,17 @@
+@import "content/cover";
+@import "content/deletePlaylist";
+@import "content/editGroup";
+@import "content/editTag";
+@import "content/fetchPlaylists";
+@import "content/fetchStats";
+@import "content/inviteCode";
+@import "content/newLibrary";
+@import "content/newPlaylists";
+@import "content/newWish";
+@import "content/openSyncThing";
+@import "content/renamePlaylist";
+@import "content/scanLibrary";
+
 $modalWidth: 600px;
 
 
@@ -19,7 +33,7 @@ $editHeaderHeight:  ($editModalHeight / 10);
 $editContentHeight: ($editModalHeight / 10) * 8;
 $editFooterHeight:  ($editModalHeight / 10);
 
-[id*='modal-'] {
+[id*='mzk-modal-'] {
     z-index: 999;
 
     height: 100%;

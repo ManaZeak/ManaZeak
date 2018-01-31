@@ -19,7 +19,7 @@ class Modal extends MzkObject {
         super();
         this.data        = data;
         this.url         = null;
-        this.id          = "modal-" + genUniqueID();
+        this.id          = "mzk-modal-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
         this.editTag     = null;
@@ -286,6 +286,7 @@ class Modal extends MzkObject {
 
 
     _editTagUI() {
+        this.ui.container.className = "mzk-modal-edittag";
         this.editTag = new EditTag(this.ui.container, this.data);
 
         let ui = {
