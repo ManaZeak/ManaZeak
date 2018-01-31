@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 
 from app.dao import getPlaylistTracks, createViewForLazy, deleteView, lazyJsonGenerator
 from app.models import Playlist, Track
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Create an empty playlist
@@ -14,18 +14,22 @@ from app.utils import errorCheckMessage
 def newPlaylist(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_NAME' in response:
-            playlist = Playlist()
-            playlist.name = strip_tags(response['PLAYLIST_NAME'])
-            playlist.user = request.user
-            playlist.save()
-            data = {
-                'PLAYLIST_ID': playlist.id,
-                'PLAYLIST_NAME': playlist.name,
-            }
-            data = {**data, **errorCheckMessage(True, None)}
+        user = request.user
+        if checkPermission(["PLST"], user):
+            if 'PLAYLIST_NAME' in response:
+                playlist = Playlist()
+                playlist.name = strip_tags(response['PLAYLIST_NAME'])
+                playlist.user = request.user
+                playlist.save()
+                data = {
+                    'PLAYLIST_ID': playlist.id,
+                    'PLAYLIST_NAME': playlist.name,
+                }
+                data = {**data, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -41,13 +45,16 @@ def renamePlaylist(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId, user=user)
-                playlist.name = strip_tags(response['PLAYLIST_NAME'])
-                playlist.save()
-                data = {
-                    'PLAYLIST_ID': playlist.id,
-                    'PLAYLIST_NAME': playlist.name,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+                if checkPermission(["PLST"], user) and playlist.isLibrary:
+                    playlist.name = strip_tags(response['PLAYLIST_NAME'])
+                    playlist.save()
+                    data = {
+                        'PLAYLIST_ID': playlist.id,
+                        'PLAYLIST_NAME': playlist.name,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "permissionError")
             else:
                 data = errorCheckMessage(False, "permissionError")
         else:
@@ -68,14 +75,13 @@ def addTracksToPlaylist(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                if not playlist.isLibrary:
-                    if playlist.user == user:
-                        tracks = Track.objects.filter(id__in=tracksId)
-                        for track in tracks:
-                            playlist.track.add(track)
-                        data = errorCheckMessage(True, None)
-                    else:
-                        data = errorCheckMessage(False, "permissionError")
+
+                # Checking permissions
+                if not playlist.isLibrary and checkPermission(["PLST"], user) and playlist.user == user:
+                    tracks = Track.objects.filter(id__in=tracksId)
+                    for track in tracks:
+                        playlist.track.add(track)
+                    data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "permissionError")
             else:
@@ -87,6 +93,7 @@ def addTracksToPlaylist(request):
     return JsonResponse(data)
 
 
+# Remove a table of tracks from a playlist
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def removeTracksFromPlaylist(request):
     if request.method == 'POST':
@@ -97,7 +104,7 @@ def removeTracksFromPlaylist(request):
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
-                if user == playlist.user and not playlist.isLibrary:
+                if checkPermission(["PLST"], user) and user == playlist.user and not playlist.isLibrary:
                     tracks = Track.objects.filter(id__in=tracksId)
                     for track in tracks:
                         playlist.track.remove(track)
@@ -202,6 +209,7 @@ def getTotalLength(playlist):
 # Return all the id of the user playlists
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserPlaylists(request):
+    # This function is available for all users even banned one
     if request.method == 'GET':
         user = request.user
         playlists = Playlist.objects.filter(user=user, isLibrary=False)

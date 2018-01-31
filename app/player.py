@@ -8,7 +8,7 @@ from django.utils.html import strip_tags
 from app.history import addToHistory
 from app.models import Shuffle, Playlist, Track, PlaylistSettings
 from app.stats.stats import addToStats
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Select a sound with shuffle mode enabled
@@ -51,27 +51,31 @@ def shuffleSoundSelector(shuffle):
 def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            if Shuffle.objects.filter(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
-                                      user=request.user).count() == 1:
-                shuffle = Shuffle.objects.get(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
-                                              user=request.user)
-            else:
-                shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
+        user = request.user
+        if checkPermission(["PLAY"], user):
+            if 'PLAYLIST_ID' in response:
+                if Shuffle.objects.filter(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
+                                          user=request.user).count() == 1:
+                    shuffle = Shuffle.objects.get(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']),
+                                                  user=request.user)
+                else:
+                    shuffle = Shuffle(playlist=Playlist.objects.get(id=response['PLAYLIST_ID']), user=request.user)
+                    shuffle.save()
+                track, playlistEnd = shuffleSoundSelector(shuffle)
+                shuffle.tracksPlayed.add(track)
                 shuffle.save()
-            track, playlistEnd = shuffleSoundSelector(shuffle)
-            shuffle.tracksPlayed.add(track)
-            shuffle.save()
-            if Track.objects.filter(id=track.id).count() == 1:
-                data = {
-                    'TRACK_ID': track.id,
-                    'IS_LAST': playlistEnd,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+                if Track.objects.filter(id=track.id).count() == 1:
+                    data = {
+                        'TRACK_ID': track.id,
+                        'IS_LAST': playlistEnd,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -81,25 +85,29 @@ def shuffleNextTrack(request):
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            playlistID = strip_tags(response['PLAYLIST_ID'])
-            if Playlist.objects.filter(id=playlistID).count() == 1:
-                playlist = Playlist.objects.get(id=playlistID)
-                rangeRand = playlist.track.count()
-                selectedTrack = randint(0, rangeRand)
-                count = 0
-                for track in playlist.track.all():
-                    if count == selectedTrack:
-                        data = {
-                            'TRACK_ID': track.id,
-                        }
-                        data = {**data, **errorCheckMessage(True, None)}
-                        return JsonResponse(data)
-                    else:
-                        count += 1
-            data = errorCheckMessage(False, "dbError")
+        user = request.user
+        if checkPermission(["PLAY"], user):
+            if 'PLAYLIST_ID' in response:
+                playlistID = strip_tags(response['PLAYLIST_ID'])
+                if Playlist.objects.filter(id=playlistID).count() == 1:
+                    playlist = Playlist.objects.get(id=playlistID)
+                    rangeRand = playlist.track.count()
+                    selectedTrack = randint(0, rangeRand)
+                    count = 0
+                    for track in playlist.track.all():
+                        if count == selectedTrack:
+                            data = {
+                                'TRACK_ID': track.id,
+                            }
+                            data = {**data, **errorCheckMessage(True, None)}
+                            return JsonResponse(data)
+                        else:
+                            count += 1
+                data = errorCheckMessage(False, "dbError")
+            else:
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

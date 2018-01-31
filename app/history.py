@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from app.models import History, UserHistory
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Add a song to history
@@ -26,22 +26,25 @@ def addToHistory(track, user):
 def getLastSongPlayed(request):
     if request.method == 'GET':
         user = request.user
-        if UserHistory.objects.filter(user=user).count() != 0:
-            userHistory = UserHistory.objects.get(user=user)
-            if userHistory.histories.count() != 0:
-                trackId = 0
-                for history in userHistory.histories.order_by('-date'):
-                    trackId = history.track.id
-                    history.delete()
-                    break
-                data = {
-                    'TRACK_ID': trackId,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+        if checkPermission(["PLAY"], user):
+            if UserHistory.objects.filter(user=user).count() != 0:
+                userHistory = UserHistory.objects.get(user=user)
+                if userHistory.histories.count() != 0:
+                    trackId = 0
+                    for history in userHistory.histories.order_by('-date'):
+                        trackId = history.track.id
+                        history.delete()
+                        break
+                    data = {
+                        'TRACK_ID': trackId,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "noHistory")
             else:
                 data = errorCheckMessage(False, "noHistory")
         else:
-            data = errorCheckMessage(False, "noHistory")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
