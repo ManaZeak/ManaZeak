@@ -46,6 +46,7 @@ def createUser(request):
             # Special condition for the first user to be administrator
             if User.objects.all().count() == 1:
                 isAdmin = True
+                populateDB()
 
             # Creating user if tests are ok
             username = form.cleaned_data.get('username')

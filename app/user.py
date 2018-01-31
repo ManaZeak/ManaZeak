@@ -20,7 +20,6 @@ def deleteUser(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserInformation(request):
     if request.method == 'GET':
-        populateDB()
         user = request.user
         userPref = UserPreferences.objects.get(user=user)
         inviteCode = InviteCode.objects.get(user=user).code
@@ -30,8 +29,11 @@ def getUserInformation(request):
             'GROUP_NAME': userPref.group.name,
             'GROUP_ID': userPref.group.id,
             'INVITE_CODE': inviteCode,
-            'GODFATHER_CODE': userPref.inviteCodename,
         }
+        if userPref.inviteCode is not None:
+            data = {**data, **dict(GODFATHER_CODE=userPref.inviteCode.code)}
+        else:
+            data = {**data, **dict(GODFATHER_CODE="Jesus")}
         data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
