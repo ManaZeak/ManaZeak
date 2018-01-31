@@ -1,4 +1,4 @@
-#trackInfo {
+.mzk-track-info {
     background-color: $secondary-color;
     border: solid 1px $dark-secondary-color;
     border-radius: 3px;
@@ -18,7 +18,7 @@
         width: 150px;
     }
 
-    #numbers {
+    .mzk-numbers {
         bottom: 0;
         font-size: 0.8em;
         left: 0;
@@ -30,7 +30,7 @@
         width: 200px;
     }
 
-    #trackWrapper {
+    .mzk-track-wrapper {
         border-right: solid 1px $dark-primary-color;
         display: inline-block;
         float: right;
@@ -49,17 +49,17 @@
             white-space: nowrap;
         }
 
-        #title {
+        .mzk-title {
             font-size: 1.1em;
             font-weight: bold;
         }
 
-        #album {
+        .mzk-album {
             margin-bottom: 5px;
         }
     }
 
-    #suggestionWrapper {
+    .mzk-suggestion-wrapper {
         float: right;
         font-size: 0.7em;
         height: auto;
@@ -69,7 +69,7 @@
         display: flex;
         flex-direction: column;
 
-        #title {
+        .mzk-title {
             font-size: 1.3em;
             font-weight: bold;
             line-height: 1.3em;
@@ -94,7 +94,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
 
-                .performerIndent {
+                .mzk-performer-indent {
                     display: inline-block;
                     margin-left: 40px;
                 }
