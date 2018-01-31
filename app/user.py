@@ -41,6 +41,10 @@ def getUserInformation(request):
                 'GODFATHER_CODE': "Christ",
                 'GODFATHER_NAME': "Jesus",
             }}
+        permissions = []
+        for permission in userPref.group.permissions.all():
+            permissions.append(permission.code)
+        data = {**data, **{'PERMISSIONS': permissions}}
         data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
