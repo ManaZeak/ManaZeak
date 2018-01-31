@@ -324,9 +324,9 @@ class AdminView extends View {
                     });
                 });
             });
-            element.innerHTML          = "<b>" + window.app.user.getUsername() + "</b> (" + admin + ") <br><br>" +
-                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + window.app.user.getInviteCode() + "<br>" +
-                                         "Godfather:&nbsp;&nbsp;" + window.app.user.getGodFatherName() + " (" + window.app.user.getGodFatherCode() + ")<br>" +
+            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
                                          "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
                                          "Joined on: " + this.info.USER[i].JOINED + "<br>" +
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
