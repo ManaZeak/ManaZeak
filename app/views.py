@@ -39,6 +39,8 @@ def createUser(request):
                 inviteCode = form.data.get('godFather')
                 if InviteCode.objects.filter(code=inviteCode).count() == 1:
                     invite = InviteCode.objects.get(code=inviteCode)
+                    if UserPreferences.objects.get(user=invite.user).group.permissions.filter(code="SPON").count() != 1:
+                        return render(request, 'signup.html', {'form': form})
                 else:
                     return render(request, 'signup.html', {'form': form})
 
