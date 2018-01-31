@@ -28,10 +28,9 @@ import Modal from './utils/Modal.js'
 
 class App extends MzkObject {
 
-    constructor() {
+    constructor(callback) {
         super();
         this.cookies                 = getCookies();
-        this.user                    = new User();
         this.dragdrop                = new DragDrop(document.body);
         this.mainContainer           = document.createElement("DIV");
         this.mainContainer.className = "mzk-main-container";
@@ -56,6 +55,8 @@ class App extends MzkObject {
         };
         document.body.appendChild(this.mainContainer);
         this._consoleWelcome();
+
+        this.user                    = new User(callback);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -68,6 +69,10 @@ class App extends MzkObject {
      *          {array}  tracks
      **/
     addTracksToPlaylist(playlist, tracks) {
+        if (!this.user.hasPermission("PLST")) {
+            return;
+        }
+
         let ids    = new Array(tracks.length);
         let names  = '';
         for (let i = 0; i < tracks.length; ++i) {
@@ -150,6 +155,10 @@ class App extends MzkObject {
      *        : {object} rights
      **/
     changeGroup(groupID, name, rights) {
+        if (!window.app.user.hasPermission("GRPE")) {
+            return;
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "admin/editGroup/",
@@ -309,6 +318,14 @@ class App extends MzkObject {
      * arg    : {function} callback - Not mandatory
      **/
     deletePlaylist(playlist, callback) {
+        if ((playlist.getIsLibrary() && !this.user.hasPermission("LIBR"))) {
+            return;
+        }
+
+        if (!playlist.getIsLibrary() && !this.user.hasPermission("PLST")) {
+            return;
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "collection/delete/",
@@ -384,35 +401,37 @@ class App extends MzkObject {
      * arg    : {object} track - The track to download
      **/
     downloadTrack(track) {
-        JSONParsedPostRequest(
-            "track/download/",
-            JSON.stringify({
-                TRACK_ID: track.id.track
-            }),
-            function (response) {
-                /* response = {
-                 *     DONE          : bool
-                 *     ERROR_H1      : string
-                 *     ERROR_MSG     : string
-                 *
-                 *     DOWNLOAD_PATH : string
-                 * } */
-                if (response.DONE) {
-                    let dl      = document.createElement("A");
-                    dl.href     = response.DOWNLOAD_PATH;
-                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
-                    document.body.appendChild(dl);
-                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
-                    document.body.removeChild(dl);
-                    //TODO: What is ZEAZZZZ ???!!!
-                    dl.remove();
-                }
+        if (window.app.user.hasPermission("DOWN")) {
+            JSONParsedPostRequest(
+                "track/download/",
+                JSON.stringify({
+                    TRACK_ID: track.id.track
+                }),
+                function (response) {
+                    /* response = {
+                     *     DONE          : bool
+                     *     ERROR_H1      : string
+                     *     ERROR_MSG     : string
+                     *
+                     *     DOWNLOAD_PATH : string
+                     * } */
+                    if (response.DONE) {
+                        let dl      = document.createElement("A");
+                        dl.href     = response.DOWNLOAD_PATH;
+                        dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
+                        document.body.appendChild(dl);
+                        dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                        document.body.removeChild(dl);
+                        //TODO: What is ZEAZZZZ ???!!!
+                        dl.remove();
+                    }
 
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    else {
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
 
@@ -423,40 +442,42 @@ class App extends MzkObject {
      * arg    : {[object]} tracks - The tracks to download
      **/
     downloadTracksZip(tracks) {
-        let ids    = new Array(tracks.length);
-        for (let i = 0; i < tracks.length; ++i) {
-            ids[i] = tracks[i].id.track;
-        }
-
-        JSONParsedPostRequest(
-            "track/multiDownload/",
-            JSON.stringify({
-                TRACKS_ID: ids
-            }),
-            function (response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     DOWNLOAD_PATH      : string
-                 * } */
-                if (response.DONE) {
-                    let dl      = document.createElement("A");
-                    dl.href     = response.DOWNLOAD_PATH;
-                    dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
-                    document.body.appendChild(dl);
-                    dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
-                    document.body.removeChild(dl);
-                    //TODO: What is ZEAZZZZ ???!!!
-                    dl.remove();
-                }
-
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
-                }
+        if (window.app.user.hasPermission("DOWN")) {
+            let ids    = new Array(tracks.length);
+            for (let i = 0; i < tracks.length; ++i) {
+                ids[i] = tracks[i].id.track;
             }
-        );
+
+            JSONParsedPostRequest(
+                "track/multiDownload/",
+                JSON.stringify({
+                    TRACKS_ID: ids
+                }),
+                function (response) {
+                    /* response = {
+                     *     DONE      : bool
+                     *     ERROR_H1  : string
+                     *     ERROR_MSG : string
+                     *
+                     *     DOWNLOAD_PATH      : string
+                     * } */
+                    if (response.DONE) {
+                        let dl      = document.createElement("A");
+                        dl.href     = response.DOWNLOAD_PATH;
+                        dl.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
+                        document.body.appendChild(dl);
+                        dl.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+                        document.body.removeChild(dl);
+                        //TODO: What is ZEAZZZZ ???!!!
+                        dl.remove();
+                    }
+
+                    else {
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
+                }
+            );
+        }
     }
 
 
@@ -653,6 +674,10 @@ class App extends MzkObject {
      *          {array}  tracks;
      */
     removeTracksFromPlaylist(playlist, tracks) {
+        if (!window.app.user.hasPermission("PLST")) {
+            return;
+        }
+
         let ids    = new Array(tracks.length);
         let names  = '';
         for (let i = 0; i < tracks.length; ++i ) {
@@ -692,6 +717,14 @@ class App extends MzkObject {
      *        : {string} name - The name to give to the playlist
      **/
     renamePlaylist(id, name) {
+        if (this.playlists.get(id).getIsLibrary() && !this.user.hasPermission("LIBR")) {
+            return;
+        }
+
+        if (!this.playlists.get(id).getIsLibrary() && !this.user.hasPermission("PLST")) {
+            return;
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "playlist/rename/",
@@ -736,6 +769,10 @@ class App extends MzkObject {
      * desc   : User requested a new playlist
      **/
     requestNewPlaylist(callback) {
+        if (!this.user.hasPermission("PLST")) {
+            return;
+        }
+
         let that = this;
         let np = new Playlist(0, null, false, false, undefined, function() {
             that.playlists.add(np);
@@ -752,6 +789,10 @@ class App extends MzkObject {
      * desc   : Admin requested a new library
      **/
     requestNewLibrary(callback) {
+        if (!this.user.hasPermission("LIBR")) {
+            return;
+        }
+
         let that = this;
         let nl = new Playlist(0, null, true, false, undefined, function() {
             that.playlists.add(nl);
@@ -1044,15 +1085,15 @@ class App extends MzkObject {
 
     _consoleWelcome() {
         let cssRuleTitle  = "color: rgb(44, 44, 48);" +
-                            "font-size: 3em;" +
-                            "font-weight: bold;" +
-                            "margin: 20px 0;" +
-                            "text-shadow: 1px 1px 5px rgb(44, 44, 48);";
+            "font-size: 3em;" +
+            "font-weight: bold;" +
+            "margin: 20px 0;" +
+            "text-shadow: 1px 1px 5px rgb(44, 44, 48);";
         let cssRuleHidden = "color: rgb(255, 255, 255);";
         setTimeout(console.log.bind(console, "%cManaZeak console", cssRuleTitle)); // Hiding source in console
         setTimeout(console.log.bind(console, "Hello there!\n" +
-                                             "\nIf you don't know why you are here, you may close this window, and keep using ManaZeak." +
-                                             "\nOtherwise, keep in mind that using this console may result in a non working app, at least on your side. "));
+            "\nIf you don't know why you are here, you may close this window, and keep using ManaZeak." +
+            "\nOtherwise, keep in mind that using this console may result in a non working app, at least on your side. "));
         setTimeout(console.log.bind(console, "%cCongratulation, you found the first key for the achievement TOAST. Here it is : ba6f7979ab2cb9096d050b7f850d50ff", cssRuleHidden));
         setTimeout(console.log.bind(console, "To know more about ManaZeak, visit https://github.com/Squadella/ManaZeak"));
         setTimeout(console.log.bind(console, "\n-----------"));

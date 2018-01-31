@@ -20,7 +20,10 @@ class TopBar extends MzkObject {
         this._createUI();
         this._eventListener();
         this.partyMode     = new PartyMode(this.topBar);
-        this.wishList      = new WishList(this.topBar);
+
+        if (window.app.user.hasPermission("WISH")) {
+            this.wishList      = new WishList(this.topBar);
+        }
         this.userMenu      = new UserMenu(this.topBar);
         this.collectionBar = new CollectionBar(window.app.playlists, this.playlistBar);
         this.newLibMenu    = null;

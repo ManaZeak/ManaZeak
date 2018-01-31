@@ -339,7 +339,10 @@ class AdminView extends View {
                 }).open();
             });
 
-            element.appendChild(mod);
+            if (window.app.user.hasPermission("GRPE")) {
+                element.appendChild(mod);
+            }
+
             groupList.appendChild(element);
         }
 
@@ -375,6 +378,10 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
+        if (!window.app.user.hasPermission("LIBR")) {
+            return;
+        }
+
         this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuLib.className         = "mzk-selected";

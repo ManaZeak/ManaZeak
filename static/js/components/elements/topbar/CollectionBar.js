@@ -102,19 +102,22 @@ class PlaylistCollectionEntry {
         let that             = this;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
-        this.contextMenu.addEntry(null, "Rename", function() {
-            that.modal       = new Modal("renamePlaylist", {
-                name: that.playlist.name,
-                id:   that.playlist.id
+
+        if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
+            this.contextMenu.addEntry(null, "Rename", function() {
+                that.modal       = new Modal("renamePlaylist", {
+                    name: that.playlist.name,
+                    id:   that.playlist.id
+                });
+                that.modal.open();
             });
-            that.modal.open();
-        });
-        this.contextMenu.addEntry(null, "Delete", function() {
-            that.modal       = new Modal("deletePlaylist", {
-                playlist: that.playlist
+            this.contextMenu.addEntry(null, "Delete", function() {
+                that.modal       = new Modal("deletePlaylist", {
+                    playlist: that.playlist
+                });
+                that.modal.open();
             });
-            that.modal.open();
-        });
+        }
     }
 
 
@@ -234,12 +237,16 @@ class CollectionBar extends MzkObject {
      **/
     _contextMenuSetup() {
         this.newLibMenu = new ContextMenu(this.newButton, null, 'click');
-        this.newLibMenu.addEntry(null, 'New Library', function() {
-            window.app.requestNewLibrary();
-        });
-        this.newLibMenu.addEntry(null, 'New Playlist', function() {
-            window.app.requestNewPlaylist();
-        });
+
+        if(window.app.user.hasPermission("LIBR"))
+            this.newLibMenu.addEntry(null, 'New Library', function() {
+                window.app.requestNewLibrary();
+            });
+
+        if(window.app.user.hasPermission("PLST"))
+            this.newLibMenu.addEntry(null, 'New Playlist', function() {
+                window.app.requestNewPlaylist();
+            });
     }
 
 
@@ -261,7 +268,8 @@ class CollectionBar extends MzkObject {
 
         this.element.appendChild(this.libsContainer);
         this.element.appendChild(this.playContainer);
-        this.element.appendChild(this.newButton);
+        if(window.app.user.hasPermission("LIBR") || window.app.user.hasPermission("PLST"))
+            this.element.appendChild(this.newButton);
 
         container.appendChild(this.element);
     }
