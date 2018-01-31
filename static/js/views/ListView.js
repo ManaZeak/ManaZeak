@@ -214,57 +214,96 @@ class ListView extends PlaylistView {
             }
         });
 
-        this.contextMenu.addEntry(null, "Edit tags", function() {
-            let ids          = that.selector.get();
-            let tracks       = new Array(ids.length);
+        if (window.app.user.hasPermission("TAGE")) {
+            this.contextMenu.addEntry(null, "Edit tags", function() {
+                let ids          = that.selector.get();
+                let tracks       = new Array(ids.length);
 
-            for(let i = 0; i < ids.length; ++i) {
-                tracks[i]    = that.entries[ids[i]].track;
-            }
+                for(let i = 0; i < ids.length; ++i) {
+                    tracks[i]    = that.entries[ids[i]].track;
+                }
 
-            window.app.updateTracksInfo(tracks, function() {
-                new Modal("editTag", tracks).open();
-            })
-        });
-
-        this.contextMenu.addEntry(null, "Download track", function() {
-            let nbTracks = that.selector.getSize();
-            if(nbTracks == 1)
-                window.app.downloadTrack(that.entries[that.selector.get()[0]].track);
-            else if(nbTracks > 0) {
-                let tracks = new Array(nbTracks);
-                let ids = that.selector.get();
-                for(let i = 0; i < nbTracks; ++i)
-                    tracks[i] = that.entries[ids[i]].track;
-                window.app.downloadTracksZip(tracks);
-            }
-        });
-
-
-        this.contextMenu.addEntry('playlists', "Add to playlist");
-
-        //TODO: Add and remove playlists on the fly (listen to window.app.playlists)
-        let playlists = window.app.getPlaylists();
-        for (let i = 0; i < playlists.length; ++i) {
-            this.contextMenu.addEntry(['playlists', null], playlists[i].name, function () {
-                let tracks = that.selector.get();
-                for(let t = 0; t < tracks.length; t++)
-                    tracks[t] = that.entries[tracks[t]].track;
-                window.app.addTracksToPlaylist(playlists[i], tracks);
+                window.app.updateTracksInfo(tracks, function() {
+                    new Modal("editTag", tracks).open();
+                })
             });
         }
 
-        this.contextMenu.addEntry(['playlists', null], "New playlist", function() {
-            window.app.requestNewPlaylist();
-        });
+        if (window.app.user.hasPermission("DOWN")) {
+            this.contextMenu.addEntry(null, "Download track", function() {
+                let nbTracks = that.selector.getSize();
+                if (nbTracks == 1) {
+                    window.app.downloadTrack(that.entries[that.selector.get()[0]].track);
+                }
 
-        if (!this.isLibrary) {
-            this.contextMenu.addEntry(null, "Remove track", function() {
-                let tracks = that.selector.get();
-                for(let t = 0; t < tracks.length; t++)
-                    tracks[t] = that.entries[tracks[t]].track;
-                window.app.removeTracksFromPlaylist(window.app.playlists.get(that.id), tracks);
+                else if(nbTracks > 0) {
+                    let tracks = new Array(nbTracks);
+                    let ids = that.selector.get();
+                    for(let i = 0; i < nbTracks; ++i)
+                        tracks[i] = that.entries[ids[i]].track;
+                    window.app.downloadTracksZip(tracks);
+                }
             });
+        }
+
+        if (window.app.user.hasPermission("PLST")) {
+
+            this.contextMenu.addEntry('playlists', "Add to playlist");
+
+            this.contextMenu.addEntry(['playlists', 'new'], "New playlist", function () {
+                window.app.requestNewPlaylist(function (newPlaylist) {
+                    let tracks = that.selector.get();
+                    for (let t = 0; t < tracks.length; ++t)
+                        tracks[t] = that.entries[tracks[t]].track;
+                    window.app.addTracksToPlaylist(newPlaylist, tracks);
+                });
+            });
+
+            window.app.playlists.listen('add', function (playlist) {
+                if (playlist.getIsLibrary() == false) {
+                    that.contextMenu.addEntry(['playlists', playlist.id], playlist.name, function () {
+                        let tracks = that.selector.get();
+                        for (let t = 0; t < tracks.length; ++t)
+                            tracks[t] = that.entries[tracks[t]].track;
+                        window.app.addTracksToPlaylist(playlist, tracks);
+                    }, 'new');
+                }
+            });
+
+            //Add all playlists that were already loaded
+            let playlists = window.app.getPlaylists();
+            for (let i = 0; i < playlists.length; ++i) {
+                this.contextMenu.addEntry(['playlists', playlists[i].id], playlists[i].name, function () {
+                    let tracks = that.selector.get();
+                    for (let t = 0; t < tracks.length; ++t)
+                        tracks[t] = that.entries[tracks[t]].track;
+                    window.app.addTracksToPlaylist(playlists[i], tracks);
+                }, 'new');
+            }
+
+            window.app.playlists.listen('rename', function (playlistID, name) {
+                that.contextMenu.getEntry(['playlists', playlistID]).setDisplayString(name);
+            });
+
+            window.app.playlists.listen('remove', function (playlistID) {
+                that.contextMenu.removeEntry(['playlists', playlistID]);
+            });
+
+            window.app.playlists.listen('clear', function () {
+                let playMenu = that.contextMenu.getEntry('playlists');
+                for (let i = 0; i < playMenu.children.length; i++)
+                    if (playMenu.children[i].getID() != 'new')
+                        playMenu.removeEntry(playMenu.children[i].getID());
+            });
+
+            if (!this.isLibrary) {
+                this.contextMenu.addEntry(null, "Remove track", function () {
+                    let tracks = that.selector.get();
+                    for (let t = 0; t < tracks.length; t++)
+                        tracks[t] = that.entries[tracks[t]].track;
+                    window.app.removeTracksFromPlaylist(window.app.playlists.get(that.id), tracks);
+                });
+            }
         }
     }
 
@@ -276,8 +315,7 @@ class ListView extends PlaylistView {
      **/
     _createUI(data) {
         this.listView               = document.createElement("DIV");
-        this.listView.id            = "listView";
-        this.container.id           = "listViewWrapper";
+        this.listView.className     = "mzk-listview";
 
         this._initHeader();
         this._addEntries(data);
@@ -285,7 +323,7 @@ class ListView extends PlaylistView {
         this.container.appendChild(this.listView);
 
         if (this.entries.length * 26 > screen.height) { // TODO : Value to adjust
-            this.header.container.classList.add("columnHeaderOffset");
+            this.header.container.classList.add("mzk-column-header-offset");
         }
 
         this.trackInfo      = new TrackInfo(this.container);
@@ -368,7 +406,6 @@ class ListView extends PlaylistView {
             title:          null,
             artist:         null,
             composer:       null,
-            performer:      null,
             album:          null,
             genre:          null,
             bitRate:        null,
@@ -379,7 +416,6 @@ class ListView extends PlaylistView {
             title:      { isAsc:    false },
             artist:     { isAsc:    false },
             composer:   { isAsc:    false },
-            performer:  { isAsc:    false },
             album:      { isAsc:    false },
             genre:      { isAsc:    false },
             bitRate:    { isAsc:    false },
@@ -406,15 +442,15 @@ class ListView extends PlaylistView {
         this.header.bitRate                  = document.createElement("DIV");
         this.header.year                     = document.createElement("DIV");
 
-        this.header.container.className      = "columnHeader";
-        this.header.duration.className       = "col-duration";
-        this.header.title.className          = "col-title";
-        this.header.artist.className         = "col-artist";
-        this.header.composer.className       = "col-composer";
-        this.header.album.className          = "col-album";
-        this.header.genre.className          = "col-genre";
-        this.header.bitRate.className        = "col-bitRate";
-        this.header.year.className           = "col-year";
+        this.header.container.className      = "mzk-column-header";
+        this.header.duration.className       = "mzk-col-duration";
+        this.header.title.className          = "mzk-col-title";
+        this.header.artist.className         = "mzk-col-artist";
+        this.header.composer.className       = "mzk-col-composer";
+        this.header.album.className          = "mzk-col-album";
+        this.header.genre.className          = "mzk-col-genre";
+        this.header.bitRate.className        = "mzk-col-bitRate";
+        this.header.year.className           = "mzk-col-year";
         this.header.duration.innerHTML       = "Duration";
         this.header.title.innerHTML          = "Title";
         this.header.artist.innerHTML         = "Artist";

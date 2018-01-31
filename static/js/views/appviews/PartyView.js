@@ -101,6 +101,7 @@ class PartyView extends View {
     _createUI() {
         this.ui = {
             container:          this.container,
+            mzkLogo:           document.createElement("IMG"),
 
             sparksContainer:    document.createElement("DIV"),
             sparksLayer1:       document.createElement("DIV"),
@@ -124,33 +125,35 @@ class PartyView extends View {
             next:               document.createElement("IMG"),
         };
 
-        this.ui.container.id             = "party";
+        this.ui.container.classList.add("mzk-partyview");
+        this.ui.mzkLogo.className            = "mzk-logo";
         // Smells like Grafikart here ;) (https://www.youtube.com/watch?v=rV6Xgb_4FFo)
-        this.ui.sparksContainer.id       = "snow";
-        this.ui.sparksLayer1.id          = "snow-layer";
-        this.ui.sparksLayer2.id          = "snow-layer";
-        this.ui.sparksLayer3.id          = "snow-layer";
-        this.ui.sparksLayer4.id          = "snow-layer";
+        this.ui.sparksContainer.className    = "mzk-star";
+        this.ui.sparksLayer1.className       = "mzk-start-layer";
+        this.ui.sparksLayer2.className       = "mzk-start-layer";
+        this.ui.sparksLayer3.className       = "mzk-start-layer";
+        this.ui.sparksLayer4.className       = "mzk-start-layer";
 
-        this.ui.trackContainer.id        = "trackContainer";
-        this.ui.trackCover.src           = "/static/img/utils/defaultcover.svg";
+        this.ui.trackContainer.className     = "mzk-track-container";
+        this.ui.mzkLogo.src                  = "/static/img/manazeak.svg";
+        this.ui.trackCover.src               = "/static/img/utils/defaultcover.svg";
 
-        this.ui.trackInfoContainer.id    = "partyTrackInfo";
-        this.ui.trackTitle.id            = "a";
-        this.ui.trackArtist.id           = "b";
-        this.ui.trackComposer.id         = "c";
-        this.ui.trackYearAlbum.id        = "d";
-        this.ui.trackGenre.id            = "e";
+        this.ui.trackInfoContainer.className = "mzk-party-track-info";
+        this.ui.trackTitle.className         = "a";
+        this.ui.trackArtist.className        = "b";
+        this.ui.trackComposer.className      = "c";
+        this.ui.trackYearAlbum.className     = "d";
+        this.ui.trackGenre.className         = "e";
 
-        this.ui.close.id                 = "close";
-        this.ui.previous.id              = "previous";
-        this.ui.play.id                  = "play";
-        this.ui.next.id                  = "next";
+        this.ui.close.className              = "mzk-close";
+        this.ui.previous.className           = "mzk-previous";
+        this.ui.play.className               = "mzk-play";
+        this.ui.next.className               = "mzk-next";
 
-        this.ui.close.src                = "/static/img/utils/idea.svg"; // TODO : add ManaZeak log + tooltip
-        this.ui.previous.src             = "/static/img/player/previous.svg";
-        this.ui.play.src                 = "/static/img/player/play.svg";
-        this.ui.next.src                 = "/static/img/player/next.svg";
+        this.ui.close.src                    = "/static/img/utils/partyview/close.svg"; // TODO : add ManaZeak log + tooltip
+        this.ui.previous.src                 = "/static/img/player/previous.svg";
+        this.ui.play.src                     = "/static/img/player/play.svg";
+        this.ui.next.src                     = "/static/img/player/next.svg";
 
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer1);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer2);
@@ -166,6 +169,7 @@ class PartyView extends View {
         this.ui.trackContainer.appendChild(this.ui.trackCover);
         this.ui.trackContainer.appendChild(this.ui.trackInfoContainer);
 
+        this.ui.container.appendChild(this.ui.mzkLogo);
         this.ui.container.appendChild(this.ui.sparksContainer);
         this.ui.container.appendChild(this.ui.trackContainer);
         this.ui.container.appendChild(this.ui.close);
@@ -192,6 +196,13 @@ class PartyView extends View {
         this.ui.next.addEventListener("click", function() {
             window.app.next();
         });
+        this.ui.previous.addEventListener("click", function() {
+            window.app.previous();
+        });
+        window.app.listen("changeTrack", function(track) {
+            that._setCurrentTrack(track);
+        });
+
     }
 
 

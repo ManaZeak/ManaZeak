@@ -1,0 +1,130 @@
+@import "../../components/elements/trackinfo";
+
+$listView-padding: 0 5%;
+
+@media (min-width: 1281px) and (max-width: 1600px) { // Bellow 1280 width, UI not handled (yet)
+    .mzk-list-view,
+    .mzk-column-header {
+        font-size: 0.8em !important;
+        padding:   0 20px !important;
+    }
+
+    .mzk-col-title {
+        width: 17% !important;
+    }
+
+    .mzk-col-artist {
+        width: 17% !important;
+    }
+
+    .mzk-col-composer {
+        width: 17% !important;
+    }
+
+    .mzk-col-album {
+        width: 17% !important;
+    }
+
+    .mzk-col-genre {
+        width: 15% !important;
+    }
+
+    .mzk-col-year {
+        text-align: center !important;
+    }
+}
+
+.mzk-listview {
+    box-sizing:          border-box;
+    max-height:          calc(100% - 35px);
+    overflow-y:          auto;
+    padding:             $listView-padding;
+    width:               100%;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select:    none; /* Firefox */
+
+    .mzk-track-container {
+        cursor:         pointer;
+        font-size:      0.8em;
+        height:         1.3em;
+        line-height:    1.46em;
+        padding-bottom: 5px;
+        padding-top:    5px;
+        width:          100%;
+
+        &.mzk-selected {
+            background-color: $secondary-color;
+        }
+    }
+
+}
+
+
+.mzk-column-header {
+    border-bottom:       solid 1px $dark-primary-color;
+    box-sizing:          border-box;
+    cursor:              pointer;
+    font-size:           0.9em;
+    font-weight:         bold;
+    height:              35px;
+    line-height:         35px;
+    padding:             $listView-padding;
+    width:               100%;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select:    none; /* Firefox */
+}
+
+[class*='mzk-col-'] {
+    box-sizing:    border-box;
+    display:       inline-block;
+    float:         left;
+    min-height:    1px;
+    overflow:      hidden;
+    padding-left:  8px;
+    padding-right: 8px;
+    text-align:    left;
+    text-overflow: ellipsis;
+    white-space:   nowrap;
+}
+
+.mzk-col-duration {
+    text-align: right;
+    width:      5%;
+}
+
+.mzk-col-title {
+    width: 22%;
+}
+
+.mzk-col-artist {
+    width: 16%;
+}
+
+.mzk-col-composer {
+    width: 18.5%;
+}
+
+.mzk-col-album {
+    width: 19%;
+}
+
+.mzk-col-genre {
+    width: 11%;
+}
+
+.mzk-col-bitRate {
+    text-align: right;
+    width:      5%;
+}
+
+.mzk-col-year {
+    width: 3.5%;
+}
+
+.mzk-column-header-offset { // Must be applied when a vertical scrollBar is active
+    width: calc(100% - 20px) !important;
+}
+
+.mzk-even-lin {
+    background-color: $listview-even-lin;
+}

@@ -1,0 +1,165 @@
+.mzk-partyview {
+    background-color:  $dark-secondary-color;
+    color:             white;
+    display:           flex;
+    overflow:          hidden;
+    -moz-animation:    party-fadeIn 0.3s linear;
+    -webkit-animation: party-fadeIn 0.3s linear;
+    animation:         party-fadeIn 0.3s linear;
+
+    position: fixed !important;
+    top:      0 !important;
+    left:     0 !important;
+    width:    100vw !important;
+    height:   100vh !important;
+    z-index:  42;
+
+    .mzk-logo {
+        position: absolute;
+        right:    25px;
+        bottom:   25px;
+        width:    250px;
+    }
+
+    .mzk-track-container {
+        align-items:  center;
+        display:      inline-flex;
+        padding-left: 10%;
+        position:     relative;
+
+        img {
+            background-color:  $dark-primary-color;
+            animation-delay:   0.2s;
+            box-shadow:        0 0 30px #fff;
+            height:            350px;
+            width:             350px;
+            -moz-animation:    fade 40s linear infinite;
+            -webkit-animation: fade 40s linear infinite;
+            animation:         fade 40s linear infinite;
+        }
+
+        .mzk-party-track-info {
+            display:     inline-block;
+            margin-left: 60px;
+
+            h1,
+            h2,
+            h3 {
+                margin:     0;
+                text-align: left;
+            }
+
+            .a,
+            .b {
+                animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+            }
+
+            .c,
+            .d {
+                animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+
+            }
+
+            .e {
+                animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.2s infinite;
+                -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+            }
+
+            .b,
+            .d {
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .mzk-star {
+        bottom:   0;
+        left:     0;
+        overflow: hidden;
+        position: absolute;
+        right:    0;
+        top:      0;
+    }
+
+    .mzk-start-layer {
+        animation:         wind 14s ease-in-out infinite alternate;
+        left:              -100px;
+        perspective:       100px;
+        right:             -100px;
+        -moz-animation:    wind 14s ease-in-out infinite alternate;
+        -webkit-animation: wind 14s ease-in-out infinite alternate;
+    }
+
+    .mzk-start-layer::after {
+        animation:         rise-closeup 40s linear infinite;
+        background:        url("/static/img/utils/partyview/bg-light.png");
+        content:           '';
+        height:            2000px;
+        left:              -100px;
+        position:          absolute;
+        right:             -100px;
+        top:               -1000px;
+        transform:         translateZ(30px);
+        -moz-animation:    rise-closeup 40s linear infinite;
+        -webkit-animation: rise-closeup 40s linear infinite;
+    }
+
+
+    .mzk-start-layer:nth-child(1) {
+        animation-duration: 25s;
+        animation-name:     wing-deux;
+    }
+
+    .mzk-start-layer:nth-child(1)::after {
+        animation-duration: 60s;
+        animation-name:     rise-blur;
+        background:         url("/static/img/utils/partyview/bg-blur.png");
+        transform:          translateZ(0px);
+    }
+
+    .mzk-start-layer:nth-child(2) {
+        animation-duration: 10s;
+    }
+
+    .mzk-start-layer:nth-child(2)::after {
+        animation-duration: 50s;
+        animation-name:     rise;
+        background:         url("/static/img/utils/partyview/bg-medium.png");
+    }
+
+    .mzk-close {
+        cursor:   pointer;
+        height:   30px;
+        position: absolute;
+        right:    15px;
+        top:      15px;
+        width:    30px;
+    }
+
+    .mzk-previous,
+    .mzk-play,
+    .mzk-next {
+        bottom:   25px;
+        cursor:   pointer;
+        height:   35px;
+        position: absolute;
+        width:    35px;
+    }
+
+    .mzk-previous {
+        left: 25px;
+    }
+
+    .mzk-play {
+        left: 80px;
+    }
+
+    .mzk-next {
+        left: 135px;
+    }
+}

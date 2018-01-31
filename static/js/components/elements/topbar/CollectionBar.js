@@ -26,11 +26,11 @@ class PlaylistCollectionEntry {
         this.entry.appendChild(this.label);
 
         if (this.isLibrary) {
-            this.entry.className   = "library";
+            this.entry.className   = "mzk-library";
         }
 
         else {
-            this.entry.className   = "playlist";
+            this.entry.className   = "mzk-playlist";
         }
 
         this.isSelected            = false;
@@ -72,21 +72,21 @@ class PlaylistCollectionEntry {
 
         if (this.isLibrary) {
             if (this.isSelected) {
-                this.entry.classList.add("librarySelected");
+                this.entry.classList.add("mzk-library-selected");
             }
 
             else {
-                this.entry.classList.remove("librarySelected");
+                this.entry.classList.remove("mzk-library-selected");
             }
         }
 
         else {
             if (this.isSelected) {
-                this.entry.classList.add("playlistSelected");
+                this.entry.classList.add("mzk-playlist-selected");
             }
 
             else {
-                this.entry.classList.remove("playlistSelected");
+                this.entry.classList.remove("mzk-playlist-selected");
             }
         }
     }
@@ -102,19 +102,22 @@ class PlaylistCollectionEntry {
         let that             = this;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
-        this.contextMenu.addEntry(null, "Rename", function() {
-            that.modal       = new Modal("renamePlaylist", {
-                name: that.playlist.name,
-                id:   that.playlist.id
+
+        if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
+            this.contextMenu.addEntry(null, "Rename", function() {
+                that.modal       = new Modal("renamePlaylist", {
+                    name: that.playlist.name,
+                    id:   that.playlist.id
+                });
+                that.modal.open();
             });
-            that.modal.open();
-        });
-        this.contextMenu.addEntry(null, "Delete", function() {
-            that.modal       = new Modal("deletePlaylist", {
-                playlist: that.playlist
+            this.contextMenu.addEntry(null, "Delete", function() {
+                that.modal       = new Modal("deletePlaylist", {
+                    playlist: that.playlist
+                });
+                that.modal.open();
             });
-            that.modal.open();
-        });
+        }
     }
 
 
@@ -125,10 +128,10 @@ class PlaylistCollectionEntry {
      * desc   : Append option button to entry
      **/
     _createOptionButton() {
-        let that           = this;
+        let that               = this;
         // TODO : add admin options, or library options
-        this.options       = document.createElement("A");
-        this.options.id    = "gear";
+        this.options           = document.createElement("A");
+        this.options.className = "mzk-gear";
         this.options.addEventListener("mouseleave", function() {
             if (that.contextMenu) {
                 that.contextMenu.setInvisible();
@@ -234,12 +237,16 @@ class CollectionBar extends MzkObject {
      **/
     _contextMenuSetup() {
         this.newLibMenu = new ContextMenu(this.newButton, null, 'click');
-        this.newLibMenu.addEntry(null, 'New Library', function() {
-            window.app.requestNewLibrary();
-        });
-        this.newLibMenu.addEntry(null, 'New Playlist', function() {
-            window.app.requestNewPlaylist();
-        });
+
+        if(window.app.user.hasPermission("LIBR"))
+            this.newLibMenu.addEntry(null, 'New Library', function() {
+                window.app.requestNewLibrary();
+            });
+
+        if(window.app.user.hasPermission("PLST"))
+            this.newLibMenu.addEntry(null, 'New Playlist', function() {
+                window.app.requestNewPlaylist();
+            });
     }
 
 
@@ -255,13 +262,14 @@ class CollectionBar extends MzkObject {
         this.playContainer           = document.createElement('DIV');
         this.newButton               = document.createElement("DIV");
 
-        this.libsContainer.className = 'no-padding';
-        this.playContainer.className = 'no-padding';
+        this.libsContainer.className = 'mzk-no-padding';
+        this.playContainer.className = 'mzk-no-padding';
         this.newButton.innerText     = '+';
 
         this.element.appendChild(this.libsContainer);
         this.element.appendChild(this.playContainer);
-        this.element.appendChild(this.newButton);
+        if(window.app.user.hasPermission("LIBR") || window.app.user.hasPermission("PLST"))
+            this.element.appendChild(this.newButton);
 
         container.appendChild(this.element);
     }

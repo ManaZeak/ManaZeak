@@ -7,47 +7,33 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import { JSONParsedGetRequest } from '../utils/Utils.js'
+import Notification from '../utils/Notification.js'
 
 class User {
 
-    constructor() {
+    constructor(callback) {
+        this.id            = -1;
         this.isAdmin       = false;
-        this.inviteCode    = 0;
-        this.godFatherCode = 0;
-        this._getUserInfo();
+        this.username      = "";
+        this.groupName     = "";
+        this.groupID       = -1;
+        this.permissions  = [];
+        this.inviteCode    = -1;
+        this.godFatherCode = -1;
+        this.godFatherName = "";
+        this.getUserInfo(callback);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
     /**
-     * method : getIsAdmin (public)
+     * method : hasPermission (public)
      * class  : User
-     * desc   : Get info from server and stores it locally
-     * arg    : {function} callback
+     * desc   : TODO
+     * arg    : {string} permissionCode
      **/
-    updateIsAdmin(callback) {
-        let that = this;
-        JSONParsedGetRequest(
-            "admin/isAdmin/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     IS_ADMIN  : bool
-                 * } */
-                if (response.DONE && response.IS_ADMIN) {
-                    that.isAdmin = true;
-                    callback(true);
-                }
-
-                else {
-                    that.isAdmin = false;
-                    callback(false);
-                }
-            }
-        );
+    hasPermission(permissionCode) {
+        return this.permissions.includes(permissionCode);
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -59,10 +45,10 @@ class User {
      * desc   : Get info from server and stores it locally
      * arg    : {function} callback
      **/
-    _getUserInfo() {
+    getUserInfo(callback) {
         let that = this;
         JSONParsedGetRequest(
-            "user/getSettings/",
+            "user/getInformation/",
             function(response) {
                 /* response = {
                  *     DONE      : bool
@@ -79,13 +65,23 @@ class User {
                  *     GODFATHER_NAME:
                  * } */
                 if (response.DONE) {
-                    // TODO : store all values
-                    that.godFatherCode = response.GODFATHER_CODE;
+                    that.id            = response.USER_ID;
+                    that.isAdmin       = response.IS_ADMIN;
+                    that.username      = response.USERNAME;
+                    that.groupName     = response.GROUP_NAME;
+                    that.groupID       = response.GROUP_ID;
+                    that.permissions  = response.PERMISSIONS;
                     that.inviteCode    = response.INVITE_CODE;
+                    that.godFatherCode = response.GODFATHER_CODE;
+                    that.godFatherName = response.GODFATHER_NAME;
+
+                    if(callback) {
+                        callback();
+                    }
                 }
 
                 else {
-
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
             }
         );
@@ -94,8 +90,12 @@ class User {
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //
 
+    getID() { return this.id; }
     getIsAdmin() { return this.isAdmin; }
-    getInviteCode() { return this.inviteCode; }
+    getUsername()    { return this.username; }
+    getInviteCode() { if (this.hasPermission("SPON")) { return this.inviteCode; } else { return "--"; }}
+    getGodFatherCode() { return this.godFatherCode; }
+    getGodFatherName() { return this.godFatherName; }
 
 }
 

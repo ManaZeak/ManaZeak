@@ -49,9 +49,9 @@ class UserView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "user";
-        this.ui.menu.id             = "leftMenu";
-        this.ui.content.id          = "content";
+        this.ui.container.classList.add("mzk-user-view");
+        this.ui.menu.className      = "mzk-left-menu";
+        this.ui.content.className   = "mzk-content";
         this.ui.menuTitle.innerHTML = "User";
         this.ui.menuGen.innerHTML   = "General";
 
@@ -84,26 +84,42 @@ class UserView extends View {
     _requestGeneralPage() {
         this._updateSettingsInfo();
         this._clearPageSpace();
-        this.ui.menuGen.className          = "selected";
+        this.ui.menuGen.className          = "mzk-selected";
         this.ui.contentTitle.innerHTML     = "General settings";
 
-        let that = this;
-        this._updateSettingsInfo(function() {
-            let userInfo                   = document.createElement("P");
+        this.ui.rescanLibLabel            = document.createElement("P");
+        this.ui.rescanLibButton           = document.createElement("BUTTON");
 
-            let admin                      = that.info.IS_ADMIN ? "Admin" : "User";
-            that.ui.contentTitle.innerHTML = "General settings";
-            userInfo.innerHTML             = "<b>" + that.info.USERNAME + "</b> (" + admin + ") <br><br>" +
-                                             "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + that.info.INVITE_CODE + "<br>" +
-                                             "Godfather:&nbsp;&nbsp;" + that.info.GODFATHER_NAME + " (" + that.info.GODFATHER_CODE + ")<br>" +
-                                             "ManaCoin: " + that.info.MANACOIN + "<br><br>" +
-                                             "Joined on: " + that.info.DATE_JOINED + "<br>" +
-                                             "Last login: " + that.info.LAST_LOGIN;
+        this.ui.rescanLibLabel.innerHTML  = "<b>Remove my account</b><br>" +
+                                                "<br>" +
+                                                "Warning, this action will remove you from the database with all your data.<br>" +
+                                                "Are you sure you want to remove your account ?";
+        this.ui.rescanLibButton.innerHTML = "DELETE MY ACCOUNT";
 
-            that.ui.content.appendChild(that.ui.contentTitle);
-            that.ui.content.appendChild(document.createElement("HR"));
-            that.ui.content.appendChild(userInfo);
+        this.ui.rescanLibButton.addEventListener("click", function() {
+            JSONParsedGetRequest(
+                "user/delete/",
+                function(response) {
+                    /* response = {
+                     *     DONE      : bool
+                     *     ERROR_H1  : string
+                     *     ERROR_MSG : string
+                     * } */
+                    if (response.DONE) {
+                        window.location.reload();
+                    }
+
+                    else {
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
+                }
+            );
         });
+
+        this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.rescanLibLabel);
+        this.ui.content.appendChild(this.ui.rescanLibButton);
     }
 
 

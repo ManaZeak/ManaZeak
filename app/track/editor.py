@@ -1,13 +1,16 @@
+import base64
+import hashlib
 import json
 
+import os
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3
-from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS
+from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
 from app.models import Track, Artist, Album, Genre
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Check if the value can be converted to int
@@ -36,6 +39,7 @@ class Information:
     albumTotalTrack = None
     comment = None
     lyrics = None
+    cover = None
 
 
 # Update the track into the database
@@ -94,6 +98,21 @@ def updateDBInfo(response, track):
             genre.save()
         genre = Genre.objects.get(name=tags.trackGenre)
         track.genre = genre
+
+    if 'COVER' in response:
+        md5Name = hashlib.md5()
+        if str(response['COVER'].split(",")[0]) == "image/png":
+            extension = "png"
+        else:
+            extension = "jpg"
+        md5Name.update(base64.b64decode(str(response['COVER'].split(",")[1])))
+        filePath = "/ManaZeak/static/img/covers/" + md5Name.hexdigest() + extension
+        if not os.path.isfile(filePath):
+            with open(filePath, 'wb+') as destination:
+                # Split the header with MIME type
+                tags.cover = base64.b64decode(str(response['COVER'].split(",")[1]))
+                destination.write(tags.cover)
+                track.coverLocation = md5Name.hexdigest() + extension
 
     if 'ALBUM_TITLE' in response and 'ALBUM_ARTISTS' in response and response['ALBUM_TITLE'] != '' \
             and response['ALBUM_ARTISTS'] != '':
@@ -165,6 +184,8 @@ def updateFileMetadata(track, tags):
             audioTag.add(COMM(text=tags.comment))
         if tags.albumDiscNumber is not None:
             audioTag.add(TPOS(text=str(tags.albumDiscNumber)))
+        if tags.cover is not None:
+            audioTag.add(APIC(data=tags.cover, type=3))
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     elif track.location.endswith(".flac"):
@@ -199,6 +220,9 @@ def updateFileMetadata(track, tags):
             audioTag['DISCNUMBER'] = str(tags.albumDiscNumber)
         if tags.comment is not None:
             audioTag['COMMENT'] = str(tags.comment)
+        if tags.cover is not None:
+            picture = audioTag.pictures
+            picture[0].data = tags.cover
         audioTag.save(track.location)
         data = errorCheckMessage(True, None)
     else:
@@ -211,7 +235,7 @@ def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        if user.is_superuser:
+        if checkPermission(["TAGE"], user):
             if 'TRACKS_ID' in response:
                 trackIds = response['TRACKS_ID']
                 data = {}

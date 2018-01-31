@@ -54,11 +54,16 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
         # Creating md5 hash for the cover
         md5Name = hashlib.md5()
         md5Name.update(front)
+        # Extracting cover type
+        if audioTag['APIC:'].mime == "image/png":
+            extension = ".png"
+        else:
+            extension = ".jpg"
         # Check if the cover already exists and save it
-        if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
-            with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
+        if not os.path.isfile(coverPath + md5Name.hexdigest() + extension):
+            with open(coverPath + md5Name.hexdigest() + extension, 'wb') as img:
                 img.write(front)
-        track.coverLocation = md5Name.hexdigest() + ".jpg"
+        track.coverLocation = md5Name.hexdigest() + extension
     if 'TIT2' in audioTag:
         if not audioTag['TIT2'].text[0] == "":
             track.title = strip_tags(audioTag['TIT2'].text[0]).rstrip()
@@ -112,7 +117,12 @@ def createMP3Track(filePath, convert, fileTypeId, coverPath):
 
     if 'TPOS' in audioTag:
         if not audioTag['TPOS'].text[0] == "":
-            track.discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+            discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+            try:
+                discNumber = int(discNumber)
+            except ValueError:
+                discNumber = 0
+            track.discNumber = discNumber
 
     # --- Adding genre to structure ---
     if 'TCON' in audioTag:
@@ -169,7 +179,6 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         pass
         if 'METADATA_BLOCK_PICTURE' in audioFile:
             picture = audioFile['METADATA_BLOCK_PICTURE'][0]
-            print(picture)
             pictureName = str(audioFile['METADATA_BLOCK_PICTURE']).encode("ascii", "ignore")
         else:
             picture = pictureName = ""
@@ -201,6 +210,10 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
     if 'DISCNUMBER' in audioFile:
         discNumber = processVorbisTag(audioFile['DISCNUMBER'])
         if not discNumber == "":
+            try:
+                discNumber = int(discNumber)
+            except ValueError:
+                discNumber = 0
             track.discNumber = discNumber
 
     if 'COMMENT' in audioFile:
@@ -245,7 +258,7 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         track.album = albumTitle.replace('\n', '')
 
     if ogg:
-        print(track)
+        pass
     return track
 
 

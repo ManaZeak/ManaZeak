@@ -12,7 +12,7 @@ from django.utils.html import strip_tags
 from app.history import addToHistory
 from app.models import Track
 from app.stats.stats import addToStats
-from app.utils import errorCheckMessage
+from app.utils import errorCheckMessage, checkPermission
 
 
 # Scan all the attributes of an MP3 track, and add it to base.
@@ -77,18 +77,22 @@ def exportTrackInfo(track):
 def getTracksDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'TRACK_ID' in response:
-            trackIds = response['TRACK_ID']
-            trackInfo = []
-            for trackId in trackIds:
-                if Track.objects.filter(id=trackId).count() == 1:
-                    trackInfo.append(exportTrackInfo(Track.objects.get(id=trackId)))
-                else:
-                    data = errorCheckMessage(False, "dbError")
-                    return JsonResponse(data)
-            data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None)}
+        user = request.user
+        if checkPermission(["PLAY"], user):
+            if 'TRACK_ID' in response:
+                trackIds = response['TRACK_ID']
+                trackInfo = []
+                for trackId in trackIds:
+                    if Track.objects.filter(id=trackId).count() == 1:
+                        trackInfo.append(exportTrackInfo(Track.objects.get(id=trackId)))
+                    else:
+                        data = errorCheckMessage(False, "dbError")
+                        return JsonResponse(data)
+                data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -100,38 +104,41 @@ def getTrackPath(request):
     if request.method == 'POST':
         response = json.loads(request.body)
         user = request.user
-        # Checking JSON keys
-        if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response \
-                and 'TRACK_PERCENTAGE' in response:
-            trackId = strip_tags(response['TRACK_ID'])
-            # Getting the track asked
-            if Track.objects.filter(id=trackId).count() == 1:
-                track = Track.objects.get(id=trackId)
-                # If we don't ask a previous track
-                if not bool(response['PREVIOUS']):
-                    # Adding the current track to the history
-                    addToHistory(track, user)
-                    # Removing the first 2 chars
-                    previousTrackPath = strip_tags(response['LAST_TRACK_PATH'])[2:]
-                    # If the previous track exists
-                    if Track.objects.filter(location=previousTrackPath).count() == 1:
-                        listeningPercentage = float(strip_tags(response['TRACK_PERCENTAGE']))
-                        previousTrack = Track.objects.get(location=previousTrackPath)
-                        # Adding to stats if the user has listened more than 15% of the song
-                        if listeningPercentage > 5:
-                            previousTrack.playCounter += 1
-                            previousTrack.save()
-                            addToStats(previousTrack, listeningPercentage, user)
+        if checkPermission(["PLAY"], user):
+            # Checking JSON keys
+            if 'TRACK_ID' in response and 'PREVIOUS' in response and 'LAST_TRACK_PATH' in response \
+                    and 'TRACK_PERCENTAGE' in response:
+                trackId = strip_tags(response['TRACK_ID'])
+                # Getting the track asked
+                if Track.objects.filter(id=trackId).count() == 1:
+                    track = Track.objects.get(id=trackId)
+                    # If we don't ask a previous track
+                    if not bool(response['PREVIOUS']):
+                        # Adding the current track to the history
+                        addToHistory(track, user)
+                        # Removing the first 2 chars
+                        previousTrackPath = strip_tags(response['LAST_TRACK_PATH'])[2:]
+                        # If the previous track exists
+                        if Track.objects.filter(location=previousTrackPath).count() == 1:
+                            listeningPercentage = float(strip_tags(response['TRACK_PERCENTAGE']))
+                            previousTrack = Track.objects.get(location=previousTrackPath)
+                            # Adding to stats if the user has listened more than 15% of the song
+                            if listeningPercentage > 5:
+                                previousTrack.playCounter += 1
+                                previousTrack.save()
+                                addToStats(previousTrack, listeningPercentage, user)
 
-                # Returning the asked song
-                data = {
-                    'TRACK_PATH': track.location,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+                    # Returning the asked song
+                    data = {
+                        'TRACK_PATH': track.location,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -142,18 +149,22 @@ def getTrackPath(request):
 def getMoodbar(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'TRACK_ID' in response:
-            trackID = response['TRACK_ID']
-            if Track.objects.filter(id=trackID).count() == 1:
-                track = Track.objects.get(id=trackID)
-                data = {
-                    'TRACK_MOOD': track.moodbar,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+        user = request.user
+        if checkPermission(["PLAY"], user):
+            if 'TRACK_ID' in response:
+                trackID = response['TRACK_ID']
+                if Track.objects.filter(id=trackID).count() == 1:
+                    track = Track.objects.get(id=trackID)
+                    data = {
+                        'TRACK_MOOD': track.moodbar,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -164,20 +175,24 @@ def getMoodbar(request):
 def getDownloadLocation(request):
     if request.method == 'POST':
         response = json.loads(request.body)
-        if 'TRACK_ID' in response:
-            trackId = strip_tags(response['TRACK_ID'])
-            if Track.objects.filter(id=trackId).count() == 1:
-                track = Track.objects.get(id=trackId)
-                track.downloadCounter += 1
-                track.save()
-                data = {
-                    'DOWNLOAD_PATH': track.location,
-                }
-                data = {**data, **errorCheckMessage(True, None)}
+        user = request.user
+        if checkPermission(["DOWN"], user):
+            if 'TRACK_ID' in response:
+                trackId = strip_tags(response['TRACK_ID'])
+                if Track.objects.filter(id=trackId).count() == 1:
+                    track = Track.objects.get(id=trackId)
+                    track.downloadCounter += 1
+                    track.save()
+                    data = {
+                        'DOWNLOAD_PATH': track.location,
+                    }
+                    data = {**data, **errorCheckMessage(True, None)}
+                else:
+                    data = errorCheckMessage(False, "dbError")
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
@@ -188,39 +203,43 @@ def getDownloadLocation(request):
 def multiTrackDownload(request):
     if request.method == "POST":
         response = json.loads(request.body)
-        if 'TRACKS_ID' in response:
-            trackIds = response['TRACKS_ID']
-            # TODO : create admin option max number of sound to download
-            if len(trackIds) > 50:
-                return JsonResponse(errorCheckMessage(False, ""))
-            locations = []
+        user = request.user
+        if checkPermission(["DOWN"], user):
+            if 'TRACKS_ID' in response:
+                trackIds = response['TRACKS_ID']
+                # TODO : create admin option max number of sound to download
+                if len(trackIds) > 50:
+                    return JsonResponse(errorCheckMessage(False, ""))
+                locations = []
 
-            # Getting tracks requested by the user
-            for trackId in trackIds:
-                if Track.objects.filter(id=trackId).count() == 1:
-                    track = Track.objects.get(id=trackId)
-                    locations.append(track.location)
-            tmp = ""
-            for loc in locations:
-                tmp += loc
-            archiveName = "ManaZeak-" + str(zlib.crc32(tmp.encode("ascii", "ignore"))) + ".zip"
+                # Getting tracks requested by the user
+                for trackId in trackIds:
+                    if Track.objects.filter(id=trackId).count() == 1:
+                        track = Track.objects.get(id=trackId)
+                        locations.append(track.location)
+                tmp = ""
+                for loc in locations:
+                    tmp += loc
+                archiveName = "ManaZeak-" + str(zlib.crc32(tmp.encode("ascii", "ignore"))) + ".zip"
 
-            # Checking if the output folder for the zip exists
-            if not os.path.isdir("/static/zip"):
-                try:
-                    os.makedirs("/static/zip")
-                except OSError:
-                    return JsonResponse(errorCheckMessage(False, "dirCreationError"))
+                # Checking if the output folder for the zip exists
+                if not os.path.isdir("/static/zip"):
+                    try:
+                        os.makedirs("/static/zip")
+                    except OSError:
+                        return JsonResponse(errorCheckMessage(False, "dirCreationError"))
 
-            # Creating archive
-            archiveName = os.path.join("/static/zip", archiveName)
-            archive = zipfile.ZipFile(archiveName, 'w', zipfile.ZIP_DEFLATED)
-            for location in locations:
-                archive.write(location, os.path.basename(location), compress_type=zipfile.ZIP_DEFLATED)
+                # Creating archive
+                archiveName = os.path.join("/static/zip", archiveName)
+                archive = zipfile.ZipFile(archiveName, 'w', zipfile.ZIP_DEFLATED)
+                for location in locations:
+                    archive.write(location, os.path.basename(location), compress_type=zipfile.ZIP_DEFLATED)
 
-            data = {**{'DOWNLOAD_PATH': archiveName, }, **errorCheckMessage(True, None)}
+                data = {**{'DOWNLOAD_PATH': archiveName, }, **errorCheckMessage(True, None)}
+            else:
+                data = errorCheckMessage(False, "badFormat")
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "permissionError")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

@@ -77,8 +77,8 @@ class QueuePreview extends MzkObject {
         let origin                     = document.createElement("SPAN");
         let composer                   = document.createElement("SPAN");
         let qControls                  = document.createElement("DIV");
-        let qControlsUp                = document.createElement("SPAN");
-        let qControlsDown              = document.createElement("SPAN");
+        let qControlsUp                = document.createElement("IMG");
+        let qControlsDown              = document.createElement("IMG");
 
         body.className                 = "mzk-qprev-body";
         title.className                = "mzk-qprev-title";
@@ -89,8 +89,9 @@ class QueuePreview extends MzkObject {
         title.innerText                = track.title;
         origin.innerText               = track.artist + ' - ' + track.album + ' (' + track.year + ')';
         composer.innerText             = 'Composed by: ' + track.composer;
-        qControlsUp.innerText          = "U";
-        qControlsDown.innerText        = "D";
+        qControlsUp.src                = "../static/img/utils/up.svg";
+        qControlsDown.src              = "../static/img/utils/down.svg";
+        img.className                  = "mzk-queue-cover";
         img.src                        = track.cover;
 
         qControlsUp.dataset.callback   = "moveUp";
@@ -192,8 +193,8 @@ class QueuePreview extends MzkObject {
                 element = element.parentNode;
 
                 if (element.tagName === 'LI') { return element; }
-                else                          { return null;    }
             }
+            return null;
         };
         this.ui.statusBar.reverseBox.addEventListener('click', function() {
             window.app.reverseQueue(!that.reverse);
@@ -206,11 +207,11 @@ class QueuePreview extends MzkObject {
                 case 'moveUp':
                     li = findParentLI(event.target);
 
-                    if (li !== null || li !== undefined) {
+                    if (li != null) {
                         sib = li.previousSibling;
 
-                        if (sib !== null || li !== undefined) {
-                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+                        if (sib != null) {
+                            for (var i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib);
                             window.app.moveQueue(i, i -1);
@@ -220,11 +221,11 @@ class QueuePreview extends MzkObject {
 
                 case 'moveDown':
                     li = findParentLI(event.target);
-                    if (li !== null || li !== undefined) {
+                    if (li != null) {
                         sib = li.nextSibling;
 
-                        if (sib !== null || li !== undefined) {
-                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
+                        if (sib != null) {
+                            for (var i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib.nextSibling);
                             window.app.moveQueue(i, i + 1);

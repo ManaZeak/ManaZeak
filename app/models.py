@@ -66,9 +66,7 @@ class Playlist(models.Model):
 
 
 class Library(models.Model):
-    name = models.CharField(max_length=1000)
     path = models.FilePathField(max_length=1000)
-    user = models.ForeignKey(User)
     playlist = models.ForeignKey(Playlist, null=True)
     convertID3 = models.BooleanField(default=False)
 
@@ -133,7 +131,19 @@ class Wallet(models.Model):
     loss = models.IntegerField(default=0)
 
 
+class Permissions(models.Model):
+    name = models.CharField(max_length=1000)
+    code = models.CharField(max_length=4)
+
+
+class Groups(models.Model):
+    name = models.CharField(max_length=1000, default="Default")
+    rank = models.IntegerField(default=0)
+    permissions = models.ManyToManyField(Permissions)
+
+
 class UserPreferences(models.Model):
     inviteCode = models.ForeignKey(InviteCode, null=True)
     wallet = models.ForeignKey(Wallet, null=True)
+    group = models.ForeignKey(Groups, null=True)
     user = models.ForeignKey(User, null=True)

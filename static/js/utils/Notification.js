@@ -64,11 +64,11 @@ class Notification {
         };
         this.notification = document.createElement("DIV");
 
-        this.notification.className = "notificationContainer";
-        this.ui.icon.className      = "icon";
-        this.ui.title.className     = "title";
-        this.ui.message.className   = "message";
-        this.ui.close.className     = "close";
+        this.notification.className = "mzk-notification-container";
+        this.ui.icon.className      = "mzk-icon";
+        this.ui.title.className     = "mzk-title";
+        this.ui.message.className   = "mzk-message";
+        this.ui.close.className     = "mzk-close";
 
         switch (this.type) {
             case "INFO":

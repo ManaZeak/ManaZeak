@@ -19,7 +19,7 @@ class Modal extends MzkObject {
         super();
         this.data        = data;
         this.url         = null;
-        this.id          = "modal-" + genUniqueID();
+        this.id          = "mzk-modal-wrapper-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
         this.editTag     = null;
@@ -75,6 +75,14 @@ class Modal extends MzkObject {
                 this._editTagUI();
                 break;
 
+            case "editGroup":
+                this._editGroupUI();
+                break;
+
+            case "chooseGroup":
+                this._chooseGroupUI();
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -124,9 +132,9 @@ class Modal extends MzkObject {
      * desc   : Append a close button to modal container
      **/
     _appendCloseButton() {
-        this.closeButton     = document.createElement("IMG");
-        this.closeButton.id  = "closeButton";
-        this.closeButton.src = "/static/img/utils/close.svg";
+        this.closeButton           = document.createElement("IMG");
+        this.closeButton.src       = "/static/img/utils/close.svg";
+        this.closeButton.className = "mzk-modal-closebutton";
 
         let that = this;
         this.closeButton.addEventListener("click", function() {
@@ -198,7 +206,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for cover modal
      **/
     _coverUI() {
-        this.ui.container.id = "cover";
+        this.ui.container.className = "mzk-modal-cover";
 
         let info             = document.createElement("H1");
         let cover            = document.createElement("IMG");
@@ -231,10 +239,11 @@ class Modal extends MzkObject {
         };
 
         this.ui.overlay.id        = this.id;
-        this.ui.overlay.className = "overlay";
-        this.ui.header.id         = "header";
-        this.ui.content.id        = "content";
-        this.ui.footer.id         = "footer";
+        this.ui.overlay.className = "mzk-modal-overlay";
+        this.ui.header.className  = "mzk-modal-header";
+        this.ui.content.className = "mzk-modal-content";
+        this.ui.footer.className  = "mzk-modal-footer";
+        this.ui.container.id      = "mzk-modal-container";
 
         this.ui.header.appendChild(this.ui.title);
         this.ui.container.appendChild(this.ui.header);
@@ -250,7 +259,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _deletePlaylistUI() {
-        this.ui.container.id    = "deletePlaylist";
+        this.ui.container.className = "mzk-modal-delete-playlist";
         this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
@@ -284,7 +293,8 @@ class Modal extends MzkObject {
 
 
     _editTagUI() {
-        this.editTag = new EditTag(this.ui.container, this.data);
+        this.ui.container.className = "mzk-modal-edit-tag";
+        this.editTag = new EditTag(this.ui.content, this.data);
 
         let ui = {
             foot:      document.createElement("DIV"),
@@ -292,7 +302,7 @@ class Modal extends MzkObject {
                 save:  document.createElement("BUTTON")
         };
 
-        ui.foot.className      = "foot";
+        ui.foot.className      = "mzk-foot";
             ui.close.innerHTML = "Close";
             ui.save.innerHTML  = "Save";
 
@@ -318,19 +328,19 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchPlaylists modal
      **/
     _fetchPlaylistsUI() {
-        this.ui.container.id       = "fetchPlaylists";
-        this.ui.title.innerHTML    = "Fetching your playlists";
+        this.ui.container.className = "mzk-modal-fetch-playlists";
+        this.ui.title.innerHTML     = "Fetching your playlists";
 
-        let spinnerContainer       = document.createElement("DIV");
-        let spinnerRing            = document.createElement("DIV");
-        let spinnerFloatDiv        = document.createElement("DIV");
-        let spinnerImage           = document.createElement("IMG");
-        let text                   = document.createElement("P");
+        let spinnerContainer        = document.createElement("DIV");
+        let spinnerRing             = document.createElement("DIV");
+        let spinnerFloatDiv         = document.createElement("DIV");
+        let spinnerImage            = document.createElement("IMG");
+        let text                    = document.createElement("P");
 
-        spinnerContainer.className = "lds-css";
-        spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/manazeak.svg";
-        text.innerHTML             = "Currently fetching your libraries and playlists, please wait.";
+        spinnerContainer.className  = "lds-css";
+        spinnerRing.className       = "lds-dual-ring";
+        spinnerImage.src            = "/static/img/manazeak.svg";
+        text.innerHTML              = "Currently fetching your libraries and playlists, please wait.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -347,19 +357,19 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchStats modal
      **/
     _fetchStatsUI() {
-        this.ui.container.id       = "fetchPlaylists";
-        this.ui.title.innerHTML    = "Crushing data";
+        this.ui.container.className = "mzk-modal-fetch-playlists";
+        this.ui.title.innerHTML     = "Crushing data";
 
-        let spinnerContainer       = document.createElement("DIV");
-        let spinnerRing            = document.createElement("DIV");
-        let spinnerFloatDiv        = document.createElement("DIV");
-        let spinnerImage           = document.createElement("IMG");
-        let text                   = document.createElement("P");
+        let spinnerContainer        = document.createElement("DIV");
+        let spinnerRing             = document.createElement("DIV");
+        let spinnerFloatDiv         = document.createElement("DIV");
+        let spinnerImage            = document.createElement("IMG");
+        let text                    = document.createElement("P");
 
-        spinnerContainer.className = "lds-css";
-        spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/manazeak.svg";
-        text.innerHTML             = "Hold on, you're data are on the road.";
+        spinnerContainer.className  = "lds-css";
+        spinnerRing.className       = "lds-dual-ring";
+        spinnerImage.src            = "/static/img/manazeak.svg";
+        text.innerHTML              = "Hold on, you're data are on the road.";
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -376,8 +386,8 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for display user'sfetchPlaylists invite code modal
      **/
     _inviteCodeUI() {
-        this.ui.container.id    = "inviteCode";
-        this.ui.title.innerHTML = "Invitation code";
+        this.ui.container.className = "mzk-modal-invite-code";
+        this.ui.title.innerHTML     = "Invitation code";
 
         let infoLabel           = document.createElement("P");
         let name                = document.createElement("H3");
@@ -409,35 +419,35 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newLibrary modal
      **/
     _newLibraryUI() {
-        this.ui.container.id    = "newLibrary";
-        this.ui.title.innerHTML = "New library";
+        this.ui.container.className = "mzk-modal-new-library";
+        this.ui.title.innerHTML     = "New library";
 
-        let infoLabel           = document.createElement("P");
-        let name                = document.createElement("INPUT");
-        let path                = document.createElement("INPUT");
-        let convertLabel        = document.createElement("SPAN");
-        let convert             = document.createElement("INPUT");
-        let scan                = document.createElement("BUTTON");
+        let infoLabel               = document.createElement("P");
+        let name                    = document.createElement("INPUT");
+        let path                    = document.createElement("INPUT");
+        let convertLabel            = document.createElement("SPAN");
+        let convert                 = document.createElement("INPUT");
+        let scan                    = document.createElement("BUTTON");
 
-        infoLabel.id            = "infoLabel";
-        name.id                 = "name";
-        path.id                 = "path";
-        convertLabel.id         = "id3Label";
-        convert.id              = "convert";
-        scan.id                 = "scanButton";
+        infoLabel.id                = "infoLabel";
+        name.id                     = "name";
+        path.id                     = "path";
+        convertLabel.id             = "id3Label";
+        convert.id                  = "convert";
+        scan.id                     = "scanButton";
 
-        name.type               = "text";
-        path.type               = "text";
-        convert.type            = "checkbox";
-        name.placeholder        = "Enter the name of the library";
-        path.placeholder        = "Enter the absolute path to your library";
+        name.type                   = "text";
+        path.type                   = "text";
+        convert.type                = "checkbox";
+        name.placeholder            = "Enter the name of the library";
+        path.placeholder            = "Enter the absolute path to your library";
 
-        infoLabel.innerHTML     = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
+        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
             "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-        convertLabel.innerHTML  = "Automatically convert files to <a href=\"https://en.wikipedia.org/wiki/ID3#ID3v2\" target=\"_blank\">ID3v2</a>";
-        scan.innerHTML          = "Scan";
+        convertLabel.innerHTML      = "Automatically convert files to <a href=\"https://en.wikipedia.org/wiki/ID3#ID3v2\" target=\"_blank\">ID3v2</a>";
+        scan.innerHTML              = "Scan";
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
@@ -461,22 +471,22 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newPlaylist modal
      **/
     _newPlaylistUI() {
-        this.ui.container.id    = "newLibrary";
-        this.ui.title.innerHTML = "New playlist";
+        this.ui.container.className = "mzk-modal-new-library";
+        this.ui.title.innerHTML     = "New playlist";
 
-        let infoLabel           = document.createElement("P");
-        let name                = document.createElement("INPUT");
-        let create              = document.createElement("BUTTON");
+        let infoLabel               = document.createElement("P");
+        let name                    = document.createElement("INPUT");
+        let create                  = document.createElement("BUTTON");
 
-        infoLabel.id            = "infoLabel";
-        name.id                 = "name";
-        create.id               = "scanButton";
+        infoLabel.id                = "infoLabel";
+        name.id                     = "name";
+        create.id                   = "scanButton";
 
-        name.type               = "text";
-        name.placeholder        = "Enter the name of the playlist";
+        name.type                   = "text";
+        name.placeholder            = "Enter the name of the playlist";
 
-        infoLabel.innerHTML     = "Please choose a name for your brand new playlist.";
-        create.innerHTML        = "Create";
+        infoLabel.innerHTML         = "Please choose a name for your brand new playlist.";
+        create.innerHTML            = "Create";
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
@@ -497,20 +507,20 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newWish modal
      **/
     _newWishUI() {
-        this.ui.container.id    = "newWish";
-        this.ui.title.innerHTML = "Track suggestion";
+        this.ui.container.className = "mzk-modal-new-wish";
+        this.ui.title.innerHTML     = "Track suggestion";
 
-        let text                = document.createElement("P");
-        let wish                = document.createElement("INPUT");
-        let submit              = document.createElement("BUTTON");
+        let text                    = document.createElement("P");
+        let wish                    = document.createElement("INPUT");
+        let submit                  = document.createElement("BUTTON");
 
-        wish.type               = "text";
-        wish.placeholder        = "Enter your suggestion here";
-        text.innerHTML          = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
+        wish.type                   = "text";
+        wish.placeholder            = "Enter your suggestion here";
+        text.innerHTML              = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
             "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill " +
             "this field (hard to say isn't it?).";
-        submit.innerHTML        = "Submit";
+        submit.innerHTML            = "Submit";
 
         this.ui.content.appendChild(text);
         this.ui.content.appendChild(wish);
@@ -555,14 +565,14 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for SyncThing IFRAME modal
      **/
     _openSyncThing() {
-        let content             = document.createElement("IFRAME");
-        this.ui.container.id    = "openSyncThing";
+        let content                 = document.createElement("IFRAME");
+        this.ui.container.className = "mzk-modal-open-syncthing";
 
-        content.frameBorder     = 0;
-        content.height          = "100%";
-        content.width           = "100%";
-        //content.src             = "http://everynoise.com/engenremap.html";
-        content.src             = "//127.0.0.1:8384/";
+        content.frameBorder         = 0;
+        content.height              = "100%";
+        content.width               = "100%";
+        //content.src                 = "http://everynoise.com/engenremap.html";
+        content.src                 = "//127.0.0.1:8384/";
 
         content.onload = function() {
         };
@@ -579,26 +589,26 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _renamePlaylistUI() {
-        this.ui.container.id    = "deletePlaylist";
-        this.ui.title.innerHTML = "Rename " + this.data.name;
+        this.ui.container.className = "mzk-modal-delete-playlist";
+        this.ui.title.innerHTML     = "Rename " + this.data.name;
 
-        let infoLabel           = document.createElement("P");
-        let name                = document.createElement("INPUT");
-        let cancel              = document.createElement("BUTTON");
-        let rename              = document.createElement("BUTTON");
+        let infoLabel               = document.createElement("P");
+        let name                    = document.createElement("INPUT");
+        let cancel                  = document.createElement("BUTTON");
+        let rename                  = document.createElement("BUTTON");
 
-        infoLabel.id            = "infoLabel";
-        name.id                 = "name";
-        cancel.id               = "cancelButton";
-        rename.id               = "deleteButton";
+        infoLabel.id                = "infoLabel";
+        name.id                     = "name";
+        cancel.id                   = "cancelButton";
+        rename.id                   = "deleteButton";
 
-        name.type               = "text";
-        name.placeholder        = "Enter the name of the playlist";
+        name.type                   = "text";
+        name.placeholder            = "Enter the name of the playlist";
 
-        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.name +
+        infoLabel.innerHTML         = "You are about to delete your playlist named " + this.data.name +
             ", and all the tracks that you've collected in it. Do you really want to delete this ?";
-        cancel.innerHTML        = "Cancel";
-        rename.innerHTML        = "Delete";
+        cancel.innerHTML            = "Cancel";
+        rename.innerHTML            = "Delete";
 
         this._appendCloseButton();
 
@@ -628,21 +638,21 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for scanLibrary modal
      **/
     _scanLibraryUI() {
-        this.ui.container.id       = "scan";
-        this.ui.title.innerHTML    = "Library scan in progress...";
+        this.ui.container.className = "mzk-modal-scan-library";
+        this.ui.title.innerHTML     = "Library scan in progress...";
 
-        let contentText            = document.createElement("P");
-        let spinnerContainer       = document.createElement("DIV");
-        let spinnerRing            = document.createElement("DIV");
-        let spinnerFloatDiv        = document.createElement("DIV");
-        let spinnerImage           = document.createElement("IMG");
-        let footerText             = document.createElement("P");
+        let contentText             = document.createElement("P");
+        let spinnerContainer        = document.createElement("DIV");
+        let spinnerRing             = document.createElement("DIV");
+        let spinnerFloatDiv         = document.createElement("DIV");
+        let spinnerImage            = document.createElement("IMG");
+        let footerText              = document.createElement("P");
 
-        contentText.innerHTML      = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
-        spinnerContainer.className = "lds-css";
-        spinnerRing.className      = "lds-dual-ring";
-        spinnerImage.src           = "/static/img/manazeak.svg";
-        footerText.innerHTML       = "On average, it take a minute to process two thousand files. Just do the math ;)";
+        contentText.innerHTML       = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
+        spinnerContainer.className  = "lds-css";
+        spinnerRing.className       = "lds-dual-ring";
+        spinnerImage.src            = "/static/img/manazeak.svg";
+        footerText.innerHTML        = "On average, it take a minute to process two thousand files. Just do the math ;)";
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -651,6 +661,138 @@ class Modal extends MzkObject {
         this.ui.content.appendChild(spinnerContainer);
         this.ui.content.appendChild(spinnerImage);
         this.ui.footer.appendChild(footerText);
+    }
+
+    /**
+     * method : _editGroupUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for edit group modal
+     */
+    _editGroupUI() {
+        this.ui.container.className = "mzk-modal-edit-group";
+        this.ui.title.innerHTML     = "Edit Group";
+
+        let nameTitle               = document.createElement("DIV");
+        let name                    = document.createElement("INPUT");
+        let cancel                  = document.createElement("BUTTON");
+        let save                    = document.createElement("BUTTON");
+        let permsTitle              = document.createElement("DIV");
+        let boxContainer            = document.createElement("DIV");
+
+        name.id                     = "name";
+        cancel.id                   = "cancelButton";
+        save.id                     = "saveButton";
+        boxContainer.className      = "mzk-modal-box-container";
+        nameTitle.className         = "mzk-modal-title";
+        permsTitle.className        = "mzk-modal-title";
+
+        name.type                   = "text";
+        name.value                  = this.data.GROUP.NAME;
+        cancel.innerHTML            = "Cancel";
+        save.innerHTML              = "Save";
+        nameTitle.innerHTML         = "Group Name";
+        permsTitle.innerHTML        = "Permissions";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(nameTitle);
+        this.ui.content.appendChild(name);
+        this.ui.content.appendChild(permsTitle);
+        this.ui.content.appendChild(boxContainer);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(save);
+
+        for(let i in this.data.PERMISSIONS) {
+            let box     = document.createElement('INPUT');
+            box.type    = 'checkbox';
+            box.value   = i;
+
+            let boxLbl  = document.createElement("LABEL");
+            boxLbl.appendChild(box);
+            boxLbl.innerHTML += this.data.PERMISSIONS[i];
+
+            boxContainer.appendChild(boxLbl);
+        }
+
+        for(let i = 0; i < this.data.GROUP.PERMISSIONS.length; ++i) {
+            for(let j = 0; j < boxContainer.children.length; ++j)
+                if(boxContainer.children[j].firstChild.value == this.data.GROUP.PERMISSIONS[i])
+                    boxContainer.children[j].firstChild.checked = true;
+        }
+
+        let that = this;
+        cancel.addEventListener('click', function() {
+            that.close();
+        });
+        save.addEventListener('click', function() {
+            let rights = {};
+            for(let i = 0; i < boxContainer.children.length; ++i)
+                rights[boxContainer.children[i].firstChild.value] = boxContainer.children[i].firstChild.checked == true;
+
+            window.app.changeGroup(that.data.GROUP.ID, name.value, rights);
+            that.close();
+        });
+    }
+
+    /**
+     * method : _chooseGroupUI (private)
+     * class  : Modal
+     * desc   : Build UI elements for choose group modal
+     */
+    _chooseGroupUI() {
+        this.ui.container.className = "mzk-modal-choose-group";
+        this.ui.title.innerHTML     = "Choose group for " + this.data.USER.NAME;
+
+        let cancel                  = document.createElement("BUTTON");
+        let save                    = document.createElement("BUTTON");
+        let groupsTitle             = document.createElement("DIV");
+        let groupsContainer         = document.createElement("UL");
+
+        cancel.id                   = "cancelButton";
+        save.id                     = "saveButton";
+        groupsContainer.className   = "mzk-modal-groups-container";
+        groupsTitle.className       = "mzk-modal-title";
+
+        cancel.innerHTML            = "Cancel";
+        save.innerHTML              = "Save";
+        groupsTitle.innerHTML       = "Available groups";
+
+        this._appendCloseButton();
+
+        this.ui.content.appendChild(groupsTitle);
+        this.ui.content.appendChild(groupsContainer);
+        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(save);
+
+        let selected = null;
+        let nbPerm = Object.keys(this.data.PERMISSIONS).length;
+        for(let i = 0; i < this.data.GROUPS.length; ++i) {
+            let li = document.createElement("LI");
+            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + " permissions)";
+            li.value     = this.data.GROUPS[i].ID;
+            if(li.value == this.data.USER.GROUP_ID) {
+                li.className = "mzk-selected";
+                selected = li;
+            }
+
+            li.addEventListener('click', function() {
+                if(selected)
+                    selected.className = "";
+                selected = li;
+                selected.className = "mzk-selected";
+            });
+
+            groupsContainer.appendChild(li);
+        }
+
+        let that = this;
+        cancel.addEventListener('click', function() {
+            that.close();
+        });
+        save.addEventListener('click', function() {
+            window.app.changeUserGroup(that.data.USER.USER_ID, selected.value, that.data.USER.NAME);
+            that.close();
+        });
     }
 
 }

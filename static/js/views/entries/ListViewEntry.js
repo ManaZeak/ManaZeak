@@ -15,46 +15,40 @@ class ListViewEntry {
         this.isSelected      = false;
 
         this.entry           = document.createElement("DIV");
-        let duration         = document.createElement("DIV");
-        let title            = document.createElement("DIV");
-        let artist           = document.createElement("DIV");
-        let composer         = document.createElement("DIV");
-        let performer        = document.createElement("DIV");
-        let album            = document.createElement("DIV");
-        let genre            = document.createElement("DIV");
-        let bitRate          = document.createElement("DIV");
-        let year             = document.createElement("DIV");
+        this.info = {
+            duration: document.createElement("DIV"),
+            title: document.createElement("DIV"),
+            artist: document.createElement("DIV"),
+            composer: document.createElement("DIV"),
+            performer: document.createElement("DIV"),
+            album: document.createElement("DIV"),
+            genre: document.createElement("DIV"),
+            bitRate: document.createElement("DIV"),
+            year: document.createElement("DIV")
+        };
 
-        this.entry.className = "trackContainer";
-        duration.className   = "col-duration";
-        title.className      = "col-title";
-        artist.className     = "col-artist";
-        composer.className   = "col-composer";
-        performer.className  = "col-performer";
-        album.className      = "col-album";
-        genre.className      = "col-genre";
-        bitRate.className    = "col-bitRate";
-        year.className       = "col-year";
-        duration.innerHTML   = secondsToTimecode(track.duration);
-        title.innerHTML      = track.title;
-        artist.innerHTML     = track.artist;
-        composer.innerHTML   = track.composer;
-        performer.innerHTML  = track.performer;
-        album.innerHTML      = track.album;
-        genre.innerHTML      = track.genre;
-        bitRate.innerHTML    = Math.round(track.bitRate / 1000) + " kbps";
-        year.innerHTML       = track.year;
+        this.entry.className           = "mzk-track-container";
+        this.info.duration.className   = "mzk-col-duration";
+        this.info.title.className      = "mzk-col-title";
+        this.info.artist.className     = "mzk-col-artist";
+        this.info.composer.className   = "mzk-col-composer";
+        this.info.performer.className  = "mzk-col-performer";
+        this.info.album.className      = "mzk-col-album";
+        this.info.genre.className      = "mzk-col-genre";
+        this.info.bitRate.className    = "mzk-col-bitRate";
+        this.info.year.className       = "mzk-col-year";
 
-        this.entry.appendChild(duration);
-        this.entry.appendChild(title);
-        this.entry.appendChild(artist);
-        this.entry.appendChild(composer);
-        //this.entry.appendChild(performer);
-        this.entry.appendChild(album);
-        this.entry.appendChild(genre);
-        this.entry.appendChild(bitRate);
-        this.entry.appendChild(year);
+        this.entry.appendChild(this.info.duration);
+        this.entry.appendChild(this.info.title);
+        this.entry.appendChild(this.info.artist);
+        this.entry.appendChild(this.info.composer);
+        //this.entry.appendChild(this.info.performer);
+        this.entry.appendChild(this.info.album);
+        this.entry.appendChild(this.info.genre);
+        this.entry.appendChild(this.info.bitRate);
+        this.entry.appendChild(this.info.year);
 
+        this._setInfo();
         this.insert(listView);
     }
 
@@ -70,7 +64,7 @@ class ListViewEntry {
         this.entry.dataset.childID = listView.children.length;
 
         if (this.entry.dataset.childID % 2 === 0) {
-            this.entry.classList.add("evenLin");
+            this.entry.classList.add("mzk-even-lin");
         }
 
         listView.appendChild(this.entry);
@@ -84,10 +78,10 @@ class ListViewEntry {
      * arg    : {int} seed - The value to test is even
      **/
     setBackground(seed) {
-        this.entry.classList.remove("evenLin");
+        this.entry.classList.remove("mzk-even-lin");
 
         if (seed % 2 === 0) {
-            this.entry.classList.add("evenLin");
+            this.entry.classList.add("mzk-even-lin");
         }
     }
 
@@ -108,6 +102,33 @@ class ListViewEntry {
         else {
             this.entry.classList.remove("mzk-selected");
         }
+    }
+
+//  -------------------------------  PRIVATE METHODS  ---------------------------------  //
+
+    /**
+     * TODO
+     */
+    _eventListener() {
+        let that = this;
+        this.track.listen('updateMetadata', function() {
+            that._setInfo();
+        });
+    }
+
+    /**
+     * TODO remove zeaz and implement a track bank
+     */
+    _setInfo() {
+        this.info.duration.innerHTML   = secondsToTimecode(this.track.duration);
+        this.info.title.innerHTML      = this.track.title;
+        this.info.artist.innerHTML     = this.track.artist;
+        this.info.composer.innerHTML   = this.track.composer;
+        this.info.performer.innerHTML  = this.track.performer;
+        this.info.album.innerHTML      = this.track.album;
+        this.info.genre.innerHTML      = this.track.genre;
+        this.info.bitRate.innerHTML    = Math.round(this.track.bitRate / 1000) + " kbps";
+        this.info.year.innerHTML       = this.track.year;
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //

@@ -9,6 +9,7 @@
 import { JSONParsedPostRequest, JSONParsedGetRequest, secondsToTimecode } from '../../utils/Utils.js'
 import Notification from '../../utils/Notification.js'
 import View from '../../core/View.js'
+import Modal from '../../utils/Modal.js'
 
 class AdminView extends View {
 
@@ -16,7 +17,59 @@ class AdminView extends View {
         super();
         this.info  = null;
         this.modal = null;
+        this.currentPage = null;
+
         this._init();
+    }
+
+
+    /**
+     * method : updateAdminInfo (public)
+     * class  : AdminView
+     * desc   : Updates admin information
+     **/
+    updateAdminInfo(callback) {
+        let that = this;
+        JSONParsedGetRequest(
+            "admin/getView/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     USER: {
+                 *         GODFATHER_NAME:
+                 *         NAME:
+                 *         IS_ADMIN:
+                 *         JOINED:
+                 *         LAST_LOGIN:
+                 *         USER_ID:
+                 *         INVITE_CODE:
+                 *         MANACOIN:
+                 *     }
+                 *     LIBRARIES: {
+                 *         NAME:
+                 *         PATH:
+                 *         NUMBER_TRACK:
+                 *         TOTAL_DURATION:
+                 *         ID:
+                 *     }
+                 *     SYNC_KEY:
+                 *     BUFFER_PATH:
+                 *     INVITE_ENABLED:
+                 * } */
+                if (response.DONE) {
+                    that.info = response;
+                    if(that.currentPage)
+                        that.currentPage();
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+        );
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -54,21 +107,22 @@ class AdminView extends View {
             contentTitle: document.createElement("H1"),
         };
 
-        this.ui.container.id        = "admin";
-        this.ui.menu.id             = "leftMenu";
-        this.ui.content.id          = "content";
+        this.ui.container.classList.add("mzk-adminview");
+        this.ui.menu.className      = "mzk-left-menu";
+        this.ui.content.className   = "mzk-admin-content";
+
         this.ui.menuTitle.innerHTML = "Admin panel";
         this.ui.menuDB.innerHTML    = "Database";
-        this.ui.menuUser.innerHTML  = "Users";
+        this.ui.menuUser.innerHTML  = "Groups / Users";
         this.ui.menuLib.innerHTML   = "Libraries";
         this.ui.menuSC.innerHTML    = "SyncThing";
-        this.ui.menuWish.innerHTML    = "Wishes";
+        this.ui.menuWish.innerHTML  = "Wishes";
 
         this.ui.menuList.appendChild(this.ui.menuDB);
+        this.ui.menuList.appendChild(this.ui.menuUser);
         this.ui.menuList.appendChild(this.ui.menuLib);
         this.ui.menuList.appendChild(this.ui.menuWish);
         this.ui.menuList.appendChild(this.ui.menuSC);
-        this.ui.menuList.appendChild(this.ui.menuUser);
 
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
@@ -101,7 +155,7 @@ class AdminView extends View {
      **/
     _init() {
         let that = this;
-        this._updateAdminInfo(function() {
+        this.updateAdminInfo(function() {
             that._createUI();
         });
     }
@@ -113,9 +167,9 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
-        this._updateAdminInfo();
+        this.currentPage = this._requestDBPage;
         this._clearPageSpace();
-        this.ui.menuDB.className        = "selected";
+        this.ui.menuDB.className        = "mzk-selected";
         this.ui.contentTitle.innerHTML  = "Database management";
 
         this.ui.rmMoodLabel             = document.createElement("P");
@@ -195,7 +249,7 @@ class AdminView extends View {
                     window.app.playlists.clear();
                     window.app.changePlaylist();
                     that.ui.rmLibButton.blur();
-                    that._updateAdminInfo();
+                    that.updateAdminInfo();
                 }
 
                 else {
@@ -237,72 +291,69 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
-        this._updateAdminInfo();
+        this.currentPage = this._requestUsersPage;
         this._clearPageSpace();
-        this.ui.menuUser.className     = "selected";
-        this.ui.contentTitle.innerHTML = "User management";
-
+        this.ui.menuUser.className     = "mzk-selected";
+        this.ui.contentTitle.innerHTML = "Group / User management";
 
         let sponsoringLabel            = document.createElement("P");
         let sponsoringSpan             = document.createElement("SPAN");
         let sponsoring                 = document.createElement("BUTTON");
-        let list                       = document.createElement("UL");
+        let groupListTitle             = document.createElement("P");
+        let groupList                  = document.createElement("UL");
+        let userListTitle              = document.createElement("P");
+        let userList                   = document.createElement("UL");
 
         let that = this;
         for (let i = 0; i < this.info.USER.length; ++i) {
-            let admin                  = this.info.USER[i].ADMIN ? "Admin" : "User";
             let element                = document.createElement("LI");
+            let grant                  = document.createElement("IMG");
             let rm                     = document.createElement("IMG");
+            grant.src                  = "/static/img/utils/edit.svg";
             rm.src                     = "/static/img/utils/trash.svg";
-            rm.addEventListener("click", function() {
-                window.app.deleteUser(that.info.USER[i].ID, function() {
-                    let that = this;
-                    JSONParsedGetRequest(
-                        "admin/getView/",
-                        function(response) { // TODO : fetch those info from getUserInfo
-                            /* response = {
-                             *     DONE      : bool
-                             *     ERROR_H1  : string
-                             *     ERROR_MSG : string
-                             *
-                             *     USER: {
-                             *         GODFATHER_NAME:
-                             *         NAME:
-                             *         IS_ADMIN:
-                             *         JOINED:
-                             *         LAST_LOGIN:
-                             *         USER_ID:
-                             *         INVITE_CODE:
-                             *         MANACOIN:
-                             *     }
-                             *     LIBRARIES: {
-                             *         NAME:
-                             *         PATH:
-                             *         NUMBER_TRACK:
-                             *         TOTAL_DURATION:
-                             *         ID:
-                             *     }
-                             *     SYNC_KEY:
-                             *     BUFFER_PATH:
-                             *     INVITE_ENABLED:
-                             * } */
-                            if (response.DONE) {
-                                that.info = response;
-                                that._requestUsersPage();
-                            }
-                        }
-                    );
-                });
+            grant.addEventListener('click', function() {
+                new Modal('chooseGroup', {
+                    USER: that.info.USER[i],
+                    GROUPS: that.info.GROUPS,
+                    PERMISSIONS: that.info.PERMISSIONS
+                }).open();
             });
-            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + admin + ") <br><br>" +
+            rm.addEventListener("click", function() {
+                window.app.deleteUser(that.info.USER[i].USER_ID);
+            });
+            element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + this.info.USER[i].GROUP_NAME + ") <br><br>" +
                                          "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
-                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + "<br>" +
+                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
                                          "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
                                          "Joined on: " + this.info.USER[i].JOINED + "<br>" +
                                          "Last login: " + this.info.USER[i].LAST_LOGIN;
 
             element.appendChild(rm);
-            list.appendChild(element);
+            if(window.app.user.hasPermission("GAPR")) {
+                element.appendChild(grant);
+            }
+            userList.appendChild(element);
+        }
+
+        for (let i = 0; i < this.info.GROUPS.length; ++i) {
+            let element                = document.createElement("LI");
+            let mod                    = document.createElement("IMG");
+            mod.src                    = "/static/img/utils/edit.svg";
+            element.innerHTML = "<b>" + this.info.GROUPS[i].NAME + "</b><br>" +
+                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + " permissions)";
+
+            mod.addEventListener('click', function() {
+                new Modal('editGroup', {
+                    GROUP: that.info.GROUPS[i],
+                    PERMISSIONS: that.info.PERMISSIONS
+                }).open();
+            });
+
+            if (window.app.user.hasPermission("GRPE")) {
+                element.appendChild(mod);
+            }
+
+            groupList.appendChild(element);
         }
 
         let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
@@ -311,6 +362,8 @@ class AdminView extends View {
                                          "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
                                          "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
         sponsoring.innerHTML           = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
+        groupListTitle.innerHTML       = "<b>Group list</b>";
+        userListTitle.innerHTML        = "<b>ManaZeak user list</b>";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -318,7 +371,12 @@ class AdminView extends View {
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(sponsoringLabel);
         this.ui.content.appendChild(sponsoringSpan);
-        this.ui.content.appendChild(list);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(groupListTitle);
+        this.ui.content.appendChild(groupList);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(userListTitle);
+        this.ui.content.appendChild(userList);
 
         sponsoring.addEventListener("click", this._toggleInviteMode.bind(this));
     }
@@ -330,15 +388,20 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
-        this._updateAdminInfo();
+        if (!window.app.user.hasPermission("LIBR")) {
+            return;
+        }
+
+        this.currentPage = this._requestLibrariesPage;
         this._clearPageSpace();
-        this.ui.menuLib.className         = "selected";
+        this.ui.menuLib.className         = "mzk-selected";
         this.ui.contentTitle.innerHTML    = "Libraries management";
 
         this.ui.rescanLibLabel            = document.createElement("P");
         this.ui.rescanLibButton           = document.createElement("BUTTON");
         this.ui.rmLibLabel                = document.createElement("P");
         this.ui.rmLibButton               = document.createElement("BUTTON");
+        this.ui.libListLabel              = document.createElement("P");
 
         this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
                                             "<br>" +
@@ -350,6 +413,7 @@ class AdminView extends View {
                                             "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
                                             "This command will erase all libraries in the database.";
         this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
+        this.ui.libListLabel.innerHTML    = "<b>Library list</b>";
 
         let list                          = document.createElement("UL");
 
@@ -360,11 +424,8 @@ class AdminView extends View {
             rm.src                        = "/static/img/utils/trash.svg";
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
-                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
-                    that._updateAdminInfo(function() {
-                        that._requestLibrariesPage();
-                    });
-                });
+                console.log(that.info.LIBRARIES[i].ID);
+                window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID));
             });
             element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
                                             this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
@@ -379,6 +440,8 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.rescanLibButton);
         this.ui.content.appendChild(this.ui.rmLibLabel);
         this.ui.content.appendChild(this.ui.rmLibButton);
+        this.ui.content.appendChild(document.createElement("HR"));
+        this.ui.content.appendChild(this.ui.libListLabel);
         this.ui.content.appendChild(list);
 
         this.ui.rescanLibButton.addEventListener("click", function() {
@@ -396,9 +459,9 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
-        this._updateAdminInfo();
+        this.currentPage = this._requestSCPage;
         this._clearPageSpace();
-        this.ui.menuSC.className       = "selected";
+        this.ui.menuSC.className       = "mzk-selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
 
         this.ui.apiKeyLabel            = document.createElement("P");
@@ -467,9 +530,9 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestWishPage() {
-        this._updateAdminInfo();
+        this.currentPage = this._requestWishPage;
         this._clearPageSpace();
-        this.ui.menuWish.className     = "selected";
+        this.ui.menuWish.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML = "Wishes management";
 
         let list                       = document.createElement("UL");
@@ -500,9 +563,8 @@ class AdminView extends View {
                         let accept         = document.createElement("IMG");
                         let refuse         = document.createElement("IMG");
 
-                        element.id         = "wishEntry";
-                        accept.id          = "accept";
-                        refuse.id          = "refuse";
+                        element.className  = "mzk-wish-entry";
+                        accept.className   = "mzk-accept";
 
                         element.innerHTML  = response.RESULT[i].USERNAME + ", " + response.RESULT[i].DATE + ":<br>" +
                                              "<b>" + response.RESULT[i].TEXT + "</b><br>";
@@ -745,8 +807,6 @@ class AdminView extends View {
      **/
     _toggleInviteMode() {
         let that = this;
-
-
         JSONParsedGetRequest(
             "admin/toggleInvite/",
             function(response) {
@@ -778,54 +838,6 @@ class AdminView extends View {
         this.ui.menuLib.className  = "";
         this.ui.menuSC.className   = "";
         this.ui.menuWish.className = "";
-    }
-
-
-    /**
-     * method : _updateAdminInfo (private)
-     * class  : AdminView
-     * desc   : Updates admin information
-     **/
-    _updateAdminInfo(callback) {
-        let that = this;
-        JSONParsedGetRequest(
-            "admin/getView/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     USER: {
-                 *         GODFATHER_NAME:
-                 *         NAME:
-                 *         IS_ADMIN:
-                 *         JOINED:
-                 *         LAST_LOGIN:
-                 *         USER_ID:
-                 *         INVITE_CODE:
-                 *         MANACOIN:
-                 *     }
-                 *     LIBRARIES: {
-                 *         NAME:
-                 *         PATH:
-                 *         NUMBER_TRACK:
-                 *         TOTAL_DURATION:
-                 *         ID:
-                 *     }
-                 *     SYNC_KEY:
-                 *     BUFFER_PATH:
-                 *     INVITE_ENABLED:
-                 * } */
-                if (response.DONE) {
-                    that.info = response;
-
-                    if (callback) {
-                        callback();
-                    }
-                }
-            }
-        );
     }
 
 }

@@ -33,8 +33,8 @@ class UserMenu {
             img:       document.createElement("IMG")
         };
 
-        this.ui.container.id = "userExpander";
-        this.ui.img.src      = "/static/img/utils/user.svg";
+        this.ui.container.className = "mzk-user-expander";
+        this.ui.img.src             = "/static/img/utils/user.svg";
 
         this.ui.container.appendChild(this.ui.img);
 
@@ -51,25 +51,27 @@ class UserMenu {
         let that         = this;
         this.contextMenu = new ContextMenu(this.ui.container, null, 'click');
 
-        this.contextMenu.addEntry('invite', 'Invite Code', function() {
-            new Modal('inviteCode', null).open();
-        });
-        this.contextMenu.addEntry('settings', 'Username', function() { // TODO : replace w/ username
+        if (window.app.user.hasPermission("ADMV")) {
+            let adm = new ContextMenuEntry('admin', 'Admin', function() {
+                window.app.showAppView('mzk_admin');
+            });
+            that.contextMenu.getContextMenu().addChild(adm, 'invite', false);
+        }
+        if (window.app.user.hasPermission("SPON")) {
+            this.contextMenu.addEntry('invite', 'Invite Code', function() {
+                new Modal('inviteCode', null).open();
+            });
+        }
+        this.contextMenu.addEntry('settings', window.app.user.getUsername(), function() { // TODO : replace w/ username
             window.app.showAppView('mzk_settings');
         });
-        this.contextMenu.addEntry('stats', 'Stats', function() {
-            window.app.showAppView('mzk_stats');
-        });
+        if (window.app.user.hasPermission("STAT")) {
+            this.contextMenu.addEntry('stats', 'Stats', function() {
+                window.app.showAppView('mzk_stats');
+            });
+        }
         this.contextMenu.addEntry('logout', 'Log out', function() {
             window.app.logOut();
-        });
-        window.app.user.updateIsAdmin(function(is) {
-            if (is) {
-                let adm = new ContextMenuEntry('admin', 'Admin', function() {
-                    window.app.showAppView('mzk_admin');
-                });
-                that.contextMenu.getContextMenu().addChild(adm, 'invite', false);
-            }
         });
     }
 

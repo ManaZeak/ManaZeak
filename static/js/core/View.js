@@ -9,9 +9,12 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-class View {
+import MzkObject from "./MzkObject.js"
+
+class View extends MzkObject{
 
     constructor() {
+        super();
         this.container           = document.createElement("DIV");
         this.container.className = "mzk-view";
         this.container.innerHTML = "";

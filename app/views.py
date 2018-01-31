@@ -11,9 +11,9 @@ from django.views.generic.list import ListView
 
 from app.adminTools import getAdminOptions
 from app.form import UserForm
-from app.models import Playlist, InviteCode, UserPreferences, Wallet
+from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
 from app.userSettings import createUserInviteCode
-from app.utils import populateDB
+from app.utils import populateDB, checkPermission
 
 
 # Main container
@@ -39,6 +39,8 @@ def createUser(request):
                 inviteCode = form.data.get('godFather')
                 if InviteCode.objects.filter(code=inviteCode).count() == 1:
                     invite = InviteCode.objects.get(code=inviteCode)
+                    if UserPreferences.objects.get(user=invite.user).group.permissions.filter(code="SPON").count() != 1:
+                        return render(request, 'signup.html', {'form': form})
                 else:
                     return render(request, 'signup.html', {'form': form})
 
@@ -46,6 +48,7 @@ def createUser(request):
             # Special condition for the first user to be administrator
             if User.objects.all().count() == 1:
                 isAdmin = True
+                populateDB()
 
             # Creating user if tests are ok
             username = form.cleaned_data.get('username')
@@ -57,6 +60,10 @@ def createUser(request):
             # Setting the user preferences
             userPref = UserPreferences()
             userPref.user = user
+            if isAdmin:
+                userPref.group = Groups.objects.get(rank=5)
+            else:
+                userPref.group = Groups.objects.get(rank=1)
             wallet = Wallet()
             wallet.save()
             userPref.wallet = wallet
@@ -89,9 +96,10 @@ class UserFormLogin(View):
         password = form.data['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('app:index')
+            if checkPermission(["LOGI"], user):
+                if user.is_active:
+                    login(request, user)
+                    return redirect('app:index')
 
         return render(request, self.template_name, {'form': form})
 

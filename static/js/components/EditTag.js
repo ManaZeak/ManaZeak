@@ -63,7 +63,8 @@ class EditTag {
             ALBUM_TITLE:       this.ui.tagAlbumField.value,
             GENRE:             this.ui.tagGenreField.value,
             ARTISTS:           this.ui.cArtistInput.value,
-            ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value
+            ALBUM_ARTISTS:     this.ui.tagAlbumArtistsField.value,
+            COVER:             this.ui.lCover.value
         };
 
         for (let f in fields) {
@@ -134,6 +135,28 @@ class EditTag {
         });
         this.selector.listen('add', function() {
             that._updateFields();
+        });
+
+        let fileinput = document.createElement('INPUT');
+        fileinput.type = 'file';
+        fileinput.accept = 'image/png,image/jpeg,image/jpg';
+        fileinput.onchange = function() {
+            if(fileinput.files[0])
+            {
+                let reader = new FileReader();
+                // This fires after the blob has been read/loaded.
+                reader.addEventListener('loadend', function(event) {
+                    that.ui.lCover.src   = event.target.result;
+                    that.ui.lCover.value = event.target.result;
+                });
+                // Start reading the blob as text.
+                reader.readAsDataURL(fileinput.files[0]);
+            }
+            fileinput.value = null;
+        };
+
+        this.ui.lContainer.addEventListener('click', function() {
+            fileinput.click();
         });
 
         this.ui.list.addEventListener('click', function(event) {
@@ -299,44 +322,44 @@ class EditTag {
      * desc   : Set UI elements
      **/
     _uiSetVar() {
-        this.ui.container.className            = "editTag";
+        this.ui.container.className            = "mzk-edit-tag";
         // List ------------------------------------------
-        this.ui.list.className                 = "list";
+        this.ui.list.className                 = "mzk-list";
         // Head ------------------------------------------
-        this.ui.head.className                 = "head";
-        this.ui.lContainer.className           = "img-container";
-        this.ui.cContainer.className           = "art-tit-container";
+        this.ui.head.className                 = "mzk-head";
+        this.ui.lContainer.className           = "mzk-img-container";
+        this.ui.cContainer.className           = "mzk-art-tit-container";
         this.ui.cTitleLabel.innerHTML          = "Title :";
         this.ui.cTitleInput.name               = "title";
         this.ui.cTitleInput.type               = "text";
-        this.ui.cArtistLabel.className         = "space-up";
+        this.ui.cArtistLabel.className         = "mzk-space-up";
         this.ui.cArtistLabel.innerHTML         = "Artist :";
         this.ui.cArtistInput.name              = "artist";
         this.ui.cArtistInput.type              = "text";
-        this.ui.rContainer.className           = "numbs-year-container";
-        this.ui.rWrapper.className             = "item-wrapper";
-        this.ui.rTrackContainer.className      = "item";
+        this.ui.rContainer.className           = "mzk-numbs-year-container";
+        this.ui.rWrapper.className             = "mzk-item-wrapper";
+        this.ui.rTrackContainer.className      = "mzk-item";
         this.ui.rTrackLabel.innerHTML          = "Track # : ";
         this.ui.rTrackNumber.name              = "track-number";
         this.ui.rTrackNumber.type              = "text";
         this.ui.rTrackSeparator.innerHTML      = "/";
         this.ui.rTrackTotal.name               = "track-total";
         this.ui.rTrackTotal.type               = "text";
-        this.ui.rDiscContainer.className       = "item";
+        this.ui.rDiscContainer.className       = "mzk-item";
         this.ui.rDiscLabel.innerHTML           = "Disc # : ";
         this.ui.rDiscNumber.name               = "disc-number";
         this.ui.rDiscNumber.type               = "text";
         this.ui.rDiscSeparator.innerHTML       = "/";
         this.ui.rDiscTotal.name                = "disc-number";
         this.ui.rDiscTotal.type                = "text";
-        this.ui.rYearContainer.className       = "item";
+        this.ui.rYearContainer.className       = "mzk-item";
         this.ui.rYearLabel.innerHTML           = "Year : ";
         this.ui.rYearNumber.name               = "year";
         this.ui.rYearNumber.type               = "text";
-        this.ui.rYearNumber.className          = "year";
+        this.ui.rYearNumber.className          = "mzk-year";
         // Tags ------------------------------------------
-        this.ui.tags.className                 = "tags";
-        this.ui.tagWrapper.className           = "tags-wrapper";
+        this.ui.tags.className                 = "mzk-tags";
+        this.ui.tagWrapper.className           = "mzk-tags-wrapper";
         this.ui.tagAlbumLabel.innerHTML        = "Album :";
         this.ui.tagAlbumField.name             = "album";
         this.ui.tagAlbumField.type             = "text";
@@ -352,22 +375,22 @@ class EditTag {
         this.ui.tagGenreLabel.innerHTML        = "Genre :";
         this.ui.tagGenreField.name             = "genre";
         this.ui.tagGenreField.type             = "text";
-        this.ui.tagGenreField.className        = "no-margin";
+        this.ui.tagGenreField.className        = "mzk-no-margin";
         // Coms ------------------------------------------
-        this.ui.coms.className                 = "coms";
-        this.ui.comElement.className           = "element";
+        this.ui.coms.className                 = "mzk-coms";
+        this.ui.comElement.className           = "mzk-element";
         this.ui.comLabel.innerHTML             = "Comment :";
         this.ui.comField.name                  = "comment";
         this.ui.comField.row                   = "8";
         this.ui.comField.cols                  = "80";
-        this.ui.lyrElement.className           = "element";
+        this.ui.lyrElement.className           = "mzk-element";
         this.ui.lyrLabel.innerHTML             = "Lyrics :";
         this.ui.lyrField.name                  = "lyrics";
         this.ui.lyrField.row                   = "8";
         this.ui.lyrField.cols                  = "80";
-        this.ui.lyrField.className             = "center";
+        this.ui.lyrField.className             = "mzk-center";
         // Info ------------------------------------------
-        this.ui.info.className                 = "info";
+        this.ui.info.className                 = "mzk-info";
     }
 
 

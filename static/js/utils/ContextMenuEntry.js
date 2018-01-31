@@ -23,6 +23,7 @@ class ContextMenuEntry {
         this.hideRule         = null;
         this.showRule         = null;
         this.element          = null;
+        this.wrapper          = null;
         this.children         = [];
         this.parent           = null;
 
@@ -44,39 +45,34 @@ class ContextMenuEntry {
      **/
     activateEventListener() { //Call this on the root
         let self = this;
-        document.body.addEventListener('click', function(event) {
-            let target = event.target;
-            while (target && target != self.element) {
-                target = target.parentNode;
-            }
-
-            if (target != self.element) {
-                self.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
-            }
-        }, true);
         this.element.addEventListener("click", function (event) {
-            if (event.target.tagName !== 'LI') {
-                return true;
-            }
 
-            let target  = event.target;
-            let ixArray = new Array(10);
+            let target = event.target;
+            while(target.tagName != 'LI')
+                if(target == self.element)
+                    return true;
+                else
+                    target = target.parentNode;
+
+            let elArray = new Array(10);
             let i       = 0;
 
             while (target.parentNode !== self.element) {
-                ixArray[i++] = target.dataset.parentIx;
+                elArray[i++] = target;
 
                 do {
                     target = target.parentNode;
                 } while (target.tagName !== 'LI');
             }
 
-            ixArray[i]  = target.dataset.parentIx;
+            elArray[i]  = target;
 
             let clicked = self;
 
             for (i; i >= 0; --i) {
-                clicked = clicked.children[ixArray[i]];
+                for(var j = 0; elArray[i] != clicked.children[j].wrapper; j++);
+
+                clicked = clicked.children[j];
             }
 
             if (clicked.children.length === 0) { // If the entry is a leaf then run its action
@@ -103,29 +99,60 @@ class ContextMenuEntry {
      *          {bool}   after       - add after the ID instead of before
      **/
     addChild(other_entry, before_ID, after) {
-        //Create the child element
-        let li              = document.createElement("LI");
-        li.dataset.parentIx = this.children.length;
-
-        if (other_entry.entryID) { li.id = "mzk-ctx-li-" + other_entry.entryID; }
-
-        li.textContent      = other_entry.displayString;
-        li.appendChild(other_entry.element);
 
         //Find where to insert it
-        let childRef        = this._findChildByID(before_ID);
+        let childRef        = this.findChildByID(before_ID);
         if (childRef) {
-            if (after === false) { childRef = childRef.element.parentNode;             }
-            else                 { childRef = childRef.element.parentNode.nextSibling; }
+            if (after === true)  { childRef = childRef.element.parentNode.nextSibling; }
+            else                 { childRef = childRef.element.parentNode;             }
         }
 
         //Insert it and add the cross references
-        this.element.insertBefore(li, childRef);
+        this.element.insertBefore(other_entry.wrapper, childRef);
         this.children.push(other_entry);
         other_entry.parent = this;
 
         if (this.element.parentNode) { this.element.parentNode.classList.add("mzk-ctx-submenu"); }
         return other_entry;
+    }
+
+
+    /**
+     * method : findChildByID (private)
+     * class  : ContextMenuEntry
+     * desc   : find a direct child from its ID
+     * arg    : {string} childID - the ID of the child
+     **/
+    findChildByID(childID) {
+        if (childID === null || childID === undefined) {
+            return null;
+        }
+
+        for (let i = 0; i < this.children.length; ++i) {
+            if (this.children[i].entryID === childID) {
+                return this.children[i];
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * method : removeChild (public)
+     * class  : ContextMenuEntry
+     * desc   : remove a subentry from this menu
+     * arg    : {object} other_entry - the ContextMenuEntry to remove
+     **/
+    removeChild(otherID) {
+        for(let i = 0; i < this.children.length; ++i)
+            if(this.children[i].entryID == otherID) {
+                let child = this.children[i];
+                this.element.removeChild(child.element.parentNode);
+                this.children.splice(i, 1);
+                return child;
+            }
+        return null;
     }
 
 
@@ -141,14 +168,26 @@ class ContextMenuEntry {
         });
     }
 
+    /**
+     * method : setDisplayString
+     * class  : ContextMenuEntry
+     * desc   : change the display string
+     * arg    : {string} newStr
+     */
+    setDisplayString(newStr) {
+        this.displayString = newStr;
+        if(this.wrapper.firstChild)
+            this.wrapper.firstChild.innerHTML = newStr;
+    }
+
 
     /**
-     * method : seMultiOpenSubmenu (public)
+     * method : setMultiOpenSubmenu (public)
      * class  : ContextMenuEntry
      * desc   : set the boolean that allow for multiple submenus to be opened
      * arg    : {bool} allow - whether to allow or forbid multiple open submenus
      **/
-    seMultiOpenSubmenu(allow) {
+    setMultiOpenSubmenu(allow) {
         this.multiOpenSubmenu = allow;
         return this;
     }
@@ -203,37 +242,20 @@ class ContextMenuEntry {
 
 
     /**
-     * method : _findChildByID (private)
-     * class  : ContextMenuEntry
-     * desc   : find a direct child from its ID
-     * arg    : {string} childID - the ID of the child
-     **/
-    _findChildByID(childID) {
-        if (childID === null || childID === undefined) {
-            return null;
-        }
-
-        for (let i = 0; i < this.children.length; ++i) {
-            if (this.children[i].entryID === childID) {
-                return this.children[i];
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * method : _init (private)
      * class  : ContextMenuEntry
      * desc   : creates the DOM element
      **/
     _init() {
         this.element = document.createElement("UL");
+        this.wrapper = document.createElement("LI");
 
         if (this.entryID) {
             this.element.id = "mzk-ctx-ul-" + this.entryID;
+            this.wrapper.id = "mzk-ctx-li-" + this.entryID;
         }
+        this.wrapper.innerHTML      = '<span class="mzk-ctx-label">' + this.displayString + '</span>';
+        this.wrapper.appendChild(this.element);
     }
 
 
@@ -250,8 +272,11 @@ class ContextMenuEntry {
             });
             this.callback.apply(null, this.callbackArgs);
         }
-        this.element.dispatchEvent(new Event('mzk_ctx:close', {bubbles: true}));
+        window.app.closeActiveMenu();
     }
+
+    //====================================== GETTERS ===================================================
+    getID() { return this.entryID; }
 
 }
 
