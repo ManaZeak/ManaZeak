@@ -724,6 +724,7 @@ class Modal extends MzkObject {
                 rights[boxContainer.children[i].firstChild.value] = boxContainer.children[i].firstChild.checked == true;
 
             window.app.changeGroup(that.data.GROUP.ID, name.value, rights);
+            that.close();
         });
     }
 

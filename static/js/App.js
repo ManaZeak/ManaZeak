@@ -150,6 +150,7 @@ class App extends MzkObject {
      *        : {object} rights
      **/
     changeGroup(groupID, name, rights) {
+        let that = this;
         JSONParsedPostRequest(
             "admin/editGroup/",
             JSON.stringify({
@@ -166,7 +167,8 @@ class App extends MzkObject {
                  *     TRACK_PATH  : string
                  * } */
                 if (response.DONE) {
-                    console.log('OUI');
+                    that.appViews['mzk_admin'].updateAdminInfo();
+                    new Notification("ERROR", "Permissions updated", "Successfully updated permissions for group " + name);
                 }
 
                 else {

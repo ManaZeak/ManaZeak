@@ -20,6 +20,54 @@ class AdminView extends View {
         this._init();
     }
 
+
+    /**
+     * method : updateAdminInfo (public)
+     * class  : AdminView
+     * desc   : Updates admin information
+     **/
+    updateAdminInfo(callback) {
+        let that = this;
+        JSONParsedGetRequest(
+            "admin/getView/",
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 *
+                 *     USER: {
+                 *         GODFATHER_NAME:
+                 *         NAME:
+                 *         IS_ADMIN:
+                 *         JOINED:
+                 *         LAST_LOGIN:
+                 *         USER_ID:
+                 *         INVITE_CODE:
+                 *         MANACOIN:
+                 *     }
+                 *     LIBRARIES: {
+                 *         NAME:
+                 *         PATH:
+                 *         NUMBER_TRACK:
+                 *         TOTAL_DURATION:
+                 *         ID:
+                 *     }
+                 *     SYNC_KEY:
+                 *     BUFFER_PATH:
+                 *     INVITE_ENABLED:
+                 * } */
+                if (response.DONE) {
+                    that.info = response;
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+        );
+    }
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
     /**
@@ -102,7 +150,7 @@ class AdminView extends View {
      **/
     _init() {
         let that = this;
-        this._updateAdminInfo(function() {
+        this.updateAdminInfo(function() {
             that._createUI();
         });
     }
@@ -114,7 +162,7 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
-        this._updateAdminInfo();
+        this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuDB.className        = "selected";
         this.ui.contentTitle.innerHTML  = "Database management";
@@ -196,7 +244,7 @@ class AdminView extends View {
                     window.app.playlists.clear();
                     window.app.changePlaylist();
                     that.ui.rmLibButton.blur();
-                    that._updateAdminInfo();
+                    that.updateAdminInfo();
                 }
 
                 else {
@@ -238,7 +286,7 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
-        this._updateAdminInfo();
+        this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuUser.className     = "selected";
         this.ui.contentTitle.innerHTML = "User management";
@@ -261,7 +309,7 @@ class AdminView extends View {
                 let self = that;
                 window.app.deleteUser(that.info.USER[i].USER_ID, function() {
                     let own = self;
-                    self._updateAdminInfo(function() {
+                    self.updateAdminInfo(function() {
                         own._requestUsersPage();
                     });
                 });
@@ -326,7 +374,7 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
-        this._updateAdminInfo();
+        this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuLib.className         = "selected";
         this.ui.contentTitle.innerHTML    = "Libraries management";
@@ -360,7 +408,7 @@ class AdminView extends View {
             rm.addEventListener("click", function() {
                 console.log(that.info.LIBRARIES[i].ID);
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID), function() {
-                    that._updateAdminInfo(function() {
+                    that.updateAdminInfo(function() {
                         that._requestLibrariesPage();
                    });
                 });
@@ -397,7 +445,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
-        this._updateAdminInfo();
+        this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuSC.className       = "selected";
         this.ui.contentTitle.innerHTML = "SyncThing management";
@@ -468,7 +516,7 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestWishPage() {
-        this._updateAdminInfo();
+        this.updateAdminInfo();
         this._clearPageSpace();
         this.ui.menuWish.className     = "selected";
         this.ui.contentTitle.innerHTML = "Wishes management";
@@ -780,55 +828,6 @@ class AdminView extends View {
         this.ui.menuSC.className   = "";
         this.ui.menuWish.className = "";
     }
-
-
-    /**
-     * method : _updateAdminInfo (private)
-     * class  : AdminView
-     * desc   : Updates admin information
-     **/
-    _updateAdminInfo(callback) {
-        let that = this;
-        JSONParsedGetRequest(
-            "admin/getView/",
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     USER: {
-                 *         GODFATHER_NAME:
-                 *         NAME:
-                 *         IS_ADMIN:
-                 *         JOINED:
-                 *         LAST_LOGIN:
-                 *         USER_ID:
-                 *         INVITE_CODE:
-                 *         MANACOIN:
-                 *     }
-                 *     LIBRARIES: {
-                 *         NAME:
-                 *         PATH:
-                 *         NUMBER_TRACK:
-                 *         TOTAL_DURATION:
-                 *         ID:
-                 *     }
-                 *     SYNC_KEY:
-                 *     BUFFER_PATH:
-                 *     INVITE_ENABLED:
-                 * } */
-                if (response.DONE) {
-                    that.info = response;
-
-                    if (callback) {
-                        callback();
-                    }
-                }
-            }
-        );
-    }
-
 }
 
 export default AdminView
