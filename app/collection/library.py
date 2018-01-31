@@ -65,6 +65,7 @@ def newLibrary(request):
                     library.save()
                     data = {
                         'LIBRARY_ID': library.id,
+                        'LIBRARY_NAME': library.playlist.name,
                     }
                     data = {**data, **errorCheckMessage(True, None)}
                 else:

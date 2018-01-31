@@ -40,16 +40,22 @@ $queue-margin:  5px;
             }
 
             & > img {
-                height:         auto;
                 margin:         0 !important;
                 vertical-align: middle;
             }
 
-            span {
-                max-width:     100%;
+            img {
+                height:        20px;
+                width:         20px;
+                margin:        3px 0;
                 overflow-x:    hidden;
                 text-overflow: ellipsis;
                 white-space:   nowrap;
+            }
+
+            .mzk-queue-cover {
+                height: 50px;
+                width:  50px;
             }
 
             .mzk-qprev-body {
