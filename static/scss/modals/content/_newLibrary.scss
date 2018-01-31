@@ -1,57 +1,8 @@
-.mzk-modal-newlibrary {
-  width: $scanModalWidth;
+&.mzk-modal-newlibrary {
 
-  position: relative;
-
-  border: solid 1px black;
-  border-radius: 3px;
-  background: $primary-color;
-
-  -webkit-user-select: none;  /* Chrome/Safari */
-  -moz-user-select: none;     /* Firefox */
-
-  text-align: center;
-
-  #header,
-  #content,
-  #footer {
-    height: auto;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-
-  #header,
-  #footer {
-    padding: $verticalPadding 30px;
-  }
-
-
-  #header {
-    height: $scanHeaderHeight;
-    border-bottom: solid 1px black;
-
-
-    h1 {
-      margin: 0;
-      line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-    }
-  }
-
-
-  #content {
-    padding: $verticalPadding 50px;
-
+  .mzk-modal-content {
 
     #infoLabel {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-
-    input[type=text] {
-      display: block;
       margin-left: auto;
       margin-right: auto;
     }
@@ -86,10 +37,7 @@
     }
   }
 
-  #footer {
-    border-top: solid 1px black;
-    height: auto;
-
+  .mzk-modal-footer {
 
     #scanButton {
       width: 75px;

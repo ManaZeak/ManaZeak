@@ -1,50 +1,7 @@
-.mzk-modal-scanlibrary {
-  min-height: $scanModalHeight;
-  width: $scanModalWidth;
-
-  position: relative;
-
-  border: solid 1px black;
-  border-radius: 3px;
-  background: $primary-color;
-
-  -webkit-user-select: none;  /* Chrome/Safari */
-  -moz-user-select: none;     /* Firefox */
+&.mzk-modal-scanlibrary {
   cursor: not-allowed;
 
-  #header,
-  #content,
-  #footer {
-    height: auto;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-
-  #header,
-  #footer {
-    padding: $verticalPadding 30px;
-  }
-
-
-  #header {
-    height: $scanHeaderHeight;
-    border-bottom: solid 1px black;
-
-
-    h1 {
-      margin: 0;
-      line-height: ($scanHeaderHeight - (2 * $verticalPadding));
-    }
-  }
-
-
-  #content {
-    min-height: $scanContentHeight;
-    padding: $verticalPadding 50px;
-
-
+  .mzk-modal-content {
     img {
       width: 100px;
       height: 100px;
@@ -52,13 +9,7 @@
     }
   }
 
-
   #footer {
-    border-top: solid 1px black;
-    min-height: $scanFooterHeight;
-    height: auto;
-
-
     p {
       margin: 0;
       padding: 15px 0;

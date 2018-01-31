@@ -1,18 +1,12 @@
-.mzk-modal-opensyncthing {
-        border: solid 1px black;
-        border-radius: 3px;
-        position: relative;
-        min-height: 90%;
-        background: $primary-color;
-        width: 90%;
+&.mzk-modal-opensyncthing {
 
-        #content {
-            box-sizing: border-box;
-            text-align: center;
-            width: 100%;
-            top: 0;
-            padding: 0;
-            height: 100%;
-            position: absolute;
-        }
-    }
+  .mzk-modal-content {
+    box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    top: 0;
+    padding: 0;
+    height: 100%;
+    position: absolute;
+  }
+}

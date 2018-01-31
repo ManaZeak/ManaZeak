@@ -19,7 +19,7 @@ class Modal extends MzkObject {
         super();
         this.data        = data;
         this.url         = null;
-        this.id          = "mzk-modal-" + genUniqueID();
+        this.id          = "mzk-modal-wrapper-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
         this.editTag     = null;
@@ -233,10 +233,11 @@ class Modal extends MzkObject {
         };
 
         this.ui.overlay.id        = this.id;
-        this.ui.overlay.className = "overlay";
-        this.ui.header.id         = "header";
-        this.ui.content.id        = "content";
-        this.ui.footer.id         = "footer";
+        this.ui.overlay.className = "mzk-modal-overlay";
+        this.ui.header.className  = "mzk-modal-header";
+        this.ui.content.className = "mzk-modal-content";
+        this.ui.footer.className  = "mzk-modal-footer";
+        this.ui.container.id      = "mzk-modal-container";
 
         this.ui.header.appendChild(this.ui.title);
         this.ui.container.appendChild(this.ui.header);
