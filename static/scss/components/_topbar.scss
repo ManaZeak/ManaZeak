@@ -6,11 +6,11 @@ $topbar-height: 50px;
 @import './elements/topbar/usermenu';
 @import './elements/topbar/collectionbar';
 
-#topBar {
-    background-color: $secondary-color;
-    height: $topbar-height;
-    position: relative;
-    width: 100%;
+.mzk-topbar {
+    background-color:    $secondary-color;
+    height:              $topbar-height;
+    position:            relative;
+    width:               100%;
     -webkit-user-select: none;
-    -moz-user-select: none;
+    -moz-user-select:    none;
 }

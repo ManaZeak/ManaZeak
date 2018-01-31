@@ -1,76 +1,54 @@
-#playlistBar { // TODO : rename
-    height: 30px;
-    position: absolute;
+.mzk-collection-bar {
+    height:     30px;
+    position:   absolute;
     text-align: center;
-    top: 20px;
-    width: 100%;
+    top:        20px;
+    width:      100%;
 
-    div { // TODO : replace padding to var, and in gear etc according.
-        box-sizing: border-box;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 0.9em;
+    div {
+        box-sizing:  border-box;
+        cursor:      pointer;
+        display:     inline-block;
+        font-size:   0.9em;
         line-height: 30px;
-        margin: 0;
-        transition: 0.2s ease;
+        margin:      0;
+        transition:  0.2s ease;
 
-        &:not(.no-padding) {
+        &:not(.mzk-no-padding) {
             padding: 0 25px;
         }
 
-        a#gear {
-            background: url("/static/img/playlist/gear.svg");
-            display : inline-block;
-            height: 10px;
+        a.mzk-gear {
+            background:  url("/static/img/playlist/gear.svg");
+            display :    inline-block;
+            height:      10px;
             margin-left: 10px;
-            margin-top: 7.5px;
-            opacity: 0;
-            position: absolute;
-            transition: 0.2s ease;
-            width: 10px;
+            margin-top:  7.5px;
+            opacity:     0;
+            position:    absolute;
+            transition:  0.2s ease;
+            width:       10px;
         }
     }
 
-    div.playlist, div.library {
-        &:hover a#gear {
+    div.mzk-playlist, div.mzk-library {
+        &:hover a.mzk-gear {
             opacity: 1;
         }
     }
 
-    div.playlist:active,
-    div.playlist:focus,
-    div.playlist:hover,
-    div.playlist.playlistSelected {
+    div.mzk-playlist:active,
+    div.mzk-playlist:focus,
+    div.mzk-playlist:hover,
+    div.mzk-playlist.mzk-playlist-selected {
         box-shadow: 0 -2px blue inset;
     }
 
 
-    div.library:active,
-    div.library:focus,
-    div.library:hover,
-    div.library.librarySelected {
+    div.mzk-library:active,
+    div.mzk-library:focus,
+    div.mzk-library:hover,
+    div.mzk-library.mzk-library-selected {
         box-shadow: 0 -2px red inset;
-    }
-
-    #newLibPlay {
-        @extend .mzk-hidden;
-        background-color: $primary-color;
-        border: solid 1px $dark-secondary-color;
-        border-radius: 2px;
-        font-size: 0.9em;
-        height: auto;
-        position: absolute;
-        width: 150px;
-        z-index: 999;
-
-        p {
-            cursor: pointer;
-            margin: 0;
-            padding: 5px 15px;
-        }
-
-        p:hover {
-            background-color: $dark-secondary-color;
-        }
     }
 }

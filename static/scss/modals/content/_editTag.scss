@@ -9,7 +9,7 @@
         text-align: start;
     }
 
-    .list {
+    .mzk-list {
         background-color: $primary-color;
         border-right:     solid 1px $dark-primary-color;
         box-sizing:       border-box;
@@ -32,13 +32,13 @@
         }
     }
 
-    .editTag {
+    .mzk-edit-tag {
         background-color: $primary-color;
         height:           600px;
         position:         relative;
         width:            600px;
 
-        .head {
+        .mzk-head {
             display: flex;
             height:  auto;
             width:   100%;
@@ -49,7 +49,7 @@
                 padding:   0;
             }
 
-            .img-container {
+            .mzk-img-container {
                 box-sizing: border-box;
                 height:     130px;
                 padding:    15px;
@@ -62,7 +62,7 @@
                 }
             }
 
-            .art-tit-container {
+            .mzk-art-tit-container {
                 align-items: center;
                 display:     flex;
                 height:      130px;
@@ -82,22 +82,22 @@
                     margin-left: 5px;
                 }
 
-                .space-up {
+                .mzk-space-up {
                     margin-top: 15px;
                 }
             }
 
-            .numbs-year-container {
+            .mzk-numbs-year-container {
                 align-items:     center;
                 display:         flex;
                 height:          130px;
                 justify-content: right;
                 width:           130px;
 
-                .item-wrapper {
+                .mzk-item-wrapper {
                     height: auto;
 
-                    .item {
+                    .mzk-item {
                         align-items:     center;
                         box-sizing:      border-box;
                         display:         flex;
@@ -116,7 +116,7 @@
                             width:      19px;
                         }
 
-                        .year {
+                        .mzk-year {
                             width: 49px !important;
                         }
                     }
@@ -125,12 +125,12 @@
         }
 
 
-        .tags {
+        .mzk-tags {
             display:         flex;
             height:          auto;
             justify-content: center;
 
-            .tags-wrapper {
+            .mzk-tags-wrapper {
                 box-sizing:      border-box;
                 display:         flex;
                 justify-content: center;
@@ -147,17 +147,16 @@
                     width:         570px;
                 }
 
-                .no-margin {
+                .mzk-no-margin {
                     margin: 0 !important;
                 }
             }
         }
 
-
-        .coms {
+        .mzk-coms {
             display: flex;
 
-            .element {
+            .mzk-element {
                 align-items: center;
                 display:     flex;
                 height:      140px;
@@ -186,14 +185,13 @@
                     border: solid 1px $accent-color !important;
                 }
 
-                .center {
+                .mzk-center {
                     text-align: center;
                 }
             }
         }
 
-
-        .info {
+        .mzk-info {
             height:     30px;
             padding:    5px 0;
             text-align: center;
@@ -210,7 +208,7 @@
         }
 
 
-        .foot {
+        .mzk-foot {
             height:     auto;
             text-align: center;
             width:      100%;
