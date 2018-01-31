@@ -24,16 +24,23 @@ def getUserInformation(request):
         userPref = UserPreferences.objects.get(user=user)
         inviteCode = InviteCode.objects.get(user=user).code
         data = {
-            'USER_ID': user.username,
+            'USER_ID': user.id,
+            'USERNAME': user.username,
             'IS_ADMIN': user.is_superuser,
             'GROUP_NAME': userPref.group.name,
             'GROUP_ID': userPref.group.id,
             'INVITE_CODE': inviteCode,
         }
         if userPref.inviteCode is not None:
-            data = {**data, **dict(GODFATHER_CODE=userPref.inviteCode.code)}
+            data = {**data, **{
+                'GODFATHER_CODE': userPref.inviteCode.code,
+                'GODFATHER_NAME': userPref.inviteCode.user.username,
+            }}
         else:
-            data = {**data, **dict(GODFATHER_CODE="Jesus")}
+            data = {**data, **{
+                'GODFATHER_CODE': "Christ",
+                'GODFATHER_NAME': "Jesus",
+            }}
         data = {**data, **errorCheckMessage(True, None)}
     else:
         data = errorCheckMessage(False, "badRequest")
