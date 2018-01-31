@@ -63,10 +63,8 @@ class PlaylistPreview extends MzkObject {
             genre:                      document.createElement("SPAN"),
             shuffle:                    document.createElement("SPAN")
         };
-        this.tooltipWrapper           = document.createElement("DIV");
         this.listContainer            = document.createElement("UL");
 
-        this.tooltipWrapper.className = "tooltipWrapper";
         this.ui.container.id          = "playlistPreview";
         this.ui.name.id               = "playlistPreviewName";
         this.ui.total.id              = "playlistPreviewTotal";
@@ -81,7 +79,6 @@ class PlaylistPreview extends MzkObject {
         this.listContainer.appendChild(this.ui.duration);
         this.listContainer.appendChild(this.ui.repeatShuffle);
         this.ui.container.appendChild(this.listContainer);
-        this.ui.container.appendChild(this.tooltipWrapper);
 
         container.appendChild(this.ui.container);
     }

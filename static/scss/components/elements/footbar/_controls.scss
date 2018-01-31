@@ -1,0 +1,57 @@
+.mzk-controls-container {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 40%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+
+    .half {
+        height: 50%;
+        text-align: center;
+        width: 100%;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+
+        img {
+            height: 30px;
+            margin-left: 3px;
+            margin-right: 3px;
+            margin-top: 13px;
+            width: 30px;
+        }
+
+        a {
+            cursor: pointer;
+        }
+
+        .main {
+            height: 40px;
+            width: 40px;
+        }
+    }
+
+    // QUEUE
+    .queueExpander {
+        cursor: pointer;
+        height: 35px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 35px;
+
+        &:hover .mzk-queue-preview {
+            @extend .mzk-visible;
+        }
+    }
+
+    .queueExpander img {
+        height: 25px !important;
+        margin-right: 5px !important;
+        margin-top: 5px !important;
+        width: 25px !important;
+    }
+}

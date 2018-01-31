@@ -1,4 +1,3 @@
-/*      --------        ProgressBar style       --------        */
 #progressBar {
     background-color: $primary-text;
     border: solid 1px $dark-secondary-color;
@@ -36,6 +35,21 @@
         width: 10px;
     }
 }
+
+
+#currentDuration,
+#totalDuration {
+    font-size: 0.7em;
+}
+
+#progressBarWrapper {
+    padding-top: 10px;
+
+    .pointer {
+        cursor: pointer;
+    }
+}
+
 
 #moodbar #moodbarThumb {
     @extend .mzk-hidden;
