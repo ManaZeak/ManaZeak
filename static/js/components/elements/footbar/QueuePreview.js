@@ -77,8 +77,8 @@ class QueuePreview extends MzkObject {
         let origin                     = document.createElement("SPAN");
         let composer                   = document.createElement("SPAN");
         let qControls                  = document.createElement("DIV");
-        let qControlsUp                = document.createElement("SPAN");
-        let qControlsDown              = document.createElement("SPAN");
+        let qControlsUp                = document.createElement("IMG");
+        let qControlsDown              = document.createElement("IMG");
 
         body.className                 = "mzk-qprev-body";
         title.className                = "mzk-qprev-title";
@@ -89,8 +89,9 @@ class QueuePreview extends MzkObject {
         title.innerText                = track.title;
         origin.innerText               = track.artist + ' - ' + track.album + ' (' + track.year + ')';
         composer.innerText             = 'Composed by: ' + track.composer;
-        qControlsUp.innerText          = "U";
-        qControlsDown.innerText        = "D";
+        qControlsUp.src                = "../static/img/utils/up.svg";
+        qControlsDown.src              = "../static/img/utils/down.svg";
+        img.className                  = "mzk-queue-cover";
         img.src                        = track.cover;
 
         qControlsUp.dataset.callback   = "moveUp";
