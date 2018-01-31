@@ -1,0 +1,128 @@
+$modalMinHeight: 400px;
+$modalWidth: 600px;
+$modalHeaderHeight: 60px;
+$modalVerticalPadding: 10px;
+
+
+$spinnerSide: 110px;
+
+[id*='mzk-modal-wrapper-'] {
+  z-index: 999;
+
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  & > #mzk-modal-container {
+    //min-height: $modalMinHeight;
+    width: $modalWidth;
+
+    position: relative;
+
+    border: solid 1px black;
+    border-radius: 3px;
+    background: $primary-color;
+
+    -webkit-user-select: none;  /* Chrome/Safari */
+    -moz-user-select: none;     /* Firefox */
+
+    .mzk-modal-header,
+    .mzk-modal-content,
+    .mzk-modal-footer {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+
+    .mzk-modal-header,
+    .mzk-modal-footer {
+      height: $modalHeaderHeight;
+      padding: $modalVerticalPadding 30px;
+    }
+
+
+    .mzk-modal-header {
+      border-bottom: solid 1px black;
+      min-height: $modalHeaderHeight;
+
+      h1 {
+        margin: 0;
+        line-height: ($modalHeaderHeight - (2 * $modalVerticalPadding));
+      }
+    }
+
+    .mzk-modal-footer {
+      border-top: solid 1px black;
+      min-height: $modalHeaderHeight;
+    }
+
+    .mzk-modal-content {
+      padding: $modalVerticalPadding 50px;
+      //min-height: $modalMinHeight - (2 * $modalHeaderHeight);
+    }
+
+    @import "content/cover";
+    @import "content/deletePlaylist";
+    @import "content/editGroup";
+    @import "content/editTag";
+    @import "content/fetchPlaylists";
+    @import "content/fetchStats";
+    @import "content/inviteCode";
+    @import "content/newLibrary";
+    @import "content/newPlaylists";
+    @import "content/newWish";
+    @import "content/openSyncThing";
+    @import "content/renamePlaylist";
+    @import "content/scanLibrary";
+  }
+
+  .mzk-modal-closebutton {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+
+.lds-dual-ring {
+  position: relative;
+}
+
+
+.lds-dual-ring div {
+  z-index: 9999;
+  position: absolute;
+  width: $spinnerSide;
+  height: $spinnerSide;
+  left: ($modalWidth / 2) - $spinnerSide;
+  top: 10px;
+  border-radius: 50%;
+  border: 4px solid $primary-text;
+  border-color: $primary-text transparent;
+  -webkit-animation: lds-dual-ring 1.3s linear infinite;
+  animation: lds-dual-ring 1.3s linear infinite;
+}

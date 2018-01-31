@@ -17,8 +17,9 @@ class User {
         this.username      = "";
         this.groupName     = "";
         this.groupID       = -1;
-        this.inviteCode    = 0;
-        this.godFatherCode = 0;
+        this.inviteCode    = -1;
+        this.godFatherCode = -1;
+        this.godFatherName = "";
         this._getUserInfo();
     }
 
@@ -91,8 +92,7 @@ class User {
                     that.groupID       = response.GROUP_ID;
                     that.inviteCode    = response.INVITE_CODE;
                     that.godFatherCode = response.GODFATHER_CODE;
-
-                    console.log(that);
+                    that.godFatherName = response.GODFATHER_NAME;
                 }
 
                 else {

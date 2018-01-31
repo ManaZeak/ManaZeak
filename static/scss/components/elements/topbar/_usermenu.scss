@@ -1,0 +1,12 @@
+.mzk-user-expander {
+    cursor: pointer;
+    height: $topbar-height / 2;
+    position: absolute;
+    right: $topbar-height / 4;
+    top: $topbar-height / 4;
+    width: auto;
+
+    img {
+        height: 100%;
+    }
+}

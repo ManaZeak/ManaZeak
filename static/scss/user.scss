@@ -1,4 +1,4 @@
-@import "../utils/tools";
+@import "utils/tools";
 
 html, body {
     background-color: $primary-color;
@@ -84,11 +84,14 @@ html, body {
 
     #error {
         background-color: $dark-primary-color;
+        border: solid 1px $secondary-color;
+        border-radius: 2px;
         left: 25px;
         padding: 15px 25px;
         position: absolute;
         text-align: left;
         top: 25px;
+        font-weight: bold;
 
         ul {
             list-style: none;
@@ -97,9 +100,19 @@ html, body {
             li {
                 ul {
                     margin-left: 15px;
+
+                    li {
+                        margin-bottom: 15px;
+                        font-weight: normal;
+                    }
                 }
             }
         }
+    }
+
+    #error:empty {
+        background-color: transparent;
+        border: solid 0 transparent;
     }
 
 

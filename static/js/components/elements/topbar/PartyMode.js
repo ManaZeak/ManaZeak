@@ -27,8 +27,8 @@ class PartyMode {
             img:       document.createElement("IMG")
         };
 
-        this.ui.container.id = "partyMode";
-        this.ui.img.src      = "/static/img/utils/party.svg";
+        this.ui.container.className = "mzk-party-mode-button";
+        this.ui.img.src             = "/static/img/utils/party.svg";
 
         this.ui.container.appendChild(this.ui.img);
 

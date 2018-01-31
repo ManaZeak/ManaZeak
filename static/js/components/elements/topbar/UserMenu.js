@@ -33,8 +33,8 @@ class UserMenu {
             img:       document.createElement("IMG")
         };
 
-        this.ui.container.id = "userExpander";
-        this.ui.img.src      = "/static/img/utils/user.svg";
+        this.ui.container.className = "mzk-user-expander";
+        this.ui.img.src             = "/static/img/utils/user.svg";
 
         this.ui.container.appendChild(this.ui.img);
 

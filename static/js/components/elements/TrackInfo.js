@@ -142,14 +142,14 @@ class TrackInfo {
             changeSuggestionType: document.createElement("IMG")
         };
 
-        this.ui.container.id              = "trackInfo";
-        this.ui.trackWrapper.id           = "trackWrapper";
-        this.ui.title.id                  = "title";
-        this.ui.album.id                  = "album";
-        this.ui.numbers.id                = "numbers";
-        this.ui.genre.id                  = "album";
-        this.ui.suggestionWrapper.id      = "suggestionWrapper";
-        this.ui.suggestionTitle.id        = "title";
+        this.ui.container.className              = "mzk-track-info";
+        this.ui.trackWrapper.className           = "mzk-track-wrapper";
+        this.ui.title.className                  = "mzk-title";
+        this.ui.album.className                  = "mzk-album";
+        this.ui.numbers.className                = "mzk-numbers";
+        this.ui.genre.className                  = "mzk-album";
+        this.ui.suggestionWrapper.className      = "mzk-suggestion-wrapper";
+        this.ui.suggestionTitle.className        = "mzk-title";
         this.ui.changeSuggestionType.src  = "";
 
         this.tracks = [];

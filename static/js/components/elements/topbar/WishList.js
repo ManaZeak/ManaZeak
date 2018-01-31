@@ -30,8 +30,8 @@ class WishList {
             img:       document.createElement("IMG")
         };
 
-        this.ui.container.id = "wishList";
-        this.ui.img.src      = "/static/img/utils/idea.svg";
+        this.ui.container.className = "mzk-wishes-button";
+        this.ui.img.src             = "/static/img/utils/idea.svg";
 
         this.ui.container.appendChild(this.ui.img);
         container.appendChild(this.ui.container);

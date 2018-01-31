@@ -81,16 +81,7 @@ class TrackPreview extends MzkObject {
         this.tooltipWrapper            = document.createElement("DIV");
         this.listContainer             = document.createElement("UL");
 
-        this.ui.container.id           = "trackPreview";
-        this.tooltipWrapper.className  = "tooltipWrapper";
-        this.ui.cover.id               = "trackPreviewCover";
-        this.ui.thumb.id               = "trackPreviewThumb";
-        this.ui.thumbTooltip.className = "tooltipTrackCover";
-        this.ui.title.id               = "trackPreviewTitle";
-        this.ui.artist.id              = "trackPreviewArtist";
-        this.ui.album.id               = "trackPreviewAlbum";
-        this.ui.year.id                = "trackPreviewYear";
-        this.ui.genre.id               = "trackPreviewGenre";
+        this.ui.container.className    = "mzk-track-preview";
         this.ui.cover.src              = "/static/img/utils/defaultcover.svg";
         this.ui.thumb.src              = "/static/img/utils/defaultcover.svg";
 
