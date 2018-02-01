@@ -50,7 +50,7 @@ $spinnerSide: 110px;
             padding:    0 ($mzk-padding * 2);
 
             button {
-                margin: ($mzk-margin * 2) 0;
+                margin: ($mzk-margin * 2) $mzk-margin;
             }
         }
 

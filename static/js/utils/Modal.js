@@ -759,7 +759,7 @@ class Modal extends MzkObject {
 
         cancel.innerHTML            = "Cancel";
         save.innerHTML              = "Save";
-        groupsTitle.innerHTML       = "Available groups";
+        groupsTitle.innerHTML       = "Available groups on ManaZeak";
 
         this._appendCloseButton();
 
