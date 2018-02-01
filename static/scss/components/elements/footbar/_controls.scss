@@ -22,10 +22,10 @@ $progress-height:     $footbar-height - $controls-height;
     }
 
     .mzk-queue-expander {
-        cursor:   pointer;
-        height:   $controls-icon-width;
-        position: absolute;
-        right:    0;
+        cursor:     pointer;
+        min-height: $controls-icon-width;
+        position:   absolute;
+        right:      0;
 
         &:hover .mzk-queue-preview {
             @extend .mzk-visible;
