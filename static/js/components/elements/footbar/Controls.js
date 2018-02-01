@@ -72,6 +72,14 @@ class Controls  {
         this.ui.previous.image.src             = "/static/img/player/previous.svg";
         this.ui.queueExpander.image.src        = "/static/img/player/queue.svg";
 
+        this.ui.play.button.className          = "mzk-controls-play";
+        this.ui.stop.button.className          = "mzk-controls-stop";
+        this.ui.repeat.button.className        = "mzk-controls-repeat";
+        this.ui.shuffle.button.className       = "mzk-controls-shuffle";
+        this.ui.next.button.className          = "mzk-controls-next";
+        this.ui.previous.button.className      = "mzk-controls-previous";
+        this.ui.queueExpander.button.className = "mzk-controls-queue";
+
         this.ui.repeat.button.appendChild(this.ui.repeat.image);
         this.ui.shuffle.button.appendChild(this.ui.shuffle.image);
         this.ui.previous.button.appendChild(this.ui.previous.image);

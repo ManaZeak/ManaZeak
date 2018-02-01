@@ -49,6 +49,26 @@
             }
 
             @import '../../components/elements/footbar/controls';
+            .mzk-controls {
+                margin-top: 2 * $app-margin;
+
+                img {
+                    background: $dark-secondary-color;
+                }
+
+                .mzk-controls-play img {
+                    height:     1.5 * $controls-icon-width;
+                    width:      1.5 * $controls-icon-width;
+                }
+
+                .mzk-controls-stop {
+                    display: none;
+                }
+
+                .mzk-controls-shuffle {
+                    margin-right: 4 * $app-margin;
+                }
+            }
         }
 
         .mzk-party-track-info {

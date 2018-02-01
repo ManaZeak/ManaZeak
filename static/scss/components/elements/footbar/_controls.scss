@@ -5,16 +5,16 @@ $progress-height:     $footbar-height - $controls-height;
 .mzk-controls {
     align-items:         center;
     display:             flex;
-    height:              $controls-height;
+    min-height:          $controls-height;
     justify-content:     center;
     width:               100%;
 
     a {
         cursor: pointer;
-        height: $controls-icon-width;
     }
 
     img {
+        border-radius: 50%;
         height:       $controls-icon-width;
         margin-left:  $controls-icon-width / 10;
         margin-right: $controls-icon-width / 10;
