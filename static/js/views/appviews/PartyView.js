@@ -10,6 +10,7 @@ import { JSONParsedPostRequest } from '../../utils/Utils.js'
 import Notification from '../../utils/Notification.js'
 import Track from '../../core/Track.js'
 import View from '../../core/View.js'
+import Controls from '../../components/elements/footbar/Controls.js'
 
 class PartyView extends View {
 
@@ -17,6 +18,7 @@ class PartyView extends View {
         super();
         this._createUI();
         this._eventListener();
+        new Controls(this.ui.coverContainer, false, false);
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -112,6 +114,7 @@ class PartyView extends View {
             sparksLayer3:       document.createElement("DIV"),
             sparksLayer4:       document.createElement("DIV"),
 
+            coverContainer:     document.createElement("DIV"),
             trackContainer:     document.createElement("DIV"),
             trackCover:         document.createElement("IMG"),
 
@@ -137,6 +140,7 @@ class PartyView extends View {
         this.ui.sparksLayer3.className       = "mzk-start-layer";
         this.ui.sparksLayer4.className       = "mzk-start-layer";
 
+        this.ui.coverContainer.className     = "mzk-party-cover-controls";
         this.ui.trackContainer.className     = "mzk-track-container";
         this.ui.mzkLogo.src                  = "/static/img/manazeak.svg";
         this.ui.trackCover.src               = "/static/img/utils/defaultcover.svg";
@@ -169,7 +173,8 @@ class PartyView extends View {
         this.ui.trackInfoContainer.appendChild(this.ui.trackYearAlbum);
         this.ui.trackInfoContainer.appendChild(this.ui.trackGenre);
 
-        this.ui.trackContainer.appendChild(this.ui.trackCover);
+        this.ui.coverContainer.appendChild(this.ui.trackCover);
+        this.ui.trackContainer.appendChild(this.ui.coverContainer);
         this.ui.trackContainer.appendChild(this.ui.trackInfoContainer);
 
         this.ui.container.appendChild(this.ui.mzkLogo);

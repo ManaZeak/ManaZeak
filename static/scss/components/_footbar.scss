@@ -10,7 +10,17 @@ $footbar-padding:        2 * $app-padding;
     position:         absolute;
     width:            100%;
 
-    @import './elements/footbar/controls';
+    .mzk-controls-container {
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        width: $footbar-controls-width;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        @import './elements/footbar/controls';
+    }
+
     @import './elements/footbar/playlistpreview';
     @import './elements/footbar/queuepreview';
     @import './elements/footbar/trackpreview';

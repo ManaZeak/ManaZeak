@@ -35,15 +35,20 @@
         padding-left: 10%;
         position:     relative;
 
-        img {
-            background-color:  $dark-primary-color;
-            animation-delay:   0.2s;
-            box-shadow:        0 0 30px #fff;
-            height:            350px;
-            width:             350px;
-            -moz-animation:    fade 40s linear infinite;
-            -webkit-animation: fade 40s linear infinite;
-            animation:         fade 40s linear infinite;
+        .mzk-party-cover-controls {
+
+            & > img {
+                background-color: $dark-primary-color;
+                animation-delay: 0.2s;
+                box-shadow: 0 0 30px #fff;
+                height: 350px;
+                width: 350px;
+                -moz-animation: fade 40s linear infinite;
+                -webkit-animation: fade 40s linear infinite;
+                animation: fade 40s linear infinite;
+            }
+
+            @import '../../components/elements/footbar/controls';
         }
 
         .mzk-party-track-info {
