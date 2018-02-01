@@ -28,65 +28,68 @@ class PartyView extends View {
      **/
     getContainer() {
         this._setPlayPause();
+        let currentlyPlaying = window.app.player.getSourceID();
+        if(currentlyPlaying != -1) {
 
-        let that = this;
-        JSONParsedPostRequest(
-            "track/getDetailedInfo/",
-            JSON.stringify({
-                TRACK_ID: [window.app.player.getSourceID()]
-            }),
-            function(response) {
-                /* response = {
-                 *     DONE      : bool
-                 *     ERROR_H1  : string
-                 *     ERROR_MSG : string
-                 *
-                 *     RESULT    : {
-                 *         ID:
-                 *         TITLE:
-                 *         YEAR:
-                 *         COMPOSER:
-                 *         PERFORMER:
-                 *         TRACK_NUMBER:
-                 *         BPM:
-                 *         LYRICS:
-                 *         COMMENT:
-                 *         BITRATE:
-                 *         SAMPLERATE:
-                 *         DURATION:
-                 *         GENRE:
-                 *         FILE_TYPE:
-                 *         DISC_NUMBER:
-                 *         SIZE:
-                 *         LAST_MODIFIED:
-                 *         COVER:
-                 *         ARTISTS: {
-                 *            ID:
-                 *            NAME:
-                 *         }
-                 *         ALBUM: {
-                 *             ID:
-                 *             TITLE:
-                 *             TOTAL_DISC:
-                 *             TOTAL_TRACK:
-                 *             ARTISTS: {
-                 *                 ID:
-                 *                 NAME:
-                 *             }
-                 *         }
-                 *         PLAY_COUNTER:
-                 *         FILE_NAME:
-                 *     }
-                 * } */
-                if (response.DONE) {
-                    that._setCurrentTrack(new Track(response.RESULT[0]));
-                }
+            let that = this;
+            JSONParsedPostRequest(
+                "track/getDetailedInfo/",
+                JSON.stringify({
+                    TRACK_ID: [window.app.player.getSourceID()]
+                }),
+                function (response) {
+                    /* response = {
+                     *     DONE      : bool
+                     *     ERROR_H1  : string
+                     *     ERROR_MSG : string
+                     *
+                     *     RESULT    : {
+                     *         ID:
+                     *         TITLE:
+                     *         YEAR:
+                     *         COMPOSER:
+                     *         PERFORMER:
+                     *         TRACK_NUMBER:
+                     *         BPM:
+                     *         LYRICS:
+                     *         COMMENT:
+                     *         BITRATE:
+                     *         SAMPLERATE:
+                     *         DURATION:
+                     *         GENRE:
+                     *         FILE_TYPE:
+                     *         DISC_NUMBER:
+                     *         SIZE:
+                     *         LAST_MODIFIED:
+                     *         COVER:
+                     *         ARTISTS: {
+                     *            ID:
+                     *            NAME:
+                     *         }
+                     *         ALBUM: {
+                     *             ID:
+                     *             TITLE:
+                     *             TOTAL_DISC:
+                     *             TOTAL_TRACK:
+                     *             ARTISTS: {
+                     *                 ID:
+                     *                 NAME:
+                     *             }
+                     *         }
+                     *         PLAY_COUNTER:
+                     *         FILE_NAME:
+                     *     }
+                     * } */
+                    if (response.DONE) {
+                        that._setCurrentTrack(new Track(response.RESULT[0]));
+                    }
 
-                else {
-                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    else {
+                        new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                    }
                 }
-            }
-        );
+            );
+        }
 
         return this.ui.container;
     }
@@ -202,6 +205,9 @@ class PartyView extends View {
         window.app.listen("changeTrack", function(track) {
             that._setCurrentTrack(track);
         });
+        window.app.listen(["togglePlay", "stopPlayback"], function() {
+            that._setPlayPause();
+        })
 
     }
 

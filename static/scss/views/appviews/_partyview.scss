@@ -3,9 +3,9 @@
     color:             white;
     display:           flex;
     overflow:          hidden;
-    -moz-animation:    party-fadeIn 0.3s linear;
-    -webkit-animation: party-fadeIn 0.3s linear;
-    animation:         party-fadeIn 0.3s linear;
+    -moz-transition:    party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
+    -webkit-transition: party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
+    transition:         party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
 
     position: fixed !important;
     top:      0 !important;
@@ -13,6 +13,14 @@
     width:    100vw !important;
     height:   100vh !important;
     z-index:  42;
+
+    transform: translateX(0);
+    &.mzk-view-hide {
+        -moz-transition:    party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        -webkit-transition: party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        transition:         party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        transform:          translateX(-100vw);
+    }
 
     .mzk-logo {
         position: absolute;
