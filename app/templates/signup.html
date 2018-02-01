@@ -20,52 +20,39 @@
         <img src="/static/img/manazeak-text.svg">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
         <form id="signupForm" action="" method="POST" name="signup">
-            <p><label for="id_username">Username:</label>
+            <p><label for="id_username"><b>Username:</b></label>
             {{ form.username }}</p>
-            <p><label for="id_password">Password:</label>
+            <p><label for="id_password"><b>Password:</b></label>
             {{ form.password1 }}</p>
-            <p><label>Repeat password:</label>
+            <p><label><b>Repeat password:</b></label>
             {{ form.password2 }}</p>
             <input type="hidden" name="next" value="/" />
-            <input type="submit" value="register" id="button" />
+            <button type="submit" value="register" id="button">Sign in</button>
             {% csrf_token %}
         </form>
         <img src="/static/img/manazeak.svg" class="mzk-logo">
         <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
     </div>
-
     <script>
         let xhr = new XMLHttpRequest();
-
         xhr.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
                 let response = JSON.parse(this.responseText);
-
                 if (response.INVITE === true) {
                     let p = document.createElement("P");
                     let label = document.createElement("LABEL");
                     let input = document.createElement("INPUT");
-
-                    label.innerHTML = "Godfather ID:";
+                    label.innerHTML = "<b>Godfather ID:</b>";
                     input.type = "text";
                     input.setAttribute("name", "godFather");
-
                     p.appendChild(label);
                     p.appendChild(input);
-
                     document.getElementById("signupForm").insertBefore(p, document.getElementById("signupForm").firstChild);
                 }
             }
         };
-
         xhr.open("GET", "../admin/isInviteEnabled/", true);
         xhr.send();
-
-/*        document.addEventListener("keydown", function(event) {
-            if (event.keyCode === 18) {
-                document.signup.submit();
-            }
-        });*/
     </script>
     </body>
 {% endblock %}

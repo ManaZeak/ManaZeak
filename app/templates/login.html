@@ -24,23 +24,15 @@
             <p>Please login below, or <a href="{% url 'app:signup' %}">sign up</a></p>
             <form action="" method="post" enctype="multipart/form-data" name="login">
                 {% csrf_token %}
-                <label for="id_username">Username:</label>
+                <label for="id_username"><b>Username:</b></label>
                 <input id="id_username" maxlength="30" name="username" type="text"><br>
-                <label for="id_password">Password:</label>
+                <label for="id_password"><b>Password:</b></label>
                 <input id="id_password" maxlength="30" name="password" type="password">
-                <button type="submit">Submit</button>
+                <button type="submit">Log in</button>
             </form>
             <img src="/static/img/manazeak.svg" class="mzk-logo">
             <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
         {% endif %}
     </div>
-
-    <script>
-/*        document.addEventListener("keydown", function(event) {
-            if (event.keyCode === 18) {
-                document.login.submit();
-            }
-        });
-*/    </script>
 </body>
 {% endblock %}

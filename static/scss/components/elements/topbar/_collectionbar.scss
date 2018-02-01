@@ -37,11 +37,18 @@
         }
     }
 
+    div.mzk-favorite:active,
+    div.mzk-favorite:focus,
+    div.mzk-favorite:hover,
+    div.mzk-favorite.mzk-favorite-selected {
+        box-shadow: 0 -2px $mzk-collection-favorites inset;
+    }
+
     div.mzk-playlist:active,
     div.mzk-playlist:focus,
     div.mzk-playlist:hover,
     div.mzk-playlist.mzk-playlist-selected {
-        box-shadow: 0 -2px blue inset;
+        box-shadow: 0 -2px $mzk-collection-playlist inset;
     }
 
 
@@ -49,6 +56,6 @@
     div.mzk-library:focus,
     div.mzk-library:hover,
     div.mzk-library.mzk-library-selected {
-        box-shadow: 0 -2px red inset;
+        box-shadow: 0 -2px $mzk-collection-library inset;
     }
 }

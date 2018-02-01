@@ -2,9 +2,9 @@ $track-info-margin:  25px;
 $track-info-padding: 15px;
 
 .mzk-track-info {
-    background-color: $secondary-color;
-    border:           solid 1px $dark-secondary-color;
-    border-radius:    $border-radius;
+    background-color: $mzk-bg-strong;
+    border:           solid 1px $mzk-bg-darker;
+    border-radius:    $mzk-border-radius;
     box-sizing:       border-box;
     height:           0;
     opacity:          0;
@@ -34,7 +34,7 @@ $track-info-padding: 15px;
     }
 
     .mzk-track-wrapper {
-        border-right:  solid 1px $dark-primary-color;
+        border-right:  solid 1px $mzk-bg-light;
         box-sizing:    border-box;
         display:       inline-block;
         float:         right;
@@ -107,7 +107,7 @@ $track-info-padding: 15px;
             li:active,
             li:hover,
             li:focus {
-                background-color: $dark-secondary-color;
+                background-color: $mzk-bg-darker;
             }
         }
 

@@ -1,7 +1,7 @@
 .mzk-notification-container {
-    background-color: $primary-color;
+    background-color: $mzk-bg-normal;
     border-radius:    1px;
-    border:           solid 1px $dark-primary-color;
+    border:           solid 1px $mzk-bg-light;
     height:           100px;
     opacity:          0;
     position:         fixed;
@@ -19,7 +19,7 @@
     }
 
     .mzk-title {
-        color:         $primary-text;
+        color:         $mzk-text;
         font-size:     1em;
         left:          50px;
         line-height:   30px;
@@ -33,7 +33,7 @@
     .mzk-message {
         bottom:        0;
         box-sizing:    border-box;
-        color:         $primary-text;
+        color:         $mzk-text;
         font-size:     0.8em;
         height:        40px;
         left:          50px;

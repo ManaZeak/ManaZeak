@@ -2,9 +2,9 @@ $menu-indentation: 20px;
 
 #mzk-ctx-wrap {
     @extend .mzk-hidden;
-    background-color: $primary-color;
-    border:           solid 1px $dark-secondary-color;
-    border-radius:    $border-radius;
+    background-color: $mzk-bg-normal;
+    border:           solid 1px $mzk-bg-darker;
+    border-radius:    $mzk-border-radius;
     font-size:        0.9em;
     height:           auto;
     line-height:      1em !important;
@@ -15,7 +15,7 @@ $menu-indentation: 20px;
     z-index:          42000;
 
     ul {
-        background-color: $primary-color;
+        background-color: $mzk-bg-normal;
         list-style:       none;
         margin:           0;
         padding:          0;
@@ -40,17 +40,17 @@ $menu-indentation: 20px;
             }
 
             &:hover {
-                background-color: $dark-secondary-color;
+                background-color: $mzk-bg-darker;
             }
 
             &:not(:first-child).mzk-ctx-submenu::before {
-                border-top: solid 1px black;
+                border-top: solid 1px $mzk-bg-darker;
             }
 
             &:not(:last-child).mzk-ctx-submenu {
 
                 &::after {
-                    border-bottom: solid 1px black;
+                    border-bottom: solid 1px $mzk-bg-darker;
                 }
 
                 & + li.mzk-ctx-submenu::before {

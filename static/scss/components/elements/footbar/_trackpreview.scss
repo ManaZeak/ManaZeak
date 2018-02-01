@@ -9,7 +9,7 @@
     width:        $footbar-info-width;
 
     img {
-        background-color: $secondary-color;
+        background-color: $mzk-bg-strong;
         cursor:           pointer;
         height:           $footbar-height;
         width:            $footbar-height;
@@ -33,7 +33,7 @@
         span {
             @extend .mzk-hidden;
             background-color: rgba(0, 0, 0, 1);
-            border-radius:    $border-radius;
+            border-radius:    $mzk-border-radius;
             bottom:           85px;
             height:           500px;
             left:             $footbar-padding;
@@ -43,8 +43,8 @@
             z-index:          1;
 
             img {
-                background-color: $secondary-color;
-                border-radius:    $border-radius;
+                background-color: $mzk-bg-strong;
+                border-radius:    $mzk-border-radius;
                 box-sizing:       border-box;
                 height:           500px !important;
                 width:            500px !important;
@@ -53,7 +53,7 @@
 
         span::after {
             border:       solid 5px;
-            border-color: $secondary-color transparent transparent transparent;
+            border-color: $mzk-bg-strong transparent transparent transparent;
             content:      "";
             left:         32px;
             position:     absolute;

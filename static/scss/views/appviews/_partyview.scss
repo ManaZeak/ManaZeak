@@ -1,5 +1,5 @@
 .mzk-partyview {
-    background-color:  $dark-secondary-color;
+    background-color:  $mzk-bg-darker;
     color:             white;
     display:           flex;
     overflow:          hidden;
@@ -28,7 +28,7 @@
         position:     relative;
 
         img {
-            background-color:  $dark-primary-color;
+            background-color:  $mzk-bg-light;
             animation-delay:   0.2s;
             box-shadow:        0 0 30px #fff;
             height:            350px;

@@ -1,10 +1,10 @@
 $footbar-height:         80px;
 $footbar-info-width:     30%;
 $footbar-controls-width: 40%;
-$footbar-padding:        2 * $app-padding;
+$footbar-padding:        2 * $mzk-padding;
 
 .mzk-footbar {
-    background-color: $secondary-color;
+    background-color: $mzk-bg-strong;
     bottom:           0;
     height:           $footbar-height;
     position:         absolute;

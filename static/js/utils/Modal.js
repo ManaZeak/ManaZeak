@@ -605,10 +605,10 @@ class Modal extends MzkObject {
         name.type                   = "text";
         name.placeholder            = "Enter the name of the playlist";
 
-        infoLabel.innerHTML         = "You are about to delete your playlist named " + this.data.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        infoLabel.innerHTML         = "You are about to rename your playlist named <b>" + this.data.name +
+            "</b>, Do you really want to rename it ?";
         cancel.innerHTML            = "Cancel";
-        rename.innerHTML            = "Delete";
+        rename.innerHTML            = "Rename";
 
         this._appendCloseButton();
 

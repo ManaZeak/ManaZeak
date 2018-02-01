@@ -8,8 +8,8 @@
 
     .mzk-moodbar-thumb {
         @extend .mzk-hidden;
-        background-color: $white;
-        border:           solid 1px $dark-secondary-color;
+        background-color: $mzk-text;
+        border:           solid 1px $mzk-bg-darker;
         border-radius:    1px;
         box-sizing:       border-box;
         height:           16px;

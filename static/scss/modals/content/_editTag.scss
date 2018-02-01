@@ -13,8 +13,8 @@
     }
 
     .mzk-list {
-        background-color: $primary-color;
-        border-right:     solid 1px $dark-primary-color;
+        background-color: $mzk-bg-normal;
+        border-right:     solid 1px $mzk-bg-light;
         box-sizing:       border-box;
         font-size:        0.8em;
         margin:           0;
@@ -28,13 +28,13 @@
             padding: 2px 15px;
 
             &.mzk-selected {
-                background-color: $secondary-color;
+                background-color: $mzk-bg-strong;
             }
         }
     }
 
     .mzk-edit-tag {
-        background-color: $primary-color;
+        background-color: $mzk-bg-normal;
         height:           600px;
         position:         relative;
         width:            $modalWidth;
@@ -167,10 +167,10 @@
 
                 textarea {
                     background:    transparent;
-                    border:        solid 1px $primary-text !important;
+                    border:        solid 1px $mzk-text !important;
                     border-radius: 2px;
                     box-sizing:    border-box;
-                    color:         $primary-text !important;
+                    color:         $mzk-text !important;
                     font-size:     0.85em;
                     height:        100px;
                     margin-top:    5px;
@@ -183,7 +183,7 @@
                 textarea:active,
                 textarea:hover,
                 textarea:focus {
-                    border: solid 1px $accent-color !important;
+                    border: solid 1px $mzk-accent-color !important;
                 }
 
                 .mzk-center {
@@ -216,9 +216,9 @@
 
             button {
                 background:    transparent;
-                border:        solid 1px $primary-text;
+                border:        solid 1px $mzk-text;
                 border-radius: 2px;
-                color:         $primary-text;
+                color:         $mzk-text;
                 cursor:        pointer;
                 font-size:     0.85em;
                 margin:        10px;
@@ -235,15 +235,15 @@
 
         input {
             border:        0;
-            border-bottom: solid 1px $primary-text !important;
-            color:         $primary-text;
+            border-bottom: solid 1px $mzk-text !important;
+            color:         $mzk-text;
             transition:    0.2s ease;
         }
 
         input:active,
         input:hover,
         input:focus {
-            border-bottom: solid 1px $accent-color !important;
+            border-bottom: solid 1px $mzk-accent-color !important;
         }
     }
 }
