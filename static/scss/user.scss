@@ -13,8 +13,15 @@ html, body {
     align-items:      center;
 }
 
+.mzk-fork {
+    border:   0;
+    position: absolute;
+    right:    0;
+    top:      0;
+    z-index:  999;
+}
 
-#login {
+.mzk-user {
     height:     auto;
     margin:     0;
     padding:    0;
@@ -80,7 +87,7 @@ html, body {
         text-align:       center;
     }
 
-    #error {
+    .mzk-error {
         background-color: $dark-primary-color;
         border:           solid 1px $secondary-color;
         border-radius:    $border-radius;
@@ -108,11 +115,10 @@ html, body {
         }
     }
 
-    #error:empty {
+    .mzk-error:empty {
         background-color: transparent;
         border:           solid 0 transparent;
     }
-
 
     .mzk-logo {
         width:         475px;

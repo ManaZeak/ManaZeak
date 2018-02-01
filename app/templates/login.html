@@ -14,9 +14,9 @@
     {% load staticfiles %}
 <body>
     <a href="https://github.com/Squadella/ManaZeak" target="_blank">
-        <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
+        <img class="mzk-fork" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
     </a>
-    <div id="login">
+    <div class="mzk-user">
         <img src="/static/img/manazeak-text.svg">
         {% if user.is_active %}
             <p>Authenticated already. Go back to <a href="{% url 'app:index' %}">ManaZeak</a></p>
@@ -31,7 +31,7 @@
                 <button type="submit">Submit</button>
             </form>
             <img src="/static/img/manazeak.svg" class="mzk-logo">
-            <div id="error">{{ form.errors }}{{ form.non_field_errors }}</div>
+            <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
         {% endif %}
     </div>
 
