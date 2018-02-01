@@ -49,6 +49,7 @@ class ListViewEntry {
         this.entry.appendChild(this.info.year);
 
         this._setInfo();
+        this._eventListener();
         this.insert(listView);
     }
 

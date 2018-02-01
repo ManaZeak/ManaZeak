@@ -1,14 +1,15 @@
 &.mzk-modal-new-wish {
     .mzk-modal-content {
+        textarea {
+            height:        120px;
+            width:         100%;
+        }
+
         p {
             margin:         0;
-            padding-bottom: 25px;
-        }
-    }
-
-    .mzk-modal-footer {
-        button {
-            cursor: pointer;
+            padding-bottom: $mzk-padding * 2;
+            text-align: justify;
+            text-indent:   20px;
         }
     }
 }

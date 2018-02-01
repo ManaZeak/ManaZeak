@@ -7,7 +7,7 @@
     width:    100%;
 
     .mzk-left-menu {
-        background-color: $dark-secondary-color;
+        background-color: $mzk-bg-darker;
         height:           100%;
         width:            200px;
 
@@ -24,13 +24,13 @@
 
             li {
                 cursor:  pointer;
-                padding: $app-padding ($app-padding * 2);
+                padding: $mzk-padding ($mzk-padding * 2);
             }
 
             li:active,
             li:focus,
             li:hover {
-                background-color: $dark-primary-color;
+                background-color: $mzk-bg-light;
             }
 
             .mzk-selected {
@@ -51,7 +51,7 @@
         }
 
         hr {
-            border-color:  $primary-text;
+            border-color:  $mzk-text;
             margin-bottom: 40px;
         }
 
@@ -60,10 +60,10 @@
             padding:    0;
 
             li {
-                background-color: $dark-primary-color;
+                background-color: $mzk-bg-light;
                 border-radius:    5px;
                 margin-bottom:    15px;
-                padding:          $app-padding ($app-padding * 2);
+                padding:          $mzk-padding ($mzk-padding * 2);
                 position:         relative;
                 min-height:       38px;
 
@@ -85,8 +85,8 @@
 
         button {
             background: none;
-            border:     solid 1px $primary-text;
-            color:      $primary-text;
+            border:     solid 1px $mzk-text;
+            color:      $mzk-text;
             cursor:     pointer;
             padding:    7px 20px;
             transition: 0.3s ease;
@@ -102,8 +102,8 @@
         input {
             background:    none;
             border:        solid 0 transparent;
-            border-bottom: solid 1px $primary-text;
-            color:         $primary-text;
+            border-bottom: solid 1px $mzk-text;
+            color:         $mzk-text;
             margin-right:  15px;
             padding:       7px 0;
             transition:    0.3s ease;

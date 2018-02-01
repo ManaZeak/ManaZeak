@@ -424,7 +424,6 @@ class AdminView extends View {
             rm.src                        = "/static/img/utils/trash.svg";
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
-                console.log(that.info.LIBRARIES[i].ID);
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID));
             });
             element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
@@ -472,8 +471,6 @@ class AdminView extends View {
         this.ui.bufferButton           = document.createElement("BUTTON");
         this.ui.rescanLabel            = document.createElement("P");
         this.ui.rescanButton           = document.createElement("BUTTON");
-        this.ui.openSCLabel            = document.createElement("P");
-        this.ui.openSCButton           = document.createElement("BUTTON");
 
         this.ui.apiKeyField.type       = "text";
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
@@ -494,11 +491,6 @@ class AdminView extends View {
                                          "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
                                          "This command will perform a rescan on each SyncThing folder.";
         this.ui.rescanButton.innerHTML = "RESCAN";
-        this.ui.openSCLabel.innerHTML  = "<b>Open SyncThing interface</b><br>" +
-                                         "<br>" +
-                                         "If none of the hereby command can't help you there, you may use the SyncThing interface.<br>" +
-                                         "This command will open the SyncThing instance right here, in a modal.";
-        this.ui.openSCButton.innerHTML = "OPEN";
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -510,17 +502,11 @@ class AdminView extends View {
         this.ui.content.appendChild(this.ui.bufferButton);
         this.ui.content.appendChild(this.ui.rescanLabel);
         this.ui.content.appendChild(this.ui.rescanButton);
-        this.ui.content.appendChild(this.ui.openSCLabel);
-        this.ui.content.appendChild(this.ui.openSCButton);
 
         let that = this;
         this.ui.apiKeyButton.addEventListener("click", this._submitAPIKey.bind(this));
         this.ui.bufferButton.addEventListener("click", this._submitBufferPath.bind(this));
         this.ui.rescanButton.addEventListener("click", this._rescanSC.bind(this));
-        this.ui.openSCButton.addEventListener("click", function() {
-            that.modal = new Modal("openSyncThing");
-            that.modal.open();
-        });
     }
 
 

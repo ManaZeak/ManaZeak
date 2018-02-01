@@ -216,8 +216,14 @@ class Modal extends MzkObject {
         info.innerHTML       = this.data.artist + " - " + this.data.album + " (" + year + ")";
         cover.src            = this.data.src;
 
-        this.ui.content.appendChild(info);
-        this.ui.content.appendChild(cover);
+        this.ui.container.innerHTML = "";
+
+        this.ui.header  = null;
+        this.ui.footer  = null;
+        this.ui.content = null;
+
+        this.ui.container.appendChild(info);
+        this.ui.container.appendChild(cover);
 
         this._appendCloseButton();
     }
@@ -259,7 +265,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _deletePlaylistUI() {
-        this.ui.container.className = "mzk-modal-delete-playlist";
+        this.ui.container.className = "mzk-modal-edit-playlist";
         this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
@@ -271,7 +277,7 @@ class Modal extends MzkObject {
         del.id                  = "deleteButton";
 
         infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.playlist.name +
-                                  ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
         del.innerHTML           = "Delete";
 
@@ -298,13 +304,13 @@ class Modal extends MzkObject {
 
         let ui = {
             foot:      document.createElement("DIV"),
-                close: document.createElement("BUTTON"),
-                save:  document.createElement("BUTTON")
+            close: document.createElement("BUTTON"),
+            save:  document.createElement("BUTTON")
         };
 
         ui.foot.className      = "mzk-foot";
-            ui.close.innerHTML = "Close";
-            ui.save.innerHTML  = "Save";
+        ui.close.innerHTML = "Close";
+        ui.save.innerHTML  = "Save";
 
         ui.foot.appendChild(ui.close);
         ui.foot.appendChild(ui.save);
@@ -314,8 +320,8 @@ class Modal extends MzkObject {
             that.close();
         });
         ui.save.addEventListener("click", function() {
-           that.editTag.saveState();
-           that.close();
+            that.editTag.saveState();
+            that.close();
         });
 
         this.editTag.getContainer().appendChild(ui.foot);
@@ -425,35 +431,26 @@ class Modal extends MzkObject {
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
         let path                    = document.createElement("INPUT");
-        let convertLabel            = document.createElement("SPAN");
-        let convert                 = document.createElement("INPUT");
         let scan                    = document.createElement("BUTTON");
 
-        infoLabel.id                = "infoLabel";
-        name.id                     = "name";
-        path.id                     = "path";
-        convertLabel.id             = "id3Label";
-        convert.id                  = "convert";
-        scan.id                     = "scanButton";
+        infoLabel.className         = "mzk-info-label";
+        name.id                     = "mzk-name";
+        path.id                     = "mzk-path";
 
         name.type                   = "text";
         path.type                   = "text";
-        convert.type                = "checkbox";
         name.placeholder            = "Enter the name of the library";
         path.placeholder            = "Enter the absolute path to your library";
 
-        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-            "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
+        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin! " +
+            "Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-        convertLabel.innerHTML      = "Automatically convert files to <a href=\"https://en.wikipedia.org/wiki/ID3#ID3v2\" target=\"_blank\">ID3v2</a>";
         scan.innerHTML              = "Scan";
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
         this.ui.content.appendChild(path);
-        this.ui.content.appendChild(convertLabel);
-        this.ui.content.appendChild(convert);
         this.ui.footer.appendChild(scan);
 
         this._appendCloseButton();
@@ -478,9 +475,8 @@ class Modal extends MzkObject {
         let name                    = document.createElement("INPUT");
         let create                  = document.createElement("BUTTON");
 
-        infoLabel.id                = "infoLabel";
-        name.id                     = "name";
-        create.id                   = "scanButton";
+        infoLabel.className         = "mzk-info-label";
+        name.id                     = "mzk-name";
 
         name.type                   = "text";
         name.placeholder            = "Enter the name of the playlist";
@@ -508,13 +504,12 @@ class Modal extends MzkObject {
      **/
     _newWishUI() {
         this.ui.container.className = "mzk-modal-new-wish";
-        this.ui.title.innerHTML     = "Track suggestion";
+        this.ui.title.innerHTML     = "Make a suggestion";
 
         let text                    = document.createElement("P");
-        let wish                    = document.createElement("INPUT");
+        let wish                    = document.createElement("TEXTAREA");
         let submit                  = document.createElement("BUTTON");
 
-        wish.type                   = "text";
         wish.placeholder            = "Enter your suggestion here";
         text.innerHTML              = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
@@ -552,7 +547,6 @@ class Modal extends MzkObject {
             }
 
             else {
-                wish.style.border = "solid 1px red";
                 new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
             }
         });
@@ -589,7 +583,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _renamePlaylistUI() {
-        this.ui.container.className = "mzk-modal-delete-playlist";
+        this.ui.container.className = "mzk-modal-edit-playlist";
         this.ui.title.innerHTML     = "Rename " + this.data.name;
 
         let infoLabel               = document.createElement("P");
@@ -605,10 +599,10 @@ class Modal extends MzkObject {
         name.type                   = "text";
         name.placeholder            = "Enter the name of the playlist";
 
-        infoLabel.innerHTML         = "You are about to delete your playlist named " + this.data.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+        infoLabel.innerHTML         = "You are about to rename your playlist named <b>" + this.data.name +
+            "</b>, Do you really want to rename it ?";
         cancel.innerHTML            = "Cancel";
-        rename.innerHTML            = "Delete";
+        rename.innerHTML            = "Rename";
 
         this._appendCloseButton();
 
@@ -755,7 +749,7 @@ class Modal extends MzkObject {
 
         cancel.innerHTML            = "Cancel";
         save.innerHTML              = "Save";
-        groupsTitle.innerHTML       = "Available groups";
+        groupsTitle.innerHTML       = "Available groups on ManaZeak";
 
         this._appendCloseButton();
 

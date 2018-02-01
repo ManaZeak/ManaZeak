@@ -63,7 +63,7 @@ class UserMenu {
             });
         }
         this.contextMenu.addEntry('settings', window.app.user.getUsername(), function() { // TODO : replace w/ username
-            window.app.showAppView('mzk_settings');
+            window.app.showAppView('mzk_user');
         });
         if (window.app.user.hasPermission("STAT")) {
             this.contextMenu.addEntry('stats', 'Stats', function() {

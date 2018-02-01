@@ -7,7 +7,7 @@ $spinnerSide: 110px;
 
 [id*='mzk-modal-wrapper-'] {
     align-items:     center;
-    background:      rgba(0, 0, 0, 0.8);
+    background:      $mzk-bg-alpha-black;
     display:         flex;
     height:          100%;
     justify-content: center;
@@ -18,13 +18,11 @@ $spinnerSide: 110px;
     z-index:         999;
 
     & > #mzk-modal-container {
-        background:          $primary-color;
-        border:              solid 1px black;
-        border-radius:       $border-radius;
+        background:          $mzk-bg-normal;
+        border:              solid $mzk-border-width $mzk-bg-darker;
+        border-radius:       $mzk-border-radius * 2;
         position:            relative;
         width:               $modalWidth;
-        -webkit-user-select: none; /* Chrome/Safari */
-        -moz-user-select:    none; /* Firefox */
 
         .mzk-modal-header,
         .mzk-modal-content,
@@ -35,16 +33,10 @@ $spinnerSide: 110px;
         }
 
 
-        .mzk-modal-header,
-        .mzk-modal-footer {
-            height:  $modalHeaderHeight;
-            padding: $modalVerticalPadding 30px;
-        }
-
-
         .mzk-modal-header {
-            border-bottom: solid 1px black;
+            border-bottom: solid 1px $mzk-bg-darker;
             min-height:    $modalHeaderHeight;
+            padding:       $mzk-padding ($mzk-padding * 2);
 
             h1 {
                 line-height: ($modalHeaderHeight - (2 * $modalVerticalPadding));
@@ -53,17 +45,22 @@ $spinnerSide: 110px;
         }
 
         .mzk-modal-footer {
-            border-top: solid 1px black;
+            border-top: solid 1px $mzk-bg-darker;
             min-height: $modalHeaderHeight;
+            padding:    0 ($mzk-padding * 2);
+
+            button {
+                margin: ($mzk-margin * 2) $mzk-margin;
+            }
         }
 
         .mzk-modal-content {
-            padding: $modalVerticalPadding 50px;
+            padding: ($mzk-padding * 2) ($mzk-padding * 5);
         }
 
         @import "content/cover";
         @import "content/chooseGroup";
-        @import "content/deletePlaylist";
+        @import "content/editPlaylist";
         @import "content/editGroup";
         @import "content/editTag";
         @import "content/fetchPlaylists";
@@ -73,7 +70,6 @@ $spinnerSide: 110px;
         @import "content/newPlaylists";
         @import "content/newWish";
         @import "content/openSyncThing";
-        @import "content/renamePlaylist";
         @import "content/scanLibrary";
     }
 
@@ -81,8 +77,8 @@ $spinnerSide: 110px;
         cursor:   pointer;
         height:   25px;
         position: absolute;
-        right:    10px;
-        top:      10px;
+        right:    $mzk-padding;
+        top:      $mzk-padding;
         width:    25px;
     }
 }
@@ -93,8 +89,8 @@ $spinnerSide: 110px;
 
 .lds-dual-ring div {
     animation:         lds-dual-ring 1.3s linear infinite;
-    border: 4px solid  $primary-text;
-    border-color:      $primary-text transparent;
+    border: 4px solid  $mzk-text;
+    border-color:      $mzk-text transparent;
     border-radius:     50%;
     position:          absolute;
     height:            $spinnerSide;

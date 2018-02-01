@@ -3,9 +3,9 @@ $queue-margin:  5px;
 
 .mzk-queue-preview {
     @extend .mzk-hidden;
-    background-color: $secondary-color;
-    border:           solid 1px $dark-secondary-color;
-    bottom:           35px;
+    background-color: $mzk-bg-strong;
+    border:           solid 1px $mzk-bg-darker;
+    bottom:           46px;
     color:            white;
     display:          flex;
     flex-direction:   column;
@@ -25,7 +25,7 @@ $queue-margin:  5px;
 
         li {
             align-items:     center;
-            border-bottom:   solid 1px $primary-text;
+            border-bottom:   solid 1px $mzk-text;
             display:         flex;
             height:          64px;
             justify-content: space-between;
@@ -90,7 +90,7 @@ $queue-margin:  5px;
 
     .mzk-queue-status {
         align-items:     center;
-        border-top:      solid 1px $dark-secondary-color;
+        border-top:      solid 1px $mzk-bg-darker;
         box-sizing:      content-box;
         display:         flex;
         flex:            none;
@@ -103,8 +103,9 @@ $queue-margin:  5px;
         }
 
         label {
-            align-items: center;
-            display:     flex;
+            align-items:    center;
+            display:        flex;
+            flex-direction: row-reverse;
         }
     }
 }

@@ -1,29 +1,29 @@
 &.mzk-modal-choose-group {
-
-  .mzk-modal-content {
-
-    .mzk-modal-title {
-      font-size: 1.5em;
-      padding-bottom: $app-padding;
-    }
-
-    .mzk-modal-groups-container {
-      border: black solid 1px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      width: 100%;
-
-      li {
-
-        padding: 2px $app-padding;
-
-        &.mzk-selected {
-          background-color: $dark-primary-color;
+    .mzk-modal-content {
+        .mzk-modal-title {
+            padding-bottom: $mzk-padding;
         }
-      }
-    }
 
-  }
+        .mzk-modal-groups-container {
+            border: solid  $mzk-border-width $mzk-bg-darker;
+            border-radius: $mzk-border-radius * 2;
+            margin:        0;
+            padding:       0;
+            list-style:    none;
+            width:         100%;
+
+            li {
+
+                cursor:  pointer;
+                padding: 2px $mzk-padding;
+
+                &.mzk-selected {
+                    background-color: $mzk-bg-light;
+                    border-radius:    $mzk-border-radius * 2;
+                }
+            }
+        }
+
+    }
 
 }

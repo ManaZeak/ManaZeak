@@ -7,12 +7,12 @@
     width:    100%;
 
     .mzk-left-menu {
-        background-color: $dark-secondary-color;
+        background-color: $mzk-bg-darker;
         height:           100%;
         width:            200px;
 
         h2 {
-            padding-left:  $app-padding;
+            padding-left:  $mzk-padding;
             margin-top:    30px;
             margin-bottom: 26px;
         }
@@ -24,13 +24,13 @@
 
             li {
                 cursor:  pointer;
-                padding: $app-padding ($app-padding * 2);
+                padding: $mzk-padding ($mzk-padding * 2);
             }
 
             li:active,
             li:focus,
             li:hover {
-                background-color: $dark-primary-color;
+                background-color: $mzk-bg-light;
             }
 
             .mzk-selected {
@@ -52,7 +52,7 @@
         }
 
         hr {
-            border-color:  $primary-text;
+            border-color:  $mzk-text;
             margin-bottom: 40px;
         }
 
@@ -73,10 +73,10 @@
             padding:       0;
 
             li {
-                background-color: $dark-primary-color;
+                background-color: $mzk-bg-light;
                 border-radius:    5px;
                 margin-bottom:    15px;
-                padding:          $app-padding ($app-padding * 2);
+                padding:          $mzk-padding ($mzk-padding * 2);
                 position:         relative;
             }
         }

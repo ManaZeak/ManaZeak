@@ -135,7 +135,8 @@ class QueuePreview extends MzkObject {
                 container:  document.createElement("DIV"),
                 trackCount: document.createElement("SPAN"),
                 reverseBox: document.createElement("INPUT"),
-                reverseLbl: document.createElement("LABEL")
+                reverseLbl: document.createElement("LABEL"),
+                reverseTxt: document.createElement("SPAN")
             },
             queueList:      document.createElement("UL"),
             queueEmpty:     document.createElement("LI")
@@ -146,15 +147,17 @@ class QueuePreview extends MzkObject {
         this.ui.queueList.className            = "mzk-queue-list";
         this.ui.queueEmpty.className           = "mzk-queue-empty";
         this.ui.statusBar.trackCount.innerText = "0 tracks";
-        this.ui.statusBar.reverseLbl.innerText = "Reverse Play:";
+        this.ui.statusBar.reverseTxt.innerHTML = "Reverse Play:";
         this.ui.statusBar.reverseBox.type      = "checkbox";
         this.ui.statusBar.reverseBox.value     = this.reverse;
         this.ui.queueEmpty.innerHTML           = "The Queue is empty";
 
+        this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseBox);
+        this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseTxt);
+
         this.ui.queueList.appendChild(this.ui.queueEmpty);
         this.ui.statusBar.container.appendChild(this.ui.statusBar.trackCount);
         this.ui.statusBar.container.appendChild(this.ui.statusBar.reverseLbl);
-        this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseBox);
         this.ui.container.appendChild(this.ui.queueList);
         this.ui.container.appendChild(this.ui.statusBar.container);
 
@@ -198,7 +201,6 @@ class QueuePreview extends MzkObject {
         };
         this.ui.statusBar.reverseBox.addEventListener('click', function() {
             window.app.reverseQueue(!that.reverse);
-            that.ui.statusBar.reverseBox.checked ^= true;
         });
         this.ui.queueList.addEventListener('click', function(event) {
             let li, sib;

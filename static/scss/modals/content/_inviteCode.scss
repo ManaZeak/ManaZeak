@@ -1,5 +1,9 @@
 &.mzk-modal-invite-code {
     .mzk-modal-content {
+
+        -webkit-user-select: text; /* Chrome/Safari */
+        -moz-user-select:    text; /* Firefox */
+
         #infoLabel {
             margin-left:  auto;
             margin-right: auto;

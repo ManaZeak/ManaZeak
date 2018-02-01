@@ -3,10 +3,10 @@
 
     .mzk-volume-bar-wrapper {
         @extend .mzk-hidden;
-        background-color: $secondary-color;
-        border:           solid 1px $dark-secondary-color;
+        background-color: $mzk-bg-strong;
+        border:           solid 1px $mzk-bg-darker;
         box-sizing:       border-box;
-        border-radius:    $border-radius;
+        border-radius:    $mzk-border-radius;
         bottom:           45px;
         height:           140px;
         left:             3px;
@@ -17,7 +17,7 @@
 
     .mzk-volume-bar-wrapper::after {
         border:       solid 5px;
-        border-color: $dark-secondary-color transparent transparent transparent;
+        border-color: $mzk-bg-darker transparent transparent transparent;
         content:      "";
         left:         10px;
         margin-top:   1px;
@@ -26,19 +26,19 @@
     }
 
     .mzk-volume-bar {
-        background-color: $primary-text;
-        border:           solid 1px $dark-secondary-color;
-        border-radius:    $border-radius;
+        background-color: $mzk-text;
+        border:           solid 1px $mzk-bg-darker;
+        border-radius:    $mzk-border-radius;
         cursor:           pointer;
         display:          inline-block;
         height:           85%;
-        margin:           $app-margin 0;
+        margin:           $mzk-margin 0;
         position:         relative;
         width:            4px;
 
         .mzk-volume-col {
             background-color: rgb(255, 0, 0);
-            border-radius:    $border-radius;
+            border-radius:    $mzk-border-radius;
             bottom:           0;
             height:           0;
             position:         absolute;
@@ -47,9 +47,9 @@
         }
 
         .mzk-volume-thumb {
-            background-color: $white;
-            border:           solid 1px $dark-secondary-color;
-            border-radius:    $border-radius * 2;
+            background-color: $mzk-text;
+            border:           solid 1px $mzk-bg-darker;
+            border-radius:    $mzk-border-radius * 2;
             bottom:           0;
             height:           10px;
             left:             -4px;
@@ -66,7 +66,7 @@
     }
 
     .mzk-volume-bar:hover > .mzk-volume-col {
-        background-color: $anti-accent-color;
+        background-color: $mzk-anti-accent-color;
     }
 
     &:hover .mzk-volume-bar-wrapper {

@@ -1,3 +1,6 @@
+$mzk-track-preview-arrow-width: 5px;
+$mzk-track-preview-cover:       600px;
+
 .mzk-track-preview {
     align-items:  center;
     box-sizing:   border-box;
@@ -8,54 +11,47 @@
     padding-left: $footbar-padding;
     width:        $footbar-info-width;
 
-    img {
-        background-color: $secondary-color;
-        cursor:           pointer;
-        height:           $footbar-height;
-        width:            $footbar-height;
-    }
-
     ul {
-        font-size:      0.8em;
+        font-size:      $footbar-font-size;
         list-style:     none;
         margin:         0;
         padding-left:   $footbar-padding;
-        vertical-align: 66%;
-
-        li {
-            padding: 1px 0;
-        }
     }
 
     div {
+        cursor: pointer;
         height: 100%;
+
+        img {
+            height:           $footbar-height;
+            width:            $footbar-height;
+        }
 
         span {
             @extend .mzk-hidden;
-            background-color: rgba(0, 0, 0, 1);
-            border-radius:    $border-radius;
-            bottom:           85px;
-            height:           500px;
+            background-color: $mzk-bg-strong;;
+            border:           solid $mzk-border-width $mzk-border-color;
+            border-radius:    $mzk-border-radius * 2;
+            bottom:           $footbar-height + $mzk-track-preview-arrow-width;
+            height:           $mzk-track-preview-cover;
             left:             $footbar-padding;
             position:         absolute;
-            text-align:       center;
-            width:            500px;
+            width:            $mzk-track-preview-cover;
             z-index:          1;
 
             img {
-                background-color: $secondary-color;
-                border-radius:    $border-radius;
+                border-radius:    $mzk-border-radius * 2;
                 box-sizing:       border-box;
-                height:           500px !important;
-                width:            500px !important;
+                height:           100% !important;
+                width:            100% !important;
             }
         }
 
         span::after {
-            border:       solid 5px;
-            border-color: $secondary-color transparent transparent transparent;
+            border:       solid $mzk-track-preview-arrow-width;
+            border-color: $mzk-border-color transparent transparent transparent;
             content:      "";
-            left:         32px;
+            left:         ($footbar-height / 2) - ($mzk-track-preview-arrow-width / 2);
             position:     absolute;
             top:          100%;
         }

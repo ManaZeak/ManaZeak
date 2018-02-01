@@ -1,5 +1,5 @@
 .mzk-progress-bar-wrapper {
-    align-items:     center;
+    align-items:     baseline;
     display:         flex;
     height:          $progress-height;
     justify-content: center;
@@ -10,13 +10,13 @@
     }
 
     .mzk-progress-bar {
-        background-color: $primary-text;
-        border:           solid 1px $dark-secondary-color;
-        border-radius:    $border-radius;
+        background-color: $mzk-text;
+        border:           solid $mzk-border-width $mzk-bg-darker;
+        border-radius:    $mzk-border-radius;
         cursor:           pointer;
         display:          inline-block;
-        height:           $border-radius;
-        margin:           0 $app-margin;
+        height:           3px;
+        margin:           0 $mzk-margin;
         position:         relative;
         width:            85%;
 
@@ -25,17 +25,17 @@
         }
 
         .mzk-progress-lin {
-            background-color: $accent-color;
-            border-radius:    $border-radius;
+            background-color: $mzk-accent-color;
+            border-radius:    $mzk-border-radius;
             height:           100%;
-            transition:       background-color 0.15s ease;
+            transition:       background-color $mzk-animation-duration ease;
             width:            0;
         }
 
         .mzk-progress-thumb {
-            background-color: $white;
-            border:           solid 1px $dark-secondary-color;
-            border-radius:    $border-radius * 2;
+            background-color: $mzk-text;
+            border:           solid $mzk-border-width $mzk-bg-darker;
+            border-radius:    $mzk-border-radius * 2;
             height:           10px;
             left:             -6px;
             margin-left:      0;
@@ -48,17 +48,17 @@
 
         .mzk-progress-timecode-hover {
             @extend .mzk-hidden;
-            background-color: $primary-text;
-            border:           solid 1px $dark-secondary-color;
-            border-radius:    3px;
+            background-color: $mzk-text;
+            border:           solid $mzk-border-width $mzk-bg-darker;
+            border-radius:    $mzk-border-radius;
             bottom:           10px;
             box-sizing:       border-box;
-            color:            $dark-secondary-color;
+            color:            $mzk-bg-darker;
             font-size:        0.7em;
             height:           20px;
             left:             0;
             line-height:      20px;
-            pointer-events:   none; /* Disable hover effect from parent */
+            pointer-events:   none;
             position:         absolute;
             text-align:       center;
             width:            60px;
@@ -67,7 +67,7 @@
     }
 
     .mzk-progress-bar:hover > .mzk-progress-lin {
-        background-color: $anti-accent-color;
+        background-color: $mzk-anti-accent-color;
     }
 
     .mzk-progress-bar:hover > .mzk-progress-thumb {

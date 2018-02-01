@@ -1,16 +1,29 @@
 $footbar-height:         80px;
 $footbar-info-width:     30%;
 $footbar-controls-width: 40%;
-$footbar-padding:        2 * $app-padding;
+$footbar-padding:        $mzk-padding * 2;
+$footbar-padding-li:     0;
+$footbar-font-size:      0.8em;
 
 .mzk-footbar {
-    background-color: $secondary-color;
+    background-color: $mzk-bg-strong;
     bottom:           0;
     height:           $footbar-height;
     position:         absolute;
     width:            100%;
 
-    @import './elements/footbar/controls';
+    .mzk-controls-container {
+        height:              100%;
+        margin-left:         auto;
+        margin-right:        auto;
+        position:            relative;
+        width:               $footbar-controls-width;
+        -webkit-user-select: none;
+        -moz-user-select:    none;
+
+        @import './elements/footbar/controls';
+    }
+
     @import './elements/footbar/playlistpreview';
     @import './elements/footbar/queuepreview';
     @import './elements/footbar/trackpreview';

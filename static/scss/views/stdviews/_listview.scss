@@ -53,7 +53,7 @@ $listView-padding: 0 5%;
         width:          100%;
 
         &.mzk-selected {
-            background-color: $secondary-color;
+            background-color: $mzk-bg-strong;
         }
     }
 
@@ -61,7 +61,7 @@ $listView-padding: 0 5%;
 
 
 .mzk-column-header {
-    border-bottom:       solid 1px $dark-primary-color;
+    border-bottom:       solid 1px $mzk-bg-light;
     box-sizing:          border-box;
     cursor:              pointer;
     font-size:           0.9em;
@@ -126,5 +126,5 @@ $listView-padding: 0 5%;
 }
 
 .mzk-even-lin {
-    background-color: $listview-even-lin;
+    background-color: $mzk-bg-alt;
 }

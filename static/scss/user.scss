@@ -1,20 +1,38 @@
 @import "utils/tools";
 
 html, body {
-    background-color: $primary-color;
-    color:            $primary-text;
+    align-items:      center;
+    background-color: $mzk-bg-normal;
+    background-image: radial-gradient($mzk-bg-normal 0%, $mzk-bg-strong 45%, $mzk-bg-darker 80%);
+    color:            $mzk-text;
+    display:          flex;
     font-family:      Helvetica, serif;
     height:           100%;
     margin:           0;
     overflow:         hidden;
     padding:          0;
     width:            100%;
-    display:          flex;
-    align-items:      center;
 }
 
+@media (max-width: 1028px) {
+    .mzk-user img {
+        width: 65% !important;
+    }
 
-#login {
+    .mzk-logo {
+        opacity: 0;
+    }
+}
+
+.mzk-fork {
+    border:   0;
+    position: absolute;
+    right:    0;
+    top:      0;
+    z-index:  999;
+}
+
+.mzk-user {
     height:     auto;
     margin:     0;
     padding:    0;
@@ -23,28 +41,30 @@ html, body {
     z-index:    2;
 
     img {
-        height:        60px;
-        margin-bottom: 25px;
+        width: 35%;
+        -webkit-user-select: none;
+        -moz-user-select:    none;
     }
 
     p {
-        margin-bottom: 25px;
-        margin-top:    25px;
+        margin: ($mzk-margin * 2) 0 ;
 
         a {
-            color:           $accent-color;
+            color:           $mzk-accent-color;
             text-decoration: none;
         }
     }
 
     form {
-        background-color: $secondary-color;
+        background-color: $mzk-bg-strong;
+        border: solid 1px $mzk-border-color;
+        border-radius:    $mzk-border-radius * 2;
         box-sizing:       border-box;
         display:          table;
         height:           auto;
         margin-left:      auto;
         margin-right:     auto;
-        padding:          25px;
+        padding:          $mzk-padding * 4;
         text-align:       center;
         width:            auto;
 
@@ -56,39 +76,25 @@ html, body {
 
     input,
     button {
-        display:      block;
-        margin-left:  auto;
-        margin-right: auto;
+        display:       block;
+        margin-left:   auto;
+        margin-right:  auto;
+        border-radius: ($mzk-border-radius * 2) - 1;
     }
 
-    button,
-    #button {
-        background-color: inherit;
-        border:           solid 1px $primary-text;
-        color:            $primary-text;
-        cursor:           pointer;
-        padding:          6px 25px;
-        margin-top:       25px;
+    button {
+        margin-bottom: 0;
     }
 
-    input {
-        background-color: inherit;
-        border:           none;
-        border-bottom:    solid 1px $primary-text;
-        color:            $primary-text;
-        margin-top:       5px;
-        text-align:       center;
-    }
-
-    #error {
-        background-color: $dark-primary-color;
-        border:           solid 1px $secondary-color;
-        border-radius:    $border-radius;
-        left:             25px;
-        padding:          15px 25px;
+    .mzk-error {
+        background-color: $mzk-bg-light;
+        border:           solid $mzk-border-width $mzk-border-color;
+        border-radius:    $mzk-border-radius * 2;
+        left:             $mzk-margin * 2;
+        padding:          $mzk-padding ($mzk-padding * 2);
         position:         absolute;
         text-align:       left;
-        top:              25px;
+        top:              $mzk-margin * 2;
         font-weight:      bold;
 
         ul {
@@ -97,10 +103,10 @@ html, body {
 
             li {
                 ul {
-                    margin-left: 15px;
+                    margin-left: $mzk-margin;
 
                     li {
-                        margin-bottom: 15px;
+                        margin-bottom: $mzk-margin;
                         font-weight:   normal;
                     }
                 }
@@ -108,17 +114,16 @@ html, body {
         }
     }
 
-    #error:empty {
+    .mzk-error:empty {
         background-color: transparent;
         border:           solid 0 transparent;
     }
 
-
     .mzk-logo {
-        width:         475px;
+        bottom:        $mzk-margin * 4;
         height:        auto;
-        z-index:       1;
-        margin-top:    50px;
-        margin-bottom: 0;
+        left:          $mzk-margin * 4;
+        position:      absolute;
+        width:         20%;
     }
 }

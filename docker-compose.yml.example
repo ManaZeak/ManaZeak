@@ -56,7 +56,7 @@ services:
         container_name: manazeak_syncthing
         # network_mode: "host" # For local discovery
         volumes:
-            - /PATH/TO/MUSIC:/var/syncthing
+            - /PATH/TO/MUSIC:/ManaZeak
         ports:
             - "127.0.0.1:8384:8384"
             - "22000:22000"

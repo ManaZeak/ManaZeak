@@ -4,17 +4,17 @@ $dnd-animation-length: 0.25s;
     &::after {
         align-items:     center;
         background:      rgba(255, 255, 255, 0.2);
-        border: dashed   $border-radius * 2;
-        border-radius:   $border-radius * 2;
-        bottom:          $app-padding;
+        border: dashed   $mzk-border-radius * 2;
+        border-radius:   $mzk-border-radius * 2;
+        bottom:          $mzk-padding;
         content:         "Drop your music here";
         display:         flex;
         justify-content: center;
-        left:            $app-padding;
+        left:            $mzk-padding;
         opacity:         0;
         position:        absolute;
-        right:           $app-padding;
-        top:             $app-padding;
+        right:           $mzk-padding;
+        top:             $mzk-padding;
         transition:      opacity $dnd-animation-length, z-index 0s $dnd-animation-length;
         z-index:         -1;
     }
