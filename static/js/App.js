@@ -215,7 +215,7 @@ class App extends MzkObject {
                 if (response.DONE) {
                     that.user.getUserInfo();
                     that.appViews['mzk_admin'].updateAdminInfo();
-                    new Notification("ERROR", "User updated", "Successfully changed group for user " + userName);
+                    new Notification("INFO", "User updated", "Successfully changed group for user " + userName);
                 }
 
                 else {
@@ -1150,9 +1150,13 @@ class App extends MzkObject {
      * desc   : Create AppViews (Stats, Admin)
      **/
     _createDefaultViews() {
-        this.createAppView('mzk_stats', new StatsView());
-        this.createAppView('mzk_admin', new AdminView());
-        this.createAppView('mzk_settings', new UserView());
+        if (window.app.user.hasPermission("ADMV")) {
+            this.createAppView('mzk_admin', new AdminView());
+        }
+        if (window.app.user.hasPermission("STAT")) {
+            this.createAppView('mzk_stats', new StatsView());
+        }
+        this.createAppView('mzk_user', new UserView());
         this.createAppView('mzk_party', new PartyView());
     }
 
