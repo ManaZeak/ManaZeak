@@ -306,14 +306,26 @@ class App extends MzkObject {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
+        let container = view.getContainer();
+        let isNew = container.parentNode != this.mainContainer;
+
+        if (isNew) {
+            this.mainContainer.appendChild(container);
+        }
+
         for (let i = 0; i < this.mainContainer.children.length; ++i) {
             this.mainContainer.children[i].classList.add('mzk-view-hide');
         }
 
-        let container = view.getContainer();
-        container.classList.remove('mzk-view-hide');
-        if (container.parentNode != this.mainContainer) {
-            this.mainContainer.appendChild(container);
+        if (isNew) {
+            //Force reflow
+            window.requestAnimationFrame(function () {
+                window.requestAnimationFrame(function() {
+                    container.classList.remove('mzk-view-hide');
+                });
+            });
+        } else {
+            container.classList.remove('mzk-view-hide');
         }
     }
 
@@ -585,11 +597,11 @@ class App extends MzkObject {
      * desc   : Init components and request user playlist from server
      **/
     init() {
-        this._createDefaultViews();
-
-        this.topBar  = new TopBar();
         this.queue   = new Queue();
         this.player  = new Player();
+
+        this._createDefaultViews();
+        this.topBar  = new TopBar();
         this.footBar = new FootBar();
         document.body.appendChild(this.topBar.getTopBar());
         document.body.appendChild(this.footBar.getFootBar());

@@ -11,10 +11,12 @@ import QueuePreview from './QueuePreview.js'
 
 class Controls  {
 
-    constructor(container) {
-        this._createUI(container);
-        this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
-        this.volumeBar    = new VolumeBar(this.container);
+    constructor(container, queuePreview, volumeBar) {
+        this._createUI(container, queuePreview, volumeBar);
+        if(queuePreview !== false)
+            this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
+        if(volumeBar !== false)
+            this.volumeBar    = new VolumeBar(this.container);
         this._eventListener();
     }
 
@@ -26,7 +28,7 @@ class Controls  {
      * desc   : Build UI elements
      * arg    : {object} container - The Controls container
      **/
-    _createUI(container) {
+    _createUI(container, queuePreview, volumeBar) {
         this.container = document.createElement("DIV");
         this.ui        = {
             play: {
@@ -60,8 +62,7 @@ class Controls  {
         };
 
         this.container.className               = "mzk-controls";
-        //TODO: switch to classes wherever possible
-        this.ui.queueExpander.button.className = "mzk-queue-expander";
+
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";
@@ -69,6 +70,14 @@ class Controls  {
         this.ui.next.image.src                 = "/static/img/player/next.svg";
         this.ui.previous.image.src             = "/static/img/player/previous.svg";
         this.ui.queueExpander.image.src        = "/static/img/player/queue.svg";
+
+        this.ui.play.button.className          = "mzk-controls-play";
+        this.ui.stop.button.className          = "mzk-controls-stop";
+        this.ui.repeat.button.className        = "mzk-controls-repeat";
+        this.ui.shuffle.button.className       = "mzk-controls-shuffle";
+        this.ui.next.button.className          = "mzk-controls-next";
+        this.ui.previous.button.className      = "mzk-controls-previous";
+        this.ui.queueExpander.button.className = "mzk-queue-expander";
 
         this.ui.repeat.button.appendChild(this.ui.repeat.image);
         this.ui.shuffle.button.appendChild(this.ui.shuffle.image);
@@ -84,7 +93,10 @@ class Controls  {
         this.container.appendChild(this.ui.play.button);
         this.container.appendChild(this.ui.stop.button);
         this.container.appendChild(this.ui.next.button);
-        this.container.appendChild(this.ui.queueExpander.button);
+
+        if(queuePreview !== false) {
+            this.container.appendChild(this.ui.queueExpander.button);
+        }
 
         container.appendChild(this.container);
     }
@@ -103,26 +115,30 @@ class Controls  {
         this.ui.repeat.button.addEventListener("click", function() { window.app.toggleRepeat(); });
         this.ui.next.button.addEventListener("click", function() { window.app.next(); });
         this.ui.previous.button.addEventListener("click", function() { window.app.previous(); });
-        this.ui.queueExpander.button.addEventListener("click", function() {
-            if (that.queuePreview.getIsLocked()) {
-                let self = that;
-                window.setTimeout(function() {
-                    self.queuePreview.hide();
-                    self.ui.queueExpander.image.src = "/static/img/player/queue.svg";
-                }, 50); // 50ms to avoid double click open/close instant QueuePreview
-            }
 
-            else {
-                let self = that;
-                window.setTimeout(function() {
-                    self.queuePreview.lock();
-                    self.ui.queueExpander.image.src = "/static/img/player/queue-locked.svg";
-                }, 50); // 50ms to avoid double click open/close instant QueuePreview
-            }
-        });
-        window.app.listen('pushQueue', function() {
-            that.queuePreview.preview();
-        });
+        if(this.queuePreview) {
+            this.ui.queueExpander.button.addEventListener("click", function () {
+                if (that.queuePreview.getIsLocked()) {
+                    let self = that;
+                    window.setTimeout(function () {
+                        self.queuePreview.hide();
+                        self.ui.queueExpander.image.src = "/static/img/player/queue.svg";
+                    }, 50); // 50ms to avoid double click open/close instant QueuePreview
+                }
+
+                else {
+                    let self = that;
+                    window.setTimeout(function () {
+                        self.queuePreview.lock();
+                        self.ui.queueExpander.image.src = "/static/img/player/queue-locked.svg";
+                    }, 50); // 50ms to avoid double click open/close instant QueuePreview
+                }
+            });
+            window.app.listen('pushQueue', function () {
+                that.queuePreview.preview();
+            });
+        }
+
         window.app.listen(['togglePlay', 'stopPlayback'], function() {
             that._setPlayPause();
         });

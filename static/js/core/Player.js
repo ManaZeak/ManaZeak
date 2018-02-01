@@ -18,7 +18,7 @@ class Player {
         this.isMuted   = false;
         this.oldVolume = 0;
         this.emptyURL  = "";
-        this.trackId   = 0;
+        this.trackId   = -1;
         this._init();
 
         document.body.insertBefore(this.player, document.body.firstChild);
@@ -105,6 +105,7 @@ class Player {
         this._pause();
         this.isPlaying  = false;
         this.player.src = "";
+        this.trackId = -1;
     }
 
 

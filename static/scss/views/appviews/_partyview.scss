@@ -3,9 +3,9 @@
     color:             white;
     display:           flex;
     overflow:          hidden;
-    -moz-animation:    party-fadeIn 0.3s linear;
-    -webkit-animation: party-fadeIn 0.3s linear;
-    animation:         party-fadeIn 0.3s linear;
+    -moz-transition:    party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
+    -webkit-transition: party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
+    transition:         party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
 
     position: fixed !important;
     top:      0 !important;
@@ -13,6 +13,14 @@
     width:    100vw !important;
     height:   100vh !important;
     z-index:  42;
+
+    transform: translateX(0);
+    &.mzk-view-hide {
+        -moz-transition:    party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        -webkit-transition: party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        transition:         party-fadeIn 0.8s linear, z-index 0s 0.8s, transform 0.8s ease-in-out;
+        transform:          translateX(-100vw);
+    }
 
     .mzk-logo {
         position: absolute;
@@ -27,15 +35,39 @@
         padding-left: 10%;
         position:     relative;
 
-        img {
-            background-color:  $mzk-bg-light;
-            animation-delay:   0.2s;
-            box-shadow:        0 0 30px #fff;
-            height:            350px;
-            width:             350px;
-            -moz-animation:    fade 40s linear infinite;
-            -webkit-animation: fade 40s linear infinite;
-            animation:         fade 40s linear infinite;
+        .mzk-party-cover-controls {
+            & > img {
+                background-color: $mzk-bg-light;
+                animation-delay: 0.2s;
+                box-shadow: 0 0 30px #fff;
+                height: 350px;
+                width: 350px;
+                -moz-animation: fade 40s linear infinite;
+                -webkit-animation: fade 40s linear infinite;
+                animation: fade 40s linear infinite;
+            }
+
+            @import '../../components/elements/footbar/controls';
+            .mzk-controls {
+                margin-top: 2 * $mzk-margin;
+
+                img {
+                    background: $mzk-bg-darker;
+                }
+
+                .mzk-controls-play img {
+                    height:     1.5 * $controls-icon-width;
+                    width:      1.5 * $controls-icon-width;
+                }
+
+                .mzk-controls-stop {
+                    display: none;
+                }
+
+                .mzk-controls-shuffle {
+                    margin-right: 4 * $mzk-margin;
+                }
+            }
         }
 
         .mzk-party-track-info {
@@ -139,27 +171,5 @@
         right:    15px;
         top:      15px;
         width:    30px;
-    }
-
-    .mzk-previous,
-    .mzk-play,
-    .mzk-next {
-        bottom:   25px;
-        cursor:   pointer;
-        height:   35px;
-        position: absolute;
-        width:    35px;
-    }
-
-    .mzk-previous {
-        left: 25px;
-    }
-
-    .mzk-play {
-        left: 80px;
-    }
-
-    .mzk-next {
-        left: 135px;
     }
 }

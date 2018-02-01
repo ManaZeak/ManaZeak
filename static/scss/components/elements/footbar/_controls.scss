@@ -2,46 +2,36 @@ $controls-icon-width: 30px;
 $controls-height:     50px;
 $progress-height:     $footbar-height - $controls-height;
 
-.mzk-controls-container {
-    height:              100%;
-    margin-left:         auto;
-    margin-right:        auto;
-    position:            relative;
-    width:               $footbar-controls-width;
-    -webkit-user-select: none;
-    -moz-user-select:    none;
+.mzk-controls {
+    align-items:         center;
+    display:             flex;
+    min-height:          $controls-height;
+    justify-content:     center;
+    width:               100%;
 
-    .mzk-controls {
-        align-items:         center;
-        display:             flex;
-        height:              $controls-height;
-        justify-content:     center;
-        width:               100%;
-
-        a {
-            cursor: pointer;
-            height: $controls-icon-width;
-        }
-
-        img {
-            height:       $controls-icon-width;
-            margin-left:  $controls-icon-width / 10;
-            margin-right: $controls-icon-width / 10;
-            width:        $controls-icon-width;
-        }
-
-        .mzk-queue-expander {
-            cursor:   pointer;
-            height:   $controls-icon-width;
-            position: absolute;
-            right:    0;
-
-            &:hover .mzk-queue-preview {
-                @extend .mzk-visible;
-            }
-        }
+    a {
+        cursor: pointer;
     }
 
-    @import './progressbar';
-    @import './volumebar';
+    img {
+        border-radius: 50%;
+        height:       $controls-icon-width;
+        margin-left:  $controls-icon-width / 10;
+        margin-right: $controls-icon-width / 10;
+        width:        $controls-icon-width;
+    }
+
+    .mzk-queue-expander {
+        cursor:   pointer;
+        height:   $controls-icon-width;
+        position: absolute;
+        right:    0;
+
+        &:hover .mzk-queue-preview {
+            @extend .mzk-visible;
+        }
+    }
 }
+
+@import './progressbar';
+@import './volumebar';
