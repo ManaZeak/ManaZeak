@@ -67,6 +67,11 @@
                 .mzk-controls-shuffle {
                     margin-right: 4 * $mzk-margin;
                 }
+
+                .mzk-controls-repeat {
+                    margin-left: 4 * $mzk-margin;
+                    order: 16;
+                }
             }
         }
 
