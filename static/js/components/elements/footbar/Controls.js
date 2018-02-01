@@ -62,8 +62,7 @@ class Controls  {
         };
 
         this.container.className               = "mzk-controls";
-        //TODO: switch to classes wherever possible
-        this.ui.queueExpander.button.className = "mzk-queue-expander";
+
         this.ui.play.image.src                 = "/static/img/player/play.svg";
         this.ui.stop.image.src                 = "/static/img/player/stop.svg";
         this.ui.repeat.image.src               = "/static/img/player/repeat.svg";
@@ -78,7 +77,7 @@ class Controls  {
         this.ui.shuffle.button.className       = "mzk-controls-shuffle";
         this.ui.next.button.className          = "mzk-controls-next";
         this.ui.previous.button.className      = "mzk-controls-previous";
-        this.ui.queueExpander.button.className = "mzk-controls-queue";
+        this.ui.queueExpander.button.className = "mzk-queue-expander";
 
         this.ui.repeat.button.appendChild(this.ui.repeat.image);
         this.ui.shuffle.button.appendChild(this.ui.shuffle.image);
