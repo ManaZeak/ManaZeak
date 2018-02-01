@@ -103,8 +103,9 @@ $queue-margin:  5px;
         }
 
         label {
-            align-items: center;
-            display:     flex;
+            align-items:    center;
+            display:        flex;
+            flex-direction: row-reverse;
         }
     }
 }
