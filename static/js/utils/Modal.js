@@ -265,7 +265,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _deletePlaylistUI() {
-        this.ui.container.className = "mzk-modal-delete-playlist";
+        this.ui.container.className = "mzk-modal-edit-playlist";
         this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
@@ -431,35 +431,26 @@ class Modal extends MzkObject {
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
         let path                    = document.createElement("INPUT");
-        let convertLabel            = document.createElement("SPAN");
-        let convert                 = document.createElement("INPUT");
         let scan                    = document.createElement("BUTTON");
 
-        infoLabel.id                = "infoLabel";
-        name.id                     = "name";
-        path.id                     = "path";
-        convertLabel.id             = "id3Label";
-        convert.id                  = "convert";
-        scan.id                     = "scanButton";
+        infoLabel.className         = "mzk-info-label";
+        name.id                     = "mzk-name";
+        path.id                     = "mzk-path";
 
         name.type                   = "text";
         path.type                   = "text";
-        convert.type                = "checkbox";
         name.placeholder            = "Enter the name of the library";
         path.placeholder            = "Enter the absolute path to your library";
 
-        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin!" +
-            "<br><br>Some additionnal features are waiting for you if your library is synced with other devices, using " +
+        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin! " +
+            "Some additionnal features are waiting for you if your library is synced with other devices, using " +
             "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
             "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-        convertLabel.innerHTML      = "Automatically convert files to <a href=\"https://en.wikipedia.org/wiki/ID3#ID3v2\" target=\"_blank\">ID3v2</a>";
         scan.innerHTML              = "Scan";
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
         this.ui.content.appendChild(path);
-        this.ui.content.appendChild(convertLabel);
-        this.ui.content.appendChild(convert);
         this.ui.footer.appendChild(scan);
 
         this._appendCloseButton();
@@ -484,9 +475,8 @@ class Modal extends MzkObject {
         let name                    = document.createElement("INPUT");
         let create                  = document.createElement("BUTTON");
 
-        infoLabel.id                = "infoLabel";
-        name.id                     = "name";
-        create.id                   = "scanButton";
+        infoLabel.className         = "mzk-info-label";
+        name.id                     = "mzk-name";
 
         name.type                   = "text";
         name.placeholder            = "Enter the name of the playlist";
@@ -593,7 +583,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _renamePlaylistUI() {
-        this.ui.container.className = "mzk-modal-delete-playlist";
+        this.ui.container.className = "mzk-modal-edit-playlist";
         this.ui.title.innerHTML     = "Rename " + this.data.name;
 
         let infoLabel               = document.createElement("P");

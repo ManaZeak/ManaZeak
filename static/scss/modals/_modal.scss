@@ -60,7 +60,7 @@ $spinnerSide: 110px;
 
         @import "content/cover";
         @import "content/chooseGroup";
-        @import "content/deletePlaylist";
+        @import "content/editPlaylist";
         @import "content/editGroup";
         @import "content/editTag";
         @import "content/fetchPlaylists";
@@ -70,7 +70,6 @@ $spinnerSide: 110px;
         @import "content/newPlaylists";
         @import "content/newWish";
         @import "content/openSyncThing";
-        @import "content/renamePlaylist";
         @import "content/scanLibrary";
     }
 

@@ -1,5 +1,5 @@
 &.mzk-modal-edit-tag {
-
+    padding: ($mzk-padding * 2) ($mzk-padding * 2) 0 ($mzk-padding * 2);
     width: auto;
 
     .mzk-modal-header,
@@ -8,7 +8,7 @@
     }
 
     .mzk-modal-content {
-        padding:    calc(2 * #{$modalVerticalPadding}) 0;
+        padding:    0;
         text-align: start;
     }
 
@@ -35,7 +35,7 @@
 
     .mzk-edit-tag {
         background-color: $mzk-bg-normal;
-        height:           600px;
+        height:           auto;
         position:         relative;
         width:            $modalWidth;
 
@@ -114,7 +114,7 @@
                             height:     1em;
                             margin:     0 3px;
                             text-align: center;
-                            width:      19px;
+                            width:      15px;
                         }
 
                         .mzk-year {
@@ -213,18 +213,6 @@
             height:     auto;
             text-align: center;
             width:      100%;
-
-            button {
-                background:    transparent;
-                border:        solid 1px $mzk-text;
-                border-radius: 2px;
-                color:         $mzk-text;
-                cursor:        pointer;
-                font-size:     0.85em;
-                margin:        10px;
-                resize:        none;
-                padding:       5px 15px;
-            }
         }
 
 

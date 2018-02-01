@@ -76,9 +76,10 @@ html, body {
 
     input,
     button {
-        display:      block;
-        margin-left:  auto;
-        margin-right: auto;
+        display:       block;
+        margin-left:   auto;
+        margin-right:  auto;
+        border-radius: ($mzk-border-radius * 2) - 1;
     }
 
     button {

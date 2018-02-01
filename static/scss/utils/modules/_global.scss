@@ -15,6 +15,10 @@ $mzk-anti-accent-color: rgba(0, 0, 255, 0.8);
 $mzk-collection-library:   rgba(255, 0, 0, 0.8);
 $mzk-collection-playlist:  rgba(0, 0, 255, 0.8);
 $mzk-collection-favorites: rgba(0, 255, 0, 0.8);
+// Std colors
+$mzk-red:   rgba(255, 0, 0, 1);
+$mzk-green: rgba(0, 255, 0, 1);
+$mzk-blue:  rgba(0, 0, 255, 1);
 
 $mzk-animation-duration: 0.2s;
 
@@ -31,7 +35,6 @@ input[type=password] {
     background:    transparent;
     border:        0;
     border-bottom: solid $mzk-border-width $mzk-text;
-    border-radius: ($mzk-border-radius * 2) - 1;
     color:         $mzk-text;
     padding:       $mzk-padding / 2;
     text-align:    center;
