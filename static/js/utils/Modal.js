@@ -216,8 +216,14 @@ class Modal extends MzkObject {
         info.innerHTML       = this.data.artist + " - " + this.data.album + " (" + year + ")";
         cover.src            = this.data.src;
 
-        this.ui.content.appendChild(info);
-        this.ui.content.appendChild(cover);
+        this.ui.container.innerHTML = "";
+
+        this.ui.header  = null;
+        this.ui.footer  = null;
+        this.ui.content = null;
+
+        this.ui.container.appendChild(info);
+        this.ui.container.appendChild(cover);
 
         this._appendCloseButton();
     }
@@ -271,7 +277,7 @@ class Modal extends MzkObject {
         del.id                  = "deleteButton";
 
         infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.playlist.name +
-                                  ", and all the tracks that you've collected in it. Do you really want to delete this ?";
+            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
         cancel.innerHTML        = "Cancel";
         del.innerHTML           = "Delete";
 
@@ -298,13 +304,13 @@ class Modal extends MzkObject {
 
         let ui = {
             foot:      document.createElement("DIV"),
-                close: document.createElement("BUTTON"),
-                save:  document.createElement("BUTTON")
+            close: document.createElement("BUTTON"),
+            save:  document.createElement("BUTTON")
         };
 
         ui.foot.className      = "mzk-foot";
-            ui.close.innerHTML = "Close";
-            ui.save.innerHTML  = "Save";
+        ui.close.innerHTML = "Close";
+        ui.save.innerHTML  = "Save";
 
         ui.foot.appendChild(ui.close);
         ui.foot.appendChild(ui.save);
@@ -314,8 +320,8 @@ class Modal extends MzkObject {
             that.close();
         });
         ui.save.addEventListener("click", function() {
-           that.editTag.saveState();
-           that.close();
+            that.editTag.saveState();
+            that.close();
         });
 
         this.editTag.getContainer().appendChild(ui.foot);
