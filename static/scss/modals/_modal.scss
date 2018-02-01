@@ -7,7 +7,7 @@ $spinnerSide: 110px;
 
 [id*='mzk-modal-wrapper-'] {
     align-items:     center;
-    background:      rgba(0, 0, 0, 0.8);
+    background:      $mzk-bg-alpha-black;
     display:         flex;
     height:          100%;
     justify-content: center;
@@ -19,12 +19,10 @@ $spinnerSide: 110px;
 
     & > #mzk-modal-container {
         background:          $mzk-bg-normal;
-        border:              solid 1px $mzk-bg-darker;
-        border-radius:       $mzk-border-radius;
+        border:              solid $mzk-border-width $mzk-bg-darker;
+        border-radius:       $mzk-border-radius * 2;
         position:            relative;
         width:               $modalWidth;
-        -webkit-user-select: none; /* Chrome/Safari */
-        -moz-user-select:    none; /* Firefox */
 
         .mzk-modal-header,
         .mzk-modal-content,
@@ -35,16 +33,10 @@ $spinnerSide: 110px;
         }
 
 
-        .mzk-modal-header,
-        .mzk-modal-footer {
-            height:  $modalHeaderHeight;
-            padding: $modalVerticalPadding 30px;
-        }
-
-
         .mzk-modal-header {
             border-bottom: solid 1px $mzk-bg-darker;
             min-height:    $modalHeaderHeight;
+            padding:       $mzk-padding ($mzk-padding * 2);
 
             h1 {
                 line-height: ($modalHeaderHeight - (2 * $modalVerticalPadding));
@@ -55,10 +47,15 @@ $spinnerSide: 110px;
         .mzk-modal-footer {
             border-top: solid 1px $mzk-bg-darker;
             min-height: $modalHeaderHeight;
+            padding:    0 ($mzk-padding * 2);
+
+            button {
+                margin: ($mzk-margin * 2) 0;
+            }
         }
 
         .mzk-modal-content {
-            padding: $modalVerticalPadding 50px;
+            padding: ($mzk-padding * 2) ($mzk-padding * 5);
         }
 
         @import "content/cover";
@@ -81,8 +78,8 @@ $spinnerSide: 110px;
         cursor:   pointer;
         height:   25px;
         position: absolute;
-        right:    10px;
-        top:      10px;
+        right:    $mzk-padding;
+        top:      $mzk-padding;
         width:    25px;
     }
 }

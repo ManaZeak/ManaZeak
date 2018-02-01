@@ -3,11 +3,11 @@ $controls-height:     60px;
 $progress-height:     $footbar-height - $controls-height;
 
 .mzk-controls {
-    align-items:         center;
-    display:             flex;
-    min-height:          $controls-height;
-    justify-content:     center;
-    width:               100%;
+    align-items:     center;
+    display:         flex;
+    min-height:      $controls-height;
+    justify-content: center;
+    width:           100%;
 
     a {
         cursor: pointer;

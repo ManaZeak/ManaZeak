@@ -1,7 +1,9 @@
 $footbar-height:         80px;
 $footbar-info-width:     30%;
 $footbar-controls-width: 40%;
-$footbar-padding:        2 * $mzk-padding;
+$footbar-padding:        $mzk-padding * 2;
+$footbar-padding-li:     0;
+$footbar-font-size:      0.8em;
 
 .mzk-footbar {
     background-color: $mzk-bg-strong;
@@ -11,13 +13,14 @@ $footbar-padding:        2 * $mzk-padding;
     width:            100%;
 
     .mzk-controls-container {
-        height: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        position: relative;
-        width: $footbar-controls-width;
+        height:              100%;
+        margin-left:         auto;
+        margin-right:        auto;
+        position:            relative;
+        width:               $footbar-controls-width;
         -webkit-user-select: none;
-        -moz-user-select: none;
+        -moz-user-select:    none;
+
         @import './elements/footbar/controls';
     }
 

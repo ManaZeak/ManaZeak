@@ -508,13 +508,12 @@ class Modal extends MzkObject {
      **/
     _newWishUI() {
         this.ui.container.className = "mzk-modal-new-wish";
-        this.ui.title.innerHTML     = "Track suggestion";
+        this.ui.title.innerHTML     = "Make a suggestion";
 
         let text                    = document.createElement("P");
-        let wish                    = document.createElement("INPUT");
+        let wish                    = document.createElement("TEXTAREA");
         let submit                  = document.createElement("BUTTON");
 
-        wish.type                   = "text";
         wish.placeholder            = "Enter your suggestion here";
         text.innerHTML              = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
             "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
@@ -552,7 +551,6 @@ class Modal extends MzkObject {
             }
 
             else {
-                wish.style.border = "solid 1px red";
                 new Notification("INFO", "Suggestion field is empty.", "You must specify something in the field.");
             }
         });
