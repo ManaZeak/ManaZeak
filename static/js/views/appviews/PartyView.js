@@ -29,7 +29,6 @@ class PartyView extends View {
      * desc   : Returns container while fetching details about current track in player
      **/
     getContainer() {
-        this._setPlayPause();
         let currentlyPlaying = window.app.player.getSourceID();
         if(currentlyPlaying != -1) {
 
@@ -126,9 +125,6 @@ class PartyView extends View {
             trackGenre:         document.createElement("H3"),
 
             close:              document.createElement("IMG"),
-            previous:           document.createElement("IMG"),
-            play:               document.createElement("IMG"),
-            next:               document.createElement("IMG"),
         };
 
         this.ui.container.classList.add("mzk-partyview");
@@ -153,14 +149,7 @@ class PartyView extends View {
         this.ui.trackGenre.className         = "e";
 
         this.ui.close.className              = "mzk-close";
-        this.ui.previous.className           = "mzk-previous";
-        this.ui.play.className               = "mzk-play";
-        this.ui.next.className               = "mzk-next";
-
-        this.ui.close.src                    = "/static/img/utils/partyview/close.svg"; // TODO : add ManaZeak log + tooltip
-        this.ui.previous.src                 = "/static/img/player/previous.svg";
-        this.ui.play.src                     = "/static/img/player/play.svg";
-        this.ui.next.src                     = "/static/img/player/next.svg";
+        this.ui.close.src                    = "/static/img/utils/partyview/close.svg";
 
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer1);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer2);
@@ -181,9 +170,6 @@ class PartyView extends View {
         this.ui.container.appendChild(this.ui.sparksContainer);
         this.ui.container.appendChild(this.ui.trackContainer);
         this.ui.container.appendChild(this.ui.close);
-        this.ui.container.appendChild(this.ui.previous);
-        this.ui.container.appendChild(this.ui.play);
-        this.ui.container.appendChild(this.ui.next);
     }
 
 
@@ -197,39 +183,11 @@ class PartyView extends View {
         this.ui.close.addEventListener("click", function() {
             window.app.restorePageContent();
         });
-        this.ui.play.addEventListener("click", function() {
-            window.app.togglePlay();
-            that._setPlayPause();
-        });
-        this.ui.next.addEventListener("click", function() {
-            window.app.next();
-        });
-        this.ui.previous.addEventListener("click", function() {
-            window.app.previous();
-        });
+
         window.app.listen("changeTrack", function(track) {
             that._setCurrentTrack(track);
         });
-        window.app.listen(["togglePlay", "stopPlayback"], function() {
-            that._setPlayPause();
-        })
 
-    }
-
-
-    /**
-     * method : _setPlayPause (private)
-     * class  : PartyView
-     * desc   : Change Play/Pause button depending on player status
-     **/
-    _setPlayPause() {
-        if (window.app.player.getIsPlaying() === true) {
-            this.ui.play.src = "/static/img/player/pause.svg";
-        }
-
-        else {
-            this.ui.play.src = "/static/img/player/play.svg";
-        }
     }
 
 
