@@ -118,6 +118,8 @@ class Controls  {
 
         if(this.queuePreview) {
             this.ui.queueExpander.button.addEventListener("click", function () {
+                if(event.target != that.ui.queueExpander.image && event.target != that.ui.queueExpander.button)
+                    return;
                 if (that.queuePreview.getIsLocked()) {
                     let self = that;
                     window.setTimeout(function () {
