@@ -47,7 +47,8 @@ def newLibrary(request):
         user = request.user
         if checkPermission(["LIBR"], user):
             response = json.loads(request.body)
-            if 'URL' in response and 'NAME' in response and 'CONVERT' in response:
+            print(response)
+            if 'URL' in response and 'NAME' in response:
                 dirPath = response['URL']
                 if os.path.isdir(dirPath):
                     # Removing / at the end of the dir path if present
@@ -55,7 +56,6 @@ def newLibrary(request):
                         dirPath = dirPath[:-1]
                     library = Library()
                     library.path = dirPath
-                    library.convertID3 = response['CONVERT']
                     playlist = Playlist()
                     playlist.user = user
                     playlist.isLibrary = True
