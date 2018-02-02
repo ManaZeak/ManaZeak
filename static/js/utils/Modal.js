@@ -457,7 +457,7 @@ class Modal extends MzkObject {
 
         let that = this;
         scan.addEventListener("click", function() {
-            that._checkLibraryInputs(name, path, null);
+            that._checkLibraryInputs(name, path, false);
         });
     }
 
