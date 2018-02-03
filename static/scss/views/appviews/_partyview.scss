@@ -134,7 +134,7 @@
 
     .mzk-start-layer::after {
         animation:         rise-closeup 40s linear infinite;
-        background:        url("/static/img/utils/partyview/bg-light.png");
+        background:        url("/static/img/partyview/bg-light.png");
         content:           '';
         height:            2000px;
         left:              -100px;
@@ -155,7 +155,7 @@
     .mzk-start-layer:nth-child(1)::after {
         animation-duration: 60s;
         animation-name:     rise-blur;
-        background:         url("/static/img/utils/partyview/bg-blur.png");
+        background:         url("/static/img/partyview/bg-blur.png");
         transform:          translateZ(0px);
     }
 
@@ -166,7 +166,7 @@
     .mzk-start-layer:nth-child(2)::after {
         animation-duration: 50s;
         animation-name:     rise;
-        background:         url("/static/img/utils/partyview/bg-medium.png");
+        background:         url("/static/img/partyview/bg-medium.png");
     }
 
     .mzk-close {

@@ -138,7 +138,7 @@ class PartyView extends View {
 
         this.ui.coverContainer.className     = "mzk-party-cover-controls";
         this.ui.trackContainer.className     = "mzk-track-container";
-        this.ui.mzkLogo.src                  = "/static/img/manazeak.svg";
+        this.ui.mzkLogo.src                  = "/static/img/logo/manazeak.svg";
         this.ui.trackCover.src               = "/static/img/utils/defaultcover.svg";
 
         this.ui.trackInfoContainer.className = "mzk-party-track-info";
@@ -149,7 +149,7 @@ class PartyView extends View {
         this.ui.trackGenre.className         = "e";
 
         this.ui.close.className              = "mzk-close";
-        this.ui.close.src                    = "/static/img/utils/partyview/close.svg";
+        this.ui.close.src                    = "/static/img/controls/left.svg";
 
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer1);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer2);

@@ -194,7 +194,7 @@ class VolumeBar extends MzkObject {
         this.volumeBar.thumb.style.bottom    = volume + "%";
 
         if (volume === 0) {
-            this.ui.mute.image.src           = "/static/img/player/mute.svg";
+            this.ui.mute.image.src           = "/static/img/player/volume-mute.svg";
         }
 
         else if (volume > 0 && volume < 66) {
@@ -202,7 +202,7 @@ class VolumeBar extends MzkObject {
         }
 
         else {
-            this.ui.mute.image.src           = "/static/img/player/volume.svg";
+            this.ui.mute.image.src           = "/static/img/player/volume-full.svg";
         }
     }
 
