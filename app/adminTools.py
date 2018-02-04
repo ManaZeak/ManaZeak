@@ -278,21 +278,20 @@ def dropAllDB(request):
     if request.method == 'GET':
         user = request.user
         if checkPermission(["ADMV"], user):
-            if user.is_superuser:
-                Track.objects.all().delete()
-                Artist.objects.all().delete()
-                Album.objects.all().delete()
-                Playlist.objects.all().delete()
-                Library.objects.all().delete()
-                Genre.objects.all().delete()
-                Shuffle.objects.all().delete()
-                UserHistory.objects.all().delete()
-                Stats.objects.all().delete()
-                History.objects.all().delete()
-
-                data = errorCheckMessage(True, None)
-            else:
-                data = errorCheckMessage(False, "permissionError")
+            # Delete views and indexes for playlists
+            for playlist in Playlist.objects.all():
+                deleteView(playlist)
+            Track.objects.all().delete()
+            Artist.objects.all().delete()
+            Album.objects.all().delete()
+            Playlist.objects.all().delete()
+            Library.objects.all().delete()
+            Genre.objects.all().delete()
+            Shuffle.objects.all().delete()
+            UserHistory.objects.all().delete()
+            Stats.objects.all().delete()
+            History.objects.all().delete()
+            data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "permissionError")
     else:
