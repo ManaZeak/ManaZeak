@@ -82,6 +82,9 @@ def addTracksToPlaylist(request):
                     tracks = Track.objects.filter(id__in=tracksId)
                     for track in tracks:
                         playlist.track.add(track)
+                    # Set rescan flag for view generation
+                    playlist.refreshView = True
+                    playlist.save()
                     data = errorCheckMessage(True, None)
                 else:
                     data = errorCheckMessage(False, "permissionError")

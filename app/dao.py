@@ -272,7 +272,6 @@ def createViewForLazy(playlist):
     deleteView(playlist)
     # Creating the hash for the view name
     viewName = getViewName(playlist)
-    print(viewName)
     sql = """
             CREATE MATERIALIZED VIEW "%s" (track_id, track_location, track_title, track_year, track_composer,
             track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,

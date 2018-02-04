@@ -10,6 +10,7 @@ from django.utils.html import strip_tags
 from multiprocessing import Process
 
 from app.collection.library import deleteLibrary
+from app.dao import deleteView
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.collection.playlist import getTotalLength
@@ -411,6 +412,7 @@ def deleteCollection(request):
                 if playlist.isLibrary:
                     if checkPermission(["LIBR"], user):
                         if Library.objects.filter(playlist=playlist).count() == 1:
+                            deleteView(playlist)
                             deleteLibrary(Library.objects.get(playlist=playlist))
                             data = errorCheckMessage(True, None)
                         else:
@@ -421,6 +423,7 @@ def deleteCollection(request):
                 # Playlist deletion
                 else:
                     if playlist.user == user and checkPermission(["PLST"], user):
+                        deleteView(playlist)
                         playlist.delete()
                         data = errorCheckMessage(True, None)
                     else:

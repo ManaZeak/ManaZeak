@@ -3,6 +3,7 @@ import multiprocessing
 
 import os
 import threading
+from time import sleep
 
 from django import db
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,7 @@ from multiprocessing import Process
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
 from app.models import Library, Playlist, FileType, Album
 from app.track.importer import createMP3Track, createVorbisTrack
-from app.utils import errorCheckMessage, splitTableCustom, checkPermission
+from app.utils import errorCheckMessage, splitTableCustom, checkPermission, refreshAllViews
 
 
 # Perform the initial scan for a library
@@ -47,7 +48,6 @@ def newLibrary(request):
         user = request.user
         if checkPermission(["LIBR"], user):
             response = json.loads(request.body)
-            print(response)
             if 'URL' in response and 'NAME' in response:
                 dirPath = response['URL']
                 if os.path.isdir(dirPath):
@@ -113,6 +113,7 @@ def rescanLibrary(library, user):
         playlist.name = name
         playlist.user = user
         playlist.isLibrary = True
+        playlist.isScanned = False
         playlist.save()
         library.playlist = playlist
         library.save()
@@ -135,6 +136,7 @@ def rescanLibraryRequest(request):
                 library = strip_tags(response['LIBRARY_ID'])
                 if Library.objects.filter(id=library).count() == 1:
                     library = Library.objects.get(id=library)
+                    refreshAllViews()
                     data = rescanLibrary(library, user)
                 else:
                     data = errorCheckMessage(False, "dbError")
@@ -152,8 +154,14 @@ def rescanAllLibraries(request):
         user = request.user
         if checkPermission(["LIBR"], user):
             libraries = Library.objects.all()
+            scanned = False
             for library in libraries:
                 rescanLibrary(library, user)
+                while not scanned:
+                    # We call the database to refresh the value in memory.
+                    scanned = Library.objects.get(id=library.id).playlist.isScanned
+                    sleep(1)
+            refreshAllViews()
             data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "permissionError")
