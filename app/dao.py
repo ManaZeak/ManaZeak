@@ -248,10 +248,16 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
+def getViewName(playlist):
+    return hashlib.md5(str(playlist.user.username).encode("ascii", "ignore") +
+                           str(playlist.name).encode("ascii", "ignore") +
+                           str(playlist.id).encode("ascii", "ignore")).hexdigest()
+
+
 # Delete index and view after finished using it
-def deleteView(userId, playlistId):
-    viewName = hashlib.md5(str(userId).encode("ascii", "ignore")+str(playlistId).encode("ascii", "ignore")).hexdigest()
-    indexName = "index"+viewName
+def deleteView(playlist):
+    viewName = getViewName(playlist)
+    indexName = "index" + viewName
     sql = """DROP INDEX IF EXISTS "%s";""" % indexName
     with connection.cursor() as cursor:
         cursor.execute(sql)
@@ -261,12 +267,12 @@ def deleteView(userId, playlistId):
 
 
 # Creation of a view for each playlist with an index
-def createViewForLazy(userId, playlistId):
+def createViewForLazy(playlist):
+    # Delete the old view if it exists
+    deleteView(playlist)
     # Creating the hash for the view name
-    viewName = hashlib.md5(str(userId).encode("ascii", "ignore")+str(playlistId).encode("ascii", "ignore")).hexdigest()
-    sql = "DROP MATERIALIZED VIEW IF EXISTS public.\"%s\" RESTRICT;" % viewName
-    with connection.cursor() as cursor:
-        cursor.execute(sql)
+    viewName = getViewName(playlist)
+    print(viewName)
     sql = """
             CREATE MATERIALIZED VIEW "%s" (track_id, track_location, track_title, track_year, track_composer,
             track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,
@@ -330,12 +336,15 @@ def createViewForLazy(userId, playlistId):
           trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name, albumTitle,trck_num) AS result;
         """ % (viewName, '%s')
     with connection.cursor() as cursor:
-        cursor.execute(sql, [str(playlistId)])
+        cursor.execute(sql, [str(playlist.id)])
     sql = """
         CREATE INDEX "%s" ON "%s" (local_id);
-        """ % ("index"+viewName, viewName)
+        """ % ("index" + viewName, viewName)
     with connection.cursor() as cursor:
         cursor.execute(sql)
+    # Set the refresh flag to false
+    playlist.refreshView = False
+    playlist.save()
 
 
 # Parse the raw sql query
@@ -370,8 +379,8 @@ def lazyJsonGenerator(row):
 
 
 # Return a queryset of tracks from a view
-def getPlaylistTracks(playlistId, userId, limit, offset):
-    viewName = hashlib.md5(str(userId).encode("ascii", "ignore") + str(playlistId).encode("ascii", "ignore")).hexdigest()
+def getPlaylistTracks(playlist, limit, offset):
+    viewName = getViewName(playlist)
     sql = """SELECT * FROM "%s" WHERE local_id > %s LIMIT %s;""" % (viewName, '%s', '%s')
     with connection.cursor() as cursor:
         cursor.execute(sql, (offset, limit))

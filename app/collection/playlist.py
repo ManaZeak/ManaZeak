@@ -142,19 +142,19 @@ def simplifiedLazyLoadingPlaylist(request):
                 if reqNumber == 0:
                     # Checking if the user can display the asked playlist
                     if playlist.user == user or playlist.isLibrary:
-                        createViewForLazy(user.id, playlist.id)
+                        if playlist.refreshView:
+                            createViewForLazy(playlist)
                     else:
                         return JsonResponse(errorCheckMessage(False, "permissionError"))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlistId, user.id, nbTracks, reqNumber)
+                    trackSet = getPlaylistTracks(playlist, nbTracks, reqNumber)
                     data = []
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
                     data = dict({'RESULT': data})
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
-                    deleteView(user.id, playlist.id)
                     data = errorCheckMessage(False, None)
             else:
                 data = errorCheckMessage(False, "dbError")
