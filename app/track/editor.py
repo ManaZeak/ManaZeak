@@ -9,7 +9,7 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3
 from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
-from app.models import Track, Artist, Album, Genre
+from app.models import Track, Artist, Album, Genre, Playlist
 from app.utils import errorCheckMessage, checkPermission
 
 
@@ -230,7 +230,7 @@ def updateFileMetadata(track, tags):
     return data
 
 
-#
+# Change a track or tracks metadata
 def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
@@ -248,6 +248,10 @@ def changeTracksMetadata(request):
                             tags = updateDBInfo(response, track)
                             # Changing tags in the file
                             data = updateFileMetadata(track, tags)
+                            for playlist in Playlist.objects.filter(track__id=track.id):
+                                if not playlist.refreshView:
+                                    playlist.refreshView = True
+                                    playlist.save()
                         else:
                             data = errorCheckMessage(False, "dbError")
                     else:

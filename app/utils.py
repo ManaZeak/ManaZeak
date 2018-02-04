@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 
-from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences
+from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist
 
 
 # Split a table in 4 table of equal size
@@ -153,6 +153,14 @@ def checkPermission(requirements, user):
         return True
     else:
         return False
+
+
+# Asks to refresh of all views
+def refreshAllViews():
+    for playlist in Playlist.objects.all():
+        if not playlist.refreshView:
+            playlist.refreshView = True
+            playlist.save()
 
 
 # Create the default entries into the database
