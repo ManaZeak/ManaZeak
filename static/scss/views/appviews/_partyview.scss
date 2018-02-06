@@ -23,13 +23,15 @@
     }
 
     .mzk-logo {
-        position: absolute;
-        right:    25px;
-        bottom:   25px;
-        width:    250px;
+        position:  absolute;
+        right:     25px;
+        bottom:    25px;
+        width:     250px;
+        max-width: calc(100% - 2 * 25px);
     }
 
     .mzk-party-cover-controls {
+        z-index:            1;
         width:              100%;
         display:            flex;
         flex-direction:     column;
@@ -41,7 +43,7 @@
             display:      inline-flex;
             padding-left: 10%;
             position:     relative;
-            width:        100%;
+            width:        90%;
 
             & > img {
                 background-color: $mzk-bg-light;
@@ -95,10 +97,10 @@
 
         @import '../../components/elements/footbar/controls';
         .mzk-controls {
-            margin-top: 2 * $mzk-margin;
+            margin-top:   2 * $mzk-margin;
             padding-left: 10%;
-            width: 350px;
-            max-width: 25%;
+            width:        350px;
+            max-width:    25%;
 
             img {
                 background: $mzk-bg-darker;
@@ -117,20 +119,19 @@
             }
 
             .mzk-controls-shuffle {
-                flex-grow: 1;
+                flex-grow:  1;
                 text-align: center;
             }
 
             .mzk-controls-repeat {
-                flex-grow: 1;
+                flex-grow:  1;
                 text-align: center;
-                order: 16;
+                order:      16;
             }
         }
     }
 
     .mzk-star {
-        display: none;
         bottom:   0;
         left:     0;
         overflow: hidden;
