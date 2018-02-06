@@ -105,9 +105,10 @@
             }
 
             .mzk-controls-play {
-                flex-basis: 15px;
+                flex-basis: 1.5 * 1.2 * $controls-icon-width;
                 img {
-                    height: 1.5 * $controls-icon-width;
+                    max-height: 1.5 * 1.2 * $controls-icon-width;
+                    max-width:  1.5 * 1.0 * $controls-icon-width;
                 }
             }
 
