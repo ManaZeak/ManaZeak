@@ -162,13 +162,13 @@ class PartyView extends View {
         this.ui.trackInfoContainer.appendChild(this.ui.trackYearAlbum);
         this.ui.trackInfoContainer.appendChild(this.ui.trackGenre);
 
-        this.ui.coverContainer.appendChild(this.ui.trackCover);
-        this.ui.trackContainer.appendChild(this.ui.coverContainer);
+        this.ui.trackContainer.appendChild(this.ui.trackCover);
         this.ui.trackContainer.appendChild(this.ui.trackInfoContainer);
+        this.ui.coverContainer.appendChild(this.ui.trackContainer);
 
         this.ui.container.appendChild(this.ui.mzkLogo);
         this.ui.container.appendChild(this.ui.sparksContainer);
-        this.ui.container.appendChild(this.ui.trackContainer);
+        this.ui.container.appendChild(this.ui.coverContainer);
         this.ui.container.appendChild(this.ui.close);
     }
 
