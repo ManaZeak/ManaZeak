@@ -11,6 +11,7 @@ import Notification from '../../utils/Notification.js'
 import Track from '../../core/Track.js'
 import View from '../../core/View.js'
 import Controls from '../../components/elements/footbar/Controls.js'
+import Shortcut from '../../utils/Shortcut.js'
 
 class PartyView extends View {
 
@@ -187,6 +188,11 @@ class PartyView extends View {
         window.app.listen("changeTrack", function(track) {
             that._setCurrentTrack(track);
         });
+
+        this.addShortcut(new Shortcut('keyup', 'Escape', function() {
+            if(!that.container.classList.contains('mzk-view-hide'))
+                window.app.restorePageContent();
+        }));
 
     }
 
