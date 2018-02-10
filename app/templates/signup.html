@@ -10,12 +10,11 @@
     <title>ManaZeak signup</title>
     <link rel="stylesheet" type="text/css" href="{% sass_src "scss/user.scss" %}">
 </head>
-{% block body %}
+<body>
     {% load staticfiles %}
     <a href="https://github.com/Squadella/ManaZeak" target="_blank">
         <img class="mzk-fork" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
     </a>
-    <body>
     <div class="mzk-user">
         <img src="/static/img/logo/manazeak-text.svg">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
@@ -54,5 +53,5 @@
         xhr.open("GET", "../admin/isInviteEnabled/", true);
         xhr.send();
     </script>
-    </body>
-{% endblock %}
+</body>
+</html>
