@@ -10,6 +10,7 @@ from django.utils.html import strip_tags
 from multiprocessing import Process
 
 from app.collection.library import deleteLibrary
+from app.dao import deleteView
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.collection.playlist import getTotalLength
@@ -277,21 +278,20 @@ def dropAllDB(request):
     if request.method == 'GET':
         user = request.user
         if checkPermission(["ADMV"], user):
-            if user.is_superuser:
-                Track.objects.all().delete()
-                Artist.objects.all().delete()
-                Album.objects.all().delete()
-                Playlist.objects.all().delete()
-                Library.objects.all().delete()
-                Genre.objects.all().delete()
-                Shuffle.objects.all().delete()
-                UserHistory.objects.all().delete()
-                Stats.objects.all().delete()
-                History.objects.all().delete()
-
-                data = errorCheckMessage(True, None)
-            else:
-                data = errorCheckMessage(False, "permissionError")
+            # Delete views and indexes for playlists
+            for playlist in Playlist.objects.all():
+                deleteView(playlist)
+            Track.objects.all().delete()
+            Artist.objects.all().delete()
+            Album.objects.all().delete()
+            Playlist.objects.all().delete()
+            Library.objects.all().delete()
+            Genre.objects.all().delete()
+            Shuffle.objects.all().delete()
+            UserHistory.objects.all().delete()
+            Stats.objects.all().delete()
+            History.objects.all().delete()
+            data = errorCheckMessage(True, None)
         else:
             data = errorCheckMessage(False, "permissionError")
     else:
@@ -411,6 +411,7 @@ def deleteCollection(request):
                 if playlist.isLibrary:
                     if checkPermission(["LIBR"], user):
                         if Library.objects.filter(playlist=playlist).count() == 1:
+                            deleteView(playlist)
                             deleteLibrary(Library.objects.get(playlist=playlist))
                             data = errorCheckMessage(True, None)
                         else:
@@ -421,6 +422,7 @@ def deleteCollection(request):
                 # Playlist deletion
                 else:
                     if playlist.user == user and checkPermission(["PLST"], user):
+                        deleteView(playlist)
                         playlist.delete()
                         data = errorCheckMessage(True, None)
                     else:

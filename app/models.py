@@ -63,6 +63,7 @@ class Playlist(models.Model):
     track = models.ManyToManyField(Track)
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
+    refreshView = models.BooleanField(default=True)
 
 
 class Library(models.Model):
