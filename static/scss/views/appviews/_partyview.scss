@@ -46,7 +46,7 @@
             width:        90%;
 
             & > img {
-                background-color: rgba(14, 15, 20, 0.66);
+                background-color: $mzk-bg-light;
                 animation-delay: 0.2s;
                 box-shadow: 0 0 30px #fff;
                 height: 350px;
@@ -103,7 +103,7 @@
             max-width:    25%;
 
             img {
-                background: $mzk-bg-darker;
+                background: $mzk-bg-alpha-darker;
             }
 
             .mzk-controls-play {
