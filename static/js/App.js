@@ -53,7 +53,6 @@ class App extends MzkObject {
                 class: null
             }
         };
-        document.body.appendChild(this.mainContainer);
         this._consoleWelcome();
 
         this.user                    = new User(callback);
@@ -602,6 +601,7 @@ class App extends MzkObject {
 
         this._createDefaultViews();
         this.topBar  = new TopBar();
+        document.body.appendChild(this.mainContainer);
         this.footBar = new FootBar();
         document.body.appendChild(this.topBar.getTopBar());
         document.body.appendChild(this.footBar.getFootBar());
