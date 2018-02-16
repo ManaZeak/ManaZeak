@@ -109,7 +109,7 @@ class App extends MzkObject {
      * arg    : {float} amount - Value between 0 and 1
      **/
     adjustVolume(amount) {
-        this.setVolume(this.player.getPlayer().volume + amount);
+         this.setVolume(this.player.getPlayer().volume + amount);
     }
 
 

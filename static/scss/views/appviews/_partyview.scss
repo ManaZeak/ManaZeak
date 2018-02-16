@@ -186,6 +186,25 @@
         background:         url("/static/img/partyview/bg-medium.png");
     }
 
+    .mzk-date {
+        height: 1em;
+        position: absolute;
+        text-align: right;
+        width: 100%;
+
+        h3 {
+            color: $mzk-text;
+            padding-top: 3px;
+            padding-right: 70px;
+
+            animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+            -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+            -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+
+            animation-direction: reverse;
+        }
+    }
+
     .mzk-close {
         z-index:  2;
         cursor:   pointer;
