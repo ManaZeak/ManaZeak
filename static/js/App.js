@@ -53,7 +53,6 @@ class App extends MzkObject {
                 class: null
             }
         };
-        document.body.appendChild(this.mainContainer);
         this._consoleWelcome();
 
         this.user                    = new User(callback);
@@ -110,7 +109,7 @@ class App extends MzkObject {
      * arg    : {float} amount - Value between 0 and 1
      **/
     adjustVolume(amount) {
-        this.setVolume(this.player.getPlayer().volume + amount);
+         this.setVolume(this.player.getPlayer().volume + amount);
     }
 
 
@@ -602,8 +601,10 @@ class App extends MzkObject {
 
         this._createDefaultViews();
         this.topBar  = new TopBar();
+        document.body.appendChild(this.mainContainer);
         this.footBar = new FootBar();
         document.body.appendChild(this.topBar.getTopBar());
+        document.body.appendChild(this.mainContainer);
         document.body.appendChild(this.footBar.getFootBar());
 
         let that = this;

@@ -14,10 +14,10 @@
     {% load staticfiles %}
 <body>
     <a href="https://github.com/Squadella/ManaZeak" target="_blank">
-        <img class="mzk-fork" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
+        <img class="mzk-fork" src="/static/img/utils/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
     </a>
     <div class="mzk-user">
-        <img src="/static/img/manazeak-text.svg">
+        <img src="/static/img/logo/manazeak-text.svg">
         {% if user.is_active %}
             <p>Authenticated already. Go back to <a href="{% url 'app:index' %}">ManaZeak</a></p>
         {% else %}
@@ -30,7 +30,7 @@
                 <input id="id_password" maxlength="30" name="password" type="password">
                 <button type="submit">Log in</button>
             </form>
-            <img src="/static/img/manazeak.svg" class="mzk-logo">
+            <img src="/static/img/logo/manazeak.svg" class="mzk-logo">
             <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
         {% endif %}
     </div>
