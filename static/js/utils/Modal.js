@@ -83,6 +83,10 @@ class Modal extends MzkObject {
                 this._chooseGroupUI();
                 break;
 
+            case "editCollectionDescription":
+                this._editCollectionDescriptionUI(false);
+                break;
+
             default:
                 new Notification("ERROR", "Can not open modals", "The given modals type doesn't exists");
                 break;
@@ -293,6 +297,45 @@ class Modal extends MzkObject {
         });
         del.addEventListener("click", function() {
             window.app.deletePlaylist(that.data.playlist);
+            that.close();
+        });
+    }
+
+
+    _editCollectionDescriptionUI(isEdit) {
+
+        this.ui.container.className = "mzk-modal-fetch-playlists";
+        this.ui.title.innerHTML     = this.data.name;
+
+        let that                    = this;
+        let contentText             = document.createElement("P");
+        let close                   = document.createElement("BUTTON");
+
+console.log("test");
+        contentText.innerHTML       = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business."; // this.data.description TODO : put collection description here
+        close.innerHTML             = "Close";
+
+        this.ui.content.appendChild(contentText);
+        this.ui.footer.appendChild(close);
+
+        if (isEdit) { // window.app.hasPermission("") TODO : add permission
+            let edit                = document.createElement("BUTTON");
+            edit.innerHTML          = "Edit";
+            this.ui.footer.appendChild(edit);
+
+            edit.addEventListener("click", function() {
+                that.close();
+            });
+        }
+
+        this._appendCloseButton();
+
+        this.setCallback(function() {
+            // TODO : send server request to change description
+            that.close();
+        });
+
+        close.addEventListener("click", function() {
             that.close();
         });
     }

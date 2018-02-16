@@ -104,6 +104,13 @@ class PlaylistCollectionEntry {
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
 
         if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
+            this.contextMenu.addEntry(null, "Description", function() {
+                that.modal       = new Modal("editCollectionDescription", {
+                    name: that.playlist.name,
+                    id:   that.playlist.id
+                });
+                that.modal.open();
+            });
             this.contextMenu.addEntry(null, "Rename", function() {
                 that.modal       = new Modal("renamePlaylist", {
                     name: that.playlist.name,
