@@ -2,8 +2,7 @@ $topbar-height: 50px;
 
 .mzk-topbar {
     background-color:    $mzk-bg-strong;
-    height:              $topbar-height;
-    position:            relative;
+    flex:                0 0 $topbar-height;
     width:               100%;
     -webkit-user-select: none;
     -moz-user-select:    none;
