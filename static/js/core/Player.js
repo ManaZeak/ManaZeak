@@ -7,7 +7,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { precisionRound } from '../utils/Utils.js'
+import { precisionRound, setCookie } from '../utils/Utils.js'
 
 class Player {
 
@@ -19,6 +19,7 @@ class Player {
         this.oldVolume = 0;
         this.emptyURL  = "";
         this.trackId   = -1;
+        this.cookieTimeout = null;
         this._init();
 
         document.body.insertBefore(this.player, document.body.firstChild);
@@ -93,6 +94,8 @@ class Player {
         }
 
         this.player.volume = precisionRound(volume, 2);
+        window.clearTimeout(this.cookieTimeout);
+        this.cookieTimeout = window.setTimeout(setCookie("MZK_VOLUME", this.player.volume, 20), 250);
     }
 
 
@@ -160,7 +163,7 @@ class Player {
      * desc   : Init player volume, set/store player empty source and listen
      **/
     _init() {
-        this.player.volume = 0.5; // TODO : init from global var in App os user settings
+        this.player.volume = window.app.cookies["MZK_VOLUME"] != undefined ? window.app.cookies["MZK_VOLUME"] : 0.5; // TODO : init from global var in App os user settings
         this.emptyURL      = '';
         this._eventListener();
     }
