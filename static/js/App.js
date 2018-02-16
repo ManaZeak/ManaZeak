@@ -6,7 +6,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { getCookies, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import { getCookies, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
 import FootBar  from './components/FootBar.js'
 import MzkObject from './core/MzkObject.js'
 import TopBar   from './components/TopBar.js'
@@ -31,6 +31,7 @@ class App extends MzkObject {
     constructor(callback) {
         super();
         this.cookies                 = getCookies();
+        this.cookieTimeout           = null;
         this.dragdrop                = new DragDrop(document.body);
         this.mainContainer           = document.createElement("DIV");
         this.mainContainer.className = "mzk-main-container";
@@ -913,6 +914,9 @@ class App extends MzkObject {
      **/
     setVolume(volume) {
         this.player.setVolume(volume);
+
+        window.clearTimeout(this.cookieTimeout);
+        this.cookieTimeout = window.setTimeout(setCookie("MZK_VOLUME", volume, 20), 250);
     }
 
 

@@ -7,7 +7,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { precisionRound, setCookie } from '../utils/Utils.js'
+import { precisionRound } from '../utils/Utils.js'
 
 class Player {
 
@@ -19,7 +19,6 @@ class Player {
         this.oldVolume = 0;
         this.emptyURL  = "";
         this.trackId   = -1;
-        this.cookieTimeout = null;
         this._init();
 
         document.body.insertBefore(this.player, document.body.firstChild);
@@ -94,8 +93,6 @@ class Player {
         }
 
         this.player.volume = precisionRound(volume, 2);
-        window.clearTimeout(this.cookieTimeout);
-        this.cookieTimeout = window.setTimeout(setCookie("MZK_VOLUME", this.player.volume, 20), 250);
     }
 
 
