@@ -189,6 +189,31 @@ class PartyView extends View {
             that._setCurrentTrack(track);
         });
 
+        window.app.listen("changeView", function(view) {
+            if (view == that) {
+                let el = document.body;
+
+                let requestMethod = el.requestFullScreen || el.webkitRequestFullScreen
+                    || el.mozRequestFullScreen || el.msRequestFullScreen;
+
+                requestMethod.call(el);
+            }
+
+            else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+
+                else if(document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+
+                else if(document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        });
+
         this.addShortcut(new Shortcut('keyup', 'Escape', function() {
             if(!that.container.classList.contains('mzk-view-hide'))
                 window.app.restorePageContent();

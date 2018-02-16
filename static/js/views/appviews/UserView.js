@@ -135,8 +135,8 @@ class UserView extends View {
     _requestUploadsPage() {
         this._updateSettingsInfo();
         this._clearPageSpace();
-        this.ui.menuUp.className           = "mzk-selected";
-        this.ui.contentTitle.innerHTML     = "Uploads";
+        this.ui.menuUp.className       = "mzk-selected";
+        this.ui.contentTitle.innerHTML = "Uploads";
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
