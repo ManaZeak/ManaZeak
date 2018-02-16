@@ -604,6 +604,7 @@ class App extends MzkObject {
         document.body.appendChild(this.mainContainer);
         this.footBar = new FootBar();
         document.body.appendChild(this.topBar.getTopBar());
+        document.body.appendChild(this.mainContainer);
         document.body.appendChild(this.footBar.getFootBar());
 
         let that = this;
