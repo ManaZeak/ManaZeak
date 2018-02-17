@@ -127,9 +127,28 @@ class InviteCode(models.Model):
 
 
 class Wallet(models.Model):
-    income = models.IntegerField(default=0)
-    expense = models.IntegerField(default=0)
-    loss = models.IntegerField(default=0)
+    miningGain = models.IntegerField(default=0)
+    miningLoss = models.IntegerField(default=0)
+    globalGain = models.IntegerField(default=0)
+    globalLoss = models.IntegerField(default=0)
+
+
+class TransactionType(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=5)
+    coinGain = models.IntegerField(default=0)
+    coinLoss = models.IntegerField(default=0)
+    streakGain = models.IntegerField(default=0)
+    streakLoss = models.IntegerField(default=0)
+    bubbles = models.BooleanField(default=False)
+
+
+class TransactionHistory(models.Model):
+    transactionType = models.ForeignKey(TransactionType)
+    streak = models.FloatField(default=0)
+    isGain = models.BooleanField(default=False)
+    baseMultiplier = models.FloatField(default=0)
+    user = models.ForeignKey(User)
 
 
 class Permissions(models.Model):
@@ -148,3 +167,6 @@ class UserPreferences(models.Model):
     wallet = models.ForeignKey(Wallet, null=True)
     group = models.ForeignKey(Groups, null=True)
     user = models.ForeignKey(User, null=True)
+    totalListeningTime = models.FloatField(default=0.0)
+    streak = models.IntegerField(default=100)
+

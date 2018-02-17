@@ -16,6 +16,9 @@ from app.utils import errorCheckMessage, checkPermission
 
 
 # Scan all the attributes of an MP3 track, and add it to base.
+from app.wallet import checkListeningGain
+
+
 def exportTrackInfo(track):
     if track.genre is not None:
         genre = track.genre.name
@@ -115,18 +118,19 @@ def getTrackPath(request):
                     # If we don't ask a previous track
                     if not bool(response['PREVIOUS']):
                         # Adding the current track to the history
-                        addToHistory(track, user)
                         # Removing the first 2 chars
                         previousTrackPath = strip_tags(response['LAST_TRACK_PATH'])[2:]
                         # If the previous track exists
                         if Track.objects.filter(location=previousTrackPath).count() == 1:
                             listeningPercentage = float(strip_tags(response['TRACK_PERCENTAGE']))
                             previousTrack = Track.objects.get(location=previousTrackPath)
+                            checkListeningGain(previousTrack, user)
                             # Adding to stats if the user has listened more than 15% of the song
                             if listeningPercentage > 5:
                                 previousTrack.playCounter += 1
                                 previousTrack.save()
                                 addToStats(previousTrack, listeningPercentage, user)
+                        addToHistory(track, user)
 
                     # Returning the asked song
                     data = {
