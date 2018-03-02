@@ -1,10 +1,34 @@
 #!/bin/bash
 
 vmzk="0.1.0"
+mzkdir=$(dirname $0)
 
 if [ $# -eq 0 ]; then
     echo -e "\e[31mERROR\e[39m No arguments supplied"
     echo -e "Script usage: ./mzk.sh --help"
+
+elif [ $1 = "init" ]; then
+    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment.\n"
+    read -p "Please enter a path for your music library: " musicpath
+    if [ -z $musicpath ]; then
+	musicpath="$HOME/Music"
+    elif [ ${musicpath:0:1} != "/" -a ${musicpath:0:1} != "~" -a ${musicpath:0:2} != "./" -a ${musicpath:0:3} != "../" -a ! -d $musicpath ]; then
+	musicpath="$HOME/$musicpath"
+    fi
+    echo -en "Setting music library path to $musicpath ... "
+    dockerconf=$(sed "s/\/PATH\/TO\/MUSIC/$(echo $musicpath | sed 's / \\/ g')/g" $mzkdir/docker-compose.yml.example)
+    echo -e "Done"
+    read -p "Please enter the path under which to store your ManaZeak database: " dbpath
+    if [ -z $dbpath ]; then
+	dbpath="$mzkdir/dbdata"
+    elif [ ${dbpath:0:1} != "/" -a ${dbpath:0:1} != "~" -a ${dbpath:0:2} != "./" -a ${dbpath:0:3} != "../" ]; then
+        dbpath="$mzkdir/$dbpath"
+    fi
+    echo -en "Setting database data folder to $dbpath ... "
+    dockerconf=$(echo "$dockerconf" | sed "s/\/PATH\/TO\/DB_DATA/$(echo $dbpath | sed 's / \\/ g')"/g)
+    echo -e "Done"
+    echo "$dockerconf" > $mzkdir/docker-compose.yml
+    echo -e "\nManaZeak wizard setup complete ! You can now run the next mzk.sh commands to build your containers.\n"
 
 elif [ $1 = "build" ]; then
     eval "docker-compose build"
