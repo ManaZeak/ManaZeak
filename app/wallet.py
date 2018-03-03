@@ -1,6 +1,5 @@
 from datetime import timedelta
-
-from django.utils import timezone
+from time import timezone
 
 from app.models import UserHistory, UserPreferences, TransactionHistory, TransactionType
 
@@ -21,20 +20,16 @@ def checkListeningGain(track, user):
                 if userPref.totalListeningTime/3600 > (userPref.totalListeningTime - track.duration)/3600:
                     count = int(round((userPref.totalListeningTime/3600))) \
                             - int(round(((userPref.totalListeningTime - track.duration)/3600)))
+                    userPref.save()
                     for _ in range(0, int(round(count))):
                         createTransaction("PLAY", user, True, 1)
-                userPref.wallet.save()
-                userPref.save()
 
 
 def calculateStreak(user, transaction):
     userPref = UserPreferences.objects.get(user=user)
-    print("zeaz", userPref.streak)
     if transaction.isGain:
         userPref.streak = transaction.transactionType.streakGain + userPref.streak
-        print("lel1", userPref.streak)
         userPref.save()
-        print("lel", userPref.streak)
     else:
         userPref.streak += transaction.transactionType.streakLoss
         userPref.save()
@@ -53,7 +48,6 @@ def createTransaction(code, user, isGain, multiplier):
             transaction.streak = 100
         else:
             transaction.streak = userPref.streak
-        print("win : ", (transaction.transactionType.coinGain * multiplier) * transaction.streak / 100)
         wallet.miningGain += int(round((transaction.transactionType.coinGain * multiplier) * transaction.streak / 100))
     else:
         if userPref.streak > 100:
