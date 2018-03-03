@@ -1,6 +1,8 @@
 from datetime import timedelta
 from time import timezone
 
+
+from app.consts import BUBBLE_PERCENTAGE
 from app.models import UserHistory, UserPreferences, TransactionHistory, TransactionType
 
 
@@ -35,6 +37,34 @@ def calculateStreak(user, transaction):
         userPref.save()
 
 
+def bubbleTransaction(amount, isGain, user):
+    if user is not None:
+        userPref = UserPreferences.objects.get(user=user)
+        if userPref is not None:
+            user = userPref.user
+            amount = int(round(amount / BUBBLE_PERCENTAGE))
+            if amount >= 1:
+                createBubbleTransaction(isGain, user, amount)
+                if userPref.inviteCode is not None:
+                    bubbleTransaction(amount, isGain, userPref.inviteCode.user)
+
+
+def createBubbleTransaction(isGain, user, amount):
+    userPref = UserPreferences.objects.get(user=user)
+    wallet = userPref.wallet
+    transaction = TransactionHistory()
+    transaction.transactionType = TransactionType.objects.get(code="BUBL")
+    transaction.isGain = isGain
+    transaction.user = user
+    transaction.baseMultiplier = 1
+    if isGain:
+        wallet.miningGain += amount
+    else:
+        wallet.miningLoss += amount
+    transaction.save()
+    wallet.save()
+
+
 def createTransaction(code, user, isGain, multiplier):
     userPref = UserPreferences.objects.get(user=user)
     wallet = userPref.wallet
@@ -48,13 +78,19 @@ def createTransaction(code, user, isGain, multiplier):
             transaction.streak = 100
         else:
             transaction.streak = userPref.streak
-        wallet.miningGain += int(round((transaction.transactionType.coinGain * multiplier) * transaction.streak / 100))
+        amount = int(round((transaction.transactionType.coinGain * multiplier) * transaction.streak / 100))
+        wallet.miningGain += amount
     else:
         if userPref.streak > 100:
             transaction.streak = 100
         else:
             transaction.streak = userPref.streak
-        wallet.miningLoss += int(round((transaction.transactionType.coinLoss * multiplier) * transaction.streak / 100))
+        amount = int(round((transaction.transactionType.coinLoss * multiplier) * transaction.streak / 100))
+        wallet.miningLoss += amount
     transaction.save()
     wallet.save()
+    if transaction.transactionType.bubbles:
+        if userPref.inviteCode is not None:
+            if userPref.inviteCode.user is not None:
+                bubbleTransaction(amount, isGain, userPref.inviteCode.user)
     calculateStreak(user, transaction)

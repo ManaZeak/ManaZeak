@@ -213,6 +213,7 @@ def populateDB():
         TransactionType(name="Upload", code="UPLD", coinGain=300, coinLoss=100, streakGain=5, streakLoss=6 , bubbles=True).save()
         TransactionType(name="Wish", code="WISH", coinGain=50, coinLoss=20, streakGain=1, streakLoss=10, bubbles=True).save()
         TransactionType(name="Gift", code="GIFT", coinGain=1, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
+        TransactionType(name="Bubble", code="BUBL", coinGain=0, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
 
     if Groups.objects.all().count() == 0:
         Groups(name="Banned", rank=0).save()
