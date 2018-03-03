@@ -103,28 +103,27 @@ def checkLibraryScanStatus(request):
 
 def rescanLibrary(library, user):
     # Check if the library is not used somewhere else
+    mp3Files = []
+    oggFiles = []
+    flacFiles = []
     if library.playlist.isScanned:
-        # Delete all the old tracks
-        name = library.playlist.name
-        library.playlist.delete()
+        for root, dirs, files in os.walk(library.path):
+            for file in files:
+                if file.lower().endswith('.mp3'):
+                    mp3Files.append(os.path.join(root, file))
 
-        # Recreating playlist
-        playlist = Playlist()
-        playlist.name = name
-        playlist.user = user
-        playlist.isLibrary = True
-        playlist.isScanned = False
-        playlist.save()
-        library.playlist = playlist
-        library.save()
+                elif file.lower().endswith('.ogg'):
+                    oggFiles.append(os.path.join(root, file))
 
-        # Scan library
-        data = scanLibrary(library, playlist, library.convertID3)
+                elif file.lower().endswith('.flac'):
+                    flacFiles.append(os.path.join(root, file))
+
     else:
         data = errorCheckMessage(False, "rescanError")
     return data
 
 
+# TODO : Create a threaded function for non blocking behavior with front
 # Drop a library and index all the tracks
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def rescanLibraryRequest(request):
@@ -136,8 +135,8 @@ def rescanLibraryRequest(request):
                 library = strip_tags(response['LIBRARY_ID'])
                 if Library.objects.filter(id=library).count() == 1:
                     library = Library.objects.get(id=library)
-                    refreshAllViews()
                     data = rescanLibrary(library, user)
+                    refreshAllViews()
                 else:
                     data = errorCheckMessage(False, "dbError")
             else:
@@ -197,7 +196,6 @@ def scanLibrary(library, playlist, convert):
             elif file.lower().endswith('.wav'):
                 # TODO: implement
                 pass
-
             else:
                 failedItems.append(file)
 
@@ -253,26 +251,13 @@ def scanLibraryProcess(mp3Files, flacFiles, oggFiles, playlist, convert, coverPa
     library.save()
 
 
-# Create thread for importing the library into db
-def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId):
-    tracks = []
-    albumReference = {}
-    tracksInfo = []
-    artists = set()
-    albums = {}
-    albumsTotalTracks = {}
-    albumsTotalDisc = {}
-    genres = set()
-
-    # Adding default values
-    albumReference[""] = Album.objects.get(title=None).id
-
+def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
+    threads = []
     mp3FileReference = FileType.objects.get(name="mp3")
     flacFileReference = FileType.objects.get(name="flac")
     oggFileReference = FileType.objects.get(name="ogg")
 
     print("Started scanning MP3 file")
-    threads = []
     # MP3 file processor
     if len(mp3Files) != 0:
         procNumber = multiprocessing.cpu_count()
@@ -312,9 +297,27 @@ def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId)
             thread.start()
 
     print("Started all scanning threads")
+    tracks = []
     for thread in threads:
         thread.join()
         tracks += thread.tracks
+    return tracks
+
+
+# Create thread for importing the library into db
+def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId):
+    albumReference = {}
+    tracksInfo = []
+    artists = set()
+    albums = {}
+    albumsTotalTracks = {}
+    albumsTotalDisc = {}
+    genres = set()
+
+    # Adding default values
+    albumReference[""] = Album.objects.get(title=None).id
+
+    tracks = fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath)
 
     for track in tracks:
         albumArtist = ""
@@ -340,6 +343,43 @@ def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
 
     print("Finished import")
+
+
+def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
+    albumReference = {}
+    tracksInfo = []
+    artists = set()
+    albums = {}
+    albumsTotalTracks = {}
+    albumsTotalDisc = {}
+    genres = set()
+
+    # Adding default values
+    albumReference[""] = Album.objects.get(title=None).id
+    coverPath = "/ManaZeak/static/img/covers/"
+
+    tracks = fileIndexer(mp3Files, flacFiles, oggFiles, True, coverPath)
+
+    for track in tracks:
+        albumArtist = ""
+        tracksInfo.append(track)
+        for artist in track.artist:
+            artists.add(artist)
+            albumArtist += artist + ","
+        albumArtist = albumArtist[:-1]
+        albumsTotalTracks[track.album] = track.totalTrack
+        albumsTotalDisc[track.album] = track.totalDisc
+        genres.add(track.genre)
+        if track.album in albums:
+            for artist in albumArtist.split(","):
+                if artist not in albums[track.album]:
+                    albums[track.album] += "," + artist
+        else:
+            albums[track.album] = albumArtist
+
+    genresReference = addGenreBulk(genres)
+    artistsReference = addArtistBulk(artists)
+    albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
 
 
 class ImportBulkThread(threading.Thread):
