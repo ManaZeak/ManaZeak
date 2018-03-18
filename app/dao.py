@@ -4,10 +4,9 @@ import io
 from contextlib import closing
 from datetime import datetime
 
-from __builtin__ import xrange
 from django.db import connection
 
-from app.models import Album, Artist, Genre
+from app.models import Album, Artist, Genre, Track
 
 
 # Import album into the database in bulk mode
@@ -387,23 +386,74 @@ def getPlaylistTracks(playlist, limit, offset):
         return cursor.fetchall()
 
 
+# Delete the associations between all the given tracks and artists and recreate it
+def updateTrackArtists(tracks, artists, tracksIds):
+    # Deleting old artists associations
+    # TODO : Check if this really works
+    sql = '''
+    DELETE FROM app_track_artist WHERE track_id IN %s;
+    '''
+    with closing(connection.cursor()) as cursor:
+        cursor.execute(sql, tracksIds)
+
+    # Recreating the link between artists and tracks
+    sql = '''
+    INSERT INTO app_track_artist (track_id, artist_id) VALUES 
+    '''
+    params = []
+    for i in range(tracks):
+        for trackArtist in tracks[i].artist:
+            artistId = artists[trackArtist]
+            params.extend([tracksIds[i], artistId])
+            sql += "(%s, %s), "
+    sql = sql[:-1]
+    with closing(connection.cursor()) as cursor:
+        cursor.execute(sql, params)
+
+
+# Inserting song that aren't present in the playlist
+def updatePlaylist(trackIds, playlistId):
+    # Deleting all the playlist track associations
+    sql = '''
+    DELETE FROM app_playlist_track WHERE playlist_id = %s;
+    '''
+    with closing(connection.cursor()) as cursor:
+        cursor.execute(sql, playlistId)
+
+    # Recreating the associations
+    sql = '''
+    INSERT INTO app_playlist_track (playlist_id, track_id) VALUES
+    '''
+    params = []
+    for trackId in trackIds:
+        sql += " (%s, %s),"
+        params.extend([playlistId, trackId])
+    sql = sql[:-1]
+    with closing(connection.cursor()) as cursor:
+        cursor.execute(sql, params)
+
+
 def refreshPlaylist(tracks, artists, albums, genres, playlistId):
+    # Default SQL query
     sql = '''
     INSERT INTO app_track (location, "coverLocation", title, "year", "composer", "performer", "number", bpm, lyrics,
                        comment, "bitRate", "bitRateMode", "sampleRate", duration, "discNumber", size, "lastModified",
                        moodbar, scanned, "playCounter", "downloadCounter", album_id, "fileType_id", genre_id,
                        uploader_id)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    VALUES 
     '''
 
+    # Generating parameters and the request
     params = []
     for track in tracks:
-        sql += ", (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        sql += "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s), "
         params.extend([track.location, track.coverLocation, track.title, track.year, track.composer, track.performer,
                        track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
                        track.sampleRate, track.duration, track.discNumber, track.size, track.lastModified,
                        track.moodbar, track.scanned, track.playCounter, track.downloadCounter, albums[track.album],
                        track.fileType, genres[track.genre], track.uploader])
+    sql = sql[:-1]
+    # Finishing the query
     sql += '''
     ON CONFLICT (location) DO UPDATE
     SET title = EXCLUDED.title, "coverLocation" = EXCLUDED."coverLocation", year = EXCLUDED.year,
@@ -412,8 +462,15 @@ def refreshPlaylist(tracks, artists, albums, genres, playlistId):
       "bitRateMode" = EXCLUDED."bitRateMode", "sampleRate" = EXCLUDED."sampleRate", duration = EXCLUDED.duration,
       "discNumber" = EXCLUDED."discNumber", size = EXCLUDED.size, "lastModified" = EXCLUDED."lastModified",
       moodbar = EXCLUDED.moodbar, scanned = TRUE, album_id = EXCLUDED.album_id, "fileType_id" = EXCLUDED."fileType_id",
-      genre_id = EXCLUDED.genre_id, uploader_id = EXCLUDED.uploader_id;
+      genre_id = EXCLUDED.genre_id, uploader_id = EXCLUDED.uploader_id
+    RETURNING id;
     '''
+
+    trackId = []
     # TODO : add a return statement in SQL get all the ids and make an UPSERT on app_track_playlist and app_track_artist
     with closing(connection.cursor()) as cursor:
+        # Executing the query and saving all the id inserted
         cursor.execute(sql, params)
+        for row in cursor.fetchall():
+            trackId.append(row[0])
+
