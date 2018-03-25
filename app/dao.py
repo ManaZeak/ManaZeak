@@ -466,11 +466,12 @@ def refreshPlaylist(tracks, artists, albums, genres, playlistId):
     RETURNING id;
     '''
 
-    trackId = []
+    tracksIds = []
     # TODO : add a return statement in SQL get all the ids and make an UPSERT on app_track_playlist and app_track_artist
     with closing(connection.cursor()) as cursor:
         # Executing the query and saving all the id inserted
         cursor.execute(sql, params)
         for row in cursor.fetchall():
-            trackId.append(row[0])
-
+            tracksIds.append(row[0])
+    updateTrackArtists(tracks, artists, tracksIds)
+    updatePlaylist(tracksIds, playlistId)

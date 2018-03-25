@@ -11,8 +11,8 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 from multiprocessing import Process
 
-from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk
-from app.models import Library, Playlist, FileType, Album
+from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk, refreshPlaylist
+from app.models import Library, Playlist, FileType, Album, Track
 from app.track.importer import createMP3Track, createVorbisTrack
 from app.utils import errorCheckMessage, splitTableCustom, checkPermission, refreshAllViews
 
@@ -101,74 +101,6 @@ def checkLibraryScanStatus(request):
     return JsonResponse(data)
 
 
-def rescanLibrary(library, user):
-    # Check if the library is not used somewhere else
-    mp3Files = []
-    oggFiles = []
-    flacFiles = []
-    if library.playlist.isScanned:
-        for root, dirs, files in os.walk(library.path):
-            for file in files:
-                if file.lower().endswith('.mp3'):
-                    mp3Files.append(os.path.join(root, file))
-
-                elif file.lower().endswith('.ogg'):
-                    oggFiles.append(os.path.join(root, file))
-
-                elif file.lower().endswith('.flac'):
-                    flacFiles.append(os.path.join(root, file))
-
-    else:
-        data = errorCheckMessage(False, "rescanError")
-    return data
-
-
-# TODO : Create a threaded function for non blocking behavior with front
-# Drop a library and index all the tracks
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def rescanLibraryRequest(request):
-    if request.method == 'POST':
-        response = json.loads(request.body)
-        user = request.user
-        if checkPermission(["LIBR"], user):
-            if 'LIBRARY_ID' in response:
-                library = strip_tags(response['LIBRARY_ID'])
-                if Library.objects.filter(id=library).count() == 1:
-                    library = Library.objects.get(id=library)
-                    data = rescanLibrary(library, user)
-                    refreshAllViews()
-                else:
-                    data = errorCheckMessage(False, "dbError")
-            else:
-                data = errorCheckMessage(False, "badFormat")
-        else:
-            data = errorCheckMessage(False, "permissionError")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
-def rescanAllLibraries(request):
-    if request.method == 'GET':
-        user = request.user
-        if checkPermission(["LIBR"], user):
-            libraries = Library.objects.all()
-            scanned = False
-            for library in libraries:
-                rescanLibrary(library, user)
-                while not scanned:
-                    # We call the database to refresh the value in memory.
-                    scanned = Library.objects.get(id=library.id).playlist.isScanned
-                    sleep(1)
-            refreshAllViews()
-            data = errorCheckMessage(True, None)
-        else:
-            data = errorCheckMessage(False, "permissionError")
-    else:
-        data = errorCheckMessage(False, "badRequest")
-    return JsonResponse(data)
-
-
 # Index all the file and start the import
 def scanLibrary(library, playlist, convert):
     failedItems = []
@@ -211,6 +143,82 @@ def scanLibrary(library, playlist, convert):
     }
     data = {**data, **errorCheckMessage(True, None)}
     return data
+
+
+# TODO : Create a threaded function for non blocking behavior with front
+# Drop a library and index all the tracks
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def rescanLibraryRequest(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if checkPermission(["LIBR"], user):
+            if 'LIBRARY_ID' in response:
+                libraryId = strip_tags(response['LIBRARY_ID'])
+                scanThread = Process(target=rescanLibraryProcess, args=(libraryId, user))
+                db.connections.close_all()
+                scanThread.start()
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "badFormat")
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def rescanAllLibraries(request):
+    if request.method == 'GET':
+        user = request.user
+        if checkPermission(["LIBR"], user):
+            scanThread = Process(target=rescanLibraryProcess, args=(None, user))
+            db.connections.close_all()
+            scanThread.start()
+            data = errorCheckMessage(True, None)
+        else:
+            data = errorCheckMessage(False, "permissionError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# If the playlist is initialized only rescan the library, else rescan all libraries
+def rescanLibraryProcess(libraryId, user):
+    if libraryId is None:
+        libraries = Library.objects.all()
+        scanned = False
+        for library in libraries:
+            rescanLibrary(library, user)
+            while not scanned:
+                # We call the database to refresh the value in memory.
+                scanned = Library.objects.get(id=library.id).playlist.isScanned
+                sleep(1)
+    else:
+        if Library.objects.filter(id=libraryId).count() == 1:
+            library = Library.objects.get(id=libraryId)
+            rescanLibrary(library, user)
+    refreshAllViews()
+
+
+def rescanLibrary(library, user):
+    # Check if the library is not used somewhere else
+    mp3Files = []
+    oggFiles = []
+    flacFiles = []
+    if library.playlist.isScanned:
+        for root, dirs, files in os.walk(library.path):
+            for file in files:
+                if file.lower().endswith('.mp3'):
+                    mp3Files.append(os.path.join(root, file))
+
+                elif file.lower().endswith('.ogg'):
+                    oggFiles.append(os.path.join(root, file))
+
+                elif file.lower().endswith('.flac'):
+                    flacFiles.append(os.path.join(root, file))
+        rescanTracksProcess(mp3Files, flacFiles, oggFiles, library.playlist)
 
 
 # Delete a library in the application
@@ -336,15 +344,16 @@ def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId)
         else:
             albums[track.album] = albumArtist
     print("Starting adding tracks to database")
+
     # Analyse the genre found and add the missing genre to the base
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
     addTrackBulk(tracksInfo, artistsReference, albumReference, genresReference, playlistId)
-
     print("Finished import")
 
 
+# Scan tracks contained in a library, update metadata of the DB and remove tracks if they don't exists anymore
 def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
     albumReference = {}
     tracksInfo = []
@@ -380,6 +389,9 @@ def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
     genresReference = addGenreBulk(genres)
     artistsReference = addArtistBulk(artists)
     albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
+    refreshPlaylist(tracks, artistsReference, albumReference, genresReference, playlist.id)
+    # Delete the tracks that were not present during the rescan
+    Track.objects.filter(playlist__id=playlist.id, scanned=False).delete()
 
 
 class ImportBulkThread(threading.Thread):
