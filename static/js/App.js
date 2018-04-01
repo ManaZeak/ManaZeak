@@ -1117,8 +1117,7 @@ class App extends MzkObject {
             for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
                 that.playlists.add(new Playlist(playlists.PLAYLIST_IDS[i],
                     playlists.PLAYLIST_NAMES[i],
-//                    playlists.PLAYLIST_DESCRIPTIONS[i],
-                    'Marapouté',
+                    playlists.PLAYLIST_DESCRIPTIONS[i],
                     playlists.PLAYLIST_IS_LIBRARY[i],
                     true,
                     undefined,

@@ -228,7 +228,7 @@ def getUserPlaylists(request):
             playlistNames.append(library.name)
             playlistIds.append(library.id)
             isLibrary.append(True)
-            playlistDescriptions.append(library.playlist.description)
+            playlistDescriptions.append(library.description)
 
         # Adding User playlists
         for playlist in playlists:
