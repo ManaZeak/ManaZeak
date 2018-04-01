@@ -18,7 +18,7 @@ def handleUploadedFile(request):
     if request.method == 'POST':
         user = request.user
         response = json.loads(request.body)
-        if checkPermission(["UPFI"], user):
+        if checkPermission(["UPLD"], user):
             if 'CONTENT' in response and 'FILENAME' in response:
                 name = strip_tags(response['FILENAME'])
                 if '/' not in name and '\\' not in name:
