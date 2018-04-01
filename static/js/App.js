@@ -20,6 +20,7 @@ import Player   from './core/Player.js'
 import StatsView from './views/appviews/StatsView.js'
 import AdminView from './views/appviews/AdminView.js'
 import UserView from './views/appviews/UserView.js'
+import HelpCenterView from './views/appviews/HelpCenterView.js'
 import PartyView from './views/appviews/PartyView.js'
 import ListView from './views/ListView.js'
 import Playlist from './core/Playlist.js'
@@ -1169,6 +1170,7 @@ class App extends MzkObject {
             this.createAppView('mzk_stats', new StatsView());
         }
         this.createAppView('mzk_user', new UserView());
+        this.createAppView('mzk_help', new HelpCenterView());
         this.createAppView('mzk_party', new PartyView());
     }
 
