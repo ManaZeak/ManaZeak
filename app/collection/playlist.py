@@ -228,12 +228,14 @@ def getUserPlaylists(request):
             playlistNames.append(library.name)
             playlistIds.append(library.id)
             isLibrary.append(True)
+            playlistDescriptions.append(library.playlist.description)
 
         # Adding User playlists
         for playlist in playlists:
             playlistNames.append(playlist.name)
             playlistIds.append(playlist.id)
             isLibrary.append(False)
+            playlistDescriptions.append(playlist.description)
 
         if len(playlistIds) == 0:
             data = errorCheckMessage(False, None)
@@ -264,6 +266,28 @@ def setPlaylistDescription(request):
                 playlist.description = strip_tags(response['PLAYLIST_DESC'])
                 playlist.save()
                 data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Get the playlist description
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def getPlaylistDescription(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistId = response['PLAYLIST_ID']
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                data = {
+                    'PLAYLIST_DESC': playlist.description
+                }
+                data = {{**data, **errorCheckMessage(True, None)}}
             else:
                 data = errorCheckMessage(False, "dbError")
         else:
