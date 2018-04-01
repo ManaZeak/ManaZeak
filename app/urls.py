@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^playlist/fetchAll/$', playlist.getUserPlaylists, name='getPlaylists'),
     url(r'^playlist/simplifiedLazyLoading/$', playlist.simplifiedLazyLoadingPlaylist, name='lazyLoading'),
     url(r'^playlist/getInfo/$', playlist.getPlaylistInfo, name='getPlaylistInfo'),  # Use this in front
+    url(r'^playlist/getDescriptions/$', playlist.setPlaylistDescription, name='setPlaylistDescription'),
 
     # Player actions
     url(r'^player/shuffleNext/$', player.shuffleNextTrack, name='shuffleNextTrack'),

@@ -250,3 +250,24 @@ def getUserPlaylists(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
+
+
+# Change the playlist description
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def setPlaylistDescription(request):
+    if request.method == "POST":
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response and 'PLAYLIST_DESC':
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                playlist.description = strip_tags(response['PLAYLIST_DESC'])
+                playlist.save()
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
