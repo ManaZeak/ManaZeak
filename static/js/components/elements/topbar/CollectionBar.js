@@ -104,7 +104,15 @@ class PlaylistCollectionEntry {
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
 
         if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
-            this.contextMenu.addEntry(null, "Description", function() {
+            this.contextMenu.addEntry(null, "Description", function() { // TODO : Url to request with Squadella
+                that.modal       = new Modal("editCollectionDescription", {
+                    name:        that.playlist.name,
+                    description: that.playlist.description,
+                    id:          that.playlist.id
+                });
+                that.modal.open();
+            });
+            this.contextMenu.addEntry(null, "Download", function() { // TODO : Url to request with Squadella
                 that.modal       = new Modal("editCollectionDescription", {
                     name: that.playlist.name,
                     id:   that.playlist.id

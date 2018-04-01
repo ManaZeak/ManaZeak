@@ -312,7 +312,7 @@ class Modal extends MzkObject {
         let close                   = document.createElement("BUTTON");
 
 console.log("test");
-        contentText.innerHTML       = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business."; // this.data.description TODO : put collection description here
+        contentText.innerHTML       = this.data.description; // this.data.description TODO : put collection description here
         close.innerHTML             = "Close";
 
         this.ui.content.appendChild(contentText);
