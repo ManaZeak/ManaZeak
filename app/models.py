@@ -64,6 +64,7 @@ class Playlist(models.Model):
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
     refreshView = models.BooleanField(default=True)
+    description = models.CharField(default="", max_length=10000)
 
 
 class Library(models.Model):

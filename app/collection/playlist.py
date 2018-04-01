@@ -220,6 +220,7 @@ def getUserPlaylists(request):
         playlistNames = []
         playlistIds = []
         isLibrary = []
+        playlistDescriptions = []
 
         # Adding global libraries
         libraries = Playlist.objects.filter(isLibrary=True)
@@ -243,6 +244,7 @@ def getUserPlaylists(request):
                 'PLAYLIST_NAMES': playlistNames,
                 'PLAYLIST_IDS': playlistIds,
                 'PLAYLIST_IS_LIBRARY': isLibrary,
+                'PLAYLIST_DESCRIPTIONS': playlistDescriptions,
             }
             data = {**data, **errorCheckMessage(True, None)}
     else:
