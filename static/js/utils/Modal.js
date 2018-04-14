@@ -322,7 +322,6 @@ class Modal extends MzkObject {
         this.ui.container.className = "mzk-modal-fetch-playlists";
         this.ui.title.innerHTML     = this.data.name;
 
-        let that                    = this;
         let contentText             = document.createElement("P");
         let close                   = document.createElement("BUTTON");
 
@@ -334,6 +333,7 @@ class Modal extends MzkObject {
 
         if ((this.data.isLibrary && window.app.user.hasPermission("LIBR")) || (!this.data.isLibrary && window.app.user.hasPermission("PLST"))) {
             this._appendEditButton();
+            let that = this;
             this.editButton.addEventListener('click', function() {
                 let save       = document.createElement("BUTTON");
                 let textarea   = document.createElement('TEXTAREA');
@@ -350,7 +350,6 @@ class Modal extends MzkObject {
 
                 let self = that;
                 save.addEventListener('click', function() {
-                    // TODO send JSON
                     self.callback(textarea.value);
                     contentText.innerHTML = textarea.value;
                     self.ui.content.removeChild(textarea);
