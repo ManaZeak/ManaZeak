@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 
-from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist
+from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
 
 
 # Split a table in 4 table of equal size
@@ -181,14 +181,14 @@ def populateDB():
         print("Created default genre")
         Genre(name=None).save()
     if Permissions.objects.all().count() == 0:
-        print("Creating default permission")
+        print("Creating default permissions")
         Permissions(name="Login", code="LOGI").save()
         Permissions(name="Music listening", code="PLAY").save()
         Permissions(name="Playlist management", code="PLST").save()
         Permissions(name="Download", code="DOWN").save()
         Permissions(name="Wish creation", code="WISH").save()
         Permissions(name="Tag submission", code="TAGS").save()
-        Permissions(name="Upload file", code='UPFI').save()
+        Permissions(name="Upload file", code='UPLD').save()
         Permissions(name="Sponsor right", code='SPON').save()
         Permissions(name="Stats access", code='STAT').save()
         Permissions(name="Child stats access", code="STCH").save()
@@ -205,6 +205,15 @@ def populateDB():
         Permissions(name="Library management", code="LIBR").save()
         Permissions(name="Grant admin privileges", code="GAPR").save()
         Permissions(name="Coin gift", code="COIN").save()
+
+    if TransactionType.objects.all().count() == 0:
+        print("Creating default transaction types")
+        TransactionType(name="Listening", code="PLAY", coinGain=100, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
+        TransactionType(name="Edit tag", code="TAGE", coinGain=100, coinLoss=300, streakGain=2, streakLoss=10, bubbles=True).save()
+        TransactionType(name="Upload", code="UPLD", coinGain=300, coinLoss=100, streakGain=5, streakLoss=6 , bubbles=True).save()
+        TransactionType(name="Wish", code="WISH", coinGain=50, coinLoss=20, streakGain=1, streakLoss=10, bubbles=True).save()
+        TransactionType(name="Gift", code="GIFT", coinGain=1, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
+        TransactionType(name="Bubble", code="BUBL", coinGain=0, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
 
     if Groups.objects.all().count() == 0:
         Groups(name="Banned", rank=0).save()
@@ -227,7 +236,7 @@ def fillDefaultPermission(group):
     if group.rank > 1:
         group.permissions.add(Permissions.objects.get(code="WISH"))
         group.permissions.add(Permissions.objects.get(code="TAGS"))
-        group.permissions.add(Permissions.objects.get(code="UPFI"))
+        group.permissions.add(Permissions.objects.get(code="UPLD"))
         group.permissions.add(Permissions.objects.get(code="SPON"))
         group.permissions.add(Permissions.objects.get(code="STAT"))
     if group.rank > 2:

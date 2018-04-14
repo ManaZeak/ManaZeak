@@ -28,7 +28,7 @@ class PartyMode {
         };
 
         this.ui.container.className = "mzk-party-mode-button";
-        this.ui.img.src             = "/static/img/utils/party.svg";
+        this.ui.img.src             = "/static/img/controls/party.svg";
 
         this.ui.container.appendChild(this.ui.img);
 

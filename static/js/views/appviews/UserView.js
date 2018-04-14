@@ -43,7 +43,8 @@ class UserView extends View {
             menuTitle:    document.createElement("H2"),
 
             menuList:     document.createElement("UL"),
-            menuGen:       document.createElement("LI"),
+            menuGen:      document.createElement("LI"),
+            menuUp:       document.createElement("LI"),
 
             content:      document.createElement("DIV"),
             contentTitle: document.createElement("H1"),
@@ -54,8 +55,10 @@ class UserView extends View {
         this.ui.content.className   = "mzk-content";
         this.ui.menuTitle.innerHTML = "User";
         this.ui.menuGen.innerHTML   = "General";
+        this.ui.menuUp.innerHTML   = "Uploads";
 
         this.ui.menuList.appendChild(this.ui.menuGen);
+        this.ui.menuList.appendChild(this.ui.menuUp);
         this.ui.menu.appendChild(this.ui.menuTitle);
         this.ui.menu.appendChild(this.ui.menuList);
         this.ui.container.appendChild(this.ui.menu);
@@ -73,6 +76,7 @@ class UserView extends View {
      **/
     _eventListener() {
         this.ui.menuGen.addEventListener("click", this._requestGeneralPage.bind(this));
+        this.ui.menuUp.addEventListener("click", this._requestUploadsPage.bind(this));
     }
 
 
@@ -120,6 +124,22 @@ class UserView extends View {
         this.ui.content.appendChild(document.createElement("HR"));
         this.ui.content.appendChild(this.ui.rescanLibLabel);
         this.ui.content.appendChild(this.ui.rescanLibButton);
+    }
+
+
+    /**
+     * method : _requestUploadsPage (private)
+     * class  : UserView
+     * desc   : Display the uploads page
+     **/
+    _requestUploadsPage() {
+        this._updateSettingsInfo();
+        this._clearPageSpace();
+        this.ui.menuUp.className       = "mzk-selected";
+        this.ui.contentTitle.innerHTML = "Uploads";
+
+        this.ui.content.appendChild(this.ui.contentTitle);
+        this.ui.content.appendChild(document.createElement("HR"));
     }
 
 

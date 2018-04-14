@@ -286,17 +286,17 @@ class TrackInfo {
         switch (this.trackSuggestionMode) {
             case 0:
                 this.ui.suggestionTitle.innerHTML = "From the same artist :";
-                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/artist.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/music/artist.svg";
                 break;
 
             case 1:
                 this.ui.suggestionTitle.innerHTML = "From the same album :";
-                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/album.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/music/album.svg";
                 break;
 
             case 2:
                 this.ui.suggestionTitle.innerHTML = "From the same genre :";
-                this.ui.changeSuggestionType.src  = "/static/img/utils/trackinfo/genre.svg";
+                this.ui.changeSuggestionType.src  = "/static/img/music/genre.svg";
                 break;
 
             default:

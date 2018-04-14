@@ -89,8 +89,8 @@ class QueuePreview extends MzkObject {
         title.innerText                = track.title;
         origin.innerText               = track.artist + ' - ' + track.album + ' (' + track.year + ')';
         composer.innerText             = 'Composed by: ' + track.composer;
-        qControlsUp.src                = "../static/img/utils/up.svg";
-        qControlsDown.src              = "../static/img/utils/down.svg";
+        qControlsUp.src                = "../static/img/controls/up.svg";
+        qControlsDown.src              = "../static/img/controls/down.svg";
         img.className                  = "mzk-queue-cover";
         img.src                        = track.cover;
 

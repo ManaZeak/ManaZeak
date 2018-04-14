@@ -18,23 +18,13 @@ import Modal from '../utils/Modal.js'
 
 class Playlist {
 
-    constructor(id, name, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
-        if (typeof rawTracks !== 'undefined') { //TODO: fix this
-            this.rawTracks       = rawTracks;
-        }
-        else {
-            this.rawTracks       = [];
-        }
-
-        if (typeof callback !== 'undefined') {
-            this.callback        = callback;
-        }
-        else {
-            this.callback        = null;
-        }
+    constructor(id, name, description, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
+        typeof rawTracks !== 'undefined' ? this.rawTracks = rawTracks : this.rawTracks = [];
+        typeof callback  !== 'undefined' ? this.callback  = callback  : this.callback  = null;
 
         this.id                  = id;
         this.name                = name;
+        this.description         = description;
         this.isLibrary           = isLibrary;
         this.isLoading           = isLoading;
         this.modal               = null;
@@ -699,8 +689,8 @@ class Playlist {
     getRepeatMode()  { return this.repeatMode;  }
     getShuffleMode() { return this.shuffleMode; }
 
-    setName(name)    { this.name = name;        }
-
+    setName(name)               { this.name = name;               }
+    setDescription(description) { this.description = description; }
 }
 
 export default Playlist

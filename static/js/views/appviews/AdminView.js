@@ -309,8 +309,8 @@ class AdminView extends View {
             let element                = document.createElement("LI");
             let grant                  = document.createElement("IMG");
             let rm                     = document.createElement("IMG");
-            grant.src                  = "/static/img/utils/edit.svg";
-            rm.src                     = "/static/img/utils/trash.svg";
+            grant.src                  = "/static/img/controls/edit.svg";
+            rm.src                     = "/static/img/controls/trash.svg";
             grant.addEventListener('click', function() {
                 new Modal('chooseGroup', {
                     USER: that.info.USER[i],
@@ -338,7 +338,7 @@ class AdminView extends View {
         for (let i = 0; i < this.info.GROUPS.length; ++i) {
             let element                = document.createElement("LI");
             let mod                    = document.createElement("IMG");
-            mod.src                    = "/static/img/utils/edit.svg";
+            mod.src                    = "/static/img/controls/edit.svg";
             element.innerHTML = "<b>" + this.info.GROUPS[i].NAME + "</b><br>" +
                                 "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + " permissions)";
 
@@ -421,7 +421,7 @@ class AdminView extends View {
         for (let i = 0; i < this.info.LIBRARIES.length; ++i) {
             let element                   = document.createElement("LI");
             let rm                        = document.createElement("IMG");
-            rm.src                        = "/static/img/utils/trash.svg";
+            rm.src                        = "/static/img/controls/trash.svg";
             let deletedID                 = that.info.LIBRARIES[i].ID;
             rm.addEventListener("click", function() {
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID));
@@ -557,30 +557,30 @@ class AdminView extends View {
 
                         switch (response.RESULT[i].STATUS) {
                             case 0:
-                                accept.src = "/static/img/utils/adminview/accepted.svg";
-                                refuse.src = "/static/img/utils/adminview/refused.svg";
+                                accept.src = "/static/img/controls/accepted.svg";
+                                refuse.src = "/static/img/controls/refused.svg";
                                 break;
                             case 1:
-                                accept.src = "/static/img/utils/adminview/accepted.svg";
-                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
+                                accept.src = "/static/img/controls/accepted.svg";
+                                refuse.src = "/static/img/controls/refused-true.svg";
                                 break;
                             case 2:
-                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
-                                refuse.src = "/static/img/utils/adminview/refused.svg";
+                                accept.src = "/static/img/controls/accepted-true.svg";
+                                refuse.src = "/static/img/controls/refused.svg";
                                 break;
                         }
 
                         let self = that;
                         accept.addEventListener("click", function() {
                             self._updateWishStatus(response.RESULT[i].WISH_ID, 2, function() {
-                                accept.src = "/static/img/utils/adminview/accepted-true.svg";
-                                refuse.src = "/static/img/utils/adminview/refused.svg";
+                                accept.src = "/static/img/controls/accepted-true.svg";
+                                refuse.src = "/static/img/controls/refused.svg";
                             });
                         });
                         refuse.addEventListener("click", function() {
                             self._updateWishStatus(response.RESULT[i].WISH_ID, 1, function() {
-                                accept.src = "/static/img/utils/adminview/accepted.svg";
-                                refuse.src = "/static/img/utils/adminview/refused-true.svg";
+                                accept.src = "/static/img/controls/accepted.svg";
+                                refuse.src = "/static/img/controls/refused-true.svg";
                             });
                         });
 
