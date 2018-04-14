@@ -106,30 +106,32 @@ class PartyView extends View {
      **/
     _createUI() {
         this.ui = {
-            container:          this.container,
-            mzkLogo:           document.createElement("IMG"),
+            container:              this.container,
+            mzkLogo:                document.createElement("IMG"),
 
-            sparksContainer:    document.createElement("DIV"),
-            sparksLayer1:       document.createElement("DIV"),
-            sparksLayer2:       document.createElement("DIV"),
-            sparksLayer3:       document.createElement("DIV"),
-            sparksLayer4:       document.createElement("DIV"),
+            sparksContainer:        document.createElement("DIV"),
+            sparksLayer1:           document.createElement("DIV"),
+            sparksLayer2:           document.createElement("DIV"),
+            sparksLayer3:           document.createElement("DIV"),
+            sparksLayer4:           document.createElement("DIV"),
 
-            coverContainer:     document.createElement("DIV"),
-            trackContainer:     document.createElement("DIV"),
-            trackCover:         document.createElement("IMG"),
+            coverContainer:         document.createElement("DIV"),
+            trackContainer:         document.createElement("DIV"),
+            trackCover:             document.createElement("IMG"),
 
-            trackInfoContainer: document.createElement("DIV"),
-            trackTitle:         document.createElement("H1"),
-            trackArtist:        document.createElement("H2"),
-            trackComposer:      document.createElement("H3"),
-            trackYearAlbum:     document.createElement("H3"),
-            trackGenre:         document.createElement("H3"),
+            trackInfoContainer:     document.createElement("DIV"),
+            trackComposerContainer: document.createElement("DIV"),
+            trackTitle:             document.createElement("H1"),
+            trackArtist:            document.createElement("H2"),
+            trackYearAlbum:         document.createElement("H2"),
+            trackComposer:          document.createElement("H3"),
+            trackComposerLabel:     document.createElement("H3"),
+            trackGenre:             document.createElement("H3"),
 
-            dateContainer:      document.createElement("DIV"),
-            date:               document.createElement("H3"),
+            dateContainer:          document.createElement("DIV"),
+            date:                   document.createElement("H3"),
 
-            close:              document.createElement("IMG"),
+            close:                  document.createElement("IMG"),
         };
 
         this.ui.container.classList.add("mzk-partyview");
@@ -147,11 +149,11 @@ class PartyView extends View {
         this.ui.trackCover.src               = "/static/img/utils/defaultcover.svg";
 
         this.ui.trackInfoContainer.className = "mzk-party-track-info";
+        this.ui.trackComposerContainer.className = "mzk-party-track-info-composers c";
         this.ui.trackTitle.className         = "a";
-        this.ui.trackArtist.className        = "b";
-        this.ui.trackComposer.className      = "c";
-        this.ui.trackYearAlbum.className     = "d";
-        this.ui.trackGenre.className         = "e";
+        this.ui.trackArtist.className        = "a";
+        this.ui.trackYearAlbum.className     = "b";
+        this.ui.trackGenre.className         = "d";
 
         this.ui.dateContainer.className      = "mzk-date";
 
@@ -163,10 +165,13 @@ class PartyView extends View {
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer3);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer4);
 
+        this.ui.trackComposerContainer.appendChild(this.ui.trackComposerLabel);
+        this.ui.trackComposerContainer.appendChild(this.ui.trackComposer);
+
         this.ui.trackInfoContainer.appendChild(this.ui.trackTitle);
         this.ui.trackInfoContainer.appendChild(this.ui.trackArtist);
-        this.ui.trackInfoContainer.appendChild(this.ui.trackComposer);
         this.ui.trackInfoContainer.appendChild(this.ui.trackYearAlbum);
+        this.ui.trackInfoContainer.appendChild(this.ui.trackComposerContainer);
         this.ui.trackInfoContainer.appendChild(this.ui.trackGenre);
 
         this.ui.trackContainer.appendChild(this.ui.trackCover);
@@ -239,9 +244,17 @@ class PartyView extends View {
         this.ui.trackCover.src           = track.cover;
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
-        this.ui.trackComposer.innerHTML  = "Composed by: " + track.composer;
-        this.ui.trackYearAlbum.innerHTML = track.year + " - " + track.album;
+        this.ui.trackYearAlbum.innerHTML = track.album + "&nbsp;&nbsp;—&nbsp;&nbsp;" + track.year;
+
+        this.ui.trackComposerLabel.innerHTML  = "Composed by:&nbsp;";
+        this.ui.trackComposer.innerHTML  = this._setComposerString(track.composer);
+
         this.ui.trackGenre.innerHTML     = track.genre;
+    }
+
+
+    _setComposerString(composer) {
+        return composer.replace(/;/g, "<br>");
     }
 
 
