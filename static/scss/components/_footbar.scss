@@ -7,9 +7,7 @@ $footbar-font-size:      0.8em;
 
 .mzk-footbar {
     background-color: $mzk-bg-strong;
-    bottom:           0;
-    height:           $footbar-height;
-    position:         absolute;
+    flex:             0 0 $footbar-height;
     width:            100%;
 
     .mzk-controls-container {

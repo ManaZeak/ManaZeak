@@ -72,19 +72,19 @@ class Notification {
 
         switch (this.type) {
             case "INFO":
-                this.ui.icon.src    = "/static/img/utils/notification/info.svg";
+                this.ui.icon.src    = "/static/img/controls/info.svg";
                 break;
 
             case "ERROR":
-                this.ui.icon.src    = "/static/img/utils/notification/error.svg";
+                this.ui.icon.src    = "/static/img/controls/error.svg";
                 break;
 
             default:
-                this.ui.icon.src    = "/static/img/utils/notification/error.svg";
+                this.ui.icon.src    = "/static/img/controls/error.svg";
                 break;
         }
 
-        this.ui.close.src           = "/static/img/utils/notification/close.svg";
+        this.ui.close.src           = "/static/img/controls/close.svg";
         this.ui.title.innerHTML     = this.title;
         this.ui.message.innerHTML   = this.message;
 

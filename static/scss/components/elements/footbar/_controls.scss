@@ -10,15 +10,19 @@ $progress-height:     $footbar-height - $controls-height;
     width:           100%;
 
     a {
-        cursor: pointer;
+        cursor:         pointer;
+        flex:           0 1 (1.2 * $controls-icon-width);
+        display:        flex;
+        flex-direction: column;
+        align-items:    center;
     }
 
     img {
         border-radius: 50%;
-        height:       $controls-icon-width;
-        margin-left:  $controls-icon-width / 10;
-        margin-right: $controls-icon-width / 10;
-        width:        $controls-icon-width;
+        max-height:    1.2 * $controls-icon-width;
+        max-width:     1.0 * $controls-icon-width;
+        margin-left:   0.1 * $controls-icon-width;
+        margin-right:  0.1 * $controls-icon-width;
     }
 
     .mzk-queue-expander {

@@ -6,11 +6,12 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-import { JSONParsedPostRequest } from '../../utils/Utils.js'
+import { JSONParsedPostRequest, secondsToDate } from '../../utils/Utils.js'
 import Notification from '../../utils/Notification.js'
 import Track from '../../core/Track.js'
 import View from '../../core/View.js'
 import Controls from '../../components/elements/footbar/Controls.js'
+import Shortcut from '../../utils/Shortcut.js'
 
 class PartyView extends View {
 
@@ -18,6 +19,7 @@ class PartyView extends View {
         super();
         this._createUI();
         this._eventListener();
+        this._startClock();
         new Controls(this.ui.coverContainer, false, false);
     }
 
@@ -124,6 +126,9 @@ class PartyView extends View {
             trackYearAlbum:     document.createElement("H3"),
             trackGenre:         document.createElement("H3"),
 
+            dateContainer:      document.createElement("DIV"),
+            date:               document.createElement("H3"),
+
             close:              document.createElement("IMG"),
         };
 
@@ -138,7 +143,7 @@ class PartyView extends View {
 
         this.ui.coverContainer.className     = "mzk-party-cover-controls";
         this.ui.trackContainer.className     = "mzk-track-container";
-        this.ui.mzkLogo.src                  = "/static/img/manazeak.svg";
+        this.ui.mzkLogo.src                  = "/static/img/logo/manazeak.svg";
         this.ui.trackCover.src               = "/static/img/utils/defaultcover.svg";
 
         this.ui.trackInfoContainer.className = "mzk-party-track-info";
@@ -148,8 +153,10 @@ class PartyView extends View {
         this.ui.trackYearAlbum.className     = "d";
         this.ui.trackGenre.className         = "e";
 
+        this.ui.dateContainer.className      = "mzk-date";
+
         this.ui.close.className              = "mzk-close";
-        this.ui.close.src                    = "/static/img/utils/partyview/close.svg";
+        this.ui.close.src                    = "/static/img/controls/left.svg";
 
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer1);
         this.ui.sparksContainer.appendChild(this.ui.sparksLayer2);
@@ -162,13 +169,15 @@ class PartyView extends View {
         this.ui.trackInfoContainer.appendChild(this.ui.trackYearAlbum);
         this.ui.trackInfoContainer.appendChild(this.ui.trackGenre);
 
-        this.ui.coverContainer.appendChild(this.ui.trackCover);
-        this.ui.trackContainer.appendChild(this.ui.coverContainer);
+        this.ui.trackContainer.appendChild(this.ui.trackCover);
         this.ui.trackContainer.appendChild(this.ui.trackInfoContainer);
+        this.ui.coverContainer.appendChild(this.ui.trackContainer);
+        this.ui.dateContainer.appendChild(this.ui.date);
 
         this.ui.container.appendChild(this.ui.mzkLogo);
         this.ui.container.appendChild(this.ui.sparksContainer);
-        this.ui.container.appendChild(this.ui.trackContainer);
+        this.ui.container.appendChild(this.ui.coverContainer);
+        this.ui.container.appendChild(this.ui.dateContainer);
         this.ui.container.appendChild(this.ui.close);
     }
 
@@ -188,6 +197,36 @@ class PartyView extends View {
             that._setCurrentTrack(track);
         });
 
+        window.app.listen("changeView", function(view) {
+            if (view == that) {
+                let el = document.body;
+
+                let requestMethod = el.requestFullScreen || el.webkitRequestFullScreen
+                    || el.mozRequestFullScreen || el.msRequestFullScreen;
+
+                requestMethod.call(el);
+            }
+
+            else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+
+                else if(document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+
+                else if(document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        });
+
+        this.addShortcut(new Shortcut('keyup', 'Escape', function() {
+            if(!that.container.classList.contains('mzk-view-hide'))
+                window.app.restorePageContent();
+        }));
+
     }
 
 
@@ -200,9 +239,21 @@ class PartyView extends View {
         this.ui.trackCover.src           = track.cover;
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
-        this.ui.trackComposer.innerHTML  = track.composer;
+        this.ui.trackComposer.innerHTML  = "Composed by: " + track.composer;
         this.ui.trackYearAlbum.innerHTML = track.year + " - " + track.album;
         this.ui.trackGenre.innerHTML     = track.genre;
+    }
+
+
+    _startClock() {
+        let that = this;
+        window.setInterval(function() {
+            that._updateClock()
+        }, 1000);
+    }
+
+    _updateClock() {
+        this.ui.date.innerHTML = secondsToDate(new Date());
     }
 
 //  ------------------------------  GETTERS / SETTERS  --------------------------------  //

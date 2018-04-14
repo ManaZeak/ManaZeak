@@ -5,29 +5,34 @@
 @import 'views/views';
 
 html, body {
-    color:       $mzk-text;
-    font-family: Helvetica, serif;
-    height:      100%;
-    margin:      0;
-    overflow:    hidden;
-    padding:     0;
-    width:       100%;
+    color:          $mzk-text;
+    display:        flex;
+    flex-direction: column;
+    font-family:    Helvetica, serif;
+    height:         100%;
+    margin:         0;
+    overflow:       hidden;
+    padding:        0;
+    width:          100%;
 }
 
 .mzk-main-container {
     background: $mzk-bg-normal;
-    height:     calc(100% - 130px);
-    position:   absolute;
-    top:        $topbar-height;
+    flex:       1 1 auto;
+    min-height: 0;
     width:      100%;
+    position:   relative;
 
     & > .mzk-view {
-        height:   100%;
         position: absolute;
-        width:    100%;
+        top:      0;
+        left:     0;
+        right:    0;
+        bottom:   0;
+        overflow: auto;
 
         &.mzk-view-hide {
-            z-index: -1;
+            visibility: hidden;
         }
     }
 

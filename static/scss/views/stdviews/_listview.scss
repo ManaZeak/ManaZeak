@@ -37,7 +37,6 @@ $listView-padding: 0 5%;
 .mzk-listview {
     box-sizing:          border-box;
     max-height:          calc(100% - 35px);
-    overflow-y:          auto;
     padding:             $listView-padding;
     width:               100%;
     -webkit-user-select: none; /* Chrome/Safari */
