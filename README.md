@@ -1,6 +1,6 @@
-<div style="text-align:center; margin-bottom: 25px;">
-    <img src ="https://manazeak.org/static/img/manazeak.png" style="width: 50%;"  align="center" />
-</div>
+<p align="center" style="margin-bottom: 25px">
+    <img src ="https://manazeak.org/static/img/manazeak.png" style="width: 50%; />
+</p>
 
 # ManaZeak
 
