@@ -22,6 +22,7 @@ class Modal extends MzkObject {
         this.id          = "mzk-modal-wrapper-" + genUniqueID();
         this.callback    = null;
         this.closeButton = null;
+        this.editButton  = null; // TODO : create modale button object
         this.editTag     = null;
 
         this._createUI();
@@ -84,7 +85,7 @@ class Modal extends MzkObject {
                 break;
 
             case "editCollectionDescription":
-                this._editCollectionDescriptionUI(false);
+                this._editCollectionDescriptionUI();
                 break;
 
             default:
@@ -146,6 +147,21 @@ class Modal extends MzkObject {
         });
 
         this.ui.container.appendChild(this.closeButton);
+    }
+
+    /**
+     * method : _appendCloseButton (private)
+     * class  : Modal
+     * desc   : Append a close button to modal container
+     **/
+    _appendEditButton() {
+        this.editButton          = document.createElement("IMG");
+        this.editButton.src       = "/static/img/controls/edit.svg";
+        this.editButton.className = "mzk-modal-editbutton";
+
+        // Listener to set when append somewhere
+
+        this.ui.container.appendChild(this.editButton);
     }
 
 
@@ -302,8 +318,7 @@ class Modal extends MzkObject {
     }
 
 
-    _editCollectionDescriptionUI(isEdit) {
-
+    _editCollectionDescriptionUI() {
         this.ui.container.className = "mzk-modal-fetch-playlists";
         this.ui.title.innerHTML     = this.data.name;
 
@@ -311,29 +326,41 @@ class Modal extends MzkObject {
         let contentText             = document.createElement("P");
         let close                   = document.createElement("BUTTON");
 
-console.log("test");
-        contentText.innerHTML       = this.data.description; // this.data.description TODO : put collection description here
+        contentText.innerHTML       = this.data.description;
         close.innerHTML             = "Close";
 
         this.ui.content.appendChild(contentText);
         this.ui.footer.appendChild(close);
 
-        if (isEdit) { // window.app.hasPermission("") TODO : add permission
-            let edit                = document.createElement("BUTTON");
-            edit.innerHTML          = "Edit";
-            this.ui.footer.appendChild(edit);
+        if ((this.data.isLibrary && window.app.user.hasPermission("LIBR")) || (!this.data.isLibrary && window.app.user.hasPermission("PLST"))) {
+            this._appendEditButton();
+            this.editButton.addEventListener('click', function() {
+                let save       = document.createElement("BUTTON");
+                let textarea   = document.createElement('TEXTAREA');
 
-            edit.addEventListener("click", function() {
-                that.close();
+                save.innerHTML = 'Save';
+                textarea.name  = 'comment';
+                textarea.row   = '8';
+                textarea.cols  = '80';
+                textarea.value = contentText.innerHTML;
+
+                that.ui.content.removeChild(contentText);
+                that.ui.footer.appendChild(save);
+                that.ui.content.appendChild(textarea);
+
+                let self = that;
+                save.addEventListener('click', function() {
+                    // TODO send JSON
+                    self.callback(textarea.value);
+                    contentText.innerHTML = textarea.value;
+                    self.ui.content.removeChild(textarea);
+                    self.ui.content.appendChild(contentText);
+                    self.ui.footer.removeChild(save);
+                });
             });
         }
 
         this._appendCloseButton();
-
-        this.setCallback(function() {
-            // TODO : send server request to change description
-            that.close();
-        });
 
         close.addEventListener("click", function() {
             that.close();
@@ -351,7 +378,7 @@ console.log("test");
             save:  document.createElement("BUTTON")
         };
 
-        ui.foot.className      = "mzk-foot";
+        ui.foot.className  = "mzk-foot";
         ui.close.innerHTML = "Close";
         ui.save.innerHTML  = "Save";
 

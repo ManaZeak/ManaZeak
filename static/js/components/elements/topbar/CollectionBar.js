@@ -12,6 +12,7 @@
 
 import Modal from '../../../utils/Modal.js'
 import ContextMenu from '../../../utils/ContextMenu.js'
+import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 
 class PlaylistCollectionEntry {
 
@@ -105,12 +106,19 @@ class PlaylistCollectionEntry {
 
         if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
             this.contextMenu.addEntry(null, "Description", function() { // TODO : Url to request with Squadella
+                console.log(that.playlist);
                 that.modal       = new Modal("editCollectionDescription", {
                     name:        that.playlist.name,
                     description: that.playlist.description,
-                    id:          that.playlist.id
+                    id:          that.playlist.id,
+                    isLibrary:   that.playlist.isLibrary
                 });
                 that.modal.open();
+
+                let self = that;
+                that.modal.setCallback(function(description) {
+                    self._sendCollectionDescription(self.playlist.id, description);
+                })
             });
             this.contextMenu.addEntry(null, "Download", function() { // TODO : Url to request with Squadella
                 that.modal       = new Modal("editCollectionDescription", {
@@ -135,6 +143,26 @@ class PlaylistCollectionEntry {
         }
     }
 
+
+    _sendCollectionDescription(id, description) {
+        JSONParsedPostRequest(
+            'playlist/setDescription/',
+            JSON.stringify({
+                PLAYLIST_ID:   id,
+                PLAYLIST_DESC: description
+            }),
+            function(response) {
+                /* response = {
+                 *     DONE      : bool
+                 *     ERROR_H1  : string
+                 *     ERROR_MSG : string
+                 * } */
+                if (!response.DONE) {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
 
 
     /**
