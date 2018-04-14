@@ -35,16 +35,8 @@ class PlaylistCollectionEntry {
         }
 
         this.isSelected            = false;
-
-        if (this.isLibrary) {
-            if (window.app.user.getIsAdmin()) {
-                this._createOptionButton();
-            }
-        }
-
-        else {
-            this._createOptionButton();
-        }
+        
+        this._createOptionButton();
 
         container.appendChild(this.entry);
     }
@@ -104,38 +96,38 @@ class PlaylistCollectionEntry {
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
 
-        if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
-            this.contextMenu.addEntry(null, "Description", function() { // TODO : Url to request with Squadella
-                console.log(that.playlist);
-                that.modal       = new Modal("editCollectionDescription", {
-                    name:        that.playlist.name,
-                    description: that.playlist.description,
-                    id:          that.playlist.id,
-                    isLibrary:   that.playlist.isLibrary
-                });
-                that.modal.open();
-
-                let self = that;
-                that.modal.setCallback(function(description) {
-                    self._sendCollectionDescription(self.playlist.id, description);
-                })
+        this.contextMenu.addEntry(null, "Description", function() { // TODO : Url to request with Squadella
+            that.modal = new Modal("editCollectionDescription", {
+                name:        that.playlist.name,
+                description: that.playlist.description,
+                id:          that.playlist.id,
+                isLibrary:   that.playlist.isLibrary
             });
+            that.modal.open();
+
+            let self = that;
+            that.modal.setCallback(function(description) {
+                self._sendCollectionDescription(self.playlist.id, description);
+            })
+        });
+
+        if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
             this.contextMenu.addEntry(null, "Download", function() { // TODO : Url to request with Squadella
-                that.modal       = new Modal("editCollectionDescription", {
+                that.modal = new Modal("editCollectionDescription", {
                     name: that.playlist.name,
                     id:   that.playlist.id
                 });
                 that.modal.open();
             });
             this.contextMenu.addEntry(null, "Rename", function() {
-                that.modal       = new Modal("renamePlaylist", {
+                that.modal = new Modal("renamePlaylist", {
                     name: that.playlist.name,
                     id:   that.playlist.id
                 });
                 that.modal.open();
             });
             this.contextMenu.addEntry(null, "Delete", function() {
-                that.modal       = new Modal("deletePlaylist", {
+                that.modal = new Modal("deletePlaylist", {
                     playlist: that.playlist
                 });
                 that.modal.open();
@@ -311,8 +303,10 @@ class CollectionBar extends MzkObject {
 
         this.element.appendChild(this.libsContainer);
         this.element.appendChild(this.playContainer);
-        if(window.app.user.hasPermission("LIBR") || window.app.user.hasPermission("PLST"))
+
+        if (window.app.user.hasPermission("LIBR") || window.app.user.hasPermission("PLST")) {
             this.element.appendChild(this.newButton);
+        }
 
         container.appendChild(this.element);
     }
