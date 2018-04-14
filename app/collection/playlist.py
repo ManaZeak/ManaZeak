@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, deleteView, lazyJsonGenerator
+from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator
 from app.models import Playlist, Track
 from app.utils import errorCheckMessage, checkPermission
 
@@ -259,12 +259,23 @@ def getUserPlaylists(request):
 def setPlaylistDescription(request):
     if request.method == "POST":
         response = json.loads(request.body)
+        user = request.user
         if 'PLAYLIST_ID' in response and 'PLAYLIST_DESC':
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
+
+                # Checking if it's a library
+                if playlist.isLibrary:
+                    if not checkPermission(['LIBR'], user):
+                        return errorCheckMessage(False, "permissionError")
+                else:
+                    # playlist edition
+                    if not checkPermission(['PLST'], user):
+                        return errorCheckMessage(False, "permissionError")
                 playlist.description = strip_tags(response['PLAYLIST_DESC'])
                 playlist.save()
+
                 data = errorCheckMessage(True, None)
             else:
                 data = errorCheckMessage(False, "dbError")
