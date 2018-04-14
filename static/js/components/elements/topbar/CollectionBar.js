@@ -35,7 +35,7 @@ class PlaylistCollectionEntry {
         }
 
         this.isSelected            = false;
-        
+
         this._createOptionButton();
 
         container.appendChild(this.entry);
@@ -107,7 +107,7 @@ class PlaylistCollectionEntry {
 
             let self = that;
             that.modal.setCallback(function(description) {
-                self._sendCollectionDescription(self.playlist.id, description);
+                self._sendCollectionDescription(self.playlist, description);
             })
         });
 
@@ -136,11 +136,13 @@ class PlaylistCollectionEntry {
     }
 
 
-    _sendCollectionDescription(id, description) {
+    _sendCollectionDescription(playlist, description) {
+        playlist.setDescription(description);
+
         JSONParsedPostRequest(
             'playlist/setDescription/',
             JSON.stringify({
-                PLAYLIST_ID:   id,
+                PLAYLIST_ID:   playlist.id,
                 PLAYLIST_DESC: description
             }),
             function(response) {

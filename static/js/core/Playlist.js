@@ -689,8 +689,8 @@ class Playlist {
     getRepeatMode()  { return this.repeatMode;  }
     getShuffleMode() { return this.shuffleMode; }
 
-    setName(name)    { this.name = name;        }
-
+    setName(name)               { this.name = name;               }
+    setDescription(description) { this.description = description; }
 }
 
 export default Playlist
