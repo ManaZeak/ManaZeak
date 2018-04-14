@@ -2,7 +2,7 @@
     background-color:  $mzk-bg-darker;
     color:             white;
     display:           flex;
-    overflow:          hidden;
+    overflow:          hidden !important;
     -moz-transition:    party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
     -webkit-transition: party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
     transition:         party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
@@ -49,8 +49,8 @@
                 background-color: $mzk-bg-light;
                 animation-delay: 0.2s;
                 box-shadow: 0 0 30px #fff;
-                height: 350px;
-                width: 350px;
+                height: 450px;
+                width: 450px;
                 -moz-animation: fade 40s linear infinite;
                 -webkit-animation: fade 40s linear infinite;
                 animation: fade 40s linear infinite;

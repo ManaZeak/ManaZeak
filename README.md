@@ -1,5 +1,5 @@
 <div style="text-align:center; margin-bottom: 25px;">
-    <img src ="http://manazeak.org/static/img/logo/manazeak.svg" style="width: 50%" />
+    <img src ="https://manazeak.org/static/img/manazeak.png" style="width: 50%" />
 </div>
 
 # ManaZeak
