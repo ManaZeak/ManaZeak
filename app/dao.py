@@ -391,8 +391,14 @@ def updateTrackArtists(tracks, artists, tracksIds):
     # Deleting old artists associations
     # TODO : Check if this really works
     sql = '''
-    DELETE FROM app_track_artist WHERE track_id IN %s;
+    DELETE FROM app_track_artist WHERE track_id IN (
     '''
+    params = []
+    params.extend(tracksIds)
+    for id in tracksIds:
+        sql += "%s, "
+    sql = sql[:-2]
+    sql += ");"
     with closing(connection.cursor()) as cursor:
         cursor.execute(sql, tracksIds)
 
@@ -401,12 +407,12 @@ def updateTrackArtists(tracks, artists, tracksIds):
     INSERT INTO app_track_artist (track_id, artist_id) VALUES 
     '''
     params = []
-    for i in range(tracks):
+    for i in range(len(tracks)):
         for trackArtist in tracks[i].artist:
             artistId = artists[trackArtist]
             params.extend([tracksIds[i], artistId])
             sql += "(%s, %s), "
-    sql = sql[:-1]
+    sql = sql[:-2]
     with closing(connection.cursor()) as cursor:
         cursor.execute(sql, params)
 
@@ -418,7 +424,7 @@ def updatePlaylist(trackIds, playlistId):
     DELETE FROM app_playlist_track WHERE playlist_id = %s;
     '''
     with closing(connection.cursor()) as cursor:
-        cursor.execute(sql, playlistId)
+        cursor.execute(sql, [playlistId])
 
     # Recreating the associations
     sql = '''
@@ -435,43 +441,50 @@ def updatePlaylist(trackIds, playlistId):
 
 def refreshPlaylist(tracks, artists, albums, genres, playlistId):
     # Default SQL query
-    sql = '''
-    INSERT INTO app_track (location, "coverLocation", title, "year", "composer", "performer", "number", bpm, lyrics,
-                       comment, "bitRate", "bitRateMode", "sampleRate", duration, "discNumber", size, "lastModified",
-                       moodbar, scanned, "playCounter", "downloadCounter", album_id, "fileType_id", genre_id,
-                       uploader_id)
-    VALUES 
-    '''
+    print(len(tracks))
+    # If there is no tracks skip this part
+    if len(tracks) > 0:
+        sql = '''
+        INSERT INTO app_track (location, "coverLocation", title, "year", "composer", "performer", "number", bpm, lyrics,
+                           comment, "bitRate", "bitRateMode", "sampleRate", duration, "discNumber", size, "lastModified",
+                           moodbar, scanned, "playCounter", "downloadCounter", album_id, "fileType_id", genre_id)
+        VALUES 
+        '''
 
-    # Generating parameters and the request
-    params = []
-    for track in tracks:
-        sql += "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s), "
-        params.extend([track.location, track.coverLocation, track.title, track.year, track.composer, track.performer,
-                       track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
-                       track.sampleRate, track.duration, track.discNumber, track.size, track.lastModified,
-                       track.moodbar, track.scanned, track.playCounter, track.downloadCounter, albums[track.album],
-                       track.fileType, genres[track.genre], track.uploader])
-    sql = sql[:-1]
-    # Finishing the query
-    sql += '''
-    ON CONFLICT (location) DO UPDATE
-    SET title = EXCLUDED.title, "coverLocation" = EXCLUDED."coverLocation", year = EXCLUDED.year,
-      composer = EXCLUDED.composer, performer = EXCLUDED.performer, number = EXCLUDED.number, bpm = EXCLUDED.bpm,
-      lyrics = EXCLUDED.lyrics, comment = EXCLUDED.comment, "bitRate" = EXCLUDED."bitRate",
-      "bitRateMode" = EXCLUDED."bitRateMode", "sampleRate" = EXCLUDED."sampleRate", duration = EXCLUDED.duration,
-      "discNumber" = EXCLUDED."discNumber", size = EXCLUDED.size, "lastModified" = EXCLUDED."lastModified",
-      moodbar = EXCLUDED.moodbar, scanned = TRUE, album_id = EXCLUDED.album_id, "fileType_id" = EXCLUDED."fileType_id",
-      genre_id = EXCLUDED.genre_id, uploader_id = EXCLUDED.uploader_id
-    RETURNING id;
-    '''
+        # Generating parameters and the request
+        params = []
+        for track in tracks:
+            sql += "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s), "
+            params.extend([track.location, track.coverLocation, track.title, track.year, track.composer, track.performer,
+                           track.number, track.bpm, track.lyrics, track.comment, track.bitRate, track.bitRateMode,
+                           track.sampleRate, track.duration, track.discNumber, track.size, datetime.now(),
+                           track.moodbar, True, track.playCounter, track.downloadCounter, albums[track.album],
+                           track.fileType, genres[track.genre]])
+        sql = sql[:-2]
+        # Finishing the query
+        sql += '''
+         ON CONFLICT (location) DO UPDATE
+        SET title = EXCLUDED.title, "coverLocation" = EXCLUDED."coverLocation", year = EXCLUDED.year,
+          composer = EXCLUDED.composer, performer = EXCLUDED.performer, number = EXCLUDED.number, bpm = EXCLUDED.bpm,
+          lyrics = EXCLUDED.lyrics, comment = EXCLUDED.comment, "bitRate" = EXCLUDED."bitRate",
+          "bitRateMode" = EXCLUDED."bitRateMode", "sampleRate" = EXCLUDED."sampleRate", duration = EXCLUDED.duration,
+          "discNumber" = EXCLUDED."discNumber", size = EXCLUDED.size, "lastModified" = EXCLUDED."lastModified",
+          moodbar = EXCLUDED.moodbar, scanned = TRUE, album_id = EXCLUDED.album_id, "fileType_id" = EXCLUDED."fileType_id",
+          genre_id = EXCLUDED.genre_id 
+        RETURNING id;
+        '''
 
-    tracksIds = []
-    # TODO : add a return statement in SQL get all the ids and make an UPSERT on app_track_playlist and app_track_artist
-    with closing(connection.cursor()) as cursor:
-        # Executing the query and saving all the id inserted
-        cursor.execute(sql, params)
-        for row in cursor.fetchall():
-            tracksIds.append(row[0])
-    updateTrackArtists(tracks, artists, tracksIds)
-    updatePlaylist(tracksIds, playlistId)
+        text_file = open("Output.txt", "w")
+        text_file.write("%s" % sql)
+        text_file.close()
+
+        tracksIds = []
+        # TODO : add a return statement in SQL get all the ids and make an UPSERT on app_track_playlist and app_track_artist
+        with closing(connection.cursor()) as cursor:
+            # Executing the query and saving all the id inserted
+            cursor.execute(sql, params)
+            for row in cursor.fetchall():
+                tracksIds.append(row[0])
+
+        updateTrackArtists(tracks, artists, tracksIds)
+        updatePlaylist(tracksIds, playlistId)

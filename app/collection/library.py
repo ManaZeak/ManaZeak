@@ -194,7 +194,7 @@ def rescanLibraryProcess(libraryId, user):
             while not scanned:
                 # We call the database to refresh the value in memory.
                 scanned = Library.objects.get(id=library.id).playlist.isScanned
-                sleep(1)
+                sleep(5)
     else:
         if Library.objects.filter(id=libraryId).count() == 1:
             library = Library.objects.get(id=libraryId)
@@ -363,6 +363,9 @@ def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
     albumsTotalDisc = {}
     genres = set()
 
+    # Set all track of the playlist as not scanned
+    Track.objects.filter(playlist__id=playlist.id).update(scanned=False)
+
     # Adding default values
     albumReference[""] = Album.objects.get(title=None).id
     coverPath = "/ManaZeak/static/img/covers/"
@@ -391,7 +394,7 @@ def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
     albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
     refreshPlaylist(tracks, artistsReference, albumReference, genresReference, playlist.id)
     # Delete the tracks that were not present during the rescan
-    Track.objects.filter(playlist__id=playlist.id, scanned=False).delete()
+    Track.objects.filter(scanned=False).delete()
 
 
 class ImportBulkThread(threading.Thread):
