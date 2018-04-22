@@ -29,7 +29,7 @@ class FileType(models.Model):
 
 
 class Track(models.Model):
-    location = models.FilePathField(max_length=1000)
+    location = models.FilePathField(max_length=1000, unique=True)
     coverLocation = models.URLField(max_length=1000, null=True)
     title = models.CharField(max_length=1000)
     year = models.IntegerField(null=True)
