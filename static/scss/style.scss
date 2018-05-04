@@ -19,13 +19,20 @@ html, body {
 .mzk-main-container {
     background: $mzk-bg-normal;
     flex:       1 1 auto;
-    overflow:   auto;
+    min-height: 0;
     width:      100%;
+    position:   relative;
 
     & > .mzk-view {
+        position: absolute;
+        top:      0;
+        left:     0;
+        right:    0;
+        bottom:   0;
+        overflow: auto;
 
         &.mzk-view-hide {
-            z-index: -1;
+            visibility: hidden;
         }
     }
 

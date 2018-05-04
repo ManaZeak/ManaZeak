@@ -1,8 +1,10 @@
+$cover-width: 600px;
+
 .mzk-partyview {
     background-color:  $mzk-bg-darker;
     color:             white;
     display:           flex;
-    overflow:          hidden;
+    overflow:          hidden !important;
     -moz-transition:    party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
     -webkit-transition: party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
     transition:         party-fadeIn 0.8s linear, z-index 0s, transform 0.8s ease-in-out;
@@ -49,8 +51,8 @@
                 background-color: $mzk-bg-light;
                 animation-delay: 0.2s;
                 box-shadow: 0 0 30px #fff;
-                height: 350px;
-                width: 350px;
+                height: $cover-width;
+                width: $cover-width;
                 -moz-animation: fade 40s linear infinite;
                 -webkit-animation: fade 40s linear infinite;
                 animation: fade 40s linear infinite;
@@ -58,13 +60,25 @@
 
             .mzk-party-track-info {
                 display:     inline-block;
-                margin-left: 60px;
+                margin-left: 80px;
 
                 h1,
                 h2,
                 h3 {
                     margin:     0;
                     text-align: left;
+                }
+
+                h1 {
+                    font-size: 3em;
+                }
+
+                h2 {
+                    font-size: 1.7em;
+                }
+
+                h3 {
+                    font-size: 1.2em;
                 }
 
                 .a,
@@ -74,24 +88,27 @@
                     -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
                 }
 
-                .c,
-                .d {
+                .c {
                     animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
                     -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
                     -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
 
                 }
 
-                .e {
+                .d {
                     animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.2s infinite;
-                    -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
-                    -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.1s infinite;
+                    -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.2s infinite;
+                    -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) 0.2s infinite;
                 }
 
                 .b,
-                .d {
+                .c {
                     margin-bottom: 20px;
                 }
+            }
+
+            .mzk-party-track-info-composers {
+                display: inline-flex;
             }
         }
 
@@ -99,8 +116,7 @@
         .mzk-controls {
             margin-top:   2 * $mzk-margin;
             padding-left: 10%;
-            width:        350px;
-            max-width:    25%;
+            width:        $cover-width;
 
             img {
                 background: $mzk-bg-alpha-darker;
@@ -196,12 +212,6 @@
             color: $mzk-text;
             padding-top: 3px;
             padding-right: 70px;
-
-            animation:         text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-            -moz-animation:    text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-            -webkit-animation: text-moving 20s cubic-bezier(0.77, 0, 0.18, 1) infinite;
-
-            animation-direction: reverse;
         }
     }
 

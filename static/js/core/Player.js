@@ -160,7 +160,7 @@ class Player {
      * desc   : Init player volume, set/store player empty source and listen
      **/
     _init() {
-        this.player.volume = 0.5; // TODO : init from global var in App os user settings
+        this.player.volume = window.app.cookies["MZK_VOLUME"] != undefined ? window.app.cookies["MZK_VOLUME"] : 0.5; // TODO : init from global var in App os user settings
         this.emptyURL      = '';
         this._eventListener();
     }

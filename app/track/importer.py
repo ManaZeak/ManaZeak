@@ -171,7 +171,8 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
     # --- COVER ---
     if not ogg:
         picture = audioFile.pictures
-        picture = picture[0].data
+        if len(picture) > 0:
+            picture = picture[0].data
         pictureName = picture
     else:
         picture = None

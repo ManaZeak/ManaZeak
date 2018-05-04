@@ -6,7 +6,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { getCookies, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import { getCookies, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
 import FootBar  from './components/FootBar.js'
 import MzkObject from './core/MzkObject.js'
 import TopBar   from './components/TopBar.js'
@@ -31,6 +31,7 @@ class App extends MzkObject {
     constructor(callback) {
         super();
         this.cookies                 = getCookies();
+        this.cookieTimeout           = null;
         this.dragdrop                = new DragDrop(document.body);
         this.mainContainer           = document.createElement("DIV");
         this.mainContainer.className = "mzk-main-container";
@@ -612,13 +613,14 @@ class App extends MzkObject {
             "playlist/fetchAll/",
             function(response) {
                 /* response = {
-                 *     DONE                : bool
-                 *     ERROR_H1            : string
-                 *     ERROR_MSG           : string
+                 *     DONE                  : bool
+                 *     ERROR_H1              : string
+                 *     ERROR_MSG             : string
                  *
-                 *     PLAYLIST_IDS        : int[] / undefined
-                 *     PLAYLIST_NAMES      : string[] / undefined
-                 *     PLAYLIST_IS_LIBRARY : bool[] / undefined
+                 *     PLAYLIST_IDS          : int[] / undefined
+                 *     PLAYLIST_NAMES        : string[] / undefined
+                 *     PLAYLIST_DESCRIPTIONS : string[] / undefined
+                 *     PLAYLIST_IS_LIBRARY   : bool[] / undefined
                  * } */
                 that._appStart(response); // Response is tested in _appStart
             }
@@ -829,7 +831,7 @@ class App extends MzkObject {
         }
 
         let that = this;
-        let np = new Playlist(0, null, false, false, undefined, function() {
+        let np = new Playlist(0, null, '', false, false, undefined, function() {
             that.playlists.add(np);
             that.changePlaylist(np.id);
             if(callback)
@@ -850,7 +852,7 @@ class App extends MzkObject {
         }
 
         let that = this;
-        let nl = new Playlist(0, null, true, false, undefined, function() {
+        let nl = new Playlist(0, null, '', true, false, undefined, function() {
             that.playlists.add(nl);
             that.changePlaylist(nl.id);
             if(callback)
@@ -913,6 +915,9 @@ class App extends MzkObject {
      **/
     setVolume(volume) {
         this.player.setVolume(volume);
+
+        window.clearTimeout(this.cookieTimeout);
+        this.cookieTimeout = window.setTimeout(setCookie("MZK_VOLUME", volume, 20), 250);
     }
 
 
@@ -1112,6 +1117,7 @@ class App extends MzkObject {
             for (let i = 0; i < playlists.PLAYLIST_IDS.length; ++i) {
                 that.playlists.add(new Playlist(playlists.PLAYLIST_IDS[i],
                     playlists.PLAYLIST_NAMES[i],
+                    playlists.PLAYLIST_DESCRIPTIONS[i],
                     playlists.PLAYLIST_IS_LIBRARY[i],
                     true,
                     undefined,

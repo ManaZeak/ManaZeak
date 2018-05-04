@@ -29,7 +29,7 @@ class FileType(models.Model):
 
 
 class Track(models.Model):
-    location = models.FilePathField(max_length=1000)
+    location = models.FilePathField(max_length=1000, unique=True)
     coverLocation = models.URLField(max_length=1000, null=True)
     title = models.CharField(max_length=1000)
     year = models.IntegerField(null=True)
@@ -64,6 +64,7 @@ class Playlist(models.Model):
     isLibrary = models.BooleanField(default=False)
     isScanned = models.BooleanField(default=False)
     refreshView = models.BooleanField(default=True)
+    description = models.CharField(default="", max_length=10000)
 
 
 class Library(models.Model):
