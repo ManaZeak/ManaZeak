@@ -688,6 +688,7 @@ class Playlist {
     getIsLibrary()   { return this.isLibrary;   }
     getRepeatMode()  { return this.repeatMode;  }
     getShuffleMode() { return this.shuffleMode; }
+    getActiveView()  { return this.activeView;  }
 
     setName(name)               { this.name = name;               }
     setDescription(description) { this.description = description; }

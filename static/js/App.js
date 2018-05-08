@@ -26,6 +26,7 @@ import ListView from './views/ListView.js'
 import Playlist from './core/Playlist.js'
 import Notification from './utils/Notification.js'
 import Modal from './utils/Modal.js'
+import SearchBar from './components/SearchBar.js'
 
 class App extends MzkObject {
 
@@ -45,6 +46,8 @@ class App extends MzkObject {
         this.cssFiles                = {};
         this.appViews                = {};
         this.shortcutMaestro         = new ShortcutMaestro();
+        this.search                  = null;
+        this.isSearchUp              = false;
         this.availableViews          = {
             LIST: {
                 index: 0,
@@ -1129,6 +1132,8 @@ class App extends MzkObject {
             defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
                 that.changePlaylist(that.playlists.getDefault().id);
+                that.search = new SearchBar();
+                that._searchListener();
                 that.playlists.forEach(function() {
                     this.getPlaylistsTracks();
                 }, false);
@@ -1201,6 +1206,15 @@ class App extends MzkObject {
         this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.01); }, true));
     }
 
+
+    _searchListener() {
+        let that = this;
+        document.body.addEventListener('keyup', function(event) {
+            if (!that.search.getVisible()) {
+                that.search.show();
+            }
+        });
+    }
 }
 
 export default App
