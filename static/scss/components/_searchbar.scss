@@ -6,9 +6,10 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
-    div {
+    .container {
         width: 400px;
         background-color: $mzk-bg-normal;
         height: 40px;
@@ -19,6 +20,19 @@
         input {
             width: 80%;
             margin: 0 10px 10px 10px;
+        }
+    }
+
+    .result {
+        max-height: 80%;
+        width: 380px;
+        background-color: $mzk-bg-light;
+
+        div {
+            padding: 7px;
+            border-bottom: solid 1px black;
+            cursor: pointer;
+            font-size: 0.9em;
         }
     }
 }

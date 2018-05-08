@@ -1211,7 +1211,7 @@ class App extends MzkObject {
         let that = this;
         document.body.addEventListener('keyup', function(event) {
             if (!that.search.getVisible()) {
-                that.search.show();
+                that.search.show(event.key, that.activePlaylist.tracks); //TODO Replace with getter
             }
         });
     }
