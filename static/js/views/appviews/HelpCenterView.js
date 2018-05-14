@@ -139,8 +139,71 @@ class HelpCenterView extends View {
         this.ui.menuRanksPerms.className = "mzk-selected";
         this.ui.contentTitle.innerHTML      = "Ranks / Permissions";
 
+        let intro = document.createElement('P');
+        intro.innerHTML = "In order to keep ManaZeak a great place for everyone, some features are locked until you earn a given reputation. Don't panic, the locked features are mostly libraries' management ones, so you won't be restricted on listening music (we are not some fucking dickhead from Spotify or Apple Music, god damn it).<br><br>" +
+            "When you first sign into ManaZeak, you will be ranked as a new comer. You will be able to naviguate trhough libraries, listen to music and a lot more that we'll be glad you discover. Nevertheless, you won't be able to upload tracks or edit tags yet. If you are not OK with those limited privileges, brace yourself, roll up your sleeves and try to earn ManaCoins  (see ManaCoin entry in the Help Center).<br><br>" +
+            "Your ManaCoin wallet helps us determine a confidence index that is a trust indicator we can put into you (again, we are not FaceBook, and this damn confidence index is not secret and won't be sold to advertiser motherfcukers). You can see it in your profile view, in the My Wallet tab. As mentionned in the ManaCoin entry, you can quickly fall into the abyss if you purposely fuck up ManaZeak. In the contrary, if you do you best to make it cleaner (suggesting tags) or enhance libraries content with your musical tastes (uploading tracks), you will soon climb the ladder and rank up: ranking up will give you more control over music collections and tracks, among of giving you the prestige of a rank.";
+
+        let ranks = document.createElement('H2');
+        ranks.innerHTML = 'Ranks';
+
+        let ranksPublicDesc = document.createElement('P');
+        ranksPublicDesc.innerHTML = "Here is the list of the official ranks of ManaZeak, with the required confidence index to be promoted :";
+
+        let ranksPublic = document.createElement('UL');
+        ranksPublic.classList.add('earningManaCoinList');
+
+        let ranksPublic1 = document.createElement('LI');
+        let ranksPublic2 = document.createElement('LI');
+        let ranksPublic3 = document.createElement('LI');
+
+        ranksPublic1.innerHTML = "<b>Naab</b> : Confidence index is under XX";
+        ranksPublic2.innerHTML = "<b>User</b> : Confidence index is between XX and YY";
+        ranksPublic3.innerHTML = "<b>Moderator</b> : Confidence index over XX";
+
+        ranksPublic.appendChild(ranksPublic1);
+        ranksPublic.appendChild(ranksPublic2);
+        ranksPublic.appendChild(ranksPublic3);
+
+        let ranksPrivDesc = document.createElement('P');
+        ranksPrivDesc.innerHTML = "These are the standard rank that are available for all. There are three special rank that are only accessible under a given set of condition :";
+
+        let ranksPriv = document.createElement('UL');
+        ranksPriv.classList.add('earningManaCoinList');
+
+        let ranksPriv1 = document.createElement('LI');
+        let ranksPriv2 = document.createElement('LI');
+        let ranksPriv3 = document.createElement('LI');
+
+        ranksPriv1.innerHTML = "<b>Banned</b> : No need to explain, you did some serious shit in there...";
+        ranksPriv2.innerHTML = "<b>Admin</b> : Libraries administrator are your gods inside ManaZeak, press F.";
+        ranksPriv3.innerHTML = "<b>Root</b> : Root Master Race is not accessible. Consider Root as the ManaZeak' non-human account.";
+
+        ranksPriv.appendChild(ranksPriv1);
+        ranksPriv.appendChild(ranksPriv2);
+        ranksPriv.appendChild(ranksPriv3);
+
+        let perm = document.createElement('H2');
+        perm.innerHTML = 'Permissions';
+
+        let permDesc = document.createElement('P');
+        permDesc.innerHTML = "As said previously, those ranks are tightly linked with permissions in ManaZeak. Here you have a table that summarize permissions with the minimal rank necessary :";
+
+        // TODO : mk table depending on nls array of perms (for statement)
+
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+
+        this.ui.content.appendChild(intro);
+
+        this.ui.content.appendChild(ranks);
+        this.ui.content.appendChild(ranksPublicDesc);
+        this.ui.content.appendChild(ranksPublic);
+        this.ui.content.appendChild(ranksPrivDesc);
+        this.ui.content.appendChild(ranksPriv);
+
+        this.ui.content.appendChild(perm);
+        this.ui.content.appendChild(permDesc);
     }
 
 
