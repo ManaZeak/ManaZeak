@@ -122,10 +122,113 @@ class HelpCenterView extends View {
     _requestTagConventionPage() {
         this._clearPageSpace();
         this.ui.menuTagConvention.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = "Tag convention";
+        this.ui.contentTitle.innerHTML      = "Tag and naming convention";
+
+        let intro = document.createElement('P');
+        intro.innerHTML = "In order to have a consistent and unified music library, we have set a couple rules and guidelines to do so. Those guidelines are specific to the manazeak.org instance (if you run your own @home, feel free to set your own convention). This section will cover two main subjects : file naming and tag rules.";
+
+        let fileConv = document.createElement('H2');
+        fileConv.innerHTMl = 'File convention';
+
+        let fileDesc = document.createElement('P');
+        fileDesc.innerHTMl = "A precisely named file is an easily one to find and manipulate, that's for sure. The following guidelines covers the whole file naming process and must be always checked before any track/album upload on ManaZeak.";
+
+        let dirSpec = document.createElement('H3');
+        dirSpec.innerHTML = 'Directory specifications';
+
+        let dirContent = document.createElement('P');
+        dirContent.innerHTML = "When you upload a full album (to be included in Albums' library), you must comply with a specific folder naming convention. Each artists must have its own folder, named identically with the artist's name. In this new folder, you must refer each and every album by its year, followed by a hyphen (-) surrounded with one space and the album title (<b>%year% - %album%</b>). Then, you may put all the album tracks in it, next to the album's cover. The album's cover itself must be a 1000x1000 .jpg file, named with the album's folder name. Finally, all the album's tracks must comply with the file specifications enounced in the File specifications section.<br><br>" +
+            "Some album are from a specific genre : single, EP. For a single, the mention <b>- Single</b> must appear at the end of the album title, for an EP, only add <b>EP</b> at the end of the album's title";
+
+        let ex = document.createElement('H4');
+        ex.innerHTML = 'Example';
+
+        let dirEx = document.createElement('P');
+        dirEx.innerHTMl = "Let's take the Metallica's album Master Of Puppets as an example. First, create the following directory hierrarchy to put tracks in ; Metallica folder, with a Master Of Puppets sub-folder :";
+
+        let dirPath = document.createElement('P');
+        dirPath.innerHTML = "Metallica / 1986 - Master Of Puppets /";
+
+        let dirDesc = document.createElement('P');
+        dirDesc.innerHTML = "After the folders creation, fill the <code>1986 - Master of Puppets</code> folder with it relative files :";
+
+        let dirCompo = document.createElement('P');
+        dirCompo.innerHTML = "101 - Metallica - Battery.flac<br>" +
+            "102 - Metallica - Master Of Puppets.flac<br>" +
+            "103 - Metallica - The Thing That Should Not Be.flac<br>" +
+            "104 - Metallica - Welcome Home (Sanitarium).flac<br>" +
+            "105 - Metallica - Disposable Heroes<br>" +
+            "106 - Metallica - Leper Messiah.flac<br>" +
+            "107 - Metallica - Orion.flac<br>" +
+            "108 - Metallica - Damage, Inc.flac<br>" +
+            "1986 - Master Of Puppets.jpg";
+
+        let dirConclusion = document.createElement('P');
+        dirConclusion.innerHTMl = "You can now upload the album by drag and droppign the Metallica folder you created straight in ManaZeak.";
+
+        let fileSpec = document.createElement('H2');
+        fileSpec.innerHTML = 'File specifications';
+
+        let fileIntro = document.createElement('P');
+        fileIntro.innerHTML = "Be sure that the file(s) you push are matching these requirements :";
+
+        let fileSpecList = document.createElement('UL');
+        fileSpecList.classList.add('earningManaCoinList');
+        let fileSpec1 = document.createElement('LI');
+        let fileSpec2 = document.createElement('LI');
+        let fileSpec3 = document.createElement('LI');
+        let fileSpec4 = document.createElement('LI');
+        let fileSpec5 = document.createElement('LI');
+        let fileSpec6 = document.createElement('LI');
+        let fileSpec7 = document.createElement('LI');
+        let fileSpec8 = document.createElement('LI');
+        let fileSpec9 = document.createElement('LI');
+        let fileSpec10 = document.createElement('LI');
+
+        fileSpec1.innerHTML = "naming for Albums library: <b>%disc number%%track number% - %composer% - %title%</b> ;";
+        fileSpec2.innerHTML = "naming for Artists and Mix libraries: <b>%composer% - %title%</b> ;";
+        fileSpec3.innerHTML = "track names must be CamelCase, always ;";
+        fileSpec4.innerHTML = "special characters must be replaced with a hyphen (-) ;";
+        fileSpec5.innerHTML = "artists name must respect the artists specific case ;";
+        fileSpec6.innerHTML = "composer(s) must be written with the artist name only ;";
+        fileSpec7.innerHTML = "multi-artists must be separated with comas, and alphabetically ordered (composer, featured artists and remixers/cover artists) ;";
+        fileSpec8.innerHTML = "featured artists must be place after the title, surrounded with parenthesis and prefixed with the <i>feat.</i> mention ;";
+        fileSpec9.innerHTML = "remixers or cover artists must be mentioned at the end, surrounded with parenthesis and suffixed with the <i>Remix</i> or <i>Cover</i> mention ;";
+        fileSpec10.innerHTML = "the mention <i>[Bonus track]</i> must appear in the appropriate case, as the last file name element.";
+
+        fileSpecList.appendChild(fileSpec1);
+        fileSpecList.appendChild(fileSpec2);
+        fileSpecList.appendChild(fileSpec3);
+        fileSpecList.appendChild(fileSpec4);
+        fileSpecList.appendChild(fileSpec5);
+        fileSpecList.appendChild(fileSpec6);
+        fileSpecList.appendChild(fileSpec7);
+        fileSpecList.appendChild(fileSpec8);
+        fileSpecList.appendChild(fileSpec9);
+        fileSpecList.appendChild(fileSpec10);
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
+
+        
+
+        this.ui.content.appendChild(intro);
+        this.ui.content.appendChild(fileConv);
+        this.ui.content.appendChild(fileDesc);
+
+        this.ui.content.appendChild(dirSpec);
+        this.ui.content.appendChild(dirContent);
+        this.ui.content.appendChild(ex);
+        this.ui.content.appendChild(dirEx);
+        this.ui.content.appendChild(dirPath);
+        this.ui.content.appendChild(dirDesc);
+        this.ui.content.appendChild(dirCompo);
+        this.ui.content.appendChild(dirConclusion);
+
+        this.ui.content.appendChild(fileSpec);
+        this.ui.content.appendChild(fileIntro);
+        this.ui.content.appendChild(fileSpecList);
+        this.ui.content.appendChild(ex.cloneNode(true));
     }
 
 
