@@ -9,6 +9,9 @@ from app.utils import errorCheckMessage, checkPermission
 
 
 # Create a wish in the database
+from app.wallet import rewardWish
+
+
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def createWish(request):
     if request.method == 'POST':
@@ -19,7 +22,7 @@ def createWish(request):
                 wish = Wish()
                 wish.user = user
                 wish.text = strip_tags(str(response['WISH']))
-                wish.status = 0  # Not done; 1 Refused; 2 Accepted
+                wish.status = 0  # Not done; 1 Refused; 2 Accepted; 3 Read
                 wish.save()
                 data = errorCheckMessage(True, None)
             else:
@@ -83,11 +86,25 @@ def setWishStatus(request):
                     except ValueError:
                         return JsonResponse(errorCheckMessage(False, "valueError"))
 
-                    if status in range(0, 3):
-                        wish.status = status
-                        wish.save()
-                        data = errorCheckMessage(True, None)
-                        # TODO : Add notification logging for user
+                    # Wishes' status can be changed only if they are "not read"
+                    if wish.status == 0:
+                        # Ignoring wishes that are stying in the status "not read"
+                        if status in range(1, 4):
+                            # Preventing admin to give himself points for wishes
+                            if wish.user != user:
+                                # Wish is refused
+                                if status == 1:
+                                    rewardWish(wish.user, False)
+                                # Wish is accepted
+                                elif status == 2:
+                                    rewardWish(wish.user, True)
+
+                            wish.status = status
+                            wish.save()
+                            data = errorCheckMessage(True, None)
+                            # TODO : Add notification logging for user
+                        else:
+                            data = errorCheckMessage(False, "valueError")
                     else:
                         data = errorCheckMessage(False, "valueError")
                 else:

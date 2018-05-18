@@ -27,6 +27,11 @@ def checkListeningGain(track, user):
                         createTransaction("PLAY", user, True, 1)
 
 
+# Create the transaction for a wish
+def rewardWish(user, isGain):
+    createTransaction("WISH", user, isGain, 1)
+
+
 def calculateStreak(user, transaction):
     userPref = UserPreferences.objects.get(user=user)
     if transaction.isGain:
