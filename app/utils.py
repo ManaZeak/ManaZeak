@@ -1,5 +1,6 @@
 from django.utils.html import strip_tags
 
+from app.achievement import refreshAchievements, checkAchievement
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
 
 
@@ -147,6 +148,7 @@ def errorCheckMessage(isDone, error):
 
 
 def checkPermission(requirements, user):
+    checkAchievement(user)
     userPref = UserPreferences.objects.get(user=user)
     permissions = userPref.group.permissions
     if permissions.filter(code__in=requirements).count() == len(requirements):
@@ -225,6 +227,9 @@ def populateDB():
         Groups(name="Root", rank=5).save()
         for group in Groups.objects.all():
             fillDefaultPermission(group)
+
+    # Creating and updating achivements
+    refreshAchievements()
 
 
 def fillDefaultPermission(group):

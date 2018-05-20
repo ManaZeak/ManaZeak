@@ -99,3 +99,10 @@ def createTransaction(code, user, isGain, multiplier):
             if userPref.inviteCode.user is not None:
                 bubbleTransaction(amount, isGain, userPref.inviteCode.user)
     calculateStreak(user, transaction)
+
+
+def rewardAchievement(user, achievement):
+    achievement.user.add(user)
+    userPref = UserPreferences.objects.get(user=user)
+    wallet = userPref.wallet
+    wallet.globalGain += achievement.reward

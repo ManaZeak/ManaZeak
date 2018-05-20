@@ -163,6 +163,18 @@ class Groups(models.Model):
     permissions = models.ManyToManyField(Permissions)
 
 
+class Achievement(models.Model):
+    description = models.CharField(max_length=10000)
+    firstHint = models.CharField(max_length=10000)
+    secondHint = models.CharField(max_length=10000)
+    thirdHint = models.CharField(max_length=10000)
+    reward = models.IntegerField()
+    title = models.CharField(max_length=10000)
+    isHidden = models.BooleanField(default=True)
+    code = models.CharField(max_length=10, unique=True)
+    user = models.ManyToManyField(User)
+
+
 class UserPreferences(models.Model):
     inviteCode = models.ForeignKey(InviteCode, null=True)
     wallet = models.ForeignKey(Wallet, null=True)
