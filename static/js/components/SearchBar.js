@@ -6,16 +6,15 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 import { matchItem } from "../utils/Utils";
-
 
 class SearchBar {
 
     constructor() {
 
         this.isVisible = false;
-        this.entries = [];
+        this._entries = [];
+        this._eventListeners = [];
 
         this._createUI();
         this._eventListener();
@@ -49,9 +48,9 @@ class SearchBar {
      **/
     _createUI() {
         this.ui = {
-            overlay: document.createElement('DIV'),
-            container: document.createElement('DIV'),
-            input:       document.createElement('INPUT'),
+            overlay:         document.createElement('DIV'),
+            container:       document.createElement('DIV'),
+            input:           document.createElement('INPUT'),
             resultContainer: document.createElement('DIV')
         };
 
@@ -62,6 +61,8 @@ class SearchBar {
         this.ui.input.name = 'search';
         this.ui.input.type = 'text';
 
+        this.ui.input.setAttribute('autocomplete', 'off');
+
         this.ui.container.appendChild(this.ui.input);
         this.ui.overlay.appendChild(this.ui.container);
         this.ui.overlay.appendChild(this.ui.resultContainer);
@@ -70,36 +71,48 @@ class SearchBar {
 
     _eventListener() {
         let that = this;
-        // TODO : integrate w/ shortcut to aggro from body
+        // TODO : integrate w/ shortcut to aggro from body and preventDefault on keyboard event
         this.ui.input.addEventListener('keyup', function(event) {
-
-            if (event.keyCode === 27 && that.isVisible) {
+            //   ESC key pressed         Search is active   Empty input
+            if ((event.keyCode === 27 && that.isVisible) || that.ui.input.value.length === 0) { // Close search component
                 that.hide();
-                return;
             }
 
-            that._clearResults();
-            that._search();
+            else {
+                that._search();
+            }
         });
     }
 
 
     _search() {
-        for (let i = 0; i < this.entries.length; ++i) {
-  			let result = matchItem(this.entries[i], this.ui.input.value); // Perform a matching test
+        this._clearResults();
 
-			if (result !== null) { // Here we avoid useless chat between Main and Worker thread
-                this._newMatch(result);
-			}
+        if (this.ui.input.value.length > 0) {
+            for (let i = 0; i < this._entries.length; ++i) {
+                let result = matchItem(this._entries[i], this.ui.input.value); // Perform a matching test
+
+                if (result !== null) { // Here we avoid useless chat between Main and Worker thread
+                    this._newMatch(result);
+                }
+            }
         }
     }
 
 
     _newMatch(result) {
         let tmp = document.createElement('DIV'); // Creating its entry
-		tmp.innerHTML = result.entry.title + ' - ' +
-                        result.entry.artist + '<br><b>Match: </b>' +
-                        result.match; // TODO : clear match output
+
+        tmp.innerHTML = result.entry.title + ' - ' +
+                        result.entry.artist +
+                        '<br><b>Match: </b>' + result.match.toTitleCase(); // TODO : clear match output
+
+        let that = this;
+        this._eventListeners.push(tmp.addEventListener('dblclick', () => {
+            window.app.changeTrack(result.entry.track, true);
+            that.hide();
+        }));
+
         this.ui.resultContainer.appendChild(tmp);
     }
 
@@ -111,16 +124,16 @@ class SearchBar {
 
     _formatEntries(rawEntries) {
         for (let i = 0; i < rawEntries.length; ++i) {
-            this.entries.push({
-                title: rawEntries[i].title,
-                album: rawEntries[i].album,
-                artist: rawEntries[i].artist,
+            this._entries.push({
+                track:    rawEntries[i],
+                title:    rawEntries[i].title,
+                album:    rawEntries[i].album,
+                artist:   rawEntries[i].artist,
                 composer: rawEntries[i].composer,
-                genre: rawEntries[i].genre
+                genre:    rawEntries[i].genre
             });
         }
     }
-
 
     getVisible() { return this.isVisible; }
 }

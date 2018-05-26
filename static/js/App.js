@@ -270,13 +270,13 @@ class App extends MzkObject {
             lastTrackPath   = "None";
         }
 
-        let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
+        let durationPlayed = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
             "track/getPath/",
             JSON.stringify({
                 TRACK_ID:         track.id.track,
                 LAST_TRACK_PATH:  lastTrackPath,
-                TRACK_PERCENTAGE: isNaN(duration_played) ? 0 : duration_played,
+                TRACK_PERCENTAGE: isNaN(durationPlayed) ? 0 : durationPlayed,
                 PREVIOUS:         previous
             }),
             function(response) {
@@ -1210,7 +1210,8 @@ class App extends MzkObject {
     _searchListener() {
         let that = this;
         document.body.addEventListener('keyup', function(event) {
-            if (!that.search.getVisible()) {
+            let inputCode = String.fromCharCode(event.keyCode);
+            if (/[a-zA-Z0-9-_\[\]]/.test(inputCode) && !that.search.getVisible()) {
                 that.search.show(event.key, that.activePlaylist.tracks); //TODO Replace with getter
             }
         });

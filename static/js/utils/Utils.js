@@ -474,15 +474,14 @@ export function genUniqueID() {
 }
 
 
-
 export function matchItem(entry, search) { // Function that check all entry' attributes (except ID) and search for a match in them
-	let result = null; // Result object, null === no match
-	let keys   = Object.keys(entry); // Entry attributes array
+	let result      = null; // Result object, null === no match
+	let keys        = Object.keys(entry); // Entry attributes array
 	let matchOutput = ''; // Keys that matched
-	let accuracy = 0; // Number of keys that matched
+	let accuracy    = 0; // Number of keys that matched
 
 	for (let i = 0; i < keys.length; ++i) { // Iterating over keys
-		if (keys[i] !== 'id' && entry[keys[i]].indexOf(search) !== -1) { // We avoid testing ID since it is only here to retrieve item back in Main thread
+		if (keys[i] !== 'track' && entry[keys[i]].toLowerCase().indexOf(search.toLowerCase()) !== -1) { // We avoid testing ID since it is only here to retrieve item back in Main thread
 			matchOutput += keys[i] + ' '; // Update match string (might be use for accuracy later...)
 			++accuracy; // Update accuracy index
 
@@ -497,3 +496,9 @@ export function matchItem(entry, search) { // Function that check all entry' att
 	return result;
 }
 
+
+String.prototype.toTitleCase = function() {
+    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2) {
+       return p1+p2.toUpperCase();
+    });
+};

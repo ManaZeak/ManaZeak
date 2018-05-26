@@ -6,7 +6,7 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-import { JSONParsedPostRequest, sortObjectArrayBy } from '../utils/Utils.js'
+import { sortObjectArrayBy } from '../utils/Utils.js'
 import ListViewEntry from './entries/ListViewEntry.js'
 import PlaylistView from '../core/PlaylistView.js'
 import MultiSelect from '../utils/MultiSelect.js'
