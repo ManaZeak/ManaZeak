@@ -14,7 +14,7 @@ def checkAchievement(user):
     achievementNotCompleted = Achievement.objects.exclude(user=user)
     for achiev in achievementNotCompleted:
         if achiev.code == AchievementEnum.LEET.name:
-            if Stats.objects.filter(user).aggregate(Sum('playCounter')) > 1337:
+            if checkLeet(user):
                 rewardAchievement(user, achiev)
 
         elif achiev.code == AchievementEnum.INSTINCT:
@@ -22,15 +22,24 @@ def checkAchievement(user):
                 rewardAchievement(user, achiev)
 
         elif achiev.code == AchievementEnum.GURU:
-            if checkGuruAchiev(user):
-                rewardAchievement(user, achiev)
+            # if checkGuruAchiev(user):
+            #   rewardAchievement(user, achiev)
+            pass
 
         elif achiev.code == AchievementEnum.MIX:
-            if Stats.objects.filter(user, track__duration=3600):
+            if Stats.objects.filter(user=user, track__duration=3600):
                 rewardAchievement(user, achiev)
 
         elif achiev.code == AchievementEnum.BEST_OF:
             pass
+
+
+def checkLeet(user):
+    sumCounter = Stats.objects.filter(user=user).aggregate(Sum('playCounter'))
+    if 'playCounter__sum' in sumCounter:
+        if sumCounter['playCounter__sum'] is not None:
+            return sumCounter['playCounter__sum'] > 1337
+    return False
 
 
 def checkInstinctAchiev(user):

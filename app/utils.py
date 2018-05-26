@@ -1,3 +1,4 @@
+from crontab import CronTab
 from django.utils.html import strip_tags
 
 from app.achievement import refreshAchievements, checkAchievement
@@ -230,6 +231,7 @@ def populateDB():
 
     # Creating and updating achivements
     refreshAchievements()
+    setCronJobs()
 
 
 def fillDefaultPermission(group):
@@ -261,3 +263,11 @@ def fillDefaultPermission(group):
     if group.rank > 4:
         group.permissions.add(Permissions.objects.get(code="GAPR"))
         group.permissions.add(Permissions.objects.get(code="COIN"))
+
+
+def setCronJobs():
+    print('Setting up cron shit')
+    cron = CronTab("root")
+    job = cron.new(command='python /Manazeak/manage.py testCron', comment='test')
+    job.minutes.every(1)
+    cron.write()
