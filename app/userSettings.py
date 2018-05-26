@@ -42,8 +42,15 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
-# Create an invite code for a user
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def changeAvatar(request):
+    if request.method == 'POST':
+        user = request.user
+
+
 def createUserInviteCode(user):
+    """ Creates an invite code for a user
+    """
     inviteCode = InviteCode()
     inviteCode.user = user
     inviteCode.code = hashlib.md5(
