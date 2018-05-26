@@ -163,6 +163,13 @@ class Groups(models.Model):
     permissions = models.ManyToManyField(Permissions)
 
 
+class Achievement(models.Model):
+    reward = models.IntegerField()
+    isHidden = models.BooleanField(default=True)
+    code = models.CharField(max_length=10, unique=True)
+    user = models.ManyToManyField(User)
+
+
 class UserPreferences(models.Model):
     inviteCode = models.ForeignKey(InviteCode, null=True)
     wallet = models.ForeignKey(Wallet, null=True)
@@ -170,4 +177,4 @@ class UserPreferences(models.Model):
     user = models.ForeignKey(User, null=True)
     totalListeningTime = models.FloatField(default=0.0)
     streak = models.IntegerField(default=100)
-
+    picture = models.FilePathField(default='/defaultimgpath')

@@ -20,11 +20,13 @@ import Player   from './core/Player.js'
 import StatsView from './views/appviews/StatsView.js'
 import AdminView from './views/appviews/AdminView.js'
 import UserView from './views/appviews/UserView.js'
+import HelpCenterView from './views/appviews/HelpCenterView.js'
 import PartyView from './views/appviews/PartyView.js'
 import ListView from './views/ListView.js'
 import Playlist from './core/Playlist.js'
 import Notification from './utils/Notification.js'
 import Modal from './utils/Modal.js'
+import SearchBar from './components/SearchBar.js'
 
 class App extends MzkObject {
 
@@ -44,6 +46,8 @@ class App extends MzkObject {
         this.cssFiles                = {};
         this.appViews                = {};
         this.shortcutMaestro         = new ShortcutMaestro();
+        this.search                  = null;
+        this.isSearchUp              = false;
         this.availableViews          = {
             LIST: {
                 index: 0,
@@ -266,13 +270,13 @@ class App extends MzkObject {
             lastTrackPath   = "None";
         }
 
-        let duration_played = (this.player.getCurrentTime() * 100) / this.player.getDuration();
+        let durationPlayed = (this.player.getCurrentTime() * 100) / this.player.getDuration();
         JSONParsedPostRequest(
             "track/getPath/",
             JSON.stringify({
                 TRACK_ID:         track.id.track,
                 LAST_TRACK_PATH:  lastTrackPath,
-                TRACK_PERCENTAGE: isNaN(duration_played) ? 0 : duration_played,
+                TRACK_PERCENTAGE: isNaN(durationPlayed) ? 0 : durationPlayed,
                 PREVIOUS:         previous
             }),
             function(response) {
@@ -1128,6 +1132,8 @@ class App extends MzkObject {
             defPlaylist.getPlaylistsTracks(function() {
                 modal.close();
                 that.changePlaylist(that.playlists.getDefault().id);
+                that.search = new SearchBar();
+                that._searchListener();
                 that.playlists.forEach(function() {
                     this.getPlaylistsTracks();
                 }, false);
@@ -1176,6 +1182,7 @@ class App extends MzkObject {
             this.createAppView('mzk_stats', new StatsView());
         }
         this.createAppView('mzk_user', new UserView());
+        this.createAppView('mzk_help', new HelpCenterView());
         this.createAppView('mzk_party', new PartyView());
     }
 
@@ -1199,6 +1206,16 @@ class App extends MzkObject {
         this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.01); }, true));
     }
 
+
+    _searchListener() {
+        let that = this;
+        document.body.addEventListener('keyup', function(event) {
+            let inputCode = String.fromCharCode(event.keyCode);
+            if (/[a-zA-Z0-9-_\[\]]/.test(inputCode) && !that.search.getVisible()) {
+                that.search.show(event.key, that.activePlaylist.tracks); //TODO Replace with getter
+            }
+        });
+    }
 }
 
 export default App

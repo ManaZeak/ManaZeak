@@ -70,6 +70,9 @@ class UserMenu {
                 window.app.showAppView('mzk_stats');
             });
         }
+        this.contextMenu.addEntry('settings', 'Help center', function() { // TODO : replace w/ username
+            window.app.showAppView('mzk_help');
+        });
         this.contextMenu.addEntry('logout', 'Log out', function() {
             window.app.logOut();
         });

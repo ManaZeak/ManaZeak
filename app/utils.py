@@ -1,5 +1,9 @@
+from distutils import command
+
+from crontab import CronTab
 from django.utils.html import strip_tags
 
+from app.achievement import refreshAchievements, checkAchievement
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
 
 
@@ -147,6 +151,7 @@ def errorCheckMessage(isDone, error):
 
 
 def checkPermission(requirements, user):
+    checkAchievement(user)
     userPref = UserPreferences.objects.get(user=user)
     permissions = userPref.group.permissions
     if permissions.filter(code__in=requirements).count() == len(requirements):
@@ -208,12 +213,18 @@ def populateDB():
 
     if TransactionType.objects.all().count() == 0:
         print("Creating default transaction types")
-        TransactionType(name="Listening", code="PLAY", coinGain=100, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
-        TransactionType(name="Edit tag", code="TAGE", coinGain=100, coinLoss=300, streakGain=2, streakLoss=10, bubbles=True).save()
-        TransactionType(name="Upload", code="UPLD", coinGain=300, coinLoss=100, streakGain=5, streakLoss=6 , bubbles=True).save()
-        TransactionType(name="Wish", code="WISH", coinGain=50, coinLoss=20, streakGain=1, streakLoss=10, bubbles=True).save()
-        TransactionType(name="Gift", code="GIFT", coinGain=1, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
-        TransactionType(name="Bubble", code="BUBL", coinGain=0, coinLoss=0, streakGain=0, streakLoss=0, bubbles=False).save()
+        TransactionType(name="Listening", code="PLAY", coinGain=100, coinLoss=0, streakGain=0, streakLoss=0,
+                        bubbles=False).save()
+        TransactionType(name="Edit tag", code="TAGE", coinGain=100, coinLoss=300, streakGain=2, streakLoss=10,
+                        bubbles=True).save()
+        TransactionType(name="Upload", code="UPLD", coinGain=300, coinLoss=100, streakGain=5, streakLoss=6,
+                        bubbles=True).save()
+        TransactionType(name="Wish", code="WISH", coinGain=50, coinLoss=20, streakGain=1, streakLoss=10,
+                        bubbles=True).save()
+        TransactionType(name="Gift", code="GIFT", coinGain=1, coinLoss=0, streakGain=0, streakLoss=0,
+                        bubbles=False).save()
+        TransactionType(name="Bubble", code="BUBL", coinGain=0, coinLoss=0, streakGain=0, streakLoss=0,
+                        bubbles=False).save()
 
     if Groups.objects.all().count() == 0:
         Groups(name="Banned", rank=0).save()
@@ -225,6 +236,11 @@ def populateDB():
         Groups(name="Root", rank=5).save()
         for group in Groups.objects.all():
             fillDefaultPermission(group)
+
+    print("zobare")
+    # Creating and updating achivements
+    setCronJobs()
+    refreshAchievements()
 
 
 def fillDefaultPermission(group):
@@ -256,3 +272,24 @@ def fillDefaultPermission(group):
     if group.rank > 4:
         group.permissions.add(Permissions.objects.get(code="GAPR"))
         group.permissions.add(Permissions.objects.get(code="COIN"))
+
+
+def setCronJobs():
+    print('Setting up cron shit')
+    cron = CronTab("root")
+    # Checking the job allready present
+    if checkIfCronJobExists('test', cron):
+        job = cron.new(command='python /ManaZeak/manage.py testCron', comment='test')
+        job.minutes.every(1)
+        cron.write()
+    if checkIfCronJobExists('rescan', cron):
+        job = cron.new(command='python /ManaZeak/manage.py rescan', comment='rescan')
+        job.hour.every(12)
+        cron.write()
+
+
+def checkIfCronJobExists(comment, cron):
+    i = 0
+    for _ in cron.find_comment(comment):
+        i += 1
+    return i == 0
