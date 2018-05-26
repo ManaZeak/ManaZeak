@@ -46,6 +46,30 @@ def getUserSettings(request):
 def changeAvatar(request):
     if request.method == 'POST':
         user = request.user
+        avatar_path = "static/img/avatars/" + user + ".png"
+        if UserPreferences.objects.filter(user=user).count() == 1:
+            userPref = UserPreferences.objects.get(user=user)
+            userPref.picture = avatar_path
+
+            md5Name = hashlib.md5()
+            if str(response['COVER'].split(",")[0]) == "image/png":
+                extension = "png"
+            else:
+                extension = "jpg"
+            md5Name.update(base64.b64decode(str(response['COVER'].split(",")[1])))
+            filePath = "/ManaZeak/static/img/covers/" + md5Name.hexdigest() + extension
+            if not os.path.isfile(filePath):
+                with open(filePath, 'wb+') as destination:
+                    # Split the header with MIME type
+                    tags.cover = base64.b64decode(str(response['COVER'].split(",")[1]))
+                    destination.write(tags.cover)
+                    track.coverLocation = md5Name.hexdigest() + extension
+
+        else:
+            data = errorCheckMessage(False, "dbError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
 
 
 def createUserInviteCode(user):
