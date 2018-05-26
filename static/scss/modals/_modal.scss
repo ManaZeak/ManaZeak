@@ -56,6 +56,10 @@ $spinnerSide: 110px;
 
         .mzk-modal-content {
             padding: ($mzk-padding * 2) ($mzk-padding * 5);
+
+            textarea {
+                width: 100%;
+            }
         }
 
         @import "content/cover";
@@ -78,6 +82,15 @@ $spinnerSide: 110px;
         height:   25px;
         position: absolute;
         right:    $mzk-padding;
+        top:      $mzk-padding;
+        width:    25px;
+    }
+
+    .mzk-modal-editbutton {
+        cursor:   pointer;
+        height:   25px;
+        position: absolute;
+        right:    ((2 * $mzk-padding) + 25px);
         top:      $mzk-padding;
         width:    25px;
     }

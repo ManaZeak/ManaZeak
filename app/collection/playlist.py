@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, deleteView, lazyJsonGenerator
+from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator
 from app.models import Playlist, Track
 from app.utils import errorCheckMessage, checkPermission
 
@@ -220,6 +220,7 @@ def getUserPlaylists(request):
         playlistNames = []
         playlistIds = []
         isLibrary = []
+        playlistDescriptions = []
 
         # Adding global libraries
         libraries = Playlist.objects.filter(isLibrary=True)
@@ -227,12 +228,14 @@ def getUserPlaylists(request):
             playlistNames.append(library.name)
             playlistIds.append(library.id)
             isLibrary.append(True)
+            playlistDescriptions.append(library.description)
 
         # Adding User playlists
         for playlist in playlists:
             playlistNames.append(playlist.name)
             playlistIds.append(playlist.id)
             isLibrary.append(False)
+            playlistDescriptions.append(playlist.description)
 
         if len(playlistIds) == 0:
             data = errorCheckMessage(False, None)
@@ -243,8 +246,63 @@ def getUserPlaylists(request):
                 'PLAYLIST_NAMES': playlistNames,
                 'PLAYLIST_IDS': playlistIds,
                 'PLAYLIST_IS_LIBRARY': isLibrary,
+                'PLAYLIST_DESCRIPTIONS': playlistDescriptions,
             }
             data = {**data, **errorCheckMessage(True, None)}
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Change the playlist description
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def setPlaylistDescription(request):
+    if request.method == "POST":
+        response = json.loads(request.body)
+        user = request.user
+        if 'PLAYLIST_ID' in response and 'PLAYLIST_DESC':
+            playlistId = strip_tags(response['PLAYLIST_ID'])
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+
+                # Checking if it's a library
+                if playlist.isLibrary:
+                    if not checkPermission(['LIBR'], user):
+                        return errorCheckMessage(False, "permissionError")
+                else:
+                    # playlist edition
+                    if not checkPermission(['PLST'], user):
+                        return errorCheckMessage(False, "permissionError")
+                playlist.description = strip_tags(response['PLAYLIST_DESC'])
+                playlist.save()
+
+                data = errorCheckMessage(True, None)
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
+# Get the playlist description
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def getPlaylistDescription(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        if 'PLAYLIST_ID' in response:
+            playlistId = response['PLAYLIST_ID']
+            if Playlist.objects.filter(id=playlistId).count() == 1:
+                playlist = Playlist.objects.get(id=playlistId)
+                data = {
+                    'PLAYLIST_DESC': playlist.description
+                }
+                data = {{**data, **errorCheckMessage(True, None)}}
+            else:
+                data = errorCheckMessage(False, "dbError")
+        else:
+            data = errorCheckMessage(False, "badFormat")
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)

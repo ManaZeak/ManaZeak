@@ -7,4 +7,6 @@ libsass
 django-compressor
 django-sass-processor
 requests
+python-crontab
+psutil
 pypng

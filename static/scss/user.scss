@@ -15,12 +15,9 @@ html, body {
 }
 
 @media (max-width: 1028px) {
-    .mzk-user img {
-        width: 65% !important;
-    }
-
-    .mzk-logo {
-        opacity: 0;
+    //Double the class to add specificity
+    .mzk-user.mzk-user img {
+        width: 65%;
     }
 }
 
@@ -125,5 +122,6 @@ html, body {
         left:          $mzk-margin * 4;
         position:      absolute;
         width:         20%;
+        max-width:     calc(20% - (#{$mzk-margin} * 4));
     }
 }

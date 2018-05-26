@@ -35,6 +35,92 @@ export function precisionRound(value, precision) {
 }
 
 
+
+export function secondsToDate(time) {
+    let weekday   = "-",
+        dayNumber = time.getDate(),
+        month     = "-",
+        year      = time.getFullYear(),
+        hours     = time.getHours(),
+        minutes   = time.getMinutes(),
+        separator = time.getSeconds() % 2 == 0 ? ":" : "<span style=\"color: transparent;\">-</span>";
+
+    switch (time.getDay()) {
+        case 0:
+            weekday = "Monday";
+            break;
+        case 1:
+            weekday = "Tuesday";
+            break;
+        case 2:
+            weekday = "Wednesday";
+            break;
+        case 3:
+            weekday = "Thursday";
+            break;
+        case 4:
+            weekday = "Friday";
+            break;
+        case 5:
+            weekday = "Saturday";
+            break;
+        case 6:
+            weekday = "Sunday";
+            break;
+        default:
+            weekday = "-";
+            break;
+    }
+
+    switch (time.getMonth()) {
+        case 0:
+            month = "January";
+            break;
+        case 1:
+            month = "February";
+            break;
+        case 2:
+            month = "March";
+            break;
+        case 3:
+            month = "April";
+            break;
+        case 4:
+            month = "May";
+            break;
+        case 5:
+            month = "June";
+            break;
+        case 6:
+            month = "July";
+            break;
+        case 7:
+            month = "August";
+            break;
+        case 8:
+            month = "September";
+            break;
+        case 9:
+            month = "October";
+            break;
+        case 10:
+            month = "November";
+            break;
+        case 11:
+            month = "December";
+            break;
+        default:
+            month = "-";
+            break;
+    }
+
+    if (hours < 10)   { hours = "0" + hours.toString();     }
+    if (minutes < 10) { minutes = "0" + minutes.toString(); }
+
+    return weekday + " " + dayNumber + " " + month + " " + year + "&nbsp;&nbsp;|&nbsp;&nbsp;" + hours + separator + minutes;
+}
+
+
 /**
  * method : secondsToTimecode (public)
  * desc   : Transforms seconds into a readable timecode
