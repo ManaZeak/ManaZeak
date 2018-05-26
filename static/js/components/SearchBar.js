@@ -6,7 +6,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { matchItem } from "../utils/Utils";
+import { matchItem, boldMatchingString } from "../utils/Utils";
 
 class SearchBar {
 
@@ -14,7 +14,6 @@ class SearchBar {
 
         this.isVisible = false;
         this._entries = [];
-        this._eventListeners = [];
 
         this._createUI();
         this._eventListener();
@@ -88,7 +87,7 @@ class SearchBar {
     _search() {
         this._clearResults();
 
-        if (this.ui.input.value.length > 0) {
+        if (this.ui.input.value.length > 1) {
             for (let i = 0; i < this._entries.length; ++i) {
                 let result = matchItem(this._entries[i], this.ui.input.value); // Perform a matching test
 
@@ -101,19 +100,46 @@ class SearchBar {
 
 
     _newMatch(result) {
-        let tmp = document.createElement('DIV'); // Creating its entry
+        let entry = document.createElement('DIV'); // Creating its entry
+        let cover = document.createElement('DIV'); // Creating its entry
+        let info = document.createElement('DIV'); // Creating its entry
 
-        tmp.innerHTML = result.entry.title + ' - ' +
-                        result.entry.artist +
-                        '<br><b>Match: </b>' + result.match.toTitleCase(); // TODO : clear match output
+        let trackCover = document.createElement('IMG');
+
+        let trackTitle = document.createElement('P');
+        let trackAlbum = document.createElement('P');
+        let trackComposer = document.createElement('P');
+        let trackGenre = document.createElement('P');
+        let matchInfo = document.createElement('P');
+
+        entry.classList.add('entry');
+
+        trackTitle.innerHTML = boldMatchingString(result.entry.title, this.ui.input.value) + ' - ' + boldMatchingString(result.entry.artist, this.ui.input.value);
+        trackAlbum.innerHTML = result.entry.track.year  + ' - ' + boldMatchingString(result.entry.album, this.ui.input.value);
+        trackComposer.innerHTML = boldMatchingString(result.entry.composer, this.ui.input.value);
+        trackGenre.innerHTML = boldMatchingString(result.entry.genre, this.ui.input.value);
+        matchInfo.innerHTML  = result.match.toTitleCase();
 
         let that = this;
-        this._eventListeners.push(tmp.addEventListener('dblclick', () => {
+        entry.addEventListener('dblclick', () => {
             window.app.changeTrack(result.entry.track, true);
             that.hide();
-        }));
+        });
 
-        this.ui.resultContainer.appendChild(tmp);
+        trackCover.src = result.entry.track.cover;
+
+        cover.appendChild(trackCover);
+
+        info.appendChild(trackTitle);
+        info.appendChild(trackAlbum);
+        info.appendChild(trackComposer);
+        info.appendChild(trackGenre);
+        info.appendChild(matchInfo);
+
+        entry.appendChild(cover);
+        entry.appendChild(info);
+
+        this.ui.resultContainer.appendChild(entry);
     }
 
 
@@ -127,8 +153,8 @@ class SearchBar {
             this._entries.push({
                 track:    rawEntries[i],
                 title:    rawEntries[i].title,
-                album:    rawEntries[i].album,
                 artist:   rawEntries[i].artist,
+                album:    rawEntries[i].album,
                 composer: rawEntries[i].composer,
                 genre:    rawEntries[i].genre
             });
