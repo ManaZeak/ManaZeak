@@ -164,12 +164,7 @@ class Groups(models.Model):
 
 
 class Achievement(models.Model):
-    description = models.CharField(max_length=10000)
-    firstHint = models.CharField(max_length=10000)
-    secondHint = models.CharField(max_length=10000)
-    thirdHint = models.CharField(max_length=10000)
     reward = models.IntegerField()
-    title = models.CharField(max_length=10000)
     isHidden = models.BooleanField(default=True)
     code = models.CharField(max_length=10, unique=True)
     user = models.ManyToManyField(User)
@@ -182,4 +177,4 @@ class UserPreferences(models.Model):
     user = models.ForeignKey(User, null=True)
     totalListeningTime = models.FloatField(default=0.0)
     streak = models.IntegerField(default=100)
-
+    picture = models.FilePathField(default='/defaultimgpath')

@@ -16,7 +16,7 @@ services:
             context: .
             dockerfile: docker/django/Dockerfile
         container_name: manazeak_app
-        command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+        command: bash -c "python3 manage.py migrate && python3 manage.py startCron && python3 manage.py runserver 0.0.0.0:8000"
         volumes:
             - /PATH/TO/MUSIC:/library
             - ./static:/static

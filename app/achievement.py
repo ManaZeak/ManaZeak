@@ -66,11 +66,6 @@ def refreshAchievements():
         else:
             dbAchiev = Achievement()
         dbAchiev.code = achiev.name
-        dbAchiev.title = achiev.title
-        dbAchiev.firstHint = achiev.firstHint
-        dbAchiev.secondHint = achiev.secondHint
-        dbAchiev.thirdHint = achiev.thirdHint
-        dbAchiev.description = achiev.description
         dbAchiev.reward = achiev.reward
         dbAchiev.isHidden = achiev.isHidden
         dbAchiev.save()
@@ -78,18 +73,14 @@ def refreshAchievements():
 
 @unique
 class AchievementEnum(Enum):
-    def __init__(self, title, description, firstHint, secondHint, thirdHint, reward, isHidden):
-        self.title = title
-        self.description = description
-        self.firstHint = firstHint
-        self.secondHint = secondHint
-        self.thirdHint = thirdHint
+    def __init__(self, reward, isHidden, code):
         self.reward = reward
         self.isHidden = isHidden
+        # This var is for avoiding an error
+        self.code = code
 
-    LEET = ('1337', 'Listen to 1337 songs', '', '', '', 100, False)
-    INSTINCT = ('To be instinct', 'Listen to a song encoded at less than 320 kbps', '', '', '', 10, False)
-    GURU = ('Follow the guru', 'Have a playlist that has at least 10 song uploaded by the same user', '', '', '',
-            10, False)
-    MIX = ('Super mix', 'Listen to a song that is longer than 1 hour', '', '', '', 10, False)
-    BEST_OF = ('Menu maxi best of', 'Have 30 songs from the same artist in a playlist', '', '', '', 100, False)
+    LEET = (100, False, 'LEET')
+    INSTINCT = (10, False, 'INSTINCT')
+    GURU = (10, False, 'GURU')
+    MIX = (10, False, 'MIX')
+    BEST_OF = (100, False, 'BEST_OF')
