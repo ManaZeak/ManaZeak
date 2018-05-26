@@ -13,7 +13,7 @@ palette = {0: (255, 255, 255),
            5: (201, 157, 186)}
 
 
-def create_identicon(username, filename, avatar_size=5, img_size_per_cell=100):
+def create_identicon(username, filename, avatar_size=14, img_size_per_cell=50):
     """ Creates and writes an identicon to disk
         Arguments:
             - (str) username: username for which the identicon should
