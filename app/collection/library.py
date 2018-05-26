@@ -155,7 +155,7 @@ def rescanLibraryRequest(request):
         if checkPermission(["LIBR"], user):
             if 'LIBRARY_ID' in response:
                 libraryId = strip_tags(response['LIBRARY_ID'])
-                scanThread = Process(target=rescanLibraryProcess, args=(libraryId, user))
+                scanThread = Process(target=rescanLibraryProcess, args=libraryId)
                 db.connections.close_all()
                 scanThread.start()
                 data = errorCheckMessage(True, None)
@@ -173,7 +173,7 @@ def rescanAllLibraries(request):
     if request.method == 'GET':
         user = request.user
         if checkPermission(["LIBR"], user):
-            scanThread = Process(target=rescanLibraryProcess, args=(None, user))
+            scanThread = Process(target=rescanLibraryProcess, args=None)
             db.connections.close_all()
             scanThread.start()
             data = errorCheckMessage(True, None)
@@ -185,12 +185,12 @@ def rescanAllLibraries(request):
 
 
 # If the playlist is initialized only rescan the library, else rescan all libraries
-def rescanLibraryProcess(libraryId, user):
+def rescanLibraryProcess(libraryId):
     if libraryId is None:
         libraries = Library.objects.all()
         scanned = False
         for library in libraries:
-            rescanLibrary(library, user)
+            rescanLibrary(library)
             while not scanned:
                 # We call the database to refresh the value in memory.
                 scanned = Library.objects.get(id=library.id).playlist.isScanned
@@ -198,11 +198,11 @@ def rescanLibraryProcess(libraryId, user):
     else:
         if Library.objects.filter(id=libraryId).count() == 1:
             library = Library.objects.get(id=libraryId)
-            rescanLibrary(library, user)
+            rescanLibrary(library)
     refreshAllViews()
 
 
-def rescanLibrary(library, user):
+def rescanLibrary(library):
     # Check if the library is not used somewhere else
     mp3Files = []
     oggFiles = []

@@ -1,3 +1,5 @@
+from distutils import command
+
 from crontab import CronTab
 from django.utils.html import strip_tags
 
@@ -279,7 +281,11 @@ def setCronJobs():
     if checkIfCronJobExists('test', cron):
         job = cron.new(command='python /ManaZeak/manage.py testCron', comment='test')
         job.minutes.every(1)
-    cron.write()
+        cron.write()
+    if checkIfCronJobExists('rescan', cron):
+        job = cron.new(command='python /ManaZeak/manage.py rescan', comment='rescan')
+        job.hour.every(12)
+        cron.write()
 
 
 def checkIfCronJobExists(comment, cron):
