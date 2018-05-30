@@ -498,6 +498,7 @@ class ListView extends PlaylistView {
      * arg    : {object} event - Mouse event
      **/
     _showTrackInfo(event) {
+/*
         if (event.target == this.listView) {
             return this.trackInfo.setVisible(false);
         }
@@ -523,6 +524,7 @@ class ListView extends PlaylistView {
                 }, 1000);
             }
         }
+*/
     }
 
 
