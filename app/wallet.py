@@ -1,6 +1,5 @@
 from datetime import timedelta
-from time import timezone
-
+from django.utils import timezone
 
 from app.consts import BUBBLE_PERCENTAGE
 from app.models import UserHistory, UserPreferences, TransactionHistory, TransactionType
