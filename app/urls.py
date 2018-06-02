@@ -71,6 +71,7 @@ urlpatterns = [
     url(r'^user/getInformation/$', user.getUserInformation, name='getUserInformation'),
     url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
     url(r'^user/delete/$', user.deleteUser, name='deleteUser'),
+    url(r'^user/editAvatar/$', userSettings.changeAvatar, name='changeAvatar'),
 
     # Group actions
     url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),
