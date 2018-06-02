@@ -8,7 +8,15 @@ if [ $# -eq 0 ]; then
     echo -e "Script usage: ./mzk.sh --help"
 
 elif [ $1 = "init" ]; then
-    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment.\n"
+    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment."
+    echo -en "Setting up necessary files ... "
+    if [ ! -d "log" ]; then
+      mkdir log
+    fi
+    if [ ! -f "log/debug.log" ]; then
+      touch log/debug.log
+    fi
+    echo -e "OK\n"
     read -p "Please enter a path for your music library: " musicpath
     if [ -z $musicpath ]; then
 	musicpath="$HOME/Music"
