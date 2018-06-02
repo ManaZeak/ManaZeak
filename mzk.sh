@@ -56,16 +56,17 @@ elif [ $1 = "repy" ]; then
     eval "docker start -i manazeak_app"
 
 elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
-    printf "Usage: ./mzk.sh <command>\n"
-    printf "Where <command> is one of:\n"
-    printf "    build, dev, prod, stop\n\n"
-    printf "./mzk.sh build        Build ManaZeak\n"
-    printf "./mzk.sh dev          Run a dev environment\n"
-    printf "./mzk.sh prod         Run a production environment\n"
-    printf "./mzk.sh stop         Stop ManaZeak application\n\n"
-    printf "./mzk.sh clean        Remove ManaZeak containers"
-    printf "./mzk.sh --help       Display the command usage  (or -h)\n"
-    printf "./mzk.sh --version    Display the version number (or -v)\n"
+    printf -- "\nUsage: ./mzk.sh <command>\n"
+    printf -- "Where <command> is one of:\n\n"
+    printf -- "init          Run the initialisation wizard\n"
+    printf -- "build         Build ManaZeak\n\n"
+    printf -- "dev           Run a dev environment\n"
+    printf -- "prod          Run a production environment\n"
+    printf -- "stop          Stop ManaZeak application\n\n"
+    printf -- "clean         Remove ManaZeak containers\n"
+    printf -- "repy          Run the application docker in interactive mode\n\n"
+    printf -- "--help        Display the command usage  (or -h)\n"
+    printf -- "--version     Display the version number (or -v)\n\n"
 
 elif [ $1 = "--version" ] || [ $1 = "-v" ]; then
     printf "ManaZeak $vmzk\n"
