@@ -14,7 +14,8 @@ class PlaylistPreview extends MzkObject {
     constructor(container) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview construction');
         }
 
@@ -31,7 +32,7 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} playlist - New playlist to get info from
      **/
     changePlaylist(playlist) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview : changePlaylist call');
         }
 
@@ -50,7 +51,7 @@ class PlaylistPreview extends MzkObject {
      * arg    : {bool} visible
      **/
     setVisible(visible) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview : setVisible call');
         }
 
@@ -66,7 +67,7 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} container - The PlaylistPreview container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview : _createUI call');
         }
 
@@ -102,7 +103,7 @@ class PlaylistPreview extends MzkObject {
      * desc   : PlaylistPreview event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview : _eventListener call');
         }
 
@@ -130,7 +131,7 @@ class PlaylistPreview extends MzkObject {
      * desc   : Update shuffle and repeat mode
      **/
     _updatePlaylistPreview() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistPreview : _updatePlaylistPreview call');
         }
 

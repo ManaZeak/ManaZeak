@@ -17,7 +17,8 @@ class MultiSelect extends MzkObject {
     constructor(purgeThreshold) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect construction');
         }
 
@@ -35,7 +36,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     add(value, append) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : add call');
         }
 
@@ -90,7 +91,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     addBulk(values, append) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : addBulk call');
         }
 
@@ -106,7 +107,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     clear() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : clear call');
         }
 
@@ -122,7 +123,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     get() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : get call');
         }
 
@@ -142,7 +143,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     getSize() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : getSize call');
         }
 
@@ -156,7 +157,7 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     purge() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MultiSelect : purge call');
         }
 

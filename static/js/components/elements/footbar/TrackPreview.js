@@ -14,7 +14,8 @@ class TrackPreview extends MzkObject {
     constructor(container) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview construction');
         }
 
@@ -31,7 +32,7 @@ class TrackPreview extends MzkObject {
      * arg    : {object} track - New track to get info from
      **/
     changeTrack(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview : changeTrack call');
         }
 
@@ -56,7 +57,7 @@ class TrackPreview extends MzkObject {
      * desc   : Reset field values and set invisible
      **/
     resetTrackPreview() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview : resetTrackPreview call');
         }
 
@@ -79,7 +80,7 @@ class TrackPreview extends MzkObject {
      * arg    : {object} container - The TrackPreview container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview : _createUI call');
         }
 
@@ -124,7 +125,7 @@ class TrackPreview extends MzkObject {
      * desc   : TrackPreview event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview : _eventListener call');
         }
 
@@ -157,7 +158,7 @@ class TrackPreview extends MzkObject {
      * arg    : {bool} visible
      **/
     _setVisible(visible) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      TrackPreview : _setVisible call');
         }
 

@@ -17,7 +17,8 @@ class FootBar extends MzkObject {
     constructor() {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  FootBar construction');
         }
 
@@ -38,7 +39,7 @@ class FootBar extends MzkObject {
      * desc   : Reset TrackPreview and ProgressBar.
      **/
     resetUI(hidePreview) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  FootBar : refreshUI call');
         }
 
@@ -57,7 +58,7 @@ class FootBar extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  FootBar : _createUI call');
         }
 
@@ -76,7 +77,7 @@ class FootBar extends MzkObject {
      * desc   : FootBar event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  FootBar : _eventListener call');
         }
 

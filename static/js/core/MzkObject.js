@@ -11,7 +11,8 @@ import MzkListener from './MzkListener.js'
 class MzkObject {
 
     constructor() {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  MzkObject construction');
         }
 
@@ -29,7 +30,7 @@ class MzkObject {
      *        : {} thisArg - TODO
      **/
     listen(event, callback, thisArg) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : listen call');
         }
 
@@ -54,7 +55,7 @@ class MzkObject {
      * arg    : {TODO} shortcut - TODO
      **/
     addShortcut(shortcut) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : addShortcut call');
         }
 
@@ -69,7 +70,7 @@ class MzkObject {
      * arg    : {TODO} shortcut - TODO
      **/
     removeShortcut(shortcut) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : removeShortcut call');
         }
 
@@ -83,7 +84,7 @@ class MzkObject {
      * desc   : TODO
      **/
     lockShortcuts() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : lockShortcuts call');
         }
 
@@ -97,7 +98,7 @@ class MzkObject {
      * desc   : TODO
      **/
     unlockShortcuts() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : unlockShortcuts call');
         }
 
@@ -113,7 +114,7 @@ class MzkObject {
      * arg    : {string} method - the name of the function to 'hijack'
      **/
     _hijackMethod(method) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  MzkObject : _hijackMethod call');
         }
 

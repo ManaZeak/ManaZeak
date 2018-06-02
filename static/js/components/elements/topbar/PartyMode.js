@@ -9,7 +9,8 @@
 class PartyMode {
 
     constructor(container) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      PartyMode construction');
         }
 
@@ -26,7 +27,7 @@ class PartyMode {
      * arg    : {object} container - The PartyMode container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PartyMode : _createUI call');
         }
 
@@ -50,7 +51,7 @@ class PartyMode {
      * desc   : PartyMode event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PartyMode : _eventListener call');
         }
 

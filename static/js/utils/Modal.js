@@ -18,7 +18,8 @@ class Modal extends MzkObject {
     constructor(type, data) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  Modal construction');
         }
 
@@ -107,7 +108,7 @@ class Modal extends MzkObject {
      * desc   : Remove the modal from body
      **/
     close() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : close call');
         }
 
@@ -122,7 +123,7 @@ class Modal extends MzkObject {
      * desc   : Add the modal to the body
      **/
     open() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : open call');
         }
 
@@ -138,7 +139,7 @@ class Modal extends MzkObject {
      * arg    : {function} callback
      **/
     setCallback(callback) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : setCallback call');
         }
 
@@ -154,7 +155,7 @@ class Modal extends MzkObject {
      * desc   : Append a close button to modal container
      **/
     _appendCloseButton() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _appendCloseButton call');
         }
 
@@ -176,7 +177,7 @@ class Modal extends MzkObject {
      * desc   : Append a close button to modal container
      **/
     _appendEditButton() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _appendEditButton call');
         }
 
@@ -199,7 +200,7 @@ class Modal extends MzkObject {
      *          {bool} convert - conversion to ID3v2
      **/
     _checkLibraryInputs(name, path, convert) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _checkLibraryInputs call');
         }
 
@@ -236,7 +237,7 @@ class Modal extends MzkObject {
      * arg    : {string} name - Given playlist name
      **/
     _checkPlaylistInputs(name) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _checkPlaylistInputs call');
         }
 
@@ -259,7 +260,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for cover modal
      **/
     _coverUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _coverUI call');
         }
 
@@ -292,7 +293,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _createUI call');
         }
 
@@ -326,7 +327,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _deletePlaylistUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _deletePlaylistUI call');
         }
 
@@ -364,7 +365,7 @@ class Modal extends MzkObject {
 
 
     _editCollectionDescriptionUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _editCollectionDescriptionUI call');
         }
 
@@ -417,7 +418,7 @@ class Modal extends MzkObject {
 
 
     _editTagUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _editTagUI call');
         }
 
@@ -456,7 +457,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchPlaylists modal
      **/
     _fetchPlaylistsUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _fetchPlaylistUI call');
         }
 
@@ -489,7 +490,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for fetchStats modal
      **/
     _fetchStatsUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _fetchStatusUI call');
         }
 
@@ -522,7 +523,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for display user'sfetchPlaylists invite code modal
      **/
     _inviteCodeUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _inviteCodeUI call');
         }
 
@@ -559,7 +560,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newLibrary modal
      **/
     _newLibraryUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _newLibraryUI call');
         }
 
@@ -606,7 +607,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newPlaylist modal
      **/
     _newPlaylistUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _newPlaylistUI call');
         }
 
@@ -645,7 +646,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for newWish modal
      **/
     _newWishUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _newWishUI call');
         }
 
@@ -684,7 +685,7 @@ class Modal extends MzkObject {
                          *     ERROR_H1  : string
                          *     ERROR_MSG : string
                          * } */
-                        if (window.debug) {
+                        if (window.debug && this.LOG) {
                             console.log('  Modal : _newWishUI server response');
                         }
 
@@ -709,7 +710,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for SyncThing IFRAME modal
      **/
     _openSyncThing() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _openSyncthingUI call');
         }
 
@@ -737,7 +738,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for delete playlist modal
      **/
     _renamePlaylistUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _renamePlaylistUI call');
         }
 
@@ -790,7 +791,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for scanLibrary modal
      **/
     _scanLibraryUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _scanLibraryUI call');
         }
 
@@ -825,7 +826,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for edit group modal
      */
     _editGroupUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _editGroupUI call');
         }
 
@@ -900,7 +901,7 @@ class Modal extends MzkObject {
      * desc   : Build UI elements for choose group modal
      */
     _chooseGroupUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Modal : _chooseGroupUI call');
         }
 

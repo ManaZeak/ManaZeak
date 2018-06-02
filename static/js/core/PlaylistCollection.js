@@ -11,10 +11,10 @@ import MzkObject from './MzkObject.js'
 class PlaylistCollection extends MzkObject {
 
     constructor() {
-
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection construction');
         }
 
@@ -31,7 +31,7 @@ class PlaylistCollection extends MzkObject {
      * arg    : {object} playlist
      **/
     add(playlist) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : add call');
         }
 
@@ -54,7 +54,7 @@ class PlaylistCollection extends MzkObject {
      * arg    : {inter} playlistID
      **/
     remove(playlistID) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : remove call');
         }
 
@@ -79,7 +79,7 @@ class PlaylistCollection extends MzkObject {
      *          {string} name
      **/
     rename(playlistID, name) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : rename call');
         }
 
@@ -101,7 +101,7 @@ class PlaylistCollection extends MzkObject {
      * desc   : Clear the collection
      **/
     clear() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : clear call');
         }
 
@@ -118,7 +118,7 @@ class PlaylistCollection extends MzkObject {
      * arg    : {boolean} includeDefault - whether to call on the default playlist
      **/
     forEach(callback, includeDefault) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : forEach call');
         }
 
@@ -138,7 +138,7 @@ class PlaylistCollection extends MzkObject {
      * arg    : {function} filterFct
      **/
     filter(filterFct) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : filter call');
         }
 
@@ -164,7 +164,7 @@ class PlaylistCollection extends MzkObject {
      * arg    : {integer} playlistID
      **/
     get(playlistID) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : get call');
         }
 
@@ -179,7 +179,7 @@ class PlaylistCollection extends MzkObject {
      * desc   : Get the default playlist from the collection
      **/
     getDefault() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistCollection : getDefault call');
         }
 

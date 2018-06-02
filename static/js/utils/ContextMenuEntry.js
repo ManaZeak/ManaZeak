@@ -15,7 +15,8 @@ const NB_OF_NAMED_ARGS = 3; // /!\ IMPORTANT - CHANGE THIS IF YOU ADD/REMOVE ARG
 class ContextMenuEntry {
 
     constructor(entryID, displayString, callback/*, MORE ARGUMENTS HERE*/) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry construction');
         }
 
@@ -48,7 +49,7 @@ class ContextMenuEntry {
      * desc   : activates the event listeners for the entire menu system
      **/
     activateEventListener() { //Call this on the root
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : activateEventListener call');
         }
 
@@ -107,7 +108,7 @@ class ContextMenuEntry {
      *          {bool}   after       - add after the ID instead of before
      **/
     addChild(other_entry, before_ID, after) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : addChild call');
         }
 
@@ -135,7 +136,7 @@ class ContextMenuEntry {
      * arg    : {string} childID - the ID of the child
      **/
     findChildByID(childID) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : findChildByID call');
         }
 
@@ -160,7 +161,7 @@ class ContextMenuEntry {
      * arg    : {object} other_entry - the ContextMenuEntry to remove
      **/
     removeChild(otherID) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : removeChild call');
         }
 
@@ -181,7 +182,7 @@ class ContextMenuEntry {
      * desc   : close the menu and its submenus
      **/
     closeAll() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : closeAll call');
         }
 
@@ -199,7 +200,7 @@ class ContextMenuEntry {
      * arg    : {string} newStr
      */
     setDisplayString(newStr) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : setDisplayString call');
         }
 
@@ -217,7 +218,7 @@ class ContextMenuEntry {
      * arg    : {bool} allow - whether to allow or forbid multiple open submenus
      **/
     setMultiOpenSubmenu(allow) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : setMultiOpenSubmenu call');
         }
 
@@ -233,7 +234,7 @@ class ContextMenuEntry {
      * arg    : {array/string} array_of_IDs - the IDs to allow
      **/
     setVisibleAreas(array_of_IDs) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : setVisibleAreas call');
         }
 
@@ -265,7 +266,7 @@ class ContextMenuEntry {
      * desc   : setup the stylesheet needed for the setVisibleAreas function
      **/
     _checkStylesheet() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : _checkStylesheet call');
         }
 
@@ -288,7 +289,7 @@ class ContextMenuEntry {
      * desc   : creates the DOM element
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : _init call');
         }
 
@@ -310,7 +311,7 @@ class ContextMenuEntry {
      * desc   : run the callback associated with the entry
      **/
     _runCallback() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry : _runCallback call');
         }
 

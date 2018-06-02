@@ -12,7 +12,8 @@ class SearchBar {
 
     constructor() {
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  SearchBar construction');
         }
 
@@ -25,7 +26,7 @@ class SearchBar {
 
 
     show(firstLetter, rawEntries) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : show call');
         }
 
@@ -38,7 +39,7 @@ class SearchBar {
 
 
     hide() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : hide call');
         }
 
@@ -58,7 +59,7 @@ class SearchBar {
      * arg    : {object} container - The UserMenu container
      **/
     _createUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _createUI call');
         }
 
@@ -85,7 +86,7 @@ class SearchBar {
 
 
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _eventListener call');
         }
 
@@ -105,7 +106,7 @@ class SearchBar {
 
 
     _search() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _search call');
         }
 
@@ -124,7 +125,7 @@ class SearchBar {
 
 
     _newMatch(result) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _newMatch call');
         }
 
@@ -172,7 +173,7 @@ class SearchBar {
 
 
     _clearResults() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _clearResults call');
         }
 
@@ -181,7 +182,7 @@ class SearchBar {
 
 
     _formatEntries(rawEntries) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  SearchBar : _formatEntries call');
         }
 

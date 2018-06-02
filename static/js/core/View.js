@@ -16,7 +16,8 @@ class View extends MzkObject{
     constructor() {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  View construction');
         }
 

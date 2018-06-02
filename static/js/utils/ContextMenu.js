@@ -16,7 +16,8 @@ import ContextMenuEntry from './ContextMenuEntry.js'
 class ContextMenu {
 
     constructor(parentElement, openCallback, event) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu construction');
         }
 
@@ -41,7 +42,7 @@ class ContextMenu {
      *        : TODO
      **/
     addEntry(entryPath, displayStr, callback, beforeID, after) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : addEntry call');
         }
 
@@ -72,7 +73,7 @@ class ContextMenu {
      * arg    : {string} entryPath - TODO
      **/
     getEntry(entryPath) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : getEntry call');
         }
 
@@ -101,7 +102,7 @@ class ContextMenu {
      * arg    : {string} entryPath - TODO
      **/
     removeEntry(entryPath) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : removeEntry call');
         }
 
@@ -129,7 +130,7 @@ class ContextMenu {
      * desc   : (re)add the context menu to its parent
      **/
     reattach() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : reattach call');
         }
 
@@ -143,7 +144,7 @@ class ContextMenu {
      * desc   : close the menu
      **/
     close() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : close call');
         }
 
@@ -158,7 +159,7 @@ class ContextMenu {
      * desc   : Set ContextMenu invisible
      **/
     setInvisible() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : setInvisible call');
         }
 
@@ -173,7 +174,7 @@ class ContextMenu {
      * desc   : ContextMenu event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : _eventListener call');
         }
 
@@ -242,7 +243,7 @@ class ContextMenu {
      * desc   : Building entries and UI
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : _init call');
         }
 
@@ -263,7 +264,7 @@ class ContextMenu {
      * desc   : ContextMenu key listeners
      **/
     _keyListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ContextMenu : _keyListener call');
         }
 

@@ -13,9 +13,11 @@ class Shortcut extends MzkObject {
     constructor(eventType, key, callback, ctrl, shift, alt, meta) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  Shortcut construction');
         }
+
         this.eventType  = eventType;
         this.key        = key;
         this.callback   = callback;
@@ -33,7 +35,7 @@ class Shortcut extends MzkObject {
      * desc   : run the shortcut
      */
     run() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Shortcut : run call');
         }
 
@@ -68,7 +70,7 @@ class Shortcut extends MzkObject {
      * args   : event
      */
     modifiersOK(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Shortcut : modifiersOK call');
         }
 

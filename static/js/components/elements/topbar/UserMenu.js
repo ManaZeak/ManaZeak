@@ -13,7 +13,8 @@ import ContextMenuEntry from '../../../utils/ContextMenuEntry.js'
 class UserMenu {
 
     constructor(container) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      UserMenu construction');
         }
 
@@ -32,7 +33,7 @@ class UserMenu {
      * arg    : {object} container - The UserMenu container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      UserMenu : _createUI call');
         }
 
@@ -56,7 +57,7 @@ class UserMenu {
      * desc   : UserMenu context menu
      **/
     _setupContextMenu() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      UserMenu : _setupContextMenu call');
         }
 

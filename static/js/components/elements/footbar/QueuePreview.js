@@ -15,7 +15,8 @@ class QueuePreview extends MzkObject {
     constructor(container) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview construction');
         }
 
@@ -36,7 +37,7 @@ class QueuePreview extends MzkObject {
      * desc   : Hide QueuePreview
      **/
     hide() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : hide call');
         }
 
@@ -51,7 +52,7 @@ class QueuePreview extends MzkObject {
      * desc   : Show and lock QueuePreview
      **/
     lock() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : lock call');
         }
 
@@ -66,7 +67,7 @@ class QueuePreview extends MzkObject {
      * desc   : Shows a queue preview of 2 seconds
      **/
     preview() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : preview call');
         }
 
@@ -87,7 +88,7 @@ class QueuePreview extends MzkObject {
      * arg    : {object} track - The track to add as an entry
      **/
     _addEntry(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : _addEntry call');
         }
 
@@ -139,7 +140,7 @@ class QueuePreview extends MzkObject {
      * desc   : TODO
      **/
     _contextMenuSetup() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : _contextMenuSetup call');
         }
     }
@@ -152,7 +153,7 @@ class QueuePreview extends MzkObject {
      * arg    : {object} container - The QueuePreview container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : _createUI call');
         }
 
@@ -198,7 +199,7 @@ class QueuePreview extends MzkObject {
      * desc   : QueuePreview key event listeners
      **/
     _keyListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : _keyListener call');
         }
 
@@ -221,7 +222,7 @@ class QueuePreview extends MzkObject {
      * desc   : QueuePreview event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      QueuePreview : _eventListener call');
         }
 

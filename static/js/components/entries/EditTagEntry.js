@@ -9,7 +9,8 @@
 class EditTagEntry {
 
     constructor(container, track) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('    EditTagEntry construction');
         }
 
@@ -30,7 +31,7 @@ class EditTagEntry {
      * return : {bool} isSelected
      **/
     setIsSelected(isSelected) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    EditTagEntry : setIsSelected call');
         }
 

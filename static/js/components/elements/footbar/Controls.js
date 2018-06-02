@@ -12,7 +12,8 @@ import QueuePreview from './QueuePreview.js'
 class Controls  {
 
     constructor(container, queuePreview, volumeBar) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      Controls construction');
         }
 
@@ -38,7 +39,7 @@ class Controls  {
      * arg    : {object} container - The Controls container
      **/
     _createUI(container, queuePreview, volumeBar) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      Controls : _createUI call');
         }
 
@@ -121,7 +122,7 @@ class Controls  {
      * desc   : Controls event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      Controls : _eventListener call');
         }
 
@@ -192,7 +193,7 @@ class Controls  {
      * desc   : Change Play/Pause image source depending on player status
      **/
     _setPlayPause() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      Controls : _setPlayPause call');
         }
 

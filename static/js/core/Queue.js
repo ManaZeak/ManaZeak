@@ -9,8 +9,8 @@
 class QueueEntry {
 
     constructor(track) {
-
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry construction');
         }
 
@@ -28,7 +28,7 @@ class QueueEntry {
      * arg    : {type} other - the new entry
      **/
     addNext(other) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry : addNext');
         }
 
@@ -55,7 +55,7 @@ class QueueEntry {
      * arg    : {type} other - the new entry
      **/
     addPrev(other) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry : addPrev');
         }
 
@@ -81,7 +81,7 @@ class QueueEntry {
      * desc   : change positions with the next QueueEntry if there is one
      **/
     moveNext() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry : moveNext');
         }
 
@@ -101,7 +101,7 @@ class QueueEntry {
      * desc   : change positions with the previous QueueEntry if there is one
      **/
     movePrev() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry : movePrev');
         }
 
@@ -121,7 +121,7 @@ class QueueEntry {
      * desc   : remove this entry from the list
      **/
     unlink() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  QueueEntry : unlink');
         }
 
@@ -157,7 +157,7 @@ class Queue extends MzkObject {
 
         super();
 
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue construction');
         }
 
@@ -176,7 +176,7 @@ class Queue extends MzkObject {
      * return : {object} The track to be played
      **/
     dequeue() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : dequeue call');
         }
 
@@ -217,7 +217,7 @@ class Queue extends MzkObject {
      * arg    : {object} track - The track to enqueue
      **/
     enqueue(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : enueue call');
         }
 
@@ -246,7 +246,7 @@ class Queue extends MzkObject {
      * return : {bool}
      **/
     isEmpty() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : isEmpty call');
         }
 
@@ -261,7 +261,7 @@ class Queue extends MzkObject {
      * return : {bool}
      **/
     isReverse() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : isReverse call');
         }
 
@@ -276,7 +276,7 @@ class Queue extends MzkObject {
      * arg    : {bool} newReverse - Set reverse value
      **/
     setReverse(newReverse) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : isReverse call');
         }
 
@@ -292,7 +292,7 @@ class Queue extends MzkObject {
      *          {int} newPos - the new desired index
      **/
     slide(element, newPos) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Queue : slide call');
         }
 

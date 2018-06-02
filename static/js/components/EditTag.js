@@ -13,7 +13,8 @@ import EditTagEntry from './entries/EditTagEntry.js'
 class EditTag {
 
     constructor(container, data) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  EditTag construction');
         }
 
@@ -37,7 +38,7 @@ class EditTag {
      * desc   : Sending modal info to backend
      **/
     saveState() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : saveState call');
         }
 
@@ -90,7 +91,7 @@ class EditTag {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
-                if (window.debug) {
+                if (window.debug && this.LOG) {
                     console.log('  EditTag : saveState server response');
                 }
 
@@ -112,7 +113,7 @@ class EditTag {
      * arg    : {object} container - The EditTag container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _createUI call');
         }
 
@@ -143,7 +144,7 @@ class EditTag {
      * desc   : EditTag event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _eventListener call');
         }
 
@@ -205,7 +206,7 @@ class EditTag {
      * desc   : Append UI elements, building final UI
      **/
     _uiAppendVar() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _uiAppendVar call');
         }
 
@@ -275,7 +276,7 @@ class EditTag {
      * desc   : Creating UI elements
      **/
     _uiCreateVar() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _uiCreateVar call');
         }
 
@@ -350,7 +351,7 @@ class EditTag {
      * desc   : Set UI elements
      **/
     _uiSetVar() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _uiSetVar call');
         }
 
@@ -433,7 +434,7 @@ class EditTag {
      * arg    : {object} track - The track to take data from
      **/
     _updateFields() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  EditTag : _updateFields call');
         }
 

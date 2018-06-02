@@ -15,7 +15,8 @@ class Track extends MzkObject{
     constructor(track) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  Track construction');
         }
 
@@ -31,7 +32,7 @@ class Track extends MzkObject{
      * arg    : {object} track - Raw JSON track
      **/
     updateMetadata(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Track : updateMetadata');
         }
 
@@ -95,7 +96,7 @@ class Track extends MzkObject{
      * return : {string} The Artists concated string
      **/
     _getArtistFromArtistsArray(artists) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Track : _getArtistFromArtistsArray');
         }
 

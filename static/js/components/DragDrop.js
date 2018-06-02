@@ -13,10 +13,11 @@ import { JSONParsedPostRequest } from '../utils/Utils.js'
 class DragDrop {
 
     constructor(element) {
-
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  DragDrop construction');
         }
+
         this.element = element;
         this.element.classList.add('mzk-dragdrop');
         //this.wrapper = document.createElement('DIV');
@@ -37,8 +38,7 @@ class DragDrop {
      * desc   : DragDrop event listeners
      **/
     _eventListener() {
-
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  DragDrop : _eventListener call');
         }
         let that = this;
@@ -68,7 +68,7 @@ class DragDrop {
                                 CONTENT:  event.target.result
                             }),
                             function(response) {
-                                if (window.debug) {
+                                if (window.debug && this.LOG) {
                                     console.log('  DragDrop : _eventListener server response');
                                 }
 

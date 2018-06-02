@@ -14,7 +14,8 @@ class ShortcutMaestro extends MzkObject {
 
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro construction');
         }
 
@@ -36,7 +37,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     lock(sourceObject) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : lock call');
         }
 
@@ -51,7 +52,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     registerShortcut(shortcut, sourceObject) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : registerShortcut call');
         }
 
@@ -80,7 +81,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     unlock(sourceObject) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : unlock call');
         }
 
@@ -99,7 +100,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     unregisterShortcut(shortcut) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : unregisterShortcut call');
         }
 
@@ -122,7 +123,7 @@ class ShortcutMaestro extends MzkObject {
      * desc   : ShortcutMaestro event listener
      */
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : _eventListener call');
         }
 
@@ -139,7 +140,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     _relay(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : _relay call');
         }
 
@@ -161,7 +162,7 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     _canRun(shortcutCapsule, event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro : _canRun call');
         }
 

@@ -16,7 +16,8 @@ class VolumeBar extends MzkObject {
     constructor(container) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar construction');
         }
 
@@ -34,7 +35,7 @@ class VolumeBar extends MzkObject {
      * desc   : Delay volume bar invisibility
      **/
     delayHideVolume() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : delayHideVolume call');
         }
 
@@ -56,7 +57,7 @@ class VolumeBar extends MzkObject {
      * arg    : {object} container - The VolumeBar container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _createUI call');
         }
 
@@ -96,7 +97,7 @@ class VolumeBar extends MzkObject {
      * desc   : VolumeBar event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _eventListener call');
         }
 
@@ -119,7 +120,7 @@ class VolumeBar extends MzkObject {
      * desc   : Init default volume, set/store player empty source and listen
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _init call');
         }
 
@@ -135,7 +136,7 @@ class VolumeBar extends MzkObject {
      * desc   : VolumeBar event listeners
      **/
     _keyListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _keyListener call');
         }
 
@@ -152,7 +153,7 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseDown(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _mouseDown call');
         }
 
@@ -172,7 +173,7 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseMove(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _mouseMove call');
         }
 
@@ -188,7 +189,7 @@ class VolumeBar extends MzkObject {
      * desc   : Action on mouse up event
      **/
     _mouseUp() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _mouseUp call');
         }
 
@@ -206,7 +207,7 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _moveVolume(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _moveVolume call');
         }
 
@@ -230,7 +231,7 @@ class VolumeBar extends MzkObject {
      * arg    : {int} volume - The volume to set
      **/
     _updateVolume(volume) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      VolumeBar : _updateVolume call');
         }
 

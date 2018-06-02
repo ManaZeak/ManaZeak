@@ -12,7 +12,8 @@ import Modal from '../../../utils/Modal.js'
 class WishList {
 
     constructor(container) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      WishList construction');
         }
 
@@ -29,7 +30,7 @@ class WishList {
      * arg    : {object} container - The WishList container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      WishList : _createUI call');
         }
 
@@ -52,7 +53,7 @@ class WishList {
      * desc   : WishList event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      WishList : _eventListener call');
         }
 

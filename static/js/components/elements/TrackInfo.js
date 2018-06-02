@@ -16,7 +16,8 @@ const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSugge
 class TrackInfo {
 
     constructor(container) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo construction');
         }
 
@@ -47,7 +48,7 @@ class TrackInfo {
      * arg    : {bool} visible - The visibility status to set
      **/
     setVisible(visible) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : setVisible call');
         }
 
@@ -81,7 +82,7 @@ class TrackInfo {
      *          {int}  offset - The left offset to open TrackInfo with
      **/
     updateGeometry(rect, offset) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _updateGeometry call');
         }
 
@@ -100,7 +101,7 @@ class TrackInfo {
      *          {function} callback - The function to callback (not mandatory)
      **/
     updateInfo(track, callback) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : updateInfo call');
         }
 
@@ -136,7 +137,7 @@ class TrackInfo {
      * arg    : {object} container - The TrackInfo container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _createUI call');
         }
 
@@ -213,7 +214,7 @@ class TrackInfo {
      * desc   : TrackInfo event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _eventListener call');
         }
 
@@ -238,7 +239,7 @@ class TrackInfo {
      * desc   : Init suggestions from cookies and add listeners on UI elements
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _init call');
         }
 
@@ -263,7 +264,7 @@ class TrackInfo {
      * arg    : {bool} visible - TrackInfo visibility status to set
      **/
     _startInactivityTimeout(time) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _startInactivityTimeout call');
         }
 
@@ -280,7 +281,7 @@ class TrackInfo {
      * desc   : Stops the inactivity timeout
      **/
     _stopInactivityTimeout() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _stopInactivityTimeout call');
         }
 
@@ -296,7 +297,7 @@ class TrackInfo {
      * desc   : Event from changeSuggestionType attribute clicked to change suggestion mode
      **/
     _toggleChangeType() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _toggleChangeType call');
         }
 
@@ -313,7 +314,7 @@ class TrackInfo {
      * arg    : {int} value - The set value (not mandatory)
      **/
     _updateSuggestionMode(value) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _updateSuggestionMode call');
         }
 
@@ -361,7 +362,7 @@ class TrackInfo {
      * desc   : Fetch suggested tracks depending on trackSuggestionMode attribute and update UI
      **/
     _updateSuggestionTracks() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('    TrackInfo : _updateSuggestionTracks call');
         }
 
@@ -415,7 +416,7 @@ class TrackInfo {
                      *         PLAY_COUNTER:
                      *         FILE_NAME:
                      * } */
-                    if (window.debug) {
+                    if (window.debug && this.LOG) {
                         console.log('    TrackInfo : _updateSuggestionTracks server response');
                     }
 

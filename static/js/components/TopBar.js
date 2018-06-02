@@ -18,7 +18,8 @@ class TopBar extends MzkObject {
     constructor() {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  TopBar construction');
         }
 
@@ -44,7 +45,7 @@ class TopBar extends MzkObject {
      * arg    : {int} id - The Track ID
      **/
     changeMoodbar(id) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  TopBar : changeMoodbar call');
         }
 
@@ -62,7 +63,7 @@ class TopBar extends MzkObject {
                  *
                  *     TRACK_MOOD  : string
                  * } */
-                if (window.debug) {
+                if (window.debug && that.LOG) {
                     console.log('  TopBar : changeMoodbar server response');
                 }
 
@@ -88,7 +89,7 @@ class TopBar extends MzkObject {
      * desc   : Erase moodbar content and hide moodbar thumb
      **/
     resetMoodbar() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  TopBar : resetMoodbar call');
         }
 
@@ -106,7 +107,7 @@ class TopBar extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  TopBar : _createUI call');
         }
 
@@ -137,7 +138,7 @@ class TopBar extends MzkObject {
      * desc   : TopBar event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  TopBar : _eventListener call');
         }
 

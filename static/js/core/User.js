@@ -12,8 +12,8 @@ import Notification from '../utils/Notification.js'
 class User {
 
     constructor(callback) {
-
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  User construction');
         }
 
@@ -38,7 +38,7 @@ class User {
      * arg    : {string} permissionCode
      **/
     hasPermission(permissionCode) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  User : hasPermission call for ' + permissionCode);
         }
 
@@ -55,7 +55,7 @@ class User {
      * arg    : {function} callback
      **/
     getUserInfo(callback) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  User : getUserInfo call');
         }
 
@@ -78,7 +78,7 @@ class User {
                  *     GODFATHER_NAME:
                  * } */
                 if (response.DONE) {
-                    if (window.debug) {
+                    if (window.debug && that.LOG) {
                         console.log('  User : getUserInfo server response');
                     }
 

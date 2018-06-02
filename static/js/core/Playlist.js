@@ -19,8 +19,8 @@ import Modal from '../utils/Modal.js'
 class Playlist {
 
     constructor(id, name, description, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
-
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  Playlist construction');
         }
 
@@ -57,7 +57,7 @@ class Playlist {
      * desc   : Set in app the current playlist to this
      **/
     activate() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : activate call');
         }
 
@@ -89,7 +89,7 @@ class Playlist {
      * return : {object} View entry
      **/
     getFirstEntry() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : getFirst call');
         }
 
@@ -104,7 +104,7 @@ class Playlist {
      * arg    : {function} callback - The function to callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : getPlaylistsTracks call');
         }
 
@@ -118,7 +118,7 @@ class Playlist {
      * desc   : Play next track, according to user repeat/shuffle settings
      **/
     playNextTrack() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : playNextTrack call');
         }
 
@@ -161,6 +161,10 @@ class Playlist {
                              *
                              *     TRACK_ID  : int
                              * } */
+                            if (window.debug && that.LOG) {
+                                 console.log('  Playlist : playNextTrack server response');
+                            }
+
                             if (response.DONE) {
                                 that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
                                 window.app.changeTrack(that.currentTrack, false);
@@ -188,6 +192,10 @@ class Playlist {
                              *     IS_LAST    : bool
                              *     TRACK_ID   : int
                              * } */
+                             if (window.debug && that.LOG) {
+                                 console.log('  Playlist : playNextTrack server response');
+                             }
+
                             if (response.DONE) {
                                 if (response.IS_LAST) {
                                     window.app.stopPlayback();
@@ -219,7 +227,7 @@ class Playlist {
      * desc   : Play previous track, according to user repeat/shuffle settings
      **/
     playPreviousTrack() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : playPreviousTrack call');
         }
 
@@ -241,6 +249,10 @@ class Playlist {
                          *
                          *     TRACK_ID  : int
                          * } */
+                         if (window.debug && that.LOG) {
+                             console.log('  Playlist : playPreviousTrack server response');
+                         }
+
                         if (response.DONE) {
                             // TODO : test if track comes from the current playlist ...
                             that.currentTrack = that.activeView.getEntryById(response.TRACK_ID);
@@ -263,7 +275,7 @@ class Playlist {
      * desc   : Refresh view
      **/
     refreshViews() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : refreshViews call');
         }
 
@@ -282,7 +294,7 @@ class Playlist {
      * arg    : {object} track - The track to select
      **/
     setCurrentTrack(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : setCurrentTrack call');
         }
 
@@ -298,7 +310,7 @@ class Playlist {
      * arg    : {object} viewType - The view type
      **/
     showView(viewType) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : showView call');
         }
 
@@ -320,7 +332,7 @@ class Playlist {
      * desc   : Change repeat mode ( 0 : off, 1 : one, 2: all ) and send info to server
      **/
     toggleRepeat() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : toggleRepeat call');
         }
 
@@ -344,7 +356,7 @@ class Playlist {
      * desc   : Change shuffle mode ( 0 : off, 1 : random, 2: shuffle ) and send info to server
      **/
     toggleShuffle() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : toggleShuffle call');
         }
 
@@ -363,6 +375,10 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                 if (window.debug && that.LOG) {
+                     console.log('  Playlist : toggleShuffle server response');
+                 }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -378,7 +394,7 @@ class Playlist {
      * desc   : Remove all track and reset tracks, artists and album count
      **/
     _clearTracks() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _clearTracks call');
         }
 
@@ -397,7 +413,7 @@ class Playlist {
      * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
      **/
     _fillTracks(tracks) { // Tracks is JSON response to playlist ID
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _fillTracks call');
         }
 
@@ -417,7 +433,7 @@ class Playlist {
      *          {function} callback - Not mandatory
      **/
     _getTracksLazy(step, callback) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _getTracksLazy call');
         }
 
@@ -457,7 +473,7 @@ class Playlist {
                  *         }
                  *     ]
                  * } */
-                if (window.debug) {
+                if (window.debug && that.LOG) {
                     console.log('  Playlist : _getTracksLazy server response');
                 }
 
@@ -494,7 +510,7 @@ class Playlist {
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
     _getTracksFromServer(playlistId) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _getTracksFromServer call');
         }
 
@@ -512,7 +528,7 @@ class Playlist {
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
     _getTracksFromServer_aux(playlistId) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _getTracksFromServer_aux call');
         }
 
@@ -528,7 +544,7 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
-                if (window.debug) {
+                if (window.debug && that.LOG) {
                     console.log('  Playlist : _getTracksFromServer_aux server response');
                 }
 
@@ -556,7 +572,7 @@ class Playlist {
      * desc   : Handle playlist instantiation depending on booleans given to constructor
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _init call');
         }
 
@@ -589,7 +605,7 @@ class Playlist {
      * arg    : {int} libraryId - The library ID to scan
      **/
     _initialLibraryScan(libraryId) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _initialLibraryScan call');
         }
 
@@ -607,6 +623,10 @@ class Playlist {
                  *
                  *     PLAYLIST_ID : int or undefined
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('  Playlist : _initialLibraryScan server response');
+                }
+
                 if (response.DONE) {
                     that.id = response.PLAYLIST_ID;
                     that._getTracksFromServer(response.PLAYLIST_ID);
@@ -626,7 +646,7 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _loadLibrary call');
         }
 
@@ -644,7 +664,7 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadPlaylist() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _loadPlaylist call');
         }
 
@@ -662,7 +682,7 @@ class Playlist {
      * desc   : Starts a new library sequence
      **/
     _newLibrary() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _newLibrary call');
         }
 
@@ -683,7 +703,7 @@ class Playlist {
      * desc   : Starts a new playlist sequence
      **/
     _newPlaylist() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _newPlaylist call');
         }
 
@@ -707,7 +727,7 @@ class Playlist {
      *          {bool} convert - Auto conversion to ID3v2
      **/
     _requestNewLibrary(name, path, convert) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _requestNewLibrary call');
         }
 
@@ -728,7 +748,7 @@ class Playlist {
                  *     LIBRARY_ID   : int or undefined
                  *     LIBRARY_NAME : string
                  * } */
-                if (window.debug) {
+                if (window.debug && that.LOG) {
                     console.log('  Playlist : _requestNewLibrary server response');
                 }
 
@@ -757,7 +777,7 @@ class Playlist {
      * arg    : {string} name - Name given by user
      **/
     _requestNewPlaylist(name) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Playlist : _requestNewPlaylist call');
         }
 
@@ -776,7 +796,7 @@ class Playlist {
                  *     PLAYLIST_ID   : int or undefined
                  *     PLAYLIST_NAME : string
                  * } */
-                if (window.debug) {
+                if (window.debug && that.LOG) {
                     console.log('  Playlist : _requestNewPlaylist server response');
                 }
 

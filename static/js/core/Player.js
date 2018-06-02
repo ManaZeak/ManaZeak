@@ -12,8 +12,8 @@ import { precisionRound } from '../utils/Utils.js'
 class Player {
 
     constructor() {
-
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  Player construction');
         }
 
@@ -38,7 +38,7 @@ class Player {
      *        : {int}     id - The associated ID
      **/
     changeSource(url, id) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : changeSource call');
         }
 
@@ -55,7 +55,7 @@ class Player {
      * return : {bool} true if src is empty
      **/
     isEmpty() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : isEmpty call');
         }
 
@@ -69,7 +69,7 @@ class Player {
      * desc   : Mute player and store old value
      **/
     mute() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : mute call');
         }
 
@@ -86,7 +86,7 @@ class Player {
      * desc   : Reset player current time and repeat the track
      **/
     repeatTrack() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : repeatTrack call');
         }
 
@@ -105,7 +105,7 @@ class Player {
      * arg    : {float} volume - Volume between 0 and 1
      **/
     setVolume(volume) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : setVolume call');
         }
 
@@ -128,7 +128,7 @@ class Player {
      * desc   : Stop player playback and reset player src
      **/
     stopPlayback() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : stopPlayback call');
         }
 
@@ -145,7 +145,7 @@ class Player {
      * desc   : Switch on and off player playback depending on its current status
      **/
     togglePlay() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : togglePlay call');
         }
 
@@ -165,7 +165,7 @@ class Player {
      * desc   : Unmute player and restore old value
      **/
     unmute() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : unmute call');
         }
 
@@ -182,7 +182,7 @@ class Player {
      * desc   : Player event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : _eventListener call');
         }
 
@@ -203,7 +203,7 @@ class Player {
      * desc   : Init player volume, set/store player empty source and listen
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : _init call');
         }
 
@@ -224,7 +224,7 @@ class Player {
      * desc   : Pause player playback
      **/
     _pause() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : _pause call');
         }
 
@@ -239,7 +239,7 @@ class Player {
      * desc   : Play player playback
      **/
     _play() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  Player : _play call');
         }
 

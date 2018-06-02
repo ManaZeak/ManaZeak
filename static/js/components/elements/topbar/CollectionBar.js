@@ -17,7 +17,8 @@ import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry construction');
         }
 
@@ -54,7 +55,7 @@ class PlaylistCollectionEntry {
      * arg    : {string} name
      **/
     rename(name) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry : rename call');
         }
 
@@ -69,7 +70,7 @@ class PlaylistCollectionEntry {
      * arg    : {bool} isSelected
      **/
     setIsSelected(isSelected) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry : setIsSelected call');
         }
 
@@ -104,7 +105,7 @@ class PlaylistCollectionEntry {
      * desc   : TODO
      **/
     _contextMenuSetup() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry : _contextMenuSetup call');
         }
 
@@ -153,7 +154,7 @@ class PlaylistCollectionEntry {
 
 
     _sendCollectionDescription(playlist, description) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry : _sendCollectionDescription call');
         }
 
@@ -171,7 +172,7 @@ class PlaylistCollectionEntry {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
-                if (window.debug) {
+                if (window.debug && this.LOG) {
                     console.log('      PlaylistCollectionEntry : _sendCollectionDescription server response');
                 }
 
@@ -189,7 +190,7 @@ class PlaylistCollectionEntry {
      * desc   : Append option button to entry
      **/
     _createOptionButton() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry : _createOptionButton call');
         }
 
@@ -228,7 +229,7 @@ class CollectionBar extends MzkObject {
     constructor(collection, container) {
         super();
 
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar construction');
         }
 
@@ -250,7 +251,7 @@ class CollectionBar extends MzkObject {
      * desc   : Refresh the display from the collection
      **/
     refresh() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : refresh call');
         }
 
@@ -282,7 +283,7 @@ class CollectionBar extends MzkObject {
      * arg    : {int} id - the id of the playlist to select
      **/
     setSelected(id) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : setSelected call');
         }
 
@@ -301,7 +302,7 @@ class CollectionBar extends MzkObject {
      * desc   : Unselect every entry in playlist bar
      **/
     unSelectAll() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : unselectAll call');
         }
 
@@ -318,7 +319,7 @@ class CollectionBar extends MzkObject {
      * desc   : Setup a context menu for Add library button and listen
      **/
     _contextMenuSetup() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : _contextMenuSetup call');
         }
 
@@ -343,7 +344,7 @@ class CollectionBar extends MzkObject {
      * arg    : {object} container - The CollectionBar container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : _createUI call');
         }
 
@@ -373,7 +374,7 @@ class CollectionBar extends MzkObject {
      * desc   : CollectionBar event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      CollectionBar : _eventListener call');
         }
 

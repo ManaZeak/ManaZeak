@@ -15,7 +15,8 @@ class PlaylistView extends View {
     constructor() {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('  PlaylistView construction');
         }
     }
@@ -86,7 +87,7 @@ class PlaylistView extends View {
      * arg    : {object} track - The track to select in view
      **/
     setSelected(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('  PlaylistView : setSelected');
         }
 

@@ -15,7 +15,8 @@ class ProgressBar extends MzkObject {
     constructor(container) {
         super();
 
-        if (window.debug) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar construction');
         }
 
@@ -36,7 +37,7 @@ class ProgressBar extends MzkObject {
      * arg    : {object} track - The track to update progress from
      **/
     refreshInterval(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : refreshInterval call');
         }
 
@@ -55,7 +56,7 @@ class ProgressBar extends MzkObject {
      * desc   : Set ProgressBar to default
      **/
     resetProgressBar () {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : resetProgressBar call');
         }
 
@@ -80,7 +81,7 @@ class ProgressBar extends MzkObject {
      * desc   : Set moodbar container/thumb
      **/
     setMoodbarProgress() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : setMoodbarProgress call');
         }
 
@@ -96,7 +97,7 @@ class ProgressBar extends MzkObject {
      * arg    : {object} track - The track to update progress from
      **/
     updateProgress(track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : updateProgress call');
         }
 
@@ -125,7 +126,7 @@ class ProgressBar extends MzkObject {
      * arg    : {object} container - The ProgressBar container
      **/
     _createUI(container) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _createUI call');
         }
 
@@ -171,7 +172,7 @@ class ProgressBar extends MzkObject {
      * desc   : ProgressBar event listeners
      **/
     _eventListener() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _eventListener call');
         }
 
@@ -201,7 +202,7 @@ class ProgressBar extends MzkObject {
      * desc   : Creating moodbar, setting timecodes and listen
      **/
     _init() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _init call');
         }
 
@@ -218,7 +219,7 @@ class ProgressBar extends MzkObject {
      * desc   : Invert timecodes
      **/
     _invertTimecode() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _invertTimecode call');
         }
 
@@ -233,7 +234,7 @@ class ProgressBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseDown(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _mouseDown call');
         }
 
@@ -266,7 +267,7 @@ class ProgressBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseMove(event) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _mouseMove call');
         }
 
@@ -288,7 +289,7 @@ class ProgressBar extends MzkObject {
      * desc   : Action on mouse up event
      **/
     _mouseUp() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _mouseUp call');
         }
 
@@ -311,7 +312,7 @@ class ProgressBar extends MzkObject {
      *        : {object} track - The current track in player to update
      **/
     _moveProgress(event, track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _moveProgress call');
         }
 
@@ -349,7 +350,7 @@ class ProgressBar extends MzkObject {
      * desc   : Clear refresh interval
      **/
     _stopRefreshInterval() {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _stopRefreshInterval call');
         }
 
@@ -366,7 +367,7 @@ class ProgressBar extends MzkObject {
      *          {object} track - The track that aggro ProgressBar
      **/
     _timecodeProgressHover(event, track) {
-        if (window.debug) {
+        if (window.debug && this.LOG) {
             console.log('      ProgressBar : _timecodeProgressHover call');
         }
 
