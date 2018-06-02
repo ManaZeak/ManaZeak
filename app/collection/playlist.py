@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator
+from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator, deleteView
 from app.models import Playlist, Track
 from app.utils import errorCheckMessage, checkPermission
 
@@ -47,7 +47,9 @@ def renamePlaylist(request):
                 playlist = Playlist.objects.get(id=playlistId, user=user)
                 if (checkPermission(["PLST"], user) and not playlist.isLibrary) \
                         or (playlist.isLibrary and checkPermission(["LIBR"], user)):
+                    deleteView(playlist)
                     playlist.name = strip_tags(response['PLAYLIST_NAME'])
+                    playlist.refreshView = True
                     playlist.save()
                     data = {
                         'PLAYLIST_ID': playlist.id,
