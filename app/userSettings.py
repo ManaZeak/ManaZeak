@@ -62,6 +62,7 @@ def changeAvatar(request):
         if UserPreferences.objects.filter(user=user).count() == 1:
             userPref = UserPreferences.objects.get(user=user)
             userPref.avatar = avatar_path
+            userPref.save()
             with open(avatar_path, 'wb') as destination:
                 img_b64 = str(request['AVATAR'].split(",")[1])
                 destination.write(base64.b64decode(img_b64))

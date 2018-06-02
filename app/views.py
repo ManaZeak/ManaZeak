@@ -72,7 +72,6 @@ def createUser(request):
             userPref.wallet = wallet
             if invite is not None:
                 userPref.inviteCode = invite
-            userPref.save()
 
             # creating user avatar
             username_hash = hashlib.md5(username.encode("utf-8")).hexdigest()
@@ -80,6 +79,7 @@ def createUser(request):
             userPref.avatar = avatar_path
             identicon.create_identicon(username=username, filename=avatar_path)
 
+            userPref.save()
             createUserInviteCode(user)
             login(request, user)
             return HttpResponseRedirect(reverse('app:index'))
