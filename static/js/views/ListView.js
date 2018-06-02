@@ -183,6 +183,7 @@ class ListView extends PlaylistView {
 
             if (this.entries[i].track.id.track === track.id.track) { // Selecting the one
                 this.entries[i].setIsSelected(true);
+                this._addIDToSelect(i);
             }
         }
     }
@@ -224,7 +225,7 @@ class ListView extends PlaylistView {
             return true;
         }
 
-        this.entries[id].setIsSelected(this.selector.add(id, event.ctrlKey));
+        this.entries[id].setIsSelected(this.selector.add(id, event == null ? false : event.ctrlKey));
     }
 
 
