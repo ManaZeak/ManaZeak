@@ -1,3 +1,4 @@
+import base64
 import hashlib
 
 from django.contrib.auth.decorators import login_required
@@ -46,25 +47,22 @@ def getUserSettings(request):
 def changeAvatar(request):
     if request.method == 'POST':
         user = request.user
-        avatar_path = "static/img/avatars/" + user + ".png"
+        if str(request['AVATAR'].split(",")[0]) == "image/png":
+            extension = "png"
+        else:
+            extension = "jpg"
+
+        username_hash = hashlib.md5(user.encode("utf-8")).hexdigest()
+        avatar_path = "static/img/avatars/" + username_hash + extension
+
+        # if only one user with that username is found
         if UserPreferences.objects.filter(user=user).count() == 1:
             userPref = UserPreferences.objects.get(user=user)
-            userPref.picture = avatar_path
-
-            md5Name = hashlib.md5()
-            if str(response['COVER'].split(",")[0]) == "image/png":
-                extension = "png"
-            else:
-                extension = "jpg"
-            md5Name.update(base64.b64decode(str(response['COVER'].split(",")[1])))
-            filePath = "/ManaZeak/static/img/covers/" + md5Name.hexdigest() + extension
-            if not os.path.isfile(filePath):
-                with open(filePath, 'wb+') as destination:
-                    # Split the header with MIME type
-                    tags.cover = base64.b64decode(str(response['COVER'].split(",")[1]))
-                    destination.write(tags.cover)
-                    track.coverLocation = md5Name.hexdigest() + extension
-
+            userPref.avatar = avatar_path
+            with open(avatar_path, 'wb') as destination:
+                img_b64 = str(request['AVATAR'].split(",")[1])
+                destination.write(base64.b64decode(img_b64))
+                # TODO: data to return when success
         else:
             data = errorCheckMessage(False, "dbError")
     else:
