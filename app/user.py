@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from app.models import Playlist, UserPreferences, UserHistory, InviteCode
-from app.utils import errorCheckMessage, populateDB
+from app.utils import errorCheckMessage
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
