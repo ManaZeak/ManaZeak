@@ -11,6 +11,11 @@ import { secondsToTimecode } from '../../utils/Utils.js'
 class ListViewEntry {
 
     constructor(track, listView) {
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry construction');
+        }
+
         this.track           = track;
         this.isSelected      = false;
 
@@ -62,6 +67,10 @@ class ListViewEntry {
      * return : {object} listView - The HTML container
      **/
     insert(listView) {
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry : insert call');
+        }
+
         this.entry.dataset.childID = listView.children.length;
 
         if (this.entry.dataset.childID % 2 === 0) {
@@ -79,6 +88,10 @@ class ListViewEntry {
      * arg    : {int} seed - The value to test is even
      **/
     setBackground(seed) {
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry : setBackground call');
+        }
+
         this.entry.classList.remove("mzk-even-lin");
 
         if (seed % 2 === 0) {
@@ -94,6 +107,10 @@ class ListViewEntry {
      * return : {bool} isSelected
      **/
     setIsSelected(isSelected) {
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry : setIsSelected call');
+        }
+
         this.isSelected = isSelected;
 
         if (this.isSelected) {
@@ -111,6 +128,10 @@ class ListViewEntry {
      * TODO
      */
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry : _eventListener call');
+        }
+
         let that = this;
         this.track.listen('updateMetadata', function() {
             that._setInfo();
@@ -121,6 +142,10 @@ class ListViewEntry {
      * TODO remove zeaz and implement a track bank
      */
     _setInfo() {
+        if (window.debug && this.LOG) {
+            console.log('    ListViewEntry : _setInfo call');
+        }
+
         this.info.duration.innerHTML   = secondsToTimecode(this.track.duration);
         this.info.title.innerHTML      = this.track.title;
         this.info.artist.innerHTML     = this.track.artist;

@@ -15,6 +15,12 @@ class AdminView extends View {
 
     constructor() {
         super();
+
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    AdminView construction');
+        }
+
         this.info  = null;
         this.modal = null;
         this.currentPage = null;
@@ -29,6 +35,10 @@ class AdminView extends View {
      * desc   : Updates admin information
      **/
     updateAdminInfo(callback) {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : updateAdminInfo call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "admin/getView/",
@@ -59,6 +69,10 @@ class AdminView extends View {
                  *     BUFFER_PATH:
                  *     INVITE_ENABLED:
                  * } */
+                 if (window.debug && that.LOG) {
+                     console.log('    AdminView : updateAdminInfo server response');
+                 }
+
                 if (response.DONE) {
                     that.info = response;
                     if(that.currentPage)
@@ -80,6 +94,10 @@ class AdminView extends View {
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _clearPageSpace call');
+        }
+
         this.ui.content.innerHTML = "";
         this._unselectAllMenuEntries();
     }
@@ -91,6 +109,10 @@ class AdminView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _createUI call');
+        }
+
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
@@ -140,6 +162,10 @@ class AdminView extends View {
      * desc   : AdminView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _eventListener call');
+        }
+
         this.ui.menuDB.addEventListener("click", this._requestDBPage.bind(this));
         this.ui.menuUser.addEventListener("click", this._requestUsersPage.bind(this));
         this.ui.menuLib.addEventListener("click", this._requestLibrariesPage.bind(this));
@@ -154,6 +180,10 @@ class AdminView extends View {
      * desc   : Create view to DB page by default
      **/
     _init() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _init call');
+        }
+
         let that = this;
         this.updateAdminInfo(function() {
             that._createUI();
@@ -167,6 +197,10 @@ class AdminView extends View {
      * desc   : Display the database management page
      **/
     _requestDBPage() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestDBPage call');
+        }
+
         this.currentPage = this._requestDBPage;
         this._clearPageSpace();
         this.ui.menuDB.className        = "mzk-selected";
@@ -213,6 +247,10 @@ class AdminView extends View {
 
 
     _regenCover() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _regenCover call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "admin/regenerateCovers/",
@@ -222,6 +260,10 @@ class AdminView extends View {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                 if (window.debug && this.LOG) {
+                     console.log('    AdminView : _regenCover call');
+                 }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -236,6 +278,10 @@ class AdminView extends View {
      * desc   : Request to delete all library
      **/
     _requestDeleteLibraries() { // TODO : put the code below in APP
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestDeleteLibraries call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "library/deleteAll/",
@@ -245,6 +291,10 @@ class AdminView extends View {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('    AdminView : _requestDeleteLibraries server response');
+                }
+
                 if (response.DONE) {
                     window.app.playlists.clear();
                     window.app.changePlaylist();
@@ -266,6 +316,10 @@ class AdminView extends View {
      * desc   : Request to rescan all library
      **/
     _requestRescanLibraries() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestRescanLibrary call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "library/rescanAll/",
@@ -277,6 +331,10 @@ class AdminView extends View {
                  *
                  *     PATH        : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('    AdminView : _requestRescanLibrary server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -291,6 +349,10 @@ class AdminView extends View {
      * desc   : Display the users management page
      **/
     _requestUsersPage() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestUsersPage call');
+        }
+
         this.currentPage = this._requestUsersPage;
         this._clearPageSpace();
         this.ui.menuUser.className     = "mzk-selected";
@@ -388,6 +450,10 @@ class AdminView extends View {
      * desc   : Display the libraries management page
      **/
     _requestLibrariesPage() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestLibrariesPage call');
+        }
+
         if (!window.app.user.hasPermission("LIBR")) {
             return;
         }
@@ -458,6 +524,10 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestSCPage() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestSCPage call');
+        }
+
         this.currentPage = this._requestSCPage;
         this._clearPageSpace();
         this.ui.menuSC.className       = "mzk-selected";
@@ -516,6 +586,10 @@ class AdminView extends View {
      * desc   : Display the SyncThing management page
      **/
     _requestWishPage() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestWishPage call');
+        }
+
         this.currentPage = this._requestWishPage;
         this._clearPageSpace();
         this.ui.menuWish.className     = "mzk-selected";
@@ -544,6 +618,10 @@ class AdminView extends View {
                  *     }
                  * } */
                 if (response.DONE) {
+                    if (window.debug && that.LOG) {
+                        console.log('    AdminView : _requestWishPage server response');
+                    }
+
                     for (let i = 0; i < response.RESULT.length; ++i) {
                         let element        = document.createElement("LI");
                         let accept         = document.createElement("IMG");
@@ -608,6 +686,10 @@ class AdminView extends View {
      * desc   : Update the vote on a given wish
      **/
     _updateWishStatus(wishID, status, callback) {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _updayeWishStatus call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "wish/setStatus/",
@@ -621,6 +703,10 @@ class AdminView extends View {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    AdminView : _updayeWishStatus server response');
+                }
+
                 if (response.DONE) {
                     if (callback) {
                         callback();
@@ -645,6 +731,10 @@ class AdminView extends View {
      * desc   : Send a drop db request to the server
      **/
     _requestDrop() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _requestDrop call');
+        }
+
         // TODO : put modal on drop action to confirm ?
         let that = this;
         JSONParsedGetRequest(
@@ -655,6 +745,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    AdminView : _requestDrop server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -674,6 +768,10 @@ class AdminView extends View {
      * desc   : Rescan syncthing folders
      **/
     _rescanSC() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _rescanSC call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "admin/syncthingRescan",
@@ -683,6 +781,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    AdminView : _rescanSC server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -702,6 +804,10 @@ class AdminView extends View {
      * desc   : Remove all moodbar from server
      **/
     _removeMoodbar() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _removeMoodbar call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "admin/removeAllMoods/",
@@ -711,6 +817,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    AdminView : _removeMoodbar server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -730,6 +840,10 @@ class AdminView extends View {
      * desc   : Submit the SyncThing API key
      **/
     _submitAPIKey() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _submitAPIKey call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "admin/changeSyncthingAPIKey/",
@@ -742,6 +856,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    AdminView : _submitAPIKey server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -761,6 +879,10 @@ class AdminView extends View {
      * desc   : Submit the SyncThing API key
      **/
     _submitBufferPath() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _submitBufferPath call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "admin/changeBufferPath/",
@@ -773,6 +895,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('    AdminView : _submitBufferPath server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -792,6 +918,10 @@ class AdminView extends View {
      * desc   : Toggle user sponsoring in app
      **/
     _toggleInviteMode() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _toggleInviteMode call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "admin/toggleInvite/",
@@ -801,6 +931,10 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('    AdminView : _toggleInviteMode call');
+                }
+
                 if (response.DONE) {
                     that._requestUsersPage();
                 }
@@ -819,6 +953,10 @@ class AdminView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
+        if (window.debug && this.LOG) {
+            console.log('    AdminView : _unselectAllMenuEntries call');
+        }
+
         this.ui.menuDB.className   = "";
         this.ui.menuUser.className = "";
         this.ui.menuLib.className  = "";

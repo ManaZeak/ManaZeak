@@ -150,6 +150,7 @@ class UserView extends View {
      **/
     _unselectAllMenuEntries() {
         this.ui.menuGen.className = "";
+        this.ui.menuUp.className  = "";
     }
 
 

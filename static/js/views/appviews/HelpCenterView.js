@@ -12,6 +12,12 @@ class HelpCenterView extends View {
 
     constructor() {
         super();
+
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView construction');
+        }
+
         this._createUI();
     }
 
@@ -23,6 +29,10 @@ class HelpCenterView extends View {
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _clearPageSpace call');
+        }
+
         this.ui.content.innerHTML = "";
         this._unselectAllMenuEntries();
     }
@@ -34,6 +44,10 @@ class HelpCenterView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _createUI call');
+        }
+
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
@@ -81,6 +95,10 @@ class HelpCenterView extends View {
      * desc   : UserView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _eventListener call');
+        }
+
         this.ui.menuLibraries.addEventListener("click", this._requestLibrariesPage.bind(this));
         this.ui.menuShortcut.addEventListener("click", this._requestShortcutsPage.bind(this));
         this.ui.menuTagConvention.addEventListener("click", this._requestTagConventionPage.bind(this));
@@ -95,6 +113,10 @@ class HelpCenterView extends View {
      * desc   : Display the general page
      **/
     _requestShortcutsPage() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _requestShortcut call');
+        }
+
         this._clearPageSpace();
         this.ui.menuShortcut.className     = "mzk-selected";
         this.ui.contentTitle.innerHTML     = "Shortcuts";
@@ -105,6 +127,10 @@ class HelpCenterView extends View {
 
 
     _requestLibrariesPage() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _requestLibrariesPage call');
+        }
+
         this._clearPageSpace();
         this.ui.menuLibraries.className = "mzk-selected";
         this.ui.contentTitle.innerHTML      = "Libraries";
@@ -120,6 +146,10 @@ class HelpCenterView extends View {
      * desc   : Display the general page
      **/
     _requestTagConventionPage() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _clearPageSpace call');
+        }
+
         this._clearPageSpace();
         this.ui.menuTagConvention.className = "mzk-selected";
         this.ui.contentTitle.innerHTML      = "Tag and naming convention";
@@ -210,7 +240,7 @@ class HelpCenterView extends View {
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
 
-        
+
 
         this.ui.content.appendChild(intro);
         this.ui.content.appendChild(fileConv);
@@ -238,6 +268,10 @@ class HelpCenterView extends View {
      * desc   : Display the general page
      **/
     _requestRanksPermsPage() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _requestRanksPermsPage call');
+        }
+
         this._clearPageSpace();
         this.ui.menuRanksPerms.className = "mzk-selected";
         this.ui.contentTitle.innerHTML      = "Ranks / Permissions";
@@ -316,6 +350,10 @@ class HelpCenterView extends View {
      * desc   : Display the general page
      **/
     _requestManaCoinPage() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _requestManaCoinPage call');
+        }
+
         this._clearPageSpace();
         this.ui.menuManaCoin.className = "mzk-selected";
         this.ui.contentTitle.innerHTML      = "ManaCoin";
@@ -497,6 +535,10 @@ class HelpCenterView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
+        if (window.debug && this.LOG) {
+            console.log('    HelpCenterView : _unselectAllMenuEntries call');
+        }
+
         this.ui.menuLibraries.className = "";
         this.ui.menuShortcut.className = "";
         this.ui.menuTagConvention.className = "";

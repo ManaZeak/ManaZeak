@@ -14,6 +14,12 @@ class StatsView extends View {
 
     constructor() {
         super();
+
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    StatsView construction');
+        }
+
         this._createUI();
     }
 
@@ -25,6 +31,10 @@ class StatsView extends View {
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _clearSpace call');
+        }
+
         this.ui.content.innerHTML = "";
         this._unselectAllMenuEntries();
     }
@@ -36,6 +46,10 @@ class StatsView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _createUI call');
+        }
+
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
@@ -77,6 +91,10 @@ class StatsView extends View {
      * desc   : StatsView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _eventListener call');
+        }
+
         this.ui.menuArtist.addEventListener("click", this._requestArtistPage.bind(this));
         this.ui.menuTrack.addEventListener("click", this._requestTrackPage.bind(this));
         this.ui.menuGenre.addEventListener("click", this._requestGenrePage.bind(this));
@@ -89,6 +107,10 @@ class StatsView extends View {
      * desc   : Display the artists page
      **/
     _requestArtistPage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestArtistPage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuArtist.className   = "mzk-selected";
@@ -127,6 +149,10 @@ class StatsView extends View {
                  *     PREF_ARTISTS      : [][]
                  *     LEAST_ARTISTS     : [][]
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    StatsView : _requestArtistPage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefArtistsLabel.innerHTML     = "";
@@ -156,6 +182,10 @@ class StatsView extends View {
      * desc   : Display the genres page
      **/
     _requestGenrePage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestGenrePage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuGenre.className    = "mzk-selected";
@@ -194,6 +224,10 @@ class StatsView extends View {
                  *     PREF_GENRES      : [][]
                  *     LEAST_GENRES     : [][]
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    StatsView : _requestGenrePage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefGenresLabel.innerHTML      = "";
@@ -223,6 +257,10 @@ class StatsView extends View {
      * desc   : Display the tracks page
      **/
     _requestTrackPage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestTrackPage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuTrack.className    = "mzk-selected";
@@ -262,6 +300,10 @@ class StatsView extends View {
                  *     PREF_TRACKS      : [][]
                  *     LEAST_TRACKS     : [][]
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('    StatsView : _requestTrackPage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefTracksLabel.innerHTML      = "";
@@ -291,6 +333,10 @@ class StatsView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _unselectAllMenuEntries call');
+        }
+
         this.ui.menuArtist.className = "";
         this.ui.menuTrack.className  = "";
         this.ui.menuGenre.className  = "";
@@ -304,6 +350,10 @@ class StatsView extends View {
      * arg    : {[int][int]} leastArtists - Key/Value artists array
      **/
     _updateLeastArtistsList(leastArtists, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastArtistsList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastArtists.length; ++i) {
             if (leastArtists[i][0] !== null) {
@@ -331,6 +381,10 @@ class StatsView extends View {
      * arg    : {[int][int]} prefArtists - Key/Value artists array
      **/
     _updatePrefArtistsList(prefArtists, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefArtistsList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefArtists.length; ++i) {
             if (prefArtists[i][0] !== null) {
@@ -358,6 +412,10 @@ class StatsView extends View {
      * arg    : {[][]} leastGenres - Key/Value tracks array
      **/
     _updateLeastGenresList(leastGenres, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastGenresList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastGenres.length; ++i) {
             if (leastGenres[i][0] !== null) {
@@ -385,6 +443,10 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefGenresList(prefGenres, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefGenresList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefGenres.length; ++i) {
             if (prefGenres[i][0] !== null) {
@@ -412,6 +474,10 @@ class StatsView extends View {
      * arg    : {[int][int]} leastTracks - Key/Value tracks array
      **/
     _updateLeastTracksList(leastTracks, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastTracksList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastTracks.length; ++i) {
             if (leastTracks[i][0] !== null) {
@@ -440,6 +506,10 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefTracksList(prefTracks, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefTracksList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefTracks.length; ++i) {
             if (prefTracks[i][0] !== null) {

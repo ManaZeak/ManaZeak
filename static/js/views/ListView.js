@@ -18,6 +18,12 @@ class ListView extends PlaylistView {
 
     constructor(data, isLibrary, id) {
         super();
+
+        this.LOG = true; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  ListView construction');
+        }
+
         this.isLibrary = isLibrary;
         this.id        = id;
         // The index of the last track on which the view was centered
@@ -48,6 +54,10 @@ class ListView extends PlaylistView {
      * return : {object} ListView entry
      **/
     getEntryById(id) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : getEntryById call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].track.id.track === id) {
                 return this.entries[i].track;
@@ -63,6 +73,10 @@ class ListView extends PlaylistView {
      * return : {object} ListView first entry
      **/
     getFirstEntry() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : getFirstEntry call');
+        }
+
         if (this.entries.length > 0) {
             return this.entries[0].track;
         }
@@ -81,6 +95,10 @@ class ListView extends PlaylistView {
      * return : {object} ListView next entry
      **/
     getNextEntry() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : getNextEntry call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i + 1) % this.entries.length].track;
@@ -96,6 +114,10 @@ class ListView extends PlaylistView {
      * return : {object} ListView previous entry
      **/
     getPreviousEntry() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : getPreviousEntry call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) {
                 return this.entries[(i - 1 + this.entries.length) % this.entries.length].track;
@@ -111,6 +133,10 @@ class ListView extends PlaylistView {
      * return : {bool} true if yes
      **/
     isLastEntry() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : isLastEntry call');
+        }
+
         return !!this.entries[this.entries.length - 1].getIsSelected();
     }
 
@@ -122,6 +148,10 @@ class ListView extends PlaylistView {
      * arg    : {[object]} tracks - Tracks array
      **/
     refreshTracks(tracks) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : refreshTracks call');
+        }
+
         while (this.listView.firstChild) {
             this.listView.removeChild(this.listView.firstChild);
         }
@@ -142,6 +172,10 @@ class ListView extends PlaylistView {
      * arg    : {object} track - The track to select
      **/
     setSelected(track) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : setSelected call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all
                 this.entries[i].setIsSelected(false);
@@ -162,6 +196,10 @@ class ListView extends PlaylistView {
      * arg    : {[object]} tracks - Tracks array to display
      **/
     _addEntries(tracks) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _addEntries call');
+        }
+
         for (let i = 0; i < tracks.length; ++i) {
             this.entries.push(new ListViewEntry(tracks[i], this.listView));
         }
@@ -176,6 +214,10 @@ class ListView extends PlaylistView {
      *          {object} event - TODO
      **/
     _addIDToSelect(id, event) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _addIDToSelect call');
+        }
+
         // Clicked outside of the entries
         if (id === undefined || id === null) {
             this._unSelectAll();
@@ -192,6 +234,10 @@ class ListView extends PlaylistView {
      * desc   : TODO
      **/
     _contextMenuSetup() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _contextMenuSetup call');
+        }
+
         let that             = this;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.listView, function(event) {
@@ -314,6 +360,10 @@ class ListView extends PlaylistView {
      * desc   : Build UI elements
      **/
     _createUI(data) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _createUI call');
+        }
+
         this.listView               = document.createElement("DIV");
         this.listView.className     = "mzk-listview";
 
@@ -340,6 +390,10 @@ class ListView extends PlaylistView {
      * desc   : ListView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _eventListener call');
+        }
+
         let that = this;
         this.listView.onscroll = function() {
             that.trackInfo.setVisible(false);
@@ -395,6 +449,10 @@ class ListView extends PlaylistView {
      * arg    : {object} data - Tracks
      **/
     _init(data) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _init call');
+        }
+
         this.listView        = null;
         this.entries         = [];
         this.trackInfo       = null;
@@ -432,6 +490,10 @@ class ListView extends PlaylistView {
      * desc   : Init ListView header
      **/
     _initHeader() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _initHeader call');
+        }
+
         this.header.container                = document.createElement("DIV");
         this.header.duration                 = document.createElement("DIV");
         this.header.title                    = document.createElement("DIV");
@@ -485,6 +547,10 @@ class ListView extends PlaylistView {
      * desc   : Reset entries background alternance
      **/
     _resetEntriesBackground() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _resetEntriesBackground call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             this.entries[i].setBackground(i);
         }
@@ -498,6 +564,10 @@ class ListView extends PlaylistView {
      * arg    : {object} event - Mouse event
      **/
     _showTrackInfo(event) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _showTrackInfo call');
+        }
+
 /*
         if (event.target == this.listView) {
             return this.trackInfo.setVisible(false);
@@ -536,6 +606,10 @@ class ListView extends PlaylistView {
      *          {bool} ascending - Sort way
      **/
     _sortBy(argument, ascending) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _sortBy call');
+        }
+
         //TODO: Optimise this for bigger playlists (need custom sort) UPDATE: Actually might not be possible
         this.entries.sort(sortObjectArrayBy(argument, ascending, "track"));
         this.listView.innerHTML = "";
@@ -554,6 +628,10 @@ class ListView extends PlaylistView {
      * desc   : Unselect all entries in ListView
      **/
     _unSelectAll() {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _unselectAll call');
+        }
+
         for (let i = 0; i < this.entries.length ;++i) {
             if (this.entries[i].getIsSelected()) {
                 this.entries[i].setIsSelected(false);
@@ -572,6 +650,10 @@ class ListView extends PlaylistView {
      *          {integer} track - The index of the track on which to center
      **/
     _centerOnTrack(track, useIndex) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _centerOnTrack call');
+        }
+
         let i = track;
         if (useIndex !== true) {
             for (i = 0; i < this.entries.length; ++i) {
@@ -606,6 +688,10 @@ class ListView extends PlaylistView {
      * arg    : {object} event - Mouse event
      **/
     _viewClicked(event) {
+        if (window.debug && this.LOG) {
+            console.log('  ListView : _viewClicked call');
+        }
+
         let that   = this;
         let target = event.target;
 
