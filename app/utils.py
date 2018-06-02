@@ -1,5 +1,7 @@
 import logging
 from crontab import CronTab
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.achievement import refreshAchievements, checkAchievement
@@ -320,17 +322,30 @@ def fillDefaultPermission(group):
 
 
 def setCronJobs():
-    print('Setting up cron shit')
     cron = CronTab("root")
-    # Checking the job allready present
-    if checkIfCronJobExists('test', cron):
-        job = cron.new(command='python /ManaZeak/manage.py testCron', comment='test')
-        job.minutes.every(1)
-        cron.write()
+    # Checking the job already present
     if checkIfCronJobExists('rescan', cron):
         job = cron.new(command='python /ManaZeak/manage.py rescan', comment='rescan')
-        job.hour.every(12)
+        job.hours.on(4)
+        job.dow.on('MON')
         cron.write()
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def refreshCrontab(request):
+    if request.method == 'GET':
+        user = request.user
+        if checkPermission(['LIBR'], user):
+            cron = CronTab("root")
+            for job in cron:
+                cron.remove(job)
+            setCronJobs()
+            data = errorCheckMessage(True, None, refreshCrontab)
+        else:
+            data = errorCheckMessage(False, "permissionError", refreshCrontab, user)
+    else:
+        data = errorCheckMessage(False, "badRequest0")
+    return JsonResponse(data)
 
 
 def checkIfCronJobExists(comment, cron):

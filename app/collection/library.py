@@ -177,7 +177,7 @@ def rescanAllLibraries(request):
     if request.method == 'GET':
         user = request.user
         if checkPermission(["LIBR"], user):
-            scanThread = Process(target=rescanLibraryProcess, args=None)
+            scanThread = Process(target=rescanLibraryProcess, args=[None])
             db.connections.close_all()
             scanThread.start()
             data = errorCheckMessage(True, None, rescanAllLibraries)

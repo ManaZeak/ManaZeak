@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, adminTools, wish, userSettings, fileUpload, user
+from app import player, history, adminTools, wish, userSettings, fileUpload, user, utils
 from app.collection import playlist, library
 from app.stats import stats, suggestion
 from app.track import track, editor
@@ -86,6 +86,7 @@ urlpatterns = [
     url(r'^admin/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
     url(r'^admin/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
+    url(r'^admin/refreshCrontab/$', utils.refreshCrontab, name='setCronJob'),
 
     # InviteCode section
     url(r'^admin/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
