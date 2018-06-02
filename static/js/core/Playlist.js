@@ -19,7 +19,7 @@ import Modal from '../utils/Modal.js'
 class Playlist {
 
     constructor(id, name, description, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  Playlist construction');
         }

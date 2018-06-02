@@ -15,7 +15,7 @@ const NB_OF_NAMED_ARGS = 3; // /!\ IMPORTANT - CHANGE THIS IF YOU ADD/REMOVE ARG
 class ContextMenuEntry {
 
     constructor(entryID, displayString, callback/*, MORE ARGUMENTS HERE*/) {
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  ContextMenuEntry construction');
         }

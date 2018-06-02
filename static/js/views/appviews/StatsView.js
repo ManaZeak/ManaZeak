@@ -15,7 +15,7 @@ class StatsView extends View {
     constructor() {
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('    StatsView construction');
         }

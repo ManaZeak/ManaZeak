@@ -13,7 +13,7 @@ class Shortcut extends MzkObject {
     constructor(eventType, key, callback, ctrl, shift, alt, meta) {
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  Shortcut construction');
         }

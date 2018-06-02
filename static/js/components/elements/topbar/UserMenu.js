@@ -13,7 +13,7 @@ import ContextMenuEntry from '../../../utils/ContextMenuEntry.js'
 class UserMenu {
 
     constructor(container) {
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('      UserMenu construction');
         }

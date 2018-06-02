@@ -18,7 +18,7 @@ class PartyView extends View {
     constructor() {
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('    PartyView construction');
         }
@@ -38,7 +38,7 @@ class PartyView extends View {
      **/
     getContainer() {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : getContainer call');
+            console.log('    PartyView : getContainer call');
         }
 
         let currentlyPlaying = window.app.player.getSourceID();
@@ -94,7 +94,7 @@ class PartyView extends View {
                      *     }
                      * } */
                     if (window.debug && that.LOG) {
-                        console.log('    HelpCenterView : getContainer server response');
+                        console.log('    PartyView : getContainer server response');
                     }
 
                     if (response.DONE) {
@@ -120,7 +120,7 @@ class PartyView extends View {
      **/
     _createUI() {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _createUI call');
+            console.log('    PartyView : _createUI call');
         }
 
         this.ui = {
@@ -212,7 +212,7 @@ class PartyView extends View {
      **/
     _eventListener() {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _eventListener call');
+            console.log('    PartyView : _eventListener call');
         }
 
         let that = this;
@@ -264,7 +264,7 @@ class PartyView extends View {
      **/
     _setCurrentTrack(track) {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _setCurrentTrack call');
+            console.log('    PartyView : _setCurrentTrack call');
         }
 
         this.ui.trackCover.src           = track.cover;
@@ -281,7 +281,7 @@ class PartyView extends View {
 
     _setComposerString(composer) {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _setComposerString call');
+            console.log('    PartyView : _setComposerString call');
         }
 
         return composer.replace(/;/g, "<br>");
@@ -290,7 +290,7 @@ class PartyView extends View {
 
     _startClock() {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _startClock call');
+            console.log('    PartyView : _startClock call');
         }
 
         let that = this;
@@ -301,7 +301,7 @@ class PartyView extends View {
 
     _updateClock() {
         if (window.debug && this.LOG) {
-            console.log('    HelpCenterView : _updateClock call');
+            console.log('    PartyView : _updateClock call');
         }
 
         this.ui.date.innerHTML = secondsToDate(new Date());

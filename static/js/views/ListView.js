@@ -19,7 +19,7 @@ class ListView extends PlaylistView {
     constructor(data, isLibrary, id) {
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  ListView construction');
         }

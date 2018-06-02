@@ -17,7 +17,7 @@ import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry construction');
         }
@@ -56,7 +56,7 @@ class PlaylistCollectionEntry {
      **/
     rename(name) {
         if (window.debug && this.LOG) {
-            console.log('      PlaylistCollectionEntry : rename call');
+            console.log('      PlaylistCollectionEntry : rename call (' + name + this + ')');
         }
 
         this.label.innerHTML = name;

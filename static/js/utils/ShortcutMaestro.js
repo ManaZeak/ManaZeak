@@ -14,7 +14,7 @@ class ShortcutMaestro extends MzkObject {
 
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  ShortcutMaestro construction');
         }

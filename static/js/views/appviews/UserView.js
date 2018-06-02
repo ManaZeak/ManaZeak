@@ -15,7 +15,7 @@ class UserView extends View {
     constructor() {
         super();
 
-        this.LOG = true; // Set to false to locally mute file
+        this.LOG = false; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('    UserView construction');
         }
@@ -158,7 +158,7 @@ class UserView extends View {
      * class  : UserView
      * desc   : Display the uploads page
      **/
-    _requestUploadsPage()
+    _requestUploadsPage() {
         if (window.debug && this.LOG) {
             console.log('    UserView : _requestUploadPage call');
         }
