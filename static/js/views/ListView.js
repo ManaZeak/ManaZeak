@@ -669,15 +669,11 @@ class ListView extends PlaylistView {
 
         let relativeDelta = this.entries[i].entry.offsetTop + this.entries[i].entry.scrollHeight / 2;
 
-        if (this.entries[i].entry.offsetParent != this.listView) {
-            relativeDelta -= this.listView.offsetTop;
-        }
-
         if (this.isActive) {
             this.lastTrackCenter = i;
         }
 
-        this.listView.scrollTop = relativeDelta - this.listView.clientHeight / 2;
+        this.container.scrollTop = relativeDelta - this.container.clientHeight / 2;
     }
 
 
