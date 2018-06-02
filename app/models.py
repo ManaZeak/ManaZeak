@@ -177,4 +177,4 @@ class UserPreferences(models.Model):
     user = models.ForeignKey(User, null=True)
     totalListeningTime = models.FloatField(default=0.0)
     streak = models.IntegerField(default=100)
-    picture = models.FilePathField(default='/defaultimgpath')
+    avatar = models.FilePathField(default='/defaultimgpath')
