@@ -34,11 +34,11 @@ def getUserSettings(request):
                     'GODFATHER_CODE': "Christ",
                     'GODFATHER_NAME': "Jesus",
                 }}
-            data = {**data, **errorCheckMessage(True, None)}
+            data = {**data, **errorCheckMessage(True, None, getUserSettings)}
         else:
-            data = errorCheckMessage(False, "dbError")
+            data = errorCheckMessage(False, "dbError", getUserSettings)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getUserSettings)
     return JsonResponse(data)
 
 

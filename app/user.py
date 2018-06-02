@@ -11,9 +11,9 @@ def deleteUser(request):
         user = request.user
         deleteLinkedEntities(user)
         user.delete()
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, deleteUser)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", deleteUser)
     return JsonResponse(data)
 
 
@@ -45,9 +45,9 @@ def getUserInformation(request):
         for permission in userPref.group.permissions.all():
             permissions.append(permission.code)
         data = {**data, **{'PERMISSIONS': permissions}}
-        data = {**data, **errorCheckMessage(True, None)}
+        data = {**data, **errorCheckMessage(True, None, getUserInformation)}
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getUserInformation)
     return JsonResponse(data)
 
 

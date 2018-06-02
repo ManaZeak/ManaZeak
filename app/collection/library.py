@@ -5,6 +5,7 @@ import os
 import threading
 from time import sleep
 
+import logging
 from django import db
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -17,10 +18,13 @@ from app.track.importer import createMP3Track, createVorbisTrack
 from app.utils import errorCheckMessage, splitTableCustom, checkPermission, refreshAllViews
 
 
+logger = logging.getLogger('django')
+
+
 # Perform the initial scan for a library
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def initialScan(request):
-    print("Asked for initial scan")
+    logger.info("Asked for initial scan")
     if request.method == 'POST':
         response = json.loads(request.body)
         user = request.user
@@ -31,13 +35,13 @@ def initialScan(request):
                     playlist = library.playlist
                     data = scanLibrary(library, playlist, library.convertID3)
                 else:
-                    data = errorCheckMessage(False, "dirNotFound")
+                    data = errorCheckMessage(False, "dirNotFound", initialScan)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", initialScan, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", initialScan, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", initialScan)
     return JsonResponse(data)
 
 
@@ -67,15 +71,15 @@ def newLibrary(request):
                         'LIBRARY_ID': library.id,
                         'LIBRARY_NAME': library.playlist.name,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, newLibrary)}
                 else:
-                    data = errorCheckMessage(False, "dirNotFound")
+                    data = errorCheckMessage(False, "dirNotFound", newLibrary)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", newLibrary, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", newLibrary, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", newLibrary)
     return JsonResponse(data)
 
 
@@ -89,15 +93,15 @@ def checkLibraryScanStatus(request):
             if 'PLAYLIST_ID' in response:
                 if Playlist.objects.filter(id=response['PLAYLIST_ID']).count() == 1:
                     playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
-                    data = errorCheckMessage(playlist.isScanned, None)
+                    data = errorCheckMessage(playlist.isScanned, None, newLibrary)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", checkLibraryScanStatus)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", checkLibraryScanStatus, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", checkLibraryScanStatus, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", checkLibraryScanStatus)
     return JsonResponse(data)
 
 
@@ -109,7 +113,7 @@ def scanLibrary(library, playlist, convert):
         try:
             os.makedirs(coverPath)
         except OSError:
-            return errorCheckMessage(False, "coverError")
+            return errorCheckMessage(False, "coverError", scanLibrary)
 
     mp3Files = []
     flacFiles = []
@@ -133,7 +137,7 @@ def scanLibrary(library, playlist, convert):
 
     # TODO, change when implement other file types
     if len(mp3Files) == 0 and len(flacFiles) == 0 and len(oggFiles) == 0:
-        return errorCheckMessage(False, "emptyLibrary")
+        return errorCheckMessage(False, "emptyLibrary", scanLibrary)
 
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, oggFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
@@ -141,7 +145,7 @@ def scanLibrary(library, playlist, convert):
     data = {
         'PLAYLIST_ID': playlist.id,
     }
-    data = {**data, **errorCheckMessage(True, None)}
+    data = {**data, **errorCheckMessage(True, None, scanLibrary)}
     return data
 
 
@@ -158,13 +162,13 @@ def rescanLibraryRequest(request):
                 scanThread = Process(target=rescanLibraryProcess, args=libraryId)
                 db.connections.close_all()
                 scanThread.start()
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, rescanLibraryRequest)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", rescanLibraryRequest, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", rescanLibraryRequest, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", rescanLibraryRequest)
     return JsonResponse(data)
 
 
@@ -176,11 +180,11 @@ def rescanAllLibraries(request):
             scanThread = Process(target=rescanLibraryProcess, args=None)
             db.connections.close_all()
             scanThread.start()
-            data = errorCheckMessage(True, None)
+            data = errorCheckMessage(True, None, rescanAllLibraries)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", rescanAllLibraries, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", rescanAllLibraries)
     return JsonResponse(data)
 
 
@@ -226,7 +230,7 @@ def deleteLibrary(library):
     library.playlist.track.all().delete()
     library.playlist.delete()
     library.delete()
-    return errorCheckMessage(True, None)
+    return errorCheckMessage(True, None, deleteLibrary)
 
 
 # Delete all the libraries and the related elements
@@ -242,11 +246,11 @@ def deleteAllLibrary(request):
                 library.delete()
             for playlist in Playlist.objects.all():
                 playlist.delete()
-            data = errorCheckMessage(True, None)
+            data = errorCheckMessage(True, None, deleteAllLibrary)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", deleteAllLibrary, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", deleteAllLibrary)
     return JsonResponse(data)
 
 

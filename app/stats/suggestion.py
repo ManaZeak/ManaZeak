@@ -51,17 +51,17 @@ def getSimilarTrack(request):
                         tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
                     # Other values
                     else:
-                        return JsonResponse(errorCheckMessage(False, "badFormat"))
+                        return JsonResponse(errorCheckMessage(False, "badFormat", getSimilarTrack, user))
 
                     # Check length of the query set
                     if len(tracks) < 4:
                         if len(tracks) == 0:
                             if mode == 0:
-                                return JsonResponse(errorCheckMessage(False, "noSameArtist"))
+                                return JsonResponse(errorCheckMessage(False, "noSameArtist", getSimilarTrack))
                             elif mode == 1:
-                                return JsonResponse(errorCheckMessage(False, "noSameAlbum"))
+                                return JsonResponse(errorCheckMessage(False, "noSameAlbum", getSimilarTrack))
                             else:
-                                return JsonResponse(errorCheckMessage(False, "noSameGenre"))
+                                return JsonResponse(errorCheckMessage(False, "noSameGenre", getSimilarTrack))
                         else:
                             numberTrackTarget = len(tracks)
 
@@ -72,13 +72,14 @@ def getSimilarTrack(request):
                             break
 
                     # Returning results
-                    return JsonResponse({**generateSimilarTrackJson(selectedTracks), **errorCheckMessage(True, None)})
+                    return JsonResponse({**generateSimilarTrackJson(selectedTracks),
+                                         **errorCheckMessage(True, None, getSimilarTrack)})
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", getSimilarTrack)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", getSimilarTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getSimilarTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getSimilarTrack)
     return data

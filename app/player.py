@@ -69,15 +69,15 @@ def shuffleNextTrack(request):
                         'TRACK_ID': track.id,
                         'IS_LAST': playlistEnd,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, shuffleNextTrack)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", shuffleNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", shuffleNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", shuffleNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", shuffleNextTrack)
     return JsonResponse(data)
 
 
@@ -99,17 +99,17 @@ def randomNextTrack(request):
                             data = {
                                 'TRACK_ID': track.id,
                             }
-                            data = {**data, **errorCheckMessage(True, None)}
+                            data = {**data, **errorCheckMessage(True, None, randomNextTrack)}
                             return JsonResponse(data)
                         else:
                             count += 1
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "dbError", randomNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", randomNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", randomNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", randomNextTrack)
     return JsonResponse(data)
 
 
@@ -117,12 +117,12 @@ def randomNextTrack(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def toggleRandom(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'RANDOM_MODE' in response and 'PLAYLIST_ID' in response:
             randomMode = strip_tags(response['RANDOM_MODE'])
             randomMode = int(randomMode)
             if randomMode in range(0, 3):
-                user = request.user
                 playlistId = strip_tags(response['PLAYLIST_ID'])
                 if Playlist.objects.filter(id=playlistId).count() == 1:
                     playlist = Playlist.objects.get(id=playlistId)
@@ -136,13 +136,13 @@ def toggleRandom(request):
                         settings.playlist = playlist
                     settings.randomMode = randomMode
                     settings.save()
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, toggleRandom)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", toggleRandom)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", toggleRandom, user)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "badFormat", toggleRandom, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", toggleRandom)
     return JsonResponse(data)

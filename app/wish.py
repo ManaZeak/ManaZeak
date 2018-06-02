@@ -24,13 +24,13 @@ def createWish(request):
                 wish.text = strip_tags(str(response['WISH']))
                 wish.status = 0  # Not done; 1 Refused; 2 Accepted; 3 Read
                 wish.save()
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, createWish)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", createWish)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", createWish, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", createWish)
     return JsonResponse(data)
 
 
@@ -59,13 +59,13 @@ def getWishes(request):
                         'STATUS': wish.status,
                     })
 
-                data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
+                data = {**dict({'RESULT': data}), **errorCheckMessage(True, None, getWishes)}
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", getWishes, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getWishes, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getWishes)
     return JsonResponse(data)
 
 
@@ -84,7 +84,7 @@ def setWishStatus(request):
                     try:
                         status = int(status)
                     except ValueError:
-                        return JsonResponse(errorCheckMessage(False, "valueError"))
+                        return JsonResponse(errorCheckMessage(False, "valueError", setWishStatus, user))
 
                     # Wishes' status can be changed only if they are "not read"
                     if wish.status == 0:
@@ -101,18 +101,18 @@ def setWishStatus(request):
 
                             wish.status = status
                             wish.save()
-                            data = errorCheckMessage(True, None)
+                            data = errorCheckMessage(True, None, setWishStatus)
                             # TODO : Add notification logging for user
                         else:
-                            data = errorCheckMessage(False, "valueError")
+                            data = errorCheckMessage(False, "valueError", setWishStatus, user)
                     else:
-                        data = errorCheckMessage(False, "valueError")
+                        data = errorCheckMessage(False, "valueError", setWishStatus, user)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", setWishStatus)
             else:
-                data = errorCheckMessage(False, "badRequest")
+                data = errorCheckMessage(False, "badRequest", setWishStatus, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", setWishStatus, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", setWishStatus)
     return JsonResponse(data)

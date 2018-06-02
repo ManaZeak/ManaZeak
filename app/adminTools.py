@@ -106,11 +106,11 @@ def getAdminView(request):
             for permission in Permissions.objects.all():
                 tmp = {**tmp, **dict({permission.code: permission.name})}
             data = {**data, **dict({'PERMISSIONS': tmp})}
-            data = {**data, **errorCheckMessage(True, None)}
+            data = {**data, **errorCheckMessage(True, None, getAdminView)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getAdminView, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getAdminView)
     return JsonResponse(data)
 
 
@@ -123,11 +123,11 @@ def removeAllMoods(request):
             moodbars = "/ManaZeak/static/mood/"
             for mood in os.listdir(moodbars):
                 os.remove(os.path.join(moodbars, mood))
-            data = errorCheckMessage(True, None)
+            data = errorCheckMessage(True, None, removeAllMoods)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", removeAllMoods, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", removeAllMoods)
     return JsonResponse(data)
 
 
@@ -146,19 +146,19 @@ def removeUser(request):
                             user = User.objects.get(id=userId)
                             deleteLinkedEntities(user)
                             user.delete()
-                            data = errorCheckMessage(True, None)
+                            data = errorCheckMessage(True, None, removeUser)
                         else:
-                            data = errorCheckMessage(False, "dbError")
+                            data = errorCheckMessage(False, "dbError", removeUser)
                     else:
-                        data = errorCheckMessage(False, "userDeleteError")
+                        data = errorCheckMessage(False, "userDeleteError", removeUser, user)
                 except ValueError:
-                    data = errorCheckMessage(False, "valueError")
+                    data = errorCheckMessage(False, "valueError", removeUser, user)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", removeUser, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", removeUser, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", removeUser)
     return JsonResponse(data)
 
 
@@ -171,13 +171,13 @@ def syncthingRescan(request):
             headers = {'X-API-Key': AdminOptions.objects.all().first().syncthingKey}
             req = requests.post('http://st:8384/rest/db/scan', headers=headers)
             if req.status_code == 200:
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, syncthingRescan)
             else:
-                data = errorCheckMessage(False, "syncthingError")
+                data = errorCheckMessage(False, "syncthingError", syncthingRescan)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", syncthingRescan, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", syncthingRescan)
     return JsonResponse(data)
 
 
@@ -194,13 +194,13 @@ def changeSyncthingAPIKey(request):
                 if syncKey != adminOptions.syncthingKey:
                     adminOptions.syncthingKey = syncKey
                     adminOptions.save()
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, syncthingRescan)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", syncthingRescan, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", syncthingRescan, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", syncthingRescan)
     return JsonResponse(data)
 
 
@@ -217,15 +217,15 @@ def changeBufferPath(request):
                 if os.path.isdir(bufferPath):
                     adminOptions.bufferPath = bufferPath
                     adminOptions.save()
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, changeBufferPath)
                 else:
-                    data = errorCheckMessage(False, "dirNotFound")
+                    data = errorCheckMessage(False, "dirNotFound", changeBufferPath)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", changeBufferPath, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", changeBufferPath, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", changeBufferPath)
     return JsonResponse(data)
 
 
@@ -244,11 +244,11 @@ def regenerateCovers(request):
             scanThread = Process(target=regenerateCoverProcess)
             db.connections.close_all()
             scanThread.start()
-            data = errorCheckMessage(True, None)
+            data = errorCheckMessage(True, None, regenerateCovers)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", regenerateCovers, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", regenerateCovers)
     return JsonResponse(data)
 
 
@@ -266,9 +266,9 @@ def isAdmin(request):
         data = {
             'IS_ADMIN': request.user.is_superuser
         }
-        data = {**data, **errorCheckMessage(True, None)}
+        data = {**data, **errorCheckMessage(True, None, isAdmin)}
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", isAdmin)
     return JsonResponse(data)
 
 
@@ -291,11 +291,11 @@ def dropAllDB(request):
             UserHistory.objects.all().delete()
             Stats.objects.all().delete()
             History.objects.all().delete()
-            data = errorCheckMessage(True, None)
+            data = errorCheckMessage(True, None, dropAllDB)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", dropAllDB, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", dropAllDB)
     return JsonResponse(data)
 
 
@@ -304,9 +304,9 @@ def isInviteEnabled(request):
         data = {
             'INVITE': getAdminOptions().inviteCodeEnabled
         }
-        data = {**data, **errorCheckMessage(True, None)}
+        data = {**data, **errorCheckMessage(True, None, isInviteEnabled)}
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", isInviteEnabled)
     return JsonResponse(data)
 
 
@@ -322,11 +322,11 @@ def toggleInvite(request):
             data = {
                 'INVITE': adminOptions.inviteCodeEnabled
             }
-            data = {**data, **errorCheckMessage(True, None)}
+            data = {**data, **errorCheckMessage(True, None, toggleInvite)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", toggleInvite)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", toggleInvite)
     return JsonResponse(data)
 
 
@@ -346,7 +346,7 @@ def editGroup(request):
                     permissions = Permissions.objects.all()
                     for permission in permissions:
                         if permission.code not in response['PERMISSIONS']:
-                            return JsonResponse(errorCheckMessage(False, "badFormat"))
+                            return JsonResponse(errorCheckMessage(False, "badFormat", editGroup, user))
                     for permission in permissions:
                         perm = response['PERMISSIONS'][permission.code]
                         if perm:
@@ -355,15 +355,15 @@ def editGroup(request):
                         else:
                             if group.permissions.filter(code=permission.code).count() == 1:
                                 group.permissions.remove(Permissions.objects.get(code=permission.code))
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, editGroup)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", editGroup)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", editGroup, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", editGroup, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", editGroup)
     return JsonResponse(data)
 
 
@@ -382,17 +382,17 @@ def editUserGroup(request):
                     if Groups.objects.filter(id=groupId).count() == 1:
                         userPref.group = Groups.objects.get(id=groupId)
                         userPref.save()
-                        data = errorCheckMessage(True, None)
+                        data = errorCheckMessage(True, None, editUserGroup)
                     else:
-                        data = errorCheckMessage(False, "dbError")
+                        data = errorCheckMessage(False, "dbError", editUserGroup)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", editUserGroup)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", editUserGroup, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", editUserGroup, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", editUserGroup)
     return JsonResponse(data)
 
 
@@ -413,27 +413,27 @@ def deleteCollection(request):
                         if Library.objects.filter(playlist=playlist).count() == 1:
                             deleteView(playlist)
                             deleteLibrary(Library.objects.get(playlist=playlist))
-                            data = errorCheckMessage(True, None)
+                            data = errorCheckMessage(True, None, deleteCollection)
                         else:
-                            data = errorCheckMessage(False, "dbError")
+                            data = errorCheckMessage(False, "dbError", deleteCollection)
                     else:
-                        data = errorCheckMessage(False, "permissionError")
+                        data = errorCheckMessage(False, "permissionError", deleteCollection, user)
 
                 # Playlist deletion
                 else:
                     if playlist.user == user and checkPermission(["PLST"], user):
                         deleteView(playlist)
                         playlist.delete()
-                        data = errorCheckMessage(True, None)
+                        data = errorCheckMessage(True, None, deleteCollection)
                     else:
-                        data = errorCheckMessage(False, "permissionError")
+                        data = errorCheckMessage(False, "permissionError", deleteCollection, user)
 
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, "dbError", deleteCollection)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, "badFormat", deleteCollection, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", deleteCollection)
     return JsonResponse(data)
 
 
@@ -484,9 +484,9 @@ def checkNamingConventionArtistsOnPlaylist(request):
                     data = dict({'RESULT': data})
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, "dbError", checkNamingConventionArtistsOnPlaylist)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", checkNamingConventionArtistsOnPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", checkNamingConventionArtistsOnPlaylist)
     return JsonResponse(data)

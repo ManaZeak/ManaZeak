@@ -1,5 +1,6 @@
 import copy
 from operator import itemgetter
+from webbrowser import get
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -65,17 +66,17 @@ def getUserPrefGenres(request):
             prefGenres = copy.deepcopy(genreTuple)
             genreTuple.sort(key=itemgetter(1), reverse=False)
             if len(prefGenres) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, "noStats", getUserPrefGenres)
             else:
                 data = {
                     'PREF_GENRES': prefGenres[:100],
                     'LEAST_GENRES': genreTuple[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefGenres)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getUserPrefGenres, user)
     else:
-        data = errorCheckMessage(False, "")
+        data = errorCheckMessage(False, None, getUserPrefGenres)
     return JsonResponse(data)
 
 
@@ -102,17 +103,17 @@ def getUserPrefArtists(request):
             prefArtists = copy.deepcopy(artistCounter)
             artistCounter.sort(key=itemgetter(1), reverse=False)
             if len(prefArtists) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, "noStats", getUserPrefArtists)
             else:
                 data = {
                     'PREF_ARTISTS': prefArtists[:100],
                     'LEAST_ARTISTS': artistCounter[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefArtists)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getUserPrefArtists, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getUserPrefArtists)
     return JsonResponse(data)
 
 
@@ -139,17 +140,17 @@ def getUserPrefTracks(request):
                 else:
                     trackTupleLeast.append((stat.track.title, stat.playCounter, 0))
             if len(trackTuplePref) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, "noStats", getUserPrefTracks)
             else:
                 data = {
                     'PREF_TRACKS': trackTuplePref[:100],
                     'LEAST_TRACKS': trackTupleLeast[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefTracks)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getUserPrefTracks, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getUserPrefTracks)
     return JsonResponse(data)
 
 
@@ -189,9 +190,9 @@ def adminGetUserStats(request):
                     'NEVER_PLAYED': userNeverPlayed(user),
                 }
                 data.append(temp)
-            data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
+            data = {**dict({'RESULT': data}), **errorCheckMessage(True, None, adminGetUserStats)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", adminGetUserStats, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", adminGetUserStats)
     return JsonResponse(data)

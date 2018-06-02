@@ -27,22 +27,22 @@ def handleUploadedFile(request):
                         try:
                             os.makedirs(adminOptions.bufferPath)
                         except os.error:
-                            return JsonResponse(errorCheckMessage(False, "dNdError"))
+                            return JsonResponse(errorCheckMessage(False, "dNdError", handleUploadedFile))
                     filePath = os.path.join(adminOptions.bufferPath, name)
                     if not os.path.isfile(filePath):
                         with open(filePath, 'wb+') as destination:
                             # Split the header with MIME type
                             destination.write(base64.b64decode(str(response['CONTENT'].split(",")[1])))
                         setUploader(filePath, user.username)
-                        data = errorCheckMessage(True, None)
+                        data = errorCheckMessage(True, None, handleUploadedFile)
                     else:
-                        data = errorCheckMessage(False, "fileExists")
+                        data = errorCheckMessage(False, "fileExists", handleUploadedFile, user)
                 else:
-                    data = errorCheckMessage(False, "badFileName")
+                    data = errorCheckMessage(False, "badFileName", handleUploadedFile)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", handleUploadedFile, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", handleUploadedFile, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", handleUploadedFile)
     return JsonResponse(data)

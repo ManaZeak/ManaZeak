@@ -38,13 +38,13 @@ def getLastSongPlayed(request):
                     data = {
                         'TRACK_ID': trackId,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, getLastSongPlayed)}
                 else:
-                    data = errorCheckMessage(False, "noHistory")
+                    data = errorCheckMessage(False, "noHistory", getLastSongPlayed, user)
             else:
-                data = errorCheckMessage(False, "noHistory")
+                data = errorCheckMessage(False, "noHistory", getLastSongPlayed, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", getLastSongPlayed, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", getLastSongPlayed)
     return JsonResponse(data)

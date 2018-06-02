@@ -3,6 +3,8 @@ import hashlib
 import json
 
 import os
+
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
@@ -187,7 +189,7 @@ def updateFileMetadata(track, tags):
         if tags.cover is not None:
             audioTag.add(APIC(data=tags.cover, type=3))
         audioTag.save(track.location)
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, updateFileMetadata)
     elif track.location.endswith(".flac"):
         audioTag = FLAC(track.location)
         if tags.trackTitle is not None:
@@ -224,13 +226,14 @@ def updateFileMetadata(track, tags):
             picture = audioTag.pictures
             picture[0].data = tags.cover
         audioTag.save(track.location)
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, updateFileMetadata)
     else:
-        data = errorCheckMessage(False, "formatError")
+        data = errorCheckMessage(False, "formatError", updateFileMetadata)
     return data
 
 
 # Change a track or tracks metadata
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
@@ -253,13 +256,13 @@ def changeTracksMetadata(request):
                                     playlist.refreshView = True
                                     playlist.save()
                         else:
-                            data = errorCheckMessage(False, "dbError")
+                            data = errorCheckMessage(False, "dbError", changeTracksMetadata)
                     else:
-                        data = errorCheckMessage(False, "valueError")
+                        data = errorCheckMessage(False, "valueError", changeTracksMetadata, user)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, "badFormat", changeTracksMetadata, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, "permissionError", changeTracksMetadata, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, "badRequest", changeTracksMetadata)
     return JsonResponse(data)
