@@ -51,6 +51,10 @@ elif [ $1 = "clean" ]; then
     echo -e "\e[93mWARNING\e[39m Images haven't been removed"
     printf "Use docker rmi \$(docker images -q) to remove every image on the system\n"
 
+elif [ $1 = "repy" ]; then
+    eval "docker kill manazeak_app 2>/dev/null"
+    eval "docker start -i manazeak_app"
+
 elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
     printf "Usage: ./mzk.sh <command>\n"
     printf "Where <command> is one of:\n"
