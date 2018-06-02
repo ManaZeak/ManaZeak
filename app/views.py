@@ -30,7 +30,7 @@ class mainView(ListView):
 # Create a new user in database
 def createUser(request):
     import hashlib
-    import identicon
+    from app import identicon
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
