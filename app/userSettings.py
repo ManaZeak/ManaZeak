@@ -45,6 +45,9 @@ def getUserSettings(request):
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeAvatar(request):
+    """ Is called when the user changes their avatar,
+        updates user's profile picture
+    """
     if request.method == 'POST':
         user = request.user
         if str(request['AVATAR'].split(",")[0]) == "image/png":

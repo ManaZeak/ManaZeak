@@ -51,6 +51,23 @@ def getUserInformation(request):
     return JsonResponse(data)
 
 
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def getAvatar(request):
+    """ returns path to Avatar of currently logged in user
+    """
+    if request.method == 'GET':
+        user = request.user
+        userPref = UserPreferences.objects.get(user=user)
+        avatarpath = userPref.avatar
+        data = {
+            'AVATARPATH': avatarpath
+        }
+        data = {**data, **errorCheckMessage(True, None)}
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 def deleteLinkedEntities(user):
     Playlist.objects.filter(user=user).delete()
     UserPreferences.objects.filter(user=user).delete()
