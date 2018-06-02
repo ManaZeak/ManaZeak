@@ -13,6 +13,11 @@ class TrackPreview extends MzkObject {
 
     constructor(container) {
         super();
+
+        if (window.debug) {
+            console.log('      TrackPreview construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -26,6 +31,10 @@ class TrackPreview extends MzkObject {
      * arg    : {object} track - New track to get info from
      **/
     changeTrack(track) {
+        if (window.debug) {
+            console.log('      TrackPreview : changeTrack call');
+        }
+
         this.ui.cover.src           = track.cover;
         this.ui.thumb.src           = track.cover;
         this.ui.title.innerHTML     = track.title;
@@ -47,6 +56,10 @@ class TrackPreview extends MzkObject {
      * desc   : Reset field values and set invisible
      **/
     resetTrackPreview() {
+        if (window.debug) {
+            console.log('      TrackPreview : resetTrackPreview call');
+        }
+
         this.ui.cover.src        = "";
         this.ui.thumb.src        = "";
         this.ui.title.innerHTML  = "";
@@ -66,6 +79,10 @@ class TrackPreview extends MzkObject {
      * arg    : {object} container - The TrackPreview container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      TrackPreview : _createUI call');
+        }
+
         this.ui = {
             container:                   document.createElement("DIV"),
             thumb:                       document.createElement("IMG"),
@@ -107,6 +124,10 @@ class TrackPreview extends MzkObject {
      * desc   : TrackPreview event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      TrackPreview : _eventListener call');
+        }
+
         this.ui.cover.addEventListener("click", function() {
             let modal = new Modal("cover", {
                 src:    that.ui.cover.src,
@@ -136,6 +157,10 @@ class TrackPreview extends MzkObject {
      * arg    : {bool} visible
      **/
     _setVisible(visible) {
+        if (window.debug) {
+            console.log('      TrackPreview : _setVisible call');
+        }
+
         this.ui.container.style.opacity = visible ? 1 : 0;
     }
 

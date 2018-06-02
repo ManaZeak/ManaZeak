@@ -12,6 +12,10 @@ class Shortcut extends MzkObject {
 
     constructor(eventType, key, callback, ctrl, shift, alt, meta) {
         super();
+
+        if (window.debug) {
+            console.log('  Shortcut construction');
+        }
         this.eventType  = eventType;
         this.key        = key;
         this.callback   = callback;
@@ -29,6 +33,10 @@ class Shortcut extends MzkObject {
      * desc   : run the shortcut
      */
     run() {
+        if (window.debug) {
+            console.log('  Shortcut : run call');
+        }
+
         this.callback();
     }
 
@@ -60,6 +68,10 @@ class Shortcut extends MzkObject {
      * args   : event
      */
     modifiersOK(event) {
+        if (window.debug) {
+            console.log('  Shortcut : modifiersOK call');
+        }
+
         return  (this.ctrl  == null || this.ctrl  == event.ctrlKey) &&
                 (this.shift == null || this.shift == event.shiftKey) &&
                 (this.alt   == null || this.alt   == event.altKey) &&

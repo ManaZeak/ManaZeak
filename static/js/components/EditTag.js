@@ -13,6 +13,10 @@ import EditTagEntry from './entries/EditTagEntry.js'
 class EditTag {
 
     constructor(container, data) {
+        if (window.debug) {
+            console.log('  EditTag construction');
+        }
+
         this.data     = data;
         this.send     = [];
         this.entries  = [];
@@ -33,6 +37,10 @@ class EditTag {
      * desc   : Sending modal info to backend
      **/
     saveState() {
+        if (window.debug) {
+            console.log('  EditTag : saveState call');
+        }
+
         let send = [];
         let tracks = [];
 
@@ -82,6 +90,10 @@ class EditTag {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug) {
+                    console.log('  EditTag : saveState server response');
+                }
+
                 if (response.DONE) {
                     window.app.updateTracksInfo(tracks);
                 } else {
@@ -100,6 +112,10 @@ class EditTag {
      * arg    : {object} container - The EditTag container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('  EditTag : _createUI call');
+        }
+
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
@@ -127,6 +143,10 @@ class EditTag {
      * desc   : EditTag event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('  EditTag : _eventListener call');
+        }
+
         let that = this;
         this.selector.listen('clear', function() {
             for (let i = 0; i < that.entries.length; ++i) {
@@ -185,6 +205,10 @@ class EditTag {
      * desc   : Append UI elements, building final UI
      **/
     _uiAppendVar() {
+        if (window.debug) {
+            console.log('  EditTag : _uiAppendVar call');
+        }
+
         // Head --------------------------------------------------
         this.ui.cForm.appendChild(this.ui.cTitleLabel);
         this.ui.cForm.appendChild(this.ui.cTitleInput);
@@ -251,6 +275,10 @@ class EditTag {
      * desc   : Creating UI elements
      **/
     _uiCreateVar() {
+        if (window.debug) {
+            console.log('  EditTag : _uiCreateVar call');
+        }
+
         this.ui = {
             container:            document.createElement("DIV"),
             // List --------------------------
@@ -322,6 +350,10 @@ class EditTag {
      * desc   : Set UI elements
      **/
     _uiSetVar() {
+        if (window.debug) {
+            console.log('  EditTag : _uiSetVar call');
+        }
+
         this.ui.container.className            = "mzk-edit-tag";
         // List ------------------------------------------
         this.ui.list.className                 = "mzk-list";
@@ -401,6 +433,9 @@ class EditTag {
      * arg    : {object} track - The track to take data from
      **/
     _updateFields() {
+        if (window.debug) {
+            console.log('  EditTag : _updateFields call');
+        }
 
         let tracks = this.selector.get();
         let tmp;

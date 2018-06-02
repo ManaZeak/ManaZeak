@@ -14,6 +14,10 @@ class PlaylistView extends View {
 
     constructor() {
         super();
+
+        if (window.debug) {
+            console.log('  PlaylistView construction');
+        }
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -82,6 +86,10 @@ class PlaylistView extends View {
      * arg    : {object} track - The track to select in view
      **/
     setSelected(track) {
+        if (window.debug) {
+            console.log('  PlaylistView : setSelected');
+        }
+
         // TODO : setSelected without unselecting all entries.
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getIsSelected()) { //  Un-selecting all

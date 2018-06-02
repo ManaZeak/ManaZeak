@@ -14,6 +14,11 @@ class QueuePreview extends MzkObject {
 
     constructor(container) {
         super();
+
+        if (window.debug) {
+            console.log('      QueuePreview construction');
+        }
+
         this.contextMenu = null;
         this.reverse     = window.app.queue.isReverse();
         this.isLocked    = false;
@@ -31,6 +36,10 @@ class QueuePreview extends MzkObject {
      * desc   : Hide QueuePreview
      **/
     hide() {
+        if (window.debug) {
+            console.log('      QueuePreview : hide call');
+        }
+
         this.isLocked = false;
         removeVisibilityLock(this.ui.container);
     }
@@ -42,6 +51,10 @@ class QueuePreview extends MzkObject {
      * desc   : Show and lock QueuePreview
      **/
     lock() {
+        if (window.debug) {
+            console.log('      QueuePreview : lock call');
+        }
+
         this.isLocked = true;
         addVisibilityLock(this.ui.container);
     }
@@ -53,6 +66,10 @@ class QueuePreview extends MzkObject {
      * desc   : Shows a queue preview of 2 seconds
      **/
     preview() {
+        if (window.debug) {
+            console.log('      QueuePreview : preview call');
+        }
+
         if (isVisibilityLocked(this.ui.container)) {
             return;
         }
@@ -70,6 +87,10 @@ class QueuePreview extends MzkObject {
      * arg    : {object} track - The track to add as an entry
      **/
     _addEntry(track) {
+        if (window.debug) {
+            console.log('      QueuePreview : _addEntry call');
+        }
+
         let li                         = document.createElement("LI");
         let img                        = document.createElement("IMG");
         let body                       = document.createElement("DIV");
@@ -118,7 +139,9 @@ class QueuePreview extends MzkObject {
      * desc   : TODO
      **/
     _contextMenuSetup() {
-
+        if (window.debug) {
+            console.log('      QueuePreview : _contextMenuSetup call');
+        }
     }
 
 
@@ -129,6 +152,10 @@ class QueuePreview extends MzkObject {
      * arg    : {object} container - The QueuePreview container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      QueuePreview : _createUI call');
+        }
+
         this.ui = {
             container:      document.createElement("DIV"),
             statusBar:  {
@@ -171,6 +198,10 @@ class QueuePreview extends MzkObject {
      * desc   : QueuePreview key event listeners
      **/
     _keyListener() {
+        if (window.debug) {
+            console.log('      QueuePreview : _keyListener call');
+        }
+
         let that = this;
         this.addShortcut(new Shortcut('keydown', 'KeyA', function() {
             if (that.isLocked) {
@@ -190,6 +221,10 @@ class QueuePreview extends MzkObject {
      * desc   : QueuePreview event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      QueuePreview : _eventListener call');
+        }
+
         let that = this;
         let findParentLI = function(element) {
             while (element.tagName !== 'UL' && element.tagName !== 'LI') {

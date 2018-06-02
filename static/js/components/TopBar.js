@@ -17,6 +17,11 @@ class TopBar extends MzkObject {
 
     constructor() {
         super();
+
+        if (window.debug) {
+            console.log('  TopBar construction');
+        }
+
         this._createUI();
         this._eventListener();
         this.partyMode     = new PartyMode(this.topBar);
@@ -39,6 +44,10 @@ class TopBar extends MzkObject {
      * arg    : {int} id - The Track ID
      **/
     changeMoodbar(id) {
+        if (window.debug) {
+            console.log('  TopBar : changeMoodbar call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "track/getMoodbar/",
@@ -53,6 +62,10 @@ class TopBar extends MzkObject {
                  *
                  *     TRACK_MOOD  : string
                  * } */
+                if (window.debug) {
+                    console.log('  TopBar : changeMoodbar server response');
+                }
+
                 let error = false;
                 that.resetMoodbar();
                 renderMoodFile(response.TRACK_MOOD, that.moodbar, function() { // Callback is here in case of 404 on the moodBar
@@ -75,6 +88,10 @@ class TopBar extends MzkObject {
      * desc   : Erase moodbar content and hide moodbar thumb
      **/
     resetMoodbar() {
+        if (window.debug) {
+            console.log('  TopBar : resetMoodbar call');
+        }
+
         d3.selectAll('.mzk-moodbar svg').remove();
         this.moodbarThumb.isVisible = false;
         removeVisibilityLock(this.moodbarThumb);
@@ -89,6 +106,10 @@ class TopBar extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug) {
+            console.log('  TopBar : _createUI call');
+        }
+
         this.topBar                      = document.createElement("DIV");
         this.moodbar                     = document.createElement("DIV");
         this.moodbarThumb                = document.createElement("DIV");
@@ -116,6 +137,10 @@ class TopBar extends MzkObject {
      * desc   : TopBar event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('  TopBar : _eventListener call');
+        }
+
         let that = this;
         window.app.listen('stopPlayback', function() {
             that.resetMoodbar();

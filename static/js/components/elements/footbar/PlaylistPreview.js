@@ -13,6 +13,11 @@ class PlaylistPreview extends MzkObject {
 
     constructor(container) {
         super();
+
+        if (window.debug) {
+            console.log('      PlaylistPreview construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -26,6 +31,10 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} playlist - New playlist to get info from
      **/
     changePlaylist(playlist) {
+        if (window.debug) {
+            console.log('      PlaylistPreview : changePlaylist call');
+        }
+
         // TODO : POST on getPlaylistInfo to add Total genre etc.
         this.ui.name.innerHTML     = playlist.name;
         this.ui.total.innerHTML    = playlist.trackTotal + " tracks";
@@ -41,6 +50,10 @@ class PlaylistPreview extends MzkObject {
      * arg    : {bool} visible
      **/
     setVisible(visible) {
+        if (window.debug) {
+            console.log('      PlaylistPreview : setVisible call');
+        }
+
         this.ui.container.style.opacity = visible ? 1 : 0;
     }
 
@@ -53,6 +66,10 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} container - The PlaylistPreview container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      PlaylistPreview : _createUI call');
+        }
+
         this.ui = {
             container:                  document.createElement("DIV"),
             name:                       document.createElement("LI"),
@@ -85,6 +102,10 @@ class PlaylistPreview extends MzkObject {
      * desc   : PlaylistPreview event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      PlaylistPreview : _eventListener call');
+        }
+
         let that = this;
         window.app.listen(['renamePlaylist', 'changePlaylist'], function() {
             let activePlaylist = window.app.getActivePlaylist();
@@ -109,6 +130,10 @@ class PlaylistPreview extends MzkObject {
      * desc   : Update shuffle and repeat mode
      **/
     _updatePlaylistPreview() {
+        if (window.debug) {
+            console.log('      PlaylistPreview : _updatePlaylistPreview call');
+        }
+
         let repeatMode  = window.app.activePlaylist.getRepeatMode();
         let shuffleMode = window.app.activePlaylist.getShuffleMode();
 

@@ -12,8 +12,12 @@ import { precisionRound } from '../utils/Utils.js'
 class Player {
 
     constructor() {
-        this.player    = document.createElement("AUDIO");
 
+        if (window.debug) {
+            console.log('  Player construction');
+        }
+
+        this.player    = document.createElement("AUDIO");
         this.isPlaying = false;
         this.isMuted   = false;
         this.oldVolume = 0;
@@ -34,6 +38,10 @@ class Player {
      *        : {int}     id - The associated ID
      **/
     changeSource(url, id) {
+        if (window.debug) {
+            console.log('  Player : changeSource call');
+        }
+
         this.trackId    = id;
         this.stopPlayback();
         this.player.src = url;
@@ -47,6 +55,10 @@ class Player {
      * return : {bool} true if src is empty
      **/
     isEmpty() {
+        if (window.debug) {
+            console.log('  Player : isEmpty call');
+        }
+
         return this.player.src == this.emptyURL;
     }
 
@@ -57,6 +69,10 @@ class Player {
      * desc   : Mute player and store old value
      **/
     mute() {
+        if (window.debug) {
+            console.log('  Player : mute call');
+        }
+
         this.isMuted       = true;
         this.oldVolume     = this.player.volume; // Store old volume for restoration on unmute
         this.player.volume = 0;
@@ -70,6 +86,10 @@ class Player {
      * desc   : Reset player current time and repeat the track
      **/
     repeatTrack() {
+        if (window.debug) {
+            console.log('  Player : repeatTrack call');
+        }
+
         this.player.currentTime = 0;
 
         if (!this.isPlaying) {
@@ -85,6 +105,10 @@ class Player {
      * arg    : {float} volume - Volume between 0 and 1
      **/
     setVolume(volume) {
+        if (window.debug) {
+            console.log('  Player : setVolume call');
+        }
+
         if (volume > 1) {
             volume = 1;
         }
@@ -104,6 +128,10 @@ class Player {
      * desc   : Stop player playback and reset player src
      **/
     stopPlayback() {
+        if (window.debug) {
+            console.log('  Player : stopPlayback call');
+        }
+
         this._pause();
         this.isPlaying  = false;
         this.player.src = "";
@@ -117,6 +145,10 @@ class Player {
      * desc   : Switch on and off player playback depending on its current status
      **/
     togglePlay() {
+        if (window.debug) {
+            console.log('  Player : togglePlay call');
+        }
+
         if (this.isPlaying) {
             this._pause();
         }
@@ -133,6 +165,10 @@ class Player {
      * desc   : Unmute player and restore old value
      **/
     unmute() {
+        if (window.debug) {
+            console.log('  Player : unmute call');
+        }
+
         this.isMuted       = false;
         this.player.volume = this.oldVolume;
         window.localStorage.setItem('mzk-volume', this.player.volume)
@@ -146,6 +182,10 @@ class Player {
      * desc   : Player event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('  Player : _eventListener call');
+        }
+
         let that = this;
         this.player.addEventListener("loadedmetadata", function() {
             window.app.playerLoadedMetadata();
@@ -163,6 +203,10 @@ class Player {
      * desc   : Init player volume, set/store player empty source and listen
      **/
     _init() {
+        if (window.debug) {
+            console.log('  Player : _init call');
+        }
+
         this.player.volume = window.localStorage.getItem('mzk-volume') ?
                                 window.localStorage.getItem('mzk-volume') :
                                 (function () {
@@ -180,6 +224,10 @@ class Player {
      * desc   : Pause player playback
      **/
     _pause() {
+        if (window.debug) {
+            console.log('  Player : _pause call');
+        }
+
         this.isPlaying = false;
         this.player.pause();
     }
@@ -191,6 +239,10 @@ class Player {
      * desc   : Play player playback
      **/
     _play() {
+        if (window.debug) {
+            console.log('  Player : _play call');
+        }
+
         this.isPlaying = true;
         this.player.play();
     }

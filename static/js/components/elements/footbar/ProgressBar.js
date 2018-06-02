@@ -14,6 +14,11 @@ class ProgressBar extends MzkObject {
 
     constructor(container) {
         super();
+
+        if (window.debug) {
+            console.log('      ProgressBar construction');
+        }
+
         this.refreshIntervalId = -1;
         this.isDragging        = false;
         this.isMouseOver       = false;
@@ -31,6 +36,10 @@ class ProgressBar extends MzkObject {
      * arg    : {object} track - The track to update progress from
      **/
     refreshInterval(track) {
+        if (window.debug) {
+            console.log('      ProgressBar : refreshInterval call');
+        }
+
         let that = this;
 
         this._stopRefreshInterval();
@@ -46,6 +55,10 @@ class ProgressBar extends MzkObject {
      * desc   : Set ProgressBar to default
      **/
     resetProgressBar () {
+        if (window.debug) {
+            console.log('      ProgressBar : resetProgressBar call');
+        }
+
         this.duration.current.innerHTML         = "--:--";
         this.duration.total.innerHTML           = "--:--";
         this.duration.hover.innerHTML           = "--:--";
@@ -67,6 +80,10 @@ class ProgressBar extends MzkObject {
      * desc   : Set moodbar container/thumb
      **/
     setMoodbarProgress() {
+        if (window.debug) {
+            console.log('      ProgressBar : setMoodbarProgress call');
+        }
+
         this.moodbar.container = document.getElementById("moodbar");
         this.moodbar.thumb     = document.getElementById("moodbarThumb");
     }
@@ -79,6 +96,10 @@ class ProgressBar extends MzkObject {
      * arg    : {object} track - The track to update progress from
      **/
     updateProgress(track) {
+        if (window.debug) {
+            console.log('      ProgressBar : updateProgress call');
+        }
+
         let distanceToLeftBorder                = (track.currentTime * 100) / track.duration;
         this.progressBar.current.style.width    = distanceToLeftBorder + "%";
         this.progressBar.thumb.style.marginLeft = distanceToLeftBorder + "%";
@@ -104,6 +125,10 @@ class ProgressBar extends MzkObject {
      * arg    : {object} container - The ProgressBar container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      ProgressBar : _createUI call');
+        }
+
         this.container   = document.createElement("DIV");
         this.progressBar = {
             container:     document.createElement("DIV"),
@@ -146,6 +171,10 @@ class ProgressBar extends MzkObject {
      * desc   : ProgressBar event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      ProgressBar : _eventListener call');
+        }
+
         let that = this;
         this.progressBar.container.addEventListener("mouseover", function () { that.isMouseOver = true; });
         this.progressBar.container.addEventListener("mouseleave", function () { that.isMouseOver = false; });
@@ -172,6 +201,10 @@ class ProgressBar extends MzkObject {
      * desc   : Creating moodbar, setting timecodes and listen
      **/
     _init() {
+        if (window.debug) {
+            console.log('      ProgressBar : _init call');
+        }
+
         this.duration.current.innerHTML = "--:--";
         this.duration.total.innerHTML   = "--:--";
         this.duration.hover.innerHTML   = "--:--";
@@ -185,6 +218,10 @@ class ProgressBar extends MzkObject {
      * desc   : Invert timecodes
      **/
     _invertTimecode() {
+        if (window.debug) {
+            console.log('      ProgressBar : _invertTimecode call');
+        }
+
         this.isInverted = !this.isInverted;
     }
 
@@ -196,6 +233,10 @@ class ProgressBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseDown(event) {
+        if (window.debug) {
+            console.log('      ProgressBar : _mouseDown call');
+        }
+
         //TODO: Clean this shit up
         if (!this.isDragging && (
                 event.target.classList.contains("mzk-progress-lin") ||
@@ -225,6 +266,10 @@ class ProgressBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseMove(event) {
+        if (window.debug) {
+            console.log('      ProgressBar : _mouseMove call');
+        }
+
         if (this.isDragging) { // Updating the ProgressBar while user is moving the mouse
             this._moveProgress(event, window.app.player.getPlayer());
             addVisibilityLock(this.duration.hover);
@@ -243,6 +288,10 @@ class ProgressBar extends MzkObject {
      * desc   : Action on mouse up event
      **/
     _mouseUp() {
+        if (window.debug) {
+            console.log('      ProgressBar : _mouseUp call');
+        }
+
         if (this.isDragging) { // User released the ProgressBar thumb
             this.isDragging          = false;
             this.isDraggingOnMoodbar = false;
@@ -262,6 +311,10 @@ class ProgressBar extends MzkObject {
      *        : {object} track - The current track in player to update
      **/
     _moveProgress(event, track) {
+        if (window.debug) {
+            console.log('      ProgressBar : _moveProgress call');
+        }
+
         let boundRect = 0;
 
         if (this.isDraggingOnMoodbar) {
@@ -296,6 +349,10 @@ class ProgressBar extends MzkObject {
      * desc   : Clear refresh interval
      **/
     _stopRefreshInterval() {
+        if (window.debug) {
+            console.log('      ProgressBar : _stopRefreshInterval call');
+        }
+
         window.clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = null;
     }
@@ -309,6 +366,10 @@ class ProgressBar extends MzkObject {
      *          {object} track - The track that aggro ProgressBar
      **/
     _timecodeProgressHover(event, track) {
+        if (window.debug) {
+            console.log('      ProgressBar : _timecodeProgressHover call');
+        }
+
         let boundRect                  = this.progressBar.container.getBoundingClientRect();
         let distanceToLeftInPx         = event.clientX - boundRect.left;
         let distanceToLeftInPr         = (distanceToLeftInPx * 100) / boundRect.width;

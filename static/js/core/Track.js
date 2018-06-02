@@ -14,6 +14,11 @@ class Track extends MzkObject{
 
     constructor(track) {
         super();
+
+        if (window.debug) {
+            console.log('  Track construction');
+        }
+
         this.updateMetadata(track);
     }
 
@@ -26,6 +31,10 @@ class Track extends MzkObject{
      * arg    : {object} track - Raw JSON track
      **/
     updateMetadata(track) {
+        if (window.debug) {
+            console.log('  Track : updateMetadata');
+        }
+
         this.id = {
             track:          track.ID                ? track.ID                : "",
             album:          track.ALBUM.ID          ? track.ALBUM.ID          : "",
@@ -86,6 +95,10 @@ class Track extends MzkObject{
      * return : {string} The Artists concated string
      **/
     _getArtistFromArtistsArray(artists) {
+        if (window.debug) {
+            console.log('  Track : _getArtistFromArtistsArray');
+        }
+
         if (artists === null || artists === undefined) { return ""; }
 
         let artistsName = []; // Artists name array

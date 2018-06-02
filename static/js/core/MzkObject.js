@@ -11,6 +11,10 @@ import MzkListener from './MzkListener.js'
 class MzkObject {
 
     constructor() {
+        if (window.debug) {
+            console.log('  MzkObject construction');
+        }
+
         this.listeners = {};
     }
 
@@ -25,6 +29,10 @@ class MzkObject {
      *        : {} thisArg - TODO
      **/
     listen(event, callback, thisArg) {
+        if (window.debug) {
+            console.log('  MzkObject : listen call');
+        }
+
         if (Array.isArray(event)) {
             for (let i = 0; i < event.length; ++i) {
                 if (this.listeners[event[i]] || this._hijackMethod(event[i]) == true) {
@@ -46,6 +54,10 @@ class MzkObject {
      * arg    : {TODO} shortcut - TODO
      **/
     addShortcut(shortcut) {
+        if (window.debug) {
+            console.log('  MzkObject : addShortcut call');
+        }
+
         window.app.getShortcutMaestro().registerShortcut(shortcut, this);
     }
 
@@ -57,6 +69,10 @@ class MzkObject {
      * arg    : {TODO} shortcut - TODO
      **/
     removeShortcut(shortcut) {
+        if (window.debug) {
+            console.log('  MzkObject : removeShortcut call');
+        }
+
         window.app.getShortcutMaestro().unregisterShortcut(shortcut, this);
     }
 
@@ -67,6 +83,10 @@ class MzkObject {
      * desc   : TODO
      **/
     lockShortcuts() {
+        if (window.debug) {
+            console.log('  MzkObject : lockShortcuts call');
+        }
+
         window.app.getShortcutMaestro().lock(this);
     }
 
@@ -77,6 +97,10 @@ class MzkObject {
      * desc   : TODO
      **/
     unlockShortcuts() {
+        if (window.debug) {
+            console.log('  MzkObject : unlockShortcuts call');
+        }
+
         window.app.getShortcutMaestro().unlock(this);
     }
 
@@ -89,6 +113,10 @@ class MzkObject {
      * arg    : {string} method - the name of the function to 'hijack'
      **/
     _hijackMethod(method) {
+        if (window.debug) {
+            console.log('  MzkObject : _hijackMethod call');
+        }
+
         if (typeof this[method] === "function" && method[0] !== '_') {
             this.listeners[method] = [];
 

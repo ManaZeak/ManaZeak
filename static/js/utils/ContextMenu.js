@@ -16,6 +16,10 @@ import ContextMenuEntry from './ContextMenuEntry.js'
 class ContextMenu {
 
     constructor(parentElement, openCallback, event) {
+        if (window.debug) {
+            console.log('  ContextMenu construction');
+        }
+
         this.contextMenu   = null;
         this.parentElement = parentElement;
         this.openCallback  = openCallback;
@@ -37,6 +41,10 @@ class ContextMenu {
      *        : TODO
      **/
     addEntry(entryPath, displayStr, callback, beforeID, after) {
+        if (window.debug) {
+            console.log('  ContextMenu : addEntry call');
+        }
+
         let parent = this.contextMenu;
 
         let i, j;
@@ -64,6 +72,10 @@ class ContextMenu {
      * arg    : {string} entryPath - TODO
      **/
     getEntry(entryPath) {
+        if (window.debug) {
+            console.log('  ContextMenu : getEntry call');
+        }
+
         let parent = this.contextMenu;
         let i, j;
         if (Array.isArray(entryPath)) {
@@ -89,6 +101,10 @@ class ContextMenu {
      * arg    : {string} entryPath - TODO
      **/
     removeEntry(entryPath) {
+        if (window.debug) {
+            console.log('  ContextMenu : removeEntry call');
+        }
+
         let parent = this.contextMenu;
         let i, j;
         if (Array.isArray(entryPath)) {
@@ -113,6 +129,10 @@ class ContextMenu {
      * desc   : (re)add the context menu to its parent
      **/
     reattach() {
+        if (window.debug) {
+            console.log('  ContextMenu : reattach call');
+        }
+
         this.parentElement.insertBefore(this.element, this.parentElement.firstChild);
     }
 
@@ -123,6 +143,10 @@ class ContextMenu {
      * desc   : close the menu
      **/
     close() {
+        if (window.debug) {
+            console.log('  ContextMenu : close call');
+        }
+
         this.element.className = "";
         this.contextMenu.closeAll();
     }
@@ -134,6 +158,10 @@ class ContextMenu {
      * desc   : Set ContextMenu invisible
      **/
     setInvisible() {
+        if (window.debug) {
+            console.log('  ContextMenu : setInvisible call');
+        }
+
         removeVisibilityLock(this.element);
     }
 
@@ -145,6 +173,10 @@ class ContextMenu {
      * desc   : ContextMenu event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('  ContextMenu : _eventListener call');
+        }
+
         let that = this;
         document.body.addEventListener('click', function(event) {
 
@@ -210,6 +242,10 @@ class ContextMenu {
      * desc   : Building entries and UI
      **/
     _init() {
+        if (window.debug) {
+            console.log('  ContextMenu : _init call');
+        }
+
         this.contextMenu = new ContextMenuEntry("master", "", null);
         this.contextMenu.activateEventListener();
         this.element     = document.createElement('DIV');
@@ -227,6 +263,10 @@ class ContextMenu {
      * desc   : ContextMenu key listeners
      **/
     _keyListener() {
+        if (window.debug) {
+            console.log('  ContextMenu : _keyListener call');
+        }
+
         let that = this;
         document.addEventListener("keydown", function(event) { // TODO : put this in Shortcut
             switch (event.keyCode) {

@@ -12,6 +12,11 @@ import Notification from '../utils/Notification.js'
 class User {
 
     constructor(callback) {
+
+        if (window.debug) {
+            console.log('  User construction');
+        }
+
         this.id            = -1;
         this.isAdmin       = false;
         this.username      = "";
@@ -33,6 +38,10 @@ class User {
      * arg    : {string} permissionCode
      **/
     hasPermission(permissionCode) {
+        if (window.debug) {
+            console.log('  User : hasPermission call for ' + permissionCode);
+        }
+
         return this.permissions.includes(permissionCode);
     }
 
@@ -46,6 +55,10 @@ class User {
      * arg    : {function} callback
      **/
     getUserInfo(callback) {
+        if (window.debug) {
+            console.log('  User : getUserInfo call');
+        }
+
         let that = this;
         JSONParsedGetRequest(
             "user/getInformation/",
@@ -65,6 +78,10 @@ class User {
                  *     GODFATHER_NAME:
                  * } */
                 if (response.DONE) {
+                    if (window.debug) {
+                        console.log('  User : getUserInfo server response');
+                    }
+
                     that.id            = response.USER_ID;
                     that.isAdmin       = response.IS_ADMIN;
                     that.username      = response.USERNAME;
@@ -75,7 +92,7 @@ class User {
                     that.godFatherCode = response.GODFATHER_CODE;
                     that.godFatherName = response.GODFATHER_NAME;
 
-                    if(callback) {
+                    if (callback) {
                         callback();
                     }
                 }

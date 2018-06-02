@@ -15,6 +15,10 @@ const NB_OF_NAMED_ARGS = 3; // /!\ IMPORTANT - CHANGE THIS IF YOU ADD/REMOVE ARG
 class ContextMenuEntry {
 
     constructor(entryID, displayString, callback/*, MORE ARGUMENTS HERE*/) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry construction');
+        }
+
         this.entryID          = entryID;
         this.displayString    = displayString;
         this.callback         = callback;
@@ -44,6 +48,10 @@ class ContextMenuEntry {
      * desc   : activates the event listeners for the entire menu system
      **/
     activateEventListener() { //Call this on the root
+        if (window.debug) {
+            console.log('  ContextMenuEntry : activateEventListener call');
+        }
+
         let self = this;
         this.element.addEventListener("click", function (event) {
 
@@ -99,6 +107,9 @@ class ContextMenuEntry {
      *          {bool}   after       - add after the ID instead of before
      **/
     addChild(other_entry, before_ID, after) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : addChild call');
+        }
 
         //Find where to insert it
         let childRef        = this.findChildByID(before_ID);
@@ -124,6 +135,10 @@ class ContextMenuEntry {
      * arg    : {string} childID - the ID of the child
      **/
     findChildByID(childID) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : findChildByID call');
+        }
+
         if (childID === null || childID === undefined) {
             return null;
         }
@@ -145,6 +160,10 @@ class ContextMenuEntry {
      * arg    : {object} other_entry - the ContextMenuEntry to remove
      **/
     removeChild(otherID) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : removeChild call');
+        }
+
         for(let i = 0; i < this.children.length; ++i)
             if(this.children[i].entryID == otherID) {
                 let child = this.children[i];
@@ -162,11 +181,16 @@ class ContextMenuEntry {
      * desc   : close the menu and its submenus
      **/
     closeAll() {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : closeAll call');
+        }
+
         this.children.forEach(function(child) {
             child.closeAll();
             child.element.classList.remove("mzk-ctx-open");
         });
     }
+
 
     /**
      * method : setDisplayString
@@ -175,9 +199,14 @@ class ContextMenuEntry {
      * arg    : {string} newStr
      */
     setDisplayString(newStr) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : setDisplayString call');
+        }
+
         this.displayString = newStr;
-        if(this.wrapper.firstChild)
+        if (this.wrapper.firstChild) {
             this.wrapper.firstChild.innerHTML = newStr;
+        }
     }
 
 
@@ -188,6 +217,10 @@ class ContextMenuEntry {
      * arg    : {bool} allow - whether to allow or forbid multiple open submenus
      **/
     setMultiOpenSubmenu(allow) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : setMultiOpenSubmenu call');
+        }
+
         this.multiOpenSubmenu = allow;
         return this;
     }
@@ -200,6 +233,10 @@ class ContextMenuEntry {
      * arg    : {array/string} array_of_IDs - the IDs to allow
      **/
     setVisibleAreas(array_of_IDs) {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : setVisibleAreas call');
+        }
+
         if (this.entryID === null || this.entryID !== undefined) {
             return;
         }
@@ -228,6 +265,10 @@ class ContextMenuEntry {
      * desc   : setup the stylesheet needed for the setVisibleAreas function
      **/
     _checkStylesheet() {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : _checkStylesheet call');
+        }
+
         if (window.app.cssFiles.contextMenu) {
             return;
         }
@@ -247,6 +288,10 @@ class ContextMenuEntry {
      * desc   : creates the DOM element
      **/
     _init() {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : _init call');
+        }
+
         this.element = document.createElement("UL");
         this.wrapper = document.createElement("LI");
 
@@ -265,6 +310,10 @@ class ContextMenuEntry {
      * desc   : run the callback associated with the entry
      **/
     _runCallback() {
+        if (window.debug) {
+            console.log('  ContextMenuEntry : _runCallback call');
+        }
+
         if (this.callback) {
             this.children.forEach(function(child) {
                 child.closeAll();

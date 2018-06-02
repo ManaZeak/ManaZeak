@@ -15,6 +15,11 @@ class View extends MzkObject{
 
     constructor() {
         super();
+
+        if (window.debug) {
+            console.log('  View construction');
+        }
+
         this.container           = document.createElement("DIV");
         this.container.className = "mzk-view";
         this.container.innerHTML = "";

@@ -9,6 +9,10 @@
 class PartyMode {
 
     constructor(container) {
+        if (window.debug) {
+            console.log('      PartyMode construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -22,6 +26,10 @@ class PartyMode {
      * arg    : {object} container - The PartyMode container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      PartyMode : _createUI call');
+        }
+
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -42,6 +50,10 @@ class PartyMode {
      * desc   : PartyMode event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      PartyMode : _eventListener call');
+        }
+
         this.ui.img.addEventListener("click", function() {
             window.app.showAppView("mzk_party");
         });

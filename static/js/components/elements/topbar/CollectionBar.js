@@ -17,6 +17,10 @@ import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry construction');
+        }
+
         //TODO: free the listeners
         this.isLibrary             = playlist.getIsLibrary();
         this.playlist              = playlist;
@@ -50,6 +54,10 @@ class PlaylistCollectionEntry {
      * arg    : {string} name
      **/
     rename(name) {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry : rename call');
+        }
+
         this.label.innerHTML = name;
     }
 
@@ -61,6 +69,10 @@ class PlaylistCollectionEntry {
      * arg    : {bool} isSelected
      **/
     setIsSelected(isSelected) {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry : setIsSelected call');
+        }
+
         this.isSelected = isSelected;
 
         if (this.isLibrary) {
@@ -92,6 +104,10 @@ class PlaylistCollectionEntry {
      * desc   : TODO
      **/
     _contextMenuSetup() {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry : _contextMenuSetup call');
+        }
+
         let that             = this;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
@@ -137,6 +153,10 @@ class PlaylistCollectionEntry {
 
 
     _sendCollectionDescription(playlist, description) {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry : _sendCollectionDescription call');
+        }
+
         playlist.setDescription(description);
 
         JSONParsedPostRequest(
@@ -151,6 +171,10 @@ class PlaylistCollectionEntry {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug) {
+                    console.log('      PlaylistCollectionEntry : _sendCollectionDescription server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -165,6 +189,10 @@ class PlaylistCollectionEntry {
      * desc   : Append option button to entry
      **/
     _createOptionButton() {
+        if (window.debug) {
+            console.log('      PlaylistCollectionEntry : _createOptionButton call');
+        }
+
         let that               = this;
         // TODO : add admin options, or library options
         this.options           = document.createElement("A");
@@ -199,6 +227,11 @@ class CollectionBar extends MzkObject {
 
     constructor(collection, container) {
         super();
+
+        if (window.debug) {
+            console.log('      CollectionBar construction');
+        }
+
         this.collection = collection;
         this.entries    = [];
         this.newLibMenu = null;
@@ -217,6 +250,10 @@ class CollectionBar extends MzkObject {
      * desc   : Refresh the display from the collection
      **/
     refresh() {
+        if (window.debug) {
+            console.log('      CollectionBar : refresh call');
+        }
+
         this.libsContainer.innerHTML = '';
         this.playContainer.innerHTML = '';
         this.entries                 = [];
@@ -245,6 +282,10 @@ class CollectionBar extends MzkObject {
      * arg    : {int} id - the id of the playlist to select
      **/
     setSelected(id) {
+        if (window.debug) {
+            console.log('      CollectionBar : setSelected call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getID() == id) {
                 this.entries[i].setIsSelected(true);
@@ -260,6 +301,10 @@ class CollectionBar extends MzkObject {
      * desc   : Unselect every entry in playlist bar
      **/
     unSelectAll() {
+        if (window.debug) {
+            console.log('      CollectionBar : unselectAll call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             this.entries[i].setIsSelected(false);
         }
@@ -273,6 +318,10 @@ class CollectionBar extends MzkObject {
      * desc   : Setup a context menu for Add library button and listen
      **/
     _contextMenuSetup() {
+        if (window.debug) {
+            console.log('      CollectionBar : _contextMenuSetup call');
+        }
+
         this.newLibMenu = new ContextMenu(this.newButton, null, 'click');
 
         if(window.app.user.hasPermission("LIBR"))
@@ -294,6 +343,10 @@ class CollectionBar extends MzkObject {
      * arg    : {object} container - The CollectionBar container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      CollectionBar : _createUI call');
+        }
+
         this.element                 = document.createElement('DIV');
         this.libsContainer           = document.createElement('DIV');
         this.playContainer           = document.createElement('DIV');
@@ -320,6 +373,10 @@ class CollectionBar extends MzkObject {
      * desc   : CollectionBar event listeners
      **/
     _eventListener() {
+        if (window.debug) {
+            console.log('      CollectionBar : _eventListener call');
+        }
+
         let that = this;
         this.collection.listen(['add', 'remove', 'clear'], function() {
             that.refresh();

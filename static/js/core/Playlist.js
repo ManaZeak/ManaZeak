@@ -19,6 +19,11 @@ import Modal from '../utils/Modal.js'
 class Playlist {
 
     constructor(id, name, description, isLibrary, isLoading, rawTracks, callback) { //TODO: get shuffle and repeat from server/cookies
+
+        if (window.debug) {
+            console.log('  Playlist construction');
+        }
+
         typeof rawTracks !== 'undefined' ? this.rawTracks = rawTracks : this.rawTracks = [];
         typeof callback  !== 'undefined' ? this.callback  = callback  : this.callback  = null;
 
@@ -52,6 +57,10 @@ class Playlist {
      * desc   : Set in app the current playlist to this
      **/
     activate() {
+        if (window.debug) {
+            console.log('  Playlist : activate call');
+        }
+
         if (this.lazyLoadOK == false) {
             this.modal = new Modal('fetchPlaylists', null);
             this.modal.open();
@@ -80,6 +89,10 @@ class Playlist {
      * return : {object} View entry
      **/
     getFirstEntry() {
+        if (window.debug) {
+            console.log('  Playlist : getFirst call');
+        }
+
         return this.activeView.getFirstEntry();
     }
 
@@ -91,6 +104,10 @@ class Playlist {
      * arg    : {function} callback - The function to callback - Not mandatory
      **/
     getPlaylistsTracks(callback) {
+        if (window.debug) {
+            console.log('  Playlist : getPlaylistsTracks call');
+        }
+
         this._getTracksLazy(0, callback);
     }
 
@@ -101,6 +118,10 @@ class Playlist {
      * desc   : Play next track, according to user repeat/shuffle settings
      **/
     playNextTrack() {
+        if (window.debug) {
+            console.log('  Playlist : playNextTrack call');
+        }
+
         let that = this;
         if (this.repeatMode === 1) {
             window.app.repeatTrack();
@@ -198,6 +219,10 @@ class Playlist {
      * desc   : Play previous track, according to user repeat/shuffle settings
      **/
     playPreviousTrack() {
+        if (window.debug) {
+            console.log('  Playlist : playPreviousTrack call');
+        }
+
         let that = this;
         switch (this.shuffleMode) {
             case 0: // Shuffle off
@@ -238,6 +263,10 @@ class Playlist {
      * desc   : Refresh view
      **/
     refreshViews() {
+        if (window.debug) {
+            console.log('  Playlist : refreshViews call');
+        }
+
         for (let i = 0; i < this.views.length; ++i) {
             if (this.views[i] !== null) {
                 this.views[i].refreshTracks(this.tracks);
@@ -253,6 +282,10 @@ class Playlist {
      * arg    : {object} track - The track to select
      **/
     setCurrentTrack(track) {
+        if (window.debug) {
+            console.log('  Playlist : setCurrentTrack call');
+        }
+
         this.currentTrack = track; // TODO : handle list sorting, search for entry in view instead
         this.activeView.setSelected(track);
     }
@@ -265,6 +298,10 @@ class Playlist {
      * arg    : {object} viewType - The view type
      **/
     showView(viewType) {
+        if (window.debug) {
+            console.log('  Playlist : showView call');
+        }
+
         let v = this.views[viewType.index];
 
         if (v === null) {
@@ -283,6 +320,10 @@ class Playlist {
      * desc   : Change repeat mode ( 0 : off, 1 : one, 2: all ) and send info to server
      **/
     toggleRepeat() {
+        if (window.debug) {
+            console.log('  Playlist : toggleRepeat call');
+        }
+
         ++this.repeatMode;
         this.repeatMode %= 3;
 
@@ -303,6 +344,10 @@ class Playlist {
      * desc   : Change shuffle mode ( 0 : off, 1 : random, 2: shuffle ) and send info to server
      **/
     toggleShuffle() {
+        if (window.debug) {
+            console.log('  Playlist : toggleShuffle call');
+        }
+
         ++this.shuffleMode;
         this.shuffleMode %= 3;
 
@@ -333,6 +378,10 @@ class Playlist {
      * desc   : Remove all track and reset tracks, artists and album count
      **/
     _clearTracks() {
+        if (window.debug) {
+            console.log('  Playlist : _clearTracks call');
+        }
+
         this.tracks        = [];
         this.durationTotal = 0;
         this.trackTotal    = 0;
@@ -348,6 +397,10 @@ class Playlist {
      * arg    : {object} tracks - Raw track w/ server syntax (capsed var)
      **/
     _fillTracks(tracks) { // Tracks is JSON response to playlist ID
+        if (window.debug) {
+            console.log('  Playlist : _fillTracks call');
+        }
+
         for (let i = 0; i < tracks.length; ++i) {
             ++this.trackTotal;
             this.durationTotal += tracks[i].DURATION;
@@ -364,6 +417,10 @@ class Playlist {
      *          {function} callback - Not mandatory
      **/
     _getTracksLazy(step, callback) {
+        if (window.debug) {
+            console.log('  Playlist : _getTracksLazy call');
+        }
+
         if (step == 0) {
             this.lazyLoadOK = false;
             this.rawTracks  = [];
@@ -400,6 +457,10 @@ class Playlist {
                  *         }
                  *     ]
                  * } */
+                if (window.debug) {
+                    console.log('  Playlist : _getTracksLazy server response');
+                }
+
                 if (response.DONE) {
                     that.rawTracks = that.rawTracks.concat(response.RESULT);
                     that._getTracksLazy(step + 1, callback);
@@ -433,6 +494,10 @@ class Playlist {
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
     _getTracksFromServer(playlistId) {
+        if (window.debug) {
+            console.log('  Playlist : _getTracksFromServer call');
+        }
+
         let that = this;
         this.getTracksIntervalId = window.setInterval(function() {
             that._getTracksFromServer_aux(playlistId);
@@ -447,6 +512,10 @@ class Playlist {
      * arg    : {int} playlistId - The playlist ID to get tracks from
      **/
     _getTracksFromServer_aux(playlistId) {
+        if (window.debug) {
+            console.log('  Playlist : _getTracksFromServer_aux call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "library/checkScanStatus/",
@@ -459,6 +528,10 @@ class Playlist {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug) {
+                    console.log('  Playlist : _getTracksFromServer_aux server response');
+                }
+
                 if (response.DONE) {
                     window.clearInterval(that.getTracksIntervalId);
                     that.getTracksIntervalId = -1;
@@ -483,6 +556,10 @@ class Playlist {
      * desc   : Handle playlist instantiation depending on booleans given to constructor
      **/
     _init() {
+        if (window.debug) {
+            console.log('  Playlist : _init call');
+        }
+
         if (this.isLoading) {
             if (this.isLibrary) { // Library loading process
                 this._loadLibrary();
@@ -512,6 +589,10 @@ class Playlist {
      * arg    : {int} libraryId - The library ID to scan
      **/
     _initialLibraryScan(libraryId) {
+        if (window.debug) {
+            console.log('  Playlist : _initialLibraryScan call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "library/initialScan/",
@@ -545,6 +626,10 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadLibrary() {
+        if (window.debug) {
+            console.log('  Playlist : _loadLibrary call');
+        }
+
         if (this.rawTracks.length === 0) {
             return;
         }
@@ -559,6 +644,10 @@ class Playlist {
      * desc   : Order _fillTracks if one sent rawTrack at instantiation
      **/
     _loadPlaylist() {
+        if (window.debug) {
+            console.log('  Playlist : _loadPlaylist call');
+        }
+
         if (this.rawTracks.length === 0) {
             return;
         }
@@ -573,6 +662,10 @@ class Playlist {
      * desc   : Starts a new library sequence
      **/
     _newLibrary() {
+        if (window.debug) {
+            console.log('  Playlist : _newLibrary call');
+        }
+
         this.isLibrary = true;
         this.modal     = new Modal("newLibrary");
         this.modal.open();
@@ -590,6 +683,10 @@ class Playlist {
      * desc   : Starts a new playlist sequence
      **/
     _newPlaylist() {
+        if (window.debug) {
+            console.log('  Playlist : _newPlaylist call');
+        }
+
         this.isLibrary = false;
         this.modal     = new Modal("newPlaylist");
         this.modal.open();
@@ -610,6 +707,10 @@ class Playlist {
      *          {bool} convert - Auto conversion to ID3v2
      **/
     _requestNewLibrary(name, path, convert) {
+        if (window.debug) {
+            console.log('  Playlist : _requestNewLibrary call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "library/new/",
@@ -627,6 +728,10 @@ class Playlist {
                  *     LIBRARY_ID   : int or undefined
                  *     LIBRARY_NAME : string
                  * } */
+                if (window.debug) {
+                    console.log('  Playlist : _requestNewLibrary server response');
+                }
+
                 if (response.DONE) {
                     that.name  = response.LIBRARY_NAME;
                     that.modal.close();
@@ -652,6 +757,10 @@ class Playlist {
      * arg    : {string} name - Name given by user
      **/
     _requestNewPlaylist(name) {
+        if (window.debug) {
+            console.log('  Playlist : _requestNewPlaylist call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "playlist/new/",
@@ -667,6 +776,10 @@ class Playlist {
                  *     PLAYLIST_ID   : int or undefined
                  *     PLAYLIST_NAME : string
                  * } */
+                if (window.debug) {
+                    console.log('  Playlist : _requestNewPlaylist server response');
+                }
+
                 if (response.DONE) {
                     that.name  = response.PLAYLIST_NAME;
                     that.id    = response.PLAYLIST_ID;

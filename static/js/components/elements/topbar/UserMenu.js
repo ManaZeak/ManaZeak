@@ -13,6 +13,10 @@ import ContextMenuEntry from '../../../utils/ContextMenuEntry.js'
 class UserMenu {
 
     constructor(container) {
+        if (window.debug) {
+            console.log('      UserMenu construction');
+        }
+
         this.contextMenu = null;
         this._createUI(container);
         this._setupContextMenu();
@@ -28,6 +32,10 @@ class UserMenu {
      * arg    : {object} container - The UserMenu container
      **/
     _createUI(container) {
+        if (window.debug) {
+            console.log('      UserMenu : _createUI call');
+        }
+
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -48,6 +56,10 @@ class UserMenu {
      * desc   : UserMenu context menu
      **/
     _setupContextMenu() {
+        if (window.debug) {
+            console.log('      UserMenu : _setupContextMenu call');
+        }
+
         let that         = this;
         this.contextMenu = new ContextMenu(this.ui.container, null, 'click');
 

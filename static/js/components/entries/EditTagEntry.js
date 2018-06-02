@@ -9,6 +9,10 @@
 class EditTagEntry {
 
     constructor(container, track) {
+        if (window.debug) {
+            console.log('    EditTagEntry construction');
+        }
+
         this.entry                 = document.createElement("P");
         this.track                 = track;
         this.entry.innerHTML       = track.fileName;
@@ -26,6 +30,10 @@ class EditTagEntry {
      * return : {bool} isSelected
      **/
     setIsSelected(isSelected) {
+        if (window.debug) {
+            console.log('    EditTagEntry : setIsSelected call');
+        }
+
         this.isSelected = isSelected;
 
         if (this.isSelected) {
