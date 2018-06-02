@@ -45,7 +45,6 @@ def getUserSettings(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeAvatar(request):
     if request.method == 'POST':
-<<<<<<< Updated upstream
         user = request.user
         avatar_path = "static/img/avatars/" + user + ".png"
         if UserPreferences.objects.filter(user=user).count() == 1:
@@ -71,9 +70,6 @@ def changeAvatar(request):
     else:
         data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
-=======
-        pass
->>>>>>> Stashed changes
 
 
 def createUserInviteCode(user):
