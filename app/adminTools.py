@@ -236,9 +236,9 @@ def regenerateCovers(request):
         user = request.user
         if checkPermission(["ADMV"], user):
             # Deleting all covers
-            moodbars = "/ManaZeak/static/img/covers"
-            for mood in os.listdir(moodbars):
-                os.remove(os.path.join(moodbars, mood))
+            covers = "/ManaZeak/static/img/covers"
+            for mood in os.listdir(covers):
+                os.remove(os.path.join(covers, mood))
 
             # Recreating covers
             scanThread = Process(target=regenerateCoverProcess)

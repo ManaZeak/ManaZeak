@@ -108,7 +108,11 @@ def updateDBInfo(response, track):
         else:
             extension = "jpg"
         md5Name.update(base64.b64decode(str(response['COVER'].split(",")[1])))
-        filePath = "/ManaZeak/static/img/covers/" + md5Name.hexdigest() + extension
+        # Check if the folder exists
+        filePath = "/ManaZeak/static/img/covers/"
+        if not os.path.isdir(filePath):
+            os.mkdir(filePath) # Create the folder
+        filePath += + md5Name.hexdigest() + extension
         if not os.path.isfile(filePath):
             with open(filePath, 'wb+') as destination:
                 # Split the header with MIME type
