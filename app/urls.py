@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, adminTools, wish, userSettings, fileUpload, user, utils
+from app import player, history, adminTools, wish, userSettings, fileUpload, user, utils, language
 from app.collection import playlist, library
 from app.stats import stats, suggestion
 from app.track import track, editor
@@ -94,4 +94,7 @@ urlpatterns = [
 
     # File upload
     url(r'^file/upload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
+    
+    # Language
+    url(r'^language/', language.loadLanguage, name='loadLanguage'),
 ]
