@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 
 from app.achievement import refreshAchievements, checkAchievement
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
-
+from app.user import deactivateUser
 
 logger = logging.getLogger('django')
 
@@ -189,6 +189,16 @@ def errorCheckMessage(isDone, error, caller, user=None):
         errorTitle = "Can't create a folder"
         errorMessage = "The application can't create a folder contact the administrator"
         logger.error("The application can't create a folder for function " + caller.__name__)
+
+    elif error == "suspiciousOperation":
+        errorTitle = "Your account have been suspended"
+        errorMessage = "And you know why!"
+        # If the user has an account
+        if user is not None:
+            logger.critical("The user : " + user.username + " tried to do some weird operation")
+            deactivateUser(user)
+        else:
+            logger.critical("An unauthenticated user tried to do some weird operation.")
 
     return {
         'DONE': isDone,

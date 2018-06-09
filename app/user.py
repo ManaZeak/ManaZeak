@@ -55,3 +55,9 @@ def deleteLinkedEntities(user):
     Playlist.objects.filter(user=user).delete()
     UserPreferences.objects.filter(user=user).delete()
     UserHistory.objects.filter(user=user).delete()
+
+
+# Deactivate a user after a suspicious operation
+def deactivateUser(user):
+    user.is_active = False
+    user.save()
