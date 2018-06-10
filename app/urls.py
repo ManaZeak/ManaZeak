@@ -61,6 +61,7 @@ urlpatterns = [
 
     # Suggestions actions
     url(r'^suggestions/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
+    url(r'^suggestions/getTracksFromSameAlbum/$', suggestion.getTracksFromSameAlbum, name='getTracksFromSameAlbum'),
 
     # Wish actions
     url(r'^wish/submit/$', wish.createWish, name='createWish'),

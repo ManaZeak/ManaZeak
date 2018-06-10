@@ -83,3 +83,31 @@ def getSimilarTrack(request):
     else:
         data = errorCheckMessage(False, "badRequest", getSimilarTrack)
     return data
+
+
+def getTracksFromSameAlbum(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if 'TRACK_ID' in response:
+            trackId = strip_tags(response['TRACK_ID'])
+            if Track.objects.filter(id=trackId).count() == 1:
+                originalTrack = Track.objects.get(id=trackId)
+                sameTracks = Track.objects.filter(album=originalTrack.album).exclude(id=originalTrack.id)
+                if sameTracks.count() > 0:
+                    trackIds = []
+                    for track in sameTracks:
+                        trackIds.append(track.id)
+                    data = {
+                        'TRACKS': trackIds
+                    }
+                    data = {**data, **errorCheckMessage(True, None, getTracksFromSameAlbum)}
+                else:
+                    data = errorCheckMessage(False, "noSameAlbum", getTracksFromSameAlbum)
+            else:
+                data = errorCheckMessage(False, "dbError", getTracksFromSameAlbum)
+        else:
+            data = errorCheckMessage(False, "badFormat", getTracksFromSameAlbum, user)
+    else:
+        data = errorCheckMessage(False, "badRequest", getTracksFromSameAlbum)
+    return JsonResponse(data)
