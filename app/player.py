@@ -5,10 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.history import addToHistory
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Shuffle, Playlist, Track, PlaylistSettings
-from app.stats.stats import addToStats
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Select a sound with shuffle mode enabled
@@ -71,13 +70,13 @@ def shuffleNextTrack(request):
                     }
                     data = {**data, **errorCheckMessage(True, None, shuffleNextTrack)}
                 else:
-                    data = errorCheckMessage(False, "dbError", shuffleNextTrack)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, shuffleNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat", shuffleNextTrack, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, shuffleNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError", shuffleNextTrack, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, shuffleNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest", shuffleNextTrack)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, shuffleNextTrack)
     return JsonResponse(data)
 
 
@@ -103,13 +102,13 @@ def randomNextTrack(request):
                             return JsonResponse(data)
                         else:
                             count += 1
-                data = errorCheckMessage(False, "dbError", randomNextTrack)
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, randomNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat", randomNextTrack, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, randomNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError", randomNextTrack, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, randomNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest", randomNextTrack)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, randomNextTrack)
     return JsonResponse(data)
 
 
@@ -138,11 +137,11 @@ def toggleRandom(request):
                     settings.save()
                     data = errorCheckMessage(True, None, toggleRandom)
                 else:
-                    data = errorCheckMessage(False, "dbError", toggleRandom)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, toggleRandom)
             else:
-                data = errorCheckMessage(False, "badFormat", toggleRandom, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, toggleRandom, user)
         else:
-            data = errorCheckMessage(False, "badFormat", toggleRandom, user)
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, toggleRandom, user)
     else:
-        data = errorCheckMessage(False, "badRequest", toggleRandom)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, toggleRandom)
     return JsonResponse(data)

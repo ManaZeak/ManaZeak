@@ -13,9 +13,10 @@ from django.utils.html import strip_tags
 from multiprocessing import Process
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk, refreshPlaylist
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Library, Playlist, FileType, Album, Track
 from app.track.importer import createMP3Track, createVorbisTrack
-from app.utils import errorCheckMessage, splitTableCustom, checkPermission, refreshAllViews
+from app.utils import splitTableCustom, checkPermission, refreshAllViews
 
 
 logger = logging.getLogger('django')
@@ -35,13 +36,13 @@ def initialScan(request):
                     playlist = library.playlist
                     data = scanLibrary(library, playlist, library.convertID3)
                 else:
-                    data = errorCheckMessage(False, "dirNotFound", initialScan)
+                    data = errorCheckMessage(False, ErrorEnum.DIR_NOT_FOUND, initialScan)
             else:
-                data = errorCheckMessage(False, "badFormat", initialScan, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, initialScan, user)
         else:
-            data = errorCheckMessage(False, "permissionError", initialScan, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, initialScan, user)
     else:
-        data = errorCheckMessage(False, "badRequest", initialScan)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, initialScan)
     return JsonResponse(data)
 
 
@@ -73,13 +74,13 @@ def newLibrary(request):
                     }
                     data = {**data, **errorCheckMessage(True, None, newLibrary)}
                 else:
-                    data = errorCheckMessage(False, "dirNotFound", newLibrary)
+                    data = errorCheckMessage(False, ErrorEnum.DIR_NOT_FOUND, newLibrary)
             else:
-                data = errorCheckMessage(False, "badFormat", newLibrary, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, newLibrary, user)
         else:
-            data = errorCheckMessage(False, "permissionError", newLibrary, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, newLibrary, user)
     else:
-        data = errorCheckMessage(False, "badRequest", newLibrary)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, newLibrary)
     return JsonResponse(data)
 
 
@@ -95,13 +96,13 @@ def checkLibraryScanStatus(request):
                     playlist = Playlist.objects.get(id=response['PLAYLIST_ID'])
                     data = errorCheckMessage(playlist.isScanned, None, newLibrary)
                 else:
-                    data = errorCheckMessage(False, "dbError", checkLibraryScanStatus)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, checkLibraryScanStatus)
             else:
-                data = errorCheckMessage(False, "badFormat", checkLibraryScanStatus, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, checkLibraryScanStatus, user)
         else:
-            data = errorCheckMessage(False, "permissionError", checkLibraryScanStatus, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, checkLibraryScanStatus, user)
     else:
-        data = errorCheckMessage(False, "badRequest", checkLibraryScanStatus)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, checkLibraryScanStatus)
     return JsonResponse(data)
 
 
@@ -113,7 +114,7 @@ def scanLibrary(library, playlist, convert):
         try:
             os.makedirs(coverPath)
         except OSError:
-            return errorCheckMessage(False, "coverError", scanLibrary)
+            return errorCheckMessage(False, ErrorEnum.COVER_ERROR, scanLibrary)
 
     mp3Files = []
     flacFiles = []
@@ -137,7 +138,7 @@ def scanLibrary(library, playlist, convert):
 
     # TODO, change when implement other file types
     if len(mp3Files) == 0 and len(flacFiles) == 0 and len(oggFiles) == 0:
-        return errorCheckMessage(False, "emptyLibrary", scanLibrary)
+        return errorCheckMessage(False, ErrorEnum.EMPTY_LIBRARY, scanLibrary)
 
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, oggFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
@@ -164,11 +165,11 @@ def rescanLibraryRequest(request):
                 scanThread.start()
                 data = errorCheckMessage(True, None, rescanLibraryRequest)
             else:
-                data = errorCheckMessage(False, "badFormat", rescanLibraryRequest, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, rescanLibraryRequest, user)
         else:
-            data = errorCheckMessage(False, "permissionError", rescanLibraryRequest, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, rescanLibraryRequest, user)
     else:
-        data = errorCheckMessage(False, "badRequest", rescanLibraryRequest)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, rescanLibraryRequest)
     return JsonResponse(data)
 
 
@@ -182,9 +183,9 @@ def rescanAllLibraries(request):
             scanThread.start()
             data = errorCheckMessage(True, None, rescanAllLibraries)
         else:
-            data = errorCheckMessage(False, "permissionError", rescanAllLibraries, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, rescanAllLibraries, user)
     else:
-        data = errorCheckMessage(False, "badRequest", rescanAllLibraries)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, rescanAllLibraries)
     return JsonResponse(data)
 
 
@@ -248,9 +249,9 @@ def deleteAllLibrary(request):
                 playlist.delete()
             data = errorCheckMessage(True, None, deleteAllLibrary)
         else:
-            data = errorCheckMessage(False, "permissionError", deleteAllLibrary, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, deleteAllLibrary, user)
     else:
-        data = errorCheckMessage(False, "badRequest", deleteAllLibrary)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, deleteAllLibrary)
     return JsonResponse(data)
 
 

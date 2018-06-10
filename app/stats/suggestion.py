@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Track
 from app.track.track import exportTrackInfo
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Generate json for a list of tracks with detailed information
@@ -51,17 +52,17 @@ def getSimilarTrack(request):
                         tracks = Track.objects.filter(genre=track.genre).exclude(id=track.id).order_by('-playCounter')
                     # Other values
                     else:
-                        return JsonResponse(errorCheckMessage(False, "badFormat", getSimilarTrack, user))
+                        return JsonResponse(errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getSimilarTrack, user))
 
                     # Check length of the query set
                     if len(tracks) < 4:
                         if len(tracks) == 0:
                             if mode == 0:
-                                return JsonResponse(errorCheckMessage(False, "noSameArtist", getSimilarTrack))
+                                return JsonResponse(errorCheckMessage(False, ErrorEnum.NO_SAME_ARTIST, getSimilarTrack))
                             elif mode == 1:
-                                return JsonResponse(errorCheckMessage(False, "noSameAlbum", getSimilarTrack))
+                                return JsonResponse(errorCheckMessage(False, ErrorEnum.NO_SAME_ALBUM, getSimilarTrack))
                             else:
-                                return JsonResponse(errorCheckMessage(False, "noSameGenre", getSimilarTrack))
+                                return JsonResponse(errorCheckMessage(False, ErrorEnum.NO_SAME_GENRE, getSimilarTrack))
                         else:
                             numberTrackTarget = len(tracks)
 
@@ -75,13 +76,13 @@ def getSimilarTrack(request):
                     return JsonResponse({**generateSimilarTrackJson(selectedTracks),
                                          **errorCheckMessage(True, None, getSimilarTrack)})
                 else:
-                    data = errorCheckMessage(False, "dbError", getSimilarTrack)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getSimilarTrack)
             else:
-                data = errorCheckMessage(False, "badFormat", getSimilarTrack, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getSimilarTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError", getSimilarTrack, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getSimilarTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest", getSimilarTrack)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getSimilarTrack)
     return data
 
 
@@ -103,11 +104,11 @@ def getTracksFromSameAlbum(request):
                     }
                     data = {**data, **errorCheckMessage(True, None, getTracksFromSameAlbum)}
                 else:
-                    data = errorCheckMessage(False, "noSameAlbum", getTracksFromSameAlbum)
+                    data = errorCheckMessage(False, ErrorEnum.NO_SAME_ALBUM, getTracksFromSameAlbum)
             else:
-                data = errorCheckMessage(False, "dbError", getTracksFromSameAlbum)
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getTracksFromSameAlbum)
         else:
-            data = errorCheckMessage(False, "badFormat", getTracksFromSameAlbum, user)
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getTracksFromSameAlbum, user)
     else:
-        data = errorCheckMessage(False, "badRequest", getTracksFromSameAlbum)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getTracksFromSameAlbum)
     return JsonResponse(data)

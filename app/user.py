@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Playlist, UserPreferences, UserHistory, InviteCode
-from app.utils import errorCheckMessage, populateDB
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -13,7 +13,7 @@ def deleteUser(request):
         user.delete()
         data = errorCheckMessage(True, None, deleteUser)
     else:
-        data = errorCheckMessage(False, "badRequest", deleteUser)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, deleteUser)
     return JsonResponse(data)
 
 
@@ -47,7 +47,7 @@ def getUserInformation(request):
         data = {**data, **{'PERMISSIONS': permissions}}
         data = {**data, **errorCheckMessage(True, None, getUserInformation)}
     else:
-        data = errorCheckMessage(False, "badRequest", getUserInformation)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserInformation)
     return JsonResponse(data)
 
 
@@ -56,8 +56,3 @@ def deleteLinkedEntities(user):
     UserPreferences.objects.filter(user=user).delete()
     UserHistory.objects.filter(user=user).delete()
 
-
-# Deactivate a user after a suspicious operation
-def deactivateUser(user):
-    user.is_active = False
-    user.save()

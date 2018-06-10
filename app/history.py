@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import History, UserHistory
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Add a song to history
@@ -40,11 +41,11 @@ def getLastSongPlayed(request):
                     }
                     data = {**data, **errorCheckMessage(True, None, getLastSongPlayed)}
                 else:
-                    data = errorCheckMessage(False, "noHistory", getLastSongPlayed, user)
+                    data = errorCheckMessage(False, ErrorEnum.NO_HISTORY, getLastSongPlayed, user)
             else:
-                data = errorCheckMessage(False, "noHistory", getLastSongPlayed, user)
+                data = errorCheckMessage(False, ErrorEnum.NO_HISTORY, getLastSongPlayed, user)
         else:
-            data = errorCheckMessage(False, "permissionError", getLastSongPlayed, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getLastSongPlayed, user)
     else:
-        data = errorCheckMessage(False, "badRequest", getLastSongPlayed)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getLastSongPlayed)
     return JsonResponse(data)

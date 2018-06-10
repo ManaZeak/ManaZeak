@@ -4,7 +4,7 @@ import os
 
 from django.http import JsonResponse
 
-from app.utils import errorCheckMessage
+from app.errors import ErrorEnum, errorCheckMessage
 
 
 # Loading the json file corresponding to the language of the user
@@ -24,9 +24,9 @@ def loadLanguage(request):
                     data = json.load(file)
                 data = {**data, **errorCheckMessage(True, None, loadLanguage)}
             else:
-                data = errorCheckMessage(False, "suspiciousOperation", loadLanguage, user)
+                data = errorCheckMessage(False, ErrorEnum.SUSPICIOUS_OPERATION, loadLanguage, user)
         else:
-            data = errorCheckMessage(False, "badFormat", loadLanguage, user)
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, loadLanguage, user)
     else:
-        data = errorCheckMessage(False, "badRequest", loadLanguage)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, loadLanguage)
     return JsonResponse(data)

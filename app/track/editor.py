@@ -11,8 +11,9 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3
 from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Genre, Playlist
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Check if the value can be converted to int
@@ -111,7 +112,7 @@ def updateDBInfo(response, track):
         # Check if the folder exists
         filePath = "/ManaZeak/static/img/covers/"
         if not os.path.isdir(filePath):
-            os.mkdir(filePath) # Create the folder
+            os.mkdir(filePath)  # Create the folder
         filePath += + md5Name.hexdigest() + extension
         if not os.path.isfile(filePath):
             with open(filePath, 'wb+') as destination:
@@ -232,7 +233,7 @@ def updateFileMetadata(track, tags):
         audioTag.save(track.location)
         data = errorCheckMessage(True, None, updateFileMetadata)
     else:
-        data = errorCheckMessage(False, "formatError", updateFileMetadata)
+        data = errorCheckMessage(False, ErrorEnum.FORMAT_ERROR, updateFileMetadata)
     return data
 
 
@@ -260,13 +261,13 @@ def changeTracksMetadata(request):
                                     playlist.refreshView = True
                                     playlist.save()
                         else:
-                            data = errorCheckMessage(False, "dbError", changeTracksMetadata)
+                            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, changeTracksMetadata)
                     else:
-                        data = errorCheckMessage(False, "valueError", changeTracksMetadata, user)
+                        data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, changeTracksMetadata, user)
             else:
-                data = errorCheckMessage(False, "badFormat", changeTracksMetadata, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, changeTracksMetadata, user)
         else:
-            data = errorCheckMessage(False, "permissionError", changeTracksMetadata, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, changeTracksMetadata, user)
     else:
-        data = errorCheckMessage(False, "badRequest", changeTracksMetadata)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, changeTracksMetadata)
     return JsonResponse(data)

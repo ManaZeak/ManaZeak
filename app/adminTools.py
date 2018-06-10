@@ -11,12 +11,13 @@ from multiprocessing import Process
 
 from app.collection.library import deleteLibrary
 from app.dao import deleteView
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.collection.playlist import getTotalLength
 from app.track.importer import regenerateCover
 from app.user import deleteLinkedEntities
-from app.utils import errorCheckMessage, timeCodeToString, checkPermission
+from app.utils import timeCodeToString, checkPermission
 from app.wallet import calculateCurrentAvailableCash
 
 
@@ -108,9 +109,9 @@ def getAdminView(request):
             data = {**data, **dict({'PERMISSIONS': tmp})}
             data = {**data, **errorCheckMessage(True, None, getAdminView)}
         else:
-            data = errorCheckMessage(False, "permissionError", getAdminView, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getAdminView, user)
     else:
-        data = errorCheckMessage(False, "badRequest", getAdminView)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getAdminView)
     return JsonResponse(data)
 
 
@@ -125,9 +126,9 @@ def removeAllMoods(request):
                 os.remove(os.path.join(moodbars, mood))
             data = errorCheckMessage(True, None, removeAllMoods)
         else:
-            data = errorCheckMessage(False, "permissionError", removeAllMoods, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, removeAllMoods, user)
     else:
-        data = errorCheckMessage(False, "badRequest", removeAllMoods)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, removeAllMoods)
     return JsonResponse(data)
 
 
@@ -148,17 +149,17 @@ def removeUser(request):
                             user.delete()
                             data = errorCheckMessage(True, None, removeUser)
                         else:
-                            data = errorCheckMessage(False, "dbError", removeUser)
+                            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, removeUser)
                     else:
-                        data = errorCheckMessage(False, "userDeleteError", removeUser, user)
+                        data = errorCheckMessage(False, ErrorEnum.USER_DELETE_ERROR, removeUser, user)
                 except ValueError:
-                    data = errorCheckMessage(False, "valueError", removeUser, user)
+                    data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, removeUser, user)
             else:
-                data = errorCheckMessage(False, "badFormat", removeUser, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, removeUser, user)
         else:
-            data = errorCheckMessage(False, "permissionError", removeUser, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, removeUser, user)
     else:
-        data = errorCheckMessage(False, "badRequest", removeUser)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, removeUser)
     return JsonResponse(data)
 
 
@@ -173,11 +174,11 @@ def syncthingRescan(request):
             if req.status_code == 200:
                 data = errorCheckMessage(True, None, syncthingRescan)
             else:
-                data = errorCheckMessage(False, "syncthingError", syncthingRescan)
+                data = errorCheckMessage(False, ErrorEnum.SYNCTHING_ERROR, syncthingRescan)
         else:
-            data = errorCheckMessage(False, "permissionError", syncthingRescan, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, syncthingRescan, user)
     else:
-        data = errorCheckMessage(False, "badRequest", syncthingRescan)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, syncthingRescan)
     return JsonResponse(data)
 
 
@@ -196,11 +197,11 @@ def changeSyncthingAPIKey(request):
                     adminOptions.save()
                 data = errorCheckMessage(True, None, syncthingRescan)
             else:
-                data = errorCheckMessage(False, "badFormat", syncthingRescan, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, syncthingRescan, user)
         else:
-            data = errorCheckMessage(False, "permissionError", syncthingRescan, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, syncthingRescan, user)
     else:
-        data = errorCheckMessage(False, "badRequest", syncthingRescan)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, syncthingRescan)
     return JsonResponse(data)
 
 
@@ -219,13 +220,13 @@ def changeBufferPath(request):
                     adminOptions.save()
                     data = errorCheckMessage(True, None, changeBufferPath)
                 else:
-                    data = errorCheckMessage(False, "dirNotFound", changeBufferPath)
+                    data = errorCheckMessage(False, ErrorEnum.DIR_NOT_FOUND, changeBufferPath)
             else:
-                data = errorCheckMessage(False, "badFormat", changeBufferPath, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, changeBufferPath, user)
         else:
-            data = errorCheckMessage(False, "permissionError", changeBufferPath, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, changeBufferPath, user)
     else:
-        data = errorCheckMessage(False, "badRequest", changeBufferPath)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, changeBufferPath)
     return JsonResponse(data)
 
 
@@ -246,9 +247,9 @@ def regenerateCovers(request):
             scanThread.start()
             data = errorCheckMessage(True, None, regenerateCovers)
         else:
-            data = errorCheckMessage(False, "permissionError", regenerateCovers, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, regenerateCovers, user)
     else:
-        data = errorCheckMessage(False, "badRequest", regenerateCovers)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, regenerateCovers)
     return JsonResponse(data)
 
 
@@ -268,7 +269,7 @@ def isAdmin(request):
         }
         data = {**data, **errorCheckMessage(True, None, isAdmin)}
     else:
-        data = errorCheckMessage(False, "badRequest", isAdmin)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, isAdmin)
     return JsonResponse(data)
 
 
@@ -293,9 +294,9 @@ def dropAllDB(request):
             History.objects.all().delete()
             data = errorCheckMessage(True, None, dropAllDB)
         else:
-            data = errorCheckMessage(False, "permissionError", dropAllDB, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, dropAllDB, user)
     else:
-        data = errorCheckMessage(False, "badRequest", dropAllDB)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, dropAllDB)
     return JsonResponse(data)
 
 
@@ -306,7 +307,7 @@ def isInviteEnabled(request):
         }
         data = {**data, **errorCheckMessage(True, None, isInviteEnabled)}
     else:
-        data = errorCheckMessage(False, "badRequest", isInviteEnabled)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, isInviteEnabled)
     return JsonResponse(data)
 
 
@@ -324,9 +325,9 @@ def toggleInvite(request):
             }
             data = {**data, **errorCheckMessage(True, None, toggleInvite)}
         else:
-            data = errorCheckMessage(False, "permissionError", toggleInvite)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, toggleInvite)
     else:
-        data = errorCheckMessage(False, "badRequest", toggleInvite)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, toggleInvite)
     return JsonResponse(data)
 
 
@@ -346,7 +347,7 @@ def editGroup(request):
                     permissions = Permissions.objects.all()
                     for permission in permissions:
                         if permission.code not in response['PERMISSIONS']:
-                            return JsonResponse(errorCheckMessage(False, "badFormat", editGroup, user))
+                            return JsonResponse(errorCheckMessage(False, ErrorEnum.BAD_FORMAT, editGroup, user))
                     for permission in permissions:
                         perm = response['PERMISSIONS'][permission.code]
                         if perm:
@@ -357,13 +358,13 @@ def editGroup(request):
                                 group.permissions.remove(Permissions.objects.get(code=permission.code))
                     data = errorCheckMessage(True, None, editGroup)
                 else:
-                    data = errorCheckMessage(False, "dbError", editGroup)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, editGroup)
             else:
-                data = errorCheckMessage(False, "badFormat", editGroup, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, editGroup, user)
         else:
-            data = errorCheckMessage(False, "permissionError", editGroup, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, editGroup, user)
     else:
-        data = errorCheckMessage(False, "badRequest", editGroup)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, editGroup)
     return JsonResponse(data)
 
 
@@ -384,15 +385,15 @@ def editUserGroup(request):
                         userPref.save()
                         data = errorCheckMessage(True, None, editUserGroup)
                     else:
-                        data = errorCheckMessage(False, "dbError", editUserGroup)
+                        data = errorCheckMessage(False, ErrorEnum.DB_ERROR, editUserGroup)
                 else:
-                    data = errorCheckMessage(False, "dbError", editUserGroup)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, editUserGroup)
             else:
-                data = errorCheckMessage(False, "badFormat", editUserGroup, user)
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, editUserGroup, user)
         else:
-            data = errorCheckMessage(False, "permissionError", editUserGroup, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, editUserGroup, user)
     else:
-        data = errorCheckMessage(False, "badRequest", editUserGroup)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, editUserGroup)
     return JsonResponse(data)
 
 
@@ -415,9 +416,9 @@ def deleteCollection(request):
                             deleteLibrary(Library.objects.get(playlist=playlist))
                             data = errorCheckMessage(True, None, deleteCollection)
                         else:
-                            data = errorCheckMessage(False, "dbError", deleteCollection)
+                            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, deleteCollection)
                     else:
-                        data = errorCheckMessage(False, "permissionError", deleteCollection, user)
+                        data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, deleteCollection, user)
 
                 # Playlist deletion
                 else:
@@ -426,14 +427,14 @@ def deleteCollection(request):
                         playlist.delete()
                         data = errorCheckMessage(True, None, deleteCollection)
                     else:
-                        data = errorCheckMessage(False, "permissionError", deleteCollection, user)
+                        data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, deleteCollection, user)
 
             else:
-                data = errorCheckMessage(False, "dbError", deleteCollection)
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, deleteCollection)
         else:
-            data = errorCheckMessage(False, "badFormat", deleteCollection, user)
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, deleteCollection, user)
     else:
-        data = errorCheckMessage(False, "badRequest", deleteCollection)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, deleteCollection)
     return JsonResponse(data)
 
 
@@ -484,9 +485,9 @@ def checkNamingConventionArtistsOnPlaylist(request):
                     data = dict({'RESULT': data})
                     data = {**data, **errorCheckMessage(True, None)}
                 else:
-                    data = errorCheckMessage(False, "dbError", checkNamingConventionArtistsOnPlaylist)
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, checkNamingConventionArtistsOnPlaylist)
         else:
-            data = errorCheckMessage(False, "permissionError", checkNamingConventionArtistsOnPlaylist, user)
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, checkNamingConventionArtistsOnPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest", checkNamingConventionArtistsOnPlaylist)
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, checkNamingConventionArtistsOnPlaylist)
     return JsonResponse(data)
