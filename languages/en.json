@@ -1,3 +1,294 @@
 {
-  "test": "real test"
+	"button": {
+		"save": "Save",
+		"cancel": "Cancel",
+		"close": "Close",
+        "create": "Create",
+        "delete": "Delete",
+        "rename": "Rename",
+        "scan": "Scan",
+        "submit": "Submit"
+	},
+    "context": {
+        "addToQueue": "Add to Queue",
+        "editTags": "Edit tags",
+        "download": "Download track",
+        "downloads": "Download tracks",
+        "addToPlaylist": "Add to playlist"
+    },
+    "date": {
+        "abbr": {
+            "day": "d",
+            "hour": "h",
+            "minute": "m",
+            "senconds": "s"
+        }
+    },
+    "modal": {
+        "wish": {
+            "title": "Make a suggestion",
+            "content": "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. Paste a URL or write as much information as you can about it, and an administrator will process your request. You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill this field (hard to say isn't it?).",
+            "placeholder": "Enter your suggestion here"
+        },
+        "newLibrary": {
+            "title": "New library",
+            "content": "Welcome! Fill the path with your library's one, name it and let the magic begin! Some additionnal features are waiting for you if your library is synced with other devices, using <a href=\"https://syncthing.net/\" target=\"_blank\">SyncThing</a>.",
+            "placeholder": {
+                "name": "Enter the name of the library",
+                "path": "Enter the absolute path to your library"
+            }
+        },
+        "newPlaylist": {
+            "title": "New playlist",
+            "content": "Please choose a name for your brand new playlist.",
+            "placeholder": "Enter the name of the playlist"
+        },
+        "renamePlaylist": {
+            "title": "Rename ",
+            "content": {
+                "pt1": "You are about to rename your playlist named ",
+                "pt2": ", Do you really want to rename it ?"
+            },
+            "placeholder": "Enter the new name of the playlist"
+        },
+        "deletePlaylist": {
+            "title": "Remove ",
+            "content": {
+                "pt1": "You are about to delete your playlist named ",
+                "pt2": ", and all the tracks that you've collected in it. Do you really want to delete this ?"
+            }
+        },
+        "invitation": {
+            "title": "Invitation code",
+            "content": "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet."
+        }
+    },
+    "queue": {
+        "empty": "The Queue is empty.",
+        "reverse": "Reverse Play",
+        "composedBy": "Composed by:"
+    },
+    "tags": {
+        "title": "Title",
+        "artist": "Artist",
+        "album": "Album",
+        "albumArtists": "Album artists",
+        "composer": "Composer",
+        "performer": "Performer",
+        "genre": "Genre",
+        "comment": "Comment",
+        "lyrics": "Lyrics",
+        "trackN": "Track #",
+        "discN": "Disc #",
+        "year": "Year",
+        "edit": {
+            "counter": "This track has been played",
+            "time": "time",
+            "times": "times"
+        }
+    },
+    "trackInfo": {
+        "suggestion": {
+            "artist": "From the same artist:",
+            "album": "From the same album:",
+            "genre": "From the same genre:"
+        }
+    },
+    "userMenu": {
+        "admin": "Admin",
+        "inviteCode": "Invite code",
+        "stats": "Stats",
+        "logOut": "Log out"
+    },
+    "utils": {
+        "track": "track",
+        "tracks": "tracks",
+        "disc": "disc",
+        "discs": "discs"
+    },
+	"views": {
+		"admin": {
+			"panel": "Admin panel",
+			"database": {
+				"entry": "Database",
+				"title": "Database management",
+				"extractCovers": {
+					"title": "Re-extract all covers from tracks",
+					"text": "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>This command will erase existing covers and re-extract them for all tracks stored in the database.",
+					"button": "RE-EXTRACT ALL COVERS"
+				},
+				"removeMoodbars": {
+					"title": "Remove all moodbars from server",
+					"text": "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated <code>.mood</code> file (if it doesn't exists already).<br>This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before ManaZeak re-generate those <code>.mood</code> files.",
+					"button": "REMOVE ALL MOODBARS"
+				},
+				"dropDatabase": {
+					"title": "Drop database",
+					"text": "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>This command will delete everything in the database except users.",
+					"button": "DROP DATABASE"
+				}
+			},
+			"groupsAndUsers": {
+				"entry": "Group / User",
+				"title": "Group / User management",
+				"sponsoring": {
+					"title": "Sponsoring option on subscribe",
+					"text": "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>This command will add a field in the sign up form that is mandatory. Sponsoring current status : ",
+					"status": {
+						"enabled": "Enabled",
+						"disabled": "Disabled"
+					},
+					"button": {
+						"enabled": "DISABLE SPONSORING",
+						"disabled": "ENABLE SPONSORING"
+					}
+				},
+				"groups": {
+					"list": {
+						"title": "Group list",
+						"permissions": "permissions"
+					},
+					"edit": {
+						"title": "Edit group",
+						"label": {
+							"name": "Group name:",
+							"permission": "Permisions:"
+						},
+						"permissions": {
+							"LOGI": "Login",
+							"PLAY": "Music listening",
+							"PLST": "Playlist management",
+							"DOWN": "Download",
+							"WISH": "Wish creation",
+							"TAGS": "Tag submission",
+							"UPLD": "Upload",
+							"SPON": "Sponsor right",
+							"STAT": "Stats access",
+							"STCH": "Child stats access",
+							"STFA": "Family stats access",
+							"WISR": "Wish review",
+							"STAL": "Access to library stats",
+							"DESC": "Change genre description",
+							"TAGE": "Tag edition",
+							"UPAP": "Upload aproval",
+							"STAA": "All stats",
+							"ADMV": "Access to AdminView",
+							"GRPE": "Edit user groups",
+							"FTAL": "Access to the whole family tree",
+							"LIBR": "Library management",
+							"GAPR": "Grant admin privileges",
+							"COIN": "Coin gift"
+						}
+					}
+				},
+				"users": {
+					"list": {
+						"title": "ManaZeak user list:",
+						"entry": {
+							"id": "User ID:      ",
+							"godfather": "Godfather:  ",
+							"manacoin": "ManaCoin: ",
+							"joined": "Joined on: ",
+							"login": "Last login: "
+						}
+					}
+				}
+			},
+			"libraries": {
+				"entry": "Libraries",
+				"title": "Libraries management",
+                "rescanLibraries": {
+                    "title": "Rescan libraries",
+                    "text": "After you made modification on files located in a library folder, use this command to perform a rescan.<br>This command will rescan all libraries in the database.",
+                    "button": "RESCAN ALL LIBRARIES"
+                },
+                "removeLibraries": {
+                    "title": "Remove libraries",
+                    "text": "In case of... Warning, this command apply to every user in ManaZeak.<br>This command will erase all libraries in the database.",
+                    "button": "REMOVE ALL LIBRARIES"
+                },
+                "libraries": {
+                    "list": {
+                        "title": "Libraries list"
+                    },
+                    "tracks": "tracks"
+                }
+			},
+			"wishes": {
+                "entry": "Wishes",
+                "title": "Wishes management"
+            },
+			"syncthing": {
+                "entry": "SyncThing",
+                "title": "SyncThing management",
+                "apiKey": {
+                    "title": "SyncThing API key",
+                    "text": "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>Please fill the following field with the key you can find on the SyncThing interface.",
+                    "button": "SUBMIT"
+                },
+                "bufferPath": {
+                    "title": "Buffer path",
+                    "text": "The buffer folder is the one selected to upload file in.<br>Please fill the following field with the buffer path.",
+                    "button": "SUBMIT"
+                },
+                "rescanFolders": {
+                    "title": "Rescan SyncThing folders",
+                    "text": "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>This command will perform a rescan on each SyncThing folder.",
+                    "button": "RESCAN"
+                }
+            }
+		},
+        "stats": {
+            "panel": "Statistics",
+            "artist": {
+                "entry": "Artist",
+                "title": "Artist statistics",
+                "list": {
+                    "topLabel": "Top Artists",
+                    "flopLabel": "Flop Artists",
+                    "trackPlayed": "track played",
+                    "tracksPlayer": "tracks played",
+                    "noTrackPlayed": "No track played"
+                }
+            },
+            "genre": {
+                "entry": "Genre",
+                "title": "Genre statistics",
+                "list": {
+                    "topLabel": "Top Genres",
+                    "flopLabel": "Flop Genres",
+                    "trackPlayed": "track played",
+                    "tracksPlayer": "tracks played",
+                    "noTrackPlayed": "Never listened",
+                    "listeningCompletion": "average listening completion: "
+                }
+            },
+            "track": {
+                "entry": "Track",
+                "title": "Track statistics",
+                "list": {
+                    "topLabel": "Top Tracks",
+                    "flopLabel": "Flop Tracks",
+                    "played": "played",
+                    "time": "time",
+                    "times": "times",
+                    "tracksPlayer": "tracks played",
+                    "noTrackPlayed": "Never listened",
+                    "listeningCompletion": "average listening completion: "
+                }
+            }
+        },
+        "user": {
+            "panel": "User panel",
+            "general": {
+                "entry": "General",
+                "title": "General settings",
+                "removeAccount": {
+                    "title": "Remove my account",
+                    "text": "Warning, this action will remove you from the database with all your data.<br>Are you sure you want to remove your account ?",
+                    "button": "DELETE MY ACCOUNT"
+                }
+            }
+        }
+	}
 }
