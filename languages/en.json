@@ -9,6 +9,10 @@
         "scan": "Scan",
         "submit": "Submit"
 	},
+    "collectionBar": {
+        "newLibrary": "New library",
+        "newPlaylist": "New playlist"
+    },
     "context": {
         "addToQueue": "Add to Queue",
         "editTags": "Edit tags",
@@ -24,7 +28,33 @@
             "senconds": "s"
         }
     },
+    "editTag": {
+        "keep": "< keep >",
+        "title": "Title: ",
+        "artist": "Artist: ",
+        "album": "Album: ",
+        "albumArtists": "Album artists: ",
+        "composer": "Composer: ",
+        "performer": "Performer: ",
+        "genre": "Genre: ",
+        "comment": "Comment: ",
+        "lyrics": "Lyrics: ",
+        "trackN": "Track #: ",
+        "discN": "Disc #: ",
+        "year": "Year: ",
+        "counter": "This track has been played ",
+        "time": " time ",
+        "times": " times "
+    },
     "modal": {
+        "fetchPlaylist": {
+            "title": "Fetching your music",
+            "content": "Currently fetching your libraries and playlists, please wait."
+        },
+        "fetchStats": {
+            "title": "Crushing data",
+            "content": "Hold on, you're data are on the road."
+        },
         "wish": {
             "title": "Make a suggestion",
             "content": "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. Paste a URL or write as much information as you can about it, and an administrator will process your request. You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill this field (hard to say isn't it?).",
@@ -43,11 +73,23 @@
             "content": "Please choose a name for your brand new playlist.",
             "placeholder": "Enter the name of the playlist"
         },
+        "scan": {
+            "title": "Library scan in progress...",
+            "content": "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.",
+            "footer": "On average, it take a minute to process two thousand files. Just do the math ;)"
+        },
+        "editGroup": {
+            "title": "Edit Group"
+        },
+        "chooseGroup": {
+            "title": "Choose group for ",
+            "content": "Available groups in ManaZeak"
+        },
         "renamePlaylist": {
             "title": "Rename ",
             "content": {
-                "pt1": "You are about to rename your playlist named ",
-                "pt2": ", Do you really want to rename it ?"
+                "pt1": "You are about to rename your playlist named <b>",
+                "pt2": "</b>, Do you really want to rename it ?"
             },
             "placeholder": "Enter the new name of the playlist"
         },
@@ -63,31 +105,24 @@
             "content": "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet."
         }
     },
+    "playlistPreview": {
+        "repeatOff": "Repeat off",
+        "repeatOne": "Repeat one",
+        "repeatAll": "Repeat all",
+        "shuffleOff": "Shuffle off",
+        "random": "Random",
+        "shuffleOn": "Shuffle on"
+    },
     "queue": {
         "empty": "The Queue is empty.",
         "reverse": "Reverse Play",
-        "composedBy": "Composed by:"
-    },
-    "tags": {
-        "title": "Title",
-        "artist": "Artist",
-        "album": "Album",
-        "albumArtists": "Album artists",
-        "composer": "Composer",
-        "performer": "Performer",
-        "genre": "Genre",
-        "comment": "Comment",
-        "lyrics": "Lyrics",
-        "trackN": "Track #",
-        "discN": "Disc #",
-        "year": "Year",
-        "edit": {
-            "counter": "This track has been played",
-            "time": "time",
-            "times": "times"
-        }
+        "composedBy": "Composed by: "
     },
     "trackInfo": {
+        "albumArtists": "Album artists: ",
+        "composer": "Composer: ",
+        "performer": "Performer: ",
+        "genre": "Genre: ",
         "suggestion": {
             "artist": "From the same artist:",
             "album": "From the same album:",
@@ -98,13 +133,38 @@
         "admin": "Admin",
         "inviteCode": "Invite code",
         "stats": "Stats",
+        "helpCenter": "Help center",
         "logOut": "Log out"
     },
     "utils": {
         "track": "track",
         "tracks": "tracks",
         "disc": "disc",
-        "discs": "discs"
+        "discs": "discs",
+        "day": {
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thursday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        },
+        "month": {
+          "january": "January",
+          "february": "February",
+          "march": "March",
+          "april": "April",
+          "may": "May",
+          "june": "June",
+          "july": "July",
+          "august": "August",
+          "september": "September",
+          "october": "October",
+          "november": "November",
+          "december": "December"
+        }
+
     },
 	"views": {
 		"admin": {

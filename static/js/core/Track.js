@@ -37,34 +37,34 @@ class Track extends MzkObject{
         }
 
         this.id = {
-            track:          track.ID                ? track.ID                : "",
-            album:          track.ALBUM.ID          ? track.ALBUM.ID          : "",
+            track:          track.ID                ? track.ID                : '',
+            album:          track.ALBUM.ID          ? track.ALBUM.ID          : '',
             artists:        this._getArtistsIDFromArtistsArray(track.ARTISTS)
         };
-        this.title        = track.TITLE             ? track.TITLE             : "";
-        this.year         = track.YEAR              ? track.YEAR              : "";
-        this.composer     = track.COMPOSER          ? track.COMPOSER          : "";
-        this.performer    = track.PERFORMER         ? track.PERFORMER         : "";
-        this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER      : "";
-        this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : "";
-        this.disc         = track.DISC_NUMBER       ? track.DISC_NUMBER        : "";
-        this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC  : "";
-        this.bpm          = track.BPM               ? track.BPM               : "";
-        this.lyrics       = track.LYRICS            ? track.LYRICS            : "";
-        this.comment      = track.COMMENT           ? track.COMMENT           : "";
-        this.bitRate      = track.BITRATE           ? track.BITRATE           : "";
-        this.sampleRate   = track.SAMPLERATE        ? track.SAMPLERATE        : "";
-        this.duration     = track.DURATION          ? track.DURATION          : "";
-        this.size         = track.SIZE              ? track.SIZE              : "";
-        this.lastModified = track.LAST_MODIFIED     ? track.LAST_MODIFIED     : "";
-        this.album        = track.ALBUM.TITLE       ? track.ALBUM.TITLE       : "";
-        this.genre        = track.GENRE             ? track.GENRE             : "";
-        this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE         : "";
-        this.cover        = track.COVER             ? "../static/img/covers/" + track.COVER : "../static/img/utils/defaultcover.svg";
+        this.title        = track.TITLE             ? track.TITLE             : '';
+        this.year         = track.YEAR              ? track.YEAR              : '';
+        this.composer     = track.COMPOSER          ? track.COMPOSER          : '';
+        this.performer    = track.PERFORMER         ? track.PERFORMER         : '';
+        this.track        = track.TRACK_NUMBER      ? track.TRACK_NUMBER      : '';
+        this.trackTotal   = track.ALBUM.TOTAL_TRACK ? track.ALBUM.TOTAL_TRACK : '';
+        this.disc         = track.DISC_NUMBER       ? track.DISC_NUMBER       : '';
+        this.discTotal    = track.ALBUM.TOTAL_DISC  ? track.ALBUM.TOTAL_DISC  : '';
+        this.bpm          = track.BPM               ? track.BPM               : '';
+        this.lyrics       = track.LYRICS            ? track.LYRICS            : '';
+        this.comment      = track.COMMENT           ? track.COMMENT           : '';
+        this.bitRate      = track.BITRATE           ? track.BITRATE           : '';
+        this.sampleRate   = track.SAMPLERATE        ? track.SAMPLERATE        : '';
+        this.duration     = track.DURATION          ? track.DURATION          : '';
+        this.size         = track.SIZE              ? track.SIZE              : '';
+        this.lastModified = track.LAST_MODIFIED     ? track.LAST_MODIFIED     : '';
+        this.album        = track.ALBUM.TITLE       ? track.ALBUM.TITLE       : '';
+        this.genre        = track.GENRE             ? track.GENRE             : '';
+        this.fileType     = track.FILE_TYPE         ? track.FILE_TYPE         : '';
+        this.cover        = track.COVER             ? '../static/img/covers/' + track.COVER : '../static/img/utils/defaultcover.svg';
         this.artist       = this._getArtistFromArtistsArray(track.ARTISTS);
         this.albumArtist  = this._getArtistFromArtistsArray(track.ALBUM.ARTISTS);
         this.playCount    = track.PLAY_COUNTER      ? track.PLAY_COUNTER      : 0;
-        this.fileName     = track.FILENAME          ? track.FILENAME          : "";
+        this.fileName     = track.FILENAME          ? track.FILENAME          : '';
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -77,7 +77,7 @@ class Track extends MzkObject{
      * return : {[int]} - The artists ID array
      **/
     _getArtistsIDFromArtistsArray(artists) {
-        if (artists === null || artists === undefined) { return ""; }
+        if (artists === null || artists === undefined) { return ''; }
 
         let artistsID = [];
         for (let i = 0; i < artists.length; ++i) {
@@ -100,7 +100,7 @@ class Track extends MzkObject{
             console.log('  Track : _getArtistFromArtistsArray');
         }
 
-        if (artists === null || artists === undefined) { return ""; }
+        if (artists === null || artists === undefined) { return ''; }
 
         let artistsName = []; // Artists name array
         for (let i = 0; i < artists.length; ++i) {
@@ -109,10 +109,10 @@ class Track extends MzkObject{
 
         artistsName.sort(); // In order to get artists alphabetically ordered
 
-        let artist = ""; // Output string
+        let artist = ''; // Output string
         for (let i = 0; i < artistsName.length; ++i) {
             artist += artistsName[i];
-            if (i < (artistsName.length - 1)) { artist += ", "; }
+            if (i < (artistsName.length - 1)) { artist += ', '; }
         }
 
         return artist;

@@ -332,7 +332,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-edit-playlist";
-        this.ui.title.innerHTML = "Remove " + this.data.playlist.name;
+        this.ui.title.innerHTML = window.app.nls.modal.deletePlaylist.title + this.data.playlist.name;
 
         let infoLabel           = document.createElement("P");
         let cancel              = document.createElement("BUTTON");
@@ -342,10 +342,10 @@ class Modal extends MzkObject {
         cancel.id               = "cancelButton";
         del.id                  = "deleteButton";
 
-        infoLabel.innerHTML     = "You are about to delete your playlist named " + this.data.playlist.name +
-            ", and all the tracks that you've collected in it. Do you really want to delete this ?";
-        cancel.innerHTML        = "Cancel";
-        del.innerHTML           = "Delete";
+        infoLabel.innerHTML     = window.app.nls.modal.deletePlaylist.content.pt1 + this.data.playlist.name +
+            window.app.nls.modal.deletePlaylist.content.pt2;
+        cancel.innerHTML        = window.app.nls.button.cancel;
+        del.innerHTML           = window.app.nls.button.delete;
 
         this._appendCloseButton();
 
@@ -376,7 +376,7 @@ class Modal extends MzkObject {
         let close                   = document.createElement("BUTTON");
 
         contentText.innerHTML       = this.data.description;
-        close.innerHTML             = "Close";
+        close.innerHTML             = window.app.nls.button.close;
 
         this.ui.content.appendChild(contentText);
         this.ui.footer.appendChild(close);
@@ -388,7 +388,7 @@ class Modal extends MzkObject {
                 let save       = document.createElement("BUTTON");
                 let textarea   = document.createElement('TEXTAREA');
 
-                save.innerHTML = 'Save';
+                save.innerHTML = window.app.nls.button.save;
                 textarea.name  = 'comment';
                 textarea.row   = '8';
                 textarea.cols  = '80';
@@ -432,8 +432,8 @@ class Modal extends MzkObject {
         };
 
         ui.foot.className  = "mzk-foot";
-        ui.close.innerHTML = "Close";
-        ui.save.innerHTML  = "Save";
+        ui.close.innerHTML = window.app.nls.button.close;
+        ui.save.innerHTML  = window.app.nls.button.save;
 
         ui.foot.appendChild(ui.close);
         ui.foot.appendChild(ui.save);
@@ -462,7 +462,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-fetch-playlists";
-        this.ui.title.innerHTML     = "Fetching your playlists";
+        this.ui.title.innerHTML     = window.app.nls.modal.fetchPlaylist.title;
 
         let spinnerContainer        = document.createElement("DIV");
         let spinnerRing             = document.createElement("DIV");
@@ -473,7 +473,7 @@ class Modal extends MzkObject {
         spinnerContainer.className  = "lds-css";
         spinnerRing.className       = "lds-dual-ring";
         spinnerImage.src            = "/static/img/logo/manazeak.svg";
-        text.innerHTML              = "Currently fetching your libraries and playlists, please wait.";
+        text.innerHTML              = window.app.nls.modal.fetchPlaylist.content;
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -495,7 +495,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-fetch-playlists";
-        this.ui.title.innerHTML     = "Crushing data";
+        this.ui.title.innerHTML     = window.app.nls.modal.fetchStats.title;
 
         let spinnerContainer        = document.createElement("DIV");
         let spinnerRing             = document.createElement("DIV");
@@ -506,7 +506,7 @@ class Modal extends MzkObject {
         spinnerContainer.className  = "lds-css";
         spinnerRing.className       = "lds-dual-ring";
         spinnerImage.src            = "/static/img/logo/manazeak.svg";
-        text.innerHTML              = "Hold on, you're data are on the road.";
+        text.innerHTML              = window.app.nls.modal.fetchStats.content;
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -528,22 +528,22 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-invite-code";
-        this.ui.title.innerHTML     = "Invitation code";
+        this.ui.title.innerHTML     = window.app.nls.modal.invitation.title;
 
         let infoLabel           = document.createElement("P");
         let name                = document.createElement("H3");
-        let cancel              = document.createElement("BUTTON");
+        let close               = document.createElement("BUTTON");
 
         infoLabel.id            = "infoLabel";
         name.id                 = "name";
 
-        cancel.innerHTML        = "Close";
+        close.innerHTML         = window.app.nls.button.close;
         name.innerHTML          = window.app.user.getInviteCode();
-        infoLabel.innerHTML     = "Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet.";
+        infoLabel.innerHTML     = window.app.nls.modal.invitation.content;
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
-        this.ui.footer.appendChild(cancel);
+        this.ui.footer.appendChild(close);
 
         this._appendCloseButton();
 
@@ -565,7 +565,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-new-library";
-        this.ui.title.innerHTML     = "New library";
+        this.ui.title.innerHTML     = window.app.nls.modal.newLibrary.title;
 
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
@@ -578,14 +578,11 @@ class Modal extends MzkObject {
 
         name.type                   = "text";
         path.type                   = "text";
-        name.placeholder            = "Enter the name of the library";
-        path.placeholder            = "Enter the absolute path to your library";
+        name.placeholder            = window.app.nls.modal.newLibrary.placeholder.name;
+        path.placeholder            = window.app.nls.modal.newLibrary.placeholder.path;
 
-        infoLabel.innerHTML         = "Welcome! Fill the path with your library's one, name it and let the magic begin! " +
-            "Some additionnal features are waiting for you if your library is synced with other devices, using " +
-            "<a href=\"http://syncthing.net\" target=\"_blank\">SyncThing</a>.<br><br>Check out the " +
-            "<a href=\"https://github.com/Squadella/ManaZeak\" target=\"_blank\">read me</a> to know more about it.";
-        scan.innerHTML              = "Scan";
+        infoLabel.innerHTML         = window.app.nls.modal.newLibrary.content;
+        scan.innerHTML              = window.app.nls.button.scan;
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
@@ -612,7 +609,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-new-library";
-        this.ui.title.innerHTML     = "New playlist";
+        this.ui.title.innerHTML     = window.app.nls.modal.newPlaylist.title;
 
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
@@ -622,10 +619,10 @@ class Modal extends MzkObject {
         name.id                     = "mzk-name";
 
         name.type                   = "text";
-        name.placeholder            = "Enter the name of the playlist";
+        name.placeholder            = window.app.nls.modal.newPlaylist.placeholder;
 
-        infoLabel.innerHTML         = "Please choose a name for your brand new playlist.";
-        create.innerHTML            = "Create";
+        infoLabel.innerHTML         = window.app.nls.modal.newPlaylist.content;
+        create.innerHTML            = window.app.nls.button.create;
 
         this.ui.content.appendChild(infoLabel);
         this.ui.content.appendChild(name);
@@ -651,18 +648,15 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-new-wish";
-        this.ui.title.innerHTML     = "Make a suggestion";
+        this.ui.title.innerHTML     = window.app.nls.modal.wish.title;
 
         let text                    = document.createElement("P");
         let wish                    = document.createElement("TEXTAREA");
         let submit                  = document.createElement("BUTTON");
 
-        wish.placeholder            = "Enter your suggestion here";
-        text.innerHTML              = "If you noticed that a track you like is missing from any playlist here, you can make a suggestion. " +
-            "Paste a URL or write as much information as you can about it, and an administrator will process your request. " +
-            "You will be notified when the track you requested has been added to a playlist. Also, if you have any feature idea, feel free to fill " +
-            "this field (hard to say isn't it?).";
-        submit.innerHTML            = "Submit";
+        wish.placeholder            = window.app.nls.modal.wish.placeholder;
+        text.innerHTML              = window.app.nls.modal.wish.content;
+        submit.innerHTML            = window.app.nls.button.submit;
 
         this.ui.content.appendChild(text);
         this.ui.content.appendChild(wish);
@@ -743,7 +737,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-edit-playlist";
-        this.ui.title.innerHTML     = "Rename " + this.data.name;
+        this.ui.title.innerHTML     = window.app.nls.modal.rename.title + this.data.name;
 
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
@@ -756,12 +750,11 @@ class Modal extends MzkObject {
         rename.id                   = "deleteButton";
 
         name.type                   = "text";
-        name.placeholder            = "Enter the name of the playlist";
+        name.placeholder            = window.app.nls.modal.rename.placeholder;
 
-        infoLabel.innerHTML         = "You are about to rename your playlist named <b>" + this.data.name +
-            "</b>, Do you really want to rename it ?";
-        cancel.innerHTML            = "Cancel";
-        rename.innerHTML            = "Rename";
+        infoLabel.innerHTML         = window.app.nls.modal.rename.content.pt1 + this.data.name + window.app.nls.modal.content.pt2;
+        cancel.innerHTML            = window.app.nls.button.cancel;
+        rename.innerHTML            = window.app.nls.button.rename;
 
         this._appendCloseButton();
 
@@ -796,7 +789,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-scan-library";
-        this.ui.title.innerHTML     = "Library scan in progress...";
+        this.ui.title.innerHTML     = window.app.nls.modal.scan.title;
 
         let contentText             = document.createElement("P");
         let spinnerContainer        = document.createElement("DIV");
@@ -805,11 +798,11 @@ class Modal extends MzkObject {
         let spinnerImage            = document.createElement("IMG");
         let footerText              = document.createElement("P");
 
-        contentText.innerHTML       = "Dark magic is currently happening, but doing such activity may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.";
+        contentText.innerHTML       = window.app.nls.modal.scan.content;
         spinnerContainer.className  = "lds-css";
         spinnerRing.className       = "lds-dual-ring";
         spinnerImage.src            = "/static/img/logo/manazeak.svg";
-        footerText.innerHTML        = "On average, it take a minute to process two thousand files. Just do the math ;)";
+        footerText.innerHTML        = window.app.nls.modal.scan.footer;
 
         spinnerRing.appendChild(spinnerFloatDiv);
         spinnerContainer.appendChild(spinnerRing);
@@ -831,7 +824,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-edit-group";
-        this.ui.title.innerHTML     = "Edit Group";
+        this.ui.title.innerHTML     = window.app.nls.modal.editGroup.title;
 
         let nameTitle               = document.createElement("DIV");
         let name                    = document.createElement("INPUT");
@@ -849,8 +842,8 @@ class Modal extends MzkObject {
 
         name.type                   = "text";
         name.value                  = this.data.GROUP.NAME;
-        cancel.innerHTML            = "Cancel";
-        save.innerHTML              = "Save";
+        cancel.innerHTML            = window.app.nls.button.cancel;
+        save.innerHTML              = window.app.nls.button.save;
         nameTitle.innerHTML         = "Group Name";
         permsTitle.innerHTML        = "Permissions";
 
@@ -906,7 +899,7 @@ class Modal extends MzkObject {
         }
 
         this.ui.container.className = "mzk-modal-choose-group";
-        this.ui.title.innerHTML     = "Choose group for " + this.data.USER.NAME;
+        this.ui.title.innerHTML     = window.app.nls.modal.chooseGroup.title + this.data.USER.NAME;
 
         let cancel                  = document.createElement("BUTTON");
         let save                    = document.createElement("BUTTON");
@@ -918,9 +911,9 @@ class Modal extends MzkObject {
         groupsContainer.className   = "mzk-modal-groups-container";
         groupsTitle.className       = "mzk-modal-title";
 
-        cancel.innerHTML            = "Cancel";
-        save.innerHTML              = "Save";
-        groupsTitle.innerHTML       = "Available groups on ManaZeak";
+        cancel.innerHTML            = window.app.nls.button.cancel;
+        save.innerHTML              = window.app.nls.button.save;
+        groupsTitle.innerHTML       = window.app.nls.modal.chooseGroup.content;
 
         this._appendCloseButton();
 

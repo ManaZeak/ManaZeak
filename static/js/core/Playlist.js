@@ -67,10 +67,10 @@ class Playlist {
             let that   = this;
             let timer  = window.setInterval(function() {
                 if (that.lazyLoadOK == true) {
+                    clearInterval(timer);
+                    that.activate();
                     that.modal.close();
                     that.modal = null;
-                    that.activate();
-                    clearInterval(timer);
                 }
             }, 100);
         }
@@ -363,6 +363,7 @@ class Playlist {
         ++this.shuffleMode;
         this.shuffleMode %= 3;
 
+        let that = this;
         JSONParsedPostRequest(
             "player/toggleRandomMode/",
             JSON.stringify({

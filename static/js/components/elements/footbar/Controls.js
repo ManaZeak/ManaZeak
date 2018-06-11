@@ -135,7 +135,7 @@ class Controls  {
         this.ui.previous.button.addEventListener("click", function() { window.app.previous(); });
 
         if (this.queuePreview) {
-            this.ui.queueExpander.button.addEventListener("click", function () {
+            this.ui.queueExpander.button.addEventListener("click", function (event) {
                 if (event.target != that.ui.queueExpander.image && event.target != that.ui.queueExpander.button)
                     return;
                 if (that.queuePreview.getIsLocked()) {

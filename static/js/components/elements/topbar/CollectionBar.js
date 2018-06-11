@@ -325,15 +325,17 @@ class CollectionBar extends MzkObject {
 
         this.newLibMenu = new ContextMenu(this.newButton, null, 'click');
 
-        if(window.app.user.hasPermission("LIBR"))
-            this.newLibMenu.addEntry(null, 'New Library', function() {
+        if (window.app.user.hasPermission("LIBR")) {
+            this.newLibMenu.addEntry(null, window.app.nls.collectionBar.newLibrary, () => {
                 window.app.requestNewLibrary();
             });
+        }
 
-        if(window.app.user.hasPermission("PLST"))
-            this.newLibMenu.addEntry(null, 'New Playlist', function() {
+        if (window.app.user.hasPermission("PLST")) {
+            this.newLibMenu.addEntry(null, window.app.nls.collectionBar.newPlaylist, () => {
                 window.app.requestNewPlaylist();
             });
+        }
     }
 
 

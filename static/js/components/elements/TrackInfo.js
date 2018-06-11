@@ -111,12 +111,12 @@ class TrackInfo {
             that.ui.cover.src                 = track.cover;
             that.ui.title.innerHTML           = track.title;
             that.ui.artist.innerHTML          = track.artist;
-            that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-            that.ui.composer.innerHTML        = "Composer : " + track.composer;
-            that.ui.performer.innerHTML       = "Performer : " + track.performer;
-            that.ui.genre.innerHTML           = "Genre : " + track.genre;
+            that.ui.albumArtist.innerHTML     = window.app.nls.trackInfo.albumArtists + track.albumArtist;
+            that.ui.composer.innerHTML        = window.app.nls.trackInfo.composer + track.composer;
+            that.ui.performer.innerHTML       = window.app.nls.trackInfo.performer + track.performer;
+            that.ui.genre.innerHTML           = window.app.nls.trackInfo.genre + track.genre;
             that.ui.album.innerHTML           = track.year + " - " + track.album;
-            that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+            that.ui.numbers.innerHTML         = window.app.nls.utils.track + '1 / 12&nbsp;-&nbsp;' + window.app.nls.utils.disc + '1 / 1';
             that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
                                                     track.fileType + " - " +
                                                     Math.round(track.bitRate / 1000) + " kbps - " +
@@ -330,17 +330,17 @@ class TrackInfo {
 
         switch (this.trackSuggestionMode) {
             case 0:
-                this.ui.suggestionTitle.innerHTML = "From the same artist :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.artist;
                 this.ui.changeSuggestionType.src  = "/static/img/music/artist.svg";
                 break;
 
             case 1:
-                this.ui.suggestionTitle.innerHTML = "From the same album :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.album;
                 this.ui.changeSuggestionType.src  = "/static/img/music/album.svg";
                 break;
 
             case 2:
-                this.ui.suggestionTitle.innerHTML = "From the same genre :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.genre;
                 this.ui.changeSuggestionType.src  = "/static/img/music/genre.svg";
                 break;
 

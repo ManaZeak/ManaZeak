@@ -9,7 +9,7 @@
  *                                         *
  * * * * * * * * * * * * * * * * * * * * * */
 
-import MzkObject from "./MzkObject.js"
+import MzkObject from './MzkObject.js'
 
 class View extends MzkObject{
 
@@ -21,9 +21,9 @@ class View extends MzkObject{
             console.log('  View construction');
         }
 
-        this.container           = document.createElement("DIV");
-        this.container.className = "mzk-view";
-        this.container.innerHTML = "";
+        this.container           = document.createElement('DIV');
+        this.container.className = 'mzk-view';
+        this.container.innerHTML = '';
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //

@@ -47,25 +47,25 @@ export function secondsToDate(time) {
 
     switch (time.getDay()) {
         case 0:
-            weekday = "Monday";
+            weekday = window.app.nls.utils.day.sunday;
             break;
         case 1:
-            weekday = "Tuesday";
+            weekday = window.app.nls.utils.day.monday;
             break;
         case 2:
-            weekday = "Wednesday";
+            weekday = window.app.nls.utils.day.tuesday;
             break;
         case 3:
-            weekday = "Thursday";
+            weekday = window.app.nls.utils.day.wednesday;
             break;
         case 4:
-            weekday = "Friday";
+            weekday = window.app.nls.utils.day.thursday;
             break;
         case 5:
-            weekday = "Saturday";
+            weekday = window.app.nls.utils.day.friday;
             break;
         case 6:
-            weekday = "Sunday";
+            weekday = window.app.nls.utils.day.saturday;
             break;
         default:
             weekday = "-";
@@ -74,40 +74,40 @@ export function secondsToDate(time) {
 
     switch (time.getMonth()) {
         case 0:
-            month = "January";
+            month = window.app.nls.utils.month.january;
             break;
         case 1:
-            month = "February";
+            month = window.app.nls.utils.month.february;
             break;
         case 2:
-            month = "March";
+            month = window.app.nls.utils.month.march;
             break;
         case 3:
-            month = "April";
+            month = window.app.nls.utils.month.april;
             break;
         case 4:
-            month = "May";
+            month = window.app.nls.utils.month.may;
             break;
         case 5:
-            month = "June";
+            month = window.app.nls.utils.month.june;
             break;
         case 6:
-            month = "July";
+            month = window.app.nls.utils.month.july;
             break;
         case 7:
-            month = "August";
+            month = window.app.nls.utils.month.august;
             break;
         case 8:
-            month = "September";
+            month = window.app.nls.utils.month.september;
             break;
         case 9:
-            month = "October";
+            month = window.app.nls.utils.month.october;
             break;
         case 10:
-            month = "November";
+            month = window.app.nls.utils.month.november;
             break;
         case 11:
-            month = "December";
+            month = window.app.nls.utils.month.december;
             break;
         default:
             month = "-";
@@ -211,6 +211,24 @@ export function sortObjectArrayBy(key, ascending, subobject) {
 
         return (!ascending ? (compare * -1) : compare);
     };
+}
+
+
+export function getNLS(cookies, lang, callback) {
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callback(JSON.parse(this.responseText));
+        }
+    };
+
+    xhr.open('POST', '  language/', true);
+    xhr.setRequestHeader('X-CSRFToken', cookies);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({
+        LANG: lang
+    }));
 }
 
 

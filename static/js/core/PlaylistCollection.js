@@ -168,7 +168,6 @@ class PlaylistCollection extends MzkObject {
             console.log('  PlaylistCollection : get call');
         }
 
-
         return this.bank[playlistID];
     }
 

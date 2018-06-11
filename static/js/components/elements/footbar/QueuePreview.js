@@ -92,32 +92,32 @@ class QueuePreview extends MzkObject {
             console.log('      QueuePreview : _addEntry call');
         }
 
-        let li                         = document.createElement("LI");
-        let img                        = document.createElement("IMG");
-        let body                       = document.createElement("DIV");
-        let title                      = document.createElement("SPAN");
-        let origin                     = document.createElement("SPAN");
-        let composer                   = document.createElement("SPAN");
-        let qControls                  = document.createElement("DIV");
-        let qControlsUp                = document.createElement("IMG");
-        let qControlsDown              = document.createElement("IMG");
+        let li                         = document.createElement('LI');
+        let img                        = document.createElement('IMG');
+        let body                       = document.createElement('DIV');
+        let title                      = document.createElement('SPAN');
+        let origin                     = document.createElement('SPAN');
+        let composer                   = document.createElement('SPAN');
+        let qControls                  = document.createElement('DIV');
+        let qControlsUp                = document.createElement('IMG');
+        let qControlsDown              = document.createElement('IMG');
 
-        body.className                 = "mzk-qprev-body";
-        title.className                = "mzk-qprev-title";
-        origin.className               = "mzk-qprev-origin";
-        composer.className             = "mzk-qprev-composer";
-        qControls.className            = "mzk-qprev-controls";
+        body.className                 = 'mzk-qprev-body';
+        title.className                = 'mzk-qprev-title';
+        origin.className               = 'mzk-qprev-origin';
+        composer.className             = 'mzk-qprev-composer';
+        qControls.className            = 'mzk-qprev-controls';
 
         title.innerText                = track.title;
         origin.innerText               = track.artist + ' - ' + track.album + ' (' + track.year + ')';
-        composer.innerText             = 'Composed by: ' + track.composer;
-        qControlsUp.src                = "../static/img/controls/up.svg";
-        qControlsDown.src              = "../static/img/controls/down.svg";
-        img.className                  = "mzk-queue-cover";
+        composer.innerText             = window.app.nls.queue.composedBy + track.composer;
+        qControlsUp.src                = '../static/img/controls/up.svg';
+        qControlsDown.src              = '../static/img/controls/down.svg';
+        img.className                  = 'mzk-queue-cover';
         img.src                        = track.cover;
 
-        qControlsUp.dataset.callback   = "moveUp";
-        qControlsDown.dataset.callback = "moveDown";
+        qControlsUp.dataset.callback   = 'moveUp';
+        qControlsDown.dataset.callback = 'moveDown';
 
         body.appendChild(title);
         body.appendChild(origin);
@@ -158,27 +158,28 @@ class QueuePreview extends MzkObject {
         }
 
         this.ui = {
-            container:      document.createElement("DIV"),
+            container:      document.createElement('DIV'),
             statusBar:  {
-                container:  document.createElement("DIV"),
-                trackCount: document.createElement("SPAN"),
-                reverseBox: document.createElement("INPUT"),
-                reverseLbl: document.createElement("LABEL"),
-                reverseTxt: document.createElement("SPAN")
+                container:  document.createElement('DIV'),
+                trackCount: document.createElement('SPAN'),
+                reverseBox: document.createElement('INPUT'),
+                reverseLbl: document.createElement('LABEL'),
+                reverseTxt: document.createElement('SPAN')
             },
-            queueList:      document.createElement("UL"),
-            queueEmpty:     document.createElement("LI")
+            queueList:      document.createElement('UL'),
+            queueEmpty:     document.createElement('LI')
         };
 
-        this.ui.container.className            = "mzk-queue-preview";
-        this.ui.statusBar.container.className  = "mzk-queue-status";
-        this.ui.queueList.className            = "mzk-queue-list";
-        this.ui.queueEmpty.className           = "mzk-queue-empty";
-        this.ui.statusBar.trackCount.innerText = "0 tracks";
-        this.ui.statusBar.reverseTxt.innerHTML = "Reverse Play:";
-        this.ui.statusBar.reverseBox.type      = "checkbox";
+        this.ui.container.className            = 'mzk-queue-preview';
+        this.ui.statusBar.container.className  = 'mzk-queue-status';
+        this.ui.queueList.className            = 'mzk-queue-list';
+        this.ui.queueEmpty.className           = 'mzk-queue-empty';
+        this.ui.statusBar.reverseBox.type      = 'checkbox';
         this.ui.statusBar.reverseBox.value     = this.reverse;
-        this.ui.queueEmpty.innerHTML           = "The Queue is empty";
+
+        this.ui.statusBar.trackCount.innerText = '0 ' + window.app.nls.utils.track;
+        this.ui.statusBar.reverseTxt.innerHTML = window.app.nls.queue.reverse;
+        this.ui.queueEmpty.innerHTML           = window.app.nls.queue.empty;
 
         this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseBox);
         this.ui.statusBar.reverseLbl.appendChild(this.ui.statusBar.reverseTxt);
@@ -249,7 +250,7 @@ class QueuePreview extends MzkObject {
                         sib = li.previousSibling;
 
                         if (sib != null) {
-                            for (var i = 0; li.parentNode.children[i] !== li; ++i) {}
+                            for (let i = 0; li.parentNode.children[i] !== li; ++i) {}
 
                             that.ui.queueList.insertBefore(that.ui.queueList.removeChild(li), sib);
                             window.app.moveQueue(i, i -1);
@@ -281,11 +282,11 @@ class QueuePreview extends MzkObject {
         });
         window.app.listen('pushQueue', function(track) {
             that._addEntry(track);
-            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + " tracks";
+            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + ' ' + (that.ui.queueList.childNodes.length - 1 > 1 ? window.app.nls.utils.tracks : window.app.nls.utils.track);
         });
         window.app.listen('popQueue', function() {
             that.ui.queueList.removeChild(that.reverse ? that.ui.queueList.lastChild : that.ui.queueList.firstChild.nextSibling);
-            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + " tracks";
+            that.ui.statusBar.trackCount.innerText = (that.ui.queueList.childNodes.length - 1) + ' ' + (that.ui.queueList.childNodes.length - 1 > 1 ? window.app.nls.utils.tracks : window.app.nls.utils.track);
         });
         window.app.listen('reverseQueue', function(reverse) {
             that.reverse = reverse;

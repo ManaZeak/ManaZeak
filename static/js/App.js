@@ -6,7 +6,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { getCookies, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import { getCookies, getNLS, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
 import FootBar  from './components/FootBar.js'
 import MzkObject from './core/MzkObject.js'
 import TopBar   from './components/TopBar.js'
@@ -43,21 +43,17 @@ class App extends MzkObject {
 
         this.cookies                 = getCookies();
         this.cookieTimeout           = null;
-        this.dragdrop                = new DragDrop(document.body);
         this.mainContainer           = document.createElement("DIV");
         this.mainContainer.className = "mzk-main-container";
         this.topBar                  = null;
         this.footBar                 = null;
         this.player                  = null;
-        this.playlists               = new PlaylistCollection();
         this.activePlaylist          = null;
         this.activeContextMenu       = null;
         this.cssFiles                = {};
         this.appViews                = {};
-        this.shortcutMaestro         = new ShortcutMaestro();
-        this.search                  = null;
         this.isSearchUp              = false;
-        this.user                    = new User(callback);
+        this.search                  = null;
         this.availableViews          = {
             LIST: {
                 index: 0,
@@ -68,6 +64,16 @@ class App extends MzkObject {
                 class: null
             }
         };
+
+
+        let that = this;
+        getNLS(this.cookies['csrftoken'], 'en', (nls) => { // TODO: get lang from user agent, deport code in utils.js
+            that.nls = nls;
+            that.dragdrop        = new DragDrop(document.body);
+            that.playlists       = new PlaylistCollection();
+            that.shortcutMaestro = new ShortcutMaestro();
+            that.user            = new User(callback);
+        });
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -1280,8 +1286,11 @@ class App extends MzkObject {
         }
 
         let ids = new Array(tracks.length);
-        for(let i = 0; i < tracks.length; ++i)
+        for (let i = 0; i < tracks.length; ++i) {
             ids[i] = tracks[i].id.track;
+        }
+
+        let that = this;
         JSONParsedPostRequest(
             "track/getDetailedInfo/",
             JSON.stringify({
