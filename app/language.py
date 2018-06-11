@@ -10,10 +10,11 @@ from app.errors import ErrorEnum, errorCheckMessage
 # Loading the json file corresponding to the language of the user
 def loadLanguage(request):
     if request.method == 'POST':
+        response = json.loads(request.body)
         user = request.user
         pathToLang = "/ManaZeak/languages/"
-        if 'LANG' in request:
-            language = request['LANG']
+        if 'LANG' in response:
+            language = response['LANG']
             # If the user tweaked the request
             if "/" not in language or "\\" not in language:
                 jsonFile = os.path.join(pathToLang, language + ".json")
