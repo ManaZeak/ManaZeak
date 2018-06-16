@@ -67,12 +67,12 @@ class HelpCenterView extends View {
         this.ui.container.classList.add("mzk-user-view");
         this.ui.menu.className         = "mzk-left-menu";
         this.ui.content.className      = "mzk-content";
-        this.ui.menuTitle.innerHTML    = "Help Center";
-        this.ui.menuLibraries.innerHTML = "Libraries";
-        this.ui.menuShortcut.innerHTML = "Shortcuts";
-        this.ui.menuTagConvention.innerHTML = "Tag convention";
-        this.ui.menuRanksPerms.innerHTML = "Ranks / Permissions";
-        this.ui.menuManaCoin.innerHTML = "ManaCoin";
+        this.ui.menuTitle.innerHTML    = window.app.nls.views.help.panel;
+        this.ui.menuLibraries.innerHTML = window.app.nls.views.help.libraries.entry;
+        this.ui.menuShortcut.innerHTML = window.app.nls.views.help.shortcuts.entry;
+        this.ui.menuTagConvention.innerHTML = window.app.nls.views.help.tag.entry;
+        this.ui.menuRanksPerms.innerHTML = window.app.nls.views.help.ranks.entry;
+        this.ui.menuManaCoin.innerHTML = window.app.nls.views.help.manacoin.entry;
 
         this.ui.menuList.appendChild(this.ui.menuLibraries);
         this.ui.menuList.appendChild(this.ui.menuShortcut);
@@ -119,7 +119,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuShortcut.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML     = "Shortcuts";
+        this.ui.contentTitle.innerHTML     = window.app.nls.views.help.shortcuts.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -133,7 +133,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuLibraries.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = "Libraries";
+        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.libraries.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -152,55 +152,46 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuTagConvention.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = "Tag and naming convention";
+        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.tag.title;
 
         let intro = document.createElement('P');
-        intro.innerHTML = "In order to have a consistent and unified music library, we have set a couple rules and guidelines to do so. Those guidelines are specific to the manazeak.org instance (if you run your own @home, feel free to set your own convention). This section will cover two main subjects : file naming and tag rules.";
+        intro.innerHTML = window.app.nls.views.help.tag.intro;
 
         let fileConv = document.createElement('H2');
-        fileConv.innerHTMl = 'File convention';
+        fileConv.innerHTMl = window.app.nls.views.help.tag.file.title;
 
         let fileDesc = document.createElement('P');
-        fileDesc.innerHTMl = "A precisely named file is an easily one to find and manipulate, that's for sure. The following guidelines covers the whole file naming process and must be always checked before any track/album upload on ManaZeak.";
+        fileDesc.innerHTMl = window.app.nls.views.help.tag.file.desc;
 
         let dirSpec = document.createElement('H3');
-        dirSpec.innerHTML = 'Directory specifications';
+        dirSpec.innerHTML = window.app.nls.views.help.tag.file.dirTitle;
 
         let dirContent = document.createElement('P');
-        dirContent.innerHTML = "When you upload a full album (to be included in Albums' library), you must comply with a specific folder naming convention. Each artists must have its own folder, named identically with the artist's name. In this new folder, you must refer each and every album by its year, followed by a hyphen (-) surrounded with one space and the album title (<b>%year% - %album%</b>). Then, you may put all the album tracks in it, next to the album's cover. The album's cover itself must be a 1000x1000 .jpg file, named with the album's folder name. Finally, all the album's tracks must comply with the file specifications enounced in the File specifications section.<br><br>" +
-            "Some album are from a specific genre : single, EP. For a single, the mention <b>- Single</b> must appear at the end of the album title, for an EP, only add <b>EP</b> at the end of the album's title";
+        dirContent.innerHTML = window.app.nls.views.help.tag.file.dir;
 
         let ex = document.createElement('H4');
-        ex.innerHTML = 'Example';
+        ex.innerHTML = window.app.nls.views.help.tag.file.exTitle;
 
         let dirEx = document.createElement('P');
-        dirEx.innerHTMl = "Let's take the Metallica's album Master Of Puppets as an example. First, create the following directory hierrarchy to put tracks in ; Metallica folder, with a Master Of Puppets sub-folder :";
+        dirEx.innerHTML = window.app.nls.views.help.tag.file.exIntro;
 
         let dirPath = document.createElement('P');
-        dirPath.innerHTML = "Metallica / 1986 - Master Of Puppets /";
+        dirPath.innerHTML = window.app.nls.views.help.tag.file.exDirectory;
 
         let dirDesc = document.createElement('P');
-        dirDesc.innerHTML = "After the folders creation, fill the <code>1986 - Master of Puppets</code> folder with it relative files :";
+        dirDesc.innerHTML = window.app.nls.views.help.tag.file.exStructure;
 
         let dirCompo = document.createElement('P');
-        dirCompo.innerHTML = "101 - Metallica - Battery.flac<br>" +
-            "102 - Metallica - Master Of Puppets.flac<br>" +
-            "103 - Metallica - The Thing That Should Not Be.flac<br>" +
-            "104 - Metallica - Welcome Home (Sanitarium).flac<br>" +
-            "105 - Metallica - Disposable Heroes<br>" +
-            "106 - Metallica - Leper Messiah.flac<br>" +
-            "107 - Metallica - Orion.flac<br>" +
-            "108 - Metallica - Damage, Inc.flac<br>" +
-            "1986 - Master Of Puppets.jpg";
+        dirCompo.innerHTML = window.app.nls.views.help.tag.file.exTracks;
 
         let dirConclusion = document.createElement('P');
-        dirConclusion.innerHTMl = "You can now upload the album by drag and droppign the Metallica folder you created straight in ManaZeak.";
+        dirConclusion.innerHTML = window.app.nls.views.help.tag.file.exConclusion;
 
-        let fileSpec = document.createElement('H2');
-        fileSpec.innerHTML = 'File specifications';
+        let fileSpec = document.createElement('H3');
+        fileSpec.innerHTML = window.app.nls.views.help.tag.file.specTitle;
 
         let fileIntro = document.createElement('P');
-        fileIntro.innerHTML = "Be sure that the file(s) you push are matching these requirements :";
+        fileIntro.innerHTML = window.app.nls.views.help.tag.file.specIntro;
 
         let fileSpecList = document.createElement('UL');
         fileSpecList.classList.add('earningManaCoinList');
@@ -215,16 +206,16 @@ class HelpCenterView extends View {
         let fileSpec9 = document.createElement('LI');
         let fileSpec10 = document.createElement('LI');
 
-        fileSpec1.innerHTML = "naming for Albums library: <b>%disc number%%track number% - %composer% - %title%</b> ;";
-        fileSpec2.innerHTML = "naming for Artists and Mix libraries: <b>%composer% - %title%</b> ;";
-        fileSpec3.innerHTML = "track names must be CamelCase, always ;";
-        fileSpec4.innerHTML = "special characters must be replaced with a hyphen (-) ;";
-        fileSpec5.innerHTML = "artists name must respect the artists specific case ;";
-        fileSpec6.innerHTML = "composer(s) must be written with the artist name only ;";
-        fileSpec7.innerHTML = "multi-artists must be separated with comas, and alphabetically ordered (composer, featured artists and remixers/cover artists) ;";
-        fileSpec8.innerHTML = "featured artists must be place after the title, surrounded with parenthesis and prefixed with the <i>feat.</i> mention ;";
-        fileSpec9.innerHTML = "remixers or cover artists must be mentioned at the end, surrounded with parenthesis and suffixed with the <i>Remix</i> or <i>Cover</i> mention ;";
-        fileSpec10.innerHTML = "the mention <i>[Bonus track]</i> must appear in the appropriate case, as the last file name element.";
+        fileSpec1.innerHTML = window.app.nls.views.help.tag.file.spec1;
+        fileSpec2.innerHTML = window.app.nls.views.help.tag.file.spec2;
+        fileSpec3.innerHTML = window.app.nls.views.help.tag.file.spec3;
+        fileSpec4.innerHTML = window.app.nls.views.help.tag.file.spec4;
+        fileSpec5.innerHTML = window.app.nls.views.help.tag.file.spec5;
+        fileSpec6.innerHTML = window.app.nls.views.help.tag.file.spec6;
+        fileSpec7.innerHTML = window.app.nls.views.help.tag.file.spec7;
+        fileSpec8.innerHTML = window.app.nls.views.help.tag.file.spec8;
+        fileSpec9.innerHTML = window.app.nls.views.help.tag.file.spec9;
+        fileSpec10.innerHTML = window.app.nls.views.help.tag.file.spec10;
 
         fileSpecList.appendChild(fileSpec1);
         fileSpecList.appendChild(fileSpec2);
@@ -274,18 +265,16 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuRanksPerms.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = "Ranks / Permissions";
+        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.ranks.title;
 
         let intro = document.createElement('P');
-        intro.innerHTML = "In order to keep ManaZeak a great place for everyone, some features are locked until you earn a given reputation. Don't panic, the locked features are mostly libraries' management ones, so you won't be restricted on listening music (we are not some fucking dickhead from Spotify or Apple Music, god damn it).<br><br>" +
-            "When you first sign into ManaZeak, you will be ranked as a new comer. You will be able to naviguate trhough libraries, listen to music and a lot more that we'll be glad you discover. Nevertheless, you won't be able to upload tracks or edit tags yet. If you are not OK with those limited privileges, brace yourself, roll up your sleeves and try to earn ManaCoins  (see ManaCoin entry in the Help Center).<br><br>" +
-            "Your ManaCoin wallet helps us determine a confidence index that is a trust indicator we can put into you (again, we are not FaceBook, and this damn confidence index is not secret and won't be sold to advertiser motherfcukers). You can see it in your profile view, in the My Wallet tab. As mentionned in the ManaCoin entry, you can quickly fall into the abyss if you purposely fuck up ManaZeak. In the contrary, if you do you best to make it cleaner (suggesting tags) or enhance libraries content with your musical tastes (uploading tracks), you will soon climb the ladder and rank up: ranking up will give you more control over music collections and tracks, among of giving you the prestige of a rank.";
+        intro.innerHTML = window.app.nls.views.help.ranks.text;
 
         let ranks = document.createElement('H2');
-        ranks.innerHTML = 'Ranks';
+        ranks.innerHTML = window.app.nls.views.help.ranks.ranksSection.title;
 
         let ranksPublicDesc = document.createElement('P');
-        ranksPublicDesc.innerHTML = "Here is the list of the official ranks of ManaZeak, with the required confidence index to be promoted :";
+        ranksPublicDesc.innerHTML = window.app.nls.views.help.ranks.ranksSection.desc;
 
         let ranksPublic = document.createElement('UL');
         ranksPublic.classList.add('earningManaCoinList');
@@ -294,16 +283,16 @@ class HelpCenterView extends View {
         let ranksPublic2 = document.createElement('LI');
         let ranksPublic3 = document.createElement('LI');
 
-        ranksPublic1.innerHTML = "<b>Naab</b> : Confidence index is under XX";
-        ranksPublic2.innerHTML = "<b>User</b> : Confidence index is between XX and YY";
-        ranksPublic3.innerHTML = "<b>Moderator</b> : Confidence index over XX";
+        ranksPublic1.innerHTML = "<b>Naab</b>" + window.app.nls.views.help.ranks.ranksSection.indexUnder + "XX";
+        ranksPublic2.innerHTML = "<b>User</b>" + window.app.nls.views.help.ranks.ranksSection.indexBetween + "XX" + window.app.nls.views.help.ranks.ranksSection.and + "YY";
+        ranksPublic3.innerHTML = "<b>Moderator</b>" + window.app.nls.views.help.ranks.ranksSection.indexOver + "XX";
 
         ranksPublic.appendChild(ranksPublic1);
         ranksPublic.appendChild(ranksPublic2);
         ranksPublic.appendChild(ranksPublic3);
 
         let ranksPrivDesc = document.createElement('P');
-        ranksPrivDesc.innerHTML = "These are the standard rank that are available for all. There are three special rank that are only accessible under a given set of condition :";
+        ranksPrivDesc.innerHTML = window.app.nls.views.help.ranks.ranksSection.special;
 
         let ranksPriv = document.createElement('UL');
         ranksPriv.classList.add('earningManaCoinList');
@@ -312,19 +301,19 @@ class HelpCenterView extends View {
         let ranksPriv2 = document.createElement('LI');
         let ranksPriv3 = document.createElement('LI');
 
-        ranksPriv1.innerHTML = "<b>Banned</b> : No need to explain, you did some serious shit in there...";
-        ranksPriv2.innerHTML = "<b>Admin</b> : Libraries administrator are your gods inside ManaZeak, press F.";
-        ranksPriv3.innerHTML = "<b>Root</b> : Root Master Race is not accessible. Consider Root as the ManaZeak' non-human account.";
+        ranksPriv1.innerHTML = "<b>Banned</b>" + window.app.nls.views.help.ranks.ranksSection.banned;
+        ranksPriv2.innerHTML = "<b>Admin</b>" + window.app.nls.views.help.ranks.ranksSection.admin;
+        ranksPriv3.innerHTML = "<b>Root</b>" + window.app.nls.views.help.ranks.ranksSection.root;
 
         ranksPriv.appendChild(ranksPriv1);
         ranksPriv.appendChild(ranksPriv2);
         ranksPriv.appendChild(ranksPriv3);
 
         let perm = document.createElement('H2');
-        perm.innerHTML = 'Permissions';
+        perm.innerHTML = window.app.nls.views.help.ranks.perms.title;
 
         let permDesc = document.createElement('P');
-        permDesc.innerHTML = "As said previously, those ranks are tightly linked with permissions in ManaZeak. Here you have a table that summarize permissions with the minimal rank necessary :";
+        permDesc.innerHTML = window.app.nls.views.help.ranks.perms.desc;
 
         // TODO : mk table depending on nls array of perms (for statement)
 
@@ -356,7 +345,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuManaCoin.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = "ManaCoin";
+        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.manacoin.title;
 
 
         let inShortItem1 = document.createElement('LI');
@@ -364,20 +353,20 @@ class HelpCenterView extends View {
         let inShortItem3 = document.createElement('LI');
         let inShortItem4 = document.createElement('LI');
 
-        inShortItem1.innerHTML = 'will make you earn ManaCoins ;';
-        inShortItem2.innerHTML = 'will make you loose ManaCoins if refused ;';
-        inShortItem3.innerHTML = 'is taken into account to compute your confidence index.';
-        inShortItem4.innerHTML = 'will make you earn ManaCoins if accepted ;';
+        inShortItem1.innerHTML = window.app.nls.views.help.manacoin.inShort1;
+        inShortItem2.innerHTML = window.app.nls.views.help.manacoin.inShort2;
+        inShortItem3.innerHTML = window.app.nls.views.help.manacoin.inShort3;
+        inShortItem4.innerHTML = window.app.nls.views.help.manacoin.inShort4;
 
 
         let intro = document.createElement('P');
-        intro.innerHTML = 'The ManaCoin is an internal currency for ManaZeak that aim to reward good practices and usages in the app. In the contrary, it is a way to keep ManaZeak clean from savage attacks, also known as sabotage. It aim to enhance collaboration in ManaZeak and reward any kind of contributions. Earning ManaCoins is a way to rank and get more permissions (see <b>Earning ManaCoin</b> section) so that administrators can trust you, and let you become a moderator of ManaZeak (see <b>Ranking system</b> section).';
+        intro.innerHTML = window.app.nls.views.help.manacoin.intro;
 
         let earningMCTitle = document.createElement('H2');
-        earningMCTitle.innerHTML = 'Earning ManaCoin';
+        earningMCTitle.innerHTML = window.app.nls.views.help.manacoin.earningTitle;
 
         let earningMC = document.createElement('P');
-        earningMC.innerHTML = 'There is several way to earn ManaCoins in ManaZeak :';
+        earningMC.innerHTML = window.app.nls.views.help.manacoin.earningListTitle;
 
         let earningMCList = document.createElement('UL');
         let earningItem1 = document.createElement('LI');
@@ -387,11 +376,11 @@ class HelpCenterView extends View {
         let earningItem5 = document.createElement('LI');
 
         earningMCList.classList.add('earningManaCoinList');
-        earningItem1.innerHTML = 'listening to music ;';
-        earningItem2.innerHTML = 'making song/feature request(s) ;';
-        earningItem3.innerHTML = 'uploading track(s)/album(s) ;';
-        earningItem4.innerHTML = 'editing track(s) metadata ;';
-        earningItem5.innerHTML = 'earning achievements.';
+        earningItem1.innerHTML = window.app.nls.views.help.manacoin.earningList1;
+        earningItem2.innerHTML = window.app.nls.views.help.manacoin.earningList2;
+        earningItem3.innerHTML = window.app.nls.views.help.manacoin.earningList3;
+        earningItem4.innerHTML = window.app.nls.views.help.manacoin.earningList4;
+        earningItem5.innerHTML = window.app.nls.views.help.manacoin.earningList5;
 
         earningMCList.appendChild(earningItem1);
         earningMCList.appendChild(earningItem2);
@@ -400,16 +389,16 @@ class HelpCenterView extends View {
         earningMCList.appendChild(earningItem5);
 
         let earningMCText = document.createElement('P');
-        earningMCText.innerHTML = "Those ways to earn ManaCoin depends on your rank, and some may not be available if your <em>under age</em> (below a given rank, see <b>Ranking system</b> section). Also, they doesn't reward you with the same amount of ManaCoins, since some of actions are pretty different. Don't bother asking, those values are super secret, and won't be exposed at any given time.";
+        earningMCText.innerHTML = window.app.nls.views.help.manacoin.earningOutro;
 
         let listeningTitle = document.createElement('H3');
-        listeningTitle.innerHTML = 'Listening to Music :';
+        listeningTitle.innerHTML = window.app.nls.views.help.manacoin.listeningTitle;
 
         let listeningText = document.createElement('P');
-        listeningText.innerHTML = "This is the most basic way to earn ManaCoins. The principle behind it is pretty simple, the more you spend time listening to music on ManaZeak, the more you will get ManaCoins. To be fair with other users, the earning function is not linear, and it will be harder to mine ManaCoins this way over time. However, there is no cap value so you can <em>theorically</em> get an infinite amount of ManaCoins listening to music ; it would only take some lifetimes to do so, but who are we to judge!";
+        listeningText.innerHTML = window.app.nls.views.help.manacoin.listeningDesc;
 
         let listeningInShortTitle = document.createElement('P');
-        listeningInShortTitle.innerHTML = '<b>In short, listening to music :</b>';
+        listeningInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.listeningShort + '</b>';
 
         let listeningInShortList = document.createElement('UL');
         listeningInShortList.classList.add('earningManaCoinList');
@@ -417,13 +406,13 @@ class HelpCenterView extends View {
         listeningInShortList.appendChild(inShortItem3);
 
         let songRequestTitle = document.createElement('H3');
-        songRequestTitle.innerHTML = 'Making song/feature request(s) :';
+        songRequestTitle.innerHTML = window.app.nls.views.help.manacoin.songReqTitle;
 
         let songRequestText = document.createElement('P');
-        songRequestText.innerHTML = "If you notice that some songs you like are missing from any libraries in ManaZeak, or if you found a missing feature that would perfectly fit ManaZeak, you can make a text suggestion, using the bulb icon in the top bar. Just write out the more informations you can about it (title, album, artist etc. for a track - behavior, trigger etc. for a feature). Once sent, you request will be handled in a timely manner (each week). It can be accepted or refused by an administrator, giving you or taking ManaCoins from you to fit the administrator spirit about ManaZeak libraries. It can also be postponned if needed. You then will be notified of what your suggestion has become : generally, if accepted, the song you requested will be dropped into a library and if refused, nothing will happen. For features, you will be rewarded by an administrator with love (and ManaCoin you silly cheap ass) once it has been fully implemented.";
+        songRequestText.innerHTML = window.app.nls.views.help.manacoin.songReqDesc;
 
         let songRequestInShortTitle = document.createElement('P');
-        songRequestInShortTitle.innerHTML = '<b>In short, making song/feature request(s) :</b>';
+        songRequestInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.songReqShort + '</b>';
 
         let songRequestInShortList = document.createElement('UL');
         songRequestInShortList.classList.add('earningManaCoinList');
@@ -432,13 +421,13 @@ class HelpCenterView extends View {
         songRequestInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let uploadTitle = document.createElement('H3');
-        uploadTitle.innerHTML = 'Uploading track(s)/album(s) :';
+        uploadTitle.innerHTML = window.app.nls.views.help.manacoin.uploadTitle;
 
         let uploadText = document.createElement('P');
-        uploadText.innerHTML = "If you notice that some songs you like are missing from any libraries in ManaZeak, you can directly upload the track(s)/album(s) by drag and dropping it anywhere in ManaZeak. You track(s)/album(s) will remain in a buffer folder until a batch is performed (each week). Then, you ill be notified if it has been refused or accepted, and if so, in which library does it belong now. Quality being a ManaZeak holy graal, keep in mind that the more clean is the file(s) you upload, the more ManaCoins you will earn. We make a distinction between 128kbps MP3, 320kbps MP3, OGG and FLAC/WAV. Don't worry, you will never loose ManaCoins uploading a low quality track, you will only earn less than if you made the effort to fetch it in high quality.";
+        uploadText.innerHTML = window.app.nls.views.help.manacoin.uploadDesc;
 
         let uploadInShortTitle = document.createElement('P');
-        uploadInShortTitle.innerHTML = '<b>In short, uploading track(s)/album(s) :</b>';
+        uploadInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.uploadShort + '</b>';
 
         let uploadInShortList = document.createElement('UL');
         uploadInShortList.classList.add('earningManaCoinList');
@@ -447,13 +436,13 @@ class HelpCenterView extends View {
         uploadInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let editTitle = document.createElement('H3');
-        editTitle.innerHTML = 'Editing track(s) metadata :';
+        editTitle.innerHTML = window.app.nls.views.help.manacoin.editTitle;
 
         let editText = document.createElement('P');
-        editText.innerHTML = "While using ManaZeak, it is possible (... absolutely certain) that you will encounter incorrectly tagged tracks. You can propose a new tag for it using the tag edition modal (right click on the track, \"Edit Tag\"). As for wishes and uploads, your submissions will be reviewed in a timely manner (each week) and depending on the quality of your edit, it will be accepted or refused. Because tagging is life, we strongly encourage you to read the section <b>Tag convention</b> before editing tags, if not you will cause the anger of a psychorigid administrator and will also loose some ManaCoins! At a given rank, tags are automatically accepted. Because they can't be refused at this rank, no loss is possible.";
+        editText.innerHTML = window.app.nls.views.help.manacoin.editDesc;
 
         let editInShortTitle = document.createElement('P');
-        editInShortTitle.innerHTML = '<b>In short, editing track(s) metadata :</b>';
+        editInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.editShort + '</b>';
 
         let editInShortList = document.createElement('UL');
         editInShortList.classList.add('earningManaCoinList');
@@ -462,10 +451,10 @@ class HelpCenterView extends View {
         editInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let achievementsTitle = document.createElement('H3');
-        achievementsTitle.innerHTML = 'Achievements :';
+        achievementsTitle.innerHTML = window.app.nls.views.help.manacoin.achivTitle;
 
         let achievementsText1 = document.createElement('P');
-        achievementsText1.innerHTML = "Finally, you can earn ManaCoin with achievements. They are here just for fun and won't be taken into account to compute your confidence index, so don't bother try harding them to rank up! There is three types of achievements :";
+        achievementsText1.innerHTML = window.app.nls.views.help.manacoin.achivDesc;
 
         let achievementsTypesList = document.createElement('UL');
         achievementsTypesList.classList.add('earningManaCoinList');
@@ -474,19 +463,19 @@ class HelpCenterView extends View {
         let achievementTypesItem2 = document.createElement('LI');
         let achievementTypesItem3 = document.createElement('LI');
 
-        achievementTypesItem1.innerHTML = 'one shot ;';
-        achievementTypesItem2.innerHTML = 'multi-level ;';
-        achievementTypesItem3.innerHTML = 'hidden.';
+        achievementTypesItem1.innerHTML = window.app.nls.views.help.manacoin.achivEntry1;
+        achievementTypesItem2.innerHTML = window.app.nls.views.help.manacoin.achivEntry2;
+        achievementTypesItem3.innerHTML = window.app.nls.views.help.manacoin.achivEntry3;
 
         achievementsTypesList.appendChild(achievementTypesItem1);
         achievementsTypesList.appendChild(achievementTypesItem2);
         achievementsTypesList.appendChild(achievementTypesItem3);
 
         let achievementsText2 = document.createElement('P');
-        achievementsText2.innerHTML = "You will find them in the scoreboard, with a fulfilling percentage compare to all users. Also, you can buy hints with ManaCoin for hidden achievements. There are three tiers of hints, from cheap to expensive, with more and more detailled informations.";
+        achievementsText2.innerHTML = window.app.nls.views.help.manacoin.achivOutro;
 
         let achievementsInShortTitle = document.createElement('P');
-        achievementsInShortTitle.innerHTML = '<b>In short, editing track(s) metadata :</b>';
+        achievementsInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.achivShort + '</b>';
 
         let achievementsInShortList = document.createElement('UL');
         achievementsInShortList.classList.add('earningManaCoinList');
