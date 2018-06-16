@@ -411,6 +411,7 @@ class Modal extends MzkObject {
 
         this._appendCloseButton();
 
+        let that = this;
         close.addEventListener("click", function() {
             that.close();
         });
@@ -731,13 +732,13 @@ class Modal extends MzkObject {
      * class  : Modal
      * desc   : Build UI elements for delete playlist modal
      **/
-    _renamePlaylistUI() {
+    _renamePlaylistUI() { // TODO rename library
         if (window.debug && this.LOG) {
             console.log('  Modal : _renamePlaylistUI call');
         }
 
         this.ui.container.className = "mzk-modal-edit-playlist";
-        this.ui.title.innerHTML     = window.app.nls.modal.rename.title + this.data.name;
+        this.ui.title.innerHTML     = window.app.nls.modal.renamePlaylist.title + this.data.name;
 
         let infoLabel               = document.createElement("P");
         let name                    = document.createElement("INPUT");
@@ -750,9 +751,9 @@ class Modal extends MzkObject {
         rename.id                   = "deleteButton";
 
         name.type                   = "text";
-        name.placeholder            = window.app.nls.modal.rename.placeholder;
+        name.placeholder            = window.app.nls.modal.renamePlaylist.placeholder;
 
-        infoLabel.innerHTML         = window.app.nls.modal.rename.content.pt1 + this.data.name + window.app.nls.modal.content.pt2;
+        infoLabel.innerHTML         = window.app.nls.modal.renamePlaylist.content.pt1 + this.data.name + window.app.nls.modal.renamePlaylist.content.pt2;
         cancel.innerHTML            = window.app.nls.button.cancel;
         rename.innerHTML            = window.app.nls.button.rename;
 
@@ -844,8 +845,8 @@ class Modal extends MzkObject {
         name.value                  = this.data.GROUP.NAME;
         cancel.innerHTML            = window.app.nls.button.cancel;
         save.innerHTML              = window.app.nls.button.save;
-        nameTitle.innerHTML         = window.app.nls.views.admin.groupsAndUsers.groups.edit.label.name;
-        permsTitle.innerHTML        = window.app.nls.views.admin.groupsAndUsers.groups.edit.label.permission;
+        nameTitle.innerHTML         = window.app.nls.adminView.groupsAndUsers.groups.edit.label.name;
+        permsTitle.innerHTML        = window.app.nls.adminView.groupsAndUsers.groups.edit.label.permission;
 
         this._appendCloseButton();
 
@@ -926,7 +927,7 @@ class Modal extends MzkObject {
         let nbPerm = Object.keys(this.data.PERMISSIONS).length;
         for(let i = 0; i < this.data.GROUPS.length; ++i) {
             let li = document.createElement("LI");
-            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + window.app.nls.views.admin.groupsAndUsers.groups.list.permissions + ")";
+            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + window.app.nls.adminView.groupsAndUsers.groups.list.permissions + ")";
             li.value     = this.data.GROUPS[i].ID;
             if(li.value == this.data.USER.GROUP_ID) {
                 li.className = "mzk-selected";

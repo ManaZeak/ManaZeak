@@ -47,25 +47,25 @@ export function secondsToDate(time) {
 
     switch (time.getDay()) {
         case 0:
-            weekday = window.app.nls.utils.day.sunday;
+            weekday = window.app.nls.date.day.sunday;
             break;
         case 1:
-            weekday = window.app.nls.utils.day.monday;
+            weekday = window.app.nls.date.day.monday;
             break;
         case 2:
-            weekday = window.app.nls.utils.day.tuesday;
+            weekday = window.app.nls.date.day.tuesday;
             break;
         case 3:
-            weekday = window.app.nls.utils.day.wednesday;
+            weekday = window.app.nls.date.day.wednesday;
             break;
         case 4:
-            weekday = window.app.nls.utils.day.thursday;
+            weekday = window.app.nls.date.day.thursday;
             break;
         case 5:
-            weekday = window.app.nls.utils.day.friday;
+            weekday = window.app.nls.date.day.friday;
             break;
         case 6:
-            weekday = window.app.nls.utils.day.saturday;
+            weekday = window.app.nls.date.day.saturday;
             break;
         default:
             weekday = "-";
@@ -74,40 +74,40 @@ export function secondsToDate(time) {
 
     switch (time.getMonth()) {
         case 0:
-            month = window.app.nls.utils.month.january;
+            month = window.app.nls.date.month.january;
             break;
         case 1:
-            month = window.app.nls.utils.month.february;
+            month = window.app.nls.date.month.february;
             break;
         case 2:
-            month = window.app.nls.utils.month.march;
+            month = window.app.nls.date.month.march;
             break;
         case 3:
-            month = window.app.nls.utils.month.april;
+            month = window.app.nls.date.month.april;
             break;
         case 4:
-            month = window.app.nls.utils.month.may;
+            month = window.app.nls.date.month.may;
             break;
         case 5:
-            month = window.app.nls.utils.month.june;
+            month = window.app.nls.date.month.june;
             break;
         case 6:
-            month = window.app.nls.utils.month.july;
+            month = window.app.nls.date.month.july;
             break;
         case 7:
-            month = window.app.nls.utils.month.august;
+            month = window.app.nls.date.month.august;
             break;
         case 8:
-            month = window.app.nls.utils.month.september;
+            month = window.app.nls.date.month.september;
             break;
         case 9:
-            month = window.app.nls.utils.month.october;
+            month = window.app.nls.date.month.october;
             break;
         case 10:
-            month = window.app.nls.utils.month.november;
+            month = window.app.nls.date.month.november;
             break;
         case 11:
-            month = window.app.nls.utils.month.december;
+            month = window.app.nls.date.month.december;
             break;
         default:
             month = "-";

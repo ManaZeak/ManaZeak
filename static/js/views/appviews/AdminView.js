@@ -133,12 +133,12 @@ class AdminView extends View {
         this.ui.menu.className      = "mzk-left-menu";
         this.ui.content.className   = "mzk-admin-content";
 
-        this.ui.menuTitle.innerHTML = window.app.nls.views.admin.panel;
-        this.ui.menuDB.innerHTML    = window.app.nls.views.admin.database.entry;
-        this.ui.menuUser.innerHTML  = window.app.nls.views.admin.groupsAndUsers.entry;
-        this.ui.menuLib.innerHTML   = window.app.nls.views.admin.libraries.entry;
-        this.ui.menuSC.innerHTML    = window.app.nls.views.admin.syncthing.entry;
-        this.ui.menuWish.innerHTML  = window.app.nls.views.admin.wishes.entry;
+        this.ui.menuTitle.innerHTML = window.app.nls.adminView.panel;
+        this.ui.menuDB.innerHTML    = window.app.nls.adminView.database.entry;
+        this.ui.menuUser.innerHTML  = window.app.nls.adminView.groupsAndUsers.entry;
+        this.ui.menuLib.innerHTML   = window.app.nls.adminView.libraries.entry;
+        this.ui.menuSC.innerHTML    = window.app.nls.adminView.syncthing.entry;
+        this.ui.menuWish.innerHTML  = window.app.nls.adminView.wishes.entry;
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuUser);
@@ -204,7 +204,7 @@ class AdminView extends View {
         this.currentPage = this._requestDBPage;
         this._clearPageSpace();
         this.ui.menuDB.className        = "mzk-selected";
-        this.ui.contentTitle.innerHTML  = window.app.nls.views.admin.database.title;
+        this.ui.contentTitle.innerHTML  = window.app.nls.adminView.database.title;
 
         this.ui.rmMoodLabel             = document.createElement("P");
         this.ui.rmMoodButton            = document.createElement("BUTTON");
@@ -213,18 +213,18 @@ class AdminView extends View {
         this.ui.dropLabel               = document.createElement("P");
         this.ui.dropButton              = document.createElement("BUTTON");
 
-        this.ui.rmCoverLabel.innerHTML  = "<b>" + window.app.nls.views.admin.database.extractCovers.title + "</b><br>" +
+        this.ui.rmCoverLabel.innerHTML  = "<b>" + window.app.nls.adminView.database.extractCovers.title + "</b><br>" +
             "<br>" +
-            window.app.nls.views.admin.database.extractCovers.text;
-        this.ui.rmMoodLabel.innerHTML   = "<b>" + window.app.nls.views.admin.database.removeMoodbars.title + "</b><br>" +
+            window.app.nls.adminView.database.extractCovers.text;
+        this.ui.rmMoodLabel.innerHTML   = "<b>" + window.app.nls.adminView.database.removeMoodbars.title + "</b><br>" +
             "<br>" +
-            window.app.nls.views.admin.database.removeMoodbars.text;
-        this.ui.dropLabel.innerHTML     = "<b>" + window.app.nls.views.admin.database.dropDatabase.title + "</b><br>" +
+            window.app.nls.adminView.database.removeMoodbars.text;
+        this.ui.dropLabel.innerHTML     = "<b>" + window.app.nls.adminView.database.dropDatabase.title + "</b><br>" +
             "<br>" +
-            window.app.nls.views.admin.database.dropDatabase.text;
-        this.ui.rmMoodButton.innerHTML  = window.app.nls.views.admin.database.removeMoodbars.button;
-        this.ui.rmCoverButton.innerHTML = window.app.nls.views.admin.database.extractCovers.button;
-        this.ui.dropButton.innerHTML    = window.app.nls.views.admin.database.dropDatabase.button;
+            window.app.nls.adminView.database.dropDatabase.text;
+        this.ui.rmMoodButton.innerHTML  = window.app.nls.adminView.database.removeMoodbars.button;
+        this.ui.rmCoverButton.innerHTML = window.app.nls.adminView.database.extractCovers.button;
+        this.ui.dropButton.innerHTML    = window.app.nls.adminView.database.dropDatabase.button;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -351,7 +351,7 @@ class AdminView extends View {
         this.currentPage = this._requestUsersPage;
         this._clearPageSpace();
         this.ui.menuUser.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.groupsAndUsers.title;
+        this.ui.contentTitle.innerHTML = window.app.nls.adminView.groupsAndUsers.title;
 
         let sponsoringLabel            = document.createElement("P");
         let sponsoringSpan             = document.createElement("SPAN");
@@ -382,11 +382,11 @@ class AdminView extends View {
             });
 
             element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + this.info.USER[i].GROUP_NAME + ") <br><br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.id + this.info.USER[i].INVITE_CODE + "<br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.godfather + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.manacoin + this.info.USER[i].MANACOIN + "<br><br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.joined + this.info.USER[i].JOINED + "<br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.login + this.info.USER[i].LAST_LOGIN;
+                                         window.app.nls.adminView.groupsAndUsers.users.list.entry.id + this.info.USER[i].INVITE_CODE + "<br>" +
+                                         window.app.nls.adminView.groupsAndUsers.users.list.entry.godfather + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
+                                         window.app.nls.adminView.groupsAndUsers.users.list.entry.manacoin + this.info.USER[i].MANACOIN + "<br><br>" +
+                                         window.app.nls.adminView.groupsAndUsers.users.list.entry.joined + this.info.USER[i].JOINED + "<br>" +
+                                         window.app.nls.adminView.groupsAndUsers.users.list.entry.login + this.info.USER[i].LAST_LOGIN;
 
             element.appendChild(rm);
 
@@ -402,7 +402,7 @@ class AdminView extends View {
             let mod                    = document.createElement("IMG");
             mod.src                    = "/static/img/controls/edit.svg";
             element.innerHTML = "<b>" + this.info.GROUPS[i].NAME + "</b><br>" +
-                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + window.app.nls.views.admin.groupsAndUsers.groups.list.permissions + ")";
+                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + window.app.nls.adminView.groupsAndUsers.groups.list.permissions + ")";
 
             mod.addEventListener('click', function() {
                 new Modal('editGroup', {
@@ -418,13 +418,13 @@ class AdminView extends View {
             groupList.appendChild(element);
         }
 
-        let status                     = this.info.INVITE_ENABLED ? window.app.nls.views.admin.groupsAndUsers.sponsoring.status.enabled : window.app.nls.views.admin.groupsAndUsers.sponsoring.status.disabled;
-        sponsoringLabel.innerHTML      = "<b>" + window.app.nls.views.admin.groupsAndUsers.sponsoring.title + "</b><br>" +
+        let status                     = this.info.INVITE_ENABLED ? window.app.nls.adminView.groupsAndUsers.sponsoring.status.enabled : window.app.nls.adminView.groupsAndUsers.sponsoring.status.disabled;
+        sponsoringLabel.innerHTML      = "<b>" + window.app.nls.adminView.groupsAndUsers.sponsoring.title + "</b><br>" +
                                          "<br>" +
-                                         window.app.nls.views.admin.groupsAndUsers.sponsoring.text + status + "</b>";
-        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? window.app.nls.views.admin.groupsAndUsers.sponsoring.button.disabled : window.app.nls.views.admin.groupsAndUsers.sponsoring.button.enabled;
-        groupListTitle.innerHTML       = "<b>" + window.app.nls.views.admin.groupsAndUsers.groups.list.title + "</b>";
-        userListTitle.innerHTML        = "<b>" + window.app.nls.views.admin.groupsAndUsers.users.list.title + "</b>";
+                                         window.app.nls.adminView.groupsAndUsers.sponsoring.text + status + "</b>";
+        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? window.app.nls.adminView.groupsAndUsers.sponsoring.button.disabled : window.app.nls.adminView.groupsAndUsers.sponsoring.button.enabled;
+        groupListTitle.innerHTML       = "<b>" + window.app.nls.adminView.groupsAndUsers.groups.list.title + "</b>";
+        userListTitle.innerHTML        = "<b>" + window.app.nls.adminView.groupsAndUsers.users.list.title + "</b>";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -460,7 +460,7 @@ class AdminView extends View {
         this.currentPage = this._requestLibrariesPage;
         this._clearPageSpace();
         this.ui.menuLib.className         = "mzk-selected";
-        this.ui.contentTitle.innerHTML    = window.app.nls.views.admin.libraries.title;
+        this.ui.contentTitle.innerHTML    = window.app.nls.adminView.libraries.title;
 
         this.ui.rescanLibLabel            = document.createElement("P");
         this.ui.rescanLibButton           = document.createElement("BUTTON");
@@ -468,15 +468,15 @@ class AdminView extends View {
         this.ui.rmLibButton               = document.createElement("BUTTON");
         this.ui.libListLabel              = document.createElement("P");
 
-        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.views.admin.libraries.rescanLibraries.title + "</b><br>" +
+        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.adminView.libraries.rescanLibraries.title + "</b><br>" +
                                             "<br>" +
-                                            window.app.nls.views.admin.libraries.rescanLibraries.text;
-        this.ui.rescanLibButton.innerHTML = window.app.nls.views.admin.libraries.rescanLibraries.button;
-        this.ui.rmLibLabel.innerHTML      = "<b>" + window.app.nls.views.admin.libraries.removeLibraries.title + "</b><br>" +
+                                            window.app.nls.adminView.libraries.rescanLibraries.text;
+        this.ui.rescanLibButton.innerHTML = window.app.nls.adminView.libraries.rescanLibraries.button;
+        this.ui.rmLibLabel.innerHTML      = "<b>" + window.app.nls.adminView.libraries.removeLibraries.title + "</b><br>" +
                                             "<br>" +
-                                            window.app.nls.views.admin.libraries.removeLibraries.text;
-        this.ui.rmLibButton.innerHTML     = window.app.nls.views.admin.libraries.removeLibraries.button;
-        this.ui.libListLabel.innerHTML    = "<b>" + window.app.nls.views.admin.libraries.list.title + "</b>";
+                                            window.app.nls.adminView.libraries.removeLibraries.text;
+        this.ui.rmLibButton.innerHTML     = window.app.nls.adminView.libraries.removeLibraries.button;
+        this.ui.libListLabel.innerHTML    = "<b>" + window.app.nls.adminView.libraries.list.title + "</b>";
 
         let list                          = document.createElement("UL");
 
@@ -528,7 +528,7 @@ class AdminView extends View {
         this.currentPage = this._requestSCPage;
         this._clearPageSpace();
         this.ui.menuSC.className       = "mzk-selected";
-        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.syncthing.title;
+        this.ui.contentTitle.innerHTML = window.app.nls.adminView.syncthing.title;
 
         this.ui.apiKeyLabel            = document.createElement("P");
         this.ui.apiKeyField            = document.createElement("INPUT");
@@ -543,18 +543,18 @@ class AdminView extends View {
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
         this.ui.apiKeyField.type       = "text";
         this.ui.bufferField.value      = this.info.BUFFER_PATH;
-        this.ui.apiKeyLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.apiKey.title + "</b><br>" +
+        this.ui.apiKeyLabel.innerHTML  = "<b>" + window.app.nls.adminView.syncthing.apiKey.title + "</b><br>" +
                                          "<br>" +
-                                         window.app.nls.views.admin.syncthing.apiKey.text;
-        this.ui.apiKeyButton.innerHTML = window.app.nls.views.admin.syncthing.apiKey.button;
-        this.ui.bufferLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.bufferPath.title + "</b><br>" +
+                                         window.app.nls.adminView.syncthing.apiKey.text;
+        this.ui.apiKeyButton.innerHTML = window.app.nls.adminView.syncthing.apiKey.button;
+        this.ui.bufferLabel.innerHTML  = "<b>" + window.app.nls.adminView.syncthing.bufferPath.title + "</b><br>" +
                                          "<br>" +
-                                         window.app.nls.views.admin.syncthing.bufferPath.text;
-        this.ui.bufferButton.innerHTML = window.app.nls.views.admin.syncthing.bufferPath.button;
-        this.ui.rescanLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.rescanFolders.title + "</b><br>" +
+                                         window.app.nls.adminView.syncthing.bufferPath.text;
+        this.ui.bufferButton.innerHTML = window.app.nls.adminView.syncthing.bufferPath.button;
+        this.ui.rescanLabel.innerHTML  = "<b>" + window.app.nls.adminView.syncthing.rescanFolders.title + "</b><br>" +
                                          "<br>" +
-                                         window.app.nls.views.admin.syncthing.rescanFolders.text;
-        this.ui.rescanButton.innerHTML = window.app.nls.views.admin.syncthing.rescanFolders.button;
+                                         window.app.nls.adminView.syncthing.rescanFolders.text;
+        this.ui.rescanButton.innerHTML = window.app.nls.adminView.syncthing.rescanFolders.button;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -587,7 +587,7 @@ class AdminView extends View {
         this.currentPage = this._requestWishPage;
         this._clearPageSpace();
         this.ui.menuWish.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.wishes.title;
+        this.ui.contentTitle.innerHTML = window.app.nls.adminView.wishes.title;
 
         let list                       = document.createElement("UL");
 

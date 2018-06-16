@@ -272,7 +272,7 @@ class PartyView extends View {
         this.ui.trackArtist.innerHTML    = track.artist;
         this.ui.trackYearAlbum.innerHTML = track.album + "&nbsp;&nbsp;—&nbsp;&nbsp;" + track.year;
 
-        this.ui.trackComposerLabel.innerHTML  = window.app.nls.views.party.composed + "&nbsp;";
+        this.ui.trackComposerLabel.innerHTML  = window.app.nls.partyView.composed + "&nbsp;";
         this.ui.trackComposer.innerHTML  = this._setComposerString(track.composer);
 
         this.ui.trackGenre.innerHTML     = track.genre;

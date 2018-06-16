@@ -113,7 +113,7 @@ class PlaylistCollectionEntry {
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
 
-        this.contextMenu.addEntry(null, "Description", function() {
+        this.contextMenu.addEntry(null, window.app.nls.collectionBar.description, function() {
             that.modal = new Modal("editCollectionDescription", {
                 name:        that.playlist.name,
                 description: that.playlist.description,
@@ -129,21 +129,17 @@ class PlaylistCollectionEntry {
         });
 
         if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
-            this.contextMenu.addEntry(null, "Download", function() {
-                that.modal = new Modal("editCollectionDescription", {
-                    name: that.playlist.name,
-                    id:   that.playlist.id
-                });
-                that.modal.open();
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.download, function() {
+                // TODO add download lib/playlist modal
             });
-            this.contextMenu.addEntry(null, "Rename", function() {
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.rename, function() {
                 that.modal = new Modal("renamePlaylist", {
                     name: that.playlist.name,
                     id:   that.playlist.id
                 });
                 that.modal.open();
             });
-            this.contextMenu.addEntry(null, "Delete", function() {
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.delete, function() {
                 that.modal = new Modal("deletePlaylist", {
                     playlist: that.playlist
                 });
