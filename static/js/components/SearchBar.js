@@ -112,7 +112,7 @@ class SearchBar {
 
         this._clearResults();
 
-        if (this.ui.input.value.length > 1) {
+        if (this.ui.input.value.length > 2) { // Perform search only if three or more char have been entered
             for (let i = 0; i < this._entries.length; ++i) {
                 let result = matchItem(this._entries[i], this.ui.input.value); // Perform a matching test
 

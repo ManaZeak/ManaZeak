@@ -133,12 +133,12 @@ class AdminView extends View {
         this.ui.menu.className      = "mzk-left-menu";
         this.ui.content.className   = "mzk-admin-content";
 
-        this.ui.menuTitle.innerHTML = "Admin panel";
-        this.ui.menuDB.innerHTML    = "Database";
-        this.ui.menuUser.innerHTML  = "Groups / Users";
-        this.ui.menuLib.innerHTML   = "Libraries";
-        this.ui.menuSC.innerHTML    = "SyncThing";
-        this.ui.menuWish.innerHTML  = "Wishes";
+        this.ui.menuTitle.innerHTML = window.app.nls.views.admin.panel;
+        this.ui.menuDB.innerHTML    = window.app.nls.views.admin.database.entry;
+        this.ui.menuUser.innerHTML  = window.app.nls.views.admin.groupsAndUsers.entry;
+        this.ui.menuLib.innerHTML   = window.app.nls.views.admin.libraries.entry;
+        this.ui.menuSC.innerHTML    = window.app.nls.views.admin.syncthing.entry;
+        this.ui.menuWish.innerHTML  = window.app.nls.views.admin.wishes.entry;
 
         this.ui.menuList.appendChild(this.ui.menuDB);
         this.ui.menuList.appendChild(this.ui.menuUser);
@@ -204,7 +204,7 @@ class AdminView extends View {
         this.currentPage = this._requestDBPage;
         this._clearPageSpace();
         this.ui.menuDB.className        = "mzk-selected";
-        this.ui.contentTitle.innerHTML  = "Database management";
+        this.ui.contentTitle.innerHTML  = window.app.nls.views.admin.database.title;
 
         this.ui.rmMoodLabel             = document.createElement("P");
         this.ui.rmMoodButton            = document.createElement("BUTTON");
@@ -213,23 +213,18 @@ class AdminView extends View {
         this.ui.dropLabel               = document.createElement("P");
         this.ui.dropButton              = document.createElement("BUTTON");
 
-        this.ui.rmCoverLabel.innerHTML  = "<b>Re-extract all covers from tracks</b><br>" +
+        this.ui.rmCoverLabel.innerHTML  = "<b>" + window.app.nls.views.admin.database.extractCovers.title + "</b><br>" +
             "<br>" +
-            "Covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>" +
-            "This command will erase existing covers and re-extract them for all tracks stored in the database.";
-        this.ui.rmMoodLabel.innerHTML   = "<b>Remove all moodbars from server</b><br>" +
+            window.app.nls.views.admin.database.extractCovers.text;
+        this.ui.rmMoodLabel.innerHTML   = "<b>" + window.app.nls.views.admin.database.removeMoodbars.title + "</b><br>" +
             "<br>" +
-            "ManaZeak perform a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated " +
-            "<code>.mood</code> file (if it doesn't exists already).<br>" +
-            "This command will erase all existing <code>.mood</code> file stored in the server. You might wait an hour or less before " +
-            "ManaZeak re-generate those <code>.mood</code> files.";
-        this.ui.dropLabel.innerHTML     = "<b>Drop database</b><br>" +
+            window.app.nls.views.admin.database.removeMoodbars.text;
+        this.ui.dropLabel.innerHTML     = "<b>" + window.app.nls.views.admin.database.dropDatabase.title + "</b><br>" +
             "<br>" +
-            "The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history, user history and statistics.<br>" +
-            "This command will delete everything in the database except users.";
-        this.ui.rmMoodButton.innerHTML  = "REMOVE ALL MOODBARS";
-        this.ui.rmCoverButton.innerHTML = "RE-EXTRACT ALL COVERS";
-        this.ui.dropButton.innerHTML    = "DROP DATABASE";
+            window.app.nls.views.admin.database.dropDatabase.text;
+        this.ui.rmMoodButton.innerHTML  = window.app.nls.views.admin.database.removeMoodbars.button;
+        this.ui.rmCoverButton.innerHTML = window.app.nls.views.admin.database.extractCovers.button;
+        this.ui.dropButton.innerHTML    = window.app.nls.views.admin.database.dropDatabase.button;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -356,7 +351,7 @@ class AdminView extends View {
         this.currentPage = this._requestUsersPage;
         this._clearPageSpace();
         this.ui.menuUser.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Group / User management";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.groupsAndUsers.title;
 
         let sponsoringLabel            = document.createElement("P");
         let sponsoringSpan             = document.createElement("SPAN");
@@ -373,6 +368,7 @@ class AdminView extends View {
             let rm                     = document.createElement("IMG");
             grant.src                  = "/static/img/controls/edit.svg";
             rm.src                     = "/static/img/controls/trash.svg";
+
             grant.addEventListener('click', function() {
                 new Modal('chooseGroup', {
                     USER: that.info.USER[i],
@@ -380,20 +376,24 @@ class AdminView extends View {
                     PERMISSIONS: that.info.PERMISSIONS
                 }).open();
             });
+
             rm.addEventListener("click", function() {
                 window.app.deleteUser(that.info.USER[i].USER_ID);
             });
+
             element.innerHTML          = "<b>" + this.info.USER[i].NAME + "</b> (" + this.info.USER[i].GROUP_NAME + ") <br><br>" +
-                                         "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + this.info.USER[i].INVITE_CODE + "<br>" +
-                                         "Godfather:&nbsp;&nbsp;" + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
-                                         "ManaCoin: " + this.info.USER[i].MANACOIN + "<br><br>" +
-                                         "Joined on: " + this.info.USER[i].JOINED + "<br>" +
-                                         "Last login: " + this.info.USER[i].LAST_LOGIN;
+                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.id + this.info.USER[i].INVITE_CODE + "<br>" +
+                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.godfather + this.info.USER[i].GODFATHER_NAME + " (" + this.info.USER[i].GODFATHER_CODE + ")<br>" +
+                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.manacoin + this.info.USER[i].MANACOIN + "<br><br>" +
+                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.joined + this.info.USER[i].JOINED + "<br>" +
+                                         window.app.nls.views.admin.groupsAndUsers.users.list.entry.login + this.info.USER[i].LAST_LOGIN;
 
             element.appendChild(rm);
-            if(window.app.user.hasPermission("GAPR")) {
+
+            if (window.app.user.hasPermission("GAPR")) {
                 element.appendChild(grant);
             }
+
             userList.appendChild(element);
         }
 
@@ -402,7 +402,7 @@ class AdminView extends View {
             let mod                    = document.createElement("IMG");
             mod.src                    = "/static/img/controls/edit.svg";
             element.innerHTML = "<b>" + this.info.GROUPS[i].NAME + "</b><br>" +
-                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + " permissions)";
+                                "(" + this.info.GROUPS[i].PERMISSIONS.length + "/"  + Object.keys(this.info.PERMISSIONS).length + window.app.nls.views.admin.groupsAndUsers.groups.list.permissions + ")";
 
             mod.addEventListener('click', function() {
                 new Modal('editGroup', {
@@ -418,14 +418,13 @@ class AdminView extends View {
             groupList.appendChild(element);
         }
 
-        let status                     = this.info.INVITE_ENABLED ? "Enabled" : "Disabled";
-        sponsoringLabel.innerHTML      = "<b>Sponsoring option on subscribe</b><br>" +
+        let status                     = this.info.INVITE_ENABLED ? window.app.nls.views.admin.groupsAndUsers.sponsoring.status.enabled : window.app.nls.views.admin.groupsAndUsers.sponsoring.status.disabled;
+        sponsoringLabel.innerHTML      = "<b>" + window.app.nls.views.admin.groupsAndUsers.sponsoring.title + "</b><br>" +
                                          "<br>" +
-                                         "When activated, any user that want to sign up needs to provide an ID from a user already signed in ManaZeak.<br>" +
-                                         "This command will add a field in the sign up form that is mandatory. <b>Sponsoring current status : " + status + "</b>";
-        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? "DISABLE SPONSORING" : "ENABLE SPONSORING";
-        groupListTitle.innerHTML       = "<b>Group list</b>";
-        userListTitle.innerHTML        = "<b>ManaZeak user list</b>";
+                                         window.app.nls.views.admin.groupsAndUsers.sponsoring.text + status + "</b>";
+        sponsoring.innerHTML           = this.info.INVITE_ENABLED ? window.app.nls.views.admin.groupsAndUsers.sponsoring.button.disabled : window.app.nls.views.admin.groupsAndUsers.sponsoring.button.enabled;
+        groupListTitle.innerHTML       = "<b>" + window.app.nls.views.admin.groupsAndUsers.groups.list.title + "</b>";
+        userListTitle.innerHTML        = "<b>" + window.app.nls.views.admin.groupsAndUsers.users.list.title + "</b>";
         //godFather.setAttribute("onClick", godFather.checked = !godFather.checked);
 
         sponsoringSpan.appendChild(sponsoring);
@@ -461,7 +460,7 @@ class AdminView extends View {
         this.currentPage = this._requestLibrariesPage;
         this._clearPageSpace();
         this.ui.menuLib.className         = "mzk-selected";
-        this.ui.contentTitle.innerHTML    = "Libraries management";
+        this.ui.contentTitle.innerHTML    = window.app.nls.views.admin.libraries.title;
 
         this.ui.rescanLibLabel            = document.createElement("P");
         this.ui.rescanLibButton           = document.createElement("BUTTON");
@@ -469,17 +468,15 @@ class AdminView extends View {
         this.ui.rmLibButton               = document.createElement("BUTTON");
         this.ui.libListLabel              = document.createElement("P");
 
-        this.ui.rescanLibLabel.innerHTML  = "<b>Rescan libraries</b><br>" +
+        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.views.admin.libraries.rescanLibraries.title + "</b><br>" +
                                             "<br>" +
-                                            "After you made modification on files located in a library folder, use this command to perform a rescan.<br>" +
-                                            "This command will rescan all libraries in the database.";
-        this.ui.rescanLibButton.innerHTML = "RESCAN ALL LIBRARIES";
-        this.ui.rmLibLabel.innerHTML      = "<b>Remove libraries</b><br>" +
+                                            window.app.nls.views.admin.libraries.rescanLibraries.text;
+        this.ui.rescanLibButton.innerHTML = window.app.nls.views.admin.libraries.rescanLibraries.button;
+        this.ui.rmLibLabel.innerHTML      = "<b>" + window.app.nls.views.admin.libraries.removeLibraries.title + "</b><br>" +
                                             "<br>" +
-                                            "In case of... Warning, this command apply to every user in ManaZeak.<br>" +
-                                            "This command will erase all libraries in the database.";
-        this.ui.rmLibButton.innerHTML     = "REMOVE ALL LIBRARIES";
-        this.ui.libListLabel.innerHTML    = "<b>Library list</b>";
+                                            window.app.nls.views.admin.libraries.removeLibraries.text;
+        this.ui.rmLibButton.innerHTML     = window.app.nls.views.admin.libraries.removeLibraries.button;
+        this.ui.libListLabel.innerHTML    = "<b>" + window.app.nls.views.admin.libraries.list.title + "</b>";
 
         let list                          = document.createElement("UL");
 
@@ -493,7 +490,7 @@ class AdminView extends View {
                 window.app.deletePlaylist(window.app.getPlaylistFromId(that.info.LIBRARIES[i].ID));
             });
             element.innerHTML             = "<b>" + this.info.LIBRARIES[i].NAME + "</b> - " + this.info.LIBRARIES[i].PATH + "<br>" +
-                                            this.info.LIBRARIES[i].NUMBER_TRACK + " tracks - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
+                                            this.info.LIBRARIES[i].NUMBER_TRACK + " " + (this.info.LIBRARIES[i].NUMBER_TRACK  > 1 ? window.app.nls.utils.tracks : window.app.nls.utils.track) + " - " + secondsToTimecode(this.info.LIBRARIES[i].TOTAL_DURATION);
 
             element.appendChild(rm);
             list.appendChild(element);
@@ -531,7 +528,7 @@ class AdminView extends View {
         this.currentPage = this._requestSCPage;
         this._clearPageSpace();
         this.ui.menuSC.className       = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "SyncThing management";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.syncthing.title;
 
         this.ui.apiKeyLabel            = document.createElement("P");
         this.ui.apiKeyField            = document.createElement("INPUT");
@@ -546,21 +543,18 @@ class AdminView extends View {
         this.ui.apiKeyField.value      = this.info.SYNC_KEY;
         this.ui.apiKeyField.type       = "text";
         this.ui.bufferField.value      = this.info.BUFFER_PATH;
-        this.ui.apiKeyLabel.innerHTML  = "<b>SyncThing API key</b><br>" +
+        this.ui.apiKeyLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.apiKey.title + "</b><br>" +
                                          "<br>" +
-                                         "In order to link ManaZeak with the SyncThing instance in the server, you must provide the SyncThing API key.<br>" +
-                                         "Please fill the following field with the key you can find on the SyncThing interface (use the OPEN button under).";
-        this.ui.apiKeyButton.innerHTML = "SUBMIT";
-        this.ui.bufferLabel.innerHTML  = "<b>Buffer path</b><br>" +
+                                         window.app.nls.views.admin.syncthing.apiKey.text;
+        this.ui.apiKeyButton.innerHTML = window.app.nls.views.admin.syncthing.apiKey.button;
+        this.ui.bufferLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.bufferPath.title + "</b><br>" +
                                          "<br>" +
-                                         "The buffer folder is the one selected to upload file in.<br>" +
-                                         "Please fill the following field with the buffer path.";
-        this.ui.bufferButton.innerHTML = "SUBMIT";
-        this.ui.rescanLabel.innerHTML  = "<b>Rescan SyncThing folders</b><br>" +
+                                         window.app.nls.views.admin.syncthing.bufferPath.text;
+        this.ui.bufferButton.innerHTML = window.app.nls.views.admin.syncthing.bufferPath.button;
+        this.ui.rescanLabel.innerHTML  = "<b>" + window.app.nls.views.admin.syncthing.rescanFolders.title + "</b><br>" +
                                          "<br>" +
-                                         "A SyncThing folder must be rescanned every time a modification is made on a file inside.<br>" +
-                                         "This command will perform a rescan on each SyncThing folder.";
-        this.ui.rescanButton.innerHTML = "RESCAN";
+                                         window.app.nls.views.admin.syncthing.rescanFolders.text;
+        this.ui.rescanButton.innerHTML = window.app.nls.views.admin.syncthing.rescanFolders.button;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -593,7 +587,7 @@ class AdminView extends View {
         this.currentPage = this._requestWishPage;
         this._clearPageSpace();
         this.ui.menuWish.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Wishes management";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.admin.wishes.title;
 
         let list                       = document.createElement("UL");
 
@@ -931,7 +925,7 @@ class AdminView extends View {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
-                if (window.debug && this.LOG) {
+                if (window.debug && that.LOG) {
                     console.log('    AdminView : _toggleInviteMode call');
                 }
 

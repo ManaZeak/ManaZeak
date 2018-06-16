@@ -206,13 +206,13 @@
 				"groups": {
 					"list": {
 						"title": "Group list",
-						"permissions": "permissions"
+						"permissions": " permissions"
 					},
 					"edit": {
 						"title": "Edit group",
 						"label": {
 							"name": "Group name:",
-							"permission": "Permisions:"
+							"permission": "<br>Permissions:"
 						},
 						"permissions": {
 							"LOGI": "Login",
@@ -245,11 +245,11 @@
 					"list": {
 						"title": "ManaZeak user list:",
 						"entry": {
-							"id": "User ID:      ",
-							"godfather": "Godfather:  ",
-							"manacoin": "ManaCoin: ",
-							"joined": "Joined on: ",
-							"login": "Last login: "
+							"id": "User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+							"godfather": "Godfather:&nbsp;&nbsp;",
+							"manacoin": "ManaCoin:&nbsp;",
+							"joined": "Joined on:&nbsp;",
+							"login": "Last login:&nbsp;"
 						}
 					}
 				}
@@ -267,11 +267,8 @@
                     "text": "In case of... Warning, this command apply to every user in ManaZeak.<br>This command will erase all libraries in the database.",
                     "button": "REMOVE ALL LIBRARIES"
                 },
-                "libraries": {
-                    "list": {
-                        "title": "Libraries list"
-                    },
-                    "tracks": "tracks"
+                "list": {
+                    "title": "Libraries list"
                 }
 			},
 			"wishes": {
@@ -303,38 +300,40 @@
             "artist": {
                 "entry": "Artist",
                 "title": "Artist statistics",
+                "default": "No stats yet to display about artists. Use ManaZeak before going there!",
                 "list": {
                     "topLabel": "Top Artists",
                     "flopLabel": "Flop Artists",
-                    "trackPlayed": "track played",
-                    "tracksPlayer": "tracks played",
+                    "untagged": "Untagged artist",
+                    "trackPlayed": " track played",
+                    "tracksPlayed": " tracks played",
                     "noTrackPlayed": "No track played"
                 }
             },
             "genre": {
                 "entry": "Genre",
                 "title": "Genre statistics",
+                "default": "No stats yet to display about genres. Use ManaZeak before going there!",
                 "list": {
                     "topLabel": "Top Genres",
                     "flopLabel": "Flop Genres",
-                    "trackPlayed": "track played",
-                    "tracksPlayer": "tracks played",
-                    "noTrackPlayed": "Never listened",
-                    "listeningCompletion": "average listening completion: "
+                    "untagged": "Untagged genre",
+                    "played": "played",
+                    "time": "time, is",
+                    "times": "times, is"
                 }
             },
             "track": {
                 "entry": "Track",
                 "title": "Track statistics",
+                "default": "No stats yet to display about tracks. Use ManaZeak before going there!",
                 "list": {
                     "topLabel": "Top Tracks",
                     "flopLabel": "Flop Tracks",
+                    "untagged": "Untagged track",
                     "played": "played",
-                    "time": "time",
-                    "times": "times",
-                    "tracksPlayer": "tracks played",
-                    "noTrackPlayed": "Never listened",
-                    "listeningCompletion": "average listening completion: "
+                    "time": "time, average listening: ",
+                    "times": "times, average listening: "
                 }
             }
         },
@@ -348,7 +347,14 @@
                     "text": "Warning, this action will remove you from the database with all your data.<br>Are you sure you want to remove your account ?",
                     "button": "DELETE MY ACCOUNT"
                 }
+            },
+            "uploads": {
+                "entry" : "Uploads",
+                "title": "Uploads settings"
             }
+        },
+        "party": {
+            "composed": "Composed by: "
         }
 	}
 }

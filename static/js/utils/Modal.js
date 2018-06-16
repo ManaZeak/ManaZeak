@@ -548,7 +548,7 @@ class Modal extends MzkObject {
         this._appendCloseButton();
 
         let that = this;
-        cancel.addEventListener("click", function() {
+        close.addEventListener("click", function() {
             that.close();
         });
     }
@@ -844,8 +844,8 @@ class Modal extends MzkObject {
         name.value                  = this.data.GROUP.NAME;
         cancel.innerHTML            = window.app.nls.button.cancel;
         save.innerHTML              = window.app.nls.button.save;
-        nameTitle.innerHTML         = "Group Name";
-        permsTitle.innerHTML        = "Permissions";
+        nameTitle.innerHTML         = window.app.nls.views.admin.groupsAndUsers.groups.edit.label.name;
+        permsTitle.innerHTML        = window.app.nls.views.admin.groupsAndUsers.groups.edit.label.permission;
 
         this._appendCloseButton();
 
@@ -867,9 +867,9 @@ class Modal extends MzkObject {
 
             boxContainer.appendChild(boxLbl);
         }
-
-        for(let i = 0; i < this.data.GROUP.PERMISSIONS.length; ++i) {
-            for(let j = 0; j < boxContainer.children.length; ++j)
+// TODO : translate ZEAZ from nls file
+        for (let i = 0; i < this.data.GROUP.PERMISSIONS.length; ++i) {
+            for (let j = 0; j < boxContainer.children.length; ++j)
                 if(boxContainer.children[j].firstChild.value == this.data.GROUP.PERMISSIONS[i])
                     boxContainer.children[j].firstChild.checked = true;
         }
@@ -880,7 +880,7 @@ class Modal extends MzkObject {
         });
         save.addEventListener('click', function() {
             let rights = {};
-            for(let i = 0; i < boxContainer.children.length; ++i)
+            for (let i = 0; i < boxContainer.children.length; ++i)
                 rights[boxContainer.children[i].firstChild.value] = boxContainer.children[i].firstChild.checked == true;
 
             window.app.changeGroup(that.data.GROUP.ID, name.value, rights);
@@ -926,7 +926,7 @@ class Modal extends MzkObject {
         let nbPerm = Object.keys(this.data.PERMISSIONS).length;
         for(let i = 0; i < this.data.GROUPS.length; ++i) {
             let li = document.createElement("LI");
-            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + " permissions)";
+            li.innerHTML = "<b>" + this.data.GROUPS[i].NAME + "</b> (" + this.data.GROUPS[i].PERMISSIONS.length + "/" + nbPerm + window.app.nls.views.admin.groupsAndUsers.groups.list.permissions + ")";
             li.value     = this.data.GROUPS[i].ID;
             if(li.value == this.data.USER.GROUP_ID) {
                 li.className = "mzk-selected";

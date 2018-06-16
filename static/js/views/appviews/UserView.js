@@ -67,9 +67,9 @@ class UserView extends View {
         this.ui.container.classList.add("mzk-user-view");
         this.ui.menu.className      = "mzk-left-menu";
         this.ui.content.className   = "mzk-content";
-        this.ui.menuTitle.innerHTML = "User";
-        this.ui.menuGen.innerHTML   = "General";
-        this.ui.menuUp.innerHTML   = "Uploads";
+        this.ui.menuTitle.innerHTML = window.app.nls.views.user.panel;
+        this.ui.menuGen.innerHTML   = window.app.nls.views.user.general.entry;
+        this.ui.menuUp.innerHTML   = window.app.nls.views.user.uploads.entry;
 
         this.ui.menuList.appendChild(this.ui.menuGen);
         this.ui.menuList.appendChild(this.ui.menuUp);
@@ -111,16 +111,15 @@ class UserView extends View {
         this._updateSettingsInfo();
         this._clearPageSpace();
         this.ui.menuGen.className          = "mzk-selected";
-        this.ui.contentTitle.innerHTML     = "General settings";
+        this.ui.contentTitle.innerHTML     = window.app.nls.views.user.general.title;
 
         this.ui.rescanLibLabel            = document.createElement("P");
         this.ui.rescanLibButton           = document.createElement("BUTTON");
 
-        this.ui.rescanLibLabel.innerHTML  = "<b>Remove my account</b><br>" +
+        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.views.user.general.removeAccount.title + "</b><br>" +
                                                 "<br>" +
-                                                "Warning, this action will remove you from the database with all your data.<br>" +
-                                                "Are you sure you want to remove your account ?";
-        this.ui.rescanLibButton.innerHTML = "DELETE MY ACCOUNT";
+                                                window.app.nls.views.user.general.removeAccount.text;
+        this.ui.rescanLibButton.innerHTML = window.app.nls.views.user.general.removeAccount.button;
 
         this.ui.rescanLibButton.addEventListener("click", function() {
             JSONParsedGetRequest(
@@ -166,7 +165,7 @@ class UserView extends View {
         this._updateSettingsInfo();
         this._clearPageSpace();
         this.ui.menuUp.className       = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Uploads";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.user.uploads.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));

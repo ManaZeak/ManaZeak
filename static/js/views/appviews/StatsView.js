@@ -67,10 +67,10 @@ class StatsView extends View {
         this.ui.container.classList.add("mzk-statsview");
         this.ui.menu.className       = "mzk-left-menu";
         this.ui.content.className    = "mzk-content";
-        this.ui.menuTitle.innerHTML  = "Statistics";
-        this.ui.menuArtist.innerHTML = "Artist";
-        this.ui.menuTrack.innerHTML  = "Track";
-        this.ui.menuGenre.innerHTML  = "Genre";
+        this.ui.menuTitle.innerHTML  = window.app.nls.views.stats.panel;
+        this.ui.menuArtist.innerHTML = window.app.nls.views.stats.artist.entry;
+        this.ui.menuTrack.innerHTML  = window.app.nls.views.stats.track.entry;
+        this.ui.menuGenre.innerHTML  = window.app.nls.views.stats.genre.entry;
 
         this.ui.menuList.appendChild(this.ui.menuArtist);
         this.ui.menuList.appendChild(this.ui.menuTrack);
@@ -114,7 +114,7 @@ class StatsView extends View {
         this._clearPageSpace();
 
         this.ui.menuArtist.className   = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Artists statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.stats.artist.title;
 
         let artistsLeft                = document.createElement("DIV");
         let artistsRight               = document.createElement("DIV");
@@ -157,12 +157,12 @@ class StatsView extends View {
                     if (response.ERROR_H1 !== "null") {
                         prefArtistsLabel.innerHTML     = "";
                         leastArtistsLabel.innerHTML    = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about artists. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.views.stats.artist.default;
                     }
 
                     else {
-                        prefArtistsLabel.innerHTML     = "Top Artists";
-                        leastArtistsLabel.innerHTML    = "Flop Artists";
+                        prefArtistsLabel.innerHTML     = window.app.nls.views.stats.artist.list.topLabel;
+                        leastArtistsLabel.innerHTML    = window.app.nls.views.stats.artist.list.flopLabel;
                         that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
                         that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
                     }
@@ -189,7 +189,7 @@ class StatsView extends View {
         this._clearPageSpace();
 
         this.ui.menuGenre.className    = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Genres statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.stats.genre.title;
 
         let genresLeft                 = document.createElement("DIV");
         let genresRight                = document.createElement("DIV");
@@ -232,12 +232,12 @@ class StatsView extends View {
                     if (response.ERROR_H1 !== "null") {
                         prefGenresLabel.innerHTML      = "";
                         leastGenresLabel.innerHTML     = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about genres. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.views.stats.genre.default;
                     }
 
                     else {
-                        prefGenresLabel.innerHTML      = "Top Genres";
-                        leastGenresLabel.innerHTML     = "Flop Genres";
+                        prefGenresLabel.innerHTML      = window.app.nls.views.stats.genre.list.topLabel;
+                        leastGenresLabel.innerHTML     = window.app.nls.views.stats.genre.list.flopLabel;
                         that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
                         that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
                     }
@@ -264,7 +264,7 @@ class StatsView extends View {
         this._clearPageSpace();
 
         this.ui.menuTrack.className    = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Tracks statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.views.stats.track.title;
 
         let tracksLeft                 = document.createElement("DIV");
         let tracksRight                = document.createElement("DIV");
@@ -300,7 +300,7 @@ class StatsView extends View {
                  *     PREF_TRACKS      : [][]
                  *     LEAST_TRACKS     : [][]
                  * } */
-                if (window.debug && this.LOG) {
+                if (window.debug && that.LOG) {
                     console.log('    StatsView : _requestTrackPage server response');
                 }
 
@@ -308,12 +308,12 @@ class StatsView extends View {
                     if (response.ERROR_H1 !== "null") {
                         prefTracksLabel.innerHTML      = "";
                         leastTracksLabel.innerHTML     = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about tracks. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.views.stats.track.default;
                     }
 
                     else {
-                        prefTracksLabel.innerHTML      = "Top Tracks";
-                        leastTracksLabel.innerHTML     = "Flop Tracks";
+                        prefTracksLabel.innerHTML      = window.app.nls.views.stats.track.list.topLabel;
+                        leastTracksLabel.innerHTML     = window.app.nls.views.stats.track.list.flopLabel;
                         that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
                         that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
                     }
@@ -360,11 +360,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (leastArtists[i][0] !== "") {
-                    entry.innerHTML =  counter + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML =  counter + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + (leastArtists[i][1] > 1 ? window.app.nls.views.stats.artist.list.tracksPlayed : window.app.nls.views.stats.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML =  counter + ". Untagged artist (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML =  counter + ". " + window.app.nls.views.stats.artist.list.untagged + " (" + leastArtists[i][1] + (leastArtists[i][1] > 1 ? window.app.nls.views.stats.artist.list.tracksPlayed : window.app.nls.views.stats.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -391,11 +391,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (prefArtists[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + (prefArtists[i][1] > 1 ? window.app.nls.views.stats.artist.list.tracksPlayed : window.app.nls.views.stats.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged artist (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.views.stats.artist.list.untagged + " (" + prefArtists[i][1] + (prefArtists[i][1] > 1 ? window.app.nls.views.stats.artist.list.tracksPlayed : window.app.nls.views.stats.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -422,11 +422,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (leastGenres[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + leastGenres[i][0] + " (" + window.app.nls.views.stats.genre.list.played + " " + leastGenres[i][1] + " " + (leastGenres[i][1] > 1 ? window.app.nls.views.stats.genre.list.times : window.app.nls.views.stats.genre.list.time) + " " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged genre (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.views.stats.genre.list.untagged + " (" + window.app.nls.views.stats.genre.list.played + " " + leastGenres[i][1] + " " + leastGenres[i][1] + " " + (leastGenres[i][1] > 1 ? window.app.nls.views.stats.genre.list.times : window.app.nls.views.stats.genre.list.time) + " " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -453,11 +453,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (prefGenres[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefGenres[i][0] + " (" + window.app.nls.views.stats.genre.list.played + " " + prefGenres[i][1] + " " + (prefGenres[i][1] > 1 ? window.app.nls.views.stats.genre.list.times : window.app.nls.views.stats.genre.list.time) + " " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged genre (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.views.stats.genre.list.untagged + " (" + window.app.nls.views.stats.genre.list.played + " " + prefGenres[i][1] + " " + (prefGenres[i][1] > 1 ? window.app.nls.views.stats.genre.list.times : window.app.nls.views.stats.genre.list.time) + " " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -484,11 +484,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (leastTracks[i][0]) {
-                    entry.innerHTML = counter + ". " + leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + leastTracks[i][0] + " (" + window.app.nls.views.stats.track.list.played + " " + leastTracks[i][1] + " " + (leastTracks[i][1] > 1 ? window.app.nls.views.stats.track.list.times : window.app.nls.views.stats.track.list.time) + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged track (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.views.stats.track.list.untagged + " (" + window.app.nls.views.stats.track.list.played + " " + leastTracks[i][1] + " " + (leastTracks[i][1] > 1 ? window.app.nls.views.stats.track.list.times : window.app.nls.views.stats.track.list.time) + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -516,11 +516,11 @@ class StatsView extends View {
                 let entry = document.createElement("LI");
 
                 if (prefTracks[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefTracks[i][0] + " (" + window.app.nls.views.stats.track.list.played + " " + prefTracks[i][1] + " " + (prefTracks[i][1] > 1 ? window.app.nls.views.stats.track.list.times : window.app.nls.views.stats.track.list.time) + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged track (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.views.stats.track.list.untagged + " (" + window.app.nls.views.stats.track.list.played + " " + prefTracks[i][1] + " " + (prefTracks[i][1] > 1 ? window.app.nls.views.stats.track.list.times : window.app.nls.views.stats.track.list.time) + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
                 ++counter;
                 ui.appendChild(entry);
