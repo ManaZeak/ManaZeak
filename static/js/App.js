@@ -65,9 +65,10 @@ class App extends MzkObject {
             }
         };
 
+        let userLang = navigator.language || navigator.userLanguage;
 
         let that = this;
-        getNLS(this.cookies['csrftoken'], 'en', (nls) => { // TODO: get lang from user agent, deport code in utils.js
+        getNLS(this.cookies['csrftoken'], userLang.substr(0, 2), (nls) => {
             that.nls = nls;
             that.dragdrop        = new DragDrop(document.body);
             that.playlists       = new PlaylistCollection();
