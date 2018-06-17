@@ -67,12 +67,12 @@ class HelpCenterView extends View {
         this.ui.container.classList.add("mzk-user-view");
         this.ui.menu.className         = "mzk-left-menu";
         this.ui.content.className      = "mzk-content";
-        this.ui.menuTitle.innerHTML    = window.app.nls.views.help.panel;
-        this.ui.menuLibraries.innerHTML = window.app.nls.views.help.libraries.entry;
-        this.ui.menuShortcut.innerHTML = window.app.nls.views.help.shortcuts.entry;
-        this.ui.menuTagConvention.innerHTML = window.app.nls.views.help.tag.entry;
-        this.ui.menuRanksPerms.innerHTML = window.app.nls.views.help.ranks.entry;
-        this.ui.menuManaCoin.innerHTML = window.app.nls.views.help.manacoin.entry;
+        this.ui.menuTitle.innerHTML    = window.app.nls.helpView.panel;
+        this.ui.menuLibraries.innerHTML = window.app.nls.helpView.libraries.entry;
+        this.ui.menuShortcut.innerHTML = window.app.nls.helpView.shortcuts.entry;
+        this.ui.menuTagConvention.innerHTML = window.app.nls.helpView.tag.entry;
+        this.ui.menuRanksPerms.innerHTML = window.app.nls.helpView.ranks.entry;
+        this.ui.menuManaCoin.innerHTML = window.app.nls.helpView.manacoin.entry;
 
         this.ui.menuList.appendChild(this.ui.menuLibraries);
         this.ui.menuList.appendChild(this.ui.menuShortcut);
@@ -119,7 +119,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuShortcut.className     = "mzk-selected";
-        this.ui.contentTitle.innerHTML     = window.app.nls.views.help.shortcuts.title;
+        this.ui.contentTitle.innerHTML     = window.app.nls.helpView.shortcuts.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -133,7 +133,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuLibraries.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.libraries.title;
+        this.ui.contentTitle.innerHTML      = window.app.nls.helpView.libraries.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -152,46 +152,46 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuTagConvention.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.tag.title;
+        this.ui.contentTitle.innerHTML      = window.app.nls.helpView.tag.title;
 
         let intro = document.createElement('P');
-        intro.innerHTML = window.app.nls.views.help.tag.intro;
+        intro.innerHTML = window.app.nls.helpView.tag.intro;
 
         let fileConv = document.createElement('H2');
-        fileConv.innerHTMl = window.app.nls.views.help.tag.file.title;
+        fileConv.innerHTMl = window.app.nls.helpView.tag.file.title;
 
         let fileDesc = document.createElement('P');
-        fileDesc.innerHTMl = window.app.nls.views.help.tag.file.desc;
+        fileDesc.innerHTMl = window.app.nls.helpView.tag.file.desc;
 
         let dirSpec = document.createElement('H3');
-        dirSpec.innerHTML = window.app.nls.views.help.tag.file.dirTitle;
+        dirSpec.innerHTML = window.app.nls.helpView.tag.file.dirTitle;
 
         let dirContent = document.createElement('P');
-        dirContent.innerHTML = window.app.nls.views.help.tag.file.dir;
+        dirContent.innerHTML = window.app.nls.helpView.tag.file.dir;
 
         let ex = document.createElement('H4');
-        ex.innerHTML = window.app.nls.views.help.tag.file.exTitle;
+        ex.innerHTML = window.app.nls.helpView.tag.file.exTitle;
 
         let dirEx = document.createElement('P');
-        dirEx.innerHTML = window.app.nls.views.help.tag.file.exIntro;
+        dirEx.innerHTML = window.app.nls.helpView.tag.file.exIntro;
 
         let dirPath = document.createElement('P');
-        dirPath.innerHTML = window.app.nls.views.help.tag.file.exDirectory;
+        dirPath.innerHTML = window.app.nls.helpView.tag.file.exDirectory;
 
         let dirDesc = document.createElement('P');
-        dirDesc.innerHTML = window.app.nls.views.help.tag.file.exStructure;
+        dirDesc.innerHTML = window.app.nls.helpView.tag.file.exStructure;
 
         let dirCompo = document.createElement('P');
-        dirCompo.innerHTML = window.app.nls.views.help.tag.file.exTracks;
+        dirCompo.innerHTML = window.app.nls.helpView.tag.file.exTracks;
 
         let dirConclusion = document.createElement('P');
-        dirConclusion.innerHTML = window.app.nls.views.help.tag.file.exConclusion;
+        dirConclusion.innerHTML = window.app.nls.helpView.tag.file.exConclusion;
 
         let fileSpec = document.createElement('H3');
-        fileSpec.innerHTML = window.app.nls.views.help.tag.file.specTitle;
+        fileSpec.innerHTML = window.app.nls.helpView.tag.file.specTitle;
 
         let fileIntro = document.createElement('P');
-        fileIntro.innerHTML = window.app.nls.views.help.tag.file.specIntro;
+        fileIntro.innerHTML = window.app.nls.helpView.tag.file.specIntro;
 
         let fileSpecList = document.createElement('UL');
         fileSpecList.classList.add('earningManaCoinList');
@@ -206,16 +206,16 @@ class HelpCenterView extends View {
         let fileSpec9 = document.createElement('LI');
         let fileSpec10 = document.createElement('LI');
 
-        fileSpec1.innerHTML = window.app.nls.views.help.tag.file.spec1;
-        fileSpec2.innerHTML = window.app.nls.views.help.tag.file.spec2;
-        fileSpec3.innerHTML = window.app.nls.views.help.tag.file.spec3;
-        fileSpec4.innerHTML = window.app.nls.views.help.tag.file.spec4;
-        fileSpec5.innerHTML = window.app.nls.views.help.tag.file.spec5;
-        fileSpec6.innerHTML = window.app.nls.views.help.tag.file.spec6;
-        fileSpec7.innerHTML = window.app.nls.views.help.tag.file.spec7;
-        fileSpec8.innerHTML = window.app.nls.views.help.tag.file.spec8;
-        fileSpec9.innerHTML = window.app.nls.views.help.tag.file.spec9;
-        fileSpec10.innerHTML = window.app.nls.views.help.tag.file.spec10;
+        fileSpec1.innerHTML = window.app.nls.helpView.tag.file.spec1;
+        fileSpec2.innerHTML = window.app.nls.helpView.tag.file.spec2;
+        fileSpec3.innerHTML = window.app.nls.helpView.tag.file.spec3;
+        fileSpec4.innerHTML = window.app.nls.helpView.tag.file.spec4;
+        fileSpec5.innerHTML = window.app.nls.helpView.tag.file.spec5;
+        fileSpec6.innerHTML = window.app.nls.helpView.tag.file.spec6;
+        fileSpec7.innerHTML = window.app.nls.helpView.tag.file.spec7;
+        fileSpec8.innerHTML = window.app.nls.helpView.tag.file.spec8;
+        fileSpec9.innerHTML = window.app.nls.helpView.tag.file.spec9;
+        fileSpec10.innerHTML = window.app.nls.helpView.tag.file.spec10;
 
         fileSpecList.appendChild(fileSpec1);
         fileSpecList.appendChild(fileSpec2);
@@ -265,16 +265,16 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuRanksPerms.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.ranks.title;
+        this.ui.contentTitle.innerHTML      = window.app.nls.helpView.ranks.title;
 
         let intro = document.createElement('P');
-        intro.innerHTML = window.app.nls.views.help.ranks.text;
+        intro.innerHTML = window.app.nls.helpView.ranks.text;
 
         let ranks = document.createElement('H2');
-        ranks.innerHTML = window.app.nls.views.help.ranks.ranksSection.title;
+        ranks.innerHTML = window.app.nls.helpView.ranks.ranksSection.title;
 
         let ranksPublicDesc = document.createElement('P');
-        ranksPublicDesc.innerHTML = window.app.nls.views.help.ranks.ranksSection.desc;
+        ranksPublicDesc.innerHTML = window.app.nls.helpView.ranks.ranksSection.desc;
 
         let ranksPublic = document.createElement('UL');
         ranksPublic.classList.add('earningManaCoinList');
@@ -283,16 +283,16 @@ class HelpCenterView extends View {
         let ranksPublic2 = document.createElement('LI');
         let ranksPublic3 = document.createElement('LI');
 
-        ranksPublic1.innerHTML = "<b>Naab</b>" + window.app.nls.views.help.ranks.ranksSection.indexUnder + "XX";
-        ranksPublic2.innerHTML = "<b>User</b>" + window.app.nls.views.help.ranks.ranksSection.indexBetween + "XX" + window.app.nls.views.help.ranks.ranksSection.and + "YY";
-        ranksPublic3.innerHTML = "<b>Moderator</b>" + window.app.nls.views.help.ranks.ranksSection.indexOver + "XX";
+        ranksPublic1.innerHTML = "<b>Naab</b>" + window.app.nls.helpView.ranks.ranksSection.indexUnder + "XX";
+        ranksPublic2.innerHTML = "<b>User</b>" + window.app.nls.helpView.ranks.ranksSection.indexBetween + "XX" + window.app.nls.helpView.ranks.ranksSection.and + "YY";
+        ranksPublic3.innerHTML = "<b>Moderator</b>" + window.app.nls.helpView.ranks.ranksSection.indexOver + "XX";
 
         ranksPublic.appendChild(ranksPublic1);
         ranksPublic.appendChild(ranksPublic2);
         ranksPublic.appendChild(ranksPublic3);
 
         let ranksPrivDesc = document.createElement('P');
-        ranksPrivDesc.innerHTML = window.app.nls.views.help.ranks.ranksSection.special;
+        ranksPrivDesc.innerHTML = window.app.nls.helpView.ranks.ranksSection.special;
 
         let ranksPriv = document.createElement('UL');
         ranksPriv.classList.add('earningManaCoinList');
@@ -301,19 +301,19 @@ class HelpCenterView extends View {
         let ranksPriv2 = document.createElement('LI');
         let ranksPriv3 = document.createElement('LI');
 
-        ranksPriv1.innerHTML = "<b>Banned</b>" + window.app.nls.views.help.ranks.ranksSection.banned;
-        ranksPriv2.innerHTML = "<b>Admin</b>" + window.app.nls.views.help.ranks.ranksSection.admin;
-        ranksPriv3.innerHTML = "<b>Root</b>" + window.app.nls.views.help.ranks.ranksSection.root;
+        ranksPriv1.innerHTML = "<b>Banned</b>" + window.app.nls.helpView.ranks.ranksSection.banned;
+        ranksPriv2.innerHTML = "<b>Admin</b>" + window.app.nls.helpView.ranks.ranksSection.admin;
+        ranksPriv3.innerHTML = "<b>Root</b>" + window.app.nls.helpView.ranks.ranksSection.root;
 
         ranksPriv.appendChild(ranksPriv1);
         ranksPriv.appendChild(ranksPriv2);
         ranksPriv.appendChild(ranksPriv3);
 
         let perm = document.createElement('H2');
-        perm.innerHTML = window.app.nls.views.help.ranks.perms.title;
+        perm.innerHTML = window.app.nls.helpView.ranks.perms.title;
 
         let permDesc = document.createElement('P');
-        permDesc.innerHTML = window.app.nls.views.help.ranks.perms.desc;
+        permDesc.innerHTML = window.app.nls.helpView.ranks.perms.desc;
 
         // TODO : mk table depending on nls array of perms (for statement)
 
@@ -345,7 +345,7 @@ class HelpCenterView extends View {
 
         this._clearPageSpace();
         this.ui.menuManaCoin.className = "mzk-selected";
-        this.ui.contentTitle.innerHTML      = window.app.nls.views.help.manacoin.title;
+        this.ui.contentTitle.innerHTML      = window.app.nls.helpView.manacoin.title;
 
 
         let inShortItem1 = document.createElement('LI');
@@ -353,20 +353,20 @@ class HelpCenterView extends View {
         let inShortItem3 = document.createElement('LI');
         let inShortItem4 = document.createElement('LI');
 
-        inShortItem1.innerHTML = window.app.nls.views.help.manacoin.inShort1;
-        inShortItem2.innerHTML = window.app.nls.views.help.manacoin.inShort2;
-        inShortItem3.innerHTML = window.app.nls.views.help.manacoin.inShort3;
-        inShortItem4.innerHTML = window.app.nls.views.help.manacoin.inShort4;
+        inShortItem1.innerHTML = window.app.nls.helpView.manacoin.inShort1;
+        inShortItem2.innerHTML = window.app.nls.helpView.manacoin.inShort2;
+        inShortItem3.innerHTML = window.app.nls.helpView.manacoin.inShort3;
+        inShortItem4.innerHTML = window.app.nls.helpView.manacoin.inShort4;
 
 
         let intro = document.createElement('P');
-        intro.innerHTML = window.app.nls.views.help.manacoin.intro;
+        intro.innerHTML = window.app.nls.helpView.manacoin.intro;
 
         let earningMCTitle = document.createElement('H2');
-        earningMCTitle.innerHTML = window.app.nls.views.help.manacoin.earningTitle;
+        earningMCTitle.innerHTML = window.app.nls.helpView.manacoin.earningTitle;
 
         let earningMC = document.createElement('P');
-        earningMC.innerHTML = window.app.nls.views.help.manacoin.earningListTitle;
+        earningMC.innerHTML = window.app.nls.helpView.manacoin.earningListTitle;
 
         let earningMCList = document.createElement('UL');
         let earningItem1 = document.createElement('LI');
@@ -376,11 +376,11 @@ class HelpCenterView extends View {
         let earningItem5 = document.createElement('LI');
 
         earningMCList.classList.add('earningManaCoinList');
-        earningItem1.innerHTML = window.app.nls.views.help.manacoin.earningList1;
-        earningItem2.innerHTML = window.app.nls.views.help.manacoin.earningList2;
-        earningItem3.innerHTML = window.app.nls.views.help.manacoin.earningList3;
-        earningItem4.innerHTML = window.app.nls.views.help.manacoin.earningList4;
-        earningItem5.innerHTML = window.app.nls.views.help.manacoin.earningList5;
+        earningItem1.innerHTML = window.app.nls.helpView.manacoin.earningList1;
+        earningItem2.innerHTML = window.app.nls.helpView.manacoin.earningList2;
+        earningItem3.innerHTML = window.app.nls.helpView.manacoin.earningList3;
+        earningItem4.innerHTML = window.app.nls.helpView.manacoin.earningList4;
+        earningItem5.innerHTML = window.app.nls.helpView.manacoin.earningList5;
 
         earningMCList.appendChild(earningItem1);
         earningMCList.appendChild(earningItem2);
@@ -389,16 +389,16 @@ class HelpCenterView extends View {
         earningMCList.appendChild(earningItem5);
 
         let earningMCText = document.createElement('P');
-        earningMCText.innerHTML = window.app.nls.views.help.manacoin.earningOutro;
+        earningMCText.innerHTML = window.app.nls.helpView.manacoin.earningOutro;
 
         let listeningTitle = document.createElement('H3');
-        listeningTitle.innerHTML = window.app.nls.views.help.manacoin.listeningTitle;
+        listeningTitle.innerHTML = window.app.nls.helpView.manacoin.listeningTitle;
 
         let listeningText = document.createElement('P');
-        listeningText.innerHTML = window.app.nls.views.help.manacoin.listeningDesc;
+        listeningText.innerHTML = window.app.nls.helpView.manacoin.listeningDesc;
 
         let listeningInShortTitle = document.createElement('P');
-        listeningInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.listeningShort + '</b>';
+        listeningInShortTitle.innerHTML = '<b>' + window.app.nls.helpView.manacoin.listeningShort + '</b>';
 
         let listeningInShortList = document.createElement('UL');
         listeningInShortList.classList.add('earningManaCoinList');
@@ -406,13 +406,13 @@ class HelpCenterView extends View {
         listeningInShortList.appendChild(inShortItem3);
 
         let songRequestTitle = document.createElement('H3');
-        songRequestTitle.innerHTML = window.app.nls.views.help.manacoin.songReqTitle;
+        songRequestTitle.innerHTML = window.app.nls.helpView.manacoin.songReqTitle;
 
         let songRequestText = document.createElement('P');
-        songRequestText.innerHTML = window.app.nls.views.help.manacoin.songReqDesc;
+        songRequestText.innerHTML = window.app.nls.helpView.manacoin.songReqDesc;
 
         let songRequestInShortTitle = document.createElement('P');
-        songRequestInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.songReqShort + '</b>';
+        songRequestInShortTitle.innerHTML = '<b>' + window.app.nls.helpView.manacoin.songReqShort + '</b>';
 
         let songRequestInShortList = document.createElement('UL');
         songRequestInShortList.classList.add('earningManaCoinList');
@@ -421,13 +421,13 @@ class HelpCenterView extends View {
         songRequestInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let uploadTitle = document.createElement('H3');
-        uploadTitle.innerHTML = window.app.nls.views.help.manacoin.uploadTitle;
+        uploadTitle.innerHTML = window.app.nls.helpView.manacoin.uploadTitle;
 
         let uploadText = document.createElement('P');
-        uploadText.innerHTML = window.app.nls.views.help.manacoin.uploadDesc;
+        uploadText.innerHTML = window.app.nls.helpView.manacoin.uploadDesc;
 
         let uploadInShortTitle = document.createElement('P');
-        uploadInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.uploadShort + '</b>';
+        uploadInShortTitle.innerHTML = '<b>' + window.app.nls.helpView.manacoin.uploadShort + '</b>';
 
         let uploadInShortList = document.createElement('UL');
         uploadInShortList.classList.add('earningManaCoinList');
@@ -436,13 +436,13 @@ class HelpCenterView extends View {
         uploadInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let editTitle = document.createElement('H3');
-        editTitle.innerHTML = window.app.nls.views.help.manacoin.editTitle;
+        editTitle.innerHTML = window.app.nls.helpView.manacoin.editTitle;
 
         let editText = document.createElement('P');
-        editText.innerHTML = window.app.nls.views.help.manacoin.editDesc;
+        editText.innerHTML = window.app.nls.helpView.manacoin.editDesc;
 
         let editInShortTitle = document.createElement('P');
-        editInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.editShort + '</b>';
+        editInShortTitle.innerHTML = '<b>' + window.app.nls.helpView.manacoin.editShort + '</b>';
 
         let editInShortList = document.createElement('UL');
         editInShortList.classList.add('earningManaCoinList');
@@ -451,10 +451,10 @@ class HelpCenterView extends View {
         editInShortList.appendChild(inShortItem3.cloneNode(true));
 
         let achievementsTitle = document.createElement('H3');
-        achievementsTitle.innerHTML = window.app.nls.views.help.manacoin.achivTitle;
+        achievementsTitle.innerHTML = window.app.nls.helpView.manacoin.achivTitle;
 
         let achievementsText1 = document.createElement('P');
-        achievementsText1.innerHTML = window.app.nls.views.help.manacoin.achivDesc;
+        achievementsText1.innerHTML = window.app.nls.helpView.manacoin.achivDesc;
 
         let achievementsTypesList = document.createElement('UL');
         achievementsTypesList.classList.add('earningManaCoinList');
@@ -463,19 +463,19 @@ class HelpCenterView extends View {
         let achievementTypesItem2 = document.createElement('LI');
         let achievementTypesItem3 = document.createElement('LI');
 
-        achievementTypesItem1.innerHTML = window.app.nls.views.help.manacoin.achivEntry1;
-        achievementTypesItem2.innerHTML = window.app.nls.views.help.manacoin.achivEntry2;
-        achievementTypesItem3.innerHTML = window.app.nls.views.help.manacoin.achivEntry3;
+        achievementTypesItem1.innerHTML = window.app.nls.helpView.manacoin.achivEntry1;
+        achievementTypesItem2.innerHTML = window.app.nls.helpView.manacoin.achivEntry2;
+        achievementTypesItem3.innerHTML = window.app.nls.helpView.manacoin.achivEntry3;
 
         achievementsTypesList.appendChild(achievementTypesItem1);
         achievementsTypesList.appendChild(achievementTypesItem2);
         achievementsTypesList.appendChild(achievementTypesItem3);
 
         let achievementsText2 = document.createElement('P');
-        achievementsText2.innerHTML = window.app.nls.views.help.manacoin.achivOutro;
+        achievementsText2.innerHTML = window.app.nls.helpView.manacoin.achivOutro;
 
         let achievementsInShortTitle = document.createElement('P');
-        achievementsInShortTitle.innerHTML = '<b>' + window.app.nls.views.help.manacoin.achivShort + '</b>';
+        achievementsInShortTitle.innerHTML = '<b>' + window.app.nls.helpView.manacoin.achivShort + '</b>';
 
         let achievementsInShortList = document.createElement('UL');
         achievementsInShortList.classList.add('earningManaCoinList');
