@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from app import player, history, adminTools, wish, userSettings, fileUpload, user
+from app import player, history, adminTools, wish, userSettings, fileUpload, user, utils, language
 from app.collection import playlist, library
 from app.stats import stats, suggestion
 from app.track import track, editor
@@ -61,6 +61,7 @@ urlpatterns = [
 
     # Suggestions actions
     url(r'^suggestions/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
+    url(r'^suggestions/getTracksFromSameAlbum/$', suggestion.getTracksFromSameAlbum, name='getTracksFromSameAlbum'),
 
     # Wish actions
     url(r'^wish/submit/$', wish.createWish, name='createWish'),
@@ -86,6 +87,7 @@ urlpatterns = [
     url(r'^admin/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
     url(r'^admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
     url(r'^admin/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
+    url(r'^admin/refreshCrontab/$', utils.refreshCrontab, name='setCronJob'),
 
     # InviteCode section
     url(r'^admin/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
@@ -93,4 +95,7 @@ urlpatterns = [
 
     # File upload
     url(r'^file/upload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
+    
+    # Language
+    url(r'^language/', language.loadLanguage, name='loadLanguage'),
 ]

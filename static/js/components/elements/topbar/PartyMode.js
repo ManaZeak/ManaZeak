@@ -9,6 +9,11 @@
 class PartyMode {
 
     constructor(container) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      PartyMode construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -22,6 +27,10 @@ class PartyMode {
      * arg    : {object} container - The PartyMode container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('      PartyMode : _createUI call');
+        }
+
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -42,6 +51,10 @@ class PartyMode {
      * desc   : PartyMode event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      PartyMode : _eventListener call');
+        }
+
         this.ui.img.addEventListener("click", function() {
             window.app.showAppView("mzk_party");
         });

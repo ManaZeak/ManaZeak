@@ -12,6 +12,12 @@ class PlaylistCollection extends MzkObject {
 
     constructor() {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection construction');
+        }
+
         this.bank = {};
         this.size = 0;
     }
@@ -25,6 +31,10 @@ class PlaylistCollection extends MzkObject {
      * arg    : {object} playlist
      **/
     add(playlist) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : add call');
+        }
+
         if (this.get(playlist.id) == null) {
             this.bank[playlist.id] = playlist;
             ++this.size;
@@ -44,6 +54,11 @@ class PlaylistCollection extends MzkObject {
      * arg    : {inter} playlistID
      **/
     remove(playlistID) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : remove call');
+        }
+
+
         if (this.get(playlistID) != null) {
             delete this.bank[playlistID];
             --this.size;
@@ -64,6 +79,11 @@ class PlaylistCollection extends MzkObject {
      *          {string} name
      **/
     rename(playlistID, name) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : rename call');
+        }
+
+
         if (this.get(playlistID) != null) {
             this.bank[playlistID].setName(name);
             return true;
@@ -81,6 +101,10 @@ class PlaylistCollection extends MzkObject {
      * desc   : Clear the collection
      **/
     clear() {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : clear call');
+        }
+
         this.bank = {};
         this.size = 0;
     }
@@ -94,6 +118,11 @@ class PlaylistCollection extends MzkObject {
      * arg    : {boolean} includeDefault - whether to call on the default playlist
      **/
     forEach(callback, includeDefault) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : forEach call');
+        }
+
+
         for (let i in this.bank) {
             if (includeDefault != false || this.bank[i] != this.getDefault()) {
                 callback.call(this.bank[i]);
@@ -109,6 +138,11 @@ class PlaylistCollection extends MzkObject {
      * arg    : {function} filterFct
      **/
     filter(filterFct) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : filter call');
+        }
+
+
         let result = new Array(this.size);
         let j      = 0;
         for (let i in this.bank) {
@@ -130,6 +164,10 @@ class PlaylistCollection extends MzkObject {
      * arg    : {integer} playlistID
      **/
     get(playlistID) {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : get call');
+        }
+
         return this.bank[playlistID];
     }
 
@@ -140,6 +178,11 @@ class PlaylistCollection extends MzkObject {
      * desc   : Get the default playlist from the collection
      **/
     getDefault() {
+        if (window.debug && this.LOG) {
+            console.log('  PlaylistCollection : getDefault call');
+        }
+
+
         for (let i in this.bank) {
             return this.bank[i];
         }

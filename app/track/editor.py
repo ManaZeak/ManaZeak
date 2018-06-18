@@ -3,14 +3,17 @@ import hashlib
 import json
 
 import os
+
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
 from mutagen.id3 import ID3
 from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Genre, Playlist
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Check if the value can be converted to int
@@ -106,7 +109,11 @@ def updateDBInfo(response, track):
         else:
             extension = "jpg"
         md5Name.update(base64.b64decode(str(response['COVER'].split(",")[1])))
-        filePath = "/ManaZeak/static/img/covers/" + md5Name.hexdigest() + extension
+        # Check if the folder exists
+        filePath = "/ManaZeak/static/img/covers/"
+        if not os.path.isdir(filePath):
+            os.mkdir(filePath)  # Create the folder
+        filePath += + md5Name.hexdigest() + extension
         if not os.path.isfile(filePath):
             with open(filePath, 'wb+') as destination:
                 # Split the header with MIME type
@@ -187,7 +194,7 @@ def updateFileMetadata(track, tags):
         if tags.cover is not None:
             audioTag.add(APIC(data=tags.cover, type=3))
         audioTag.save(track.location)
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, updateFileMetadata)
     elif track.location.endswith(".flac"):
         audioTag = FLAC(track.location)
         if tags.trackTitle is not None:
@@ -224,13 +231,14 @@ def updateFileMetadata(track, tags):
             picture = audioTag.pictures
             picture[0].data = tags.cover
         audioTag.save(track.location)
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, updateFileMetadata)
     else:
-        data = errorCheckMessage(False, "formatError")
+        data = errorCheckMessage(False, ErrorEnum.FORMAT_ERROR, updateFileMetadata)
     return data
 
 
 # Change a track or tracks metadata
+@login_required(redirect_field_name='login.html', login_url='app:login')
 def changeTracksMetadata(request):
     if request.method == 'POST':
         user = request.user
@@ -253,13 +261,13 @@ def changeTracksMetadata(request):
                                     playlist.refreshView = True
                                     playlist.save()
                         else:
-                            data = errorCheckMessage(False, "dbError")
+                            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, changeTracksMetadata)
                     else:
-                        data = errorCheckMessage(False, "valueError")
+                        data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, changeTracksMetadata, user)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, changeTracksMetadata, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, changeTracksMetadata, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, changeTracksMetadata)
     return JsonResponse(data)

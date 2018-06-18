@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Wish
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Create a wish in the database
@@ -24,13 +25,13 @@ def createWish(request):
                 wish.text = strip_tags(str(response['WISH']))
                 wish.status = 0  # Not done; 1 Refused; 2 Accepted; 3 Read
                 wish.save()
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, createWish)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, createWish)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, createWish, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, createWish)
     return JsonResponse(data)
 
 
@@ -59,13 +60,13 @@ def getWishes(request):
                         'STATUS': wish.status,
                     })
 
-                data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
+                data = {**dict({'RESULT': data}), **errorCheckMessage(True, None, getWishes)}
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getWishes, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getWishes, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getWishes)
     return JsonResponse(data)
 
 
@@ -84,7 +85,7 @@ def setWishStatus(request):
                     try:
                         status = int(status)
                     except ValueError:
-                        return JsonResponse(errorCheckMessage(False, "valueError"))
+                        return JsonResponse(errorCheckMessage(False, ErrorEnum.VALUE_ERROR, setWishStatus, user))
 
                     # Wishes' status can be changed only if they are "not read"
                     if wish.status == 0:
@@ -101,18 +102,18 @@ def setWishStatus(request):
 
                             wish.status = status
                             wish.save()
-                            data = errorCheckMessage(True, None)
+                            data = errorCheckMessage(True, None, setWishStatus)
                             # TODO : Add notification logging for user
                         else:
-                            data = errorCheckMessage(False, "valueError")
+                            data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, setWishStatus, user)
                     else:
-                        data = errorCheckMessage(False, "valueError")
+                        data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, setWishStatus, user)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, setWishStatus)
             else:
-                data = errorCheckMessage(False, "badRequest")
+                data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, setWishStatus, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, setWishStatus, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, setWishStatus)
     return JsonResponse(data)

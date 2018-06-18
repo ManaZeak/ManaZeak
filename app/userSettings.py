@@ -3,8 +3,9 @@ import hashlib
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import InviteCode, UserPreferences
-from app.utils import errorCheckMessage, timeCodeToString
+from app.utils import timeCodeToString
 from app.wallet import calculateCurrentAvailableCash
 
 
@@ -34,11 +35,11 @@ def getUserSettings(request):
                     'GODFATHER_CODE': "Christ",
                     'GODFATHER_NAME': "Jesus",
                 }}
-            data = {**data, **errorCheckMessage(True, None)}
+            data = {**data, **errorCheckMessage(True, None, getUserSettings)}
         else:
-            data = errorCheckMessage(False, "dbError")
+            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getUserSettings)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserSettings)
     return JsonResponse(data)
 
 

@@ -1,5 +1,6 @@
 $mzk-track-preview-arrow-width: 5px;
 $mzk-track-preview-cover:       600px;
+$mzk-track-preview-max:         70vh;
 
 .mzk-track-preview {
     align-items:  center;
@@ -29,13 +30,16 @@ $mzk-track-preview-cover:       600px;
 
         span {
             @extend .mzk-hidden;
-            background-color: $mzk-bg-strong;;
+            background-color: $mzk-bg-strong;
             border:           solid $mzk-border-width $mzk-border-color;
             border-radius:    $mzk-border-radius * 2;
             bottom:           $footbar-height + $mzk-track-preview-arrow-width;
             height:           $mzk-track-preview-cover;
             left:             $footbar-padding;
+            max-height:       calc(#{$mzk-track-preview-max} - #{$footbar-height});
+            max-width:        calc(#{$mzk-track-preview-max} - #{$footbar-height});
             position:         absolute;
+            pointer-events:   none;
             width:            $mzk-track-preview-cover;
             z-index:          1;
 

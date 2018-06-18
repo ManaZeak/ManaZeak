@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.history import addToHistory
 from app.models import Track
 from app.stats.stats import addToStats
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Scan all the attributes of an MP3 track, and add it to base.
@@ -89,15 +90,15 @@ def getTracksDetailedInfo(request):
                     if Track.objects.filter(id=trackId).count() == 1:
                         trackInfo.append(exportTrackInfo(Track.objects.get(id=trackId)))
                     else:
-                        data = errorCheckMessage(False, "dbError")
+                        data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getTracksDetailedInfo)
                         return JsonResponse(data)
-                data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None)}
+                data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None, getTracksDetailedInfo)}
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getTracksDetailedInfo, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getTracksDetailedInfo, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getTracksDetailedInfo)
     return JsonResponse(data)
 
 
@@ -136,15 +137,15 @@ def getTrackPath(request):
                     data = {
                         'TRACK_PATH': track.location,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, getTrackPath)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getTrackPath)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getTrackPath, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getTrackPath, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getTrackPath)
     return JsonResponse(data)
 
 
@@ -162,15 +163,15 @@ def getMoodbar(request):
                     data = {
                         'TRACK_MOOD': track.moodbar,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, getMoodbar)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getMoodbar)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getMoodbar, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getMoodbar, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getMoodbar)
     return JsonResponse(data)
 
 
@@ -190,15 +191,15 @@ def getDownloadLocation(request):
                     data = {
                         'DOWNLOAD_PATH': track.location,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, getDownloadLocation)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getDownloadLocation)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getDownloadLocation, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getDownloadLocation, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getDownloadLocation)
     return JsonResponse(data)
 
 
@@ -213,7 +214,7 @@ def multiTrackDownload(request):
                 trackIds = response['TRACKS_ID']
                 # TODO : create admin option max number of sound to download
                 if len(trackIds) > 50:
-                    return JsonResponse(errorCheckMessage(False, ""))
+                    return JsonResponse(errorCheckMessage(False, None, multiTrackDownload))
                 locations = []
 
                 # Getting tracks requested by the user
@@ -231,7 +232,7 @@ def multiTrackDownload(request):
                     try:
                         os.makedirs("/static/zip")
                     except OSError:
-                        return JsonResponse(errorCheckMessage(False, "dirCreationError"))
+                        return JsonResponse(errorCheckMessage(False, ErrorEnum.DIR_CREATION_ERROR, multiTrackDownload))
 
                 # Creating archive
                 archiveName = os.path.join("/static/zip", archiveName)
@@ -241,9 +242,9 @@ def multiTrackDownload(request):
 
                 data = {**{'DOWNLOAD_PATH': archiveName, }, **errorCheckMessage(True, None)}
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, multiTrackDownload)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, multiTrackDownload, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, multiTrackDownload)
     return JsonResponse(data)

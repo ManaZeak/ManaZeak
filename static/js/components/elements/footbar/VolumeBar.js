@@ -15,6 +15,12 @@ class VolumeBar extends MzkObject {
 
     constructor(container) {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar construction');
+        }
+
         this.isDragging   = false;
         this.volumeLockId = -1;
         this._createUI(container);
@@ -29,6 +35,10 @@ class VolumeBar extends MzkObject {
      * desc   : Delay volume bar invisibility
      **/
     delayHideVolume() {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : delayHideVolume call');
+        }
+
         let that = this;
 
         window.clearTimeout(this.volumeLockId);
@@ -47,6 +57,10 @@ class VolumeBar extends MzkObject {
      * arg    : {object} container - The VolumeBar container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _createUI call');
+        }
+
         this.ui        = {
             mute: {
                 button: document.createElement("A"),
@@ -83,6 +97,10 @@ class VolumeBar extends MzkObject {
      * desc   : VolumeBar event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _eventListener call');
+        }
+
         let that = this;
         this.ui.mute.image.addEventListener("click", function() {
             window.app.toggleMute();
@@ -102,6 +120,10 @@ class VolumeBar extends MzkObject {
      * desc   : Init default volume, set/store player empty source and listen
      **/
     _init() {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _init call');
+        }
+
         this._updateVolume(window.app.getVolume());
         this._eventListener();
         this._keyListener();
@@ -114,6 +136,10 @@ class VolumeBar extends MzkObject {
      * desc   : VolumeBar event listeners
      **/
     _keyListener() {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _keyListener call');
+        }
+
         let that = this;
         this.addShortcut(new Shortcut('keyup', 'ArrowUp', function() { that.delayHideVolume(); }));
         this.addShortcut(new Shortcut('keyup', 'ArrowDown', function() { that.delayHideVolume(); }));
@@ -127,6 +153,10 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseDown(event) {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _mouseDown call');
+        }
+
         if (!this.isDragging &&
             (event.target.classList.contains("mzk-volume-col") || event.target.classList.contains("mzk-volume-bar") || event.target.classList.contains("mzk-volume-thumb"))) {
             this.isDragging = true;
@@ -143,6 +173,10 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _mouseMove(event) {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _mouseMove call');
+        }
+
         if (this.isDragging) {
             this._moveVolume(event);
         }
@@ -155,6 +189,10 @@ class VolumeBar extends MzkObject {
      * desc   : Action on mouse up event
      **/
     _mouseUp() {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _mouseUp call');
+        }
+
         if (this.isDragging) {
             this.isDragging = false;
             toggleVisibilityLock(this.volumeBar.wrapper);
@@ -169,6 +207,10 @@ class VolumeBar extends MzkObject {
      * arg    : {object} event - MouseEvent
      **/
     _moveVolume(event) {
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _moveVolume call');
+        }
+
         let boundRect                       = this.volumeBar.container.getBoundingClientRect();
         let distanceToBottomInPx            = boundRect.bottom - event.clientY;
         let distanceToBottomInPr            = (distanceToBottomInPx * 100) / boundRect.height;
@@ -189,20 +231,24 @@ class VolumeBar extends MzkObject {
      * arg    : {int} volume - The volume to set
      **/
     _updateVolume(volume) {
-        volume                              *= 100;
-        this.volumeBar.current.style.height  = volume + "%";
-        this.volumeBar.thumb.style.bottom    = volume + "%";
+        if (window.debug && this.LOG) {
+            console.log('      VolumeBar : _updateVolume call');
+        }
+
+        volume                             *= 100;
+        this.volumeBar.current.style.height = volume + "%";
+        this.volumeBar.thumb.style.bottom   = volume + "%";
 
         if (volume === 0) {
-            this.ui.mute.image.src           = "/static/img/player/volume-mute.svg";
+            this.ui.mute.image.src = "/static/img/player/volume-mute.svg";
         }
 
         else if (volume > 0 && volume < 66) {
-            this.ui.mute.image.src           = "/static/img/player/volume-half.svg";
+            this.ui.mute.image.src = "/static/img/player/volume-half.svg";
         }
 
         else {
-            this.ui.mute.image.src           = "/static/img/player/volume-full.svg";
+            this.ui.mute.image.src = "/static/img/player/volume-full.svg";
         }
     }
 

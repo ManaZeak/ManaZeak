@@ -1,10 +1,14 @@
-from distutils import command
-
+import logging
 from crontab import CronTab
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.achievement import refreshAchievements, checkAchievement
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
+
+logger = logging.getLogger('django')
 
 
 # Split a table in 4 table of equal size
@@ -40,114 +44,6 @@ def timeCodeToString(timestamp):
     return str(timestamp.day).zfill(2) + "/" + str(timestamp.month).zfill(2) + \
            "/" + str(timestamp.year) + " - " + str(timestamp.hour) + ":" + \
            str(timestamp.minute)
-
-
-# Generate the base of any status message
-def errorCheckMessage(isDone, error):
-    errorTitle = ""
-    errorMessage = ""
-
-    if error is None:
-        errorTitle = "null"
-        errorMessage = "null"
-
-    elif error == "badFormat":
-        errorTitle = "Wrong format"
-        errorMessage = "The server didn't understood what you said."
-
-    elif error == "badRequest":
-        errorTitle = "Bad request"
-        errorMessage = "The server didn't expected this request."
-
-    elif error == "dbError":
-        errorTitle = "Database error"
-        errorMessage = "Something went wrong with the database."
-
-    elif error == "fileNotFound":
-        errorTitle = "No such file"
-        errorMessage = "The server didn't find the file you asked."
-
-    elif error == "dirNotFound":
-        errorTitle = "No such directory"
-        errorMessage = "The server didn't find the directory you asked."
-
-    elif error == "emptyLibrary":
-        errorTitle = "The library is empty"
-        errorMessage = "There is no file to add in the library"
-
-    elif error == "coverError":
-        errorTitle = "Can't create file"
-        errorMessage = "The server cannot generate the file for the covers, check the permissions."
-
-    elif error == "permissionError":
-        errorTitle = "Not permitted"
-        errorMessage = "You are not allowed to do this."
-
-    elif error == "rescanError":
-        errorTitle = "Library isn't ready"
-        errorMessage = "Another scan is running in background, be a little more patient"
-
-    elif error == "noHistory":
-        errorTitle = "Your history is empty"
-        errorMessage = "Can't go backward if you never played any song!"
-
-    elif error == "noSameArtist":
-        errorTitle = "No results were found"
-        errorMessage = "Can't find any track by the same artist"
-
-    elif error == "noSameGenre":
-        errorTitle = "No results were found"
-        errorMessage = "Can't find any track with the same genre"
-
-    elif error == "noSameAlbum":
-        errorTitle = "No results were found"
-        errorMessage = "Can't find any track with the same album"
-
-    elif error == "syncthingError":
-        errorTitle = "Fail to communicate with syncthing"
-        errorMessage = "Check if syncthing is running correctly"
-
-    elif error == "userDeleteError":
-        errorTitle = "Can't delete this user"
-        errorMessage = "You can't delete your own account if you are admin"
-
-    elif error == "noStats":
-        errorTitle = "Can't display stats"
-        errorMessage = "Use the application for generating stats"
-
-    elif error == "badFileName":
-        errorTitle = "The filename is invalid"
-        errorMessage = "Change the filename if you want to upload it"
-
-    elif error == "fileExists":
-        errorTitle = "File already exists"
-        errorMessage = "The file you want to upload exists already"
-
-    elif error == "valueError":
-        errorTitle = "Wrong value"
-        errorMessage = "The value wasn't expected"
-
-    elif error == "dNdError":
-        errorTitle = "The drag and drop hasn't been setup"
-        errorMessage = "The administrator didn't configured correctly the buffer folder"
-
-    elif error == "formatError":
-        errorTitle = "The format provided doesn't have support"
-        errorMessage = "We don't supports this extension"
-
-    elif error == "downloadLimit":
-        errorTitle = "You maximum download limit reached"
-        errorMessage = "Select less tracks and try again"
-
-    elif error == "dirCreationError":
-        errorTitle = "Can't create a folder"
-        errorMessage = "The application can't create a folder contact the administrator"
-
-    return {
-        'DONE': isDone,
-        'ERROR_H1': "" + errorTitle + "",
-        'ERROR_MSG': "" + errorMessage + "",
-    }
 
 
 def checkPermission(requirements, user):
@@ -275,17 +171,30 @@ def fillDefaultPermission(group):
 
 
 def setCronJobs():
-    print('Setting up cron shit')
     cron = CronTab("root")
-    # Checking the job allready present
-    if checkIfCronJobExists('test', cron):
-        job = cron.new(command='python /ManaZeak/manage.py testCron', comment='test')
-        job.minutes.every(1)
-        cron.write()
+    # Checking the job already present
     if checkIfCronJobExists('rescan', cron):
         job = cron.new(command='python /ManaZeak/manage.py rescan', comment='rescan')
-        job.hour.every(12)
+        job.hours.on(4)
+        job.dow.on('MON')
         cron.write()
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def refreshCrontab(request):
+    if request.method == 'GET':
+        user = request.user
+        if checkPermission(['LIBR'], user):
+            cron = CronTab("root")
+            for job in cron:
+                cron.remove(job)
+            setCronJobs()
+            data = errorCheckMessage(True, None, refreshCrontab)
+        else:
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, refreshCrontab, user)
+    else:
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, refreshCrontab)
+    return JsonResponse(data)
 
 
 def checkIfCronJobExists(comment, cron):

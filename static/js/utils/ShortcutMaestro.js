@@ -11,7 +11,14 @@ import MzkObject from '../core/MzkObject.js'
 class ShortcutMaestro extends MzkObject {
 
     constructor() {
+
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro construction');
+        }
+
         this.shortcuts  = {
             keydown:  {},
             keyup:    {},
@@ -30,6 +37,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     lock(sourceObject) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : lock call');
+        }
+
         this.stack.push(sourceObject);
     }
 
@@ -41,6 +52,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     registerShortcut(shortcut, sourceObject) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : registerShortcut call');
+        }
+
         let type = shortcut.getType();
         let key  = shortcut.getKey();
 
@@ -66,6 +81,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     unlock(sourceObject) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : unlock call');
+        }
+
         for (let i = this.stack.length; i >= 0; --i) {
             if (this.stack[i] == sourceObject) {
                 this.stack.splice(i, 1);
@@ -81,6 +100,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     unregisterShortcut(shortcut) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : unregisterShortcut call');
+        }
+
         let type = shortcut.getType();
         let key  = shortcut.getKey();
         if (this.shortcuts[type] != null && this.shortcuts[type][key] != null) {
@@ -100,6 +123,10 @@ class ShortcutMaestro extends MzkObject {
      * desc   : ShortcutMaestro event listener
      */
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : _eventListener call');
+        }
+
         document.addEventListener('keydown', this._relay.bind(this));
         document.addEventListener('keyup', this._relay.bind(this));
         document.addEventListener('keypress', this._relay.bind(this));
@@ -113,6 +140,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     _relay(event) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : _relay call');
+        }
+
         let fireable = this.shortcuts[event.type][event.code];
         if (fireable != null) {
             for (let i = 0; i < fireable.length; ++i) {
@@ -131,6 +162,10 @@ class ShortcutMaestro extends MzkObject {
      * args   : TODO
      */
     _canRun(shortcutCapsule, event) {
+        if (window.debug && this.LOG) {
+            console.log('  ShortcutMaestro : _canRun call');
+        }
+
         let blocked = this.stack.length == 0 ? false : this.stack[this.stack.length - 1] != shortcutCapsule.src;
         return !blocked && shortcutCapsule.short.modifiersOK(event);
     }

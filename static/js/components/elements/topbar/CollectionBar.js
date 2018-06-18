@@ -17,6 +17,11 @@ import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry construction');
+        }
+
         //TODO: free the listeners
         this.isLibrary             = playlist.getIsLibrary();
         this.playlist              = playlist;
@@ -50,6 +55,10 @@ class PlaylistCollectionEntry {
      * arg    : {string} name
      **/
     rename(name) {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry : rename call (' + name + this + ')');
+        }
+
         this.label.innerHTML = name;
     }
 
@@ -61,6 +70,10 @@ class PlaylistCollectionEntry {
      * arg    : {bool} isSelected
      **/
     setIsSelected(isSelected) {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry : setIsSelected call');
+        }
+
         this.isSelected = isSelected;
 
         if (this.isLibrary) {
@@ -92,11 +105,15 @@ class PlaylistCollectionEntry {
      * desc   : TODO
      **/
     _contextMenuSetup() {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry : _contextMenuSetup call');
+        }
+
         let that             = this;
         this.contextMenu     = null;
         this.contextMenu     = new ContextMenu(this.options, null, 'click');
 
-        this.contextMenu.addEntry(null, "Description", function() {
+        this.contextMenu.addEntry(null, window.app.nls.collectionBar.description, function() {
             that.modal = new Modal("editCollectionDescription", {
                 name:        that.playlist.name,
                 description: that.playlist.description,
@@ -112,21 +129,17 @@ class PlaylistCollectionEntry {
         });
 
         if ((this.playlist.getIsLibrary() && window.app.user.hasPermission("LIBR")) || (!this.playlist.getIsLibrary() && window.app.user.hasPermission("PLST"))) {
-            this.contextMenu.addEntry(null, "Download", function() {
-                that.modal = new Modal("editCollectionDescription", {
-                    name: that.playlist.name,
-                    id:   that.playlist.id
-                });
-                that.modal.open();
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.download, function() {
+                // TODO add download lib/playlist modal
             });
-            this.contextMenu.addEntry(null, "Rename", function() {
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.rename, function() {
                 that.modal = new Modal("renamePlaylist", {
                     name: that.playlist.name,
                     id:   that.playlist.id
                 });
                 that.modal.open();
             });
-            this.contextMenu.addEntry(null, "Delete", function() {
+            this.contextMenu.addEntry(null, window.app.nls.collectionBar.delete, function() {
                 that.modal = new Modal("deletePlaylist", {
                     playlist: that.playlist
                 });
@@ -137,6 +150,10 @@ class PlaylistCollectionEntry {
 
 
     _sendCollectionDescription(playlist, description) {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry : _sendCollectionDescription call');
+        }
+
         playlist.setDescription(description);
 
         JSONParsedPostRequest(
@@ -151,6 +168,10 @@ class PlaylistCollectionEntry {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('      PlaylistCollectionEntry : _sendCollectionDescription server response');
+                }
+
                 if (!response.DONE) {
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
                 }
@@ -165,6 +186,10 @@ class PlaylistCollectionEntry {
      * desc   : Append option button to entry
      **/
     _createOptionButton() {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistCollectionEntry : _createOptionButton call');
+        }
+
         let that               = this;
         // TODO : add admin options, or library options
         this.options           = document.createElement("A");
@@ -199,6 +224,11 @@ class CollectionBar extends MzkObject {
 
     constructor(collection, container) {
         super();
+
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar construction');
+        }
+
         this.collection = collection;
         this.entries    = [];
         this.newLibMenu = null;
@@ -217,6 +247,10 @@ class CollectionBar extends MzkObject {
      * desc   : Refresh the display from the collection
      **/
     refresh() {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : refresh call');
+        }
+
         this.libsContainer.innerHTML = '';
         this.playContainer.innerHTML = '';
         this.entries                 = [];
@@ -245,6 +279,10 @@ class CollectionBar extends MzkObject {
      * arg    : {int} id - the id of the playlist to select
      **/
     setSelected(id) {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : setSelected call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             if (this.entries[i].getID() == id) {
                 this.entries[i].setIsSelected(true);
@@ -260,6 +298,10 @@ class CollectionBar extends MzkObject {
      * desc   : Unselect every entry in playlist bar
      **/
     unSelectAll() {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : unselectAll call');
+        }
+
         for (let i = 0; i < this.entries.length; ++i) {
             this.entries[i].setIsSelected(false);
         }
@@ -273,17 +315,23 @@ class CollectionBar extends MzkObject {
      * desc   : Setup a context menu for Add library button and listen
      **/
     _contextMenuSetup() {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : _contextMenuSetup call');
+        }
+
         this.newLibMenu = new ContextMenu(this.newButton, null, 'click');
 
-        if(window.app.user.hasPermission("LIBR"))
-            this.newLibMenu.addEntry(null, 'New Library', function() {
+        if (window.app.user.hasPermission("LIBR")) {
+            this.newLibMenu.addEntry(null, window.app.nls.collectionBar.newLibrary, () => {
                 window.app.requestNewLibrary();
             });
+        }
 
-        if(window.app.user.hasPermission("PLST"))
-            this.newLibMenu.addEntry(null, 'New Playlist', function() {
+        if (window.app.user.hasPermission("PLST")) {
+            this.newLibMenu.addEntry(null, window.app.nls.collectionBar.newPlaylist, () => {
                 window.app.requestNewPlaylist();
             });
+        }
     }
 
 
@@ -294,6 +342,10 @@ class CollectionBar extends MzkObject {
      * arg    : {object} container - The CollectionBar container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : _createUI call');
+        }
+
         this.element                 = document.createElement('DIV');
         this.libsContainer           = document.createElement('DIV');
         this.playContainer           = document.createElement('DIV');
@@ -320,6 +372,10 @@ class CollectionBar extends MzkObject {
      * desc   : CollectionBar event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      CollectionBar : _eventListener call');
+        }
+
         let that = this;
         this.collection.listen(['add', 'remove', 'clear'], function() {
             that.refresh();

@@ -3,12 +3,27 @@
 vmzk="0.1.0"
 mzkdir=$(dirname $0)
 
+create_necessary_files()
+{
+    echo -en "Setting up necessary files ... "
+    if [ ! -d "log" ]; then
+      mkdir log
+    fi
+    if [ ! -f "log/debug.log" ]; then
+      touch log/debug.log
+    fi
+    echo -e "OK\n"
+}
+
 if [ $# -eq 0 ]; then
     echo -e "\e[31mERROR\e[39m No arguments supplied"
     echo -e "Script usage: ./mzk.sh --help"
 
 elif [ $1 = "init" ]; then
-    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment.\n"
+    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment."
+
+    create_necessary_files
+
     read -p "Please enter a path for your music library: " musicpath
     if [ -z $musicpath ]; then
 	musicpath="$HOME/Music"
@@ -35,10 +50,12 @@ elif [ $1 = "build" ]; then
     eval "npm install"
 
 elif [ $1 = "dev" ]; then
+    create_necessary_files
     eval "docker-compose up -d"
     eval "npm run dev"
 
 elif [ $1 = "prod" ]; then
+    create_necessary_files
     eval "docker-compose up -d"
     eval "npm run prod"
 

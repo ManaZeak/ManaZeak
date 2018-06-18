@@ -8,8 +8,9 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.adminTools import getAdminOptions
+from app.errors import ErrorEnum, errorCheckMessage
 from app.track.importer import setUploader
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Handle the file upload
@@ -27,22 +28,22 @@ def handleUploadedFile(request):
                         try:
                             os.makedirs(adminOptions.bufferPath)
                         except os.error:
-                            return JsonResponse(errorCheckMessage(False, "dNdError"))
+                            return JsonResponse(errorCheckMessage(False, ErrorEnum.DND_ERROR, handleUploadedFile))
                     filePath = os.path.join(adminOptions.bufferPath, name)
                     if not os.path.isfile(filePath):
                         with open(filePath, 'wb+') as destination:
                             # Split the header with MIME type
                             destination.write(base64.b64decode(str(response['CONTENT'].split(",")[1])))
                         setUploader(filePath, user.username)
-                        data = errorCheckMessage(True, None)
+                        data = errorCheckMessage(True, None, handleUploadedFile)
                     else:
-                        data = errorCheckMessage(False, "fileExists")
+                        data = errorCheckMessage(False, ErrorEnum.FILE_EXISTS, handleUploadedFile, user)
                 else:
-                    data = errorCheckMessage(False, "badFileName")
+                    data = errorCheckMessage(False, ErrorEnum.BAD_FILE_NAME, handleUploadedFile)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, handleUploadedFile, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, handleUploadedFile, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, handleUploadedFile)
     return JsonResponse(data)

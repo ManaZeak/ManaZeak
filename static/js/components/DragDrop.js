@@ -13,16 +13,21 @@ import { JSONParsedPostRequest } from '../utils/Utils.js'
 class DragDrop {
 
     constructor(element) {
-      this.element = element;
-      this.element.classList.add('mzk-dragdrop');
-      //this.wrapper = document.createElement('DIV');
-      //this.wrapper.className = 'mzk-dragdrop';
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  DragDrop construction');
+        }
 
-      //if(this.element.parentNode)
-      //    this.element.parentNode.replaceChild(this.wrapper, this.element);
+        this.element = element;
+        this.element.classList.add('mzk-dragdrop');
+        //this.wrapper = document.createElement('DIV');
+        //this.wrapper.className = 'mzk-dragdrop';
 
-      //this.wrapper.appendChild(this.element);
-      this._eventListener();
+        //if(this.element.parentNode)
+        //    this.element.parentNode.replaceChild(this.wrapper, this.element);
+
+        //this.wrapper.appendChild(this.element);
+        this._eventListener();
     }
 
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -33,6 +38,9 @@ class DragDrop {
      * desc   : DragDrop event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  DragDrop : _eventListener call');
+        }
         let that = this;
         this.element.addEventListener('dragenter', function() {
            that.element.classList.add('mzk-dragdrop-show');
@@ -60,6 +68,10 @@ class DragDrop {
                                 CONTENT:  event.target.result
                             }),
                             function(response) {
+                                if (window.debug && this.LOG) {
+                                    console.log('  DragDrop : _eventListener server response');
+                                }
+
                                 if (!response.DONE) {
                                     new Notification('INFO', 'Upload successful', 'Your file ' + f.name + ' has been uploaded.');
                                 }

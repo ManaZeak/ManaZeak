@@ -1,12 +1,14 @@
 import copy
 from operator import itemgetter
+from webbrowser import get
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Stats, Artist, Track, Genre
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Add track to stats for a user
@@ -65,17 +67,17 @@ def getUserPrefGenres(request):
             prefGenres = copy.deepcopy(genreTuple)
             genreTuple.sort(key=itemgetter(1), reverse=False)
             if len(prefGenres) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, ErrorEnum.NO_STATS, getUserPrefGenres)
             else:
                 data = {
                     'PREF_GENRES': prefGenres[:100],
                     'LEAST_GENRES': genreTuple[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefGenres)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getUserPrefGenres, user)
     else:
-        data = errorCheckMessage(False, "")
+        data = errorCheckMessage(False, None, getUserPrefGenres)
     return JsonResponse(data)
 
 
@@ -102,17 +104,17 @@ def getUserPrefArtists(request):
             prefArtists = copy.deepcopy(artistCounter)
             artistCounter.sort(key=itemgetter(1), reverse=False)
             if len(prefArtists) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, ErrorEnum.NO_STATS, getUserPrefArtists)
             else:
                 data = {
                     'PREF_ARTISTS': prefArtists[:100],
                     'LEAST_ARTISTS': artistCounter[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefArtists)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getUserPrefArtists, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPrefArtists)
     return JsonResponse(data)
 
 
@@ -139,17 +141,17 @@ def getUserPrefTracks(request):
                 else:
                     trackTupleLeast.append((stat.track.title, stat.playCounter, 0))
             if len(trackTuplePref) == 0:
-                data = errorCheckMessage(True, "noStats")
+                data = errorCheckMessage(True, ErrorEnum.NO_STATS, getUserPrefTracks)
             else:
                 data = {
                     'PREF_TRACKS': trackTuplePref[:100],
                     'LEAST_TRACKS': trackTupleLeast[:100],
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getUserPrefTracks)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, getUserPrefTracks, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPrefTracks)
     return JsonResponse(data)
 
 
@@ -189,9 +191,9 @@ def adminGetUserStats(request):
                     'NEVER_PLAYED': userNeverPlayed(user),
                 }
                 data.append(temp)
-            data = {**dict({'RESULT': data}), **errorCheckMessage(True, None)}
+            data = {**dict({'RESULT': data}), **errorCheckMessage(True, None, adminGetUserStats)}
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, adminGetUserStats, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, adminGetUserStats)
     return JsonResponse(data)

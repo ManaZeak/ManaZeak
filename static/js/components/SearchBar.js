@@ -12,6 +12,11 @@ class SearchBar {
 
     constructor() {
 
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar construction');
+        }
+
         this.isVisible = false;
         this._entries = [];
 
@@ -21,6 +26,10 @@ class SearchBar {
 
 
     show(firstLetter, rawEntries) {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : show call');
+        }
+
         this._formatEntries(rawEntries);
         this.isVisible = true;
         document.body.appendChild(this.ui.overlay);
@@ -30,6 +39,10 @@ class SearchBar {
 
 
     hide() {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : hide call');
+        }
+
         this.isVisible = false;
         this._clearResults();
         document.body.removeChild(this.ui.overlay);
@@ -46,6 +59,10 @@ class SearchBar {
      * arg    : {object} container - The UserMenu container
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _createUI call');
+        }
+
         this.ui = {
             overlay:         document.createElement('DIV'),
             container:       document.createElement('DIV'),
@@ -69,6 +86,10 @@ class SearchBar {
 
 
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _eventListener call');
+        }
+
         let that = this;
         // TODO : integrate w/ shortcut to aggro from body and preventDefault on keyboard event
         this.ui.input.addEventListener('keyup', function(event) {
@@ -85,9 +106,13 @@ class SearchBar {
 
 
     _search() {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _search call');
+        }
+
         this._clearResults();
 
-        if (this.ui.input.value.length > 1) {
+        if (this.ui.input.value.length > 2) { // Perform search only if three or more char have been entered
             for (let i = 0; i < this._entries.length; ++i) {
                 let result = matchItem(this._entries[i], this.ui.input.value); // Perform a matching test
 
@@ -100,6 +125,10 @@ class SearchBar {
 
 
     _newMatch(result) {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _newMatch call');
+        }
+
         let entry = document.createElement('DIV'); // Creating its entry
         let cover = document.createElement('DIV'); // Creating its entry
         let info = document.createElement('DIV'); // Creating its entry
@@ -144,11 +173,19 @@ class SearchBar {
 
 
     _clearResults() {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _clearResults call');
+        }
+
         this.ui.resultContainer.innerHTML = '';
     }
 
 
     _formatEntries(rawEntries) {
+        if (window.debug && this.LOG) {
+            console.log('  SearchBar : _formatEntries call');
+        }
+
         for (let i = 0; i < rawEntries.length; ++i) {
             this._entries.push({
                 track:    rawEntries[i],

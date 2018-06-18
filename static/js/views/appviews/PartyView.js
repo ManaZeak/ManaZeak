@@ -17,6 +17,12 @@ class PartyView extends View {
 
     constructor() {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    PartyView construction');
+        }
+
         this._createUI();
         this._eventListener();
         this._startClock();
@@ -31,6 +37,10 @@ class PartyView extends View {
      * desc   : Returns container while fetching details about current track in player
      **/
     getContainer() {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : getContainer call');
+        }
+
         let currentlyPlaying = window.app.player.getSourceID();
         if(currentlyPlaying != -1) {
 
@@ -83,6 +93,10 @@ class PartyView extends View {
                      *         FILE_NAME:
                      *     }
                      * } */
+                    if (window.debug && that.LOG) {
+                        console.log('    PartyView : getContainer server response');
+                    }
+
                     if (response.DONE) {
                         that._setCurrentTrack(new Track(response.RESULT[0]));
                     }
@@ -105,6 +119,10 @@ class PartyView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _createUI call');
+        }
+
         this.ui = {
             container:              this.container,
             mzkLogo:                document.createElement("IMG"),
@@ -193,6 +211,10 @@ class PartyView extends View {
      * desc   : PartyView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _eventListener call');
+        }
+
         let that = this;
         this.ui.close.addEventListener("click", function() {
             window.app.restorePageContent();
@@ -241,12 +263,16 @@ class PartyView extends View {
      * desc   : Change current track in view
      **/
     _setCurrentTrack(track) {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _setCurrentTrack call');
+        }
+
         this.ui.trackCover.src           = track.cover;
         this.ui.trackTitle.innerHTML     = track.title;
         this.ui.trackArtist.innerHTML    = track.artist;
         this.ui.trackYearAlbum.innerHTML = track.album + "&nbsp;&nbsp;—&nbsp;&nbsp;" + track.year;
 
-        this.ui.trackComposerLabel.innerHTML  = "Composed by:&nbsp;";
+        this.ui.trackComposerLabel.innerHTML  = window.app.nls.partyView.composed + "&nbsp;";
         this.ui.trackComposer.innerHTML  = this._setComposerString(track.composer);
 
         this.ui.trackGenre.innerHTML     = track.genre;
@@ -254,11 +280,19 @@ class PartyView extends View {
 
 
     _setComposerString(composer) {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _setComposerString call');
+        }
+
         return composer.replace(/;/g, "<br>");
     }
 
 
     _startClock() {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _startClock call');
+        }
+
         let that = this;
         window.setInterval(function() {
             that._updateClock()
@@ -266,6 +300,10 @@ class PartyView extends View {
     }
 
     _updateClock() {
+        if (window.debug && this.LOG) {
+            console.log('    PartyView : _updateClock call');
+        }
+
         this.ui.date.innerHTML = secondsToDate(new Date());
     }
 

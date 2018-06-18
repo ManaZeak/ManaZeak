@@ -14,6 +14,12 @@ class UserView extends View {
 
     constructor() {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    UserView construction');
+        }
+
         this.info  = null;
         this._createUI();
     }
@@ -26,6 +32,10 @@ class UserView extends View {
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _clearSpace call');
+        }
+
         this.ui.content.innerHTML = "";
         this._unselectAllMenuEntries();
     }
@@ -37,6 +47,10 @@ class UserView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _createUI call');
+        }
+
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
@@ -53,9 +67,9 @@ class UserView extends View {
         this.ui.container.classList.add("mzk-user-view");
         this.ui.menu.className      = "mzk-left-menu";
         this.ui.content.className   = "mzk-content";
-        this.ui.menuTitle.innerHTML = "User";
-        this.ui.menuGen.innerHTML   = "General";
-        this.ui.menuUp.innerHTML   = "Uploads";
+        this.ui.menuTitle.innerHTML = window.app.nls.userView.panel;
+        this.ui.menuGen.innerHTML   = window.app.nls.userView.general.entry;
+        this.ui.menuUp.innerHTML   = window.app.nls.userView.uploads.entry;
 
         this.ui.menuList.appendChild(this.ui.menuGen);
         this.ui.menuList.appendChild(this.ui.menuUp);
@@ -75,6 +89,10 @@ class UserView extends View {
      * desc   : UserView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _eventListener call');
+        }
+
         this.ui.menuGen.addEventListener("click", this._requestGeneralPage.bind(this));
         this.ui.menuUp.addEventListener("click", this._requestUploadsPage.bind(this));
     }
@@ -86,19 +104,22 @@ class UserView extends View {
      * desc   : Display the general page
      **/
     _requestGeneralPage() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _requestGeneralPage call');
+        }
+
         this._updateSettingsInfo();
         this._clearPageSpace();
         this.ui.menuGen.className          = "mzk-selected";
-        this.ui.contentTitle.innerHTML     = "General settings";
+        this.ui.contentTitle.innerHTML     = window.app.nls.userView.general.title;
 
         this.ui.rescanLibLabel            = document.createElement("P");
         this.ui.rescanLibButton           = document.createElement("BUTTON");
 
-        this.ui.rescanLibLabel.innerHTML  = "<b>Remove my account</b><br>" +
+        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.userView.general.removeAccount.title + "</b><br>" +
                                                 "<br>" +
-                                                "Warning, this action will remove you from the database with all your data.<br>" +
-                                                "Are you sure you want to remove your account ?";
-        this.ui.rescanLibButton.innerHTML = "DELETE MY ACCOUNT";
+                                                window.app.nls.userView.general.removeAccount.text;
+        this.ui.rescanLibButton.innerHTML = window.app.nls.userView.general.removeAccount.button;
 
         this.ui.rescanLibButton.addEventListener("click", function() {
             JSONParsedGetRequest(
@@ -109,6 +130,10 @@ class UserView extends View {
                      *     ERROR_H1  : string
                      *     ERROR_MSG : string
                      * } */
+                    if (window.debug && that.LOG) {
+                        console.log('    UserView : _requestGeneralPage call');
+                    }
+
                     if (response.DONE) {
                         window.location.reload();
                     }
@@ -133,10 +158,14 @@ class UserView extends View {
      * desc   : Display the uploads page
      **/
     _requestUploadsPage() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _requestUploadPage call');
+        }
+
         this._updateSettingsInfo();
         this._clearPageSpace();
         this.ui.menuUp.className       = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Uploads";
+        this.ui.contentTitle.innerHTML = window.app.nls.userView.uploads.title;
 
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
@@ -149,7 +178,12 @@ class UserView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _unselectAllMenuEntries call');
+        }
+
         this.ui.menuGen.className = "";
+        this.ui.menuUp.className  = "";
     }
 
 
@@ -159,6 +193,10 @@ class UserView extends View {
      * desc   : Updates settings information
      **/
     _updateSettingsInfo(callback) {
+        if (window.debug && this.LOG) {
+            console.log('    UserView : _updateSettingsInfo call');
+        }
+
         let that = this;
         JSONParsedGetRequest( // TODO : user the function in User class
             "user/getSettings/",
@@ -177,6 +215,10 @@ class UserView extends View {
                  *     GODFATHER_CODE:
                  *     GODFATHER_NAME:
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    UserView : _updateSettingsInfo server response');
+                }
+
                 if (response.DONE) {
                     that.info = response;
 

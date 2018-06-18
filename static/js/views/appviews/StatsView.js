@@ -14,6 +14,12 @@ class StatsView extends View {
 
     constructor() {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    StatsView construction');
+        }
+
         this._createUI();
     }
 
@@ -25,6 +31,10 @@ class StatsView extends View {
      * desc   : Clear the UI content div from all its child
      **/
     _clearPageSpace() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _clearSpace call');
+        }
+
         this.ui.content.innerHTML = "";
         this._unselectAllMenuEntries();
     }
@@ -36,6 +46,10 @@ class StatsView extends View {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _createUI call');
+        }
+
         this.ui = {
             container:    this.container,
             menu:         document.createElement("DIV"),
@@ -53,10 +67,10 @@ class StatsView extends View {
         this.ui.container.classList.add("mzk-statsview");
         this.ui.menu.className       = "mzk-left-menu";
         this.ui.content.className    = "mzk-content";
-        this.ui.menuTitle.innerHTML  = "Statistics";
-        this.ui.menuArtist.innerHTML = "Artist";
-        this.ui.menuTrack.innerHTML  = "Track";
-        this.ui.menuGenre.innerHTML  = "Genre";
+        this.ui.menuTitle.innerHTML  = window.app.nls.statsView.panel;
+        this.ui.menuArtist.innerHTML = window.app.nls.statsView.artist.entry;
+        this.ui.menuTrack.innerHTML  = window.app.nls.statsView.track.entry;
+        this.ui.menuGenre.innerHTML  = window.app.nls.statsView.genre.entry;
 
         this.ui.menuList.appendChild(this.ui.menuArtist);
         this.ui.menuList.appendChild(this.ui.menuTrack);
@@ -77,6 +91,10 @@ class StatsView extends View {
      * desc   : StatsView event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _eventListener call');
+        }
+
         this.ui.menuArtist.addEventListener("click", this._requestArtistPage.bind(this));
         this.ui.menuTrack.addEventListener("click", this._requestTrackPage.bind(this));
         this.ui.menuGenre.addEventListener("click", this._requestGenrePage.bind(this));
@@ -89,10 +107,14 @@ class StatsView extends View {
      * desc   : Display the artists page
      **/
     _requestArtistPage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestArtistPage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuArtist.className   = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Artists statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.statsView.artist.title;
 
         let artistsLeft                = document.createElement("DIV");
         let artistsRight               = document.createElement("DIV");
@@ -127,16 +149,20 @@ class StatsView extends View {
                  *     PREF_ARTISTS      : [][]
                  *     LEAST_ARTISTS     : [][]
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    StatsView : _requestArtistPage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefArtistsLabel.innerHTML     = "";
                         leastArtistsLabel.innerHTML    = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about artists. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.statsView.artist.default;
                     }
 
                     else {
-                        prefArtistsLabel.innerHTML     = "Top Artists";
-                        leastArtistsLabel.innerHTML    = "Flop Artists";
+                        prefArtistsLabel.innerHTML     = window.app.nls.statsView.artist.list.topLabel;
+                        leastArtistsLabel.innerHTML    = window.app.nls.statsView.artist.list.flopLabel;
                         that._updatePrefArtistsList(response.PREF_ARTISTS, prefArtists);
                         that._updateLeastArtistsList(response.LEAST_ARTISTS, leastArtists);
                     }
@@ -156,10 +182,14 @@ class StatsView extends View {
      * desc   : Display the genres page
      **/
     _requestGenrePage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestGenrePage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuGenre.className    = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Genres statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.statsView.genre.title;
 
         let genresLeft                 = document.createElement("DIV");
         let genresRight                = document.createElement("DIV");
@@ -194,16 +224,20 @@ class StatsView extends View {
                  *     PREF_GENRES      : [][]
                  *     LEAST_GENRES     : [][]
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    StatsView : _requestGenrePage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefGenresLabel.innerHTML      = "";
                         leastGenresLabel.innerHTML     = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about genres. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.statsView.genre.default;
                     }
 
                     else {
-                        prefGenresLabel.innerHTML      = "Top Genres";
-                        leastGenresLabel.innerHTML     = "Flop Genres";
+                        prefGenresLabel.innerHTML      = window.app.nls.statsView.genre.list.topLabel;
+                        leastGenresLabel.innerHTML     = window.app.nls.statsView.genre.list.flopLabel;
                         that._updatePrefGenresList(response.PREF_GENRES, prefGenres);
                         that._updateLeastGenresList(response.LEAST_GENRES, leastGenres);
                     }
@@ -223,10 +257,14 @@ class StatsView extends View {
      * desc   : Display the tracks page
      **/
     _requestTrackPage() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _requestTrackPage call');
+        }
+
         this._clearPageSpace();
 
         this.ui.menuTrack.className    = "mzk-selected";
-        this.ui.contentTitle.innerHTML = "Tracks statistic";
+        this.ui.contentTitle.innerHTML = window.app.nls.statsView.track.title;
 
         let tracksLeft                 = document.createElement("DIV");
         let tracksRight                = document.createElement("DIV");
@@ -262,16 +300,20 @@ class StatsView extends View {
                  *     PREF_TRACKS      : [][]
                  *     LEAST_TRACKS     : [][]
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('    StatsView : _requestTrackPage server response');
+                }
+
                 if (response.DONE) {
                     if (response.ERROR_H1 !== "null") {
                         prefTracksLabel.innerHTML      = "";
                         leastTracksLabel.innerHTML     = "";
-                        that.ui.contentTitle.innerHTML = "No stats yet to display about tracks. Use ManaZeak before going there!";
+                        that.ui.contentTitle.innerHTML = window.app.nls.statsView.track.default;
                     }
 
                     else {
-                        prefTracksLabel.innerHTML      = "Top Tracks";
-                        leastTracksLabel.innerHTML     = "Flop Tracks";
+                        prefTracksLabel.innerHTML      = window.app.nls.statsView.track.list.topLabel;
+                        leastTracksLabel.innerHTML     = window.app.nls.statsView.track.list.flopLabel;
                         that._updatePrefTracksList(response.PREF_TRACKS, prefTracks);
                         that._updateLeastTracksList(response.LEAST_TRACKS, leastTracks);
                     }
@@ -291,6 +333,10 @@ class StatsView extends View {
      * desc   : Unselect every entry in the left menu
      **/
     _unselectAllMenuEntries() {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _unselectAllMenuEntries call');
+        }
+
         this.ui.menuArtist.className = "";
         this.ui.menuTrack.className  = "";
         this.ui.menuGenre.className  = "";
@@ -304,17 +350,21 @@ class StatsView extends View {
      * arg    : {[int][int]} leastArtists - Key/Value artists array
      **/
     _updateLeastArtistsList(leastArtists, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastArtistsList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastArtists.length; ++i) {
             if (leastArtists[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (leastArtists[i][0] !== "") {
-                    entry.innerHTML =  counter + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML =  counter + ". " + leastArtists[i][0] + " (" + leastArtists[i][1] + (leastArtists[i][1] > 1 ? window.app.nls.statsView.artist.list.tracksPlayed : window.app.nls.statsView.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML =  counter + ". Untagged artist (" + leastArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML =  counter + ". " + window.app.nls.statsView.artist.list.untagged + " (" + leastArtists[i][1] + (leastArtists[i][1] > 1 ? window.app.nls.statsView.artist.list.tracksPlayed : window.app.nls.statsView.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -331,17 +381,21 @@ class StatsView extends View {
      * arg    : {[int][int]} prefArtists - Key/Value artists array
      **/
     _updatePrefArtistsList(prefArtists, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefArtistsList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefArtists.length; ++i) {
             if (prefArtists[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (prefArtists[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefArtists[i][0] + " (" + prefArtists[i][1] + (prefArtists[i][1] > 1 ? window.app.nls.statsView.artist.list.tracksPlayed : window.app.nls.statsView.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged artist (" + prefArtists[i][1] + " tracks played)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.statsView.artist.list.untagged + " (" + prefArtists[i][1] + (prefArtists[i][1] > 1 ? window.app.nls.statsView.artist.list.tracksPlayed : window.app.nls.statsView.artist.list.trackPlayed) + ")"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -358,17 +412,21 @@ class StatsView extends View {
      * arg    : {[][]} leastGenres - Key/Value tracks array
      **/
     _updateLeastGenresList(leastGenres, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastGenresList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastGenres.length; ++i) {
             if (leastGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (leastGenres[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + leastGenres[i][0] + " (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + leastGenres[i][0] + " (" + window.app.nls.statsView.genre.list.played + " " + leastGenres[i][1] + " " + (leastGenres[i][1] > 1 ? window.app.nls.statsView.genre.list.times : window.app.nls.statsView.genre.list.time) + " " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged genre (played " + leastGenres[i][1] + " times, is " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.statsView.genre.list.untagged + " (" + window.app.nls.statsView.genre.list.played + " " + leastGenres[i][1] + " " + leastGenres[i][1] + " " + (leastGenres[i][1] > 1 ? window.app.nls.statsView.genre.list.times : window.app.nls.statsView.genre.list.time) + " " + precisionRound(leastGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -385,17 +443,21 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefGenresList(prefGenres, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefGenresList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefGenres.length; ++i) {
             if (prefGenres[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (prefGenres[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefGenres[i][0] + " (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefGenres[i][0] + " (" + window.app.nls.statsView.genre.list.played + " " + prefGenres[i][1] + " " + (prefGenres[i][1] > 1 ? window.app.nls.statsView.genre.list.times : window.app.nls.statsView.genre.list.time) + " " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged genre (played " + prefGenres[i][1] + " times, is " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.statsView.genre.list.untagged + " (" + window.app.nls.statsView.genre.list.played + " " + prefGenres[i][1] + " " + (prefGenres[i][1] > 1 ? window.app.nls.statsView.genre.list.times : window.app.nls.statsView.genre.list.time) + " " + precisionRound(prefGenres[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -412,17 +474,21 @@ class StatsView extends View {
      * arg    : {[int][int]} leastTracks - Key/Value tracks array
      **/
     _updateLeastTracksList(leastTracks, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updateLeastTracksList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < leastTracks.length; ++i) {
             if (leastTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (leastTracks[i][0]) {
-                    entry.innerHTML = counter + ". " + leastTracks[i][0] + " (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + leastTracks[i][0] + " (" + window.app.nls.statsView.track.list.played + " " + leastTracks[i][1] + " " + (leastTracks[i][1] > 1 ? window.app.nls.statsView.track.list.times : window.app.nls.statsView.track.list.time) + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged track (played " + leastTracks[i][1] + " times, average listening : " + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.statsView.track.list.untagged + " (" + window.app.nls.statsView.track.list.played + " " + leastTracks[i][1] + " " + (leastTracks[i][1] > 1 ? window.app.nls.statsView.track.list.times : window.app.nls.statsView.track.list.time) + precisionRound(leastTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 ++counter;
@@ -440,17 +506,21 @@ class StatsView extends View {
      * arg    : {[int][int]} prefTracks - Key/Value tracks array
      **/
     _updatePrefTracksList(prefTracks, ui) {
+        if (window.debug && this.LOG) {
+            console.log('    StatsView : _updatePrefTracksList call');
+        }
+
         let counter = 1; // A must here since void element is not in a fixed index in array
         for (let i = 0; i < prefTracks.length; ++i) {
             if (prefTracks[i][0] !== null) {
                 let entry = document.createElement("LI");
 
                 if (prefTracks[i][0] !== "") {
-                    entry.innerHTML = counter + ". " + prefTracks[i][0] + " (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + prefTracks[i][0] + " (" + window.app.nls.statsView.track.list.played + " " + prefTracks[i][1] + " " + (prefTracks[i][1] > 1 ? window.app.nls.statsView.track.list.times : window.app.nls.statsView.track.list.time) + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
 
                 else {
-                    entry.innerHTML = counter + ". Untagged track (played " + prefTracks[i][1] + " times, average listening : " + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
+                    entry.innerHTML = counter + ". " + window.app.nls.statsView.track.list.untagged + " (" + window.app.nls.statsView.track.list.played + " " + prefTracks[i][1] + " " + (prefTracks[i][1] > 1 ? window.app.nls.statsView.track.list.times : window.app.nls.statsView.track.list.time) + precisionRound(prefTracks[i][2], 1) + "%)"; // 0 = name, 1 = counter
                 }
                 ++counter;
                 ui.appendChild(entry);

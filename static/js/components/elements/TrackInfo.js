@@ -16,6 +16,11 @@ const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSugge
 class TrackInfo {
 
     constructor(container) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo construction');
+        }
+
         this.inactivityTimeoutId = -1;    // ID for the inactivity timeout
         this.trackSuggestionMode = 0;     // 0: By Artists / 1: By Album / 2: By Genre
         this.track               = null;  // Track that triggered TrackInfo in view
@@ -43,6 +48,10 @@ class TrackInfo {
      * arg    : {bool} visible - The visibility status to set
      **/
     setVisible(visible) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : setVisible call');
+        }
+
         if (this.locked === true) {
             return;
         }
@@ -73,6 +82,10 @@ class TrackInfo {
      *          {int}  offset - The left offset to open TrackInfo with
      **/
     updateGeometry(rect, offset) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _updateGeometry call');
+        }
+
         this.ui.container.style.top    = (rect.top - 24) + "px";
         this.ui.container.style.left   = (rect.left + offset + 8) + "px"; // 8 come from the padding in col-title
         this.ui.container.style.height = "200px";
@@ -88,18 +101,22 @@ class TrackInfo {
      *          {function} callback - The function to callback (not mandatory)
      **/
     updateInfo(track, callback) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : updateInfo call');
+        }
+
         let that = this;
         window.app.updateTracksInfo([track], function() {
             that.track                        = track;
             that.ui.cover.src                 = track.cover;
             that.ui.title.innerHTML           = track.title;
             that.ui.artist.innerHTML          = track.artist;
-            that.ui.albumArtist.innerHTML     = "Album Artists : " + track.albumArtist;
-            that.ui.composer.innerHTML        = "Composer : " + track.composer;
-            that.ui.performer.innerHTML       = "Performer : " + track.performer;
-            that.ui.genre.innerHTML           = "Genre : " + track.genre;
+            that.ui.albumArtist.innerHTML     = window.app.nls.trackInfo.albumArtists + track.albumArtist;
+            that.ui.composer.innerHTML        = window.app.nls.trackInfo.composer + track.composer;
+            that.ui.performer.innerHTML       = window.app.nls.trackInfo.performer + track.performer;
+            that.ui.genre.innerHTML           = window.app.nls.trackInfo.genre + track.genre;
             that.ui.album.innerHTML           = track.year + " - " + track.album;
-            that.ui.numbers.innerHTML         = "track 1 / 12&nbsp;-&nbsp;disc 1 / 1";
+            that.ui.numbers.innerHTML         = window.app.nls.utils.track + '1 / 12&nbsp;-&nbsp;' + window.app.nls.utils.disc + '1 / 1';
             that.ui.trackDetails.innerHTML    = secondsToTimecode(track.duration) + " - " +
                                                     track.fileType + " - " +
                                                     Math.round(track.bitRate / 1000) + " kbps - " +
@@ -120,6 +137,10 @@ class TrackInfo {
      * arg    : {object} container - The TrackInfo container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _createUI call');
+        }
+
         this.ui = {
             container:            document.createElement("DIV"),
             cover:                document.createElement("IMG"),
@@ -193,6 +214,10 @@ class TrackInfo {
      * desc   : TrackInfo event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _eventListener call');
+        }
+
         let that = this;
         this.ui.container.addEventListener("mouseenter", function() {
             that.locked = true;
@@ -214,6 +239,10 @@ class TrackInfo {
      * desc   : Init suggestions from cookies and add listeners on UI elements
      **/
     _init() {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _init call');
+        }
+
         let cookies = getCookies();
 
         if (cookies.TRACK_INFO_SUGGESTION_MODE >= 0 && cookies.TRACK_INFO_SUGGESTION_MODE < TOTAL_SUGGESTIONS_MODES) {
@@ -235,6 +264,10 @@ class TrackInfo {
      * arg    : {bool} visible - TrackInfo visibility status to set
      **/
     _startInactivityTimeout(time) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _startInactivityTimeout call');
+        }
+
         let that = this;
         this.inactivityTimeoutId = window.setTimeout(function() {
             that.setVisible(false);
@@ -248,6 +281,10 @@ class TrackInfo {
      * desc   : Stops the inactivity timeout
      **/
     _stopInactivityTimeout() {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _stopInactivityTimeout call');
+        }
+
         if (this.inactivityTimeoutId !== -1) {
             window.clearTimeout(this.inactivityTimeoutId);
         }
@@ -260,6 +297,10 @@ class TrackInfo {
      * desc   : Event from changeSuggestionType attribute clicked to change suggestion mode
      **/
     _toggleChangeType() {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _toggleChangeType call');
+        }
+
         ++this.trackSuggestionMode;
         this._updateSuggestionMode();
         this._updateSuggestionTracks();
@@ -273,6 +314,10 @@ class TrackInfo {
      * arg    : {int} value - The set value (not mandatory)
      **/
     _updateSuggestionMode(value) {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _updateSuggestionMode call');
+        }
+
         if (value) {
             this.trackSuggestionMode              = value % TOTAL_SUGGESTIONS_MODES;
         }
@@ -285,17 +330,17 @@ class TrackInfo {
 
         switch (this.trackSuggestionMode) {
             case 0:
-                this.ui.suggestionTitle.innerHTML = "From the same artist :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.artist;
                 this.ui.changeSuggestionType.src  = "/static/img/music/artist.svg";
                 break;
 
             case 1:
-                this.ui.suggestionTitle.innerHTML = "From the same album :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.album;
                 this.ui.changeSuggestionType.src  = "/static/img/music/album.svg";
                 break;
 
             case 2:
-                this.ui.suggestionTitle.innerHTML = "From the same genre :";
+                this.ui.suggestionTitle.innerHTML = window.app.nls.trackInfo.suggestion.genre;
                 this.ui.changeSuggestionType.src  = "/static/img/music/genre.svg";
                 break;
 
@@ -317,6 +362,10 @@ class TrackInfo {
      * desc   : Fetch suggested tracks depending on trackSuggestionMode attribute and update UI
      **/
     _updateSuggestionTracks() {
+        if (window.debug && this.LOG) {
+            console.log('    TrackInfo : _updateSuggestionTracks call');
+        }
+
         let that = this;
         if (this.track !== null) {
             JSONParsedPostRequest(
@@ -367,6 +416,10 @@ class TrackInfo {
                      *         PLAY_COUNTER:
                      *         FILE_NAME:
                      * } */
+                    if (window.debug && this.LOG) {
+                        console.log('    TrackInfo : _updateSuggestionTracks server response');
+                    }
+
                     if (!response.DONE) {
                         that.tracks[0].ui.innerHTML             = response.ERROR_H1 + "<br>" + response.ERROR_MSG;
                         that.tracks[0].ui.style.opacity         = 1;

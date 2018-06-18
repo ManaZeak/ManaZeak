@@ -13,11 +13,16 @@ import EditTagEntry from './entries/EditTagEntry.js'
 class EditTag {
 
     constructor(container, data) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  EditTag construction');
+        }
+
         this.data     = data;
         this.send     = [];
         this.entries  = [];
         this.selector = new MultiSelect();
-        this.keepStr  = '< keep >';
+        this.keepStr  = window.app.nls.editTag.keep;
 
         this._createUI(container);
         this._eventListener();
@@ -33,6 +38,10 @@ class EditTag {
      * desc   : Sending modal info to backend
      **/
     saveState() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : saveState call');
+        }
+
         let send = [];
         let tracks = [];
 
@@ -82,6 +91,10 @@ class EditTag {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && this.LOG) {
+                    console.log('  EditTag : saveState server response');
+                }
+
                 if (response.DONE) {
                     window.app.updateTracksInfo(tracks);
                 } else {
@@ -100,6 +113,10 @@ class EditTag {
      * arg    : {object} container - The EditTag container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _createUI call');
+        }
+
         this._uiCreateVar();
         this._uiSetVar();
         this._uiAppendVar();
@@ -127,6 +144,10 @@ class EditTag {
      * desc   : EditTag event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _eventListener call');
+        }
+
         let that = this;
         this.selector.listen('clear', function() {
             for (let i = 0; i < that.entries.length; ++i) {
@@ -141,8 +162,7 @@ class EditTag {
         fileinput.type = 'file';
         fileinput.accept = 'image/png,image/jpeg,image/jpg';
         fileinput.onchange = function() {
-            if(fileinput.files[0])
-            {
+            if (fileinput.files[0]) {
                 let reader = new FileReader();
                 // This fires after the blob has been read/loaded.
                 reader.addEventListener('loadend', function(event) {
@@ -185,6 +205,10 @@ class EditTag {
      * desc   : Append UI elements, building final UI
      **/
     _uiAppendVar() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _uiAppendVar call');
+        }
+
         // Head --------------------------------------------------
         this.ui.cForm.appendChild(this.ui.cTitleLabel);
         this.ui.cForm.appendChild(this.ui.cTitleInput);
@@ -251,6 +275,10 @@ class EditTag {
      * desc   : Creating UI elements
      **/
     _uiCreateVar() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _uiCreateVar call');
+        }
+
         this.ui = {
             container:            document.createElement("DIV"),
             // List --------------------------
@@ -322,6 +350,10 @@ class EditTag {
      * desc   : Set UI elements
      **/
     _uiSetVar() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _uiSetVar call');
+        }
+
         this.ui.container.className            = "mzk-edit-tag";
         // List ------------------------------------------
         this.ui.list.className                 = "mzk-list";
@@ -329,62 +361,62 @@ class EditTag {
         this.ui.head.className                 = "mzk-head";
         this.ui.lContainer.className           = "mzk-img-container";
         this.ui.cContainer.className           = "mzk-art-tit-container";
-        this.ui.cTitleLabel.innerHTML          = "Title :";
+        this.ui.cTitleLabel.innerHTML          = window.app.nls.editTag.title;
         this.ui.cTitleInput.name               = "title";
         this.ui.cTitleInput.type               = "text";
         this.ui.cArtistLabel.className         = "mzk-space-up";
-        this.ui.cArtistLabel.innerHTML         = "Artist :";
+        this.ui.cArtistLabel.innerHTML         = window.app.nls.editTag.artist;
         this.ui.cArtistInput.name              = "artist";
         this.ui.cArtistInput.type              = "text";
         this.ui.rContainer.className           = "mzk-numbs-year-container";
         this.ui.rWrapper.className             = "mzk-item-wrapper";
         this.ui.rTrackContainer.className      = "mzk-item";
-        this.ui.rTrackLabel.innerHTML          = "Track # : ";
+        this.ui.rTrackLabel.innerHTML          = window.app.nls.editTag.trackN;
         this.ui.rTrackNumber.name              = "track-number";
         this.ui.rTrackNumber.type              = "text";
         this.ui.rTrackSeparator.innerHTML      = "/";
         this.ui.rTrackTotal.name               = "track-total";
         this.ui.rTrackTotal.type               = "text";
         this.ui.rDiscContainer.className       = "mzk-item";
-        this.ui.rDiscLabel.innerHTML           = "Disc # : ";
+        this.ui.rDiscLabel.innerHTML           = window.app.nls.editTag.discN;
         this.ui.rDiscNumber.name               = "disc-number";
         this.ui.rDiscNumber.type               = "text";
         this.ui.rDiscSeparator.innerHTML       = "/";
         this.ui.rDiscTotal.name                = "disc-number";
         this.ui.rDiscTotal.type                = "text";
         this.ui.rYearContainer.className       = "mzk-item";
-        this.ui.rYearLabel.innerHTML           = "Year : ";
+        this.ui.rYearLabel.innerHTML           = window.app.nls.editTag.year;
         this.ui.rYearNumber.name               = "year";
         this.ui.rYearNumber.type               = "text";
         this.ui.rYearNumber.className          = "mzk-year";
         // Tags ------------------------------------------
         this.ui.tags.className                 = "mzk-tags";
         this.ui.tagWrapper.className           = "mzk-tags-wrapper";
-        this.ui.tagAlbumLabel.innerHTML        = "Album :";
+        this.ui.tagAlbumLabel.innerHTML        = window.app.nls.editTag.album;
         this.ui.tagAlbumField.name             = "album";
         this.ui.tagAlbumField.type             = "text";
-        this.ui.tagAlbumArtistsLabel.innerHTML = "Album artists :";
+        this.ui.tagAlbumArtistsLabel.innerHTML = window.app.nls.editTag.albumArtists;
         this.ui.tagAlbumArtistsField.name      = "album-artists";
         this.ui.tagAlbumArtistsField.type      = "text";
-        this.ui.tagComposerLabel.innerHTML     = "Composer :";
+        this.ui.tagComposerLabel.innerHTML     = window.app.nls.editTag.composer;
         this.ui.tagComposerField.name          = "composer";
         this.ui.tagComposerField.type          = "text";
-        this.ui.tagPerformerLabel.innerHTML    = "Performer :";
+        this.ui.tagPerformerLabel.innerHTML    = window.app.nls.editTag.performer;
         this.ui.tagPerformerField.name         = "performer";
         this.ui.tagPerformerField.type         = "text";
-        this.ui.tagGenreLabel.innerHTML        = "Genre :";
+        this.ui.tagGenreLabel.innerHTML        = window.app.nls.editTag.genre;
         this.ui.tagGenreField.name             = "genre";
         this.ui.tagGenreField.type             = "text";
         this.ui.tagGenreField.className        = "mzk-no-margin";
         // Coms ------------------------------------------
         this.ui.coms.className                 = "mzk-coms";
         this.ui.comElement.className           = "mzk-element";
-        this.ui.comLabel.innerHTML             = "Comment :";
+        this.ui.comLabel.innerHTML             = window.app.nls.editTag.comment;
         this.ui.comField.name                  = "comment";
         this.ui.comField.row                   = "8";
         this.ui.comField.cols                  = "80";
         this.ui.lyrElement.className           = "mzk-element";
-        this.ui.lyrLabel.innerHTML             = "Lyrics :";
+        this.ui.lyrLabel.innerHTML             = window.app.nls.editTag.lyrics;
         this.ui.lyrField.name                  = "lyrics";
         this.ui.lyrField.row                   = "8";
         this.ui.lyrField.cols                  = "80";
@@ -401,6 +433,9 @@ class EditTag {
      * arg    : {object} track - The track to take data from
      **/
     _updateFields() {
+        if (window.debug && this.LOG) {
+            console.log('  EditTag : _updateFields call');
+        }
 
         let tracks = this.selector.get();
         let tmp;
@@ -437,7 +472,8 @@ class EditTag {
                                             tmp.fileType + " - " +
                                             Math.round(tmp.bitRate / 1000) + " kbps - " +
                                             tmp.sampleRate + " Hz";
-                this.ui.lineTwo.innerHTML = "This track has been played " + tmp.playCount + " times (" +
+                this.ui.lineTwo.innerHTML = window.app.nls.editTag.counter + tmp.playCount +
+                                            (tmp.playcount > 1 ? window.app.nls.editTag.times : window.app.nls.editTag.time) + '(' +
                                             secondsToTimecode(tmp.playCount * tmp.duration) + ")";
                 this.ui.lineOne.classList.remove('multiple');
                 this.ui.lineTwo.classList.remove('multiple');
@@ -447,18 +483,22 @@ class EditTag {
             }
         }
 
-        for(let i = 1; i < tracks.length; ++i) {
+        for (let i = 1; i < tracks.length; ++i) {
             tmp = this.entries[tracks[i]].track;
 
-            for(let f in fields)
-                if(fields[f] != tmp[f])
+            for (let f in fields) {
+                if (fields[f] != tmp[f]) {
                     fields[f] = this.keepStr;
+                }
+            }
         }
 
-        if(fields.cover == this.keepStr) //TODO: default image for <keep>
-            this.ui.lCover.src                 = 'FEAX_ZEAZ_PLEAZ';
-        else
-            this.ui.lCover.src                 = fields.cover;
+        if (fields.cover == this.keepStr) {//TODO: default image for <keep>
+            this.ui.lCover.src = 'FEAX_ZEAZ_PLEAZ';
+        }
+        else {
+            this.ui.lCover.src = fields.cover;
+        }
 
         this.ui.cTitleInput.value          = fields.title;
         this.ui.rYearNumber.value          = fields.year;

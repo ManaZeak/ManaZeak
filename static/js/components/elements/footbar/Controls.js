@@ -12,11 +12,21 @@ import QueuePreview from './QueuePreview.js'
 class Controls  {
 
     constructor(container, queuePreview, volumeBar) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      Controls construction');
+        }
+
         this._createUI(container, queuePreview, volumeBar);
-        if(queuePreview !== false)
+
+        if (queuePreview !== false) {
             this.queuePreview = new QueuePreview(this.ui.queueExpander.button);
-        if(volumeBar !== false)
+        }
+
+        if (volumeBar !== false) {
             this.volumeBar    = new VolumeBar(this.container);
+        }
+
         this._eventListener();
     }
 
@@ -29,6 +39,10 @@ class Controls  {
      * arg    : {object} container - The Controls container
      **/
     _createUI(container, queuePreview, volumeBar) {
+        if (window.debug && this.LOG) {
+            console.log('      Controls : _createUI call');
+        }
+
         this.container = document.createElement("DIV");
         this.ui        = {
             play: {
@@ -94,7 +108,7 @@ class Controls  {
         this.container.appendChild(this.ui.stop.button);
         this.container.appendChild(this.ui.next.button);
 
-        if(queuePreview !== false) {
+        if (queuePreview !== false) {
             this.container.appendChild(this.ui.queueExpander.button);
         }
 
@@ -108,6 +122,10 @@ class Controls  {
      * desc   : Controls event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      Controls : _eventListener call');
+        }
+
         let that = this;
         this.ui.play.button.addEventListener("click", function() { window.app.togglePlay(); });
         this.ui.stop.button.addEventListener("click", function() { window.app.stopPlayback(); });
@@ -116,9 +134,9 @@ class Controls  {
         this.ui.next.button.addEventListener("click", function() { window.app.next(); });
         this.ui.previous.button.addEventListener("click", function() { window.app.previous(); });
 
-        if(this.queuePreview) {
-            this.ui.queueExpander.button.addEventListener("click", function () {
-                if(event.target != that.ui.queueExpander.image && event.target != that.ui.queueExpander.button)
+        if (this.queuePreview) {
+            this.ui.queueExpander.button.addEventListener("click", function (event) {
+                if (event.target != that.ui.queueExpander.image && event.target != that.ui.queueExpander.button)
                     return;
                 if (that.queuePreview.getIsLocked()) {
                     let self = that;
@@ -175,6 +193,10 @@ class Controls  {
      * desc   : Change Play/Pause image source depending on player status
      **/
     _setPlayPause() {
+        if (window.debug && this.LOG) {
+            console.log('      Controls : _setPlayPause call');
+        }
+
         if (window.app.player.getIsPlaying() === true) {
             this.ui.play.image.src = "/static/img/player/pause.svg";
         }

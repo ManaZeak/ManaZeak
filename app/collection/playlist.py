@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator
+from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator, deleteView
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Playlist, Track
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Create an empty playlist
@@ -25,13 +26,13 @@ def newPlaylist(request):
                     'PLAYLIST_ID': playlist.id,
                     'PLAYLIST_NAME': playlist.name,
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, newPlaylist)}
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, newPlaylist, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, newPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, newPlaylist)
     return JsonResponse(data)
 
 
@@ -39,29 +40,31 @@ def newPlaylist(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def renamePlaylist(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response and 'PLAYLIST_NAME' in response:
-            user = request.user
             playlistId = strip_tags(response['PLAYLIST_ID'])
             if Playlist.objects.filter(id=playlistId, user=user).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId, user=user)
                 if (checkPermission(["PLST"], user) and not playlist.isLibrary) \
                         or (playlist.isLibrary and checkPermission(["LIBR"], user)):
+                    deleteView(playlist)
                     playlist.name = strip_tags(response['PLAYLIST_NAME'])
+                    playlist.refreshView = True
                     playlist.save()
                     data = {
                         'PLAYLIST_ID': playlist.id,
                         'PLAYLIST_NAME': playlist.name,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, renamePlaylist)}
                 else:
-                    data = errorCheckMessage(False, "permissionError")
+                    data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, renamePlaylist, user)
             else:
-                data = errorCheckMessage(False, "permissionError")
+                data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, renamePlaylist, user)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, renamePlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, renamePlaylist)
     return JsonResponse(data)
 
 
@@ -85,15 +88,15 @@ def addTracksToPlaylist(request):
                     # Set rescan flag for view generation
                     playlist.refreshView = True
                     playlist.save()
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, addTracksToPlaylist)
                 else:
-                    data = errorCheckMessage(False, "permissionError")
+                    data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, addTracksToPlaylist, user)
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, addTracksToPlaylist)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, addTracksToPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, addTracksToPlaylist)
     return JsonResponse(data)
 
 
@@ -112,15 +115,15 @@ def removeTracksFromPlaylist(request):
                     tracks = Track.objects.filter(id__in=tracksId)
                     for track in tracks:
                         playlist.track.remove(track)
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, removeTracksFromPlaylist)
                 else:
-                    data = errorCheckMessage(False, "permissionError")
+                    data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, removeTracksFromPlaylist, user)
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, removeTracksFromPlaylist)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, removeTracksFromPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, removeTracksFromPlaylist)
     return JsonResponse(data)
 
 
@@ -129,26 +132,27 @@ def removeTracksFromPlaylist(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def simplifiedLazyLoadingPlaylist(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'REQUEST_NUMBER' in response and 'PLAYLIST_ID' in response:
+
             playlistId = strip_tags(response['PLAYLIST_ID'])
             try:
                 reqNumber = int(strip_tags(response['REQUEST_NUMBER']))
             except ValueError:
-                return JsonResponse(errorCheckMessage(False, "valueError"))
+                return JsonResponse(errorCheckMessage(False, ErrorEnum.VALUE_ERROR, simplifiedLazyLoadingPlaylist, user))
             nbTracks = 300
             reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:
                 playlist = Playlist.objects.get(id=playlistId)
                 # Checking if it's the first request for creating the view
-                user = request.user
                 if reqNumber == 0:
                     # Checking if the user can display the asked playlist
                     if playlist.user == user or playlist.isLibrary:
                         if playlist.refreshView:
                             createViewForLazy(playlist)
                     else:
-                        return JsonResponse(errorCheckMessage(False, "permissionError"))
+                        return JsonResponse(errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
                     trackSet = getPlaylistTracks(playlist, nbTracks, reqNumber)
@@ -156,15 +160,15 @@ def simplifiedLazyLoadingPlaylist(request):
                     for row in trackSet:
                         data.append(lazyJsonGenerator(row))
                     data = dict({'RESULT': data})
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
-                    data = errorCheckMessage(False, None)
+                    data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, simplifiedLazyLoadingPlaylist)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, simplifiedLazyLoadingPlaylist, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, simplifiedLazyLoadingPlaylist)
     return JsonResponse(data)
 
 
@@ -172,6 +176,7 @@ def simplifiedLazyLoadingPlaylist(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getPlaylistInfo(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
             playlistId = strip_tags(response['PLAYLIST_ID'])
@@ -191,13 +196,13 @@ def getPlaylistInfo(request):
                     'GENRE_TOTAL': len(genres),
                     'AVERAGE_BIT_RATE': bitRate,
                 }
-                data = {**data, **errorCheckMessage(True, None)}
+                data = {**data, **errorCheckMessage(True, None, getPlaylistInfo)}
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getPlaylistInfo)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getPlaylistInfo, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getPlaylistInfo)
     return JsonResponse(data)
 
 
@@ -238,7 +243,7 @@ def getUserPlaylists(request):
             playlistDescriptions.append(playlist.description)
 
         if len(playlistIds) == 0:
-            data = errorCheckMessage(False, None)
+            data = errorCheckMessage(False, None, getUserPlaylists)
         else:
             # TODO : use JS0N convention
             data = {
@@ -248,9 +253,9 @@ def getUserPlaylists(request):
                 'PLAYLIST_IS_LIBRARY': isLibrary,
                 'PLAYLIST_DESCRIPTIONS': playlistDescriptions,
             }
-            data = {**data, **errorCheckMessage(True, None)}
+            data = {**data, **errorCheckMessage(True, None, getUserPlaylists)}
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPlaylists)
     return JsonResponse(data)
 
 
@@ -268,21 +273,21 @@ def setPlaylistDescription(request):
                 # Checking if it's a library
                 if playlist.isLibrary:
                     if not checkPermission(['LIBR'], user):
-                        return errorCheckMessage(False, "permissionError")
+                        return errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, setPlaylistDescription, user)
                 else:
                     # playlist edition
                     if not checkPermission(['PLST'], user):
-                        return errorCheckMessage(False, "permissionError")
+                        return errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, setPlaylistDescription, user)
                 playlist.description = strip_tags(response['PLAYLIST_DESC'])
                 playlist.save()
 
-                data = errorCheckMessage(True, None)
+                data = errorCheckMessage(True, None, setPlaylistDescription)
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, setPlaylistDescription)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, setPlaylistDescription, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, setPlaylistDescription)
     return JsonResponse(data)
 
 
@@ -290,6 +295,7 @@ def setPlaylistDescription(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getPlaylistDescription(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'PLAYLIST_ID' in response:
             playlistId = response['PLAYLIST_ID']
@@ -298,11 +304,11 @@ def getPlaylistDescription(request):
                 data = {
                     'PLAYLIST_DESC': playlist.description
                 }
-                data = {{**data, **errorCheckMessage(True, None)}}
+                data = {{**data, **errorCheckMessage(True, None, getPlaylistDescription)}}
             else:
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getPlaylistDescription)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getPlaylistDescription, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getPlaylistDescription)
     return JsonResponse(data)

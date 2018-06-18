@@ -9,6 +9,11 @@
 class MzkListener {
 
     constructor(name, description, callback, thisArg) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  MzkListener construction');
+        }
+
         this.name     = name;
         this.desc     = description;
         this.callback = callback;
@@ -25,6 +30,10 @@ class MzkListener {
      * arg    : {array} args - the arguments to be applied to the callback
      **/
     runCallback(args) {
+        if (window.debug && this.LOG) {
+            console.log('  MzkListener : runCallback call');
+        }
+
         if (this.active == true) {
             this.callback.apply(this.thisArg, args);
         }
@@ -38,6 +47,10 @@ class MzkListener {
      * arg    : {bool} active - the new state
      **/
     setActive(active) {
+        if (window.debug && this.LOG) {
+            console.log('  MzkListener : setActive call');
+        }
+
         this.active = active;
     }
 

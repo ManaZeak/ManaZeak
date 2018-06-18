@@ -5,10 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.history import addToHistory
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Shuffle, Playlist, Track, PlaylistSettings
-from app.stats.stats import addToStats
-from app.utils import errorCheckMessage, checkPermission
+from app.utils import checkPermission
 
 
 # Select a sound with shuffle mode enabled
@@ -69,15 +68,15 @@ def shuffleNextTrack(request):
                         'TRACK_ID': track.id,
                         'IS_LAST': playlistEnd,
                     }
-                    data = {**data, **errorCheckMessage(True, None)}
+                    data = {**data, **errorCheckMessage(True, None, shuffleNextTrack)}
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, shuffleNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, shuffleNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, shuffleNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, shuffleNextTrack)
     return JsonResponse(data)
 
 
@@ -99,17 +98,17 @@ def randomNextTrack(request):
                             data = {
                                 'TRACK_ID': track.id,
                             }
-                            data = {**data, **errorCheckMessage(True, None)}
+                            data = {**data, **errorCheckMessage(True, None, randomNextTrack)}
                             return JsonResponse(data)
                         else:
                             count += 1
-                data = errorCheckMessage(False, "dbError")
+                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, randomNextTrack)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, randomNextTrack, user)
         else:
-            data = errorCheckMessage(False, "permissionError")
+            data = errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, randomNextTrack, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, randomNextTrack)
     return JsonResponse(data)
 
 
@@ -117,12 +116,12 @@ def randomNextTrack(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def toggleRandom(request):
     if request.method == 'POST':
+        user = request.user
         response = json.loads(request.body)
         if 'RANDOM_MODE' in response and 'PLAYLIST_ID' in response:
             randomMode = strip_tags(response['RANDOM_MODE'])
             randomMode = int(randomMode)
             if randomMode in range(0, 3):
-                user = request.user
                 playlistId = strip_tags(response['PLAYLIST_ID'])
                 if Playlist.objects.filter(id=playlistId).count() == 1:
                     playlist = Playlist.objects.get(id=playlistId)
@@ -136,13 +135,13 @@ def toggleRandom(request):
                         settings.playlist = playlist
                     settings.randomMode = randomMode
                     settings.save()
-                    data = errorCheckMessage(True, None)
+                    data = errorCheckMessage(True, None, toggleRandom)
                 else:
-                    data = errorCheckMessage(False, "dbError")
+                    data = errorCheckMessage(False, ErrorEnum.DB_ERROR, toggleRandom)
             else:
-                data = errorCheckMessage(False, "badFormat")
+                data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, toggleRandom, user)
         else:
-            data = errorCheckMessage(False, "badFormat")
+            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, toggleRandom, user)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, toggleRandom)
     return JsonResponse(data)

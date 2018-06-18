@@ -6,7 +6,7 @@
  *                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import { getCookies, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
+import { getCookies, getNLS, setCookie, JSONParsedGetRequest, JSONParsedPostRequest, getRequest } from './utils/Utils.js'
 import FootBar  from './components/FootBar.js'
 import MzkObject from './core/MzkObject.js'
 import TopBar   from './components/TopBar.js'
@@ -31,23 +31,29 @@ import SearchBar from './components/SearchBar.js'
 class App extends MzkObject {
 
     constructor(callback) {
+
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('App construction');
+        } else {
+            this._consoleWelcome();
+        }
+
         this.cookies                 = getCookies();
         this.cookieTimeout           = null;
-        this.dragdrop                = new DragDrop(document.body);
         this.mainContainer           = document.createElement("DIV");
         this.mainContainer.className = "mzk-main-container";
         this.topBar                  = null;
         this.footBar                 = null;
         this.player                  = null;
-        this.playlists               = new PlaylistCollection();
         this.activePlaylist          = null;
         this.activeContextMenu       = null;
         this.cssFiles                = {};
         this.appViews                = {};
-        this.shortcutMaestro         = new ShortcutMaestro();
-        this.search                  = null;
         this.isSearchUp              = false;
+        this.search                  = null;
         this.availableViews          = {
             LIST: {
                 index: 0,
@@ -58,9 +64,17 @@ class App extends MzkObject {
                 class: null
             }
         };
-        this._consoleWelcome();
 
-        this.user                    = new User(callback);
+        let userLang = navigator.language || navigator.userLanguage;
+
+        let that = this;
+        getNLS(this.cookies['csrftoken'], userLang.substr(0, 2), (nls) => {
+            that.nls = nls;
+            that.dragdrop        = new DragDrop(document.body);
+            that.playlists       = new PlaylistCollection();
+            that.shortcutMaestro = new ShortcutMaestro();
+            that.user            = new User(callback);
+        });
     }
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -73,6 +87,10 @@ class App extends MzkObject {
      *          {array}  tracks
      **/
     addTracksToPlaylist(playlist, tracks) {
+        if (window.debug && this.LOG) {
+            console.log('App : addTracksToPlaylist call');
+        }
+
         if (!this.user.hasPermission("PLST")) {
             return;
         }
@@ -96,6 +114,10 @@ class App extends MzkObject {
                  *     ERROR_H1     : string
                  *     ERROR_MSG    : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : addTracksToPlaylist server response');
+                }
+
                 if (response.DONE) {
                     new Notification("INFO", "Tracks added to " + playlist.name, names + " have been added to " + playlist.name + ".");
                     playlist.getPlaylistsTracks();
@@ -114,6 +136,10 @@ class App extends MzkObject {
      * arg    : {float} amount - Value between 0 and 1
      **/
     adjustVolume(amount) {
+        if (window.debug && this.LOG) {
+            console.log('App : adjustVolume call');
+        }
+
          this.setVolume(this.player.getPlayer().volume + amount);
     }
 
@@ -125,6 +151,10 @@ class App extends MzkObject {
      * arg    : {string} path - Current track path
      **/
     changePageTitle(path) {
+        if (window.debug && this.LOG) {
+            console.log('App : changePageTitle call');
+        }
+
         // IDEA : Recontruct from Track attributes bc special char won't display as below ... (?/etc.)
         document.title = path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''); // Automatically remove path to file and any extension
     }
@@ -137,6 +167,10 @@ class App extends MzkObject {
      *
      **/
     getActivePlaylist() {
+        if (window.debug && this.LOG) {
+            console.log('App : getActivePlaylist call');
+        }
+
         return this.activePlaylist ? this.activePlaylist : null;
     }
 
@@ -147,6 +181,10 @@ class App extends MzkObject {
      * desc   : return the current volume
      **/
     getVolume() {
+        if (window.debug && this.LOG) {
+            console.log('App : getVolume call');
+        }
+
         return this.player.getVolume();
     }
 
@@ -159,6 +197,10 @@ class App extends MzkObject {
      *        : {object} rights
      **/
     changeGroup(groupID, name, rights) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeGroup call');
+        }
+
         if (!this.user.hasPermission("GRPE")) {
             return;
         }
@@ -177,6 +219,10 @@ class App extends MzkObject {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : changeGroup server response');
+                }
+
                 if (response.DONE) {
                     that.appViews['mzk_admin'].updateAdminInfo();
                     new Notification("ERROR", "Permissions updated", "Successfully updated permissions for group " + name);
@@ -199,6 +245,10 @@ class App extends MzkObject {
      *        : {string} userName
      **/
     changeUserGroup(userID, groupID, userName) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeUserGroup call');
+        }
+
         if (!this.user.hasPermission("GAPR")) {
             return;
         }
@@ -216,6 +266,10 @@ class App extends MzkObject {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : changeUserGroup server response');
+                }
+
                 if (response.DONE) {
                     that.user.getUserInfo();
                     that.appViews['mzk_admin'].updateAdminInfo();
@@ -236,6 +290,10 @@ class App extends MzkObject {
      * desc   : Change the active playlist
      **/
     changePlaylist(playlistID) {
+        if (window.debug && this.LOG) {
+            console.log('App : changePlaylist call');
+        }
+
         let newActive = playlistID != null ? this.playlists.get(playlistID) : this.playlists.getDefault();
         if (newActive) {
             this.activePlaylist = newActive;
@@ -255,6 +313,10 @@ class App extends MzkObject {
      *          {bool} previous - For server about history
      **/
     changeTrack(track, previous) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeTrack call');
+        }
+
         if (track == null) {
             return false;
         }
@@ -287,6 +349,10 @@ class App extends MzkObject {
                  *
                  *     TRACK_PATH  : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : changeTrack server response');
+                }
+
                 if (response.DONE) {
                     that.player.changeSource(".." + response.TRACK_PATH, track.id.track);
                     that.changePageTitle(response.TRACK_PATH);
@@ -310,6 +376,10 @@ class App extends MzkObject {
      * arg    : {object} view - The view to set
      **/
     changeView(view) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeView call');
+        }
+
         let container = view.getContainer();
         let isNew = container.parentNode != this.mainContainer;
 
@@ -339,8 +409,14 @@ class App extends MzkObject {
      * desc   : Close the active menu
      */
     closeActiveMenu() {
-        if(this.activeContextMenu)
+        if (window.debug && this.LOG) {
+            console.log('App : closeActiveView call');
+        }
+
+        if (this.activeContextMenu) {
             this.activeContextMenu.close();
+        }
+
         this.activeContextMenu = null;
     }
 
@@ -353,6 +429,10 @@ class App extends MzkObject {
      *          {object} view - The View object
      **/
     createAppView(name, view) {
+        if (window.debug && this.LOG) {
+            console.log('App : createAppView call for ' + name);
+        }
+
         if (this.appViews[name] == null) {
             this.appViews[name] = view;
             return true;
@@ -372,6 +452,10 @@ class App extends MzkObject {
      * arg    : {function} callback - Not mandatory
      **/
     deletePlaylist(playlist, callback) {
+        if (window.debug && this.LOG) {
+            console.log('App : deletePlaylist call for ' + playlist.name);
+        }
+
         if ((playlist.getIsLibrary() && !this.user.hasPermission("LIBR"))) {
             return;
         }
@@ -392,6 +476,10 @@ class App extends MzkObject {
                  *     ERROR_H1    : string
                  *     ERROR_MSG   : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : deletePlaylist server response');
+                }
+
                 if (response.DONE) {
                     that.appViews['mzk_admin'].updateAdminInfo();
                     that.playlists.remove(playlist.id);
@@ -426,6 +514,10 @@ class App extends MzkObject {
      *        : {function} callback - The function to callback - Mandatory
      **/
     deleteUser(id, callback) {
+        if (window.debug && this.LOG) {
+            console.log('App : deleteUser call');
+        }
+
         let that = this;
         JSONParsedPostRequest(
             "admin/removeUser/",
@@ -438,6 +530,10 @@ class App extends MzkObject {
                  *     ERROR_H1  : string
                  *     ERROR_MSG : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : deleteUser server response');
+                }
+
                 if (!response.DONE) {
                     that.appViews['mzk_admin'].updateAdminInfo();
                     new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
@@ -458,6 +554,10 @@ class App extends MzkObject {
      * arg    : {object} track - The track to download
      **/
     downloadTrack(track) {
+        if (window.debug && this.LOG) {
+            console.log('App : downloadTrack call');
+        }
+
         if (window.app.user.hasPermission("DOWN")) {
             JSONParsedPostRequest(
                 "track/download/",
@@ -472,6 +572,10 @@ class App extends MzkObject {
                      *
                      *     DOWNLOAD_PATH : string
                      * } */
+                    if (window.debug && that.LOG) {
+                        console.log('App : downloadTrack server response');
+                    }
+
                     if (response.DONE) {
                         let dl      = document.createElement("A");
                         dl.href     = response.DOWNLOAD_PATH;
@@ -499,6 +603,10 @@ class App extends MzkObject {
      * arg    : {[object]} tracks - The tracks to download
      **/
     downloadTracksZip(tracks) {
+        if (window.debug && this.LOG) {
+            console.log('App : downloadTracksZip call');
+        }
+
         if (window.app.user.hasPermission("DOWN")) {
             let ids    = new Array(tracks.length);
             for (let i = 0; i < tracks.length; ++i) {
@@ -518,6 +626,10 @@ class App extends MzkObject {
                      *
                      *     DOWNLOAD_PATH      : string
                      * } */
+                    if (window.debug && that.LOG) {
+                        console.log('App : downloadTracksZip server response');
+                    }
+
                     if (response.DONE) {
                         let dl      = document.createElement("A");
                         dl.href     = response.DOWNLOAD_PATH;
@@ -545,6 +657,10 @@ class App extends MzkObject {
      * arg    : {int} amount - Time in seconds
      **/
     fastForward(amount) {
+        if (window.debug && this.LOG) {
+            console.log('App : fastForward call');
+        }
+
         this.player.getPlayer().currentTime += amount;
     }
 
@@ -556,6 +672,10 @@ class App extends MzkObject {
      * arg    : {int} id - The playlist to get from an ID
      **/
     getPlaylistFromId(id) {
+        if (window.debug && this.LOG) {
+            console.log('App : getPlaylistFromId call with id ' + id);
+        }
+
         return this.playlists.get(id);
     }
 
@@ -567,6 +687,10 @@ class App extends MzkObject {
      * return : {object} element
      **/
     getPlaylists() {
+        if (window.debug && this.LOG) {
+            console.log('App : getPlaylists call');
+        }
+
         return this.playlists.filter(function() {
             return this.getIsLibrary() == false;
         });
@@ -579,6 +703,7 @@ class App extends MzkObject {
      * desc   : Get the shortcut maestro
      **/
     getShortcutMaestro() {
+        // TODO : move in getter/setter
         return this.shortcutMaestro;
     }
 
@@ -589,6 +714,10 @@ class App extends MzkObject {
      * desc   : Hide any content in mainContainer
      **/
     hidePageContent() {
+        if (window.debug && this.LOG) {
+            console.log('App : hidePageContent call');
+        }
+
         addInvisibilityLock(this.footBar.getFootBar());
         addInvisibilityLock(this.mainContainer);
         addInvisibilityLock(this.topBar.getTopBar());
@@ -601,6 +730,10 @@ class App extends MzkObject {
      * desc   : Init components and request user playlist from server
      **/
     init() {
+        if (window.debug && this.LOG) {
+            console.log('App : init call');
+        }
+
         this.queue   = new Queue();
         this.player  = new Player();
 
@@ -626,6 +759,10 @@ class App extends MzkObject {
                  *     PLAYLIST_DESCRIPTIONS : string[] / undefined
                  *     PLAYLIST_IS_LIBRARY   : bool[] / undefined
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : init server response');
+                }
+
                 that._appStart(response); // Response is tested in _appStart
             }
         );
@@ -638,6 +775,10 @@ class App extends MzkObject {
      * desc   : Log out from current user
      **/
     logOut() {
+        if (window.debug && this.LOG) {
+            console.log('App : logOut call');
+        }
+
         getRequest(
             "logout",
             function() {
@@ -654,6 +795,10 @@ class App extends MzkObject {
      * arg    : {type} element - TODO
      **/
     moveQueue(element, newPos) {
+        if (window.debug && this.LOG) {
+            console.log('App : moveQueue call');
+        }
+
         this.queue.slide(element, newPos);
     }
 
@@ -664,6 +809,10 @@ class App extends MzkObject {
      * desc   : Mute playback
      **/
     mute() {
+        if (window.debug && this.LOG) {
+            console.log('App : mute call');
+        }
+
         this.player.mute();
     }
 
@@ -674,6 +823,10 @@ class App extends MzkObject {
      * desc   : Get next track
      **/
     next() {
+        if (window.debug && this.LOG) {
+            console.log('App : next call');
+        }
+
         if (this.queue.isEmpty() == false) {
             this.popQueue();
         }
@@ -690,7 +843,9 @@ class App extends MzkObject {
      * desc   : fired when the player has loaded the file metadata
      **/
     playerLoadedMetadata() {
-
+        if (window.debug && this.LOG) {
+            console.log('App : playerLoadedMetadata call');
+        }
     }
 
 
@@ -700,6 +855,10 @@ class App extends MzkObject {
      * desc   : TODO
      **/
     popQueue() {
+        if (window.debug && this.LOG) {
+            console.log('App : popQueue call');
+        }
+
         this.changeTrack(this.queue.dequeue(), false);
     }
 
@@ -710,6 +869,10 @@ class App extends MzkObject {
      * desc   : Get previous track
      **/
     previous() {
+        if (window.debug && this.LOG) {
+            console.log('App : previous call');
+        }
+
         if (!this.player.isEmpty()) {
             this.activePlaylist.playPreviousTrack();
         }
@@ -723,6 +886,10 @@ class App extends MzkObject {
      * arg    : {object} track - The Track to push in Queue
      **/
     pushQueue(track) {
+        if (window.debug && this.LOG) {
+            console.log('App : pushQueue call');
+        }
+
         this.queue.enqueue(track);
     }
 
@@ -734,6 +901,10 @@ class App extends MzkObject {
      *          {array}  tracks;
      */
     removeTracksFromPlaylist(playlist, tracks) {
+        if (window.debug && this.LOG) {
+            console.log('App : removeTracksFromPlaylist call');
+        }
+
         if (!window.app.user.hasPermission("PLST")) {
             return;
         }
@@ -757,6 +928,10 @@ class App extends MzkObject {
                  *     ERROR_H1       : string
                  *     ERROR_MSG      : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : removeTracksFromPlaylist server response');
+                }
+
                 if (response.DONE) {
                     new Notification("INFO", "Tracks removed from " + playlist.name, names + " have been removed from " + playlist.name + ".");
                     playlist.getPlaylistsTracks();
@@ -777,6 +952,10 @@ class App extends MzkObject {
      *        : {string} name - The name to give to the playlist
      **/
     renamePlaylist(id, name) {
+        if (window.debug && this.LOG) {
+            console.log('App : renamePlaylist call');
+        }
+
         if (this.playlists.get(id).getIsLibrary() && !this.user.hasPermission("LIBR")) {
             return;
         }
@@ -801,6 +980,11 @@ class App extends MzkObject {
                  *     PLAYLIST_ID   : string
                  *     PLAYLIST_NAME : string
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : renamePlaylist server response');
+                }
+
+
                 if (response.DONE) {
                     that.appViews['mzk_admin'].updateAdminInfo();
                     that.playlists.rename(response.PLAYLIST_ID, response.PLAYLIST_NAME);
@@ -820,6 +1004,10 @@ class App extends MzkObject {
      * desc   : Repeat current track
      **/
     repeatTrack() {
+        if (window.debug && this.LOG) {
+            console.log('App : repeatTrack call');
+        }
+
         this.player.repeatTrack();
     }
 
@@ -830,6 +1018,10 @@ class App extends MzkObject {
      * desc   : User requested a new playlist
      **/
     requestNewPlaylist(callback) {
+        if (window.debug && this.LOG) {
+            console.log('App : requestNewPlaylist call');
+        }
+
         if (!this.user.hasPermission("PLST")) {
             return;
         }
@@ -838,8 +1030,9 @@ class App extends MzkObject {
         let np = new Playlist(0, null, '', false, false, undefined, function() {
             that.playlists.add(np);
             that.changePlaylist(np.id);
-            if(callback)
+            if (callback) {
                 callback(np);
+            }
             that.appViews['mzk_admin'].updateAdminInfo();
         });
     }
@@ -851,6 +1044,10 @@ class App extends MzkObject {
      * desc   : Admin requested a new library
      **/
     requestNewLibrary(callback) {
+        if (window.debug && this.LOG) {
+            console.log('App : requestNewLibrary call');
+        }
+
         if (!this.user.hasPermission("LIBR")) {
             return;
         }
@@ -859,8 +1056,9 @@ class App extends MzkObject {
         let nl = new Playlist(0, null, '', true, false, undefined, function() {
             that.playlists.add(nl);
             that.changePlaylist(nl.id);
-            if(callback)
+            if (callback) {
                 callback(nl);
+            }
             that.appViews['mzk_admin'].updateAdminInfo();
         });
     }
@@ -872,6 +1070,10 @@ class App extends MzkObject {
      * desc   : Restore any content in mainContainer
      **/
     restorePageContent() {
+        if (window.debug && this.LOG) {
+            console.log('App : restorePageContent call');
+        }
+
         this.activePlaylist.activate();
     }
 
@@ -883,6 +1085,10 @@ class App extends MzkObject {
      * arg    : {bool} reverse
      **/
     reverseQueue(reverse) {
+        if (window.debug && this.LOG) {
+            console.log('App : reverseQueue call');
+        }
+
         this.queue.setReverse(reverse);
     }
 
@@ -894,6 +1100,10 @@ class App extends MzkObject {
      * arg    : {int} amount - Time in seconds
      **/
     rewind(amount) {
+        if (window.debug && this.LOG) {
+            console.log('App : rewind call');
+        }
+
         this.player.getPlayer().currentTime -= amount;
     }
 
@@ -905,6 +1115,10 @@ class App extends MzkObject {
      * arg    : {string} name - AppView name
      **/
     showAppView(name) {
+        if (window.debug && this.LOG) {
+            console.log('App : showAppView call');
+        }
+
         if (this.appViews[name]) {
             this.changeView(this.appViews[name]);
         }
@@ -918,6 +1132,10 @@ class App extends MzkObject {
      * arg    : {float} volume - Volume between 0 and 1
      **/
     setVolume(volume) {
+        if (window.debug && this.LOG) {
+            console.log('App : setVolume call');
+        }
+
         this.player.setVolume(volume);
 
         window.clearTimeout(this.cookieTimeout);
@@ -931,6 +1149,10 @@ class App extends MzkObject {
      * desc   : Stop ManaZeak playback
      **/
     stopPlayback() {
+        if (window.debug && this.LOG) {
+            console.log('App : stopPlayback call');
+        }
+
         this.changePageTitle("ManaZeak");
         this.player.stopPlayback();
     }
@@ -942,6 +1164,10 @@ class App extends MzkObject {
      * desc   : Toggle mute on player
      **/
     toggleMute() {
+        if (window.debug && this.LOG) {
+            console.log('App : toggleMute call');
+        }
+
         if (this.player.isMuted) {
             this.unmute();
             this.setVolume(this.player.oldVolume);
@@ -960,6 +1186,10 @@ class App extends MzkObject {
      * desc   : Toggle play on player
      **/
     togglePlay() {
+        if (window.debug && this.LOG) {
+            console.log('App : togglePlay call');
+        }
+
         if (this.player.isEmpty()) {
             this.changeTrack(this.activePlaylist.getFirstEntry(), false);
         }
@@ -976,6 +1206,10 @@ class App extends MzkObject {
      * desc   : Toggle repeat mode on playlist
      **/
     toggleRepeat() {
+        if (window.debug && this.LOG) {
+            console.log('App : toggleRepeat call');
+        }
+
         this.activePlaylist.toggleRepeat();
         switch(this.activePlaylist.getRepeatMode()) {
             case 0:
@@ -1002,6 +1236,10 @@ class App extends MzkObject {
      * desc   : Toggle shuffle mode on playlist
      **/
     toggleShuffle() {
+        if (window.debug && this.LOG) {
+            console.log('App : toggleShuffle call');
+        }
+
         this.activePlaylist.toggleShuffle();
         switch(this.activePlaylist.getShuffleMode()) {
             case 0:
@@ -1028,6 +1266,10 @@ class App extends MzkObject {
      * desc   : Unmute playback
      **/
     unmute() {
+        if (window.debug && this.LOG) {
+            console.log('App : mute call');
+        }
+
         this.player.unmute();
     }
 
@@ -1040,9 +1282,16 @@ class App extends MzkObject {
      *          {function} callback - The function to callback (not mandatory)
      **/
     updateTracksInfo(tracks, callback) {
+        if (window.debug && this.LOG) {
+            console.log('App : updateTracksInfo call');
+        }
+
         let ids = new Array(tracks.length);
-        for(let i = 0; i < tracks.length; ++i)
+        for (let i = 0; i < tracks.length; ++i) {
             ids[i] = tracks[i].id.track;
+        }
+
+        let that = this;
         JSONParsedPostRequest(
             "track/getDetailedInfo/",
             JSON.stringify({
@@ -1091,6 +1340,10 @@ class App extends MzkObject {
                  *         FILE_NAME:
                  *     }
                  * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : updateTracksInfo server response');
+                }
+
                 if (response.DONE) {
                     for(let i = 0; i < tracks.length; ++i)
                         tracks[i].updateMetadata(response.RESULT[i]);
@@ -1113,6 +1366,10 @@ class App extends MzkObject {
      * desc   : ManaZeak start point. Fetching playlist, build UI according to those, and activate the last playlist used
      **/
     _appStart(playlists) {
+        if (window.debug && this.LOG) {
+            console.log('App : _appStart call');
+        }
+
         let that = this;
         if (playlists.DONE) { // User already have playlists
             let modal = new Modal("fetchPlaylists"); // TODO : gen unique ID from utils here
@@ -1175,6 +1432,10 @@ class App extends MzkObject {
      * desc   : Create AppViews (Stats, Admin)
      **/
     _createDefaultViews() {
+        if (window.debug && this.LOG) {
+            console.log('App : _createDefaultViews call');
+        }
+
         if (window.app.user.hasPermission("ADMV")) {
             this.createAppView('mzk_admin', new AdminView());
         }
@@ -1193,21 +1454,29 @@ class App extends MzkObject {
      * desc   : App key listeners
      **/
     _keyListener() {
+        if (window.debug && this.LOG) {
+            console.log('App : _keyListener call');
+        }
+
         let that = this;
-        this.addShortcut(new Shortcut('keydown', 'Space', function() { that.togglePlay(); }));
-        this.addShortcut(new Shortcut('keydown', 'Semicolon', function() { that.toggleMute(); }));
-        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(10); }, false));
-        this.addShortcut(new Shortcut('keydown', 'ArrowLeft', function() { that.rewind(30); }, true));
-        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10); }, false));
-        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30); }, true));
-        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.1); }, false));
-        this.addShortcut(new Shortcut('keydown', 'ArrowUp', function() { that.adjustVolume(0.01); }, true));
-        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.1); }, false));
-        this.addShortcut(new Shortcut('keydown', 'ArrowDown', function() { that.adjustVolume(-0.01); }, true));
+        this.addShortcut(new Shortcut('keydown', 'Space',      function() { that.togglePlay();       }));
+        this.addShortcut(new Shortcut('keydown', 'Semicolon',  function() { that.toggleMute();       }));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft',  function() { that.rewind(10);         }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowLeft',  function() { that.rewind(30);         }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(10);    }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowRight', function() { that.fastForward(30);    }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp',    function() { that.adjustVolume(0.1);  }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowUp',    function() { that.adjustVolume(0.01); }, true));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown',  function() { that.adjustVolume(-0.1); }, false));
+        this.addShortcut(new Shortcut('keydown', 'ArrowDown',  function() { that.adjustVolume(-0.01); }, true));
     }
 
 
     _searchListener() {
+        if (window.debug && this.LOG) {
+            console.log('App : _searchListener call');
+        }
+
         let that = this;
         document.body.addEventListener('keyup', function(event) {
             let inputCode = String.fromCharCode(event.keyCode);

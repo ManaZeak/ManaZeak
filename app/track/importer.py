@@ -188,6 +188,8 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         md5Name = hashlib.md5()
         md5Name.update(pictureName)
         # Check if the cover already exists and save it
+        if not os.path.isdir(coverPath):
+            os.mkdir(coverPath)  # Create the folder
         if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
             with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                 img.write(picture)
@@ -281,6 +283,8 @@ def regenerateCover(track):
                 md5Name = hashlib.md5()
                 md5Name.update(front)
                 # Check if the cover already exists and save it
+                if not os.path.isdir(coverPath):
+                    os.mkdir(coverPath)
                 if not os.path.isfile(coverPath + md5Name.hexdigest() + ".jpg"):
                     with open(coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                         img.write(front)

@@ -13,6 +13,11 @@ import ContextMenuEntry from '../../../utils/ContextMenuEntry.js'
 class UserMenu {
 
     constructor(container) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      UserMenu construction');
+        }
+
         this.contextMenu = null;
         this._createUI(container);
         this._setupContextMenu();
@@ -28,6 +33,10 @@ class UserMenu {
      * arg    : {object} container - The UserMenu container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('      UserMenu : _createUI call');
+        }
+
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -48,17 +57,21 @@ class UserMenu {
      * desc   : UserMenu context menu
      **/
     _setupContextMenu() {
+        if (window.debug && this.LOG) {
+            console.log('      UserMenu : _setupContextMenu call');
+        }
+
         let that         = this;
         this.contextMenu = new ContextMenu(this.ui.container, null, 'click');
 
         if (window.app.user.hasPermission("ADMV")) {
-            let adm = new ContextMenuEntry('admin', 'Admin', function() {
+            let adm = new ContextMenuEntry('admin', window.app.nls.userMenu.admin, function() {
                 window.app.showAppView('mzk_admin');
             });
             that.contextMenu.getContextMenu().addChild(adm, 'invite', false);
         }
         if (window.app.user.hasPermission("SPON")) {
-            this.contextMenu.addEntry('invite', 'Invite Code', function() {
+            this.contextMenu.addEntry('invite', window.app.nls.userMenu.inviteCode, function() {
                 new Modal('inviteCode', null).open();
             });
         }
@@ -66,14 +79,14 @@ class UserMenu {
             window.app.showAppView('mzk_user');
         });
         if (window.app.user.hasPermission("STAT")) {
-            this.contextMenu.addEntry('stats', 'Stats', function() {
+            this.contextMenu.addEntry('stats', window.app.nls.userMenu.stats, function() {
                 window.app.showAppView('mzk_stats');
             });
         }
-        this.contextMenu.addEntry('settings', 'Help center', function() { // TODO : replace w/ username
+        this.contextMenu.addEntry('settings', window.app.nls.userMenu.helpCenter, function() { // TODO : replace w/ username
             window.app.showAppView('mzk_help');
         });
-        this.contextMenu.addEntry('logout', 'Log out', function() {
+        this.contextMenu.addEntry('logout', window.app.nls.userMenu.logOut, function() {
             window.app.logOut();
         });
     }

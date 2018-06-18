@@ -16,6 +16,12 @@ class FootBar extends MzkObject {
 
     constructor() {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  FootBar construction');
+        }
+
         this._createUI();
         this.trackPreview    = new TrackPreview(this.footBar);
         this.controls        = new Controls(this.controlsContainer);
@@ -33,6 +39,10 @@ class FootBar extends MzkObject {
      * desc   : Reset TrackPreview and ProgressBar.
      **/
     resetUI(hidePreview) {
+        if (window.debug && this.LOG) {
+            console.log('  FootBar : refreshUI call');
+        }
+
         this.trackPreview.resetTrackPreview();
         this.progressBar.resetProgressBar();
         if (hidePreview) {
@@ -48,6 +58,10 @@ class FootBar extends MzkObject {
      * desc   : Build UI elements
      **/
     _createUI() {
+        if (window.debug && this.LOG) {
+            console.log('  FootBar : _createUI call');
+        }
+
         this.footBar                     = document.createElement("DIV");
         this.controlsContainer           = document.createElement("DIV");
         this.progressContainer           = document.createElement("DIV");
@@ -63,6 +77,10 @@ class FootBar extends MzkObject {
      * desc   : FootBar event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('  FootBar : _eventListener call');
+        }
+
         let that = this;
         window.app.listen('stopPlayback', function() {
             that.resetUI();

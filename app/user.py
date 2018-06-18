@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Playlist, UserPreferences, UserHistory, InviteCode
-from app.utils import errorCheckMessage, populateDB
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -11,9 +11,9 @@ def deleteUser(request):
         user = request.user
         deleteLinkedEntities(user)
         user.delete()
-        data = errorCheckMessage(True, None)
+        data = errorCheckMessage(True, None, deleteUser)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, deleteUser)
     return JsonResponse(data)
 
 
@@ -45,9 +45,9 @@ def getUserInformation(request):
         for permission in userPref.group.permissions.all():
             permissions.append(permission.code)
         data = {**data, **{'PERMISSIONS': permissions}}
-        data = {**data, **errorCheckMessage(True, None)}
+        data = {**data, **errorCheckMessage(True, None, getUserInformation)}
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserInformation)
     return JsonResponse(data)
 
 
@@ -55,3 +55,4 @@ def deleteLinkedEntities(user):
     Playlist.objects.filter(user=user).delete()
     UserPreferences.objects.filter(user=user).delete()
     UserHistory.objects.filter(user=user).delete()
+

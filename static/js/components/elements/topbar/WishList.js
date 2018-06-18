@@ -12,6 +12,11 @@ import Modal from '../../../utils/Modal.js'
 class WishList {
 
     constructor(container) {
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      WishList construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -25,6 +30,10 @@ class WishList {
      * arg    : {object} container - The WishList container
      **/
     _createUI(container) {
+        if (window.debug && this.LOG) {
+            console.log('      WishList : _createUI call');
+        }
+
         this.ui = {
             container: document.createElement("DIV"),
             img:       document.createElement("IMG")
@@ -44,6 +53,10 @@ class WishList {
      * desc   : WishList event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      WishList : _eventListener call');
+        }
+
         this.ui.img.addEventListener("click", function() {
             let modal = new Modal("newWish");
             modal.open();

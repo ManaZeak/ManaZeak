@@ -13,6 +13,12 @@ class PlaylistPreview extends MzkObject {
 
     constructor(container) {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview construction');
+        }
+
         this._createUI(container);
         this._eventListener();
     }
@@ -26,9 +32,13 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} playlist - New playlist to get info from
      **/
     changePlaylist(playlist) {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview : changePlaylist call');
+        }
+
         // TODO : POST on getPlaylistInfo to add Total genre etc.
         this.ui.name.innerHTML     = playlist.name;
-        this.ui.total.innerHTML    = playlist.trackTotal + " tracks";
+        this.ui.total.innerHTML    = playlist.trackTotal + ' ' + (playlist.trackTotal > 1 ? window.app.nls.utils.tracks : window.app.nls.utils.track);
         this.ui.duration.innerHTML = secondsToTimecode(playlist.durationTotal);
         this._updatePlaylistPreview();
     }
@@ -41,6 +51,10 @@ class PlaylistPreview extends MzkObject {
      * arg    : {bool} visible
      **/
     setVisible(visible) {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview : setVisible call');
+        }
+
         this.ui.container.style.opacity = visible ? 1 : 0;
     }
 
@@ -53,19 +67,23 @@ class PlaylistPreview extends MzkObject {
      * arg    : {object} container - The PlaylistPreview container
      **/
     _createUI(container) {
-        this.ui = {
-            container:                  document.createElement("DIV"),
-            name:                       document.createElement("LI"),
-            total:                      document.createElement("LI"),
-            duration:                   document.createElement("LI"),
-            repeatShuffle:              document.createElement("LI"),
-            repeat:                     document.createElement("SPAN"),
-            genre:                      document.createElement("SPAN"),
-            shuffle:                    document.createElement("SPAN")
-        };
-        this.listContainer            = document.createElement("UL");
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview : _createUI call');
+        }
 
-        this.ui.container.className   = "mzk-playlist-review";
+        this.ui = {
+            container:     document.createElement("DIV"),
+            name:          document.createElement("LI"),
+            total:         document.createElement("LI"),
+            duration:      document.createElement("LI"),
+            repeatShuffle: document.createElement("LI"),
+            repeat:        document.createElement("SPAN"),
+            genre:         document.createElement("SPAN"),
+            shuffle:       document.createElement("SPAN")
+        };
+        this.listContainer = document.createElement("UL");
+
+        this.ui.container.className = "mzk-playlist-review";
 
         this.ui.repeatShuffle.appendChild(this.ui.repeat);
         this.ui.repeatShuffle.appendChild(this.ui.shuffle);
@@ -85,6 +103,10 @@ class PlaylistPreview extends MzkObject {
      * desc   : PlaylistPreview event listeners
      **/
     _eventListener() {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview : _eventListener call');
+        }
+
         let that = this;
         window.app.listen(['renamePlaylist', 'changePlaylist'], function() {
             let activePlaylist = window.app.getActivePlaylist();
@@ -109,20 +131,24 @@ class PlaylistPreview extends MzkObject {
      * desc   : Update shuffle and repeat mode
      **/
     _updatePlaylistPreview() {
+        if (window.debug && this.LOG) {
+            console.log('      PlaylistPreview : _updatePlaylistPreview call');
+        }
+
         let repeatMode  = window.app.activePlaylist.getRepeatMode();
         let shuffleMode = window.app.activePlaylist.getShuffleMode();
 
         switch (repeatMode) {
             case 0:
-                this.ui.repeat.innerHTML = "Repeat off";
+                this.ui.repeat.innerHTML = window.app.nls.playlistPreview.repeatOff;
                 break;
 
             case 1:
-                this.ui.repeat.innerHTML = "Repeat one";
+                this.ui.repeat.innerHTML = window.app.nls.playlistPreview.repeatOne;
                 break;
 
             case 2:
-                this.ui.repeat.innerHTML = "Repeat all";
+                this.ui.repeat.innerHTML = window.app.nls.playlistPreview.repeatAll;
                 break;
 
             default:
@@ -132,15 +158,15 @@ class PlaylistPreview extends MzkObject {
 
         switch (shuffleMode) {
             case 0:
-                this.ui.shuffle.innerHTML = " - Shuffle off";
+                this.ui.shuffle.innerHTML = ' - ' + window.app.nls.playlistPreview.shuffleOff;
                 break;
 
             case 1:
-                this.ui.shuffle.innerHTML = " - Random";
+                this.ui.shuffle.innerHTML = ' - ' + window.app.nls.playlistPreview.random;
                 break;
 
             case 2:
-                this.ui.shuffle.innerHTML = " - Shuffle on";
+                this.ui.shuffle.innerHTML = ' - ' + window.app.nls.playlistPreview.shuffleOn;
                 break;
 
             default:

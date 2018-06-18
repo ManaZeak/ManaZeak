@@ -16,6 +16,12 @@ class MultiSelect extends MzkObject {
 
     constructor(purgeThreshold) {
         super();
+
+        this.LOG = false; // Set to false to locally mute file
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect construction');
+        }
+
         this.selection = {};
         this.size = 0;
         this.maxSize = 0;
@@ -30,6 +36,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     add(value, append) {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : add call');
+        }
+
         if (append == false) {
             if (this.size == 1 && this.selection[value] == true) {
                 this.clear();
@@ -81,6 +91,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     addBulk(values, append) {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : addBulk call');
+        }
+
         for (let i = 0; i < values.length; ++i) {
             this.add(values[i], append | i != 0);
         }
@@ -93,6 +107,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     clear() {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : clear call');
+        }
+
         this.selection = {};
         this.size      = 0;
         this.maxSize   = 0;
@@ -105,6 +123,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     get() {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : get call');
+        }
+
         let result = new Array(this.size);
         let ix = 0;
         for (let i in this.selection)
@@ -121,6 +143,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     getSize() {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : getSize call');
+        }
+
         return this.size;
     }
 
@@ -131,6 +157,10 @@ class MultiSelect extends MzkObject {
      * desc   : TODO
      **/
     purge() {
+        if (window.debug && this.LOG) {
+            console.log('  MultiSelect : purge call');
+        }
+
         for (let i in this.selection) {
             if (this.selection[i] == false) {
                 delete this.selection[i];
