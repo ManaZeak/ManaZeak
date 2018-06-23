@@ -13,7 +13,7 @@ import EditTagEntry from './entries/EditTagEntry.js'
 class EditTag {
 
     constructor(container, data) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  EditTag construction');
         }

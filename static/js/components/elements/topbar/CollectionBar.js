@@ -17,7 +17,7 @@ import { JSONParsedPostRequest } from '../../../utils/Utils.js'
 class PlaylistCollectionEntry {
 
     constructor(playlist, container) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('      PlaylistCollectionEntry construction');
         }

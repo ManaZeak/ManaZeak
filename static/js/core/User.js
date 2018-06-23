@@ -12,7 +12,7 @@ import Notification from '../utils/Notification.js'
 class User {
 
     constructor(callback) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  User construction');
         }

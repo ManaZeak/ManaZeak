@@ -11,7 +11,7 @@ import MzkListener from './MzkListener.js'
 class MzkObject {
 
     constructor() {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  MzkObject construction');
         }

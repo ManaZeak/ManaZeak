@@ -12,7 +12,7 @@ import QueuePreview from './QueuePreview.js'
 class Controls  {
 
     constructor(container, queuePreview, volumeBar) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('      Controls construction');
         }
