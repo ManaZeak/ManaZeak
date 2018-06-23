@@ -18,9 +18,9 @@ def checkListeningGain(track, user):
         if timezone.now() - lastDate >= timedelta(seconds=track.duration):
             if userPref is not None:
                 userPref.totalListeningTime += track.duration
-                if userPref.totalListeningTime/3600 > (userPref.totalListeningTime - track.duration)/3600:
-                    count = int(round((userPref.totalListeningTime/3600))) \
-                            - int(round(((userPref.totalListeningTime - track.duration)/3600)))
+                if userPref.totalListeningTime / 3600 > (userPref.totalListeningTime - track.duration) / 3600:
+                    count = int(round((userPref.totalListeningTime / 3600))) \
+                        - int(round(((userPref.totalListeningTime - track.duration) / 3600)))
                     userPref.save()
                     for _ in range(0, int(round(count))):
                         createTransaction("PLAY", user, True, 1)
