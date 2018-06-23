@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
+from app import identicon
 from app.adminTools import getAdminOptions
 from app.form import UserForm
 from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
@@ -29,9 +30,6 @@ class mainView(ListView):
 
 # Create a new user in database
 def createUser(request):
-    import hashlib
-    from app import identicon
-
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         isAdmin = False
@@ -74,10 +72,7 @@ def createUser(request):
                 userPref.inviteCode = invite
 
             # creating user avatar
-            username_hash = hashlib.md5(username.encode("utf-8")).hexdigest()
-            avatar_path = "static/img/avatars/" + username_hash + ".png"
-            userPref.avatar = avatar_path
-            identicon.create_identicon(username=username, filename=avatar_path)
+            userPref.avatar = identicon.create_identicon(username)
 
             userPref.save()
             createUserInviteCode(user)

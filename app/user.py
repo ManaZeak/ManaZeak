@@ -17,6 +17,7 @@ def deleteUser(request):
     return JsonResponse(data)
 
 
+# Gives the information about a user
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserInformation(request):
     if request.method == 'GET':
@@ -30,6 +31,7 @@ def getUserInformation(request):
             'GROUP_NAME': userPref.group.name,
             'GROUP_ID': userPref.group.id,
             'INVITE_CODE': inviteCode,
+            'AVATAR_PATH': userPref.avatar,
         }
         if userPref.inviteCode is not None:
             data = {**data, **{
@@ -48,23 +50,6 @@ def getUserInformation(request):
         data = {**data, **errorCheckMessage(True, None, getUserInformation)}
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserInformation)
-    return JsonResponse(data)
-
-
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def getAvatar(request):
-    """ returns path to Avatar of currently logged in user
-    """
-    if request.method == 'GET':
-        user = request.user
-        userPref = UserPreferences.objects.get(user=user)
-        avatarpath = userPref.avatar
-        data = {
-            'AVATARPATH': avatarpath
-        }
-        data = {**data, **errorCheckMessage(True, None)}
-    else:
-        data = errorCheckMessage(False, "badRequest")
     return JsonResponse(data)
 
 

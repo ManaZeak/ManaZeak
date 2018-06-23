@@ -1,7 +1,7 @@
-""" This module contains a simple identicon creation utility function.
-    Original color palette : coolors.co/659bd8-ff776d-ffd793-9eefae-c99dba
-"""
+# This module contains a simple identicon creation utility function.
+# Original color palette : coolors.co/659bd8-ff776d-ffd793-9eefae-c99dba
 import hashlib
+import os
 import random
 import png  # requires pypng
 
@@ -13,19 +13,24 @@ palette = {0: (255, 255, 255),
            5: (201, 157, 186)}
 
 
-def create_identicon(username, filename, avatar_size=15, img_size_per_cell=50):
-    """ Creates and writes an identicon to disk
-        Arguments:
-            - (str) username: username for which the identicon should
-                              be created (is used as seed)
-            - (str) filename: file to which the image shoould be written
-            - (int) avatar_size: avatars will be squares of avatar_size
-                                 squares wide and tall
-            - (int) img_size_per_cell: number of pixels for the width and
-                                       height of each square in the avatar
-    """
+# Creates and writes an identicon to disk
+#         Arguments:
+#             - (str) username: username for which the identicon should
+#                               be created (is used as seed)
+#             - (str) filename: file to which the image shoould be written
+#             - (int) avatar_size: avatars will be squares of avatar_size
+#                                  squares wide and tall
+#             - (int) img_size_per_cell: number of pixels for the width and
+#                                        height of each square in the avatar
+def create_identicon(username, avatar_size=15, img_size_per_cell=50):
+    username_hash = hashlib.md5(username.encode("utf-8")).hexdigest()
+    avatar_path = "static/img/avatars/" + username_hash + ".png"
+    # Folder creation
+    if not os.path.exists(os.path.dirname(avatar_path)):
+        os.makedirs(os.path.dirname(avatar_path))
+
     # hashing username to use as seed
-    username_hash = hashlib.md5(username.encode("utf-8"))
+    username_hash = hashlib.md5(username_hash.encode("utf-8"))
     random.seed(username_hash.hexdigest())
     # selecting random color among the 5 defined colors
     color = random.randint(1, 5)
@@ -55,19 +60,19 @@ def create_identicon(username, filename, avatar_size=15, img_size_per_cell=50):
     # If pixel is 1, color*pixel = color and palette[color] = some color
     avatar = [[palette[color * pixel] for pixel in row] for row in avatar_bin]
     avatar = _resize_avatar(avatar, avatar_size, img_size_per_cell)
-    png.from_array(avatar, 'RGB').save(filename)
+    png.from_array(avatar, 'RGB').save(avatar_path)
+    return avatar_path
 
 
+# Resizes avatars in a nearest-neighbor fashion copying rowsand columns
+#         Arguments:
+#             - (list<list<(int, int, int)>>) avatar:
+#                     the avatar to resize
+#             - (int) avatar_size: avatars will be squares of avatar_size
+#                                  squares wide and tall
+#             - (int) img_size_per_cell: number of pixels for the width and
+#                                        height of each square in the avatar
 def _resize_avatar(avatar, avatar_size, img_size_per_cell):
-    """ Resizes avatars in a nearest-neighbor fashion copying rowsand columns
-        Arguments:
-            - (list<list<(int, int, int)>>) avatar:
-                    the avatar to resize
-            - (int) avatar_size: avatars will be squares of avatar_size
-                                 squares wide and tall
-            - (int) img_size_per_cell: number of pixels for the width and
-                                       height of each square in the avatar
-    """
     img_size = img_size_per_cell * (avatar_size + 2)
     return [[avatar[i // img_size_per_cell][j // img_size_per_cell]
              for j in range(img_size)]
