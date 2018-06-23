@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -44,14 +45,14 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
+# Is called when the user changes their avatar,
+#        updates user's profile picture
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeAvatar(request):
-    """ Is called when the user changes their avatar,
-        updates user's profile picture
-    """
     if request.method == 'POST':
+        response = json.loads(request)
         user = request.user
-        if str(request['AVATAR'].split(",")[0]) == "image/png":
+        if str(response['AVATAR'].split(",")[0]) == "image/png":
             extension = "png"
         else:
             extension = "jpg"
@@ -65,13 +66,13 @@ def changeAvatar(request):
             userPref.avatar = avatar_path
             userPref.save()
             with open(avatar_path, 'wb') as destination:
-                img_b64 = str(request['AVATAR'].split(",")[1])
+                img_b64 = str(response['AVATAR'].split(",")[1])
                 destination.write(base64.b64decode(img_b64))
-                # TODO: data to return when success
+            data = errorCheckMessage(True, None, changeAvatar)
         else:
-            data = errorCheckMessage(False, "dbError")
+            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, changeAvatar)
     else:
-        data = errorCheckMessage(False, "badRequest")
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, changeAvatar)
     return JsonResponse(data)
 
 
