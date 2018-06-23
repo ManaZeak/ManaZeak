@@ -448,6 +448,11 @@
         "title":"Remove my account",
         "text":"Warning, this action will remove you from the database with all your data.<br>Are you sure you want to remove your account ?",
         "button":"DELETE MY ACCOUNT"
+      },
+      "changeAvatar": {
+        "title": "Change your avatar",
+        "text": "Use the following button tu change your avatar. ",
+        "button": "CHANGE AVATAR"
       }
     },
     "uploads":{

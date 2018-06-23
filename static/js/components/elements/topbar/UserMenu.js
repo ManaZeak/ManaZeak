@@ -23,6 +23,12 @@ class UserMenu {
         this._setupContextMenu();
     }
 
+
+    setAvatar(path) {
+        this.ui.img.src = '/' + path;
+    }
+
+
 //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
 
@@ -43,8 +49,7 @@ class UserMenu {
         };
 
         this.ui.container.className = "mzk-user-expander";
-        this.ui.img.src             = "/static/img/controls/user.svg";
-
+        this.ui.img.src             = '/' + window.app.user.avatarPath;
         this.ui.container.appendChild(this.ui.img);
 
         container.appendChild(this.ui.container);

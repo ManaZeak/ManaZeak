@@ -85,9 +85,10 @@ class User {
                     that.id            = response.USER_ID;
                     that.isAdmin       = response.IS_ADMIN;
                     that.username      = response.USERNAME;
+                    that.avatarPath    = response.AVATAR_PATH;
                     that.groupName     = response.GROUP_NAME;
                     that.groupID       = response.GROUP_ID;
-                    that.permissions  = response.PERMISSIONS;
+                    that.permissions   = response.PERMISSIONS;
                     that.inviteCode    = response.INVITE_CODE;
                     that.godFatherCode = response.GODFATHER_CODE;
                     that.godFatherName = response.GODFATHER_NAME;

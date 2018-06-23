@@ -144,6 +144,40 @@ class App extends MzkObject {
     }
 
 
+    changeAvatar(image) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeAvatar call');
+        }
+
+        let that = this;
+        JSONParsedPostRequest(
+            "user/editAvatar/",
+            JSON.stringify({
+                AVATAR: image
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : changeAvatar server response');
+                }
+
+                if (response.DONE) {
+                    that.user.getUserInfo();
+                    that.topBar.userMenu.setAvatar(that.user.avatar);
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : changePageTitle (public)
      * class  : App
