@@ -7,13 +7,14 @@ from django.utils.html import strip_tags
 from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Wish
 from app.utils import checkPermission
-
-
-# Create a wish in the database
 from app.wallet import rewardWish
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Create a wish in the database
+#   @param request POST request from the front must contains tag:
+#   - WISH with the wish message inside
+#   @return the status of the request
 def createWish(request):
     if request.method == 'POST':
         user = request.user
@@ -35,8 +36,13 @@ def createWish(request):
     return JsonResponse(data)
 
 
-# Get all wishes or get only those of the user
+
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Get all wishes or get only those of the user
+#   @param request POST request from the front containing the tag ALL:
+#       - true to get all wishes
+#       - false to get only the user wishes
+#   @return a wish object list in json
 def getWishes(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -70,8 +76,13 @@ def getWishes(request):
     return JsonResponse(data)
 
 
-# Change a wish status
+
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Change a wish status
+#   @param request POST request from front contains key:
+#   - WISH_ID : the id of the wish
+#   - STATUS : the status of the wish
+#   @return The status of the request
 def setWishStatus(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -103,7 +114,6 @@ def setWishStatus(request):
                             wish.status = status
                             wish.save()
                             data = errorCheckMessage(True, None, setWishStatus)
-                            # TODO : Add notification logging for user
                         else:
                             data = errorCheckMessage(False, ErrorEnum.VALUE_ERROR, setWishStatus, user)
                     else:

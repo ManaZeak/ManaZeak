@@ -5,11 +5,16 @@ from app.consts import BUBBLE_PERCENTAGE
 from app.models import UserHistory, UserPreferences, TransactionHistory, TransactionType
 
 
-# Calculate the available cash
+## Calculate the available cash for a user
+#   @param wallet the wallet object of a user
+#   @return the available cash for a user
 def calculateCurrentAvailableCash(wallet):
     return wallet.miningGain - wallet.miningLoss + wallet.globalGain - wallet.globalLoss
 
 
+## Check if the user must be rewarded for listening an hour of sound
+#   @param track a track object
+#   @param user the user logged in
 def checkListeningGain(track, user):
     userHistory = UserHistory.objects.get(user=user)
     userPref = UserPreferences.objects.get(user=user)
@@ -26,7 +31,8 @@ def checkListeningGain(track, user):
                         createTransaction("PLAY", user, True, 1)
 
 
-# Create the transaction for a wish
+## Create the transaction for a wish
+#   @param
 def rewardWish(user, isGain):
     createTransaction("WISH", user, isGain, 1)
 
