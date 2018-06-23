@@ -360,6 +360,7 @@ def importLibrary(mp3Files, flacFiles, oggFiles, coverPath, convert, playlistId)
 
 # Scan tracks contained in a library, update metadata of the DB and remove tracks if they don't exists anymore
 def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
+    logger.info("Starting rescan of the tracks for playlist : " + playlist.name)
     albumReference = {}
     tracksInfo = []
     artists = set()
@@ -399,7 +400,7 @@ def rescanTracksProcess(mp3Files, flacFiles, oggFiles, playlist):
     albumReference = addAlbumBulk(albums, artistsReference, albumsTotalTracks, albumsTotalDisc)
     refreshPlaylist(tracks, artistsReference, albumReference, genresReference, playlist.id)
     # Delete the tracks that were not present during the rescan
-    Track.objects.filter(scanned=False).delete()
+    Track.objects.filter(scanned=False, playlist=playlist).delete()
 
 
 class ImportBulkThread(threading.Thread):
