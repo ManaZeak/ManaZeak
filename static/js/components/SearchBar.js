@@ -30,11 +30,12 @@ class SearchBar {
             console.log('  SearchBar : show call');
         }
 
-        this._formatEntries(rawEntries);
         this.isVisible = true;
         document.body.appendChild(this.ui.overlay);
         this.ui.input.value = firstLetter;
         this.ui.input.focus();
+
+        this._formatEntries(rawEntries);
     }
 
 

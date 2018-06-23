@@ -1479,8 +1479,8 @@ class App extends MzkObject {
 
         let that = this;
         document.body.addEventListener('keyup', function(event) {
-            let inputCode = String.fromCharCode(event.keyCode);
-            if (/[a-zA-Z0-9-_\[\]]/.test(inputCode) && !that.search.getVisible()) {
+            if (((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90)) &&
+                !that.search.getVisible()) {
                 that.search.show(event.key, that.activePlaylist.tracks); //TODO Replace with getter
             }
         });
