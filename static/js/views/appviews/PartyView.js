@@ -25,7 +25,6 @@ class PartyView extends View {
 
         this._createUI();
         this._eventListener();
-        this._startClock();
         new Controls(this.ui.coverContainer, false, false);
     }
 
@@ -98,6 +97,7 @@ class PartyView extends View {
                     }
 
                     if (response.DONE) {
+                        that._startClock();
                         that._setCurrentTrack(new Track(response.RESULT[0]));
                     }
 

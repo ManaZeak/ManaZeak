@@ -46,7 +46,7 @@ class ProgressBar extends MzkObject {
         this._stopRefreshInterval();
         this.refreshIntervalId = window.setInterval(function () {
             that.updateProgress(track);
-        }, 50); // Firing an updateProgress every 50ms to appear smooth on moodBar
+        }, 300); // Firing an updateProgress every 50ms to appear smooth on moodBar
     }
 
 
