@@ -24,8 +24,13 @@ class UserMenu {
     }
 
 
-    setAvatar(path) {
-        this.ui.img.src = '/' + path;
+    setAvatar() {
+        this.ui.container.removeChild(this.ui.img);
+        this.ui.img = {};
+        this.ui.img = document.createElement("IMG");
+        this.ui.img.src = '/' + window.app.user.avatarPath;
+
+        this.ui.container.appendChild(this.ui.img);
     }
 
 

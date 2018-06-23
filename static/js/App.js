@@ -166,8 +166,10 @@ class App extends MzkObject {
                 }
 
                 if (response.DONE) {
-                    that.user.getUserInfo();
-                    that.topBar.userMenu.setAvatar(that.user.avatar);
+                    let self = that;
+                    that.user.getUserInfo(function() {
+                        self.topBar.userMenu.setAvatar();
+                    });
                 }
 
                 else {
