@@ -114,6 +114,9 @@ def updateDBInfo(response, track):
         if not os.path.isdir(filePath):
             os.mkdir(filePath)  # Create the folder
         filePath += + md5Name.hexdigest() + extension
+
+		# if the filePath is the same, then the md5 hash of the image is
+        # the same, therefore the images are the same, therefore do nothing
         if not os.path.isfile(filePath):
             with open(filePath, 'wb+') as destination:
                 # Split the header with MIME type

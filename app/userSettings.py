@@ -1,3 +1,4 @@
+import base64
 import hashlib
 
 from django.contrib.auth.decorators import login_required
@@ -43,8 +44,40 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
-# Create an invite code for a user
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def changeAvatar(request):
+    """ Is called when the user changes their avatar,
+        updates user's profile picture
+    """
+    if request.method == 'POST':
+        user = request.user
+        if str(request['AVATAR'].split(",")[0]) == "image/png":
+            extension = "png"
+        else:
+            extension = "jpg"
+
+        username_hash = hashlib.md5(user.encode("utf-8")).hexdigest()
+        avatar_path = "static/img/avatars/" + username_hash + extension
+
+        # if only one user with that username is found
+        if UserPreferences.objects.filter(user=user).count() == 1:
+            userPref = UserPreferences.objects.get(user=user)
+            userPref.avatar = avatar_path
+            userPref.save()
+            with open(avatar_path, 'wb') as destination:
+                img_b64 = str(request['AVATAR'].split(",")[1])
+                destination.write(base64.b64decode(img_b64))
+                # TODO: data to return when success
+        else:
+            data = errorCheckMessage(False, "dbError")
+    else:
+        data = errorCheckMessage(False, "badRequest")
+    return JsonResponse(data)
+
+
 def createUserInviteCode(user):
+    """ Creates an invite code for a user
+    """
     inviteCode = InviteCode()
     inviteCode.user = user
     inviteCode.code = hashlib.md5(

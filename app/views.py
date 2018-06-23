@@ -29,6 +29,9 @@ class mainView(ListView):
 
 # Create a new user in database
 def createUser(request):
+    import hashlib
+    from app import identicon
+
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         isAdmin = False
@@ -69,8 +72,14 @@ def createUser(request):
             userPref.wallet = wallet
             if invite is not None:
                 userPref.inviteCode = invite
-            userPref.save()
 
+            # creating user avatar
+            username_hash = hashlib.md5(username.encode("utf-8")).hexdigest()
+            avatar_path = "static/img/avatars/" + username_hash + ".png"
+            userPref.avatar = avatar_path
+            identicon.create_identicon(username=username, filename=avatar_path)
+
+            userPref.save()
             createUserInviteCode(user)
             login(request, user)
             return HttpResponseRedirect(reverse('app:index'))
