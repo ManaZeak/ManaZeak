@@ -50,14 +50,14 @@ def getUserSettings(request):
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def changeAvatar(request):
     if request.method == 'POST':
-        response = json.loads(request)
+        response = json.loads(request.body)
         user = request.user
         if str(response['AVATAR'].split(",")[0]) == "image/png":
             extension = "png"
         else:
             extension = "jpg"
 
-        username_hash = hashlib.md5(user.encode("utf-8")).hexdigest()
+        username_hash = hashlib.md5(user.username.encode("utf-8")).hexdigest()
         avatar_path = "static/img/avatars/" + username_hash + extension
 
         # if only one user with that username is found
