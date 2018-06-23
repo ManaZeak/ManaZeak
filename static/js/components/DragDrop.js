@@ -13,7 +13,7 @@ import { JSONParsedPostRequest } from '../utils/Utils.js'
 class DragDrop {
 
     constructor(element) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  DragDrop construction');
         }

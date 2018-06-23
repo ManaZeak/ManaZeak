@@ -12,7 +12,7 @@ import { precisionRound } from '../utils/Utils.js'
 class Player {
 
     constructor() {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('  Player construction');
         }

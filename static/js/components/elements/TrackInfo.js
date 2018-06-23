@@ -16,7 +16,7 @@ const TOTAL_SUGGESTIONS_MODES  = 3; // Number of suggestion mode (see trackSugge
 class TrackInfo {
 
     constructor(container) {
-        this.LOG = false; // Set to false to locally mute file
+        this.LOG = true; // Set to false to locally mute file
         if (window.debug && this.LOG) {
             console.log('    TrackInfo construction');
         }
