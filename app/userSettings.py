@@ -53,9 +53,9 @@ def changeAvatar(request):
         response = json.loads(request.body)
         user = request.user
         if str(response['AVATAR'].split(",")[0]) == "image/png":
-            extension = "png"
+            extension = ".png"
         else:
-            extension = "jpg"
+            extension = ".jpg"
 
         username_hash = hashlib.md5(user.username.encode("utf-8")).hexdigest()
         avatar_path = "static/img/avatars/" + username_hash + extension
