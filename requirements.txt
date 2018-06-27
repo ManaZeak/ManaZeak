@@ -9,3 +9,4 @@ django-sass-processor
 requests
 python-crontab
 psutil
+pypng

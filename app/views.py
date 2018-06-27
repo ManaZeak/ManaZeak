@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 
+from app import identicon
 from app.adminTools import getAdminOptions
 from app.form import UserForm
 from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
@@ -16,7 +17,9 @@ from app.userSettings import createUserInviteCode
 from app.utils import populateDB, checkPermission
 
 
-# Main container
+## Main container
+#   @param ListView view object (given by django)
+#   @return the main view page
 class mainView(ListView):
     template_name = 'index.html'
     queryset = Playlist
@@ -27,7 +30,9 @@ class mainView(ListView):
         return super(mainView, self).dispatch(*args, **kwargs)
 
 
-# Create a new user in database
+## Create a new user in database
+#   @param request request given by the front: must be POST (form submit)
+#   @return the main view page or the login view
 def createUser(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -69,8 +74,11 @@ def createUser(request):
             userPref.wallet = wallet
             if invite is not None:
                 userPref.inviteCode = invite
-            userPref.save()
 
+            # creating user avatar
+            userPref.avatar = identicon.create_identicon(username)
+
+            userPref.save()
             createUserInviteCode(user)
             login(request, user)
             return HttpResponseRedirect(reverse('app:index'))
@@ -79,12 +87,14 @@ def createUser(request):
     return render(request, 'signup.html', {'form': form})
 
 
-# Render the user form login views
+## Render the user form login views
+#   @param view object (given by django)
+#   @return the form for loggin in
 class UserFormLogin(View):
     form_class = UserForm
     template_name = 'login.html'
 
-    # Display the blank form
+    ## Display the blank form
     def get(self, request):
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
@@ -104,8 +114,10 @@ class UserFormLogin(View):
         return render(request, self.template_name, {'form': form})
 
 
-# Log out the user
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Log out the user
+#   @param request request given by the front
+#   @return the login page
 def logoutView(request):
     logout(request)
     return render(request, 'login.html')

@@ -17,6 +17,7 @@ def deleteUser(request):
     return JsonResponse(data)
 
 
+# Gives the information about a user
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserInformation(request):
     if request.method == 'GET':
@@ -30,6 +31,7 @@ def getUserInformation(request):
             'GROUP_NAME': userPref.group.name,
             'GROUP_ID': userPref.group.id,
             'INVITE_CODE': inviteCode,
+            'AVATAR_PATH': userPref.avatar,
         }
         if userPref.inviteCode is not None:
             data = {**data, **{

@@ -133,7 +133,6 @@ def populateDB():
         for group in Groups.objects.all():
             fillDefaultPermission(group)
 
-    print("zobare")
     # Creating and updating achivements
     setCronJobs()
     refreshAchievements()

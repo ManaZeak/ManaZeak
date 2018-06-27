@@ -1,4 +1,6 @@
+import base64
 import hashlib
+import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -43,8 +45,40 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
-# Create an invite code for a user
+# Is called when the user changes their avatar,
+#        updates user's profile picture
+@login_required(redirect_field_name='login.html', login_url='app:login')
+def changeAvatar(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        user = request.user
+        if str(response['AVATAR'].split(",")[0]) == "image/png":
+            extension = ".png"
+        else:
+            extension = ".jpg"
+
+        username_hash = hashlib.md5(user.username.encode("utf-8")).hexdigest()
+        avatar_path = "static/img/avatars/" + username_hash + extension
+
+        # if only one user with that username is found
+        if UserPreferences.objects.filter(user=user).count() == 1:
+            userPref = UserPreferences.objects.get(user=user)
+            userPref.avatar = avatar_path
+            userPref.save()
+            with open(avatar_path, 'wb') as destination:
+                img_b64 = str(response['AVATAR'].split(",")[1])
+                destination.write(base64.b64decode(img_b64))
+            data = errorCheckMessage(True, None, changeAvatar)
+        else:
+            data = errorCheckMessage(False, ErrorEnum.DB_ERROR, changeAvatar)
+    else:
+        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, changeAvatar)
+    return JsonResponse(data)
+
+
 def createUserInviteCode(user):
+    """ Creates an invite code for a user
+    """
     inviteCode = InviteCode()
     inviteCode.user = user
     inviteCode.code = hashlib.md5(

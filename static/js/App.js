@@ -144,6 +144,42 @@ class App extends MzkObject {
     }
 
 
+    changeAvatar(image) {
+        if (window.debug && this.LOG) {
+            console.log('App : changeAvatar call');
+        }
+
+        let that = this;
+        JSONParsedPostRequest(
+            "user/editAvatar/",
+            JSON.stringify({
+                AVATAR: image
+            }),
+            function (response) {
+                /* response = {
+                 *     DONE        : bool
+                 *     ERROR_H1    : string
+                 *     ERROR_MSG   : string
+                 * } */
+                if (window.debug && that.LOG) {
+                    console.log('App : changeAvatar server response');
+                }
+
+                if (response.DONE) {
+                    let self = that;
+                    that.user.getUserInfo(function() {
+                        self.topBar.userMenu.setAvatar();
+                    });
+                }
+
+                else {
+                    new Notification("ERROR", response.ERROR_H1, response.ERROR_MSG);
+                }
+            }
+        );
+    }
+
+
     /**
      * method : changePageTitle (public)
      * class  : App
@@ -1479,8 +1515,8 @@ class App extends MzkObject {
 
         let that = this;
         document.body.addEventListener('keyup', function(event) {
-            let inputCode = String.fromCharCode(event.keyCode);
-            if (/[a-zA-Z0-9-_\[\]]/.test(inputCode) && !that.search.getVisible()) {
+            if (((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90)) &&
+                !that.search.getVisible()) {
                 that.search.show(event.key, that.activePlaylist.tracks); //TODO Replace with getter
             }
         });

@@ -448,11 +448,139 @@
         "title":"Remove my account",
         "text":"Warning, this action will remove you from the database with all your data.<br>Are you sure you want to remove your account ?",
         "button":"DELETE MY ACCOUNT"
+      },
+      "changeAvatar": {
+        "title": "Change your avatar",
+        "text": "Use the following button tu change your avatar. ",
+        "button": "CHANGE AVATAR"
       }
     },
     "uploads":{
       "entry":"Uploads",
       "title":"Uploads settings"
     }
+  },
+  "errors":{
+    "BAD_FORMAT":{
+      "title": "Wrong format",
+      "message": "The server didn't understood what you said.",
+      "severity": "ERROR"
+    },
+    "BAD_REQUEST":{
+      "title": "Bad request",
+      "message": "The server didn't expected this request.",
+      "severity": "ERROR"
+    },
+    "DB_ERROR":{
+      "title": "Database error",
+      "message": "Something went wrong with the database.",
+      "severity": "ERROR"
+    },
+    "FILE_NOT_FOUND":{
+      "title": "No such file",
+      "message": "The server didn't find the file you asked.",
+      "severity": "ERROR"
+    },
+    "DIR_NOT_FOUND":{
+      "title": "No such directory",
+      "message": "The server didn't find the directory you asked.",
+      "severity": "ERROR"
+    },
+    "EMPTY_LIBRARY":{
+      "title": "The library is empty",
+      "message": "There is no file to add in the library",
+      "severity": "WARN"
+    },
+    "COVER_ERROR":{
+      "title": "Can't create file",
+      "message": "The server cannot generate the file for the covers, check the permissions.",
+      "severity": "ERROR"
+    },
+    "PERMISSION_ERROR":{
+      "title": "Not permitted",
+      "message": "You are not allowed to do this.",
+      "severity": "ERROR"
+    },
+    "RESCAN_ERROR":{
+      "title": "Library isn't ready",
+      "message": "Another scan is running in background, be a little more patient",
+      "severity": "INFO"
+    },
+    "NO_HISTORY":{
+      "title": "Your history is empty",
+      "message": "Can't go backward if you never played any song!",
+      "severity": "INFO"
+    },
+    "NO_SAME_ARTIST":{
+      "title": "No results were found",
+      "message": "Can't find any track by the same artist",
+      "severity": "INFO"
+    },
+    "NO_SAME_GENRE":{
+      "title": "No results were found",
+      "message": "Can't find any track with the same genre",
+      "severity": "INFO"
+    },
+    "NO_SAME_ALBUM":{
+      "title": "No results were found",
+      "message": "Can't find any track with the same album",
+      "severity": "INFO"
+    },
+    "SYNCTHING_ERROR":{
+      "title": "Fail to communicate with syncthing",
+      "message": "Check if syncthing is running correctly",
+      "severity": "WARN"
+    },
+    "USER_DELETE_ERROR":{
+      "title": "Can't delete this user",
+      "message": "You can't delete your own account if you are admin",
+      "severity": "ERROR"
+    },
+    "NO_STATS":{
+      "title": "Can't display stats",
+      "message": "Use the application for generating stats",
+      "severity": "INFO"
+    },
+    "BAD_FILENAME":{
+      "title": "The filename is invalid",
+      "message": "Change the filename if you want to upload it",
+      "severity": "WARN"
+    },
+    "FILE_EXISTS":{
+      "title": "File already exists",
+      "message": "The file you want to upload exists already",
+      "severity": "WARN"
+    },
+    "VALUE_ERROR":{
+      "title": "Wrong value",
+      "message": "The value wasn't expected",
+      "severity": "ERROR"
+    },
+    "DND_ERROR":{
+      "title": "The drag and drop hasn't been setup",
+      "message": "The administrator didn't configured correctly the buffer folder",
+      "severity": "ERROR"
+    },
+    "FORMAT_ERROR":{
+      "title": "The format provided doesn't have support",
+      "message": "We don't supports this extension",
+      "severity": "ERROR"
+    },
+    "DOWNLOAD_LIMIT":{
+      "title": "You maximum download limit reached",
+      "message": "Select less tracks and try again",
+      "severity": "WARN"
+    },
+    "DIR_CREATION_ERROR":{
+      "title": "Can't create a folder",
+      "message": "The application can't create a folder contact the administrator",
+      "severity": "ERROR"
+    },
+    "SUSPICIOUS_OPERATION":
+    {
+      "title": "Your account have been suspended",
+      "message": "And you know why!",
+      "severity": "ERROR"
+    },
   }
 }

@@ -113,15 +113,22 @@ class UserView extends View {
         this.ui.menuGen.className          = "mzk-selected";
         this.ui.contentTitle.innerHTML     = window.app.nls.userView.general.title;
 
-        this.ui.rescanLibLabel            = document.createElement("P");
-        this.ui.rescanLibButton           = document.createElement("BUTTON");
-
-        this.ui.rescanLibLabel.innerHTML  = "<b>" + window.app.nls.userView.general.removeAccount.title + "</b><br>" +
+        this.ui.removeAccountLabel            = document.createElement("P");
+        this.ui.removeAccountButton           = document.createElement("BUTTON");
+        this.ui.removeAccountLabel.innerHTML  = "<b>" + window.app.nls.userView.general.removeAccount.title + "</b><br>" +
                                                 "<br>" +
                                                 window.app.nls.userView.general.removeAccount.text;
-        this.ui.rescanLibButton.innerHTML = window.app.nls.userView.general.removeAccount.button;
+        this.ui.removeAccountButton.innerHTML = window.app.nls.userView.general.removeAccount.button;
 
-        this.ui.rescanLibButton.addEventListener("click", function() {
+        this.ui.changeAvatarLabel            = document.createElement("P");
+        this.ui.changeAvatarButton           = document.createElement("BUTTON");
+
+        this.ui.changeAvatarLabel.innerHTML  = "<b>" + window.app.nls.userView.general.changeAvatar.title + "</b><br>" +
+                                                "<br>" +
+                                                window.app.nls.userView.general.changeAvatar.text;
+        this.ui.changeAvatarButton.innerHTML = window.app.nls.userView.general.changeAvatar.button;
+
+        this.ui.removeAccountButton.addEventListener("click", function() {
             JSONParsedGetRequest(
                 "user/delete/",
                 function(response) {
@@ -145,10 +152,32 @@ class UserView extends View {
             );
         });
 
+        let fileinput = document.createElement('INPUT');
+        fileinput.type = 'file';
+        fileinput.accept = 'image/png,image/jpeg,image/jpg';
+        fileinput.onchange = function() {
+            if (fileinput.files[0]) {
+                let reader = new FileReader();
+                // This fires after the blob has been read/loaded.
+                reader.addEventListener('loadend', function(event) {
+                    window.app.changeAvatar(event.target.result);
+                });
+                // Start reading the blob as text.
+                reader.readAsDataURL(fileinput.files[0]);
+            }
+            fileinput.value = null;
+        };
+
+        this.ui.changeAvatarButton.addEventListener('click', () => {
+            fileinput.click();
+        });
+
         this.ui.content.appendChild(this.ui.contentTitle);
         this.ui.content.appendChild(document.createElement("HR"));
-        this.ui.content.appendChild(this.ui.rescanLibLabel);
-        this.ui.content.appendChild(this.ui.rescanLibButton);
+        this.ui.content.appendChild(this.ui.removeAccountLabel);
+        this.ui.content.appendChild(this.ui.removeAccountButton);
+        this.ui.content.appendChild(this.ui.changeAvatarLabel);
+        this.ui.content.appendChild(this.ui.changeAvatarButton);
     }
 
 
