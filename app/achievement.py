@@ -3,12 +3,15 @@ from enum import Enum, unique
 from django.db.models import Sum, Count
 
 from app.models import Achievement, Stats, UserHistory, Playlist
-
-
-# Iterate over all achiev and check if some of the are completed
 from app.wallet import rewardAchievement
 
+## @package app.achievements
+#   This package is used for managing the achievements of the user.
+#   Some function of this package are called by cron for checking the user achievement progression.
 
+
+## Iterate over all achievements and check if some of the are completed by the user
+#   @param user the user to check the achievement completion
 def checkAchievement(user):
     # Getting only achievements the user didn't completed
     achievementNotCompleted = Achievement.objects.exclude(user=user)
@@ -34,6 +37,8 @@ def checkAchievement(user):
             pass
 
 
+## Check the leet achievement. (listen to 1337 tracks)
+#   @param user the user to be checked.
 def checkLeet(user):
     sumCounter = Stats.objects.filter(user=user).aggregate(Sum('playCounter'))
     if 'playCounter__sum' in sumCounter:
@@ -42,14 +47,18 @@ def checkLeet(user):
     return False
 
 
+## Check the is instinct. (listen a song that is less than 320 kbps)
+#   @param user the user to be checked.
 def checkInstinctAchiev(user):
     userHistory = UserHistory.objects.get(user=user)
     histories = userHistory.histories.all().filter(track__bitRateMode__lt=320).count()
     return histories > 1
 
 
-# TODO : check if this really works
+## Check the guru achievement. (listen to 10 tracks uploaded by the same user).
+#   @param user the user to be checked.
 def checkGuruAchiev(user):
+    # TODO : check if this really works
     userPlaylist = Playlist.objects.filter(user=user).values('track__uploader', counter=Count('track'))
     for info in userPlaylist:
         if 'counter' in info:
@@ -58,7 +67,7 @@ def checkGuruAchiev(user):
     return False
 
 
-# Function for checking if the achievement in teh database is up to date
+## Function for checking if the achievements in the database are up to date
 def refreshAchievements():
     for achiev in AchievementEnum:
         if Achievement.objects.filter(code=achiev.name).count() == 1:
@@ -72,7 +81,12 @@ def refreshAchievements():
 
 
 @unique
+## Achievement enumeration contains all the achievements
 class AchievementEnum(Enum):
+    ## Constructor of the enum
+    #   @param reward the number of coin reward to the user for the achievement
+    #   @param isHidden if the description of teh achievement isHidden
+    #   @param code the code of the achievement need for the enum entry to be unique
     def __init__(self, reward, isHidden, code):
         self.reward = reward
         self.isHidden = isHidden
