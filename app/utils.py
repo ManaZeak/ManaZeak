@@ -8,30 +8,31 @@ from app.achievement import refreshAchievements, checkAchievement
 from app.errors import ErrorEnum, errorCheckMessage
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
 
+
+## @package app.utils
+# This package contains utility functions.
+
+
+## Logger needed for writing into the log file.
 logger = logging.getLogger('django')
 
 
-# Split a table in 4 table of equal size
-def splitTable(table):
-    if len(table) % 4 == 0:
-        chunkSize = int(len(table) / 4)
+## Split a table in x tables of equal size.
+#   @param table the table that need to be split.
+#   @param numberOfCluster the number of partition the table need to be split.
+#   @return numberOfCluster tables that can be created from the size of the original table.
+def splitTable(table, numberOfCluster):
+    if len(table) % numberOfCluster == 0:
+        chunkSize = int(len(table) / numberOfCluster)
     else:
-        chunkSize = int(len(table) / 4) + 1
+        chunkSize = int(len(table) / numberOfCluster) + 1
     for i in range(0, len(table), chunkSize):
         yield table[i:i + chunkSize]
 
 
-# Split a table in x tables of equal size
-def splitTableCustom(table, number):
-    if len(table) % number == 0:
-        chunkSize = int(len(table) / number)
-    else:
-        chunkSize = int(len(table) / number) + 1
-    for i in range(0, len(table), chunkSize):
-        yield table[i:i + chunkSize]
-
-
-# Format for vorbis tags
+## Process a Vorbis tag to remove the useless info.
+#   @param tag the vobis tag
+#   @return the cleaned tag
 def processVorbisTag(tag):
     tag = strip_tags(tag)
     tag = tag[2:]
@@ -39,13 +40,19 @@ def processVorbisTag(tag):
     return tag
 
 
-# Return a readable time code for a time code
+## Transform a timecode to a string readable for humans.
+#   @param timestamp the timestamp object (date object in DB)
+#   @return a string of the format "DD/MM/YYYY - HH:MM"
 def timeCodeToString(timestamp):
     return str(timestamp.day).zfill(2) + "/" + str(timestamp.month).zfill(2) + \
            "/" + str(timestamp.year) + " - " + str(timestamp.hour) + ":" + \
            str(timestamp.minute)
 
 
+## Check if a user has the given permission.
+#   @param requirements the permission required.
+#   @param user the user asking for permission.
+#   @return True if the user has permission, False otherwise.
 def checkPermission(requirements, user):
     checkAchievement(user)
     userPref = UserPreferences.objects.get(user=user)
@@ -56,7 +63,7 @@ def checkPermission(requirements, user):
         return False
 
 
-# Asks to refresh of all views
+## Set a flag in the database asking for regenerating all the postgres views
 def refreshAllViews():
     for playlist in Playlist.objects.all():
         if not playlist.refreshView:
@@ -64,7 +71,16 @@ def refreshAllViews():
             playlist.save()
 
 
-# Create the default entries into the database
+## Create the default entries into the database.
+#   Generate in database :
+#   - the file types
+#   - the default artist
+#   - the default album
+#   - the default genre
+#   - the permissions
+#   - the transaction types
+#   - the default groups
+#   Creating the cron jobs and refresh the achievement of the base from the data stored in the enum
 def populateDB():
     if FileType.objects.all().count() == 0:
         print("Created files types")
@@ -121,7 +137,6 @@ def populateDB():
                         bubbles=False).save()
         TransactionType(name="Bubble", code="BUBL", coinGain=0, coinLoss=0, streakGain=0, streakLoss=0,
                         bubbles=False).save()
-
     if Groups.objects.all().count() == 0:
         Groups(name="Banned", rank=0).save()
         print("Creating the defaults groups")
@@ -132,12 +147,13 @@ def populateDB():
         Groups(name="Root", rank=5).save()
         for group in Groups.objects.all():
             fillDefaultPermission(group)
-
     # Creating and updating achivements
     setCronJobs()
     refreshAchievements()
 
 
+## Add the permission to a group given the user rank
+#   @param group the Group object of a user
 def fillDefaultPermission(group):
     if group.rank > 0:
         group.permissions.add(Permissions.objects.get(code="LOGI"))
@@ -169,6 +185,7 @@ def fillDefaultPermission(group):
         group.permissions.add(Permissions.objects.get(code="COIN"))
 
 
+## Create the cron job if the job don't exists
 def setCronJobs():
     cron = CronTab("root")
     # Checking the job already present
@@ -180,6 +197,8 @@ def setCronJobs():
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Delete all the jobs in the crontab and create the cron tab from the function setCronJobs()
+#   @param request the request from the navigator
 def refreshCrontab(request):
     if request.method == 'GET':
         user = request.user

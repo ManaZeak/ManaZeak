@@ -5,7 +5,7 @@ from django.db.models import Sum, Count
 from app.models import Achievement, Stats, UserHistory, Playlist
 from app.wallet import rewardAchievement
 
-## @package app.achievements
+## @package app.achievement
 #   This package is used for managing the achievements of the user.
 #   Some function of this package are called by cron for checking the user achievement progression.
 
@@ -93,8 +93,17 @@ class AchievementEnum(Enum):
         # This var is for avoiding an error
         self.code = code
 
+    ## Leet achievement, listen to 1337 tracks.
     LEET = (100, False, 'LEET')
+
+    ## To be instinct achievement, listen to a track that has a bitrate of less than 320 kbps.
     INSTINCT = (10, False, 'INSTINCT')
+
+    ## Guru listen to 10 songs of the same uploader.
     GURU = (10, False, 'GURU')
+
+    ## Mix achievement, listen to a song that is longer than 1 hour.
     MIX = (10, False, 'MIX')
+
+    ## BEST_OF Best of achievement.
     BEST_OF = (100, False, 'BEST_OF')

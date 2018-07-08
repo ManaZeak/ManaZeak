@@ -16,7 +16,7 @@ from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk, ref
 from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Library, Playlist, FileType, Album, Track
 from app.track.importer import createMP3Track, createVorbisTrack
-from app.utils import splitTableCustom, checkPermission, refreshAllViews
+from app.utils import splitTable, checkPermission, refreshAllViews
 
 
 logger = logging.getLogger('django')
@@ -279,7 +279,7 @@ def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
             if procNumber == 0:
                 print("ERROR!")
                 return
-        splicedMP3 = splitTableCustom(mp3Files, procNumber)
+        splicedMP3 = splitTable(mp3Files, procNumber)
         for mp3 in splicedMP3:
             thread = ImportBulkThread(0, mp3, convert, mp3FileReference, coverPath)
             threads.append(thread)
@@ -291,7 +291,7 @@ def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
             procNumber -= 1
             if procNumber == 0:
                 return
-        splicedFLAC = splitTableCustom(flacFiles, multiprocessing.cpu_count())
+        splicedFLAC = splitTable(flacFiles, multiprocessing.cpu_count())
         for flac in splicedFLAC:
             thread = ImportBulkThread(1, flac, convert, flacFileReference, coverPath)
             threads.append(thread)
@@ -303,7 +303,7 @@ def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
             procNumber -= 1
             if procNumber == 0:
                 return
-        splicedOGG = splitTableCustom(oggFiles, multiprocessing.cpu_count())
+        splicedOGG = splitTable(oggFiles, multiprocessing.cpu_count())
         for ogg in splicedOGG:
             thread = ImportBulkThread(1, ogg, convert, oggFileReference, coverPath)
             threads.append(thread)

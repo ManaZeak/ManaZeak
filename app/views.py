@@ -16,6 +16,9 @@ from app.models import Playlist, InviteCode, UserPreferences, Wallet, Groups
 from app.userSettings import createUserInviteCode
 from app.utils import populateDB, checkPermission
 
+## @package app.views
+#   This package handle the main view of the application and the login and signup page.
+
 
 ## Main container
 #   @param ListView view object (given by django)
@@ -49,6 +52,7 @@ def createUser(request):
                 else:
                     return render(request, 'signup.html', {'form': form})
 
+            # FIXME: TOO LONG! Make smaller functions
             form.save()
             # Special condition for the first user to be administrator
             if User.objects.all().count() == 1:
@@ -89,7 +93,7 @@ def createUser(request):
 
 ## Render the user form login views
 #   @param view object (given by django)
-#   @return the form for loggin in
+#   @return the form for logging in
 class UserFormLogin(View):
     form_class = UserForm
     template_name = 'login.html'

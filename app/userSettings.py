@@ -10,10 +10,24 @@ from app.models import InviteCode, UserPreferences
 from app.utils import timeCodeToString
 from app.wallet import calculateCurrentAvailableCash
 
+## @package app.userSettings
+#   This package is used to handle the user information.
 
-# Return the user's information
+
+## Return the user's information
+#   @param request the GET request from the front.
+#   @return a json containing :
+#   - the username (USERNAME)
+#   - the date the user join the app (DATE_JOINED)
+#   - the last date the user logged in (LAST_LOGIN)
+#   - the invite code of the user (INVITE_CODE)
+#   - if the user is admin (IS_ADMIN)
+#   - the number of manacoin of the user (MANACOIN)
+#   - the godfather code (GODFATHER_CODE)
+#   - the godfather username (GODFATHER_NAME)
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserSettings(request):
+    # FIXME : merge with function app.user.getUserInformation
     if request.method == 'GET':
         user = request.user
         if UserPreferences.objects.filter(user=user).count() == 1:
@@ -45,9 +59,12 @@ def getUserSettings(request):
     return JsonResponse(data)
 
 
-# Is called when the user changes their avatar,
-#        updates user's profile picture
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Function for changing the user avatar.
+#   Requires the user to be logged in.
+#   @param request a POST request from the front.
+#   The POST request must contain :
+#   - a base 64 encoded image (AVATAR)
 def changeAvatar(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -76,6 +93,8 @@ def changeAvatar(request):
     return JsonResponse(data)
 
 
+## Create the user invite code for inviting other users.
+#   @param user to be associated with the invite code
 def createUserInviteCode(user):
     """ Creates an invite code for a user
     """
