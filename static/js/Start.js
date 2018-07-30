@@ -1,5 +1,14 @@
 import Utils from './utils/Utils.js'
-import Mzk from './Mzk.js'
+import Notification from './utils/Notification.js'
 
-window.Utils = new Utils;
+import Mzk from './core/Mzk.js'
+
+window.Utils = new Utils();
+window.Notification = new Notification({
+    thickBorder: 'top',
+    duration:    4000,
+    transition:  200,
+    maxActive:   3
+});
+
 document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); });

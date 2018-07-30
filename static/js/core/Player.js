@@ -9,7 +9,6 @@ class Player {
 		this._player = {}; // HTML audio player
 		this._volume = 0.0; // Volume in range [0, 1] float
 
-		this._isLooping = false; // Loop lag
 		this._isMuted = false; // Mute flag
 		this._isPlaying = false; // Playback flag
 
@@ -25,12 +24,13 @@ class Player {
    * @name _init
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Build player tag and set loop/volume values
    **/
 	_init() {
 		this._player = document.createElement('AUDIO'); // Create HTML audio tag
 		this._player.id = 'mzk-audio-player'; // Assign player ID
-		this._player.loop = this._isLooping; // Set player loop state
 		this.setVolume(1); // Initialize volume to its maximum value
 	}
 
@@ -39,6 +39,8 @@ class Player {
    * @name _event
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Listen to ended track event on audio player
    **/
 	_events() {
@@ -50,6 +52,8 @@ class Player {
    * @name _attach
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Append audio player to the DOM using a fragment
    **/
 	_attach() {
@@ -63,6 +67,8 @@ class Player {
    * @name _getProgress
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Compute and returns the current track progression in the player
    * @returns {number} The track progression in completion percentage in range [0, 100]
    **/
@@ -75,6 +81,8 @@ class Player {
    * @name _setProgress
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Set progression percentage on current track
    * @param {number} percentage - The progression percentage in range [0, 100]
    **/
@@ -92,6 +100,8 @@ class Player {
    * @name _setVolume
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Set the player volume according to the given value.
    * @param {number} value - The volume value to set in range [0, 1]
    **/
@@ -116,29 +126,23 @@ class Player {
    * @name _trackEnded
    * @private
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Action to take when the current track reaches its end
    **/
   _trackEnded() {
 		this._isPlaying = false; // Update playling state
-		this._isLooping ? this.repeatTrack() : null; // Next track behavior
+		mzk.trackEnded();
 	}
 
 //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   /**
    * @method
-   * @name toggleLoop
-   * @memberof Player
-   * @description Toggle the looping state of the player
-   **/
-  toggleLoop() {
-    this._isLooping = !this._isLooping; // Swap isLooping state
-  }
-
-  /**
-   * @method
    * @name toggleMute
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Toggle the mute status of the player
    **/
   toggleMute() {
@@ -149,6 +153,8 @@ class Player {
    * @method
    * @name togglePlay
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Toggle the playback state of the player
    **/
   togglePlay() {
@@ -159,6 +165,8 @@ class Player {
    * @method
    * @name adjustProgress
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Add/Substract the amount (percentage) to the current progress (percentage)
    * @param {number} amount - Percentage value to adjust progress in range [0, 100]
    **/
@@ -170,6 +178,8 @@ class Player {
    * @method
    * @name adjustVolume
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Add/Substract the amount to the current volume
    * @param {number} amount - Volume to add/substract in range [0, 1]
    **/
@@ -181,6 +191,8 @@ class Player {
    * @method
    * @name changeTrack
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Change the player source and start the playback once ready to play
    * @param {string} url - The path to the track (local or hosted)
    * @returns {Promise} A Promise that resolves when player is operating
@@ -206,6 +218,8 @@ class Player {
    * @method
    * @name play
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Swap playing state and start playback at currentTime
    **/
 	play() {
@@ -219,6 +233,8 @@ class Player {
    * @method
    * @name pause
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Swap playing state and pause playback at currentTime
    **/
 	pause() {
@@ -232,6 +248,8 @@ class Player {
    * @method
    * @name stop
    * @memberof Player
+	 * @author Arthur Beaulieu
+	 * @since July 2018
    * @description Stop playback and remove source from player attributes
    **/
 	stop() {
@@ -246,6 +264,8 @@ class Player {
    * @method
    * @name mute
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Set player effective volume to zero
    **/
 	mute() {
@@ -259,6 +279,8 @@ class Player {
    * @method
    * @name unmute
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description Restore player volume to previous its value
    **/
 	unmute() {
@@ -272,6 +294,8 @@ class Player {
    * @method
    * @name repeatTrack
    * @memberof Player
+	 * @author Arthur Beaulieu
+   * @since July 2018
    * @description restart immediatly the current track in the player
    **/
   repeatTrack() {
@@ -283,7 +307,6 @@ class Player {
 
 //  -------------------------------  GETTERS / SETTERS  -------------------------------  //
 
-	getIsLooping()   { return this._isLooping;          }
 	getIsPlaying()   { return this._isPlaying;          }
 	getIsMuted()     { return this._isMuted;            }
 	getVolume()      { return this._volume;             }
@@ -294,6 +317,8 @@ class Player {
   setProgress(percentage) { this._setProgress(percentage); }
   setVolume(value)        { this._setVolume(value);        }
 
+	hasSource() { return this._player.src ? true : false; }
+
 }
 
-export default Player
+export default Player;
