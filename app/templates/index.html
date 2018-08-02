@@ -11,11 +11,38 @@
         <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
     </head>
     <body>
+      <div id="top-bar">
+
+      </div>
+      <div id="footbar">
+        <div class="left">
+
+        </div>
+        <div class="center">
+          <div id="controls-container">
+            <!-- <img src="../../static/img/player/previous.svg" alt=""> -->
+            <img id="stop" src="../../static/img/player/stop.svg" alt="">
+            <img id="play" src="../../static/img/player/play.svg" alt="">
+            <!-- <img src="../../static/img/player/next.svg" alt=""> -->
+          </div>
+          <div id="progress-container">
+            <div id="progress-track">
+              <div id="progress-current"></div>
+              <div id="progress-thumb"></div>
+              <div id="progress-hover">--:--</div>
+            </div>
+            <div id="progress-moodbar">
+
+            </div>
+          </div>
+        </div>
+        <div class="right">
+
+        </div>
+      </div>
 <!--  TEMP MATERIAL HERE, JUST TO TEST PLAYER -->
 <button id="change">Track 1</button>
 <button id="change1">Track 2</button><br>
-<button id="play">Play</button>
-<button id="stop">Stop</button>
 <button id="mute">Mute</button><br>
 <span id="vo">Volume: 1</span><br>
 <button id="vd">Volume down</button>

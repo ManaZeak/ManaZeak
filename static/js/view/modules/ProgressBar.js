@@ -13,24 +13,19 @@ class ProgressBar {
 
   		this._init();
       this._events();
-  		this._attach();
+  		//this._attach();
   	}
 
 
   	_init() {
-  		this._progress.container = document.createElement('DIV');
-  		this._progress.track = document.createElement('DIV');
-  		this._progress.current = document.createElement('DIV');
-  		this._progress.thumb = document.createElement('DIV');
-  		this._progress.hover = document.createElement('DIV');
+  		this._progress.container = document.getElementById('progress-container');
+  		this._progress.track = document.getElementById('progress-track');
+  		this._progress.current = document.getElementById('progress-current');
+  		this._progress.thumb = document.getElementById('progress-thumb');
+  		this._progress.hover = document.getElementById('progress-hover');
+  		this._progress.moodbar = document.getElementById('progress-moodbar');
 
-  		this._progress.container.id = 'progress';
-  		this._progress.track.id = 'progress-track';
-  		this._progress.current.id = 'progress-current';
-  		this._progress.thumb.id = 'progress-thumb';
-  		this._progress.hover.id = 'progress-hover';
-
-  		if (this._options.timecode) {
+  		if (this._options.timecode) { // TODO : restore this
   			this._progress.left = document.createElement('P');
   			this._progress.right = document.createElement('P');
   			this.resetTimecode();
@@ -38,8 +33,8 @@ class ProgressBar {
   	}
 
     _events() {
-      this._progress.track.addEventListener('mouseover', this._updateMouseOver.bind(this));
-  		this._progress.track.addEventListener('mouseleave', this._updateMouseOver.bind(this));
+      this._progress.container.addEventListener('mouseover', this._updateMouseOver.bind(this));
+  		this._progress.container.addEventListener('mouseleave', this._updateMouseOver.bind(this));
     }
 
   	_attach() {
@@ -58,10 +53,12 @@ class ProgressBar {
 
   	_updateMouseOver(event) {
   		if (event.type === 'mouseover') {
+        this._progress.hover.style.opacity = '1'; // Automatic CSS transition
   			this._isMouseOver = true;
   		}
 
   		else if (event.type === 'mouseleave') {
+        this._progress.hover.style.opacity = '0'; // Automatic CSS transition
   			this._isMouseOver = false;
   		}
   	}
@@ -78,7 +75,7 @@ class ProgressBar {
    	}
 
   	_mouseDown(event) {
-  		if (!this._isDragging && (event.target.id === 'progress-track' || event.target.id === 'progress-current' || event.target.id === 'progress-thumb')) {
+  		if (!this._isDragging && (event.target.id === 'progress-moodbar' ||event.target.id === 'progress-container' || event.target.id === 'progress-track' || event.target.id === 'progress-current' || event.target.id === 'progress-thumb')) {
         mzk.mute();
         this._isDragging = true;
         this._stopAnimation();
@@ -133,6 +130,10 @@ class ProgressBar {
   	}
 
     resetProgressBar() {
+      this._progress.thumb.style.transition = 'left 0.5s ease 0s';
+      this._progress.current.style.transition = 'width 0.5s ease 0s';
+      this._progress.moodbar.style.height = '0';
+
       this.setProgress(0);
       this.desactivate();
     }
@@ -151,11 +152,12 @@ class ProgressBar {
       this._isActive = true;
   		this._startAnimation();
 
-      this._mouseDown = this._mouseDown.bind(this); // In order to be able to remove event listener later
+      this._mouseDown = this._mouseDown.bind(this); // In order to be able to remove event listener in desactivate()
       this._mouseMove = this._mouseMove.bind(this);
       this._mouseUp = this._mouseUp.bind(this);
 
-      this._progress.track.addEventListener('mousedown', this._mouseDown);
+      this._progress.moodbar.style.height = '25px';
+      this._progress.container.addEventListener('mousedown', this._mouseDown);
       window.addEventListener('mousemove', this._mouseMove);
       window.addEventListener('mouseup', this._mouseUp);
   	}
@@ -164,9 +166,16 @@ class ProgressBar {
       this._isActive = false;
       this._stopAnimation();
 
-      this._progress.track.removeEventListener('mousedown', this._mouseDown);
+      this._progress.container.removeEventListener('mousedown', this._mouseDown);
       window.removeEventListener('mousemove', this._mouseMove);
       window.removeEventListener('mouseup', this._mouseUp);
+
+      setTimeout(function() { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
+        // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
+        // Lag duration will be equal to the transition time otherwise
+        this._progress.thumb.style.transition = 'left 0s ease 0s'; // Reset left transition to default
+        this._progress.current.style.transition = 'width 0s ease 0s'; // Reset width transition to default
+      }.bind(this), 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
   	}
 
   	adjustProgress(amount) {

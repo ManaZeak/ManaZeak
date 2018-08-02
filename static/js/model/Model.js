@@ -2,6 +2,12 @@ import Player from '../core/Player.js'
 
 class Model {
   constructor() {
+    this.player = {};
+
+    this._init();
+  }
+
+  _init() {
     this.player = new Player();
     Notification.info({ message: 'Success Model start' });
   }

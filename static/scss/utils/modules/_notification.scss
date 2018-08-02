@@ -1,33 +1,33 @@
 /* Usefull classes and styles taken from MessCss */
-$font-size:        14px;
-$line-spacing:     $font-size * (140 / 100);
-$border-radius:    2px;
+$font-size: 14px;
+$line-spacing: $font-size * (140 / 100);
+$border-radius: 2px;
 $border-thickness: 1px;
 
-$color-dark-text:       rgb(20, 20, 20);
-$color-dark-border:   	rgb(20, 20, 20);
-$color-info:    		rgb(3, 169, 244);
-$color-info-light:      rgba(3, 169, 244, 0.25);
-$color-info-lighter:    rgb(205, 238, 253);
-$color-success: 		rgb(76, 175, 80);
-$color-success-light:   rgba(76, 175, 80, 0.25);
+$color-dark-text: rgb(20, 20, 20);
+$color-dark-border: rgb(20, 20, 20);
+$color-info: rgb(3, 169, 244);
+$color-info-light: rgba(3, 169, 244, 0.25);
+$color-info-lighter: rgb(205, 238, 253);
+$color-success: rgb(76, 175, 80);
+$color-success-light: rgba(76, 175, 80, 0.25);
 $color-success-lighter: rgb(219, 239, 220);
-$color-warning: 		rgb(255, 152, 0);
-$color-warning-light: 	rgba(255, 152, 0, 0.25);
+$color-warning: rgb(255, 152, 0);
+$color-warning-light: rgba(255, 152, 0, 0.25);
 $color-warning-lighter: rgb(255, 234, 204);
-$color-error:   	  	rgb(244, 67, 54);
-$color-error-light:   	rgba(244, 67, 54, 0.25);
-$color-error-lighter: 	rgb(253, 217, 215);
+$color-error: rgb(244, 67, 54);
+$color-error-light: rgba(244, 67, 54, 0.25);
+$color-error-lighter: rgb(253, 217, 215);
 
-/* Notification specific variables */ 
-$notification-width: 	    325px;
-$notification-min-height:   50px;
-$notification-icon: 	    25px;
+/* Notification specific variables */
+$notification-width: 325px;
+$notification-min-height:50px;
+$notification-icon: 25px;
 $notification-counter-size: 18px;
-$notification-padding: 	    12px;
-$notification-margin: 	    10px;
+$notification-padding: 12px;
+$notification-margin: 10px;
 $notification-border-thick: 3px;
-$notification-border-std:   1px;
+$notification-border-std: 1px;
 
 div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, cite, code, pre, em, q, small, strong, sub, sup, b, u, i {
 	border: 0;
@@ -38,7 +38,6 @@ div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, cite, code, pre, em, q, sma
 	vertical-align: baseline;
 }
 
-body 				 { line-height: 1; 		}
 *, *:before, *:after { box-sizing: border-box; }
 
 @mixin userSelect($value) {

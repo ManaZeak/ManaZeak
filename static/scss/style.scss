@@ -1,12 +1,14 @@
 @import 'utils/tools';
-@import 'view/progressbar';
+@import 'view/topbar';
+@import 'view/footbar';
+//@import 'view/components/progressbar';
 
 html, body {
-    color:          $mzk-text;
-    font-family:    Helvetica, serif;
-    height:         100%;
-    margin:         0;
-    overflow:       hidden;
-    padding:        0;
-    width:          100%;
+  font-family: Segoe, Helvetica, serif;
+  height: 100%;
+  line-height: 1;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
 }

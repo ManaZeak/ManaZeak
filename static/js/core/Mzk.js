@@ -6,6 +6,8 @@ class Mzk {
   constructor() {
     this.model = {};
     this.view = {};
+    this.cookies = {};
+    this.lang = {}
 
     this._init();
   }
@@ -13,9 +15,12 @@ class Mzk {
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   _init() {
-    let that = this;
-    this._initModel()
-      .then(() => { return that._initView(); });
+    this.cookies = Utils.getCookies();
+
+    Utils.getLangage(this.cookies['csrftoken'], (navigator.language || navigator.userLanguage))
+      .then(function(nls) { this.lang = nls; }.bind(this))
+      .then(function() { return this._initModel(); }.bind(this))
+      .then(function() { return this._initView(); }.bind(this));
   }
 
   _initModel() {

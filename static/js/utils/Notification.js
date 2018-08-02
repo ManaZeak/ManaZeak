@@ -1,72 +1,98 @@
 class Notification {
-
 	/**
 	* @summary Create an instance of a notification handler
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description Notification Class to automatically handle one or several notification of different types at the same time.
-	*
-	* @param {object} [options] 		  		    - The notification handler global options
+	* @param {object} [options] - The notification handler global options
 	* @param {string} [options.position=top-right] - <i>top-left; top-right; bottom-left; bottom-right;</i>
-	* @param {string} [options.thickBorder=top]    - <i>top; bottom; left; right; none;</i>
-	* @param {number} [options.duration=3000]      - Notification life cycle duration (in ms)
-	* @param {number} [options.transition=100]     - Notification fade animation transition timing (in ms)
-	* @param {number} [options.maxActive=5]        - Maximum of simultaneously opened notification
+	* @param {string} [options.thickBorder=top] - <i>top; bottom; left; right; none;</i>
+	* @param {number} [options.duration=3000] - Notification life cycle duration (in ms) in range N*
+	* @param {number} [options.transition=100] - Notification fade animation transition timing (in ms) in range N*
+	* @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*
 	**/
 	constructor(options) {
 		this.DEBUG = false;
 		if (this.DEBUG) { console.log('[ Notification ] constructor()', this); }
 
-		// Private attributes
-		this._dismissAllLock = false;
-		this._dom     = document.createElement('DIV');
-		this._active  = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
-		this._queue   = {}; // Queue notifications when max active has been reached
-		this._history = [];
+		this._dismissAllLock = false; // Dismiss all operation in progress flag
+		this._dom = {}; // Notification handler container
+		this._active = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
+		this._queue = {}; // Queue notifications when max active has been reached
+		this._history = []; // Notification history
 
-		// Default values
+		this._position = '';
+		this._thickBorder = '';
+		this._duration = 0;
+		this._transition = 0;
+		this._maxActive = 0;
+		this._default = {};
+
+		this._init(options);
+		this._attach();
+	}
+
+	//  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+	/**
+	* @method
+	* @name _init
+	* @private
+	* @memberof Notification
+	* @summary Init the notification handler
+	* @author Arthur Beaulieu
+	* @since July 2018
+	* @description Create the handler DOM element, set default values, test given options and properly add CSS class to the handler
+	* @param {object} [options] - The notification handler global options
+	* @param {string} [options.position=top-right] - <i>top-left; top-right; bottom-left; bottom-right;</i>
+	* @param {string} [options.thickBorder=top] - <i>top; bottom; left; right; none;</i>
+	* @param {number} [options.duration=3000] - Notification life cycle duration (in ms) in range N*
+	* @param {number} [options.transition=100]  - Notification fade animation transition timing (in ms) in range N*
+	* @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*	**/
+	_init(options) {
+		this._dom = document.createElement('DIV'); // Notification handler DOM container
+		this._dom.classList.add('notification-container'); // Set proper CSS class
+
 		this._default = {
 			handler: {
-				position:    'top-right',
+				position: 'top-right',
 				thickBorder: 'top',
-				duration:    5000,
-				transition:  200,
-				maxActive:   10
+				duration: 5000,
+				transition: 200,
+				maxActive: 10
 			},
 			notification: {
-				type:     'info',
-				message:  '',
-				title:    '',
+				type: 'info',
+				message: '',
+				title: '',
 				iconless: false,
 				closable: true,
-				sticky:   false,
+				sticky: false,
 				renderTo: this._dom,
-				CBtitle:  '',
+				CBtitle: '',
 				callback: null
 			},
 			color: {
 				success: 'rgb(76, 175, 80)',
-				info:    'rgb(3, 169, 244)',
+				info: 'rgb(3, 169, 244)',
 				warning: 'rgb(255, 152, 0)',
-				error: 	 'rgb(244, 67, 54)'
+				error: 'rgb(244, 67, 54)'
 			}
-		}
+		};
 
-		// Private attributes that may be altered using options object
-		this._position    = options === undefined ? this._default.handler.position    : options.position    === undefined ? this._default.handler.position    : options.position;
+		this._position = options === undefined ? this._default.handler.position : options.position  === undefined ? this._default.handler.position : options.position;
 		this._thickBorder = options === undefined ? this._default.handler.thickBorder : options.thickBorder === undefined ? this._default.handler.thickBorder : options.thickBorder;
-		this._duration    = options === undefined ? this._default.handler.duration    : options.duration    === undefined ? this._default.handler.duration    : options.duration;
-		this._transition  = options === undefined ? this._default.handler.transition  : options.transition  === undefined ? this._default.handler.transition  : options.transition;
-		this._maxActive   = options === undefined ? this._default.handler.maxActive   : options.maxActive   === undefined ? this._default.handler.maxActive   : options.maxActive;
+		this._duration = options === undefined ? this._default.handler.duration : options.duration === undefined ? this._default.handler.duration : options.duration;
+		this._transition = options === undefined ? this._default.handler.transition : options.transition  === undefined ? this._default.handler.transition : options.transition;
+		this._maxActive = options === undefined ? this._default.handler.maxActive : options.maxActive === undefined ? this._default.handler.maxActive : options.maxActive;
 
-		// Test Notification inner variables validity
-		if (this.DEBUG && this._position !== 'top-left' && this._position !== 'top-right' && this._position !== 'bottom-left' && this._position !== 'bottom-right') {
+		if (this.DEBUG && this._position !== 'top-left' && this._position !== 'top-right' && this._position !== 'bottom-left' && this._position !== 'bottom-right') { // Illegal value for position
 			console.warn('[ Notification ] constructor() | Invalid value for position' +
 			'\nGiven position value of ' + this._position + ' has been replaced with ' + this._default.handler.position);
 			this._position = this._default.handler.position; // Default value
 		}
 
-		if (this.DEBUG && this._thickBorder !== 'top' && this._thickBorder !== 'bottom' && this._thickBorder !== 'left' && this._thickBorder !== 'right' && this._thickBorder !== 'none') {
+		if (this.DEBUG && this._thickBorder !== 'top' && this._thickBorder !== 'bottom' && this._thickBorder !== 'left' && this._thickBorder !== 'right' && this._thickBorder !== 'none') { // Illegal value for thick border
 			console.warn('[ Notification ] constructor() | Invalid value for thickBorder' +
 			'\nGiven position value of ' + this._thickBorder + ' has been replaced with ' + this._default.handler.position);
 			this._thickBorder = this._default.handler.thickBorder; // Default value
@@ -89,291 +115,120 @@ class Notification {
 			'\nGiven maxActive value of ' + this._maxActive + ' has been replaced with ' + this._default.handler.maxActive);
 			this._maxActive = this._default.handler.maxActive; // Default value for _maxActive
 		}
-		// Test end
 
-		this._dom.classList.add('notification-container');
-		this._dom.classList.add(this._position);
-
-		document.body.appendChild(this._dom);
-	}
-
-	//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-	/**
-	* @method
-	* @name dismiss
-	* @public
-	* @memberof Notification
-	*
-	* @summary Dismiss a notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Dismiss a specific notification via its ID
-	*
-	* @param {number} id - The notification ID to dismiss
-	**/
-	dismiss(id) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + id + '.dismis()'); }
-
-		window.clearTimeout(this._active[id].timeoutID); // Clear notification timeout
-
-		if (this._active[id].requestCount > 1) { // Several request are pending
-			this._clearRequestCount(this._active[id]); // Clear all pending request
-		}
-
-		this._close(this._active[id]); // Close notification
+		this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
 	}
 
 	/**
 	* @method
-	* @name dismissAll
-	* @public
+	* @name _attach
+	* @private
 	* @memberof Notification
-	*
-	* @summary Dismiss all visible notifications
+	* @summary Attach the notification handler
+	* @author Arthur Beaulieu
+	* @since July 2018
+	* @description Attach the notification handler to the dom using a fragment
+	**/
+	_attach() {
+		let fragment = document.createDocumentFragment();
+		fragment.appendChild(this._dom);
+		document.body.appendChild(fragment);
+	}
+
+	/**
+	* @method
+	* @name _events
+	* @private
+	* @memberof Notification
+	* @summary Listen to user interaction on a notification
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Clear the notification handler from all its active notifications
+	* @description Handle mouse events for the given notification
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {object} notification.dom - Notifiction DOM element
+	* @param {number} notification.requestCount - Notification inner call counter
+	* @param {number} notification.timeoutID - Notification own setTimeout ID
+	* @param {boolean} notification.sticky - Notification sticky behvaior
+	* @param {boolean} notification.closable - Make notification closable flag
 	**/
-	dismissAll() {
-		if (this.DEBUG) { console.log('[ Notification ] dismisAll()'); }
+	_events(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._events()'); }
 
-		// Check that _dimissAllLock is disable and that there is still notification displayed
-		if (!this._dismissAllLock && Object.keys(this._active).length !== 0) {
-			this._dismissAllLock = true; // dismissAllLock will be unlocked at the last _close() method call
-			this._queue = {}; // Clear queue object
+		let that 	   = this,
+		closeFired = false, // Close fired flag
 
-			for (let id in this._active) { // Iterate over notifications
-				this.dismiss(id);
+		// Inner callback functions
+		_unDim = () => { // Undim notification
+			if (notification.isDimmed) {
+				this._unDim(notification);
 			}
-		}
-	}
+		},
 
-	/**
-	* @method
-	* @name dismissType
-	* @public
-	* @memberof Notification
-	*
-	* @summary Dismiss typed notifications
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Dismiss all notifications from a given type
-	*
-	* @param {string} type - <i>succes; info; warning; error;</i>
-	**/
-	dismissType(type) {
-		if (this.DEBUG) { console.log('[ Notification ] dismisType()'); }
-
-		// Check that _dimissAllLock is disable and that there is still notification displayed
-		if (Object.keys(this._active).length !== 0) {
-			for (let id in this._active) { // Iterate over notifications
-				if (this._active[id].type === type) {
-					this.dismiss(id);
-				}
+		_close = () => { // Close notification
+			if (that._active[notification.id] === undefined) {
+				return;
 			}
+
+			// Update counter DOM element
+			if (notification.requestCount > 1) {
+				this._decrementRequestCounter(notification, true);
+			}
+
+			// Remove notification element from the DOM tree
+			else if (!closeFired) {
+				closeFired = true;
+				window.clearTimeout(notification.timeoutID); // Clear life cycle timeout
+				notification.dom.close.removeEventListener('click', _close); // Avoid error when spam clicking the close button
+				this._close(notification);
+			}
+		},
+
+
+		_resetTimeout = () => { // Reset life cycle timeout
+			if (that._active[notification.id] === undefined) {
+				return;
+			}
+
+			if (!closeFired && !notification.isDimmed) { // Only reset timeout if no close event has been fired
+				that._resetTimeout(notification);
+			}
+		};
+
+		// Mouse event listeners
+		if (notification.sticky) {
+			notification.dom.addEventListener('mouseenter', _unDim.bind(this));
+			notification.dom.addEventListener('mouseout',   _unDim.bind(this));
 		}
+
+		if (notification.closable) {
+			notification.dom.addEventListener('click', 		 _close.bind(this));
+			notification.dom.close.addEventListener('click', _close.bind(this));
+		}
+
+		notification.dom.addEventListener('mouseover', _resetTimeout.bind(this));
 	}
-
-	/**
-	* @method
-	* @name error
-	* @public
-	* @memberof Notification
-	*
-	* @summary Call a new error notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Build an error notification
-	*
-	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
-	*
-	* @returns {number} The newly created notification ID
-	**/
-	error(options) {
-		if (this.DEBUG) { console.log('[ Notification ] error()'); }
-
-		options.type = 'error';
-		return this.new(options);
-	}
-
-	/**
-	* @method
-	* @name info
-	* @public
-	* @memberof Notification
-	*
-	* @summary Call a new info notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Build an info notification
-	*
-	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
-	*
-	* @returns {number} The newly created notification ID
-	**/
-	info(options) {
-		if (this.DEBUG) { console.log('[ Notification ] info()'); }
-
-		options.type = 'info';
-		return this.new(options);
-	}
-
-	/**
-	* @method
-	* @name new
-	* @public
-	* @memberof Notification
-	*
-	* @summary Call a new notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Build a notification according to the given options, then append it to notification container.
-	*
-	* @param {object}   options 		  			   - The notification options object
-	* @param {string}   options.type     			   - <i>Error; Warning; Info; Success;</i>
-	* @param {string}   [options.title=options.type]  - Notification title
-	* @param {string}   options.message  			   - Notification message
-	* @param {number}   [options.duration=handler]    - Notification duration (override handler duration value)
-	* @param {boolean}  [options.iconless=false]	   - No icon flag
-	* @param {string}   [options.thickBorder=handler] - Notification border side (override handler side value)
-	* @param {boolean}  [options.closable=true] 	   - Make notification closable flag
-	* @param {boolean}  [options.sticky=false]   	   - Make notification sticky flag
-	* @param {object}   [options.renderTo=handler]	   - Dom object to render the notification in
-	* @param {string}   [options.CBtitle=Callback]    - Notification callback title
-	* @param {function} [options.callback=undefined]  - Notification callback button
-	*
-	* @returns {number} The newly created notification ID
-	**/
-	new(options) {
-		if (this.DEBUG) { console.log('[ Notification ] new()'); }
-
-		// Check for mandatory arguments existence
-		if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
-			console.error('[ Notification ] new() | Notification type or message is undefined\n' +
-			'Those two fields are required to build a notification, check your .new() call');
-			return;
-		}
-
-		// Check for unclosable at all notification
-		if (options.sticky && options.closable === false && options.callback === undefined) {
-			console.error('[ Notification ] new() | Given options are that notification can not be closed and is a sticky one\n' +
-			'You must provide a valid callback so there is a way to close the notification');
-			return;
-		}
-
-		// Test Notification inner variables validity
-		if (this.DEBUG && options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
-			console.warn('[ Notification ] new() | Invalid value for type' +
-			'\nGiven type value of ' + options.type + ' has been replaced with ' + this._default.notification.type);
-			options.type = this._default.notification.type;
-		}
-
-		if (this._dismissAllLock) {
-			this._dismissAllLock = false; // Unlock dismissAllLock
-		}
-
-		// Build notification DOM element according to the given options
-		let notification = this._buildUI({
-			id: 	       this._idGenerator(options.type + '' + options.message, 5), // Generating an ID of 5 characters long from notification mandatory fields
-			type:        options.type,
-			message:     options.message,
-			title:       options.title       === undefined ? this._default.notification.title    : options.title,
-			duration:    options.duration    === undefined ? this._duration           	          : options.duration,
-			iconless:    options.iconless    === undefined ? this._default.notification.iconless : options.iconless,
-			thickBorder: options.thickBorder === undefined ? this._thickBorder    				  		  : options.thickBorder,
-			closable:    options.closable    === undefined ? this._default.notification.closable : options.closable,
-			sticky:      options.sticky      === undefined ? this._default.notification.sticky   : options.sticky,
-			renderTo:    options.renderTo    === undefined ? this._default.notification.renderTo : options.renderTo,
-			CBtitle:     options.CBtitle     === undefined ? this._default.notification.CBtitle  : options.CBtitle,
-			callback:    options.callback    === undefined ? this._default.notification.callback : options.callback,
-			isDimmed:    false, // Only usefull if sticky is set to true
-		});
-
-		// Create a new notification in the container: No notification with the same ID is already open
-		if (!this._active[notification.id]) {
-			this._start(notification);
-		}
-
-		// Use existing notification: increment request count and reset timeout
-		else {
-			this._resetTimeout(this._active[notification.id]);
-			this._incrementRequestCounter(this._active[notification.id]);
-			notification = {}; // Clear local new notification since it already exists in this._active
-		}
-
-		return notification.id;
-	}
-
-	/**
-	* @method
-	* @name success
-	* @public
-	* @memberof Notification
-	*
-	* @summary Call a new success notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Build a success notification
-	*
-	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
-	*
-	* @returns {number} The newly created notification ID
-	**/
-	success(options) {
-		if (this.DEBUG) { console.log('[ Notification ] success()'); }
-
-		options.type = 'success';
-		return this.new(options);
-	}
-
-	/**
-	* @method
-	* @name warning
-	* @public
-	* @memberof Notification
-	*
-	* @summary Call a new warning notification
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Build a warning notification
-	*
-	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
-	*
-	* @returns {number} The newly created notification ID
-	**/
-	warning(options) {
-		if (this.DEBUG) { console.log('[ Notification ] warning()'); }
-
-		options.type = 'warning';
-		return this.new(options);
-	}
-
-	//  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
 	/**
 	* @method
 	* @name _buildUI
 	* @private
 	* @memberof Notification
-	*
-	* @summary Build notification UI
+	* @summary Build a notification UI
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description Builds the DOM element that contains and that adapts to all given options
-	*
-	* @param {object}   notification 		      - The notification object
-	* @param {number}   notification.id  	      - Notification personnal ID
-	* @param {string}   notification.type        - Error, Warning, Info, Success
-	* @param {string}   notification.title	      - Notification title
-	* @param {string}   notification.message     - Notification message
-	* @param {boolean}  notification.iconless    - No icon flag
-	* @param {string}   notification.thickBorder - Notification border side (override handler side value)
-	* @param {boolean}  notification.closable    - Make notification closable flag
-	* @param {boolean}  notification.sticky      - Make notification sticky flag
-	* @param {string}   notification.CBtitle     - Notification callback title
-	* @param {function} notification.callback    - Notification callback button
-	*
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {string} notification.type - Error, Warning, Info, Success
+	* @param {string} notification.title - Notification title
+	* @param {string} notification.message - Notification message
+	* @param {boolean} notification.iconless - No icon flag
+	* @param {string} notification.thickBorder - Notification border side (override handler side value)
+	* @param {boolean} notification.closable - Make notification closable flag
+	* @param {boolean} notification.sticky - Make notification sticky flag
+	* @param {string} notification.CBtitle - Notification callback title
+	* @param {function} notification.callback - Notification callback button
 	* @returns {object} Enhanced and ready notification object
 	**/
 	_buildUI(notification) {
@@ -507,60 +362,79 @@ class Notification {
 
 	/**
 	* @method
-	* @name _checkCounter
+	* @name _start
 	* @private
 	* @memberof Notification
-	*
-	* @summary Check a notification counter and act accordingly
+	* @summary Start a notification life cycle
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount
-	*
-	* @param {object}  notification 		      - The notification object
-	* @param {number}  notification.id  		  - Notification personnal ID
-	* @param {number}  notification.requestCount - Notification inner call counter
-	* @param {object}  notification.dom 		  - Notifiction DOM element
-	* @param {number}  notification.timeoutID    - Notification own setTimeout ID
-	* @param {boolean} notification.sticky 	  - Notification sticky behvaior
+	* @description Call this method to add the new notification to the DOM container, and launch its life cycle
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
 	**/
-	_checkCounter(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._checkCounter()'); }
+	_start(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._start()'); }
 
-		// This notification as still more than one cycle to live
-		if (notification.requestCount > 1) {
-			this._decrementRequestCounter(notification);
+		if (Object.keys(this._active).length >= this._maxActive) {
+			this._queue[notification.id] = notification;
 		}
 
-		// This notification reached the end of its life cycle
 		else {
-			if (notification.renderTo.contains(notification.dom)) {
-				window.clearTimeout(notification.timeoutID);
-				notification.sticky ? this._dim(notification) : this._close(notification); // FadeOut/Dim depending on sticky behavior
-			}
+			this._active[notification.id] = notification; // Append the new notification to the _active object
+
+			this._events(notification); // Listen to mouse events on the newly created notification
+			this._open(notification); // Open the new notification
+
+			let that = this;
+			notification.timeoutID = window.setTimeout(() => {
+				that._checkCounter(notification); // Check notification request count to act accordingly
+			}, notification.duration); // Use Notification master duration
 		}
 	}
 
 	/**
 	* @method
-	* @name _clearRequestCount
+	* @name _open
 	* @private
 	* @memberof Notification
-	*
-	* @summary Reset request count to one
+	* @summary Open the notification with a fade in animation
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Method that clear every pending request
-	*
-	* @param {object} notification 	- The notification object
-	* @param {number} notification.id  - Notification personnal ID
+	* @description Open and add the notification to the container
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
 	* @param {object} notification.dom - Notifiction DOM element
 	**/
-	_clearRequestCount(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._clearRequestCount()'); }
+	_open(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._open()'); }
 
-		notification.requestCount = 1;
-		notification.dom.removeChild(notification.dom.counter);
-		delete notification.dom.counter;
+		// Reverse insertion when notifications are on bottom
+		if (this._position === 'bottom-right' || this._position === 'bottom-left') {
+			notification.renderTo.insertBefore(notification.dom, notification.renderTo.firstChild);
+		}
+
+		else {
+			notification.renderTo.appendChild(notification.dom);
+		}
+
+		notification.opened = Date.now();
+
+		let that = this,
+		i    = 0;
+
+		(function fadeIn() { // Start animation immediatly
+			if (i < 100) {
+				notification.dom.style.opacity = i / 100;
+				++i;
+			}
+
+			else if (i === 100) {
+				notification.dom.style.opacity = 1; // Set notification full opacity
+				return; // End function
+			}
+
+			window.setTimeout(fadeIn, that._transition / 100); // Split animation transition into 100 iterations
+		})();
 	}
 
 	/**
@@ -568,17 +442,15 @@ class Notification {
 	* @name _close
 	* @private
 	* @memberof Notification
-	*
 	* @summary Close the notification with a fade out animation
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description Close and remove the notification from the container
-	*
-	* @param {object} notification 		  - The notification object
-	* @param {number} notification.id  	  - Notification personnal ID
-	* @param {bool}   notification.isClosing - Already closing flag
-	* @param {object} notification.dom 	  - Notifiction DOM element
-	* @param {object} notification.renderTo  - DOM object to render the notification in
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {boolean} notification.isClosing - Already closing flag
+	* @param {object} notification.dom - Notifiction DOM element
+	* @param {object} notification.renderTo - DOM object to render the notification in
 	**/
 	_close(notification) {
 		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._close() '); }
@@ -623,215 +495,19 @@ class Notification {
 
 	/**
 	* @method
-	* @name _decrementRequestCounter
-	* @private
-	* @memberof Notification
-	*
-	* @summary Decrement notification requestCount
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description This method is called each notification cycle end to update its inner counter
-	*
-	* @param {object}  notification 	  		  - The notification object
-	* @param {number}  notification.id  		  - Notification personnal ID
-	* @param {boolean} notification.sticky 	  - Notification sticky behvaior
-	* @param {boolean} notification.isDimmed 	  - Notification dimmed status (only useful if notification.sticky is true)
-	* @param {number}  notification.requestCount - Notification inner call counter
-	* @param {object}  notification.dom 		  - Notification DOM element
-	* @param {boolean} force 					  - To force the notification.requestCount decrementation
-	**/
-	_decrementRequestCounter(notification, force) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._decrementRequestCounter()'); }
-
-		if (notification.sticky && !force) {
-			if (!notification.isDimmed) {
-				this._dim(notification);
-			}
-
-			return;
-		}
-
-		this._resetTimeout(notification);
-		--notification.requestCount; // Decrement notification.requestCount
-
-		// Update counter DOM element
-		if (notification.requestCount > 1) {
-			notification.dom.counter.innerHTML = notification.requestCount;
-		}
-
-		// Remove counter element from the DOM tree
-		else {
-			notification.dom.removeChild(notification.dom.counter);
-			delete notification.dom.counter;
-		}
-	}
-
-	/**
-	* @method
-	* @name _dim
-	* @private
-	* @memberof Notification
-	*
-	* @summary Dim the notification with a half fade out animation
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Only useful for sticky notification that dim instead of close at the end of its life cycle
-	*
-	* @param {object}  notification 	  	  - The notification object
-	* @param {number}  notification.id  	  - Notification personnal ID
-	* @param {object}  notification.dom 	  - Notifiction DOM element
-	* @param {boolean} notification.sticky   - Notification sticky behvaior
-	* @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
-	**/
-	_dim(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._dim()'); }
-
-		let that = this,
-		i    = 100;
-
-		(function halfFadeOut() { // Start animation immediatly
-			if (i >= 0) {
-				notification.dom.style.opacity = i / 100;
-				--i;
-
-				if (i === 50 && notification.sticky) { // Opacity has reached 0.51
-					notification.dom.style.opacity = 0.5; // Set half transparency on notification
-					notification.isDimmed = true; // Update notification dim status
-					return; // End function
-				}
-			}
-
-			window.setTimeout(halfFadeOut, that._transition / 100); // Split animation transition into 100 iterations (50 for real here)
-		})();
-	}
-
-	/**
-	* @method
-	* @name _eventListener
-	* @private
-	* @memberof Notification
-	*
-	* @summary Listen to user interaction
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Handle mouse events for the given notification
-	*
-	* @param {object}  notification 	  	  	  - The notification object
-	* @param {number}  notification.id  	  	  - Notification personnal ID
-	* @param {object}  notification.dom 	      - Notifiction DOM element
-	* @param {number}  notification.requestCount - Notification inner call counter
-	* @param {number}  notification.timeoutID    - Notification own setTimeout ID
-	* @param {boolean} notification.sticky   	  - Notification sticky behvaior
-	* @param {boolean} notification.closable     - Make notification closable flag
-	**/
-	_eventListener(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._eventListener()'); }
-
-		let that 	   = this,
-		closeFired = false, // Close fired flag
-
-		// Inner callback functions
-		_unDim = () => { // Undim notification
-			if (notification.isDimmed) {
-				this._unDim(notification);
-			}
-		},
-
-		_close = () => { // Close notification
-			if (that._active[notification.id] === undefined) {
-				return;
-			}
-
-			// Update counter DOM element
-			if (notification.requestCount > 1) {
-				this._decrementRequestCounter(notification, true);
-			}
-
-			// Remove notification element from the DOM tree
-			else if (!closeFired) {
-				closeFired = true;
-				window.clearTimeout(notification.timeoutID); // Clear life cycle timeout
-				notification.dom.close.removeEventListener('click', _close); // Avoid error when spam clicking the close button
-				this._close(notification);
-			}
-		},
-
-
-		_resetTimeout = () => { // Reset life cycle timeout
-			if (that._active[notification.id] === undefined) {
-				return;
-			}
-
-			if (!closeFired && !notification.isDimmed) { // Only reset timeout if no close event has been fired
-				that._resetTimeout(notification);
-			}
-		};
-
-		// Mouse event listeners
-		if (notification.sticky) {
-			notification.dom.addEventListener('mouseenter', _unDim.bind(this));
-			notification.dom.addEventListener('mouseout',   _unDim.bind(this));
-		}
-
-		if (notification.closable) {
-			notification.dom.addEventListener('click', 		 _close.bind(this));
-			notification.dom.close.addEventListener('click', _close.bind(this));
-		}
-
-		notification.dom.addEventListener('mouseover', _resetTimeout.bind(this));
-	}
-
-	/**
-	* @method
-	* @name _idGenerator
-	* @private
-	* @memberof Notification
-	*
-	* @summary Generate an ID
-	* @author Arthur Beaulieu
-	* @since June 2018
-	* @description Hash the seed to generate an ID
-	*
-	* @param {string} seed   - The seed string to hash
-	* @param {number} length - The length of the returned ID
-	**/
-	_idGenerator(seed, length) {
-		/* Original code from:
-		* http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-		* Tweaked to fit Notification class needs
-		*/
-		let hash 	  = 0,
-		character = '';
-
-		if (seed.length === 0 || length > 12) { return undefined; }
-
-		for (let i = 0; i < seed.length; ++i) {
-			character = seed.charCodeAt(i);
-
-			hash  = ((hash << 5) - hash) + character;
-			hash |= 0; // Convert to 32bit integer
-		}
-
-		return (Math.abs(hash).toString(36) + '' + Math.abs(hash / 2).toString(36).split('').reverse().join('')).substring(0, length).toUpperCase(); // Here is the twekead line
-	}
-
-	/**
-	* @method
 	* @name _incrementRequestCounter
 	* @private
 	* @memberof Notification
-	*
 	* @summary Increment notification requestCount
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description This method is called when a notification is requested another time
-	*
-	* @param {object}  notification 	  	  	  - The notification object
-	* @param {number}  notification.id  	  	  - Notification personnal ID
-	* @param {number}  notification.requestCount - Notification inner call counter
-	* @param {object}  notification.dom 	      - Notifiction DOM element
-	* @param {boolean} notification.sticky   	  - Notification sticky behvaior
-	* @param {boolean} notification.isDimmed 	  - Notification dimmed status (only useful if notification.sticky is true)
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {number} notification.requestCount - Notification inner call counter
+	* @param {object} notification.dom - Notifiction DOM element
+	* @param {boolean} notification.sticky - Notification sticky behvaior
+	* @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
 	**/
 	_incrementRequestCounter(notification) {
 		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._incrementRequestCounter()'); }
@@ -862,51 +538,101 @@ class Notification {
 		}
 	}
 
-	/*
+	/**
 	* @method
-	* @name _open
+	* @name _decrementRequestCounter
 	* @private
 	* @memberof Notification
-	*
-	* @summary Open the notification with a fade in animation
+	* @summary Decrement notification requestCount
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Open and add the notification to the container
-	*
-	* @param {object} notification 	- The notification object
-	* @param {number} notification.id  - Notification personnal ID
+	* @description This method is called each notification cycle end to update its inner counter
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {boolean} notification.sticky - Notification sticky behvaior
+	* @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+	* @param {number} notification.requestCount - Notification inner call counter
+	* @param {object} notification.dom - Notification DOM element
+	* @param {boolean} force - To force the notification.requestCount decrementation
+	**/
+	_decrementRequestCounter(notification, force) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._decrementRequestCounter()'); }
+
+		if (notification.sticky && !force) {
+			if (!notification.isDimmed) {
+				this._dim(notification);
+			}
+
+			return;
+		}
+
+		this._resetTimeout(notification);
+		--notification.requestCount; // Decrement notification.requestCount
+
+		// Update counter DOM element
+		if (notification.requestCount > 1) {
+			notification.dom.counter.innerHTML = notification.requestCount;
+		}
+
+		// Remove counter element from the DOM tree
+		else {
+			notification.dom.removeChild(notification.dom.counter);
+			delete notification.dom.counter;
+		}
+	}
+
+	/**
+	* @method
+	* @name _checkCounter
+	* @private
+	* @memberof Notification
+	* @summary Check a notification counter and act accordingly
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {number} notification.requestCount - Notification inner call counter
+	* @param {object} notification.dom - Notifiction DOM element
+	* @param {number} notification.timeoutID - Notification own setTimeout ID
+	* @param {boolean} notification.sticky - Notification sticky behvaior
+	**/
+	_checkCounter(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._checkCounter()'); }
+
+		// This notification as still more than one cycle to live
+		if (notification.requestCount > 1) {
+			this._decrementRequestCounter(notification);
+		}
+
+		// This notification reached the end of its life cycle
+		else {
+			if (notification.renderTo.contains(notification.dom)) {
+				window.clearTimeout(notification.timeoutID);
+				notification.sticky ? this._dim(notification) : this._close(notification); // FadeOut/Dim depending on sticky behavior
+			}
+		}
+	}
+
+	/**
+	* @method
+	* @name _clearRequestCount
+	* @private
+	* @memberof Notification
+	* @summary Reset request count to one
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Method that clear every pending request
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
 	* @param {object} notification.dom - Notifiction DOM element
 	**/
-	_open(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._open()'); }
+	_clearRequestCount(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._clearRequestCount()'); }
 
-		// Reverse insertion when notifications are on bottom
-		if (this._position === 'bottom-right' || this._position === 'bottom-left') {
-			notification.renderTo.insertBefore(notification.dom, notification.renderTo.firstChild);
-		}
-
-		else {
-			notification.renderTo.appendChild(notification.dom);
-		}
-
-		notification.opened = Date.now();
-
-		let that = this,
-		i    = 0;
-
-		(function fadeIn() { // Start animation immediatly
-			if (i < 100) {
-				notification.dom.style.opacity = i / 100;
-				++i;
-			}
-
-			else if (i === 100) {
-				notification.dom.style.opacity = 1; // Set notification full opacity
-				return; // End function
-			}
-
-			window.setTimeout(fadeIn, that._transition / 100); // Split animation transition into 100 iterations
-		})();
+		notification.requestCount = 1;
+		notification.dom.removeChild(notification.dom.counter);
+		delete notification.dom.counter;
 	}
 
 	/**
@@ -914,14 +640,12 @@ class Notification {
 	* @name _resetTimeout
 	* @private
 	* @memberof Notification
-	*
 	* @summary Reset a notification life cycle
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description Use this to reset a notification life cycle, and delay its close event
-	*
-	* @param {object} notification 		  - The notification object
-	* @param {number} notification.id  	  - Notification personnal ID
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
 	* @param {number} notification.timeoutID - Notification own setTimeout ID
 	**/
 	_resetTimeout(notification) {
@@ -937,36 +661,72 @@ class Notification {
 
 	/**
 	* @method
-	* @name _start
+	* @name _updateHistory
 	* @private
 	* @memberof Notification
-	*
-	* @summary Start a notification life cycle
+	* @summary Update the handler history
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Call this method to add the new notification to the DOM container, and launch its life cycle
-	*
-	* @param {object} notification    - The notification object
+	* @description Add a notification to the history. Might be executed when a notification is being closed
+	* @param {object} notification - The notification object
 	* @param {number} notification.id - Notification personnal ID
 	**/
-	_start(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._start()'); }
+	_updateHistory(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._updateHistory()'); }
 
-		if (Object.keys(this._active).length >= this._maxActive) {
-			this._queue[notification.id] = notification;
-		}
+		// Remove this notification from the active object
+		delete this._active[notification.id];
 
-		else {
-			this._active[notification.id] = notification; // Append the new notification to the _active object
+		// Work notification copy
+		let cleanEntry = JSON.parse(JSON.stringify(notification));
 
-			this._eventListener(notification); // Listen to mouse events on the newly created notification
-			this._open(notification); // Open the new notification
+		// Clear notification object from working attributes
+		delete cleanEntry.isClosing;
+		delete cleanEntry.isDimmed;
+		delete cleanEntry.requestCount;
+		delete cleanEntry.timeoutID;
+		delete cleanEntry.renderTo;
+		delete cleanEntry.dom;
 
-			let that = this;
-			notification.timeoutID = window.setTimeout(() => {
-				that._checkCounter(notification); // Check notification request count to act accordingly
-			}, notification.duration); // Use Notification master duration
-		}
+		// Save notification to the history
+		this._history.push(cleanEntry);
+	}
+
+	/**
+	* @method
+	* @name _dim
+	* @private
+	* @memberof Notification
+	* @summary Dim the notification with a half fade out animation
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Only useful for sticky notification that dim instead of close at the end of its life cycle
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {object} notification.dom - Notifiction DOM element
+	* @param {boolean} notification.sticky - Notification sticky behvaior
+	* @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+	**/
+	_dim(notification) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._dim()'); }
+
+		let that = this,
+		i    = 100;
+
+		(function halfFadeOut() { // Start animation immediatly
+			if (i >= 0) {
+				notification.dom.style.opacity = i / 100;
+				--i;
+
+				if (i === 50 && notification.sticky) { // Opacity has reached 0.51
+					notification.dom.style.opacity = 0.5; // Set half transparency on notification
+					notification.isDimmed = true; // Update notification dim status
+					return; // End function
+				}
+			}
+
+			window.setTimeout(halfFadeOut, that._transition / 100); // Split animation transition into 100 iterations (50 for real here)
+		})();
 	}
 
 	/**
@@ -974,15 +734,13 @@ class Notification {
 	* @name _unDim
 	* @private
 	* @memberof Notification
-	*
 	* @summary Restore notification opacity
 	* @author Arthur Beaulieu
 	* @since June 2018
 	* @description Call this method when a notification is not inactive anymore
-	*
-	* @param {object} notification    		  - The notification object
-	* @param {number} notification.id 		  - Notification personnal ID
-	* @param {object} notification.dom 	  - Notifiction DOM element
+	* @param {object} notification - The notification object
+	* @param {number} notification.id - Notification personnal ID
+	* @param {object} notification.dom - Notifiction DOM element
 	* @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
 	**/
 	_unDim(notification) {
@@ -1008,46 +766,243 @@ class Notification {
 		})();
 	}
 
+	//  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
 	/**
 	* @method
-	* @name _updateHistory
-	* @private
+	* @name new
+	* @public
 	* @memberof Notification
-	*
-	* @summary Update the handler history
+	* @summary Call a new notification
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Add a notification to the history. Might be executed when a notification is being closed
-	*
-	* @param {object} notification    - The notification object
-	* @param {number} notification.id - Notification personnal ID
+	* @description Build a notification according to the given options, then append it to notification container.
+	* @param {object} options - The notification options object
+	* @param {string} options.type - <i>Error; Warning; Info; Success;</i>
+	* @param {string} [options.title=options.type] - Notification title
+	* @param {string} options.message - Notification message
+	* @param {number} [options.duration=handler] - Notification duration (override handler duration value)
+	* @param {boolean} [options.iconless=false] - No icon flag
+	* @param {string} [options.thickBorder=handler] - Notification border side (override handler side value)
+	* @param {boolean} [options.closable=true] - Make notification closable flag
+	* @param {boolean} [options.sticky=false] - Make notification sticky flag
+	* @param {object} [options.renderTo=handler] - Dom object to render the notification in
+	* @param {string} [options.CBtitle=Callback] - Notification callback title
+	* @param {function} [options.callback=undefined] - Notification callback button
+	* @returns {number} The newly created notification ID
 	**/
-	_updateHistory(notification) {
-		if (this.DEBUG) { console.log('[ Notification ] ' + notification.id + '._updateHistory()'); }
+	new(options) {
+		if (this.DEBUG) { console.log('[ Notification ] new()'); }
 
-		// Remove this notification from the active object
-		delete this._active[notification.id];
+		// Check for mandatory arguments existence
+		if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+			console.error('[ Notification ] new() | Notification type or message is undefined\n' +
+			'Those two fields are required to build a notification, check your .new() call');
+			return;
+		}
 
-		// Work notification copy
-		let cleanEntry = JSON.parse(JSON.stringify(notification));
+		// Check for unclosable at all notification
+		if (options.sticky && options.closable === false && options.callback === undefined) {
+			console.error('[ Notification ] new() | Given options are that notification can not be closed and is a sticky one\n' +
+			'You must provide a valid callback so there is a way to close the notification');
+			return;
+		}
 
-		// Clear notification object from working attributes
-		delete cleanEntry.isClosing;
-		delete cleanEntry.isDimmed;
-		delete cleanEntry.requestCount;
-		delete cleanEntry.timeoutID;
-		delete cleanEntry.renderTo;
-		delete cleanEntry.dom;
+		// Test Notification inner variables validity
+		if (this.DEBUG && options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
+			console.warn('[ Notification ] new() | Invalid value for type' +
+			'\nGiven type value of ' + options.type + ' has been replaced with ' + this._default.notification.type);
+			options.type = this._default.notification.type;
+		}
 
-		// Save notification to the history
-		this._history.push(cleanEntry);
+		if (this._dismissAllLock) {
+			this._dismissAllLock = false; // Unlock dismissAllLock
+		}
+
+		// Build notification DOM element according to the given options
+		let notification = this._buildUI({
+			id: 	       Utils.idGenerator(options.type + '' + options.message, 5), // Generating an ID of 5 characters long from notification mandatory fields
+			type:        options.type,
+			message:     options.message,
+			title:       options.title       === undefined ? this._default.notification.title    : options.title,
+			duration:    options.duration    === undefined ? this._duration           	          : options.duration,
+			iconless:    options.iconless    === undefined ? this._default.notification.iconless : options.iconless,
+			thickBorder: options.thickBorder === undefined ? this._thickBorder    				  		  : options.thickBorder,
+			closable:    options.closable    === undefined ? this._default.notification.closable : options.closable,
+			sticky:      options.sticky      === undefined ? this._default.notification.sticky   : options.sticky,
+			renderTo:    options.renderTo    === undefined ? this._default.notification.renderTo : options.renderTo,
+			CBtitle:     options.CBtitle     === undefined ? this._default.notification.CBtitle  : options.CBtitle,
+			callback:    options.callback    === undefined ? this._default.notification.callback : options.callback,
+			isDimmed:    false, // Only usefull if sticky is set to true
+		});
+
+		// Create a new notification in the container: No notification with the same ID is already open
+		if (!this._active[notification.id]) {
+			this._start(notification);
+		}
+
+		// Use existing notification: increment request count and reset timeout
+		else {
+			this._resetTimeout(this._active[notification.id]);
+			this._incrementRequestCounter(this._active[notification.id]);
+			notification = {}; // Clear local new notification since it already exists in this._active
+		}
+
+		return notification.id;
+	}
+
+	/**
+	* @method
+	* @name info
+	* @public
+	* @memberof Notification
+	* @summary Call a new info notification
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Build an info notification
+	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+	* @returns {number} The newly created notification ID
+	**/
+	info(options) {
+		if (this.DEBUG) { console.log('[ Notification ] info()'); }
+
+		options.type = 'info';
+		return this.new(options);
+	}
+
+	/**
+	* @method
+	* @name success
+	* @public
+	* @memberof Notification
+	* @summary Call a new success notification
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Build a success notification
+	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+	* @returns {number} The newly created notification ID
+	**/
+	success(options) {
+		if (this.DEBUG) { console.log('[ Notification ] success()'); }
+
+		options.type = 'success';
+		return this.new(options);
+	}
+
+	/**
+	* @method
+	* @name warning
+	* @public
+	* @memberof Notification
+	* @summary Call a new warning notification
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Build a warning notification
+	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+	* @returns {number} The newly created notification ID
+	**/
+	warning(options) {
+		if (this.DEBUG) { console.log('[ Notification ] warning()'); }
+
+		options.type = 'warning';
+		return this.new(options);
+	}
+
+	/**
+	* @method
+	* @name error
+	* @public
+	* @memberof Notification
+	* @summary Call a new error notification
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Build an error notification
+	* @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+	* @returns {number} The newly created notification ID
+	**/
+	error(options) {
+		if (this.DEBUG) { console.log('[ Notification ] error()'); }
+
+		options.type = 'error';
+		return this.new(options);
+	}
+
+	/**
+	* @method
+	* @name dismiss
+	* @public
+	* @memberof Notification
+	* @summary Dismiss a notification
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Dismiss a specific notification via its ID
+	* @param {number} id - The notification ID to dismiss
+	**/
+	dismiss(id) {
+		if (this.DEBUG) { console.log('[ Notification ] ' + id + '.dismis()'); }
+
+		window.clearTimeout(this._active[id].timeoutID); // Clear notification timeout
+
+		if (this._active[id].requestCount > 1) { // Several request are pending
+			this._clearRequestCount(this._active[id]); // Clear all pending request
+		}
+
+		this._close(this._active[id]); // Close notification
+	}
+
+	/**
+	* @method
+	* @name dismissAll
+	* @public
+	* @memberof Notification
+	* @summary Dismiss all visible notifications
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Clear the notification handler from all its active notifications
+	**/
+	dismissAll() {
+		if (this.DEBUG) { console.log('[ Notification ] dismisAll()'); }
+
+		// Check that _dimissAllLock is disable and that there is still notification displayed
+		if (!this._dismissAllLock && Object.keys(this._active).length !== 0) {
+			this._dismissAllLock = true; // dismissAllLock will be unlocked at the last _close() method call
+			this._queue = {}; // Clear queue object
+
+			for (let id in this._active) { // Iterate over notifications
+				this.dismiss(id);
+			}
+		}
+	}
+
+	/**
+	* @method
+	* @name dismissType
+	* @public
+	* @memberof Notification
+	* @summary Dismiss typed notifications
+	* @author Arthur Beaulieu
+	* @since June 2018
+	* @description Dismiss all notifications from a given type
+	* @param {string} type - <i>succes; info; warning; error;</i>
+	**/
+	dismissType(type) {
+		if (this.DEBUG) { console.log('[ Notification ] dismisType()'); }
+
+		// Check that _dimissAllLock is disable and that there is still notification displayed
+		if (Object.keys(this._active).length !== 0) {
+			for (let id in this._active) { // Iterate over notifications
+				if (this._active[id].type === type) {
+					this.dismiss(id);
+				}
+			}
+		}
 	}
 
 	//  --------------------------------  GETTER METHODS   --------------------------------  //
 
 	getHistoryLength() { return this._history.length; }
-	getHistory()	   { return this._history;		  }
+	getHistory() { return this._history; }
 
 }
 
-export default Notification
+export default Notification;

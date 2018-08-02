@@ -1,35 +1,38 @@
+import FootBar from './footbar/FootBar.js'
 import ProgressBar from './modules/ProgressBar.js'
 
 class View {
   constructor() {
-    this.progressBar = new ProgressBar({
-      timecode: true
-    });
+    this._init();
+  }
+
+  _init() {
+    this.footBar = new FootBar();
 
     this.test();
   }
 
   changeTrack(isPlaying) {
     this.togglePlay(isPlaying);
-    this.progressBar.updateDuration(mzk.model.player.getDuration());
+    this.footBar.getProgressBar().updateDuration(mzk.model.player.getDuration());
   }
 
   togglePlay(isPlaying) {
-    if (!isPlaying) {
-      document.getElementById("play").innerHTML = 'Play';
-      this.progressBar.desactivate();
+    this.footBar.updatePlayButton(isPlaying);
+
+    if (isPlaying) {
+      this.footBar.getProgressBar().activate();
     }
 
-    else if (isPlaying) {
-      document.getElementById("play").innerHTML = 'Pause';
-      this.progressBar.activate();
+    else if (!isPlaying) {
+      this.footBar.getProgressBar().desactivate();
     }
   }
 
   stopPlayback(hasSource) {
-    !hasSource ? document.getElementById("play").innerHTML = 'Play' : Notification.error({ message: 'Player didnt stopped well' });
-    this.progressBar.resetProgressBar();
-    this.progressBar.resetTimecode();
+    this.footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
+    this.footBar.getProgressBar().resetProgressBar();
+    this.footBar.getProgressBar().resetTimecode();
   }
 
   updateVolume(isMuted, volume) {
@@ -38,14 +41,12 @@ class View {
   }
 
   updateProgress(progress) {
-    this.progressBar.setProgress(progress);
+    this.footBar.getProgressBar().setProgress(progress);
     document.getElementById("seak").innerHTML = progress + ' %';
   }
 
   test() { // This has to go when controls are a thing
-    let b, c, d, e, f, g, h, i, j, k, l, m, n, o;
-    b = document.getElementById("play");
-    c = document.getElementById("stop");
+    let d, e, f, g, h, i, j, k, l, m, n, o;
     d = document.getElementById("change");
     h = document.getElementById("change1");
     e = document.getElementById("mute");
@@ -57,8 +58,6 @@ class View {
     n = document.getElementById("vh");
     o = document.getElementById("half");
 
-    b.addEventListener('click', function() { mzk.togglePlay(); });
-    c.addEventListener('click', function() { mzk.stopPlayback(); });
     d.addEventListener('click', function() { mzk.changeTrack(5); });
     h.addEventListener('click', function() { mzk.changeTrack(7); });
     e.addEventListener('click', function() { mzk.toggleMute(); });
@@ -73,4 +72,4 @@ class View {
   }
 }
 
-export default View
+export default View;
