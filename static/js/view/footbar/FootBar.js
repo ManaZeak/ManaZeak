@@ -1,4 +1,4 @@
-import ProgressBar from '../modules/ProgressBar.js'
+import ProgressBar from './components/ProgressBar.js'
 
 class FootBar {
   constructor() {

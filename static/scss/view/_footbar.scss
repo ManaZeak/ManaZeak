@@ -1,3 +1,5 @@
+@import './components/progressbar';
+
 #footbar {
   background: red;
   bottom: 0;
@@ -27,66 +29,6 @@
         cursor: pointer;
         height: 66%;
         margin: 0 3px;
-      }
-    }
-
-     #progress-container {
-      align-items: center;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
-      height: 30px;
-      width: 100%;
-
-      #progress-track {
-        width: 100%;
-        background-color: #555555;
-        position: relative;
-        height: 4px;
-
-        #progress-current {
-          background-color: lime;
-          height: 100%;
-          width: 0%;
-          transition: width 0s ease 0s;
-        }
-
-        #progress-thumb {
-          background-color: blue;
-          position: absolute;
-          height: 6px;
-          width: 6px;
-          left: 0%;
-          bottom: calc(30% - 4px);
-          transition: left 0s ease 0s;
-        }
-
-        #progress-hover {
-          background-color: grey;
-          border: solid 1px black;
-          border-radius: 3px;
-          bottom: 55px;
-          box-sizing: border-box;
-          color: black;
-          font-size: 0.7em;
-          height: 20px;
-          left: 0;
-          line-height: 20px;
-          opacity: 0;
-          pointer-events: none;
-          position: absolute;
-          text-align: center;
-          transition: opacity .2s ease;
-          width: 60px;
-          z-index: 2;
-        }
-      }
-
-      #progress-moodbar {
-        height: 0;
-        transition: height 0.5s ease;
-        width: 100%;
       }
     }
   }

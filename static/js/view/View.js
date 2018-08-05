@@ -1,5 +1,4 @@
 import FootBar from './footbar/FootBar.js'
-import ProgressBar from './modules/ProgressBar.js'
 
 class View {
   constructor() {
