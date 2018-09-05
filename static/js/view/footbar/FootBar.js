@@ -1,11 +1,14 @@
+import VolumeBar from './components/VolumeBar.js'
 import ProgressBar from './components/ProgressBar.js'
 
 class FootBar {
   constructor() {
     this._controls = {
       play: {},
-      stop: {}
+      stop: {},
+      volume: {}
     }
+    this._volumeBar = {};
     this._progressBar = {};
 
     this._init();
@@ -16,9 +19,8 @@ class FootBar {
     this._controls.play = document.getElementById('play');
     this._controls.stop = document.getElementById('stop');
 
-    this._progressBar = new ProgressBar({
-      timecode: false
-    });
+    this._volumeBar = new VolumeBar();
+    this._progressBar = new ProgressBar();
   }
 
   _events() {
@@ -36,7 +38,12 @@ class FootBar {
     }
   }
 
+  updateVolume(isMuted, volume) {
+
+  }
+
   getProgressBar() { return this._progressBar; }
+  getVolumeBar() { return this._volumeBar; }
 }
 
 export default FootBar;

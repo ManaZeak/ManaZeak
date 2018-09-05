@@ -30,7 +30,7 @@ class Player {
 	_init() {
 		this._player = document.createElement('AUDIO'); // Create HTML audio tag
 		this._player.id = 'mzk-audio-player'; // Assign player ID
-		this.setVolume(1); // Initialize volume to its maximum value
+		this.setVolume(1); // Initialize volume to its maximum value TODO : get value from options, from user settings in localStorage
 	}
 
 	/**
@@ -72,6 +72,7 @@ class Player {
 	* @returns {number} The track progression in completion percentage in range [0, 100]
 	**/
 	_getProgress() {
+		// console.log(Utils.precisionRound((this._player.currentTime * 100) / this._player.duration, 3)); // TODO test this by calling mzk.getProgress on mzk start to check that if called when no track is load, it trully returns 0
 		return Utils.precisionRound((this._player.currentTime * 100) / this._player.duration, 3); // Compute percentage from current time
 	}
 
@@ -107,7 +108,7 @@ class Player {
 	_setVolume(value) {
 		if (typeof value !== 'number') { console.log('a'); return; } // Bad format for value
 
-		if (value <= 0) { this.mute(); this._volume = 0; return; } // Bound lower value
+		if (value <= 0) { this.mute(); this._volume = 0.5; return; } // Bound lower value at 0.5 bc we want to avoid this : volumebar goes down to zero, user mute, then unmute, but volume is still 0.
 		if (value > 1) { this._player.volume = 1; return; } // Bound upper value
 
 		if (this._isMuted) { // Restore mute state if needed

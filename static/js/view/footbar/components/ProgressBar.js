@@ -1,10 +1,9 @@
 class ProgressBar {
 
-  	constructor(options) {
-  		this._options = options;
-  		this._progress = { container: {}, track: {}, current: {}, thumb: {}, hover: {}, left: {}, right: {} };
-  		this._rafId = null;
-
+  	constructor() {
+  		this._progress = { container: {}, track: {}, current: {}, thumb: {}, hover: {}, moodbar: {}, left: {}, right: {} }; // DOM elements
+      this._topbarLogo = {};
+      this._rafId = null;
       this._duration = 0;
 
   		this._isActive = false; // Boolean flag to make listeners available/unavailable
@@ -22,12 +21,11 @@ class ProgressBar {
   		this._progress.thumb = document.getElementById('progress-thumb');
   		this._progress.hover = document.getElementById('progress-hover');
   		this._progress.moodbar = document.getElementById('progress-moodbar');
+      this._progress.left = document.getElementById('footbar-left');
+      this._progress.right = document.getElementById('footbar-right');
+      this._topbarLogo = document.getElementById('topbar-logo');
 
-  		if (this._options.timecode) { // TODO : restore this
-  			this._progress.left = document.createElement('P');
-  			this._progress.right = document.createElement('P');
-  			this.resetTimecode();
-  		}
+      this._resetTimecode();
 
       // In order to remove event listeners in _removeEvents()
       this._mouseDown = this._mouseDown.bind(this);
@@ -51,20 +49,6 @@ class ProgressBar {
       window.removeEventListener('mousemove', this._mouseMove);
       window.removeEventListener('mouseup', this._mouseUp);
     }
-
-  	_attach() {
-  		this._progress.track.appendChild(this._progress.current);
-  		this._progress.track.appendChild(this._progress.thumb);
-  		this._progress.track.appendChild(this._progress.hover);
-
-  		if (this._options.timecode) { this._progress.container.appendChild(this._progress.left); }
-  		this._progress.container.appendChild(this._progress.track);
-  		if (this._options.timecode) { this._progress.container.appendChild(this._progress.right); }
-
-  		let fragment = document.createDocumentFragment();
-  		fragment.appendChild(this._progress.container);
-  		document.body.appendChild(fragment);
-  	}
 
   	_updateMouseOver(event) {
   		if (event.type === 'mouseover') {
@@ -127,13 +111,13 @@ class ProgressBar {
         mzk.setProgress(Utils.precisionRound(distance, 3));
   	}
 
-  	_startAnimation() {
-      let animate = function() {
-        this.setProgress(mzk.getProgress());
-      }.bind(this);
+    _animate() {
+      this.setProgress(mzk.getProgress());
+    }
 
+  	_startAnimation() {
   		if (this._isActive) {
-  			animate();
+  			this._animate();
   			this._rafId = requestAnimationFrame(this._startAnimation.bind(this));
   		}
   	}
@@ -144,22 +128,30 @@ class ProgressBar {
   		}
   	}
 
-    resetProgressBar() {
-      this._progress.thumb.style.transition = 'left 0.5s ease 0s, opacity 0.5s ease 0s'; // Match transition duration w/ the one in view/components/_progressbar.scss ($progress-transition)
-      this._progress.current.style.transition = 'width 0.5s ease 0s'; // Match transition duration w/ the one in view/components/_progressbar.scss ($progress-transition)
-      this._progress.track.style.opacity = '0';
-      this._progress.moodbar.style.opacity = '0';
-      this._progress.moodbar.style.height = '0';
+    _resetTimecode() {
+      setTimeout(function() {
+        this._progress.left.innerHTML = '--:--';
+    		this._progress.right.innerHTML = '--:--';
+        this._progress.hover.innerHTML = '--:--';
+      }.bind(this), 500); // Match value with the one in scss/view/components/_progresbar.scss -> $footbar-transition
+  	}
 
+    resetProgressBar() {
       this.setProgress(0);
       this.desactivate();
     }
 
-    resetTimecode() {
-  		this._progress.left.innerHTML = '--:--';
-  		this._progress.right.innerHTML = '--:--';
-      this._progress.hover.innerHTML = '--:--';
-  	}
+    activateTransitions() {
+      this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+      this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+    }
+
+    desactivateTransitions() {
+      // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
+      // Lag duration will be equal to the transition time otherwise
+      this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.4s ease 0s'; // Reset left transition to default, match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+      this._progress.current.style.transition = 'width 0s ease 0s'; // Reset width transition to default
+    }
 
   	toggleActive() {
   		!this._isActive ? this.activate(): this.desactivate();
@@ -167,27 +159,21 @@ class ProgressBar {
 
   	activate() {
       this._isActive = true;
-      this._progress.moodbar.style.height = '25px'; // Match value w/ the one in view/components/_progresbar.scss ($progress-moodbar-height)
-      this._progress.thumb.style.opacity = '1';
-      this._progress.track.style.opacity = '1';
-      this._progress.moodbar.style.opacity = '1';
-  		this._startAnimation();
+      this.setVisibility(true);
+      this._startAnimation();
+      this.activateTransitions(); // TODO : add transition in startAnimation
       this._addEvents();
   	}
 
   	desactivate() {
       this._isActive = false;
-      this._progress.thumb.style.opacity = '0';
-      this._progress.track.style.opacity = '0';
-      this._progress.moobar.style.opacity = '0';
-      this._stopAnimation();
+      this.setVisibility(false);
+      this._resetTimecode();
       this._removeEvents();
+      this._stopAnimation();
 
       setTimeout(function() { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
-        // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
-        // Lag duration will be equal to the transition time otherwise
-        this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.5s ease 0s'; // Reset left transition to default, match transition duration w/ the one in view/components/_progressbar.scss ($progress-transition)
-        this._progress.current.style.transition = 'width 0s ease 0s'; // Reset width transition to default
+        this.desactivateTransitions();
       }.bind(this), 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
   	}
 
@@ -207,6 +193,32 @@ class ProgressBar {
         this._progress.left.innerHTML = Utils.secondsToTimecode((percentage * this._duration) / 100);
   		}
   	}
+
+    setVisibility(isVisible) {
+      if (isVisible) {
+        this._progress.moodbar.style.height = '25px'; // Match value w/ the one in view/components/_progresbar.scss ($progress-moodbar-height)
+        this._progress.moodbar.style.opacity = '1';
+        this._progress.moodbar.style.cursor = 'pointer';
+        this._progress.track.style.opacity = '1';
+        this._progress.track.style.cursor = 'pointer';
+        this._progress.thumb.style.opacity = '1';
+        this._progress.left.style.opacity = '1';
+        this._progress.right.style.opacity = '1';
+        this._topbarLogo.style.opacity = '1';
+      }
+
+      else if (!isVisible) {
+        this._progress.moodbar.style.height = '0';
+        this._progress.moodbar.style.opacity = '0';
+        this._progress.moodbar.style.cursor = 'default';
+        this._progress.track.style.opacity = '0';
+        this._progress.track.style.cursor = 'default';
+        this._progress.thumb.style.opacity = '0';
+        this._progress.left.style.opacity = '0';
+        this._progress.right.style.opacity = '0';
+        this._topbarLogo.style.opacity = '0';
+      }
+    }
 
   	setIsActive(isActive) { this._isActive = isActive; }
   	setIsMouseOver(isMouseOver) { this._isMouseOver = isMouseOver; }

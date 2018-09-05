@@ -1,0 +1,57 @@
+$aside-transition: ($transition-duration * 4);
+$aside-button-length: 30px;
+
+#left-aside,
+#right-aside {
+  background-color: green;
+  bottom: $footbar-height;
+  position: absolute;
+  top: $topbar-height;
+  width: 15%;
+
+  transition: left $aside-transition ease-in-out 0s,
+              right $aside-transition ease-in-out 0s;
+
+  img {
+    cursor: pointer;
+    height: $aside-button-length;
+    opacity: 1;
+    position: absolute;
+    top: $margin;
+    width: $aside-button-length;
+
+    transition: opacity $aside-transition ease-out 0s;
+  }
+}
+
+#left-aside {
+  img {
+    right: $margin;
+  }
+}
+
+#right-aside {
+  img {
+    left: $margin;
+  }
+}
+
+#left-aside-open,
+#right-aside-open {
+  cursor: pointer;
+  height: $aside-button-length;
+  opacity: 1;
+  position: absolute;
+  top: ($topbar-height + $margin);
+  width: $aside-button-length;
+
+  transition: opacity $transition-duration ease-in 0s;  // time / 5
+}
+
+#left-aside-open {
+  left: $margin;
+}
+
+#right-aside-open {
+  right: $margin;
+}

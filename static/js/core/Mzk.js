@@ -39,7 +39,7 @@ class Mzk {
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
-  //  --------------------------------  PLAYBACK METHODS  ---------------------------------  //
+      //  --------------------------------  PLAYBACK METHODS  ---------------------------------  //
 
   changeTrack(id) {
     // TODO : get Track from id via Komunikator
@@ -57,7 +57,7 @@ class Mzk {
       .then(function() { this.view.stopPlayback(this.model.player.hasSource()); }.bind(this));
   }
 
-  //  --------------------------------  VOLUME METHODS  ---------------------------------  //
+      //  --------------------------------  VOLUME METHODS  ---------------------------------  //
 
   mute() { this.model.mute(); }
 
@@ -65,20 +65,23 @@ class Mzk {
 
   toggleMute() {
     this.model.toggleMute()
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.player.getVolume()); }.bind(this));
+      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
   }
 
   adjustVolume(amount) {
     this.model.adjustVolume(amount)
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.player.getVolume()); }.bind(this));
+      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
   }
 
   setVolume(volume) {
     this.model.setVolume(volume)
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.player.getVolume()); }.bind(this));
+      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
   }
 
-  //  --------------------------------  PROGRESS METHODS  ---------------------------------  //
+  getIsMuted() { return this.model.player.getIsMuted(); }
+  getVolume() { return this.model.getVolume(); }
+
+      //  --------------------------------  PROGRESS METHODS  ---------------------------------  //
 
   getProgress() { return this.model.player.getProgress(); }
 
@@ -93,6 +96,7 @@ class Mzk {
   }
 
   trackEnded() {
+    this.stopPlayback(); // Only when no repetition is set and end of pl is reached TODO
     // TODO repeat value to get here
 //    this.model.player.repeatTrack(); // Repeat one
 // If repeat off ->  this.model.stopPlayback(); .then( this.view.restoreDefault();

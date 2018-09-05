@@ -12,7 +12,7 @@ class Model {
     Notification.info({ message: 'Success Model start' });
   }
 
-  //  --------------------------------  PLAYBACK METHODS  ---------------------------------  //
+      //  --------------------------------  PLAYER METHODS  ---------------------------------  //
 
   changeTrack(url) {
     return new Promise(function(resolve) {
@@ -82,6 +82,8 @@ class Model {
       resolve();
     }.bind(this));
   }
+
+  getVolume() { return this.player.getVolume(); }  
 }
 
 export default Model;
