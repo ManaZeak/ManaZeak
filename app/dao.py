@@ -8,8 +8,17 @@ from django.db import connection
 
 from app.models import Album, Artist, Genre, Track
 
+# TODO: a séparer en :viewmanager, playlist action, import action
 
-# Import album into the database in bulk mode
+## @package app.dao
+# package containing the manual operations on the database
+
+## Import a group of albums into the database in bulk mode
+#   @param album the set of albums existing in the tracks to import
+#   @param artists the artists existing in the set to import
+#   @param totalTrack dict associating album title and track numbers
+#   @param totalDisc dict associating album title and disc numbers
+#   @return A dict containing the album title associated with the album id
 def addAlbumBulk(albums, artists, totalTrack, totalDisc):
     albumReference = {"": Album.objects.get(title=None)}
     newAlbums = {}
@@ -76,7 +85,12 @@ def addAlbumBulk(albums, artists, totalTrack, totalDisc):
     return {**albumReference, **newAlbums}
 
 
-# Import track into the database in bulk mode
+## Import track into the database in bulk mode.
+#   @param tracks the tracks objects.
+#   @param artists the artist dict association the names and the ids.
+#   @param albums the album dict association the albums title and the ids.
+#   @param genres the genre associated with their ids.
+#   @param playlistId the id of the playlist the track are added to.
 def addTrackBulk(tracks, artists, albums, genres, playlistId):
     referenceTracks = {}
 
@@ -153,6 +167,9 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
     virtualFile.close()
 
 
+## Add new artists to the database in bulk mode
+#   @param artists the set of the artists names
+#   @return a dict associating the artists names with their ids
 def addArtistBulk(artists):
     artistReference = {"": Artist.objects.get(name=None).id}
     newArtist = {}
@@ -200,7 +217,9 @@ def addArtistBulk(artists):
     return {**artistReference, **newArtist}
 
 
-# With a given set add the missing genre to the database and return a dict with name:id
+## With a given set add the missing genre to the database and return a dict with name:id
+#   @param genres the set of the genres to be added
+#   @return A dict associating the genre name with their id
 def addGenreBulk(genres):
     genreReference = {"": Genre.objects.get(name=None).id}
     newGenre = {}
@@ -248,6 +267,7 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
+##
 def getViewName(playlist):
     return hashlib.md5(str(playlist.user.username).encode("ascii", "ignore") +
                        str(playlist.name).encode("ascii", "ignore") +

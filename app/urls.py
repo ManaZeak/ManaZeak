@@ -68,43 +68,43 @@ urlpatterns = [
     url(r'^history/getLastSongPlayed/$', history.getLastSongPlayed, name='getLastSongPlayed'),  # get the last song played by the user
 
     ######################## Suggestions actions ########################
-    url(r'^suggestions/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),
-    url(r'^suggestions/getTracksFromSameAlbum/$', suggestion.getTracksFromSameAlbum, name='getTracksFromSameAlbum'),
+    url(r'^suggestions/getSimilarTrack/$', suggestion.getSimilarTrack, name='getSimilarTrack'),  # get the similar track
+    url(r'^suggestions/getTracksFromSameAlbum/$', suggestion.getTracksFromSameAlbum, name='getTracksFromSameAlbum'),  # get the tracks from the same albums
 
     ############################ Wish actions ###########################
-    url(r'^wish/submit/$', wish.createWish, name='createWish'),
-    url(r'^wish/get/$', wish.getWishes, name='getWishes'),
-    url(r'^wish/setStatus/$', wish.setWishStatus, name='setWishStatus'),
+    url(r'^wish/submit/$', wish.createWish, name='createWish'),  # create a wish
+    url(r'^wish/get/$', wish.getWishes, name='getWishes'),  # get the wishes
+    url(r'^wish/setStatus/$', wish.setWishStatus, name='setWishStatus'),  # set the wish status code
 
     ########################### User actions ############################
-    url(r'^user/getInformation/$', user.getUserInformation, name='getUserInformation'),
-    url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),
-    url(r'^user/delete/$', user.deleteUser, name='deleteUser'),
-    url(r'^user/editAvatar/$', userSettings.changeAvatar, name='changeAvatar'),
+    url(r'^user/getInformation/$', user.getUserInformation, name='getUserInformation'),  # get the user information
+    url(r'^user/getSettings/$', userSettings.getUserSettings, name='getUserSettings'),  # get the user information
+    url(r'^user/delete/$', user.deleteUser, name='deleteUser'),  # delete a user
+    url(r'^user/editAvatar/$', userSettings.changeAvatar, name='changeAvatar'),  # edit the avatar of a user
 
     ########################### Group actions ###########################
-    url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),
-    url(r'^admin/editUserGroup/$', adminTools.editUserGroup, name='editUserGroup'),
+    url(r'^admin/editGroup/$', adminTools.editGroup, name='editGroup'),  # edit the permissions of a group
+    url(r'^admin/editUserGroup/$', adminTools.editUserGroup, name='editUserGroup'),  # edit the group of a user
 
     ########################### Admin actions ###########################
     url(r'^admin/isAdmin/$', adminTools.isAdmin, name='isAdmin'),  # TODO : remove in front
-    url(r'^admin/getView/$', adminTools.getAdminView, name='getAdminView'),
-    url(r'^admin/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),
-    url(r'^admin/removeUser/$', adminTools.removeUser, name='removeUserById'),
-    url(r'^admin/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),
-    url(r'^admin/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),
-    url(r'^admin/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),
-    url(r'^admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),
-    url(r'^admin/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),
-    url(r'^admin/refreshCrontab/$', utils.refreshCrontab, name='setCronJob'),
+    url(r'^admin/getView/$', adminTools.getAdminView, name='getAdminView'),  # get the admin view page
+    url(r'^admin/removeAllMoods/$', adminTools.removeAllMoods, name='removeAllMoods'),  # delete all moodbars files
+    url(r'^admin/removeUser/$', adminTools.removeUser, name='removeUserById'),  # delete a specific user
+    url(r'^admin/changeSyncthingAPIKey/$', adminTools.changeSyncthingAPIKey, name='changeAdminOptions'),  # change the syncthing API key
+    url(r'^admin/syncthingRescan/$', adminTools.syncthingRescan, name='syncthingRescan'),  # launch a syncthing rescan
+    url(r'^admin/regenerateCovers/$', adminTools.regenerateCovers, name='regenerateCovers'),  # regenerate all the covers
+    url(r'^admin/ZNCcuoa8kJL8z6xgNZKnWmMfahHf9j6w6Fi3HFc/$', adminTools.dropAllDB, name='drop'),  # delete all the database
+    url(r'^admin/changeBufferPath/$', adminTools.changeBufferPath, name='changeBufferPath'),  # change the buffer path
+    url(r'^admin/refreshCrontab/$', utils.refreshCrontab, name='setCronJob'),  # refresh all the task in the crontab
 
     ######################### InviteCode section #########################
-    url(r'^admin/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),
-    url(r'^admin/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),
+    url(r'^admin/isInviteEnabled/$', adminTools.isInviteEnabled, name='isInviteEnabled'),  # is the invite mode is enabled
+    url(r'^admin/toggleInvite/$', adminTools.toggleInvite, name='toggleInvite'),  # activate or deactivate invite mode
 
     ############################# File upload ############################
-    url(r'^file/upload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),
+    url(r'^file/upload/$', fileUpload.handleUploadedFile, name='handleUploadedFile'),  # handle when a file is uploaded
 
     ############################## Language ##############################
-    url(r'^language/', language.loadLanguage, name='loadLanguage'),
+    url(r'^language/', language.loadLanguage, name='loadLanguage'),  # send the json containing the lang strings
 ]
