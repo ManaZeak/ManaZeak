@@ -1,4 +1,5 @@
 import FootBar from './footbar/FootBar.js'
+import Aside from './maincontainer/Aside.js'
 
 class View {
   constructor() {
@@ -6,7 +7,14 @@ class View {
   }
 
   _init() {
+    this.mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
+
+    this._leftAside = new Aside({ side: 'left' });
+    this._rightAside = new Aside({ side: 'right' });
+    this._scene = document.getElementById('scene');
+
     this.footBar = new FootBar();
+    this.footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume()); // TODO : replace with mzk.getUserVolume() or from localStorage or from opts (serv)
 
     this.test();
   }
@@ -22,10 +30,11 @@ class View {
     if (isPlaying) {
       this.footBar.getProgressBar().activate();
     }
-
+/*
     else if (!isPlaying) {
       this.footBar.getProgressBar().desactivate();
     }
+*/
   }
 
   stopPlayback(hasSource) {
@@ -35,13 +44,21 @@ class View {
   }
 
   updateVolume(isMuted, volume) {
+    this.footBar.getVolumeBar().updateVolume(isMuted, volume);
+
     document.getElementById("vo").innerHTML = 'Volume: ' + volume;
     !isMuted ? document.getElementById("mute").innerHTML = 'Mute' : document.getElementById("mute").innerHTML = 'UnMute';
   }
 
-  updateProgress(progress) {
+  updateProgress(progress) { // Called onClick
+    this.footBar.getProgressBar().desactivateTransitions(); // Must disable transition when called
+
     this.footBar.getProgressBar().setProgress(progress);
     document.getElementById("seak").innerHTML = progress + ' %';
+
+    setTimeout(function() { // Restore transitions
+      this.footBar.getProgressBar().activateTransitions();
+    }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
   test() { // This has to go when controls are a thing

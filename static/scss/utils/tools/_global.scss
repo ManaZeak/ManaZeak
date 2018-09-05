@@ -1,3 +1,14 @@
+$topbar-height: 50px;
+$footbar-height: 80px;
+
+$margin: 10px;
+
+$transition-duration: 0.2s;
+
+$mzk-text-logo-width: 145px;
+
+// Old mzk values ::
+
 // Background colors
 $mzk-bg-light:        rgba(64, 64, 72, 1);
 $mzk-bg-normal:       rgba(44, 44, 48, 1);
@@ -23,7 +34,6 @@ $mzk-blue:  rgba(0, 0, 255, 1);
 
 $mzk-animation-duration: 0.2s;
 
-$topbar-height:        50px;
 $mzk-border-color:     $mzk-bg-darker;
 $mzk-border-color-neg: $mzk-text;
 $mzk-border-width:     1px;

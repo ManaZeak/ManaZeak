@@ -1,0 +1,7 @@
+@import './maincontainer/aside'; // Loading progressbar rules
+@import './maincontainer/scene'; // Loading progressbar rules
+
+#mainContainer {
+  width: 100%;
+  height: calc(100% - (#{$topbar-height} + #{$footbar-height});
+}

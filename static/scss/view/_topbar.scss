@@ -1,5 +1,19 @@
+$topbar-margin: (2 * $margin);
+$topbar-transition: ($transition-duration * 2);
+
 #top-bar {
   background: blue;
-  height: 50px;
+  display: flex;
+  height: $topbar-height;
   width: 100%;
+
+  img {
+    align-self: center;
+    position: absolute;
+    left: calc(7.5% - (#{$mzk-text-logo-width} / 2)); // Aside width (15%) / 2
+    opacity: 0;
+    width: $mzk-text-logo-width;
+
+    transition: opacity $topbar-transition ease 0s;
+  }
 }
