@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator, deleteView
+from app.dao import getPlaylistTracksFromView, createViewForLazy, lazyJsonGenerator, deleteView
 from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Playlist, Track
 from app.utils import checkPermission
@@ -155,11 +155,10 @@ def simplifiedLazyLoadingPlaylist(request):
                         return JsonResponse(errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlist, nbTracks, reqNumber)
-                    data = []
+                    trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
+                    data = {}
                     for row in trackSet:
-                        data.append(lazyJsonGenerator(row))
-                    data = dict({'RESULT': data})
+                        lazyJsonGenerator(row, data)
                     data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
                     data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)
