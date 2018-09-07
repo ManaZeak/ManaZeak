@@ -9,13 +9,10 @@ from app.errors import ErrorEnum, errorCheckMessage
 from app.models import Shuffle, Playlist, Track, PlaylistSettings
 from app.utils import checkPermission
 
-## @package app.player
-#   this package is used to handle the player actions.
 
-
-## Select a sound when shuffle mode enabled
-#   @param shuffle a shuffle object, contains for each user the track he already played
-#   @return a track and if the playlist is finished
+## Return a track with a given shuffle
+#   @param shuffle shuffle object of the user requesting a song
+#   @return track and if the playlist is finished. Return -1 if something went wrong
 def shuffleSoundSelector(shuffle):
     playlistEnd = False
     playlist = shuffle.playlist
@@ -90,10 +87,11 @@ def shuffleNextTrack(request):
     return JsonResponse(data)
 
 
-## Get the next track when the random mode is enabled
-#   @param request the POST request from the front must contain the following information :
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Get a random track of the playlist
+#   @param request a POST request containing :
 #   - the playlist id (PLAYLIST_ID)
-#   @return a default json response and a track ID (TRACK_ID)
+#   @return return a json containing the selected by the random (TRACK_ID) and a standard status message.
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
