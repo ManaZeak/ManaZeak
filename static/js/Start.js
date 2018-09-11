@@ -11,4 +11,4 @@ window.Notification = new Notification({
     maxActive:   3
 });
 
-document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); });
+document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); mzk.init() });

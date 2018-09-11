@@ -1,60 +1,81 @@
 import Model from '../model/Model.js'
 import View from '../view/View.js'
+import Komunikator from './Komunikator.js'
+import User from './User.js'
 
 class Mzk {
 
   constructor() {
     this.model = {};
     this.view = {};
+    this.komunikator = {};
+
     this.cookies = {};
     this.lang = {}
-
-    this._init();
+    this.user = {};
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-  _init() {
-    this.cookies = Utils.getCookies();
+  _initKomunikator() {
+    return new Promise(resolve => {
+      this.komunikator = new Komunikator(this.cookies['csrftoken']);
+      resolve();
+    });
+  }
 
-    Utils.getLangage(this.cookies['csrftoken'], (navigator.language || navigator.userLanguage))
-      .then(function(nls) { this.lang = nls; }.bind(this))
-      .then(function() { return this._initModel(); }.bind(this))
-      .then(function() { return this._initView(); }.bind(this));
+  _initUser() {
+    return new Promise(resolve => {
+      this.user = new User();
+      this.komunikator.get('user/getInformation/')
+        .then(response => { this.user.updateProperties(response); resolve(); })
+        //.catch(function(re) { console.log(re); }); // TODO : create Utils.handleResponseErrors to handle or Error.js singleton TODO
+    });
   }
 
   _initModel() {
-    return new Promise(function (resolve) {
+    return new Promise(resolve => {
       this.model = new Model();
       resolve();
-    }.bind(this));
+    });
   }
 
   _initView() {
-    return new Promise(function (resolve) {
+    return new Promise(resolve => {
       this.view = new View();
       resolve();
-    }.bind(this));
+    });
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  init() {
+    this.cookies = Utils.getCookies(); // Get user cookies
+
+    Utils.getLangage(this.cookies['csrftoken'], (navigator.language || navigator.userLanguage)) // Fetch language keys/values to init View later
+      .then(nls => { this.lang = nls; }) // Save langage in Mzk object
+      .then(() => { return this._initKomunikator(); }) // Set Komunikator to handle backend comunication
+      .then(() => { return this._initUser(); }) // Create User object that stores everything useful about a given user
+      .then(() => { return this._initModel(); }) // Initialize mzk Model
+      .then(() => { return this._initView(); }); // Initialize mzk View
+  }
 
       //  --------------------------------  PLAYBACK METHODS  ---------------------------------  //
 
   changeTrack(id) {
     // TODO : get Track from id via Komunikator
     this.model.changeTrack((id === 5) ? '../static/101 - 501 - Black and Blue.flac' : 'http://static.kevvv.in/sounds/callmemaybe.mp3')
-      .then(function() { this.view.changeTrack(this.model.player.getIsPlaying()); }.bind(this));
+      .then(() => { this.view.changeTrack(this.model.player.getIsPlaying()); });
   }
 
   togglePlay() {
     this.model.togglePlay()
-      .then(function() { this.view.togglePlay(this.model.player.getIsPlaying()); }.bind(this));
+      .then(() => { this.view.togglePlay(this.model.player.getIsPlaying()); });
   }
 
   stopPlayback() {
     this.model.stopPlayback()
-      .then(function() { this.view.stopPlayback(this.model.player.hasSource()); }.bind(this));
+      .then(() => { this.view.stopPlayback(this.model.player.hasSource()); });
   }
 
       //  --------------------------------  VOLUME METHODS  ---------------------------------  //
@@ -65,17 +86,17 @@ class Mzk {
 
   toggleMute() {
     this.model.toggleMute()
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
+      .then(() => { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); });
   }
 
   adjustVolume(amount) {
     this.model.adjustVolume(amount)
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
+      .then(() => { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); });
   }
 
   setVolume(volume) {
     this.model.setVolume(volume)
-      .then(function() { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); }.bind(this));
+      .then(() => { this.view.updateVolume(this.model.player.getIsMuted(), this.model.getVolume()); });
   }
 
   getIsMuted() { return this.model.player.getIsMuted(); }
@@ -87,12 +108,12 @@ class Mzk {
 
   adjustProgress(amount) {
     this.model.adjustProgress(amount)
-      .then(function() { this.view.updateProgress(this.model.player.getProgress()); }.bind(this));
+      .then(() => { this.view.updateProgress(this.model.player.getProgress()); });
   }
 
   setProgress(progress) {
     this.model.setProgress(progress)
-      .then(function() { this.view.updateProgress(this.model.player.getProgress()); }.bind(this));
+      .then(() => { this.view.updateProgress(this.model.player.getProgress()); });
   }
 
   trackEnded() {
