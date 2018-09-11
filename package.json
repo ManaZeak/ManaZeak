@@ -19,8 +19,8 @@
   "homepage": "https://github.com/Squadella/ManaZeak#readme",
   "devDependencies": {
     "uglifyjs-webpack-plugin": "^1.1.2",
-    "webpack": "^3.9.1",
+    "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
-    "worker-loader": "^1.1.1"
+    "worker-loader": "^2.0.0"
   }
 }

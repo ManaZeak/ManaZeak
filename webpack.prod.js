@@ -2,6 +2,7 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+    mode: 'production',  
     entry: './static/js/Start.js',
     output: {
         path: path.resolve(__dirname, 'static/js/dist'),
