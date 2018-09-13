@@ -15,10 +15,15 @@ from app.stats.stats import addToStats
 from app.utils import checkPermission
 
 
-# Scan all the attributes of an MP3 track, and add it to base.
+## @package app.track.track
+#   Manges the track object
+
+
 from app.wallet import checkListeningGain
 
 
+## Scan all the attributes of an MP3 track, and add it to base.
+#   @param track a track object
 def exportTrackInfo(track):
     if track.genre is not None:
         genre = track.genre.name
@@ -75,8 +80,31 @@ def exportTrackInfo(track):
     return data
 
 
-# Get all the information about a track
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Get all the information about a track.
+#   @param request a POST request containing :
+#       - the track id to get the information (TRACK_ID)
+#   @return a json response containing :
+#       - the id of the track (ID)
+#       - the title of the track (TITLE)
+#       - the year of the track (YEAR)
+#       - the composer of the track (COMPOSER)
+#       - the performer (PERFORMER)
+#       - the track number (TRACK_NUMBER)
+#       - the track bpm (BPM)
+#       - the track lyrics (LYRICS)
+#       - the track comment (COMMENT)
+#       - the track bitrate (BITRATE)
+#       - the track samplerate (SAMPLERATE)
+#       - the track duration (DURATION)
+#       - the track genre (GENRE)
+#       - the track file type (FILE_TYPE)
+#       - the track disc number (DISC_NUMBER)
+#       - the track size (SIZE)
+#       - the track file last modified date (LAST_MODIFIED)
+#       - the track cover path (COVER)
+#       - a artist object containing :
+#           - 
 def getTracksDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -91,7 +119,7 @@ def getTracksDetailedInfo(request):
                     else:
                         data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getTracksDetailedInfo)
                         return JsonResponse(data)
-                data = {**dict({'RESULT': trackInfo}), ** errorCheckMessage(True, None, getTracksDetailedInfo)}
+                data = {**dict({'RESULT': trackInfo}), **errorCheckMessage(True, None, getTracksDetailedInfo)}
             else:
                 data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getTracksDetailedInfo, user)
         else:

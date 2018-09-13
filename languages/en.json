@@ -1,5 +1,17 @@
 {
   "errors":{
+    "frontend": {
+      "INVALID_ERROR_CODE": {
+        "title": "Invalid error code",
+        "message": "The error key you gave when you raised an error doesn't exists.",
+        "severity": "error"
+      },
+      "URL_NOT_FOUND": {
+        "title": "URL not found",
+        "message": "The API url you tried to reach doesn't exists.",
+        "severity": "error"
+      }
+    },
     "backend":  {
       "BAD_FORMAT":{
         "title": "Wrong format",
