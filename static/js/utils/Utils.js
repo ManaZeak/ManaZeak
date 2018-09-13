@@ -71,23 +71,6 @@ class Utils {
     return (Math.abs(hash).toString(36) + '' + Math.abs(hash / 2).toString(36).split('').reverse().join('')).substring(0, length).toUpperCase(); // Here is the twekead line
   }
 
-  getLangage(csrfCookie, lang) {
-    return new Promise(function(resolve) {
-      let xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-          resolve(JSON.parse(this.responseText));
-        }
-      };
-
-      xhr.open('POST', 'language/', true);
-      xhr.setRequestHeader('X-CSRFToken', csrfCookie);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify({ LANG: lang }));
-    });
-  }
-
   getCookies() {
     let cookies = {};
     if (document.cookie && document.cookie !== '') {

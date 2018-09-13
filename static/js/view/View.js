@@ -21,7 +21,7 @@ class View {
 
   changeTrack(isPlaying) {
     this.togglePlay(isPlaying);
-    this.footBar.getProgressBar().updateDuration(mzk.model.player.getDuration());
+    this.footBar.getProgressBar().updateDuration(mzk.model.getPlayer().getDuration());
   }
 
   togglePlay(isPlaying) {

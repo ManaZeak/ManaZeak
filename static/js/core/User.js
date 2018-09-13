@@ -19,7 +19,7 @@ class User {
     }
 
     updateProperties(properties) {
-        console.log(properties);
+        //console.log(properties);
     }
 
 

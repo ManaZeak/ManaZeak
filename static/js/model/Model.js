@@ -2,13 +2,13 @@ import Player from '../core/Player.js'
 
 class Model {
   constructor() {
-    this.player = {};
+    this._player = {};
 
     this._init();
   }
 
   _init() {
-    this.player = new Player();
+    this._player = new Player();
     Notification.info({ message: 'Success Model start' });
   }
 
@@ -16,74 +16,75 @@ class Model {
 
   changeTrack(url) {
     return new Promise(function(resolve) {
-      this.player.changeTrack(url).then(resolve);
+      this._player.changeTrack(url).then(resolve);
     }.bind(this));
   }
 
   togglePlay() {
     return new Promise(function(resolve) {
-      this.player.togglePlay();
+      this._player.togglePlay();
       resolve();
     }.bind(this));
   }
 
   stopPlayback() {
     return new Promise(function(resolve) {
-      this.player.stop();
+      this._player.stop();
       resolve();
     }.bind(this));
   }
 
   mute() {
     return new Promise(function(resolve) {
-      this.player.mute();
+      this._player.mute();
       resolve();
     }.bind(this));
   }
 
   unmute() {
     return new Promise(function(resolve) {
-      this.player.unmute();
+      this._player.unmute();
       resolve();
     }.bind(this));
   }
 
   toggleMute() {
     return new Promise(function(resolve) {
-      this.player.toggleMute();
+      this._player.toggleMute();
       resolve();
     }.bind(this));
   }
 
   adjustVolume(amount) {
     return new Promise(function(resolve) {
-      this.player.adjustVolume(amount);
+      this._player.adjustVolume(amount);
       resolve();
     }.bind(this));
   }
 
   setVolume(volume) {
     return new Promise(function(resolve) {
-      this.player.setVolume(volume);
+      this._player.setVolume(volume);
       resolve();
     }.bind(this));
   }
 
   adjustProgress(amount) {
     return new Promise(function(resolve) {
-      this.player.adjustProgress(amount);
+      this._player.adjustProgress(amount);
       resolve();
     }.bind(this));
   }
 
   setProgress(progress) {
     return new Promise(function(resolve) {
-      this.player.setProgress(progress);
+      this._player.setProgress(progress);
       resolve();
     }.bind(this));
   }
 
-  getVolume() { return this.player.getVolume(); }  
+  getVolume() { return this._player.getVolume(); }
+  getPlayer() { return this._player; }
 }
 
 export default Model;
