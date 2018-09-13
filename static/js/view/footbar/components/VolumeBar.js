@@ -2,6 +2,7 @@ class VolumeBar {
 
   constructor() {
     this._volume = { image: {}, wrapper: {}, container: {}, current: {}, thumb: {} };
+    this._showHideTimeoutId = -1;
     this.isDragging = false;
 
     this._init();
@@ -31,6 +32,8 @@ class VolumeBar {
   }
 
   _mouseOver() {
+    clearTimeout(this._showHideTimeoutId);
+    this._showHideTimeoutId = -1;
     this._showWrapper();
   }
 
@@ -83,9 +86,19 @@ class VolumeBar {
       mzk.setVolume(toLeftInPr / 100);
     }
 
+    startShowHide() {
+      if (this._showHideTimeoutId === -1) { this._showWrapper(); } // Show wrapp bc no timeout in progress
+      else { clearTimeout(this._showHideTimeoutId); } // Reset timeout to avoid wrapper blinking
+
+      this._showHideTimeoutId = setTimeout(() => {
+        this._showHideTimeoutId = -1; // Reset timeout id
+        this._hideWrapper();
+      }, 1000); // Transition time according to $transition-duration by 5 (utils/tools/_global.scss)
+    }
+
     updateVolume(isMuted, volume) {
       volume *= 100;
-      // Image update
+      // Icon update
       if (volume === 0 || (typeof isMuted === 'boolean' && isMuted === true)) { this._volume.image.src = "/static/img/player/volume-mute.svg"; }
       else if (volume > 0 && volume < 66) { this._volume.image.src = "/static/img/player/volume-half.svg" }
       else { this._volume.image.src = "/static/img/player/volume-full.svg"; }

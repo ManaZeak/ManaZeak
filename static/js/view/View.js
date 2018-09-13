@@ -86,6 +86,8 @@ class View {
 
     Notification.info({ message: 'Success UI start' });
   }
+
+  getFootBar() { return this.footBar; }
 }
 
 export default View;

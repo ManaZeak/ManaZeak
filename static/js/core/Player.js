@@ -108,8 +108,8 @@ class Player {
 	_setVolume(value) {
 		if (typeof value !== 'number') { console.log('a'); return; } // Bad format for value
 
-		if (value <= 0) { this.mute(); this._volume = 0.5; return; } // Bound lower value at 0.5 bc we want to avoid this : volumebar goes down to zero, user mute, then unmute, but volume is still 0.
-		if (value > 1) { this._player.volume = 1; return; } // Bound upper value
+		if (value <= 0) { this.mute(); this._volume = 0; return; } // Bound lower value
+		if (value > 1) { value = 1; } // Bound upper value
 
 		if (this._isMuted) { // Restore mute state if needed
 			this.unmute(); // Un mute playback
@@ -296,7 +296,7 @@ class Player {
 	unmute() {
 		if (this._isMuted) { // Avoid multi call
 			this._isMuted = false; // Set mute state to false
-			this._player.volume = this._volume; // Restore old volume
+			this.setVolume(this._volume === 0 ? 0.5 : this.volume); // Restore old volume value
 		}
 	}
 
