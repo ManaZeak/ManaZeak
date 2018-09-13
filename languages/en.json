@@ -6,6 +6,11 @@
         "message": "The error key you gave when you raised an error doesn't exists.",
         "severity": "error"
       },
+      "ACCESS_FORBIDDEN": {
+        "title": "Access forbidden",
+        "message": "You are not granted to access the API url you tried to reach.",
+        "severity": "error"
+      },
       "URL_NOT_FOUND": {
         "title": "URL not found",
         "message": "The API url you tried to reach doesn't exists.",
