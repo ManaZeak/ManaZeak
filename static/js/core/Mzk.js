@@ -2,7 +2,6 @@ import Komunikator from './Komunikator.js'
 import User from './User.js'
 import Model from '../model/Model.js'
 import View from '../view/View.js'
-import Shortcut from './Shortcut.js'
 
 class Mzk {
 
@@ -13,10 +12,20 @@ class Mzk {
     this.lang = {}
     this.model = {};
     this.view = {};
-    this.shortcut = {};
   }
 
-  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+  //  --------------------------------  SESSION INITIALIZATION  ---------------------------------  //
+
+  init() {
+    this.cookies = Utils.getCookies(); // Get user cookies
+
+    this._initKomunikator()
+      .then(() => { return this._initLang(); }) // Create User object that stores everything useful about a given user
+      .then(() => { return this._initUser(); }) // Create User object that stores everything useful about a given user
+      .then(() => { return this._initModel(); }) // Initialize mzk Model
+      .then(() => { return this._initView(); }) // Initialize mzk View
+      .then(() => { return this._initShortcut(); }); // Initialize mzk Shortcuts
+  }
 
   _initKomunikator() {
     return new Promise(resolve => {
@@ -30,7 +39,7 @@ class Mzk {
       this.user = new User();
       this.komunikator.get('user/getInformation/')
         .then(userInfo => { this.user.updateProperties(userInfo); resolve(); })
-        .catch(errorCode => { Errors.raise(errorCode, true); reject() });
+        .catch(errorCode => { Errors.raise(errorCode, true); resolve() }); // TODO : catch reject over this promise
     });
   }
 
@@ -66,23 +75,9 @@ class Mzk {
 
   _initShortcut() {
     return new Promise(resolve => {
-      this.shortcut = new Shortcut();
       this.reloadShortcuts();
       resolve();
     });
-  }
-
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-  init() {
-    this.cookies = Utils.getCookies(); // Get user cookies
-
-    this._initKomunikator()
-      .then(() => { return this._initLang(); }) // Create User object that stores everything useful about a given user
-      .then(() => { return this._initUser(); }) // Create User object that stores everything useful about a given user
-      .then(() => { return this._initModel(); }) // Initialize mzk Model
-      .then(() => { return this._initView(); }) // Initialize mzk View
-      .then(() => { return this._initShortcut(); }); // Initialize mzk Shortcuts
   }
 
 //  --------------------------------  PLAYBACK METHODS  ---------------------------------  //
@@ -153,15 +148,23 @@ class Mzk {
 //  --------------------------------  SHORTCUTS METHODS  ---------------------------------  //
 
   reloadShortcuts() {
+    Shortcut.removeAll();
     // TODO : get from komunikator user bindings
-    this.shortcut.register('Ctrl+Shift+ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.25); });
-    this.shortcut.register('Ctrl+Shift+ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.25); });
-    this.shortcut.register('Ctrl+ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.1); });
-    this.shortcut.register('Ctrl+ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.1); });
-    this.shortcut.register('ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.01); });
-    this.shortcut.register('ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.01); });
+    Shortcut.register('Ctrl+Shift+ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.25); });
+    Shortcut.register('Ctrl+Shift+ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.25); });
+    Shortcut.register('Ctrl+ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.1); });
+    Shortcut.register('Ctrl+ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.1); });
+    Shortcut.register('ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.01); });
+    Shortcut.register('ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.01); });
   }
 
+  //  --------------------------------  COLLECTION METHODS  ---------------------------------  //
+
+  getCollection() {
+    this.komunikator.get('playlist/fetchAll/')
+      .then(collection => { this.model.initCollection(collection); })
+      .catch(errorCode => { Errors.raise(errorCode, true); });
+  }
 }
 
 export default Mzk;

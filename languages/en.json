@@ -15,6 +15,11 @@
         "title": "URL not found",
         "message": "The API url you tried to reach doesn't exists.",
         "severity": "error"
+      },
+      "INTERNAL_ERROR": {
+        "title": "Internal server error",
+        "message": "Something went wrong back side of the moon.",
+        "severity": "error"
       }
     },
     "backend":  {

@@ -19,7 +19,15 @@ class User {
     }
 
     updateProperties(properties) {
-        //console.log(properties);
+      this.id            = properties.USER_ID;
+      this.isAdmin       = properties.IS_ADMIN;
+      this.username      = properties.USERNAME;
+      this.groupName     = properties.GROUP_NAME;
+      this.groupID       = properties.GROUP_ID;
+      this.permissions  = properties.PERMISSIONS;
+      this.inviteCode    = properties.INVITE_CODE;
+      this.godFatherCode = properties.GODFATHER_CODE;
+      this.godFatherName = properties.GODFATHER_NAME;
     }
 
 

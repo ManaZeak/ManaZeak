@@ -1,18 +1,21 @@
 import Player from '../core/Player.js'
+import Collection from './Collection.js'
 
 class Model {
   constructor() {
     this._player = {};
+    this._collection = {};
 
     this._init();
   }
 
   _init() {
     this._player = new Player();
+    this._collection = new Collection();
     Notification.info({ message: 'Success Model start' });
   }
 
-      //  --------------------------------  PLAYER METHODS  ---------------------------------  //
+//  --------------------------------  PLAYER METHODS  ---------------------------------  //
 
   changeTrack(url) {
     return new Promise(function(resolve) {
@@ -83,8 +86,27 @@ class Model {
     }.bind(this));
   }
 
+  //  --------------------------------  COLLECTION METHODS  ---------------------------------  //
+
+  initCollection(response) {
+    if (response.DONE) {
+      let a = this._collection.addPlaylist(response, true); // remove true when loading all playlists
+      this._collection.initialScan(a);
+      console.log(this._collection);
+    }
+
+    else if (response.ERROR_KEY === null) {
+      this._collection.newLibrary();
+    }
+
+    else {
+      Errors.raise(response.ERROR_KEY);
+    }
+  }
+
   getVolume() { return this._player.getVolume(); }
   getPlayer() { return this._player; }
+  getCollection() { return this._collection; }
 }
 
 export default Model;
