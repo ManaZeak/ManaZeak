@@ -106,6 +106,7 @@ def createTransaction(code, user, isGain, multiplier):
     transaction.user = user
     transaction.baseMultiplier = multiplier
     if isGain:
+        # Resets the user streak if the user was in a loosing streak
         if userPref.streak < 100:
             transaction.streak = 100
         else:
@@ -113,6 +114,7 @@ def createTransaction(code, user, isGain, multiplier):
         amount = int(round((transaction.transactionType.coinGain * multiplier) * transaction.streak / 100))
         wallet.miningGain += amount
     else:
+        # Resets the winning streak
         if userPref.streak > 100:
             transaction.streak = 100
         else:
