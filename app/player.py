@@ -10,7 +10,9 @@ from app.models import Shuffle, Playlist, Track, PlaylistSettings
 from app.utils import checkPermission
 
 
-# Select a sound with shuffle mode enabled
+## Return a track with a given shuffle
+#   @param shuffle shuffle object of the user requesting a song
+#   @return track and if the playlist is finished. Return -1 if something went wrong
 def shuffleSoundSelector(shuffle):
     playlistEnd = False
     playlist = shuffle.playlist
@@ -45,8 +47,13 @@ def shuffleSoundSelector(shuffle):
     return -1
 
 
-# Get the next track when the shuffle mode is enabled
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Function for getting a track from the front when in shuffle mode.
+#   @param request the POST request from the front must contain :
+#   - a playlist ID (PLAYLIST_ID)
+#   @return a default json response and the following information :
+#   - the track ID (TRACK_ID)
+#   - if the track is the last one boolean (IS_LAST)
 def shuffleNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -80,7 +87,11 @@ def shuffleNextTrack(request):
     return JsonResponse(data)
 
 
-# Get the next track when the random mode is enabled
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Get a random track of the playlist
+#   @param request a POST request containing :
+#   - the playlist id (PLAYLIST_ID)
+#   @return return a json containing the selected by the random (TRACK_ID) and a standard status message.
 def randomNextTrack(request):
     if request.method == 'POST':
         response = json.loads(request.body)
@@ -112,8 +123,15 @@ def randomNextTrack(request):
     return JsonResponse(data)
 
 
-# Change the mode of getting the next track
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Change the mode of getting the next track
+#   @param request a POST request from the front must contains :
+#   - the playlist ID (PLAYLIST_ID)
+#   - the mode of shuffle (RANDOM_MODE) the modes are :
+#       - 0 no random
+#       - 1 shuffle tracks
+#       - 2 random tracks
+#   @return a default json response
 def toggleRandom(request):
     if request.method == 'POST':
         user = request.user

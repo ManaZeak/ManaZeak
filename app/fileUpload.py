@@ -15,6 +15,9 @@ from app.utils import checkPermission
 
 # Handle the file upload
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Function for handling uploaded file to the server
+#   @param request the content of the file in base64
+#   @return if the operation was successful
 def handleUploadedFile(request):
     if request.method == 'POST':
         user = request.user

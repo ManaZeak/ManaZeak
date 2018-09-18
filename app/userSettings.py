@@ -14,6 +14,7 @@ from app.wallet import calculateCurrentAvailableCash
 #   This package is used to handle the user information.
 
 
+@login_required(redirect_field_name='login.html', login_url='app:login')
 ## Return the user's information
 #   @param request the GET request from the front.
 #   @return a json containing :
@@ -25,7 +26,6 @@ from app.wallet import calculateCurrentAvailableCash
 #   - the number of manacoin of the user (MANACOIN)
 #   - the godfather code (GODFATHER_CODE)
 #   - the godfather username (GODFATHER_NAME)
-@login_required(redirect_field_name='login.html', login_url='app:login')
 def getUserSettings(request):
     # FIXME : merge with function app.user.getUserInformation
     if request.method == 'GET':

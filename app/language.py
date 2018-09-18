@@ -1,4 +1,3 @@
-# Loads the json for the language for the user
 import json
 import os
 
@@ -6,8 +5,14 @@ from django.http import JsonResponse
 
 from app.errors import ErrorEnum, errorCheckMessage
 
+## @package app.language
+#   This package is used to send the correct json file to the front depending of the user language.
 
-# Loading the json file corresponding to the language of the user
+
+## Loading the json file corresponding to the language of the user.
+#   @param request a POST request send by the front must contain :
+#   - the user locale (LANG)
+#   @return a default json response and the json file containing all the language keys and strings.
 def loadLanguage(request):
     if request.method == 'POST':
         response = json.loads(request.body)

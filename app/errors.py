@@ -2,93 +2,100 @@ import logging
 from enum import Enum, unique
 
 
-# Enum containing al the possible errors
 @unique
+## The enumeration containing all the information about the errors.
 class ErrorEnum(Enum):
-    # Bad json format send to the server
+    ## Bad json format send to the server.
     BAD_FORMAT = 1
 
-    # Bad type of request send to the server
+    ## Bad type of request send to the server.
     BAD_REQUEST = 2
 
-    # The db didn't return anything
+    ## The db didn't return anything.
     DB_ERROR = 3
 
-    # The asked file didn't exist
+    ## The asked file didn't exist.
     FILE_NOT_FOUND = 4
 
-    # The directory asked didn't exist
+    ## The directory asked didn't exist.
     DIR_NOT_FOUND = 5
 
-    # The library asked is empty
+    ## The library asked is empty.
     EMPTY_LIBRARY = 6
 
-    # The directory for covers cannot be created
+    ## The directory for covers cannot be created.
     COVER_ERROR = 7
 
-    # The user didn't have enough permission
+    ## The user didn't have enough permission.
     PERMISSION_ERROR = 8
 
-    # Error during the rescan
+    ## Error during the rescan.
     RESCAN_ERROR = 9
 
-    # No track history for the given user
+    ## No track history for the given user.
     NO_HISTORY = 10
 
-    # No same artist for the given track
+    ## No same artist for the given track.
     NO_SAME_ARTIST = 11
 
-    # No same genre for the given track
+    ## No same genre for the given track.
     NO_SAME_GENRE = 12
 
-    # No same album for the given track
+    ## No same album for the given track.
     NO_SAME_ALBUM = 13
 
-    # Syncthing encountered an error
+    ## Syncthing encountered an error.
     SYNCTHING_ERROR = 14
 
-    # Some user tried to delete an admin user
+    ## Some user tried to delete an admin user.
     USER_DELETE_ERROR = 15
 
-    # No stats for the given user
+    ## No stats for the given user.
     NO_STATS = 16
 
-    # Bad filename for the upload
+    ## Bad filename for the upload.
     BAD_FILENAME = 17
 
-    # File didn't exists
+    ## The file didn't exists.
     FILE_EXISTS = 18
 
-    # Wrong format of input inside the JSON response
+    ## Wrong format of input inside the JSON response.
     VALUE_ERROR = 19
 
-    # Error during the file uplaod
+    ## Error during the file uplaod.
     DND_ERROR = 20
 
-    # Wrong format of audio file
+    ## Wrong format of audio file.
     FORMAT_ERROR = 21
 
-    # Limit for download has been reached
+    ## Limit for download has been reached.
     DOWNLOAD_LIMIT = 22
 
-    # Cannot create a directory
+    ## Cannot create a directory.
     DIR_CREATION_ERROR = 23
 
-    # Suspicious operation for a user
+    ## Suspicious operation for a user.
     SUSPICIOUS_OPERATION = 24
 
 
 logger = logging.getLogger('django')
 
 
-# Deactivate a user after a suspicious operation
+## Deactivate a user after a suspicious operation.
+#   @param user the user that must be suspended.
 def deactivateUser(user):
     user.is_active = False
     user.save()
 
 
-# Generate the base of any status message
-# TODO: mettre caller a None
+## Creates a JSON response with the status of the task, also log the errors to a file.
+#   @param isDone if the operation was successful.
+#   @param error the type of error (contained in the enum).
+#   @param caller the function calling the function.
+#   @param user the user logged in.
+#   @return A JSON containing:
+#       - the status of the operation (DONE)
+#       - the key of the error (can be none) (ERROR_KEY)
 def errorCheckMessage(isDone, error, caller, user=None):
     if error is None:
         errorKey = None
