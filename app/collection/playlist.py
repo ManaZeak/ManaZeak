@@ -140,7 +140,8 @@ def simplifiedLazyLoadingPlaylist(request):
             try:
                 reqNumber = int(strip_tags(response['REQUEST_NUMBER']))
             except ValueError:
-                return JsonResponse(errorCheckMessage(False, ErrorEnum.VALUE_ERROR, simplifiedLazyLoadingPlaylist, user))
+                return JsonResponse(
+                    errorCheckMessage(False, ErrorEnum.VALUE_ERROR, simplifiedLazyLoadingPlaylist, user))
             nbTracks = 300
             reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:
@@ -152,7 +153,8 @@ def simplifiedLazyLoadingPlaylist(request):
                         if playlist.refreshView:
                             createViewForLazy(playlist)
                     else:
-                        return JsonResponse(errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
+                        return JsonResponse(
+                            errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
                     trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
@@ -220,39 +222,14 @@ def getUserPlaylists(request):
     # This function is available for all users even banned one
     if request.method == 'GET':
         user = request.user
-        playlists = Playlist.objects.filter(user=user, isLibrary=False)
-        playlistNames = []
-        playlistIds = []
-        isLibrary = []
-        playlistDescriptions = []
 
-        # Adding global libraries
-        libraries = Playlist.objects.filter(isLibrary=True)
-        for library in libraries:
-            playlistNames.append(library.name)
-            playlistIds.append(library.id)
-            isLibrary.append(True)
-            playlistDescriptions.append(library.description)
+        # Getting all the available playlists
+        playlists = Playlist.objects.filter(isPublic=True) | \
+                    Playlist.objects.filter(isLibrary=True) | \
+                    Playlist.objects.filter(user=user)
 
-        # Adding User playlists
         for playlist in playlists:
-            playlistNames.append(playlist.name)
-            playlistIds.append(playlist.id)
-            isLibrary.append(False)
-            playlistDescriptions.append(playlist.description)
-
-        if len(playlistIds) == 0:
-            data = errorCheckMessage(False, None, getUserPlaylists)
-        else:
-            # TODO : use JS0N convention
-            data = {
-                'NUMBER': len(playlistNames),
-                'PLAYLIST_NAMES': playlistNames,
-                'PLAYLIST_IDS': playlistIds,
-                'PLAYLIST_IS_LIBRARY': isLibrary,
-                'PLAYLIST_DESCRIPTIONS': playlistDescriptions,
-            }
-            data = {**data, **errorCheckMessage(True, None, getUserPlaylists)}
+            pass
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPlaylists)
     return JsonResponse(data)
