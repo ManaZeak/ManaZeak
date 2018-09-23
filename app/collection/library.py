@@ -13,7 +13,7 @@ from django.utils.html import strip_tags
 from multiprocessing import Process
 
 from app.dao import addGenreBulk, addArtistBulk, addAlbumBulk, addTrackBulk, refreshPlaylist
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Library, Playlist, FileType, Album, Track
 from app.track.importer import createMP3Track, createVorbisTrack
 from app.utils import splitTable, checkPermission, refreshAllViews

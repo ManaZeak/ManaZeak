@@ -19,7 +19,7 @@ class ViewType(models.Model):
 
 
 ## This class describe a view for a playlist.
-class PlaylistView(models.Model):
+class PlaylistViewOptions(models.Model):
     ## The user associated to the view.
     user = models.ForeignKey(User)
     ## The playlist associated to the view.
@@ -32,3 +32,5 @@ class PlaylistView(models.Model):
     randomMode = models.IntegerField(default=0)
     ## The repeat mode on the playlist for the user and playlist.
     repeatEnabled = models.IntegerField(default=0)
+    ## Is the view is active for the playlist
+    isActive = models.BooleanField(default=True)
