@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.achievement import refreshAchievements, checkAchievement
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import FileType, Genre, Album, Artist, Permissions, Groups, UserPreferences, Playlist, TransactionType
 
 
@@ -14,6 +14,8 @@ from app.models import FileType, Genre, Album, Artist, Permissions, Groups, User
 
 
 ## Logger needed for writing into the log file.
+from app.models.views import ViewType
+
 logger = logging.getLogger('django')
 
 
@@ -147,6 +149,10 @@ def populateDB():
         Groups(name="Root", rank=5).save()
         for group in Groups.objects.all():
             fillDefaultPermission(group)
+
+    if ViewType.objects.all().count() == 0:
+        ViewType(name="LIST").save()
+        ViewType(name="ALBUM").save()
     # Creating and updating achivements
     setCronJobs()
     refreshAchievements()

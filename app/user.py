@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Playlist, UserPreferences, UserHistory, InviteCode
 
 ## @package app.user

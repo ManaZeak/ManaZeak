@@ -11,7 +11,7 @@ from multiprocessing import Process
 
 from app.collection.library import deleteLibrary
 from app.dao import deleteView
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.collection.playlist import getTotalLength

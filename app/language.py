@@ -3,7 +3,7 @@ import os
 
 from django.http import JsonResponse
 
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 
 ## @package app.language
 #   This package is used to send the correct json file to the front depending of the user language.

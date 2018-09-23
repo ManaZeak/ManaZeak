@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.utils.html import strip_tags
 
 from app.adminTools import getAdminOptions
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.track.importer import setUploader
 from app.utils import checkPermission
 
