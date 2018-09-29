@@ -20,7 +20,8 @@ $color-error-light: rgba(244, 67, 54, 0.25);
 $color-error-lighter: rgb(253, 217, 215);
 
 /* Notification specific variables */
-$notification-width: 325px;
+$notification-max-width: 345px;
+$notification-min-width: 200px;
 $notification-min-height:50px;
 $notification-icon: 25px;
 $notification-counter-size: 18px;
@@ -39,28 +40,6 @@ div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, cite, code, pre, em, q, sma
 }
 
 *, *:before, *:after { box-sizing: border-box; }
-
-@mixin userSelect($value) {
-    -webkit-user-select: $value;
-    -moz-user-select:    $value;
-    -ms-user-select:     $value;
-    -o-user-select:      $value;
-    user-select:         $value;
-}
-
-@mixin transition($transition) {
-    -webkit-transition: $transition;
-    -moz-transition:    $transition;
-    -o-transition:      $transition;
-    transition:         $transition;
-}
-
-@mixin shadow($shadow, $r, $g, $b, $a) {
-    -webkit-box-shadow: $shadow rgba($r, $g, $b, $a);
-    -moz-box-shadow:    $shadow rgba($r, $g, $b, $a);
-    -o-box-shadow:      $shadow rgba($r, $g, $b, $a);
-    box-shadow:         $shadow rgba($r, $g, $b, $a);
-}
 
 html {
     font-family:      Helvetica, sans-serif;
@@ -87,9 +66,13 @@ button {
 
 /* Notification style code begin here */
 .notification-container {
-	height:   auto;
+	align-items: flex-end;
+	display: flex;
+	flex-direction: column;
+	height: auto;
 	position: fixed;
-	width:    $notification-width;
+	width: auto;
+	z-index: 999;
 
 	&.top-left {
 		left: 0;
@@ -121,19 +104,25 @@ button {
 	font-size: 	   0.9em;
 	height: 	   auto;
 	margin: 	   $notification-margin;
+	min-width: $notification-min-width;
+	opacity: 0;
 	padding: 	   $notification-padding;
 	position: 	   relative;
-	width: 		   auto;
-	z-index: 	   9999;
+	width: 		   fit-content;
+	z-index: 	   999;
+	width: 		   -moz-fit-content;
 
-	@include shadow(0 0 $notification-margin, 0, 0, 0, 0.2);
-	@include userSelect(none);
+	transition: opacity 1s ease 0s;
+
+	@include box-shadow(0 0 $notification-margin, 0, 0, 0, 0.2);
+	@include user-select(none);
 
 	&:nth-child(n + 2) {
 		margin-top: $notification-padding;
 	}
 
 	.vector-container {
+		align-self: baseline;
 		height: 	$notification-icon;
 		margin: 	0;
 		width: 		$notification-icon;
@@ -146,12 +135,13 @@ button {
 
 	.text-container {
 		padding:    0 $notification-padding;
-		text-align: left;
+		margin-right: $notification-margin;
+		text-align: justify;
 
 		h6,
 		p {
 			margin-bottom: ($notification-padding / 2);
-			max-width: 	   $notification-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - (2 * $border-thickness);
+			max-width: 	   $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - (2 * $border-thickness);
 			word-wrap: 	   break-word;
 		}
 
@@ -162,7 +152,7 @@ button {
 			margin-bottom: ($notification-padding / 2);
 
 			&.iconless-width {
-				max-width: $notification-width - (2 * $notification-margin) - (4 * $notification-padding) - (2 * $border-thickness);
+				max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - (2 * $border-thickness);
 			}
 		}
 
@@ -177,9 +167,9 @@ button {
 	&.right-border {
 		h6,
 		p {
-			max-width: $notification-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - ($border-thickness + $notification-border-thick);
+			max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - ($border-thickness + $notification-border-thick);
 			&.iconless-width {
-				max-width: $notification-width - (2 * $notification-margin) - (4 * $notification-padding) - ($border-thickness + $notification-border-thick);
+				max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - ($border-thickness + $notification-border-thick);
 			}
 		}
 	}

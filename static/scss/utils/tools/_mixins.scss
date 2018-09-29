@@ -1,3 +1,26 @@
+@mixin transition($transition) {
+    -webkit-transition: $transition;
+    -moz-transition:    $transition;
+    -o-transition:      $transition;
+    transition:         $transition;
+}
+
+@mixin user-select($value) {
+    -webkit-user-select: $value;
+    -moz-user-select:    $value;
+    -ms-user-select:     $value;
+    -o-user-select:      $value;
+    user-select:         $value;
+}
+
+@mixin box-shadow($shadow, $r, $g, $b, $a) {
+    -webkit-box-shadow: $shadow rgba($r, $g, $b, $a);
+    -moz-box-shadow:    $shadow rgba($r, $g, $b, $a);
+    -o-box-shadow:      $shadow rgba($r, $g, $b, $a);
+    box-shadow:         $shadow rgba($r, $g, $b, $a);
+}
+
+/*
 @keyframes text-moving {
     0% {
         opacity:   0;
@@ -78,3 +101,4 @@
     transform: rotate(360deg);
   }
 }
+*/

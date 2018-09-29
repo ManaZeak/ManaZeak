@@ -1,7 +1,20 @@
 #scene {
   width: 70%;
-  background-color: pink;
   height: 100%;
   margin-left: auto;
   margin-right: auto;
+  box-shadow: 0 0px 0px 0px transparent,
+              0 0px 0px 0px transparent,
+              12px 0 15px -4px rgba(31, 73, 125, 0.1),
+              -12px 0 15px -4px rgba(31, 73, 125, 0.1);
+  z-index: 600;
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    z-index: 700;
+  }
 }

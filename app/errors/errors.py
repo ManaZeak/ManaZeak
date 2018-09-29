@@ -96,7 +96,8 @@ def deactivateUser(user):
 #   @return A JSON containing:
 #       - the status of the operation (DONE)
 #       - the key of the error (can be none) (ERROR_KEY)
-def errorCheckMessage(isDone, error, caller, user=None):
+def \
+        errorCheckMessage(isDone, error, caller, user=None):
     if error is None:
         errorKey = None
     else:

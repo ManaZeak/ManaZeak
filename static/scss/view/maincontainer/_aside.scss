@@ -8,6 +8,7 @@ $aside-button-length: 30px;
   position: absolute;
   top: $topbar-height;
   width: 15%;
+  z-index: 700;
 
   transition: left $aside-transition ease-in-out 0s,
               right $aside-transition ease-in-out 0s;

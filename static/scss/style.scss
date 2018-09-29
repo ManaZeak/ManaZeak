@@ -1,14 +1,11 @@
+/*
+  z-index :
+    600 - Scene
+    700 - Top/Foot, Asides
+    900 - Notification
+*/
+
 @import 'utils/tools';
 @import 'view/topbar';
-@import 'view/footbar';
 @import 'view/maincontainer';
-
-html, body {
-  font-family: Segoe, Helvetica, serif;
-  height: 100%;
-  line-height: 1;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  width: 100%;
-}
+@import 'view/footbar';

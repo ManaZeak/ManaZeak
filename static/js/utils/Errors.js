@@ -14,25 +14,25 @@ class Errors {
     this._cssRules.error = 'color: rgb(255, 0, 48); font-weight: bold;';
   }
 
-  raise(code, frontend) {
+  raise(options) {
     let severity = '', title = '', message = '';
 
-    if (mzk.lang.errors.frontend[code] === undefined && mzk.lang.errors.backend[code] === undefined) {
-      severity = mzk.lang.errors.frontend.INVALID_ERROR_CODE.severity;
-      title = mzk.lang.errors.frontend.INVALID_ERROR_CODE.title;
-      message = mzk.lang.errors.frontend.INVALID_ERROR_CODE.message;
+    if (mzk.lang.errors.frontend[options.code] === undefined && mzk.lang.errors.backend[options.code] === undefined) { // JavaScript scripting error
+      severity = 'error';
+      title = `Error in JavaScript source code`;
+      message = `${options.code.name} because ${options.code.message} in file ${options.code.fileName.match(/\/([^\/]+)\/?$/)[1]} (${options.code.lineNumber}:${options.code.columnNumber})`;
     }
 
-    else if (frontend) {
-      severity = mzk.lang.errors.frontend[code].severity;
-      title = mzk.lang.errors.frontend[code].title;
-      message = mzk.lang.errors.frontend[code].message;
+    else if (options.frontend) {
+      severity = mzk.lang.errors.frontend[options.code].severity;
+      title = mzk.lang.errors.frontend[options.code].title;
+      message = mzk.lang.errors.frontend[options.code].message;
     }
 
     else {
-      severity = mzk.lang.errors.backend[code].severity;
-      title = mzk.lang.errors.backend[code].title;
-      message = mzk.lang.errors.backend[code].message;
+      severity = mzk.lang.errors.backend[options.code].severity;
+      title = mzk.lang.errors.backend[options.code].title;
+      message = mzk.lang.errors.backend[options.code].message;
     }
 
     Notification.new({
@@ -46,13 +46,13 @@ class Errors {
         firefox: /firefox/i.test(navigator.userAgent),
         chrome: /chrome/i.test(navigator.userAgent) && /google inc/i.test(navigator.vendor) // Test vendor to avoid false positive
       };
-      let code = ''; // To access console property easily (see console[type] call)
+      options.code = ''; // To access console property easily (see console[type] call)
       let outputString = `%c${message}\n${this._getCallerName(browser)}`;
 
       console.groupCollapsed(`${severity.toUpperCase()} : ${title} (Error.js)`);
 
-      severity === 'warning' ? code = 'warn' : code = severity; // Since console.warning doesn't exists (console.warn())
-      console[code](outputString, this._cssRules[severity]); // Apply type and severity to build console call
+      severity === 'warning' ? options.code = 'warn' : options.code = severity; // Since console.warning doesn't exists (console.warn())
+      console[options.code](outputString, this._cssRules[severity]); // Apply type and severity to build console call
 
       if (this._trace && severity !== 'error') {
         if (browser.firefox || (browser.chrome && severity !== 'warning')) {

@@ -419,22 +419,9 @@ class Notification {
 
 		notification.opened = Date.now();
 
-		let that = this,
-		i    = 0;
-
-		(function fadeIn() { // Start animation immediatly
-			if (i < 100) {
-				notification.dom.style.opacity = i / 100;
-				++i;
-			}
-
-			else if (i === 100) {
-				notification.dom.style.opacity = 1; // Set notification full opacity
-				return; // End function
-			}
-
-			window.setTimeout(fadeIn, that._transition / 100); // Split animation transition into 100 iterations
-		})();
+		window.setTimeout(() => {
+			notification.dom.style.opacity = 1;
+		}, 10);
 	}
 
 	/**
@@ -466,31 +453,21 @@ class Notification {
 		let that = this;
 		let i    = 100;
 
-		(function fadeOut() { // Start animation immediatly
-			if (i > 0) {
-				notification.dom.style.opacity = i / 100;
+		notification.dom.style.opacity = 0;
 
-				--i;
+		window.setTimeout(() => {
+			this._updateHistory(notification);
+			notification.renderTo.removeChild(notification.dom); // Remove this notification from the DOM tree
+
+			if (Object.keys(this._queue).length > 0) { // Notification queue is not empty
+				that._start(this._queue[Object.keys(this._queue)[0]]); // Start first queued notification
+				delete this._queue[Object.keys(this._queue)[0]]; // Shift queue object
 			}
 
-			else if (i === 0) { // Opacity has reached 0
-				that._updateHistory(notification);
-				notification.renderTo.removeChild(notification.dom); // Remove this notification from the DOM tree
-
-				if (Object.keys(that._queue).length > 0) { // Notification queue is not empty
-					that._start(that._queue[Object.keys(that._queue)[0]]); // Start first queued notification
-					delete that._queue[Object.keys(that._queue)[0]]; // Shift queue object
-				}
-
-				else if (Object.keys(that._active).length === 0) { // Check this._active emptyness
-					that._dismissAllLock = false; // Unlock dismissAllLock
-				}
-
-				return; // End function
+			else if (Object.keys(this._active).length === 0) { // Check this._active emptyness
+				this._dismissAllLock = false; // Unlock dismissAllLock
 			}
-
-			window.setTimeout(fadeOut, that._transition / 100); // Split animation transition into 100 iterations
-		})();
+		}, 1000); // Transition value set in _notification.scss
 	}
 
 	/**

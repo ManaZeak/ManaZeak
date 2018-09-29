@@ -36,12 +36,14 @@ def getPlaylistInfo(playlist, user):
 #   @return a dict containing the playlist information
 def _getPlaylistDetailedInformation(playlist):
     data = {
+        'ID': playlist.id,
         'NAME': playlist.name,
-        'DESC': playlist.description,
+        'DESCRIPTION': playlist.description,
         'IS_PUBLIC': playlist.isPublic,
-        'TOTAL_TRK': "TO BE IMPLEMENTED",
-        'TOTAL_DUR': "TO BE IMPLEMENTED",
-        'AVG_BITRATE': "TO BE IMPLEMENTED",
+        'IS_LIBRARY': playlist.isLibrary,
+        'TOTAL_TRACK': "TO BE IMPLEMENTED",
+        'TOTAL_DURATION': "TO BE IMPLEMENTED",
+        'AVERAGE_BITRATE': "TO BE IMPLEMENTED",
         'OWNER': playlist.user.username,
     }
     return data
@@ -58,6 +60,7 @@ def _getPlaylistViewInformation(options):
             for col in option.columns.all():
                 columns.append({
                     'NAME': col.name,
+                    'ORDER': 0, # TODO store in db
                     'WIDTH': col.width,
                 })
             data = {

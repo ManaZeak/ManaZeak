@@ -65,6 +65,7 @@ elif [ $1 = "stop" ]; then
 
 elif [ $1 = "clean" ]; then
     eval "docker-compose rm -sf"
+    eval "sudo rm -r db_data"
     echo -e "\e[93mWARNING\e[39m Images haven't been removed"
     printf "Use docker rmi \$(docker images -q) to remove every image on the system\n"
 

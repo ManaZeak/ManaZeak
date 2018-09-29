@@ -7,6 +7,7 @@ a.volumebar-expander {
   margin: 0 $footbar-controls-margin;
   outline: 0;
   position: relative;
+  z-index: 733;
 
   img {
     height: 100%;
@@ -26,7 +27,6 @@ a.volumebar-expander {
     height: 33px;
     left: 0;
     margin-left: 40px;
-  //  pointer-events: none;
     position: absolute;
     transition: opacity 0.5s ease 0s, visibility 0.5s ease 0s;
     text-align: center;

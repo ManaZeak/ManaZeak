@@ -14,6 +14,7 @@ $progress-thumb-height: 9px;
   justify-content: end;
   height: $footbar-progress-height;
   width: 100%;
+  z-index: 733;
 
   #progress-track, #progress-current {
     border-top-left-radius: 3px;
@@ -27,7 +28,7 @@ $progress-thumb-height: 9px;
     position: relative;
     transition: opacity $footbar-transition ease 0s;
     width: 100%;
-    z-index: 2; // To make thumb appear always on top of moodbar
+    z-index: 734; // To make thumb appear always on top of moodbar
 
     #progress-current {
       background-color: lime;
@@ -54,7 +55,7 @@ $progress-thumb-height: 9px;
       background-color: grey;
       border: solid 1px black;
       border-radius: 3px;
-      bottom: 55px;
+      bottom: 8px;
       box-sizing: border-box;
       color: black;
       font-size: 0.7em;
@@ -67,7 +68,7 @@ $progress-thumb-height: 9px;
       text-align: center;
       transition: opacity ($footbar-transition / 2) ease;
       width: 60px;
-      z-index: 2;
+      z-index: 734;
     }
   }
 
