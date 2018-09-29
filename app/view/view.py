@@ -16,10 +16,10 @@ def createDefaultListView(user, playlist):
 
 ## Generating the columns for a given view
 def generateDefaultListViewColumns():
-    cols = [ViewColumn(name='Duration', width='90px'), ViewColumn(name='Title', width='20%'),
-            ViewColumn(name='Artist', width='14%'), ViewColumn(name='Composer', width='14%'),
-            ViewColumn(name='Performer', width='14%'), ViewColumn(name='Album', width='14%'),
-            ViewColumn(name='Genre', width='calc(24% - 90px)')]
+    cols = [ViewColumn(name='Duration', width='10'), ViewColumn(name='Title', width='20'),
+            ViewColumn(name='Artist', width='14'), ViewColumn(name='Composer', width='14'),
+            ViewColumn(name='Performer', width='14'), ViewColumn(name='Album', width='14'),
+            ViewColumn(name='Genre', width='14')]
     for col in cols:
         col.save()
     return cols

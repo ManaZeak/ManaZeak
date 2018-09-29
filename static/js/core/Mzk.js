@@ -20,11 +20,11 @@ class Mzk {
     this.cookies = Utils.getCookies(); // Get user cookies
 
     this._initKomunikator()
-      .then(() => { return this._initLang(); }) // Create User object that stores everything useful about a given user
-      .then(() => { return this._initUser(); }) // Create User object that stores everything useful about a given user
-      .then(() => { return this._initModel(); }) // Initialize mzk Model
-      .then(() => { return this._initView(); }) // Initialize mzk View
-      .then(() => { return this._initShortcut(); }); // Initialize mzk Shortcuts
+      .then(() => { return this._initLang(); })
+      .then(() => { return this._initUser(); })
+      .then(() => { return this._initModel(); })
+      .then(() => { return this._initView(); })
+      .then(() => { return this._initShortcut(); });
   }
 
   _initKomunikator() {
@@ -39,7 +39,7 @@ class Mzk {
       this.user = new User();
       this.komunikator.get('user/getInformation/')
         .then(userInfo => { this.user.updateProperties(userInfo); resolve(); })
-        .catch(errorCode => { Errors.raise(errorCode, true); resolve() }); // TODO : catch reject over this promise
+        .catch(errorCode => { Errors.raise({ code: errorCode, frontend: true }); resolve() }); // TODO : send reject over this promise, as fatal error
     });
   }
 
@@ -148,6 +148,7 @@ class Mzk {
 //  --------------------------------  SHORTCUTS METHODS  ---------------------------------  //
 
   reloadShortcuts() {
+    this.getCollection();
     Shortcut.removeAll();
     // TODO : get from komunikator user bindings
     Shortcut.register('Ctrl+Shift+ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.25); });
@@ -161,9 +162,15 @@ class Mzk {
   //  --------------------------------  COLLECTION METHODS  ---------------------------------  //
 
   getCollection() {
-    this.komunikator.get('playlist/fetchAll/')
-      .then(collection => { this.model.initCollection(collection); })
-      .catch(errorCode => { Errors.raise(errorCode, true); });
+    this.komunikator.get('playlist/getUserPlaylists/')
+      .then(collection => {
+        this.model.initCollection(collection)
+          .then(a => {
+            this.view.initCollection(collection);
+          })
+          .catch(errorKey => { Errors.raise({ code: errorKey, frontend: false }); });
+      })
+      .catch(errorKey => { Errors.raise({ code: errorKey, frontend: true }); });
   }
 }
 

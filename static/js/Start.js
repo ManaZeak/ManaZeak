@@ -12,9 +12,9 @@ let errorsOptions = {
 
 let notificationOptions = {
     thickBorder: 'top',
-    duration:    4000,
-    transition:  200,
-    maxActive:   3
+    duration: 4000,
+    transition: 200,
+    maxActive: 3
 };
 
 window.Utils = new Utils();

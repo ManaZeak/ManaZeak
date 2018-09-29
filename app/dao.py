@@ -8,6 +8,7 @@ from django.db import connection
 
 from app.models import Album, Artist, Genre, Track
 
+
 # TODO: a séparer en :viewmanager, playlist action, import action
 
 ## @package app.dao
@@ -300,8 +301,7 @@ def createViewForLazy(playlist):
                 left join app_artist artist on app_album_artist.artist_id = artist.id
                 left join app_genre genre on track.genre_id = genre.id
                 left join app_playlist_track playlist on track.id = playlist.track_id
-                where (number <= 0 or number is null)
-                  and playlist.playlist_id = %s
+                where playlist.playlist_id = %s
               GROUP BY alb.title, alb.title, track.title, number, "bitRate", track.id, genre.name
               ORDER BY concatArtName, alb.title, number) as result;
         """ % (viewName, '%s')
@@ -319,18 +319,23 @@ def createViewForLazy(playlist):
 
 ## Parse the raw sql query and add it to the existing dict
 def lazyJsonGenerator(row, data):
+
     artists = row[8]
     album = row[10]
     # Adding artist information if it doesn't exists
     if artists not in data:
-        data[artists] = {'IDS': row[9]}
+        data[artists] = {
+            'IDS': row[9],
+            'NAME': row[8],
+        }
 
     # Adding album information if it doesn't exists
     if album not in data[artists]:
         # Creating the album and adding the track container
         data[artists][album] = {
             'ID': row[12],
-            'TRACKS': []
+            'NAME': row[10],
+            'TRACKS': [],
         }
 
     # Adding the track information
@@ -343,7 +348,7 @@ def lazyJsonGenerator(row, data):
         'BITRATE': row[5],
         'DURATION': row[6],
         'COVER': row[7],
-        'GENRE': row[11]
+        'GENRE': row[11],
     })
 
 

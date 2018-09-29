@@ -1,0 +1,223 @@
+$listview-margin: $margin;
+$listview-padding: $padding;
+$listview-icon: 30px;
+$listview-track-height: 40px;
+
+.listview {
+  height: 100%;
+  width: 100%;
+  z-index: 600;
+
+  #listview-resize-marker {
+    width: 1px;
+    height: calc(100% - 50px);
+    top: 45px;
+    position:absolute;
+    z-index: 9999;
+    background: lime;
+  }
+
+  .header {
+    border-bottom: solid 1px black;
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+    box-sizing: border-box;
+    display: grid;
+    font-family: Helvetica;
+    grid-template-rows: 100%;
+    height: $listview-track-height;
+    line-height: $listview-track-height;
+    overflow-x: hidden;
+    user-select: none;
+    width: 100%;
+    z-index: 633;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+
+    &:hover {
+      div .listview-resize-handle {
+        border-right: solid 1px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+
+    div {
+      cursor: move;
+      overflow: hidden;
+      padding: 0 $listview-padding;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        & .listview-stretch-button {
+          opacity: 1;
+        }
+      }
+
+      &.dragElem {
+        opacity: 0.4;
+        background: red;
+      }
+
+      &.over {
+        border-left: 2px solid blue;
+      }
+
+      .listview-resize-handle {
+        border-right: solid 1px rgba(0, 0, 0, 0.05);
+        width: 5px;
+        height: 30px;
+        cursor: ew-resize;
+        position:absolute;
+        right: 0;
+        bottom: 5px;
+        padding: 0;
+        z-index: 999;
+
+        transition: border 0.4s ease 0s;
+
+        &.over {
+          border-left: none;
+        }
+      }
+
+      .listview-stretch-button {
+        width: 15px;
+        opacity: 0;
+        height: 15px;
+        cursor: pointer;
+        position:absolute;
+        right: 5px;
+        bottom: 12.5px;
+        padding: 0;
+        z-index: 999;
+
+        transition: opacity 0.4s ease 0s;
+
+        &.over {
+          border-left: none;
+        }
+      }
+    }
+  }
+
+  .track-container {
+    box-sizing: border-box;
+    font-family: Helvetica;
+    height: calc(100% - #{$listview-track-height});
+    overflow-y: auto;
+    position: relative;
+    width: 100%;
+    z-index: 633;
+
+    .entry {
+      background: rgb(255, 240, 240);
+      box-sizing: border-box;
+      cursor: pointer;
+      display: grid;
+      grid-template-rows: 100%;
+      height: $listview-track-height;
+      line-height: $listview-track-height;
+      margin-bottom: 2px;
+      user-select: none;
+      width: 100%;
+
+      transition: all 0.15s ease-out;
+
+      -webkit-user-select: none;
+      -webkit-transition: all 0.15s ease-in;
+
+      -moz-user-select: none;
+      -moz-transition: all 0.15s ease-in;
+
+      p {
+        display: inline-block;
+        margin: 0;
+      }
+
+      div {
+        overflow: hidden;
+        padding: 0 $listview-padding;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &:nth-child(2n) {
+        background: rgb(240, 240, 255);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.selected {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  #listview-context {
+    background: white;
+    border: solid 1px black;
+    border-top-left-radius: 5px;
+    bottom: 0;
+    height: auto;
+    position: absolute;
+    right: 0;
+    width: 200px;
+    z-index: 665;
+
+    button {
+      background: rgba(0, 0, 0, 0.05);
+      border: solid 1px black;
+      border-radius: 3px;
+      height: $listview-icon;
+      margin: $listview-margin;
+    }
+
+    div {
+      margin: $listview-margin 0;
+    }
+
+    hr {
+      margin-bottom: 0;
+      margin-top: $listview-margin;
+    }
+  }
+
+  .options {
+    cursor: pointer;
+    bottom: $listview-margin;
+    height: $listview-icon;
+    position: absolute;
+    right: $listview-margin;
+    width: $listview-icon;
+    z-index: 666;
+  }
+
+  #listview-spinner {
+    bottom: $listview-padding;
+    height: ($listview-icon + $listview-padding);
+    position: absolute;
+    right: $listview-padding;
+    width: ($listview-icon + $listview-padding);
+    z-index: 699;
+
+    &:before {
+      background: transparent;
+      border: 2px solid lime;
+      border-radius: 50%;
+      border-bottom-color: transparent;
+      border-top-color: transparent;
+      box-sizing: border-box;
+      content: '';
+      height: ($listview-icon + $listview-padding);
+      position: absolute;
+      width: ($listview-icon + $listview-padding);
+
+      animation: listview-loading-spin 1.5s linear infinite;
+    }
+  }
+}

@@ -69,8 +69,17 @@ def newLibrary(request):
                     library.playlist = playlist
                     library.save()
                     data = {
-                        'LIBRARY_ID': library.id,
-                        'LIBRARY_NAME': library.playlist.name,
+                        'INFO': {
+                            'ID': library.id,
+                            'NAME': library.playlist.name,
+                            'DESCRIPTION': library.playlist.description,
+                            'IS_PUBLIC': library.playlist.isPublic,
+                            'IS_LIBRARY': library.playlist.isLibrary,
+                            'TOTAL_TRACK': "TO BE IMPLEMENTED",
+                            'TOTAL_DURATION': "TO BE IMPLEMENTED",
+                            'AVERAGE_BITRATE': "TO BE IMPLEMENTED",
+                            'OWNER': library.playlist.user.username
+                        }
                     }
                     data = {**data, **errorCheckMessage(True, None, newLibrary)}
                 else:

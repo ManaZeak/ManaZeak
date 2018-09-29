@@ -104,7 +104,7 @@ def exportTrackInfo(track):
 #       - the track file last modified date (LAST_MODIFIED)
 #       - the track cover path (COVER)
 #       - a artist object containing :
-#           - 
+#           -
 def getTracksDetailedInfo(request):
     if request.method == 'POST':
         response = json.loads(request.body)

@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -11,6 +12,7 @@ from app.errors.exceptions import CreationException
 from app.models import Playlist, Track
 from app.utils import checkPermission
 
+logger = logging.getLogger('django')
 
 # Create an empty playlist
 @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -161,8 +163,14 @@ def simplifiedLazyLoadingPlaylist(request):
                 if playlist.track.all().count() > reqNumber:
                     trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
                     data = {}
+                    exitTable = []
                     for row in trackSet:
                         lazyJsonGenerator(row, data)
+                    for albumObjects in data:
+                        exitTable.append(data[albumObjects])
+                    data = {
+                        'RESULT': exitTable
+                    }
                     data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
                     data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)
@@ -205,8 +213,9 @@ def getUserPlaylists(request):
             # If something when wrong stop the process and send an error to the front
             return JsonResponse(errorCheckMessage(False, ErrorEnum.DB_ERROR, getUserPlaylists))
         data = {
-            'MZK': playlistsInfo
+            'COLLECTION': playlistsInfo
         }
+        data = {**data, **errorCheckMessage(True, None, getUserPlaylists, user)}
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPlaylists)
     return JsonResponse(data)

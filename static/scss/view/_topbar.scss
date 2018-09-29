@@ -6,6 +6,7 @@ $topbar-transition: ($transition-duration * 2);
   display: flex;
   height: $topbar-height;
   width: 100%;
+  z-index: 700;
 
   img {
     align-self: center;

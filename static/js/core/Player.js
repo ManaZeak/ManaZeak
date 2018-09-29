@@ -296,7 +296,7 @@ class Player {
 	unmute() {
 		if (this._isMuted) { // Avoid multi call
 			this._isMuted = false; // Set mute state to false
-			this.setVolume(this._volume === 0 ? 0.5 : this.volume); // Restore old volume value
+			this.setVolume(this._volume === 0 ? 0.5 : this._volume); // Restore old volume value
 		}
 	}
 

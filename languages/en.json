@@ -1,11 +1,6 @@
 {
   "errors":{
     "frontend": {
-      "INVALID_ERROR_CODE": {
-        "title": "Invalid error code",
-        "message": "The error key you gave when you raised an error doesn't exists.",
-        "severity": "error"
-      },
       "ACCESS_FORBIDDEN": {
         "title": "Access forbidden",
         "message": "You are not granted to access the API url you tried to reach.",
@@ -20,6 +15,16 @@
         "title": "Internal server error",
         "message": "Something went wrong back side of the moon.",
         "severity": "error"
+      },
+      "CANT_STRETCH_COLUMN": {
+        "title": "Can't stretch this column",
+        "message": "The column you want to stretch is too tight to absorb the overflow. Use Stretch All in the view options to restore the table layout.",
+        "severity": "warning"
+      },
+      "ALREADY_STRETCH": {
+        "title": "Layout already stretched",
+        "message": "Your column layout is already stretched. Resize any column if you want to change the layout.",
+        "severity": "info"
       }
     },
     "backend":  {
