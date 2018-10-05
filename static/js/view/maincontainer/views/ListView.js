@@ -3,6 +3,16 @@ import ScrollBar from '../../../utils/ScrollBar.js';
 'use strict';
 
 class ListView {
+  /**
+  * @summary ListView for mzk Scene
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description ListView that display tracks with customizable columns (size and type) in rows
+  * @param {object} options - The ListView options object
+  * @param {array} options.availableColumns - The ListView available column (not necessarly the ones that are displayed)
+  * @param {array} options.columns - The user columns
+  * @param {object} options.target - The DOM target node to inject ListView in (usually mzk Scene)
+  **/
   constructor(options) {
     this._availableColumns = options.availableColumns;
     this._columns = options.columns;
@@ -23,6 +33,8 @@ class ListView {
     this._init();
     this._events();
   }
+
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   _init() {
     this._dom.fragment = document.createDocumentFragment();
@@ -552,7 +564,6 @@ class ListView {
         let firstCall = this._tracks.length === 0 ? true : false;
 
         for (let i = 0; i < tracks.length; ++i) { // Init listview content depending on options object
-          //this._tracks.push(tracks[i]);
           let listViewEntry = new ListViewEntry({ track: tracks[i], datasetId: i, gridTemplateColumns: gridTemplateColumns });
           this._tracks.push(listViewEntry);
 
@@ -560,7 +571,14 @@ class ListView {
             let col = document.createElement('DIV');
             col.classList.add(this._columns[j].name.toLowerCase());
             col.dataset.id = j;
-            col.innerHTML = listViewEntry.getLowerCaseOf(this._columns[j].name.toLowerCase());
+
+            if (this._columns[j].name.toLowerCase() === 'duration') {
+              col.innerHTML = Utils.secondsToTimecode(listViewEntry.get(this._columns[j].name.toLowerCase()));
+            }
+
+            else {
+              col.innerHTML = listViewEntry.get(this._columns[j].name.toLowerCase());
+            }
 
             listViewEntry.addColumn(col);
           }

@@ -1,9 +1,10 @@
-import Utils from './utils/Utils.js'
-import Errors from './utils/Errors.js'
-import Shortcut from './utils/Shortcut.js'
-import Notification from './utils/Notification.js'
-
-import Mzk from './core/Mzk.js'
+import Utils from './utils/Utils.js';
+import Errors from './utils/Errors.js';
+import Events from './utils/Events.js';
+import Shortcut from './utils/Shortcut.js';
+import Notification from './utils/Notification.js';
+import Mzk from './core/Mzk.js';
+'use_strict';
 
 let errorsOptions = {
   verbose: true,
@@ -19,7 +20,8 @@ let notificationOptions = {
 
 window.Utils = new Utils();
 window.Errors = new Errors(errorsOptions);
+window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
 
-document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); mzk.init(); });
+document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); mzk.start(); });

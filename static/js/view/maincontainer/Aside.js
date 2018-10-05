@@ -1,7 +1,15 @@
-import AsideEntry from './AsideEntry.js'
+import AsideEntry from './AsideEntry.js';
+'use_strict';
 
 class Aside {
-
+  /**
+	* @summary A components container
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Can be filled with various AsideEntries and is meant to be both sides of a Mzk scene
+  * @param {object} options - The Aside options object
+  * @param {string} options.side - The Aside position on screen (`left` or `right` only)
+	**/
   constructor(options) {
     this.side = options.side; // TODO sanitize options
     this.dom = {};
@@ -13,6 +21,15 @@ class Aside {
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
+  /**
+	* @method
+	* @name _init
+	* @private
+	* @memberof Aside
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Init the Aside according to its side
+	**/
   _init() {
     this.dom = document.getElementById(this.side + '-aside');
     this.dom.style[this.side] = 0; // TODO verifier val this side
@@ -29,11 +46,31 @@ class Aside {
     this._events();
   }
 
+  /**
+	* @method
+	* @name _events
+	* @private
+	* @memberof Aside
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Handle Aside mouse click events (show and hide)
+	**/
   _events() {
     this._close.addEventListener('click', this.hide);
     this._open.addEventListener('click', this.show);
   }
 
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+	* @method
+	* @name hide
+	* @public
+	* @memberof Aside
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Hide the aside with animation
+	**/
   hide() {
     var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     this.dom.style[this.side] = '-' + ((this.dom.offsetWidth * 100) / viewportWidth) + '%';
@@ -41,6 +78,15 @@ class Aside {
     this._open.style.opacity = 1;
   }
 
+  /**
+	* @method
+	* @name show
+	* @public
+	* @memberof Aside
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Show the aside with animation
+	**/
   show() {
     this.dom.style[this.side] = '0%';
     this._close.style.opacity = 1;

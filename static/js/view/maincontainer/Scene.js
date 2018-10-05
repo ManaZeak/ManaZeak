@@ -2,18 +2,46 @@ import ListView from './views/ListView.js';
 'use_strict';
 
 class Scene {
+  /**
+	* @summary ManaZeak main scene to renders views in
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Handle the main scene
+	**/
   constructor() {
     this._scene = document.getElementById('scene');
-
-    this.test();
+    // TODO : add test function that replace scene with a sandBox to work with
   }
 
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+	* @method
+	* @name addView
+	* @public
+	* @memberof Scene
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Add a new view in the scene (only append the DOM element)
+  * @param {object} node - The DOM node to append to the scene
+	**/
   addView(node) {
+    // TODO : clear existing material
     let fragment = document.createDocumentFragment();
     fragment.appendChild(node);
     this._scene.appendChild(fragment);
   }
 
+  /**
+	* @method
+	* @name addOverlay
+	* @public
+	* @memberof Scene
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Add an overlay div (modal style) over the scene
+  * @param {object} node - The DOM node to append to the scene as an overlay
+	**/
   addOverlay(node) {
     let fragment = document.createDocumentFragment();
     node.classList.add('overlay');
@@ -21,37 +49,28 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
-  updateView(view) {
-    let l = {};
-    let options = {};
-
-    if (view.VIEW === 'LIST') {
-      let columns = [];
-      for (let i = 0; i < view.LISTVIEW.COLS.length; ++i) {
-        columns.push({
-          name: view.LISTVIEW.COLS[i].NAME,
-          order: i, // view.LISTVIEW.COLS[i].ORDER
-          width: view.LISTVIEW.COLS[i].WIDTH
-        });
-      }
-    }
-  }
-
-  test() { // This has to go when controls are a thing
+  /**
+	* @method
+	* @name updateView
+	* @public
+	* @memberof Scene
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Update the current view with the given playlist
+  * @param {object} playlist - The playlist to update the view with
+	**/
+  updateView(playlist) {
+    let artists = playlist.getArtists();
     let tracks = [];
 
-  	for (let i = 0; i < 100; ++i) {
-      tracks.push({
-        id: i,
-        title: 'title ' + i,
-        artist: 'artist',
-        composer: 'composer',
-        performer: 'performer',
-        album: 'album',
-        genre: 'genre',
-        duration: '01:03:21'
-      });
-  	}
+    for (var i = 0; i < artists.length; ++i) {
+//      for (var j = 0; j < artists[i].albums.length; ++j) {
+        console.log(artists[i].albums);
+        for (var k = 0; k < artists[i].albums.tracks.length; ++k) {
+          tracks.push(artists[i].albums.tracks[k]);
+        }
+//      }
+    }
 
   	let options = {
   			columns: [
@@ -92,7 +111,7 @@ class Scene {
   				}
   			],
   			target: this._scene,
-  			availableColumns: [
+  			availableColumns: [ // TODO : store this in a default.json file somewhere
           {
   					name: 'Duration',
             order: 0,
@@ -131,20 +150,14 @@ class Scene {
   			]
   		};
 
-    let view = new ListView(options);
-
+    let view = new ListView(options); // TODO : move this
     this.addView(view.getDOMFragment());
-
-//    let a = document.createElement('DIV');
-//    this.addOverlay(a);
-
     view.addTracks(tracks);
+
     setTimeout(() => {
       view.centerOn(2);
       //view.addTracks(tracks);
     }, 500);
-
-    Notification.info({ message: 'Success UI start' });
   }
 }
 

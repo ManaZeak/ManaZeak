@@ -1,3 +1,5 @@
+'use_strict';
+
 class Player {
 	/**
 	* @summary Basic audio HTML music player
@@ -324,6 +326,7 @@ class Player {
 	getProgress() { return this._getProgress(); }
 	getDuration() { return this._player.duration; }
 	getCurrentTime() { return this._player.currentTime; }
+	getSource() {return this._player.attributes.getNamedItem('src') !== null ? this._player.attributes.getNamedItem('src').value : 'None';  }
 
 	setProgress(percentage) { this._setProgress(percentage); }
 	setVolume(value) { this._setVolume(value); }

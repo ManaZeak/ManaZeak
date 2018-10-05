@@ -1,10 +1,30 @@
+'use_strict'
+
 class Utils {
+  /**
+  * @summary Miscelaneous utils
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Miscelaneous utils function and prototypes for mzk
+  **/
   constructor() {
     this._prototypes();
   }
 
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+	* @method
+	* @name _prototypes
+	* @private
+	* @memberof Utils
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Overrides some useful type prototypes
+	**/
   _prototypes() {
-    Array.prototype.move = function(pos1, pos2) { // https://www.redips.net/javascript/array-move/ <- Da real MVP
+    // https://www.redips.net/javascript/array-move/ <- Da real MVP
+    Array.prototype.move = function(pos1, pos2) {
        // local variables
        var i, tmp;
        // cast input parameters to integers
@@ -33,11 +53,36 @@ class Utils {
 
   }
 
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+	* @method
+	* @name precisionRound
+	* @public
+	* @memberof Utils
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Do a Math.round with a given precision (ie amount of integers after the coma)
+	* @param {nunmber} value - The value to precisely round
+	* @param {number} precision - The number of integers after the coma
+  * @return {number} - The rounded value
+	**/
   precisionRound(value, precision) {
     let multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
   }
 
+  /**
+	* @method
+	* @name secondsToTimecode
+	* @public
+	* @memberof Utils
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Convert a time in seconds into a time DD HH MM SS
+	* @param {nunmber} time - The time in seconds to convert
+	* @return {string} - The output string according to time duration
+	**/
   secondsToTimecode(time) {
       let transformedTime = {
           d: 0,
@@ -71,23 +116,16 @@ class Utils {
 
   /**
 	* @method
-	* @name _idGenerator
-	* @private
-	* @memberof Notification
-	*
-	* @summary Generate an ID
+	* @name idGenerator
+	* @public
+	* @memberof Utils
 	* @author Arthur Beaulieu
 	* @since June 2018
-	* @description Hash the seed to generate an ID
-	*
+	* @description Hash the seed to generate an ID, inspired from http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 	* @param {string} seed   - The seed string to hash
 	* @param {number} length - The length of the returned ID
 	**/
   idGenerator(seed, length) {
-    /* Original code from:
-    * http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-    * Tweaked to fit Notification class needs
-    */
     let hash 	  = 0,
     character = '';
 
@@ -103,6 +141,16 @@ class Utils {
     return (Math.abs(hash).toString(36) + '' + Math.abs(hash / 2).toString(36).split('').reverse().join('')).substring(0, length).toUpperCase(); // Here is the twekead line
   }
 
+  /**
+	* @method
+	* @name getCookies
+	* @public
+	* @memberof Utils
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Get all session cookies
+	* @return {object} - The cookies object
+	**/
   getCookies() {
     let cookies = {};
     if (document.cookie && document.cookie !== '') {
