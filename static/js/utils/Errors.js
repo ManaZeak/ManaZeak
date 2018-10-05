@@ -1,4 +1,12 @@
+'use_strict';
+
 class Errors {
+  /**
+	* @summary Errors system with feedback
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Raise both a log and a user feeback depending on lang/*.json files (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript
+	**/
   constructor(options) {
     this._verbose = options.verbose === undefined ? false : (typeof options.verbose === 'boolean' ? options.verbose : false);
     this._trace = options.trace === undefined ? false : (typeof options.trace === 'boolean' ? options.trace : false);
@@ -14,8 +22,56 @@ class Errors {
     this._cssRules.error = 'color: rgb(255, 0, 48); font-weight: bold;';
   }
 
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+	* @method
+	* @name _getCallerName
+	* @private
+	* @memberof Errors
+	* @author Arthur Beaulieu
+	* @since July 2018
+	* @description Get caller function name depending on given browser
+	* @param {object} browsers - Contains a browser list associated with a boolean to know which browser is in use
+  * @returns {string} The caller function name
+  **/
+  _getCallerName(browser) {
+    // Original code from: https://gist.github.com/irisli/716b6dacd3f151ce2b7e - Tweaked to fit Errors class needs (only Chrome and Firefox are supported here)
+    let caller = (new Error()).stack; // Create error and get its call stack
+
+    if (browser.firefox) {
+      caller = caller.split('\n')[2]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
+      caller = caller.replace(/\@+/, ' ('); // Change `@` to `(`
+      caller += ')';
+    }
+
+    else if (browser.chrome) {
+      caller = caller.split('\n')[3]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
+      caller = caller.replace(/^Error\s+/, ''); // Remove Chrome `Error` string
+      caller = caller.replace(/^\s+at./, ''); // Remove Chrome `at` string
+    }
+
+    return `Raised from function ${caller}`;
+  }
+
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+	* @method
+	* @name raise
+	* @public
+	* @memberof Events
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Register a custom event using a name and a callback
+	* @param {object} options - The error options
+	* @param {string} options.code - The error key value in lang/*.json "errors" object
+	* @param {boolean} [options.frontend=false] - The event string identifier (use specific names)
+	**/
   raise(options) {
-    let severity = '', title = '', message = '';
+    let severity = '';
+    let title = '';
+    let message = '';
 
     if (mzk.lang.errors.frontend[options.code] === undefined && mzk.lang.errors.backend[options.code] === undefined) { // JavaScript scripting error
       severity = 'error';
@@ -46,11 +102,10 @@ class Errors {
         firefox: /firefox/i.test(navigator.userAgent),
         chrome: /chrome/i.test(navigator.userAgent) && /google inc/i.test(navigator.vendor) // Test vendor to avoid false positive
       };
+
       options.code = ''; // To access console property easily (see console[type] call)
       let outputString = `%c${message}\n${this._getCallerName(browser)}`;
-
       console.groupCollapsed(`${severity.toUpperCase()} : ${title} (Error.js)`);
-
       severity === 'warning' ? options.code = 'warn' : options.code = severity; // Since console.warning doesn't exists (console.warn())
       console[options.code](outputString, this._cssRules[severity]); // Apply type and severity to build console call
 
@@ -62,23 +117,6 @@ class Errors {
 
       console.groupEnd();
     }
-  }
-
-  _getCallerName(browser) {
-    // Original code from: https://gist.github.com/irisli/716b6dacd3f151ce2b7e - Tweaked to fit Errors class needs (only Chrome and Firefox are supported)
-    let caller = (new Error()).stack; // Create error and get its call stack
-
-    if (browser.firefox) {
-      caller = caller.split('\n')[2]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
-      caller = caller.replace(/\@+/, ' ('); // Change `@` to `(`
-      caller += ')';
-    } else if (browser.chrome) {
-      caller = caller.split('\n')[3]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
-      caller = caller.replace(/^Error\s+/, ''); // Remove Chrome `Error` string
-      caller = caller.replace(/^\s+at./, ''); // Remove Chrome `at` string
-    }
-
-    return `Raised from function ${caller}`;
   }
 }
 

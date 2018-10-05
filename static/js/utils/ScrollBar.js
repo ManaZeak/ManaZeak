@@ -1,6 +1,15 @@
+'use_strict';
+
 class ScrollBar {
+  /**
+	* @summary Custom JavaScript ScrollBar for any conatiner
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Build a custom ScrollBar according to the given DOM target, inspired from https://github.com/buzinas/simple-scrollbar <3
+  * @param {object} options - The ScrollBar options
+	* @param {object} options.target - The DOM node to add a ScrollBar to
+  **/
   constructor(options) {
-    // https://github.com/buzinas/simple-scrollbar <3
     this._target = options.target; // Parent div to put the ScrollBar in
     this._wrapper = {}; // Wrap both container and ScrollBar
     this._container = {}; // Content to scroll + browser ScrollBar (18px offset)
@@ -13,7 +22,19 @@ class ScrollBar {
     this._updateScrollBar();
   }
 
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+	* @method
+	* @name _init
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Build DOM hierrarchy, ScrollBar double wraps the content to append its custom bar
+	**/
   _init() {
+    let fragment = document.createDocumentFragment();
     // Creating associated elements (wrapper, container, bar)
     this._target.classList.add('scrollbar-container');
     this._wrapper = document.createElement('DIV');
@@ -26,14 +47,25 @@ class ScrollBar {
     }
     // Link DOM elements
     this._wrapper.appendChild(this._container);
-    this._target.appendChild(this._wrapper); // TODO : replace with fragment
-    this._target.insertAdjacentHTML('beforeend', '<div class="scroll"></div>');
+    fragment.appendChild(this._wrapper);
+    // Append fragment to DOM target
+    this._target.appendChild(fragment);
+    this._target.insertAdjacentHTML('beforeend', '<div class="scroll"></div>'); // Append scroll as last child
     this._bar = this._target.lastChild; // Get content from line just over this!
     // Methods auto binding with this to be able to add/remove listeners easily
     this._drag = this._drag.bind(this);
     this._stopDrag = this._stopDrag.bind(this);
   }
 
+  /**
+	* @method
+	* @name _events
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Handle ScrollBar mouse events
+	**/
   _events() {
     window.addEventListener('resize', this._updateScrollBar.bind(this));
     this._container.addEventListener('scroll', this._updateScrollBar.bind(this));
@@ -41,6 +73,16 @@ class ScrollBar {
     this._bar.addEventListener('mousedown', this._barClicked.bind(this));
   }
 
+  /**
+	* @method
+	* @name _drag
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Handle the drag animation of the bar
+  * @param {object} event - The Mouse event from this._events()  
+	**/
   _drag(event) {
     let delta = event.pageY - this._lastPageY;
     this._lastPageY = event.pageY;
@@ -49,6 +91,16 @@ class ScrollBar {
     });
   }
 
+  /**
+	* @method
+	* @name _barClicked
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Add document events when bar is clicked to track the mouse movement in parent
+  * @param {object} event - The Mouse event from this._events()
+	**/
   _barClicked(event) {
     this._lastPageY = event.pageY;
     this._bar.classList.add('scrollbar-grabbed');
@@ -57,6 +109,15 @@ class ScrollBar {
     document.addEventListener('mouseup', this._stopDrag);
   }
 
+  /**
+	* @method
+	* @name _stopDrag
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Remove document events when bar is released
+	**/
   _stopDrag() {
     this._bar.classList.remove('scrollbar-grabbed');
     document.body.classList.remove('scrollbar-grabbed');
@@ -64,10 +125,19 @@ class ScrollBar {
     document.removeEventListener('mouseup', this._stopDrag);
   }
 
+  /**
+	* @method
+	* @name _updateScrollBar
+	* @private
+	* @memberof ScrollBar
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Compute bar position according to DOM measurements
+	**/
   _updateScrollBar() {
-    let totalHeight = this._container.scrollHeight,
-        ownHeight = this._container.clientHeight,
-        right = (this._target.clientWidth - this._bar.clientWidth) * -1;
+    let totalHeight = this._container.scrollHeight;
+    let ownHeight = this._container.clientHeight;
+    let right = (this._target.clientWidth - this._bar.clientWidth) * -1;
 
     this._scrollRatio = ownHeight / totalHeight;
     requestAnimationFrame(() => {
@@ -79,7 +149,9 @@ class ScrollBar {
         let height = (Math.max(this._scrollRatio * 100, 5) * ownHeight) / 100;
         let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
 
-        if (Math.max(this._scrollRatio * 100, 5) === 5) {
+        if (Math.max(this._scrollRatio * 100, 5) === 5) { // ScrollBar has reached its minimum size
+          /* Here is a complex thing : scroll total height != DOM node total height. We must substract
+          a growing percentage (as user goes down) that is scaled after total scroll progress in %. */
           let scrollProgressPercentage = (this._container.scrollTop * 100) / (totalHeight - ownHeight);
           top = ((ownHeight - height) * (((this._container.scrollTop + (scrollProgressPercentage * ownHeight) / 100) / totalHeight) * 100)) / 100;
         }

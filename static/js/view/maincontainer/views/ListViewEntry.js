@@ -1,6 +1,12 @@
 'user strict';
 
 class ListViewEntry {
+  /**
+   * @summary ListView entry
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description A ListView item that aim to contain track and its interactivity
+   **/
   constructor(options) {
     if (typeof options !== 'object') { return; }
     this.artist = options.track.artist || '';
@@ -24,11 +30,6 @@ class ListViewEntry {
     this._dom.appendChild(column);
   }
 
-  getTitleLowerCase() { return this.title.toLowerCase(); }
-  getLowerCaseOf(tag) { return this[tag].toLowerCase(); }
-
-  getIsSelected() { return this._isSelected; }
-
   getDom() {
     let fragment = document.createDocumentFragment();
     fragment.appendChild(this._dom)
@@ -46,6 +47,11 @@ class ListViewEntry {
       this._dom.classList.add('selected');
     }
   }
+
+  getLowerCaseOf(tag) { return this[tag].toString().toLowerCase(); }
+  get(tag) { return this[tag]; }
+  getIsSelected() { return this._isSelected; }
+
 }
 
 export default ListViewEntry;

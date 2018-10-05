@@ -6,7 +6,8 @@
   "scripts": {
     "debug": "webpack --env.prod=false --progress --display-error-details --verbose --profile",
     "dev": "webpack --env.prod=false --progress",
-    "prod": "webpack --env.prod=true --progress"
+    "prod": "webpack --env.prod=true --progress",
+    "frontDoc": "jsdoc -c ./doc/frontend/jsDoc.config.json"
   },
   "homepage": "https://manazeak.org",
   "repository": {
@@ -44,6 +45,7 @@
   "devDependencies": {
     "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "jsdoc": "^3.5.5"
   }
 }

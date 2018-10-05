@@ -1,7 +1,12 @@
+'use_strict';
+
 class Shortcut {
-  /* Usefull keys :
-    ArrowUp, ArrowDown, ArrowLeft, ArrowRight
-  */
+  /**
+	* @summary Basic keyboard Shortcut handler
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Handler callbacks set on keyboard bindings
+  **/
   constructor() {
     this._singleKey = [];
     this._multiKey = [];
@@ -9,16 +14,46 @@ class Shortcut {
     this._testShortcuts = this._testShortcuts.bind(this);
   }
 
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+	* @method
+	* @name _addEvents
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Add key down and key press events to the DOM
+	**/
   _addEvents() {
     document.addEventListener('keydown', this._testShortcuts);
     document.addEventListener('keypress', this._testShortcuts);
   }
 
+  /**
+	* @method
+	* @name _removeEvents
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Remove key down and key press events to the DOM
+	**/
   _removeEvents() {
     document.removeEventListener('keydown', this._testShortcuts);
     document.removeEventListener('keypress', this._testShortcuts);
   }
 
+  /**
+	* @method
+	* @name _testShortcuts
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Test keyboard event to fire stored shortcut accordingly
+  * @param {object} event - The Keyboard event from this._addEvents()
+  **/
   _testShortcuts(event) {
     if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) {
       event.preventDefault();
@@ -71,6 +106,17 @@ class Shortcut {
     }
   }
 
+  /**
+	* @method
+	* @name _getModifiersCount
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Count the amount of modifiers in given shortcut binding
+  * @param {string} keyString - The keys string
+  * @return {number} - The number of modifiers in the keys string
+  **/
   _getModifiersCount(keyString) {
     let count = 0;
     let modifiers = {
@@ -86,6 +132,16 @@ class Shortcut {
     return count;
   }
 
+  /**
+	* @method
+	* @name _setAllPauseFlag
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Pause/Resume all shortcuts currently registered
+  * @param {boolean} value - The pause value to set
+  **/
   _setAllPauseFlag(value) {
     for (let i = 0; i < this._singleKey.length; ++i) {
       this._setPauseStatus(this._singleKey[i].keyString, value);
@@ -96,6 +152,17 @@ class Shortcut {
     }
   }
 
+  /**
+	* @method
+	* @name _setOnePauseFlag
+	* @private
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Pause/Resume given shortcuts currently registered
+  * @param {string} keyString - The keys string
+  * @param {boolean} value - The pause value to set
+  **/
   _setOnePauseFlag(keyString, value) {
     if (this._getModifiersCount(keyString) === 0) {
       for (let i = 0; i < this._singleKey.length; ++i) {
@@ -114,6 +181,19 @@ class Shortcut {
     }
   }
 
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+	* @method
+	* @name register
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Register a new shortcut and bind it to a callback
+	* @param {string} keyString - The keys string
+	* @param {function} fire - The shortcut callback to trigger
+	**/
   register(keyString, fire) {
     let shortcut = {
       keyString: keyString,
@@ -137,7 +217,17 @@ class Shortcut {
       this._multiKey.push(shortcut);
   }
 
-  remove(keyString) {
+  /**
+	* @method
+	* @name unregister
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description UnRegister a shortcut via its keys string
+	* @param {string} keyString - The keys string
+	**/
+  unregister(keyString) {
     if (this._getModifiersCount(keyString) === 0) {
       for (let i = this._singleKey.length - 1; i >= 0; i--) {
         if (this._singleKey[i].key === keyString.toLowerCase()) {
@@ -159,24 +249,72 @@ class Shortcut {
     }
   }
 
-  resume(keyString) {
-    this._setOnePauseFlag(keyString, false);
-  }
-
-  pause(keyString) {
-    this._setOnePauseFlag(keyString, true);
-  }
-
-  removeAll() {
+  /**
+	* @method
+	* @name unregisterAll
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Unregister every active shortcut
+	**/
+  unregisterAll() {
     this._singleKey = [];
     this._multiKey = [];
     this._removeEvents();
   }
 
+  /**
+	* @method
+	* @name resume
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Resume the given shortcut callback
+	* @param {string} keyString - The keys string
+	**/
+  resume(keyString) {
+    this._setOnePauseFlag(keyString, false);
+  }
+
+  /**
+	* @method
+	* @name pause
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Pause the given shortcut callback
+	* @param {string} keyString - The keys string
+	**/
+  pause(keyString) {
+    this._setOnePauseFlag(keyString, true);
+  }
+
+  /**
+	* @method
+	* @name resumeAll
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Resume all shortcuts callback
+	**/
   resumeAll() {
     this._setAllPauseFlag(false);
   }
 
+
+  /**
+	* @method
+	* @name pauseAll
+	* @public
+	* @memberof Shortcut
+	* @author Arthur Beaulieu
+	* @since September 2018
+	* @description Pause all shortcuts callback
+	**/
   pauseAll() {
     this._setAllPauseFlag(true);
   }
