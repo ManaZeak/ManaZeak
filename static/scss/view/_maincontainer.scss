@@ -3,6 +3,7 @@
 @import './maincontainer/scene'; // Loading progressbar rules
 
 #mainContainer {
-  width: 100%;
+  background-image: linear-gradient(red, yellow);                
   height: calc(100% - (#{$topbar-height} + #{$footbar-height});
+  width: 100%;
 }

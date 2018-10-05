@@ -3,11 +3,11 @@ import ListView from './views/ListView.js';
 
 class Scene {
   /**
-	* @summary ManaZeak main scene to renders views in
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Handle the main scene
-	**/
+  * @summary ManaZeak main scene to renders views in
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Handle the main scene
+  **/
   constructor() {
     this._scene = document.getElementById('scene');
     // TODO : add test function that replace scene with a sandBox to work with
@@ -16,15 +16,15 @@ class Scene {
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   /**
-	* @method
-	* @name addView
-	* @public
-	* @memberof Scene
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Add a new view in the scene (only append the DOM element)
+  * @method
+  * @name addView
+  * @public
+  * @memberof Scene
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Add a new view in the scene (only append the DOM element)
   * @param {object} node - The DOM node to append to the scene
-	**/
+  **/
   addView(node) {
     // TODO : clear existing material
     let fragment = document.createDocumentFragment();
@@ -33,15 +33,15 @@ class Scene {
   }
 
   /**
-	* @method
-	* @name addOverlay
-	* @public
-	* @memberof Scene
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Add an overlay div (modal style) over the scene
+  * @method
+  * @name addOverlay
+  * @public
+  * @memberof Scene
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Add an overlay div (modal style) over the scene
   * @param {object} node - The DOM node to append to the scene as an overlay
-	**/
+  **/
   addOverlay(node) {
     let fragment = document.createDocumentFragment();
     node.classList.add('overlay');
@@ -49,16 +49,29 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
+  toggleSceneExtension() {
+    //TODO : replace this;view w/ this._activeView ie Views array system
+    if (this._scene.classList.contains('extended')) {
+      this._scene.classList.remove('extended');
+    } else {
+      this._scene.classList.add('extended');
+    }
+
+    setTimeout(() => {
+      this.view.refreshView();
+    }, 500);
+  }
+
   /**
-	* @method
-	* @name updateView
-	* @public
-	* @memberof Scene
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Update the current view with the given playlist
+  * @method
+  * @name updateView
+  * @public
+  * @memberof Scene
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Update the current view with the given playlist
   * @param {object} playlist - The playlist to update the view with
-	**/
+  **/
   updateView(playlist) {
     let artists = playlist.getArtists();
     let tracks = [];
@@ -72,90 +85,90 @@ class Scene {
 //      }
     }
 
-  	let options = {
-  			columns: [
+    let options = {
+        columns: [
           {
-  					name: 'Duration',
+            name: 'Duration',
             order: 0,
-  					width: '10'
-  				},
-  				{
-  					name: 'Title',
-            order: 1,
-  					width: '20'
-  				},
-  				{
-  					name: 'Artist',
-            order: 2,
-  					width: '14'
-  				},
-  				{
-  					name: 'Composer',
-            order: 3,
-  					width: '14'
-  				},
-  				{
-  					name: 'Performer',
-            order: 4,
-  					width: '14'
-  				},
-  				{
-  					name: 'Album',
-            order: 5,
-  					width: '14'
-  				},
-  				{
-  					name: 'Genre',
-            order: 6,
-  					width: '14'
-  				}
-  			],
-  			target: this._scene,
-  			availableColumns: [ // TODO : store this in a default.json file somewhere
+            width: '10'
+          },
           {
-  					name: 'Duration',
-            order: 0,
-  					width: '10'
-  				},
-  				{
-  					name: 'Title',
+            name: 'Title',
             order: 1,
-  					width: '20'
-  				},
-  				{
-  					name: 'Artist',
+            width: '20'
+          },
+          {
+            name: 'Artist',
             order: 2,
-  					width: '14'
-  				},
-  				{
-  					name: 'Composer',
+            width: '14'
+          },
+          {
+            name: 'Composer',
             order: 3,
-  					width: '14'
-  				},
-  				{
-  					name: 'Performer',
+            width: '14'
+          },
+          {
+            name: 'Performer',
             order: 4,
-  					width: '14'
-  				},
-  				{
-  					name: 'Album',
+            width: '14'
+          },
+          {
+            name: 'Album',
             order: 5,
-  					width: '14'
-  				},
-  				{
-  					name: 'Genre',
+            width: '14'
+          },
+          {
+            name: 'Genre',
             order: 6,
-  					width: '14'
-  				}
-  			]
-  		};
+            width: '14'
+          }
+        ],
+        target: this._scene,
+        availableColumns: [ // TODO : store this in a default.json file somewhere
+          {
+            name: 'Duration',
+            order: 0,
+            width: '10'
+          },
+          {
+            name: 'Title',
+            order: 1,
+            width: '20'
+          },
+          {
+            name: 'Artist',
+            order: 2,
+            width: '14'
+          },
+          {
+            name: 'Composer',
+            order: 3,
+            width: '14'
+          },
+          {
+            name: 'Performer',
+            order: 4,
+            width: '14'
+          },
+          {
+            name: 'Album',
+            order: 5,
+            width: '14'
+          },
+          {
+            name: 'Genre',
+            order: 6,
+            width: '14'
+          }
+        ]
+      };
 
-    let view = new ListView(options); // TODO : move this
-    this.addView(view.getDOMFragment());
-    view.addTracks(tracks);
+    this.view = new ListView(options); // TODO : move this
+    this.addView(this.view.getDOMFragment());
+    this.view.addTracks(tracks);
 
     setTimeout(() => {
-      view.centerOn(2);
+      this.view.centerOn(2);
       //view.addTracks(tracks);
     }, 500);
   }

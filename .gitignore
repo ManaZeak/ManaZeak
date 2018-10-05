@@ -122,5 +122,6 @@ doc/frontend/
 moodbar/moodbar-0.1.2
 node_modules/
 static/js/dist/manazeak.bundle.js
+static/js/dist/manazeak.bundle.js.map
 
 /package-lock.json
