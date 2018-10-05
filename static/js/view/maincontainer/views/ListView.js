@@ -180,8 +180,10 @@ class ListView {
   _fillOptionsContext(context) {
     let activatedColumns = this._checkActivatedColumns();
 
+    let checkBoxes = document.createElement('DIV');
+    checkBoxes.classList.add('checkbox-container');
+
     for (let i = 0; i < this._availableColumns.length; ++i) {
-      let entry = document.createElement('DIV');
       let text = document.createElement('LABEL');
       let input = document.createElement('INPUT');
 
@@ -211,18 +213,23 @@ class ListView {
           });
       });
 
-      entry.appendChild(input);
-      entry.appendChild(text);
-      context.appendChild(entry);
+      checkBoxes.appendChild(input);
+      checkBoxes.appendChild(text);
     }
 
+    let stretchAll = document.createElement('BUTTON');
+    stretchAll.innerHTML = 'Stretch All Columns';
+    checkBoxes.appendChild(stretchAll);
+
+    context.appendChild(checkBoxes);
     context.appendChild(document.createElement('HR'));
 
-    let stretchAll = document.createElement('BUTTON');
-    stretchAll.innerHTML = 'Stretch All';
-    context.appendChild(stretchAll);
+    let extendView = document.createElement('IMG');
+    extendView.src = '/static/img/controls/right.svg';
+    context.appendChild(extendView);
 
     stretchAll.addEventListener('click', () => { this._stretchAllColumns(); });
+    extendView.addEventListener('click', () => { mzk.view.toggleSceneExtension(); }); // TODO Extend this from AppView class to create
   }
 
   _initHeader() {
@@ -612,6 +619,10 @@ class ListView {
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].setSelected(false);
     }
+  }
+
+  refreshView() { // TODO move this in AppView extended class to create and this is override
+    this._refreshGridColumn();
   }
 
   getDOMFragment() { return this._dom.fragment; }

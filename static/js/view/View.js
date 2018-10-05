@@ -6,11 +6,11 @@ import FootBar from './footbar/FootBar.js';
 
 class View {
   /**
-	* @summary Fronted View class
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
-	**/
+  * @summary Fronted View class
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
+  **/
   constructor() {
     this._mainContainer = {};
     this._topBar = {};
@@ -25,14 +25,14 @@ class View {
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   /**
-	* @method
-	* @name _init
-	* @private
-	* @memberof View
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the View object width TopBar, FootBar, Asides and Scene
-	**/
+  * @method
+  * @name _init
+  * @private
+  * @memberof View
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the View object width TopBar, FootBar, Asides and Scene
+  **/
   _init() {
     this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
 
@@ -141,6 +141,10 @@ class View {
     setTimeout(function() { // Restore transitions
       this._footBar.getProgressBar().activateTransitions();
     }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
+  }
+
+  toggleSceneExtension() {
+    this._scene.toggleSceneExtension();
   }
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //

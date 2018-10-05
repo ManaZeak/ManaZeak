@@ -76,7 +76,7 @@ input[type=checkbox] {
 input[type=checkbox] + label {
   cursor: pointer;
   display: block;
-  margin: 10px;
+  margin: 7px;
   padding: 0;
 
   &:before {
@@ -87,7 +87,7 @@ input[type=checkbox] + label {
     display: inline-block;
     height: 1em;
     line-height: 1em;
-    margin-right: 10px;
+    margin-right: 7px;
     transition: .2s;
     vertical-align: top;
     width: 1em;
