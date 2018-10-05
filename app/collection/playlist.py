@@ -14,6 +14,7 @@ from app.utils import checkPermission
 
 logger = logging.getLogger('django')
 
+
 # Create an empty playlist
 @login_required(redirect_field_name='login.html', login_url='app:login')
 def newPlaylist(request):
@@ -162,15 +163,17 @@ def simplifiedLazyLoadingPlaylist(request):
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
                     trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
-                    data = {}
+                    data = {'RESULT': []}
                     exitTable = []
+                    albumPositionMap = {}
+                    artistPositionMap = {}
                     for row in trackSet:
-                        lazyJsonGenerator(row, data)
-                    for albumObjects in data:
-                        exitTable.append(data[albumObjects])
-                    data = {
-                        'RESULT': exitTable
-                    }
+                        lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap)
+                    # for albumObjects in data:
+                    #    exitTable.append(data[albumObjects])
+                    # data = {
+                    #    'RESULT': exitTable
+                    # }
                     data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
                     data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)

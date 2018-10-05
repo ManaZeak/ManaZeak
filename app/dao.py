@@ -6,7 +6,7 @@ from datetime import datetime
 
 from django.db import connection
 
-from app.models import Album, Artist, Genre, Track
+from app.models import Album, Artist, Genre
 
 
 # TODO: a séparer en :viewmanager, playlist action, import action
@@ -294,8 +294,12 @@ def createViewForLazy(playlist):
     # Creating the hash for the view name
     viewName = getViewName(playlist)
     sql = """
-            CREATE MATERIALIZED VIEW "%s" (track_id, track_title, track_year, composer, performer, bit_rate, duration, cover, artists_names, artists_ids, genre_name, album_id, album_title) AS SELECT *, row_number() OVER() AS local_id FROM (
-              SELECT track.id, track.title, year, composer, performer, "bitRate", duration, "coverLocation", string_agg(artist.name,  ';' ORDER BY artist.name) concatArtName, string_agg(artist.id::character varying,  ';' ORDER BY artist.name) concatArtId, alb.title, genre.name, track.album_id, alb.title FROM app_track track
+            CREATE MATERIALIZED VIEW "%s" (track_id, track_title, track_year, composer, performer, bit_rate, duration, 
+            cover, artists_names, artists_ids, genre_name, album_id, album_title) AS SELECT *, row_number() OVER()
+             AS local_id FROM ( SELECT track.id, track.title, year, composer, performer, "bitRate", duration,
+              "coverLocation", string_agg(artist.name,  ';' ORDER BY artist.name) concatArtName, 
+              string_agg(artist.id::character varying,';' ORDER BY artist.name) concatArtId, alb.title, genre.name,
+               track.album_id, alb.title FROM app_track track
                 left join app_album alb on track.album_id = alb.id
                 left join app_album_artist on alb.id = app_album_artist.album_id
                 left join app_artist artist on app_album_artist.artist_id = artist.id
@@ -318,28 +322,41 @@ def createViewForLazy(playlist):
 
 
 ## Parse the raw sql query and add it to the existing dict
-def lazyJsonGenerator(row, data):
-
+def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
     artists = row[8]
     album = row[10]
-    # Adding artist information if it doesn't exists
-    if artists not in data:
-        data[artists] = {
+
+    # If the artist isn't in the map, we create it
+    if artists not in artistPositionMap:
+        # Adding the new artist position to the map
+        artistPosition = len(data['RESULT'])
+        artistPositionMap[artists] = artistPosition
+        # Inserting the artist json into the result
+        data['RESULT'].append({
             'IDS': row[9],
             'NAME': row[8],
-        }
+            'ALBUMS': [],
+        })
+    else:
+        # Getting the artist position in the map
+        artistPosition = artistPositionMap[artists]
 
-    # Adding album information if it doesn't exists
-    if album not in data[artists]:
-        # Creating the album and adding the track container
-        data[artists][album] = {
+    # If the album isn't in the album map
+    if album not in albumPositionMap:
+        # Adding the new album position to the map
+        albumPosition = len(data['RESULT'][artistPosition]['ALBUMS'])
+        albumPositionMap[album] = albumPosition
+        # Inserting the new album into the result
+        data['RESULT'][artistPosition]['ALBUMS'].append({
             'ID': row[12],
             'NAME': row[10],
             'TRACKS': [],
-        }
+        })
+    else:
+        albumPosition = albumPositionMap[album]
 
     # Adding the track information
-    data[artists][album]['TRACKS'].append({
+    data['RESULT'][artistPosition]['ALBUMS'][albumPosition]['TRACKS'].append({
         'ID': row[0],
         'TITLE': row[1],
         'YEAR': row[2],
