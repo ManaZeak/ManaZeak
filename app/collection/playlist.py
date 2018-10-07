@@ -163,17 +163,14 @@ def simplifiedLazyLoadingPlaylist(request):
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
                     trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
-                    data = {'RESULT': []}
-                    exitTable = []
+                    data = []
                     albumPositionMap = {}
                     artistPositionMap = {}
                     for row in trackSet:
                         lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap)
-                    # for albumObjects in data:
-                    #    exitTable.append(data[albumObjects])
-                    # data = {
-                    #    'RESULT': exitTable
-                    # }
+                    data = {
+                        'RESULT': data,
+                    }
                     data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
                     data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)
