@@ -3,10 +3,10 @@ import Track from './Track.js';
 
 class Playlist {
   /**
-	* @summary ManaZeak Playlist class
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Playlist object that stores all information about a single playlist
+  * @summary ManaZeak Playlist class
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Playlist object that stores all information about a single playlist
   * @param {object} options - The playlist information
   * @param {number} options.id - The playlist id
   * @param {boolean} options.isLibrary - Is playlist a library
@@ -17,7 +17,7 @@ class Playlist {
   * @param {number} options.averageBitRate - The playlist average bitrate
   * @param {number} options.totalDuration - The playlist total duration
   * @param {number} options.totalTrack - The playlist total track
-	**/
+  **/
   constructor(options) {
     this._id = options.id;
     this._isLibrary = options.isLibrary;
@@ -37,20 +37,16 @@ class Playlist {
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   /**
-	* @method
-	* @name _getArtistsLazyLoad
-	* @private
-	* @memberof Playlist
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Fetch a bunch of tracks
+  * @method
+  * @name _getArtistsLazyLoad
+  * @private
+  * @memberof Playlist
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Fetch a bunch of tracks
   * @param {number} step - The lazy load call number
-	**/
+  **/
   _getArtistsLazyLoad(step) {
-    if (step === 0) {
-      this._rawArtists = [];
-    }
-
     let options = {
       PLAYLIST_ID: this._id,
       REQUEST_NUMBER: step
@@ -59,14 +55,13 @@ class Playlist {
     mzk.komunikator.post('playlist/simplifiedLazyLoading/', options)
       .then((response) => {
         if (response.DONE) {
-          this._rawArtists = this._rawArtists.concat(response.RESULT);
-          this._getArtistsLazyLoad(step + 1);
+          this._convertRawArtists(response.RESULT)
+            .then(() => { this._getArtistsLazyLoad(step + 1); });
         }
 
         else {
           if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) { // Successfully loaded all
-            this._convertRawArtists()
-              .then(() => { Events.fire(`TrackLoaded-${this._id}`); });
+            Events.fire(`TrackLoaded-${this._id}`);
           }
 
           else {
@@ -84,39 +79,40 @@ class Playlist {
   }
 
   /**
-	* @method
-	* @name _convertRawArtists
-	* @private
-	* @memberof Playlist
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Convert raw artists into cleansed object
+  * @method
+  * @name _convertRawArtists
+  * @private
+  * @memberof Playlist
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Convert raw artists into cleansed object
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
-  _convertRawArtists() {
+  **/
+  _convertRawArtists(rawArtistsArray) {
     return new Promise(resolve => {
-      for (let i = 0; i < this._rawArtists.length; ++i) {
-        if (this._rawArtists[i]['Inception'] !== undefined) { // TODO Iterate over album instead of hard code
-          var albumTrack = [];
-
-          for (let j = 0; j < this._rawArtists[i]['Inception'].TRACKS.length; ++j) {
-            albumTrack.push(new Track({
-              album: 'Inception',
-              artist: this._rawArtists[i].NAME,
-              rawTrack: this._rawArtists[i]['Inception'].TRACKS[j]
+      for (let i = 0; i < rawArtistsArray.length; ++i) {
+        var albums =  [];
+        for (let j = 0; j < rawArtistsArray[i].ALBUMS.length; ++j) {
+          var tracks = [];
+          for (let k = 0; k < rawArtistsArray[i].ALBUMS[j].TRACKS.length; ++k) {
+            tracks.push(new Track({
+              album: rawArtistsArray[i].ALBUMS[j],
+              artist: rawArtistsArray[i].NAME,
+              rawTrack: rawArtistsArray[i].ALBUMS[j].TRACKS[k]
             }));
           }
 
+          albums.push({
+            id: rawArtistsArray[i].ALBUMS[j].ID,
+            name: rawArtistsArray[i].ALBUMS[j].NAME,
+            tracks: tracks
+          });
         }
 
         this._artists.push({
-          ids: this._rawArtists[i].IDS,
-          name: this._rawArtists[i].NAME,
-          albums: {
-            id: 1,
-            name: 'Inception',
-            tracks: albumTrack
-          }
+          ids: rawArtistsArray[i].IDS,
+          name: rawArtistsArray[i].NAME,
+          albums: albums
         });
       }
 
@@ -127,18 +123,18 @@ class Playlist {
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   /**
-	* @method
-	* @name getArtistsFromServer
-	* @public
-	* @memberof Playlist
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Get playlist relative artists object from server
+  * @method
+  * @name getArtistsFromServer
+  * @public
+  * @memberof Playlist
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Get playlist relative artists object from server
   * @param {object} response - The server reponse object
   * @param {boolean} response.DONE - The request status
   * @param {string} response.ERROR_KEY - The error key to eventually use
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   getArtistsFromServer(response) {
     return new Promise((resolve, reject) => {
       if (response.DONE) {

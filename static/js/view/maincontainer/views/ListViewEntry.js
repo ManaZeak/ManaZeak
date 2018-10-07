@@ -10,7 +10,7 @@ class ListViewEntry {
   constructor(options) {
     if (typeof options !== 'object') { return; }
     this.artist = options.track.artist || '';
-    this.album = options.track.album || '';
+    this.album = options.track.album.NAME || '';
     this.composer = options.track.composer || '';
     this.duration = options.track.duration || '';
     this.genre = options.track.genre || '';

@@ -77,12 +77,11 @@ class Scene {
     let tracks = [];
 
     for (var i = 0; i < artists.length; ++i) {
-//      for (var j = 0; j < artists[i].albums.length; ++j) {
-        console.log(artists[i].albums);
-        for (var k = 0; k < artists[i].albums.tracks.length; ++k) {
-          tracks.push(artists[i].albums.tracks[k]);
+      for (var j = 0; j < artists[i].albums.length; ++j) {
+        for (var k = 0; k < artists[i].albums[j].tracks.length; ++k) {
+          tracks.push(artists[i].albums[j].tracks[k]);
         }
-//      }
+      }
     }
 
     let options = {
