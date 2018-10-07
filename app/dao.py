@@ -295,11 +295,11 @@ def createViewForLazy(playlist):
     viewName = getViewName(playlist)
     sql = """
             CREATE MATERIALIZED VIEW "%s" (track_id, track_title, track_year, composer, performer, bit_rate, duration, 
-            cover, artists_names, artists_ids, genre_name, album_id, album_title) AS SELECT *, row_number() OVER()
-             AS local_id FROM ( SELECT track.id, track.title, year, composer, performer, "bitRate", duration,
-              "coverLocation", string_agg(artist.name,  ';' ORDER BY artist.name) concatArtName, 
+            cover, artists_names, artists_ids, genre_name, album_id, album_title, track_moodbar) AS SELECT *, 
+            row_number() OVER() AS local_id FROM ( SELECT track.id, track.title, year, composer, performer, "bitRate", 
+            duration, "coverLocation", string_agg(artist.name,  ';' ORDER BY artist.name) concatArtName, 
               string_agg(artist.id::character varying,';' ORDER BY artist.name) concatArtId, alb.title, genre.name,
-               track.album_id, alb.title FROM app_track track
+               track.album_id, track.moodbar FROM app_track track
                 left join app_album alb on track.album_id = alb.id
                 left join app_album_artist on alb.id = app_album_artist.album_id
                 left join app_artist artist on app_album_artist.artist_id = artist.id
@@ -329,10 +329,10 @@ def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
     # If the artist isn't in the map, we create it
     if artists not in artistPositionMap:
         # Adding the new artist position to the map
-        artistPosition = len(data['RESULT'])
+        artistPosition = len(data)
         artistPositionMap[artists] = artistPosition
         # Inserting the artist json into the result
-        data['RESULT'].append({
+        data.append({
             'IDS': row[9],
             'NAME': row[8],
             'ALBUMS': [],
@@ -344,10 +344,10 @@ def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
     # If the album isn't in the album map
     if album not in albumPositionMap:
         # Adding the new album position to the map
-        albumPosition = len(data['RESULT'][artistPosition]['ALBUMS'])
+        albumPosition = len(data[artistPosition]['ALBUMS'])
         albumPositionMap[album] = albumPosition
         # Inserting the new album into the result
-        data['RESULT'][artistPosition]['ALBUMS'].append({
+        data[artistPosition]['ALBUMS'].append({
             'ID': row[12],
             'NAME': row[10],
             'TRACKS': [],
@@ -356,7 +356,7 @@ def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
         albumPosition = albumPositionMap[album]
 
     # Adding the track information
-    data['RESULT'][artistPosition]['ALBUMS'][albumPosition]['TRACKS'].append({
+    data[artistPosition]['ALBUMS'][albumPosition]['TRACKS'].append({
         'ID': row[0],
         'TITLE': row[1],
         'YEAR': row[2],
@@ -366,6 +366,7 @@ def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
         'DURATION': row[6],
         'COVER': row[7],
         'GENRE': row[11],
+        'MOODBAR': row[13],
     })
 
 
