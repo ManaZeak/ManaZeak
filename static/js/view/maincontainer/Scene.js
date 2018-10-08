@@ -57,9 +57,7 @@ class Scene {
       this._scene.classList.add('extended');
     }
 
-    setTimeout(() => {
-      this.view.refreshView();
-    }, 500);
+    this.view.refreshView();
   }
 
   /**

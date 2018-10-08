@@ -622,7 +622,13 @@ class ListView {
   }
 
   refreshView() { // TODO move this in AppView extended class to create and this is override
-    this._refreshGridColumn();
+    this._startLoading()
+      .then(() => {
+        setTimeout(() => {
+          this._refreshGridColumn();
+          this._stopLoading();
+        }, 500);
+      });
   }
 
   getDOMFragment() { return this._dom.fragment; }
