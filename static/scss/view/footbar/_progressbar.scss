@@ -73,10 +73,16 @@ $progress-thumb-height: 9px;
   }
 
   #progress-moodbar {
-    background-color: yellow;
+    background-color: black;
     height: 0; // Height is set in ProgressBar.js
     opacity: 0;
     transition: height $footbar-transition ease 0s, opacity $footbar-transition ease 0s;
     width: 100%;
+
+    svg {
+      -webkit-animation: fadein $footbar-transition ease-in-out 0s;
+        -moz-animation: fadein $footbar-transition ease-in-out 0s;
+          animation: fadein $footbar-transition ease-in-out 0s;
+    }
   }
 }

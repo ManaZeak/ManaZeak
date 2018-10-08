@@ -140,7 +140,7 @@ class Playlist {
       if (response.DONE) {
         let eventOptions = {
           name: `TrackLoaded-${this._id}`,
-          oneShot: true
+          oneShot: true // Event needs to be dismissed after request completion
         }
 
         Events.register(eventOptions, () => { resolve(); });

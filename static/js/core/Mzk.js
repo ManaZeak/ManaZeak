@@ -6,11 +6,11 @@ import View from '../view/View.js'
 
 class Mzk {
   /**
-	* @summary ManaZeak main controller
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Handle both Model ad View, and animate them accordingly. Host User, Langage and Komunikator also.
-	**/
+  * @summary ManaZeak main controller
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Handle both Model ad View, and animate them accordingly. Host User, Langage and Komunikator also.
+  **/
   constructor() {
     this.cookies = {};
     this.komunikator = {};
@@ -23,14 +23,14 @@ class Mzk {
   //  --------------------------------  SESSION INITIALIZATION  ---------------------------------  //
 
   /**
-	* @method
-	* @name start
-	* @public
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init a ManaZeak session depending on user settings in db
-	**/
+  * @method
+  * @name start
+  * @public
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init a ManaZeak session depending on user settings in db
+  **/
   start() {
     this.cookies = Utils.getCookies(); // Get user cookies
 
@@ -44,15 +44,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initKomunikator
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the Komunikator object (cookies must have been stored before)
+  * @method
+  * @name _initKomunikator
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the Komunikator object (cookies must have been stored before)
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initKomunikator() {
     return new Promise(resolve => {
       this.komunikator = new Komunikator({ csrfToken: this.cookies['csrftoken'] });
@@ -61,15 +61,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initUser
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the User object
+  * @method
+  * @name _initUser
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the User object
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initUser() {
     return new Promise((resolve, reject) => {
       this.user = new User();
@@ -80,15 +80,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initLang
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the lang keys and attach them to this
+  * @method
+  * @name _initLang
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the lang keys and attach them to this
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initLang() {
     let checkLang = (lang) => { // In case language JSON can not be fetched, we raise a manual notification only.
       if (lang.DONE) { this.lang = lang; }
@@ -106,15 +106,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initModel
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the frontend Model
+  * @method
+  * @name _initModel
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the frontend Model
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initModel() {
     return new Promise(resolve => {
       this.model = new Model();
@@ -123,15 +123,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initView
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the frontend View
+  * @method
+  * @name _initView
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the frontend View
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initView() {
     return new Promise(resolve => {
       this.view = new View();
@@ -140,15 +140,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _initShortcut
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the user shortcuts
+  * @method
+  * @name _initShortcut
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Init the user shortcuts
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _initShortcut() {
     return new Promise(resolve => {
       this.reloadShortcuts();
@@ -157,15 +157,15 @@ class Mzk {
   }
 
   /**
-	* @method
-	* @name _startApp
-	* @private
-	* @memberof Mzk
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Start the UI building (must be called when everything have been safely initialized)
+  * @method
+  * @name _startApp
+  * @private
+  * @memberof Mzk
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Start the UI building (must be called when everything have been safely initialized)
   * @returns {Promise} - A promise that resolve when logic has been executed
-	**/
+  **/
   _startApp() {
     return new Promise(resolve => {
       this.komunikator.get('playlist/getUserPlaylists/')
@@ -199,8 +199,9 @@ class Mzk {
     };
 
     this.komunikator.post('track/getPath/', options)
-      .then(url => { return this.model.changeTrack(url.TRACK_PATH) })
-      .then(() => { this.view.changeTrack(); });
+      .then(url => { return this.model.changeTrack(id, url.TRACK_PATH) })
+      .then(() => { this.view.changeTrack(this.model.getActiveTrack()); });
+      
       // Ci-gît ce petit banc de test, pour le lulz uniquement
       //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
   }
