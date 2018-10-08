@@ -1,6 +1,11 @@
 {
   "errors":{
     "frontend": {
+      "UNKNOWN_ERROR": {
+        "title": "Unknown error",
+        "message": "Something unexpected happened and isn't properly handle in source code.",
+        "severity": "error"
+      },
       "ACCESS_FORBIDDEN": {
         "title": "Access forbidden",
         "message": "You are not granted to access the API url you tried to reach.",

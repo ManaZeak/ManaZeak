@@ -201,7 +201,7 @@ class Mzk {
     this.komunikator.post('track/getPath/', options)
       .then(url => { return this.model.changeTrack(id, url.TRACK_PATH) })
       .then(() => { this.view.changeTrack(this.model.getActiveTrack()); });
-      
+
       // Ci-gît ce petit banc de test, pour le lulz uniquement
       //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
   }
@@ -379,6 +379,7 @@ class Mzk {
     Shortcut.register('Ctrl+ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.1); });
     Shortcut.register('ArrowDown', () => { this.showHideVolumeBar(); this.adjustVolume(-0.01); });
     Shortcut.register('ArrowUp', () => { this.showHideVolumeBar(); this.adjustVolume(0.01); });
+    Shortcut.register('Space', () => { this.togglePlay(); });
   }
 
   //  --------------------------------  COLLECTION METHODS  ---------------------------------  //
