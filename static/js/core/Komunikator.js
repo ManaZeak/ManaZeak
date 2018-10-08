@@ -1,4 +1,4 @@
-'use_strict'
+'use_strict';
 
 class Komunikator {
   /**
@@ -48,7 +48,7 @@ class Komunikator {
   **/
   get(url) {
     return new Promise((resolve, reject) => {
-      let options = {
+      const options = {
         method: 'GET',
         headers: new Headers([ this._headers[0] ])
       };
@@ -57,14 +57,12 @@ class Komunikator {
         .then(response => {
           if (response.ok) { resolve(response.json()); }
 
+          else if (response.status === 404) {
+              reject('URL_NOT_FOUND');
+          }
+
           else {
-            switch(response.status) {
-              case 404:
-                reject('URL_NOT_FOUND');
-                break;
-              default:
-                break;
-            }
+            reject('UNKNOWN_ERROR');
           }
       });
     });

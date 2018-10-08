@@ -6,12 +6,12 @@ import Notification from './utils/Notification.js';
 import Mzk from './core/Mzk.js';
 'use_strict';
 
-let errorsOptions = {
+const errorsOptions = {
   verbose: true,
   trace: true
 };
 
-let notificationOptions = {
+const notificationOptions = {
     thickBorder: 'top',
     duration: 4000,
     transition: 200,
@@ -24,4 +24,7 @@ window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
 
-document.addEventListener('DOMContentLoaded', () => { window.mzk = new Mzk(); mzk.start(); });
+document.addEventListener('DOMContentLoaded', () => {
+  window.mzk = new Mzk();
+  mzk.start();
+});

@@ -15,10 +15,10 @@
 <body>
     {% load staticfiles %}
     <a href="https://github.com/Squadella/ManaZeak" target="_blank">
-        <img class="mzk-fork" src="/static/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
+        <img class="mzk-fork" src="/static/utils/img/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png" alt="fork-us">
     </a>
     <div class="mzk-user">
-        <img src="/static/img/logo/manazeak-text.svg">
+        <img src="/static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
         <form id="signupForm" action="" method="POST" name="signup">
             <p><label for="id_username"><b>Username:</b></label>
@@ -31,7 +31,7 @@
             <button type="submit" value="register" id="button">Sign in</button>
             {% csrf_token %}
         </form>
-        <img src="/static/img/logo/manazeak.svg" class="mzk-logo">
+        <img src="/static/img/logo/manazeak.svg" class="mzk-logo" alt="manazeak-logo">
         <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
     </div>
     <script>
