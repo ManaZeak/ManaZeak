@@ -2,10 +2,10 @@
 
 class Track {
   /**
-	* @summary ManaZeak Track class
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Stores all metadata from a raw format
+  * @summary ManaZeak Track class
+  * @author Arthur Beaulieu
+  * @since September 2018
+  * @description Stores all metadata from a raw format
   * @param {object} options - The track metadata
   * @param {string} options.album - Track album
   * @param {string} options.artist - Track artist
@@ -19,7 +19,7 @@ class Track {
   * @param {string} options.rawTrack.PERFORMER - Track performer
   * @param {string} options.rawTrack.TITLE - Track title
   * @param {number} options.rawTrack.YEAR - Track year
-	**/
+  **/
   constructor(options) {
     this.album = options.album;
     this.artist = options.artist;
@@ -29,6 +29,7 @@ class Track {
     this.duration = options.rawTrack.DURATION;
     this.genre = options.rawTrack.GENRE;
     this.id = options.rawTrack.ID;
+    this.moodbar = options.rawTrack.MOODBAR;
     this.performer = options.rawTrack.PERFORMER;
     this.title = options.rawTrack.TITLE;
     this.year = options.rawTrack.YEAR;

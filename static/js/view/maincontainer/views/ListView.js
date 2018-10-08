@@ -162,7 +162,7 @@ class ListView {
   }
 
   _optionsClicked() {
-    let listViewContext = this._target.querySelector("#listview-context");
+    let listViewContext = this._target.querySelector('#listview-context');
 
     if (listViewContext !== null) { // Close context
       listViewContext.remove();
@@ -189,7 +189,7 @@ class ListView {
 
       input.id = 'context-' + this._availableColumns[i].name;
       text.innerHTML = this._availableColumns[i].name;
-      text.setAttribute('for', 'context-' + this._availableColumns[i].name);
+      text.setAttribute('for', `context-${this._availableColumns[i].name}`);
       input.setAttribute('type', 'checkbox');
 
       if (activatedColumns.indexOf(this._availableColumns[i].name) !== -1) {
@@ -279,8 +279,8 @@ class ListView {
     let resize = event => {
       grabbed = true;
       this._dom.wrapper.appendChild(marker);
-      parent.style.width = ((event.clientX) - (parent.offsetLeft + this._target.offsetLeft)) + 'px';
-      marker.style.left = ((event.clientX) - this._target.offsetLeft - 1) + 'px';
+      parent.style.width = `${(event.clientX) - (parent.offsetLeft + this._target.offsetLeft)}px`;
+      marker.style.left = `${event.clientX - this._target.offsetLeft - 1}px`;
     };
 
     let stopResizing = event => {
@@ -383,7 +383,7 @@ class ListView {
     let gridTemplateColumns = ''; // CSS grid rule
 
     for (let i = 0; i < this._columns.length; ++i) { // Init listview header and CSS grid columns rule
-      gridTemplateColumns += (this._columns[i].width * (this._dom.wrapper.clientWidth / 100)) + 'px ';
+      gridTemplateColumns += `${(this._columns[i].width * (this._dom.wrapper.clientWidth / 100))}px `;
     }
 
     return gridTemplateColumns;

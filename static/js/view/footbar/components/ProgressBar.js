@@ -135,7 +135,7 @@ class ProgressBar {
       percentage = 0;
     }
 
-    this._progress.hover.style.left = ((((boundRect.width * percentage) / 100) - 30) * 100) / boundRect.width + "%";
+    this._progress.hover.style.left = `${((((boundRect.width * percentage) / 100) - 30) * 100) / boundRect.width}%`;
     this._progress.hover.innerHTML = Utils.secondsToTimecode((percentage * this._duration) / 100);
   }
 
@@ -150,7 +150,15 @@ class ProgressBar {
   * @param {object} event - The mouse event object
   **/
   _mouseDown(event) {
-    if (!this._isDragging && (event.target.id === 'progress-moodbar' || event.target.id === 'progress-container' || event.target.id === 'progress-track' || event.target.id === 'progress-current' || event.target.id === 'progress-thumb')) {
+    if (!this._isDragging &&
+      (event.target.id === 'progress-container' ||
+      event.target.id === 'progress-track' ||
+      event.target.id === 'progress-current' ||
+      event.target.id === 'progress-moodbar' ||
+      event.target.id === 'progress-thumb' ||
+      event.target.id === 'moodbarThumb' ||
+      event.target.tagName === 'rect')) {
+
       mzk.mute();
       this._isDragging = true;
       this._stopAnimation();
@@ -418,8 +426,8 @@ class ProgressBar {
   **/
   setProgress(percentage) {
     if (this._isActive) {
-      this._progress.current.style.width = percentage + '%';
-      this._progress.thumb.style.left = percentage + '%';
+      this._progress.current.style.width = `${percentage}%`;
+      this._progress.thumb.style.left = `${percentage}%`;
       this._progress.left.innerHTML = Utils.secondsToTimecode((percentage * this._duration) / 100);
     }
   }
@@ -432,7 +440,7 @@ class ProgressBar {
   * @author Arthur Beaulieu
   * @since August 2018
   * @description Set the visibility status of the ProgressBar
-  * @param {boolean} isVisible - The visibility state  
+  * @param {boolean} isVisible - The visibility state
   **/
   setVisibility(isVisible) {
     if (isVisible) {
@@ -463,6 +471,8 @@ class ProgressBar {
   setIsActive(isActive) { this._isActive = isActive; }
   setIsMouseOver(isMouseOver) { this._isMouseOver = isMouseOver; }
   setIsDragging(isDragging) { this._isDragging = isDragging; }
+
+  getMoodbarContainer() { return this._progress.moodbar; }
 }
 
 export default ProgressBar;

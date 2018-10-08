@@ -56,9 +56,12 @@ class View {
   * @since September 2018
   * @description Change UI elements according to the new playing track informations
   **/
-  changeTrack() {
+  changeTrack(track) {
+    d3.selectAll('.moodbar svg').remove(); // Clear current moodbar
+    this.togglePlay();
+
     let player = mzk.model.getPlayer();
-    this.togglePlay(player.getIsPlaying());
+    this._footBar.renderMoodFile(track.moodbar);
     this._footBar.getProgressBar().updateDuration(player.getDuration());
   }
 
@@ -75,7 +78,7 @@ class View {
     let isPlaying = mzk.model.getPlayer().getIsPlaying();
     this._footBar.updatePlayButton(isPlaying);
 
-    if (isPlaying) { // If !playing we don't desactivate ProgressBar -> pause != stop
+    if (isPlaying) { // Don't handle !playing (desactivate) bc pause != stop
       this._footBar.getProgressBar().activate(); // Activate make the progress bar appear w/ animation
     }
   }
@@ -90,6 +93,7 @@ class View {
   * @description Updates UI element to match the player stand by state
   **/
   stopPlayback() {
+    d3.selectAll('.moodbar svg').remove(); // Clear current moodbar
     // TODO : unselectAll on current view
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.getProgressBar().resetProgressBar();
