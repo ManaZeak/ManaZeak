@@ -9,5 +9,5 @@ install: pip install -r requirements.txt
 addons:
   sonarcloud:
     organization: "manazeak"
-    token: SONARCLOUDKEY
+    token: $SONARCLOUDKEY
 script: sonar-scanner
