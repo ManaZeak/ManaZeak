@@ -1,7 +1,8 @@
 sudo: true
 language: python
 python: 3.6
-install: pip install -r requirements.txt
+before_install: sudo apt install python3-pip
+install: pip-3.3 install -r requirements.txt
 
 addons:
   sonarcloud:
