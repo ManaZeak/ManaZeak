@@ -1,0 +1,9 @@
+sudo: true
+language: python
+python: 3.7
+install: pip install -r requierements.txt
+
+addons:
+  sonarcloud:
+    organization: "manazeak"
+    token: SONARCLOUDKEY
