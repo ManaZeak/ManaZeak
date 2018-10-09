@@ -1,7 +1,7 @@
 sudo: true
 language: python
 python: 3.6
-before_install: sudo apt install python3-pip
+before_install: sudo apt install pylint3
 install: pip-3.3 install -r requirements.txt
 
 addons:
