@@ -10,4 +10,3 @@ requests
 python-crontab
 psutil
 pypng
-pylint
