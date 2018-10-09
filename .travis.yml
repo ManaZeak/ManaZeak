@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python3-pip
 install:
-  - pip-3.6 install -r requirements.txt
+  - pip-3 install -r requirements.txt
 addons:
   sonarcloud:
     organization: "manazeak"
