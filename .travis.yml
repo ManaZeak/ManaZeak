@@ -9,7 +9,7 @@ before_install:
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
   - sudo mv sonar-scanner-3.2.0.1227-linux /opt/sonar/
-  - sudo echo /opt/sonar/sonar-scanner-cli-3.2.0.1227-linux/bin >> /etc/environment
+  - sudo echo /opt/sonar/sonar-scanner-3.2.0.1227-linux/bin >> /etc/environment
 install:
   - pip3 install -r requirements.txt
 
