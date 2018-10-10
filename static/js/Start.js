@@ -12,10 +12,10 @@ const errorsOptions = {
 };
 
 const notificationOptions = {
-    thickBorder: 'top',
-    duration: 4000,
-    transition: 200,
-    maxActive: 3
+  thickBorder: 'top',
+  duration: 4000,
+  transition: 200,
+  maxActive: 3
 };
 
 window.Utils = new Utils();

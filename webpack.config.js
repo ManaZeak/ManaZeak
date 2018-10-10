@@ -16,14 +16,14 @@ module.exports = env => {
         filename: 'manazeak.bundle.js'
     },
     module: {
-  
+
     },
     resolve: {
-        extensions: ['.js', 'scss'],
-        modules: ['node_modules', SRC],
+        extensions: ['.js', '.scss'],
+        modules: ['node_modules', SRC]
     },
     optimization: (env.prod !== 'true') ? {} :  {
       minimizer: [ new UglifyJsPlugin() ]
     }
-  }
+  };
 };

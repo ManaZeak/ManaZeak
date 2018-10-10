@@ -6,11 +6,11 @@ import FootBar from './footbar/FootBar.js';
 
 class View {
   /**
-  * @summary Fronted View class
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
-  **/
+   * @summary Fronted View class
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
+   **/
   constructor() {
     this._mainContainer = {};
     this._topBar = {};
@@ -25,21 +25,25 @@ class View {
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   /**
-  * @method
-  * @name _init
-  * @private
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Init the View object width TopBar, FootBar, Asides and Scene
-  **/
+   * @method
+   * @name _init
+   * @private
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Init the View object width TopBar, FootBar, Asides and Scene
+   **/
   _init() {
     this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
 
     this._topBar = new TopBar();
-    this._leftAside = new Aside({ side: 'left' });
+    this._leftAside = new Aside({
+      side: 'left'
+    });
     this._scene = new Scene();
-    this._rightAside = new Aside({ side: 'right' });
+    this._rightAside = new Aside({
+      side: 'right'
+    });
     this._footBar = new FootBar();
 
     this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume()); // TODO : replace with mzk.getUserVolume() or from localStorage or from opts (serv)
@@ -48,34 +52,34 @@ class View {
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   /**
-  * @method
-  * @name changeTrack
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Change UI elements according to the new playing track informations
-  **/
+   * @method
+   * @name changeTrack
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Change UI elements according to the new playing track informations
+   **/
   changeTrack(track) {
-    d3.selectAll('.moodbar svg').remove(); // Clear current moodbar
+    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this.togglePlay();
 
-    let player = mzk.model.getPlayer();
+    const player = mzk.model.getPlayer();
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.getProgressBar().updateDuration(player.getDuration());
   }
 
   /**
-  * @method
-  * @name togglePlay
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Change UI elements according to the new playing state
-  **/
+   * @method
+   * @name togglePlay
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Change UI elements according to the new playing state
+   **/
   togglePlay() {
-    let isPlaying = mzk.model.getPlayer().getIsPlaying();
+    const isPlaying = mzk.model.getPlayer().getIsPlaying();
     this._footBar.updatePlayButton(isPlaying);
 
     if (isPlaying) { // Don't handle !playing (desactivate) bc pause != stop
@@ -84,61 +88,60 @@ class View {
   }
 
   /**
-  * @method
-  * @name stopPlayback
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Updates UI element to match the player stand by state
-  **/
+   * @method
+   * @name stopPlayback
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Updates UI element to match the player stand by state
+   **/
   stopPlayback() {
-    d3.selectAll('.moodbar svg').remove(); // Clear current moodbar
-    // TODO : unselectAll on current view
+    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.getProgressBar().resetProgressBar();
     this._footBar.getProgressBar().resetTimecode();
   }
 
   /**
-  * @method
-  * @name initPlaylist
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Init the given playlist into the scene/view
-  * @param {object} playlist - The playlist to init the view with
-  **/
+   * @method
+   * @name initPlaylist
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Init the given playlist into the scene/view
+   * @param {object} playlist - The playlist to init the view with
+   **/
   initPlaylist(playlist) {
     this._scene.updateView(playlist);
   }
 
   /**
-  * @method
-  * @name updateVolume
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Update the volume values in the UI according to the player's value
-  **/
+   * @method
+   * @name updateVolume
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Update the volume values in the UI according to the player's value
+   **/
   updateVolume() {
-    let player = mzk.model.getPlayer();
+    const player = mzk.model.getPlayer();
     this._footBar.getVolumeBar().updateVolume(player.getIsMuted(), player.getVolume());
   }
 
   /**
-  * @method
-  * @name updateProgress
-  * @public
-  * @memberof View
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description Updates the progress bar according to the player progress' value
-  **/
+   * @method
+   * @name updateProgress
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Updates the progress bar according to the player progress' value
+   **/
   updateProgress() { // Called onClick
-    let progress = mzk.model.getPlayer().getProgress();
+    const progress = mzk.model.getPlayer().getProgress();
     this._footBar.getProgressBar().desactivateTransitions(); // Must disable transition when called
     this._footBar.getProgressBar().setProgress(progress);
 
@@ -153,7 +156,9 @@ class View {
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
-  getFootBar() { return this._footBar; }
+  getFootBar() {
+    return this._footBar;
+  }
 }
 
 export default View;
