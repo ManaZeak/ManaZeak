@@ -11,11 +11,8 @@ before_install:
   - mv sonar-scanner-3.2.0.1227-linux /opt/sonar/
   - sudo sh -c 'echo /opt/sonar/sonar-runner-dist-2.4/bin >> /etc/environment'
 
+
 install:
   - pip3 install -r requirements.txt
 
-addons:
-  sonarcloud:
-    organization: "manazeak"
-    token: $SONARCLOUDKEY
-script: sonar-scanner
+script: sonar-scanner -D sonar.login=$SONARCLOUDKEY
