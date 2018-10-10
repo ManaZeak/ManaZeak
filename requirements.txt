@@ -3,7 +3,6 @@ django-compressor
 django-libsass
 psycopg2
 mutagen
-libsass
 django-sass-processor
 requests
 python-crontab
