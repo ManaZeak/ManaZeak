@@ -6,14 +6,12 @@ before_install:
   - git fetch --unshallow
   - sudo apt-get update -qq
   - sudo apt-get install -qq python3-pip
+  - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-  - ls
-  - pwd
-  - cd $HOME
-  - pwd
-  - ls
-  - sudo sh -c 'echo export PATH=./sonar-scanner-3.2.0.1227-linux/bin:$PATH >> .bashrc'
+  - sudo sh -c 'echo export PATH=/home/travis/build/Squadella/sonar-scanner-3.2.0.1227-linux/bin:$PATH >> .bashrc'
+  - source .bashrc
+  - cd ./ManaZeak
 
 
 install:
