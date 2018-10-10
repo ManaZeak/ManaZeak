@@ -8,8 +8,10 @@ before_install:
   - sudo apt-get install -qq python3-pip
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-  - mv sonar-scanner-3.2.0.1227-linux /opt/sonar/
-  - sudo sh -c 'echo /opt/sonar/sonar-runner-dist-2.4/bin >> /etc/environment'
+  - cd $HOME
+  - pwd
+  - ls
+  - sudo sh -c 'echo export PATH=./sonar-scanner-3.2.0.1227-linux/bin:$PATH >> .bashrc'
 
 
 install:
