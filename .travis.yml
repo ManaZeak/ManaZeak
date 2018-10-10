@@ -2,19 +2,22 @@ sudo: required
 dist: trusty
 language: python
 python: 3.6
-before_install:
+
+install:
   - git fetch --unshallow
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python3-pip
-  - sudo apt-get upgrade -y
+  - sudo apt-get install -qq nodejs npm python3-pip
+  - sudo ln -s /usr/bin/nodejs /usr/bin/node
+  - pip3 install -r requirements.txt
+  - sudo mv pylint3.py /usr/local/bin/pylint3
+  - chmod 777 pylint.sh
+  - sudo mv pylint.sh /usr/local/bin/pylint
+  - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-  - sudo mv sonar-scanner-3.2.0.1227-linux /opt/sonar/
-install:
-  - pip3 install -r requirements.txt
+  - sudo sh -c 'echo export PATH=/home/travis/build/Squadella/sonar-scanner-3.2.0.1227-linux/bin:$PATH >> $HOME/.bashrc'
+  - source $HOME/.bashrc
+  - cd ./ManaZeak
+  - sonar-scanner -D sonar.login=$SONARCLOUDKEY
 
-addons:
-  sonarcloud:
-    organization: "manazeak"
-    token: $SONARCLOUDKEY
-script: sonar-scanner
+script: sonar-scanner -D sonar.login=$SONARCLOUDKEY
