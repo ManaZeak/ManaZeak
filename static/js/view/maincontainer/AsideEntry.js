@@ -2,12 +2,12 @@
 
 class AsideEntry {
   /**
-	* @summary An entry that is meant to be used as an Aside children
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description TODO
-  * @param {object} options - The AsideEntry options object
-	**/
+   * @summary An entry that is meant to be used as an Aside children
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description TODO
+   * @param {object} options - The AsideEntry options object
+   **/
   constructor(options) {
     this.title = options.title;
     this.dom = {};
@@ -18,14 +18,14 @@ class AsideEntry {
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   /**
-	* @method
-	* @name _init
-	* @private
-	* @memberof AsideEntry
-	* @author Arthur Beaulieu
-	* @since September 2018
-	* @description Init the AsideEntry DOM and fill it with instance attributes
-	**/
+   * @method
+   * @name _init
+   * @private
+   * @memberof AsideEntry
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Init the AsideEntry DOM and fill it with instance attributes
+   **/
   _init() {
     this.dom.title = document.createElement('P');
     this.dom.title.innerHTML = this.title;
@@ -33,7 +33,9 @@ class AsideEntry {
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
-  getDom() { return this.dom.title; }
+  getDom() {
+    return this.dom.title;
+  }
 }
 
 export default AsideEntry;

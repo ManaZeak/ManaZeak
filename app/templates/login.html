@@ -26,9 +26,13 @@
             <p>Please login below, or <a href="{% url 'app:signup' %}">sign up</a></p>
             <form action="" method="post" enctype="multipart/form-data" name="login">
                 {% csrf_token %}
-                <label for="id_username"><b>Username:</b></label>
+                <label for="id_username">
+                  <strong>Username:</strong>
+                </label>
                 <input id="id_username" maxlength="30" name="username" type="text"><br>
-                <label for="id_password"><b>Password:</b></label>
+                <label for="id_password">
+                  <strong>Password:</strong>
+                </label>
                 <input id="id_password" maxlength="30" name="password" type="password">
                 <button type="submit">Log in</button>
             </form>

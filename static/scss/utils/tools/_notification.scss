@@ -31,18 +31,18 @@ $notification-border-thick: 3px;
 $notification-border-std: 1px;
 
 div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, cite, code, pre, em, q, small, strong, sub, sup, b, u, i {
-	border: 0;
-	font: inherit;
-	font-size: 100%;
-	margin: 0;
-	padding: 0;
-	vertical-align: baseline;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
 }
 
 *, *:before, *:after { box-sizing: border-box; }
 
 html {
-    font-family:      Helvetica, sans-serif;
+    font-family: Helvetica, sans-serif;
 }
 
 body {
@@ -66,209 +66,208 @@ button {
 
 /* Notification style code begin here */
 .notification-container {
-	align-items: flex-end;
-	display: flex;
-	flex-direction: column;
-	height: auto;
-	position: fixed;
-	width: auto;
-	z-index: 999;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  position: fixed;
+  width: auto;
+  z-index: 999;
 
-	&.top-left {
-		left: 0;
-		top:  0;
-	}
+  &.top-left {
+    left: 0;
+    top:  0;
+  }
 
-	&.top-right {
-		right: 0;
-		top:   0;
-	}
+  &.top-right {
+    right: 0;
+    top:   0;
+  }
 
-	&.bottom-left {
-		bottom: 0;
-		left:   0;
-	}
+  &.bottom-left {
+    bottom: 0;
+    left:   0;
+  }
 
-	&.bottom-right {
-		bottom: 0;
-		right:  0;
-	}
+  &.bottom-right {
+    bottom: 0;
+    right:  0;
+  }
 }
 
 
 .notification {
-	align-items:   center;
-	border-radius: $border-radius;
-	cursor: 	   pointer;
-	display: 	   flex;
-	font-size: 	   0.9em;
-	height: 	   auto;
-	margin: 	   $notification-margin;
-	min-width: $notification-min-width;
-	opacity: 0;
-	padding: 	   $notification-padding;
-	position: 	   relative;
-	width: 		   fit-content;
-	z-index: 	   999;
-	width: 		   -moz-fit-content;
+  align-items: center;
+  border-radius: $border-radius;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.9em;
+  height: auto;
+  margin: $notification-margin;
+  min-width: $notification-min-width;
+  opacity: 0;
+  padding: $notification-padding;
+  position: relative;
+  width: fit-content;
+  z-index: 999;
 
-	transition: opacity 1s ease 0s;
+  transition: opacity 1s ease 0s;
 
-	@include box-shadow(0 0 $notification-margin, 0, 0, 0, 0.2);
-	@include user-select(none);
+  @include box-shadow(0 0 $notification-margin, 0, 0, 0, 0.2);
+  @include user-select(none);
 
-	&:nth-child(n + 2) {
-		margin-top: $notification-padding;
-	}
+  &:nth-child(n + 2) {
+    margin-top: $notification-padding;
+  }
 
-	.icon-container {
-		align-self: baseline;
-		height: 	$notification-icon;
-		margin: 	0;
-		width: 		$notification-icon;
+  .icon-container {
+    align-self: baseline;
+    height: 	$notification-icon;
+    margin: 	0;
+    width: 		$notification-icon;
 
-		svg {
-			height:  $notification-icon;
-			width:   $notification-icon;
-		}
-	}
+    svg {
+      height:  $notification-icon;
+      width:   $notification-icon;
+    }
+  }
 
-	.text-container {
-		padding:    0 $notification-padding;
-		margin-right: $notification-margin;
-		text-align: justify;
+  .text-container {
+    padding:    0 $notification-padding;
+    margin-right: $notification-margin;
+    text-align: justify;
 
-		h6,
-		p {
-			margin-bottom: ($notification-padding / 2);
-			max-width: 	   $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - (2 * $border-thickness);
-			word-wrap: 	   break-word;
-		}
+    h6,
+    p {
+      margin-bottom: ($notification-padding / 2);
+      max-width: 	   $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - (2 * $border-thickness);
+      word-wrap: 	   break-word;
+    }
 
-		p {
-			font-size: 	   0.9em;
-			line-height:   1.4em;
-			margin:        0;
-			margin-bottom: ($notification-padding / 2);
+    p {
+      font-size: 	   0.9em;
+      line-height:   1.4em;
+      margin:        0;
+      margin-bottom: ($notification-padding / 2);
 
-			&.iconless-width {
-				max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - (2 * $border-thickness);
-			}
-		}
+      &.iconless-width {
+        max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - (2 * $border-thickness);
+      }
+    }
 
-		button {
-			font-size:     0.9em;
-			margin-bottom: 0;
-			padding: 	   ($notification-padding / 6) ($notification-padding / 2);
-		}
-	}
+    button {
+      font-size:     0.9em;
+      margin-bottom: 0;
+      padding: 	   ($notification-padding / 6) ($notification-padding / 2);
+    }
+  }
 
-	&.left-border,
-	&.right-border {
-		h6,
-		p {
-			max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - ($border-thickness + $notification-border-thick);
-			&.iconless-width {
-				max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - ($border-thickness + $notification-border-thick);
-			}
-		}
-	}
+  &.left-border,
+  &.right-border {
+    h6,
+    p {
+      max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - $notification-icon - ($border-thickness + $notification-border-thick);
+      &.iconless-width {
+        max-width: $notification-max-width - (2 * $notification-margin) - (4 * $notification-padding) - ($border-thickness + $notification-border-thick);
+      }
+    }
+  }
 
-	.counter {
-		align-items:     center;
-		border-radius:   50%;
-		color: 		     $color-dark-text;
-		display: 	     flex;
-		font-size: 	     0.85em;
-		height: 	     $notification-counter-size;
-		justify-content: center;
-		left: 			 -7px;
-		line-height: 	 100%;
-		position: 		 absolute;
-		top: 			 -5px;
-		width: 			 $notification-counter-size;
-	}
+  .counter {
+    align-items:     center;
+    border-radius:   50%;
+    color: 		     $color-dark-text;
+    display: 	     flex;
+    font-size: 	     0.85em;
+    height: 	     $notification-counter-size;
+    justify-content: center;
+    left: 			 -7px;
+    line-height: 	 100%;
+    position: 		 absolute;
+    top: 			 -5px;
+    width: 			 $notification-counter-size;
+  }
 
-	.close {
-		cursor:   pointer;
-		position: absolute;
-		right:    $notification-margin;
-		top: 	  ($notification-margin / 2);
-	}
+  .close {
+    cursor:   pointer;
+    position: absolute;
+    right:    $notification-margin;
+    top: 	  ($notification-margin / 2);
+  }
 
-	&.info {
-		background-color: $color-info-lighter;
-		border: 		  solid $notification-border-std $color-info-light;
+  &.info {
+    background-color: $color-info-lighter;
+    border: 		  solid $notification-border-std $color-info-light;
 
-		& > .close {
-			color: $color-info;
-		}
+    & > .close {
+      color: $color-info;
+    }
 
-		& > .counter {
-			background: $color-info-lighter;
-			border: 	solid $notification-border-std $color-info;
-		}
+    & > .counter {
+      background: $color-info-lighter;
+      border: 	solid $notification-border-std $color-info;
+    }
 
-		&.top-border    { border-top:    solid $notification-border-thick $color-info; }
-		&.bottom-border { border-bottom: solid $notification-border-thick $color-info; }
-		&.left-border   { border-left:   solid $notification-border-thick $color-info; }
-		&.right-border  { border-right:  solid $notification-border-thick $color-info; }
-	}
+    &.top-border    { border-top:    solid $notification-border-thick $color-info; }
+    &.bottom-border { border-bottom: solid $notification-border-thick $color-info; }
+    &.left-border   { border-left:   solid $notification-border-thick $color-info; }
+    &.right-border  { border-right:  solid $notification-border-thick $color-info; }
+  }
 
-	&.success {
-		background-color: $color-success-lighter;
-		border: 		  solid $notification-border-std $color-success-light;
+  &.success {
+    background-color: $color-success-lighter;
+    border: 		  solid $notification-border-std $color-success-light;
 
-		& > .close {
-			color: $color-success;
-		}
+    & > .close {
+      color: $color-success;
+    }
 
-		& > .counter {
-			background: $color-success-lighter;
-			border: 	solid $notification-border-std $color-success;
-		}
+    & > .counter {
+      background: $color-success-lighter;
+      border: 	solid $notification-border-std $color-success;
+    }
 
-		&.top-border    { border-top:    solid $notification-border-thick $color-success; }
-		&.bottom-border { border-bottom: solid $notification-border-thick $color-success; }
-		&.left-border   { border-left:   solid $notification-border-thick $color-success; }
-		&.right-border  { border-right:  solid $notification-border-thick $color-success; }
-	}
+    &.top-border    { border-top:    solid $notification-border-thick $color-success; }
+    &.bottom-border { border-bottom: solid $notification-border-thick $color-success; }
+    &.left-border   { border-left:   solid $notification-border-thick $color-success; }
+    &.right-border  { border-right:  solid $notification-border-thick $color-success; }
+  }
 
-	&.warning {
-		background-color: $color-warning-lighter;
-		border: solid $notification-border-std $color-warning-light;
+  &.warning {
+    background-color: $color-warning-lighter;
+    border: solid $notification-border-std $color-warning-light;
 
-		& > .close {
-			color: $color-warning;
-		}
+    & > .close {
+      color: $color-warning;
+    }
 
-		& > .counter {
-			background: $color-warning-lighter;
-			border:     solid $notification-border-std $color-warning;
-		}
+    & > .counter {
+      background: $color-warning-lighter;
+      border:     solid $notification-border-std $color-warning;
+    }
 
-		&.top-border    { border-top: 	 solid $notification-border-thick $color-warning; }
-		&.bottom-border { border-bottom: solid $notification-border-thick $color-warning; }
-		&.left-border   { border-left: 	 solid $notification-border-thick $color-warning; }
-		&.right-border  { border-right:  solid $notification-border-thick $color-warning; }
-	}
+    &.top-border    { border-top: 	 solid $notification-border-thick $color-warning; }
+    &.bottom-border { border-bottom: solid $notification-border-thick $color-warning; }
+    &.left-border   { border-left: 	 solid $notification-border-thick $color-warning; }
+    &.right-border  { border-right:  solid $notification-border-thick $color-warning; }
+  }
 
-	&.error {
-		background-color: $color-error-lighter;
-		border: 		  solid $notification-border-std $color-error-light;
+  &.error {
+    background-color: $color-error-lighter;
+    border: 		  solid $notification-border-std $color-error-light;
 
-		& > .close {
-			color: $color-error;
-		}
+    & > .close {
+      color: $color-error;
+    }
 
-		& > .counter {
-			background: $color-error-lighter;
-			border: 	solid $notification-border-std $color-error;
-		}
+    & > .counter {
+      background: $color-error-lighter;
+      border: 	solid $notification-border-std $color-error;
+    }
 
-		&.top-border    { border-top:    solid $notification-border-thick $color-error; }
-		&.bottom-border { border-bottom: solid $notification-border-thick $color-error; }
-		&.left-border   { border-left: 	 solid $notification-border-thick $color-error; }
-		&.right-border  { border-right:  solid $notification-border-thick $color-error; }
-	}
+    &.top-border    { border-top:    solid $notification-border-thick $color-error; }
+    &.bottom-border { border-bottom: solid $notification-border-thick $color-error; }
+    &.left-border   { border-left: 	 solid $notification-border-thick $color-error; }
+    &.right-border  { border-right:  solid $notification-border-thick $color-error; }
+  }
 }

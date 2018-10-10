@@ -21,12 +21,24 @@
         <img src="/static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
         <p>Use this form to sign up, and begin to use ManaZeak<br>If you already have an account, please <a href="{% url 'app:login' %}">log in</a></p>
         <form id="signupForm" action="" method="POST" name="signup">
-            <p><label for="id_username"><b>Username:</b></label>
-            {{ form.username }}</p>
-            <p><label for="id_password"><b>Password:</b></label>
-            {{ form.password1 }}</p>
-            <p><label><b>Repeat password:</b></label>
-            {{ form.password2 }}</p>
+            <p>
+              <label for="id_username">
+                <strong>Username:</strong>
+              </label>
+              {{ form.username }}
+            </p>
+            <p>
+              <label for="id_password">
+                <strong>Password:</strong>
+              </label>
+              {{ form.password1 }}
+            </p>
+            <p>
+              <label>
+                <strong>Repeat password:</strong>
+              </label>
+              {{ form.password2 }}
+            </p>
             <input type="hidden" name="next" value="/" />
             <button type="submit" value="register" id="button">Sign in</button>
             {% csrf_token %}

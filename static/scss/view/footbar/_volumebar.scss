@@ -14,11 +14,6 @@ a.volumebar-expander {
     margin: 0;
   }
 
-  &:hover #volumebar-wrapper {
-    opacity: 1;
-    visibility: visible;
-  }
-
   #volumebar-wrapper {
     background-color: #1f2127;
     border: solid 1px #0e0f14;
@@ -51,6 +46,12 @@ a.volumebar-expander {
   }
 
 
+  &:hover #volumebar-wrapper {
+    opacity: 1;
+    visibility: visible;
+  }
+
+
   #volumebar-container {
     background-color: #aaaabe;
     border: solid 1px #0e0f14;
@@ -61,9 +62,6 @@ a.volumebar-expander {
     position: relative;
     width: 85%;
     height: 5px;
-
-    &:hover > #volumebar-thumb { opacity: 1; }
-    &:hover > #volumebar-current { background-color: $mzk-anti-accent-color; }
 
     #volumebar-current {
       background-color: rgb(255, 0, 0);
@@ -89,5 +87,8 @@ a.volumebar-expander {
       transition: opacity 0.15s ease;
       width: 10px;
     }
+
+    &:hover > #volumebar-current { background-color: $mzk-anti-accent-color; }
+    &:hover > #volumebar-thumb { opacity: 1; }
   }
 }

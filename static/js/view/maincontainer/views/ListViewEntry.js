@@ -8,7 +8,9 @@ class ListViewEntry {
    * @description A ListView item that aim to contain track and its interactivity
    **/
   constructor(options) {
-    if (typeof options !== 'object') { return; }
+    if (typeof options !== 'object') {
+      return;
+    }
     this.artist = options.track.artist || '';
     this.album = options.track.album.NAME || '';
     this.composer = options.track.composer || '';
@@ -31,8 +33,8 @@ class ListViewEntry {
   }
 
   getDom() {
-    let fragment = document.createDocumentFragment();
-    fragment.appendChild(this._dom)
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(this._dom);
     return fragment;
   }
 
@@ -41,16 +43,20 @@ class ListViewEntry {
 
     if (!status) {
       this._dom.classList.remove('selected');
-    }
-
-    else {
+    } else {
       this._dom.classList.add('selected');
     }
   }
 
-  getLowerCaseOf(tag) { return this[tag].toString().toLowerCase(); }
-  get(tag) { return this[tag]; }
-  getIsSelected() { return this._isSelected; }
+  getLowerCaseOf(tag) {
+    return this[tag].toString().toLowerCase();
+  }
+  get(tag) {
+    return this[tag];
+  }
+  getIsSelected() {
+    return this._isSelected;
+  }
 
 }
 

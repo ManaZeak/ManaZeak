@@ -38,7 +38,6 @@ class VolumeBar {
   _events() {
     this._volume.image.addEventListener('click', mzk.toggleMute.bind(mzk));
     this._volume.container.addEventListener('mousedown', this._mouseDown.bind(this));
-    // this._volume.wrapper.addEventListener('mouseover', this._mouseOver.bind(this));
 
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
@@ -51,7 +50,11 @@ class VolumeBar {
   }
 
   _mouseDown(event) {
-    if (!this.isDragging && (event.target.id === 'volumebar-wrapper' || event.target.id === 'volumebar-container' || event.target.id === 'volumebar-current' || event.target.id === 'volumebar-thumb')) {
+    if (!this.isDragging && (event.target.id === 'volumebar-wrapper' ||
+        event.target.id === 'volumebar-container' ||
+        event.target.id === 'volumebar-current' ||
+        event.target.id === 'volumebar-thumb')) {
+
       this.isDragging = true;
       this._moveVolume(event);
       this._showWrapper();
@@ -89,8 +92,8 @@ class VolumeBar {
 
   _moveVolume(event) {
     // Get container bound rectangle and compute difference in px and % (pr)
-    let boundRect = this._volume.container.getBoundingClientRect();
-    let toLeftInPx = event.clientX - boundRect.left; // Client X position minus container left X position equals X variation from container left side
+    const boundRect = this._volume.container.getBoundingClientRect();
+    const toLeftInPx = event.clientX - boundRect.left; // Client X position minus container left X position equals X variation from container left side
     let toLeftInPr = (toLeftInPx * 100) / boundRect.width; // Get width percentage depending on container width
     // OOB protection
     if (toLeftInPr > 100) {
@@ -123,18 +126,18 @@ class VolumeBar {
     volume *= 100;
     // Icon update
     if (volume === 0 || (typeof isMuted === 'boolean' && isMuted === true)) {
-      this._volume.image.src = "/static/img/player/volume-mute.svg";
+      this._volume.image.src = '/static/img/player/volume-mute.svg';
     } else if (volume > 0 && volume < 66) {
-      this._volume.image.src = "/static/img/player/volume-half.svg"
+      this._volume.image.src = '/static/img/player/volume-half.svg';
     } else {
-      this._volume.image.src = "/static/img/player/volume-full.svg";
+      this._volume.image.src = '/static/img/player/volume-full.svg';
     }
     // Current and thumb update
     if (typeof isMuted === 'boolean' && isMuted === true) {
       volume = 0;
     } // To set volume current and thumb at 0% left when muted.
-    this._volume.current.style.width = volume + "%";
-    this._volume.thumb.style.left = volume + "%";
+    this._volume.current.style.width = `${volume}%`;
+    this._volume.thumb.style.left = `${volume}%`;
   }
 }
 

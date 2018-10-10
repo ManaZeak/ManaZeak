@@ -80,9 +80,19 @@ $progress-thumb-height: 9px;
     width: 100%;
 
     svg {
-      -webkit-animation: fadein $footbar-transition ease-in-out 0s;
-        -moz-animation: fadein $footbar-transition ease-in-out 0s;
-          animation: fadein $footbar-transition ease-in-out 0s;
+      animation: $footbar-transition ease-in-out 0s;
+    }
+
+    svg.fade-in {
+      g {
+        // -webkit-animation: fadein $footbar-transition ease-in-out 0s;
+        // -moz-animation: fadein $footbar-transition ease-in-out 0s;
+        animation: fadein $footbar-transition ease-in-out 0s;
+      }
+    }
+
+    svg.fade-out {
+      animation: fadeout $footbar-transition ease-in-out 0s;
     }
   }
 }

@@ -4,22 +4,28 @@ import ScrollBar from '../../../utils/ScrollBar.js';
 
 class ListView {
   /**
-  * @summary ListView for mzk Scene
-  * @author Arthur Beaulieu
-  * @since September 2018
-  * @description ListView that display tracks with customizable columns (size and type) in rows
-  * @param {object} options - The ListView options object
-  * @param {array} options.availableColumns - The ListView available column (not necessarly the ones that are displayed)
-  * @param {array} options.columns - The user columns
-  * @param {object} options.target - The DOM target node to inject ListView in (usually mzk Scene)
-  **/
+   * @summary ListView for mzk Scene
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description ListView that display tracks with customizable columns (size and type) in rows
+   * @param {object} options - The ListView options object
+   * @param {array} options.availableColumns - The ListView available column (not necessarly the ones that are displayed)
+   * @param {array} options.columns - The user columns
+   * @param {object} options.target - The DOM target node to inject ListView in (usually mzk Scene)
+   **/
   constructor(options) {
     this._availableColumns = options.availableColumns;
     this._columns = options.columns;
     this._tracks = [];
     this._target = options.target;
     this._scrollBar = {};
-    this._dom = { fragment: {}, wrapper: {}, header: {}, container: {}, options: {} };
+    this._dom = {
+      fragment: {},
+      wrapper: {},
+      header: {},
+      container: {},
+      options: {}
+    };
 
     this._draggedColumn = null;
 
@@ -55,7 +61,9 @@ class ListView {
     this._dom.wrapper.appendChild(this._dom.options);
     this._dom.fragment.appendChild(this._dom.wrapper);
 
-    setTimeout(() => { this._initHeader(); }, 0); // Wait that header has been added to the DOM
+    setTimeout(() => {
+      this._initHeader();
+    }, 0); // Wait that header has been added to the DOM
   }
 
   _events() {
@@ -79,7 +87,7 @@ class ListView {
   _trackClicked(event) {
     event.stopPropagation(); // Block window click listener
 
-    let targetId = event.target.parentNode.dataset.id;
+    const targetId = event.target.parentNode.dataset.id;
 
     if (!targetId) {
       this.unselectAll();
@@ -91,7 +99,7 @@ class ListView {
       this._click.targetId = targetId;
 
       if (!event.ctrlKey) { // Simple click unselects all
-        let isTargetSelected = this._tracks[targetId].getIsSelected(); // Saving target selection state before unselecting all
+        const isTargetSelected = this._tracks[targetId].getIsSelected(); // Saving target selection state before unselecting all
         this.unselectAll();
         this._tracks[targetId].setSelected(isTargetSelected); // Restore previous state to properly use in Normal click behavior condition
         this._selection.push(parseInt(targetId, 10));
@@ -107,9 +115,7 @@ class ListView {
             if (parseInt(targetId, 10) < this._selection[0]) { // Compare to this._selection[0] since this._selection is always ordered
               start = parseInt(targetId, 10);
               end = this._selection[0];
-            }
-
-            else if (parseInt(targetId, 10) > this._selection[this._selection.length - 1]) { // Same here with greater index in this._selection
+            } else if (parseInt(targetId, 10) > this._selection[this._selection.length - 1]) { // Same here with greater index in this._selection
               start = this._selection[this._selection.length - 1] + 1; // +1  to avoid first item repetition
               end = parseInt(targetId, 10) + 1; // +1 to not forget the targetId too
             }
@@ -121,17 +127,13 @@ class ListView {
 
             this._stopLoading();
           });
-      }
-
-      else { // Normal click behavior
+      } else { // Normal click behavior
         this._startLoading()
           .then(() => {
             if (this._tracks[targetId].getIsSelected()) {
               this._tracks[targetId].setSelected(false);
               this._selection.splice(this._selection.indexOf(targetId), 1);
-            }
-
-            else {
+            } else {
               this._tracks[targetId].setSelected(true);
               this._selection.push(parseInt(targetId, 10));
             }
@@ -143,9 +145,7 @@ class ListView {
       this._click.timeoutId = setTimeout(() => {
         this._click.dbclick = false;
       }, 300); // Double click speed lower than 300ms
-    }
-
-    else {
+    } else {
       this._startLoading()
         .then(() => {
           clearTimeout(this._click.timeoutId);
@@ -157,8 +157,9 @@ class ListView {
         });
     }
 
-    this._selection.sort(function(a,b){return a - b});
-    //console.log(this._selection);
+    this._selection.sort((a, b) => {
+      return (a - b);
+    });
   }
 
   _optionsClicked() {
@@ -171,21 +172,21 @@ class ListView {
 
     // Otherwise, append context, and fill it with its content
     listViewContext = document.createElement('DIV');
-    listViewContext.id ='listview-context';
+    listViewContext.id = 'listview-context';
     this._dom.wrapper.appendChild(listViewContext);
 
     this._fillOptionsContext(listViewContext);
   }
 
   _fillOptionsContext(context) {
-    let activatedColumns = this._checkActivatedColumns();
+    const activatedColumns = this._checkActivatedColumns();
 
-    let checkBoxes = document.createElement('DIV');
+    const checkBoxes = document.createElement('DIV');
     checkBoxes.classList.add('checkbox-container');
 
     for (let i = 0; i < this._availableColumns.length; ++i) {
-      let text = document.createElement('LABEL');
-      let input = document.createElement('INPUT');
+      const text = document.createElement('LABEL');
+      const input = document.createElement('INPUT');
 
       input.id = 'context-' + this._availableColumns[i].name;
       text.innerHTML = this._availableColumns[i].name;
@@ -197,7 +198,7 @@ class ListView {
       }
 
       input.addEventListener('click', (event) => {
-        let name = event.target.id.match(/-(.*)/)[1];
+        const name = event.target.id.match(/-(.*)/)[1];
         let width = '';
 
         this._startLoading()
@@ -208,7 +209,10 @@ class ListView {
                 break;
               }
             }
-            this._toggleColumn({ name: name, width: width });
+            this._toggleColumn({
+              name: name,
+              width: width
+            });
             this._stopLoading();
           });
       });
@@ -217,31 +221,35 @@ class ListView {
       checkBoxes.appendChild(text);
     }
 
-    let stretchAll = document.createElement('BUTTON');
+    const stretchAll = document.createElement('BUTTON');
     stretchAll.innerHTML = 'Stretch All Columns';
     checkBoxes.appendChild(stretchAll);
 
     context.appendChild(checkBoxes);
     context.appendChild(document.createElement('HR'));
 
-    let extendView = document.createElement('IMG');
+    const extendView = document.createElement('IMG');
     extendView.src = '/static/img/controls/right.svg';
     context.appendChild(extendView);
 
-    stretchAll.addEventListener('click', () => { this._stretchAllColumns(); });
-    extendView.addEventListener('click', () => { mzk.view.toggleSceneExtension(); }); // TODO Extend this from AppView class to create
+    stretchAll.addEventListener('click', () => {
+      this._stretchAllColumns();
+    });
+    extendView.addEventListener('click', () => {
+      mzk.view.toggleSceneExtension();
+    }); // TODO Extend this from AppView class to create
   }
 
   _initHeader() {
-    let fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     this._dom.header.style.gridTemplateColumns = this._computeGridTemplateColumns(); // Assign CSS rule
 
     for (let i = 0; i < this._columns.length; ++i) { // Fill header with user's columns
       this._columns[i].order = i; // Assign column order
 
-      let column = document.createElement('DIV');
-      let stretch = document.createElement('IMG');
-      let resize = document.createElement('DIV');
+      const column = document.createElement('DIV');
+      const stretch = document.createElement('IMG');
+      const resize = document.createElement('DIV');
 
       column.classList.add(this._columns[i].name.toLowerCase());
       column.setAttribute('draggable', 'true');
@@ -260,30 +268,27 @@ class ListView {
       // Add header events : Drag'n'Drop, resize and stretch self
       this._handleDragEvents(column);
       this._handleResizeEvents(resize);
-      stretch.addEventListener('click', (event) => { this._stretchColumn(event.target.parentNode) });
+      stretch.addEventListener('click', (event) => {
+        this._stretchColumn(event.target.parentNode);
+      });
     }
 
     this._dom.header.appendChild(fragment);
   }
 
   _handleResizeEvents(handle) {
+    const parent = handle.parentNode;
+    const marker = document.createElement('DIV');
     let grabbed = false;
-    let parent = handle.parentNode;
 
-    let initResize = event => {
-      event.target.parentNode.setAttribute('draggable', 'false');
-      window.addEventListener('mousemove', resize, false);
-      window.addEventListener('mouseup', stopResizing, false);
-    };
-
-    let resize = event => {
+    const resize = event => {
       grabbed = true;
       this._dom.wrapper.appendChild(marker);
       parent.style.width = `${(event.clientX) - (parent.offsetLeft + this._target.offsetLeft)}px`;
       marker.style.left = `${event.clientX - this._target.offsetLeft - 1}px`;
     };
 
-    let stopResizing = event => {
+    const stopResizing = event => {
       this._startLoading()
         .then(() => {
           event.target.parentNode.setAttribute('draggable', 'true');
@@ -307,40 +312,55 @@ class ListView {
         });
     };
 
-    let marker = document.createElement('DIV');
+    const initResize = event => {
+      event.target.parentNode.setAttribute('draggable', 'false');
+      window.addEventListener('mousemove', resize, false);
+      window.addEventListener('mouseup', stopResizing, false);
+    };
+
     handle.addEventListener('mousedown', initResize, false);
     marker.id = 'listview-resize-marker';
   }
 
   _handleDragEvents(column) {
-    let dragStart = e => {
-      if (e.target.getAttribute('draggable') === false) { return; } // Abort drag, resize event is occuring
+    const dragStart = e => {
+      if (e.target.getAttribute('draggable') === false) {
+        return;
+      } // Abort drag, resize event is occuring
       this._draggedColumn = e.target; // Store drag start column
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/html', e.target.outerHTML);
       e.target.classList.add('dragElem');
     };
 
-    let dragOver = event => {
-      if (event.target.getAttribute('draggable') === false) { return; } // Abort drag, resize event is occuring
-      if (event.preventDefault) { event.preventDefault(); } // Necessary. Allows us to drop.
-      if (this._draggedColumn !== event.target) { event.target.classList.add('over'); }
-      event.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+    const dragOver = event => {
+      if (event.target.getAttribute('draggable') === false) {
+        return;
+      } // Abort drag, resize event is occuring
+      if (event.preventDefault) {
+        event.preventDefault();
+      } // Necessary. Allows us to drop.
+      if (this._draggedColumn !== event.target) {
+        event.target.classList.add('over');
+      }
+      event.dataTransfer.dropEffect = 'move'; // See the section on the DataTransfer object.
     };
 
-    let dragLeave = function() {
-      this.classList.remove('over');  // this / e.target is previous target element.
+    const dragLeave = function() {
+      this.classList.remove('over'); // this / e.target is previous target element.
     };
 
-    let dragEnd = event => {
+    const dragEnd = event => {
       // this/e.target is the source node.
       event.target.classList.remove('over');
       event.target.classList.remove('dragElem');
     };
 
-    let drop = event => {
+    const drop = event => {
       // this/e.target is current target element.
-      if (event.stopPropagation) { event.stopPropagation(); } // Stops some browsers from redirecting.
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      } // Stops some browsers from redirecting.
 
       event.target.classList.remove('over');
 
@@ -355,9 +375,7 @@ class ListView {
 
             if (this._draggedColumn.dataset.id < event.target.dataset.id) {
               this._columns.move(this._draggedColumn.dataset.id, event.target.dataset.id - 1); // Since we splice in move, we need to simulate insert
-            }
-
-            else { // No need to test id equality since self-drop is prevented : that._draggedColumn !== this
+            } else { // No need to test id equality since self-drop is prevented : that._draggedColumn !== this
               this._columns.move(this._draggedColumn.dataset.id, event.target.dataset.id);
             }
 
@@ -365,9 +383,7 @@ class ListView {
             this._refreshGridColumn();
             this._stopLoading();
           });
-      }
-
-      else {
+      } else {
         this._draggedColumn = null; //
       }
     };
@@ -395,7 +411,7 @@ class ListView {
     for (let i = 0; i < this._columns.length; ++i) { // Init listview header
       this._columns[i].order = i; // Refresh columns order
 
-      let column = this._dom.header.childNodes[i];
+      const column = this._dom.header.childNodes[i];
       column.style = ''; // Remove old remaining width style value
       column.className = this._columns[i].name.toLowerCase();
       column.childNodes[0].nodeValue = this._columns[i].name; // Don't innerHTML to avoid remove of stretch and resize handles. childNodes[0] is #text node
@@ -403,7 +419,7 @@ class ListView {
     }
   }
 
-    // gridTemplateColumns optionnal (custom set or self set)
+  // gridTemplateColumns optionnal (custom set or self set)
   _refreshGridColumn(gridTemplateColumns) {
     if (!gridTemplateColumns) {
       gridTemplateColumns = this._computeGridTemplateColumns();
@@ -417,7 +433,7 @@ class ListView {
   }
 
   _checkActivatedColumns() {
-    let activatedColumns = [];
+    const activatedColumns = [];
 
     for (let i = 0; i < this._columns.length; ++i) {
       for (let j = 0; j < this._availableColumns.length; ++j) {
@@ -440,7 +456,7 @@ class ListView {
       this._refreshGridColumn();
 
       for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
-        let col = document.createElement('DIV');
+        const col = document.createElement('DIV');
         col.classList.add(column.name.toLowerCase());
         col.innerHTML = this._tracks[this._dom.container.childNodes[i].dataset.id].getLowerCaseOf(column.name.toLowerCase());
 
@@ -471,9 +487,7 @@ class ListView {
   _toggleColumn(column) {
     if (this._checkActivatedColumns().indexOf(column.name) === -1) {
       this._addColumn(column);
-    }
-
-    else {
+    } else {
       this._removeColumn(column);
     }
   }
@@ -481,8 +495,8 @@ class ListView {
   _stretchColumn(column) {
     this._startLoading()
       .then(() => {
+        const index = column.dataset.id; // Column to stretch index
         let sum = 0; // Columns width in % sum
-        let index = column.dataset.id; // Column to stretch index
 
         for (let i = 0; i < this._columns.length; ++i) {
           sum += parseFloat(this._columns[i].width, 10);
@@ -492,22 +506,22 @@ class ListView {
 
         if (sum < 100) { // Expand column
           this._columns[index].width += (100 - sum);
-        }
-
-        else if (sum > 100) { // Retract column
+        } else if (sum > 100) { // Retract column
           if ((sum - 100) < this._columns[index].width) {
             this._columns[index].width -= (sum - 100);
-          }
-
-          else { // Too tight to retract column, raise a warning
-            Errors.raise({ code: 'CANT_STRETCH_COLUMN', frontend: true });
+          } else { // Too tight to retract column, raise a warning
+            Errors.raise({
+              code: 'CANT_STRETCH_COLUMN',
+              frontend: true
+            });
             this._stopLoading();
             return;
           }
-        }
-
-        else { // Layout is 100% stretched to its container, raise an info
-          Errors.raise({ code: 'ALREADY_STRETCH', frontend: true });
+        } else { // Layout is 100% stretched to its container, raise an info
+          Errors.raise({
+            code: 'ALREADY_STRETCH',
+            frontend: true
+          });
           this._stopLoading();
           return;
         }
@@ -521,11 +535,11 @@ class ListView {
   _stretchAllColumns() {
     this._startLoading()
       .then(() => {
+        const equalColumnWidthInPx = (this._dom.wrapper.clientWidth / this._columns.length);
         let alreadyStretched = true; // Assuming by default that that columns have equal width
-        let equalColumnWidthInPx = (this._dom.wrapper.clientWidth / this._columns.length);
 
         for (let i = 0; i < this._columns.length; ++i) { // Loop to find if columns aren't all equal
-          let currentColumnWidthInPx = ((this._dom.wrapper.clientWidth * this._columns[i].width) / 100);
+          const currentColumnWidthInPx = ((this._dom.wrapper.clientWidth * this._columns[i].width) / 100);
           if (currentColumnWidthInPx !== equalColumnWidthInPx) { // One column isn't equals to the others
             alreadyStretched = false; // Break equal width assumption
             break;
@@ -533,7 +547,10 @@ class ListView {
         }
 
         if (alreadyStretched) { // Exit function if columns are already stretched
-          Errors.raise({ code: 'ALREADY_STRETCH', frontend: true });
+          Errors.raise({
+            code: 'ALREADY_STRETCH',
+            frontend: true
+          });
           this._stopLoading();
           return;
         }
@@ -551,39 +568,45 @@ class ListView {
 
   _startLoading() {
     return new Promise(resolve => {
-      let spinner = document.createElement('DIV');
+      const spinner = document.createElement('DIV');
       spinner.id = 'listview-spinner';
       this._dom.wrapper.appendChild(spinner);
-      setTimeout(() => { resolve(); }, 50); // Ensure spinner has started its animation before resolving the promise
+      setTimeout(() => {
+        resolve();
+      }, 50); // Ensure spinner has started its animation before resolving the promise
     });
   }
 
   _stopLoading() {
-    let spinner = this._dom.wrapper.querySelector("#listview-spinner");
-    if (spinner != null) { this._dom.wrapper.removeChild(spinner); }
+    const spinner = this._dom.wrapper.querySelector("#listview-spinner");
+    if (spinner != null) {
+      this._dom.wrapper.removeChild(spinner);
+    }
   }
 
   addTracks(tracks) {
     this._startLoading()
       .then(() => {
-        let fragment = document.createDocumentFragment();
-        let gridTemplateColumns = this._computeGridTemplateColumns(); // CSS grid rule
-        let firstCall = this._tracks.length === 0 ? true : false;
+        const fragment = document.createDocumentFragment();
+        const gridTemplateColumns = this._computeGridTemplateColumns(); // CSS grid rule
+        const firstCall = this._tracks.length === 0 ? true : false;
 
         for (let i = 0; i < tracks.length; ++i) { // Init listview content depending on options object
-          let listViewEntry = new ListViewEntry({ track: tracks[i], datasetId: i, gridTemplateColumns: gridTemplateColumns });
+          const listViewEntry = new ListViewEntry({
+            track: tracks[i],
+            datasetId: i,
+            gridTemplateColumns: gridTemplateColumns
+          });
           this._tracks.push(listViewEntry);
 
           for (let j = 0; j < this._columns.length; ++j) {
-            let col = document.createElement('DIV');
+            const col = document.createElement('DIV');
             col.classList.add(this._columns[j].name.toLowerCase());
             col.dataset.id = j;
 
             if (this._columns[j].name.toLowerCase() === 'duration') {
               col.innerHTML = Utils.secondsToTimecode(listViewEntry.get(this._columns[j].name.toLowerCase()));
-            }
-
-            else {
+            } else {
               col.innerHTML = listViewEntry.get(this._columns[j].name.toLowerCase());
             }
 
@@ -596,7 +619,9 @@ class ListView {
         this._dom.container.appendChild(fragment);
 
         if (firstCall) {
-          this._scrollBar = new ScrollBar({ target: this._dom.container });
+          this._scrollBar = new ScrollBar({
+            target: this._dom.container
+          });
           this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
         }
 
@@ -605,11 +630,23 @@ class ListView {
   }
 
   centerOn(id) {
-    for (var i = 0; i < this._dom.container.childNodes.length; ++i) {
-      if (this._dom.container.childNodes[i].dataset.id == id) { break; } // Can't do === since dataset.id is a string
+    let index = -1;
+    for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
+      if (parseInt(this._dom.container.childNodes[i].dataset.id) === id) {
+        index = i;
+        break;
+      }
     }
-// TODO handle error if i not found.
-    let relativeDelta = this._dom.container.childNodes[i].offsetTop + this._dom.container.childNodes[i].scrollHeight / 2;
+
+    if (index === -1) {
+      Errors.raise({
+        code: 'CANT_CENTER_TRACK',
+        frontend: true
+      });
+      return;
+    }
+
+    const relativeDelta = this._dom.container.childNodes[index].offsetTop + this._dom.container.childNodes[index].scrollHeight / 2;
     this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
   }
 
@@ -631,7 +668,9 @@ class ListView {
       });
   }
 
-  getDOMFragment() { return this._dom.fragment; }
+  getDOMFragment() {
+    return this._dom.fragment;
+  }
 }
 
 export default ListView;

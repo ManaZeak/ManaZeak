@@ -1,9 +1,14 @@
 {
   "errors":{
     "frontend": {
+      "FATAL_ERROR": {
+        "title": "Fatal error",
+        "message": "Something went very wrong in ManaZeak initialization. Please contact support.",
+        "severity": "error"
+      },
       "UNKNOWN_ERROR": {
         "title": "Unknown error",
-        "message": "Something unexpected happened and isn't properly handle in source code.",
+        "message": "Something unexpected happened and isn't properly handled in source code.",
         "severity": "error"
       },
       "ACCESS_FORBIDDEN": {
@@ -21,6 +26,21 @@
         "message": "Something went wrong back side of the moon.",
         "severity": "error"
       },
+      "INVALID_PROGRESS": {
+        "title": "Invalid progress value",
+        "message": "The value given to set the progress is not a number.",
+        "severity": "warning"
+      },
+      "INVALID_VOLUME": {
+        "title": "Invalid volume value",
+        "message": "The value given to set the volume is not a number.",
+        "severity": "warning"
+      },
+      "INVALID_TRACK_URL": {
+        "title": "Invalid track url",
+        "message": "The url given to set the track is not a string, nor an url.",
+        "severity": "warning"
+      },
       "CANT_STRETCH_COLUMN": {
         "title": "Can't stretch this column",
         "message": "The column you want to stretch is too tight to absorb the overflow. Use Stretch All in the view options to restore the table layout.",
@@ -29,6 +49,11 @@
       "ALREADY_STRETCH": {
         "title": "Layout already stretched",
         "message": "Your column layout is already stretched. Resize any column if you want to change the layout.",
+        "severity": "info"
+      },
+      "CANT_CENTER_TRACK": {
+        "title": "Can not center on given track",
+        "message": "The track ID you gave to center the list view on is not valid.",
         "severity": "info"
       }
     },
