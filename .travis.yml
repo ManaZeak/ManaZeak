@@ -11,8 +11,8 @@ install:
   - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-  - sudo sh -c 'echo export PATH=/home/travis/build/Squadella/sonar-scanner-3.2.0.1227-linux/bin:$PATH >> .bashrc'
-  - source .bashrc
+  - sudo sh -c 'echo export PATH=/home/travis/build/Squadella/sonar-scanner-3.2.0.1227-linux/bin:$PATH >> $HOME/.bashrc'
+  - source $HOME/.bashrc
   - cd ./ManaZeak
 
 script: sonar-scanner -D sonar.login=$SONARCLOUDKEY
