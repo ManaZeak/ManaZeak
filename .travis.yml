@@ -6,7 +6,7 @@ python: 3.6
 install:
   - git fetch --unshallow
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python3-pip nodejs npm
+  - sudo apt-get install -qq pylint nodejs npm
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
   - pip3 install -r requirements.txt
   - cd ../
