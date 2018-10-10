@@ -6,9 +6,10 @@ python: 3.6
 install:
   - git fetch --unshallow
   - sudo apt-get update -qq
-  - sudo apt-get install -qq pylint nodejs npm
+  - sudo apt-get install -qq nodejs npm python3-pip
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
   - pip3 install -r requirements.txt
+  - sudo python3 pylint3Installer.py
   - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
