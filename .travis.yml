@@ -10,12 +10,8 @@ install:
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
   - pip3 install -r requirements.txt
   - cd ../
-  - wget https://codeload.github.com/PyCQA/pylint/zip/pylint-2.1.1
-  - ls
-  - unzip pylint-2.1.1
-  - cd ./pylint-pylint-2.1.1
-  - python3 setup.py install
-  - cd ../
+  - wget http://http.us.debian.org/debian/pool/main/p/pylint/pylint3_2.1.1-2_all.deb
+  - sudo dpkg --install pylint3_2.1.1-2_all.deb
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
   - sudo sh -c 'echo export PATH=/home/travis/build/Squadella/sonar-scanner-3.2.0.1227-linux/bin:$PATH >> $HOME/.bashrc'
