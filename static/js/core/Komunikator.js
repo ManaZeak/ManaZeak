@@ -2,6 +2,8 @@
 
 
 class Komunikator {
+
+
   /** @summary <h1>Handle ManaZeak's HTTP requests</h1>
    * @author Arthur Beaulieu
    * @since September 2018
@@ -46,7 +48,6 @@ class Komunikator {
   /** @method
    * @async
    * @name get
-   * @public
    * @memberof Komunikator
    * @description <blockquote><code>GET</code> HTTP request using the fetch API.<br>
    * <code>resolve</code> returns the response as an <code>Object</code>.<br>
@@ -77,7 +78,6 @@ class Komunikator {
   /** @method
    * @async
    * @name getBinaryResponse
-   * @public
    * @memberof Komunikator
    * @description <blockquote><code>GET</code> HTTP request using an <code>XMLHttpRequest</code>, with an override mimetype hack to pass bytes through unprocessed.<br>
    * It was implemented to allow <code>d3.js</code> to render <code>.mood</code> file (used in <a href="./FootBar.html#.renderMoodFile" target="_blank">renderMoodFile</a>).<br>
@@ -105,7 +105,6 @@ class Komunikator {
   /** @method
    * @async
    * @name post
-   * @public
    * @memberof Komunikator
    * @description <blockquote><code>POST</code> HTTP request using the fetch API.<br>
    * Beware that the given options object match the url expectations (browse the backend documentation for further details).<br>

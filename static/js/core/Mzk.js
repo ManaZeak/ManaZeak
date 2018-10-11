@@ -100,7 +100,7 @@ class Mzk {
       this.user = new User();
       this.komunikator.get('user/getInformation/')
         .then(userInfo => {
-          this.user.updateProperties(userInfo);
+          this.user.setMembers(userInfo);
           resolve();
         })
         .catch(errorCode => {
