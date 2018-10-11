@@ -2,6 +2,8 @@
 
 
 class Player {
+
+
   /**
    * @summary Basic audio HTML music player
    * @author Arthur Beaulieu
@@ -427,7 +429,7 @@ class Player {
   }
 
 
-  //  ----  GETTER METHODS   ----  //
+  //  ----  GETTER   ----  //
 
 
   getIsPlaying() {
@@ -460,7 +462,7 @@ class Player {
   }
 
 
-  //  ----  SETTER METHODS   ----  //
+  //  ----  SETTER   ----  //
 
 
   setProgress(percentage) {
