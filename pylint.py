@@ -1,3 +1,3 @@
-#! /usr/bin/pyhton3.6
+#! /usr/bin/pyhton3
 from pylint import run_pylint
 run_pylint()
