@@ -1,124 +1,109 @@
-import Notification from '../utils/Notification.js';
 'use_strict';
 
 
 class User {
-  /**
-   * @summary ManaZeak user class
+
+
+  /** @summary <h1>ManaZeak's user class</h1>
    * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Stores user information and provide a permission tester
-   **/
+   * @since June 2018
+   * @description <blockquote>This class stores everything useful about the user.<br>
+   * It stores its own attributes and provide a method to test the user's permissions (frontend only, the backend does its own test for this).<br>
+   * All user members must be accessed through getters and setters.<br>
+   * This object is a <a href="Mzk.html" target="_blank">Mzk</a>'s attribute, that can be used from anywhere (<code>mzk.user</code>).</blockquote> */
   constructor() {
-    this.id = -1;
-    this.isAdmin = false;
-    this.username = '';
-    this.groupName = '';
-    this.groupID = -1;
-    this.permissions = [];
-    this.inviteCode = -1;
-    this.godFatherCode = -1;
-    this.godFatherName = '';
+    /** @private
+     * @member {String} - The user's god father's invite code */
+    this._godfatherCode = '';
+    /** @private
+     * @member {String} - The user's god father's name */
+    this._godfatherName = '';
+    /** @private
+     * @member {Number} - The user's current group id */
+    this._groupId = -1;
+    /** @private
+     * @member {String} - The user's current group name */
+    this._groupName = '';
+    /** @private
+     * @member {Number} - The user's id */
+    this._id = -1;
+    /** @private
+     * @member {String} - The user's invite code hash */
+    this._inviteCode = '';
+    /** @private
+     * @member {Boolean} - The user's admin status */
+    this._isAdmin = false;
+    /** @private
+     * @member {Array} - The user's permissions (4-grams items, see <code>app/utils.py:populateDB()</code>) */
+    this._permissions = [];
+    /** @private
+     * @member {String} - The user's username */
+    this._username = '';
   }
 
 
   //  ----  PUBLIC METHODS  ----  //
 
 
-  /**
-   * @method
+  /** @method
    * @name hasPermission
-   * @public
    * @memberof User
-   * @author Arthur Beaulieu
-   * @since June 2018
-   * @description Test if the session user has a given permission
-   * @param {string} permissionCode - The permission code to test
-   * @returns {boolean} - The permission status for the user
-   **/
+   * @description <blockquote>Test if the user has a given permission, using the 4-grams defined in <code>app/utils.py:populateDB()</code>.</blockquote>
+   * @param {String} permissionCode - The permission code to test, it must be a four caps letters
+   * @returns {Boolean} True if user is granted, false otherwise */
   hasPermission(permissionCode) {
-    return this.permissions.includes(permissionCode);
+    return this._permissions.includes(permissionCode);
   }
 
 
-  /**
-   * @method
-   * @name updateProperties
-   * @public
+  /** @method
+   * @name setMembers
    * @memberof User
-   * @author Arthur Beaulieu
-   * @since June 2018
-   * @description Updates the user inner properties
-   * @param {object} options - The options to assign to the session user
-   * @param {number} options.USER_ID - The user id
-   * @param {boolean} options.IS_ADMIN - The user admin status
-   * @param {string} options.GROUP_NAME - The user group
-   * @param {number} options.GROUP_ID - The user group id
-   * @param {array} options.PERMISSIONS - The user permissions
-   * @param {number} options.INVITE_CODE - The user invitation code
-   * @param {number} options.GODFATHER_CODE - The user godfather invitation code
-   * @param {string} options.GODFATHER_NAME - The user godfather name
-   **/
-  updateProperties(options) {
-    this.id = options.USER_ID;
-    this.isAdmin = options.IS_ADMIN;
-    this.username = options.USERNAME;
-    this.groupName = options.GROUP_NAME;
-    this.groupId = options.GROUP_ID;
-    this.permissions = options.PERMISSIONS;
-    this.inviteCode = options.INVITE_CODE;
-    this.godFatherCode = options.GODFATHER_CODE;
-    this.godFatherName = options.GODFATHER_NAME;
+   * @description <blockquote>Set members according to the given <code>GET</code> response from url <code>user/getInformation/</code>.</blockquote>
+   * @param {Object} options - The server response object
+   * @param {Number} options.GODFATHER_CODE - The user's godfather invitation code
+   * @param {String} options.GODFATHER_NAME - The user's godfather name
+   * @param {Number} options.GROUP_ID - The user's group id
+   * @param {String} options.GROUP_NAME - The user's group
+   * @param {Number} options.USER_ID - The user's id
+   * @param {Number} options.INVITE_CODE - The user's invitation code
+   * @param {Boolean} options.IS_ADMIN - The user's admin status
+   * @param {Array} options.PERMISSIONS - The user's permissions
+   * @param {String} options.USERNAME - The user's username */
+  setMembers(options) {
+    this._godfatherCode = options.GODFATHER_CODE;
+    this._godfatherName = options.GODFATHER_NAME;
+    this._groupId = options.GROUP_ID;
+    this._groupName = options.GROUP_NAME;
+    this._id = options.USER_ID;
+    this._inviteCode = options.INVITE_CODE;
+    this._isAdmin = options.IS_ADMIN;
+    this._permissions = options.PERMISSIONS;
+    this._username = options.USERNAME;
   }
 
 
-  //  ----  GETTER METHODS  ----  //
+  //  ----  GETTER  ----  //
 
 
-  getID() {
-    return this.id;
+  /** <strong>getter:godfatherName</strong>
+   * @type {String} */
+  get godfatherName() {
+    return this._godfatherName;
   }
 
 
-  getIsAdmin() {
-    return this.isAdmin;
+  /** <strong>getter:id</strong>
+   * @type {Number} */
+  get id() {
+    return this._id;
   }
 
 
-  getUsername() {
-    return this.username;
-  }
-
-
-  getGodFatherName() {
-    return this.godFatherName;
-  }
-
-
-  getGodFatherCode() {
-    return this.godFatherCode;
-  }
-
-
-  /**
-   * @method
-   * @name getInviteCode
-   * @public
-   * @memberof User
-   * @author Arthur Beaulieu
-   * @since October 2018
-   * @description Returns the user invite code if permission is granted
-   * @returns {string} - The user invite code (or <code>Unauthorized</code>)
-   **/
-  getInviteCode() {
-    let inviteCode = 'Unauthorized';
-
-    // User can bypass this in console, but backend will say STFU if trying to invite someone
-    if (this.hasPermission('SPON')) {
-      inviteCode = this.inviteCode;
-    }
-
-    return inviteCode;
+  /** <strong>getter:username</strong>
+   * @type {String} */
+  get username() {
+    return this._username;
   }
 }
 
