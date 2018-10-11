@@ -9,7 +9,9 @@ install:
   - sudo apt-get install -y nodejs npm python3 python3-pip dpkg
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
   - pip3 install -r requirements.txt
+  - sudo chmod 777 pylint.py
   - sudo mv pylint.py /usr/bin/pylint3
+  - cat /usr/bin/pylint3
   - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
