@@ -90,7 +90,7 @@ class FootBar {
    * @param {string} url - The url to fetch the modd file
    **/
   renderMoodFile(url) {
-    mzk.komunikator.getWithOverrideMimeType(url)
+    mzk.komunikator.getBinaryResponse(url)
       .then((responseText) => {
         // Original code from : https://gist.github.com/Valodim/5225460
         const rgb = [...Array((responseText.length / 3))];

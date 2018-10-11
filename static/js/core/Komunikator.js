@@ -2,16 +2,22 @@
 
 
 class Komunikator {
-  /**
-   * @summary ManaZeak backend comunicator
+  /** @summary <h1>Handle ManaZeak's HTTP requests</h1>
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handle all urls calls (GET, POST) and handle errors. This object is meant to be a Mzk attribute, that can be used from any sub-classes.
-   * @param {object} options - The komunikator options object
-   * @param {string} options.csrfToken - The user session csrf token (must be extracted from cookies before)
-   **/
+   * @description <blockquote>This class is the main object to deal with when requesting something from the server.<br>
+   * It handle all urls calls (<code>GET</code>, <code>POST</code>), treat responses or handle errors using <code>Promise</code>.<br>
+   * Because it uses <code>Promise</code>, success and errors are to be handled in the caller function, using <code>.then()</code> and <code>.catch()</code>.<br>
+   * This object is a <a href="Mzk.html" target="_blank">Mzk</a>'s attribute, that can be used from anywhere (<code>mzk.komunikator</code>).<br>
+   * Refer to <code>app/url.py</code> for available urls to control ManaZeak.</blockquote>
+   * @param {Object} options - The komunikator's parameters
+   * @param {String} options.csrfToken - The user's csrf token (must be extracted from browser's cookies before) */
   constructor(options) {
+    /** @private
+     * @member {String} - The user's csrf token */
     this._csrfToken = options.csrfToken;
+    /** @private
+     * @member {Array} - The HTTP headers that are used in <code>GET</code> and <code>POST</code> requests */
     this._headers = [];
 
     this._init();
@@ -21,15 +27,12 @@ class Komunikator {
   //  ----  PRIVATE METHODS  ----  //
 
 
-  /**
-   * @method
+  /** @method
    * @name _init
    * @private
    * @memberof Komunikator
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Fills the header array width content type, accep, csrftoken
-   **/
+   * @description <blockquote>Init the Komunikator class by filling its <code>_headers</code> private member, to use in requests later on.<br>
+   * This method must be called in Komunikator's constructor only.</blockquote> */
   _init() {
     this._headers.push(['Content-Type', 'application/json; charset=UTF-8']); // this._headers[0]
     this._headers.push(['Accept', 'application/json']); // this._headers[1]
@@ -40,17 +43,16 @@ class Komunikator {
   //  ----  PUBLIC METHODS  ----  //
 
 
-  /**
-   * @method
+  /** @method
+   * @async
    * @name get
    * @public
    * @memberof Komunikator
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description GET http request using fetch API. Refeer to <code>url.py</code> for available URLs
-   * @param {string} url - The GET url to fetch data from
-   * @returns {Promise} - A promise that resolve when logic has been executed
-   **/
+   * @description <blockquote><code>GET</code> HTTP request using the fetch API.<br>
+   * <code>resolve</code> returns the response as an <code>Object</code>.<br>
+   * <code>reject</code> returns an error key as a <code>String</code>.</blockquote>
+   * @param {String} url - The <code>GET</code> url to fetch data from (see <code>app/urls.py</code>)
+   * @returns {Promise} The request <code>Promise</code> */
   get(url) {
     return new Promise((resolve, reject) => {
       const options = {
@@ -72,25 +74,27 @@ class Komunikator {
   }
 
 
-  /**
-   * @method
-   * @name getWithOverrideMimeType
+  /** @method
+   * @async
+   * @name getBinaryResponse
    * @public
    * @memberof Komunikator
-   * @author Arthur Beaulieu
-   * @since October 2018
-   * @description GET with hack to pass bytes through unprocessed, returns a bytes array
-   * @param {string} url - The GET url to fetch data from
-   * @returns {Promise} - A promise that resolve when logic has been executed
-   **/
-  getWithOverrideMimeType(url) {
-    return new Promise((resolve) => {
+   * @description <blockquote><code>GET</code> HTTP request using an <code>XMLHttpRequest</code>, with an override mimetype hack to pass bytes through unprocessed.<br>
+   * It was implemented to allow <code>d3.js</code> to render <code>.mood</code> file (used in <a href="./FootBar.html#.renderMoodFile" target="_blank">renderMoodFile</a>).<br>
+   * <code>resolve</code> returns the response as binary data.<br>
+   * <code>reject</code> returns an error key as a <code>String</code>.</blockquote>
+   * @param {String} url - The <code>.mood</code> file url to fetch data from
+   * @returns {Promise} The request <code>Promise</code> */
+  getBinaryResponse(url) {
+    return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
-      xhr.onreadystatechange = function() { // Keep function old js definition since this is the request response object
+      xhr.onreadystatechange = function() { // Keep old js function definition since this is the request response object
         if (this.readyState === 4 && this.status === 200) {
           resolve(this.responseText); // responseText is binary data
+        } else {
+          reject();
         }
       };
       xhr.send();
@@ -98,18 +102,18 @@ class Komunikator {
   }
 
 
-  /**
-   * @method
+  /** @method
+   * @async
    * @name post
    * @public
    * @memberof Komunikator
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description POST http request using fetch API. Refeer to <code>url.py</code> for available URLs
-   * @param {string} url - The POST url to fetch data from
-   * @param {object} data - The JSON object that contains POST parameters
-   * @returns {Promise} - A promise that resolve when logic has been executed
-   **/
+   * @description <blockquote><code>POST</code> HTTP request using the fetch API.<br>
+   * Beware that the given options object match the url expectations (browse the backend documentation for further details).<br>
+   * <code>resolve</code> returns the response as an <code>Object</code>.<br>
+   * <code>reject</code> returns an error key as a <code>String</code>.</blockquote>
+   * @param {String} url - The <code>POST</code> url to fetch data from (see <code>app/urls.py</code>)
+   * @param {Object} data - The <code>JSON</code> object that contains <code>POST</code> parameters
+   * @returns {Promise} The request <code>Promise</code> */
   post(url, data) {
     return new Promise((resolve, reject) => {
       const options = {
