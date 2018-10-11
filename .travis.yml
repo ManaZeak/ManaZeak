@@ -11,7 +11,7 @@ install:
   - pip3 install -r requirements.txt
   - sudo chmod 777 pylint.py
   - sudo mv pylint.py /usr/bin/pylint3
-  - ls /usr/bin
+  - pylint3
   - cd ../
   - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
   - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
