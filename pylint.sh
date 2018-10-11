@@ -1,3 +1,2 @@
 #!/bin/bash
-
-pylint3 "$@"
+python3 -m pylint "$@"
