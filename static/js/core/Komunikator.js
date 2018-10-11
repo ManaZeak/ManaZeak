@@ -93,8 +93,6 @@ class Komunikator {
       xhr.onreadystatechange = function() { // Keep old js function definition since this is the request response object
         if (this.readyState === 4 && this.status === 200) {
           resolve(this.responseText); // responseText is binary data
-        } else {
-          reject();
         }
       };
       xhr.send();
