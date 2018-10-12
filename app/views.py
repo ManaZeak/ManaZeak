@@ -125,3 +125,11 @@ class UserFormLogin(View):
 def logoutView(request):
     logout(request)
     return render(request, 'login.html')
+
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Send the new library HTML template
+#   @param request request given by the front
+#   @return the new library template
+def newLibraryModal(request):
+    return render(request, 'modals/newlibrary.html')

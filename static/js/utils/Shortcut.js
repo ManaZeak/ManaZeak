@@ -55,6 +55,7 @@ class Shortcut {
    * @param {object} event - The Keyboard event from this._addEvents()
    **/
   _testShortcuts(event) {
+      console.log(event)
     if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
       event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
     }
@@ -142,11 +143,11 @@ class Shortcut {
    **/
   _setAllPauseFlag(value) {
     for (let i = 0; i < this._singleKey.length; ++i) {
-      this._setPauseStatus(this._singleKey[i].keyString, value);
+      this._setOnePauseFlag(this._singleKey[i].keyString, value);
     }
 
     for (let i = 0; i < this._multiKey.length; ++i) {
-      this._setPauseStatus(this._multiKey[i].keyString, value);
+      this._setOnePauseFlag(this._multiKey[i].keyString, value);
     }
   }
 
@@ -296,6 +297,7 @@ class Shortcut {
    * @description Resume all shortcuts callback
    **/
   resumeAll() {
+    this._addEvents();
     this._setAllPauseFlag(false);
   }
 
@@ -310,6 +312,7 @@ class Shortcut {
    * @description Pause all shortcuts callback
    **/
   pauseAll() {
+    this._removeEvents();
     this._setAllPauseFlag(true);
   }
 }

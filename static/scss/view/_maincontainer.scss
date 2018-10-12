@@ -4,6 +4,18 @@
 
 #mainContainer {
   background-image: linear-gradient(red, yellow);                
-  height: calc(100% - (#{$topbar-height} + #{$footbar-height});
+  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
   width: 100%;
+
+  #overlay {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    height: calc(100% - #{$topbar-height} - #{$footbar-height});
+    justify-content: center;
+    position: absolute;
+    top: $topbar-height;
+    width: 100%;
+    z-index: 700;
+  }
 }

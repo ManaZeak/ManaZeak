@@ -171,12 +171,16 @@ class Collection {
         return;
       }
 
-      const checkResponse = (response) => {
+      const checkServerResponse = (response) => {
         if (response.DONE) {
           this._activePlaylist = 0;
           this._buildPlaylist(response);
           this._initialScan(this._playlists[0])
-            .then(resolve);
+            .then(() => {
+              Shortcut.resumeAll(); // Restore all shortcuts
+              mzk.view.removeOverlay(); // Remove modal from main container
+              resolve();
+            });
         } else {
           Errors.raise({
             code: response.ERROR_KEY,
@@ -185,22 +189,30 @@ class Collection {
         }
       };
 
-      const options = {
-        URL: '/library/tmp7',
-        NAME: 'MZK2',
-        CONVERT: false
+      const checkModalValues = (formValues) => {
+        const options = {
+          NAME: formValues.name,
+          URL: formValues.path,
+          CONVERT: false
+        };
+
+        mzk.komunikator.post('library/new/', options)
+          .then(response => {
+            checkServerResponse(response);
+          })
+          .catch(response => {
+            Errors.raise({
+              code: response,
+              frontend: true
+            });
+          });
       };
 
-      mzk.komunikator.post('library/new/', options)
-        .then(response => {
-          checkResponse(response);
-        })
-        .catch(response => {
-          Errors.raise({
-            code: response,
-            frontend: true
-          });
-        });
+      Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
+      mzk.view.displayModal({
+          name: 'newlibrary',
+          callback: checkModalValues
+      });
     });
   }
 
