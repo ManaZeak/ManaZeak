@@ -263,6 +263,22 @@ class Mzk {
       durationPlayed = this.model.getPlayer().getProgress();
     }
 
+    this.komunikator.getTemplate('login')
+        .then(html => {
+          console.log(html);var parser = new DOMParser();
+  // Parse the text
+  var doc = parser.parseFromString(html, "text/html");
+
+  // You can now even select part of that html as you would in the regular DOM
+  // Example:
+  // var docArticle = doc.querySelector('article').innerHTML;
+
+  console.log(doc);
+
+        }).catch(err => {
+          console.log(err);
+        });
+
     const options = {
       TRACK_ID: id,
       LAST_TRACK_PATH: this.model.getPlayer().getSource(),

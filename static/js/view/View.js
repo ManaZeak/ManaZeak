@@ -63,7 +63,7 @@ class View {
   changeTrack(track) {
     d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this.togglePlay();
-
+    
     const player = mzk.model.getPlayer();
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.getProgressBar().updateDuration(player.getDuration());

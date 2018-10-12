@@ -67,6 +67,10 @@ class Komunikator {
             resolve(response.json());
           } else if (response.status === 404) {
             reject('URL_NOT_FOUND');
+          } else if (response.status === 403) {
+            reject('ACCESS_FORBIDDEN');
+          } else if (response.status === 500) {
+            reject('INTERNAL_ERROR');
           } else {
             reject('UNKNOWN_ERROR');
           }
@@ -102,6 +106,40 @@ class Komunikator {
 
   /** @method
    * @async
+   * @name getTemplate
+   * @memberof Komunikator
+   * @description <blockquote><code>GET</code> HTTP request using the fetch API.<br>
+   * <code>resolve</code> returns the response as a <code>String</code>.<br>
+   * <code>reject</code> returns an error key as a <code>String</code>.</blockquote>
+   * @param {String} url - The <code>GET</code> url to fetch data from (see <code>app/urls.py</code>)
+   * @returns {Promise} The request <code>Promise</code> */
+  getTemplate(url) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: 'GET',
+        headers: new Headers([this._headers[0]])
+      };
+
+      fetch(url, options)
+        .then(response => {
+          if (response.ok) {
+            resolve(response.text());
+          } else if (response.status === 404) {
+            reject('URL_NOT_FOUND');
+          } else if (response.status === 403) {
+            reject('ACCESS_FORBIDDEN');
+          } else if (response.status === 500) {
+            reject('INTERNAL_ERROR');
+          } else {
+            reject('UNKNOWN_ERROR');
+          }
+        });
+    });
+  }
+
+
+  /** @method
+   * @async
    * @name post
    * @memberof Komunikator
    * @description <blockquote><code>POST</code> HTTP request using the fetch API.<br>
@@ -123,20 +161,14 @@ class Komunikator {
         .then(response => {
           if (response.ok) {
             resolve(response.json());
+          } else if (response.status === 404) {
+            reject('URL_NOT_FOUND');
+          } else if (response.status === 403) {
+            reject('ACCESS_FORBIDDEN');
+          } else if (response.status === 500) {
+            reject('INTERNAL_ERROR');
           } else {
-            switch (response.status) {
-              case 403:
-                reject('ACCESS_FORBIDDEN');
-                break;
-              case 404:
-                reject('URL_NOT_FOUND');
-                break;
-              case 500:
-                reject('INTERNAL_ERROR');
-                break;
-              default:
-                break;
-            }
+            reject('UNKNOWN_ERROR');
           }
         });
     });
