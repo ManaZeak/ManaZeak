@@ -23,6 +23,9 @@ urlpatterns = [
     url(r'^login/$', views.UserFormLogin.as_view(), name='login'),  # display the login page
     url(r'^logout/$', views.logoutView, name='logout'),  # logout the user
 
+    ####################### Modal templates ##########################
+    url(r'^modals/newlibrary/$', views.newLibraryModal, name='newLibrary'),  # send the new library template
+
     ####################### Collection actions ##########################
     url(r'^collection/delete/$', adminTools.deleteCollection, name='deleteCol'),  # delete a playlist or a library
 

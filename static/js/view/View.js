@@ -2,7 +2,9 @@ import TopBar from './topbar/TopBar.js';
 import Aside from './maincontainer/Aside.js';
 import Scene from './maincontainer/Scene.js';
 import FootBar from './footbar/FootBar.js';
+import Modal from '../utils/Modal.js';
 'use_strict';
+
 
 class View {
   /**
@@ -18,6 +20,8 @@ class View {
     this._scene = {};
     this._rightAside = {};
     this._footBar = {};
+
+    this.modal = new Modal();
 
     this._init();
   }
@@ -63,7 +67,7 @@ class View {
   changeTrack(track) {
     d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this.togglePlay();
-    
+
     const player = mzk.model.getPlayer();
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.getProgressBar().updateDuration(player.getDuration());
@@ -152,6 +156,44 @@ class View {
 
   toggleSceneExtension() {
     this._scene.toggleSceneExtension();
+  }
+
+  /** @method
+   * @name addOverlay
+   * @public
+   * @memberof View
+   * @description Add an overlay div (modal style) over the scene
+   * @param {object} node - The DOM node to append to the scene as an overlay
+   **/
+  addOverlay(node) {
+    const overlay = document.createElement('DIV');
+    const fragment = document.createDocumentFragment();
+
+    overlay.id = 'overlay';
+    overlay.appendChild(node);
+    fragment.appendChild(overlay);
+
+    this._mainContainer.appendChild(fragment);
+  }
+
+  removeOverlay() {
+    this._mainContainer.removeChild(document.getElementById('overlay'));
+  }
+
+  displayModal(options) {
+    if (options.name === 'newlibrary') {
+      mzk.komunikator.getTemplate('modals/newlibrary/')
+        .then((response) => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(response, "text/html");
+          const modal = doc.getElementsByClassName('modal')[0];
+          this.addOverlay(modal);
+
+          this.modal.newLibrary({
+            callback: options.callback
+          });
+        });
+    }
   }
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //

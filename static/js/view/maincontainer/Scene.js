@@ -32,22 +32,6 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
-  /**
-   * @method
-   * @name addOverlay
-   * @public
-   * @memberof Scene
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Add an overlay div (modal style) over the scene
-   * @param {object} node - The DOM node to append to the scene as an overlay
-   **/
-  addOverlay(node) {
-    const fragment = document.createDocumentFragment();
-    node.classList.add('overlay');
-    fragment.appendChild(node);
-    this._scene.appendChild(fragment);
-  }
 
   toggleSceneExtension() {
     //TODO : replace this;view w/ this._activeView ie Views array system
