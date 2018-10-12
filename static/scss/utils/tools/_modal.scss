@@ -1,0 +1,109 @@
+.modal {
+  font-family: Helvetica, serif;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 2em red;
+  min-height: 250px;
+  min-width: 350px;
+  max-width: 550px;
+  position: relative;
+
+  div:last-child {
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+  }
+
+  .header {
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	height: 60px;
+
+    p {
+      font-size: 20px;
+      height: 60px;
+      line-height: 60px;
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    span.close {
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      height: 60px;
+      line-height: 60px;
+      top: 0;
+    }
+  }
+
+  .container {
+	background-color: rgba(0, 0, 250, 0.08);
+	min-height: 100px;
+	padding: 25px;
+	top: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+    p.description {
+	  margin: 0;
+	  margin-bottom: 25px;
+	  text-indent: 25px;
+	  text-align: justify;
+    }
+
+    label {
+	  margin-left: 7.5%;
+    }
+
+    input {
+      background-color: white;
+	  margin: 10px 0;
+	  padding: 0 10px;
+      border: none;
+	  height: 35px;
+	  width: 75%;
+	  margin-left: 7.5%;
+    }
+
+    code {
+      padding: 0.2em 0.4em;
+      margin: 0;
+      font-size: 85%;
+      background-color: rgba(27,31,35,0.05);
+      border-radius: 3px;
+      font-family: monospace, monospace;
+      color: #cb345b;
+    }
+  }
+}
+
+.modal .footer {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+
+  button {
+	background-color: purple;
+	border: none;
+	height: 35px;
+	width: auto;
+	padding: 0 20px;
+	border-radius: 15px;
+	cursor: pointer;
+	color: white;
+	text-decoration : none;
+	outline: none;
+	transition: all 0.1s ease 0s;
+
+    &:active {
+	  background-color: blue;
+    }
+
+    &::-moz-focus-inner {
+      border: 0;
+    }
+  }
+}
