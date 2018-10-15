@@ -16,9 +16,8 @@ class View {
   constructor() {
     this._mainContainer = {};
     this._topBar = {};
-    this._leftAside = {};
+    this._aside = {};
     this._scene = {};
-    this._rightAside = {};
     this._footBar = {};
 
     this.modal = new Modal();
@@ -41,13 +40,10 @@ class View {
     this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
 
     this._topBar = new TopBar();
-    this._leftAside = new Aside({
+    this._aside = new Aside({
       side: 'left'
     });
     this._scene = new Scene();
-    this._rightAside = new Aside({
-      side: 'right'
-    });
     this._footBar = new FootBar();
 
     this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume()); // TODO : replace with mzk.getUserVolume() or from localStorage or from opts (serv)
@@ -154,8 +150,17 @@ class View {
     }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
+  extendScene() {
+    this._scene.extend();
+  }
+
+  retractScene() {
+    this._scene.retract();
+  }
+
   toggleSceneExtension() {
-    this._scene.toggleSceneExtension();
+    this._scene.toggleExtension();
+    this._aside.toggleHideShow();
   }
 
   /** @method

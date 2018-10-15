@@ -228,16 +228,9 @@ class ListView {
     context.appendChild(checkBoxes);
     context.appendChild(document.createElement('HR'));
 
-    const extendView = document.createElement('IMG');
-    extendView.src = '/static/img/controls/right.svg';
-    context.appendChild(extendView);
-
     stretchAll.addEventListener('click', () => {
       this._stretchAllColumns();
     });
-    extendView.addEventListener('click', () => {
-      mzk.view.toggleSceneExtension();
-    }); // TODO Extend this from AppView class to create
   }
 
   _initHeader() {

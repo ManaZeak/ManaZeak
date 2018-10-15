@@ -11,7 +11,6 @@ class Aside {
    * @param {string} options.side - The Aside position on screen (`left` or `right` only)
    **/
   constructor(options) {
-    this.side = options.side; // TODO sanitize options
     this.dom = {};
     this._open = {};
     this._close = {};
@@ -31,11 +30,11 @@ class Aside {
    * @description Init the Aside according to its side
    **/
   _init() {
-    this.dom = document.getElementById(this.side + '-aside');
-    this.dom.style[this.side] = 0; // TODO verifier val this side
+    this.dom = document.getElementById('aside');
+    this.dom.style.left = 0;
 
-    this._close = document.getElementById(this.side + '-aside-close');
-    this._open = document.getElementById(this.side + '-aside-open');
+    this._close = document.getElementById('aside-close');
+    this._open = document.getElementById('aside-open');
 
     const a = new AsideEntry({
       title: 'Links'
@@ -75,9 +74,10 @@ class Aside {
    **/
   hide() {
     const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    this.dom.style[this.side] = `-${((this.dom.offsetWidth * 100) / viewportWidth)}%`;
+    this.dom.style.left = `-${((this.dom.offsetWidth * 100) / viewportWidth)}%`;
     this._close.style.opacity = 0;
     this._open.style.opacity = 1;
+    mzk.view.extendScene();
   }
 
   /**
@@ -90,9 +90,18 @@ class Aside {
    * @description Show the aside with animation
    **/
   show() {
-    this.dom.style[this.side] = '0%';
+    this.dom.style.left = 0;
     this._close.style.opacity = 1;
     this._open.style.opacity = 0;
+    mzk.view.retractScene();
+  }
+
+  toggleHideShow() {
+    if (this.dom.style.left === '0px') {
+      this.hide();
+    } else {
+      this.show();
+    }
   }
 }
 
