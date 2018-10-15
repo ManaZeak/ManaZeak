@@ -32,16 +32,22 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
-
-  toggleSceneExtension() {
-    //TODO : replace this;view w/ this._activeView ie Views array system
-    if (this._scene.classList.contains('extended')) {
-      this._scene.classList.remove('extended');
-    } else {
-      this._scene.classList.add('extended');
-    }
-
+  extend() {
+    this._scene.classList.add('extended');
     this.view.refreshView();
+  }
+
+  retract() {
+    this._scene.classList.remove('extended');
+    this.view.refreshView();
+  }
+
+  toggleExtension() {
+    if (this._scene.classList.contains('extended')) {
+      this.retract();
+    } else {
+      this.extend();
+    }
   }
 
   /**

@@ -1,20 +1,16 @@
+$scene-transition: ($transition-duration * 4);
+$margin-offset: 25px; // Offset to match arrow icons size in main container
+
 #scene {
-  background-image: linear-gradient(red, yellow);
-  width: 70%;
+  width: 85%;
+  margin-left: 15%;
+  padding: calc(#{$margin-offset} + #{$margin * 2});
   height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  transition: all 0.5s ease 0s;
-  // box-shadow: 0 0px 0px 0px transparent,
-  //             0 0px 0px 0px transparent,
-  //             12px 0 15px -4px rgba(31, 73, 125, 0.1),
-  //             -12px 0 15px -4px rgba(31, 73, 125, 0.1);
+  transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
 
   &.extended {
-    z-index: 999;
-    transform: translateY(-50px);
     width: 100%;
-    height: calc(100% + 130px);
+    margin-left: 0;
   }
 }

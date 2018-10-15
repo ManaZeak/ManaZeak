@@ -55,7 +55,6 @@ class Shortcut {
    * @param {object} event - The Keyboard event from this._addEvents()
    **/
   _testShortcuts(event) {
-      console.log(event)
     if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
       event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
     }
