@@ -5,7 +5,8 @@ $main-container-icon-margin: (8 * $margin) / 10;
 @import './maincontainer/scene'; // Loading progressbar rules
 
 #mainContainer {
-  background-image: linear-gradient(red, yellow);                
+//  background-image: linear-gradient(red, yellow);
+  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
   height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
   width: 100%;
 

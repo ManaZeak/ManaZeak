@@ -100,7 +100,7 @@ class View {
     d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.getProgressBar().resetProgressBar();
-    this._footBar.getProgressBar().resetTimecode();
+    this._scene.stopPlayback();
   }
 
   /**

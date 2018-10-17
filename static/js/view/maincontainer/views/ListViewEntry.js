@@ -26,6 +26,7 @@ class ListViewEntry {
     this._dom.style.gridTemplateColumns = options.gridTemplateColumns;
 
     this._isSelected = false;
+    this._isPlaying = false;
   }
 
   addColumn(column) {
@@ -45,6 +46,16 @@ class ListViewEntry {
       this._dom.classList.remove('selected');
     } else {
       this._dom.classList.add('selected');
+    }
+  }
+
+  setPlaying(status) {
+    this._isPlaying = status;
+
+    if (!status) {
+      this._dom.classList.remove('playing');
+    } else {
+      this._dom.classList.add('playing');
     }
   }
 

@@ -2,11 +2,11 @@ $aside-transition: ($transition-duration * 4);
 $aside-button-length: 25px;
 
 #aside {
-  background-color: green;
+  background-color: $dark-alpha;
   bottom: $footbar-height;
   position: absolute;
   top: $topbar-height;
-  width: 15%;
+  width: $aside-width;
   left: 0;
   z-index: 600;
 
@@ -28,7 +28,6 @@ $aside-button-length: 25px;
 img#aside-open {
   cursor: pointer;
   height: $aside-button-length;
-  opacity: 1;
   position: absolute;
   top: ($topbar-height + $main-container-icon-margin);
   left: $main-container-icon-margin;

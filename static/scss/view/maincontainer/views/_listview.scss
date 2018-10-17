@@ -23,6 +23,7 @@ $listview-track-height: 40px;
     box-sizing: border-box;
     display: grid;
     font-family: Helvetica, serif;
+    font-weight: 800;
     grid-template-rows: 100%;
     height: $listview-track-height;
     line-height: $listview-track-height;
@@ -112,7 +113,7 @@ $listview-track-height: 40px;
     z-index: 633;
 
     .entry {
-      background: rgb(255, 240, 240);
+      background: $darker-alpha;
       box-sizing: border-box;
       cursor: pointer;
       display: grid;
@@ -121,6 +122,7 @@ $listview-track-height: 40px;
       line-height: $listview-track-height;
       margin-bottom: 2px;
       user-select: none;
+      z-index: 634;
       width: 100%;
 
       transition: all 0.15s ease-out;
@@ -144,7 +146,7 @@ $listview-track-height: 40px;
       }
 
       &:nth-child(2n) {
-        background: rgb(240, 240, 255);
+        background: $dark-alpha;
       }
 
       &:last-child {
@@ -152,7 +154,20 @@ $listview-track-height: 40px;
       }
 
       &.selected {
-        background-color: rgba(0, 0, 0, 0.6);
+        background-color: $darker-alpha-light;
+      }
+
+      &.playing {
+        &::before {
+          content: url(/static/img/player/play2.svg);
+          height: (2 * $listview-track-height) / 4;
+          width: (2 * $listview-track-height) / 4;
+          opacity: 0.5;
+          line-height: 35px;
+          position: absolute;
+          left: 0;
+          z-index: 999;
+        }
       }
     }
   }
