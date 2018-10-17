@@ -36,6 +36,8 @@ class ListView {
       timeoutId: -1
     };
 
+    this._playingTrackId = {};
+
     this._init();
     this._events();
   }
@@ -149,9 +151,12 @@ class ListView {
       this._startLoading()
         .then(() => {
           clearTimeout(this._click.timeoutId);
+          this.removePlayingIcon();
           mzk.changeTrack(this._tracks[targetId].id);
+          this._playingTrackId = targetId;
           this._click.dbclick = false;
           this._tracks[targetId].setSelected(true);
+          this._tracks[targetId].setPlaying(true);
           this._selection.push(parseInt(targetId, 10));
           this._stopLoading();
         });
@@ -451,7 +456,12 @@ class ListView {
       for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
         const col = document.createElement('DIV');
         col.classList.add(column.name.toLowerCase());
-        col.innerHTML = this._tracks[this._dom.container.childNodes[i].dataset.id].getLowerCaseOf(column.name.toLowerCase());
+
+        if (column.name.toLowerCase() === 'duration') {
+          col.innerHTML = Utils.secondsToTimecode(this._tracks[this._dom.container.childNodes[i].dataset.id].get(column.name.toLowerCase()));
+        } else {
+          col.innerHTML = this._tracks[this._dom.container.childNodes[i].dataset.id].get(column.name.toLowerCase());
+        }
 
         this._dom.container.childNodes[i].appendChild(col);
       }
@@ -459,6 +469,7 @@ class ListView {
   }
 
   _removeColumn(column) {
+    console.log(this._columns);
     for (let i = this._columns.length - 1; i >= 0; --i) {
       if (this._columns[i].name === column.name) {
         this._columns.splice(i, 1);
@@ -648,6 +659,13 @@ class ListView {
 
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].setSelected(false);
+    }
+  }
+
+  removePlayingIcon() {
+    if (this._tracks[this._playingTrackId]) { // Testing if a track is flagged playing
+      this._tracks[this._playingTrackId].setPlaying(false); // Remove the flag
+      this._playingTrackId = {};
     }
   }
 

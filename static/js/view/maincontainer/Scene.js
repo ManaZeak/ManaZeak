@@ -15,6 +15,10 @@ class Scene {
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+  stopPlayback() {
+    this.view.removePlayingIcon(); // Warning, this is specific to listView so far
+  }
+
   /**
    * @method
    * @name addView
@@ -34,12 +38,16 @@ class Scene {
 
   extend() {
     this._scene.classList.add('extended');
-    this.view.refreshView();
+    setTimeout(() => {
+      this.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
   retract() {
     this._scene.classList.remove('extended');
-    this.view.refreshView();
+    setTimeout(() => {
+        this.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
   toggleExtension() {
