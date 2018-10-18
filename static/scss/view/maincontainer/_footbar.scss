@@ -7,7 +7,7 @@ $moodbar-height: 25px;
 $footbar-transition: ($transition-duration * 2);
 
 #footbar {
-  background: $darker-solid;
+  background: $bar-alpha;
   bottom: 0;
   display: flex;
   height: $footbar-height; // Defined in utils/tools/_variables.scss
@@ -32,7 +32,6 @@ $footbar-transition: ($transition-duration * 2);
 
   .left {
     justify-content: flex-end;
-    margin-left: $aside-width;
 
     p {
       margin-right: $margin;
