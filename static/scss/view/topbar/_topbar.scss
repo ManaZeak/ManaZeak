@@ -1,14 +1,17 @@
 $topbar-margin: (2 * $margin);
 $topbar-transition: ($transition-duration * 2);
 
-#top-bar {
-  background: $darker-solid;
+#topbar {
+  background: $bar-alpha;
   display: flex;
   height: $topbar-height;
   width: 100%;
   z-index: 700;
 
-  img {
+  @include user-select(none);
+
+
+  img#topbar-logo {
     align-self: center;
     position: absolute;
     left: calc(#{$aside-width / 2} - (#{$mzk-text-logo-width} / 2));
@@ -17,4 +20,17 @@ $topbar-transition: ($transition-duration * 2);
 
     transition: opacity $topbar-transition ease 0s;
   }
+
+  img#topbar-avatar {
+    position: absolute;
+    right: $margin;
+    top: 0;
+    height: $topbar-height;
+    left: inherit;
+    width: auto;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  @import './usermenu';
 }

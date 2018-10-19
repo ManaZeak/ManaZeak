@@ -133,3 +133,10 @@ def logoutView(request):
 #   @return the new library template
 def newLibraryModal(request):
     return render(request, 'modals/newlibrary.html')
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Send the user menu context HTML template
+#   @param request request given by the front
+#   @return the user menu template
+def userMenuContext(request):
+    return render(request, 'modals/usermenu.html')

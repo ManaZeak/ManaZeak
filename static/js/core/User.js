@@ -71,6 +71,7 @@ class User {
    * @param {Array} options.PERMISSIONS - The user's permissions
    * @param {String} options.USERNAME - The user's username */
   setMembers(options) {
+    this._avatarPath = options.AVATAR_PATH;
     this._godfatherCode = options.GODFATHER_CODE;
     this._godfatherName = options.GODFATHER_NAME;
     this._groupId = options.GROUP_ID;
@@ -104,6 +105,10 @@ class User {
    * @type {String} */
   get username() {
     return this._username;
+  }
+
+  get avatarPath() {
+    return this._avatarPath;
   }
 }
 

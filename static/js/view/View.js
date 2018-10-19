@@ -150,17 +150,19 @@ class View {
     }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
-  extendScene() {
-    this._scene.extend();
+
+  extendMainContainer() {
+    this._mainContainer.classList.add('extended');
+    setTimeout(() => {
+      this._scene.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
-  retractScene() {
-    this._scene.retract();
-  }
-
-  toggleSceneExtension() {
-    this._scene.toggleExtension();
-    this._aside.toggleHideShow();
+  retractMainContainer() {
+    this._mainContainer.classList.remove('extended');
+    setTimeout(() => {
+        this._scene.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
   /** @method

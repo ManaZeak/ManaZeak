@@ -1,4 +1,6 @@
+import UserMenu from './UserMenu.js';
 'use_strict';
+
 
 class TopBar {
   /**
@@ -8,7 +10,43 @@ class TopBar {
    * @description Handle all components in the TopBar and all related events
    **/
   constructor() {
+    this._topbar = {};
+    this._avatar = {};
+    this._userMenu = {};
 
+    this._init();
+    this._events();
+  }
+
+  _init() {
+    this._topbar = document.getElementById('topbar');
+    this._avatar = document.getElementById('topbar-avatar');
+    this._userMenu = document.createElement('DIV');
+
+    this._userMenu = new UserMenu({
+      target: this._topbar
+    });
+    this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
+  }
+
+  _events() {
+//    this._dismissUserMenu = this._dismissUserMenu.bind(this);
+
+    this._avatar.addEventListener('click', () => {
+      if (this._topbar.contains(this._userMenu.dom)) {
+        this.closeUserMenu();
+      } else {
+        this.openUserMenu();
+      }
+    });
+  }
+
+  openUserMenu() {
+    this._userMenu.open();
+  }
+
+  closeUserMenu() {
+    this._userMenu.close();
   }
 }
 

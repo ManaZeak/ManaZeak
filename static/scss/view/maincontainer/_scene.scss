@@ -2,15 +2,9 @@ $scene-transition: ($transition-duration * 4);
 $margin-offset: 25px; // Offset to match arrow icons size in main container
 
 #scene {
-  width: calc(100% - #{$aside-width});
-  margin-left: $aside-width;
+  width: 100%;
   padding: calc(#{$margin-offset} + #{$main-container-icon-margin * 2});
-  height: 100%;
+  height: calc(100% - #{$footbar-height});
   transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
-
-  &.extended {
-    width: 100%;
-    margin-left: 0;
-  }
 }

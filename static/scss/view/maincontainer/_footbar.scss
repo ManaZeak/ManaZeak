@@ -11,6 +11,7 @@ $footbar-transition: ($transition-duration * 2);
   bottom: 0;
   display: flex;
   height: $footbar-height; // Defined in utils/tools/_variables.scss
+  justify-content: center;
   position: absolute;
   width: 100%;
   z-index: 700;
@@ -40,6 +41,7 @@ $footbar-transition: ($transition-duration * 2);
 
   .center {
     height: 100%;
+    max-width: 1000px;
     width: calc(100% - (#{$footbar-sides-width} * 2));
 
     #controls-container {
@@ -57,10 +59,10 @@ $footbar-transition: ($transition-duration * 2);
         -moz-user-select: none;
       }
 
-      @import './footbar/volumebar'; // Loading volumebar rules
+      @import '../footbar/volumebar'; // Loading volumebar rules
     }
 
-    @import './footbar/progressbar'; // Loading progressbar rules
+    @import '../footbar/progressbar'; // Loading progressbar rules
   }
 
   .right {
