@@ -13,6 +13,7 @@
     width: auto;
     height: auto;
     padding: 0 $margin;
+    border-radius: 5px;
     background: $dark-solid;
     z-index: 999;
 
@@ -42,7 +43,18 @@
       content: '';
       position: absolute;
       top: -5px;
+      cursor: pointer;
       right: 15px;
     }
+  }
+
+  &::after {
+    width: 40px;
+    height: 40px;
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 0;
+    cursor: pointer;
   }
 }

@@ -9,10 +9,9 @@ class UserMenu {
    * @description Hold all user links to control the main view, logout etc.
    **/
   constructor(options) {
-    this._userMenu = {};
     this._target = options.target;
+    this._userMenu = {};
     this._overlay = {};
-
     this._logOut = {};
 
     this._init();
