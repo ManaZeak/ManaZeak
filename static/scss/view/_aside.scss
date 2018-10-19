@@ -3,12 +3,11 @@ $aside-button-length: 25px;
 
 #aside { // Aside height is greater than main container since we want it to cover the footbar when expanded
   background-color: $dark-solid;
-  bottom: $footbar-height;
-  height: calc(100% + #{$footbar-height});
+  height: calc(100% - #{$topbar-height});
   position: absolute;
-  top: $topbar-height;
   width: $aside-width;
   left: 0;
+  top: $topbar-height;
   z-index: 701; // Just over footbar
 
   transition: left $aside-transition ease-in-out 0s;

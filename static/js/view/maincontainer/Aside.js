@@ -77,7 +77,7 @@ class Aside {
     this.dom.style.left = `-${((this.dom.offsetWidth * 100) / viewportWidth)}%`;
     this._close.style.opacity = 0;
     this._open.style.opacity = 1;
-    mzk.view.extendScene();
+    mzk.view.extendMainContainer();
   }
 
   /**
@@ -93,7 +93,7 @@ class Aside {
     this.dom.style.left = 0;
     this._close.style.opacity = 1;
     this._open.style.opacity = 0;
-    mzk.view.retractScene();
+    mzk.view.retractMainContainer();
   }
 
   toggleHideShow() {

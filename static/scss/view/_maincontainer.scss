@@ -1,24 +1,34 @@
 $main-container-icon-margin: (8 * $margin) / 10;
 
 @import './maincontainer/views/listview'; // Loading list view rules
-@import './maincontainer/aside'; // Loading progressbar rules
 @import './maincontainer/scene'; // Loading progressbar rules
 
 #mainContainer {
 //  background-image: linear-gradient(red, yellow);
   background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
-  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
-  width: 100%;
+  height: calc(100% - (#{$topbar-height}));
+  left: $aside-width;
+  position: absolute;
+  width: calc(100% - #{$aside-width});
 
-  #overlay {
+  transition: all 0.8s ease-in-out 0s;
+
+  #overlay { // Move overlay in scene instead of in container
     align-items: center;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
-    height: calc(100% - #{$topbar-height} - #{$footbar-height});
+    height: calc(100% - #{$topbar-height});
     justify-content: center;
     position: absolute;
     top: $topbar-height;
-    width: 100%;
+    width: calc(100% - #{$aside-width});
     z-index: 700;
   }
+
+  &.extended {
+    width: 100%;
+    left: 0;
+  }
+
+  @import './maincontainer/footbar';
 }

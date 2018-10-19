@@ -107,6 +107,7 @@ $listview-track-height: 40px;
     box-sizing: border-box;
     font-family: Helvetica, serif;
     height: calc(100% - #{$listview-track-height});
+    overflow-x: hidden;
     overflow-y: auto;
     position: relative;
     width: 100%;
@@ -154,18 +155,21 @@ $listview-track-height: 40px;
       }
 
       &.selected {
-        background-color: $darker-alpha-light;
+        background-color: $blue-darker-alpha-light;
       }
 
       &.playing {
+        @include box-shadow(0 0 $margin, 255, 255, 255, 0.1);
+
         &::before {
-          content: url(/static/img/player/play2.svg);
-          height: (2 * $listview-track-height) / 4;
-          width: (2 * $listview-track-height) / 4;
+          content: '';
+          background: url(/static/img/player/play2.svg);
+          height: (3 * $listview-track-height) / 4;
+          width: (3 * $listview-track-height) / 4;
           opacity: 0.5;
-          line-height: 35px;
+          margin-top: $listview-track-height / 8;
           position: absolute;
-          left: 0;
+          left: $listview-track-height / 8;
           z-index: 999;
         }
       }

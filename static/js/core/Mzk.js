@@ -549,6 +549,14 @@ class Mzk {
   }
 
 
+  logOut() {
+    this.komunikator.getBinaryResponse('logout/')
+      .then(() => {
+        location.reload();
+      });
+  }
+
+
   //  ----  GETTERS / SETTERS  ----  //
 
 
