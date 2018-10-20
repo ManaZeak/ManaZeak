@@ -12,6 +12,10 @@ $aside-button-length: 25px;
 
   transition: left $aside-transition ease-in-out 0s;
 
+  p {
+      margin: $margin;
+  }
+
   img#aside-close {
     cursor: pointer;
     height: $aside-button-length;

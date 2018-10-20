@@ -36,7 +36,7 @@ class ListView {
       timeoutId: -1
     };
 
-    this._playingTrackId = {};
+    this._playingTrackIndex = -1;
 
     this._init();
     this._events();
@@ -49,18 +49,16 @@ class ListView {
     this._dom.wrapper = document.createElement('DIV');
     this._dom.header = document.createElement('DIV');
     this._dom.container = document.createElement('DIV');
-    this._dom.options = document.createElement('IMG');
+    this._dom.options = document.getElementById('view-option');
 
     this._dom.wrapper.classList.add('listview');
     this._dom.header.classList.add('header');
     this._dom.container.classList.add('track-container');
     this._dom.options.classList.add('options');
     this._target.style.position = 'relative';
-    this._dom.options.src = '/static/img/controls/right.svg';
 
     this._dom.wrapper.appendChild(this._dom.header);
     this._dom.wrapper.appendChild(this._dom.container);
-    this._dom.wrapper.appendChild(this._dom.options);
     this._dom.fragment.appendChild(this._dom.wrapper);
 
     setTimeout(() => {
@@ -148,23 +146,37 @@ class ListView {
         this._click.dbclick = false;
       }, 300); // Double click speed lower than 300ms
     } else {
-      this._startLoading()
-        .then(() => {
-          clearTimeout(this._click.timeoutId);
-          this.removePlayingIcon();
-          mzk.changeTrack(this._tracks[targetId].id);
-          this._playingTrackId = targetId;
-          this._click.dbclick = false;
-          this._tracks[targetId].setSelected(true);
-          this._tracks[targetId].setPlaying(true);
-          this._selection.push(parseInt(targetId, 10));
-          this._stopLoading();
-        });
+      clearTimeout(this._click.timeoutId);
+      this.removePlayingIcon();
+      this._tracks[targetId].setSelected(true);
+      this._selection.push(parseInt(targetId, 10));
+      mzk.changeTrack(this._tracks[targetId].id);
     }
 
     this._selection.sort((a, b) => {
       return (a - b);
     });
+  }
+
+  changeTrack(id) {
+    let targetId = 0;
+
+    for ( let i = 0; i < this._tracks.length; ++i) {
+      if (this._tracks[i].id === id) {
+        targetId = i;
+        break;
+      }
+    }
+
+    this._startLoading()
+      .then(() => {
+        this._playingTrackIndex !== -1 ? this._tracks[this._playingTrackIndex].setPlaying(false) : undefined;
+
+        this._playingTrackIndex = targetId;
+        this._click.dbclick = false;
+        this._tracks[targetId].setPlaying(true);
+        this._stopLoading();
+      });
   }
 
   _optionsClicked() {
@@ -663,9 +675,9 @@ class ListView {
   }
 
   removePlayingIcon() {
-    if (this._tracks[this._playingTrackId]) { // Testing if a track is flagged playing
-      this._tracks[this._playingTrackId].setPlaying(false); // Remove the flag
-      this._playingTrackId = {};
+    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
+      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
+      this._playingTrackIndex = -1;
     }
   }
 
@@ -681,6 +693,10 @@ class ListView {
 
   getDOMFragment() {
     return this._dom.fragment;
+  }
+
+  getNextTrackId() {
+    return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
   }
 }
 

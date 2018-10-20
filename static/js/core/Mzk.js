@@ -276,7 +276,7 @@ class Mzk {
       })
       .then(() => {
         this.view.changeTrack(this.model.getActiveTrack());
-      });
+      })
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
     //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
@@ -462,7 +462,8 @@ class Mzk {
    * @description Triggered when the player reached the end of a track
    **/
   trackEnded() {
-    this.stopPlayback(); // Only when no repetition is set and end of pl is reached TODO
+    mzk.changeTrack(this.view.getNextTrackId());
+//    this.stopPlayback(); // Only when no repetition is set and end of pl is reached TODO
     // TODO repeat value to get here
     //    this.model.getPlayer().repeatTrack(); // Repeat one
     // If repeat off ->  this.model.stopPlayback(); .then( this.view.restoreDefault();

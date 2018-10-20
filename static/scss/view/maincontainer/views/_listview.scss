@@ -224,16 +224,6 @@ $listview-track-height: 40px;
     }
   }
 
-  .options {
-    cursor: pointer;
-    bottom: $listview-margin;
-    height: $listview-icon;
-    position: absolute;
-    right: $listview-margin;
-    width: $listview-icon;
-    z-index: 666;
-  }
-
   #listview-spinner {
     bottom: $listview-padding;
     height: ($listview-icon + $listview-padding);
