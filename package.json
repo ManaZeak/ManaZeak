@@ -7,6 +7,7 @@
     "debug": "webpack --env.prod=false --progress --display-error-details --verbose --profile",
     "dev": "webpack --env.prod=false --progress",
     "prod": "webpack --env.prod=true --progress",
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
     "frontDoc": "jsdoc -c ./doc/config/jsDoc.json"
   },
   "homepage": "https://manazeak.org",
@@ -46,6 +47,7 @@
     "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
+    "sonar-scanner": "^3.1.0",
     "jsdoc": "^3.5.5",
     "tui-jsdoc-template": "^1.2.2"
   }

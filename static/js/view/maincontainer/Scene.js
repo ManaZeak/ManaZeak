@@ -160,12 +160,6 @@ class Scene {
     this.view = new ListView(options); // TODO : move this
     this.addView(this.view.getDOMFragment());
     this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
-    this.view.addTracks(tracks);
 
     setTimeout(() => {
       this.view.centerOn(2);

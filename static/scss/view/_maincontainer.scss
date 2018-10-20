@@ -17,11 +17,12 @@ $main-container-icon-margin: (8 * $margin) / 10;
     align-items: center;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
-    height: calc(100% - #{$topbar-height});
+    height: calc(100% - #{$footbar-height});
     justify-content: center;
     position: absolute;
-    top: $topbar-height;
-    width: calc(100% - #{$aside-width});
+    left: 0;
+    top: 0;
+    width: 100%;
     z-index: 700;
   }
 
