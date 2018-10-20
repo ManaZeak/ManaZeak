@@ -63,6 +63,7 @@ class View {
   changeTrack(track) {
     d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
     this.togglePlay();
+    this._scene.changeTrack(track.id);
 
     const player = mzk.model.getPlayer();
     this._footBar.renderMoodFile(track.moodbar);
@@ -201,6 +202,10 @@ class View {
           });
         });
     }
+  }
+
+  getNextTrackId() {
+    return this._scene.getNextTrackId();
   }
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //

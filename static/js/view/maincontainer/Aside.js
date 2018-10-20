@@ -36,7 +36,7 @@ class Aside {
     this._open = document.getElementById('aside-open');
 
     const a = new AsideEntry({
-      title: 'Links'
+      title: 'Content to come some day!'
     });
     this.dom.appendChild(a.getDom());
 

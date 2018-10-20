@@ -1,10 +1,22 @@
 $scene-transition: ($transition-duration * 4);
 $margin-offset: 25px; // Offset to match arrow icons size in main container
+$aside-button-length: 25px;
 
 #scene {
   width: 100%;
+  position: relative;
   padding: calc(#{$margin-offset} + #{$main-container-icon-margin * 2});
   height: calc(100% - #{$footbar-height});
   transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
+
+  #view-option {
+    cursor: pointer;
+    bottom: $main-container-icon-margin;
+    height: $aside-button-length;
+    position: absolute;
+    right: $main-container-icon-margin;
+    width: $aside-button-length;
+    z-index: 666;
+  }
 }

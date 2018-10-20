@@ -165,6 +165,14 @@ class Scene {
       this.view.centerOn(2);
     }, 500);
   }
+
+  changeTrack(id) {
+    this.view.changeTrack(id);
+  }
+
+  getNextTrackId() {
+    return this.view.getNextTrackId();
+  }
 }
 
 export default Scene;
