@@ -4,10 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Wish
 from app.utils import checkPermission
 from app.wallet import rewardWish
+
+## @package app.wish
+#   This package is used for operations about wishes.
+#   Wishes are messages to the administrator created by the user the main purpose is to suggest songs.
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -34,7 +38,6 @@ def createWish(request):
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, createWish)
     return JsonResponse(data)
-
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -74,7 +77,6 @@ def getWishes(request):
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getWishes)
     return JsonResponse(data)
-
 
 
 @login_required(redirect_field_name='login.html', login_url='app:login')

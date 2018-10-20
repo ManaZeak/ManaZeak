@@ -1,13 +1,18 @@
 import json
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.dao import getPlaylistTracks, createViewForLazy, lazyJsonGenerator, deleteView
-from app.errors import ErrorEnum, errorCheckMessage
+from app.collection.playlistManager import getPlaylistInfo
+from app.dao import getPlaylistTracksFromView, createViewForLazy, lazyJsonGenerator, deleteView
+from app.errors.errors import ErrorEnum, errorCheckMessage
+from app.errors.exceptions import CreationException
 from app.models import Playlist, Track
 from app.utils import checkPermission
+
+logger = logging.getLogger('django')
 
 
 # Create an empty playlist
@@ -140,7 +145,8 @@ def simplifiedLazyLoadingPlaylist(request):
             try:
                 reqNumber = int(strip_tags(response['REQUEST_NUMBER']))
             except ValueError:
-                return JsonResponse(errorCheckMessage(False, ErrorEnum.VALUE_ERROR, simplifiedLazyLoadingPlaylist, user))
+                return JsonResponse(
+                    errorCheckMessage(False, ErrorEnum.VALUE_ERROR, simplifiedLazyLoadingPlaylist, user))
             nbTracks = 300
             reqNumber *= nbTracks
             if Playlist.objects.filter(id=playlistId).count() == 1:
@@ -152,14 +158,19 @@ def simplifiedLazyLoadingPlaylist(request):
                         if playlist.refreshView:
                             createViewForLazy(playlist)
                     else:
-                        return JsonResponse(errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
+                        return JsonResponse(
+                            errorCheckMessage(False, ErrorEnum.PERMISSION_ERROR, simplifiedLazyLoadingPlaylist, user))
                 # Checking if the user is asking possible tracks
                 if playlist.track.all().count() > reqNumber:
-                    trackSet = getPlaylistTracks(playlist, nbTracks, reqNumber)
+                    trackSet = getPlaylistTracksFromView(playlist, nbTracks, reqNumber)
                     data = []
+                    albumPositionMap = {}
+                    artistPositionMap = {}
                     for row in trackSet:
-                        data.append(lazyJsonGenerator(row))
-                    data = dict({'RESULT': data})
+                        lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap)
+                    data = {
+                        'RESULT': data,
+                    }
                     data = {**data, **errorCheckMessage(True, None, simplifiedLazyLoadingPlaylist)}
                 else:
                     data = errorCheckMessage(False, None, simplifiedLazyLoadingPlaylist)
@@ -172,40 +183,6 @@ def simplifiedLazyLoadingPlaylist(request):
     return JsonResponse(data)
 
 
-# Send basic data about the playlist
-@login_required(redirect_field_name='login.html', login_url='app:login')
-def getPlaylistInfo(request):
-    if request.method == 'POST':
-        user = request.user
-        response = json.loads(request.body)
-        if 'PLAYLIST_ID' in response:
-            playlistId = strip_tags(response['PLAYLIST_ID'])
-            if Playlist.objects.filter(id=playlistId).count() == 1:
-                playlist = Playlist.objects.get(id=playlistId)
-                artists = set()
-                genres = set()
-                bitRate = 0
-                for track in playlist.track:
-                    artists.add(track.artist)
-                    genres.add(track.genre)
-                    bitRate += track.bitRate
-                bitRate = bitRate / len(playlist.track)
-                data = {
-                    'TRACK_TOTAL': playlist.track.count(),
-                    'ARTIST_TOTAL': len(artists),
-                    'GENRE_TOTAL': len(genres),
-                    'AVERAGE_BIT_RATE': bitRate,
-                }
-                data = {**data, **errorCheckMessage(True, None, getPlaylistInfo)}
-            else:
-                data = errorCheckMessage(False, ErrorEnum.DB_ERROR, getPlaylistInfo)
-        else:
-            data = errorCheckMessage(False, ErrorEnum.BAD_FORMAT, getPlaylistInfo, user)
-    else:
-        data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getPlaylistInfo)
-    return JsonResponse(data)
-
-
 # Return the time length of a playlist
 def getTotalLength(playlist):
     tracks = playlist.track.all()
@@ -215,45 +192,30 @@ def getTotalLength(playlist):
     return totalDuration
 
 
-# Return all the id of the user playlists
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## This function is used to get all the information about the available playlist for a user
+#   @param request a GET request from the front.
 def getUserPlaylists(request):
     # This function is available for all users even banned one
     if request.method == 'GET':
         user = request.user
-        playlists = Playlist.objects.filter(user=user, isLibrary=False)
-        playlistNames = []
-        playlistIds = []
-        isLibrary = []
-        playlistDescriptions = []
 
-        # Adding global libraries
-        libraries = Playlist.objects.filter(isLibrary=True)
-        for library in libraries:
-            playlistNames.append(library.name)
-            playlistIds.append(library.id)
-            isLibrary.append(True)
-            playlistDescriptions.append(library.description)
+        # Getting all the available playlists
+        playlists = Playlist.objects.filter(isPublic=True) | \
+                    Playlist.objects.filter(isLibrary=True) | \
+                    Playlist.objects.filter(user=user)
 
-        # Adding User playlists
-        for playlist in playlists:
-            playlistNames.append(playlist.name)
-            playlistIds.append(playlist.id)
-            isLibrary.append(False)
-            playlistDescriptions.append(playlist.description)
-
-        if len(playlistIds) == 0:
-            data = errorCheckMessage(False, None, getUserPlaylists)
-        else:
-            # TODO : use JS0N convention
-            data = {
-                'NUMBER': len(playlistNames),
-                'PLAYLIST_NAMES': playlistNames,
-                'PLAYLIST_IDS': playlistIds,
-                'PLAYLIST_IS_LIBRARY': isLibrary,
-                'PLAYLIST_DESCRIPTIONS': playlistDescriptions,
-            }
-            data = {**data, **errorCheckMessage(True, None, getUserPlaylists)}
+        playlistsInfo = []
+        try:
+            for playlist in playlists:
+                playlistsInfo.append(getPlaylistInfo(playlist, user))
+        except CreationException:
+            # If something when wrong stop the process and send an error to the front
+            return JsonResponse(errorCheckMessage(False, ErrorEnum.DB_ERROR, getUserPlaylists))
+        data = {
+            'COLLECTION': playlistsInfo
+        }
+        data = {**data, **errorCheckMessage(True, None, getUserPlaylists, user)}
     else:
         data = errorCheckMessage(False, ErrorEnum.BAD_REQUEST, getUserPlaylists)
     return JsonResponse(data)

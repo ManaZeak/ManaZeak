@@ -1,0 +1,162 @@
+
+// Old mzk values ::
+
+// Background colors
+$mzk-bg-light:        rgba(64, 64, 72, 1);
+$mzk-bg-normal:       rgba(44, 44, 48, 1);
+$mzk-bg-alt:          rgba(41, 41, 45, 1);
+$mzk-bg-strong:       rgba(31, 33, 39, 1);
+$mzk-bg-darker:       rgba(14, 15, 20, 1);
+$mzk-bg-alpha-darker: rgba(14, 15, 20, 0.66);
+$mzk-bg-alpha-black:  rgba(0, 0, 0, 0.8);
+// Text colors
+$mzk-text:       rgba(170, 170, 190, 1);
+$mzk-text-light: rgba(235, 235, 255, 1);
+// App colors
+$mzk-accent-color:      rgba(255, 0, 0, 0.8);
+$mzk-anti-accent-color: rgba(0, 0, 255, 0.8);
+// Collection colors
+$mzk-collection-library:   rgba(255, 0, 0, 0.8);
+$mzk-collection-playlist:  rgba(0, 0, 255, 0.8);
+$mzk-collection-favorites: rgba(0, 255, 0, 0.8);
+// Std colors
+$mzk-red:   rgba(255, 0, 0, 1);
+$mzk-green: rgba(0, 255, 0, 1);
+$mzk-blue:  rgba(0, 0, 255, 1);
+
+$mzk-animation-duration: 0.2s;
+
+$mzk-border-color:     $mzk-bg-darker;
+$mzk-border-color-neg: $mzk-text;
+$mzk-border-width:     1px;
+$mzk-border-radius:    3px;
+$mzk-padding:          10px;
+$mzk-margin:           10px;
+
+html, body {
+  color: $lighter-solid;
+  font-family: Segoe, Helvetica, serif;
+  height: 100%;
+  line-height: 1;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+input[type=text],
+input[type=password] {
+    background:    transparent;
+    border:        0;
+    border-bottom: solid $mzk-border-width $mzk-text;
+    color:         $mzk-text;
+    padding:       $mzk-padding / 2;
+    text-align:    center;
+    transition:    $mzk-animation-duration;
+
+    &:active,
+    &:focus {
+        color: $mzk-text-light;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+        border-bottom: solid 1px $mzk-text-light;
+    }
+}
+
+button {
+    background:    transparent;
+    margin:        25px 10px;
+    padding:       10px 25px;
+    color:         $mzk-text;
+    border-radius: 6px;
+    border:        solid 1px $mzk-text;
+    cursor:        pointer;
+    transition:    $mzk-animation-duration;
+
+    &:active,
+    &:focus,
+    &:hover {
+        border:     solid 1px $mzk-text-light;
+        box-shadow: 0 0 1px $mzk-text-light;
+        color:      $mzk-text-light;
+    }
+}
+
+textarea {
+    background:    transparent;
+    border:        solid 1px $mzk-text;
+    border-radius: $mzk-border-radius;
+    box-sizing:    border-box;
+    color:         $mzk-text;
+    padding:       $mzk-padding / 2;
+    resize:        none;
+    transition:    0.2s ease;
+
+    &:active,
+    &:focus,
+    &:hover {
+        border:     solid 1px $mzk-text-light;
+        box-shadow: 0 0 1px $mzk-text-light;
+        color:      $mzk-text-light;
+    }
+}
+
+/* Checkbox from https://codepen.io/zFunx/pen/dWbevd */
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label {
+  cursor: pointer;
+  display: block;
+  margin: 7px;
+  padding: 0;
+
+  &:before {
+    border: 0.1em solid #000;
+    border-radius: 0.2em;
+    color: transparent;
+    content: "\2714";
+    display: inline-block;
+    height: 1em;
+    line-height: 1em;
+    margin-right: 7px;
+    transition: .2s;
+    vertical-align: top;
+    width: 1em;
+  }
+
+  &:active:before {
+    transform: scale(0);
+  }
+}
+
+input[type=checkbox]:disabled + label:before {
+  transform: scale(1);
+  border-color: #aaa;
+}
+
+input[type=checkbox]:checked + label:before {
+  background-color: MediumSeaGreen;
+  border-color: MediumSeaGreen;
+  color: #fff;
+}
+
+input[type=checkbox]:checked:disabled + label:before {
+  transform: scale(1);
+  background-color: #bfb;
+  border-color: #bfb;
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}

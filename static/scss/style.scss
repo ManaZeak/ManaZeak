@@ -1,40 +1,11 @@
+/*
+  z-index :
+    600 - Scene
+    700 - Top/Foot, Asides
+    900 - Notification
+*/
+
 @import 'utils/tools';
-@import 'modals/modal';
-@import 'components/topbar';
-@import 'components/footbar';
-@import 'components/searchbar';
-@import 'views/views';
-
-html, body {
-    color:          $mzk-text;
-    display:        flex;
-    flex-direction: column;
-    font-family:    Helvetica, serif;
-    height:         100%;
-    margin:         0;
-    overflow:       hidden;
-    padding:        0;
-    width:          100%;
-}
-
-.mzk-main-container {
-    background: $mzk-bg-normal;
-    flex:       1 1 auto;
-    min-height: 0;
-    width:      100%;
-    position:   relative;
-
-    & > .mzk-view {
-        position: absolute;
-        top:      0;
-        left:     0;
-        right:    0;
-        bottom:   0;
-        overflow: auto;
-
-        &.mzk-view-hide {
-            visibility: hidden;
-        }
-    }
-
-}
+@import 'view/topbar/topbar';
+@import 'view/maincontainer';
+@import 'view/aside';

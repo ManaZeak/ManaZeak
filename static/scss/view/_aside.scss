@@ -1,0 +1,43 @@
+$aside-transition: ($transition-duration * 4);
+$aside-button-length: 25px;
+
+#aside { // Aside height is greater than main container since we want it to cover the footbar when expanded
+  background-color: $dark-solid;
+  height: calc(100% - #{$topbar-height});
+  position: absolute;
+  width: $aside-width;
+  left: -$aside-width;
+  top: $topbar-height;
+  z-index: 701; // Just over footbar
+
+  transition: left $aside-transition ease-in-out 0s;
+
+  p {
+      margin: $margin;
+  }
+
+  img#aside-close {
+    cursor: pointer;
+    height: $aside-button-length;
+    opacity: 1;
+    position: absolute;
+    top: $main-container-icon-margin;
+    right: $main-container-icon-margin;
+    width: $aside-button-length;
+
+    transition: opacity $aside-transition ease-out 0s;
+  }
+}
+
+img#aside-open {
+  cursor: pointer;
+  height: $aside-button-length;
+  position: absolute;
+  top: ($topbar-height + $main-container-icon-margin);
+  left: $main-container-icon-margin;
+  width: $aside-button-length;
+  z-index: 700;
+  opacity: 1;
+
+  transition: opacity $transition-duration ease-in 0s;  // time / 5
+}

@@ -1,0 +1,47 @@
+{
+  "plugins": ["plugins/markdown"],
+  "recurseDepth": 10,
+  "source": {
+    "include": ["./static/js"],
+    "exclude": ["./static/js/dist/manazeak.bundle.js"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "name": "ManaZeak",
+    "footerText": "&nbsp;&nbsp;ManaZeak is love",
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "logo": {
+      "url": "https://manazeak.org/static/img/logo/manazeak-text.svg",
+      "width": "auto",
+      "height": "13px",
+      "link": "https://github.com/Squadella/ManaZeak"
+    },
+    "default": {
+      "staticFiles": {
+        "include": [
+          "static/"
+        ]
+      }
+    },
+    "css": [
+      "doc/jsDoc.style.css"
+    ]
+  },
+  "opts": {
+    "template": "node_modules/tui-jsdoc-template",
+    "destination": "./doc/frontend",
+    "readme": "./README.md",
+    "package": "./package.json",
+    "access": "all",
+    "recurse": true,
+    "verbose": true,
+    "private": true
+  }
+}

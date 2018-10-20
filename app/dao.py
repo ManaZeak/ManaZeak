@@ -6,10 +6,20 @@ from datetime import datetime
 
 from django.db import connection
 
-from app.models import Album, Artist, Genre, Track
+from app.models import Album, Artist, Genre
 
 
-# Import album into the database in bulk mode
+# TODO: a séparer en :viewmanager, playlist action, import action
+
+## @package app.dao
+# package containing the manual operations on the database
+
+## Import a group of albums into the database in bulk mode
+#   @param album the set of albums existing in the tracks to import
+#   @param artists the artists existing in the set to import
+#   @param totalTrack dict associating album title and track numbers
+#   @param totalDisc dict associating album title and disc numbers
+#   @return A dict containing the album title associated with the album id
 def addAlbumBulk(albums, artists, totalTrack, totalDisc):
     albumReference = {"": Album.objects.get(title=None)}
     newAlbums = {}
@@ -76,7 +86,12 @@ def addAlbumBulk(albums, artists, totalTrack, totalDisc):
     return {**albumReference, **newAlbums}
 
 
-# Import track into the database in bulk mode
+## Import track into the database in bulk mode.
+#   @param tracks the tracks objects.
+#   @param artists the artist dict association the names and the ids.
+#   @param albums the album dict association the albums title and the ids.
+#   @param genres the genre associated with their ids.
+#   @param playlistId the id of the playlist the track are added to.
 def addTrackBulk(tracks, artists, albums, genres, playlistId):
     referenceTracks = {}
 
@@ -153,6 +168,9 @@ def addTrackBulk(tracks, artists, albums, genres, playlistId):
     virtualFile.close()
 
 
+## Add new artists to the database in bulk mode
+#   @param artists the set of the artists names
+#   @return a dict associating the artists names with their ids
 def addArtistBulk(artists):
     artistReference = {"": Artist.objects.get(name=None).id}
     newArtist = {}
@@ -200,7 +218,9 @@ def addArtistBulk(artists):
     return {**artistReference, **newArtist}
 
 
-# With a given set add the missing genre to the database and return a dict with name:id
+## With a given set add the missing genre to the database and return a dict with name:id
+#   @param genres the set of the genres to be added
+#   @return A dict associating the genre name with their id
 def addGenreBulk(genres):
     genreReference = {"": Genre.objects.get(name=None).id}
     newGenre = {}
@@ -248,6 +268,7 @@ def addGenreBulk(genres):
     return {**genreReference, **newGenre}
 
 
+##
 def getViewName(playlist):
     return hashlib.md5(str(playlist.user.username).encode("ascii", "ignore") +
                        str(playlist.name).encode("ascii", "ignore") +
@@ -273,66 +294,20 @@ def createViewForLazy(playlist):
     # Creating the hash for the view name
     viewName = getViewName(playlist)
     sql = """
-            CREATE MATERIALIZED VIEW "%s" (track_id, track_location, track_title, track_year, track_composer,
-            track_performer, track_number, track_bpm, track_lyrics, track_comment, track_bitRate, track_bitRateMode,
-            track_sampleRate, track_duration, track_discNumber, track_size, track_lastModified, track_cover,
-            track_fileType_id, track_mood, track_download_counter, album_title, genre_id, genre_name, album_id,
-             artist_name, artist_id, album_artist_id, album_artist_name)
-              AS SELECT *, row_number() OVER() AS local_id FROM (SELECT trck_id, trk_loc, trck_tit, trck_year,
-              trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr, trck_com,
-              track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_dnum, trck_siz, trck_lastM, trck_cov,
-              trck_play, trck_mood, trck_dl, albumTitle,gen_id, genreName, alb_id,
-              string_agg(DISTINCT artistName, ',') AS art_name,
-              string_agg(DISTINCT art_id::TEXT, ',') AS art_id,
-              string_agg(DISTINCT album_artist_id::TEXT, ',') AS alb_art,
-              string_agg(DISTINCT album_artist_name, ',') AS alb_art_name
-            FROM (
-                  SELECT * FROM
-                    (
-                      SELECT
-                        app_track.id                AS trck_id,
-                        app_track.location          AS trk_loc,
-                        app_track.title             AS trck_tit,
-                        app_track.year              AS trck_year,
-                        app_track.composer          AS trck_comp,
-                        app_track.performer         AS trk_perf,
-                        app_track.number            AS trck_num,
-                        app_track.bpm               AS trk_bpm,
-                        app_track.lyrics            AS trck_lyr,
-                        app_track.comment           AS trck_com,
-                        app_track."bitRate"         AS track_bit_rate,
-                        app_track."bitRateMode"     AS trck_bitmode,
-                        app_track."sampleRate"      AS trck_sampRate,
-                        app_track.duration          AS trck_dur,
-                        app_track."discNumber"      AS trck_dnum,
-                        app_track.size              AS trck_siz,
-                        app_track."lastModified"    AS trck_lastM,
-                        app_track."coverLocation"   AS trck_cov,
-                        app_track."playCounter"     AS trck_play,
-                        app_track.moodbar           AS trck_mood,
-                        app_track."downloadCounter" AS trck_dl,
-                        *
-                      FROM app_track
-                        INNER JOIN (SELECT name AS album_artist_name, a3.id AS album_artist_id, title AS albumTitle, 
-                        app_album.id AS alb_id FROM app_album INNER JOIN app_album_artist a ON app_album.id = a.album_id
-                        INNER JOIN app_artist a3 ON a.artist_id = a3."id") a ON app_track.album_id = alb_id
-                        INNER JOIN (SELECT
-                                      name AS genreName,
-                                      id   AS gen_id
-                                    FROM app_genre) a2 ON app_track.genre_id = gen_id
-                        INNER JOIN (SELECT
-                                      name          AS artistName,
-                                      app_artist.id AS art_id
-                                    FROM app_artist) a4 INNER JOIN app_track_artist a3 ON art_id = a3.artist_id
-                          ON app_track.id = a3.track_id
-                    ) test
-                  INNER JOIN (SELECT * FROM app_playlist 
-                  INNER JOIN app_playlist_track t ON app_playlist.id = t.playlist_id
-                  WHERE app_playlist.id = %s) playlists ON trck_id = playlists.track_id
-            ) request
-        GROUP BY trck_id, trk_loc, trck_tit, trck_year, genreName, trck_comp, trk_perf, trck_num, trk_bpm, trck_lyr,
-         trck_com, track_bit_rate, trck_bitmode,trck_sampRate, trck_dur, trck_siz, trck_lastM, trck_cov, trck_play,
-          trck_mood, trck_dl, albumTitle, gen_id, trck_dnum, alb_id ORDER BY art_name, albumTitle,trck_num) AS result;
+            CREATE MATERIALIZED VIEW "%s" (track_id, track_title, track_year, composer, performer, bit_rate, duration, 
+            cover, artists_names, artists_ids, genre_name, album_id, album_title, track_moodbar) AS SELECT *, 
+            row_number() OVER() AS local_id FROM ( SELECT track.id, track.title, year, composer, performer, "bitRate", 
+            duration, "coverLocation", string_agg(artist.name,  ';' ORDER BY artist.name) concatArtName, 
+              string_agg(artist.id::character varying,';' ORDER BY artist.name) concatArtId, alb.title, genre.name,
+               track.album_id, track.moodbar FROM app_track track
+                left join app_album alb on track.album_id = alb.id
+                left join app_album_artist on alb.id = app_album_artist.album_id
+                left join app_artist artist on app_album_artist.artist_id = artist.id
+                left join app_genre genre on track.genre_id = genre.id
+                left join app_playlist_track playlist on track.id = playlist.track_id
+                where playlist.playlist_id = %s
+              GROUP BY alb.title, alb.title, track.title, number, "bitRate", track.id, genre.name
+              ORDER BY concatArtName, alb.title, number) as result;
         """ % (viewName, '%s')
     with connection.cursor() as cursor:
         cursor.execute(sql, [str(playlist.id)])
@@ -346,39 +321,57 @@ def createViewForLazy(playlist):
     playlist.save()
 
 
-# Parse the raw sql query
-def lazyJsonGenerator(row):
-    splicedArtistName = row[25].split(",")
-    splicedArtistId = row[26].split(",")
-    artists = []
+## Parse the raw sql query and add it to the existing dict
+def lazyJsonGenerator(row, data, albumPositionMap, artistPositionMap):
+    artists = row[8]
+    album = row[10]
 
-    for artistId, artist in zip(splicedArtistId, splicedArtistName):
-        artists.append({
-            'ID': artistId,
-            'NAME': artist,
+    # If the artist isn't in the map, we create it
+    if artists not in artistPositionMap:
+        # Adding the new artist position to the map
+        artistPosition = len(data)
+        artistPositionMap[artists] = artistPosition
+        # Inserting the artist json into the result
+        data.append({
+            'IDS': row[9],
+            'NAME': row[8],
+            'ALBUMS': [],
         })
+    else:
+        # Getting the artist position in the map
+        artistPosition = artistPositionMap[artists]
 
-    data = {
+    # If the album isn't in the album map
+    if album not in albumPositionMap:
+        # Adding the new album position to the map
+        albumPosition = len(data[artistPosition]['ALBUMS'])
+        albumPositionMap[album] = albumPosition
+        # Inserting the new album into the result
+        data[artistPosition]['ALBUMS'].append({
+            'ID': row[12],
+            'NAME': row[10],
+            'TRACKS': [],
+        })
+    else:
+        albumPosition = albumPositionMap[album]
+
+    # Adding the track information
+    data[artistPosition]['ALBUMS'][albumPosition]['TRACKS'].append({
         'ID': row[0],
-        'TITLE': row[2],
-        'YEAR': row[3],
-        'COMPOSER': row[4],
-        'PERFORMER': row[5],
-        'BITRATE': row[10],
-        'DURATION': row[13],
-        'COVER': row[17],
-        'ARTISTS': artists,
-        'GENRE': row[23],
-        'ALBUM': {
-            'ID': row[24],
-            'TITLE': row[21],
-        },
-    }
-    return data
+        'TITLE': row[1],
+        'YEAR': row[2],
+        'COMPOSER': row[3],
+        'PERFORMER': row[4],
+        'BITRATE': row[5],
+        'DURATION': row[6],
+        'COVER': row[7],
+        'GENRE': row[11],
+        'MOODBAR': row[13],
+    })
 
 
 # Return a queryset of tracks from a view
-def getPlaylistTracks(playlist, limit, offset):
+def getPlaylistTracksFromView(playlist, limit, offset):
     viewName = getViewName(playlist)
     sql = """SELECT * FROM "%s" WHERE local_id > %s LIMIT %s;""" % (viewName, '%s', '%s')
     with connection.cursor() as cursor:

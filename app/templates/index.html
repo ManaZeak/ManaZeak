@@ -11,6 +11,52 @@
         <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
     </head>
     <body>
+      <div id="topbar">
+        <img src="../../static/img/logo/manazeak-text.svg" id="topbar-logo" alt="manazeak-text-logo">
+          <img src="" id="topbar-avatar" alt="user-avatar">
+      </div>
+      <img src="../../static/img/controls/right.svg" id="aside-open" alt="aside-open">
+      <div id="aside">
+        <img src="../../static/img/controls/left.svg" id="aside-close" alt="aside-close">
+      </div>
+      <div id="mainContainer" class="extended">
+        <div id="scene">
+          <img src="../../static/img/controls/right.svg" id="view-option" alt="view-option">
+        </div>
+          <div id="footbar">
+            <div class="left">
+              <p id="footbar-left"></p>
+            </div>
+            <div class="center">
+              <div id="controls-container">
+                <img id="stop" src="../../static/img/player/stop.svg" alt="player-stop">
+                <img id="play" src="../../static/img/player/play.svg" alt="player-play">
+                <a href="#" class="volumebar-expander" draggable="false">
+                  <img id="volumebar-img" src="../../static/img/player/volume-full.svg" alt="player-volume">
+                  <div id="volumebar-wrapper">
+                    <div id="volumebar-container">
+                      <div id="volumebar-current"></div>
+                      <div id="volumebar-thumb"></div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div id="progress-container">
+                <div id="progress-track">
+                  <div id="progress-current"></div>
+                  <div id="progress-thumb"></div>
+                  <div id="progress-hover">--:--</div>
+                </div>
+                <div id="progress-moodbar" class="moodbar">
+                  <svg height="100%" width="100%" draggable="false"></svg>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <p id="footbar-right"></p>
+            </div>
+          </div>
+        </div>
         <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "js/dist/manazeak.bundle.js" %}"></script>
     </body>

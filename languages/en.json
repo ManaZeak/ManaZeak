@@ -1,586 +1,187 @@
 {
-  "adminView":{
-    "panel":"Admin panel",
-    "database":{
-      "entry":"Database",
-      "title":"Database management",
-      "extractCovers":{
-        "title":"Re-extract all covers from tracks",
-        "text":"Album covers are automatically extracted from all tracks contained in a new library and locally stored on the server.<br>This command will erase existing covers and re-extract them for all tracks stored in the database.",
-        "button":"RE-EXTRACT ALL COVERS"
-      },
-      "removeMoodbars":{
-        "title":"Remove all moodbars from server",
-        "text":"ManaZeak performs a MoodBar scan on all tracks in the <code>/library/</code> folder every hour to generate the associated <code>.mood</code> file (if it doesn't exist already).<br>This command will erase all existing <code>.mood</code> files stored on the server. You may have to wait up to an hour before ManaZeak re-generates those <code>.mood</code> files.",
-        "button":"REMOVE ALL MOODBARS"
-      },
-      "dropDatabase":{
-        "title":"Drop database",
-        "text":"The server database stores data about users, libraries, playlists, tracks, artists, albums, genres, shuffle history DAFUQAYOUTAKINABOUT, user history and statistics.<br>This command will delete everything in the database except users.",
-        "button":"DROP DATABASE"
-      }
-    },
-    "groupsAndUsers":{
-      "entry":"Group / User",
-      "title":"Group / User management",
-      "sponsoring":{
-        "title":"Sponsoring option on subscribe",
-        "text":"When activated, any user that wants to sign up needs to provide an ID from a user already signed up with ManaZeak.<br>This command will add a field in the sign up form that is mandatory. Current sponsoring status : ",
-        "status":{
-          "enabled":"Enabled",
-          "disabled":"Disabled"
-        },
-        "button":{
-          "enabled":"DISABLE SPONSORING",
-          "disabled":"ENABLE SPONSORING"
-        }
-      },
-      "groups":{
-        "list":{
-          "title":"Group list",
-          "permissions":" permissions"
-        },
-        "edit":{
-          "title":"Edit group",
-          "label":{
-            "name":"Group name:",
-            "permission":"<br>Permissions:"
-          },
-          "permissions":{
-            "LOGI":"Login",
-            "PLAY":"Listening to music",
-            "PLST":"Playlist management",
-            "DOWN":"Download",
-            "WISH":"Wish creation",
-            "TAGS":"Tag submission",
-            "UPLD":"Upload",
-            "SPON":"Right to sponsor",
-            "STAT":"Access stats",
-            "STCH":"Access godchild stats",
-            "STFA":"Access family stats",
-            "WISR":"Wish review",
-            "STAL":"Access to library stats",
-            "DESC":"Change genre description",
-            "TAGE":"Tag alteration",
-            "UPAP":"Upload approval",
-            "STAA":"All stats",
-            "ADMV":"Access to AdminView",
-            "GRPE":"Edit user groups",
-            "FTAL":"Access to the whole family tree",
-            "LIBR":"Library management",
-            "GAPR":"Grant admin privileges",
-            "COIN":"Coin gift"
-          }
-        }
-      },
-      "users":{
-        "list":{
-          "title":"ManaZeak user list:",
-          "entry":{
-            "id":"User ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-            "godfather":"Godfather:&nbsp;&nbsp;",
-            "manacoin":"ManaCoin:&nbsp;",
-            "joined":"Joined on:&nbsp;",
-            "login":"Last login:&nbsp;"
-          }
-        }
-      }
-    },
-    "libraries":{
-      "entry":"Libraries",
-      "title":"Libraries management",
-      "rescanLibraries":{
-        "title":"Rescan libraries",
-        "text":"After modifying files located in a library folder, use this command to perform a rescan.<br>This command will rescan all libraries in the database.",
-        "button":"RESCAN ALL LIBRARIES"
-      },
-      "removeLibraries":{
-        "title":"Remove libraries",
-        "text":"WARNING: this command applies to every user in ManaZeak.<br>This command will erase all libraries in the database.",
-        "button":"REMOVE ALL LIBRARIES"
-      },
-      "list":{
-        "title":"Libraries list"
-      }
-    },
-    "wishes":{
-      "entry":"Wishes",
-      "title":"Wish management"
-    },
-    "syncthing":{
-      "entry":"SyncThing",
-      "title":"SyncThing management",
-      "apiKey":{
-        "title":"SyncThing API key",
-        "text":"In order to link ManaZeak with the SyncThing instance on the server, you must provide the SyncThing API key.<br>Please fill the following field in with the key you can find on the SyncThing interface.",
-        "button":"SUBMIT"
-      },
-      "bufferPath":{
-        "title":"Buffer path",
-        "text":"The buffer directory is the one selected to upload files in.<br>Please fill the following field in with the path to the buffer directory.",
-        "button":"SUBMIT"
-      },
-      "rescanFolders":{
-        "title":"Rescan SyncThing folders",
-        "text":"A SyncThing folder must be rescanned every time a modification is made to one of its files.<br>This command will perform a rescan on each SyncThing folder.",
-        "button":"RESCAN"
-      }
-    }
-  },
-  "button":{
-    "save":"Save",
-    "cancel":"Cancel",
-    "close":"Close",
-    "create":"Create",
-    "delete":"Delete",
-    "rename":"Rename",
-    "scan":"Scan",
-    "submit":"Submit"
-  },
-  "collectionBar":{
-    "newLibrary":"New library",
-    "newPlaylist":"New playlist",
-    "description":"Description",
-    "download":"Download",
-    "rename":"Rename",
-    "delete":"Delete"
-  },
-  "context":{
-    "addToQueue":"Add to Queue",
-    "editTags":"Edit tags",
-    "download":"Download track",
-    "downloads":"Download tracks",
-    "addToPlaylist":"Add to playlist"
-  },
-  "date":{
-    "abbr":{
-      "day":"d",
-      "hour":"h",
-      "minute":"m",
-      "senconds":"s"
-    },
-    "day":{
-      "monday":"Monday",
-      "tuesday":"Tuesday",
-      "wednesday":"Wednesday",
-      "thursday":"Thursday",
-      "friday":"Friday",
-      "saturday":"Saturday",
-      "sunday":"Sunday"
-    },
-    "month":{
-      "january":"January",
-      "february":"February",
-      "march":"March",
-      "april":"April",
-      "may":"May",
-      "june":"June",
-      "july":"July",
-      "august":"August",
-      "september":"September",
-      "october":"October",
-      "november":"November",
-      "december":"December"
-    }
-  },
-  "editTag":{
-    "keep":"< keep >",
-    "title":"Title: ",
-    "artist":"Artist: ",
-    "album":"Album: ",
-    "albumArtists":"Album artists: ",
-    "composer":"Composer: ",
-    "performer":"Performer: ",
-    "genre":"Genre: ",
-    "comment":"Comment: ",
-    "lyrics":"Lyrics: ",
-    "trackN":"Track #: ",
-    "discN":"Disc #: ",
-    "year":"Year: ",
-    "counter":"This track has been played ",
-    "time":" time ",
-    "times":" times "
-  },
-  "helpView":{
-    "panel":"Help Center",
-    "libraries":{
-      "entry":"Libraries",
-      "title":"Library information"
-    },
-    "shortcuts":{
-      "entry":"Shortcuts",
-      "title":"Shortcut information"
-    },
-    "tag":{
-      "entry":"Tag convention",
-      "title":"Tag and name convention",
-      "intro":"We have set a few rules and guidelines in order to have a consistent and unified music library. Those guidelines are specific to the manazeak.org instance (if you run your own @ home, feel free to set your own convention). This section will cover two main subjects : file naming and tag rules.",
-      "file":{
-        "title":"File naming convention",
-        "desc":"A precisely named file is one that is easy to find and manipulate. The following guidelines cover the whole file naming process and must always be verified before any track/album is uploaded to ManaZeak.",
-        "dirTitle":"Directory specifications",
-        "dir":"When you upload a full album (to be included in Albums' library), you must comply with a specific folder naming convention. Each artist must have its own folder, named after the artist. In this folder, you must create a folder for each album. Album folders are to have a name of the form (<b>%year% - %album%</b>) with %year% being the year the album came out nd %album% the title of the album. All the tracks of an album go in the relevnt directory, as well as the album cover. The album cover itself must be a 1000x1000 .jpg file, with the same name as the directory. Finally, all the album's tracks must comply with the file specifications detailed in the File specifications section.<br><br>Some albums are from a specific genre : single, EP. For a single, the mention <b>- Single</b> must appear at the end of the album title, for an EP, only add <b>EP</b> at the end of the album's title",
-        "exTitle":"Example",
-        "exIntro":"Let's take the Metallica's album Master Of Puppets as an example. First, create the following directory hierarchy to put tracks in: a <em>Metallica</em> folder, with a <em>Master Of Puppets</em> sub-folder:",
-        "exDirectory":"<code>Metallica/1986 - Master Of Puppets/</code>",
-        "exStructure":"Once the folders are created, fill the <code>1986 - Master of Puppets</code> folder with its relevant files:",
-        "exTracks":"101 - Metallica - Battery.flac<br>102 - Metallica - Master Of Puppets.flac<br>103 - Metallica - The Thing That Should Not Be.flac<br>104 - Metallica - Welcome Home (Sanitarium).flac<br>105 - Metallica - Disposable Heroes<br>106 - Metallica - Leper Messiah.flac<br>107 - Metallica - Orion.flac<br>108 - Metallica - Damage, Inc.flac<br>1986 - Master Of Puppets.jpg",
-        "exConclusion":"You can now upload the album by dragging and dropping the Metallica folder you created straight into ManaZeak.",
-        "specTitle":"File specification",
-        "specIntro":"Be sure that the file(s) you push match these requirements:",
-        "spec1":"naming for Albums library: <b>%disc number%%track number% - %composer% - %title%</b> ;",
-        "spec2":"naming for Artists and Mix libraries: <b>%composer% - %title%</b>;",
-        "spec3":"track names must be CamelCase, always;",
-        "spec4":"special characters must be replaced with a hyphen (-);",
-        "spec5":"artist names must respect the artist's specific case;",
-        "spec6":"composer(s) must be written with the artist name only;",
-        "spec7":"multi-artists must be separated with commas, and alphabetically ordered (composer, featured artists and remixers/cover artists);",
-        "spec8":"featured artists must be placed after the title, surrounded with parenthesis and prefixed with the <i>feat.</i> mention;",
-        "spec9":"remixers or cover artists must be mentioned at the end, surrounded with parentheses and suffixed with the <i>Remix</i> or <i>Cover</i> mention;",
-        "spec10":"the mention <i>[Bonus track]</i> must appear where appropriate, as the last file name element."
-      }
-    },
-    "ranks":{
-      "entry":"Ranks / Permissions",
-      "title":"Rank / Permission information",
-      "text":"In order to keep ManaZeak a great place for everyone, some features are locked until you earn a given reputation. Don't panic, the locked features are mostly library-management-oriented, so music playback won't be restricted (we aren't fucking dickheads from Spotify or Apple Music, God damn it).<br><br>When you first sign into ManaZeak, you will be ranked as a newcomer. You will be able to navigate through libraries, listen to music and a lot more which we look forward to you discovering. Nevertheless, you won't be able to upload tracks or edit tags yet. If you are not OK with those limited privileges, brace yourself, roll up your sleeves and try to earn ManaCoin (see ManaCoin entry in the Help Center).<br><br>Your ManaCoin wallet helps us determine a confidence index, which represents your trustworthiness (again, we are not Facebook, and this confidence index is not secret and won't be sold to any motherfucking advertisers). You can see it in your profile view, in the <em>My Wallet</em> tab. As mentioned in the ManaCoin entry, our trust in you can plummet if you purposely fuck up ManaZeak. Conversely, if you do your best to make it cleaner (<em>e.g.</em> by suggesting tags) or enhance libraries' contents with your musical tastes (by uploading tracks), you will soon climb the ladder and rank up: ranking up will give you more control over music collections and tracks, as well as the prestige of a rank.",
-      "ranksSection":{
-        "title":"Ranks",
-        "desc":"Here is the list of the official ranks of ManaZeak, with the required confidence index to be promoted:",
-        "indexUnder":": Confidence index is under ",
-        "indexBetween":": Confidence index is between ",
-        "and":" and ",
-        "indexOver":": Confidence index is over ",
-        "special":"These are the standard ranks that are available for all users. There are three special ranks that are only accessible under a given set of conditions:",
-        "banned":": No need to explain, you need to do some serious shit to get there...",
-        "admin":": Library administrators are your Gods inside ManaZeak, press F.",
-        "root":": Root Master Race is not accessible. Consider Root as the ManaZeak non-human account."
-      },
-      "perms":{
-        "title":"Permissions",
-        "desc":"As said previously, those ranks are tightly linked with permissions in ManaZeak. Here you have a table that summarizes permissions with the minimal rank necessary:"
-      }
-    },
-    "manacoin":{
-      "entry":"ManaCoin",
-      "title":"ManaCoin information",
-      "inShort1":"will make you earn ManaCoin;",
-      "inShort2":"will make you lose ManaCoin if refused;",
-      "inShort3":"is taken into account to compute your confidence index.",
-      "inShort4":"will make you earn ManaCoin if accepted;",
-      "intro":"The ManaCoin is an internal currency for ManaZeak that aims to reward good practices and usage of the app. Conversely, it is also a way to keep ManaZeak clean from sabotage. It aims to enhance collaboration in ManaZeak and reward all kinds of contributions. Earning ManaCoin is a way to rank up and earn more permissions (see <b>Earning ManaCoin</b> section) so that administrators can trust you, and maybe event let you become a moderator of ManaZeak (see <b>Ranking system</b> section).",
-      "earningTitle":"Earning ManaCoin",
-      "earningListTitle":"There are several ways to earn ManaCoin in ManaZeak:",
-      "earningList1":"listening to music;",
-      "earningList2":"making song/feature request(s);",
-      "earningList3":"uploading track(s)/album(s);",
-      "earningList4":"editing track metadata;",
-      "earningList5":"earning achievements.",
-      "earningOutro":"Those ways to earn ManaCoin depend on your rank, and some may not be available if you're <em>\"underage\"</em> (below a given rank, see <b>Ranking system</b> section). Also, they don't reward you with the same amount of ManaCoin, since some actions are pretty different in their significance. Don't bother asking, those values are super secret, and won't be exposed at any given time. Please don't look at the source code.",
-      "listeningTitle":"Listening to Music:",
-      "listeningDesc":"This is the most basic way to earn ManaCoin. The principle behind it is pretty simple, the more you spend time listening to music on ManaZeak, the more ManaCoin you get. To be fair to other users, the earning function is not linear, and it will be harder to mine ManaCoin this way over time. However, there is no cap value so you can <em>theorically</em> get an infinite amount of ManaCoin listening to music; it would only take millenia to do so.",
-      "listeningShort":"In short, listening to music:",
-      "songReqTitle":"Making song/feature request(s):",
-      "songReqDesc":"If you notice that some songs you like are missing from a library in ManaZeak, or if you found a missing feature that would perfectly fit into ManaZeak, you can make a text suggestion, using the lightbulb icon in the top bar. Just write out as much information as you can about it (title, album, artist etc. for a track; behavior, trigger etc. for a feature). Once sent, you request will be handled in a timely manner (each week). It can be accepted or refused by an administrator, rewarding you with or relieving you of ManaCoin to fit the administrator's preference about their ManaZeak libraries. It can also be postponned if need be. You will then be notified of what has become of your suggestion: generally, if accepted, the song you requested will be included into a library and if refused, nothing will happen. For features, you will be rewarded by an administrator with love (and ManaCoin you silly cheap ass) once it has been fully implemented.",
-      "songReqShort":"In short, making song/feature request(s):",
-      "uploadTitle":"Uploading track(s)/album(s):",
-      "uploadDesc":"If you notice that some songs you like are missing from a library in ManaZeak, you can directly upload the track(s)/album(s) by dragging and dropping it anywhere in ManaZeak. Your track(s)/album(s) will remain in a buffer folder until a batch of trck proposals is processed (each week). Then, you will be notified of whether it has been refused or accepted, and where applicable in which library it has been integrated. Quality being the Holy Grail of ManaZeak, keep in mind that the clean the file(s) you upload, the more ManaCoin you will earn. We make a distinction between 128kbps MP3, 320kbps MP3, OGG and FLAC/WAV. Don't worry, you will never loose ManaCoin uploading a low quality track, you will only earn less than if you make the effort to fetch it in high quality.",
-      "uploadShort":"In short, uploading track(s)/album(s):",
-      "editTitle":"Editing track(s) metadata:",
-      "editDesc":"While using ManaZeak, it is possible (or rather, absolutely certain) that you will encounter incorrectly tagged tracks. You can propose a new tag for it using the tag modification modal (right click on the track, \"Edit Tags\"). As for wishes and uploads, your submissions will be reviewed in a timely manner (each week) and depending on the accuracy of your edit, it will be accepted or refused. Because tagging is the most important thing in life, we strongly encourage you to read the section <b>Tag convention</b> before editing tags, lest you incur the wrath of a psychorigid administrator and lose some ManaCoin! Passed a certain rank, tags modifications are automatically accepted. Because they can't be refused at this rank, no ManaCoin loss is possible.",
-      "editShort":"In short, editing track(s) metadata:",
-      "achivTitle":"Achievements:",
-      "achivDesc":"Finally, you can earn ManaCoin with achievements. They are here just for fun and won't be taken into account to compute your confidence index, so don't bother trying hard at them to rank up! There are three types of achievements:",
-      "achivEntry1":"one shot;",
-      "achivEntry2":"multi-level;",
-      "achivEntry3":"hidden.",
-      "achivOutro":"You will find them in the scoreboard, with a fulfilment percentage comparison to all users. Also, you can buy hints with ManaCoin for hidden achievements. There are three tiers of hints, from cheap to expensive, with more and more detailled information.",
-      "achivShort":"In short, achievements:"
-    }
-  },
-  "modal":{
-    "fetchPlaylist":{
-      "title":"Fetching your music",
-      "content":"Currently fetching your libraries and playlists, please wait."
-    },
-    "fetchStats":{
-      "title":"Crunching data",
-      "content":"Hold on, your data is on the way."
-    },
-    "wish":{
-      "title":"Make a suggestion",
-      "content":"If you notice that a track you like is missing from a playlist, you can make a suggestion. Paste a URL or write as much information as you can about it, and an administrator will process your request. You will be notified if and when the track you requested has been added to a playlist. Also, if you have any feature ideas, feel free to use this field for that (it's hard to come up with anything isn't it?).",
-      "placeholder":"Enter your suggestion here"
-    },
-    "newLibrary":{
-      "title":"New library",
-      "content":"Welcome! Fill the path with the one to your library, name it and let the magic begin! Some additionnal features are waiting for you if your library is synced with other devices, using <a href=\"https://syncthing.net/\" target=\"_blank\">SyncThing</a>.",
-      "placeholder":{
-        "name":"Enter the name of the library",
-        "path":"Enter the absolute path to your library"
-      }
-    },
-    "newPlaylist":{
-      "title":"New playlist",
-      "content":"Please choose a name for your brand new playlist.",
-      "placeholder":"Enter the name of the playlist"
-    },
-    "scan":{
-      "title":"Library scan in progress...",
-      "content":"Currently performing dark magic rituals. This may take a while, depending on the number of files you have. Please relax, go grab some coffee and let the server manage its business.",
-      "footer":"On average, it takes a minute to process two thousand files. Just do the math;)"
-    },
-    "editGroup":{
-      "title":"Edit Group"
-    },
-    "chooseGroup":{
-      "title":"Choose group for ",
-      "content":"Available groups in ManaZeak"
-    },
-    "renamePlaylist":{
-      "title":"Rename ",
-      "content":{
-        "pt1":"You are about to rename your playlist named <b>",
-        "pt2":"</b>, Do you really want to rename it?"
-      },
-      "placeholder":"Enter the new name of the playlist"
-    },
-    "deletePlaylist":{
-      "title":"Remove ",
-      "content":{
-        "pt1":"You are about to delete your playlist named ",
-        "pt2":", and all the tracks that you've collected in it. Do you really want to delete this?"
-      }
-    },
-    "invitation":{
-      "title":"Invitation code",
-      "content":"Here is your unique invitation code. Share it with your friends if they want to join ManaZeak. Please do not share this code on the internet."
-    }
-  },
-  "partyView":{
-    "composed":"Composed by: "
-  },
-  "playlistPreview":{
-    "repeatOff":"Repeat off",
-    "repeatOne":"Repeat one",
-    "repeatAll":"Repeat all",
-    "shuffleOff":"Shuffle off",
-    "random":"Random",
-    "shuffleOn":"Shuffle on"
-  },
-  "queue":{
-    "empty":"The Queue is empty.",
-    "reverse":"Reverse Play",
-    "composedBy":"Composed by: "
-  },
-  "statsView":{
-    "panel":"Statistics",
-    "artist":{
-      "entry":"Artist",
-      "title":"Artist statistics",
-      "default":"No stats yet to display about artists. Use ManaZeak before coming here!",
-      "list":{
-        "topLabel":"Top Artists",
-        "flopLabel":"Flop Artists",
-        "untagged":"Untagged artist",
-        "trackPlayed":" track played",
-        "tracksPlayed":" tracks played",
-        "noTrackPlayed":"No track played"
-      }
-    },
-    "genre":{
-      "entry":"Genre",
-      "title":"Genre statistics",
-      "default":"No stats yet to display about genres. Use ManaZeak before coming here!",
-      "list":{
-        "topLabel":"Top Genres",
-        "flopLabel":"Flop Genres",
-        "untagged":"Untagged genre",
-        "played":"played",
-        "time":"time, is",
-        "times":"times, is"
-      }
-    },
-    "track":{
-      "entry":"Track",
-      "title":"Track statistics",
-      "default":"No stats yet to display about tracks. Use ManaZeak before coming here!",
-      "list":{
-        "topLabel":"Top Tracks",
-        "flopLabel":"Flop Tracks",
-        "untagged":"Untagged track",
-        "played":"played",
-        "time":"time, average listening: ",
-        "times":"times, average listening: "
-      }
-    }
-  },
-  "trackInfo":{
-    "albumArtists":"Album artists: ",
-    "composer":"Composer: ",
-    "performer":"Performer: ",
-    "genre":"Genre: ",
-    "suggestion":{
-      "artist":"From the same artist:",
-      "album":"From the same album:",
-      "genre":"From the same genre:"
-    }
-  },
-  "userMenu":{
-    "admin":"Admin",
-    "inviteCode":"Invite code",
-    "stats":"Stats",
-    "helpCenter":"Help center",
-    "logOut":"Log out"
-  },
-  "utils":{
-    "track":"track",
-    "tracks":"tracks",
-    "disc":"disc",
-    "discs":"discs"
-  },
-  "userView":{
-    "panel":"User panel",
-    "general":{
-      "entry":"General",
-      "title":"General settings",
-      "removeAccount":{
-        "title":"Remove my account",
-        "text":"Warning, this action will remove you from the database with all of your data.<br>Are you sure you want to remove your account?",
-        "button":"DELETE MY ACCOUNT"
-      },
-      "changeAvatar": {
-        "title": "Change your avatar",
-        "text": "Use the following button to change your avatar. ",
-        "button": "CHANGE AVATAR"
-      }
-    },
-    "uploads":{
-      "entry":"Uploads",
-      "title":"Uploads settings"
-    }
-  },
   "errors":{
-    "BAD_FORMAT":{
-      "title": "Wrong format",
-      "message": "The server didn't understand what you said.",
-      "severity": "error"
+    "frontend": {
+      "FATAL_ERROR": {
+        "title": "Fatal error",
+        "message": "Something went very wrong in ManaZeak initialization. Please contact support.",
+        "severity": "error"
+      },
+      "UNKNOWN_ERROR": {
+        "title": "Unknown error",
+        "message": "Something unexpected happened and isn't properly handled in source code.",
+        "severity": "error"
+      },
+      "ACCESS_FORBIDDEN": {
+        "title": "Access forbidden",
+        "message": "You are not granted to access the API url you tried to reach.",
+        "severity": "error"
+      },
+      "URL_NOT_FOUND": {
+        "title": "URL not found",
+        "message": "The API url you tried to reach doesn't exists.",
+        "severity": "error"
+      },
+      "INTERNAL_ERROR": {
+        "title": "Internal server error",
+        "message": "Something went wrong back side of the moon.",
+        "severity": "error"
+      },
+      "INVALID_PROGRESS": {
+        "title": "Invalid progress value",
+        "message": "The value given to set the progress is not a number.",
+        "severity": "warning"
+      },
+      "INVALID_VOLUME": {
+        "title": "Invalid volume value",
+        "message": "The value given to set the volume is not a number.",
+        "severity": "warning"
+      },
+      "INVALID_TRACK_URL": {
+        "title": "Invalid track url",
+        "message": "The url given to set the track is not a string, nor an url.",
+        "severity": "warning"
+      },
+      "CANT_STRETCH_COLUMN": {
+        "title": "Can't stretch this column",
+        "message": "The column you want to stretch is too tight to absorb the overflow. Use Stretch All in the view options to restore the table layout.",
+        "severity": "warning"
+      },
+      "ALREADY_STRETCH": {
+        "title": "Layout already stretched",
+        "message": "Your column layout is already stretched. Resize any column if you want to change the layout.",
+        "severity": "info"
+      },
+      "CANT_CENTER_TRACK": {
+        "title": "Can not center on given track",
+        "message": "The track ID you gave to center the list view on is not valid.",
+        "severity": "info"
+      }
     },
-    "BAD_REQUEST":{
-      "title": "Bad request",
-      "message": "The server didn't expect this request.",
-      "severity": "error"
-    },
-    "DB_ERROR":{
-      "title": "Database error",
-      "message": "Something went wrong with the database.",
-      "severity": "error"
-    },
-    "FILE_NOT_FOUND":{
-      "title": "No such file",
-      "message": "The server didn't find the file you asked for.",
-      "severity": "error"
-    },
-    "DIR_NOT_FOUND":{
-      "title": "No such directory",
-      "message": "The server didn't find the directory you asked for.",
-      "severity": "error"
-    },
-    "EMPTY_LIBRARY":{
-      "title": "The library is empty",
-      "message": "There is no file to add in the library",
-      "severity": "warning"
-    },
-    "COVER_ERROR":{
-      "title": "Can't create file",
-      "message": "The server cannot generate the file for the covers, check the permissions.",
-      "severity": "error"
-    },
-    "PERMISSION_ERROR":{
-      "title": "Not permitted",
-      "message": "You are not allowed to do this.",
-      "severity": "error"
-    },
-    "RESCAN_ERROR":{
-      "title": "Library isn't ready",
-      "message": "Another scan is running in the background, please be a little more patient",
-      "severity": "info"
-    },
-    "NO_HISTORY":{
-      "title": "Your history is empty",
-      "message": "You can't play a previous song if you haven't listened to any!",
-      "severity": "info"
-    },
-    "NO_SAME_ARTIST":{
-      "title": "No results were found",
-      "message": "Can't find any track by the same artist",
-      "severity": "info"
-    },
-    "NO_SAME_GENRE":{
-      "title": "No results were found",
-      "message": "Can't find any track with the same genre",
-      "severity": "info"
-    },
-    "NO_SAME_ALBUM":{
-      "title": "No results were found",
-      "message": "Can't find any track with the same album",
-      "severity": "info"
-    },
-    "SYNCTHING_ERROR":{
-      "title": "Failed to communicate with syncthing",
-      "message": "Check if syncthing is running correctly",
-      "severity": "warning"
-    },
-    "USER_DELETE_ERROR":{
-      "title": "Can't delete this user",
-      "message": "You can't delete your own account if you are admin",
-      "severity": "error"
-    },
-    "NO_STATS":{
-      "title": "Can't display stats",
-      "message": "Use the application for generating stats",
-      "severity": "info"
-    },
-    "BAD_FILENAME":{
-      "title": "The filename is invalid",
-      "message": "Change the filename if you want to upload it",
-      "severity": "warning"
-    },
-    "FILE_EXISTS":{
-      "title": "File already exists",
-      "message": "The file you want to upload already exists",
-      "severity": "warning"
-    },
-    "VALUE_ERROR":{
-      "title": "Wrong value",
-      "message": "The value wasn't expected",
-      "severity": "error"
-    },
-    "DND_ERROR":{
-      "title": "The drag and drop hasn't been setup",
-      "message": "The administrator didn't configure the buffer folder correctly",
-      "severity": "error"
-    },
-    "FORMAT_ERROR":{
-      "title": "The format provided doesn't have support",
-      "message": "We don't support this extension",
-      "severity": "error"
-    },
-    "DOWNLOAD_LIMIT":{
-      "title": "Your maximum download limith has been reached",
-      "message": "Select fewer tracks and try again",
-      "severity": "warning"
-    },
-    "DIR_CREATION_ERROR":{
-      "title": "Can't create a folder",
-      "message": "The application can't create a folder, please contact the administrator",
-      "severity": "error"
-    },
-    "SUSPICIOUS_OPERATION":
-    {
-      "title": "Your account have been suspended",
-      "message": "And you know why!",
-      "severity": "error"
+    "backend":  {
+      "BAD_FORMAT":{
+        "title": "Wrong format",
+        "message": "The server didn't understand what you said.",
+        "severity": "error"
+      },
+      "BAD_REQUEST":{
+        "title": "Bad request",
+        "message": "The server didn't expect this request.",
+        "severity": "error"
+      },
+      "DB_ERROR":{
+        "title": "Database error",
+        "message": "Something went wrong with the database.",
+        "severity": "error"
+      },
+      "FILE_NOT_FOUND":{
+        "title": "No such file",
+        "message": "The server didn't find the file you asked for.",
+        "severity": "error"
+      },
+      "DIR_NOT_FOUND":{
+        "title": "No such directory",
+        "message": "The server didn't find the directory you asked for.",
+        "severity": "error"
+      },
+      "EMPTY_LIBRARY":{
+        "title": "The library is empty",
+        "message": "There is no file to add in the library",
+        "severity": "warning"
+      },
+      "COVER_ERROR":{
+        "title": "Can't create file",
+        "message": "The server cannot generate the file for the covers, check the permissions.",
+        "severity": "error"
+      },
+      "PERMISSION_ERROR":{
+        "title": "Not permitted",
+        "message": "You are not allowed to do this.",
+        "severity": "error"
+      },
+      "RESCAN_ERROR":{
+        "title": "Library isn't ready",
+        "message": "Another scan is running in the background, please be a little more patient",
+        "severity": "info"
+      },
+      "NO_HISTORY":{
+        "title": "Your history is empty",
+        "message": "You can't play a previous song if you haven't listened to any!",
+        "severity": "info"
+      },
+      "NO_SAME_ARTIST":{
+        "title": "No results were found",
+        "message": "Can't find any track by the same artist",
+        "severity": "info"
+      },
+      "NO_SAME_GENRE":{
+        "title": "No results were found",
+        "message": "Can't find any track with the same genre",
+        "severity": "info"
+      },
+      "NO_SAME_ALBUM":{
+        "title": "No results were found",
+        "message": "Can't find any track with the same album",
+        "severity": "info"
+      },
+      "SYNCTHING_ERROR":{
+        "title": "Failed to communicate with syncthing",
+        "message": "Check if syncthing is running correctly",
+        "severity": "warning"
+      },
+      "USER_DELETE_ERROR":{
+        "title": "Can't delete this user",
+        "message": "You can't delete your own account if you are admin",
+        "severity": "error"
+      },
+      "NO_STATS":{
+        "title": "Can't display stats",
+        "message": "Use the application for generating stats",
+        "severity": "info"
+      },
+      "BAD_FILENAME":{
+        "title": "The filename is invalid",
+        "message": "Change the filename if you want to upload it",
+        "severity": "warning"
+      },
+      "FILE_EXISTS":{
+        "title": "File already exists",
+        "message": "The file you want to upload already exists",
+        "severity": "warning"
+      },
+      "VALUE_ERROR":{
+        "title": "Wrong value",
+        "message": "The value wasn't expected",
+        "severity": "error"
+      },
+      "DND_ERROR":{
+        "title": "The drag and drop hasn't been setup",
+        "message": "The administrator didn't configure the buffer folder correctly",
+        "severity": "error"
+      },
+      "FORMAT_ERROR":{
+        "title": "The format provided doesn't have support",
+        "message": "We don't support this extension",
+        "severity": "error"
+      },
+      "DOWNLOAD_LIMIT":{
+        "title": "Your maximum download limith has been reached",
+        "message": "Select fewer tracks and try again",
+        "severity": "warning"
+      },
+      "DIR_CREATION_ERROR":{
+        "title": "Can't create a folder",
+        "message": "The application can't create a folder, please contact the administrator",
+        "severity": "error"
+      },
+      "SUSPICIOUS_OPERATION":
+      {
+        "title": "Your account have been suspended",
+        "message": "And you know why!",
+        "severity": "error"
+      }
     }
+  },
+  "frontend": {
+
   }
 }

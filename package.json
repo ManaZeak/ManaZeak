@@ -1,25 +1,54 @@
 {
   "name": "manazeak",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "<div style=\"text-align:center; margin-bottom: 25px;\">     <img src =\"http://manazeak.org/static/img/logo/manazeak.svg\" style=\"width: 50%\" /> </div>",
   "main": "./static/js/Start.js",
   "scripts": {
-    "dev": "webpack --watch --config webpack.dev.js",
-    "prod": "webpack --config webpack.prod.js"
+    "debug": "webpack --env.prod=false --progress --display-error-details --verbose --profile",
+    "dev": "webpack --env.prod=false --progress",
+    "prod": "webpack --env.prod=true --progress",
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
+    "frontDoc": "jsdoc -c ./doc/config/jsDoc.json"
   },
+  "homepage": "https://manazeak.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Squadella/ManaZeak.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Squadella/ManaZeak/issues"
   },
-  "homepage": "https://github.com/Squadella/ManaZeak#readme",
+  "author": "The ManaZeak Authors",
+  "contributors": [
+    {
+      "name": "Arthur Beaulieu"
+    },
+    {
+      "name": "Pierre Bouniol"
+    },
+    {
+      "name": "Valentin Peiro"
+    },
+    {
+      "name": "Pierre-Balthazar Donadieu de Lavit"
+    },
+    {
+      "name": "Guilhem Piat"
+    },
+    {
+      "name": "Armand Vignat"
+    },
+    {
+      "name": "Laetitia Genin"
+    }
+  ],
+  "license": "ISC",
   "devDependencies": {
     "uglifyjs-webpack-plugin": "^1.1.2",
-    "webpack": "^3.9.1",
-    "worker-loader": "^1.1.1"
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "sonar-scanner": "^3.1.0",
+    "jsdoc": "^3.5.5",
+    "tui-jsdoc-template": "^1.2.2"
   }
 }

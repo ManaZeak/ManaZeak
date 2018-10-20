@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vmzk="0.1.0"
+vmzk="0.0.2"
 mzkdir=$(dirname $0)
 
 create_necessary_files()
@@ -59,6 +59,9 @@ elif [ $1 = "prod" ]; then
     eval "docker-compose up -d"
     eval "npm run prod"
 
+  elif [ $1 = "doc" ] && [ $2 = "frontend" ]; then
+      eval "npm run frontDoc"
+
 elif [ $1 = "stop" ]; then
     eval "docker-compose stop"
     eval "docker ps"
@@ -73,17 +76,17 @@ elif [ $1 = "repy" ]; then
     eval "docker start -i manazeak_app"
 
 elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
-    printf -- "\nUsage: ./mzk.sh <command>\n"
-    printf -- "Where <command> is one of:\n\n"
-    printf -- "init          Run the initialisation wizard\n"
-    printf -- "build         Build ManaZeak\n\n"
-    printf -- "dev           Run a dev environment\n"
-    printf -- "prod          Run a production environment\n"
-    printf -- "stop          Stop ManaZeak application\n\n"
-    printf -- "clean         Remove ManaZeak containers\n"
-    printf -- "repy          Run the application docker in interactive mode\n\n"
-    printf -- "--help        Display the command usage  (or -h)\n"
-    printf -- "--version     Display the version number (or -v)\n\n"
+    printf -- "  ManaZeak-cli v$vmzk, available commands:\n\n"
+    printf -- "#  ./mzk.sh init : Run the initialisation wizard\n"
+    printf -- "#  ./mzk.sh build : Build ManaZeak\n#\n"
+    printf -- "#  ./mzk.sh dev : Run a dev environment\n"
+    printf -- "#  ./mzk.sh prod : Run a production environment\n#\n"
+    printf -- "#  ./mzk.sh stop : Stop ManaZeak application\n"
+    printf -- "#  ./mzk.sh clean : Remove ManaZeak containers\n"
+    printf -- "#  ./mzk.sh repy : Run the application docker in interactive mode\n#\n"
+    printf -- "#  ./mzk.sh doc frontend : Generates the JavaScript documentation\n#\n"
+    printf -- "#  ./mzk.sh --help : Display the script usage  (or -h)\n"
+    printf -- "#  ./mzk.sh --version : Display the version number (or -v)\n"
 
 elif [ $1 = "--version" ] || [ $1 = "-v" ]; then
     printf "ManaZeak $vmzk\n"
