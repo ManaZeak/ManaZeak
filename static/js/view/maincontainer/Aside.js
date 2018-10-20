@@ -31,7 +31,6 @@ class Aside {
    **/
   _init() {
     this.dom = document.getElementById('aside');
-    this.dom.style.left = 0;
 
     this._close = document.getElementById('aside-close');
     this._open = document.getElementById('aside-open');

@@ -6,7 +6,7 @@ $aside-button-length: 25px;
   height: calc(100% - #{$topbar-height});
   position: absolute;
   width: $aside-width;
-  left: 0;
+  left: -$aside-width;
   top: $topbar-height;
   z-index: 701; // Just over footbar
 
@@ -33,7 +33,7 @@ img#aside-open {
   left: $main-container-icon-margin;
   width: $aside-button-length;
   z-index: 700;
-  opacity: 0;
+  opacity: 1;
 
   transition: opacity $transition-duration ease-in 0s;  // time / 5
 }
