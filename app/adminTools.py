@@ -11,7 +11,7 @@ from multiprocessing import Process
 
 from app.collection.library import deleteLibrary
 from app.dao import deleteView
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Playlist, Library, Genre, Shuffle, UserHistory, Stats, History, \
     AdminOptions, UserPreferences, InviteCode, Groups, Permissions
 from app.collection.playlist import getTotalLength
@@ -20,7 +20,12 @@ from app.user import deleteLinkedEntities
 from app.utils import timeCodeToString, checkPermission
 from app.wallet import calculateCurrentAvailableCash
 
+## @package app.adminTools
+# Tools used for administration purpose
 
+
+## Get the admin parameters
+#   @return The admin option object
 def getAdminOptions():
     # If a abnormal number of admin options
     if AdminOptions.objects.all().count() > 1:
@@ -39,6 +44,26 @@ def getAdminOptions():
 
 # Get all the information needed for the admin view
 @login_required(redirect_field_name='login.html', login_url='app:login')
+## Send the information needed for displaying the admin page
+#   @param request a GET request
+#   @return a JSON containing :
+#       - Information about the user (USER) containing :
+#           - The godfather name (GODFATHER_NAME)
+#           - The godfather code (GODFATHER_CODE)
+#           - The username (USERNAME)
+#           - If the user is admin (IS_ADMIN)
+#           - The last date the user logged in (LAST_LOGIN)
+#           - The user id (USER_ID)
+#           - The invite code of the user (INVITE_CODE)
+#           - The amount of ManaCoin available (MANACOIN)
+#           - The group id of the user (GROUP_ID)
+#           - The group name of the user (GROUP_NAME)
+#       - Information about the libraries (LIBRARIES) containing :
+#           - The library name (NAME)
+#           - The library path (PATH)
+#           - The number of tracks contained in the library (NUMBER_TRACK)
+#           - The duration of the playlist (TOTAL_DURATION)
+#           - The id of the playlist (ID)
 def getAdminView(request):
     if request.method == 'GET':
         user = request.user
@@ -55,7 +80,7 @@ def getAdminView(request):
                 inviteCode = InviteCode.objects.get(user=user)
                 godfather = {
                     'GODFATHER_NAME': "Jesus",
-                    "GODFATHER_CODE": "Christ",
+                    'GODFATHER_CODE': "Christ",
                 }
                 if userPreferences.inviteCode is not None:
                     godfather = {

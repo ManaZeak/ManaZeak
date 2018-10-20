@@ -11,7 +11,7 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3
 from mutagen.id3._frames import TIT2, TDRC, TPE1, TOPE, TCOM, TRCK, TBPM, USLT, TCON, TALB, COMM, TXXX, TPOS, APIC
 
-from app.errors import ErrorEnum, errorCheckMessage
+from app.errors.errors import ErrorEnum, errorCheckMessage
 from app.models import Track, Artist, Album, Genre, Playlist
 from app.utils import checkPermission
 

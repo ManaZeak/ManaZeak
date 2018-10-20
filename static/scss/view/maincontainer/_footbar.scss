@@ -1,0 +1,73 @@
+$footbar-controls-height: 50px;
+$footbar-controls-scale: 66%; // Usefull for volume bar image
+$footbar-controls-margin: 3px;
+$footbar-progress-height: 30px;
+$footbar-sides-width: 85px;
+$moodbar-height: 25px;
+$footbar-transition: ($transition-duration * 2);
+
+#footbar {
+  background: $bar-alpha;
+  bottom: 0;
+  display: flex;
+  height: $footbar-height; // Defined in utils/tools/_variables.scss
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 700;
+
+  .left,
+  .right {
+    align-items: flex-end;
+    display: flex;
+    height: ($footbar-controls-height + $footbar-progress-height);
+    width: $footbar-sides-width;
+
+    p {
+      height: $moodbar-height;
+      line-height: $moodbar-height;
+      opacity: 0;
+      transition: opacity $footbar-transition linear;
+    }
+  }
+
+  .left {
+    justify-content: flex-end;
+
+    p {
+      margin-right: $margin;
+    }
+  }
+
+  .center {
+    height: 100%;
+    max-width: 1000px;
+    width: calc(100% - (#{$footbar-sides-width} * 2));
+
+    #controls-container {
+      align-items: center;
+      display: flex;
+      height: $footbar-controls-height;
+      justify-content: center;
+      width: 100%;
+
+      img {
+        cursor: pointer;
+        height: $footbar-controls-scale;
+        margin: 0 $footbar-controls-margin;
+        user-select: none;
+        -moz-user-select: none;
+      }
+
+      @import '../footbar/volumebar'; // Loading volumebar rules
+    }
+
+    @import '../footbar/progressbar'; // Loading progressbar rules
+  }
+
+  .right {
+    p {
+      margin-left: $margin;
+    }
+  }
+}

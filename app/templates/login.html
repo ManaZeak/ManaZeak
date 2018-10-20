@@ -19,20 +19,24 @@
         <img class="mzk-fork" src="/static/img/utils/fork.png" alt="Fork me on GitHub" data-canonical-src="/static/img/fork.png">
     </a>
     <div class="mzk-user">
-        <img src="/static/img/logo/manazeak-text.svg">
+        <img src="/static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
         {% if user.is_active %}
             <p>Authenticated already. Go back to <a href="{% url 'app:index' %}">ManaZeak</a></p>
         {% else %}
             <p>Please login below, or <a href="{% url 'app:signup' %}">sign up</a></p>
             <form action="" method="post" enctype="multipart/form-data" name="login">
                 {% csrf_token %}
-                <label for="id_username"><b>Username:</b></label>
+                <label for="id_username">
+                  <strong>Username:</strong>
+                </label>
                 <input id="id_username" maxlength="30" name="username" type="text"><br>
-                <label for="id_password"><b>Password:</b></label>
+                <label for="id_password">
+                  <strong>Password:</strong>
+                </label>
                 <input id="id_password" maxlength="30" name="password" type="password">
                 <button type="submit">Log in</button>
             </form>
-            <img src="/static/img/logo/manazeak.svg" class="mzk-logo">
+            <img src="/static/img/logo/manazeak.svg" class="mzk-logo" alt="manazeak-logo">
             <div class="mzk-error">{{ form.errors }}{{ form.non_field_errors }}</div>
         {% endif %}
     </div>
