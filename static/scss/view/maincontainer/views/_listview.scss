@@ -224,27 +224,5 @@ $listview-track-height: 40px;
     }
   }
 
-  #listview-spinner {
-    bottom: $listview-padding;
-    height: ($listview-icon + $listview-padding);
-    position: absolute;
-    right: $listview-padding;
-    width: ($listview-icon + $listview-padding);
-    z-index: 699;
 
-    &:before {
-      background: transparent;
-      border: 2px solid lime;
-      border-radius: 50%;
-      border-bottom-color: transparent;
-      border-top-color: transparent;
-      box-sizing: border-box;
-      content: '';
-      height: ($listview-icon + $listview-padding);
-      position: absolute;
-      width: ($listview-icon + $listview-padding);
-
-      animation: listview-loading-spin 1.5s linear infinite;
-    }
-  }
 }

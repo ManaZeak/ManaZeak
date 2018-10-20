@@ -19,4 +19,28 @@ $aside-button-length: 25px;
     width: $aside-button-length;
     z-index: 666;
   }
+
+  #listview-spinner {
+    bottom: 20px;
+    height: $aside-button-length;
+    position: absolute;
+    right: 20px;
+    width: $aside-button-length;
+    z-index: 699;
+
+    &:before {
+      background: transparent;
+      border: 2px solid lime;
+      border-radius: 50%;
+      border-bottom-color: transparent;
+      border-top-color: transparent;
+      box-sizing: border-box;
+      content: '';
+      height: ($listview-icon + $listview-padding);
+      position: absolute;
+      width: ($listview-icon + $listview-padding);
+
+      animation: listview-loading-spin 1.5s linear infinite;
+    }
+  }
 }
