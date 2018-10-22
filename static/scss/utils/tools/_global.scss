@@ -142,7 +142,7 @@ input[type=checkbox]:disabled + label:before {
 input[type=checkbox]:checked + label:before {
   background-color: MediumSeaGreen;
   border-color: MediumSeaGreen;
-  color: #fff;
+  color: black;
 }
 
 input[type=checkbox]:checked:disabled + label:before {
