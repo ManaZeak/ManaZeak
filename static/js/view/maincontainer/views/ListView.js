@@ -23,8 +23,7 @@ class ListView {
       fragment: {},
       wrapper: {},
       header: {},
-      container: {},
-      options: {}
+      container: {}
     };
 
     this._draggedColumn = null;
@@ -49,12 +48,10 @@ class ListView {
     this._dom.wrapper = document.createElement('DIV');
     this._dom.header = document.createElement('DIV');
     this._dom.container = document.createElement('DIV');
-    this._dom.options = document.getElementById('view-option');
 
     this._dom.wrapper.classList.add('listview');
     this._dom.header.classList.add('header');
     this._dom.container.classList.add('track-container');
-    this._dom.options.classList.add('options');
     this._target.style.position = 'relative';
 
     this._dom.wrapper.appendChild(this._dom.header);
@@ -67,10 +64,6 @@ class ListView {
   }
 
   _events() {
-    this._dom.options.addEventListener('click', () => {
-      this._optionsClicked();
-    });
-
     this._dom.container.addEventListener('click', (event) => {
       this._trackClicked(event);
     });
@@ -179,19 +172,28 @@ class ListView {
       });
   }
 
-  _optionsClicked() {
+  optionsClicked() {
     let listViewContext = this._target.querySelector('#listview-context');
 
     if (listViewContext !== null) { // Close context
-      listViewContext.remove();
+      listViewContext.parentNode.remove();
       return;
     }
 
     // Otherwise, append context, and fill it with its content
+    let overlay = document.createElement('DIV');
+    overlay.classList.add('transparent-overlay');
+    overlay.addEventListener('click', (event) => {
+      if (!event.target.closest('#listview-context')) {
+        listViewContext.parentNode.remove();
+      }
+    }, true);
+
     listViewContext = document.createElement('DIV');
     listViewContext.id = 'listview-context';
-    this._dom.wrapper.appendChild(listViewContext);
 
+    overlay.appendChild(listViewContext);
+    this._target.appendChild(overlay);
     this._fillOptionsContext(listViewContext);
   }
 
@@ -238,14 +240,14 @@ class ListView {
       checkBoxes.appendChild(text);
     }
 
+    context.appendChild(checkBoxes);
+
     const stretchAll = document.createElement('BUTTON');
     stretchAll.innerHTML = 'Stretch All Columns';
-    checkBoxes.appendChild(stretchAll);
+    context.appendChild(stretchAll);
 
-    context.appendChild(checkBoxes);
-    context.appendChild(document.createElement('HR'));
-
-    stretchAll.addEventListener('click', () => {
+    stretchAll.addEventListener('click', (event) => {
+      event.stopPropagation();
       this._stretchAllColumns();
     });
   }
@@ -481,7 +483,6 @@ class ListView {
   }
 
   _removeColumn(column) {
-    console.log(this._columns);
     for (let i = this._columns.length - 1; i >= 0; --i) {
       if (this._columns[i].name === column.name) {
         this._columns.splice(i, 1);

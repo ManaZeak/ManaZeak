@@ -10,7 +10,16 @@ class Scene {
    **/
   constructor() {
     this._scene = document.getElementById('scene');
+    this._optionButton = document.getElementById('view-option');
     // TODO : add test function that replace scene with a sandBox to work with
+
+    this._events();
+  }
+
+  _events() {
+    this._optionButton.addEventListener('click', () => {
+      this.view.optionsClicked();
+    });
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
