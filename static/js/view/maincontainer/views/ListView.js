@@ -270,7 +270,7 @@ class ListView {
 
       stretch.classList.add('listview-stretch-button');
       stretch.setAttribute('draggable', 'false');
-      stretch.src = '/static/img/controls/right.svg'; // TODO expand svg (left right arrow);
+      stretch.src = '/static/img/actions/stretch-x.svg'; // TODO expand svg (left right arrow);
 
       resize.classList.add('listview-resize-handle');
 
