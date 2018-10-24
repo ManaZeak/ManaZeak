@@ -251,22 +251,22 @@ class Notification {
     if (notification.type === 'success') {
       notification.dom.classList.add('success');
       if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/utils/Notification.js/success.svg';
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
       }
     } else if (notification.type === 'warning') {
       notification.dom.classList.add('warning');
       if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/utils/Notification.js/warning.svg';
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
       }
     } else if (notification.type === 'error') {
       notification.dom.classList.add('error');
       if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/utils/Notification.js/error.svg';
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
       }
     } else if (notification.type === 'info') {
       notification.dom.classList.add('info');
       if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/utils/Notification.js/info.svg';
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
       }
     }
 

@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load sass_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,20 +7,20 @@
         <meta name="viewport" content="initial-scale=1">
         <meta name="description" content="ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. Check out our repo : https://github.com/Squadella/ManaZeak">
         <title>ManaZeak</title>
-        <link rel="stylesheet" type="text/css" href="{% sass_src "scss/style.scss" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "dist/css/manazeak.bundle.css" %}">
     </head>
     <body>
       <div id="topbar">
-        <img src="../../static/img/logo/manazeak-text.svg" id="topbar-logo" alt="manazeak-text-logo">
-          <img src="" id="topbar-avatar" alt="user-avatar">
+        <img src="{% static "img/logo/manazeak-text.svg" %}" id="topbar-logo" alt="manazeak-text-logo">
+          <img src="{% static "img/default/user.svg" %}" id="topbar-avatar" alt="user-avatar">
       </div>
-      <img src="../../static/img/controls/right.svg" id="aside-open" alt="aside-open">
+      <img src="{% static "img/navigation/nav-right.svg" %}" id="aside-open" alt="aside-open">
       <div id="aside">
-        <img src="../../static/img/controls/left.svg" id="aside-close" alt="aside-close">
+        <img src="{% static "img/navigation/nav-left.svg" %}" id="aside-close" alt="aside-close">
       </div>
       <div id="mainContainer" class="extended">
         <div id="scene">
-          <img src="../../static/img/controls/right.svg" id="view-option" alt="view-option">
+          <img src="{% static "img/actions/option-gear.svg" %}" id="view-option" alt="view-option">
         </div>
           <div id="footbar">
             <div class="left">
@@ -29,17 +28,20 @@
             </div>
             <div class="center">
               <div id="controls-container">
-                <img id="stop" src="../../static/img/player/stop.svg" alt="player-stop">
-                <img id="play" src="../../static/img/player/play.svg" alt="player-play">
-                <a href="#" class="volumebar-expander" draggable="false">
-                  <img id="volumebar-img" src="../../static/img/player/volume-full.svg" alt="player-volume">
-                  <div id="volumebar-wrapper">
-                    <div id="volumebar-container">
-                      <div id="volumebar-current"></div>
-                      <div id="volumebar-thumb"></div>
-                    </div>
+                <img id="repeat" src="{% static "img/player/repeat-off.svg" %}" alt="player-repeat">
+                <img id="shuffle" src="{% static "img/player/shuffle-off.svg" %}" alt="player-shuffle">
+                <img id="previous" src="{% static "img/player/track-previous.svg" %}" alt="player-previous">
+                <img id="stop" src="{% static "img/player/stop.svg" %}" alt="player-stop">
+                <img id="play" src="{% static "img/player/play.svg" %}" alt="player-play">
+                <img id="next" src="{% static "img/player/track-next.svg" %}" alt="player-next">
+                <div id="volumebar-wrapper">
+                  <img id="volumebar-img" src="{% static "img/player/volume-full.svg" %}" alt="player-volume">
+                  <div id="volumebar-container">
+                    <div id="volumebar-current" class="full"></div>
+                    <div id="volumebar-thumb"></div>
                   </div>
-                </a>
+                </div>
+                <img id="queue" src="{% static "img/player/queue.svg" %}" alt="player-queue">
               </div>
               <div id="progress-container">
                 <div id="progress-track">
@@ -58,6 +60,6 @@
           </div>
         </div>
         <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/dist/manazeak.bundle.js" %}"></script>
+        <script type="text/javascript" src="{% static "dist/js/manazeak.bundle.js" %}"></script>
     </body>
 </html>
