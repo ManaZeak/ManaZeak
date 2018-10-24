@@ -130,6 +130,7 @@ moodbar/moodbar-0.1.2
 node_modules/
 
 # Bundles
-static/dist/
+*.bundle.css
+*.bundle.js
 
 /package-lock.json
