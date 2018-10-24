@@ -1,3 +1,5 @@
+import '../scss/style.scss';
+
 import Utils from './utils/Utils.js';
 import Errors from './utils/Errors.js';
 import Events from './utils/Events.js';

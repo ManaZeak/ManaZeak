@@ -20,7 +20,7 @@ $aside-button-length: 25px;
     z-index: 666;
   }
 
-  #listview-spinner {
+  #loading-spinner {
     bottom: 20px;
     height: $aside-button-length;
     position: absolute;
@@ -36,11 +36,82 @@ $aside-button-length: 25px;
       border-top-color: transparent;
       box-sizing: border-box;
       content: '';
-      height: ($listview-icon + $listview-padding);
+      right: -($aside-button-length / 2);
+      bottom: -($aside-button-length / 2);
+      height: ($aside-button-length + $padding);
       position: absolute;
-      width: ($listview-icon + $listview-padding);
+      width: ($aside-button-length + $padding);
 
       animation: listview-loading-spin 1.5s linear infinite;
+    }
+  }
+
+  .transparent-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 990;
+    top: 0;
+    left: 0;
+
+    #listview-context {
+      background: $dark-solid;
+      border: solid 1px black;
+      border-radius: 5px;
+      bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
+      height: auto;
+      position: absolute;
+      right: 5px;
+      width: 180px;
+      z-index: 665;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      .checkbox-container {
+        margin: $margin;
+
+        label:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      button {
+        background: rgba(0, 0, 0, 1);
+        border: solid 1px black;
+        border-radius: 20px;
+        height: auto;
+        width: auto;
+        display: block;
+        font-size: 0.9em;
+        margin: 15px;
+        margin-top: 0;
+        padding: 5px 15px;
+        color: white;
+      }
+
+      img {
+        cursor: pointer;
+        bottom: $margin;
+        height: $aside-button-length;
+        position: absolute;
+        float: right;
+        right: (2 * $margin) + $aside-button-length;
+        width: $aside-button-length;
+        z-index: 666;
+      }
+
+      &::after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 8px 0 8px;
+        border-color: $dark-alpha-light transparent transparent transparent;
+        position: absolute;
+        right: 10.5px;
+        bottom: -8px;
+      }
     }
   }
 }

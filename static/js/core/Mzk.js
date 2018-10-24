@@ -276,7 +276,7 @@ class Mzk {
       })
       .then(() => {
         this.view.changeTrack(this.model.getActiveTrack());
-      })
+      });
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
     //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
@@ -401,20 +401,6 @@ class Mzk {
   }
 
 
-  /**
-   * @method
-   * @name showHideVolumeBar
-   * @public
-   * @memberof Mzk
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Show volume bar for an amount of time then hide it. Use when updating the volume in the code
-   **/
-  showHideVolumeBar() {
-    this.view.getFootBar().getVolumeBar().startShowHide();
-  }
-
-
   //  ----  PROGRESS METHODS  ----  //
 
 
@@ -462,13 +448,73 @@ class Mzk {
    * @description Triggered when the player reached the end of a track
    **/
   trackEnded() {
-    mzk.changeTrack(this.view.getNextTrackId());
-//    this.stopPlayback(); // Only when no repetition is set and end of pl is reached TODO
-    // TODO repeat value to get here
-    //    this.model.getPlayer().repeatTrack(); // Repeat one
-    // If repeat off ->  this.model.stopPlayback(); .then( this.view.restoreDefault();
+    mzk.nextTrackInView();
   }
 
+
+  /**
+   * @method
+   * @name nextTrackInView
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since October 2018
+   * @description Change the player track using the next one in the current view
+   **/
+  nextTrackInView() {
+    const repeatMode = this.model.repeatMode;
+
+    if (repeatMode === 0) {
+      if (this.view.isLastTrack()) {
+        this.stopPlayback();
+      } else {
+        mzk.nextTrackInView();
+      }
+    } else if (repeatMode === 1) {
+      mzk.repeatTrack();
+    } else if (repeatMode === 2) {
+      mzk.changeTrack(this.view.getNextTrackId());
+    } else {
+      // TODO : handle error
+    }
+  }
+
+
+  /**
+   * @method
+   * @name previousTrackInView
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since October 2018
+   * @description Change the player track using the previous one in the current view
+   **/
+  previousTrackInView() {
+    mzk.changeTrack(this.view.getPreviousTrackId());
+  }
+
+
+  repeatTrack() {
+    this.model.repeatTrack();
+    // No need to update the view since the current track didn't changed
+  }
+
+
+  /**
+   * @method
+   * @name toggleRepeatMode
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since October 2018
+   * @description Change the repeat state to the next one (off, one, all)
+   **/
+  toggleRepeatMode() {
+    this.model.toggleRepeatMode()
+      .then((repeatMode) => {
+        this.view.setRepeatMode(repeatMode);
+      });
+  }
 
   //  ----  SHORTCUTS METHODS  ----  //
 
@@ -489,32 +535,26 @@ class Mzk {
 
     // Volume control
     Shortcut.register('Ctrl+Shift+ArrowDown', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(-0.25);
     });
 
     Shortcut.register('Ctrl+Shift+ArrowUp', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(0.25);
     });
 
     Shortcut.register('Ctrl+ArrowDown', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(-0.1);
     });
 
     Shortcut.register('Ctrl+ArrowUp', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(0.1);
     });
 
     Shortcut.register('ArrowDown', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(-0.01);
     });
 
     Shortcut.register('ArrowUp', () => {
-      this.showHideVolumeBar();
       this.adjustVolume(0.01);
     });
 

@@ -1,38 +1,3 @@
-
-// Old mzk values ::
-
-// Background colors
-$mzk-bg-light:        rgba(64, 64, 72, 1);
-$mzk-bg-normal:       rgba(44, 44, 48, 1);
-$mzk-bg-alt:          rgba(41, 41, 45, 1);
-$mzk-bg-strong:       rgba(31, 33, 39, 1);
-$mzk-bg-darker:       rgba(14, 15, 20, 1);
-$mzk-bg-alpha-darker: rgba(14, 15, 20, 0.66);
-$mzk-bg-alpha-black:  rgba(0, 0, 0, 0.8);
-// Text colors
-$mzk-text:       rgba(170, 170, 190, 1);
-$mzk-text-light: rgba(235, 235, 255, 1);
-// App colors
-$mzk-accent-color:      rgba(255, 0, 0, 0.8);
-$mzk-anti-accent-color: rgba(0, 0, 255, 0.8);
-// Collection colors
-$mzk-collection-library:   rgba(255, 0, 0, 0.8);
-$mzk-collection-playlist:  rgba(0, 0, 255, 0.8);
-$mzk-collection-favorites: rgba(0, 255, 0, 0.8);
-// Std colors
-$mzk-red:   rgba(255, 0, 0, 1);
-$mzk-green: rgba(0, 255, 0, 1);
-$mzk-blue:  rgba(0, 0, 255, 1);
-
-$mzk-animation-duration: 0.2s;
-
-$mzk-border-color:     $mzk-bg-darker;
-$mzk-border-color-neg: $mzk-text;
-$mzk-border-width:     1px;
-$mzk-border-radius:    3px;
-$mzk-padding:          10px;
-$mzk-margin:           10px;
-
 html, body {
   color: $lighter-solid;
   font-family: Segoe, Helvetica, serif;
@@ -142,7 +107,7 @@ input[type=checkbox]:disabled + label:before {
 input[type=checkbox]:checked + label:before {
   background-color: MediumSeaGreen;
   border-color: MediumSeaGreen;
-  color: #fff;
+  color: black;
 }
 
 input[type=checkbox]:checked:disabled + label:before {

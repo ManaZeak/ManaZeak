@@ -46,8 +46,8 @@ class UserMenu {
   _viewportClicked(event) {
     event.stopPropagation();
 
-    if (event.target !== this._userMenu) {
-      this.close();
+    if (!event.target.closest(`.user-menu`)) {
+        this.close();
     }
   }
 

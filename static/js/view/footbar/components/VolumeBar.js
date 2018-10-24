@@ -43,12 +43,6 @@ class VolumeBar {
     this._mouseUp = this._mouseUp.bind(this);
   }
 
-  _mouseOver() {
-    clearTimeout(this._showHideTimeoutId);
-    this._showHideTimeoutId = -1;
-    this._showWrapper();
-  }
-
   _mouseDown(event) {
     if (!this.isDragging && (event.target.id === 'volumebar-wrapper' ||
         event.target.id === 'volumebar-container' ||
@@ -57,7 +51,6 @@ class VolumeBar {
 
       this.isDragging = true;
       this._moveVolume(event);
-      this._showWrapper();
 
       window.addEventListener('mousemove', this._mouseMove);
       window.addEventListener('mouseup', this._mouseUp);
@@ -73,21 +66,9 @@ class VolumeBar {
   _mouseUp() {
     if (this.isDragging) {
       this.isDragging = false;
-      this._hideWrapper();
-
       window.removeEventListener('mousemove', this._mouseMove);
       window.removeEventListener('mouseup', this._mouseUp);
     }
-  }
-
-  _hideWrapper() {
-    this._volume.wrapper.style.opacity = null;
-    this._volume.wrapper.style.visibility = null;
-  }
-
-  _showWrapper() {
-    this._volume.wrapper.style.opacity = 1;
-    this._volume.wrapper.style.visibility = 'visible';
   }
 
   _moveVolume(event) {
@@ -108,30 +89,30 @@ class VolumeBar {
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
-  startShowHide() {
-    if (this._showHideTimeoutId === -1) {
-      this._showWrapper();
-    } // Show wrapp bc no timeout in progress
-    else {
-      clearTimeout(this._showHideTimeoutId);
-    } // Reset timeout to avoid wrapper blinking
-
-    this._showHideTimeoutId = setTimeout(() => {
-      this._showHideTimeoutId = -1; // Reset timeout id
-      this._hideWrapper();
-    }, 1000); // Transition time according to $transition-duration by 5 (utils/tools/_global.scss)
-  }
-
   updateVolume(isMuted, volume) {
+    const removeFullClass = () => {
+      if (this._volume.current.classList.contains('full')) {
+        this._volume.current.classList.remove('full');
+      }
+    };
+
     volume *= 100;
     // Icon update
     if (volume === 0 || (typeof isMuted === 'boolean' && isMuted === true)) {
+      removeFullClass();
       this._volume.image.src = '/static/img/player/volume-mute.svg';
-    } else if (volume > 0 && volume < 66) {
+    } else if (volume > 0 && volume < 50) {
+      removeFullClass();
       this._volume.image.src = '/static/img/player/volume-half.svg';
     } else {
+      removeFullClass();
       this._volume.image.src = '/static/img/player/volume-full.svg';
     }
+
+    if (volume > 97 && volume <= 100) { // Add border radius on right side
+      this._volume.current.classList.add('full');
+    }
+
     // Current and thumb update
     if (typeof isMuted === 'boolean' && isMuted === true) {
       volume = 0;

@@ -75,7 +75,7 @@
       font-size: 85%;
       background-color: rgba(27,31,35,0.05);
       border-radius: 3px;
-      font-family: monospace, monospace;
+      font-family: monospace, serif;
       color: #cb345b;
     }
   }
@@ -101,12 +101,12 @@
 	outline: none;
 	transition: all 0.1s ease 0s;
 
-    &:active {
-	  background-color: blue;
-    }
-
     &::-moz-focus-inner {
       border: 0;
+    }
+
+    &:active {
+	  background-color: blue;
     }
   }
 }
