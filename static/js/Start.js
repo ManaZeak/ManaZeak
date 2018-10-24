@@ -26,8 +26,6 @@ window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
 
-//Utils.addStyleSheet('/static/dist/css/main.css');
-
 document.addEventListener('DOMContentLoaded', () => {
   window.mzk = new Mzk();
   mzk.start();

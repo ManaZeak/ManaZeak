@@ -276,7 +276,7 @@ class Mzk {
       })
       .then(() => {
         this.view.changeTrack(this.model.getActiveTrack());
-      })
+      });
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
     //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })

@@ -8,13 +8,13 @@ module.exports = env => {
   const SRC = path.resolve(__dirname, 'static');
   const DIST = path.resolve(__dirname, 'static/dist');
 
-  let cssLoaders = [
+  const cssLoaders = [
     {
       loader: 'css-loader',
       options: {
         importLoaders: 1
       }
-    },
+    }
   ];
 
   if (env.prod === 'true') {
@@ -72,7 +72,7 @@ module.exports = env => {
           assetNameRegExp: /\manazeak.bundle.css$/g,
           cssProcessor: require('cssnano'),
           cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
+            preset: ['default', { discardComments: { removeAll: true } }]
           },
           canPrint: true
         })

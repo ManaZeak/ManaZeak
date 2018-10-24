@@ -153,7 +153,7 @@ class Playlist {
   }
 
   toggleRepeatMode() {
-    this._repeatMode = ++this._repeatMode % 3;
+    this._repeatMode = (this._repeatMode + 1) % 3;
   }
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //

@@ -180,7 +180,7 @@ class ListView {
     }
 
     // Otherwise, append context, and fill it with its content
-    let overlay = document.createElement('DIV');
+    const overlay = document.createElement('DIV');
     overlay.classList.add('transparent-overlay');
     overlay.addEventListener('click', (event) => {
       if (!event.target.closest('#listview-context')) {

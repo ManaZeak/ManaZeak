@@ -49,8 +49,6 @@ class UserMenu {
     if (!event.target.closest(`.user-menu`)) {
         this.close();
     }
-      if (event.target !== this._userMenu) {
-    }
   }
 
 
