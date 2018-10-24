@@ -27,7 +27,6 @@ class ListView {
     };
 
     this._draggedColumn = null;
-
     this._selection = [];
     this._click = { // Object to handle click events on track entries
       dbclick: false,
@@ -99,7 +98,7 @@ class ListView {
       }
 
       if (event.ctrlKey && event.shiftKey && this._selection.length > 0) { // Ctrl + Shift + Click : fill selection in between target and closest selectioned track
-        this._startLoading()
+        mzk.view.startLoading()
           .then(() => {
             // TODO : différence entre target et le dernier endroit ou on click
             let start = 0;
@@ -118,10 +117,10 @@ class ListView {
               this._selection.push(i);
             }
 
-            this._stopLoading();
+            mzk.view.stopLoading();
           });
       } else { // Normal click behavior
-        this._startLoading()
+        mzk.view.startLoading()
           .then(() => {
             if (this._tracks[targetId].getIsSelected()) {
               this._tracks[targetId].setSelected(false);
@@ -131,7 +130,7 @@ class ListView {
               this._selection.push(parseInt(targetId, 10));
             }
 
-            this._stopLoading();
+            mzk.view.stopLoading();
           });
       }
 
@@ -161,14 +160,14 @@ class ListView {
       }
     }
 
-    this._startLoading()
+    mzk.view.startLoading()
       .then(() => {
         this._playingTrackIndex !== -1 ? this._tracks[this._playingTrackIndex].setPlaying(false) : undefined;
 
         this._playingTrackIndex = targetId;
         this._click.dbclick = false;
         this._tracks[targetId].setPlaying(true);
-        this._stopLoading();
+        mzk.view.stopLoading();
       });
   }
 
@@ -220,7 +219,7 @@ class ListView {
         const name = event.target.id.match(/-(.*)/)[1];
         let width = '';
 
-        this._startLoading()
+        mzk.view.startLoading()
           .then(() => {
             for (let j = 0; j < this._availableColumns.length; ++j) {
               if (this._availableColumns[j].name === name) {
@@ -232,7 +231,7 @@ class ListView {
               name: name,
               width: width
             });
-            this._stopLoading();
+            mzk.view.stopLoading();
           });
       });
 
@@ -301,7 +300,7 @@ class ListView {
     };
 
     const stopResizing = event => {
-      this._startLoading()
+      mzk.view.startLoading()
         .then(() => {
           event.target.parentNode.setAttribute('draggable', 'true');
           window.removeEventListener('mousemove', resize, false);
@@ -320,7 +319,7 @@ class ListView {
           }
 
           this._refreshGridColumn(this._computeGridTemplateColumns());
-          this._stopLoading();
+          mzk.view.stopLoading();
         });
     };
 
@@ -379,7 +378,7 @@ class ListView {
       // Don't do anything if dropping the same column we're dragging.
       if (this._draggedColumn !== event.target) {
         event.target.removeEventListener('drageend', dragEnd, false);
-        this._startLoading()
+        mzk.view.startLoading()
           .then(() => {
             for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
               this._dom.container.childNodes[i].insertBefore(this._dom.container.childNodes[i].childNodes[this._draggedColumn.dataset.id], this._dom.container.childNodes[i].childNodes[event.target.dataset.id]);
@@ -393,7 +392,7 @@ class ListView {
 
             this._draggedColumn = null; // Must be done after column movement in grid
             this._refreshGridColumn();
-            this._stopLoading();
+            mzk.view.stopLoading();
           });
       } else {
         this._draggedColumn = null; //
@@ -510,7 +509,7 @@ class ListView {
   }
 
   _stretchColumn(column) {
-    this._startLoading()
+    mzk.view.startLoading()
       .then(() => {
         const index = column.dataset.id; // Column to stretch index
         let sum = 0; // Columns width in % sum
@@ -531,7 +530,7 @@ class ListView {
               code: 'CANT_STRETCH_COLUMN',
               frontend: true
             });
-            this._stopLoading();
+            mzk.view.stopLoading();
             return;
           }
         } else { // Layout is 100% stretched to its container, raise an info
@@ -539,18 +538,18 @@ class ListView {
             code: 'ALREADY_STRETCH',
             frontend: true
           });
-          this._stopLoading();
+          mzk.view.stopLoading();
           return;
         }
 
         this._columns[index].width = this._columns[index].width.toString(); // Restore target value
         this._refreshGridColumn();
-        this._stopLoading();
+        mzk.view.stopLoading();
       });
   }
 
   _stretchAllColumns() {
-    this._startLoading()
+    mzk.view.startLoading()
       .then(() => {
         const equalColumnWidthInPx = (this._dom.wrapper.clientWidth / this._columns.length);
         let alreadyStretched = true; // Assuming by default that that columns have equal width
@@ -568,7 +567,7 @@ class ListView {
             code: 'ALREADY_STRETCH',
             frontend: true
           });
-          this._stopLoading();
+          mzk.view.stopLoading();
           return;
         }
 
@@ -579,30 +578,13 @@ class ListView {
         }
 
         this._refreshGridColumn(gridTemplateColumns); // Refresh ListView grid with custom gridTemplateColumns value
-        this._stopLoading();
+        mzk.view.stopLoading();
       });
   }
 
-  _startLoading() {
-    return new Promise(resolve => {
-      const spinner = document.createElement('DIV');
-      spinner.id = 'listview-spinner';
-      this._dom.wrapper.appendChild(spinner);
-      setTimeout(() => {
-        resolve();
-      }, 50); // Ensure spinner has started its animation before resolving the promise
-    });
-  }
-
-  _stopLoading() {
-    const spinner = this._dom.wrapper.querySelector("#listview-spinner");
-    if (spinner != null) {
-      this._dom.wrapper.removeChild(spinner);
-    }
-  }
 
   addTracks(tracks) {
-    this._startLoading()
+    mzk.view.startLoading()
       .then(() => {
         const fragment = document.createDocumentFragment();
         const gridTemplateColumns = this._computeGridTemplateColumns(); // CSS grid rule
@@ -642,7 +624,8 @@ class ListView {
           this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
         }
 
-        this._stopLoading();
+        mzk.view.stopLoading();
+        mzk.view.stopLoading();
       });
   }
 
@@ -683,11 +666,11 @@ class ListView {
   }
 
   refreshView() { // TODO move this in AppView extended class to create and this is override
-    this._startLoading()
+    mzk.view.startLoading()
       .then(() => {
         setTimeout(() => {
           this._refreshGridColumn();
-          this._stopLoading();
+          mzk.view.stopLoading();
         }, 500);
       });
   }
@@ -698,6 +681,18 @@ class ListView {
 
   getNextTrackId() {
     return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
+  }
+
+  getPreviousTrackId() {
+    return this._tracks[(this._playingTrackIndex + this._tracks.length - 1) % this._tracks.length].id;
+  }
+
+  isLastTrack() {
+    if (this._playingTrackIndex === this._tracks.length - 1) {
+      return true;
+    }
+
+    return false;
   }
 }
 

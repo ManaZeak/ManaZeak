@@ -1,6 +1,6 @@
 {
   "name": "manazeak",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "<div style=\"text-align:center; margin-bottom: 25px;\">     <img src =\"http://manazeak.org/static/img/logo/manazeak.svg\" style=\"width: 50%\" /> </div>",
   "main": "./static/js/Start.js",
   "scripts": {
@@ -44,9 +44,19 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "uglifyjs-webpack-plugin": "^1.1.2",
+    "css-loader": "^1.0.0",
+    "postcss-loader": "3.0.0",
+    "autoprefixer": "^9.3.0",
+    "style-loader": "^0.23.1",
+    "node-sass": "^4.9.4",
+    "sass-loader": "^7.1.0",
+    "cssnano": "^4.1.7",
+    "mini-css-extract-plugin": "^0.4.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "sonar-scanner": "^3.1.0",
     "jsdoc": "^3.5.5",
     "tui-jsdoc-template": "^1.2.2"

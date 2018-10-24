@@ -12,7 +12,7 @@
    enable-background="new 0 0 100.021 100.021"
    id="svg8"
    sodipodi:docname="stop.svg"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
    width="100%"
    height="100%">
   <metadata
@@ -38,14 +38,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-height="1013"
      id="namedview10"
      showgrid="false"
      inkscape:zoom="3.3368432"
-     inkscape:cx="-40.235882"
+     inkscape:cx="-84.289495"
      inkscape:cy="21.372529"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8" />
   <g
@@ -58,5 +58,5 @@
      id="path818"
      d="M 94.999127,95 H 5.0008725 V 5 H 94.999127 z M 9.7962955,90.205568 H 90.210157 V 9.795421 H 9.7962955 z"
      inkscape:connector-curvature="0"
-     style="fill:#aaaabe;fill-opacity:1;stroke-width:0.11067037" />
+     style="fill:#aaaabe;fill-opacity:1;stroke-width:3;stroke:#aaaabe;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
 </svg>

@@ -277,7 +277,22 @@ class Model {
     return null;
   }
 
+  toggleRepeatMode() {
+    return new Promise(resolve => {
+      this._collection.getActivePlaylist().toggleRepeatMode();
+      resolve(this._collection.getActivePlaylist().repeatMode);
+    });
+  }
+
+  repeatTrack() {
+    this._player.repeatTrack();
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
+
+  get repeatMode() {
+    return this._collection.getActivePlaylist().repeatMode;
+  }
 
   getVolume() {
     return this._player.getVolume();

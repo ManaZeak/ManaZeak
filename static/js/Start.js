@@ -1,3 +1,5 @@
+import '../scss/style.scss';
+
 import Utils from './utils/Utils.js';
 import Errors from './utils/Errors.js';
 import Events from './utils/Events.js';
@@ -23,6 +25,8 @@ window.Errors = new Errors(errorsOptions);
 window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
+
+//Utils.addStyleSheet('/static/dist/css/main.css');
 
 document.addEventListener('DOMContentLoaded', () => {
   window.mzk = new Mzk();

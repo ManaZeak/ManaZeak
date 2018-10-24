@@ -1,6 +1,7 @@
 import Track from './Track.js';
 'use_strict';
 
+
 class Playlist {
   /**
    * @summary ManaZeak Playlist class
@@ -28,6 +29,7 @@ class Playlist {
     this._avgBitrate = options.averagBitRate;
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
+    this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
 
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
@@ -150,7 +152,15 @@ class Playlist {
     });
   }
 
+  toggleRepeatMode() {
+    this._repeatMode = ++this._repeatMode % 3;
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
+
+  get repeatMode() {
+    return this._repeatMode;
+  }
 
   getId() {
     return this._id;

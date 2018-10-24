@@ -13,7 +13,10 @@ class FootBar {
     this._controls = {
       play: {},
       stop: {},
-      volume: {}
+      volume: {},
+      previous: {},
+      next: {},
+      repeat: {}
     };
     this._volumeBar = {};
     this._progressBar = {};
@@ -36,6 +39,9 @@ class FootBar {
   _init() {
     this._controls.play = document.getElementById('play');
     this._controls.stop = document.getElementById('stop');
+    this._controls.previous = document.getElementById('previous');
+    this._controls.next = document.getElementById('next');
+    this._controls.repeat = document.getElementById('repeat');
 
     this._volumeBar = new VolumeBar();
     this._progressBar = new ProgressBar();
@@ -54,8 +60,21 @@ class FootBar {
     this._controls.play.addEventListener('click', () => {
       mzk.togglePlay();
     });
+
     this._controls.stop.addEventListener('click', () => {
       mzk.stopPlayback();
+    });
+
+    this._controls.previous.addEventListener('click', () => {
+      mzk.previousTrackInView();
+    });
+
+    this._controls.next.addEventListener('click', () => {
+      mzk.nextTrackInView();
+    });
+
+    this._controls.repeat.addEventListener('click', () => {
+      mzk.toggleRepeatMode();
     });
   }
 
@@ -130,6 +149,16 @@ class FootBar {
           .attr('height', '100%')
           .attr('width', '100%');
       });
+  }
+
+  setRepeatMode(value) {
+    if (value === 0) {
+      this._controls.repeat.src = '/static/img/player/repeat-off.svg';
+    } else if (value === 1) {
+      this._controls.repeat.src = '/static/img/player/repeat-one.svg';
+    } else if (value === 2) {
+      this._controls.repeat.src = '/static/img/player/repeat-all.svg';
+    }
   }
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //

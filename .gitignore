@@ -129,8 +129,7 @@ moodbar/moodbar-0.1.2
 # npm GC
 node_modules/
 
-# Js bundles
-static/js/dist/manazeak.bundle.js
-static/js/dist/manazeak.bundle.js.map
+# Bundles
+static/dist/
 
 /package-lock.json

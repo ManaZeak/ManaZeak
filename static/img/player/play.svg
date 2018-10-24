@@ -12,7 +12,7 @@
    enable-background="new 0 0 99.893 99.893"
    id="svg8"
    sodipodi:docname="play.svg"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
    width="100%"
    height="100%">
   <metadata
@@ -38,19 +38,19 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-height="1013"
      id="namedview10"
      showgrid="false"
      inkscape:zoom="4.7250561"
-     inkscape:cx="11.13961"
+     inkscape:cx="-90.446486"
      inkscape:cy="39.964619"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8" />
   <path
      id="path825"
-     d="M 15.11181,95 V 5 L 82.030703,50.000702 z M 18.116993,10.644219 V 89.354694 L 76.644287,50.000702 z"
+     d="M 18.171472,91.937933 V 8.0621202 L 80.536767,50.000681 Z m 2.80069,-78.615663 v 73.3545 L 75.516878,50.000681 Z"
      inkscape:connector-curvature="0"
-     style="fill:#aaaabe;fill-opacity:1;stroke-width:0.07773493" />
+     style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:3.26183724;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>

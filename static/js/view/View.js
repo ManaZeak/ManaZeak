@@ -208,6 +208,32 @@ class View {
     return this._scene.getNextTrackId();
   }
 
+  getPreviousTrackId() {
+    return this._scene.getPreviousTrackId();
+  }
+
+  startLoading() {
+    return new Promise(resolve => {
+      this._scene.startLoading()
+        .then(resolve);
+    });
+  }
+
+  stopLoading() {
+    return new Promise(resolve => {
+      this._scene.stopLoading()
+        .then(resolve);
+    });
+  }
+
+  setRepeatMode(value) {
+    this._footBar.setRepeatMode(value);
+  }
+
+  isLastTrack() {
+    return this._scene.isLastTrack();
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   getFootBar() {
