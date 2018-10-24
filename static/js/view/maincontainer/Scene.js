@@ -169,10 +169,11 @@ class Scene {
     this.view = new ListView(options); // TODO : move this
     this.addView(this.view.getDOMFragment());
     this.view.addTracks(tracks);
-
+/*
     setTimeout(() => {
       this.view.centerOn(2);
     }, 500);
+*/
   }
 
   changeTrack(id) {
@@ -181,6 +182,35 @@ class Scene {
 
   getNextTrackId() {
     return this.view.getNextTrackId();
+  }
+
+  getPreviousTrackId() {
+    return this.view.getPreviousTrackId();
+  }
+
+  isLastTrack() {
+    return this.view.isLastTrack();
+  }
+
+  startLoading() {
+    return new Promise(resolve => {
+      const spinner = document.createElement('DIV');
+      spinner.id = 'loading-spinner';
+      this._scene.appendChild(spinner);
+      setTimeout(() => {
+        resolve();
+      }, 50); // Ensure spinner has started its animation before resolving the promise
+    });
+  }
+
+  stopLoading() {
+    return new Promise(resolve => {
+        const spinner = this._scene.querySelector("#loading-spinner");
+        if (spinner != null) {
+            this._scene.removeChild(spinner);
+        }
+        resolve();
+    });
   }
 }
 

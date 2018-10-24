@@ -20,7 +20,7 @@ $aside-button-length: 25px;
     z-index: 666;
   }
 
-  #listview-spinner {
+  #loading-spinner {
     bottom: 20px;
     height: $aside-button-length;
     position: absolute;
@@ -36,9 +36,11 @@ $aside-button-length: 25px;
       border-top-color: transparent;
       box-sizing: border-box;
       content: '';
-      height: ($listview-icon + $listview-padding);
+      right: -($aside-button-length / 2);
+      bottom: -($aside-button-length / 2);
+      height: ($aside-button-length + $padding);
       position: absolute;
-      width: ($listview-icon + $listview-padding);
+      width: ($aside-button-length + $padding);
 
       animation: listview-loading-spin 1.5s linear infinite;
     }
@@ -90,12 +92,12 @@ $aside-button-length: 25px;
 
       img {
         cursor: pointer;
-        bottom: $listview-margin;
-        height: $listview-icon;
+        bottom: $margin;
+        height: $aside-button-length;
         position: absolute;
         float: right;
-        right: (2 * $listview-margin) + $listview-icon;
-        width: $listview-icon;
+        right: (2 * $margin) + $aside-button-length;
+        width: $aside-button-length;
         z-index: 666;
       }
 

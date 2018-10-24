@@ -1,71 +1,25 @@
-a.volumebar-expander {
-  align-items: center;
-  cursor: pointer;
+#volumebar-wrapper {
+  height: 100%;
+  text-align: center;
+  width: 170px;
   display: flex;
-  height: $footbar-controls-scale;
-  justify-content: center;
-  margin: 0 $footbar-controls-margin;
-  outline: 0;
-  position: relative;
-  z-index: 733;
-
-  img {
-    height: 100%;
-    margin: 0;
-  }
-
-  #volumebar-wrapper {
-    background-color: #1f2127;
-    border: solid 1px #0e0f14;
-    border-radius: 3px;
-    box-sizing: border-box;
-    height: 33px;
-    left: 0;
-    margin-left: 40px;
-    position: absolute;
-    transition: opacity 0.5s ease 0s, visibility 0.5s ease 0s;
-    text-align: center;
-    width: 140px;
-
-    opacity: 0;
-    visibility: hidden;
-
-    &:hover {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    &::before {
-      border: solid 6px;
-      border-color: transparent #0e0f14 transparent transparent;
-      content: '';
-      left: -12px;
-      position: absolute;
-      margin: 9.5px 0;
-    }
-  }
-
-
-  &:hover #volumebar-wrapper {
-    opacity: 1;
-    visibility: visible;
-  }
-
+  position: absolute;
+  right: calc(33px + #{$footbar-controls-margin});
+  align-items: center;
 
   #volumebar-container {
     background-color: #aaaabe;
-    border: solid 1px #0e0f14;
-    border-radius: 3px;
-    display: inline-block;
-    margin: 13px 0;
-    pointer-events: initial; // Restore pointer events on volumebar
+    border-radius: 4px;
+    pointer-events: initial;
     position: relative;
-    width: 85%;
-    height: 5px;
+    width: 75%;
+    height: 6px;
+    margin-left: auto;
+    margin-right: auto;
 
     #volumebar-current {
       background-color: rgb(255, 0, 0);
-      border-radius: $mzk-border-radius;
+      border-radius: $mzk-border-radius 0 0 $mzk-border-radius;
       bottom: 0;
       height: 100%;
       position: absolute;
@@ -73,22 +27,29 @@ a.volumebar-expander {
       width: 100%;
     }
 
+    #volumebar-current.full {
+      border-radius: $mzk-border-radius;
+    }
+
     #volumebar-thumb {
-      background-color: $mzk-text;
-      border: solid 1px $mzk-bg-darker;
-      border-radius: $mzk-border-radius * 2;
+      background-color: white;
+      border-radius: 50%;
       bottom: 0;
-      height: 10px;
-      margin-left: -4px;
+      height: 12px;
+      margin-left: -6px;
       left: 100%;
       margin-bottom: -3px;
       opacity: 0;
       position: absolute;
       transition: opacity 0.15s ease;
-      width: 10px;
+      width: 12px;
     }
 
-    &:hover > #volumebar-current { background-color: $mzk-anti-accent-color; }
-    &:hover > #volumebar-thumb { opacity: 1; }
+    &:hover > #volumebar-current {
+      background-color: $mzk-anti-accent-color;
+    }
+    &:hover > #volumebar-thumb {
+      opacity: 1;
+    }
   }
 }

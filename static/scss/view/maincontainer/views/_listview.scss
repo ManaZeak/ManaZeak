@@ -155,15 +155,16 @@ $listview-track-height: 40px;
       }
 
       &.selected {
-        background-color: $blue-darker-alpha-light;
+        background-color: $green-darker-alpha-light !important; // Important to 'z-index' over playing bg-color
       }
 
       &.playing {
-        @include box-shadow(0 0 $margin, 255, 255, 255, 0.1);
+        background-color: $blue-darker-alpha-light;
+        box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
 
         &::before {
           content: '';
-          background: url(/static/img/player/play2.svg);
+          background: url(/static/img/player/play.svg);
           height: (3 * $listview-track-height) / 4;
           width: (3 * $listview-track-height) / 4;
           opacity: 0.5;
