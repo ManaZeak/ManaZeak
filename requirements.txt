@@ -1,9 +1,6 @@
-Django==1.11.8
-django-compressor
-django-libsass
+Django==2.1.2
 psycopg2
 mutagen
-django-sass-processor
 requests
 python-crontab
 psutil
