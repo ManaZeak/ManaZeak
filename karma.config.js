@@ -43,7 +43,7 @@ module.exports = function(config) {
         ]
       },
       watch: true,
-      mode: 'development',
+      mode: 'development'
     },
     webpackServer: {
       noInfo: true
