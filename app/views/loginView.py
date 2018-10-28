@@ -28,12 +28,9 @@ class Login(View):
         username = form.data['username']
         password = form.data['password']
         user = authenticate(username=username, password=password)
-        if user is not None:
-            if checkPermission(["LOGI"], user):
-                if user.is_active:
-                    login(request, user)
-                    return redirect('app:index')
-
+        if user is not None and checkPermission(["LOGI"], user) and user.is_active:
+            login(request, user)
+            return redirect('app:index')
         return render(request, self.template_name, {'form': form})
 
 

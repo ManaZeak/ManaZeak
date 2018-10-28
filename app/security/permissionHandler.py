@@ -7,4 +7,5 @@
 #   @param user the user to check the permission
 #   @return True if the user has the permission, False otherwise
 def checkPermission(requiredPermission, user):
-    pass  # FIXME: to be implemented
+    # FIXME: to be implemented
+    return True

@@ -16,5 +16,6 @@ def createUserSettings(user, inviteCode):
         userPref.group = Group.objects.get(rank=1)
     # Setting the user avatar
     userPref.avatar = generateAvatar(user.username)
-    userPref.inviteCode = inviteCode
+    if inviteCode is not None:
+        userPref.inviteCode = inviteCode
     userPref.save()
