@@ -113,13 +113,13 @@ db_data
 
 ### ManaZeak specific ###
 .scannerwork
-doc/
-log/
-node_modules/
-static/dist/
-static/mood/
-static/img/avatars/
-static/img/covers/
-static/lib/
+doc/**
+log/**
+node_modules/**
+static/dist/**
+static/mood/**
+static/img/avatars/**
+static/img/covers/**
+static/lib/**
 
 *.mood
