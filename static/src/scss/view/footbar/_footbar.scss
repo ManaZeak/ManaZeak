@@ -52,22 +52,37 @@ $footbar-transition: ($transition-duration * 2);
       width: 100%;
       position: relative;
 
-      img {
+      div.image-wrapper {
         cursor: pointer;
-        height: $footbar-controls-scale;
-        margin: 0 $footbar-controls-margin;
-        user-select: none;
-        -moz-user-select: none;
+        height: 50%;
       }
 
-      #repeat {
+      .shuffle-left {
+        position: absolute;
+        left: calc(33px + #{$footbar-controls-margin});
+      }
+
+      .repeat-left {
         position: absolute;
         left: 0;
       }
 
-      #shuffle {
-        position: absolute;
-        left: calc(33px + #{$footbar-controls-margin})
+      img {
+        cursor: pointer;
+        height: 100%;
+        margin: 0 $footbar-controls-margin;
+        user-select: none;
+        -moz-user-select: none;
+
+        #repeat {
+          position: absolute;
+          left: 0;
+        }
+
+        #shuffle {
+          position: absolute;
+          left: calc(33px + #{$footbar-controls-margin});
+        }
       }
 
       @import 'volumebar'; // Loading volumebar rules

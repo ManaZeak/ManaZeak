@@ -28,20 +28,20 @@
             </div>
             <div class="center">
               <div id="controls-container">
-                <img id="repeat" src="{% static "img/player/repeat-off.svg" %}" alt="player-repeat">
-                <img id="shuffle" src="{% static "img/player/shuffle-off.svg" %}" alt="player-shuffle">
-                <img id="previous" src="{% static "img/player/track-previous.svg" %}" alt="player-previous">
-                <img id="stop" src="{% static "img/player/stop.svg" %}" alt="player-stop">
-                <img id="play" src="{% static "img/player/play.svg" %}" alt="player-play">
-                <img id="next" src="{% static "img/player/track-next.svg" %}" alt="player-next">
+                <div class="repeat-left image-wrapper"><img id="repeat" src="{% static "img/player/repeat-off.svg" %}" alt="player-repeat"></div>
+                <div class="shuffle-left image-wrapper"><img id="shuffle" src="{% static "img/player/shuffle-off.svg" %}" alt="player-shuffle"></div>
+                <div class="image-wrapper"><img id="previous" src="{% static "img/player/track-previous.svg" %}" alt="player-previous"></div>
+                <div class="image-wrapper"><img id="stop" src="{% static "img/player/stop.svg" %}" alt="player-stop"></div>
+                <div class="image-wrapper"><img id="play" src="{% static "img/player/play.svg" %}" alt="player-play"></div>
+                <div class="image-wrapper"><img id="next" src="{% static "img/player/track-next.svg" %}" alt="player-next"></div>
                 <div id="volumebar-wrapper">
-                  <img id="volumebar-img" src="{% static "img/player/volume-full.svg" %}" alt="player-volume">
+                  <div class="image-wrapper"><img id="volumebar-img" src="{% static "img/player/volume-full.svg" %}" alt="player-volume"></div>
                   <div id="volumebar-container">
                     <div id="volumebar-current" class="full"></div>
                     <div id="volumebar-thumb"></div>
                   </div>
                 </div>
-                <img id="queue" src="{% static "img/player/queue.svg" %}" alt="player-queue">
+                <div class="image-wrapper"><img id="queue" src="{% static "img/player/queue.svg" %}" alt="player-queue"></div>
               </div>
               <div id="progress-container">
                 <div id="progress-track">
@@ -59,7 +59,7 @@
             </div>
           </div>
         </div>
-        <script type="text/javascript" src="{% static "js/lib/d3.v3.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "lib/d3.v3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "dist/js/manazeak.bundle.js" %}"></script>
     </body>
 </html>

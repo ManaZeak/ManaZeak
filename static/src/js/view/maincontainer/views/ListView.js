@@ -67,8 +67,10 @@ class ListView {
       this._trackClicked(event);
     });
 
-    window.addEventListener('click', () => {
-      this.unselectAll();
+    window.addEventListener('click', (event) => {
+      if (event.target.id === 'scene') {
+        this.unselectAll();
+      }
     });
 
     window.addEventListener('resize', () => {
@@ -687,12 +689,12 @@ class ListView {
     return this._tracks[(this._playingTrackIndex + this._tracks.length - 1) % this._tracks.length].id;
   }
 
-  isLastTrack() {
-    if (this._playingTrackIndex === this._tracks.length - 1) {
-      return true;
-    }
+  getFirstTrackId() {
+    return this._tracks[0].id;
+  }
 
-    return false;
+  isLastTrack() {
+    return this._playingTrackIndex === this._tracks.length - 1;
   }
 }
 
