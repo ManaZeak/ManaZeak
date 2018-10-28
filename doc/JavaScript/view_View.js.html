@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: view/View.js | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="./jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/Squadella/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v0.1.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Aside.html">Aside</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Aside_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Aside.html#._events">_events</a></li><li><a href="Aside.html#._init">_init</a></li><li><a href="Aside.html#.hide">hide</a></li><li><a href="Aside.html#.show">show</a></li></ul></div></li><li><a href="AsideEntry.html">AsideEntry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AsideEntry_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AsideEntry.html#._init">_init</a></li></ul></div></li><li><a href="Collection.html">Collection</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Collection_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Collection.html#._buildPlaylist">_buildPlaylist</a></li><li><a href="Collection.html#._initialScan">_initialScan</a></li><li><a href="Collection.html#.buildUserCollection">buildUserCollection</a></li><li><a href="Collection.html#.checkScanStatus">checkScanStatus</a></li><li><a href="Collection.html#.newLibrary">newLibrary</a></li></ul></div></li><li><a href="Errors.html">Errors</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Errors_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Errors.html#._getCallerName">_getCallerName</a></li></ul></div></li><li><a href="Events.html">Events</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Events_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Events.html#.fire">fire</a></li><li><a href="Events.html#.raise">raise</a></li><li><a href="Events.html#.register">register</a></li><li><a href="Events.html#.unregister">unregister</a></li><li><a href="Events.html#.unregisterAll">unregisterAll</a></li></ul></div></li><li><a href="FootBar.html">FootBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="FootBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="FootBar.html#._events">_events</a></li><li><a href="FootBar.html#._init">_init</a></li><li><a href="FootBar.html#.renderMoodFile">renderMoodFile</a></li><li><a href="FootBar.html#.updatePlayButton">updatePlayButton</a></li></ul></div></li><li><a href="Komunikator.html">Komunikator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Komunikator_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Komunikator.html#_csrfToken">_csrfToken</a></li><li><a href="Komunikator.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Komunikator.html#._init">_init</a></li><li><a href="Komunikator.html#.get">get</a></li><li><a href="Komunikator.html#.getBinaryResponse">getBinaryResponse</a></li><li><a href="Komunikator.html#.getTemplate">getTemplate</a></li><li><a href="Komunikator.html#.post">post</a></li></ul></div></li><li><a href="ListView.html">ListView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ListView_sub"></div></li><li><a href="ListViewEntry.html">ListViewEntry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ListViewEntry_sub"></div></li><li><a href="Model.html">Model</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Model_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Model.html#._init">_init</a></li><li><a href="Model.html#.adjustProgress">adjustProgress</a></li><li><a href="Model.html#.adjustVolume">adjustVolume</a></li><li><a href="Model.html#.changeTrack">changeTrack</a></li><li><a href="Model.html#.getTrackById">getTrackById</a></li><li><a href="Model.html#.initCollection">initCollection</a></li><li><a href="Model.html#.mute">mute</a></li><li><a href="Model.html#.setProgress">setProgress</a></li><li><a href="Model.html#.setVolume">setVolume</a></li><li><a href="Model.html#.stopPlayback">stopPlayback</a></li><li><a href="Model.html#.toggleMute">toggleMute</a></li><li><a href="Model.html#.togglePlay">togglePlay</a></li><li><a href="Model.html#.unmute">unmute</a></li></ul></div></li><li><a href="Mzk.html">Mzk</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Mzk_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Mzk.html#._initKomunikator">_initKomunikator</a></li><li><a href="Mzk.html#._initLang">_initLang</a></li><li><a href="Mzk.html#._initModel">_initModel</a></li><li><a href="Mzk.html#._initShortcut">_initShortcut</a></li><li><a href="Mzk.html#._initUser">_initUser</a></li><li><a href="Mzk.html#._initView">_initView</a></li><li><a href="Mzk.html#._startApp">_startApp</a></li><li><a href="Mzk.html#.adjustProgress">adjustProgress</a></li><li><a href="Mzk.html#.adjustVolume">adjustVolume</a></li><li><a href="Mzk.html#.changeTrack">changeTrack</a></li><li><a href="Mzk.html#.mute">mute</a></li><li><a href="Mzk.html#.nextTrackInView">nextTrackInView</a></li><li><a href="Mzk.html#.previousTrackInView">previousTrackInView</a></li><li><a href="Mzk.html#.reloadShortcuts">reloadShortcuts</a></li><li><a href="Mzk.html#.setProgress">setProgress</a></li><li><a href="Mzk.html#.setVolume">setVolume</a></li><li><a href="Mzk.html#.start">start</a></li><li><a href="Mzk.html#.stopPlayback">stopPlayback</a></li><li><a href="Mzk.html#.toggleMute">toggleMute</a></li><li><a href="Mzk.html#.togglePlay">togglePlay</a></li><li><a href="Mzk.html#.toggleRepeatMode">toggleRepeatMode</a></li><li><a href="Mzk.html#.trackEnded">trackEnded</a></li><li><a href="Mzk.html#.unmute">unmute</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#._updateHistory">_updateHistory</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="Player.html">Player</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Player_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Player.html#._attach">_attach</a></li><li><a href="Player.html#._event">_event</a></li><li><a href="Player.html#._getProgress">_getProgress</a></li><li><a href="Player.html#._init">_init</a></li><li><a href="Player.html#._setProgress">_setProgress</a></li><li><a href="Player.html#._setVolume">_setVolume</a></li><li><a href="Player.html#._trackEnded">_trackEnded</a></li><li><a href="Player.html#.adjustProgress">adjustProgress</a></li><li><a href="Player.html#.adjustVolume">adjustVolume</a></li><li><a href="Player.html#.changeTrack">changeTrack</a></li><li><a href="Player.html#.getSource">getSource</a></li><li><a href="Player.html#.hasSource">hasSource</a></li><li><a href="Player.html#.mute">mute</a></li><li><a href="Player.html#.pause">pause</a></li><li><a href="Player.html#.play">play</a></li><li><a href="Player.html#.repeatTrack">repeatTrack</a></li><li><a href="Player.html#.stop">stop</a></li><li><a href="Player.html#.toggleMute">toggleMute</a></li><li><a href="Player.html#.togglePlay">togglePlay</a></li><li><a href="Player.html#.unmute">unmute</a></li></ul></div></li><li><a href="Playlist.html">Playlist</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Playlist_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Playlist.html#._convertRawArtists">_convertRawArtists</a></li><li><a href="Playlist.html#._getArtistsLazyLoad">_getArtistsLazyLoad</a></li><li><a href="Playlist.html#.getArtistsFromServer">getArtistsFromServer</a></li></ul></div></li><li><a href="ProgressBar.html">ProgressBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ProgressBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ProgressBar.html#._addEvents">_addEvents</a></li><li><a href="ProgressBar.html#._animate">_animate</a></li><li><a href="ProgressBar.html#._init">_init</a></li><li><a href="ProgressBar.html#._mouseDown">_mouseDown</a></li><li><a href="ProgressBar.html#._mouseMove">_mouseMove</a></li><li><a href="ProgressBar.html#._mouseUp">_mouseUp</a></li><li><a href="ProgressBar.html#._moveProgress">_moveProgress</a></li><li><a href="ProgressBar.html#._removeEvents">_removeEvents</a></li><li><a href="ProgressBar.html#._resetTimecode">_resetTimecode</a></li><li><a href="ProgressBar.html#._startAnimation">_startAnimation</a></li><li><a href="ProgressBar.html#._stopAnimation">_stopAnimation</a></li><li><a href="ProgressBar.html#._updateHoverTimecode">_updateHoverTimecode</a></li><li><a href="ProgressBar.html#._updateMouseOver">_updateMouseOver</a></li><li><a href="ProgressBar.html#.activate">activate</a></li><li><a href="ProgressBar.html#.activateTransitions">activateTransitions</a></li><li><a href="ProgressBar.html#.adjustProgress">adjustProgress</a></li><li><a href="ProgressBar.html#.desactivate">desactivate</a></li><li><a href="ProgressBar.html#.desactivateTransitions">desactivateTransitions</a></li><li><a href="ProgressBar.html#.resetProgressBar">resetProgressBar</a></li><li><a href="ProgressBar.html#.setProgress">setProgress</a></li><li><a href="ProgressBar.html#.setVisibility">setVisibility</a></li><li><a href="ProgressBar.html#.toggleActive">toggleActive</a></li><li><a href="ProgressBar.html#.updateDuration">updateDuration</a></li></ul></div></li><li><a href="Scene.html">Scene</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Scene_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Scene.html#.addView">addView</a></li><li><a href="Scene.html#.updateView">updateView</a></li></ul></div></li><li><a href="ScrollBar.html">ScrollBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ScrollBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ScrollBar.html#._barClicked">_barClicked</a></li><li><a href="ScrollBar.html#._drag">_drag</a></li><li><a href="ScrollBar.html#._events">_events</a></li><li><a href="ScrollBar.html#._init">_init</a></li><li><a href="ScrollBar.html#._stopDrag">_stopDrag</a></li><li><a href="ScrollBar.html#._updateScrollBar">_updateScrollBar</a></li></ul></div></li><li><a href="Shortcut.html">Shortcut</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Shortcut_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Shortcut.html#._addEvents">_addEvents</a></li><li><a href="Shortcut.html#._getModifiersCount">_getModifiersCount</a></li><li><a href="Shortcut.html#._removeEvents">_removeEvents</a></li><li><a href="Shortcut.html#._setAllPauseFlag">_setAllPauseFlag</a></li><li><a href="Shortcut.html#._setOnePauseFlag">_setOnePauseFlag</a></li><li><a href="Shortcut.html#._testShortcuts">_testShortcuts</a></li><li><a href="Shortcut.html#.pause">pause</a></li><li><a href="Shortcut.html#.pauseAll">pauseAll</a></li><li><a href="Shortcut.html#.register">register</a></li><li><a href="Shortcut.html#.resume">resume</a></li><li><a href="Shortcut.html#.resumeAll">resumeAll</a></li><li><a href="Shortcut.html#.unregister">unregister</a></li><li><a href="Shortcut.html#.unregisterAll">unregisterAll</a></li></ul></div></li><li><a href="TopBar.html">TopBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="TopBar_sub"></div></li><li><a href="Track.html">Track</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Track_sub"></div></li><li><a href="User.html">User</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="User_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="User.html#_godfatherCode">_godfatherCode</a></li><li><a href="User.html#_godfatherName">_godfatherName</a></li><li><a href="User.html#_groupId">_groupId</a></li><li><a href="User.html#_groupName">_groupName</a></li><li><a href="User.html#_id">_id</a></li><li><a href="User.html#_inviteCode">_inviteCode</a></li><li><a href="User.html#_isAdmin">_isAdmin</a></li><li><a href="User.html#_permissions">_permissions</a></li><li><a href="User.html#_username">_username</a></li><li><a href="User.html#godfatherName">godfatherName</a></li><li><a href="User.html#id">id</a></li><li><a href="User.html#username">username</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="User.html#.hasPermission">hasPermission</a></li><li><a href="User.html#.setMembers">setMembers</a></li></ul></div></li><li><a href="UserMenu.html">UserMenu</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserMenu_sub"></div></li><li><a href="Utils.html">Utils</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Utils_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Utils.html#._prototypes">_prototypes</a></li><li><a href="Utils.html#.getCookies">getCookies</a></li><li><a href="Utils.html#.idGenerator">idGenerator</a></li><li><a href="Utils.html#.precisionRound">precisionRound</a></li><li><a href="Utils.html#.secondsToTimecode">secondsToTimecode</a></li></ul></div></li><li><a href="View.html">View</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="View_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="View.html#._init">_init</a></li><li><a href="View.html#.addOverlay">addOverlay</a></li><li><a href="View.html#.changeTrack">changeTrack</a></li><li><a href="View.html#.initPlaylist">initPlaylist</a></li><li><a href="View.html#.stopPlayback">stopPlayback</a></li><li><a href="View.html#.togglePlay">togglePlay</a></li><li><a href="View.html#.updateProgress">updateProgress</a></li><li><a href="View.html#.updateVolume">updateVolume</a></li></ul></div></li><li><a href="VolumeBar.html">VolumeBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="VolumeBar_sub"></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import TopBar from './topbar/TopBar.js';
+import Aside from './maincontainer/Aside.js';
+import Scene from './maincontainer/Scene.js';
+import FootBar from './footbar/FootBar.js';
+import Modal from '../utils/Modal.js';
+'use_strict';
+
+
+class View {
+  /**
+   * @summary Fronted View class
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use &lt;code>Model.js&lt;/code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
+   **/
+  constructor() {
+    this._mainContainer = {};
+    this._topBar = {};
+    this._aside = {};
+    this._scene = {};
+    this._footBar = {};
+
+    this.modal = new Modal();
+
+    this._init();
+  }
+
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+   * @method
+   * @name _init
+   * @private
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Init the View object width TopBar, FootBar, Asides and Scene
+   **/
+  _init() {
+    this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
+
+    this._topBar = new TopBar();
+    this._aside = new Aside({
+      side: 'left'
+    });
+    this._scene = new Scene();
+    this._footBar = new FootBar();
+
+    this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume()); // TODO : replace with mzk.getUserVolume() or from localStorage or from opts (serv)
+  }
+
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+   * @method
+   * @name changeTrack
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Change UI elements according to the new playing track informations
+   **/
+  changeTrack(track) {
+    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
+    this.togglePlay();
+    this._scene.changeTrack(track.id);
+
+    const player = mzk.model.getPlayer();
+    this._footBar.renderMoodFile(track.moodbar);
+    this._footBar.getProgressBar().updateDuration(player.getDuration());
+  }
+
+  /**
+   * @method
+   * @name togglePlay
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Change UI elements according to the new playing state
+   **/
+  togglePlay() {
+    const isPlaying = mzk.model.getPlayer().getIsPlaying();
+    this._footBar.updatePlayButton(isPlaying);
+
+    if (isPlaying) { // Don't handle !playing (desactivate) bc pause != stop
+      this._footBar.getProgressBar().activate(); // Activate make the progress bar appear w/ animation
+    }
+  }
+
+  /**
+   * @method
+   * @name stopPlayback
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Updates UI element to match the player stand by state
+   **/
+  stopPlayback() {
+    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
+    this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
+    this._footBar.getProgressBar().resetProgressBar();
+    this._scene.stopPlayback();
+  }
+
+  /**
+   * @method
+   * @name initPlaylist
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Init the given playlist into the scene/view
+   * @param {object} playlist - The playlist to init the view with
+   **/
+  initPlaylist(playlist) {
+    this._scene.updateView(playlist);
+  }
+
+  /**
+   * @method
+   * @name updateVolume
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Update the volume values in the UI according to the player's value
+   **/
+  updateVolume() {
+    const player = mzk.model.getPlayer();
+    this._footBar.getVolumeBar().updateVolume(player.getIsMuted(), player.getVolume());
+  }
+
+  /**
+   * @method
+   * @name updateProgress
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Updates the progress bar according to the player progress' value
+   **/
+  updateProgress() { // Called onClick
+    const progress = mzk.model.getPlayer().getProgress();
+    this._footBar.getProgressBar().desactivateTransitions(); // Must disable transition when called
+    this._footBar.getProgressBar().setProgress(progress);
+
+    setTimeout(function() { // Restore transitions
+      this._footBar.getProgressBar().activateTransitions();
+    }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
+  }
+
+
+  extendMainContainer() {
+    this._mainContainer.classList.add('extended');
+    setTimeout(() => {
+      this._scene.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
+  }
+
+  retractMainContainer() {
+    this._mainContainer.classList.remove('extended');
+    setTimeout(() => {
+        this._scene.view.refreshView();
+    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
+  }
+
+  /** @method
+   * @name addOverlay
+   * @public
+   * @memberof View
+   * @description Add an overlay div (modal style) over the scene
+   * @param {object} node - The DOM node to append to the scene as an overlay
+   **/
+  addOverlay(node) {
+    const overlay = document.createElement('DIV');
+    const fragment = document.createDocumentFragment();
+
+    overlay.id = 'overlay';
+    overlay.appendChild(node);
+    fragment.appendChild(overlay);
+
+    this._mainContainer.appendChild(fragment);
+  }
+
+  removeOverlay() {
+    this._mainContainer.removeChild(document.getElementById('overlay'));
+  }
+
+  displayModal(options) {
+    if (options.name === 'newlibrary') {
+      mzk.komunikator.getTemplate('modals/newlibrary/')
+        .then((response) => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(response, "text/html");
+          const modal = doc.getElementsByClassName('modal')[0];
+          this.addOverlay(modal);
+
+          this.modal.newLibrary({
+            callback: options.callback
+          });
+        });
+    }
+  }
+
+  getNextTrackId() {
+    return this._scene.getNextTrackId();
+  }
+
+  getPreviousTrackId() {
+    return this._scene.getPreviousTrackId();
+  }
+
+  startLoading() {
+    return new Promise(resolve => {
+      this._scene.startLoading()
+        .then(resolve);
+    });
+  }
+
+  stopLoading() {
+    return new Promise(resolve => {
+      this._scene.stopLoading()
+        .then(resolve);
+    });
+  }
+
+  setRepeatMode(value) {
+    this._footBar.setRepeatMode(value);
+  }
+
+  isLastTrack() {
+    return this._scene.isLastTrack();
+  }
+
+  //  --------------------------------  GETTER METHODS   --------------------------------  //
+
+  getFootBar() {
+    return this._footBar;
+  }
+}
+
+export default View;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
