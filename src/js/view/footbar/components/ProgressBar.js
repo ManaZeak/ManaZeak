@@ -386,9 +386,9 @@ class ProgressBar {
     this._removeEvents();
     this._stopAnimation();
 
-    setTimeout(function() { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
+    setTimeout(() => { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
       this.desactivateTransitions();
-    }.bind(this), 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
+    }, 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
   }
 
   /**
@@ -455,7 +455,6 @@ class ProgressBar {
       this._progress.moodbar.style.cursor = 'pointer';
       this._progress.track.style.opacity = '1';
       this._progress.track.style.cursor = 'pointer';
-      this._progress.thumb.style.opacity = '1';
       this._progress.left.style.opacity = '1';
       this._progress.right.style.opacity = '1';
       this._topbarLogo.style.opacity = '1';
@@ -465,7 +464,6 @@ class ProgressBar {
       this._progress.moodbar.style.cursor = 'default';
       this._progress.track.style.opacity = '0';
       this._progress.track.style.cursor = 'default';
-      this._progress.thumb.style.opacity = '0';
       this._progress.left.style.opacity = '0';
       this._progress.right.style.opacity = '0';
       this._topbarLogo.style.opacity = '0';

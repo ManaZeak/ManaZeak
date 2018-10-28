@@ -30,6 +30,8 @@ $browser-scrollbar-width: 20px; // 20px is for the original scroll bar width
     transition: opacity $transition-duration ease-in-out;
     width: $scrollbar-width;
 
+    @include box-shadow(0 0 2px, 255, 255, 255, 0.125);
+
     &.hidden {
       display: none;
     }
