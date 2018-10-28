@@ -7,9 +7,15 @@
   right: calc(33px + #{$footbar-controls-margin});
   align-items: center;
 
+  div.image-wrapper {
+    cursor: pointer;
+    height: 50%;
+  }
+
   #volumebar-container {
     background-color: #aaaabe;
     border-radius: 4px;
+    cursor: pointer;
     pointer-events: initial;
     position: relative;
     width: 75%;

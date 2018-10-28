@@ -293,10 +293,14 @@ class Mzk {
    * @description Toggle the playback and update the view
    **/
   togglePlay() {
-    this.model.togglePlay()
-      .then(() => {
-        this.view.togglePlay();
-      });
+    if (!this.model.getPlayer().hasSource()) {
+      this.changeTrack(this.view.getFirstTrackId());
+    } else {
+      this.model.togglePlay()
+        .then(() => {
+          this.view.togglePlay();
+        });
+    }
   }
 
 
@@ -468,7 +472,7 @@ class Mzk {
       if (this.view.isLastTrack()) {
         this.stopPlayback();
       } else {
-        mzk.nextTrackInView();
+        mzk.changeTrack(this.view.getNextTrackId());
       }
     } else if (repeatMode === 1) {
       mzk.repeatTrack();
