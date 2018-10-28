@@ -28,9 +28,12 @@ This will prompt you a wizard, to fill the database path and the library root pa
 ``./mzk.sh dev`` or ``./mkz.sh prod``
 
 Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/)
+
 The first user that will sign in into the app will be the app administrator. When the first user log in ManaZeak, he will be ask to create a library. 
 
 When declaring your libraries, prefix your path with ```/library/``` since ``/library/`` is equal to the path you gave in the ``./mzk.sh init`` wizard. Those declared libraries will be declared for every user in the app.
+
+However, if not everything went as expected, you might check the [Troubleshooting](https://github.com/Squadella/ManaZeak/wiki/Troubleshooting) entry to get some help.
 
 ## Technologies
 [d3.js](https://github.com/d3/d3) |
