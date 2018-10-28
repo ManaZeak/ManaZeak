@@ -20,6 +20,14 @@
     box-shadow:         $shadow rgba($r, $g, $b, $a);
 }
 
+@mixin tooltip-animation($duration) {
+    transition:         opacity           $duration ease-in-out,
+                        visibility        $duration ease-in-out,
+                        transform         $duration cubic-bezier(0.71, 1.7, 0.77, 1.24);
+
+    transform:         translate3d(0, 0, 0);
+}
+
 
 @keyframes fadein {
     from { opacity: 0; }
