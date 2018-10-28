@@ -188,6 +188,10 @@ class Scene {
     return this.view.getPreviousTrackId();
   }
 
+  getFirstTrackId() {
+    return this.view.getFirstTrackId();
+  }
+
   isLastTrack() {
     return this.view.isLastTrack();
   }

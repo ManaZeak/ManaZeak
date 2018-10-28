@@ -33,7 +33,7 @@ module.exports = env => {
   return {
     mode: (env.prod === 'true') ? 'production' : 'development',
     watch: (env.prod !== 'true'),
-    entry: './static/js/Start.js',
+    entry: './static/src/js/Start.js',
     devtool: 'inline-source-map',
     output: {
       path: DIST,
