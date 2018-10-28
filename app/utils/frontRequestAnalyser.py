@@ -17,6 +17,9 @@ def checkRequest(expectRequestMethod, request, caller, expectedKeys=None, user=N
     # Test the keys of the request
     if request.method == 'POST' and expectedKeys is not None:
         return _checkRequestPOST(request, caller, expectedKeys, user)
+    return {
+        'DONE': True,
+    }
 
 
 ## Check a request of the POST type.

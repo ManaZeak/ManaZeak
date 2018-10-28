@@ -48,9 +48,9 @@ class Track(models.Model):
     ## The year of creation of the track (metadata).
     year = models.IntegerField(null=True)
     ## The composer of the track.
-    composer = models.ManyToManyField(Artist, null=True)
+    composer = models.ManyToManyField(Artist, related_name='composer_artists')
     ## The performer of the track.
-    performer = models.ManyToManyField(Artist, null=True )
+    performer = models.ManyToManyField(Artist, related_name='performer_artists')
     ## The position of the track inside the album.
     number = models.IntegerField(null=True)
     ## The beats per minute of the track.

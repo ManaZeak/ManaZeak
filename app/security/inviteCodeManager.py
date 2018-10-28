@@ -12,8 +12,10 @@ from app.models.security import InviteCode
 def generateInviteCode(newUser, godfatherInviteCode):
     # Creating the invite code for the new user
     _createUserInviteCode(newUser)
-    # Updating the godfather invite code to be used and creates another one
-    _updateInviteCode(godfatherInviteCode)
+    # If the invite code mode is not enabled there is no godfather
+    if godfatherInviteCode is not None:
+        # Updating the godfather invite code to be used and creates another one
+        _updateInviteCode(godfatherInviteCode)
 
 
 ## Get the object invite code of the database from a string invite code
