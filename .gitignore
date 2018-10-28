@@ -105,32 +105,21 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
-### Sass ###
-.sass-cache/
-*.css.map
-*.css
-
-
 ### Docker ###
 docker-compose.yml
 db_data
 
-*.mood
-
-# scannerwork folder is for sonar-scanner
-.scannerwork/
-
-# JSDoc to exclude (see ./mzk.sh doc frontend)
-doc/frontend/
-
-moodbar/moodbar-0.1.2
-
-# npm GC
-node_modules/
-
-# Bundles
-*.bundle.css
-*.bundle.js
-
 /package-lock.json
+
+### ManaZeak specific ###
+.scannerwork
+doc/**
+log/**
+node_modules/**
+static/dist/**
+static/mood/**
+static/img/avatars/**
+static/img/covers/**
+static/lib/**
+
+*.mood

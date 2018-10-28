@@ -1,7 +1,7 @@
 $main-container-icon-margin: (8 * $margin) / 10;
 
-@import './maincontainer/views/listview'; // Loading list view rules
-@import './maincontainer/scene'; // Loading progressbar rules
+@import 'maincontainer/views/listview'; // Loading list view rules
+@import 'maincontainer/scene'; // Loading progressbar rules
 
 #mainContainer {
 //  background-image: linear-gradient(red, yellow);
