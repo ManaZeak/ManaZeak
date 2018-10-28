@@ -2,6 +2,7 @@
 @import "tools/global";
 @import "tools/mixins";
 @import "tools/keyframes";
-@import "tools/notification";
+@import "feedback/notification";
+@import "feedback/tooltip";
 @import "tools/modal";
 @import "tools/scrollbar";

@@ -212,6 +212,10 @@ class View {
     return this._scene.getPreviousTrackId();
   }
 
+  getFirstTrackId() {
+    return this._scene.getFirstTrackId();
+  }
+
   startLoading() {
     return new Promise(resolve => {
       this._scene.startLoading()

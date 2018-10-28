@@ -1,0 +1,170 @@
+/* Tooltip */
+$tooltip-width: 150px;
+$tooltip-arrow: 6px;
+$tooltip-bg: rgba(255, 0, 0, 0.75);
+$tooltip-text: rgb(255, 255, 255);
+
+
+/* Base styles for the element that has a tooltip */
+[data-tooltip] {
+    cursor: pointer;
+    position: relative;
+
+    /* Base styles for the tooltip's content area */
+    &::after {
+        background-color: $tooltip-bg;
+        color: $tooltip-text;
+        content: attr(data-tooltip);
+        font-size: $font-size;
+        padding: $padding;
+        width: $tooltip-width;
+        z-index: 1000;
+        text-align: center;
+    }
+
+    /* Base styles for the tooltip's directional arrow */
+    &::before {
+        background: transparent;
+        top: -1px;
+        border: $tooltip-arrow solid transparent;
+        content: '';
+        z-index: 1001;
+    }
+
+    &::after,
+    &::before {
+        @include tooltip-animation($transition-duration / 2);
+        opacity:        0;
+        pointer-events: none;
+        position:       absolute;
+        visibility:     hidden;
+    }
+
+    &:hover::after,
+    &:focus::after,
+    &:focus::before,
+    &:hover::before {
+        opacity:    1;
+        visibility: visible;
+    }
+}
+
+.tooltip-top {
+    &::after {
+        margin-left: -($tooltip-width / 2);
+    }
+
+    &::before {
+        border-top-color: $tooltip-bg;
+        margin-bottom:    -($tooltip-arrow * 2);
+        margin-left:      -($tooltip-arrow);
+    }
+
+    &::after,
+    &::before {
+        bottom: 100%;
+        left:   50%;
+    }
+
+    &:focus::after,
+    &:hover::after,
+    &:focus::before,
+    &:hover::before {
+        -webkit-transform: translateY(-($tooltip-arrow * 2));
+        -moz-transform:    translateY(-($tooltip-arrow * 2));
+        -o-transform:      translateY(-($tooltip-arrow * 2));
+        transform:         translateY(-($tooltip-arrow * 2));
+    }
+}
+
+.tooltip-bottom {
+    &::after {
+        margin-left: -($tooltip-width / 2);
+    }
+
+    &::before {
+        border-bottom-color: $tooltip-bg;
+        margin-left:         -($tooltip-arrow);
+        margin-top:          -($tooltip-arrow * 2);
+    }
+
+    &::after,
+    &::before {
+        bottom: auto;
+        left:   50%;
+        top:    100%;
+    }
+
+    &:focus::after,
+    &:hover::after,
+    &:focus::before,
+    &:hover::before {
+        -webkit-transform: translateY($tooltip-arrow * 2);
+        -moz-transform:    translateY($tooltip-arrow * 2);
+        -o-transform:      translateY($tooltip-arrow * 2);
+        transform:         translateY($tooltip-arrow * 2);
+    }
+}
+
+.tooltip-left {
+    &::after {
+        margin-bottom: -($tooltip-width / 10);
+        margin-left:   0;
+    }
+
+    &::before {
+        border-left-color: $tooltip-bg;
+        margin-bottom:     ($tooltip-arrow * 2);
+        margin-left:       0;
+        margin-right:      -($tooltip-arrow * 2);
+        top:               0;
+    }
+
+    &::after,
+    &::before {
+        bottom: 50%;
+        left:   auto;
+        right:  100%;
+    }
+
+    &:focus::after,
+    &:hover::after,
+    &:focus::before,
+    &:hover::before {
+        -webkit-transform: translateX(-($tooltip-arrow * 2));
+        -moz-transform:    translateX(-($tooltip-arrow * 2));
+        -o-transform:      translateX(-($tooltip-arrow * 2));
+        transform:         translateX(-($tooltip-arrow * 2));
+    }
+}
+
+.tooltip-right {
+    &::after {
+        margin-bottom: -($tooltip-width / 10);
+        margin-left:   0;
+    }
+
+    &::before {
+        border-right-color: $tooltip-bg;
+        border-top-color:   transparent;
+        margin-bottom:      0;
+        margin-left:        -($tooltip-arrow * 2);
+        top:                0;
+    }
+
+    &::after,
+    &::before {
+        bottom: 50%;
+        left:   100%;
+    }
+
+    &:focus::after,
+    &:hover::after,
+    &:focus::before,
+    &:hover::before {
+        -webkit-transform: translateX($tooltip-arrow * 2);
+        -moz-transform:    translateX($tooltip-arrow * 2);
+        -o-transform:      translateX($tooltip-arrow * 2);
+        transform:         translateX($tooltip-arrow * 2);
+    }
+}
