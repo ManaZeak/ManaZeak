@@ -1,0 +1,61 @@
+#volumebar-wrapper {
+  height: 100%;
+  text-align: center;
+  width: 170px;
+  display: flex;
+  position: absolute;
+  right: calc(33px + #{$footbar-controls-margin});
+  align-items: center;
+
+  div.image-wrapper {
+    cursor: pointer;
+    height: 50%;
+  }
+
+  #volumebar-container {
+    background-color: #aaaabe;
+    border-radius: 4px;
+    cursor: pointer;
+    pointer-events: initial;
+    position: relative;
+    width: 75%;
+    height: 6px;
+    margin-left: auto;
+    margin-right: auto;
+
+    #volumebar-current {
+      background-color: rgb(255, 0, 0);
+      border-radius: $mzk-border-radius 0 0 $mzk-border-radius;
+      bottom: 0;
+      height: 100%;
+      position: absolute;
+      transition: background-color 0.15s ease;
+      width: 100%;
+    }
+
+    #volumebar-current.full {
+      border-radius: $mzk-border-radius;
+    }
+
+    #volumebar-thumb {
+      background-color: white;
+      border-radius: 50%;
+      bottom: 0;
+      height: 12px;
+      margin-left: -6px;
+      left: 100%;
+      margin-bottom: -3px;
+      opacity: 0;
+      position: absolute;
+      transition: opacity 0.15s ease;
+      width: 12px;
+    }
+
+    &:hover > #volumebar-current {
+      background-color: $mzk-anti-accent-color;
+    }
+    &:hover > #volumebar-thumb {
+      opacity: 1;
+    }
+  }
+}

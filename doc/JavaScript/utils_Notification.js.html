@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: utils/Notification.js | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="./jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/Squadella/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v0.1.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Aside.html">Aside</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Aside_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Aside.html#._events">_events</a></li><li><a href="Aside.html#._init">_init</a></li><li><a href="Aside.html#.hide">hide</a></li><li><a href="Aside.html#.show">show</a></li></ul></div></li><li><a href="AsideEntry.html">AsideEntry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AsideEntry_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AsideEntry.html#._init">_init</a></li></ul></div></li><li><a href="Collection.html">Collection</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Collection_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Collection.html#._buildPlaylist">_buildPlaylist</a></li><li><a href="Collection.html#._initialScan">_initialScan</a></li><li><a href="Collection.html#.buildUserCollection">buildUserCollection</a></li><li><a href="Collection.html#.checkScanStatus">checkScanStatus</a></li><li><a href="Collection.html#.newLibrary">newLibrary</a></li></ul></div></li><li><a href="Errors.html">Errors</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Errors_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Errors.html#._getCallerName">_getCallerName</a></li></ul></div></li><li><a href="Events.html">Events</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Events_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Events.html#.fire">fire</a></li><li><a href="Events.html#.raise">raise</a></li><li><a href="Events.html#.register">register</a></li><li><a href="Events.html#.unregister">unregister</a></li><li><a href="Events.html#.unregisterAll">unregisterAll</a></li></ul></div></li><li><a href="FootBar.html">FootBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="FootBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="FootBar.html#._events">_events</a></li><li><a href="FootBar.html#._init">_init</a></li><li><a href="FootBar.html#.renderMoodFile">renderMoodFile</a></li><li><a href="FootBar.html#.updatePlayButton">updatePlayButton</a></li></ul></div></li><li><a href="Komunikator.html">Komunikator</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Komunikator_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Komunikator.html#_csrfToken">_csrfToken</a></li><li><a href="Komunikator.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Komunikator.html#._init">_init</a></li><li><a href="Komunikator.html#.get">get</a></li><li><a href="Komunikator.html#.getBinaryResponse">getBinaryResponse</a></li><li><a href="Komunikator.html#.getTemplate">getTemplate</a></li><li><a href="Komunikator.html#.post">post</a></li></ul></div></li><li><a href="ListView.html">ListView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ListView_sub"></div></li><li><a href="ListViewEntry.html">ListViewEntry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ListViewEntry_sub"></div></li><li><a href="Model.html">Model</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Model_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Model.html#._init">_init</a></li><li><a href="Model.html#.adjustProgress">adjustProgress</a></li><li><a href="Model.html#.adjustVolume">adjustVolume</a></li><li><a href="Model.html#.changeTrack">changeTrack</a></li><li><a href="Model.html#.getTrackById">getTrackById</a></li><li><a href="Model.html#.initCollection">initCollection</a></li><li><a href="Model.html#.mute">mute</a></li><li><a href="Model.html#.setProgress">setProgress</a></li><li><a href="Model.html#.setVolume">setVolume</a></li><li><a href="Model.html#.stopPlayback">stopPlayback</a></li><li><a href="Model.html#.toggleMute">toggleMute</a></li><li><a href="Model.html#.togglePlay">togglePlay</a></li><li><a href="Model.html#.unmute">unmute</a></li></ul></div></li><li><a href="Mzk.html">Mzk</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Mzk_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Mzk.html#._initKomunikator">_initKomunikator</a></li><li><a href="Mzk.html#._initLang">_initLang</a></li><li><a href="Mzk.html#._initModel">_initModel</a></li><li><a href="Mzk.html#._initShortcut">_initShortcut</a></li><li><a href="Mzk.html#._initUser">_initUser</a></li><li><a href="Mzk.html#._initView">_initView</a></li><li><a href="Mzk.html#._startApp">_startApp</a></li><li><a href="Mzk.html#.adjustProgress">adjustProgress</a></li><li><a href="Mzk.html#.adjustVolume">adjustVolume</a></li><li><a href="Mzk.html#.changeTrack">changeTrack</a></li><li><a href="Mzk.html#.mute">mute</a></li><li><a href="Mzk.html#.nextTrackInView">nextTrackInView</a></li><li><a href="Mzk.html#.previousTrackInView">previousTrackInView</a></li><li><a href="Mzk.html#.reloadShortcuts">reloadShortcuts</a></li><li><a href="Mzk.html#.setProgress">setProgress</a></li><li><a href="Mzk.html#.setVolume">setVolume</a></li><li><a href="Mzk.html#.start">start</a></li><li><a href="Mzk.html#.stopPlayback">stopPlayback</a></li><li><a href="Mzk.html#.toggleMute">toggleMute</a></li><li><a href="Mzk.html#.togglePlay">togglePlay</a></li><li><a href="Mzk.html#.toggleRepeatMode">toggleRepeatMode</a></li><li><a href="Mzk.html#.trackEnded">trackEnded</a></li><li><a href="Mzk.html#.unmute">unmute</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#._updateHistory">_updateHistory</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="Player.html">Player</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Player_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Player.html#._attach">_attach</a></li><li><a href="Player.html#._event">_event</a></li><li><a href="Player.html#._getProgress">_getProgress</a></li><li><a href="Player.html#._init">_init</a></li><li><a href="Player.html#._setProgress">_setProgress</a></li><li><a href="Player.html#._setVolume">_setVolume</a></li><li><a href="Player.html#._trackEnded">_trackEnded</a></li><li><a href="Player.html#.adjustProgress">adjustProgress</a></li><li><a href="Player.html#.adjustVolume">adjustVolume</a></li><li><a href="Player.html#.changeTrack">changeTrack</a></li><li><a href="Player.html#.getSource">getSource</a></li><li><a href="Player.html#.hasSource">hasSource</a></li><li><a href="Player.html#.mute">mute</a></li><li><a href="Player.html#.pause">pause</a></li><li><a href="Player.html#.play">play</a></li><li><a href="Player.html#.repeatTrack">repeatTrack</a></li><li><a href="Player.html#.stop">stop</a></li><li><a href="Player.html#.toggleMute">toggleMute</a></li><li><a href="Player.html#.togglePlay">togglePlay</a></li><li><a href="Player.html#.unmute">unmute</a></li></ul></div></li><li><a href="Playlist.html">Playlist</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Playlist_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Playlist.html#._convertRawArtists">_convertRawArtists</a></li><li><a href="Playlist.html#._getArtistsLazyLoad">_getArtistsLazyLoad</a></li><li><a href="Playlist.html#.getArtistsFromServer">getArtistsFromServer</a></li></ul></div></li><li><a href="ProgressBar.html">ProgressBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ProgressBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ProgressBar.html#._addEvents">_addEvents</a></li><li><a href="ProgressBar.html#._animate">_animate</a></li><li><a href="ProgressBar.html#._init">_init</a></li><li><a href="ProgressBar.html#._mouseDown">_mouseDown</a></li><li><a href="ProgressBar.html#._mouseMove">_mouseMove</a></li><li><a href="ProgressBar.html#._mouseUp">_mouseUp</a></li><li><a href="ProgressBar.html#._moveProgress">_moveProgress</a></li><li><a href="ProgressBar.html#._removeEvents">_removeEvents</a></li><li><a href="ProgressBar.html#._resetTimecode">_resetTimecode</a></li><li><a href="ProgressBar.html#._startAnimation">_startAnimation</a></li><li><a href="ProgressBar.html#._stopAnimation">_stopAnimation</a></li><li><a href="ProgressBar.html#._updateHoverTimecode">_updateHoverTimecode</a></li><li><a href="ProgressBar.html#._updateMouseOver">_updateMouseOver</a></li><li><a href="ProgressBar.html#.activate">activate</a></li><li><a href="ProgressBar.html#.activateTransitions">activateTransitions</a></li><li><a href="ProgressBar.html#.adjustProgress">adjustProgress</a></li><li><a href="ProgressBar.html#.desactivate">desactivate</a></li><li><a href="ProgressBar.html#.desactivateTransitions">desactivateTransitions</a></li><li><a href="ProgressBar.html#.resetProgressBar">resetProgressBar</a></li><li><a href="ProgressBar.html#.setProgress">setProgress</a></li><li><a href="ProgressBar.html#.setVisibility">setVisibility</a></li><li><a href="ProgressBar.html#.toggleActive">toggleActive</a></li><li><a href="ProgressBar.html#.updateDuration">updateDuration</a></li></ul></div></li><li><a href="Scene.html">Scene</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Scene_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Scene.html#.addView">addView</a></li><li><a href="Scene.html#.updateView">updateView</a></li></ul></div></li><li><a href="ScrollBar.html">ScrollBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ScrollBar_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ScrollBar.html#._barClicked">_barClicked</a></li><li><a href="ScrollBar.html#._drag">_drag</a></li><li><a href="ScrollBar.html#._events">_events</a></li><li><a href="ScrollBar.html#._init">_init</a></li><li><a href="ScrollBar.html#._stopDrag">_stopDrag</a></li><li><a href="ScrollBar.html#._updateScrollBar">_updateScrollBar</a></li></ul></div></li><li><a href="Shortcut.html">Shortcut</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Shortcut_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Shortcut.html#._addEvents">_addEvents</a></li><li><a href="Shortcut.html#._getModifiersCount">_getModifiersCount</a></li><li><a href="Shortcut.html#._removeEvents">_removeEvents</a></li><li><a href="Shortcut.html#._setAllPauseFlag">_setAllPauseFlag</a></li><li><a href="Shortcut.html#._setOnePauseFlag">_setOnePauseFlag</a></li><li><a href="Shortcut.html#._testShortcuts">_testShortcuts</a></li><li><a href="Shortcut.html#.pause">pause</a></li><li><a href="Shortcut.html#.pauseAll">pauseAll</a></li><li><a href="Shortcut.html#.register">register</a></li><li><a href="Shortcut.html#.resume">resume</a></li><li><a href="Shortcut.html#.resumeAll">resumeAll</a></li><li><a href="Shortcut.html#.unregister">unregister</a></li><li><a href="Shortcut.html#.unregisterAll">unregisterAll</a></li></ul></div></li><li><a href="TopBar.html">TopBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="TopBar_sub"></div></li><li><a href="Track.html">Track</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Track_sub"></div></li><li><a href="User.html">User</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="User_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="User.html#_godfatherCode">_godfatherCode</a></li><li><a href="User.html#_godfatherName">_godfatherName</a></li><li><a href="User.html#_groupId">_groupId</a></li><li><a href="User.html#_groupName">_groupName</a></li><li><a href="User.html#_id">_id</a></li><li><a href="User.html#_inviteCode">_inviteCode</a></li><li><a href="User.html#_isAdmin">_isAdmin</a></li><li><a href="User.html#_permissions">_permissions</a></li><li><a href="User.html#_username">_username</a></li><li><a href="User.html#godfatherName">godfatherName</a></li><li><a href="User.html#id">id</a></li><li><a href="User.html#username">username</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="User.html#.hasPermission">hasPermission</a></li><li><a href="User.html#.setMembers">setMembers</a></li></ul></div></li><li><a href="UserMenu.html">UserMenu</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserMenu_sub"></div></li><li><a href="Utils.html">Utils</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Utils_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Utils.html#._prototypes">_prototypes</a></li><li><a href="Utils.html#.getCookies">getCookies</a></li><li><a href="Utils.html#.idGenerator">idGenerator</a></li><li><a href="Utils.html#.precisionRound">precisionRound</a></li><li><a href="Utils.html#.secondsToTimecode">secondsToTimecode</a></li></ul></div></li><li><a href="View.html">View</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="View_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="View.html#._init">_init</a></li><li><a href="View.html#.addOverlay">addOverlay</a></li><li><a href="View.html#.changeTrack">changeTrack</a></li><li><a href="View.html#.initPlaylist">initPlaylist</a></li><li><a href="View.html#.stopPlayback">stopPlayback</a></li><li><a href="View.html#.togglePlay">togglePlay</a></li><li><a href="View.html#.updateProgress">updateProgress</a></li><li><a href="View.html#.updateVolume">updateVolume</a></li></ul></div></li><li><a href="VolumeBar.html">VolumeBar</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="VolumeBar_sub"></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use_strict';
+
+class Notification {
+  /**
+   * @summary Create an instance of a notification handler
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Notification Class to automatically handle one or several notification of different types at the same time.
+   * @param {object} [options] - The notification handler global options
+   * @param {string} [options.position=top-right] - &lt;i>top-left; top-right; bottom-left; bottom-right;&lt;/i>
+   * @param {string} [options.thickBorder=top] - &lt;i>top; bottom; left; right; none;&lt;/i>
+   * @param {number} [options.duration=3000] - Notification life cycle duration (in ms) in range N*
+   * @param {number} [options.transition=100] - Notification fade animation transition timing (in ms) in range N*
+   * @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*
+   **/
+  constructor(options) {
+    this._dismissAllLock = false; // Dismiss all operation in progress flag
+    this._dom = {}; // Notification handler container
+    this._active = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
+    this._queue = {}; // Queue notifications when max active has been reached
+    this._history = []; // Notification history
+    this._default = {}; // Will contain all default value for Notification
+
+    this._position = '';
+    this._thickBorder = '';
+    this._duration = 0;
+    this._transition = 0;
+    this._maxActive = 0;
+
+    this._init(options);
+    this._attach();
+  }
+
+  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  /**
+   * @method
+   * @name _init
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Create the handler DOM element, set default values, test given options and properly add CSS class to the handler
+   * @param {object} [options] - The notification handler global options
+   * @param {string} [options.position=top-right] - &lt;i>top-left; top-right; bottom-left; bottom-right;&lt;/i>
+   * @param {string} [options.thickBorder=top] - &lt;i>top; bottom; left; right; none;&lt;/i>
+   * @param {number} [options.duration=3000] - Notification life cycle duration (in ms) in range N*
+   * @param {number} [options.transition=100]  - Notification fade animation transition timing (in ms) in range N*
+   * @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*
+   **/
+  _init(options) {
+    this._dom = document.createElement('DIV'); // Notification handler DOM container
+    this._dom.classList.add('notification-container'); // Set proper CSS class
+
+    this._default = {
+      handler: {
+        position: 'top-right',
+        thickBorder: 'top',
+        duration: 5000,
+        transition: 200,
+        maxActive: 10
+      },
+      notification: {
+        type: 'info',
+        message: '',
+        title: '',
+        iconless: false,
+        closable: true,
+        sticky: false,
+        renderTo: this._dom,
+        CBtitle: '',
+        callback: null
+      },
+      color: {
+        success: 'rgb(76, 175, 80)',
+        info: 'rgb(3, 169, 244)',
+        warning: 'rgb(255, 152, 0)',
+        error: 'rgb(244, 67, 54)'
+      }
+    };
+
+    this._position = options === undefined ? this._default.handler.position : options.position === undefined ? this._default.handler.position : options.position;
+    this._thickBorder = options === undefined ? this._default.handler.thickBorder : options.thickBorder === undefined ? this._default.handler.thickBorder : options.thickBorder;
+    this._duration = options === undefined ? this._default.handler.duration : options.duration === undefined ? this._default.handler.duration : options.duration;
+    this._transition = options === undefined ? this._default.handler.transition : options.transition === undefined ? this._default.handler.transition : options.transition;
+    this._maxActive = options === undefined ? this._default.handler.maxActive : options.maxActive === undefined ? this._default.handler.maxActive : options.maxActive;
+
+    if (this._position !== 'top-left' &amp;&amp; this._position !== 'top-right' &amp;&amp; this._position !== 'bottom-left' &amp;&amp; this._position !== 'bottom-right') { // Illegal value for position
+      this._position = this._default.handler.position; // Default value
+    }
+
+    if (this._thickBorder !== 'top' &amp;&amp; this._thickBorder !== 'bottom' &amp;&amp; this._thickBorder !== 'left' &amp;&amp; this._thickBorder !== 'right' &amp;&amp; this._thickBorder !== 'none') { // Illegal value for thick border
+      this._thickBorder = this._default.handler.thickBorder; // Default value
+    }
+
+    if (typeof this._duration !== 'number' || this._duration &lt;= 0) { // Illegal value for duration
+      this._duration = this._default.handler.duration; // Default value
+    }
+
+    if (this._duration &lt; (this._transition * 2)) { // Transition over (duration / 2)
+      this._transition = this._default.handler.transition; // Default value for _maxActive
+    }
+
+    if (typeof this._maxActive !== 'number' || this._maxActive &lt;= 0) { // Illegal value for maxActive
+      this._maxActive = this._default.handler.maxActive; // Default value for _maxActive
+    }
+
+    this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
+  }
+
+  /**
+   * @method
+   * @name _attach
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Attach the notification handler to the dom using a fragment
+   **/
+  _attach() {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(this._dom);
+    document.body.appendChild(fragment);
+  }
+
+  /**
+   * @method
+   * @name _events
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Handle mouse events for the given notification
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {number} notification.requestCount - Notification inner call counter
+   * @param {number} notification.timeoutID - Notification own setTimeout ID
+   * @param {boolean} notification.sticky - Notification sticky behvaior
+   * @param {boolean} notification.closable - Make notification closable flag
+   **/
+  _events(notification) {
+    let closeFired = false; // Close fired flag
+
+    // Inner callback functions
+    const _unDim = () => { // Undim notification
+      if (notification.isDimmed) {
+        this._unDim(notification);
+      }
+    };
+
+    const _close = () => { // Close notification
+      if (this._active[notification.id] === undefined) {
+        return;
+      }
+
+      // Update counter DOM element
+      if (notification.requestCount > 1) {
+        this._decrementRequestCounter(notification, true);
+      }
+
+      // Remove notification element from the DOM tree
+      else if (!closeFired) {
+        closeFired = true;
+        window.clearTimeout(notification.timeoutID); // Clear life cycle timeout
+        notification.dom.close.removeEventListener('click', _close); // Avoid error when spam clicking the close button
+        this._close(notification);
+      }
+    };
+
+    const _resetTimeout = () => { // Reset life cycle timeout
+      if (this._active[notification.id] === undefined) {
+        return;
+      }
+
+      if (!closeFired &amp;&amp; !notification.isDimmed) { // Only reset timeout if no close event has been fired
+        this._resetTimeout(notification);
+      }
+    };
+
+    // Mouse event listeners
+    if (notification.sticky) {
+      notification.dom.addEventListener('mouseenter', _unDim.bind(this));
+      notification.dom.addEventListener('mouseout', _unDim.bind(this));
+    }
+
+    if (notification.closable) {
+      notification.dom.addEventListener('click', _close.bind(this));
+      notification.dom.close.addEventListener('click', _close.bind(this));
+    }
+
+    notification.dom.addEventListener('mouseover', _resetTimeout.bind(this));
+  }
+
+  /**
+   * @method
+   * @name _buildUI
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Builds the DOM element that contains and that adapts to all given options
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {string} notification.type - Error, Warning, Info, Success
+   * @param {string} notification.title - Notification title
+   * @param {string} notification.message - Notification message
+   * @param {boolean} notification.iconless - No icon flag
+   * @param {string} notification.thickBorder - Notification border side (override handler side value)
+   * @param {boolean} notification.closable - Make notification closable flag
+   * @param {boolean} notification.sticky - Make notification sticky flag
+   * @param {string} notification.CBtitle - Notification callback title
+   * @param {function} notification.callback - Notification callback button
+   * @returns {object} Enhanced and ready notification object
+   **/
+  _buildUI(notification) {
+    notification.requestCount = 1;
+    notification.totalRequestCount = 1;
+
+    // Create notification DOM elements
+    notification.dom = document.createElement('DIV');
+    notification.dom.icon = document.createElement('IMG');
+    notification.dom.text = document.createElement('DIV');
+    notification.dom.close = document.createElement('DIV');
+    notification.dom.maintitle = document.createElement('H6');
+    notification.dom.message = document.createElement('P');
+
+    // Class assignation
+    notification.dom.classList.add('notification');
+    notification.dom.icon.classList.add('icon-container');
+    notification.dom.text.classList.add('text-container');
+    notification.dom.close.classList.add('close');
+
+    // Changing border side
+    if (notification.thickBorder === 'top') {
+      notification.dom.classList.add('top-border');
+    } else if (notification.thickBorder === 'bottom') {
+      notification.dom.classList.add('bottom-border');
+    } else if (notification.thickBorder === 'left') {
+      notification.dom.classList.add('left-border');
+    } else if (notification.thickBorder === 'right') {
+      notification.dom.classList.add('right-border');
+    }
+
+    // Text modification
+    notification.dom.maintitle.innerHTML = notification.title;
+    notification.dom.message.innerHTML = notification.message;
+    notification.dom.close.innerHTML = '&amp;#x2716;';
+
+    // Type specification (title, icon, color)
+    if (notification.type === 'success') {
+      notification.dom.classList.add('success');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
+      }
+    } else if (notification.type === 'warning') {
+      notification.dom.classList.add('warning');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
+      }
+    } else if (notification.type === 'error') {
+      notification.dom.classList.add('error');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
+      }
+    } else if (notification.type === 'info') {
+      notification.dom.classList.add('info');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
+      }
+    }
+
+    if (notification.iconless) {
+      notification.dom.message.classList.add('iconless-width');
+    }
+
+    notification.dom.text.appendChild(notification.dom.maintitle);
+    notification.dom.text.appendChild(notification.dom.message);
+
+    // Add callback button and listener if needed
+    if (notification.callback) {
+      const callbackButton = document.createElement('BUTTON');
+      callbackButton.innerHTML = notification.CBtitle;
+      notification.dom.text.appendChild(callbackButton);
+
+      callbackButton.addEventListener('click', () => {
+        this._close(notification);
+        notification.callback();
+      });
+    }
+
+    // Fill notification DOM element
+    if (!notification.iconless) {
+      notification.dom.appendChild(notification.dom.icon);
+    }
+
+    notification.dom.appendChild(notification.dom.text);
+
+    // Append close button if needed
+    if (notification.closable) {
+      notification.dom.appendChild(notification.dom.close);
+    }
+
+    // Return final notification
+    return notification;
+  }
+
+  /**
+   * @method
+   * @name _start
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Call this method to add the new notification to the DOM container, and launch its life cycle
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   **/
+  _start(notification) {
+    if (Object.keys(this._active).length >= this._maxActive) {
+      this._queue[notification.id] = notification;
+    } else {
+      this._active[notification.id] = notification; // Append the new notification to the _active object
+
+      this._events(notification); // Listen to mouse events on the newly created notification
+      this._open(notification); // Open the new notification
+
+      notification.timeoutID = window.setTimeout(() => {
+        this._checkCounter(notification); // Check notification request count to act accordingly
+      }, notification.duration); // Use Notification master duration
+    }
+  }
+
+  /**
+   * @method
+   * @name _open
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Open and add the notification to the container
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {object} notification.dom - Notifiction DOM element
+   **/
+  _open(notification) {
+    // Reverse insertion when notifications are on bottom
+    if (this._position === 'bottom-right' || this._position === 'bottom-left') {
+      notification.renderTo.insertBefore(notification.dom, notification.renderTo.firstChild);
+    } else {
+      notification.renderTo.appendChild(notification.dom);
+    }
+
+    notification.opened = Date.now();
+
+    window.setTimeout(() => {
+      notification.dom.style.opacity = 1;
+    }, 10);
+  }
+
+  /**
+   * @method
+   * @name _close
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Close and remove the notification from the container
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {boolean} notification.isClosing - Already closing flag
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {object} notification.renderTo - DOM object to render the notification in
+   **/
+  _close(notification) {
+    if (notification.isClosing) { // Avoid double close on a notification (in case dismiss/dismissAll is triggerred when notification is already closing)
+      return;
+    }
+
+    notification.isClosing = true; // Lock notification to one fadeOut animation
+    notification.closed = Date.now();
+    notification.effectiveDuration = notification.closed - notification.opened;
+    notification.dom.style.opacity = 0;
+    // TODO hadle this._transition instead of hard code in css
+
+    window.setTimeout(() => {
+      this._updateHistory(notification);
+      notification.renderTo.removeChild(notification.dom); // Remove this notification from the DOM tree
+
+      if (Object.keys(this._queue).length > 0) { // Notification queue is not empty
+        this._start(this._queue[Object.keys(this._queue)[0]]); // Start first queued notification
+        delete this._queue[Object.keys(this._queue)[0]]; // Shift queue object
+      } else if (Object.keys(this._active).length === 0) { // Check this._active emptyness
+        this._dismissAllLock = false; // Unlock dismissAllLock
+      }
+    }, 1000); // Transition value set in _notification.scss TODO same as few lines up
+  }
+
+  /**
+   * @method
+   * @name _incrementRequestCounter
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description This method is called when a notification is requested another time
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {number} notification.requestCount - Notification inner call counter
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {boolean} notification.sticky - Notification sticky behvaior
+   * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+   **/
+  _incrementRequestCounter(notification) {
+    ++notification.requestCount; // Increment notification.requestCount
+
+    if (notification.totalRequestCount &lt; notification.requestCount) {
+      notification.totalRequestCount = notification.requestCount;
+    }
+
+    // Update counter DOM element
+    if (notification.requestCount > 1) {
+      // Update existing counter
+      if (notification.dom.counter) {
+        notification.dom.counter.innerHTML = notification.requestCount;
+      }
+
+      // Create counter DOm element
+      else {
+        notification.dom.counter = document.createElement('DIV');
+        notification.dom.counter.classList.add('counter');
+        notification.dom.counter.innerHTML = notification.requestCount;
+        notification.dom.appendChild(notification.dom.counter);
+      }
+    }
+
+    // Undim notification if it is a sticky/dimmed one
+    if (notification.sticky &amp;&amp; notification.isDimmed) {
+      this._unDim(notification);
+    }
+  }
+
+  /**
+   * @method
+   * @name _decrementRequestCounter
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description This method is called each notification cycle end to update its inner counter
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {boolean} notification.sticky - Notification sticky behvaior
+   * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+   * @param {number} notification.requestCount - Notification inner call counter
+   * @param {object} notification.dom - Notification DOM element
+   * @param {boolean} force - To force the notification.requestCount decrementation
+   **/
+  _decrementRequestCounter(notification, force) {
+    if (notification.sticky &amp;&amp; !force) {
+      if (!notification.isDimmed) {
+        this._dim(notification);
+      }
+
+      return;
+    }
+
+    this._resetTimeout(notification);
+    --notification.requestCount; // Decrement notification.requestCount
+
+    // Update counter DOM element
+    if (notification.requestCount > 1) {
+      notification.dom.counter.innerHTML = notification.requestCount;
+    }
+
+    // Remove counter element from the DOM tree
+    else {
+      notification.dom.removeChild(notification.dom.counter);
+      delete notification.dom.counter;
+    }
+  }
+
+  /**
+   * @method
+   * @name _checkCounter
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {number} notification.requestCount - Notification inner call counter
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {number} notification.timeoutID - Notification own setTimeout ID
+   * @param {boolean} notification.sticky - Notification sticky behvaior
+   **/
+  _checkCounter(notification) {
+    // This notification as still more than one cycle to live
+    if (notification.requestCount > 1) {
+      this._decrementRequestCounter(notification);
+    }
+
+    // This notification reached the end of its life cycle
+    else {
+      if (notification.renderTo.contains(notification.dom)) {
+        window.clearTimeout(notification.timeoutID);
+        notification.sticky ? this._dim(notification) : this._close(notification); // FadeOut/Dim depending on sticky behavior
+      }
+    }
+  }
+
+  /**
+   * @method
+   * @name _clearRequestCount
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Method that clear every pending request
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {object} notification.dom - Notifiction DOM element
+   **/
+  _clearRequestCount(notification) {
+    notification.requestCount = 1;
+    notification.dom.removeChild(notification.dom.counter);
+    delete notification.dom.counter;
+  }
+
+  /**
+   * @method
+   * @name _resetTimeout
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Use this to reset a notification life cycle, and delay its close event
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {number} notification.timeoutID - Notification own setTimeout ID
+   **/
+  _resetTimeout(notification) {
+    window.clearTimeout(notification.timeoutID); // Clear previpous life cycle
+
+    notification.timeoutID = window.setTimeout(() => {
+      this._checkCounter(notification); // Check notification request count to act accordingly
+    }, notification.duration); // Use Notification master duration
+  }
+
+  /**
+   * @method
+   * @name _updateHistory
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Add a notification to the history. Might be executed when a notification is being closed
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   **/
+  _updateHistory(notification) {
+    // Remove this notification from the active object
+    delete this._active[notification.id];
+
+    // Work notification copy
+    const cleanEntry = JSON.parse(JSON.stringify(notification));
+
+    // Clear notification object from working attributes
+    delete cleanEntry.isClosing;
+    delete cleanEntry.isDimmed;
+    delete cleanEntry.requestCount;
+    delete cleanEntry.timeoutID;
+    delete cleanEntry.renderTo;
+    delete cleanEntry.dom;
+
+    // Save notification to the history
+    this._history.push(cleanEntry);
+  }
+
+  /**
+   * @method
+   * @name _dim
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Only useful for sticky notification that dim instead of close at the end of its life cycle
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {boolean} notification.sticky - Notification sticky behvaior
+   * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+   **/
+  _dim(notification) {
+    const that = this;
+    let i = 100;
+    (function halfFadeOut() { // Start animation immediatly
+      if (i >= 0) {
+        notification.dom.style.opacity = i / 100;
+        --i;
+
+        if (i === 50 &amp;&amp; notification.sticky) { // Opacity has reached 0.51
+          notification.dom.style.opacity = 0.5; // Set half transparency on notification
+          notification.isDimmed = true; // Update notification dim status
+          return; // End function
+        }
+      }
+
+      window.setTimeout(halfFadeOut, that._transition / 100); // Split animation transition into 100 iterations (50 for real here)
+    })();
+  }
+
+  /**
+   * @method
+   * @name _unDim
+   * @private
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Call this method when a notification is not inactive anymore
+   * @param {object} notification - The notification object
+   * @param {number} notification.id - Notification personnal ID
+   * @param {object} notification.dom - Notifiction DOM element
+   * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
+   **/
+  _unDim(notification) {
+    const that = this;
+    let i = 50;
+    (function halfFadeIn() {
+      if (i &lt; 100) {
+        notification.dom.style.opacity = i / 100;
+        ++i;
+      } else if (i === 100) {
+        notification.dom.style.opacity = 1; // Set full visibility on notification
+        notification.isDimmed = false; // Update notification dim status
+        that._resetTimeout(notification); // Reset life cycle timeout
+        return; // End function
+      }
+
+      window.setTimeout(halfFadeIn, that._transition / 100); // Split animation transition into 100 iterations (50 for real here)
+    })();
+  }
+
+  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  /**
+   * @method
+   * @name new
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Build a notification according to the given options, then append it to notification container.
+   * @param {object} options - The notification options object
+   * @param {string} options.type - &lt;i>Error; Warning; Info; Success;&lt;/i>
+   * @param {string} [options.title=options.type] - Notification title
+   * @param {string} options.message - Notification message
+   * @param {number} [options.duration=handler] - Notification duration (override handler duration value)
+   * @param {boolean} [options.iconless=false] - No icon flag
+   * @param {string} [options.thickBorder=handler] - Notification border side (override handler side value)
+   * @param {boolean} [options.closable=true] - Make notification closable flag
+   * @param {boolean} [options.sticky=false] - Make notification sticky flag
+   * @param {object} [options.renderTo=handler] - Dom object to render the notification in
+   * @param {string} [options.CBtitle=Callback] - Notification callback title
+   * @param {function} [options.callback=undefined] - Notification callback button
+   * @returns {number} The newly created notification ID
+   **/
+  new(options) {
+    // Check for mandatory arguments existence
+    if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+      return -1;
+    }
+
+    // Check for unclosable at all notification
+    if (options.sticky &amp;&amp; options.closable === false &amp;&amp; options.callback === undefined) {
+      return -1;
+    }
+
+    // Test Notification inner variables validity
+    if (options.type !== 'info' &amp;&amp; options.type !== 'success' &amp;&amp; options.type !== 'warning' &amp;&amp; options.type !== 'error') {
+      options.type = this._default.notification.type;
+    }
+
+    if (this._dismissAllLock) {
+      this._dismissAllLock = false; // Unlock dismissAllLock
+    }
+
+    // Build notification DOM element according to the given options
+    let notification = this._buildUI({
+      id: Utils.idGenerator(options.type + '' + options.message, 5), // Generating an ID of 5 characters long from notification mandatory fields
+      type: options.type,
+      message: options.message,
+      title: options.title === undefined ? this._default.notification.title : options.title,
+      duration: options.duration === undefined ? this._duration : options.duration,
+      iconless: options.iconless === undefined ? this._default.notification.iconless : options.iconless,
+      thickBorder: options.thickBorder === undefined ? this._thickBorder : options.thickBorder,
+      closable: options.closable === undefined ? this._default.notification.closable : options.closable,
+      sticky: options.sticky === undefined ? this._default.notification.sticky : options.sticky,
+      renderTo: options.renderTo === undefined ? this._default.notification.renderTo : options.renderTo,
+      CBtitle: options.CBtitle === undefined ? this._default.notification.CBtitle : options.CBtitle,
+      callback: options.callback === undefined ? this._default.notification.callback : options.callback,
+      isDimmed: false // Only usefull if sticky is set to true
+    });
+
+    // Create a new notification in the container: No notification with the same ID is already open
+    if (!this._active[notification.id]) {
+      this._start(notification);
+    }
+
+    // Use existing notification: increment request count and reset timeout
+    else {
+      this._resetTimeout(this._active[notification.id]);
+      this._incrementRequestCounter(this._active[notification.id]);
+      notification = {}; // Clear local new notification since it already exists in this._active
+    }
+
+    return notification.id;
+  }
+
+  /**
+   * @method
+   * @name info
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Build an info notification
+   * @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+   * @returns {number} The newly created notification ID
+   **/
+  info(options) {
+    options.type = 'info';
+    return this.new(options);
+  }
+
+  /**
+   * @method
+   * @name success
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Build a success notification
+   * @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+   * @returns {number} The newly created notification ID
+   **/
+  success(options) {
+    options.type = 'success';
+    return this.new(options);
+  }
+
+  /**
+   * @method
+   * @name warning
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Build a warning notification
+   * @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+   * @returns {number} The newly created notification ID
+   **/
+  warning(options) {
+    options.type = 'warning';
+    return this.new(options);
+  }
+
+  /**
+   * @method
+   * @name error
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Build an error notification
+   * @param {object} options - The notification options object (see new() arguments since this is an abstraction of new())
+   * @returns {number} The newly created notification ID
+   **/
+  error(options) {
+    options.type = 'error';
+    return this.new(options);
+  }
+
+  /**
+   * @method
+   * @name dismiss
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Dismiss a specific notification via its ID
+   * @param {number} id - The notification ID to dismiss
+   **/
+  dismiss(id) {
+    window.clearTimeout(this._active[id].timeoutID); // Clear notification timeout
+
+    if (this._active[id].requestCount > 1) { // Several request are pending
+      this._clearRequestCount(this._active[id]); // Clear all pending request
+    }
+
+    this._close(this._active[id]); // Close notification
+  }
+
+  /**
+   * @method
+   * @name dismissAll
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Clear the notification handler from all its active notifications
+   **/
+  dismissAll() {
+    if (!this._dismissAllLock &amp;&amp; Object.keys(this._active).length !== 0) { // Check that _dimissAllLock is disable and that there is still notification displayed
+      this._dismissAllLock = true; // dismissAllLock will be unlocked at the last _close() method call
+      this._queue = {}; // Clear queue object
+
+      for (const id in this._active) { // Iterate over notifications
+        this.dismiss(id);
+      }
+    }
+  }
+
+  /**
+   * @method
+   * @name dismissType
+   * @public
+   * @memberof Notification
+   * @author Arthur Beaulieu
+   * @since June 2018
+   * @description Dismiss all notifications from a given type
+   * @param {string} type - &lt;i>succes; info; warning; error;&lt;/i>
+   **/
+  dismissType(type) {
+    if (Object.keys(this._active).length !== 0) { // Check that _dimissAllLock is disable and that there is still notification displayed
+      for (const id in this._active) { // Iterate over notifications
+        if (this._active[id].type === type) {
+          this.dismiss(id);
+        }
+      }
+    }
+  }
+
+  //  --------------------------------  GETTER METHODS   --------------------------------  //
+
+  getHistoryLength() {
+    return this._history.length;
+  }
+  getHistory() {
+    return this._history;
+  }
+
+}
+
+export default Notification;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

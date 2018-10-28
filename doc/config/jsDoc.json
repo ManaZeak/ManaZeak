@@ -2,8 +2,8 @@
   "plugins": ["plugins/markdown"],
   "recurseDepth": 10,
   "source": {
-    "include": ["./static/js"],
-    "exclude": ["./static/js/dist/manazeak.bundle.js"],
+    "include": ["./static/src/js"],
+    "exclude": ["./static/dist/**/*"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
@@ -31,12 +31,12 @@
       }
     },
     "css": [
-      "doc/jsDoc.style.css"
+      "./jsDoc.style.css"
     ]
   },
   "opts": {
     "template": "node_modules/tui-jsdoc-template",
-    "destination": "./doc/frontend",
+    "destination": "./doc/JavaScript",
     "readme": "./README.md",
     "package": "./package.json",
     "access": "all",
