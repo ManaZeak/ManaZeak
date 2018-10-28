@@ -1,4 +1,5 @@
 import ListView from './views/ListView.js';
+import AlbumView from './views/AlbumView.js';
 'use_strict';
 
 class Scene {
@@ -25,7 +26,7 @@ class Scene {
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   stopPlayback() {
-    this.view.removePlayingIcon(); // Warning, this is specific to listView so far
+    this.view.stopPlayback(); // Warning, this is specific to listView so far
   }
 
   /**
@@ -78,16 +79,7 @@ class Scene {
    * @param {object} playlist - The playlist to update the view with
    **/
   updateView(playlist) {
-    const artists = playlist.getArtists();
     const tracks = [];
-
-    for (let i = 0; i < artists.length; ++i) {
-      for (let j = 0; j < artists[i].albums.length; ++j) {
-        for (let k = 0; k < artists[i].albums[j].tracks.length; ++k) {
-          tracks.push(artists[i].albums[j].tracks[k]);
-        }
-      }
-    }
 
     const options = {
       columns: [{
@@ -166,9 +158,10 @@ class Scene {
       ]
     };
 
-    this.view = new ListView(options); // TODO : move this
+//    this.view = new ListView(options); // TODO : move this
+    this.view = new AlbumView(options); // TODO : move this
     this.addView(this.view.getDOMFragment());
-    this.view.addTracks(tracks);
+    this.view.addTracks(playlist.getArtists());
 /*
     setTimeout(() => {
       this.view.centerOn(2);

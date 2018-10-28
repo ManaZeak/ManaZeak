@@ -585,12 +585,22 @@ class ListView {
   }
 
 
-  addTracks(tracks) {
+  addTracks(artists) {
     mzk.view.startLoading()
       .then(() => {
+        let tracks = [];
+
+        for (let i = 0; i < artists.length; ++i) {
+          for (let j = 0; j < artists[i].albums.length; ++j) {
+            for (let k = 0; k < artists[i].albums[j].tracks.length; ++k) {
+              tracks.push(artists[i].albums[j].tracks[k]);
+            }
+          }
+        }
+
         const fragment = document.createDocumentFragment();
         const gridTemplateColumns = this._computeGridTemplateColumns(); // CSS grid rule
-        const firstCall = this._tracks.length === 0 ? true : false;
+        const firstCall = (this._tracks.length === 0);
 
         for (let i = 0; i < tracks.length; ++i) { // Init listview content depending on options object
           const listViewEntry = new ListViewEntry({
@@ -627,7 +637,6 @@ class ListView {
         }
 
         mzk.view.stopLoading();
-        mzk.view.stopLoading();
       });
   }
 
@@ -660,7 +669,7 @@ class ListView {
     }
   }
 
-  removePlayingIcon() {
+  stopPlayback() {
     if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
       this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
       this._playingTrackIndex = -1;

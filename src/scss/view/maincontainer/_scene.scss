@@ -1,3 +1,6 @@
+@import './views/listview'; // Loading list view rules
+@import './views/albumview'; // Loading album view rules
+
 $scene-transition: ($transition-duration * 4);
 $margin-offset: 25px; // Offset to match arrow icons size in main container
 $aside-button-length: 25px;
