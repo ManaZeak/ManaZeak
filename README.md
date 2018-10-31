@@ -3,8 +3,8 @@
 </p>
 
 [![Build Status](https://travis-ci.org/Squadella/ManaZeak.svg?branch=master)](https://travis-ci.org/Squadella/ManaZeak)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSquadella%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSquadella%2FManaZeak?ref=badge_shield)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
 
 Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!
 
