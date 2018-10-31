@@ -3,6 +3,8 @@
 </p>
 
 # ManaZeak
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSquadella%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSquadella%2FManaZeak?ref=badge_shield)
+
 
 ManaZeak is a free software that gives you the ability to listen to and edit your musical library and to share it with friends, from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked with [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that share it.
 
@@ -89,3 +91,7 @@ Finally, if everything is OK with [Docker](https://github.com/docker) and with [
 - [Armand Vignat](https://github.com/avignat) (docker)
 - [Guilhem Piat](https://github.com/Syncrossus) (translation)
 - [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin) (logo)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSquadella%2FManaZeak.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSquadella%2FManaZeak?ref=badge_large)
