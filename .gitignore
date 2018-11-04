@@ -123,3 +123,6 @@ static/img/covers/**
 static/lib/**
 
 *.mood
+
+coverage.xml
+.coverage

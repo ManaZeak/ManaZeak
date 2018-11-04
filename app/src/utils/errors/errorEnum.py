@@ -2,7 +2,7 @@ from enum import unique, Enum
 
 
 @unique
-## The enumeration containing all the information about the errors.
+## The enumeration containing all the keys of each possible errors.
 class ErrorEnum(Enum):
     ## Bad json format send to the server.
     BAD_FORMAT = 1

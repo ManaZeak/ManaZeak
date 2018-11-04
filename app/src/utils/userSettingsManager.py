@@ -1,10 +1,14 @@
-from app.avatars.avatarGenerator import generateAvatar
 from app.models.security import Group
 from app.models.settings import UserSetting
+from app.src.utils.avatars.avatarGenerator import AvatarGenerator
 
 
 ## @package app.utils.userSettingsManager
 # Control the users settings
+
+## Create the user settings in database for a user
+#   @param user the user to be linked with the settings created
+#   @param inviteCode the invite code the user used if any
 def createUserSettings(user, inviteCode):
     userPref = UserSetting()
     userPref.user = user
@@ -15,7 +19,7 @@ def createUserSettings(user, inviteCode):
     else:
         userPref.group = Group.objects.get(rank=1)
     # Setting the user avatar
-    userPref.avatar = generateAvatar(user.username)
+    userPref.avatar = AvatarGenerator().generateAvatar(user.username)
     if inviteCode is not None:
         userPref.inviteCode = inviteCode
     userPref.save()

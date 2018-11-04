@@ -7,10 +7,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from app.security.inviteCodeManager import getInviteCodeByCode, generateInviteCode
-from app.utils.applicationConfigurationManager import getApplicationConfiguration
-from app.utils.frontRequestAnalyser import checkRequest
-from app.utils.requestType import RequestMethodEnum
+from app.src.security.inviteCodeManager import getInviteCodeByCode, generateInviteCode
+from app.src.utils.applicationConfigurationManager import getApplicationConfiguration
+from app.src.utils.frontRequestChecker import FrontRequestChecker
+from app.src.utils.userSettingsManager import createUserSettings
 
 ## @package app.views.signupView
 # This package manage the action be done when a user create an account
@@ -19,14 +19,13 @@ from app.utils.requestType import RequestMethodEnum
 ## This function creates a new user and log the user.
 #   @param request the request send by the front. Contains a form with the information needed to create an account.
 #   @return the page for the navigator
-from app.utils.userSettingsManager import createUserSettings
 
 logger = logging.getLogger('django')
 
 
 def signup(request):
     # Checking that the response is correct
-    requestAnalyserResult = checkRequest('POST', request, signup)
+    requestAnalyserResult = FrontRequestChecker.checkRequest('POST', request, signup)
     print(requestAnalyserResult)
     if not requestAnalyserResult['DONE']:
         print("lel")
