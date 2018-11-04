@@ -6,9 +6,15 @@ before_install:
   - git fetch --unshallow
   - sudo apt-get update -qq
   - sudo apt-get install -qq pylint
+before_script:
+	- "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
 install: pip install -r requirements.txt
 addons:
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
-script: sonar-scanner
+script:
+  - sonar-scanner
+  - fossa
+after_success:
+  - fossa test
