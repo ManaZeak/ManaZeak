@@ -6,3 +6,6 @@ python-crontab
 psutil
 pypng
 pylint
+pytest
+pytest-cov
+pytest-django

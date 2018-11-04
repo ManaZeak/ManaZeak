@@ -2,8 +2,8 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
-from app.security.permissionHandler import checkPermission
-from app.views.forms import UserLoginForm
+from app.src.security.permissionHandler import checkPermission
+from app.src.views.forms import UserLoginForm
 
 
 ## @package app.views.loginView
