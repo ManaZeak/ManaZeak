@@ -15,7 +15,6 @@ addons:
     token: $SONARCLOUDKEY
 script:
 #  - sonar-scanner
-  - fossa init
-  - fossa
+  - fossa -c ./.fossa.yml
 after_success:
   - fossa test
