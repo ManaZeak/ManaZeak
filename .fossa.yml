@@ -1,0 +1,14 @@
+version: 1
+
+cli:
+  server: https://app.fossa.io
+  #api_key: some-key-here
+  # # If `project` or `locator` are unset, infer locator from VCS.
+  project: git@github.com:ManaZeak/ManaZeak.git
+  # locator: git+github.com/fossas/fossa-cli$revision
+
+analyze:
+  modules:
+    - name: ManaZeak
+      path: .
+      type: npm
