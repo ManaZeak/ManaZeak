@@ -2,7 +2,7 @@
     <img src="https://manazeak.org/static/img/logo/manazeak-bg.png" width="740" height="419" />
 </p>
 
-[![Build Status](https://travis-ci.org/Squadella/ManaZeak.svg?branch=master)](https://travis-ci.org/Squadella/ManaZeak)
+[![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak?ref=badge_shield)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
 
