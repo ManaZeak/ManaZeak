@@ -30,8 +30,6 @@ class TopBar {
   }
 
   _events() {
-//    this._dismissUserMenu = this._dismissUserMenu.bind(this);
-
     this._avatar.addEventListener('click', () => {
       if (this._topbar.contains(this._userMenu.dom)) {
         this.closeUserMenu();

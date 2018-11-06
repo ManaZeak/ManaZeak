@@ -79,8 +79,6 @@ class Scene {
    * @param {object} playlist - The playlist to update the view with
    **/
   updateView(playlist) {
-    const tracks = [];
-
     const options = {
       columns: [{
           name: 'Duration',

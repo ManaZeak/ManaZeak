@@ -37,7 +37,7 @@ class AlbumView extends SceneView {
 
   }
 
-  _fillOptionsContext(context) {
+  _fillOptionsContext() {
 
   }
 

@@ -96,6 +96,14 @@
               left: 7px;
             }
 
+            p {
+              font-weight: 800;
+              padding-left: 7px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+
             p:first-child {
               align-self: end;
               grid-column: 1;
@@ -106,14 +114,6 @@
               text-overflow: inherit;
               white-space: inherit;
               overflow: inherit;
-            }
-
-            p {
-              font-weight: 800;
-              padding-left: 7px;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
             }
 
             p:last-child {
