@@ -39,6 +39,10 @@ class ListViewEntry {
     return fragment;
   }
 
+  get dom() {
+    return this._dom;
+  }
+
   setSelected(status) {
     this._isSelected = status;
 

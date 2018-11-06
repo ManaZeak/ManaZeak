@@ -2,8 +2,18 @@
 
 
 class SceneView {
-  constructor(options) {
-    this._lulz = 'LELEL';
+  constructor() {
+    this._tracks = [];
+    this._scrollBar = {};
+
+    this._selection = [];
+    this._click = { // Object to handle click events on track entries
+      dbclick: false,
+      targetId: -1,
+      timeoutId: -1
+    };
+
+    this._playingTrackIndex = -1;
   }
 
 _trackClicked(event) {
@@ -118,8 +128,8 @@ _trackClicked(event) {
 
   centerOn(id) {
     let index = -1;
-    for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
-      if (parseInt(this._dom.container.childNodes[i].dataset.id) === id) {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      if (parseInt(this._tracks[i].id) === id) {
         index = i;
         break;
       }
@@ -133,15 +143,8 @@ _trackClicked(event) {
       return;
     }
 
-    const relativeDelta = this._dom.container.childNodes[index].offsetTop + this._dom.container.childNodes[index].scrollHeight / 2;
+    const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
     this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
-  }
-
-  stopPlayback() {
-    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
-      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
-      this._playingTrackIndex = -1;
-    }
   }
 
   refreshView() {

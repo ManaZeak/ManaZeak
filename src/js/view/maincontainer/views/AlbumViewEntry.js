@@ -50,6 +50,10 @@ class AlbumViewEntry {
     return fragment;
   }
 
+  get dom() {
+    return this._dom.container;
+  }
+
   setSelected(status) {
     this._isSelected = status;
 

@@ -14,7 +14,7 @@ addons:
     organization: "manazeak"
     token: $SONARCLOUDKEY
 script:
-#  - sonar-scanner
-  - fossa -c ./.fossa.yml
+  - sonar-scanner
+  - fossa
 after_success:
   - fossa test

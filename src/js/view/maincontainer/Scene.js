@@ -162,11 +162,11 @@ class Scene {
     this.view = new AlbumView(options); // TODO : move this
     this.addView(this.view.getDOMFragment());
     this.view.addTracks(playlist.getArtists());
-/*
+
     setTimeout(() => {
-      this.view.centerOn(2);
+      this.view.centerOn(38);
     }, 500);
-*/
+
   }
 
   changeTrack(id) {
