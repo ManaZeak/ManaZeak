@@ -1,8 +1,9 @@
+import SceneView from '../SceneView';
 import ListViewEntry from './ListViewEntry';
 import ScrollBar from '../../../utils/ScrollBar.js';
 'use strict';
 
-class ListView {
+class ListView extends SceneView {
   /**
    * @summary ListView for mzk Scene
    * @author Arthur Beaulieu
@@ -14,6 +15,8 @@ class ListView {
    * @param {object} options.target - The DOM target node to inject ListView in (usually mzk Scene)
    **/
   constructor(options) {
+    super();
+
     this._availableColumns = options.availableColumns;
     this._columns = options.columns;
     this._tracks = [];
@@ -76,101 +79,6 @@ class ListView {
     window.addEventListener('resize', () => {
       this._refreshGridColumn(this._computeGridTemplateColumns());
     });
-  }
-
-  _trackClicked(event) {
-    event.stopPropagation(); // Block window click listener
-
-    const targetId = event.target.parentNode.dataset.id;
-
-    if (!targetId) {
-      this.unselectAll();
-      return;
-    }
-
-    if (!this._click.dbclick || this._click.targetId !== targetId) { // Second test force dbclick to occur on same track
-      this._click.dbclick = true;
-      this._click.targetId = targetId;
-
-      if (!event.ctrlKey) { // Simple click unselects all
-        const isTargetSelected = this._tracks[targetId].getIsSelected(); // Saving target selection state before unselecting all
-        this.unselectAll();
-        this._tracks[targetId].setSelected(isTargetSelected); // Restore previous state to properly use in Normal click behavior condition
-        this._selection.push(parseInt(targetId, 10));
-      }
-
-      if (event.ctrlKey && event.shiftKey && this._selection.length > 0) { // Ctrl + Shift + Click : fill selection in between target and closest selectioned track
-        mzk.view.startLoading()
-          .then(() => {
-            // TODO : différence entre target et le dernier endroit ou on click
-            let start = 0;
-            let end = 0;
-
-            if (parseInt(targetId, 10) < this._selection[0]) { // Compare to this._selection[0] since this._selection is always ordered
-              start = parseInt(targetId, 10);
-              end = this._selection[0];
-            } else if (parseInt(targetId, 10) > this._selection[this._selection.length - 1]) { // Same here with greater index in this._selection
-              start = this._selection[this._selection.length - 1] + 1; // +1  to avoid first item repetition
-              end = parseInt(targetId, 10) + 1; // +1 to not forget the targetId too
-            }
-
-            for (let i = start; i < end; ++i) { // Loop to fill in between items
-              this._tracks[i].setSelected(true);
-              this._selection.push(i);
-            }
-
-            mzk.view.stopLoading();
-          });
-      } else { // Normal click behavior
-        mzk.view.startLoading()
-          .then(() => {
-            if (this._tracks[targetId].getIsSelected()) {
-              this._tracks[targetId].setSelected(false);
-              this._selection.splice(this._selection.indexOf(targetId), 1);
-            } else {
-              this._tracks[targetId].setSelected(true);
-              this._selection.push(parseInt(targetId, 10));
-            }
-
-            mzk.view.stopLoading();
-          });
-      }
-
-      this._click.timeoutId = setTimeout(() => {
-        this._click.dbclick = false;
-      }, 300); // Double click speed lower than 300ms
-    } else {
-      clearTimeout(this._click.timeoutId);
-      this.removePlayingIcon();
-      this._tracks[targetId].setSelected(true);
-      this._selection.push(parseInt(targetId, 10));
-      mzk.changeTrack(this._tracks[targetId].id);
-    }
-
-    this._selection.sort((a, b) => {
-      return (a - b);
-    });
-  }
-
-  changeTrack(id) {
-    let targetId = 0;
-
-    for ( let i = 0; i < this._tracks.length; ++i) {
-      if (this._tracks[i].id === id) {
-        targetId = i;
-        break;
-      }
-    }
-
-    mzk.view.startLoading()
-      .then(() => {
-        this._playingTrackIndex !== -1 ? this._tracks[this._playingTrackIndex].setPlaying(false) : undefined;
-
-        this._playingTrackIndex = targetId;
-        this._click.dbclick = false;
-        this._tracks[targetId].setPlaying(true);
-        mzk.view.stopLoading();
-      });
   }
 
   optionsClicked() {
@@ -584,7 +492,6 @@ class ListView {
       });
   }
 
-
   addTracks(artists) {
     mzk.view.startLoading()
       .then(() => {
@@ -640,43 +547,7 @@ class ListView {
       });
   }
 
-  centerOn(id) {
-    let index = -1;
-    for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
-      if (parseInt(this._dom.container.childNodes[i].dataset.id) === id) {
-        index = i;
-        break;
-      }
-    }
-
-    if (index === -1) {
-      Errors.raise({
-        code: 'CANT_CENTER_TRACK',
-        frontend: true
-      });
-      return;
-    }
-
-    const relativeDelta = this._dom.container.childNodes[index].offsetTop + this._dom.container.childNodes[index].scrollHeight / 2;
-    this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
-  }
-
-  unselectAll() {
-    this._selection = [];
-
-    for (let i = 0; i < this._tracks.length; ++i) {
-      this._tracks[i].setSelected(false);
-    }
-  }
-
-  stopPlayback() {
-    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
-      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
-      this._playingTrackIndex = -1;
-    }
-  }
-
-  refreshView() { // TODO move this in AppView extended class to create and this is override
+  refreshView() {
     mzk.view.startLoading()
       .then(() => {
         setTimeout(() => {
@@ -684,26 +555,6 @@ class ListView {
           mzk.view.stopLoading();
         }, 500);
       });
-  }
-
-  getDOMFragment() {
-    return this._dom.fragment;
-  }
-
-  getNextTrackId() {
-    return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
-  }
-
-  getPreviousTrackId() {
-    return this._tracks[(this._playingTrackIndex + this._tracks.length - 1) % this._tracks.length].id;
-  }
-
-  getFirstTrackId() {
-    return this._tracks[0].id;
-  }
-
-  isLastTrack() {
-    return this._playingTrackIndex === this._tracks.length - 1;
   }
 }
 

@@ -21,7 +21,7 @@ class ListViewEntry {
     this.title = options.track.title || '';
 
     this._dom = document.createElement('DIV');
-    this._dom.classList.add('entry');
+    this._dom.classList.add('track');
     this._dom.dataset.id = options.datasetId;
     this._dom.style.gridTemplateColumns = options.gridTemplateColumns;
 
