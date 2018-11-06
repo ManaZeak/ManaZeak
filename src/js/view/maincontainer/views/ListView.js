@@ -19,9 +19,7 @@ class ListView extends SceneView {
 
     this._availableColumns = options.availableColumns;
     this._columns = options.columns;
-    this._tracks = [];
-    this._target = options.target;
-    this._scrollBar = {};
+    this._target = options.target; // TODO remove target like in alb view
     this._dom = {
       fragment: {},
       wrapper: {},
@@ -30,14 +28,6 @@ class ListView extends SceneView {
     };
 
     this._draggedColumn = null;
-    this._selection = [];
-    this._click = { // Object to handle click events on track entries
-      dbclick: false,
-      targetId: -1,
-      timeoutId: -1
-    };
-
-    this._playingTrackIndex = -1;
 
     this._init();
     this._events();

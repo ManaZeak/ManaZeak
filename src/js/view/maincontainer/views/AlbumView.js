@@ -13,20 +13,8 @@ class AlbumView extends SceneView {
 
     this._dom = {
       fragment: {},
-      wrapper: {}
+      container: {}
     };
-
-    this._tracks = [];
-    this._scrollBar = {};
-
-    this._selection = [];
-    this._click = { // Object to handle click events on track entries
-      dbclick: false,
-      targetId: -1,
-      timeoutId: -1
-    };
-
-    this._playingTrackIndex = -1;
 
     this._init();
     this._events();
@@ -34,13 +22,13 @@ class AlbumView extends SceneView {
 
   _init() {
     this._dom.fragment = document.createDocumentFragment();
-    this._dom.wrapper = document.createElement('DIV');
-    this._dom.wrapper.classList.add('albumview');
-    this._dom.fragment.appendChild(this._dom.wrapper);
+    this._dom.container = document.createElement('DIV');
+    this._dom.container.classList.add('albumview');
+    this._dom.fragment.appendChild(this._dom.container);
   }
 
   _events() {
-    this._dom.wrapper.addEventListener('click', event => {
+    this._dom.container.addEventListener('click', event => {
       this._trackClicked(event);
     });
   }
@@ -54,25 +42,23 @@ class AlbumView extends SceneView {
   }
 
   addTracks(artists) {
-    let tracks = [];
-
     const firstCall = (this._tracks.length === 0);
     let index = 0;
 
     for (let i = 0; i < artists.length; ++i) {
-      let artist = document.createElement('DIV');
+      const artist = document.createElement('DIV');
       artist.classList.add('artist');
 
-      let artistName = document.createElement('H1');
+      const artistName = document.createElement('H1');
       artistName.innerHTML = artists[i].name;
 
       artist.appendChild(artistName);
 
       for (let j = 0; j < artists[i].albums.length; ++j) {
-        let album = document.createElement('DIV');
+        const album = document.createElement('DIV');
         album.classList.add('album');
 
-        let albumCover = document.createElement('IMG');
+        const albumCover = document.createElement('IMG');
 
         if (artists[i].albums[j].tracks[0].cover !== '') {
           albumCover.src = `/static/img/covers/${artists[i].albums[j].tracks[0].cover}`;
@@ -82,20 +68,20 @@ class AlbumView extends SceneView {
 
         album.appendChild(albumCover);
 
-        let albumInfo = document.createElement('DIV');
+        const albumInfo = document.createElement('DIV');
         albumInfo.classList.add('album-info');
 
-        let albumName = document.createElement('H1');
+        const albumName = document.createElement('H1');
         albumName.innerHTML = `${artists[i].albums[j].name} - ${artists[i].albums[j].tracks[0].year}`;
 
         albumInfo.appendChild(albumName);
 
-        let albumTracks = document.createElement('DIV');
+        const albumTracks = document.createElement('DIV');
         albumTracks.classList.add('tracks-container');
 
-        let genres = document.createElement('DIV');
+        const genres = document.createElement('DIV');
         genres.classList.add('genre-badges');
-        let genresObject = {};
+        const genresObject = {};
 
         for (let k = 0; k < artists[i].albums[j].tracks.length; ++k) {
           const albumViewEntry = new AlbumViewEntry({
@@ -109,7 +95,7 @@ class AlbumView extends SceneView {
 
           if (!genresObject[artists[i].albums[j].tracks[k].genre] && artists[i].albums[j].tracks[k].genre !== '') {
             genresObject[artists[i].albums[j].tracks[k].genre] = 1;
-            let genreBadge = document.createElement('SPAN');
+            const genreBadge = document.createElement('SPAN');
             genreBadge.innerHTML = artists[i].albums[j].tracks[k].genre;
             genres.appendChild(genreBadge);
           }
@@ -123,16 +109,24 @@ class AlbumView extends SceneView {
         artist.appendChild(album);
       }
 
-      this._dom.wrapper.appendChild(artist);
+      this._dom.container.appendChild(artist);
     }
 
     if (firstCall) {
       this._scrollBar = new ScrollBar({
-        target: this._dom.wrapper
+        target: this._dom.container
       });
-      this._dom.wrapper = this._dom.wrapper.firstChild.firstChild; // ScrollBar creates two wrappers
+      this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
     }
   }
+
+  stopPlayback() {
+    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
+      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
+      this._playingTrackIndex = -1;
+    }
+  }
+
 }
 
 export default AlbumView;
