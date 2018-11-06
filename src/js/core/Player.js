@@ -329,8 +329,6 @@ class Player {
     if (this._player.src) { // Apply only if src is defined
       this._player.pause(); // Pause player playback
       this._isPlaying = false; // Set playing state to false
-      this._player.currentTime = 0;
-      //this._player.duration = 0;
       this._player.removeAttribute('src'); // Remove src attribute from player (since this._player.src = null doesn't delete src)
     }
   }
