@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 
 class SceneView {
@@ -43,7 +43,6 @@ _trackClicked(event) {
       if (event.ctrlKey && event.shiftKey && this._selection.length > 0) { // Ctrl + Shift + Click : fill selection in between target and closest selectioned track
         mzk.view.startLoading()
           .then(() => {
-            // TODO : différence entre target et le dernier endroit ou on click
             let start = 0;
             let end = 0;
 
@@ -122,7 +121,7 @@ _trackClicked(event) {
       });
   }
 
-  addTracks(artists) {
+  addTracks() {
 
   }
 

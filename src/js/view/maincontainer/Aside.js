@@ -10,7 +10,7 @@ class Aside {
    * @param {object} options - The Aside options object
    * @param {string} options.side - The Aside position on screen (`left` or `right` only)
    **/
-  constructor(options) {
+  constructor() {
     this.dom = {};
     this._open = {};
     this._close = {};
