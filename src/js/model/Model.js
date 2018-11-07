@@ -236,18 +236,29 @@ class Model {
         if (response.COLLECTION.length === 0) {
           this._collection.newLibrary()
             .then(() => {
-              resolve(this._collection.getActivePlaylist());
+              resolve(this._collection.activePlaylist);
             });
         } else {
           this._collection.buildUserCollection(response)
             .then(() => {
-              resolve(this._collection.getActivePlaylist());
+              resolve(this._collection.activePlaylist);
             });
         }
       } else {
         reject(response.ERROR_KEY);
       }
     });
+  }
+
+  setActiveView(newView) {
+    return new Promise((resolve) => {
+      this._collection.activePlaylist.activeView = newView;
+      resolve();
+    });
+  }
+
+  get activeView() {
+    return this._collection.activePlaylist.activeView;
   }
 
   /**
@@ -279,8 +290,8 @@ class Model {
 
   toggleRepeatMode() {
     return new Promise(resolve => {
-      this._collection.getActivePlaylist().toggleRepeatMode();
-      resolve(this._collection.getActivePlaylist().repeatMode);
+      this._collection.activePlaylist.toggleRepeatMode();
+      resolve(this._collection.activePlaylist.repeatMode);
     });
   }
 
@@ -291,7 +302,7 @@ class Model {
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
-    return this._collection.getActivePlaylist().repeatMode;
+    return this._collection.activePlaylist.repeatMode;
   }
 
   getVolume() {

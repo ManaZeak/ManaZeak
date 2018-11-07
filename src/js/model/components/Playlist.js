@@ -1,6 +1,5 @@
 import Track from './Track.js';
-'use_strict';
-
+'use strict';
 
 class Playlist {
   /**
@@ -30,6 +29,7 @@ class Playlist {
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
+    this._activeView = ViewEnum.ListView;
 
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
@@ -167,6 +167,14 @@ class Playlist {
   }
   getArtists() {
     return this._artists;
+  }
+
+  get activeView() {
+    return this._activeView;
+  }
+
+  set activeView(newView) {
+    this._activeView = newView;
   }
 }
 

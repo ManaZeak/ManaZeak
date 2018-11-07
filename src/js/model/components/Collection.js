@@ -218,7 +218,7 @@ class Collection {
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
-  getActivePlaylist() {
+  get activePlaylist() {
     return this._playlists[this._activePlaylist];
   }
 }
