@@ -26,7 +26,16 @@ window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
 
+window.ViewEnum = Object.freeze({
+  'ListView': 'ListView',
+  'AlbumView': 'AlbumView'
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   window.mzk = new Mzk();
   mzk.start();
+
+  setTimeout(() => {
+    mzk.changeActiveView('AlbumView');
+  }, 5000);
 });

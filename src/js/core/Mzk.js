@@ -458,6 +458,23 @@ class Mzk {
 
   /**
    * @method
+   * @name changeActiveView
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since November 2018
+   * @description Set a new active view to the active playlist
+   **/
+  changeActiveView(newView) {
+    this.model.setActiveView(newView)
+      .then(() => {
+        this.view.setActiveView(this.model.getCollection().activePlaylist);
+      });
+  }
+
+
+  /**
+   * @method
    * @name nextTrackInView
    * @public
    * @memberof Mzk

@@ -40,7 +40,8 @@ class Scene {
    * @param {object} node - The DOM node to append to the scene
    **/
   addView(node) {
-    // TODO : clear existing material
+    this._scene.innerHTML = '';
+    this._scene.appendChild(this._optionButton);
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
     this._scene.appendChild(fragment);
@@ -156,15 +157,22 @@ class Scene {
       ]
     };
 
-//    this.view = new ListView(options); // TODO : move this
-    this.view = new AlbumView(options); // TODO : move this
+    const activeView = playlist.activeView;
+
+    if (activeView === 'ListView') {
+      this.view = new ListView(options);
+    }
+
+    else if (activeView === 'AlbumView') {
+      this.view = new AlbumView(options);
+    }
+
     this.addView(this.view.getDOMFragment());
     this.view.addTracks(playlist.getArtists());
 
     setTimeout(() => {
-      this.view.centerOn(38);
+      this.view.centerOn(38); // TODO Put this in a scene cmd
     }, 500);
-
   }
 
   changeTrack(id) {

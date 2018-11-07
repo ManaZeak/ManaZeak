@@ -188,6 +188,10 @@ class View {
     this._mainContainer.removeChild(document.getElementById('overlay'));
   }
 
+  setActiveView(playlist) {
+    this._scene.updateView(playlist);
+  }
+
   displayModal(options) {
     if (options.name === 'newlibrary') {
       mzk.komunikator.getTemplate('modals/newlibrary/')
