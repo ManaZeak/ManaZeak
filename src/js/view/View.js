@@ -190,12 +190,6 @@ class View {
     this._mainContainer.removeChild(document.getElementById('overlay'));
   }
 
-  centerOnActiveTrack() {
-    this._scene.view.centerOn({
-      index: this._scene.view.playingTrackIndex
-    });
-  }
-
   setActiveView(playlist) {
     this._scene.updateView(playlist);
   }

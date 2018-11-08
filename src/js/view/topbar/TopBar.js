@@ -21,32 +21,23 @@ class TopBar {
   _init() {
     this._topbar = document.getElementById('topbar');
     this._avatar = document.getElementById('topbar-avatar');
-    this._userMenu = document.createElement('DIV');
 
     this._userMenu = new UserMenu({
-      target: this._topbar
+      target: this._topbar,
+      url: 'modals/usermenu/'
     });
+
     this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
   }
 
   _events() {
-//    this._dismissUserMenu = this._dismissUserMenu.bind(this);
-
     this._avatar.addEventListener('click', () => {
       if (this._topbar.contains(this._userMenu.dom)) {
-        this.closeUserMenu();
+        this._userMenu.close();
       } else {
-        this.openUserMenu();
+        this._userMenu.open();
       }
     });
-  }
-
-  openUserMenu() {
-    this._userMenu.open();
-  }
-
-  closeUserMenu() {
-    this._userMenu.close();
   }
 }
 

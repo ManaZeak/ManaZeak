@@ -144,10 +144,6 @@ _trackClicked(event) {
     }
 
     if (index === -1) {
-      Errors.raise({
-        code: 'CANT_CENTER_TRACK',
-        frontend: true
-      });
       return;
     }
 
