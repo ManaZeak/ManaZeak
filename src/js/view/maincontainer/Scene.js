@@ -1,6 +1,6 @@
 import ListView from './views/ListView.js';
 import AlbumView from './views/AlbumView.js';
-import SceneCommands from './SceneCommands.js';
+import ViewSwitcher from './ViewSwitcher.js';
 'use_strict';
 
 class Scene {
@@ -14,14 +14,33 @@ class Scene {
     this._scene = document.getElementById('scene');
     this._optionButton = document.getElementById('view-option');
     this.view = {};
-    this._sceneCommands = new SceneCommands({
-      target: this._scene
+    this._viewSwitcher = new ViewSwitcher({
+      target: this._scene,
+      url: 'modals/changeview/'
     });
+
+    this._sceneCommands = document.getElementById('scene-commands');
+    this._activeViewLabel = this._sceneCommands.childNodes[1];
+    this._centerOnActiveTrack = document.getElementById('center-on-track');
 
     this._events();
   }
 
   _events() {
+    this._activeViewLabel.addEventListener('click', () => {
+      if (this._scene.contains(this._viewSwitcher.dom)) {
+        this._viewSwitcher.close();
+      } else {
+        this._viewSwitcher.open();
+      }
+    });
+
+    this._centerOnActiveTrack.addEventListener('click', () => {
+      this.view.centerOn({
+        index: this.view.playingTrackIndex
+      });
+    });
+
     this._optionButton.addEventListener('click', () => {
       this.view.optionsClicked();
     });
@@ -45,20 +64,19 @@ class Scene {
    **/
   addView(node) {
     this._scene.innerHTML = '';
-    this._scene.appendChild(this._sceneCommands.dom);
+    this._scene.appendChild(this._sceneCommands);
     this._scene.appendChild(this._optionButton);
+
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
     this._scene.appendChild(fragment);
   }
 
   extend() {
-    this._sceneCommands.asideClosed();
     this.view.refreshView();
   }
 
   retract() {
-    this._sceneCommands.asideOpened();
     this.view.refreshView();
   }
 
@@ -154,10 +172,12 @@ class Scene {
 
     if (activeView === 'ListView') {
       this.view = new ListView(options);
+      this._activeViewLabel.innerHTML = 'Tracks';
     }
 
     else if (activeView === 'AlbumView') {
       this.view = new AlbumView(options);
+      this._activeViewLabel.innerHTML = 'Artists';
     }
 
     this.addView(this.view.getDOMFragment());

@@ -15,7 +15,7 @@ $aside-button-length: 25px;
 
   #scene-commands {
     position: absolute;
-    left: $margin-offset + ($main-container-icon-margin * 2);
+    right: 0;
     height: $margin-offset + ($main-container-icon-margin * 2);
     width: auto;
     top: 0;
@@ -33,14 +33,14 @@ $aside-button-length: 25px;
         content: '';
         border-style: solid;
         border-width: 6px 6px 0 6px;
-        border-color: $mzk-anti-accent-color transparent transparent transparent;
-        margin-left: 12px;
+        border-color: $mzk-bg-darker transparent transparent transparent;
+        margin-left: 10px;
       }
     }
 
     img {
       height: calc(49px / 2);
-      padding: 0 12px;
+      padding: 0 15px;
       cursor: pointer;
     }
   }
@@ -156,7 +156,7 @@ $aside-button-length: 25px;
       top: 89px;
       height: auto;
       position: absolute;
-      left: 49px;
+      right: 49px;
       width: auto;
       z-index: 665;
       display: flex;
