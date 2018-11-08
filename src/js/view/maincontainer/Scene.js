@@ -1,5 +1,6 @@
 import ListView from './views/ListView.js';
 import AlbumView from './views/AlbumView.js';
+import SceneCommands from './SceneCommands.js';
 'use_strict';
 
 class Scene {
@@ -12,7 +13,10 @@ class Scene {
   constructor() {
     this._scene = document.getElementById('scene');
     this._optionButton = document.getElementById('view-option');
-    // TODO : add test function that replace scene with a sandBox to work with
+    this.view = {};
+    this._sceneCommands = new SceneCommands({
+      target: this._scene
+    });
 
     this._events();
   }
@@ -41,6 +45,7 @@ class Scene {
    **/
   addView(node) {
     this._scene.innerHTML = '';
+    this._scene.appendChild(this._sceneCommands.dom);
     this._scene.appendChild(this._optionButton);
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
@@ -48,25 +53,13 @@ class Scene {
   }
 
   extend() {
-    this._scene.classList.add('extended');
-    setTimeout(() => {
-      this.view.refreshView();
-    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
+    this._sceneCommands.asideClosed();
+    this.view.refreshView();
   }
 
   retract() {
-    this._scene.classList.remove('extended');
-    setTimeout(() => {
-        this.view.refreshView();
-    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
-  }
-
-  toggleExtension() {
-    if (this._scene.classList.contains('extended')) {
-      this.retract();
-    } else {
-      this.extend();
-    }
+    this._sceneCommands.asideOpened();
+    this.view.refreshView();
   }
 
   /**
@@ -169,10 +162,6 @@ class Scene {
 
     this.addView(this.view.getDOMFragment());
     this.view.addTracks(playlist.getArtists());
-
-    setTimeout(() => {
-      this.view.centerOn(38); // TODO Put this in a scene cmd
-    }, 500);
   }
 
   changeTrack(id) {

@@ -140,3 +140,10 @@ def newLibraryModal(request):
 #   @return the user menu template
 def userMenuContext(request):
     return render(request, 'modals/usermenu.html')
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Send the change view context HTML template
+#   @param request request given by the front
+#   @return the user menu template
+def changeViewContext(request):
+    return render(request, 'modals/changeview.html')

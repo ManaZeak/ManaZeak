@@ -34,8 +34,4 @@ window.ViewEnum = Object.freeze({
 document.addEventListener('DOMContentLoaded', () => {
   window.mzk = new Mzk();
   mzk.start();
-
-  setTimeout(() => {
-    mzk.changeActiveView('AlbumView');
-  }, 5000);
 });
