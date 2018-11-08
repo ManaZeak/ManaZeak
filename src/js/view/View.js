@@ -154,6 +154,7 @@ class View {
 
   extendMainContainer() {
     this._mainContainer.classList.add('extended');
+    this._scene.extend();
     setTimeout(() => {
       this._scene.view.refreshView();
     }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
@@ -161,8 +162,9 @@ class View {
 
   retractMainContainer() {
     this._mainContainer.classList.remove('extended');
-    setTimeout(() => {
-        this._scene.view.refreshView();
+    this._scene.retract();
+      setTimeout(() => {
+      this._scene.view.refreshView();
     }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
@@ -186,6 +188,12 @@ class View {
 
   removeOverlay() {
     this._mainContainer.removeChild(document.getElementById('overlay'));
+  }
+
+  centerOnActiveTrack() {
+    this._scene.view.centerOn({
+      index: this._scene.view.playingTrackIndex
+    });
   }
 
   setActiveView(playlist) {

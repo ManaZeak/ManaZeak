@@ -92,6 +92,10 @@ _trackClicked(event) {
     });
   }
 
+  stopPlayback() {
+
+  }
+
   unselectAll() {
     this._selection = [];
 
@@ -125,12 +129,17 @@ _trackClicked(event) {
 
   }
 
-  centerOn(id) {
+  centerOn(options) {
     let index = -1;
-    for (let i = 0; i < this._tracks.length; ++i) {
-      if (parseInt(this._tracks[i].id) === id) {
-        index = i;
-        break;
+    if (options.index && options.index !== -1) {
+      index = options.index;
+    } else if (options.id) {
+      let index = -1;
+      for (let i = 0; i < this._tracks.length; ++i) {
+        if (parseInt(this._tracks[i].id) === id) {
+          index = i;
+          break;
+        }
       }
     }
 
@@ -154,6 +163,10 @@ _trackClicked(event) {
     return this._dom.fragment;
   }
 
+  get playingTrackId() {
+      return this._tracks
+  }
+
   getNextTrackId() {
     return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
   }
@@ -168,6 +181,10 @@ _trackClicked(event) {
 
   isLastTrack() {
     return this._playingTrackIndex === this._tracks.length - 1;
+  }
+
+  get playingTrackIndex() {
+      return this._playingTrackIndex;
   }
 }
 
