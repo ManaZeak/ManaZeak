@@ -160,7 +160,7 @@ _trackClicked(event) {
   }
 
   get playingTrackId() {
-      return this._tracks
+      return this._tracks;
   }
 
   getNextTrackId() {
