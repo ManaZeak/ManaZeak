@@ -485,7 +485,7 @@ class ListView extends SceneView {
   addTracks(artists) {
     mzk.view.startLoading()
       .then(() => {
-        let tracks = [];
+        const tracks = [];
 
         for (let i = 0; i < artists.length; ++i) {
           for (let j = 0; j < artists[i].albums.length; ++j) {
