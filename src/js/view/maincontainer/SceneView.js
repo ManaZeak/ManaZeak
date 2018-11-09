@@ -134,7 +134,6 @@ _trackClicked(event) {
     if (options.index && options.index !== -1) {
       index = options.index;
     } else if (options.id) {
-      let index = -1;
       for (let i = 0; i < this._tracks.length; ++i) {
         if (parseInt(this._tracks[i].id) === id) {
           index = i;
