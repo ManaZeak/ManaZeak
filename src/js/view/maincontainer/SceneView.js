@@ -116,7 +116,9 @@ _trackClicked(event) {
 
     mzk.view.startLoading()
       .then(() => {
-        this._playingTrackIndex !== -1 ? this._tracks[this._playingTrackIndex].setPlaying(false) : undefined;
+        if (this._playingTrackIndex !== -1) {
+          this._tracks[this._playingTrackIndex].setPlaying(false);
+        }
 
         this._playingTrackIndex = targetId;
         this._click.dbclick = false;
