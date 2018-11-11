@@ -1,6 +1,7 @@
 import SceneView from '../SceneView';
 import ListViewEntry from './ListViewEntry';
 import ScrollBar from '../../../utils/ScrollBar.js';
+import TrackContext from "./TrackContext";
 'use strict';
 
 class ListView extends SceneView {
@@ -27,6 +28,8 @@ class ListView extends SceneView {
       container: {}
     };
 
+    this._trackContext = {};
+
     this._draggedColumn = null;
 
     this._init();
@@ -50,6 +53,11 @@ class ListView extends SceneView {
     this._dom.wrapper.appendChild(this._dom.container);
     this._dom.fragment.appendChild(this._dom.wrapper);
 
+    this._trackContext = new TrackContext({
+      target: this._dom.container,
+      url: 'contexts/trackcontext/'
+    });
+
     setTimeout(() => {
       this._initHeader();
     }, 0); // Wait that header has been added to the DOM
@@ -58,6 +66,16 @@ class ListView extends SceneView {
   _events() {
     this._dom.container.addEventListener('click', (event) => {
       this._trackClicked(event);
+    });
+
+    this._dom.container.addEventListener('contextmenu', event => {
+      event.preventDefault();
+
+      if (this._dom.container.contains(this._trackContext.dom)) {
+        this._trackContext.close();
+      } else {
+        this._contextClicked(event);
+      }
     });
 
     window.addEventListener('click', (event) => {
@@ -69,6 +87,12 @@ class ListView extends SceneView {
     window.addEventListener('resize', () => {
       this._refreshGridColumn(this._computeGridTemplateColumns());
     });
+  }
+
+  _contextClicked(event) {
+    if (event.target.closest('.track')) {
+      this._trackContext.open(event);
+    }
   }
 
   optionsClicked() {

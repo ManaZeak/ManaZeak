@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^modals/usermenu/$', views.userMenuContext, name='userMenu'),  # send the new library template
     url(r'^modals/changeview/$', views.changeViewContext, name='changeView'),  # send the new library template
 
+    url(r'^contexts/trackcontext/$', views.trackContext, name='trackContext'),  # send the new library template
+
     ####################### Collection actions ##########################
     url(r'^collection/delete/$', adminTools.deleteCollection, name='deleteCol'),  # delete a playlist or a library
 

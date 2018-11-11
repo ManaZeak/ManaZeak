@@ -1,11 +1,3 @@
-$footbar-controls-height: 50px;
-$footbar-controls-scale: 50%; // Usefull for volume bar image
-$footbar-controls-margin: 5px;
-$footbar-progress-height: 30px;
-$footbar-sides-width: 85px;
-$moodbar-height: 25px;
-$footbar-transition: ($transition-duration * 2);
-
 #footbar {
   background: $bar-alpha;
   bottom: 0;

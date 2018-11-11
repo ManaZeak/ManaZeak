@@ -1,4 +1,5 @@
 import SceneView from '../SceneView';
+import TrackContext from './TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
 import ScrollBar from "../../../utils/ScrollBar";
 
@@ -16,6 +17,8 @@ class AlbumView extends SceneView {
       container: {}
     };
 
+    this._trackContext = {};
+
     this._init();
     this._events();
   }
@@ -25,12 +28,33 @@ class AlbumView extends SceneView {
     this._dom.container = document.createElement('DIV');
     this._dom.container.classList.add('albumview');
     this._dom.fragment.appendChild(this._dom.container);
+
+    this._trackContext = new TrackContext({
+      target: this._dom.container,
+      url: 'contexts/trackcontext/'
+    });
   }
 
   _events() {
     this._dom.container.addEventListener('click', event => {
       this._trackClicked(event);
     });
+
+    this._dom.container.addEventListener('contextmenu', event => {
+      event.preventDefault();
+
+      if (this._dom.container.contains(this._trackContext.dom)) {
+        this._trackContext.close();
+      } else {
+        this._contextClicked(event);
+      }
+    });
+  }
+
+  _contextClicked(event) {
+    if (event.target.closest('.track')) {
+      this._trackContext.open(event);
+    }
   }
 
   optionsClicked() {
