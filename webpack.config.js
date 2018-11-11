@@ -14,6 +14,16 @@ module.exports = env => {
       options: {
         importLoaders: 1
       }
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: (loader) => [
+          require('autoprefixer')({
+            browsers: ['last 2 versions']
+          })
+        ]
+      }
     }
   ];
 
@@ -33,7 +43,7 @@ module.exports = env => {
   return {
     mode: (env.prod === 'true') ? 'production' : 'development',
     watch: (env.prod !== 'true'),
-    entry: './static/src/js/Start.js',
+    entry: './src/js/Start.js',
     devtool: 'inline-source-map',
     output: {
       path: DIST,
