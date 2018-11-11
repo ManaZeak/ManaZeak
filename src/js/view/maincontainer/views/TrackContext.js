@@ -32,4 +32,4 @@ class TrackContext extends ContextMenu {
   }
 }
 
-export default TrackContext
+export default TrackContext;
