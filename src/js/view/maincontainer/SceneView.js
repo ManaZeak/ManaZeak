@@ -116,7 +116,9 @@ _trackClicked(event) {
 
     mzk.view.startLoading()
       .then(() => {
-        this._playingTrackIndex !== -1 ? this._tracks[this._playingTrackIndex].setPlaying(false) : undefined;
+        if (this._playingTrackIndex !== -1) {
+          this._tracks[this._playingTrackIndex].setPlaying(false);
+        }
 
         this._playingTrackIndex = targetId;
         this._click.dbclick = false;
@@ -134,7 +136,6 @@ _trackClicked(event) {
     if (options.index && options.index !== -1) {
       index = options.index;
     } else if (options.id) {
-      let index = -1;
       for (let i = 0; i < this._tracks.length; ++i) {
         if (parseInt(this._tracks[i].id) === id) {
           index = i;
@@ -160,7 +161,7 @@ _trackClicked(event) {
   }
 
   get playingTrackId() {
-      return this._tracks
+      return this._tracks;
   }
 
   getNextTrackId() {

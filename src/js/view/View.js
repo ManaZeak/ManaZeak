@@ -46,7 +46,7 @@ class View {
     this._scene = new Scene();
     this._footBar = new FootBar();
 
-    this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume()); // TODO : replace with mzk.getUserVolume() or from localStorage or from opts (serv)
+    this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume());
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
