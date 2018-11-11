@@ -28,6 +28,24 @@ $dark-alpha-light: rgba(31, 33, 39, 0.8);
 $dark-alpha: rgba(31, 33, 39, 0.5);
 
 
+$main-container-icon-margin: (8 * $margin) / 10;
+$aside-transition: ($transition-duration * 4);
+$aside-button-length: 25px;
+
+
+$footbar-controls-height: 50px;
+$footbar-controls-scale: 50%; // Usefull for volume bar image
+$footbar-controls-margin: 5px;
+$footbar-progress-height: 30px;
+$footbar-sides-width: 85px;
+$moodbar-height: 25px;
+$footbar-transition: ($transition-duration * 2);
+
+$progress-transition: $footbar-transition; // Variable defined in _footbar.scss
+$progress-height: $moodbar-height; // Variable defined in _footbar.scss
+$progress-track-height: 6px;
+$progress-thumb-height: 12px;
+
 
 // Old mzk values ::
 
