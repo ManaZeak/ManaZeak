@@ -1,4 +1,4 @@
-import Player from '../../src/js/core/Player.js';
+import Player from '../../../src/js/core/Player.js';
 
 window.mzk = {};
 var player = {};
