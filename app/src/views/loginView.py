@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
-from app.src.security.permissionHandler import checkPermission
+from app.src.security.permissionEnum import PermissionEnum
+from app.src.security.permissionHandler import PermissionHandler
 from app.src.views.forms import UserLoginForm
 
 
@@ -28,7 +29,7 @@ class Login(View):
         username = form.data['username']
         password = form.data['password']
         user = authenticate(username=username, password=password)
-        if user is not None and checkPermission(["LOGI"], user) and user.is_active:
+        if user is not None and PermissionHandler.checkPermission(PermissionEnum.LOGIN, user) and user.is_active:
             login(request, user)
             return redirect('app:index')
         return render(request, self.template_name, {'form': form})

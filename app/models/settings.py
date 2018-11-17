@@ -8,6 +8,8 @@ from app.models.security import Group, InviteCode
 class ApplicationConfiguration(models.Model):
     ## Toggle if an invitation code is needed for the login
     inviteCodeEnabled = models.BooleanField(default=False)
+    ## The default group of a new user
+    defaultGroup = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
 
 ## This class stores the preferences and the information about a user.
