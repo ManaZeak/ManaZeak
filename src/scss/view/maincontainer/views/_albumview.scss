@@ -1,0 +1,149 @@
+.albumview {
+  height: 100%;
+  width: 100%;
+  font-size: 0.9em;
+  z-index: 600;
+
+  .artist {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+      font-size: 3.66em;
+      line-height: 2em;
+      color: $lighter-solid;
+    }
+
+    .album {
+      width: 90%;
+      height: auto;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      grid-template-rows: 300px auto;
+
+      img {
+        width: 250px;
+        height: 250px;
+        margin: 25px;
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .genre-badges {
+        grid-column: 1;
+        grid-row: 2;
+        justify-self: center;
+        line-height: 2.8em;
+        text-align: center;
+        
+        span {
+          background: $lighter-alpha-strong;
+          padding: 7px;
+          line-height: 1em;
+          font-size: 1em;
+          border-radius: 5px;
+          margin: 3.5px;
+          cursor: pointer;
+        }
+      }
+
+      .album-info {
+        width: 100%;
+        grid-column: 2;
+        grid-row: 1 / span 2;
+
+        h1 {
+          font-size: 2em;
+          line-height: 2em;
+          padding-left: 25px;
+          color: $lighter-solid;
+        }
+
+        .tracks-container {
+          display: grid;
+          grid-gap: 8px 12px;
+          padding: 25px;
+          grid-template-columns: repeat(2, 1fr);
+          min-height: 66%;
+          grid-auto-flow: column;
+          border-left: solid 1px $lighter-alpha-strong;
+
+          .track {
+            max-width: 500px;
+            user-select: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            height: 55px;
+            padding: 7px 15px;
+            background: $lighter-alpha-strong;
+            position: relative;
+            display: grid;
+            grid-template-columns: 2fr 14fr;
+            grid-template-rows: 1fr 1fr;
+
+            &::before {
+              font-size: 1.66em;
+              color: #333;
+              letter-spacing: -2px;
+              content: attr(data-before);
+              position: absolute;
+              top: 7px;
+              text-shadow: #AAA 0 0 3px;
+              left: 7px;
+            }
+
+            p {
+              font-weight: 800;
+              padding-left: 7px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+
+            p:first-child {
+              align-self: end;
+              grid-column: 1;
+              grid-row: 1 / span 2;
+              z-index: 999;
+              font-weight: inherit;
+              padding-left: 0;
+              text-overflow: inherit;
+              white-space: inherit;
+              overflow: inherit;
+            }
+
+            p:last-child {
+              color: #ccc;
+              font-weight: inherit;
+            }
+
+            &.selected {
+              background-color: $green-darker-alpha-light !important; // Important to 'z-index' over playing bg-color
+            }
+
+            &.playing {
+              background-color: $blue-darker-alpha-light;
+              box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
+
+              &::after {
+                content: '';
+                background: url(/static/img/player/play.svg);
+                height: (3 * $listview-track-height) / 4;
+                width: (3 * $listview-track-height) / 4;
+                opacity: 0.5;
+                top: 7px;
+                position: absolute;
+                right: 7px;
+                z-index: 999;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
