@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from app.src.services.user.userSignupService import UserSignupService
 from app.src.utils.exceptions import userException
+from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 
 ## @package app.views.signupView
@@ -23,10 +24,9 @@ logger = logging.getLogger('django')
 
 def signup(request):
     # Checking that the response is correct
-    requestAnalyserResult = FrontRequestChecker.checkRequest('POST', request, signup)
-    print(requestAnalyserResult)
-    if not requestAnalyserResult['DONE']:
-        # Refreshing the page with the good information
+    try:
+        FrontRequestChecker.checkRequest('POST', request, signup)
+    except UserException:
         return render(request, 'signup.html', {'form': UserCreationForm()})
 
     signupService = UserSignupService()

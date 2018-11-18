@@ -16,15 +16,21 @@ class ErrorHandler:
     #   @param caller the function object that called.
     #   @param user the user who encountered the error.
     #   @return a dict ready to be send to the client.
-    def createStandardStateMessage(isDone, errorType, caller, user=None):
+    def createStandardStateMessage(isDone, errorType=None, caller=None, user=None):
         # Logging the error
         if not isDone:
             ErrorHandler._formatLogErrorMessage(errorType, caller, user)
         # Preparing the dict for the response to the front
-        return {
-            'ISDONE': isDone,
-            'ERROR_KEY': errorType.name,
-        }
+        if errorType is None:
+            return {
+                'DONE': isDone,
+                'ERROR_KEY': None,
+            }
+        else:
+            return {
+                'DONE': isDone,
+                'ERROR_KEY': errorType.name,
+            }
 
     @staticmethod
     ## This function create the formatted log for the serer in case of an error.

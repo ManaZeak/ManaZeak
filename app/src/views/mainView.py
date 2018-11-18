@@ -15,6 +15,6 @@ class mainView(ListView):
     template_name = 'index.html'
     queryset = ApplicationConfiguration
 
-    @method_decorator(login_required(redirect_field_name='user/login.html', login_url='app:login'))
+    @method_decorator(login_required(redirect_field_name='', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
         return super(mainView, self).dispatch(*args, **kwargs)

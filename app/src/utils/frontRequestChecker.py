@@ -10,29 +10,27 @@ from app.src.utils.errors.errorHandler import ErrorHandler
 
 
 ## This class is used to verify the request coming from the front is correctly formatted.
+from app.src.utils.exceptions.userException import UserException
+
+
 class FrontRequestChecker:
 
     @staticmethod
-    ## Check if a request is correct
+    ## Check if a request is correct. Throws an exception if an unexpected value was encountered.
     #   @param expectedRequestMethod the type of html request type expected
     #   @param request the request coming from the front
     #   @param caller the method calling this function (needed for error logging)
     #   @param expectedKeys the keys expected in the POST request if any
     #   @param user the user doing the request
-    #   @return a dict containing :
-    #       - the status of the checker (DONE)
-    #       - an error message or the parsed data (DATA)
+    #   @return the response if the request is a POST nothing if it's a get.
     def checkRequest(expectedRequestMethod, request, caller, expectedKeys=None, user=None):
         # Check if the request has the good method type
         if request.method != expectedRequestMethod:
-            return FrontRequestChecker._generateError(ErrorEnum.BAD_REQUEST, caller, user)
+            raise UserException(ErrorEnum.BAD_REQUEST)
 
         # Test the keys of the request
         if request.method == 'POST' and expectedKeys is not None:
             return FrontRequestChecker._checkRequestPOST(request, caller, expectedKeys, user)
-        return {
-            'DONE': True,
-        }
 
     @staticmethod
     ## Check a request of the POST type.
@@ -47,19 +45,7 @@ class FrontRequestChecker:
         # Checking if all the keys are present
         for key in expectedKeys:
             if key not in parsedRequest:
-                return FrontRequestChecker._generateError(ErrorEnum.BAD_FORMAT, caller, user)
+                raise UserException(ErrorEnum.BAD_FORMAT)
 
         # Creating the returning object
-        return {
-            'DONE': True,
-            'DATA': parsedRequest,
-        }
-
-    @staticmethod
-    ## @return Generate a dict containing the error message
-    #   @param errorType the type of error to throw coming from #ErrorEnum
-    def _generateError(errorType, caller, user):
-        return {
-            'DONE': False,
-            'DATA': ErrorHandler.createStandardStateMessage(False, errorType, caller, user),
-        }
+        return parsedRequest
