@@ -24,3 +24,5 @@ class UserSetting(models.Model):
     avatar = models.FilePathField(default='/defaultimgpath')  # FIXME : mettre un vrai chemin
     ## The invite code the user used to create an account
     usedInviteCode = models.ForeignKey(InviteCode, on_delete=models.CASCADE, null=True)
+    ## The language the user choosed
+    language = models.CharField(max_length=5, null=True)

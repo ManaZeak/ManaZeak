@@ -1,7 +1,11 @@
 from django.urls import path
 
+from app.src.services.user.languageService import LanguageService
 from app.src.views import loginView
 from app.src.views import mainView, signupView
+from app.src.views.genericViews import GenericViews
+
+
 ## The name of the app linked to the urls
 app_name = 'app'
 
@@ -12,5 +16,9 @@ urlpatterns = [
     ############################# Views #############################
     path('login/', loginView.Login.as_view(), name='login'),
     path('signup/', signupView.signup, name='signup'),
-    path('', mainView.mainView.as_view(), name='index')
+    path('logout/', GenericViews.logoutView, name='logout'),
+    path('', mainView.mainView.as_view(), name='index'),
+
+    ############################ Language ############################
+    path('language/', LanguageService.selectLanguage, name='language')
 ]
