@@ -12,6 +12,7 @@ class Model {
   constructor() {
     this._player = {};
     this._collection = {};
+    this._queue = [];
     this._activeTrack = null;
 
     this._init();
@@ -299,6 +300,20 @@ class Model {
     this._player.repeatTrack();
   }
 
+  appendToQueue(id) {
+    this._queue.push(id);
+  }
+
+  getNextFromQueue() {
+    const id = this._queue[0];
+
+    if (this._queue.length > 0) {
+      this._queue.splice(0, 1);
+    }
+
+    return id;
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
@@ -316,6 +331,10 @@ class Model {
   }
   getActiveTrack() {
     return this._activeTrack;
+  }
+
+  get queue() {
+    return this._queue;
   }
 }
 

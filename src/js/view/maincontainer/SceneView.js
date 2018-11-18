@@ -192,6 +192,10 @@ class SceneView {
       return this._tracks;
   }
 
+  getTrackById(id) {
+    return this._tracks[id];
+  }
+
   getNextTrackId() {
     return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
   }

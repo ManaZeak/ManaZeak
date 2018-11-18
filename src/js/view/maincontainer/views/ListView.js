@@ -89,7 +89,8 @@ class ListView extends SceneView {
 
   _contextClicked(event) {
     if (event.target.closest('.track')) {
-      this._trackContext.open(event);
+      // Event target is a column, we need to parent tiil we have the track-container
+      this._trackContext.open(event, event.target.parentNode.dataset.id);
     }
   }
 

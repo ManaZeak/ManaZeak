@@ -483,6 +483,11 @@ class Mzk {
    * @description Change the player track using the next one in the current view
    **/
   nextTrackInView() {
+    if (this.model.queue.length > 0) {
+      mzk.changeTrack(this.model.getNextFromQueue());
+      return;
+    }
+
     const repeatMode = this.model.repeatMode;
 
     if (repeatMode === 0) {
@@ -518,6 +523,12 @@ class Mzk {
   repeatTrack() {
     this.model.repeatTrack();
     // No need to update the view since the current track didn't changed
+  }
+
+
+  addTrackToQueue(datasetId) {
+    let id = this.view.getTrackById(datasetId).id;
+    this.model.appendToQueue(id);
   }
 
 
