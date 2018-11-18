@@ -2,7 +2,7 @@
 
 
 class SceneView {
-  constructor() {
+  constructor(options) {
     this._tracks = [];
     this._scrollBar = {};
 
@@ -14,9 +14,17 @@ class SceneView {
     };
 
     this._playingTrackIndex = -1;
+
+    if (options.selection) { // Override selection only if user has a selection, keep empty array from super otherwise
+      this.selection = options.selection;
+    }
+
+    if (options.playingTrackIndex) {
+      this._playingTrackIndex = options.playingTrackIndex;
+    }
   }
 
-_trackClicked(event) {
+  _trackClicked(event) {
     event.stopPropagation(); // Block window click listener
 
     const closest = event.target.closest('.track');
@@ -33,11 +41,15 @@ _trackClicked(event) {
       this._click.dbclick = true;
       this._click.targetId = targetId;
 
-      if (!event.ctrlKey) { // Simple click unselects all
+      if (!event.ctrlKey) { // Simple click unselects all, return to avoid side effects. Unselect then done
         const isTargetSelected = this._tracks[targetId].getIsSelected(); // Saving target selection state before unselecting all
         this.unselectAll();
-        this._tracks[targetId].setSelected(isTargetSelected); // Restore previous state to properly use in Normal click behavior condition
-        this._selection.push(parseInt(targetId, 10));
+
+        if (isTargetSelected) {
+          this._tracks[targetId].setSelected(false); // Restore previous state to properly use in Normal click behavior condition
+          this._selection.splice(this._selection.indexOf(targetId), 1);
+          return;
+        }
       }
 
       if (event.ctrlKey && event.shiftKey && this._selection.length > 0) { // Ctrl + Shift + Click : fill selection in between target and closest selectioned track
@@ -131,6 +143,18 @@ _trackClicked(event) {
 
   }
 
+  initTracksState() {
+    if (this._playingTrackIndex >= 0) {
+      this._tracks[this._playingTrackIndex].setPlaying(true);
+    }
+
+    if (this._selection.length > 0) {
+      for (let i = 0; i < this._selection.length; ++i) {
+        this._tracks[this._selection[i]].setSelected(true);
+      }
+    }
+  }
+
   centerOn(options) {
     let index = -1;
     if (options.index && options.index !== -1) {
@@ -154,6 +178,10 @@ _trackClicked(event) {
 
   refreshView() {
 
+  }
+
+  fillContext(context) {
+    return null;
   }
 
   getDOMFragment() {
@@ -182,6 +210,18 @@ _trackClicked(event) {
 
   get playingTrackIndex() {
       return this._playingTrackIndex;
+  }
+
+  set playingTrackIndex(trackIndex) {
+      this._playingTrackIndex = trackIndex;
+  }
+
+  get selection() {
+    return this._selection;
+  }
+
+  set selection(selection) {
+    this._selection = selection;
   }
 }
 

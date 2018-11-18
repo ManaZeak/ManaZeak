@@ -123,6 +123,12 @@ class Utils {
     }
   }
 
+  alreadyExistsInArray(array, value) {
+    return array.some(function(arrayValue) {
+      return value === arrayValue;
+    });
+  }
+
   /**
    * @method
    * @name idGenerator

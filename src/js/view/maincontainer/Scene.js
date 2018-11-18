@@ -12,7 +12,7 @@ class Scene {
    **/
   constructor() {
     this._scene = document.getElementById('scene');
-    this._optionButton = document.getElementById('view-option');
+    this._optionButton = document.getElementById('scene-view-option');
     this.view = {};
     this._viewSwitcher = new ViewSwitcher({
       target: this._scene,
@@ -42,8 +42,33 @@ class Scene {
     });
 
     this._optionButton.addEventListener('click', () => {
-      this.view.optionsClicked();
+      this._optionClicked();
     });
+  }
+
+  _optionClicked() {
+    let sceneContext = this._scene.querySelector('#scene-context');
+
+    if (sceneContext !== null) { // Close context
+      sceneContext.parentNode.remove();
+      return;
+    }
+
+    // Otherwise, append context, and fill it with its content
+    const overlay = document.createElement('DIV');
+    overlay.classList.add('transparent-overlay');
+    overlay.addEventListener('click', (event) => {
+      if (!event.target.closest('#scene-context')) {
+        sceneContext.parentNode.remove();
+      }
+    }, true);
+
+    sceneContext = document.createElement('DIV');
+    sceneContext.id = 'scene-context';
+
+    overlay.appendChild(sceneContext);
+    this._scene.appendChild(overlay);
+    this.view.fillContext(sceneContext);
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -92,90 +117,16 @@ class Scene {
    **/
   updateView(playlist) {
     const options = {
-      columns: [{
-          name: 'Duration',
-          order: 0,
-          width: '10'
-        },
-        {
-          name: 'Title',
-          order: 1,
-          width: '20'
-        },
-        {
-          name: 'Artist',
-          order: 2,
-          width: '14'
-        },
-        {
-          name: 'Composer',
-          order: 3,
-          width: '14'
-        },
-        {
-          name: 'Performer',
-          order: 4,
-          width: '14'
-        },
-        {
-          name: 'Album',
-          order: 5,
-          width: '14'
-        },
-        {
-          name: 'Genre',
-          order: 6,
-          width: '14'
-        }
-      ],
-      target: this._scene,
-      availableColumns: [ // TODO : store this in a default.json file somewhere
-        {
-          name: 'Duration',
-          order: 0,
-          width: '10'
-        },
-        {
-          name: 'Title',
-          order: 1,
-          width: '20'
-        },
-        {
-          name: 'Artist',
-          order: 2,
-          width: '14'
-        },
-        {
-          name: 'Composer',
-          order: 3,
-          width: '14'
-        },
-        {
-          name: 'Performer',
-          order: 4,
-          width: '14'
-        },
-        {
-          name: 'Album',
-          order: 5,
-          width: '14'
-        },
-        {
-          name: 'Genre',
-          order: 6,
-          width: '14'
-        }
-      ]
+      playingTrackIndex: this.view.playingTrackIndex,
+      selection: this.view.selection
     };
 
-    const activeView = playlist.activeView;
-
-    if (activeView === 'ListView') {
+    if (playlist.activeView === 'ListView') {
       this.view = new ListView(options);
       this._activeViewLabel.innerHTML = 'Tracks';
     }
 
-    else if (activeView === 'AlbumView') {
+    else if (playlist.activeView === 'AlbumView') {
       this.view = new AlbumView(options);
       this._activeViewLabel.innerHTML = 'Artists';
     }
