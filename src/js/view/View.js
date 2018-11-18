@@ -210,6 +210,10 @@ class View {
     }
   }
 
+  getTrackById(id) {
+    return this._scene.getTrackById(id);
+  }
+
   getNextTrackId() {
     return this._scene.getNextTrackId();
   }

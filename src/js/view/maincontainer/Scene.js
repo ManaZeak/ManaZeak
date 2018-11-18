@@ -139,6 +139,10 @@ class Scene {
     this.view.changeTrack(id);
   }
 
+  getTrackById(id) {
+    return this.view.getTrackById(id);
+  }
+
   getNextTrackId() {
     return this.view.getNextTrackId();
   }
