@@ -142,6 +142,8 @@ class AlbumView extends SceneView {
       });
       this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
     }
+
+    this.initTracksState();
   }
 
   stopPlayback() {

@@ -13,7 +13,7 @@ $aside-button-length: 25px;
   transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
 
-  #view-option {
+  #scene-view-option {
     cursor: pointer;
     bottom: $main-container-icon-margin;
     height: $aside-button-length;
@@ -121,8 +121,8 @@ $aside-button-length: 25px;
         }
       }
     }    
-    
-    #listview-context {
+
+    #scene-context {
       background: $dark-solid;
       border: solid 1px black;
       border-radius: 5px;

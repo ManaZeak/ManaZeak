@@ -2,6 +2,8 @@ import SceneView from '../SceneView';
 import ListViewEntry from './ListViewEntry';
 import ScrollBar from '../../../utils/ScrollBar.js';
 import TrackContext from "./TrackContext";
+
+import listview from '../../../../../static/json/default/listview.json';
 'use strict';
 
 class ListView extends SceneView {
@@ -16,24 +18,21 @@ class ListView extends SceneView {
    * @param {object} options.target - The DOM target node to inject ListView in (usually mzk Scene)
    **/
   constructor(options) {
-    super();
+    super(options);
 
-    this._availableColumns = options.availableColumns;
-    this._columns = options.columns;
-    this._target = options.target; // TODO remove target like in alb view
+    this._availableColumns = listview.availableColumns;
+    this._columns = listview.defaultColumns; // TODO Get from user pref first, and fallback to default if not prefs
+    this._trackContext = {}; // Context menu clicked on a track
+    this._draggedColumn = null; // Currently dragged column
     this._dom = {
       fragment: {},
       wrapper: {},
       header: {},
       container: {}
     };
-
-    this._trackContext = {};
-
-    this._draggedColumn = null;
-
     this._init();
     this._events();
+
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -47,7 +46,6 @@ class ListView extends SceneView {
     this._dom.wrapper.classList.add('listview');
     this._dom.header.classList.add('header');
     this._dom.container.classList.add('track-container');
-    this._target.style.position = 'relative';
 
     this._dom.wrapper.appendChild(this._dom.header);
     this._dom.wrapper.appendChild(this._dom.container);
@@ -95,86 +93,6 @@ class ListView extends SceneView {
     }
   }
 
-  optionsClicked() {
-    let listViewContext = this._target.querySelector('#listview-context');
-
-    if (listViewContext !== null) { // Close context
-      listViewContext.parentNode.remove();
-      return;
-    }
-
-    // Otherwise, append context, and fill it with its content
-    const overlay = document.createElement('DIV');
-    overlay.classList.add('transparent-overlay');
-    overlay.addEventListener('click', (event) => {
-      if (!event.target.closest('#listview-context')) {
-        listViewContext.parentNode.remove();
-      }
-    }, true);
-
-    listViewContext = document.createElement('DIV');
-    listViewContext.id = 'listview-context';
-
-    overlay.appendChild(listViewContext);
-    this._target.appendChild(overlay);
-    this._fillOptionsContext(listViewContext);
-  }
-
-  _fillOptionsContext(context) {
-    const activatedColumns = this._checkActivatedColumns();
-
-    const checkBoxes = document.createElement('DIV');
-    checkBoxes.classList.add('checkbox-container');
-
-    for (let i = 0; i < this._availableColumns.length; ++i) {
-      const text = document.createElement('LABEL');
-      const input = document.createElement('INPUT');
-
-      input.id = 'context-' + this._availableColumns[i].name;
-      text.innerHTML = this._availableColumns[i].name;
-      text.setAttribute('for', `context-${this._availableColumns[i].name}`);
-      input.setAttribute('type', 'checkbox');
-
-      if (activatedColumns.indexOf(this._availableColumns[i].name) !== -1) {
-        input.checked = true;
-      }
-
-      input.addEventListener('click', (event) => {
-        const name = event.target.id.match(/-(.*)/)[1];
-        let width = '';
-
-        mzk.view.startLoading()
-          .then(() => {
-            for (let j = 0; j < this._availableColumns.length; ++j) {
-              if (this._availableColumns[j].name === name) {
-                width = this._availableColumns[j].width;
-                break;
-              }
-            }
-            this._toggleColumn({
-              name: name,
-              width: width
-            });
-            mzk.view.stopLoading();
-          });
-      });
-
-      checkBoxes.appendChild(input);
-      checkBoxes.appendChild(text);
-    }
-
-    context.appendChild(checkBoxes);
-
-    const stretchAll = document.createElement('BUTTON');
-    stretchAll.innerHTML = 'Stretch All Columns';
-    context.appendChild(stretchAll);
-
-    stretchAll.addEventListener('click', (event) => {
-      event.stopPropagation();
-      this._stretchAllColumns();
-    });
-  }
-
   _initHeader() {
     const fragment = document.createDocumentFragment();
     this._dom.header.style.gridTemplateColumns = this._computeGridTemplateColumns(); // Assign CSS rule
@@ -217,10 +135,11 @@ class ListView extends SceneView {
     let grabbed = false;
 
     const resize = event => {
+      const target = this._dom.wrapper.parentNode;
       grabbed = true;
       this._dom.wrapper.appendChild(marker);
-      parent.style.width = `${(event.clientX) - (parent.offsetLeft + this._target.offsetLeft)}px`;
-      marker.style.left = `${event.clientX - this._target.offsetLeft - 1}px`;
+      parent.style.width = `${(event.clientX) - (parent.offsetLeft + target.offsetLeft)}px`;
+      marker.style.left = `${event.clientX - target.offsetLeft - 1}px`;
     };
 
     const stopResizing = event => {
@@ -557,8 +476,64 @@ class ListView extends SceneView {
           this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
         }
 
+        this.initTracksState();
         mzk.view.stopLoading();
       });
+  }
+
+  fillContext(context) {
+    const activatedColumns = this._checkActivatedColumns();
+
+    const checkBoxes = document.createElement('DIV');
+    checkBoxes.classList.add('checkbox-container');
+
+    for (let i = 0; i < this._availableColumns.length; ++i) {
+      const text = document.createElement('LABEL');
+      const input = document.createElement('INPUT');
+
+      input.id = 'context-' + this._availableColumns[i].name;
+      text.innerHTML = this._availableColumns[i].name;
+      text.setAttribute('for', `context-${this._availableColumns[i].name}`);
+      input.setAttribute('type', 'checkbox');
+
+      if (activatedColumns.indexOf(this._availableColumns[i].name) !== -1) {
+        input.checked = true;
+      }
+
+      input.addEventListener('click', (event) => {
+        const name = event.target.id.match(/-(.*)/)[1];
+        let width = '';
+
+        mzk.view.startLoading()
+          .then(() => {
+            for (let j = 0; j < this._availableColumns.length; ++j) {
+              if (this._availableColumns[j].name === name) {
+                width = this._availableColumns[j].width;
+                break;
+              }
+            }
+            this._toggleColumn({
+              name: name,
+              width: width
+            });
+            mzk.view.stopLoading();
+          });
+      });
+
+      checkBoxes.appendChild(input);
+      checkBoxes.appendChild(text);
+    }
+
+    context.appendChild(checkBoxes);
+
+    const stretchAll = document.createElement('BUTTON');
+    stretchAll.innerHTML = 'Stretch All Columns';
+    context.appendChild(stretchAll);
+
+    stretchAll.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this._stretchAllColumns();
+    });
   }
 
   refreshView() {
