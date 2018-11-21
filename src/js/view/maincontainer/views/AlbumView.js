@@ -53,7 +53,11 @@ class AlbumView extends SceneView {
 
   _contextClicked(event) {
     if (event.target.closest('.track')) {
-      this._trackContext.open(event);
+      if (event.target.className !== 'track') {
+        this._trackContext.open(event, event.target.parentNode.dataset.id);
+      } else {
+        this._trackContext.open(event, event.target.dataset.id);
+      }
     }
   }
 

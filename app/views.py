@@ -154,3 +154,10 @@ def changeViewContext(request):
 #   @return the user menu template
 def trackContext(request):
     return render(request, 'contexts/trackcontext.html')
+
+@login_required(redirect_field_name='login.html', login_url='app:login')
+## Send the change view context HTML template
+#   @param request request given by the front
+#   @return the user menu template
+def queueContext(request):
+    return render(request, 'contexts/queuecontext.html')
