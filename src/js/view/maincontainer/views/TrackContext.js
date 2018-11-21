@@ -17,6 +17,7 @@ class TrackContext extends ContextMenu {
     event.stopImmediatePropagation();
 
     mzk.addTrackToQueue(this._targetId);
+    this.close();
   }
 
   setActions(doc) {

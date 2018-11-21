@@ -49,6 +49,16 @@
         height: 50%;
       }
 
+      div:last-child {
+        position: absolute;
+        right: 0;
+        width: 35px;
+
+        img {
+          height: 100% !important;
+        }
+      }
+
       .shuffle-left {
         position: absolute;
         left: calc(33px + #{$footbar-controls-margin});

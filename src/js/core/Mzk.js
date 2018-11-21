@@ -527,8 +527,11 @@ class Mzk {
 
 
   addTrackToQueue(datasetId) {
-    let id = this.view.getTrackById(datasetId).id;
-    this.model.appendToQueue(id);
+    const track = this.view.getTrackById(datasetId);
+
+    if (track) {
+      this.model.appendToQueue(track.id);
+    }
   }
 
 

@@ -320,6 +320,22 @@ class Model {
     return this._collection.activePlaylist.repeatMode;
   }
 
+  get queuedTracks() {
+    const queuedTracks = [];
+
+    for (let i = 0; i < this._queue.length; ++i) {
+      const index = this._queue[i];
+
+      const track = this.getTrackById(index);
+
+      if (track) {
+        queuedTracks.push(track);
+      }
+    }
+
+    return queuedTracks;
+  }
+
   getVolume() {
     return this._player.getVolume();
   }
