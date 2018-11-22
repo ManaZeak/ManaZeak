@@ -66,7 +66,7 @@ class Komunikator {
           if (response.ok) {
             resolve(response.json());
           } else {
-            this.handleErrorCode(response.status, reject)
+            this.handleErrorCode(response.status, reject);
           }
         });
     });
@@ -95,7 +95,7 @@ class Komunikator {
           if (this.status === 200) {
             resolve(this.responseText); // responseText is binary data
           } else {
-            that.handleErrorCode(this.status, reject)
+            that.handleErrorCode(this.status, reject);
           }
         }
       };
@@ -125,7 +125,7 @@ class Komunikator {
           if (response.ok) {
             resolve(response.text());
           } else {
-            this.handleErrorCode(response.status, reject)
+            this.handleErrorCode(response.status, reject);
           }
         });
     });
@@ -156,7 +156,7 @@ class Komunikator {
           if (response.ok) {
             resolve(response.json());
           } else {
-            this.handleErrorCode(response.status, reject)
+            this.handleErrorCode(response.status, reject);
           }
         });
     });
