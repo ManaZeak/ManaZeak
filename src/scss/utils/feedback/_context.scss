@@ -150,6 +150,18 @@
       align-items: start;
       justify-content: center;
 
+      .queue-status {
+        text-align: left;
+        padding: 8px;
+        border-top: solid 1px black;
+
+        p {
+          font-size: 0.9em;
+          height: 15px;
+          line-height: 15px;
+        }
+      }
+
       .queued-track {
         height: 50px;
         min-width: 225px;
@@ -189,18 +201,6 @@
         height: 100%;
         position: absolute;
         top: 0;
-      }
-    }
-
-    .queue-status {
-      text-align: left;
-      padding: 8px;
-      border-top: solid 1px black;
-
-      p {
-        font-size: 0.9em;
-        height: 15px;
-        line-height: 15px;
       }
     }
 
