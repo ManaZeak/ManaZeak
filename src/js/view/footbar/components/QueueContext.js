@@ -15,11 +15,11 @@ class QueueContext extends ContextMenu {
     this._dom.container.innerHTML = '';
 
     for (let i = 0; i < tracks.length; ++i) {
-      let uiTrack = document.createElement('DIV');
+      const uiTrack = document.createElement('DIV');
       uiTrack.classList.add('queued-track');
       console.log(tracks[i]);
 
-      let cover = document.createElement('IMG');
+      const cover = document.createElement('IMG');
 
       if (tracks[i].cover) {
         cover.src = `/static/img/covers/${tracks[i].cover}`;
@@ -27,10 +27,10 @@ class QueueContext extends ContextMenu {
         cover.src = `/static/img/default/cover.svg`;
       }
 
-      let title = document.createElement('P');
+      const title = document.createElement('P');
       title.innerHTML = tracks[i].title;
 
-      let artist = document.createElement('P');
+      const artist = document.createElement('P');
       artist.innerHTML = tracks[i].artist;
 
       uiTrack.appendChild(cover);
