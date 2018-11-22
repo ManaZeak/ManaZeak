@@ -69,9 +69,66 @@ class AlbumView extends SceneView {
 
   }
 
+  _buildAlbum(album) {
+    let index = 0;
+
+    const uiAlbum = document.createElement('DIV');
+    uiAlbum.classList.add('album');
+
+    const albumCover = document.createElement('IMG');
+
+    if (album.tracks[0].cover !== '') {
+      albumCover.src = `/static/img/covers/${album.tracks[0].cover}`;
+    } else {
+      albumCover.src = '/static/img/default/cover.svg';
+    }
+
+    uiAlbum.appendChild(albumCover);
+
+    const albumInfo = document.createElement('DIV');
+    albumInfo.classList.add('album-info');
+
+    const albumName = document.createElement('H1');
+    albumName.innerHTML = `${album.name} - ${album.year}`;
+
+    albumInfo.appendChild(albumName);
+
+    const albumTracks = document.createElement('DIV');
+    albumTracks.classList.add('tracks-container');
+
+    const genres = document.createElement('DIV');
+    genres.classList.add('genre-badges');
+    const genresObject = {};
+
+    for (let k = 0; k < album.tracks.length; ++k) {
+      const albumViewEntry = new AlbumViewEntry({
+        track: album.tracks[k],
+        datasetId: index,
+        trackNumber: k
+      });
+      this._tracks.push(albumViewEntry);
+      albumTracks.appendChild(albumViewEntry.getDom());
+      ++index;
+
+      if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {
+        genresObject[album.tracks[k].genre] = 1;
+        const genreBadge = document.createElement('SPAN');
+        genreBadge.innerHTML = album.tracks[k].genre;
+        genres.appendChild(genreBadge);
+      }
+    }
+
+    albumTracks.setAttribute('style', `grid-template-rows: repeat(${Math.round(album.tracks.length / 2)}, auto);`);
+    albumInfo.appendChild(albumTracks);
+
+    uiAlbum.appendChild(genres);
+    uiAlbum.appendChild(albumInfo);
+
+    return uiAlbum;
+  }
+
   addTracks(artists) {
     const firstCall = (this._tracks.length === 0);
-    let index = 0;
 
     for (let i = 0; i < artists.length; ++i) {
       const artist = document.createElement('DIV');
@@ -83,57 +140,7 @@ class AlbumView extends SceneView {
       artist.appendChild(artistName);
 
       for (let j = 0; j < artists[i].albums.length; ++j) {
-        const album = document.createElement('DIV');
-        album.classList.add('album');
-
-        const albumCover = document.createElement('IMG');
-
-        if (artists[i].albums[j].tracks[0].cover !== '') {
-          albumCover.src = `/static/img/covers/${artists[i].albums[j].tracks[0].cover}`;
-        } else {
-          albumCover.src = '/static/img/default/cover.svg';
-        }
-
-        album.appendChild(albumCover);
-
-        const albumInfo = document.createElement('DIV');
-        albumInfo.classList.add('album-info');
-
-        const albumName = document.createElement('H1');
-        albumName.innerHTML = `${artists[i].albums[j].name} - ${artists[i].albums[j].tracks[0].year}`;
-
-        albumInfo.appendChild(albumName);
-
-        const albumTracks = document.createElement('DIV');
-        albumTracks.classList.add('tracks-container');
-
-        const genres = document.createElement('DIV');
-        genres.classList.add('genre-badges');
-        const genresObject = {};
-
-        for (let k = 0; k < artists[i].albums[j].tracks.length; ++k) {
-          const albumViewEntry = new AlbumViewEntry({
-            track: artists[i].albums[j].tracks[k],
-            datasetId: index,
-            trackNumber: k
-          });
-          this._tracks.push(albumViewEntry);
-          albumTracks.appendChild(albumViewEntry.getDom());
-          ++index;
-
-          if (!genresObject[artists[i].albums[j].tracks[k].genre] && artists[i].albums[j].tracks[k].genre !== '') {
-            genresObject[artists[i].albums[j].tracks[k].genre] = 1;
-            const genreBadge = document.createElement('SPAN');
-            genreBadge.innerHTML = artists[i].albums[j].tracks[k].genre;
-            genres.appendChild(genreBadge);
-          }
-        }
-
-        albumTracks.setAttribute('style', `grid-template-rows: repeat(${Math.round(artists[i].albums[j].tracks.length / 2)}, auto);`);
-        albumInfo.appendChild(albumTracks);
-
-        album.appendChild(genres);
-        album.appendChild(albumInfo);
+        const album = this._buildAlbum(artists[i].albums[j]);
         artist.appendChild(album);
       }
 
