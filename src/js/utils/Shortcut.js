@@ -30,6 +30,42 @@ class Shortcut {
     document.addEventListener('keypress', this._testShortcuts);
   }
 
+    /**
+     * @method
+     * @name register
+     * @public
+     * @memberof Shortcut
+     * @author Arthur Beaulieu
+     * @since September 2018
+     * @description Register a new shortcut and bind it to a callback
+     * @param {string} keyString - The keys string
+     * @param {function} fire - The shortcut callback to trigger
+     **/
+    register(keyString, fire) {
+      const shortcut = {
+        keyString: keyString,
+        modifiers: {
+          ctrlKey: /ctrl/i.test(keyString),
+          altKey: /alt/i.test(keyString),
+          shiftKey: /shift/i.test(keyString)
+        },
+        modifierCount: this._getModifiersCount(keyString),
+        key: keyString.substr(keyString.lastIndexOf('+') + 1).toLowerCase(),
+        paused: false,
+        fire: fire
+      };
+
+      if (this._singleKey.length === 0 || this._multiKey.length === 0) {
+        this._addEvents();
+      }
+
+      if (!shortcut.modifiers.ctrlKey && !shortcut.modifiers.shiftKey && !shortcut.modifiers.altKey && !shortcut.modifiers.metaKey) {
+        this._singleKey.push(shortcut);
+      } else {
+        this._multiKey.push(shortcut);
+      }
+    }
+
   /**
    * @method
    * @name _removeEvents
@@ -178,40 +214,6 @@ class Shortcut {
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-  /**
-   * @method
-   * @name register
-   * @public
-   * @memberof Shortcut
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Register a new shortcut and bind it to a callback
-   * @param {string} keyString - The keys string
-   * @param {function} fire - The shortcut callback to trigger
-   **/
-  register(keyString, fire) {
-    const shortcut = {
-      keyString: keyString,
-      modifiers: {
-        ctrlKey: /ctrl/i.test(keyString),
-        altKey: /alt/i.test(keyString),
-        shiftKey: /shift/i.test(keyString)
-      },
-      modifierCount: this._getModifiersCount(keyString),
-      key: keyString.substr(keyString.lastIndexOf('+') + 1).toLowerCase(),
-      paused: false,
-      fire: fire
-    };
-
-    if (this._singleKey.length === 0 || this._multiKey.length === 0) {
-      this._addEvents();
-    }
-
-    (!shortcut.modifiers.ctrlKey && !shortcut.modifiers.shiftKey && !shortcut.modifiers.altKey && !shortcut.modifiers.metaKey) ?
-    this._singleKey.push(shortcut):
-      this._multiKey.push(shortcut);
-  }
 
   /**
    * @method

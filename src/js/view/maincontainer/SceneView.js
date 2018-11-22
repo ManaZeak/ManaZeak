@@ -180,7 +180,7 @@ class SceneView {
 
   }
 
-  fillContext(context) {
+  fillContext() {
     return null;
   }
 

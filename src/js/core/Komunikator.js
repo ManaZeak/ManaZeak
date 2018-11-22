@@ -65,14 +65,8 @@ class Komunikator {
         .then(response => {
           if (response.ok) {
             resolve(response.json());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
           } else {
-            reject('UNKNOWN_ERROR');
+            this.handleErrorCode(response.status, reject)
           }
         });
     });
@@ -90,13 +84,19 @@ class Komunikator {
    * @param {String} url - The <code>.mood</code> file url to fetch data from
    * @returns {Promise} The request <code>Promise</code> */
   getBinaryResponse(url) {
+    const that = this;
+
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
       xhr.onreadystatechange = function() { // Keep old js function definition since this is the request response object
         if (this.readyState === 4 && this.status === 200) {
-          resolve(this.responseText); // responseText is binary data
+          if (this.status === 200) {
+            resolve(this.responseText); // responseText is binary data
+          } else {
+            that.handleErrorCode(this.status, reject)
+          }
         }
       };
       xhr.send();
@@ -124,14 +124,8 @@ class Komunikator {
         .then(response => {
           if (response.ok) {
             resolve(response.text());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
           } else {
-            reject('UNKNOWN_ERROR');
+            this.handleErrorCode(response.status, reject)
           }
         });
     });
@@ -161,17 +155,23 @@ class Komunikator {
         .then(response => {
           if (response.ok) {
             resolve(response.json());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
           } else {
-            reject('UNKNOWN_ERROR');
+            this.handleErrorCode(response.status, reject)
           }
         });
     });
+  }
+
+  handleErrorCode(code, reject) {
+    if (code === 404) {
+      reject('URL_NOT_FOUND');
+    } else if (code === 403) {
+      reject('ACCESS_FORBIDDEN');
+    } else if (code === 500) {
+      reject('INTERNAL_ERROR');
+    } else {
+      reject('UNKNOWN_ERROR');
+    }
   }
 }
 
