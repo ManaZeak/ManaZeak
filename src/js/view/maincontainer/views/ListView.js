@@ -225,7 +225,10 @@ class ListView extends SceneView {
         mzk.view.startLoading()
           .then(() => {
             for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
-              this._dom.container.childNodes[i].insertBefore(this._dom.container.childNodes[i].childNodes[this._draggedColumn.dataset.id], this._dom.container.childNodes[i].childNodes[event.target.dataset.id]);
+              const draggedColumn = this._dom.container.childNodes[i].childNodes[this._draggedColumn.dataset.id];
+              const targetColumn = this._dom.container.childNodes[i].childNodes[event.target.dataset.id];
+
+              this._dom.container.childNodes[i].insertBefore(draggedColumn, targetColumn);
             }
 
             if (this._draggedColumn.dataset.id < event.target.dataset.id) {
