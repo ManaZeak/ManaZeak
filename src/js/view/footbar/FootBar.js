@@ -148,7 +148,7 @@ class FootBar {
           };
         }
 
-        const svg = d3.select(this._progressBar.getMoodbarContainer().childNodes[1]).append('g'); // TODO : childNodes0 , remove text bs
+        const svg = d3.select(this._progressBar.getMoodbarContainer().childNodes[1]).append('g');
 
         svg.append('linearGradient')
           .attr('id', `moodbar-gradient-${url[0] + url[1]}`)

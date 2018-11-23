@@ -5,7 +5,7 @@ class AsideEntry {
    * @summary An entry that is meant to be used as an Aside children
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description TODO
+   * @description Aside entry
    * @param {object} options - The AsideEntry options object
    **/
   constructor(options) {
