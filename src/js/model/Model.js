@@ -1,6 +1,6 @@
 import Player from '../core/Player.js';
 import Collection from './components/Collection.js';
-'use_strict';
+'use strict';
 
 class Model {
   /**

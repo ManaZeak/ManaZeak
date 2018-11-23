@@ -1,5 +1,5 @@
 import Playlist from './Playlist.js';
-'use_strict';
+'use strict';
 
 class Collection {
   /**
