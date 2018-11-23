@@ -1,3 +1,5 @@
+import NotificationDefaults from '../../../static/json/default/notification.json';
+
 'use strict';
 
 class Notification {
@@ -52,39 +54,49 @@ class Notification {
     this._dom = document.createElement('DIV'); // Notification handler DOM container
     this._dom.classList.add('notification-container'); // Set proper CSS class
 
-    this._default = {
-      handler: {
-        position: 'top-right',
-        thickBorder: 'top',
-        duration: 5000,
-        transition: 200,
-        maxActive: 10
-      },
-      notification: {
-        type: 'info',
-        message: '',
-        title: '',
-        iconless: false,
-        closable: true,
-        sticky: false,
-        renderTo: this._dom,
-        CBtitle: '',
-        callback: null
-      },
-      color: {
-        success: 'rgb(76, 175, 80)',
-        info: 'rgb(3, 169, 244)',
-        warning: 'rgb(255, 152, 0)',
-        error: 'rgb(244, 67, 54)'
+    this._default = NotificationDefaults;
+    this._default.notification.renderTo = this._dom;
+
+    this._setOptionsDefault(options);
+
+    this._position = options.position;
+    this._thickBorder = options.thickBorder;
+    this._duration = options.duration;
+    this._transition = options.transition;
+    this._maxActive = options.maxActive;
+
+    this._setAttributesDefault();
+
+    this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
+  }
+
+  _setOptionsDefault(options) {
+    if (options !== undefined) {
+      if (options.position === undefined) {
+        options.position = this._default.handler.position;
       }
-    };
 
-    this._position = options === undefined ? this._default.handler.position : options.position === undefined ? this._default.handler.position : options.position;
-    this._thickBorder = options === undefined ? this._default.handler.thickBorder : options.thickBorder === undefined ? this._default.handler.thickBorder : options.thickBorder;
-    this._duration = options === undefined ? this._default.handler.duration : options.duration === undefined ? this._default.handler.duration : options.duration;
-    this._transition = options === undefined ? this._default.handler.transition : options.transition === undefined ? this._default.handler.transition : options.transition;
-    this._maxActive = options === undefined ? this._default.handler.maxActive : options.maxActive === undefined ? this._default.handler.maxActive : options.maxActive;
+      if (options.thickBorder === undefined) {
+        options.thickBorder = this._default.handler.thickBorder;
+      }
 
+      if (options.duration === undefined) {
+        options.duration = this._default.handler.duration;
+      }
+
+      if (options.transition) {
+        options.transition = this._default.handler.transition;
+      }
+
+      if (options.maxActive) {
+        options.maxActive = this._default.handler.maxActive;
+      }
+    } else {
+      console.error('Notification handler : no options given.');
+    }
+  }
+
+  _setAttributesDefault() {
     if (this._position !== 'top-left' && this._position !== 'top-right' && this._position !== 'bottom-left' && this._position !== 'bottom-right') { // Illegal value for position
       this._position = this._default.handler.position; // Default value
     }
@@ -105,7 +117,6 @@ class Notification {
       this._maxActive = this._default.handler.maxActive; // Default value for _maxActive
     }
 
-    this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
   }
 
   /**
@@ -217,58 +228,8 @@ class Notification {
     notification.requestCount = 1;
     notification.totalRequestCount = 1;
 
-    // Create notification DOM elements
-    notification.dom = document.createElement('DIV');
-    notification.dom.icon = document.createElement('IMG');
-    notification.dom.text = document.createElement('DIV');
-    notification.dom.close = document.createElement('DIV');
-    notification.dom.maintitle = document.createElement('H6');
-    notification.dom.message = document.createElement('P');
-
-    // Class assignation
-    notification.dom.classList.add('notification');
-    notification.dom.icon.classList.add('icon-container');
-    notification.dom.text.classList.add('text-container');
-    notification.dom.close.classList.add('close');
-
-    // Changing border side
-    if (notification.thickBorder === 'top') {
-      notification.dom.classList.add('top-border');
-    } else if (notification.thickBorder === 'bottom') {
-      notification.dom.classList.add('bottom-border');
-    } else if (notification.thickBorder === 'left') {
-      notification.dom.classList.add('left-border');
-    } else if (notification.thickBorder === 'right') {
-      notification.dom.classList.add('right-border');
-    }
-
-    // Text modification
-    notification.dom.maintitle.innerHTML = notification.title;
-    notification.dom.message.innerHTML = notification.message;
-    notification.dom.close.innerHTML = '&#x2716;';
-
-    // Type specification (title, icon, color)
-    if (notification.type === 'success') {
-      notification.dom.classList.add('success');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
-      }
-    } else if (notification.type === 'warning') {
-      notification.dom.classList.add('warning');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
-      }
-    } else if (notification.type === 'error') {
-      notification.dom.classList.add('error');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
-      }
-    } else if (notification.type === 'info') {
-      notification.dom.classList.add('info');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
-      }
-    }
+    this._buildUIDom(notification);
+    this._buildNotificationType(notification);
 
     if (notification.iconless) {
       notification.dom.message.classList.add('iconless-width');
@@ -304,6 +265,66 @@ class Notification {
     // Return final notification
     return notification;
   }
+
+
+  _buildUIDom(notification) {
+    // Create notification DOM elements
+    notification.dom = document.createElement('DIV');
+    notification.dom.icon = document.createElement('IMG');
+    notification.dom.text = document.createElement('DIV');
+    notification.dom.close = document.createElement('DIV');
+    notification.dom.maintitle = document.createElement('H6');
+    notification.dom.message = document.createElement('P');
+
+    // Class assignation
+    notification.dom.classList.add('notification');
+    notification.dom.icon.classList.add('icon-container');
+    notification.dom.text.classList.add('text-container');
+    notification.dom.close.classList.add('close');
+
+    // Changing border side
+    if (notification.thickBorder === 'top') {
+      notification.dom.classList.add('top-border');
+    } else if (notification.thickBorder === 'bottom') {
+      notification.dom.classList.add('bottom-border');
+    } else if (notification.thickBorder === 'left') {
+      notification.dom.classList.add('left-border');
+    } else if (notification.thickBorder === 'right') {
+      notification.dom.classList.add('right-border');
+    }
+
+    // Text modification
+    notification.dom.maintitle.innerHTML = notification.title;
+    notification.dom.message.innerHTML = notification.message;
+    notification.dom.close.innerHTML = '&#x2716;';
+  }
+
+
+  _buildNotificationType(notification) {
+    // Type specification (title, icon, color)
+    if (notification.type === 'success') {
+      notification.dom.classList.add('success');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
+      }
+    } else if (notification.type === 'warning') {
+      notification.dom.classList.add('warning');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
+      }
+    } else if (notification.type === 'error') {
+      notification.dom.classList.add('error');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
+      }
+    } else if (notification.type === 'info') {
+      notification.dom.classList.add('info');
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
+      }
+    }
+  }
+
 
   /**
    * @method
