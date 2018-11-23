@@ -502,7 +502,10 @@ class Mzk {
     } else if (repeatMode === 2) {
       mzk.changeTrack(this.view.getNextTrackId());
     } else {
-      // TODO : handle error
+      Errors.raise({
+        code: 'NO_NEXT_TRACK',
+        frontend: true
+      });
     }
   }
 

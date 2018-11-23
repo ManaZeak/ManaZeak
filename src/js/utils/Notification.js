@@ -149,7 +149,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Handle mouse events for the given notification
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    * @param {number} notification.requestCount - Notification inner call counter
@@ -309,23 +309,19 @@ class Notification {
 
   _buildNotificationType(notification) {
     // Type specification (title, icon, color)
-    if (notification.type === 'success') {
-      notification.dom.classList.add('success');
+    if (notification.type === 'success' ||
+        notification.type === 'warning' ||
+        notification.type === 'error' ||
+        notification.type === 'info') {
+      notification.dom.classList.add(notification.type);
+
       if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
+        notification.dom.icon.src = `/static/img/feedback/Notification.js/${notification.type}.svg`;
       }
-    } else if (notification.type === 'warning') {
-      notification.dom.classList.add('warning');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
-      }
-    } else if (notification.type === 'error') {
-      notification.dom.classList.add('error');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
-      }
-    } else if (notification.type === 'info') {
+
+    } else {
       notification.dom.classList.add('info');
+
       if (!notification.iconless) {
         notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
       }
@@ -367,7 +363,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Open and add the notification to the container
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    **/
@@ -394,7 +390,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Close and remove the notification from the container
-   * @param {object} notification - The notification object
+   * @param {{id: number}|{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {boolean} notification.isClosing - Already closing flag
    * @param {object} notification.dom - Notifiction DOM element
@@ -409,7 +405,6 @@ class Notification {
     notification.closed = Date.now();
     notification.effectiveDuration = notification.closed - notification.opened;
     notification.dom.style.opacity = 0;
-    // TODO hadle this._transition instead of hard code in css
 
     window.setTimeout(() => {
       this._updateHistory(notification);
@@ -421,7 +416,7 @@ class Notification {
       } else if (Object.keys(this._active).length === 0) { // Check this._active emptyness
         this._dismissAllLock = false; // Unlock dismissAllLock
       }
-    }, 1000); // Transition value set in _notification.scss TODO same as few lines up
+    }, 1000); // Transition value set in _notification.scss
   }
 
   /**
@@ -476,7 +471,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description This method is called each notification cycle end to update its inner counter
-   * @param {object} notification - The notification object
+   * @param {{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {boolean} notification.sticky - Notification sticky behvaior
    * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
@@ -516,7 +511,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {number} notification.requestCount - Notification inner call counter
    * @param {object} notification.dom - Notifiction DOM element
@@ -534,7 +529,7 @@ class Notification {
       if (notification.renderTo.contains(notification.dom)) {
         window.clearTimeout(notification.timeoutID);
         if (notification.sticky) { // FadeOut/Dim depending on sticky behavior
-          this._dim(notification)
+          this._dim(notification);
         } else {
           this._close(notification);
         }
@@ -568,7 +563,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Use this to reset a notification life cycle, and delay its close event
-   * @param {object} notification - The notification object
+   * @param {{id: number}|{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {number} notification.timeoutID - Notification own setTimeout ID
    **/
@@ -618,7 +613,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Only useful for sticky notification that dim instead of close at the end of its life cycle
-   * @param {object} notification - The notification object
+   * @param {{id: number, requestCount: number, dom: Object, timeoutID: number, sticky: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    * @param {boolean} notification.sticky - Notification sticky behvaior
@@ -872,7 +867,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Dismiss a specific notification via its ID
-   * @param {number} id - The notification ID to dismiss
+   * @param {string} id - The notification ID to dismiss
    **/
   dismiss(id) {
     window.clearTimeout(this._active[id].timeoutID); // Clear notification timeout
