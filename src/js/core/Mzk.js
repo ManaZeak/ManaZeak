@@ -2,6 +2,7 @@ import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
 import View from '../view/View.js';
 import User from './User.js';
+import Notification from "../utils/Notification";
 'use strict';
 
 

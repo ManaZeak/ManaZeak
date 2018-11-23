@@ -120,32 +120,56 @@ class Shortcut {
       if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
         switch (shortcut.modifierCount) {
           case 1:
-            if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
-               (shortcut.modifiers.altKey && event.altKey) ||
-               (shortcut.modifiers.shiftKey && event.shiftKey)) {
-              shortcut.fire();
+            if (this._singleModifierTrigger(event, shortcut) === true) {
               return;
             }
             break;
           case 2:
-            if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
-              (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
-              (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
-              shortcut.fire();
+            if (this._doubleModifiersTrigger(event, shortcut) === true) {
               return;
             }
             break;
           case 3:
-            if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
-               shortcut.modifiers.altKey && event.altKey &&
-               shortcut.modifiers.shiftKey && event.shiftKey)) {
-               shortcut.fire();
-               return;
+            if (this._tripleModifiersTrigger(event, shortcut) === true) {
+              return;
             }
             break;
         }
       }
     }
+  }
+
+  _singleModifierTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
+        (shortcut.modifiers.altKey && event.altKey) ||
+        (shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
+  }
+
+  _doubleModifiersTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
+        (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
+        (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
+  }
+
+  _tripleModifiersTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
+        shortcut.modifiers.altKey && event.altKey &&
+        shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
   }
 
   /**
