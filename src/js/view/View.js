@@ -11,7 +11,8 @@ class View {
    * @summary Fronted View class
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
+   * @description <blockquote>Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>.
+   * This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.</blockquote>
    **/
   constructor() {
     this._mainContainer = {};
