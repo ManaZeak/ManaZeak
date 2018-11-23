@@ -667,39 +667,26 @@ class Notification {
    * @returns {number} The newly created notification ID
    **/
   new(options) {
-    // Check for mandatory arguments existence
-    if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+    if (this._checkOptionsValidity(options) === false) {
       return -1;
     }
 
-    // Check for unclosable at all notification
-    if (options.sticky && options.closable === false && options.callback === undefined) {
-      return -1;
-    }
-
-    // Test Notification inner variables validity
-    if (options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
-      options.type = this._default.notification.type;
-    }
-
-    if (this._dismissAllLock) {
-      this._dismissAllLock = false; // Unlock dismissAllLock
-    }
+    this._setOptionsFallback(options);
 
     // Build notification DOM element according to the given options
     let notification = this._buildUI({
-      id: Utils.idGenerator(options.type + '' + options.message, 5), // Generating an ID of 5 characters long from notification mandatory fields
+      id: Utils.idGenerator(`${options.type}${options.message}`, 5), // Generating an ID of 5 characters long from notification mandatory fields
       type: options.type,
       message: options.message,
-      title: options.title === undefined ? this._default.notification.title : options.title,
-      duration: options.duration === undefined ? this._duration : options.duration,
-      iconless: options.iconless === undefined ? this._default.notification.iconless : options.iconless,
-      thickBorder: options.thickBorder === undefined ? this._thickBorder : options.thickBorder,
-      closable: options.closable === undefined ? this._default.notification.closable : options.closable,
-      sticky: options.sticky === undefined ? this._default.notification.sticky : options.sticky,
-      renderTo: options.renderTo === undefined ? this._default.notification.renderTo : options.renderTo,
-      CBtitle: options.CBtitle === undefined ? this._default.notification.CBtitle : options.CBtitle,
-      callback: options.callback === undefined ? this._default.notification.callback : options.callback,
+      title: options.title,
+      duration: options.duration,
+      iconless: options.iconless,
+      thickBorder: options.thickBorder,
+      closable: options.closable,
+      sticky: options.sticky,
+      renderTo: options.renderTo,
+      CBtitle: options.CBtitle,
+      callback: options.callback,
       isDimmed: false // Only usefull if sticky is set to true
     });
 
@@ -716,6 +703,69 @@ class Notification {
     }
 
     return notification.id;
+  }
+
+
+  _checkOptionsValidity(options) {
+    // Check for mandatory arguments existence
+    if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+      return false;
+    }
+
+    // Check for unclosable at all notification
+    if (options.sticky && options.closable === false && options.callback === undefined) {
+      return false;
+    }
+
+    // Test Notification inner variables validity
+    if (options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
+      options.type = this._default.notification.type;
+    }
+
+    if (this._dismissAllLock) {
+      this._dismissAllLock = false; // Unlock dismissAllLock
+    }
+
+    return true;
+  }
+
+
+  _setOptionsFallback(options) {
+    if (options.title === undefined) {
+      options.title = this._default.notification.title;
+    }
+
+    if (options.duration === undefined) {
+      options.duration = this._duration;
+    }
+
+    if (options.iconless === undefined) {
+      options.iconless = this._default.notification.iconless;
+    }
+
+    if (options.thickBorder === undefined) {
+      options.thickBorder = this._thickBorder;
+    }
+
+    if (options.closable === undefined) {
+      options.closable = this._default.notification.closable;
+    }
+
+    if (options.sticky === undefined) {
+      options.sticky= this._default.notification.sticky;
+    }
+
+    if (options.renderTo === undefined) {
+      options.renderTo = this._default.notification.renderTo;
+    }
+
+    if (options.CBtitle === undefined) {
+      options.CBtitle = this._default.notification.CBtitle;
+    }
+
+    if (options.callback === undefined) {
+      options.callback = this._default.notification.callback;
+    }
   }
 
   /**
