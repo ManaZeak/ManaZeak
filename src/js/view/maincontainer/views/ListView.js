@@ -21,7 +21,7 @@ class ListView extends SceneView {
     super(options);
 
     this._availableColumns = listview.availableColumns;
-    this._columns = listview.defaultColumns; // TODO Get from user pref first, and fallback to default if not prefs
+    this._columns = listview.defaultColumns;
     this._trackContext = {}; // Context menu clicked on a track
     this._draggedColumn = null; // Currently dragged column
     this._dom = {
