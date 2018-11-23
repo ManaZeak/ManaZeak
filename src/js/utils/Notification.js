@@ -97,11 +97,18 @@ class Notification {
   }
 
   _setAttributesDefault() {
-    if (this._position !== 'top-left' && this._position !== 'top-right' && this._position !== 'bottom-left' && this._position !== 'bottom-right') { // Illegal value for position
+    if (this._position !== 'top-left' && /* Illegal value for position */
+        this._position !== 'top-right' &&
+        this._position !== 'bottom-left' &&
+        this._position !== 'bottom-right') {
       this._position = this._default.handler.position; // Default value
     }
 
-    if (this._thickBorder !== 'top' && this._thickBorder !== 'bottom' && this._thickBorder !== 'left' && this._thickBorder !== 'right' && this._thickBorder !== 'none') { // Illegal value for thick border
+    if (this._thickBorder !== 'top' && /* Illegal value for thick border */
+        this._thickBorder !== 'bottom' &&
+        this._thickBorder !== 'left' &&
+        this._thickBorder !== 'right' &&
+        this._thickBorder !== 'none') {
       this._thickBorder = this._default.handler.thickBorder; // Default value
     }
 
@@ -526,7 +533,11 @@ class Notification {
     else {
       if (notification.renderTo.contains(notification.dom)) {
         window.clearTimeout(notification.timeoutID);
-        notification.sticky ? this._dim(notification) : this._close(notification); // FadeOut/Dim depending on sticky behavior
+        if (notification.sticky) { // FadeOut/Dim depending on sticky behavior
+          this._dim(notification)
+        } else {
+          this._close(notification);
+        }
       }
     }
   }
