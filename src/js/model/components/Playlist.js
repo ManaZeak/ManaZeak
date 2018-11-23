@@ -62,7 +62,7 @@ class Playlist {
               this._getArtistsLazyLoad(step + 1);
             });
         } else {
-          if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) { // Successfully loaded all
+          if (response.ERROR_MSG === undefined) { // Successfully loaded all
             Events.fire(`TrackLoaded-${this._id}`);
           } else {
             console.log('Error');

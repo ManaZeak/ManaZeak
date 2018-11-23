@@ -63,11 +63,7 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.json());
-          } else {
-            this.handleErrorCode(response.status, reject);
-          }
+          this._resolveAsJSON(response, resolve, reject);
         });
     });
   }
@@ -84,19 +80,13 @@ class Komunikator {
    * @param {String} url - The <code>.mood</code> file url to fetch data from
    * @returns {Promise} The request <code>Promise</code> */
   getBinaryResponse(url) {
-    const that = this;
-
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
-      xhr.onreadystatechange = function() { // Keep old js function definition since this is the request response object
-        if (this.readyState === 4 && this.status === 200) {
-          if (this.status === 200) {
-            resolve(this.responseText); // responseText is binary data
-          } else {
-            that.handleErrorCode(this.status, reject);
-          }
+      xhr.onreadystatechange = response => { // Keep old js function definition since this is the request response object
+        if (response.originalTarget.readyState === 4 && response.originalTarget.status === 200) {
+          this._resolveAsBinary(response.originalTarget, resolve, reject);
         }
       };
       xhr.send();
@@ -122,11 +112,7 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.text());
-          } else {
-            this.handleErrorCode(response.status, reject);
-          }
+          this._resolveAsText(response, resolve, reject);
         });
     });
   }
@@ -153,16 +139,38 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.json());
-          } else {
-            this.handleErrorCode(response.status, reject);
-          }
+          this._resolveAsJSON(response, resolve, reject);
         });
     });
   }
 
-  handleErrorCode(code, reject) {
+  _resolveAsJSON(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.json());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  //response is from fetch
+  _resolveAsText(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.text());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  // response is a XMLHTTPRequest
+  _resolveAsBinary(response, resolve, reject) {
+    if (response.status === 200) {
+      resolve(response.responseText); // responseText is binary data
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  _handleErrorCode(code, reject) {
     if (code === 404) {
       reject('URL_NOT_FOUND');
     } else if (code === 403) {
