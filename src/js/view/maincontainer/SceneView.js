@@ -128,7 +128,7 @@ class SceneView {
 
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].setSelected(false);
-    }
+    }W
   }
 
   changeTrack(id) {

@@ -1,7 +1,7 @@
 import ListView from './views/ListView.js';
 import AlbumView from './views/AlbumView.js';
 import ViewSwitcher from './ViewSwitcher.js';
-'use_strict';
+'use strict';
 
 class Scene {
   /**

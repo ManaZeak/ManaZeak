@@ -2,7 +2,7 @@ import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
 import View from '../view/View.js';
 import User from './User.js';
-'use_strict';
+'use strict';
 
 
 class Mzk {

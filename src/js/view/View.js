@@ -3,7 +3,7 @@ import Aside from './maincontainer/Aside.js';
 import Scene from './maincontainer/Scene.js';
 import FootBar from './footbar/FootBar.js';
 import Modal from '../utils/Modal.js';
-'use_strict';
+'use strict';
 
 
 class View {

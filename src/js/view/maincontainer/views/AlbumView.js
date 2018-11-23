@@ -2,8 +2,7 @@ import SceneView from '../SceneView';
 import TrackContext from './TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
 import ScrollBar from "../../../utils/ScrollBar";
-
-'use_strict';
+'use strict';
 
 
 class AlbumView extends SceneView {

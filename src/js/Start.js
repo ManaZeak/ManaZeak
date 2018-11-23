@@ -6,7 +6,7 @@ import Events from './utils/Events.js';
 import Shortcut from './utils/Shortcut.js';
 import Notification from './utils/Notification.js';
 import Mzk from './core/Mzk.js';
-'use_strict';
+'use strict';
 
 const errorsOptions = {
   verbose: true,
