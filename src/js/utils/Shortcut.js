@@ -118,22 +118,12 @@ class Shortcut {
       const shortcut = this._multiKey[i];
 
       if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-        switch (shortcut.modifierCount) {
-          case 1:
-            if (this._singleModifierTrigger(event, shortcut) === true) {
-              return;
-            }
-            break;
-          case 2:
-            if (this._doubleModifiersTrigger(event, shortcut) === true) {
-              return;
-            }
-            break;
-          case 3:
-            if (this._tripleModifiersTrigger(event, shortcut) === true) {
-              return;
-            }
-            break;
+        if (shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) {
+          return;
+        } else if (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) {
+          return;
+        } else if (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true) {
+          return;
         }
       }
     }
