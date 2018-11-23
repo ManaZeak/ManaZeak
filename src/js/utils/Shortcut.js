@@ -96,45 +96,53 @@ class Shortcut {
     }
 
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
-      for (let i = 0; i < this._multiKey.length; ++i) {
-        const shortcut = this._multiKey[i];
-
-        if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-          switch (shortcut.modifierCount) {
-            case 1:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
-                (shortcut.modifiers.altKey && event.altKey) ||
-                (shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-            case 2:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
-                (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
-                (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-            case 3:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
-                  shortcut.modifiers.altKey && event.altKey &&
-                  shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-          }
-        }
-      }
+      this._multiKeyTest(event);
     } else { // Single key shortcut
-      for (let i = 0; i < this._singleKey.length; ++i) {
-        const shortcut = this._singleKey[i];
+      this._singleKeyTest(event);
+    }
+  }
 
-        if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-          shortcut.fire(this);
-          return;
+  _singleKeyTest(event) {
+    for (let i = 0; i < this._singleKey.length; ++i) {
+      const shortcut = this._singleKey[i];
+
+      if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
+        shortcut.fire(this);
+        return;
+      }
+    }
+  }
+
+  _multiKeyTest(event) {
+    for (let i = 0; i < this._multiKey.length; ++i) {
+      const shortcut = this._multiKey[i];
+
+      if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
+        switch (shortcut.modifierCount) {
+          case 1:
+            if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
+               (shortcut.modifiers.altKey && event.altKey) ||
+               (shortcut.modifiers.shiftKey && event.shiftKey)) {
+              shortcut.fire();
+              return;
+            }
+            break;
+          case 2:
+            if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
+              (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
+              (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
+              shortcut.fire();
+              return;
+            }
+            break;
+          case 3:
+            if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
+               shortcut.modifiers.altKey && event.altKey &&
+               shortcut.modifiers.shiftKey && event.shiftKey)) {
+               shortcut.fire();
+               return;
+            }
+            break;
         }
       }
     }
