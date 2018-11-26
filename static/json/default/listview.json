@@ -1,39 +1,46 @@
 {
-  "defaultColumns": [{
-    "name": "Duration",
-    "order": 0,
-    "width": "10"
-  },
-  {
-    "name": "Title",
-    "order": 1,
-    "width": "20"
-  },
-  {
-    "name": "Artist",
-    "order": 2,
-    "width": "14"
-  },
-  {
-    "name": "Composer",
-    "order": 3,
-    "width": "14"
-  },
-  {
-    "name": "Performer",
-    "order": 4,
-    "width": "14"
-  },
-  {
-    "name": "Album",
-    "order": 5,
-    "width": "14"
-  },
-  {
-    "name": "Genre",
-    "order": 6,
-    "width": "14"
-  }],
+  "defaultColumns": [
+    {
+      "name": "Duration",
+      "order": 0,
+      "width": "10"
+    },
+    {
+      "name": "Title",
+      "order": 1,
+      "width": "20"
+    },
+    {
+      "name": "Artist",
+      "order": 2,
+      "width": "14"
+    },
+    {
+      "name": "Composer",
+      "order": 3,
+      "width": "14"
+    },
+    {
+      "name": "Performer",
+      "order": 4,
+      "width": "14"
+    },
+    {
+      "name": "Album",
+      "order": 5,
+      "width": "14"
+    },
+    {
+      "name": "Year",
+      "order": 7,
+      "width": "1"
+    },
+    {
+      "name": "Genre",
+      "order": 6,
+      "width": "13"
+    }
+  ],
   "availableColumns": [
     {
       "name": "Duration",
@@ -68,7 +75,17 @@
     {
       "name": "Genre",
       "order": 6,
-      "width": "14"
+      "width": "8"
+    },
+    {
+      "name": "Year",
+      "order": 7,
+      "width": "1"
+    },
+    {
+      "name": "BitRate",
+      "order": 8,
+      "width": "5"
     }
   ]
 }
