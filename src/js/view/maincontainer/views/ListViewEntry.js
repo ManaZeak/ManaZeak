@@ -19,6 +19,8 @@ class ListViewEntry {
     this.id = options.track.id || '';
     this.performer = options.track.performer || '';
     this.title = options.track.title || '';
+    this.year = options.track.year || '';
+    this.bitrate = options.track.bitrate || '';
 
     this._dom = document.createElement('DIV');
     this._dom.classList.add('track');

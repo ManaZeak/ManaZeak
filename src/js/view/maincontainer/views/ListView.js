@@ -178,14 +178,14 @@ class ListView extends SceneView {
   }
 
   _handleDragEvents(column) {
-    const dragStart = e => {
-      if (e.target.getAttribute('draggable') === false) {
+    const dragStart = event => {
+      if (event.target.getAttribute('draggable') === false) {
         return;
       } // Abort drag, resize event is occuring
-      this._draggedColumn = e.target; // Store drag start column
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', e.target.outerHTML);
-      e.target.classList.add('dragElem');
+      this._draggedColumn = event.target; // Store drag start column
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/html', event.target.outerHTML);
+      event.target.classList.add('dragElem');
     };
 
     const dragOver = event => {
@@ -202,7 +202,7 @@ class ListView extends SceneView {
     };
 
     const dragLeave = function() {
-      this.classList.remove('over'); // this / e.target is previous target element.
+      this.classList.remove('over');
     };
 
     const dragEnd = event => {
@@ -311,16 +311,21 @@ class ListView extends SceneView {
         width: column.width
       });
 
-      this._refreshGridColumn();
+      this._refreshGridColumn(this._computeGridTemplateColumns());
 
       for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
         const col = document.createElement('DIV');
         col.classList.add(column.name.toLowerCase());
 
+        const track = this._tracks[this._dom.container.childNodes[i].dataset.id];
+        const columnValue = track.get(column.name.toLowerCase());
+
         if (column.name.toLowerCase() === 'duration') {
-          col.innerHTML = Utils.secondsToTimecode(this._tracks[this._dom.container.childNodes[i].dataset.id].get(column.name.toLowerCase()));
+          col.innerHTML = Utils.secondsToTimecode(columnValue);
+        } else if (column.name.toLowerCase() === 'bitrate') {
+          col.innerHTML = `${Math.floor(columnValue / 1000)} kb/s`;
         } else {
-          col.innerHTML = this._tracks[this._dom.container.childNodes[i].dataset.id].get(column.name.toLowerCase());
+          col.innerHTML = columnValue;
         }
 
         this._dom.container.childNodes[i].appendChild(col);
