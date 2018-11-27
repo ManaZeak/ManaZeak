@@ -148,7 +148,7 @@ def scanLibrary(library, playlist, convert):
     # TODO, change when implement other file types
     if len(mp3Files) == 0 and len(flacFiles) == 0 and len(oggFiles) == 0:
         return errorCheckMessage(False, ErrorEnum.EMPTY_LIBRARY, scanLibrary)
-
+    logger.info('There is ' + str(len(mp3Files)) + ' mp3 files and ' + str(len(flacFiles)) + ' flac files')
     scanThread = Process(target=scanLibraryProcess, args=(mp3Files, flacFiles, oggFiles, playlist, convert, coverPath, library))
     db.connections.close_all()
     scanThread.start()
@@ -279,7 +279,7 @@ def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
     flacFileReference = FileType.objects.get(name="flac")
     oggFileReference = FileType.objects.get(name="ogg")
 
-    print("Started scanning MP3 file")
+    logger.info("Launching all song scanners")
     # MP3 file processor
     if len(mp3Files) != 0:
         procNumber = multiprocessing.cpu_count()
@@ -323,6 +323,7 @@ def fileIndexer(mp3Files, flacFiles, oggFiles, convert, coverPath):
     for thread in threads:
         thread.join()
         tracks += thread.tracks
+    logger.info('All tracks scanned')
     return tracks
 
 
