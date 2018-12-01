@@ -19,7 +19,7 @@ from app.src.utils.frontRequestChecker import FrontRequestChecker
 #   @param request the request send by the front. Contains a form with the information needed to create an account.
 #   @return the page for the navigator
 
-logger = logging.getLogger('django')
+logger = logging.getLogger('users')
 
 
 def signup(request):
@@ -34,6 +34,7 @@ def signup(request):
     try:
         user = signupService.createUser(form)
         if user is not None:
+            logger.info('New user created : ' + user.username)
             # Log the new user into the app
             login(request, user)
             return HttpResponseRedirect(reverse('app:index'))

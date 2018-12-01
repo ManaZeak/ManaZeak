@@ -1,4 +1,5 @@
 Django==2.1.2
+channels
 psycopg2
 mutagen
 requests

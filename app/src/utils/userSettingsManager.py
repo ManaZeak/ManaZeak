@@ -19,17 +19,17 @@ class UserSettingsManager:
     def createUserSettings(user, inviteCode):
         userPref = UserSetting()
         userPref.user = user
-        # Special group if the user is an admin
-        if user.is_superuser:
-            userPref.group = Group.objects.get(rank=5)
-        else:
-            # Use the default group of the application
-            userPref.group = ApplicationConfigurationManager.getApplicationConfiguration().defaultGroup
         # Setting the user avatar
         userPref.avatar = AvatarGenerator().generateAvatar(user.username)
         if inviteCode is not None:
             userPref.inviteCode = inviteCode
         userPref.save()
+        # Special group if the user is an admin
+        if user.is_superuser:
+            userPref.groups.add(Group.objects.get(rank=5))
+        else:
+            # Use the default group of the application
+            userPref.groups.add(ApplicationConfigurationManager.getApplicationConfiguration().defaultGroup)
 
     @staticmethod
     ## Get the user settings from the database
