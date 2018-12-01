@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ManaZeak.wsgi.application'
+ASGI_APPLICATION = "ManaZeak.routing.application"
 
 
 # Database
@@ -140,6 +142,12 @@ LOGGING = {
             'filename': './log/debug.log',
             'formatter': 'simple',
         },
+        'userInfos': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './log/userInfos.log',
+            'formatter': 'simple',
+        }
     },
     'loggers': {
         'django': {
@@ -147,6 +155,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'users': {
+            'handlers': ['userInfos'],
+            'level': 'INFO',
+            'propagate': True,
+        }
     },
     'formatters': {
         'simple': {

@@ -1,6 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 
 ## this class is used fir rendering all the templates in the application
 class GenericViews:
@@ -12,7 +13,7 @@ class GenericViews:
     #   @return the login page
     def logoutView(request):
         logout(request)
-        return render(request, 'login.html')
+        return redirect('app:login')
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')

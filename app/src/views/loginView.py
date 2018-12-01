@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
@@ -10,6 +12,8 @@ from app.src.views.forms import UserLoginForm
 ## @package app.views.loginView
 # This package is used for managing the user login and teh action associated with it
 
+
+logger = logging.getLogger('users')
 
 ## Render the user form login views
 #   @param view object (given by django)
@@ -30,8 +34,11 @@ class Login(View):
         password = form.data['password']
         user = authenticate(username=username, password=password)
         if user is not None and PermissionHandler.checkPermission(PermissionEnum.LOGIN, user) and user.is_active:
+            logger.info('User : ' + user.username + ' logged in successfully')
             login(request, user)
             return redirect('app:index')
+        else:
+            logger.info('User : ' + username + ' failed to log in')
         return render(request, self.template_name, {'form': form})
 
 
