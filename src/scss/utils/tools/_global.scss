@@ -116,6 +116,10 @@ input[type=checkbox]:checked:disabled + label:before {
   border-color: #bfb;
 }
 
+p.italic {
+  font-style: italic;
+}
+
 [draggable] {
   -moz-user-select: none;
   -khtml-user-select: none;

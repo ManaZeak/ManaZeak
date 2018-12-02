@@ -1,6 +1,6 @@
 import Player from '../core/Player.js';
 import Collection from './components/Collection.js';
-'use_strict';
+'use strict';
 
 class Model {
   /**
@@ -12,6 +12,7 @@ class Model {
   constructor() {
     this._player = {};
     this._collection = {};
+    this._queue = [];
     this._activeTrack = null;
 
     this._init();
@@ -299,10 +300,40 @@ class Model {
     this._player.repeatTrack();
   }
 
+  appendToQueue(id) {
+    this._queue.push(id);
+  }
+
+  getNextFromQueue() {
+    const id = this._queue[0];
+
+    if (this._queue.length > 0) {
+      this._queue.splice(0, 1);
+    }
+
+    return id;
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
     return this._collection.activePlaylist.repeatMode;
+  }
+
+  get queuedTracks() {
+    const queuedTracks = [];
+
+    for (let i = 0; i < this._queue.length; ++i) {
+      const index = this._queue[i];
+
+      const track = this.getTrackById(index);
+
+      if (track) {
+        queuedTracks.push(track);
+      }
+    }
+
+    return queuedTracks;
   }
 
   getVolume() {
@@ -316,6 +347,10 @@ class Model {
   }
   getActiveTrack() {
     return this._activeTrack;
+  }
+
+  get queue() {
+    return this._queue;
   }
 }
 

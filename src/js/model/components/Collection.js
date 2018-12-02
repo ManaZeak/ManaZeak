@@ -1,5 +1,5 @@
 import Playlist from './Playlist.js';
-'use_strict';
+'use strict';
 
 class Collection {
   /**
@@ -122,7 +122,7 @@ class Collection {
       totalDuration: playlist.INFO.TOTAL_DURATION,
       totalTrack: playlist.INFO.TOTAL_TRACK
     };
-    // TODO handle playlist.VIEW
+
     this._playlists.push(new Playlist(options));
   }
 
@@ -148,7 +148,7 @@ class Collection {
         this._buildPlaylist(response.COLLECTION[i]);
         this._playlists[this._playlists.length - 1].getArtistsFromServer(response)
           .then(() => {
-            this._activePlaylist = 0; // TODO : store in ack user latest active playlist (keep the I index)
+            this._activePlaylist = 0;
             resolve();
           });
       }

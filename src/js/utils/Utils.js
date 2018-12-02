@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 class Utils {
   /**
@@ -121,6 +121,12 @@ class Utils {
     } else {
       return `${transformedTime.m}:${transformedTime.s}`;
     }
+  }
+
+  alreadyExistsInArray(array, value) {
+    return array.some(function(arrayValue) {
+      return value === arrayValue;
+    });
   }
 
   /**
