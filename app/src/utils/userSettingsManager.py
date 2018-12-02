@@ -16,13 +16,14 @@ class UserSettingsManager:
     ## Create the user settings in database for a user
     #   @param user the user to be linked with the settings created
     #   @param inviteCode the invite code the user used if any
-    def createUserSettings(user, inviteCode):
+    def createUserSettings(user, inviteCodeUsed, inviteCode):
         userPref = UserSetting()
         userPref.user = user
         # Setting the user avatar
         userPref.avatar = AvatarGenerator().generateAvatar(user.username)
-        if inviteCode is not None:
-            userPref.inviteCode = inviteCode
+        if inviteCodeUsed is not None:
+            userPref.usedInviteCode = inviteCodeUsed
+        userPref.inviteCode = inviteCode
         userPref.save()
         # Special group if the user is an admin
         if user.is_superuser:

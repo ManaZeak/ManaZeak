@@ -10,6 +10,7 @@ from app.src.services.user.userSignupService import UserSignupService
 from app.src.utils.exceptions import userException
 from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
+from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 ## @package app.views.signupView
 # This package manage the action be done when a user create an account
@@ -25,7 +26,7 @@ logger = logging.getLogger('users')
 def signup(request):
     # Checking that the response is correct
     try:
-        FrontRequestChecker.checkRequest('POST', request, signup)
+        FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, signup)
     except UserException:
         return render(request, 'signup.html', {'form': UserCreationForm()})
 

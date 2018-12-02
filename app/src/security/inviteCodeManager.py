@@ -19,11 +19,12 @@ class InviteCodeManager:
     #   @param godfatherUser the user that has invited the new user
     def generateInviteCode(self, newUser, godfatherInviteCode):
         # Creating the invite code for the new user
-        self._createUserInviteCode(newUser)
+        inviteCode = self._createUserInviteCode(newUser)
         # If the invite code mode is not enabled there is no godfather
         if godfatherInviteCode is not None:
             # Updating the godfather invite code to be used and creates another one
             self._updateInviteCode(godfatherInviteCode)
+        return inviteCode
 
     ## Create a new invite code and invalidate the used one
     #   @param godfatherInviteCode the invite code object of the god father
@@ -46,6 +47,7 @@ class InviteCodeManager:
         inviteCode.user = user
         inviteCode.code = self._generateCode(user)
         inviteCode.save()
+        return inviteCode
 
     ## Generate an code for an invite
     #   @return a code in md5
