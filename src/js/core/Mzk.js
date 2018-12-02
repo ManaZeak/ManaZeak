@@ -2,7 +2,8 @@ import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
 import View from '../view/View.js';
 import User from './User.js';
-'use_strict';
+import Notification from "../utils/Notification";
+'use strict';
 
 
 class Mzk {
@@ -483,6 +484,11 @@ class Mzk {
    * @description Change the player track using the next one in the current view
    **/
   nextTrackInView() {
+    if (this.model.queue.length > 0) {
+      mzk.changeTrack(this.model.getNextFromQueue());
+      return;
+    }
+
     const repeatMode = this.model.repeatMode;
 
     if (repeatMode === 0) {
@@ -496,7 +502,10 @@ class Mzk {
     } else if (repeatMode === 2) {
       mzk.changeTrack(this.view.getNextTrackId());
     } else {
-      // TODO : handle error
+      Errors.raise({
+        code: 'NO_NEXT_TRACK',
+        frontend: true
+      });
     }
   }
 
@@ -518,6 +527,15 @@ class Mzk {
   repeatTrack() {
     this.model.repeatTrack();
     // No need to update the view since the current track didn't changed
+  }
+
+
+  addTrackToQueue(datasetId) {
+    const track = this.view.getTrackById(datasetId);
+
+    if (track) {
+      this.model.appendToQueue(track.id);
+    }
   }
 
 

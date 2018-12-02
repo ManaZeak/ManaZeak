@@ -29,7 +29,7 @@ class Playlist {
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
-    this._activeView = ViewEnum.ListView;
+    this._activeView = ViewEnum.AlbumView;
 
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
@@ -62,7 +62,7 @@ class Playlist {
               this._getArtistsLazyLoad(step + 1);
             });
         } else {
-          if (response.ERROR_MSG == "null" || response.ERROR_MSG == "" || response.ERROR_MSG == null) { // Successfully loaded all
+          if (response.ERROR_MSG === undefined) { // Successfully loaded all
             Events.fire(`TrackLoaded-${this._id}`);
           } else {
             console.log('Error');

@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 
 class ProgressBar {
@@ -366,7 +366,7 @@ class ProgressBar {
     this._isActive = true;
     this.setVisibility(true);
     this._startAnimation();
-    this.activateTransitions(); // TODO : add transition in startAnimation
+    this.activateTransitions();
     this._addEvents();
   }
 

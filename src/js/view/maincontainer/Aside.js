@@ -1,5 +1,5 @@
 import AsideEntry from './AsideEntry.js';
-'use_strict';
+'use strict';
 
 class Aside {
   /**

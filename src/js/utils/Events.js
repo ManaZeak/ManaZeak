@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 class Events {
   /**
@@ -39,9 +39,13 @@ class Events {
     this._events[options.name].push({
       id: this._eventUid,
       name: options.name,
-      oneShot: options.oneShot ? options.oneShot : false,
+      oneShot: false,
       callback: callback
     });
+
+    if (options.oneShot) {
+      this._events[options.name].oneShot = true;
+    }
 
     this._eventUid++;
 
@@ -64,8 +68,7 @@ class Events {
     }
 
     for (const key in this._events) {
-      let i = this._events[key].length;
-      while (i--) { // Reverse parsing, post decrement is mandatory bc of splice()
+      for (let i = this._events[key].length - 1; i >= 0; --i) { // Reverse parsing, post decrement is mandatory bc of splice()
         if (this._events[key][i].id === uid) {
           this._events[key].splice(i, 1);
         }
@@ -106,8 +109,7 @@ class Events {
     }
 
     for (const key in this._events) {
-      let i = this._events[key].length;
-      while (i--) { // Reverse parsing, post decrement is mandatory bc of splice()
+      for (let i = this._events[key].length - 1; i >= 0; --i) { // Reverse parsing, post decrement is mandatory bc of splice()
         if (this._events[key][i].name === eventName) {
           this._events[key][i].callback();
           if (this._events[key][i].oneShot) {

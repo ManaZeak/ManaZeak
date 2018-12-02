@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 
 class Komunikator {
@@ -63,17 +63,7 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.json());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
-          } else {
-            reject('UNKNOWN_ERROR');
-          }
+          this._resolveAsJSON(response, resolve, reject);
         });
     });
   }
@@ -94,9 +84,9 @@ class Komunikator {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
-      xhr.onreadystatechange = function() { // Keep old js function definition since this is the request response object
-        if (this.readyState === 4 && this.status === 200) {
-          resolve(this.responseText); // responseText is binary data
+      xhr.onreadystatechange = response => { // Keep old js function definition since this is the request response object
+        if (response.originalTarget.readyState === 4 && response.originalTarget.status === 200) {
+          this._resolveAsBinary(response.originalTarget, resolve, reject);
         }
       };
       xhr.send();
@@ -122,17 +112,7 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.text());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
-          } else {
-            reject('UNKNOWN_ERROR');
-          }
+          this._resolveAsText(response, resolve, reject);
         });
     });
   }
@@ -159,19 +139,47 @@ class Komunikator {
 
       fetch(url, options)
         .then(response => {
-          if (response.ok) {
-            resolve(response.json());
-          } else if (response.status === 404) {
-            reject('URL_NOT_FOUND');
-          } else if (response.status === 403) {
-            reject('ACCESS_FORBIDDEN');
-          } else if (response.status === 500) {
-            reject('INTERNAL_ERROR');
-          } else {
-            reject('UNKNOWN_ERROR');
-          }
+          this._resolveAsJSON(response, resolve, reject);
         });
     });
+  }
+
+  _resolveAsJSON(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.json());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  //response is from fetch
+  _resolveAsText(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.text());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  // response is a XMLHTTPRequest
+  _resolveAsBinary(response, resolve, reject) {
+    if (response.status === 200) {
+      resolve(response.responseText); // responseText is binary data
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+  _handleErrorCode(code, reject) {
+    if (code === 404) {
+      reject('URL_NOT_FOUND');
+    } else if (code === 403) {
+      reject('ACCESS_FORBIDDEN');
+    } else if (code === 500) {
+      reject('INTERNAL_ERROR');
+    } else {
+      reject('UNKNOWN_ERROR');
+    }
   }
 }
 

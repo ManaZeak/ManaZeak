@@ -1,6 +1,7 @@
 import VolumeBar from './components/VolumeBar.js';
 import ProgressBar from './components/ProgressBar.js';
-'use_strict';
+import QueueContext from './components/QueueContext.js';
+'use strict';
 
 class FootBar {
   /**
@@ -16,10 +17,12 @@ class FootBar {
       volume: {},
       previous: {},
       next: {},
-      repeat: {}
+      repeat: {},
+      queue: {}
     };
     this._volumeBar = {};
     this._progressBar = {};
+    this._queueContext = {};
 
     this._init();
     this._events();
@@ -42,9 +45,14 @@ class FootBar {
     this._controls.previous = document.getElementById('previous');
     this._controls.next = document.getElementById('next');
     this._controls.repeat = document.getElementById('repeat');
+    this._controls.queue = document.getElementById('queue');
 
     this._volumeBar = new VolumeBar();
     this._progressBar = new ProgressBar();
+    this._queueContext = new QueueContext({
+      target: document.body,
+      url: 'contexts/queuecontext/'
+    });
   }
 
   /**
@@ -75,6 +83,20 @@ class FootBar {
 
     this._controls.repeat.addEventListener('click', () => {
       mzk.toggleRepeatMode();
+    });
+
+    this._controls.queue.addEventListener('click', () => {
+      if (document.body.contains(this._queueContext.dom)) {
+        this._queueContext.close();
+      } else {
+        const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const clientRectangle = this._controls.queue.getBoundingClientRect();
+
+        this._queueContext.open({
+          rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width),
+          queue: mzk.model.queuedTracks
+        });
+      }
     });
   }
 
@@ -126,7 +148,7 @@ class FootBar {
           };
         }
 
-        const svg = d3.select(this._progressBar.getMoodbarContainer().childNodes[1]).append('g'); // TODO : childNodes0 , remove text bs
+        const svg = d3.select(this._progressBar.getMoodbarContainer().childNodes[1]).append('g');
 
         svg.append('linearGradient')
           .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
