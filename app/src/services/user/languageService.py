@@ -12,6 +12,9 @@ from app.src.utils.frontRequestChecker import FrontRequestChecker
 
 
 ## This class allows the front to choose the right language to display
+from app.src.utils.requestMethodEnum import RequestMethodEnum
+
+
 class LanguageService(object):
 
     @staticmethod
@@ -24,7 +27,8 @@ class LanguageService(object):
         pathToLang = "/ManaZeak/static/json/lang/"
         user = request.user
         try:
-            response = FrontRequestChecker.checkRequest('POST', request, LanguageService.selectLanguage, ['LANG'], user)
+            response = FrontRequestChecker.checkRequest(
+                RequestMethodEnum.POST, request, LanguageService.selectLanguage, ['LANG'], user)
             requestedLang = response['LANG']
             if LanguageService._checkLanguage(requestedLang):
                 jsonFile = os.path.join(pathToLang, requestedLang + ".json")

@@ -25,7 +25,7 @@ class FrontRequestChecker:
     #   @return the response if the request is a POST nothing if it's a get.
     def checkRequest(expectedRequestMethod, request, caller, expectedKeys=None, user=None):
         # Check if the request has the good method type
-        if request.method != expectedRequestMethod:
+        if request.method != expectedRequestMethod.value:
             raise UserException(ErrorEnum.BAD_REQUEST)
 
         # Test the keys of the request

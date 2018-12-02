@@ -2,6 +2,7 @@ from django.urls import path
 
 from app.src.collections.library.libraryService import getTrack
 from app.src.services.user.languageService import LanguageService
+from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
 from app.src.views import mainView, signupView
 from app.src.views.genericViews import GenericViews
@@ -23,5 +24,9 @@ urlpatterns = [
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),
 
+    ########################## User Settings ##########################
+    path('user/getInformation/', UserInformationService.getUserInformation, name='getUserInformation'),
+
+    # TESTING METHOD
     path('test/<path:path>', getTrack, name='test')
 ]

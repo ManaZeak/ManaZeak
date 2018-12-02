@@ -21,16 +21,16 @@ class UserSignupService:
         if not form.is_valid():
             return None
         # Checking if the invite code provided is correct
-        inviteCode = self._checkInviteCode(form)
+        inviteCodeUsed = self._checkInviteCode(form)
         # Saving the user into the database
         form.save()
         # Authenticating the user into the app and granting him super user right if its te first user to log in
         user = self._authenticatingAndAlteringUser(form)
-        # Generating the user setting
-        UserSettingsManager.createUserSettings(user, inviteCode)
         # Creating the user invite code and updating the godfather invite code
         inviteCodeManager = InviteCodeManager()
-        inviteCodeManager.generateInviteCode(user, inviteCode)
+        inviteCode = inviteCodeManager.generateInviteCode(user, inviteCodeUsed)
+        # Generating the user setting
+        UserSettingsManager.createUserSettings(user, inviteCodeUsed, inviteCode)
         return user
 
     ## Authenticate and transform the user as a superuser if it's the first one.

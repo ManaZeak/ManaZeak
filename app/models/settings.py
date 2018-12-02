@@ -15,7 +15,7 @@ class ApplicationConfiguration(models.Model):
 ## This class stores the preferences and the information about a user.
 class UserSetting(models.Model):
     ## The invite code of the user.
-    inviteCode = models.CharField(max_length=32)
+    inviteCode = models.ForeignKey(InviteCode, on_delete=models.CASCADE, null=True)
     ## The groups of the user
     groups = models.ManyToManyField(Group)
     ## The user linked to the preferences
@@ -23,6 +23,6 @@ class UserSetting(models.Model):
     ## The path to the avatar of the user.
     avatar = models.FilePathField(default='/defaultimgpath')  # FIXME : mettre un vrai chemin
     ## The invite code the user used to create an account
-    usedInviteCode = models.ForeignKey(InviteCode, on_delete=models.CASCADE, null=True)
+    usedInviteCode = models.ForeignKey(InviteCode, on_delete=models.CASCADE, null=True, related_name='used_invite_code')
     ## The language the user choosed
     language = models.CharField(max_length=5, null=True)

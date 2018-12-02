@@ -16,6 +16,7 @@ class Command(BaseCommand):
         self._permissionGenerator()
         self._groupGenerator()
         self._generateApplicationConfiguration()
+        logger.info('Inserted all the default objects into the database')
 
     ## Generate the default group for the application
     def _groupGenerator(self):
@@ -29,12 +30,12 @@ class Command(BaseCommand):
             logger.info('Generated default groups.')
             for group in Group.objects.all():
                 self._fillDefaultPermissions(group)
+            logger.info('Associated default permissions to groups.')
 
     @staticmethod
     ## Add the permission to a group given the user rank
     #   @param group the Group object of a user
     def _fillDefaultPermissions(group):
-        logger.info('Associating default permissions to groups.')
         if group.rank > 0:
             group.permissions.add(Permissions.objects.get(code="LOGI"))
             group.permissions.add(Permissions.objects.get(code="PLAY"))
