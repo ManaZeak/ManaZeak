@@ -42,6 +42,85 @@ class Komunikator {
   }
 
 
+
+  /** @method
+   * @name _resolveAsJSON
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by fetch requests to format server response
+   * as a JSON object.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
+  _resolveAsJSON(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.json());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+
+  /** @method
+   * @name _resolveAsText
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by fetch requests to format server response
+   * as a string. In ManaZeak, the main usage for this formatting type is when requesting an
+   * HTML template. This way it can be easily parsed and built into a DOM object.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
+  _resolveAsText(response, resolve, reject) {
+    if (response.ok) {
+      resolve(response.text());
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+
+  /** @method
+   * @name _resolveAsBinary
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by XMLHTTPRequests to format server response
+   * as binary data. In ManaZeak, the main usage for this formatting type is when requesting
+   * a <code>.mood</code> file, so it can be rendered as a moodbar in the UI.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
+  _resolveAsBinary(response, resolve, reject) {
+    if (response.status === 200) {
+      resolve(response.responseText);
+    } else {
+      this._handleErrorCode(response.status, reject);
+    }
+  }
+
+
+  /** @method
+   * @name _handleErrorCode
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>This method is called whenever a server request didn't went well.
+   * In case a request (from any type) fails, its HTTP status code have to be handle in the method,
+   * so the reject code can be handled in the UI.</blockquote>
+   * @param {Number} code - The HTTP error code to handle
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
+  _handleErrorCode(code, reject) {
+    if (code === 404) {
+      reject('URL_NOT_FOUND');
+    } else if (code === 403) {
+      reject('ACCESS_FORBIDDEN');
+    } else if (code === 500) {
+      reject('INTERNAL_ERROR');
+    } else {
+      reject('UNKNOWN_ERROR');
+    }
+  }
+
+
   //  ----  PUBLIC METHODS  ----  //
 
 
@@ -149,82 +228,6 @@ class Komunikator {
   }
 
 
-  /** @method
-   * @name _resolveAsJSON
-   * @private
-   * @memberof Komunikator
-   * @description <blockquote>Tool method used by fetch requests to format server response
-   * as a JSON object.</blockquote>
-   * @param {Object} response - The <code>fetch</code> response object
-   * @param {Function} resolve - The request <code>Promise</code> resolve callback
-   * @param {Function} reject - The request <code>Promise</code> reject callback */
-  _resolveAsJSON(response, resolve, reject) {
-    if (response.ok) {
-      resolve(response.json());
-    } else {
-      this._handleErrorCode(response.status, reject);
-    }
-  }
-
-
-  /** @method
-   * @name _resolveAsText
-   * @private
-   * @memberof Komunikator
-   * @description <blockquote>Tool method used by fetch requests to format server response
-   * as a string. In ManaZeak, the main usage for this formatting type is when requesting an
-   * HTML template. This way it can be easily parsed and built into a DOM object.</blockquote>
-   * @param {Object} response - The <code>fetch</code> response object
-   * @param {Function} resolve - The request <code>Promise</code> resolve callback
-   * @param {Function} reject - The request <code>Promise</code> reject callback */
-  _resolveAsText(response, resolve, reject) {
-    if (response.ok) {
-      resolve(response.text());
-    } else {
-      this._handleErrorCode(response.status, reject);
-    }
-  }
-
-
-  /** @method
-   * @name _resolveAsBinary
-   * @private
-   * @memberof Komunikator
-   * @description <blockquote>Tool method used by XMLHTTPRequests to format server response
-   * as binary data. In ManaZeak, the main usage for this formatting type is when requesting
-   * a <code>.mood</code> file, so it can be rendered as a moodbar in the UI.</blockquote>
-   * @param {Object} response - The <code>fetch</code> response object
-   * @param {Function} resolve - The request <code>Promise</code> resolve callback
-   * @param {Function} reject - The request <code>Promise</code> reject callback */
-  _resolveAsBinary(response, resolve, reject) {
-    if (response.status === 200) {
-      resolve(response.responseText);
-    } else {
-      this._handleErrorCode(response.status, reject);
-    }
-  }
-
-
-  /** @method
-   * @name _handleErrorCode
-   * @private
-   * @memberof Komunikator
-   * @description <blockquote>This method is called whenever a server request didn't went well.
-   * In case a request (from any type) fails, its HTTP status code have to be handle in the method,
-   * so the reject code can be handled in the UI.</blockquote>
-   * @param {Number} code - The HTTP error code to handle
-   * @param {Function} reject - The request <code>Promise</code> reject callback */
-  _handleErrorCode(code, reject) {
-    if (code === 404) {
-      reject('URL_NOT_FOUND');
-    } else if (code === 403) {
-      reject('ACCESS_FORBIDDEN');
-    } else if (code === 500) {
-      reject('INTERNAL_ERROR');
-    } else {
-      reject('UNKNOWN_ERROR');
-    }
-  }
 }
 
 export default Komunikator;
