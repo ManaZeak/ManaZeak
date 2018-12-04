@@ -34,7 +34,7 @@ class Komunikator {
    * @private
    * @memberof Komunikator
    * @description <blockquote>Init the Komunikator class by filling its <code>_headers</code> private member, to use in requests later on.<br>
-   * This method must be called in Komunikator's constructor only.</blockquote> */
+   * This method must be called from the Komunikator's constructor only.</blockquote> */
   _init() {
     this._headers.push(['Content-Type', 'application/json; charset=UTF-8']); // this._headers[0]
     this._headers.push(['Accept', 'application/json']); // this._headers[1]
@@ -48,6 +48,7 @@ class Komunikator {
   /** @method
    * @async
    * @name get
+   * @public
    * @memberof Komunikator
    * @description <blockquote><code>GET</code> HTTP request using the fetch API.<br>
    * <code>resolve</code> returns the response as an <code>Object</code>.<br>
@@ -72,6 +73,7 @@ class Komunikator {
   /** @method
    * @async
    * @name getBinaryResponse
+   * @public
    * @memberof Komunikator
    * @description <blockquote><code>GET</code> HTTP request using an <code>XMLHttpRequest</code>, with an override mimetype hack to pass bytes through unprocessed.<br>
    * It was implemented to allow <code>d3.js</code> to render <code>.mood</code> file (used in <a href="./FootBar.html#.renderMoodFile" target="_blank">renderMoodFile</a>).<br>
@@ -97,6 +99,7 @@ class Komunikator {
   /** @method
    * @async
    * @name getTemplate
+   * @public
    * @memberof Komunikator
    * @description <blockquote><code>GET</code> HTTP request using the fetch API.<br>
    * <code>resolve</code> returns the response as a <code>String</code>.<br>
@@ -121,6 +124,7 @@ class Komunikator {
   /** @method
    * @async
    * @name post
+   * @public
    * @memberof Komunikator
    * @description <blockquote><code>POST</code> HTTP request using the fetch API.<br>
    * Beware that the given options object match the url expectations (browse the backend documentation for further details).<br>
@@ -144,6 +148,16 @@ class Komunikator {
     });
   }
 
+
+  /** @method
+   * @name _resolveAsJSON
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by fetch requests to format server response
+   * as a JSON object.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
   _resolveAsJSON(response, resolve, reject) {
     if (response.ok) {
       resolve(response.json());
@@ -152,7 +166,17 @@ class Komunikator {
     }
   }
 
-  //response is from fetch
+
+  /** @method
+   * @name _resolveAsText
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by fetch requests to format server response
+   * as a string. In ManaZeak, the main usage for this formatting type is when requesting an
+   * HTML template. This way it can be easily parsed and built into a DOM object.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
   _resolveAsText(response, resolve, reject) {
     if (response.ok) {
       resolve(response.text());
@@ -161,15 +185,35 @@ class Komunikator {
     }
   }
 
-  // response is a XMLHTTPRequest
+
+  /** @method
+   * @name _resolveAsBinary
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>Tool method used by XMLHTTPRequests to format server response
+   * as binary data. In ManaZeak, the main usage for this formatting type is when requesting
+   * a <code>.mood</code> file, so it can be rendered as a moodbar in the UI.</blockquote>
+   * @param {Object} response - The <code>fetch</code> response object
+   * @param {Function} resolve - The request <code>Promise</code> resolve callback
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
   _resolveAsBinary(response, resolve, reject) {
     if (response.status === 200) {
-      resolve(response.responseText); // responseText is binary data
+      resolve(response.responseText);
     } else {
       this._handleErrorCode(response.status, reject);
     }
   }
 
+
+  /** @method
+   * @name _handleErrorCode
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>This method is called whenever a server request didn't went well.
+   * In case a request (from any type) fails, its HTTP status code have to be handle in the method,
+   * so the reject code can be handled in the UI.</blockquote>
+   * @param {Number} code - The HTTP error code to handle
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
   _handleErrorCode(code, reject) {
     if (code === 404) {
       reject('URL_NOT_FOUND');
