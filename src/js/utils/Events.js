@@ -63,7 +63,7 @@ class Events {
    * @param {number} uid - The event unique id
    **/
   unregister(uid) {
-    if (typeof uuid !== 'number') {
+    if (typeof uid !== 'number') {
       return;
     }
 
