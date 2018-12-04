@@ -88,7 +88,8 @@ class AlbumView extends SceneView {
     albumInfo.classList.add('album-info');
 
     const albumName = document.createElement('H1');
-    albumName.innerHTML = `${album.name} - ${album.year}`;
+//    albumName.innerHTML = `${album.name} - ${album.year}`;
+    albumName.innerHTML = `${album.name} - ${album.tracks[0].year}`;
 
     albumInfo.appendChild(albumName);
 
