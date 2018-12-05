@@ -232,7 +232,7 @@ def createVorbisTrack(filePath, fileTypeId, coverPath):
         track.totalTrack = processVorbisTag(audioFile['TOTALTRACK'])
 
     if 'BPM' in audioFile:
-        track.bpm = processVorbisTag(audioFile['BPM'])
+        track.bpm = math.floor(float(processVorbisTag(audioFile['BPM'])))
 
     if 'LYRICS' in audioFile:
         track.lyrics = processVorbisTag(audioFile['LYRICS'])

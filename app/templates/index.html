@@ -7,6 +7,7 @@
         <meta name="viewport" content="initial-scale=1">
         <meta name="description" content="ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. Check out our repo : https://github.com/Squadella/ManaZeak">
         <title>ManaZeak</title>
+    	<link rel="icon" type="image/png" href="{% static "img/logo/manazeak-logo-square.svg" %}">
         <link rel="stylesheet" type="text/css" href="{% static "dist/css/manazeak.bundle.css" %}">
     </head>
     <body>
@@ -20,7 +21,11 @@
       </div>
       <div id="mainContainer" class="extended">
         <div id="scene">
-          <img src="{% static "img/actions/option-gear.svg" %}" id="view-option" alt="view-option">
+          <div id="scene-commands">
+            <span>View</span>
+            <img src="{% static "img/actions/stretch-y.svg" %}" id="center-on-track" alt="center-on-track">
+          </div>
+          <img src="{% static "img/actions/option-gear.svg" %}" id="scene-view-option" alt="scene-view-option">
         </div>
           <div id="footbar">
             <div class="left">
