@@ -1,97 +1,56 @@
 <p align="center" style="margin-bottom: 25px">
-    <img src="/static/img/logo/manazeak-bg.png" width="740" height="419" />
+    <img src="/static/img/logo/manazeak-floyd-bg.png" width="740" height="419" />
 </p>
 
-# ManaZeak
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSquadella%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSquadella%2FManaZeak?ref=badge_shield)
+[![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak?ref=badge_shield)
+[![License](https://img.shields.io/github/license/ManaZeak/ManaZeak.svg)](https://github.com/ManaZeak/ManaZeak/blob/master/LICENSE.md)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
 
-
-ManaZeak is a free software that gives you the ability to listen to and edit your musical library and to share it with friends, from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked with [SyncThing](https://syncthing.net/), to automatically sync your online library with all the devices that share it.
+Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!
 
 ## Get Started
 
-#### Dependencies
+ManaZeak shall be installed on a Linux distribution with the following packages installed (refer to your distribution package manager for installation):
 
-To install, refer to your distribution package manager.
+``docker``
+``docker-compose``
+``npm``
 
-- ```docker```
-- ```docker-compose```
-- ```npm```
+Once dependencies requirements are met, clone the project to your machine and init the ManaZeak app:
 
-#### Installation
+``git clone https://github.com/Squadella/ManaZeak``
 
+``cd ManaZeak``
 
-In order to make an instance work, run the following commands :
-- ```$ git clone https://github.com/Squadella/ManaZeak```
-- ```$ cd ManaZeak; cp docker-compose.yml.example docker-compose.yml```
+`` ./mzk.sh init``
 
-Open the newly created  ```docker-compose.yml``` and replace all ```/PATH/TO/LIBRARY``` inside it with the path of your musical collection root directory (absolute path). Also, replace ``/PATH/TO/DB_DATA`` with the path you want ManaZeak to save its database in (absolute path, please don't ``./db_data``). Then keep going with :
+This will prompt you a wizard, to fill the database path and the library root path. Then you can run the app:
 
-- ```$ docker-compose build``` (This may take a while, go grab some coffee...)
-- ```$ docker-compose up -d```
+``./mzk.sh dev`` or ``./mkz.sh prod``
 
-You can now check that all containers have been launched correctly by using :
-- ```$ docker ps -a```
+Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/)
 
-Then, you must build the assets with [Webpack](https://github.com/webpack/webpack) :
-- ```npm install```
-- ```npm run prod``` (If you want to watch any changes on the files, use ``npm run dev``)
+The first user that will sign in into the app will be the app administrator. When the first user log in ManaZeak, he will be ask to create a library. 
 
-Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/) (or a production address, but keep in mind that this is an experimental  software).
+When declaring your libraries, prefix your path with ```/library/``` since ``/library/`` is equal to the path you gave in the ``./mzk.sh init`` wizard. Those declared libraries will be declared for every user in the app.
 
-#### Setup
-- You can now create an user : it will be an admin acount.
-- You have to declare your libraries from this admin acount.
-- It's cooked, go check the admin panel to tune the app!
-
-**NB**: *When declaring your libraries in ManaZeak, don't forget to prefix your path with ```/library/```. Those declared libraries will be declared for every user (already registered or new ones) in the app.*
-
-## Features
-
-#### Already in
-
-- Basic player (Play/Pause/Stop/Volume/Repeat/Random/Shuffle/Queue)
-- Drag & Drop (to suggest new file on the instance)
-- File support : MPEG3, OGG, FLAC
-- Link with [SyncThing](https://github.com/syncthing/syncthing) (to allow remote synchronisation)
-- Metadata edition (because tagging is life)
-- [MoodBar](https://en.wikipedia.org/wiki/Moodbar) (a way to have a unique visual of an audio file)
-- Playlist management (create/rename/delete)
-- Track(s) downloading (if you want a sweet local array of musical genius)
-- Track suggestion (based on internal statistic)
-- User account system (optional sponsoring setting)
-- User stats (to know better you musical habits)
-- Views :
-    - list (standard list view with tracks metadata);
-    - party (more minimalist view).
-
-#### Scheduled
-
-- Milestone
-- File support : WAV
-- ManaCoin intern system
-- ManaGotIt (Automatic player that suggests tracks according to some criteria)
-- Views :
-    - album (more visual for discographies);
-    - genre (a Top 100 for each genre, with a short description)).
+However, if not everything went as expected, you might check the [Troubleshooting](https://github.com/Squadella/ManaZeak/wiki/Troubleshooting) entry to get some help.
 
 ## Technologies
-- [d3.js](https://github.com/d3/d3)
-- [Django](https://github.com/django/django)
-- [Docker](https://github.com/docker)
-- [Postgresql](https://github.com/postgres/postgres)
-- [SyncThing](https://github.com/syncthing/syncthing)
-- [Webpack](https://github.com/webpack/webpack)
+[d3.js](https://github.com/d3/d3) |
+[Django](https://github.com/django/django) |
+[Docker](https://github.com/docker) |
+[Postgresql](https://github.com/postgres/postgres) |
+[SyncThing](https://github.com/syncthing/syncthing) |
+[Webpack](https://github.com/webpack/webpack)
 
 ## Contributors
-- [Arthur Beaulieu](https://github.com/ArthurBeaulieu) (front)
-- [Pierre Bouniol](https://github.com/Squadella) (back)
-- [Valentin Peiro](https://github.com/Oxydiz) (front)
-- [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) (docker)
-- [Armand Vignat](https://github.com/avignat) (docker)
-- [Guilhem Piat](https://github.com/Syncrossus) (translation)
-- [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin) (logo)
+[Arthur Beaulieu](https://github.com/ArthurBeaulieu) (Maintainer) |
+[Pierre Bouniol](https://github.com/Squadella) (Maintainer)
 
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSquadella%2FManaZeak.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSquadella%2FManaZeak?ref=badge_large)
+[Valentin Peiro](https://github.com/Oxydiz) |
+[Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) |
+[Armand Vignat](https://github.com/avignat) |
+[Guilhem Piat](https://github.com/Syncrossus) |
+[Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)

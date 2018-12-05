@@ -1,23 +1,23 @@
 {
   "name": "manazeak",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "<div style=\"text-align:center; margin-bottom: 25px;\">     <img src =\"http://manazeak.org/static/img/logo/manazeak.svg\" style=\"width: 50%\" /> </div>",
-  "main": "static/src/js/Start.js",
+  "main": "src/js/Start.js",
   "scripts": {
     "dev": "webpack --env.prod=false --progress",
     "debug": "webpack --env.prod=false --progress --display-error-details --verbose --profile",
     "prod": "webpack --env.prod=true --progress",
     "test": "karma start karma.config.js",
     "doc": "jsdoc -c ./doc/config/jsDoc.json",
-    "sonar-scanner": "x"
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
-  "homepage": "https://manazeak.org",
+  "homepage": "https://manazeak.github.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Squadella/ManaZeak.git"
+    "url": "git+https://github.com/ManaZeak/ManaZeak.git"
   },
   "bugs": {
-    "url": "https://github.com/Squadella/ManaZeak/issues"
+    "url": "https://github.com/ManaZeak/ManaZeak/issues"
   },
   "author": "The ManaZeak Authors",
   "contributors": [
@@ -43,7 +43,7 @@
       "name": "Laetitia Genin"
     }
   ],
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "autoprefixer": "^9.3.0",

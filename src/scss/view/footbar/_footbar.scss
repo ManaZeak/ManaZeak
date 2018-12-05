@@ -1,0 +1,108 @@
+#footbar {
+  background: $bar-alpha;
+  bottom: 0;
+  display: flex;
+  height: $footbar-height; // Defined in utils/tools/_variables.scss
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 700;
+
+  .left,
+  .right {
+    align-items: flex-end;
+    display: flex;
+    height: ($footbar-controls-height + $footbar-progress-height);
+    width: $footbar-sides-width;
+
+    p {
+      height: $moodbar-height;
+      line-height: $moodbar-height;
+      opacity: 0;
+      transition: opacity $footbar-transition linear;
+    }
+  }
+
+  .left {
+    justify-content: flex-end;
+
+    p {
+      margin-right: $margin;
+    }
+  }
+
+  .center {
+    height: 100%;
+    max-width: 1000px;
+    width: calc(100% - (#{$footbar-sides-width} * 2));
+
+    #controls-container {
+      align-items: center;
+      display: flex;
+      height: $footbar-controls-height;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+
+      div.image-wrapper {
+        cursor: pointer;
+        height: 50%;
+      }
+
+      img {
+        cursor: pointer;
+        height: 100%;
+        margin: 0 $footbar-controls-margin;
+        user-select: none;
+        -moz-user-select: none;
+
+        #repeat {
+          position: absolute;
+          left: 0;
+        }
+
+        #shuffle {
+          position: absolute;
+          left: calc(33px + #{$footbar-controls-margin});
+        }
+      }
+
+      div:last-child {
+        position: absolute;
+        right: 0;
+        width: 35px;
+
+        img {
+          height: 100% !important;
+        }
+      }
+
+      .shuffle-left {
+        position: absolute;
+        left: calc(33px + #{$footbar-controls-margin});
+      }
+
+      .repeat-left {
+        position: absolute;
+        left: 0;
+      }
+
+      @import 'volumebar'; // Loading volumebar rules
+
+      #queue {
+        position: absolute;
+        right: 0;
+        height: $footbar-controls-scale;
+        margin: 0 $footbar-controls-margin;
+      }
+    }
+
+    @import 'progressbar'; // Loading progressbar rules
+  }
+
+  .right {
+    p {
+      margin-left: $margin;
+    }
+  }
+}
