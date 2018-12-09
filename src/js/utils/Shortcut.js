@@ -5,13 +5,20 @@ class Shortcut {
    * @summary Basic keyboard Shortcut handler
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handler callbacks set on keyboard bindings
+   * @description Singleton class, Handler callbacks set on keyboard bindings
    **/
   constructor() {
+    if (!!Shortcut.instance) {
+      return Shortcut.instance;
+    }
+
+    Shortcut.instance = this;
     this._singleKey = [];
     this._multiKey = [];
 
     this._testShortcuts = this._testShortcuts.bind(this);
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //

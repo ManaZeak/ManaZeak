@@ -7,7 +7,7 @@ class Notification {
    * @summary Create an instance of a notification handler
    * @author Arthur Beaulieu
    * @since June 2018
-   * @description Notification Class to automatically handle one or several notification of different types at the same time.
+   * @description Notification Singleton Class to automatically handle one or several notification of different types at the same time.
    * @param {object} [options] - The notification handler global options
    * @param {string} [options.position=top-right] - <i>top-left; top-right; bottom-left; bottom-right;</i>
    * @param {string} [options.thickBorder=top] - <i>top; bottom; left; right; none;</i>
@@ -16,6 +16,11 @@ class Notification {
    * @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*
    **/
   constructor(options) {
+    if (!!Notification.instance) {
+      return Notification.instance;
+    }
+
+    Notification.instance = this;
     this._dismissAllLock = false; // Dismiss all operation in progress flag
     this._dom = {}; // Notification handler container
     this._active = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
@@ -31,6 +36,8 @@ class Notification {
 
     this._init(options);
     this._attach();
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
