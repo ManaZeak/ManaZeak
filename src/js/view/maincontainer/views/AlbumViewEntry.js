@@ -6,6 +6,7 @@ class AlbumViewEntry {
     if (typeof options !== 'object') {
       return;
     }
+
     this._artist = options.track.artist || '';
     this._composer = options.track.composer || '';
     this._duration = options.track.duration || '';
