@@ -5,11 +5,18 @@ class Events {
    * @summary Basic custom events system
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Exposes an API to register/unregister events and fire them
+   * @description Singleton class, Exposes an API to register/unregister events and fire them
    **/
   constructor() {
+    if (!!Events.instance) {
+      return Events.instance;
+    }
+
+    Events.instance = this;
     this._eventUid = 0;
     this._events = {};
+
+    return this;
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
