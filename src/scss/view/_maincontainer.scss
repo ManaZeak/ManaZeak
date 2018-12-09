@@ -3,7 +3,7 @@
 #mainContainer {
 //  background-image: linear-gradient(red, yellow);
   background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
-  height: calc(100% - (#{$topbar-height}));
+  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
   left: $aside-width;
   position: absolute;
   width: calc(100% - #{$aside-width});
@@ -27,6 +27,4 @@
     width: 100%;
     left: 0;
   }
-
-  @import 'footbar/footbar';
 }
