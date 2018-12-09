@@ -69,8 +69,6 @@ class AlbumView extends SceneView {
   }
 
   _buildAlbum(album) {
-    let index = 0;
-
     const uiAlbum = document.createElement('DIV');
     uiAlbum.classList.add('album');
 
@@ -103,12 +101,12 @@ class AlbumView extends SceneView {
     for (let k = 0; k < album.tracks.length; ++k) {
       const albumViewEntry = new AlbumViewEntry({
         track: album.tracks[k],
-        datasetId: index,
+        datasetId: this._trackDatasetId,
         trackNumber: k
       });
       this._tracks.push(albumViewEntry);
       albumTracks.appendChild(albumViewEntry.getDom());
-      ++index;
+      ++this._trackDatasetId;
 
       if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {
         genresObject[album.tracks[k].genre] = 1;
@@ -128,6 +126,7 @@ class AlbumView extends SceneView {
   }
 
   addTracks(artists) {
+    this._trackDatasetId = 0; // Need to be attached to this, and must be deleted after user (at the end of this method)
     const firstCall = (this._tracks.length === 0);
 
     for (let i = 0; i < artists.length; ++i) {
@@ -155,6 +154,7 @@ class AlbumView extends SceneView {
     }
 
     this.initTracksState();
+    delete this._trackDatasetId;
   }
 
   stopPlayback() {
