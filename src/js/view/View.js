@@ -1,5 +1,4 @@
 import TopBar from './topbar/TopBar.js';
-import Aside from './maincontainer/Aside.js';
 import Scene from './maincontainer/Scene.js';
 import FootBar from './footbar/FootBar.js';
 import Modal from '../utils/Modal.js';
@@ -17,7 +16,6 @@ class View {
   constructor() {
     this._mainContainer = {};
     this._topBar = {};
-    this._aside = {};
     this._scene = {};
     this._footBar = {};
 
@@ -35,15 +33,12 @@ class View {
    * @memberof View
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Init the View object width TopBar, FootBar, Asides and Scene
+   * @description Init the View object width TopBar, FootBar and Scene
    **/
   _init() {
     this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
 
     this._topBar = new TopBar();
-    this._aside = new Aside({
-      side: 'left'
-    });
     this._scene = new Scene();
     this._footBar = new FootBar();
 
