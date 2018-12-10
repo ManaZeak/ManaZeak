@@ -9,7 +9,7 @@ $aside-button-length: 25px;
   width: 100%;
   position: relative;
   padding: $margin-offset + ($main-container-icon-margin * 2);
-  height: calc(100% - #{$footbar-height});
+  height: 100%;
   transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
 

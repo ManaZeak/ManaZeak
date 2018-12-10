@@ -166,8 +166,8 @@ class Komunikator {
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
       xhr.onreadystatechange = response => { // Keep old js function definition since this is the request response object
-        if (response.originalTarget.readyState === 4 && response.originalTarget.status === 200) {
-          this._resolveAsBinary(response.originalTarget, resolve, reject);
+        if (response.target.readyState === 4 && response.target.status === 200) {
+          this._resolveAsBinary(response.target, resolve, reject);
         }
       };
       xhr.send();
