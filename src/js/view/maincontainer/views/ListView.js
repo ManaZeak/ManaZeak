@@ -20,8 +20,13 @@ class ListView extends SceneView {
   constructor(options) {
     super(options);
 
+    if ('ontouchstart' in window || 'onmsgesturechange') {
+      this._columns = listview.responsiveColumns;
+    } else {
+      this._columns = listview.defaultColumns;
+    }
+
     this._availableColumns = listview.availableColumns;
-    this._columns = listview.defaultColumns;
     this._trackContext = {}; // Context menu clicked on a track
     this._draggedColumn = null; // Currently dragged column
     this._dom = {
