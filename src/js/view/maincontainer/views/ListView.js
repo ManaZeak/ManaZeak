@@ -20,7 +20,7 @@ class ListView extends SceneView {
   constructor(options) {
     super(options);
 
-    if ('ontouchstart' in window || 'onmsgesturechange') {
+    if ('ontouchstart' in document.documentElement) {
       this._columns = listview.responsiveColumns;
     } else {
       this._columns = listview.defaultColumns;
