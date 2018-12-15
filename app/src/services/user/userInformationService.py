@@ -1,5 +1,3 @@
-from builtins import object
-
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
@@ -28,7 +26,7 @@ class UserInformationService(object):
         try:
             # Checking if the request is correct
             FrontRequestChecker.checkRequest(
-                RequestMethodEnum.GET, request, UserInformationService.getUserInformation, None, user)
+                RequestMethodEnum.GET, request)
             # Returning the information about the user with a standard response
             return JsonResponse(
                 {

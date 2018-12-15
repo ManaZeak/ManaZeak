@@ -7,7 +7,7 @@ import png  # requires pypng
 ## @package app.avatars
 #  This package contains a simple avatar creation utility function.
 
-class AvatarGenerator:
+class AvatarGenerator(object):
     ## The color palette for the avatars
     palette = {0: (255, 255, 255),
                1: (101, 155, 216),

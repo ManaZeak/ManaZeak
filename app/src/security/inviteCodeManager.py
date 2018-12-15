@@ -4,7 +4,7 @@ from app.models.security import InviteCode
 
 
 ## This class is used for managing the invite code of the users
-class InviteCodeManager:
+class InviteCodeManager(object):
 
     @staticmethod
     ## Get the object invite code of the database from a string invite code

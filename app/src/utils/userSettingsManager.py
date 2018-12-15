@@ -10,7 +10,7 @@ from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
 
-class UserSettingsManager:
+class UserSettingsManager(object):
 
     @staticmethod
     ## Create the user settings in database for a user

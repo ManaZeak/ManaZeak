@@ -2,7 +2,6 @@ import json
 from builtins import staticmethod
 
 from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.errors.errorHandler import ErrorHandler
 
 
 ## @package app.utils.requestHandler
@@ -13,7 +12,7 @@ from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
 
 
-class FrontRequestChecker:
+class FrontRequestChecker(object):
 
     @staticmethod
     ## Check if a request is correct. Throws an exception if an unexpected value was encountered.
@@ -23,14 +22,14 @@ class FrontRequestChecker:
     #   @param expectedKeys the keys expected in the POST request if any
     #   @param user the user doing the request
     #   @return the response if the request is a POST nothing if it's a get.
-    def checkRequest(expectedRequestMethod, request, caller, expectedKeys=None, user=None):
+    def checkRequest(expectedRequestMethod, request, expectedKeys=None):
         # Check if the request has the good method type
         if request.method != expectedRequestMethod.value:
             raise UserException(ErrorEnum.BAD_REQUEST)
 
         # Test the keys of the request
         if request.method == 'POST' and expectedKeys is not None:
-            return FrontRequestChecker._checkRequestPOST(request, caller, expectedKeys, user)
+            return FrontRequestChecker._checkRequestPOST(request, expectedKeys)
 
     @staticmethod
     ## Check a request of the POST type.
@@ -38,7 +37,7 @@ class FrontRequestChecker:
     #   @param caller the function that called the analyser
     #   @param expectedKeys the key expected to be in the request
     #   @param user the user doing the action
-    def _checkRequestPOST(request, caller, expectedKeys, user):
+    def _checkRequestPOST(request, expectedKeys):
         # Parsing the request
         parsedRequest = json.loads(request.body)
 

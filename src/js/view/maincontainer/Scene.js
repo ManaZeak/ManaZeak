@@ -16,7 +16,7 @@ class Scene {
     this.view = {};
     this._viewSwitcher = new ViewSwitcher({
       target: this._scene,
-      url: 'modals/changeview/'
+      url: 'modals/changeView/'
     });
 
     this._sceneCommands = document.getElementById('scene-commands');

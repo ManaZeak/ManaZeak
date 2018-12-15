@@ -6,7 +6,7 @@ from app.src.utils.exceptions.userException import UserException
 
 ## @package app.utils.adminOptionManager
 # Manage the global option of the application
-class ApplicationConfigurationManager:
+class ApplicationConfigurationManager(object):
 
     @staticmethod
     ## Get the global options of the application

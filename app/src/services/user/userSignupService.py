@@ -13,7 +13,7 @@ from app.src.utils.exceptions.userException import UserException
 from app.src.utils.userSettingsManager import UserSettingsManager
 
 
-class UserSignupService:
+class UserSignupService(object):
 
     ## This method insert a user and all the linked objects into the database.
     def createUser(self, form):
