@@ -11,10 +11,10 @@ from app.models import ApplicationConfiguration
 ## Main container
 #   @param ListView view object (given by django)
 #   @return the main view page
-class mainView(ListView):
+class MainView(ListView):
     template_name = 'index.html'
     queryset = ApplicationConfiguration
 
     @method_decorator(login_required(redirect_field_name='', login_url='app:login'))
     def dispatch(self, *args, **kwargs):
-        return super(mainView, self).dispatch(*args, **kwargs)
+        return super(MainView, self).dispatch(*args, **kwargs)

@@ -28,7 +28,7 @@ class LanguageService(object):
         user = request.user
         try:
             response = FrontRequestChecker.checkRequest(
-                RequestMethodEnum.POST, request, LanguageService.selectLanguage, ['LANG'], user)
+                RequestMethodEnum.POST, request, ['LANG'])
             requestedLang = response['LANG']
             if LanguageService._checkLanguage(requestedLang):
                 jsonFile = os.path.join(pathToLang, requestedLang + ".json")
@@ -43,9 +43,8 @@ class LanguageService(object):
                     {**data, **ErrorHandler.createStandardStateMessage(True)}
                 )
         except UserException as e:
-            return JsonResponse(
-                ErrorHandler.createStandardStateMessage(False, e.errorType, LanguageService.selectLanguage, user)
-            )
+            # Handle the errors and send the response to the front.
+            return ErrorHandler.generateJsonResponseFromException(e, LanguageService.selectLanguage, user)
 
     @staticmethod
     ## Check if the requested json is correct

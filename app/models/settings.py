@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from app.models import Playlist
 from app.models.security import Group, InviteCode
 
 
@@ -21,8 +22,18 @@ class UserSetting(models.Model):
     ## The user linked to the preferences
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ## The path to the avatar of the user.
-    avatar = models.FilePathField(default='/defaultimgpath')  # FIXME : mettre un vrai chemin
+    avatar = models.FilePathField(default='static/default/user.svg')
     ## The invite code the user used to create an account
     usedInviteCode = models.ForeignKey(InviteCode, on_delete=models.CASCADE, null=True, related_name='used_invite_code')
-    ## The language the user choosed
+    ## The language the user choose
     language = models.CharField(max_length=5, null=True)
+
+
+## This class stores the order of the playlist for a user
+class PlaylistOrder(models.Model):
+    ## The user with this settings
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    ## The playlist concerned
+    playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING)
+    ## The position in the list of the playlist
+    position = models.IntegerField()

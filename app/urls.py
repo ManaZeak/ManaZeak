@@ -1,10 +1,10 @@
 from django.urls import path
 
-from app.src.collections.library.libraryService import getTrack
+from app.src.services.collections.library.libraryService import getTrack
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
-from app.src.views import mainView, signupView
+from app.src.views import MainView, signupView
 from app.src.views.genericViews import GenericViews
 
 
@@ -19,7 +19,11 @@ urlpatterns = [
     path('login/', loginView.Login.as_view(), name='login'),
     path('signup/', signupView.signup, name='signup'),
     path('logout/', GenericViews.logoutView, name='logout'),
-    path('', mainView.mainView.as_view(), name='index'),
+    path('', MainView.MainView.as_view(), name='index'),
+
+    ############################# Modals #############################
+    path('modals/userMenu/', GenericViews.userMenuContext, name='userMenu'),
+    path('modals/changeView/', GenericViews.changeViewContext, name='userMenu'),
 
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),

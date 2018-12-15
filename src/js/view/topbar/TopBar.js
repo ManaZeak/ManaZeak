@@ -24,7 +24,7 @@ class TopBar {
 
     this._userMenu = new UserMenu({
       target: this._topbar,
-      url: 'modals/usermenu/'
+      url: 'modals/userMenu/'
     });
 
     this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates

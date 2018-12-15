@@ -2,11 +2,13 @@
 # This package handle the errors that can happen during a normal use of the application.
 import logging
 
+from django.http import JsonResponse
+
 logger = logging.getLogger('django')
 
 
 ## This class allows to create standard response message to the front
-class ErrorHandler:
+class ErrorHandler(object):
 
     @staticmethod
     ## This function create a dict containing the default information for server response to the front.
@@ -31,6 +33,12 @@ class ErrorHandler:
                 'DONE': isDone,
                 'ERROR_KEY': errorType.name,
             }
+
+    @staticmethod
+    def generateJsonResponseFromException(exception, caller, user):
+        return JsonResponse(
+            ErrorHandler.createStandardStateMessage(False, exception.errorType, caller, user)
+        )
 
     @staticmethod
     ## This function create the formatted log for the serer in case of an error.
