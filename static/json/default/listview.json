@@ -41,6 +41,23 @@
       "width": "13"
     }
   ],
+  "responsiveColumns": [
+    {
+      "name": "Duration",
+      "order": 0,
+      "width": "20"
+    },
+    {
+      "name": "Artist",
+      "order": 1,
+      "width": "30"
+    },
+    {
+      "name": "Title",
+      "order": 2,
+      "width": "50"
+    }
+  ],
   "availableColumns": [
     {
       "name": "Duration",
