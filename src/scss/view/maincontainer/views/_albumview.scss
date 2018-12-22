@@ -35,8 +35,9 @@
       .genre-badges {
         grid-column: 1;
         grid-row: 2;
-        justify-self: center;
+        justify-self: end;
         line-height: 2.8em;
+        margin: 0 25px;
         text-align: center;
         
         span {
@@ -108,7 +109,6 @@
               align-self: end;
               grid-column: 1;
               grid-row: 1 / span 2;
-              z-index: 999;
               font-weight: inherit;
               padding-left: 0;
               text-overflow: inherit;

@@ -1,14 +1,21 @@
-'use_strict';
+'use strict';
 
 class Utils {
   /**
    * @summary Miscelaneous utils
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Miscelaneous utils function and prototypes for mzk
+   * @description Singleton class, Miscelaneous utils function and prototypes for mzk
    **/
   constructor() {
+    if (!!Utils.instance) {
+      return Utils.instance;
+    }
+
+    Utils.instance = this;
     this._prototypes();
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -121,6 +128,12 @@ class Utils {
     } else {
       return `${transformedTime.m}:${transformedTime.s}`;
     }
+  }
+
+  alreadyExistsInArray(array, value) {
+    return array.some(function(arrayValue) {
+      return value === arrayValue;
+    });
   }
 
   /**

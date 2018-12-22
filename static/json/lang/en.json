@@ -55,6 +55,11 @@
         "title": "Can not center on given track",
         "message": "The track ID you gave to center the list view on is not valid.",
         "severity": "info"
+      },
+      "NO_NEXT_TRACK": {
+        "title": "No track to play next",
+        "message": "Please select a track or open a playlist to play a track.",
+        "severity": "info"
       }
     },
     "backend":  {

@@ -1,15 +1,22 @@
-'use_strict';
+'use strict';
 
 class Events {
   /**
    * @summary Basic custom events system
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Exposes an API to register/unregister events and fire them
+   * @description Singleton class, Exposes an API to register/unregister events and fire them
    **/
   constructor() {
+    if (!!Events.instance) {
+      return Events.instance;
+    }
+
+    Events.instance = this;
     this._eventUid = 0;
     this._events = {};
+
+    return this;
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -39,9 +46,13 @@ class Events {
     this._events[options.name].push({
       id: this._eventUid,
       name: options.name,
-      oneShot: options.oneShot ? options.oneShot : false,
+      oneShot: false,
       callback: callback
     });
+
+    if (options.oneShot) {
+      this._events[options.name].oneShot = true;
+    }
 
     this._eventUid++;
 
@@ -59,13 +70,12 @@ class Events {
    * @param {number} uid - The event unique id
    **/
   unregister(uid) {
-    if (typeof uuid !== 'number') {
+    if (typeof uid !== 'number') {
       return;
     }
 
     for (const key in this._events) {
-      let i = this._events[key].length;
-      while (i--) { // Reverse parsing, post decrement is mandatory bc of splice()
+      for (let i = this._events[key].length - 1; i >= 0; --i) { // Reverse parsing, post decrement is mandatory bc of splice()
         if (this._events[key][i].id === uid) {
           this._events[key].splice(i, 1);
         }
@@ -106,8 +116,7 @@ class Events {
     }
 
     for (const key in this._events) {
-      let i = this._events[key].length;
-      while (i--) { // Reverse parsing, post decrement is mandatory bc of splice()
+      for (let i = this._events[key].length - 1; i >= 0; --i) { // Reverse parsing, post decrement is mandatory bc of splice()
         if (this._events[key][i].name === eventName) {
           this._events[key][i].callback();
           if (this._events[key][i].oneShot) {

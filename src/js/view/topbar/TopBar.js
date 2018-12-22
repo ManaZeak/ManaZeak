@@ -1,5 +1,5 @@
 import UserMenu from './UserMenu.js';
-'use_strict';
+'use strict';
 
 
 class TopBar {

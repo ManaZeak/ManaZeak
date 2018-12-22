@@ -1,13 +1,18 @@
-'use_strict';
+'use strict';
 
 class Errors {
   /**
    * @summary Errors system with feedback
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Raise both a log and a user feeback depending on lang/*.json files (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript
+   * @description Singleton class, Raise both a log and a user feeback depending on lang/*.json files (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript
    **/
   constructor(options) {
+    if (!!Errors.instance) {
+      return Errors.instance;
+    }
+
+    Errors.instance = this;
     this._verbose = false;
     if (options.verbose !== undefined && typeof options.verbose === 'boolean') {
       this._verbose = options.verbose;
@@ -28,6 +33,8 @@ class Errors {
     this._cssRules.info = 'color: rgb(44, 44, 48); font-weight: bold;';
     this._cssRules.warning = 'color: rgb(44, 44, 48); font-weight: bold;';
     this._cssRules.error = 'color: rgb(255, 0, 48); font-weight: bold;';
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //

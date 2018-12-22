@@ -113,8 +113,9 @@ db_data
 
 ### ManaZeak specific ###
 .scannerwork
-doc/**
 log/**
+doc/frontend/**
+doc/python/**
 node_modules/**
 static/dist/**
 static/mood/**

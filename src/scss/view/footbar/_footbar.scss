@@ -49,16 +49,6 @@
         height: 50%;
       }
 
-      .shuffle-left {
-        position: absolute;
-        left: calc(33px + #{$footbar-controls-margin});
-      }
-
-      .repeat-left {
-        position: absolute;
-        left: 0;
-      }
-
       img {
         cursor: pointer;
         height: 100%;
@@ -75,6 +65,26 @@
           position: absolute;
           left: calc(33px + #{$footbar-controls-margin});
         }
+      }
+
+      div:last-child {
+        position: absolute;
+        right: 0;
+        width: 35px;
+
+        img {
+          height: 100% !important;
+        }
+      }
+
+      .shuffle-left {
+        position: absolute;
+        left: calc(33px + #{$footbar-controls-margin});
+      }
+
+      .repeat-left {
+        position: absolute;
+        left: 0;
       }
 
       @import 'volumebar'; // Loading volumebar rules
