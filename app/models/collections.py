@@ -8,7 +8,7 @@ from app.models import Track
 ## This class describes the playlists in the database.
 class Playlist(models.Model):
     ## The name of the playlist
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default='Playlist')
     ## The tracks contained in the playlist
     track = models.ManyToManyField(Track)
     ## The number of track in the playlist
@@ -24,7 +24,7 @@ class Playlist(models.Model):
     ## The owner of the playlist
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     ## The description of the playlist
-    description = models.CharField(max_length=5000)
+    description = models.CharField(max_length=5000, null=True)
 
 ## This class describes a library.
 class Library(models.Model):

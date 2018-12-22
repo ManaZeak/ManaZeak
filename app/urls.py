@@ -1,6 +1,6 @@
 from django.urls import path
 
-from app.src.services.collections.library.libraryService import getTrack
+from app.src.services.collections.playlist.playlistService import PlaylistService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
@@ -21,6 +21,10 @@ urlpatterns = [
     path('logout/', GenericViews.logoutView, name='logout'),
     path('', MainView.MainView.as_view(), name='index'),
 
+    ########################### Playlists ###########################
+    path('playlist/getUserPlaylists/', PlaylistService.getUserPlaylists, name='getUserPlaylists'),
+    path('playlist/getTrack/<path:path>/', PlaylistService.getTrack, name='getTrack'),
+
     ############################# Modals #############################
     path('modals/userMenu/', GenericViews.userMenuContext, name='userMenu'),
     path('modals/changeView/', GenericViews.changeViewContext, name='userMenu'),
@@ -30,7 +34,4 @@ urlpatterns = [
 
     ########################## User Settings ##########################
     path('user/getInformation/', UserInformationService.getUserInformation, name='getUserInformation'),
-
-    # TESTING METHOD
-    path('test/<path:path>', getTrack, name='test')
 ]

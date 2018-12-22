@@ -7,11 +7,11 @@ class PlayListHelper(object):
     @staticmethod
     ## This class send the order of the playlist set by the user
     #   @param user the user asking for his playlist
-    #   @return the playlists ordered in a array by the rank
+    #   @return the playlists ordered in a array by the position
     def getOrderedPlaylist(user):
         playlists = []
         # Getting the information about the order of the playlist
-        playlistOrders = PlaylistOrder.objects.filter(user=user).order_by('rank')
+        playlistOrders = PlaylistOrder.objects.filter(user=user).order_by('position')
         for playlistOrder in playlistOrders:
             playlists.append(playlistOrder.playlist)
         return playlists
@@ -32,3 +32,8 @@ class PlayListHelper(object):
             'OWNER': playlist.owner,
         }
 
+    ## Fill the given table with playlist infos
+    #   @param playlists the table contains playlists
+    def getPlaylistsInformation(self, playlists, playlistsInfo):
+        for playlist in playlists:
+            playlistsInfo.append(self.getPlaylistInformation(playlist))
