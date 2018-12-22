@@ -1,7 +1,7 @@
 from app.models.settings import ApplicationConfiguration
 
 from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.exceptions.userException import UserException
+from app.src.utils.exceptions.unexpectedStateException import UnexpectedStateException
 
 
 ## @package app.utils.adminOptionManager
@@ -13,5 +13,5 @@ class ApplicationConfigurationManager(object):
     #   @return the application configuration object
     def getApplicationConfiguration():
         if ApplicationConfiguration.objects.all().count() != 1:
-            raise UserException(ErrorEnum.UNEXPECTED_STATE)
+            raise UnexpectedStateException()
         return ApplicationConfiguration.objects.first()

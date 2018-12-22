@@ -26,7 +26,7 @@ logger = logging.getLogger('users')
 def signup(request):
     # Checking that the response is correct
     try:
-        FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, signup)
+        FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request)
     except UserException:
         return render(request, 'signup.html', {'form': UserCreationForm()})
 
