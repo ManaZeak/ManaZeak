@@ -46,3 +46,12 @@ class GenericViews(object):
     #   @return the user menu template
     def trackContext(request):
         return render(request, 'contexts/trackcontext.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    ## Send the queue context HTML template
+    #   @param request request given by the front
+    #   @return the user menu template
+    def queueContext(request):
+        return render(request, 'contexts/queuecontext.html')
+
