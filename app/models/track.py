@@ -19,15 +19,15 @@ class Artist(models.Model):
 ## This class is describing the table album.
 class Album(models.Model):
     ## The title of the album.
-    title = models.CharField(max_length=1000, unique=True, null=True)
+    title = models.CharField(max_length=1000, null=True)
     ## The number of disc of the album.
     totalDisc = models.IntegerField(null=True)
     ## the number of track in the album.
     totalTrack = models.IntegerField(null=True)
     ## The artists associated to the album.
-    artist = models.ManyToManyField(Artist)
+    artists = models.ManyToManyField(Artist)
     ## The description of the album
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, null=True)
 
 
 ## This class is describing the table genre.
@@ -48,9 +48,9 @@ class Track(models.Model):
     ## The year of creation of the track (metadata).
     year = models.IntegerField(null=True)
     ## The composer of the track.
-    composer = models.ManyToManyField(Artist, related_name='composer_artists')
+    composers = models.ManyToManyField(Artist, related_name='composer_artists')
     ## The performer of the track.
-    performer = models.ManyToManyField(Artist, related_name='performer_artists')
+    performers = models.ManyToManyField(Artist, related_name='performer_artists')
     ## The position of the track inside the album.
     number = models.IntegerField(null=True)
     ## The beats per minute of the track.
@@ -78,7 +78,7 @@ class Track(models.Model):
     ## The album linked to the track.
     album = models.ForeignKey(Album, null=True, on_delete=models.CASCADE)
     ## The genre linked to the track.
-    genre = models.ForeignKey(Genre, null=True, on_delete=models.CASCADE)
+    genre = models.ManyToManyField(Genre)
     ## The file type linked to the track.
     fileType = models.ForeignKey(FileType, null=True, on_delete=models.CASCADE)
     ## The track moodbar path.
