@@ -10,7 +10,6 @@ $topbar-transition: ($transition-duration * 2);
 
   @include user-select(none);
 
-
   img#topbar-logo {
     align-self: center;
     position: absolute;
@@ -31,6 +30,4 @@ $topbar-transition: ($transition-duration * 2);
     opacity: 1;
     cursor: pointer;
   }
-
-  @import './usermenu';
 }

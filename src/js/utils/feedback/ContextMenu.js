@@ -34,7 +34,7 @@ class ContextMenu {
   }
 
   _viewportClicked(event) {
-    event.stopPropagation();
+    event.stopImmediatePropagation();
 
     if (!event.target.closest(this._overlay.children[0].className)) {
       this.close();

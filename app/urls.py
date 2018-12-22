@@ -34,4 +34,3 @@ urlpatterns = [
 
     ########################## User Settings ##########################
     path('user/getInformation/', UserInformationService.getUserInformation, name='getUserInformation'),
-]

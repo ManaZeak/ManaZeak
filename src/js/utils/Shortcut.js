@@ -1,17 +1,24 @@
-'use_strict';
+'use strict';
 
 class Shortcut {
   /**
    * @summary Basic keyboard Shortcut handler
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handler callbacks set on keyboard bindings
+   * @description Singleton class, Handler callbacks set on keyboard bindings
    **/
   constructor() {
+    if (!!Shortcut.instance) {
+      return Shortcut.instance;
+    }
+
+    Shortcut.instance = this;
     this._singleKey = [];
     this._multiKey = [];
 
     this._testShortcuts = this._testShortcuts.bind(this);
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -29,6 +36,42 @@ class Shortcut {
     document.addEventListener('keydown', this._testShortcuts);
     document.addEventListener('keypress', this._testShortcuts);
   }
+
+    /**
+     * @method
+     * @name register
+     * @public
+     * @memberof Shortcut
+     * @author Arthur Beaulieu
+     * @since September 2018
+     * @description Register a new shortcut and bind it to a callback
+     * @param {string} keyString - The keys string
+     * @param {function} fire - The shortcut callback to trigger
+     **/
+    register(keyString, fire) {
+      const shortcut = {
+        keyString: keyString,
+        modifiers: {
+          ctrlKey: /ctrl/i.test(keyString),
+          altKey: /alt/i.test(keyString),
+          shiftKey: /shift/i.test(keyString)
+        },
+        modifierCount: this._getModifiersCount(keyString),
+        key: keyString.substr(keyString.lastIndexOf('+') + 1).toLowerCase(),
+        paused: false,
+        fire: fire
+      };
+
+      if (this._singleKey.length === 0 || this._multiKey.length === 0) {
+        this._addEvents();
+      }
+
+      if (!shortcut.modifiers.ctrlKey && !shortcut.modifiers.shiftKey && !shortcut.modifiers.altKey && !shortcut.modifiers.metaKey) {
+        this._singleKey.push(shortcut);
+      } else {
+        this._multiKey.push(shortcut);
+      }
+    }
 
   /**
    * @method
@@ -60,48 +103,70 @@ class Shortcut {
     }
 
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
-      for (let i = 0; i < this._multiKey.length; ++i) {
-        const shortcut = this._multiKey[i];
-
-        if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-          switch (shortcut.modifierCount) {
-            case 1:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
-                (shortcut.modifiers.altKey && event.altKey) ||
-                (shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-            case 2:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
-                (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
-                (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-            case 3:
-              if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
-                  shortcut.modifiers.altKey && event.altKey &&
-                  shortcut.modifiers.shiftKey && event.shiftKey)) {
-                shortcut.fire();
-                return;
-              }
-              break;
-          }
-        }
-      }
+      this._multiKeyTest(event);
     } else { // Single key shortcut
-      for (let i = 0; i < this._singleKey.length; ++i) {
-        const shortcut = this._singleKey[i];
+      this._singleKeyTest(event);
+    }
+  }
 
-        if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-          shortcut.fire(this);
+  _singleKeyTest(event) {
+    for (let i = 0; i < this._singleKey.length; ++i) {
+      const shortcut = this._singleKey[i];
+
+      if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
+        shortcut.fire(this);
+        return;
+      }
+    }
+  }
+
+  _multiKeyTest(event) {
+    for (let i = 0; i < this._multiKey.length; ++i) {
+      const shortcut = this._multiKey[i];
+
+      if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
+        if (shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) {
+          return;
+        } else if (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) {
+          return;
+        } else if (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true) {
           return;
         }
       }
     }
+  }
+
+  _singleModifierTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey) ||
+        (shortcut.modifiers.altKey && event.altKey) ||
+        (shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
+  }
+
+  _doubleModifiersTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.altKey && event.altKey) ||
+        (shortcut.modifiers.ctrlKey && event.ctrlKey && shortcut.modifiers.shiftKey && event.shiftKey) ||
+        (shortcut.modifiers.altKey && event.altKey && shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
+  }
+
+  _tripleModifiersTrigger(event, shortcut) {
+    if ((shortcut.modifiers.ctrlKey && event.ctrlKey &&
+        shortcut.modifiers.altKey && event.altKey &&
+        shortcut.modifiers.shiftKey && event.shiftKey)) {
+      shortcut.fire();
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -178,40 +243,6 @@ class Shortcut {
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-  /**
-   * @method
-   * @name register
-   * @public
-   * @memberof Shortcut
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Register a new shortcut and bind it to a callback
-   * @param {string} keyString - The keys string
-   * @param {function} fire - The shortcut callback to trigger
-   **/
-  register(keyString, fire) {
-    const shortcut = {
-      keyString: keyString,
-      modifiers: {
-        ctrlKey: /ctrl/i.test(keyString),
-        altKey: /alt/i.test(keyString),
-        shiftKey: /shift/i.test(keyString)
-      },
-      modifierCount: this._getModifiersCount(keyString),
-      key: keyString.substr(keyString.lastIndexOf('+') + 1).toLowerCase(),
-      paused: false,
-      fire: fire
-    };
-
-    if (this._singleKey.length === 0 || this._multiKey.length === 0) {
-      this._addEvents();
-    }
-
-    (!shortcut.modifiers.ctrlKey && !shortcut.modifiers.shiftKey && !shortcut.modifiers.altKey && !shortcut.modifiers.metaKey) ?
-    this._singleKey.push(shortcut):
-      this._multiKey.push(shortcut);
-  }
 
   /**
    * @method

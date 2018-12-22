@@ -1,9 +1,8 @@
 import TopBar from './topbar/TopBar.js';
-import Aside from './maincontainer/Aside.js';
 import Scene from './maincontainer/Scene.js';
 import FootBar from './footbar/FootBar.js';
 import Modal from '../utils/Modal.js';
-'use_strict';
+'use strict';
 
 
 class View {
@@ -11,12 +10,12 @@ class View {
    * @summary Fronted View class
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>. This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.
+   * @description <blockquote>Handle everything that is UI. Not meant AT ALL to handle data modelisation, use <code>Model.js</code>.
+   * This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.</blockquote>
    **/
   constructor() {
     this._mainContainer = {};
     this._topBar = {};
-    this._aside = {};
     this._scene = {};
     this._footBar = {};
 
@@ -34,15 +33,12 @@ class View {
    * @memberof View
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Init the View object width TopBar, FootBar, Asides and Scene
+   * @description Init the View object width TopBar, FootBar and Scene
    **/
   _init() {
     this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
 
     this._topBar = new TopBar();
-    this._aside = new Aside({
-      side: 'left'
-    });
     this._scene = new Scene();
     this._footBar = new FootBar();
 
@@ -208,6 +204,10 @@ class View {
           });
         });
     }
+  }
+
+  getTrackById(id) {
+    return this._scene.getTrackById(id);
   }
 
   getNextTrackId() {

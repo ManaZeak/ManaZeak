@@ -1,11 +1,13 @@
-'use_strict';
+import NotificationDefaults from '../../../static/json/default/notification.json';
+
+'use strict';
 
 class Notification {
   /**
    * @summary Create an instance of a notification handler
    * @author Arthur Beaulieu
    * @since June 2018
-   * @description Notification Class to automatically handle one or several notification of different types at the same time.
+   * @description Notification Singleton Class to automatically handle one or several notification of different types at the same time.
    * @param {object} [options] - The notification handler global options
    * @param {string} [options.position=top-right] - <i>top-left; top-right; bottom-left; bottom-right;</i>
    * @param {string} [options.thickBorder=top] - <i>top; bottom; left; right; none;</i>
@@ -14,6 +16,11 @@ class Notification {
    * @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N*
    **/
   constructor(options) {
+    if (!!Notification.instance) {
+      return Notification.instance;
+    }
+
+    Notification.instance = this;
     this._dismissAllLock = false; // Dismiss all operation in progress flag
     this._dom = {}; // Notification handler container
     this._active = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
@@ -29,6 +36,8 @@ class Notification {
 
     this._init(options);
     this._attach();
+
+    return this;
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -52,44 +61,61 @@ class Notification {
     this._dom = document.createElement('DIV'); // Notification handler DOM container
     this._dom.classList.add('notification-container'); // Set proper CSS class
 
-    this._default = {
-      handler: {
-        position: 'top-right',
-        thickBorder: 'top',
-        duration: 5000,
-        transition: 200,
-        maxActive: 10
-      },
-      notification: {
-        type: 'info',
-        message: '',
-        title: '',
-        iconless: false,
-        closable: true,
-        sticky: false,
-        renderTo: this._dom,
-        CBtitle: '',
-        callback: null
-      },
-      color: {
-        success: 'rgb(76, 175, 80)',
-        info: 'rgb(3, 169, 244)',
-        warning: 'rgb(255, 152, 0)',
-        error: 'rgb(244, 67, 54)'
+    this._default = NotificationDefaults;
+    this._default.notification.renderTo = this._dom;
+
+    this._setOptionsDefault(options);
+
+    this._position = options.position;
+    this._thickBorder = options.thickBorder;
+    this._duration = options.duration;
+    this._transition = options.transition;
+    this._maxActive = options.maxActive;
+
+    this._setAttributesDefault();
+
+    this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
+  }
+
+  _setOptionsDefault(options) {
+    if (options !== undefined) {
+      if (options.position === undefined) {
+        options.position = this._default.handler.position;
       }
-    };
 
-    this._position = options === undefined ? this._default.handler.position : options.position === undefined ? this._default.handler.position : options.position;
-    this._thickBorder = options === undefined ? this._default.handler.thickBorder : options.thickBorder === undefined ? this._default.handler.thickBorder : options.thickBorder;
-    this._duration = options === undefined ? this._default.handler.duration : options.duration === undefined ? this._default.handler.duration : options.duration;
-    this._transition = options === undefined ? this._default.handler.transition : options.transition === undefined ? this._default.handler.transition : options.transition;
-    this._maxActive = options === undefined ? this._default.handler.maxActive : options.maxActive === undefined ? this._default.handler.maxActive : options.maxActive;
+      if (options.thickBorder === undefined) {
+        options.thickBorder = this._default.handler.thickBorder;
+      }
 
-    if (this._position !== 'top-left' && this._position !== 'top-right' && this._position !== 'bottom-left' && this._position !== 'bottom-right') { // Illegal value for position
+      if (options.duration === undefined) {
+        options.duration = this._default.handler.duration;
+      }
+
+      if (options.transition) {
+        options.transition = this._default.handler.transition;
+      }
+
+      if (options.maxActive) {
+        options.maxActive = this._default.handler.maxActive;
+      }
+    } else {
+      console.error('Notification handler : no options given.');
+    }
+  }
+
+  _setAttributesDefault() {
+    if (this._position !== 'top-left' && /* Illegal value for position */
+        this._position !== 'top-right' &&
+        this._position !== 'bottom-left' &&
+        this._position !== 'bottom-right') {
       this._position = this._default.handler.position; // Default value
     }
 
-    if (this._thickBorder !== 'top' && this._thickBorder !== 'bottom' && this._thickBorder !== 'left' && this._thickBorder !== 'right' && this._thickBorder !== 'none') { // Illegal value for thick border
+    if (this._thickBorder !== 'top' && /* Illegal value for thick border */
+        this._thickBorder !== 'bottom' &&
+        this._thickBorder !== 'left' &&
+        this._thickBorder !== 'right' &&
+        this._thickBorder !== 'none') {
       this._thickBorder = this._default.handler.thickBorder; // Default value
     }
 
@@ -105,7 +131,6 @@ class Notification {
       this._maxActive = this._default.handler.maxActive; // Default value for _maxActive
     }
 
-    this._dom.classList.add(this._position); // Add position CSS class only after this._position is sure to be a valid value
   }
 
   /**
@@ -131,7 +156,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Handle mouse events for the given notification
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    * @param {number} notification.requestCount - Notification inner call counter
@@ -217,58 +242,8 @@ class Notification {
     notification.requestCount = 1;
     notification.totalRequestCount = 1;
 
-    // Create notification DOM elements
-    notification.dom = document.createElement('DIV');
-    notification.dom.icon = document.createElement('IMG');
-    notification.dom.text = document.createElement('DIV');
-    notification.dom.close = document.createElement('DIV');
-    notification.dom.maintitle = document.createElement('H6');
-    notification.dom.message = document.createElement('P');
-
-    // Class assignation
-    notification.dom.classList.add('notification');
-    notification.dom.icon.classList.add('icon-container');
-    notification.dom.text.classList.add('text-container');
-    notification.dom.close.classList.add('close');
-
-    // Changing border side
-    if (notification.thickBorder === 'top') {
-      notification.dom.classList.add('top-border');
-    } else if (notification.thickBorder === 'bottom') {
-      notification.dom.classList.add('bottom-border');
-    } else if (notification.thickBorder === 'left') {
-      notification.dom.classList.add('left-border');
-    } else if (notification.thickBorder === 'right') {
-      notification.dom.classList.add('right-border');
-    }
-
-    // Text modification
-    notification.dom.maintitle.innerHTML = notification.title;
-    notification.dom.message.innerHTML = notification.message;
-    notification.dom.close.innerHTML = '&#x2716;';
-
-    // Type specification (title, icon, color)
-    if (notification.type === 'success') {
-      notification.dom.classList.add('success');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/success.svg';
-      }
-    } else if (notification.type === 'warning') {
-      notification.dom.classList.add('warning');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/warning.svg';
-      }
-    } else if (notification.type === 'error') {
-      notification.dom.classList.add('error');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/error.svg';
-      }
-    } else if (notification.type === 'info') {
-      notification.dom.classList.add('info');
-      if (!notification.iconless) {
-        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
-      }
-    }
+    this._buildUIDom(notification);
+    this._buildNotificationType(notification);
 
     if (notification.iconless) {
       notification.dom.message.classList.add('iconless-width');
@@ -305,6 +280,62 @@ class Notification {
     return notification;
   }
 
+
+  _buildUIDom(notification) {
+    // Create notification DOM elements
+    notification.dom = document.createElement('DIV');
+    notification.dom.icon = document.createElement('IMG');
+    notification.dom.text = document.createElement('DIV');
+    notification.dom.close = document.createElement('DIV');
+    notification.dom.maintitle = document.createElement('H6');
+    notification.dom.message = document.createElement('P');
+
+    // Class assignation
+    notification.dom.classList.add('notification');
+    notification.dom.icon.classList.add('icon-container');
+    notification.dom.text.classList.add('text-container');
+    notification.dom.close.classList.add('close');
+
+    // Changing border side
+    if (notification.thickBorder === 'top') {
+      notification.dom.classList.add('top-border');
+    } else if (notification.thickBorder === 'bottom') {
+      notification.dom.classList.add('bottom-border');
+    } else if (notification.thickBorder === 'left') {
+      notification.dom.classList.add('left-border');
+    } else if (notification.thickBorder === 'right') {
+      notification.dom.classList.add('right-border');
+    }
+
+    // Text modification
+    notification.dom.maintitle.innerHTML = notification.title;
+    notification.dom.message.innerHTML = notification.message;
+    notification.dom.close.innerHTML = '&#x2716;';
+  }
+
+
+  _buildNotificationType(notification) {
+    // Type specification (title, icon, color)
+    if (notification.type === 'success' ||
+        notification.type === 'warning' ||
+        notification.type === 'error' ||
+        notification.type === 'info') {
+      notification.dom.classList.add(notification.type);
+
+      if (!notification.iconless) {
+        notification.dom.icon.src = `/static/img/feedback/Notification.js/${notification.type}.svg`;
+      }
+
+    } else {
+      notification.dom.classList.add('info');
+
+      if (!notification.iconless) {
+        notification.dom.icon.src = '/static/img/feedback/Notification.js/info.svg';
+      }
+    }
+  }
+
+
   /**
    * @method
    * @name _start
@@ -339,7 +370,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Open and add the notification to the container
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    **/
@@ -366,7 +397,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Close and remove the notification from the container
-   * @param {object} notification - The notification object
+   * @param {{id: number}|{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {boolean} notification.isClosing - Already closing flag
    * @param {object} notification.dom - Notifiction DOM element
@@ -381,7 +412,6 @@ class Notification {
     notification.closed = Date.now();
     notification.effectiveDuration = notification.closed - notification.opened;
     notification.dom.style.opacity = 0;
-    // TODO hadle this._transition instead of hard code in css
 
     window.setTimeout(() => {
       this._updateHistory(notification);
@@ -393,7 +423,7 @@ class Notification {
       } else if (Object.keys(this._active).length === 0) { // Check this._active emptyness
         this._dismissAllLock = false; // Unlock dismissAllLock
       }
-    }, 1000); // Transition value set in _notification.scss TODO same as few lines up
+    }, 1000); // Transition value set in _notification.scss
   }
 
   /**
@@ -448,7 +478,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description This method is called each notification cycle end to update its inner counter
-   * @param {object} notification - The notification object
+   * @param {{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {boolean} notification.sticky - Notification sticky behvaior
    * @param {boolean} notification.isDimmed - Notification dimmed status (only useful if notification.sticky is true)
@@ -488,7 +518,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount
-   * @param {object} notification - The notification object
+   * @param {{id: number}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {number} notification.requestCount - Notification inner call counter
    * @param {object} notification.dom - Notifiction DOM element
@@ -505,7 +535,11 @@ class Notification {
     else {
       if (notification.renderTo.contains(notification.dom)) {
         window.clearTimeout(notification.timeoutID);
-        notification.sticky ? this._dim(notification) : this._close(notification); // FadeOut/Dim depending on sticky behavior
+        if (notification.sticky) { // FadeOut/Dim depending on sticky behavior
+          this._dim(notification);
+        } else {
+          this._close(notification);
+        }
       }
     }
   }
@@ -536,7 +570,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Use this to reset a notification life cycle, and delay its close event
-   * @param {object} notification - The notification object
+   * @param {{id: number}|{id: number, dom: Object, requestCount: number, timeoutID: number, sticky: boolean, closable: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {number} notification.timeoutID - Notification own setTimeout ID
    **/
@@ -586,7 +620,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Only useful for sticky notification that dim instead of close at the end of its life cycle
-   * @param {object} notification - The notification object
+   * @param {{id: number, requestCount: number, dom: Object, timeoutID: number, sticky: boolean}} notification - The notification object
    * @param {number} notification.id - Notification personnal ID
    * @param {object} notification.dom - Notifiction DOM element
    * @param {boolean} notification.sticky - Notification sticky behvaior
@@ -667,39 +701,26 @@ class Notification {
    * @returns {number} The newly created notification ID
    **/
   new(options) {
-    // Check for mandatory arguments existence
-    if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+    if (this._checkOptionsValidity(options) === false) {
       return -1;
     }
 
-    // Check for unclosable at all notification
-    if (options.sticky && options.closable === false && options.callback === undefined) {
-      return -1;
-    }
-
-    // Test Notification inner variables validity
-    if (options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
-      options.type = this._default.notification.type;
-    }
-
-    if (this._dismissAllLock) {
-      this._dismissAllLock = false; // Unlock dismissAllLock
-    }
+    this._setOptionsFallback(options);
 
     // Build notification DOM element according to the given options
     let notification = this._buildUI({
-      id: Utils.idGenerator(options.type + '' + options.message, 5), // Generating an ID of 5 characters long from notification mandatory fields
+      id: Utils.idGenerator(`${options.type}${options.message}`, 5), // Generating an ID of 5 characters long from notification mandatory fields
       type: options.type,
       message: options.message,
-      title: options.title === undefined ? this._default.notification.title : options.title,
-      duration: options.duration === undefined ? this._duration : options.duration,
-      iconless: options.iconless === undefined ? this._default.notification.iconless : options.iconless,
-      thickBorder: options.thickBorder === undefined ? this._thickBorder : options.thickBorder,
-      closable: options.closable === undefined ? this._default.notification.closable : options.closable,
-      sticky: options.sticky === undefined ? this._default.notification.sticky : options.sticky,
-      renderTo: options.renderTo === undefined ? this._default.notification.renderTo : options.renderTo,
-      CBtitle: options.CBtitle === undefined ? this._default.notification.CBtitle : options.CBtitle,
-      callback: options.callback === undefined ? this._default.notification.callback : options.callback,
+      title: options.title,
+      duration: options.duration,
+      iconless: options.iconless,
+      thickBorder: options.thickBorder,
+      closable: options.closable,
+      sticky: options.sticky,
+      renderTo: options.renderTo,
+      CBtitle: options.CBtitle,
+      callback: options.callback,
       isDimmed: false // Only usefull if sticky is set to true
     });
 
@@ -716,6 +737,69 @@ class Notification {
     }
 
     return notification.id;
+  }
+
+
+  _checkOptionsValidity(options) {
+    // Check for mandatory arguments existence
+    if (options === undefined || options.type === undefined || (options.message === undefined || options.message === '')) {
+      return false;
+    }
+
+    // Check for unclosable at all notification
+    if (options.sticky && options.closable === false && options.callback === undefined) {
+      return false;
+    }
+
+    // Test Notification inner variables validity
+    if (options.type !== 'info' && options.type !== 'success' && options.type !== 'warning' && options.type !== 'error') {
+      options.type = this._default.notification.type;
+    }
+
+    if (this._dismissAllLock) {
+      this._dismissAllLock = false; // Unlock dismissAllLock
+    }
+
+    return true;
+  }
+
+
+  _setOptionsFallback(options) {
+    if (options.title === undefined) {
+      options.title = this._default.notification.title;
+    }
+
+    if (options.duration === undefined) {
+      options.duration = this._duration;
+    }
+
+    if (options.iconless === undefined) {
+      options.iconless = this._default.notification.iconless;
+    }
+
+    if (options.thickBorder === undefined) {
+      options.thickBorder = this._thickBorder;
+    }
+
+    if (options.closable === undefined) {
+      options.closable = this._default.notification.closable;
+    }
+
+    if (options.sticky === undefined) {
+      options.sticky= this._default.notification.sticky;
+    }
+
+    if (options.renderTo === undefined) {
+      options.renderTo = this._default.notification.renderTo;
+    }
+
+    if (options.CBtitle === undefined) {
+      options.CBtitle = this._default.notification.CBtitle;
+    }
+
+    if (options.callback === undefined) {
+      options.callback = this._default.notification.callback;
+    }
   }
 
   /**
@@ -790,7 +874,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Dismiss a specific notification via its ID
-   * @param {number} id - The notification ID to dismiss
+   * @param {string} id - The notification ID to dismiss
    **/
   dismiss(id) {
     window.clearTimeout(this._active[id].timeoutID); // Clear notification timeout
