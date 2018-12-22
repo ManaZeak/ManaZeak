@@ -34,7 +34,7 @@ class SceneView {
     }
   }
 
-  _doubleClick(targetId) {
+  _playTrack(targetId) {
     clearTimeout(this._click.timeoutId);
     this.stopPlayback();
     this._tracks[targetId].setSelected(true);
@@ -93,6 +93,12 @@ class SceneView {
       targetId = closest.dataset.id;
     }
 
+    if ('ontouchstart' in document.documentElement) { // Mobile Click
+      this.unselectAll();
+      this._playTrack(targetId);
+      return;
+    }
+
     if (!this._click.dbclick || this._click.targetId !== targetId) { // Second test force dbclick to occur on same track
       this._click.dbclick = true; // Activate double click lock
       this._click.targetId = targetId;
@@ -111,7 +117,7 @@ class SceneView {
         this._click.dbclick = false; // Desactivate double click lock
       }, 300);
     } else { // Dble click
-      this._doubleClick(targetId);
+      this._playTrack(targetId);
     }
 
     this._selection.sort((a, b) => {

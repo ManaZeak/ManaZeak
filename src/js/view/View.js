@@ -191,19 +191,17 @@ class View {
   }
 
   displayModal(options) {
-    if (options.name === 'newlibrary') {
-      mzk.komunikator.getTemplate('modals/newlibrary/')
-        .then((response) => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(response, "text/html");
-          const modal = doc.getElementsByClassName('modal')[0];
-          this.addOverlay(modal);
+    mzk.komunikator.getTemplate(options.url)
+      .then((response) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response, 'text/html');
+        const modal = doc.getElementsByClassName('modal')[0];
+        this.addOverlay(modal);
 
-          this.modal.newLibrary({
-            callback: options.callback
-          });
+        this.modal.newLibrary({
+          callback: options.callback
         });
-    }
+      });
   }
 
   getTrackById(id) {

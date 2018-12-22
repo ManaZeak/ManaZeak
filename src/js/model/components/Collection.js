@@ -210,8 +210,8 @@ class Collection {
 
       Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
       mzk.view.displayModal({
-          name: 'newlibrary',
-          callback: checkModalValues
+        url: 'modals/newlibrary',
+        callback: checkModalValues
       });
     });
   }
