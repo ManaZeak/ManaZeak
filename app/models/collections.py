@@ -10,7 +10,7 @@ class Playlist(models.Model):
     ## The name of the playlist
     name = models.CharField(max_length=100, default='Playlist')
     ## The tracks contained in the playlist
-    track = models.ManyToManyField(Track)
+    tracks = models.ManyToManyField(Track)
     ## The number of track in the playlist
     totalTracks = models.IntegerField()
     ## The total listening time of the playlist

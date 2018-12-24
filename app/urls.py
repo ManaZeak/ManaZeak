@@ -1,5 +1,6 @@
 from django.urls import path
 
+from app.src.services.collections.library.libraryService import LibraryService
 from app.src.services.collections.playlist.playlistService import PlaylistService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
@@ -19,6 +20,9 @@ urlpatterns = [
     path('logout/', GenericViews.logoutView, name='logout'),
     path('', MainView.MainView.as_view(), name='index'),
 
+    ########################### Libraries ###########################
+    path('lib/new/', LibraryService.createLibrary, name='createLibrary'),
+
     ########################### Playlists ###########################
     path('playlist/getUserPlaylists/', PlaylistService.getUserPlaylists, name='getUserPlaylists'),
     path('playlist/getTrack/<path:path>/', PlaylistService.getTrack, name='getTrack'),
@@ -26,6 +30,7 @@ urlpatterns = [
     ############################# Modals #############################
     path('modals/userMenu/', GenericViews.userMenuContext, name='userMenu'),
     path('modals/changeView/', GenericViews.changeViewContext, name='userMenu'),
+    path('modals/newLibrary/', GenericViews.newLibraryModal, name='newLibraryModal'),
 
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),

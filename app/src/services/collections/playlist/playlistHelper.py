@@ -1,3 +1,4 @@
+from app.models import Playlist
 from app.models.settings import PlaylistOrder
 
 
@@ -28,8 +29,9 @@ class PlayListHelper(object):
             'IS_PUBLIC': playlist.isPublic,
             'IS_LIBRARY': playlist.isLibrary,
             'TOTAL_TRACK': playlist.totalTracks,
+            'TOTAL_DURATION': playlist.listeningTime,
             'AVERAGE_BITRATE': playlist.averageBitRate,
-            'OWNER': playlist.owner,
+            'OWNER': playlist.owner.username,
         }
 
     ## Fill the given table with playlist infos
@@ -37,3 +39,18 @@ class PlayListHelper(object):
     def getPlaylistsInformation(self, playlists, playlistsInfo):
         for playlist in playlists:
             playlistsInfo.append(self.getPlaylistInformation(playlist))
+
+    @staticmethod
+    ## Creates an empty playlist
+    def createPlaylist(owner, name, isLibrary, isPublic, description=None):
+        playlist = Playlist()
+        playlist.owner = owner
+        playlist.isLibrary = isLibrary
+        playlist.name = name
+        playlist.isPublic = isPublic
+        playlist.description = description
+        playlist.totalTracks = 0
+        playlist.listeningTime = 0
+        playlist.averageBitRate = 0
+        playlist.save()
+        return playlist
