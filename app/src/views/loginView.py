@@ -6,6 +6,7 @@ from django.views.generic.base import View
 
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
+from app.src.utils.exceptions.userException import UserException
 from app.src.views.forms import UserLoginForm
 
 
@@ -31,14 +32,18 @@ class Login(View):
     def post(self, request):
         form = self.form_class(request.POST)
         username = form.data['username']
-        password = form.data['password']
-        user = authenticate(username=username, password=password)
-        if user is not None and PermissionHandler.checkPermission(PermissionEnum.LOGIN, user) and user.is_active:
-            logger.info('User : ' + user.username + ' logged in successfully')
-            login(request, user)
-            return redirect('app:index')
-        else:
-            logger.info('User : ' + username + ' failed to log in')
+        try:
+            password = form.data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                PermissionHandler.checkPermission(PermissionEnum.LOGIN, user)
+                logger.info('User : ' + user.username + ' logged in successfully')
+                login(request, user)
+                return redirect('app:index')
+            else:
+                logger.info('User : ' + username + ' failed to log in')
+        except UserException:
+            logger.info('The user : ' + username + ' did not have permission to log in.')
         return render(request, self.template_name, {'form': form})
 
 

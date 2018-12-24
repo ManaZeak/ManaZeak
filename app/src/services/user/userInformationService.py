@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
@@ -8,11 +10,11 @@ from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 
-
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
-
 from app.src.utils.userSettingsManager import UserSettingsManager
+
+logger = logging.getLogger('django')
 
 
 ## This class allows the front to get information about a user
@@ -59,8 +61,8 @@ class UserInformationService(object):
             'GODFATHER_NAME': godfatherName,
             'GROUPS': UserInformationService._getUserGroups(userSettings),
             'INVITE_CODE': userSettings.inviteCode.code,
-            'IS_ADMIN': PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user),
-            'PERMISSIONS': UserInformationService._getUserPermissionNames(userSettings),
+            'IS_ADMIN': PermissionHandler.hasPermission(PermissionEnum.ADMIN_VIEW, user),
+            'PERMISSIONS': UserInformationService._getUserPermissionsCodes(userSettings),
             'USERNAME': user.username,
         }
 
@@ -82,10 +84,10 @@ class UserInformationService(object):
     ## Extract the permission name from the user settings
     #   @param userSettings the settings of the user
     #   @return a array containing all the permission of the user
-    def _getUserPermissionNames(userSettings):
+    def _getUserPermissionsCodes(userSettings):
         permissionNames = []
         # Getting all the permissions and getting their names
         groupPermissions = Permissions.objects.filter(group__in=userSettings.groups.all()).distinct()
         for permission in groupPermissions:
-            permissionNames.append(permission.name)
+            permissionNames.append(permission.code)
         return permissionNames

@@ -38,7 +38,7 @@ class PlaylistService(object):
             )
             # removing the playlist already in the queryset if there is any
             if len(playlists) > 0:
-                playlists.exclude(playlists)
+                playlists.exclude(id__in=[pl.id for pl in playlists])
 
             helper.getPlaylistsInformation(playlists, playlistsInfo)
             # FIXME: change COLLECTION to COLLECTIONS

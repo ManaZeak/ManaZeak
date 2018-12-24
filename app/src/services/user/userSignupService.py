@@ -56,8 +56,7 @@ class UserSignupService(object):
             if inviteCode is None:
                 raise UserException(ErrorEnum.INVITE_CODE_NOT_FOUND)
             # Checking if the invite code given is linked to a user that can invite
-            if not PermissionHandler.checkPermission(PermissionEnum.INVITE, inviteCode.user):
-                raise UserException(ErrorEnum.PERMISSION_ERROR)
+            PermissionHandler.checkPermission(PermissionEnum.INVITE, inviteCode.user)
         return inviteCode
 
     @staticmethod

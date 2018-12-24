@@ -196,7 +196,7 @@ class Collection {
           CONVERT: false
         };
 
-        mzk.komunikator.post('library/new/', options)
+        mzk.komunikator.post('lib/new/', options)
           .then(response => {
             checkServerResponse(response);
           })
@@ -210,7 +210,7 @@ class Collection {
 
       Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
       mzk.view.displayModal({
-        url: 'modals/newlibrary',
+        url: 'modals/newLibrary/',
         callback: checkModalValues
       });
     });
