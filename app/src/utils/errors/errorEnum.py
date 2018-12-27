@@ -29,7 +29,7 @@ class ErrorEnum(Enum):
     PERMISSION_ERROR = 'The user doesn\'t have the required permission.'
 
     ## Error during the rescan.
-    RESCAN_ERROR = 'The rescan encountered an error.'
+    SCAN_IN_PROGRESS = 'A scan is already in progress.'
 
     ## No track history for the given user.
     NO_HISTORY = 'The user has no track history.'

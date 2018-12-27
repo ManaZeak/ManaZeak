@@ -103,7 +103,7 @@
         "message": "You are not allowed to do this.",
         "severity": "error"
       },
-      "RESCAN_ERROR":{
+      "SCAN_IN_PROGRESS":{
         "title": "Library isn't ready",
         "message": "Another scan is running in the background, please be a little more patient",
         "severity": "info"

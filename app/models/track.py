@@ -74,7 +74,7 @@ class Track(models.Model):
     ## The last time the track was modified.
     lastModified = models.DateField(auto_now=True, null=True)
     ## The artists linked to the track.
-    artist = models.ManyToManyField(Artist)
+    artists = models.ManyToManyField(Artist)
     ## The album linked to the track.
     album = models.ForeignKey(Album, null=True, on_delete=models.CASCADE)
     ## The genre linked to the track.

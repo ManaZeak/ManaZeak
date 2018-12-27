@@ -2,7 +2,7 @@ import logging
 
 from django.core.management import BaseCommand
 
-from app.models import Group, ApplicationConfiguration, Permissions
+from app.models import Group, ApplicationConfiguration, Permissions, FileType
 
 logger = logging.getLogger('django')
 
@@ -16,6 +16,7 @@ class Command(BaseCommand):
         self._permissionGenerator()
         self._groupGenerator()
         self._generateApplicationConfiguration()
+        self._generateDefaultFileTypes()
         logger.info('Inserted all the default objects into the database')
 
     ## Generate the default group for the application
@@ -104,3 +105,11 @@ class Command(BaseCommand):
         appConf = ApplicationConfiguration()
         appConf.defaultGroup = Group.objects.get(rank=1)
         appConf.save()
+
+    @staticmethod
+    ## This function generate the default file types the application can handle.
+    def _generateDefaultFileTypes():
+        if FileType.objects.all().count() > 0:
+            return
+        FileType(name="mp3").save()
+        FileType(name="flac").save()

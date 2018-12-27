@@ -32,3 +32,14 @@ class Library(models.Model):
     path = models.FilePathField(max_length=1000)
     ## The playlist associated to the library.
     playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING)
+
+## This class is used to get the information about a library when the scan or the rescan takes place.
+class LibraryScanStatus(models.Model):
+    ## The total track to scan.
+    totalTracks = models.IntegerField()
+    ## The tracks that have been scanned by the algorithm.
+    processedTrack = models.IntegerField()
+    ## If the library has been scanned
+    isScanned = models.BooleanField()
+    ## The associated library
+    library = models.ForeignKey(Library, on_delete=models.DO_NOTHING)
