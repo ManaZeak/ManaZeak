@@ -1,6 +1,5 @@
 from app.models.settings import ApplicationConfiguration
 
-from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.unexpectedStateException import UnexpectedStateException
 
 

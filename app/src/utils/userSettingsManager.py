@@ -1,4 +1,3 @@
-from app.models import ApplicationConfiguration
 from app.models.security import Group
 from app.models.settings import UserSetting
 from app.src.utils.applicationConfigurationManager import ApplicationConfigurationManager

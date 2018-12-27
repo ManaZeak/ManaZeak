@@ -5,7 +5,7 @@ from app.src.utils.userSettingsManager import UserSettingsManager
 
 
 ## This class is used to control the permissions of users.
-class PermissionHandler:
+class PermissionHandler(object):
 
     @staticmethod
     ## Check if a user has a specific permission
