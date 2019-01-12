@@ -5,6 +5,12 @@ from app.models.settings import PlaylistOrder
 ## This class permit to externalize some process of playlistService
 class PlayListHelper(object):
 
+    ## Fill the given table with playlist infos
+    #   @param playlists the table contains playlists
+    def getPlaylistsInformation(self, playlists, playlistsInfo):
+        for playlist in playlists:
+            playlistsInfo.append(self.getPlaylistInformation(playlist))
+
     @staticmethod
     ## This class send the order of the playlist set by the user
     #   @param user the user asking for his playlist
@@ -34,12 +40,6 @@ class PlayListHelper(object):
             'OWNER': playlist.owner.username,
         }
 
-    ## Fill the given table with playlist infos
-    #   @param playlists the table contains playlists
-    def getPlaylistsInformation(self, playlists, playlistsInfo):
-        for playlist in playlists:
-            playlistsInfo.append(self.getPlaylistInformation(playlist))
-
     @staticmethod
     ## Creates an empty playlist
     def createPlaylist(owner, name, isLibrary, isPublic, description=None):
@@ -54,3 +54,17 @@ class PlayListHelper(object):
         playlist.averageBitRate = 0
         playlist.save()
         return playlist
+
+    @staticmethod
+    ## Delete a playlist and the linked objects.
+    #   @param playlist
+    def deletePlaylist(playlist):
+        # If the playlist isn't present do nothing
+        if playlist is None:
+            return
+        # Deleting the linked tracks
+        playlist.tracks.all().delete()
+        # Deleting all the user order linked to this playlist
+        PlaylistOrder.objects.filter(playlist=playlist).delete()
+        # Deleting the playlist
+        playlist.delete()
