@@ -5,21 +5,49 @@ from app.src.utils.exceptions.userException import UserException
 ## Handles the operations linked to the status of the libraries during the rescan
 class LibraryStatusHelper(object):
 
+    ## Constructor
+    def __init__(self, library):
+        ## The library associated to this helper
+        self.library = library
+
+    ## Initialise the scan status before updating it live when rescanning/scanning
+    #   @param totalFiles the number of files to extract.
+    #   @param library the library to be rescanned.
+    def initScanStatus(self, totalFiles):
+        scanStatus = self.getLibraryScanStatus(self.library)
+        scanStatus.totalTracks = totalFiles
+        scanStatus.save()
+
+    ## Set the status of the library to available.
+    def endLibraryScan(self):
+        scanStatus = LibraryStatusHelper.getLibraryScanStatus(self.library)
+        if scanStatus.isScanned:
+            raise UserException(ErrorEnum.UNEXPECTED_STATE)
+        scanStatus.isScanned = True
+        scanStatus.save()
+
+    ## Update the number of processed track for the playlist of the helper.
+    #   @param trackExtracted the number of track processed to add.
+    def updateCounter(self, trackExtracted):
+        # Getting the scan status object
+        scanStatus = LibraryStatusHelper.getLibraryScanStatus(self.library)
+        # Adding processed tracks
+        scanStatus.processedTrack += trackExtracted
+        scanStatus.save()
+
+    @staticmethod
+    ## Set the status of the library rescan to false.
+    def abortLibraryScan(library):
+        scanStatus = LibraryStatusHelper.getLibraryScanStatus(library)
+        scanStatus.isScanned = True
+        scanStatus.save()
+
     @staticmethod
     ## Set the status of the library to being scanned for avoiding colliding with others functions.
     def startLibraryScan(library):
         LibraryStatusHelper.scanNotInProgress(library)
         scanStatus = LibraryStatusHelper.getLibraryScanStatus(library)
         scanStatus.isScanned = False
-        scanStatus.save()
-
-    @staticmethod
-    ## Set the status of the library to available.
-    def endLibraryScan(library):
-        scanStatus = LibraryStatusHelper.getLibraryScanStatus(library)
-        if scanStatus.isScanned:
-            raise UserException(ErrorEnum.UNEXPECTED_STATE)
-        scanStatus.isScanned = True
         scanStatus.save()
 
     @staticmethod
@@ -42,8 +70,8 @@ class LibraryStatusHelper(object):
     ## Creates and save and library scan status object.
     def _createLibraryScanStatus(library):
         libScanStatus = LibraryScanStatus()
-        libScanStatus.totalTracks = library.playlist.totalTracks
-        libScanStatus.processedTrack = library.playlist.totalTracks
+        libScanStatus.totalTracks = 0
+        libScanStatus.processedTrack = 0
         libScanStatus.isScanned = True
         libScanStatus.library = library
         libScanStatus.save()

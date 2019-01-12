@@ -3,6 +3,7 @@ import os
 from django.utils.html import strip_tags
 
 from app.models import Library
+from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
 
 from app.src.utils.errors.errorEnum import ErrorEnum
@@ -59,3 +60,41 @@ class LibraryHelper(object):
             raise UserException(ErrorEnum.EMPTY_LIBRARY)
         # return the track found
         return mp3Files, flacFiles
+
+    @staticmethod
+    ## Get a library from it's id in the database.
+    #   @param libraryId the library id to fetch.
+    #   @return a library object.
+    def getLibraryFromId(libraryId):
+        # The library doesn't exist
+        if Library.objects.filter(id=libraryId).count() != 1:
+            raise UserException(ErrorEnum.DB_ERROR)
+        return Library.objects.get(id=libraryId)
+
+    @staticmethod
+    ## Delete a library and all the associated objects.
+    #   @param library the library object to delete.
+    def deleteLibrary(library, scanStatus):
+        # Deleting the scan status associated to the library
+        scanStatus.delete()
+        playlist = library.playlist
+        library.delete()
+        # Deleting the playlist created by the library
+        PlayListHelper.deletePlaylist(playlist)
+
+    @staticmethod
+    ## Cancel all the operation done in the library creation if the function encountered an error.
+    #   @param library the library to abort.
+    #   @param exception the exception raised by the processing.
+    def abortLibraryInitialScan(library, exception):
+        # The library hasn't been created nothing to rollback.
+        if library is None:
+            return
+        # The library has been created, checking if the scan status object has been created
+        scanStatus = LibraryStatusHelper.getLibraryScanStatus(library)
+        if exception.errorType == ErrorEnum.SCAN_IN_PROGRESS:
+            return  # Nothing to do, a scan is already in progress
+        # Canceling the failed scan
+        LibraryStatusHelper.abortLibraryScan(library)
+        # Deleting the created library
+        LibraryHelper.deleteLibrary(library, scanStatus)

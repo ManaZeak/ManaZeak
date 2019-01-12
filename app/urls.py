@@ -22,6 +22,8 @@ urlpatterns = [
 
     ########################### Libraries ###########################
     path('lib/new/', LibraryService.createLibrary, name='createLibrary'),
+    path('lib/initialScan/', LibraryService.initialScan, name='initialScan'), # FIXME : to be moved into the new library action.
+    path('lib/delete/<int:libraryId>/', LibraryService.deleteLibrary, name='deleteLibrary'),
 
     ########################### Playlists ###########################
     path('playlist/getUserPlaylists/', PlaylistService.getUserPlaylists, name='getUserPlaylists'),

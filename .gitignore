@@ -128,3 +128,4 @@ static/lib/**
 coverage.xml
 .coverage
 /static/avatars/
+/static/covers/

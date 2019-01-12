@@ -178,11 +178,15 @@
         "message": "The application can't create a folder, please contact the administrator",
         "severity": "error"
       },
-      "SUSPICIOUS_OPERATION":
-      {
+      "SUSPICIOUS_OPERATION": {
         "title": "Your account have been suspended",
         "message": "And you know why!",
         "severity": "error"
+      },
+      "NOT_IMPLEMENTED": {
+        "title": "The operation you asked isn't coded yet.",
+        "message": "Please wait for a future update to do this.",
+        "severity": "info"
       }
     }
   },

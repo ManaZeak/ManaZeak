@@ -32,7 +32,7 @@ class Collection {
         LIBRARY_ID: playlist.getId()
       };
 
-      mzk.komunikator.post('library/initialScan/', options)
+      mzk.komunikator.post('lib/initialScan/', options)
         .then(() => {
           return this._checkScanStatus(playlist);
         })

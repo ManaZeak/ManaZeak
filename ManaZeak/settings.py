@@ -139,13 +139,19 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': './log/debug.log',
+            'filename': './log/app.log',
             'formatter': 'simple',
         },
-        'userInfos': {
+        'userInfo': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': './log/userInfos.log',
+            'filename': './log/userInfo.log',
+            'formatter': 'simple',
+        },
+        'scanInfo': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './log/scanInfo.log',
             'formatter': 'simple',
         }
     },
@@ -156,7 +162,12 @@ LOGGING = {
             'propagate': True,
         },
         'users': {
-            'handlers': ['userInfos'],
+            'handlers': ['userInfo'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'scan': {
+            'handlers': ['scanInfo'],
             'level': 'INFO',
             'propagate': True,
         }

@@ -81,3 +81,6 @@ class ErrorEnum(Enum):
 
     ## Suspicious operation for a user.
     SUSPICIOUS_OPERATION = 'The user did a suspicious operation (hacking?)'
+
+    ## Not implemented error
+    NOT_IMPLEMENTED = 'The function you asked isn\'t implemented yet.'
