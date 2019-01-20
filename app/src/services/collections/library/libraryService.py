@@ -90,7 +90,7 @@ class LibraryService(object):
             # Closing all connection to the database for avoiding to use the same connection between processes.
             db.connections.close_all()
             # Launching the process of integrating the track into the database.
-            scanThread.run()
+            scanThread.run()  # FIXME : test if it's start OR run (big library integration)
             # Return a standard response, the front has to check if the scan is successful
             return JsonResponse(ErrorHandler.createStandardStateMessage(True))
 

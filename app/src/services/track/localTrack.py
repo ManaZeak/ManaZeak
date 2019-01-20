@@ -40,7 +40,7 @@ class LocalTrack(object):
         ## The album linked to the track.
         self.album = ''
         ## The genre linked to the track.
-        self.genre = ''
+        self.genres = []
         ## The file type linked to the track.
         self.fileType = 0
         ## The track moodbar path.
@@ -51,4 +51,6 @@ class LocalTrack(object):
         self.playCounter = 0
         ## The number of time the track has been downloaded.
         self.downloadCounter = 0
+        ## The folder name of teh artist containing the file
+        self.artistFolderName = ''
 

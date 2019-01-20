@@ -2,6 +2,7 @@ import hashlib
 import math
 import os
 import re
+from pathlib import Path
 
 from django.utils.html import strip_tags
 from mutagen.flac import FLAC
@@ -28,6 +29,7 @@ class TrackExtractorService(object):
         track.fileType = self.mp3formatId
         audioFile = MP3(trackPath)
         track.location = trackPath
+        track.artistFolderName = self._extractNameArtistFolder(trackPath)
         track.size = os.path.getsize(trackPath)
         track.bitRate = audioFile.info.bitrate
         track.duration = audioFile.info.length
@@ -112,8 +114,8 @@ class TrackExtractorService(object):
 
         # --- Adding genre to structure ---
         if 'TCON' in audioTag:
-            genreName = strip_tags(audioTag['TCON'].text[0]).rstrip()
-            track.genre = genreName
+            genres = strip_tags(audioTag['TCON'].text[0]).rstrip().split(',')
+            track.genres = genres
 
         # --- Adding artist to structure ---
         if 'TPE1' in audioTag:  # Check if artist exists
@@ -145,6 +147,7 @@ class TrackExtractorService(object):
 
         # --- FILE INFORMATION ---
         track.location = trackPath
+        track.artistFolderName = self._extractNameArtistFolder(trackPath)
         track.size = os.path.getsize(trackPath)
         track.bitRate = audioTag.info.bitrate
         track.duration = audioTag.info.length
@@ -212,8 +215,8 @@ class TrackExtractorService(object):
                 track.performers = self._extractArtistsFromList(performers)
 
         if 'GENRE' in audioTag:
-            genreName = self._trimVorbisTag(audioTag['GENRE'])
-            track.genre = genreName.rstrip()
+            genres = self._trimVorbisTag(audioTag['GENRE']).rstrip().split(',')
+            track.genres = genres
 
         if 'ARTIST' in audioTag:  # Check if artist exists
             artists = self._trimVorbisTag(audioTag['ARTIST'])
@@ -266,6 +269,17 @@ class TrackExtractorService(object):
                 with open(self.coverPath + md5Name.hexdigest() + ".jpg", 'wb') as img:
                     img.write(picture)
             track.coverLocation = md5Name.hexdigest() + ".jpg"
+
+    @staticmethod
+    ## Extract the artist folder name. Used later in the integration process.
+    #   @param path the path of the track.
+    #   @return the folder name of the artist.
+    def _extractNameArtistFolder(path):
+        path = Path(path)
+        # If the path is long enough
+        if len(path.parts) > 2:
+            return path.parts[len(path.parts)-3]
+        return ''
 
     @staticmethod
     ## Process a Vorbis tag to remove the useless info.
