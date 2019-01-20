@@ -3,6 +3,7 @@ import multiprocessing
 from multiprocessing.pool import Pool
 
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
+from app.src.services.track.indexedTrackContainer import IndexedTrackContainer
 from app.src.services.track.trackExtractorService import TrackExtractorService
 
 loggerScan = logging.getLogger('scan')
@@ -38,11 +39,12 @@ class LibraryIntegrationService(object):
         processPool = Pool(processes=processToLaunch)
 
         # Launch process to extract the metadata contained in the flac and mp3 files
-        extractedTracks = (processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(mp3Files)) +
-                           processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(flacFiles)))[0]
+        extractedTracks = [processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(mp3Files)),
+                           processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(flacFiles))]
+
 
         loggerScan.info('Finished the extractions of all the tracks')
-        loggerScan.info('Number of extracted tracks : ' + str(len(extractedTracks)))
+        loggerScan.info('Number of extracted tracks : ' + str(len(extractedTracks[0])))
 
         # raise UserException(ErrorEnum.NOT_IMPLEMENTED)
         # FIXME : integrates the data into the database
@@ -52,18 +54,18 @@ class LibraryIntegrationService(object):
     #   @return a table a local tracks
     def extractMetaDataFromTracks(self, tracksPath):
         # Setting up the scan status
-        localTracks = []
+        container = IndexedTrackContainer()
         if len(tracksPath) == 0:
             loggerScan.info('No track to extract!')
             return
         if tracksPath[0].endswith('mp3'):
             for trackPath in tracksPath:
-                localTracks.append(self.trackExtractorService.extractMp3File(trackPath))
+                container.addTrack(self.trackExtractorService.extractMp3File(trackPath))
         elif tracksPath[0].endswith('flac'):
             for trackPath in tracksPath:
-                localTracks.append(self.trackExtractorService.extractFlacFile(trackPath))
-        self.statusHelper.updateCounter(len(localTracks))
-        return localTracks
+                container.addTrack(self.trackExtractorService.extractFlacFile(trackPath))
+        self.statusHelper.updateCounter(container.tracksInContainer)
+        return container
 
     @staticmethod
     ## This function split a table into smaller tables of x element inside a table
