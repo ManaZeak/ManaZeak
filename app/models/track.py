@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import DO_NOTHING
 
 
 ## This class is describing the table fileType.
@@ -24,8 +25,8 @@ class Album(models.Model):
     totalDisc = models.IntegerField(null=True)
     ## the number of track in the album.
     totalTrack = models.IntegerField(null=True)
-    ## The artists associated to the album.
-    artists = models.ManyToManyField(Artist)
+    ## The artist associated to the album.
+    artists = models.ForeignKey(Artist, DO_NOTHING)
     ## The description of the album
     description = models.CharField(max_length=1000, null=True)
 

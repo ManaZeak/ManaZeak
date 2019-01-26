@@ -39,12 +39,15 @@ class LibraryIntegrationService(object):
         processPool = Pool(processes=processToLaunch)
 
         # Launch process to extract the metadata contained in the flac and mp3 files
-        extractedTracks = [processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(mp3Files)),
+        trackContainers = [processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(mp3Files)),
                            processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(flacFiles))]
 
+        # Creating the master track container this will contain all the track extracted
+        trackContainer = IndexedTrackContainer()
+        trackContainer.merge(trackContainers)
 
-        loggerScan.info('Finished the extractions of all the tracks')
-        loggerScan.info('Number of extracted tracks : ' + str(len(extractedTracks[0])))
+        loggerScan.info('Finished the extractions of all the tracks.')
+        loggerScan.info('Number of extracted tracks : ' + trackContainer.tracksInContainer)
 
         # raise UserException(ErrorEnum.NOT_IMPLEMENTED)
         # FIXME : integrates the data into the database
