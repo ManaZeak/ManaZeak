@@ -51,6 +51,16 @@ class LocalTrack(object):
         self.playCounter = 0
         ## The number of time the track has been downloaded.
         self.downloadCounter = 0
-        ## The folder name of teh artist containing the file
+        ## The folder name of the artist containing the file
         self.artistFolderName = ''
 
+
+## This class is a lighter version of an artist stored in the database, used only for importing tracks to the database.
+class LocalArtist(object):
+
+    ## Constructor
+    def __init__(self):
+        ## The name of the artist
+        self.name = ""
+        ## The real name of the artist
+        self.realName = ""

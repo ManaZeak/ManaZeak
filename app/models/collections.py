@@ -26,12 +26,14 @@ class Playlist(models.Model):
     ## The description of the playlist
     description = models.CharField(max_length=5000, null=True)
 
+
 ## This class describes a library.
 class Library(models.Model):
     ## The library path.
     path = models.FilePathField(max_length=1000)
     ## The playlist associated to the library.
     playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING)
+
 
 ## This class is used to get the information about a library when the scan or the rescan takes place.
 class LibraryScanStatus(models.Model):

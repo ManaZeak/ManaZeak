@@ -10,7 +10,7 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.models import FileType
-from app.src.services.track.localTrack import LocalTrack
+from app.src.services.track.localTrack import LocalTrack, LocalArtist
 
 
 ## This class allows to extract teh metadata contained in a file and put it in a local track.
@@ -120,17 +120,17 @@ class TrackExtractorService(object):
         # --- Adding artist to structure ---
         if 'TPE1' in audioTag:  # Check if artist exists
             artists = strip_tags(audioTag['TPE1'].text[0])
-            track.artists = self._extractArtistsFromList(artists)
+            track.artists = self._getLocalArtistsFromTrack(artists)
 
         # Extracting composers
         if 'TCOM' in audioTag and audioTag['TCOM'].text[0] != "":
             composers = strip_tags(audioTag['TCOM'].text[0])
-            track.composers = self._extractArtistsFromList(composers)
+            track.composers = self._getLocalArtistsFromTrack(composers)
 
         # Extracting performers
         if 'TOPE' in audioTag and audioTag['TOPE'].text[0] != "":
             performers = strip_tags(audioTag['TOPE'].text[0])
-            track.performers = self._extractArtistsFromList(performers)
+            track.performers = self._getLocalArtistsFromTrack(performers)
 
         # --- Adding album to structure ---
         if 'TALB' in audioTag:
@@ -207,12 +207,12 @@ class TrackExtractorService(object):
         if 'COMPOSER' in audioTag:
             composers = self._trimVorbisTag(audioTag['COMPOSER'])
             if not composers == "":
-                track.composers = self._extractArtistsFromList(composers)
+                track.composers = self._getLocalArtistsFromTrack(composers)
 
         if 'PERFORMER' in audioTag:
             performers = self._trimVorbisTag(audioTag['PERFORMER'])
             if not performers == "":
-                track.performers = self._extractArtistsFromList(performers)
+                track.performers = self._getLocalArtistsFromTrack(performers)
 
         if 'GENRE' in audioTag:
             genres = self._trimVorbisTag(audioTag['GENRE']).rstrip().split(',')
@@ -220,7 +220,7 @@ class TrackExtractorService(object):
 
         if 'ARTIST' in audioTag:  # Check if artist exists
             artists = self._trimVorbisTag(audioTag['ARTIST'])
-            track.artists = self._extractArtistsFromList(artists)
+            track.artists = self._getLocalArtistsFromTrack(artists)
 
         if 'ALBUM' in audioTag:
             albumTitle = self._trimVorbisTag(audioTag['ALBUM'])
@@ -302,3 +302,20 @@ class TrackExtractorService(object):
         for i in range(len(artists)):
             artists[i] = artists[i].lstrip().rstrip()
         return artists
+
+    @staticmethod
+    ## Construct a table of local artists for a given string.
+    #   @param tagString the tag string to transform into a table of local artists
+    #   @return the list of the local artists
+    def _getLocalArtistsFromTrack(tagString):
+        localArtists = []
+        splitArtists = TrackExtractorService._extractArtistsFromList(tagString)
+        for artist in splitArtists:
+            splitArtist = artist.split('(')
+            artist = LocalArtist()
+            artist.name = splitArtist[0].strip()
+            # If the artist has a real name
+            if len(splitArtist) > 1:
+                # Removing the last ')'
+                artist.realName = splitArtist[1].strip()[:-1]
+        return localArtists
