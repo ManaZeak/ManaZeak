@@ -20,7 +20,7 @@ class ListView extends SceneView {
   constructor(options) {
     super(options);
 
-    if ('ontouchstart' in document.documentElement) {
+    if (Utils.isMobileDevice()) {
       this._columns = listview.responsiveColumns;
     } else {
       this._columns = listview.defaultColumns;

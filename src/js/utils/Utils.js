@@ -165,6 +165,12 @@ class Utils {
     return (Math.abs(hash).toString(36) + '' + Math.abs(hash / 2).toString(36).split('').reverse().join('')).substring(0, length).toUpperCase(); // Here is the twekead line
   }
 
+
+  isMobileDevice() {
+    return (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement);
+  }
+
+
   /**
    * @method
    * @name getCookies
