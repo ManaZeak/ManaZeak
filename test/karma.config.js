@@ -4,12 +4,12 @@ module.exports = function(config) {
     browsers: ['Firefox'],
     frameworks: ['jasmine'],
     files: [
-      './static/test/test-context.js'
+      './test-context.js'
       //'./static/js/core/**/*.js'
     ],
     reporters: ['progress', 'coverage'],
     preprocessors: {
-      './static/test/test-context.js': ['webpack']
+      './test-context.js': ['webpack']
       //'./static/js/core/**/*.js': ['webpack', 'sourcemap', 'coverage']
     },
     babelPreprocessor: {
@@ -20,7 +20,7 @@ module.exports = function(config) {
     },
     coverageReporter: {
       type : 'lcov',
-      dir : './static/test/coverage/',
+      dir : './coverage/',
       subdir: (browser) => {
         // normalization process to keep a consistent browser name across different OS
         return browser.split(/[ /-]/)[0];

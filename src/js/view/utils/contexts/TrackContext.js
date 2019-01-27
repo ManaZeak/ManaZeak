@@ -57,7 +57,7 @@ class TrackContext extends ContextMenu {
 
   open(event, id) {
     this._targetId = id;
-    let pos = {
+    const pos = {
       x: event.clientX,
       y: event.clientY
     };

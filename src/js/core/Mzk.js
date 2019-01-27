@@ -3,28 +3,44 @@ import Model from '../model/Model.js';
 import UserInterface from '../view/UserInterface.js';
 import User from './User.js';
 import Notification from "../view/utils/Notification";
-import NewLibraryModal from "../view/utils/modals/NewLibraryModal";
 'use strict';
 
 
 class Mzk {
+
+
   /**
    * @summary ManaZeak main controller
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handle both Model and the user interface, and animate them accordingly. Host User, Langage and Komunikator also.
+   * @description <blockquote>Control the whole ManaZeak user session. Handle both Model and the user interface, and animate them accordingly.
+   * Host User, Language and Komunikator also.</blockquote>
    **/
   constructor() {
+    /** @public
+     * @member {object} - User session cookies */
     this.cookies = {};
+    /** @public
+     * @member {object} - ManaZeak server Komunikator */
     this.komunikator = {};
+    /** @public
+     * @member {object} - Local language values */
     this.lang = {};
+    /** @public
+     * @member {object} - Front end model */
     this.model = {};
+    /** @public
+     * @member {object} - Session user object */
     this.user = {};
+    /** @public
+     * @member {object} - ManaZeak User Interface */
     this.ui = {};
   }
 
 
-  //  ----  SESSION INITIALIZATION  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  ----------------------------------  SESSION INITIALIZATION  ----------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -245,7 +261,48 @@ class Mzk {
   }
 
 
-  //  ----  PLAYBACK METHODS  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  PLAYBACK METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name togglePlay
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Toggle the playback and update the user interface
+   **/
+  togglePlay() {
+    if (!this.model.player.hasSource()) {
+      this.changeTrack(this.ui.firstTrackId);
+    } else {
+      this.model.togglePlay()
+        .then(() => {
+          this.ui.togglePlay();
+        });
+    }
+  }
+
+
+  /**
+   * @method
+   * @name stopPlayback
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Stop the playback and update the user interface
+   **/
+  stopPlayback() {
+    this.model.stopPlayback()
+      .then(() => {
+        this.ui.stopPlayback();
+      });
+  }
+
 
 
   /**
@@ -287,43 +344,53 @@ class Mzk {
 
   /**
    * @method
-   * @name togglePlay
+   * @name repeatTrack
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Toggle the playback and update the user interface
+   * @since November 2018
+   * @description Repeat the current track loaded in the player
    **/
-  togglePlay() {
-    if (!this.model.player.hasSource()) {
-      this.changeTrack(this.ui.firstTrackId);
-    } else {
-      this.model.togglePlay()
-        .then(() => {
-          this.ui.togglePlay();
-        });
-    }
+  repeatTrack() {
+    this.model.repeatTrack();
+    // No need to update the view since the current track didn't changed
   }
 
 
   /**
    * @method
-   * @name stopPlayback
+   * @name toggleRepeatMode
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Stop the playback and update the user interface
+   * @since October 2018
+   * @description Change the repeat state to the next one (off, one, all)
    **/
-  stopPlayback() {
-    this.model.stopPlayback()
-      .then(() => {
-        this.ui.stopPlayback();
+  toggleRepeatMode() {
+    this.model.toggleRepeatMode()
+      .then((repeatMode) => {
+        this.ui.repeatMode = repeatMode;
       });
   }
 
 
-  //  ----  VOLUME METHODS  ----  //
+  /**
+   * @method
+   * @name trackEnded
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Triggered when the player reached the end of a track
+   **/
+  trackEnded() {
+    mzk.nextTrackInView();
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------------  VOLUME METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -381,6 +448,7 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Add/Substract a given amount of volume, in range float[-1, 1] and update the user interface
+   * @param {number} amount - The percentage amount to progress in the playback in range float[-1, 1]
    **/
   adjustVolume(amount) {
     this.model.adjustVolume(amount)
@@ -398,6 +466,7 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Add/Substract a given amount of volume, in range float[0, 1] and update the user interface
+   * @param {number} volume - The volume value to set in range float[0, 1]
    **/
   setVolume(volume) {
     this.model.setVolume(volume)
@@ -406,8 +475,9 @@ class Mzk {
       });
   }
 
-
-  //  ----  PROGRESS METHODS  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  PROGRESS METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -418,6 +488,7 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Adjust the progress percentage from a given amoun in range float[-100,100] and update the user interface
+   * @param {number} amount - The percentage amount to progress in the playback in range float[-100, 100]
    **/
   adjustProgress(amount) {
     this.model.adjustProgress(amount)
@@ -435,6 +506,7 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Set the progress percentage in range float[0,100] and update the user interface
+   * @param {number} progress - The percentage progress value to set in range float[0, 100]
    **/
   setProgress(progress) {
     this.model.setProgress(progress)
@@ -443,19 +515,9 @@ class Mzk {
       });
   }
 
-
-  /**
-   * @method
-   * @name trackEnded
-   * @public
-   * @memberof Mzk
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Triggered when the player reached the end of a track
-   **/
-  trackEnded() {
-    mzk.nextTrackInView();
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  SCENE VIEW METHODS  ------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -466,14 +528,15 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since November 2018
    * @description Set a new active view to the active playlist
+   * @param {string} newView - The new view string value in the global ViewEnum
    **/
   changeActiveView(newView) {
     this.model.setActiveView(newView)
       .then(() => {
-        this.ui.setSceneActiveView(this.model.collection.activePlaylist);
+        this.ui.updateView(this.model.collection.activePlaylist);
       })
-      .catch(e => {
-        console.log(e)
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -528,10 +591,33 @@ class Mzk {
   }
 
 
-  repeatTrack() {
-    this.model.repeatTrack();
-    // No need to update the view since the current track didn't changed
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------------  QUEUE METHODS  ---------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name addTrackToQueue
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since October 2018
+   * @description Change the player track using the previous one in the current view
+   * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
+   **/
+  addTrackToQueue(datasetId) {
+    const track = this.ui.getTrackById(datasetId);
+
+    if (track) {
+      this.model.appendToQueue(track.id);
+    }
   }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  APP ACTION METHODS  ------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -542,14 +628,15 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since January 2019
    * @description Serve the user a download of the current selection in the active view. If no selection, it serve the right-clicked track
+   * @param {string} id - The track dataset id (DOM dataset id) that triggered the context (see <code>if</code> condition)
    **/
   download(id) {
-    let selection = this.ui.activeView.selection;
+    const selection = this.ui.activeView.selection;
     const ids = [];
 
     if (selection.length === 0) { // User has no selection, so the downloaded track is the one the track context has been clicked on
       ids.push(this.ui.getTrackById(id).id);
-    } else { // Fiil the ids array with user selection
+    } else { // Fill the ids array with user selection
       for (let i = 0; i < selection.length; ++i) {
         ids.push(this.ui.getTrackById(selection[i]).id);
       }
@@ -563,7 +650,7 @@ class Mzk {
       .then(response => {
         if (response.DONE) {
           // Creating a fictive button
-          let button = document.createElement('A');
+          const button = document.createElement('A');
           // Set the href path
           button.href = response.DOWNLOAD_PATH;
           // Regex to only keep the filename for the download content
@@ -574,41 +661,35 @@ class Mzk {
           document.body.removeChild(button);
         }
         else {
-
+          console.log(response);
         }
       })
-      .catch(response => {
-        console.log(response)
+      .catch(error => {
+        console.log(error);
       });
-  }
-
-
-  addTrackToQueue(datasetId) {
-    const track = this.ui.getTrackById(datasetId);
-
-    if (track) {
-      this.model.appendToQueue(track.id);
-    }
   }
 
 
   /**
    * @method
-   * @name toggleRepeatMode
+   * @name logOut
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
-   * @since October 2018
-   * @description Change the repeat state to the next one (off, one, all)
+   * @since November 2018
+   * @description Log out the user from server and reload location
    **/
-  toggleRepeatMode() {
-    this.model.toggleRepeatMode()
-      .then((repeatMode) => {
-        this.ui.repeatMode = repeatMode;
+  logOut() {
+    this.komunikator.getBinaryResponse('logout/')
+      .then(() => {
+        location.reload();
       });
   }
 
-  //  ----  SHORTCUTS METHODS  ----  //
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  SHORTCUTS METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -682,33 +763,34 @@ class Mzk {
   }
 
 
-  logOut() {
-    this.komunikator.getBinaryResponse('logout/')
-      .then(() => {
-        location.reload();
-      });
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
-  //  ----  GETTERS / SETTERS  ----  //
-
-
-  get playerMuted() {
-    return this.model.player.muted;
-  }
-
-
- // Get percentage progress
+  /** @public
+   * @member {number} - The player current progress in percentage in range float[0, 100] */
   get playerProgress() {
-    return this.model.player.progress;
+    return this.model.player.progress; // Returns player percentage progress
   }
 
 
+  /** @public
+   * @member {number} - The playback volume value in range float[0, 1] */
   get playerVolume() {
     return this.model.player.volume;
   }
 
 
+  /** @public
+   * @member {boolean} - The player muted state */
+  get playerMuted() {
+    return this.model.player.muted;
+  }
+
+
+  /** @public
+   * @member {boolean} - The player plaing state */
   get playerPlaying() {
     return this.model.player.isPlaying;
   }

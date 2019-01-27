@@ -1,18 +1,24 @@
-import Player from '../../../src/js/core/Player.js';
+import Player from '../../src/js/core/Player.js';
 
 window.mzk = {};
-var player = {};
+let player = {};
 
 describe('Player unit tests', function() {
+
 
   beforeEach(function() {
     player = new Player();
   });
 
+
   afterEach(function() {
     let previousPlayer = document.getElementById('mzk-audio-player');
-    if (previousPlayer) { document.body.removeChild(previousPlayer); }
+
+    if (previousPlayer) {
+      document.body.removeChild(previousPlayer);
+    }
   });
+
 
   it('Instanciation and initialization | covers Player constructor', function(done) {
     expect(player).not.toBe(null); // Player object has been created
@@ -23,6 +29,7 @@ describe('Player unit tests', function() {
 
     done();
   });
+
 
   it('Volume modification | covers volume setter', function(done) {
     player.volume = -100; // OOB (lower overflow)
@@ -49,6 +56,7 @@ describe('Player unit tests', function() {
     done();
   });
 
+
   it('Volume modification | covers adjustVolume()', function(done) {
     player.adjustVolume(-100); // OOB (lower overflow) adjustVolume()
     expect(player._volume).toBe(0);
@@ -67,6 +75,7 @@ describe('Player unit tests', function() {
 
     done();
   });
+
 
   it('Volume modification | covers mute(), unmute(), toggleMute()', function(done) {
     player.volume = 0.9;
@@ -97,6 +106,7 @@ describe('Player unit tests', function() {
     done()
   });
 
+
   it('Player playback | covers changeTrack(), pause(), play(), togglePlay()', function(done) {
     expect(player._player.src).toBe('');
     player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
@@ -118,7 +128,8 @@ describe('Player unit tests', function() {
         done();
       });
   });
-/*
+
+
   it('Player playback progress | covers adjustProgress(), repeatTrack(), stop(), trackEnded evt', function(done) {
     window.mzk.trackEnded = function() {
       expect(player._isPlaying).toBe(false);
@@ -131,42 +142,43 @@ describe('Player unit tests', function() {
 
     player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
       .then(() => {
-        setTimeout(() => {
-            player.adjustProgress(50);
-            expect(Math.round(player._player.currentTime)).toBe(97);
-            player.repeatTrack();
-            expect(Math.round(player._player.currentTime)).toBe(0);
-            player.adjustProgress(-1000);
-            expect(Math.round(player._player.currentTime)).toBe(0);
-            player.adjustProgress(1000);
-            expect(Math.round(player._player.currentTime)).toBe(0);
+        window.setTimeout(() => {
+          player.adjustProgress(50);
+          expect(Math.round(player._player.currentTime)).toBe(97);
+          player.repeatTrack();
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          player.adjustProgress(-1000);
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          player.adjustProgress(1000);
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          done();
         }, 500);
       });
   });
 
+
   it('Getter test | covers getIsPlaying(), getIsMuted(), getVolume(), getProgress(), getDuration(), getCurrentTime(), hasSource()', function(done) {
     player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
       .then(() => {
-        expect(player.getIsPlaying()).toBe(true);
+        expect(player.playing).toBe(true);
         player.pause();
-        expect(player.getIsPlaying()).toBe(false);
+        expect(player.playing).toBe(false);
         player.play();
-        expect(player.getIsMuted()).toBe(false);
+        expect(player.muted).toBe(false);
         player.mute();
-        expect(player.getIsMuted()).toBe(true);
-        expect(player.getVolume()).toBe(1);
+        expect(player.muted).toBe(true);
+        expect(player.volume).toBe(1);
         player.unmute();
-        expect(player.getIsMuted()).toBe(false);
-        expect(player.getVolume()).toBe(1);
+        expect(player.muted).toBe(false);
+        expect(player.volume).toBe(1);
 
         window.setTimeout(function() {
-          expect(Math.round(player.getProgress() * 100)).toBe(6);
-          expect(Math.round(player.getDuration())).toBe(193);
+          expect(Math.round(player.progress * 100)).toBe(8);
+          expect(Math.round(player.duration)).toBe(193);
           expect(player.hasSource()).toBe(true);
 
           done();
         }, 200);
       });
   });
-*/
 });
