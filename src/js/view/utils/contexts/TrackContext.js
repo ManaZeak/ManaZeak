@@ -57,8 +57,21 @@ class TrackContext extends ContextMenu {
 
   open(event, id) {
     this._targetId = id;
-    this._dom.style.left = `${event.clientX}px`;
-    this._dom.style.top = `${event.clientY}px`;
+    let pos = {
+      x: event.clientX,
+      y: event.clientY
+    };
+    // Avoid X overflow : X pos + context width
+    if (event.clientX + 135 > document.body.clientWidth) {
+      pos.x -= 135;
+    }
+    // Avoid Y overflow : Y pos + context height + footbar height
+    if (event.clientY + (Object.keys(this._commands).length * 30) + 80 > document.body.clientHeight) {
+      pos.y -= (Object.keys(this._commands).length * 30);
+    }
+
+    this._dom.style.left = `${pos.x}px`;
+    this._dom.style.top = `${pos.y}px`;
     this._target.appendChild(this._overlay);
     this._overlay.addEventListener('click', this._viewportClicked, false);
   }

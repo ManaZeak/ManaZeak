@@ -100,14 +100,14 @@
       height: auto;
       position: absolute;
       left: 0;
-      width: auto;
       z-index: 999;
       display: flex;
+      width: 135px; // Match value in TrackContext.js if modified here
       justify-content: center;
       flex-direction: column;
 
       .entry {
-        height: 30px;
+        height: 30px; // Match value in TrackContext.js if modified here
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -164,7 +164,7 @@
 
       .queued-track {
         height: 50px;
-        min-width: 225px;
+        min-width: 275px;
         display: grid;
         grid-template-columns: 70px 1fr;
         grid-template-rows: 1fr 1fr;
