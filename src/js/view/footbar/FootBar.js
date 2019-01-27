@@ -173,7 +173,21 @@ class FootBar {
       });
   }
 
-  setRepeatMode(value) {
+
+  //  --------------------------------  GETTER METHODS   --------------------------------  //
+
+
+  get progressBar() {
+    return this._progressBar;
+  }
+
+
+  get volumeBar() {
+    return this._volumeBar;
+  }
+
+
+  set repeatMode(value) {
     if (value === 0) {
       this._controls.repeat.src = '/static/img/player/repeat-off.svg';
     } else if (value === 1) {
@@ -183,14 +197,8 @@ class FootBar {
     }
   }
 
-  //  --------------------------------  GETTER METHODS   --------------------------------  //
 
-  getProgressBar() {
-    return this._progressBar;
-  }
-  getVolumeBar() {
-    return this._volumeBar;
-  }
 }
+
 
 export default FootBar;

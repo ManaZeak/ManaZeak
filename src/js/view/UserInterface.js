@@ -5,7 +5,7 @@ import Modal from '../utils/Modal.js';
 'use strict';
 
 
-class View {
+class UserInterface {
   /**
    * @summary Fronted View class
    * @author Arthur Beaulieu
@@ -42,7 +42,7 @@ class View {
     this._scene = new Scene();
     this._footBar = new FootBar();
 
-    this._footBar.getVolumeBar().updateVolume(mzk.getIsMuted(), mzk.getVolume());
+    this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
   }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
@@ -57,13 +57,11 @@ class View {
    * @description Change UI elements according to the new playing track informations
    **/
   changeTrack(track) {
-    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
+    this.clearMoodbar();
     this.togglePlay();
     this._scene.changeTrack(track.id);
-
-    const player = mzk.model.getPlayer();
     this._footBar.renderMoodFile(track.moodbar);
-    this._footBar.getProgressBar().updateDuration(player.getDuration());
+    this._footBar.progressBar.updateDuration(mzk.model.player.duration);
   }
 
   /**
@@ -76,11 +74,11 @@ class View {
    * @description Change UI elements according to the new playing state
    **/
   togglePlay() {
-    const isPlaying = mzk.model.getPlayer().getIsPlaying();
+    const isPlaying = mzk.model.player.playing;
     this._footBar.updatePlayButton(isPlaying);
 
     if (isPlaying) { // Don't handle !playing (desactivate) bc pause != stop
-      this._footBar.getProgressBar().activate(); // Activate make the progress bar appear w/ animation
+      this._footBar.progressBar.activate(); // Activate make the progress bar appear w/ animation
     }
   }
 
@@ -94,9 +92,9 @@ class View {
    * @description Updates UI element to match the player stand by state
    **/
   stopPlayback() {
-    d3.selectAll('.moodbar svg g').remove(); // Clear current moodbar
+    this.clearMoodbar();
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
-    this._footBar.getProgressBar().resetProgressBar();
+    this._footBar.progressBar.resetProgressBar();
     this._scene.stopPlayback();
   }
 
@@ -124,9 +122,14 @@ class View {
    * @description Update the volume values in the UI according to the player's value
    **/
   updateVolume() {
-    const player = mzk.model.getPlayer();
-    this._footBar.getVolumeBar().updateVolume(player.getIsMuted(), player.getVolume());
+    this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
   }
+
+
+  clearMoodbar() {
+    d3.selectAll('.moodbar svg g').remove();
+  }
+
 
   /**
    * @method
@@ -138,31 +141,13 @@ class View {
    * @description Updates the progress bar according to the player progress' value
    **/
   updateProgress() { // Called onClick
-    const progress = mzk.model.getPlayer().getProgress();
-    this._footBar.getProgressBar().desactivateTransitions(); // Must disable transition when called
-    this._footBar.getProgressBar().setProgress(progress);
+    const progress = mzk.model.player.progress;
+    this._footBar.progressBar.desactivateTransitions(); // Must disable transition when called
+    this._footBar.progressBar.setProgress(progress);
 
     setTimeout(function() { // Restore transitions
-      this._footBar.getProgressBar().activateTransitions();
+      this._footBar.progressBar.activateTransitions();
     }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
-  }
-
-
-  extendMainContainer() {
-    this._mainContainer.classList.add('extended');
-    this._scene.extend();
-    setTimeout(() => {
-      this._scene.view.refreshView();
-    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
-  }
-
-
-  retractMainContainer() {
-    this._mainContainer.classList.remove('extended');
-    this._scene.retract();
-      setTimeout(() => {
-      this._scene.view.refreshView();
-    }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
 
@@ -190,16 +175,6 @@ class View {
   }
 
 
-  setActiveView(playlist) {
-    this._scene.updateView(playlist);
-  }
-
-
-  get activeView() {
-    return this._scene.view;
-  }
-
-
   displayModal(options) {
     mzk.komunikator.getTemplate(options.url)
       .then((response) => {
@@ -220,20 +195,6 @@ class View {
   }
 
 
-  getNextTrackId() {
-    return this._scene.getNextTrackId();
-  }
-
-  getPreviousTrackId() {
-    return this._scene.getPreviousTrackId();
-  }
-
-
-  getFirstTrackId() {
-    return this._scene.getFirstTrackId();
-  }
-
-
   startLoading() {
     return new Promise(resolve => {
       this._scene.startLoading()
@@ -250,22 +211,42 @@ class View {
   }
 
 
-  setRepeatMode(value) {
-    this._footBar.setRepeatMode(value);
+  isLastTrack() {
+    return this._scene.isLastTrack();
   }
 
 
-  isLastTrack() {
-    return this._scene.isLastTrack();
+  updateView(playlist) {
+    this._scene.updateView(playlist);
   }
 
 
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
 
-  getFootBar() {
-    return this._footBar;
+  get activeView() {
+    return this._scene.view;
+  }
+
+
+  get firstTrackId() {
+    return this._scene.firstTrackId;
+  }
+
+
+  get nextTrackId() {
+    return this._scene.nextTrackId;
+  }
+
+
+  get previousTrackId() {
+    return this._scene.previousTrackId;
+  }
+
+
+  set repeatMode(value) {
+    this._footBar.repeatMode = value;
   }
 }
 
-export default View;
+export default UserInterface;

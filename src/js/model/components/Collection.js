@@ -29,7 +29,7 @@ class Collection {
   _initialScan(playlist) {
     return new Promise((resolve) => {
       const options = {
-        LIBRARY_ID: playlist.getId()
+        LIBRARY_ID: playlist.id
       };
 
       mzk.komunikator.post('library/initialScan/', options)
@@ -56,7 +56,7 @@ class Collection {
     return new Promise((resolve, reject) => {
       let intervalId = -1;
       const options = {
-        PLAYLIST_ID: playlist.getId()
+        PLAYLIST_ID: playlist.id
       };
 
       const checkStatus = () => {
@@ -178,7 +178,7 @@ class Collection {
           this._initialScan(this._playlists[0])
             .then(() => {
               Shortcut.resumeAll(); // Restore all shortcuts
-              mzk.view.removeOverlay(); // Remove modal from main container
+              mzk.ui.removeOverlay(); // Remove modal from main container
               resolve();
             });
         } else {
@@ -209,7 +209,7 @@ class Collection {
       };
 
       Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
-      mzk.view.displayModal({
+      mzk.ui.displayModal({
         url: 'modals/newlibrary',
         callback: checkModalValues
       });

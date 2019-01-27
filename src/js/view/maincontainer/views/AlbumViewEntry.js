@@ -28,6 +28,7 @@ class AlbumViewEntry {
     this._init();
   }
 
+
   _init() {
     this._dom.container.dataset.before = (this._trackNumber + 1);
 
@@ -45,27 +46,8 @@ class AlbumViewEntry {
     this._dom.container.appendChild(this._dom.composer);
   }
 
-  getDom() {
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(this._dom.container);
-    return fragment;
-  }
 
-  get dom() {
-    return this._dom.container;
-  }
-
-  setSelected(status) {
-    this._isSelected = status;
-
-    if (!status) {
-      this._dom.container.classList.remove('selected');
-    } else {
-      this._dom.container.classList.add('selected');
-    }
-  }
-
-  setPlaying(status) {
+  _setIsPlaying(status) {
     this._isPlaying = status;
 
     if (!status) {
@@ -75,8 +57,15 @@ class AlbumViewEntry {
     }
   }
 
-  getIsSelected() {
-    return this._isSelected;
+
+  _setIsSelected(status) {
+    this._isSelected = status;
+
+    if (!status) {
+      this._dom.container.classList.remove('selected');
+    } else {
+      this._dom.container.classList.add('selected');
+    }
   }
 
 
@@ -84,9 +73,28 @@ class AlbumViewEntry {
     return this._id;
   }
 
-  get container() {
-    return this._dom.container;
+
+  get selected() {
+    return this._isSelected;
+  }
+
+
+  get dom() {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(this._dom.container);
+    return fragment;
+  }
+
+
+  set selected(status) {
+    this._setIsSelected(status);
+  }
+
+
+  set playing(status) {
+    this._setIsPlaying(status);
   }
 }
+
 
 export default AlbumViewEntry;

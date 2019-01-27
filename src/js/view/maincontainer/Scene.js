@@ -26,6 +26,7 @@ class Scene {
     this._events();
   }
 
+
   _events() {
     this._activeViewLabel.addEventListener('click', () => {
       if (this._scene.contains(this._viewSwitcher.dom)) {
@@ -45,6 +46,7 @@ class Scene {
       this._optionClicked();
     });
   }
+
 
   _optionClicked() {
     let sceneContext = this._scene.querySelector('#scene-context');
@@ -73,9 +75,11 @@ class Scene {
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+
   stopPlayback() {
     this.view.stopPlayback(); // Warning, this is specific to listView so far
   }
+
 
   /**
    * @method
@@ -97,13 +101,6 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
-  extend() {
-    this.view.refreshView();
-  }
-
-  retract() {
-    this.view.refreshView();
-  }
 
   /**
    * @method
@@ -131,33 +128,25 @@ class Scene {
       this._activeViewLabel.innerHTML = 'Artists';
     }
 
-    this.addView(this.view.getDOMFragment());
-    this.view.addTracks(playlist.getArtists());
+    this.addView(this.view.dom);
+    this.view.addTracks(playlist.artists);
   }
+
 
   changeTrack(id) {
     this.view.changeTrack(id);
   }
 
+
   getTrackById(id) {
     return this.view.getTrackById(id);
   }
 
-  getNextTrackId() {
-    return this.view.getNextTrackId();
-  }
-
-  getPreviousTrackId() {
-    return this.view.getPreviousTrackId();
-  }
-
-  getFirstTrackId() {
-    return this.view.getFirstTrackId();
-  }
 
   isLastTrack() {
     return this.view.isLastTrack();
   }
+
 
   startLoading() {
     return new Promise(resolve => {
@@ -178,6 +167,21 @@ class Scene {
         }
         resolve();
     });
+  }
+
+
+  get nextTrackId() {
+    return this.view.nextTrackId;
+  }
+
+
+  get previousTrackId() {
+    return this.view.previousTrackId;
+  }
+
+
+  get firstTrackId() {
+    return this.view.firstTrackId;
   }
 }
 

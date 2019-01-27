@@ -24,24 +24,24 @@ describe('Player unit tests', function() {
     done();
   });
 
-  it('Volume modification | covers setVolume()', function(done) {
-    player.setVolume(-100); // OOB (lower overflow) setVolume()
+  it('Volume modification | covers volume setter', function(done) {
+    player.volume = -100; // OOB (lower overflow)
     expect(player._volume).toBe(0);
     expect(player._player.volume).toBe(0);
     expect(player._isMuted).toBe(true);
-    player.setVolume(100); // OOB (higher overflow) setVolume()
+    player.volume = 100; // OOB (higher overflow)
     expect(player._volume).toBe(1);
     expect(player._player.volume).toBe(1);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0); // Regular setVolume() to zero
+    player.volume = 0;
     expect(player._volume).toBe(0);
     expect(player._player.volume).toBe(0);
     expect(player._isMuted).toBe(true);
-    player.setVolume(0.5); // Regular setVolume() to half
+    player.volume = 0.5; // Half
     expect(player._volume).toBe(0.5);
     expect(player._player.volume).toBe(0.5);
     expect(player._isMuted).toBe(false);
-    player.setVolume(1); // Regular setVolume() to half
+    player.volume = 1;
     expect(player._volume).toBe(1);
     expect(player._player.volume).toBe(1);
     expect(player._isMuted).toBe(false);
@@ -69,7 +69,7 @@ describe('Player unit tests', function() {
   });
 
   it('Volume modification | covers mute(), unmute(), toggleMute()', function(done) {
-    player.setVolume(0.9);
+    player.volume = 0.9;
     player.mute(); // Mute player action
     expect(player._volume).toBe(0.9); // Old volume value has been stored
     expect(player._player.volume).toBe(0);
@@ -78,13 +78,13 @@ describe('Player unit tests', function() {
     expect(player._volume).toBe(0.9);
     expect(player._player.volume).toBe(0.9);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0);
+    player.volume = 0;
     expect(player._isMuted).toBe(true);
     player.unmute(); // UnMute player action
     expect(player._volume).toBe(0.5); // Player restore default half volume value
     expect(player._player.volume).toBe(0.5);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0.9);
+    player.volume = 0.9;
     player.toggleMute();
     expect(player._volume).toBe(0.9); // Old volume value has been stored
     expect(player._player.volume).toBe(0);

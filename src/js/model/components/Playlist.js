@@ -162,10 +162,11 @@ class Playlist {
     return this._repeatMode;
   }
 
-  getId() {
+  get id() {
     return this._id;
   }
-  getArtists() {
+
+  get artists() {
     return this._artists;
   }
 

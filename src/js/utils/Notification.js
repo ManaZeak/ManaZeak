@@ -25,7 +25,6 @@ class Notification {
     this._dom = {}; // Notification handler container
     this._active = {}; // Active notifications object : retrieve a notification using its ID (this._active[ID])
     this._queue = {}; // Queue notifications when max active has been reached
-    this._history = []; // Notification history
     this._default = {}; // Will contain all default value for Notification
 
     this._position = '';
@@ -414,7 +413,6 @@ class Notification {
     notification.dom.style.opacity = 0;
 
     window.setTimeout(() => {
-      this._updateHistory(notification);
       notification.renderTo.removeChild(notification.dom); // Remove this notification from the DOM tree
 
       if (Object.keys(this._queue).length > 0) { // Notification queue is not empty
@@ -582,35 +580,6 @@ class Notification {
     }, notification.duration); // Use Notification master duration
   }
 
-  /**
-   * @method
-   * @name _updateHistory
-   * @private
-   * @memberof Notification
-   * @author Arthur Beaulieu
-   * @since June 2018
-   * @description Add a notification to the history. Might be executed when a notification is being closed
-   * @param {object} notification - The notification object
-   * @param {number} notification.id - Notification personnal ID
-   **/
-  _updateHistory(notification) {
-    // Remove this notification from the active object
-    delete this._active[notification.id];
-
-    // Work notification copy
-    const cleanEntry = JSON.parse(JSON.stringify(notification));
-
-    // Clear notification object from working attributes
-    delete cleanEntry.isClosing;
-    delete cleanEntry.isDimmed;
-    delete cleanEntry.requestCount;
-    delete cleanEntry.timeoutID;
-    delete cleanEntry.renderTo;
-    delete cleanEntry.dom;
-
-    // Save notification to the history
-    this._history.push(cleanEntry);
-  }
 
   /**
    * @method
@@ -925,16 +894,6 @@ class Notification {
       }
     }
   }
-
-  //  --------------------------------  GETTER METHODS   --------------------------------  //
-
-  getHistoryLength() {
-    return this._history.length;
-  }
-  getHistory() {
-    return this._history;
-  }
-
 }
 
 export default Notification;

@@ -14,7 +14,7 @@ class Modal {
 
     close.addEventListener('click', () => {
       Shortcut.resumeAll();
-      mzk.view.removeOverlay();
+      mzk.ui.removeOverlay();
     });
 
     create.addEventListener('click', () => {

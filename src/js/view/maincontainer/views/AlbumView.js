@@ -105,7 +105,7 @@ class AlbumView extends SceneView {
         trackNumber: k
       });
       this._tracks.push(albumViewEntry);
-      albumTracks.appendChild(albumViewEntry.getDom());
+      albumTracks.appendChild(albumViewEntry.dom);
       ++this._trackDatasetId;
 
       if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {
@@ -156,14 +156,6 @@ class AlbumView extends SceneView {
     this.initTracksState();
     delete this._trackDatasetId;
   }
-
-  stopPlayback() {
-    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
-      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
-      this._playingTrackIndex = -1;
-    }
-  }
-
 }
 
 export default AlbumView;
