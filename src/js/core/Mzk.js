@@ -530,6 +530,55 @@ class Mzk {
   }
 
 
+  /**
+   * @method
+   * @name download
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since January 2019
+   * @description Serve the user a download of the current selection in the active view. If no selection, it serve the right-clicked track
+   **/
+  download(id) {
+    let selection = this.view.activeView.selection;
+    const ids = [];
+
+    if (selection.length === 0) { // User has no selection, so the downloaded track is the one the track context has been clicked on
+      ids.push(this.view.getTrackById(id).id);
+    } else { // Fiil the ids array with user selection
+      for (let i = 0; i < selection.length; ++i) {
+        ids.push(this.view.getTrackById(selection[i]).id);
+      }
+    }
+
+    const options = {
+      TRACKS_ID: ids
+    };
+
+    this.komunikator.post('track/multiDownload/', options)
+      .then(response => {
+        if (response.DONE) {
+          // Creating a fictive button
+          let button = document.createElement('A');
+          // Set the href path
+          button.href = response.DOWNLOAD_PATH;
+          // Regex to only keep the filename for the download content
+          button.download = response.DOWNLOAD_PATH.replace(/^.*[\\\/]/, '');
+          // DOM interaction (append, click and remove)
+          document.body.appendChild(button);
+          button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          document.body.removeChild(button);
+        }
+        else {
+
+        }
+      })
+      .catch(response => {
+        console.log(response)
+      });
+  }
+
+
   addTrackToQueue(datasetId) {
     const track = this.view.getTrackById(datasetId);
 
