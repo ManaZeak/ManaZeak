@@ -93,7 +93,7 @@ class SceneView {
       targetId = closest.dataset.id;
     }
 
-    if ('ontouchstart' in document.documentElement) { // Mobile Click
+    if (Utils.isMobileDevice()) { // Mobile Click
       this.unselectAll();
       this._playTrack(targetId);
       return;

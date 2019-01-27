@@ -20,7 +20,7 @@ class ListView extends SceneView {
   constructor(options) {
     super(options);
 
-    if ('ontouchstart' in document.documentElement) {
+    if (Utils.isMobileDevice()) {
       this._columns = listview.responsiveColumns;
     } else {
       this._columns = listview.defaultColumns;
@@ -383,7 +383,7 @@ class ListView extends SceneView {
           if ((sum - 100) < this._columns[index].width) {
             this._columns[index].width -= (sum - 100);
           } else { // Too tight to retract column, raise a warning
-            Errors.raise({
+            Logger.raise({
               code: 'CANT_STRETCH_COLUMN',
               frontend: true
             });
@@ -391,7 +391,7 @@ class ListView extends SceneView {
             return;
           }
         } else { // Layout is 100% stretched to its container, raise an info
-          Errors.raise({
+          Logger.raise({
             code: 'ALREADY_STRETCH',
             frontend: true
           });
@@ -420,7 +420,7 @@ class ListView extends SceneView {
         }
 
         if (alreadyStretched) { // Exit function if columns are already stretched
-          Errors.raise({
+          Logger.raise({
             code: 'ALREADY_STRETCH',
             frontend: true
           });
@@ -471,6 +471,8 @@ class ListView extends SceneView {
 
             if (this._columns[j].name.toLowerCase() === 'duration') {
               col.innerHTML = Utils.secondsToTimecode(listViewEntry.get(this._columns[j].name.toLowerCase()));
+            } else if (this._columns[j].name.toLowerCase() === 'bitrate') {
+              col.innerHTML = Utils.sizeToKiloBytes(listViewEntry.get(this._columns[j].name.toLowerCase())) + ' kbps';
             } else {
               col.innerHTML = listViewEntry.get(this._columns[j].name.toLowerCase());
             }

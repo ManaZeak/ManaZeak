@@ -3,7 +3,7 @@
     {
       "name": "Duration",
       "order": 0,
-      "width": "10"
+      "width": "6"
     },
     {
       "name": "Title",
@@ -16,29 +16,34 @@
       "width": "14"
     },
     {
-      "name": "Composer",
+      "name": "Year",
       "order": 3,
-      "width": "14"
+      "width": "3"
     },
     {
-      "name": "Performer",
+      "name": "Album",
       "order": 4,
       "width": "14"
     },
     {
-      "name": "Album",
+      "name": "Composer",
       "order": 5,
       "width": "14"
     },
     {
-      "name": "Year",
-      "order": 7,
-      "width": "1"
+      "name": "Performer",
+      "order": 6,
+      "width": "14"
     },
     {
       "name": "Genre",
-      "order": 6,
-      "width": "13"
+      "order": 7,
+      "width": "10"
+    },
+    {
+      "name": "BitRate",
+      "order": 8,
+      "width": "5"
     }
   ],
   "responsiveColumns": [

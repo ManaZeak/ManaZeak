@@ -1,14 +1,14 @@
 import '../scss/style.scss';
 
 import Utils from './utils/Utils.js';
-import Errors from './utils/Errors.js';
+import Logger from './utils/Logger.js';
 import Events from './utils/Events.js';
 import Shortcut from './utils/Shortcut.js';
 import Notification from './utils/Notification.js';
 import Mzk from './core/Mzk.js';
 'use strict';
 
-const errorsOptions = {
+const loggerOptions = {
   verbose: true,
   trace: true
 };
@@ -21,7 +21,7 @@ const notificationOptions = {
 };
 
 window.Utils = new Utils();
-window.Errors = new Errors(errorsOptions);
+window.Logger = new Logger(loggerOptions);
 window.Events = new Events();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
