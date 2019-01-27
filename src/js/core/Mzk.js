@@ -1,6 +1,6 @@
 import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
-import View from '../view/View.js';
+import UserInterface from '../view/UserInterface.js';
 import User from './User.js';
 import Notification from "../utils/Notification";
 'use strict';
@@ -11,7 +11,7 @@ class Mzk {
    * @summary ManaZeak main controller
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Handle both Model ad View, and animate them accordingly. Host User, Langage and Komunikator also.
+   * @description Handle both Model and the user interface, and animate them accordingly. Host User, Langage and Komunikator also.
    **/
   constructor() {
     this.cookies = {};
@@ -19,7 +19,7 @@ class Mzk {
     this.lang = {};
     this.model = {};
     this.user = {};
-    this.view = {};
+    this.ui = {};
   }
 
 
@@ -49,7 +49,7 @@ class Mzk {
         return this._initModel();
       })
       .then(() => {
-        return this._initView();
+        return this._initUi();
       })
       .then(() => {
         return this._initShortcut();
@@ -172,17 +172,17 @@ class Mzk {
 
   /**
    * @method
-   * @name _initView
+   * @name _initUi
    * @private
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Init the frontend View
+   * @description Init the frontend Ui
    * @returns {Promise} - A promise that resolve when logic has been executed
    **/
-  _initView() {
+  _initUi() {
     return new Promise(resolve => {
-      this.view = new View();
+      this.ui = new UserInterface();
       resolve();
     });
   }
@@ -222,7 +222,7 @@ class Mzk {
         .then(collection => {
           this.model.initCollection(collection)
             .then(playlist => {
-              this.view.initPlaylist(playlist);
+              this.ui.initPlaylist(playlist);
               resolve();
             })
             .catch(errorKey => {
@@ -260,13 +260,13 @@ class Mzk {
   changeTrack(id) {
     let durationPlayed = 0;
 
-    if (!isNaN(this.model.getPlayer().getProgress())) {
-      durationPlayed = this.model.getPlayer().getProgress();
+    if (!isNaN(this.playerProgress)) {
+      durationPlayed = this.playerProgress;
     }
 
     const options = {
       TRACK_ID: id,
-      LAST_TRACK_PATH: this.model.getPlayer().getSource(),
+      LAST_TRACK_PATH: this.model.player.getSource(),
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
     };
@@ -276,7 +276,7 @@ class Mzk {
         return this.model.changeTrack(id, track.TRACK_PATH);
       })
       .then(() => {
-        this.view.changeTrack(this.model.getActiveTrack());
+        this.ui.changeTrack(this.model.playingTrack);
       });
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
@@ -291,15 +291,15 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Toggle the playback and update the view
+   * @description Toggle the playback and update the user interface
    **/
   togglePlay() {
-    if (!this.model.getPlayer().hasSource()) {
-      this.changeTrack(this.view.getFirstTrackId());
+    if (!this.model.player.hasSource()) {
+      this.changeTrack(this.ui.firstTrackId);
     } else {
       this.model.togglePlay()
         .then(() => {
-          this.view.togglePlay();
+          this.ui.togglePlay();
         });
     }
   }
@@ -312,12 +312,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Stop the playback and update the view
+   * @description Stop the playback and update the user interface
    **/
   stopPlayback() {
     this.model.stopPlayback()
       .then(() => {
-        this.view.stopPlayback();
+        this.ui.stopPlayback();
       });
   }
 
@@ -336,7 +336,7 @@ class Mzk {
    **/
   mute() {
     this.model.mute();
-    this.view.updateVolume();
+    this.ui.updateVolume();
   }
 
 
@@ -351,7 +351,7 @@ class Mzk {
    **/
   unmute() {
     this.model.unmute();
-    this.view.updateVolume();
+    this.ui.updateVolume();
   }
 
 
@@ -362,12 +362,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Toggle the player's mute state and update the view
+   * @description Toggle the player's mute state and update the user interface
    **/
   toggleMute() {
     this.model.toggleMute()
       .then(() => {
-        this.view.updateVolume();
+        this.ui.updateVolume();
       });
   }
 
@@ -379,12 +379,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Add/Substract a given amount of volume, in range float[-1, 1] and update the view
+   * @description Add/Substract a given amount of volume, in range float[-1, 1] and update the user interface
    **/
   adjustVolume(amount) {
     this.model.adjustVolume(amount)
       .then(() => {
-        this.view.updateVolume();
+        this.ui.updateVolume();
       });
   }
 
@@ -396,12 +396,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Add/Substract a given amount of volume, in range float[0, 1] and update the view
+   * @description Add/Substract a given amount of volume, in range float[0, 1] and update the user interface
    **/
   setVolume(volume) {
     this.model.setVolume(volume)
       .then(() => {
-        this.view.updateVolume();
+        this.ui.updateVolume();
       });
   }
 
@@ -416,12 +416,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Adjust the progress percentage from a given amoun in range float[-100,100] and update the view
+   * @description Adjust the progress percentage from a given amoun in range float[-100,100] and update the user interface
    **/
   adjustProgress(amount) {
     this.model.adjustProgress(amount)
       .then(() => {
-        this.view.updateProgress();
+        this.ui.updateProgress();
       });
   }
 
@@ -433,12 +433,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Set the progress percentage in range float[0,100] and update the view
+   * @description Set the progress percentage in range float[0,100] and update the user interface
    **/
   setProgress(progress) {
     this.model.setProgress(progress)
       .then(() => {
-        this.view.updateProgress();
+        this.ui.updateProgress();
       });
   }
 
@@ -469,7 +469,10 @@ class Mzk {
   changeActiveView(newView) {
     this.model.setActiveView(newView)
       .then(() => {
-        this.view.setActiveView(this.model.getCollection().activePlaylist);
+        this.ui.setSceneActiveView(this.model.collection.activePlaylist);
+      })
+      .catch(e => {
+        console.log(e)
       });
   }
 
@@ -492,15 +495,15 @@ class Mzk {
     const repeatMode = this.model.repeatMode;
 
     if (repeatMode === 0) {
-      if (this.view.isLastTrack()) {
+      if (this.ui.isLastTrack()) {
         this.stopPlayback();
       } else {
-        mzk.changeTrack(this.view.getNextTrackId());
+        mzk.changeTrack(this.ui.nextTrackId);
       }
     } else if (repeatMode === 1) {
       mzk.repeatTrack();
     } else if (repeatMode === 2) {
-      mzk.changeTrack(this.view.getNextTrackId());
+      mzk.changeTrack(this.ui.nextTrackId);
     } else {
       Logger.raise({
         code: 'NO_NEXT_TRACK',
@@ -520,7 +523,7 @@ class Mzk {
    * @description Change the player track using the previous one in the current view
    **/
   previousTrackInView() {
-    mzk.changeTrack(this.view.getPreviousTrackId());
+    mzk.changeTrack(this.ui.lastTrackId);
   }
 
 
@@ -540,14 +543,14 @@ class Mzk {
    * @description Serve the user a download of the current selection in the active view. If no selection, it serve the right-clicked track
    **/
   download(id) {
-    let selection = this.view.activeView.selection;
+    let selection = this.ui.activeView.selection;
     const ids = [];
 
     if (selection.length === 0) { // User has no selection, so the downloaded track is the one the track context has been clicked on
-      ids.push(this.view.getTrackById(id).id);
+      ids.push(this.ui.getTrackById(id).id);
     } else { // Fiil the ids array with user selection
       for (let i = 0; i < selection.length; ++i) {
-        ids.push(this.view.getTrackById(selection[i]).id);
+        ids.push(this.ui.getTrackById(selection[i]).id);
       }
     }
 
@@ -580,7 +583,7 @@ class Mzk {
 
 
   addTrackToQueue(datasetId) {
-    const track = this.view.getTrackById(datasetId);
+    const track = this.ui.getTrackById(datasetId);
 
     if (track) {
       this.model.appendToQueue(track.id);
@@ -600,7 +603,7 @@ class Mzk {
   toggleRepeatMode() {
     this.model.toggleRepeatMode()
       .then((repeatMode) => {
-        this.view.setRepeatMode(repeatMode);
+        this.ui.repeatMode = repeatMode;
       });
   }
 
@@ -689,15 +692,28 @@ class Mzk {
   //  ----  GETTERS / SETTERS  ----  //
 
 
-  getIsMuted() {
-    return this.model.getPlayer().getIsMuted();
+  get playerMuted() {
+    return this.model.player.muted;
   }
-  getProgress() {
-    return this.model.getPlayer().getProgress();
+
+
+ // Get percentage progress
+  get playerProgress() {
+    return this.model.player.progress;
   }
-  getVolume() {
-    return this.model.getVolume();
+
+
+  get playerVolume() {
+    return this.model.player.volume;
   }
+
+
+  get playerPlaying() {
+    return this.model.player.isPlaying;
+  }
+
+
 }
+
 
 export default Mzk;

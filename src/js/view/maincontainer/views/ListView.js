@@ -66,6 +66,7 @@ class ListView extends SceneView {
     }, 0); // Wait that header has been added to the DOM
   }
 
+
   _events() {
     this._dom.container.addEventListener('click', (event) => {
       this._trackClicked(event);
@@ -92,12 +93,14 @@ class ListView extends SceneView {
     });
   }
 
+
   _contextClicked(event) {
     if (event.target.closest('.track')) {
       // Event target is a column, we need to parent tiil we have the track-container
       this._trackContext.open(event, event.target.parentNode.dataset.id);
     }
   }
+
 
   _initHeader() {
     const fragment = document.createDocumentFragment();
@@ -135,6 +138,7 @@ class ListView extends SceneView {
     this._dom.header.appendChild(fragment);
   }
 
+
   _handleResizeEvents(handle) {
     const parent = handle.parentNode;
     const marker = document.createElement('DIV');
@@ -149,7 +153,7 @@ class ListView extends SceneView {
     };
 
     const stopResizing = event => {
-      mzk.view.startLoading()
+      mzk.ui.startLoading()
         .then(() => {
           event.target.parentNode.setAttribute('draggable', 'true');
           window.removeEventListener('mousemove', resize, false);
@@ -168,7 +172,9 @@ class ListView extends SceneView {
           }
 
           this._refreshGridColumn(this._computeGridTemplateColumns());
-          mzk.view.stopLoading();
+        })
+        .finally(() => {
+          mzk.ui.stopLoading();
         });
     };
 
@@ -181,6 +187,7 @@ class ListView extends SceneView {
     handle.addEventListener('mousedown', initResize, false);
     marker.id = 'listview-resize-marker';
   }
+
 
   _handleDragEvents(column) {
     const dragStart = event => {
@@ -227,7 +234,7 @@ class ListView extends SceneView {
       // Don't do anything if dropping the same column we're dragging.
       if (this._draggedColumn !== event.target) {
         event.target.removeEventListener('drageend', dragEnd, false);
-        mzk.view.startLoading()
+        mzk.ui.startLoading()
           .then(() => {
             for (let i = 0; i < this._dom.container.childNodes.length; ++i) {
               const draggedColumn = this._dom.container.childNodes[i].childNodes[this._draggedColumn.dataset.id];
@@ -244,7 +251,9 @@ class ListView extends SceneView {
 
             this._draggedColumn = null; // Must be done after column movement in grid
             this._refreshGridColumn();
-            mzk.view.stopLoading();
+          })
+          .finally(() => {
+            mzk.ui.stopLoading();
           });
       } else {
         this._draggedColumn = null; //
@@ -258,6 +267,7 @@ class ListView extends SceneView {
     column.addEventListener('dragend', dragEnd, false);
   }
 
+
   _computeGridTemplateColumns() {
     let gridTemplateColumns = ''; // CSS grid rule
 
@@ -267,6 +277,7 @@ class ListView extends SceneView {
 
     return gridTemplateColumns;
   }
+
 
   _refreshHeader(gridTemplateColumns) {
     this._dom.header.style.gridTemplateColumns = gridTemplateColumns;
@@ -282,6 +293,7 @@ class ListView extends SceneView {
     }
   }
 
+
   // gridTemplateColumns optionnal (custom set or self set)
   _refreshGridColumn(gridTemplateColumns) {
     if (!gridTemplateColumns) {
@@ -294,6 +306,7 @@ class ListView extends SceneView {
       this._dom.container.childNodes[i].style.gridTemplateColumns = gridTemplateColumns;
     }
   }
+
 
   _checkActivatedColumns() {
     const activatedColumns = [];
@@ -308,6 +321,7 @@ class ListView extends SceneView {
 
     return activatedColumns;
   }
+
 
   _addColumn(column) {
     if (this._checkActivatedColumns().indexOf(column.name) === -1) {
@@ -338,6 +352,7 @@ class ListView extends SceneView {
     }
   }
 
+
   _removeColumn(column) {
     for (let i = this._columns.length - 1; i >= 0; --i) {
       if (this._columns[i].name === column.name) {
@@ -357,6 +372,7 @@ class ListView extends SceneView {
     }
   }
 
+
   _toggleColumn(column) {
     if (this._checkActivatedColumns().indexOf(column.name) === -1) {
       this._addColumn(column);
@@ -365,8 +381,9 @@ class ListView extends SceneView {
     }
   }
 
+
   _stretchColumn(column) {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
         const index = column.dataset.id; // Column to stretch index
         let sum = 0; // Columns width in % sum
@@ -387,7 +404,6 @@ class ListView extends SceneView {
               code: 'CANT_STRETCH_COLUMN',
               frontend: true
             });
-            mzk.view.stopLoading();
             return;
           }
         } else { // Layout is 100% stretched to its container, raise an info
@@ -395,18 +411,20 @@ class ListView extends SceneView {
             code: 'ALREADY_STRETCH',
             frontend: true
           });
-          mzk.view.stopLoading();
           return;
         }
 
         this._columns[index].width = this._columns[index].width.toString(); // Restore target value
         this._refreshGridColumn();
-        mzk.view.stopLoading();
+      })
+      .finally(() => {
+        mzk.ui.stopLoading();
       });
   }
 
+
   _stretchAllColumns() {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
         const equalColumnWidthInPx = (this._dom.wrapper.clientWidth / this._columns.length);
         let alreadyStretched = true; // Assuming by default that that columns have equal width
@@ -424,7 +442,6 @@ class ListView extends SceneView {
             code: 'ALREADY_STRETCH',
             frontend: true
           });
-          mzk.view.stopLoading();
           return;
         }
 
@@ -435,12 +452,15 @@ class ListView extends SceneView {
         }
 
         this._refreshGridColumn(gridTemplateColumns); // Refresh ListView grid with custom gridTemplateColumns value
-        mzk.view.stopLoading();
+      })
+      .finally(() => {
+        mzk.ui.stopLoading();
       });
   }
 
+
   addTracks(artists) {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
         const tracks = [];
 
@@ -470,17 +490,17 @@ class ListView extends SceneView {
             col.dataset.id = j;
 
             if (this._columns[j].name.toLowerCase() === 'duration') {
-              col.innerHTML = Utils.secondsToTimecode(listViewEntry.get(this._columns[j].name.toLowerCase()));
+              col.innerHTML = Utils.secondsToTimecode(listViewEntry.getTagValue(this._columns[j].name.toLowerCase()));
             } else if (this._columns[j].name.toLowerCase() === 'bitrate') {
-              col.innerHTML = Utils.sizeToKiloBytes(listViewEntry.get(this._columns[j].name.toLowerCase())) + ' kbps';
+              col.innerHTML = Utils.sizeToKiloBytes(listViewEntry.getTagValue(this._columns[j].name.toLowerCase())) + ' kbps';
             } else {
-              col.innerHTML = listViewEntry.get(this._columns[j].name.toLowerCase());
+              col.innerHTML = listViewEntry.getTagValue(this._columns[j].name.toLowerCase());
             }
 
             listViewEntry.addColumn(col);
           }
 
-          fragment.appendChild(listViewEntry.getDom());
+          fragment.appendChild(listViewEntry.dom);
         }
 
         this._dom.container.appendChild(fragment);
@@ -493,9 +513,12 @@ class ListView extends SceneView {
         }
 
         this.initTracksState();
-        mzk.view.stopLoading();
+      })
+      .finally(() => {
+        mzk.ui.stopLoading();
       });
   }
+
 
   fillContext(context) {
     const activatedColumns = this._checkActivatedColumns();
@@ -520,7 +543,7 @@ class ListView extends SceneView {
         const name = event.target.id.match(/-(.*)/)[1];
         let width = '';
 
-        mzk.view.startLoading()
+        mzk.ui.startLoading()
           .then(() => {
             for (let j = 0; j < this._availableColumns.length; ++j) {
               if (this._availableColumns[j].name === name) {
@@ -532,7 +555,9 @@ class ListView extends SceneView {
               name: name,
               width: width
             });
-            mzk.view.stopLoading();
+          })
+          .finally(() => {
+            mzk.ui.stopLoading();
           });
       });
 
@@ -552,13 +577,14 @@ class ListView extends SceneView {
     });
   }
 
+
   refreshView() {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
-        setTimeout(() => {
-          this._refreshGridColumn();
-          mzk.view.stopLoading();
-        }, 500);
+        this._refreshGridColumn();
+      })
+      .finally(() => {
+        mzk.ui.stopLoading();
       });
   }
 }

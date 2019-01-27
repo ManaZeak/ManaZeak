@@ -37,7 +37,7 @@ class Player {
   _init() {
     this._player = document.createElement('AUDIO'); // Create HTML audio tag
     this._player.id = 'mzk-audio-player'; // Assign player ID
-    this.setVolume(1); // Initialize volume to its maximum value, prefs
+    this.volume = 1; // Initialize volume to its maximum value, prefs
   }
 
 
@@ -152,7 +152,7 @@ class Player {
 
     if (this._isMuted) { // Restore mute state if needed
       this.unmute(); // Un mute playback
-      this.setVolume(value); // Call again setVolume with previous value
+      this.volume = value; // Call again setVolume with previous value
       return;
     }
 
@@ -378,7 +378,7 @@ class Player {
       }
 
       this._isMuted = false; // Set mute state to false
-      this.setVolume(volume); // Restore old volume value
+      this.volume = volume; // Restore old volume value
     }
   }
 
@@ -411,13 +411,11 @@ class Player {
    * @returns {string} - The player current source url
    **/
   getSource() {
-    let source = 'None';
-
     if (this._player.src !== null) {
-      source = this._player.src;
+      return this._player.src;
+    } else {
+      return 'None';
     }
-
-    return source;
   }
 
 
@@ -432,58 +430,42 @@ class Player {
    * @returns {boolean} - The presence of a source in player state
    **/
   hasSource() {
-    let hasSource = false;
-
-    if (this._player.src) {
-      hasSource = true;
-    }
-
-    return hasSource;
+    return !!this._player.src;
   }
 
 
   //  ----  GETTER   ----  //
 
 
-  getIsPlaying() {
+  get playing() {
     return this._isPlaying;
   }
 
-
-  getIsMuted() {
+  get muted() {
     return this._isMuted;
   }
 
-
-  getVolume() {
+  get volume() {
     return this._volume;
   }
 
-
-  getProgress() {
+  get progress() {
     return this._getProgress();
   }
 
-
-  getDuration() {
+  get duration() {
     return this._player.duration;
   }
-
-
-  getCurrentTime() {
-    return this._player.currentTime;
-  }
-
 
   //  ----  SETTER   ----  //
 
 
-  setProgress(percentage) {
+  set progress(percentage) {
     this._setProgress(percentage);
   }
 
 
-  setVolume(value) {
+  set volume(value) {
     this._setVolume(value);
   }
 }

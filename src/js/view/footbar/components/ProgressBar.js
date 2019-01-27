@@ -238,7 +238,7 @@ class ProgressBar {
    * @description Set the progress bar completion according to the Mzk player progress value
    **/
   _animate() {
-    this.setProgress(mzk.getProgress());
+    this.setProgress(mzk.playerProgress);
   }
 
   /**

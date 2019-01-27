@@ -13,7 +13,7 @@ class Model {
     this._player = {};
     this._collection = {};
     this._queue = [];
-    this._activeTrack = null;
+    this._playingTrack = null;
 
     this._init();
   }
@@ -34,6 +34,22 @@ class Model {
     this._collection = new Collection();
   }
 
+
+  _getQueuedTracks() {
+    const queuedTracks = [];
+    for (let i = 0; i < this._queue.length; ++i) {
+      const index = this._queue[i];
+      const track = this.getTrackById(index);
+
+      if (track) {
+        queuedTracks.push(track);
+      }
+    }
+
+    return queuedTracks;
+  }
+
+
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   //  --------------------------------  PLAYER METHODS  ---------------------------------  //
@@ -51,7 +67,7 @@ class Model {
    **/
   changeTrack(id, url) {
     return new Promise(resolve => {
-      this._activeTrack = this.getTrackById(id);
+      this._playingTrack = this.getTrackById(id);
       this._player.changeTrack(url).then(resolve);
     });
   }
@@ -87,7 +103,7 @@ class Model {
   stopPlayback() {
     return new Promise(resolve => {
       this._player.stop();
-      this._activeTrack = null;
+      this._playingTrack = null;
       resolve();
     });
   }
@@ -174,7 +190,7 @@ class Model {
    **/
   setVolume(volume) {
     return new Promise(resolve => {
-      this._player.setVolume(volume);
+      this._player.volume = volume;
       resolve();
     });
   }
@@ -210,7 +226,7 @@ class Model {
    **/
   setProgress(progress) {
     return new Promise(resolve => {
-      this._player.setProgress(progress);
+      this._player.progress = progress;
       resolve();
     });
   }
@@ -251,16 +267,6 @@ class Model {
     });
   }
 
-  setActiveView(newView) {
-    return new Promise((resolve) => {
-      this._collection.activePlaylist.activeView = newView;
-      resolve();
-    });
-  }
-
-  get activeView() {
-    return this._collection.activePlaylist.activeView;
-  }
 
   /**
    * @method
@@ -314,43 +320,43 @@ class Model {
     return id;
   }
 
+
+  setActiveView(newView) {
+    return new Promise((resolve) => {
+      this._collection.activePlaylist.activeView = newView;
+      resolve();
+    });
+  }
+
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
     return this._collection.activePlaylist.repeatMode;
   }
 
-  get queuedTracks() {
-    const queuedTracks = [];
-
-    for (let i = 0; i < this._queue.length; ++i) {
-      const index = this._queue[i];
-
-      const track = this.getTrackById(index);
-
-      if (track) {
-        queuedTracks.push(track);
-      }
-    }
-
-    return queuedTracks;
-  }
-
-  getVolume() {
-    return this._player.getVolume();
-  }
-  getPlayer() {
+  get player() {
     return this._player;
   }
-  getCollection() {
+
+  get activeView() {
+    return this._collection.activePlaylist.activeView;
+  }
+
+  get collection() {
     return this._collection;
   }
-  getActiveTrack() {
-    return this._activeTrack;
+
+  get playingTrack() {
+    return this._playingTrack;
   }
 
   get queue() {
     return this._queue;
+  }
+
+  get queuedTracks() {
+    return this._getQueuedTracks();
   }
 }
 

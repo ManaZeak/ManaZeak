@@ -25,11 +25,11 @@ class SceneView {
   }
 
   _simpleClick(targetId) {
-    const isTargetSelected = this._tracks[targetId].getIsSelected(); // Saving target selection state before unselecting all
+    const isTargetSelected = this._tracks[targetId].selected; // Saving target selection state before unselecting all
     this.unselectAll();
 
     if (isTargetSelected) {
-      this._tracks[targetId].setSelected(false); // Restore previous state to properly use in Normal click behavior condition
+      this._tracks[targetId].selected = false; // Restore previous state to properly use in Normal click behavior condition
       this._selection.splice(this._selection.indexOf(targetId), 1);
     }
   }
@@ -37,28 +37,28 @@ class SceneView {
   _playTrack(targetId) {
     clearTimeout(this._click.timeoutId);
     this.stopPlayback();
-    this._tracks[targetId].setSelected(true);
+    this._tracks[targetId].selected = true;
     this._selection.push(parseInt(targetId, 10));
     mzk.changeTrack(this._tracks[targetId].id);
   }
 
   _toggleSelected(targetId) {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
-        if (this._tracks[targetId].getIsSelected()) {
-          this._tracks[targetId].setSelected(false);
+        if (this._tracks[targetId].selected) {
+          this._tracks[targetId].selected = false;
           this._selection.splice(this._selection.indexOf(targetId), 1);
         } else {
-          this._tracks[targetId].setSelected(true);
+          this._tracks[targetId].selected = true;
           this._selection.push(parseInt(targetId, 10));
         }
 
-        mzk.view.stopLoading();
+        mzk.ui.stopLoading();
       });
   }
 
   _controlShiftClick(targetId) {
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
         let start = 0;
         let end = 0;
@@ -72,11 +72,11 @@ class SceneView {
         }
 
         for (let i = start; i < end; ++i) { // Loop to fill in between items
-          this._tracks[i].setSelected(true);
+          this._tracks[i].selected = true;
           this._selection.push(i);
         }
 
-        mzk.view.stopLoading();
+        mzk.ui.stopLoading();
       });
   }
 
@@ -126,14 +126,17 @@ class SceneView {
   }
 
   stopPlayback() {
-
+    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
+      this._tracks[this._playingTrackIndex].playing = false; // Remove the flag
+      this._playingTrackIndex = -1;
+    }
   }
 
   unselectAll() {
     this._selection = [];
 
     for (let i = 0; i < this._tracks.length; ++i) {
-      this._tracks[i].setSelected(false);
+      this._tracks[i].selected = false;
     }
   }
 
@@ -147,16 +150,16 @@ class SceneView {
       }
     }
 
-    mzk.view.startLoading()
+    mzk.ui.startLoading()
       .then(() => {
         if (this._playingTrackIndex !== -1) {
-          this._tracks[this._playingTrackIndex].setPlaying(false);
+          this._tracks[this._playingTrackIndex].playing = false;
         }
 
         this._playingTrackIndex = targetId;
         this._click.dbclick = false;
-        this._tracks[targetId].setPlaying(true);
-        mzk.view.stopLoading();
+        this._tracks[targetId].playing = true;
+        mzk.ui.stopLoading();
       });
   }
 
@@ -166,12 +169,12 @@ class SceneView {
 
   initTracksState() {
     if (this._playingTrackIndex >= 0) {
-      this._tracks[this._playingTrackIndex].setPlaying(true);
+      this._tracks[this._playingTrackIndex].playing = true;
     }
 
     if (this._selection.length > 0) {
       for (let i = 0; i < this._selection.length; ++i) {
-        this._tracks[this._selection[i]].setSelected(true);
+        this._tracks[this._selection[i]].selected = true;
       }
     }
   }
@@ -205,45 +208,55 @@ class SceneView {
     return null;
   }
 
-  getDOMFragment() {
-    return this._dom.fragment;
-  }
-
-  get playingTrackId() {
-      return this._tracks;
-  }
-
   getTrackById(id) {
     return this._tracks[id];
   }
 
-  getNextTrackId() {
-    return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
-  }
-
-  getPreviousTrackId() {
-    return this._tracks[(this._playingTrackIndex + this._tracks.length - 1) % this._tracks.length].id;
-  }
-
-  getFirstTrackId() {
-    return this._tracks[0].id;
-  }
 
   isLastTrack() {
     return this._playingTrackIndex === this._tracks.length - 1;
   }
 
-  get playingTrackIndex() {
-      return this._playingTrackIndex;
+
+  get dom() {
+    return this._dom.fragment;
   }
+
+
+  get playingTrackId() {
+    return this._tracks;
+  }
+
+
+  get playingTrackIndex() {
+    return this._playingTrackIndex;
+  }
+
+
+  get firstTrackId() {
+    return this._tracks[0].id;
+  }
+
+
+  get nextTrackId() {
+    return this._tracks[(this._playingTrackIndex + 1) % this._tracks.length].id;
+  }
+
+
+  get previousTrackId() {
+    return this._tracks[(this._playingTrackIndex + this._tracks.length - 1) % this._tracks.length].id;
+  }
+
+
+  get selection() {
+    return this._selection;
+  }
+
 
   set playingTrackIndex(trackIndex) {
       this._playingTrackIndex = trackIndex;
   }
 
-  get selection() {
-    return this._selection;
-  }
 
   set selection(selection) {
     this._selection = selection;

@@ -34,12 +34,6 @@ class Track {
     this.title = options.rawTrack.TITLE;
     this.year = options.rawTrack.YEAR;
   }
-
-  //  --------------------------------  GETTER METHODS   --------------------------------  //
-
-  getId() {
-    return this._id;
-  }
 }
 
 export default Track;

@@ -31,31 +31,8 @@ class ListViewEntry {
     this._isPlaying = false;
   }
 
-  addColumn(column) {
-    this._dom.appendChild(column);
-  }
 
-  getDom() {
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(this._dom);
-    return fragment;
-  }
-
-  get dom() {
-    return this._dom;
-  }
-
-  setSelected(status) {
-    this._isSelected = status;
-
-    if (!status) {
-      this._dom.classList.remove('selected');
-    } else {
-      this._dom.classList.add('selected');
-    }
-  }
-
-  setPlaying(status) {
+  _setIsPlaying(status) {
     this._isPlaying = status;
 
     if (!status) {
@@ -65,16 +42,48 @@ class ListViewEntry {
     }
   }
 
-  getLowerCaseOf(tag) {
-    return this[tag].toString().toLowerCase();
+
+  _setIsSelected(status) {
+    this._isSelected = status;
+
+    if (!status) {
+      this._dom.classList.remove('selected');
+    } else {
+      this._dom.classList.add('selected');
+    }
   }
-  get(tag) {
+
+
+  addColumn(column) {
+    this._dom.appendChild(column);
+  }
+
+
+  getTagValue(tag) {
     return this[tag];
   }
-  getIsSelected() {
+
+
+  get dom() {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(this._dom);
+    return fragment;
+  }
+
+
+  get selected() {
     return this._isSelected;
   }
 
+
+  set playing(status) {
+    this._setIsPlaying(status);
+  }
+
+
+  set selected(status) {
+    this._setIsSelected(status);
+  }
 }
 
 export default ListViewEntry;
