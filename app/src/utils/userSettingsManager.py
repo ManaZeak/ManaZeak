@@ -1,7 +1,7 @@
 from app.models.security import Group
 from app.models.settings import UserSetting
 from app.src.utils.applicationConfigurationManager import ApplicationConfigurationManager
-from app.src.utils.avatars.avatarGenerator import AvatarGenerator
+from app.src.utils.imageGenerators.avatarGenerator import AvatarGenerator
 
 
 # Controls the users settings

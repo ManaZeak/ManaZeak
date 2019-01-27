@@ -2,6 +2,7 @@ from app.models.collections import LibraryScanStatus
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
+
 ## Handles the operations linked to the status of the libraries during the rescan
 class LibraryStatusHelper(object):
 

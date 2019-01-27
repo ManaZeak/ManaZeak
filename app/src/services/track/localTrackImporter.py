@@ -43,7 +43,6 @@ class LocalTrackImporter(object):
             artistAlbums = self.albumReference[existingAlbum.artist.name]
             artistAlbums[existingAlbum.title] = existingAlbum.id
 
-
     ## Insert or update the tracks in the database.
     def insertLocalTracks(self):
         # Ajouter les genres
