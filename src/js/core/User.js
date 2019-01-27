@@ -42,18 +42,9 @@ class User {
   }
 
 
-  //  ----  PUBLIC METHODS  ----  //
-
-
-  /** @method
-   * @name hasPermission
-   * @memberof User
-   * @description <blockquote>Test if the user has a given permission, using the 4-grams defined in <code>app/utils.py:populateDB()</code>.</blockquote>
-   * @param {String} permissionCode - The permission code to test, it must be a four caps letters
-   * @returns {Boolean} True if user is granted, false otherwise */
-  hasPermission(permissionCode) {
-    return this._permissions.includes(permissionCode);
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  -----------------------------------  INIT SESSION METHODS  -----------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /** @method
@@ -84,32 +75,35 @@ class User {
   }
 
 
-  //  ----  GETTER  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  PERMISSION METHODS  ------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
-  /** <strong>getter:godfatherName</strong>
-   * @type {String} */
-  get godfatherName() {
-    return this._godfatherName;
+  /** @method
+   * @name hasPermission
+   * @memberof User
+   * @description <blockquote>Test if the user has a given permission, using the 4-grams defined in <code>app/utils.py:populateDB()</code>.</blockquote>
+   * @param {String} permissionCode - The permission code to test, it must be a four caps letters
+   * @returns {Boolean} True if user is granted, false otherwise */
+  hasPermission(permissionCode) {
+    return this._permissions.includes(permissionCode);
   }
 
 
-  /** <strong>getter:id</strong>
-   * @type {Number} */
-  get id() {
-    return this._id;
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
-  /** <strong>getter:username</strong>
-   * @type {String} */
-  get username() {
-    return this._username;
-  }
-
+  /** @public
+   * @member {string} - The user's avatar url path */
   get avatarPath() {
     return this._avatarPath;
   }
+
+
 }
+
 
 export default User;

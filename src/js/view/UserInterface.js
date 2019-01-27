@@ -5,6 +5,8 @@ import FootBar from './footbar/FootBar.js';
 
 
 class UserInterface {
+
+
   /**
    * @summary Fronted View class
    * @author Arthur Beaulieu
@@ -21,7 +23,9 @@ class UserInterface {
     this._init();
   }
 
+
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
 
   /**
    * @method
@@ -42,7 +46,9 @@ class UserInterface {
     this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
   }
 
+
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
 
   /**
    * @method
@@ -183,32 +189,46 @@ class UserInterface {
   }
 
 
-  //  --------------------------------  GETTER METHODS   --------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
+  /** @public
+   * @member {object} - The scene current active view */
   get activeView() {
     return this._scene.view;
   }
 
 
+  /** @public
+   * @member {number} - The current scene view first track dataset id */
   get firstTrackId() {
     return this._scene.firstTrackId;
   }
 
 
+  /** @public
+   * @member {number} - The current scene view next track dataset id, according to the playing track */
   get nextTrackId() {
     return this._scene.nextTrackId;
   }
 
 
+  /** @public
+   * @member {number} - The current scene view previous track dataset id, according to the playing track */
   get previousTrackId() {
     return this._scene.previousTrackId;
   }
 
 
+  /** @public
+   * @member {number} - The repeat mode to set in range int[0, 2] */
   set repeatMode(value) {
     this._footBar.repeatMode = value;
   }
+
+
 }
 
 export default UserInterface;

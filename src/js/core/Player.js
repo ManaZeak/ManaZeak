@@ -8,12 +8,20 @@ class Player {
    * @summary Basic audio HTML music player
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Provide a few features to control a playback. Should be handled in a controller
+   * @description Provide a few features to control an audio playback. Should be handled in a controller
    **/
   constructor() {
-    this._player = {}; // HTML audio player
-    this._volume = 0.0; // Volume in range [0, 1] float
-    this._isMuted = false; // Mute flag
+    /** @private
+     * @member {object} - The HTML audio player */
+    this._player = {};
+    /** @private
+     * @member {number} - The player's volume in range float[0, 1] */
+    this._volume = 0.0;
+    /** @private
+     * @member {boolean} - The player's mute flag */
+    this._isMuted = false;
+    /** @private
+     * @member {boolean} - The player's is playing flag */
     this._isPlaying = false; // Playback flag
 
     this._init(); // Init player object
@@ -22,8 +30,9 @@ class Player {
   }
 
 
-  //  ----  PRIVATE METHODS  ----  //
-
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
   /**
    * @method
@@ -71,224 +80,9 @@ class Player {
   }
 
 
-  /**
-   * @method
-   * @name _getProgress
-   * @private
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Compute and returns the current track progression in the player
-   * @returns {number} The track progression in completion percentage in range [0, 100]
-   **/
-  _getProgress() {
-    return Utils.precisionRound((this._player.currentTime * 100) / this._player.duration, 3) || 0; // Compute percentage from current time
-  }
-
-
-  /**
-   * @method
-   * @name _setProgress
-   * @private
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Set progression percentage on current track
-   * @param {number} percentage - The progression percentage in range [0, 100]
-   **/
-  _setProgress(percentage) {
-    if (typeof percentage !== 'number') { // Bad format for value
-      Logger.raise({
-        code: 'INVALID_PROGRESS',
-        frontend: true
-      });
-      return;
-    }
-
-    if (this._player.currentTime === 0) { // When player is stopped, currentTime = 0. We don't do anything
-      return;
-    }
-
-    if (percentage <= 0) { // Bound lower value
-      percentage = 0;
-    }
-
-    if (percentage > 100) { // Bound upper value
-      percentage = 100;
-    }
-
-    this._player.currentTime = (percentage * this._player.duration) / 100; // Apply percentage to total duration
-  }
-
-
-  /**
-   * @method
-   * @name _setVolume
-   * @private
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Set the player volume according to the given value.
-   * @param {number} value - The volume value to set in range [0, 1]
-   **/
-  _setVolume(value) {
-    if (typeof value !== 'number') { // Bad format for value
-      Logger.raise({
-        code: 'INVALID_VOLUME',
-        frontend: true
-      });
-      return;
-    }
-
-    if (value <= 0) { // Bound lower value
-      this.mute();
-      this._volume = 0;
-      return;
-    }
-
-    if (value > 1) { // Bound upper value
-      value = 1;
-    }
-
-    if (this._isMuted) { // Restore mute state if needed
-      this.unmute(); // Un mute playback
-      this.volume = value; // Call again setVolume with previous value
-      return;
-    }
-
-    this._player.volume = Utils.precisionRound(value, 2); // Assign new volume value (truncated with 2 decimals)
-    this._volume = this._player.volume; // Store old volume value
-  }
-
-
-  /**
-   * @method
-   * @name _trackEnded
-   * @private
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Action to take when the current track reaches its end
-   **/
-  _trackEnded() {
-    this._isPlaying = false; // Update playling state
-    mzk.trackEnded();
-  }
-
-
-  //  ----  PUBLIC METHODS  ----  //
-
-
-  /**
-   * @method
-   * @name toggleMute
-   * @public
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Toggle the mute status of the player
-   **/
-  toggleMute() {
-    if (!this._isMuted) {
-      this.mute();
-    } else {
-      this.unmute();
-    }
-  }
-
-
-  /**
-   * @method
-   * @name togglePlay
-   * @public
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Toggle the playback state of the player
-   **/
-  togglePlay() {
-    if (!this._isPlaying) {
-      this.play();
-    } else {
-      this.pause();
-    }
-  }
-
-
-  /**
-   * @method
-   * @name adjustProgress
-   * @public
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Add/Substract the amount (percentage) to the current progress (percentage)
-   * @param {number} amount - Percentage value to adjust progress in range [0, 100]
-   **/
-  adjustProgress(amount) {
-    this._setProgress(this._getProgress() + amount); // Inner call with current progression
-  }
-
-
-  /**
-   * @method
-   * @name adjustVolume
-   * @public
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Add/Substract the amount to the current volume
-   * @param {number} amount - Volume to add/substract in range [0, 1]
-   **/
-  adjustVolume(amount) {
-    this._setVolume(this._volume + amount); // Inner call
-  }
-
-
-  /**
-   * @method
-   * @name changeTrack
-   * @public
-   * @memberof Player
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Change the player source and start the playback once ready to play
-   * @param {string} url - The path to the track (local or hosted)
-   * @returns {Promise} A Promise that resolves when player is operating
-   **/
-  changeTrack(url) {
-    return new Promise((resolve) => {
-      if (typeof url !== 'string') { // Bad format value
-        Logger.raise({
-          code: 'INVALID_TRACK_URL',
-          frontend: true
-        });
-        return;
-      }
-
-      const startPlayback = () => {
-        this.play(); // Call player play method (not actually play after that line)
-        resolve(); // Resolve promise
-      };
-
-      const loadedListener = () => {
-        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
-        startPlayback();
-      };
-
-      if (this._isPlaying) { // Stop any previous playback
-        this.stop();
-      }
-
-      this._player.src = url; // Set new track url
-
-      if (Utils.isMobileDevice()) {
-        startPlayback();
-      } else {
-        this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
-      }
-    });
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  PLAYBACK METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -345,6 +139,107 @@ class Player {
 
   /**
    * @method
+   * @name togglePlay
+   * @public
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Toggle the playback state of the player
+   **/
+  togglePlay() {
+    if (!this._isPlaying) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  }
+
+
+  /**
+   * @method
+   * @name changeTrack
+   * @public
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Change the player source and start the playback once ready to play
+   * @param {string} url - The path to the track (local or hosted)
+   * @returns {Promise} A Promise that resolves when player is operating
+   **/
+  changeTrack(url) {
+    return new Promise((resolve) => {
+      if (typeof url !== 'string') { // Bad format value
+        Logger.raise({
+          code: 'INVALID_TRACK_URL',
+          frontend: true
+        });
+        return;
+      }
+
+      const startPlayback = () => {
+        this.play(); // Call player play method (not actually play after that line)
+        resolve(); // Resolve promise
+      };
+
+      const loadedListener = () => {
+        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
+        startPlayback();
+      };
+
+      if (this._isPlaying) { // Stop any previous playback
+        this.stop();
+      }
+
+      this._player.src = url; // Set new track url
+
+      if (Utils.isMobileDevice()) {
+        startPlayback();
+      } else {
+        this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+      }
+    });
+  }
+
+
+  /**
+   * @method
+   * @name repeatTrack
+   * @public
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description restart immediately the current track in the player
+   **/
+  repeatTrack() {
+    if (this._player.src) { // Apply only if src is defined
+      this._player.currentTime = 0; // Reset current time
+      this.play(); // Start playback
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _trackEnded
+   * @private
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Action to take when the current track reaches its end
+   **/
+  _trackEnded() {
+    this._isPlaying = false; // Update playling state
+    mzk.trackEnded();
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------------  VOLUME METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
    * @name mute
    * @public
    * @memberof Player
@@ -385,19 +280,151 @@ class Player {
 
   /**
    * @method
-   * @name repeatTrack
+   * @name toggleMute
    * @public
    * @memberof Player
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description restart immediately the current track in the player
+   * @description Toggle the mute status of the player
    **/
-  repeatTrack() {
-    if (this._player.src) { // Apply only if src is defined
-      this._player.currentTime = 0; // Reset current time
-      this.play(); // Start playback
+  toggleMute() {
+    if (!this._isMuted) {
+      this.mute();
+    } else {
+      this.unmute();
     }
   }
+
+
+  /**
+   * @method
+   * @name adjustVolume
+   * @public
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Add/Substract the amount to the current volume
+   * @param {number} amount - Volume to add/substract in range [0, 1]
+   **/
+  adjustVolume(amount) {
+    this._setVolume(this._volume + amount); // Inner call
+  }
+
+
+  /**
+   * @method
+   * @name _setVolume
+   * @private
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Set the player volume according to the given value.
+   * @param {number} value - The volume value to set in range [0, 1]
+   **/
+  _setVolume(value) {
+    if (typeof value !== 'number') { // Bad format for value
+      Logger.raise({
+        code: 'INVALID_VOLUME',
+        frontend: true
+      });
+      return;
+    }
+
+    if (value <= 0) { // Bound lower value
+      this.mute();
+      this._volume = 0;
+      return;
+    }
+
+    if (value > 1) { // Bound upper value
+      value = 1;
+    }
+
+    if (this._isMuted) { // Restore mute state if needed
+      this.unmute(); // Un mute playback
+      this.volume = value; // Call again setVolume with previous value
+      return;
+    }
+
+    this._player.volume = Utils.precisionRound(value, 2); // Assign new volume value (truncated with 2 decimals)
+    this._volume = this._player.volume; // Store old volume value
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  PROGRESS METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name adjustProgress
+   * @public
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Add/Substract the amount (percentage) to the current progress (percentage)
+   * @param {number} amount - Percentage value to adjust progress in range [0, 100]
+   **/
+  adjustProgress(amount) {
+    this._setProgress(this._getProgress() + amount); // Inner call with current progression
+  }
+
+
+  /**
+   * @method
+   * @name _getProgress
+   * @private
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Compute and returns the current track progression in the player
+   * @returns {number} The track progression in completion percentage in range [0, 100]
+   **/
+  _getProgress() {
+    return Utils.precisionRound((this._player.currentTime * 100) / this._player.duration, 3) || 0; // Compute percentage from current time
+  }
+
+
+  /**
+   * @method
+   * @name _setProgress
+   * @private
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Set progression percentage on current track
+   * @param {number} percentage - The progression percentage in range [0, 100]
+   **/
+  _setProgress(percentage) {
+    if (typeof percentage !== 'number') { // Bad format for value
+      Logger.raise({
+        code: 'INVALID_PROGRESS',
+        frontend: true
+      });
+      return;
+    }
+
+    if (this._player.currentTime === 0) { // When player is stopped, currentTime = 0. We don't do anything
+      return;
+    }
+
+    if (percentage <= 0) { // Bound lower value
+      percentage = 0;
+    }
+
+    if (percentage > 100) { // Bound upper value
+      this._trackEnded();
+      return;
+    }
+
+    this._player.currentTime = (percentage * this._player.duration) / 100; // Apply percentage to total duration
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------------  SOURCE METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /**
@@ -434,40 +461,61 @@ class Player {
   }
 
 
-  //  ----  GETTER   ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
+  /** @public
+   * @member {boolean} - The player's playing state public accessor */
   get playing() {
     return this._isPlaying;
   }
 
+
+  /** @public
+   * @member {boolean} - The player's muted state public accessor */
   get muted() {
     return this._isMuted;
   }
 
+
+  /** @public
+   * @member {number} - The player's volume value in range float[0, 1] */
   get volume() {
     return this._volume;
   }
 
+
+  /** @public
+   * @member {number} - The player's progress percentage in range int[0, 100] */
   get progress() {
     return this._getProgress();
   }
 
+
+  /** @public
+   * @member {number} - The current loaded track's float duration */
   get duration() {
     return this._player.duration;
   }
 
-  //  ----  SETTER   ----  //
 
-
+  /** @public
+   * @member {number} - The player's progress percentage in range int[0, 100] */
   set progress(percentage) {
     this._setProgress(percentage);
   }
 
 
+  /** @public
+   * @member {number} - The player's volume value in range float[0, 1] */
   set volume(value) {
     this._setVolume(value);
   }
+
+
 }
+
 
 export default Player;

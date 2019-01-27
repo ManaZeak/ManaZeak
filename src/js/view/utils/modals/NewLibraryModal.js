@@ -4,7 +4,7 @@ import Modal from '../Modal.js';
 
 class NewLibraryModal extends Modal {
   constructor(options) {
-    super(options)
+    super(options);
   }
 
 

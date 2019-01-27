@@ -5,7 +5,8 @@ class Logger {
    * @summary Logger system with feedback
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Singleton class, Raise both a log and a user feeback depending on lang/*.json files (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript
+   * @description <blockquote>Singleton class, Raise both a log and a user feeback depending on lang/*.json files
+   * (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript</blockquote>
    **/
   constructor(options) {
     if (!!Logger.instance) {
