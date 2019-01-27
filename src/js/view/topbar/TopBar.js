@@ -1,4 +1,4 @@
-import UserMenu from './UserMenu.js';
+import UserMenuContext from '../utils/contexts/UserMenuContext.js';
 'use strict';
 
 
@@ -22,9 +22,9 @@ class TopBar {
     this._topbar = document.getElementById('topbar');
     this._avatar = document.getElementById('topbar-avatar');
 
-    this._userMenu = new UserMenu({
+    this._userMenu = new UserMenuContext({
       target: this._topbar,
-      url: 'modals/usermenu/'
+      url: 'contexts/usermenu/'
     });
 
     this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates

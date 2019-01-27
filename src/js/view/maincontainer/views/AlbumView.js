@@ -1,7 +1,7 @@
 import SceneView from '../SceneView';
-import TrackContext from './TrackContext.js';
+import TrackContext from '../../utils/contexts/TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
-import ScrollBar from "../../../utils/ScrollBar";
+import ScrollBar from "../../utils/ScrollBar";
 'use strict';
 
 

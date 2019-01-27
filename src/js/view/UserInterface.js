@@ -1,7 +1,6 @@
 import TopBar from './topbar/TopBar.js';
 import Scene from './maincontainer/Scene.js';
 import FootBar from './footbar/FootBar.js';
-import Modal from '../utils/Modal.js';
 'use strict';
 
 
@@ -18,8 +17,6 @@ class UserInterface {
     this._topBar = {};
     this._scene = {};
     this._footBar = {};
-
-    this.modal = new Modal();
 
     this._init();
   }
@@ -64,6 +61,7 @@ class UserInterface {
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
   }
 
+
   /**
    * @method
    * @name togglePlay
@@ -82,6 +80,7 @@ class UserInterface {
     }
   }
 
+
   /**
    * @method
    * @name stopPlayback
@@ -98,6 +97,7 @@ class UserInterface {
     this._scene.stopPlayback();
   }
 
+
   /**
    * @method
    * @name initPlaylist
@@ -111,6 +111,7 @@ class UserInterface {
   initPlaylist(playlist) {
     this._scene.updateView(playlist);
   }
+
 
   /**
    * @method
@@ -148,45 +149,6 @@ class UserInterface {
     setTimeout(function() { // Restore transitions
       this._footBar.progressBar.activateTransitions();
     }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
-  }
-
-
-  /** @method
-   * @name addOverlay
-   * @public
-   * @memberof View
-   * @description Add an overlay div (modal style) over the scene
-   * @param {object} node - The DOM node to append to the scene as an overlay
-   **/
-  addOverlay(node) {
-    const overlay = document.createElement('DIV');
-    const fragment = document.createDocumentFragment();
-
-    overlay.id = 'overlay';
-    overlay.appendChild(node);
-    fragment.appendChild(overlay);
-
-    this._mainContainer.appendChild(fragment);
-  }
-
-
-  removeOverlay() {
-    this._mainContainer.removeChild(document.getElementById('overlay'));
-  }
-
-
-  displayModal(options) {
-    mzk.komunikator.getTemplate(options.url)
-      .then((response) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(response, 'text/html');
-        const modal = doc.getElementsByClassName('modal')[0];
-        this.addOverlay(modal);
-
-        this.modal.newLibrary({
-          callback: options.callback
-        });
-      });
   }
 
 

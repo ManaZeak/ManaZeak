@@ -1,8 +1,10 @@
-import ContextMenu from '../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../ContextMenu.js';
 'use strict';
 
 
-class UserMenu extends ContextMenu {
+class UserMenuContext extends ContextMenu {
+
+
   /**
    * @summary TopBar user menu
    * @author Arthur Beaulieu
@@ -11,8 +13,8 @@ class UserMenu extends ContextMenu {
    **/
   constructor(options) {
     super(options);
-    // setActions is called when the template has been fetch.
   }
+
 
   setActions(doc) {
     this._logOut = doc.getElementsByClassName('log-out')[0];
@@ -20,7 +22,9 @@ class UserMenu extends ContextMenu {
       mzk.logOut();
     }, true);
   }
+
+
 }
 
 
-export default UserMenu;
+export default UserMenuContext;

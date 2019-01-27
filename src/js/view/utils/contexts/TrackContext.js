@@ -1,13 +1,14 @@
-import ContextMenu from '../../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../ContextMenu.js';
 'use strict';
 
 
 class TrackContext extends ContextMenu {
+
+
   constructor(options) {
     super(options);
 
     this._targetId = -1;
-
     this._commands = {
       playPause: {},
       stop: {},
@@ -36,7 +37,6 @@ class TrackContext extends ContextMenu {
 
   _addToQueue(event) {
     event.stopImmediatePropagation();
-
     mzk.addTrackToQueue(this._targetId);
     this.close();
   }

@@ -1,7 +1,7 @@
 import SceneView from '../SceneView';
 import ListViewEntry from './ListViewEntry';
-import ScrollBar from '../../../utils/ScrollBar.js';
-import TrackContext from "./TrackContext";
+import ScrollBar from '../../utils/ScrollBar.js';
+import TrackContext from "../../utils/contexts/TrackContext";
 
 import listview from '../../../../../static/json/default/listview.json';
 'use strict';

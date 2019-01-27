@@ -1,4 +1,5 @@
 import Playlist from './Playlist.js';
+import NewLibraryModal from "../../view/utils/modals/NewLibraryModal";
 'use strict';
 
 class Collection {
@@ -177,8 +178,6 @@ class Collection {
           this._buildPlaylist(response);
           this._initialScan(this._playlists[0])
             .then(() => {
-              Shortcut.resumeAll(); // Restore all shortcuts
-              mzk.ui.removeOverlay(); // Remove modal from main container
               resolve();
             });
         } else {
@@ -208,8 +207,7 @@ class Collection {
           });
       };
 
-      Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
-      mzk.ui.displayModal({
+      new NewLibraryModal({
         url: 'modals/newlibrary',
         callback: checkModalValues
       });

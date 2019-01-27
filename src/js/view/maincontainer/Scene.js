@@ -1,6 +1,6 @@
 import ListView from './views/ListView.js';
 import AlbumView from './views/AlbumView.js';
-import ViewSwitcher from './ViewSwitcher.js';
+import ViewSwitcherContext from '../utils/contexts/ViewSwitcherContext.js';
 'use strict';
 
 class Scene {
@@ -14,9 +14,9 @@ class Scene {
     this._scene = document.getElementById('scene');
     this._optionButton = document.getElementById('scene-view-option');
     this.view = {};
-    this._viewSwitcher = new ViewSwitcher({
+    this._viewSwitcher = new ViewSwitcherContext({
       target: this._scene,
-      url: 'modals/changeview/'
+      url: 'contexts/changeview/'
     });
 
     this._sceneCommands = document.getElementById('scene-commands');
@@ -49,7 +49,7 @@ class Scene {
 
 
   _optionClicked() {
-    let sceneContext = this._scene.querySelector('#scene-context');
+    let sceneContext = this._scene.querySelector('.scene-options');
 
     if (sceneContext !== null) { // Close context
       sceneContext.parentNode.remove();
@@ -58,15 +58,15 @@ class Scene {
 
     // Otherwise, append context, and fill it with its content
     const overlay = document.createElement('DIV');
-    overlay.classList.add('transparent-overlay');
+    overlay.classList.add('context-transparent-overlay'); // TODO move this else where no ? like in viewoptionscontext maybe ?
     overlay.addEventListener('click', (event) => {
-      if (!event.target.closest('#scene-context')) {
+      if (!event.target.closest('.scene-options')) {
         sceneContext.parentNode.remove();
       }
     }, true);
 
     sceneContext = document.createElement('DIV');
-    sceneContext.id = 'scene-context';
+    sceneContext.className = 'scene-options';
 
     overlay.appendChild(sceneContext);
     this._scene.appendChild(overlay);
