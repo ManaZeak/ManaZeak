@@ -58,7 +58,7 @@ class Mzk {
         return this._startApp();
       })
       .catch(() => {
-        Errors.raise({
+        Logger.raise({
           code: 'FATAL_ERROR',
           frontend: true
         });
@@ -105,7 +105,7 @@ class Mzk {
           resolve();
         })
         .catch(errorCode => {
-          Errors.raise({
+          Logger.raise({
             code: errorCode,
             frontend: true
           });
@@ -226,7 +226,7 @@ class Mzk {
               resolve();
             })
             .catch(errorKey => {
-              Errors.raise({
+              Logger.raise({
                 code: errorKey,
                 frontend: false
               });
@@ -234,7 +234,7 @@ class Mzk {
             });
         })
         .catch(errorKey => {
-          Errors.raise({
+          Logger.raise({
             code: errorKey,
             frontend: true
           });
@@ -502,7 +502,7 @@ class Mzk {
     } else if (repeatMode === 2) {
       mzk.changeTrack(this.view.getNextTrackId());
     } else {
-      Errors.raise({
+      Logger.raise({
         code: 'NO_NEXT_TRACK',
         frontend: true
       });

@@ -67,7 +67,7 @@ class Collection {
               playlist.getArtistsFromServer(response)
                 .then(resolve)
                 .catch(errorCode => {
-                  Errors.raise({
+                  Logger.raise({
                     code: errorCode,
                     frontend: false
                   });
@@ -76,7 +76,7 @@ class Collection {
             }
           })
           .catch(errorCode => {
-            Errors.raise({
+            Logger.raise({
               code: errorCode,
               frontend: true
             });
@@ -182,7 +182,7 @@ class Collection {
               resolve();
             });
         } else {
-          Errors.raise({
+          Logger.raise({
             code: response.ERROR_KEY,
             frontend: false
           });
@@ -201,7 +201,7 @@ class Collection {
             checkServerResponse(response);
           })
           .catch(response => {
-            Errors.raise({
+            Logger.raise({
               code: response,
               frontend: true
             });

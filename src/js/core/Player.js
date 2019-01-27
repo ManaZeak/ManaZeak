@@ -98,7 +98,7 @@ class Player {
    **/
   _setProgress(percentage) {
     if (typeof percentage !== 'number') { // Bad format for value
-      Errors.raise({
+      Logger.raise({
         code: 'INVALID_PROGRESS',
         frontend: true
       });
@@ -133,7 +133,7 @@ class Player {
    **/
   _setVolume(value) {
     if (typeof value !== 'number') { // Bad format for value
-      Errors.raise({
+      Logger.raise({
         code: 'INVALID_VOLUME',
         frontend: true
       });
@@ -259,7 +259,7 @@ class Player {
   changeTrack(url) {
     return new Promise((resolve) => {
       if (typeof url !== 'string') { // Bad format value
-        Errors.raise({
+        Logger.raise({
           code: 'INVALID_TRACK_URL',
           frontend: true
         });

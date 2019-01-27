@@ -1,18 +1,18 @@
 'use strict';
 
-class Errors {
+class Logger {
   /**
-   * @summary Errors system with feedback
+   * @summary Logger system with feedback
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Singleton class, Raise both a log and a user feeback depending on lang/*.json files (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript
    **/
   constructor(options) {
-    if (!!Errors.instance) {
-      return Errors.instance;
+    if (!!Logger.instance) {
+      return Logger.instance;
     }
 
-    Errors.instance = this;
+    Logger.instance = this;
     this._verbose = false;
     if (options.verbose !== undefined && typeof options.verbose === 'boolean') {
       this._verbose = options.verbose;
@@ -43,7 +43,7 @@ class Errors {
    * @method
    * @name _getCallerName
    * @private
-   * @memberof Errors
+   * @memberof Logger
    * @author Arthur Beaulieu
    * @since July 2018
    * @description Get caller function name depending on given browser
@@ -73,7 +73,7 @@ class Errors {
    * @method
    * @name raise
    * @public
-   * @memberof Events
+   * @memberof Logger
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Register a custom event using a name and a callback
@@ -115,7 +115,7 @@ class Errors {
 
       options.code = 'warn'; // To access console property easily (see console[type] call), init to warn ince console.warning doesn't exists (console.warn())
       const outputString = `%c${message}\n${this._getCallerName(browser)}`;
-      console.groupCollapsed(`${severity.toUpperCase()} : ${title} (Error.js)`);
+      console.groupCollapsed(`${severity.toUpperCase()} : ${title} (Logger.js)`);
 
       if (severity !== 'warning') {
         options.code = severity;
@@ -132,4 +132,4 @@ class Errors {
   }
 }
 
-export default Errors;
+export default Logger;

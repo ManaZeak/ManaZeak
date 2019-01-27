@@ -29,7 +29,7 @@ class Playlist {
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
-    this._activeView = ViewEnum.AlbumView;
+    this._activeView = ViewEnum.ListView;
 
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
@@ -70,7 +70,7 @@ class Playlist {
         }
       })
       .catch(errorCode => {
-        Errors.raise({
+        Logger.raise({
           code: errorCode,
           frontend: true
         });
