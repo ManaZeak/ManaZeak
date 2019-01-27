@@ -4,17 +4,18 @@ import random
 import png  # requires pypng
 
 
-## @package app.avatars
-#  This package contains a simple avatar creation utility function.
-
+##  This class contains a simple avatar creation utility function.
 class AvatarGenerator(object):
-    ## The color palette for the avatars
-    palette = {0: (255, 255, 255),
-               1: (101, 155, 216),
-               2: (255, 119, 109),
-               3: (255, 215, 147),
-               4: (158, 239, 174),
-               5: (201, 157, 186)}
+
+    ## Constructor
+    def __init__(self):
+        ## The color palette for the imageGenerators
+        self.palette = {0: (255, 255, 255),
+                        1: (101, 155, 216),
+                        2: (255, 119, 109),
+                        3: (255, 215, 147),
+                        4: (158, 239, 174),
+                        5: (201, 157, 186)}
 
     # Creates and writes an avatar to disk.
     #   @param username the user name string.
@@ -22,7 +23,7 @@ class AvatarGenerator(object):
     #   @param imageSizePerCell number of pixels for the width and height of each square in the avatar
     def generateAvatar(self, username, avatarSize=15, imageSizePerCell=50):
         usernameHash = hashlib.md5(username.encode("utf-8")).hexdigest()
-        avatarPath = "static/avatars/" + usernameHash + ".png"
+        avatarPath = "static/imageGenerators/" + usernameHash + ".png"
         # Folder creation
         if not os.path.exists(os.path.dirname(avatarPath)):
             os.makedirs(os.path.dirname(avatarPath))
@@ -39,16 +40,16 @@ class AvatarGenerator(object):
         avatarBaseWidth = (avatarSize + 2) // 2 + avatarSize % 2
 
         # creating first blank row to give a little padding space
-        avatarBase = [[0 for i in range(avatarBaseWidth)]]
+        avatarBase = [[0 for _ in range(avatarBaseWidth)]]
 
         # creating actual avatar
         avatarBase += [[0] +  # blank left column for padding
                        [random.randint(0, 1)
-                        for i in range(avatarBaseWidth - 1)]
-                       for j in range(avatarSize)]
+                        for _ in range(avatarBaseWidth - 1)]
+                       for _ in range(avatarSize)]
 
         # creating last blank row (padding space)
-        avatarBase += [[0 for i in range(avatarBaseWidth)]]
+        avatarBase += [[0 for _ in range(avatarBaseWidth)]]
 
         # creating full-width binary version of avatar
         avatarBin = [[row[i] if i < avatarBaseWidth
@@ -64,11 +65,11 @@ class AvatarGenerator(object):
         png.from_array(avatar, 'RGB').save(avatarPath)
         return avatarPath
 
-    ## Resize avatars in a nearest-neighbor fashion copying rows and columns
+    @staticmethod
+    ## Resize imageGenerators in a nearest-neighbor fashion copying rows and columns
     #   @param avatar the avatar to resize
     #   @param avatarSize avatar will be squares of avatar_size squares wide and tall.
     #   @param imageSizePerCell number of pixels for the width and height of each square in the avatar
-    @staticmethod
     def _resizeAvatar(avatar, avatarSize, imageSizePerCell):
         imgSize = imageSizePerCell * (avatarSize + 2)
         return [[avatar[i // imageSizePerCell][j // imageSizePerCell]

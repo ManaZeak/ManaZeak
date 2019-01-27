@@ -1,4 +1,3 @@
-import collections
 
 
 ## This class is used to store information about the position on the file system of the tracks.

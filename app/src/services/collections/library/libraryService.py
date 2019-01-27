@@ -21,6 +21,7 @@ from app.src.utils.requestMethodEnum import RequestMethodEnum
 loggerDjango = logging.getLogger('django')
 loggerScan = logging.getLogger('scan')
 
+
 ## This class is used to manage the libraries of the application
 class LibraryService(object):
 

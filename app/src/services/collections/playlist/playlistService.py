@@ -12,6 +12,7 @@ from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 logger = logging.getLogger('django')
 
+
 ## This class is used to manage the playlists inside the application
 class PlaylistService(object):
 
