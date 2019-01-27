@@ -156,6 +156,7 @@ class View {
     }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
 
+
   retractMainContainer() {
     this._mainContainer.classList.remove('extended');
     this._scene.retract();
@@ -163,6 +164,7 @@ class View {
       this._scene.view.refreshView();
     }, 800); // Value must match 4 times the $transition-duration var in scss/utils/tools/_variables.scss
   }
+
 
   /** @method
    * @name addOverlay
@@ -182,13 +184,21 @@ class View {
     this._mainContainer.appendChild(fragment);
   }
 
+
   removeOverlay() {
     this._mainContainer.removeChild(document.getElementById('overlay'));
   }
 
+
   setActiveView(playlist) {
     this._scene.updateView(playlist);
   }
+
+
+  get activeView() {
+    return this._scene.view;
+  }
+
 
   displayModal(options) {
     mzk.komunikator.getTemplate(options.url)
@@ -204,9 +214,11 @@ class View {
       });
   }
 
+
   getTrackById(id) {
     return this._scene.getTrackById(id);
   }
+
 
   getNextTrackId() {
     return this._scene.getNextTrackId();
@@ -216,9 +228,11 @@ class View {
     return this._scene.getPreviousTrackId();
   }
 
+
   getFirstTrackId() {
     return this._scene.getFirstTrackId();
   }
+
 
   startLoading() {
     return new Promise(resolve => {
@@ -227,6 +241,7 @@ class View {
     });
   }
 
+
   stopLoading() {
     return new Promise(resolve => {
       this._scene.stopLoading()
@@ -234,15 +249,19 @@ class View {
     });
   }
 
+
   setRepeatMode(value) {
     this._footBar.setRepeatMode(value);
   }
+
 
   isLastTrack() {
     return this._scene.isLastTrack();
   }
 
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
+
 
   getFootBar() {
     return this._footBar;
