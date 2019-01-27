@@ -1,4 +1,4 @@
-.transparent-overlay {
+.context-transparent-overlay {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -289,7 +289,7 @@
     }
 
 
-    #scene-context {
+    .scene-options {
       background: $dark-solid;
       border: solid 1px black;
       border-radius: 5px;

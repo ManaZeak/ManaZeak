@@ -1,10 +1,9 @@
 'use strict';
 
-class ContextMenu {
 
-
+class Modal {
   constructor(options) {
-    this._target = options.target;
+    this._callback = options.callback;
     this._url = options.url;
     this._overlay = {};
     this._dom = {};
@@ -12,52 +11,55 @@ class ContextMenu {
     this._init();
   }
 
+
   _init() {
     mzk.komunikator.getTemplate(this._url)
       .then((response) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(response, 'text/html');
 
-        this._overlay = doc.getElementsByClassName('transparent-overlay')[0];
+        this._overlay = doc.getElementsByClassName('modal-overlay')[0];
         this._dom = doc.getElementsByClassName(this._overlay.children[0].className)[0];
         this._events();
         this.setActions(doc);
+        this.open();
       });
   }
 
-  setActions() {
-
-  }
 
   _events() {
     this._viewportClicked = this._viewportClicked.bind(this);
   }
 
+
   _viewportClicked(event) {
     event.stopImmediatePropagation();
 
-    if (!event.target.closest(this._overlay.children[0].className)) {
+    if (event.target === this._overlay) {
       this.close();
     }
   }
 
+
+  setActions() {
+
+  }
+
+
   open() {
-    this._target.appendChild(this._overlay);
+    Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
+    document.body.appendChild(this._overlay);
     this._overlay.addEventListener('click', this._viewportClicked, false);
   }
 
 
   close() {
-    if (this._target.contains(this._overlay)) {
-      this._target.removeChild(this._overlay);
+    if (document.body.contains(this._overlay)) {
+      Shortcut.resumeAll();
+      document.body.removeChild(this._overlay);
       this._overlay.removeEventListener('click', this._viewportClicked, false);
     }
   }
-
-
-  get dom() {
-    return this._dom;
-  }
 }
 
-export default ContextMenu;
+export default Modal;

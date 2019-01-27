@@ -1,8 +1,8 @@
-import ContextMenu from '../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../ContextMenu.js';
 'use strict';
 
 
-class ViewSwitcher extends ContextMenu {
+class ViewSwitcherContext extends ContextMenu {
   constructor(options) {
     super(options);
 
@@ -30,4 +30,4 @@ class ViewSwitcher extends ContextMenu {
   }
 }
 
-export default ViewSwitcher;
+export default ViewSwitcherContext;

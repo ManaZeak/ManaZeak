@@ -1,6 +1,6 @@
 import VolumeBar from './components/VolumeBar.js';
 import ProgressBar from './components/ProgressBar.js';
-import QueueContext from './components/QueueContext.js';
+import QueueContext from '../utils/contexts/QueueContext.js';
 'use strict';
 
 class FootBar {

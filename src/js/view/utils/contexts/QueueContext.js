@@ -1,15 +1,19 @@
-import ContextMenu from '../../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../ContextMenu.js';
 'use strict';
 
 
 class QueueContext extends ContextMenu {
+
+
   constructor(options) {
     super(options);
   }
 
+
   setActions(doc) {
     this._dom.container = doc.getElementsByClassName('track-container')[0];
   }
+
 
   _fillQueuedTracks(tracks) {
     this._dom.container.innerHTML = '';
@@ -39,6 +43,7 @@ class QueueContext extends ContextMenu {
       this._dom.container.appendChild(uiTrack);
     }
   }
+
 
   open(options) {
     if (options.queue.length > 0) {

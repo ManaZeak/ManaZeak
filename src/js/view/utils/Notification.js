@@ -1,4 +1,4 @@
-import NotificationDefaults from '../../../static/json/default/notification.json';
+import NotificationDefaults from '../../../../static/json/default/notification.json';
 
 'use strict';
 
