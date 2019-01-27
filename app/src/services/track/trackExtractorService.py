@@ -77,23 +77,23 @@ class TrackExtractorService(object):
 
         # Extracting track bpm
         if 'TBPM' in audioTag and audioTag['TBPM'].text[0] != "":
-                track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0]).rstrip()))
+            track.bpm = math.floor(float(strip_tags(audioTag['TBPM'].text[0]).rstrip()))
 
         # Extracting track comment
         if 'COMM' in audioTag and audioTag['COMM'].text != "":
-                track.comment = strip_tags(audioTag['COMM'].text).rstrip()
+            track.comment = strip_tags(audioTag['COMM'].text).rstrip()
 
         # Extracting track comment (other possible placement)
         elif 'COMM::XXX' in audioTag and audioTag['COMM::XXX'].text != "":
-                track.comment = strip_tags(audioTag['COMM::XXX'].text[0]).rstrip()
+            track.comment = strip_tags(audioTag['COMM::XXX'].text[0]).rstrip()
 
         # Extracting track lyrics
         if 'USLT' in audioTag and audioTag['USLT'].text != "":
-                track.lyrics = strip_tags(audioTag['USLT'].text).rstrip()
+            track.lyrics = strip_tags(audioTag['USLT'].text).rstrip()
 
         # Extracting track lyrics (other possible placement)
         if 'USLT::XXX' in audioTag and audioTag['USLT::XXX'].text != "":
-                track.lyrics = strip_tags(audioTag['USLT::XXX'].text).rstrip()
+            track.lyrics = strip_tags(audioTag['USLT::XXX'].text).rstrip()
 
         # Extracting track total disc and lyrics (other possible placement)
         if len(audioTag.getall('TXXX')) != 0:
@@ -105,12 +105,12 @@ class TrackExtractorService(object):
 
         # Extracting the disc number of the track
         if 'TPOS' in audioTag and audioTag['TPOS'].text[0] != "":
-                discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
-                try:
-                    discNumber = int(discNumber)
-                except ValueError:
-                    discNumber = 0
-                track.discNumber = discNumber
+            discNumber = strip_tags(audioTag['TPOS'].text[0]).rstrip()
+            try:
+                discNumber = int(discNumber)
+            except ValueError:
+                discNumber = 0
+            track.discNumber = discNumber
 
         # --- Adding genre to structure ---
         if 'TCON' in audioTag:
