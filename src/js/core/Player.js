@@ -266,10 +266,14 @@ class Player {
         return;
       }
 
-      const loadedListener = () => {
-        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
+      const startPlayback = () => {
         this.play(); // Call player play method (not actually play after that line)
         resolve(); // Resolve promise
+      };
+
+      const loadedListener = () => {
+        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
+        startPlayback();
       };
 
       if (this._isPlaying) { // Stop any previous playback
@@ -277,7 +281,12 @@ class Player {
       }
 
       this._player.src = url; // Set new track url
-      this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+
+      if (Utils.isMobileDevice()) {
+        startPlayback();
+      } else {
+        this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+      }
     });
   }
 
