@@ -98,7 +98,7 @@ class Player {
    **/
   _setProgress(percentage) {
     if (typeof percentage !== 'number') { // Bad format for value
-      Errors.raise({
+      Logger.raise({
         code: 'INVALID_PROGRESS',
         frontend: true
       });
@@ -133,7 +133,7 @@ class Player {
    **/
   _setVolume(value) {
     if (typeof value !== 'number') { // Bad format for value
-      Errors.raise({
+      Logger.raise({
         code: 'INVALID_VOLUME',
         frontend: true
       });
@@ -259,17 +259,21 @@ class Player {
   changeTrack(url) {
     return new Promise((resolve) => {
       if (typeof url !== 'string') { // Bad format value
-        Errors.raise({
+        Logger.raise({
           code: 'INVALID_TRACK_URL',
           frontend: true
         });
         return;
       }
 
-      const loadedListener = () => {
-        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
+      const startPlayback = () => {
         this.play(); // Call player play method (not actually play after that line)
         resolve(); // Resolve promise
+      };
+
+      const loadedListener = () => {
+        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
+        startPlayback();
       };
 
       if (this._isPlaying) { // Stop any previous playback
@@ -277,7 +281,12 @@ class Player {
       }
 
       this._player.src = url; // Set new track url
-      this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+
+      if (Utils.isMobileDevice()) {
+        startPlayback();
+      } else {
+        this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+      }
     });
   }
 

@@ -130,6 +130,24 @@ class Utils {
     }
   }
 
+
+  sizeToKiloBytes(bytes) {
+    if (bytes === 0) {
+      return 0;
+    }
+
+    let size = 0;
+    const power = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    if (power === 2) { // When mb, add 2 precision decimals
+      size = Math.round(bytes / Math.pow(1024, power - 1));
+    } else {
+      size = Math.round(bytes / Math.pow(1024, power));
+    }
+
+    return size;
+  }
+
+
   alreadyExistsInArray(array, value) {
     return array.some(function(arrayValue) {
       return value === arrayValue;
@@ -164,6 +182,12 @@ class Utils {
 
     return (Math.abs(hash).toString(36) + '' + Math.abs(hash / 2).toString(36).split('').reverse().join('')).substring(0, length).toUpperCase(); // Here is the twekead line
   }
+
+
+  isMobileDevice() {
+    return (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement);
+  }
+
 
   /**
    * @method
