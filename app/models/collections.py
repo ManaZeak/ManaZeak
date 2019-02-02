@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import DO_NOTHING
 
-
-from app.models import Track
+from app.models import Track, TrackInScopeAverages
 
 
 ## This class describes the playlists in the database.
@@ -11,12 +11,8 @@ class Playlist(models.Model):
     name = models.CharField(max_length=100, default='Playlist')
     ## The tracks contained in the playlist
     tracks = models.ManyToManyField(Track)
-    ## The number of track in the playlist
-    totalTracks = models.IntegerField()
     ## The total listening time of the playlist
     listeningTime = models.IntegerField()
-    ## The average bit rate of the tracks contained in the library
-    averageBitRate = models.IntegerField()
     ## If the playlist is a library
     isLibrary = models.BooleanField()
     ## If the playlist is public
@@ -25,6 +21,10 @@ class Playlist(models.Model):
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     ## The description of the playlist
     description = models.CharField(max_length=5000, null=True)
+    ## The picture of the playlist
+    picture = models.URLField(max_length=1000, null=True)
+    ## Stat of the genre
+    stat = models.ForeignKey(TrackInScopeAverages, on_delete=DO_NOTHING)
 
 
 ## This class describes a library.
