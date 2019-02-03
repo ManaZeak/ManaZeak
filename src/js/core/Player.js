@@ -5,10 +5,10 @@ class Player {
 
 
   /**
-   * @summary Basic audio HTML music player
+   * @summary <h1>Basic audio HTML music player</h1>
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Provide a few features to control an audio playback. Should be handled in a controller
+   * @description <blockquote>Provide a few features to control an audio playback. Should be handled in a controller.</blockquote>
    **/
   constructor() {
     /** @private
@@ -33,6 +33,7 @@ class Player {
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
+
 
   /**
    * @method
