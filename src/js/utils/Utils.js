@@ -131,20 +131,12 @@ class Utils {
   }
 
 
-  sizeToKiloBytes(bytes) {
-    if (bytes === 0) {
+  sizeToKiloBytes(bitrate) {
+    if (bitrate === 0) {
       return 0;
     }
 
-    let size = 0;
-    const power = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    if (power === 2) { // When mb, add 2 precision decimals
-      size = Math.round(bytes / Math.pow(1024, power - 1));
-    } else {
-      size = Math.round(bytes / Math.pow(1024, power));
-    }
-
-    return size;
+    return Math.round(bitrate / 1000, 2);
   }
 
 
