@@ -492,7 +492,7 @@ class ListView extends SceneView {
             if (this._columns[j].name.toLowerCase() === 'duration') {
               col.innerHTML = Utils.secondsToTimecode(listViewEntry.getTagValue(this._columns[j].name.toLowerCase()));
             } else if (this._columns[j].name.toLowerCase() === 'bitrate') {
-              col.innerHTML = Utils.sizeToKiloBytes(listViewEntry.getTagValue(this._columns[j].name.toLowerCase())) + ' kbps';
+              col.innerHTML = Utils.roundBitRate(listViewEntry.getTagValue(this._columns[j].name.toLowerCase()));
             } else {
               col.innerHTML = listViewEntry.getTagValue(this._columns[j].name.toLowerCase());
             }

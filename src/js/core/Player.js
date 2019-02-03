@@ -62,6 +62,48 @@ class Player {
    **/
   _events() {
     this._player.addEventListener('ended', this._trackEnded.bind(this)); // Handle track end playback event
+    this._player.addEventListener('error', this._handleErrors.bind(this));
+  }
+
+
+  /**
+   * @method
+   * @name _handleErrors
+   * @private
+   * @memberof Player
+   * @author Arthur Beaulieu
+   * @since January 2019
+   * @description Handle all the player's media errors
+   **/
+  _handleErrors(event) {
+    const error = event.target.error;
+
+    if (error.code === error.MEDIA_ERR_DECODE) {
+      Logger.raise({
+        code: 'MEDIA_DECODE_ERROR',
+        frontend: true
+      });
+    } else if (error.code === error.MEDIA_ERR_ABORTED) {
+      Logger.raise({
+        code: 'MEDIA_ABORT_ERROR',
+        frontend: true
+      });
+    } else if (error.code === error.MEDIA_ERR_NETWORK) {
+      Logger.raise({
+        code: 'MEDIA_NETWORK_ERROR',
+        frontend: true
+      });
+    } else if (error.code === error.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+      Logger.raise({
+        code: 'MEDIA_SRC_NOT_SUPPORTED_ERROR',
+        frontend: true
+      });
+    } else {
+      Logger.raise({
+        code: 'MEDIA_UNKNOWN_ERROR',
+        frontend: true
+      });
+    }
   }
 
 
