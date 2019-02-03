@@ -131,12 +131,12 @@ class Utils {
   }
 
 
-  sizeToKiloBytes(bitrate) {
+  roundBitRate(bitrate) {
     if (bitrate === 0) {
       return 0;
     }
 
-    return Math.round(bitrate / 1000, 2);
+    return `${Math.round(bitrate / 1000, 2)} kpbs`; // Converts BitRate to rounded KiloBitRate
   }
 
 
