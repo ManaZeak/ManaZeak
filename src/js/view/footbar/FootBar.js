@@ -3,14 +3,19 @@ import ProgressBar from './components/ProgressBar.js';
 import QueueContext from '../utils/contexts/QueueContext.js';
 'use strict';
 
+
 class FootBar {
+
+
   /**
    * @summary ManaZeak FootBar
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Handle all components in the FootBar and all related events
+   * @description <blockquote>Handle all components in the FootBar and all related events</blockquote>
    **/
   constructor() {
+    /** @private
+     * @member {object} - The FootBar DOMs element (play, stop, mute volume, previous, next, repeat, queue) */
     this._controls = {
       play: {},
       stop: {},
@@ -20,15 +25,25 @@ class FootBar {
       repeat: {},
       queue: {}
     };
+    /** @private
+     * @member {object} - The volume bar object */
     this._volumeBar = {};
+    /** @private
+     * @member {object} - The progress bar object */
     this._progressBar = {};
+    /** @private
+     * @member {object} - The Queue context */
     this._queueContext = {};
 
     this._init();
     this._events();
   }
 
-  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
 
   /**
    * @method
@@ -37,7 +52,7 @@ class FootBar {
    * @memberof FootBar
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Init the FootBar with controls, a volume bar and a progress bar
+   * @description Init the FootBar with controls, a volume bar, a progress bar and a queue
    **/
   _init() {
     this._controls.play = document.getElementById('play');
@@ -55,6 +70,7 @@ class FootBar {
     });
   }
 
+
   /**
    * @method
    * @name _events
@@ -62,7 +78,7 @@ class FootBar {
    * @memberof FootBar
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Handle al controls click events
+   * @description Handle all controls click events
    **/
   _events() {
     this._controls.play.addEventListener('click', () => {
@@ -100,7 +116,11 @@ class FootBar {
     });
   }
 
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CONTROLS METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
 
   /**
    * @method
@@ -120,6 +140,12 @@ class FootBar {
     }
   }
 
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  MOODBAR METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
   /**
    * @method
    * @name renderMoodFile
@@ -127,13 +153,13 @@ class FootBar {
    * @memberof FootBar
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Render a mood file into the progress-moodbar container
+   * @description Render a mood file into the progress-moodbar container.
+   * Original code from : <a href="https://gist.github.com/Valodim/5225460">https://gist.github.com/Valodim/5225460</a>
    * @param {string} url - The url to fetch the modd file
    **/
   renderMoodFile(url) {
     mzk.komunikator.getBinaryResponse(url)
       .then((responseText) => {
-        // Original code from : https://gist.github.com/Valodim/5225460
         const rgb = [...Array((responseText.length / 3))];
 
         for (let i = 0; i < rgb.length; ++i) {
@@ -148,7 +174,7 @@ class FootBar {
           };
         }
 
-        const svg = d3.select(this._progressBar.getMoodbarContainer().childNodes[1]).append('g');
+        const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
 
         svg.append('linearGradient')
           .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
@@ -174,19 +200,27 @@ class FootBar {
   }
 
 
-  //  --------------------------------  GETTER METHODS   --------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
+  /** @public
+   * @member {object} - The FootBar's progress bar public accessor */
   get progressBar() {
     return this._progressBar;
   }
 
 
+  /** @public
+   * @member {object} - The FootBar's volume bar public accessor */
   get volumeBar() {
     return this._volumeBar;
   }
 
 
+  /** @public
+   * @member {number} - The FootBar control repeat mode value in range int[0, 2] */
   set repeatMode(value) {
     if (value === 0) {
       this._controls.repeat.src = '/static/img/player/repeat-off.svg';

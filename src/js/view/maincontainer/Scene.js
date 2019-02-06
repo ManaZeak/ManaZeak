@@ -143,6 +143,11 @@ class Scene {
   }
 
 
+  isFirstTrack() {
+    return this.view.isFirstTrack();
+  }
+
+
   isLastTrack() {
     return this.view.isLastTrack();
   }

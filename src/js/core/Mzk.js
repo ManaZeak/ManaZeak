@@ -587,7 +587,24 @@ class Mzk {
    * @description Change the player track using the previous one in the current view
    **/
   previousTrackInView() {
-    mzk.changeTrack(this.ui.lastTrackId);
+    const repeatMode = this.model.repeatMode;
+
+    if (repeatMode === 0) {
+      if (this.ui.isFirstTrack()) {
+        this.stopPlayback();
+      } else {
+        mzk.changeTrack(this.ui.previousTrackId);
+      }
+    } else if (repeatMode === 1) {
+      mzk.repeatTrack();
+    } else if (repeatMode === 2) {
+      mzk.changeTrack(this.ui.previousTrackId);
+    } else {
+      Logger.raise({
+        code: 'NO_NEXT_TRACK',
+        frontend: true
+      });
+    }
   }
 
 

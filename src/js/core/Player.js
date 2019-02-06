@@ -20,8 +20,8 @@ class Player {
     /** @private
      * @member {boolean} - The player's mute flag */
     this._isMuted = false;
-    /** @private
-     * @member {boolean} - The player's is playing flag */
+      /** @private
+       * @member {boolean} - The player's is playing flag */
     this._isPlaying = false; // Playback flag
 
     this._init(); // Init player object
