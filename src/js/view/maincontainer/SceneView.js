@@ -213,6 +213,11 @@ class SceneView {
   }
 
 
+  isFirstTrack() {
+    return this._playingTrackIndex === 0;
+  }
+
+
   isLastTrack() {
     return this._playingTrackIndex === this._tracks.length - 1;
   }

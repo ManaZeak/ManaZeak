@@ -81,7 +81,7 @@ class UserInterface {
     const isPlaying = mzk.model.player.playing;
     this._footBar.updatePlayButton(isPlaying);
 
-    if (isPlaying) { // Don't handle !playing (desactivate) bc pause != stop
+    if (isPlaying) { // Don't handle !playing (deactivate) bc pause != stop
       this._footBar.progressBar.activate(); // Activate make the progress bar appear w/ animation
     }
   }
@@ -149,12 +149,12 @@ class UserInterface {
    **/
   updateProgress() { // Called onClick
     const progress = mzk.model.player.progress;
-    this._footBar.progressBar.desactivateTransitions(); // Must disable transition when called
+    this._footBar.progressBar.deactivateTransitions(); // Must disable transition when called
     this._footBar.progressBar.setProgress(progress);
 
-    setTimeout(function() { // Restore transitions
+    setTimeout(() => { // Restore transitions
       this._footBar.progressBar.activateTransitions();
-    }.bind(this), 50); // 5 is fine, but 50 is more 'lag friendly'
+    }, 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
 
@@ -176,6 +176,11 @@ class UserInterface {
       this._scene.stopLoading()
         .then(resolve);
     });
+  }
+
+
+  isFirstTrack() {
+    return this._scene.isFirstTrack();
   }
 
 
