@@ -29,6 +29,7 @@ class Playlist {
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
+    this._shuffleMode = 0; // 0 = off | 1 = shuffle | 2 = random
     this._activeView = ViewEnum.ListView;
 
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
@@ -156,10 +157,19 @@ class Playlist {
     this._repeatMode = (this._repeatMode + 1) % 3;
   }
 
+
+  toggleShuffleMode() {
+    this._shuffleMode = (this._shuffleMode + 1) % 3;
+  }
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
     return this._repeatMode;
+  }
+
+  get shuffleMode() {
+    return this._shuffleMode;
   }
 
   get id() {

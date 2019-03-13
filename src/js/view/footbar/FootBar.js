@@ -23,6 +23,7 @@ class FootBar {
       previous: {},
       next: {},
       repeat: {},
+      shuffle: {},
       queue: {}
     };
     /** @private
@@ -60,6 +61,7 @@ class FootBar {
     this._controls.previous = document.getElementById('previous');
     this._controls.next = document.getElementById('next');
     this._controls.repeat = document.getElementById('repeat');
+    this._controls.shuffle = document.getElementById('shuffle');
     this._controls.queue = document.getElementById('queue');
 
     this._volumeBar = new VolumeBar();
@@ -94,11 +96,15 @@ class FootBar {
     });
 
     this._controls.next.addEventListener('click', () => {
-      mzk.nextTrackInView();
+      mzk.next();
     });
 
     this._controls.repeat.addEventListener('click', () => {
       mzk.toggleRepeatMode();
+    });
+
+    this._controls.shuffle.addEventListener('click', () => {
+      mzk.toggleShuffleMode();
     });
 
     this._controls.queue.addEventListener('click', () => {
@@ -228,6 +234,19 @@ class FootBar {
       this._controls.repeat.src = '/static/img/player/repeat-one.svg';
     } else if (value === 2) {
       this._controls.repeat.src = '/static/img/player/repeat-all.svg';
+    }
+  }
+
+
+  /** @public
+   * @member {number} - The FootBar control shuffle mode value in range int[0, 2] */
+  set shuffleMode(value) {
+    if (value === 0) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-off.svg';
+    } else if (value === 1) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-on.svg';
+    } else if (value === 2) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-random-on.svg';
     }
   }
 

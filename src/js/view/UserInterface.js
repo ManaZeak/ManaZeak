@@ -234,6 +234,13 @@ class UserInterface {
   }
 
 
+  /** @public
+   * @member {number} - The repeat mode to set in range int[0, 2] */
+  set shuffleMode(value) {
+    this._footBar.shuffleMode = value;
+  }
+
+
 }
 
 export default UserInterface;

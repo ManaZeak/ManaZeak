@@ -376,6 +376,23 @@ class Mzk {
 
   /**
    * @method
+   * @name toggleShuffleMode
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since October 2018
+   * @description Change the shuffle state to the next one (off, one, all)
+   **/
+  toggleShuffleMode() {
+    this.model.toggleShuffleMode()
+      .then((shuffleMode) => {
+        this.ui.shuffleMode = shuffleMode;
+      });
+  }
+
+
+  /**
+   * @method
    * @name trackEnded
    * @public
    * @memberof Mzk
@@ -384,7 +401,7 @@ class Mzk {
    * @description Triggered when the player reached the end of a track
    **/
   trackEnded() {
-    mzk.nextTrackInView();
+    mzk.next();
   }
 
 
@@ -543,34 +560,46 @@ class Mzk {
 
   /**
    * @method
-   * @name nextTrackInView
+   * @name next
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
    * @description Change the player track using the next one in the current view
    **/
-  nextTrackInView() {
+  next() {
     if (this.model.queue.length > 0) {
       mzk.changeTrack(this.model.getNextFromQueue());
       return;
     }
 
     const repeatMode = this.model.repeatMode;
+    const shuffleMode = this.model.shuffleMode;
 
-    if (repeatMode === 0) {
-      if (this.ui.isLastTrack()) {
-        this.stopPlayback();
-      } else {
+    if (shuffleMode === 0) {
+      if (repeatMode === 0) {
+        if (this.ui.isLastTrack()) {
+          this.stopPlayback();
+        } else {
+          mzk.changeTrack(this.ui.nextTrackId);
+        }
+      } else if (repeatMode === 1) {
+        mzk.repeatTrack();
+      } else if (repeatMode === 2) {
         mzk.changeTrack(this.ui.nextTrackId);
+      } else {
+        Logger.raise({
+          code: 'NO_NEXT_TRACK',
+          frontend: true
+        });
       }
-    } else if (repeatMode === 1) {
-      mzk.repeatTrack();
-    } else if (repeatMode === 2) {
-      mzk.changeTrack(this.ui.nextTrackId);
+    } else if (shuffleMode === 1) { // Shuffle
+      mzk.playShuffleTrackInPlaylist();
+    } else if (shuffleMode === 2) { // Random
+      mzk.playRandomTrackInPlaylist();
     } else {
       Logger.raise({
-        code: 'NO_NEXT_TRACK',
+        code: 'INVALID_SHUFFLE_MODE',
         frontend: true
       });
     }
@@ -605,6 +634,70 @@ class Mzk {
         frontend: true
       });
     }
+  }
+
+
+  playRandomTrackInPlaylist() {
+    const options = {
+      PLAYLIST_ID: this.model.id
+    };
+
+    this.komunikator.post('player/randomNext/', options)
+      .then(response => {
+        /* response = {
+         *     DONE       : bool
+         *     ERROR_H1   : string
+         *     ERROR_MSG  : string
+         *
+         *     IS_LAST    : bool
+         *     TRACK_ID   : int
+         * } */
+        if (response.DONE) {
+          mzk.changeTrack(response.TRACK_ID);
+          const shuffleMode = this.model.shuffleMode;
+          const av = this.ui.activeView;
+          const options = {
+            id: response.TRACK_ID
+          };
+
+          av.centerOn(options);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+
+  playShuffleTrackInPlaylist() {
+    const options = {
+      PLAYLIST_ID: this.model.id
+    };
+
+    this.komunikator.post('player/shuffleNext/', options)
+      .then(response => {
+        /* response = {
+         *     DONE       : bool
+         *     ERROR_H1   : string
+         *     ERROR_MSG  : string
+         *
+         *     IS_LAST    : bool
+         *     TRACK_ID   : int
+         * } */
+        if (response.DONE) {
+          mzk.changeTrack(response.TRACK_ID);
+          const shuffleMode = this.model.shuffleMode;
+          const av = this.ui.activeView;
+          const options = {
+            id: response.TRACK_ID
+          };
+
+          av.centerOn(options);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
 
