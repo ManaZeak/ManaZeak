@@ -41,7 +41,7 @@ class ContextMenu {
 
 
   setActions() {
-
+    // Mandatory to override in children class
   }
 
 

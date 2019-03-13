@@ -315,7 +315,7 @@ class Mzk {
    * @description Change the played track with the gievn one (using its ID)
    * @param {number} id - The track ID to request to the server
    **/
-  changeTrack(id) {
+  changeTrack(id, centerOn) {
     let durationPlayed = 0;
 
     if (!isNaN(this.playerProgress)) {
@@ -335,6 +335,12 @@ class Mzk {
       })
       .then(() => {
         this.ui.changeTrack(this.model.playingTrack);
+
+        if (centerOn === true) {
+          this.ui.activeView.centerOn({
+            id: id
+          });
+        }
       });
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
@@ -653,14 +659,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID);
-          const shuffleMode = this.model.shuffleMode;
-          const av = this.ui.activeView;
-          const options = {
-            id: response.TRACK_ID
-          };
-
-          av.centerOn(options);
+          mzk.changeTrack(response.TRACK_ID, true);
         }
       })
       .catch(error => {
@@ -685,20 +684,16 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID);
-          const shuffleMode = this.model.shuffleMode;
-          const av = this.ui.activeView;
-          const options = {
-            id: response.TRACK_ID
-          };
-
-          av.centerOn(options);
+          mzk.changeTrack(response.TRACK_ID, true);
         }
       })
       .catch(error => {
         console.log(error);
       });
   }
+
+
+
 
 
   //  ------------------------------------------------------------------------------------------------//
