@@ -181,11 +181,12 @@ class SceneView {
 
   centerOn(options) {
     let index = -1;
+
     if (options.index && options.index !== -1) {
       index = options.index;
     } else if (options.id) {
       for (let i = 0; i < this._tracks.length; ++i) {
-        if (parseInt(this._tracks[i].id) === id) {
+        if (parseInt(this._tracks[i].id) === options.id) {
           index = i;
           break;
         }
@@ -196,7 +197,7 @@ class SceneView {
       return;
     }
 
-    const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
+    const relativeDelta = this._tracks[index]._dom.offsetTop + this._tracks[index]._dom.scrollHeight / 2;
     this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
   }
 

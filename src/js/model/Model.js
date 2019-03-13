@@ -302,6 +302,13 @@ class Model {
     });
   }
 
+  toggleShuffleMode() {
+    return new Promise(resolve => {
+      this._collection.activePlaylist.toggleShuffleMode();
+      resolve(this._collection.activePlaylist.shuffleMode);
+    });
+  }
+
   repeatTrack() {
     this._player.repeatTrack();
   }
@@ -335,12 +342,20 @@ class Model {
     return this._collection.activePlaylist.repeatMode;
   }
 
+  get shuffleMode() {
+    return this._collection.activePlaylist.shuffleMode;
+  }
+
+  get id() {
+    return this._collection.activePlaylist.id;
+  }
+
   get player() {
     return this._player;
   }
 
   get activeView() {
-    return this._collection.activePlaylist.activeView;
+      return this._collection.activePlaylist.activeView;
   }
 
   get collection() {

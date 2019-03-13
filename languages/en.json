@@ -85,6 +85,11 @@
         "title": "No track to play next",
         "message": "Please select a track or open a playlist to play a track.",
         "severity": "info"
+      },
+      "INVALID_SHUFFLE_MODE": {
+        "title": "Invalid shuffle mode",
+        "message": "Something went wrong with the shuffle value. Contact an administrator (support@manazeak.org)",
+        "severity": "warning"
       }
     },
     "backend":  {

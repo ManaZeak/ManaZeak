@@ -138,6 +138,13 @@ class Scene {
   }
 
 
+  centerOn(index) {
+    this.view.centerOn({
+      index: index
+    });
+  }
+
+
   getTrackById(id) {
     return this.view.getTrackById(id);
   }
