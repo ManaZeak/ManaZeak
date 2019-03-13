@@ -42,7 +42,7 @@ class Modal {
 
 
   setActions() {
-
+    // Mandatory to override in children class
   }
 
 

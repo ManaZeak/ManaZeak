@@ -12,7 +12,7 @@ describe('Player unit tests', function() {
 
 
   afterEach(function() {
-    let previousPlayer = document.getElementById('mzk-audio-player');
+    const previousPlayer = document.getElementById('mzk-audio-player');
 
     if (previousPlayer) {
       document.body.removeChild(previousPlayer);
@@ -103,16 +103,16 @@ describe('Player unit tests', function() {
     expect(player._player.volume).toBe(0.9);
     expect(player._isMuted).toBe(false);
 
-    done()
+    done();
   });
 
 
   it('Player playback | covers changeTrack(), pause(), play(), togglePlay()', function(done) {
     expect(player._player.src).toBe('');
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
         expect(player._player.src).not.toBe('');
-        expect(player._player.src).toBe('http://static.kevvv.in/sounds/callmemaybe.mp3');
+        expect(player._player.src).toBe(/* local tst fq */);
         expect(player._isPlaying).toBe(true);
         player.pause();
         expect(player._isPlaying).toBe(false);
@@ -140,7 +140,7 @@ describe('Player unit tests', function() {
       done();
     };
 
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
         window.setTimeout(() => {
           player.adjustProgress(50);
@@ -158,7 +158,7 @@ describe('Player unit tests', function() {
 
 
   it('Getter test | covers getIsPlaying(), getIsMuted(), getVolume(), getProgress(), getDuration(), getCurrentTime(), hasSource()', function(done) {
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
         expect(player.playing).toBe(true);
         player.pause();
