@@ -105,7 +105,7 @@ class AlbumView extends SceneView {
         trackNumber: k
       });
       this._tracks.push(albumViewEntry);
-      albumTracks.appendChild(albumViewEntry.dom);
+      albumTracks.appendChild(albumViewEntry.domFragment);
       ++this._trackDatasetId;
 
       if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {

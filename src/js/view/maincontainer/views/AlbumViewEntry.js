@@ -80,6 +80,11 @@ class AlbumViewEntry {
 
 
   get dom() {
+    return this._dom.container;
+  }
+
+
+  get domFragment() {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(this._dom.container);
     return fragment;
