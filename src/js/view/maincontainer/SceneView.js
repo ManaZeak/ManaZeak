@@ -177,6 +177,12 @@ class SceneView {
         this._tracks[this._selection[i]].selected = true;
       }
     }
+
+    const options = {
+      index: this._playingTrackIndex
+    };
+
+    this.centerOn(options);
   }
 
   centerOn(options) {
