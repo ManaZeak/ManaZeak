@@ -22,10 +22,14 @@ class ListViewEntry {
     this.year = options.track.year || '';
     this.bitrate = options.track.bitrate || '';
 
-    this._dom = document.createElement('DIV');
-    this._dom.classList.add('track');
-    this._dom.dataset.id = options.datasetId;
-    this._dom.style.gridTemplateColumns = options.gridTemplateColumns;
+    this._dom = {
+      container: {}
+    };
+
+    this._dom.container = document.createElement('DIV');
+    this._dom.container.classList.add('track');
+    this._dom.container.dataset.id = options.datasetId;
+    this._dom.container.style.gridTemplateColumns = options.gridTemplateColumns;
 
     this._isSelected = false;
     this._isPlaying = false;
@@ -36,9 +40,9 @@ class ListViewEntry {
     this._isPlaying = status;
 
     if (!status) {
-      this._dom.classList.remove('playing');
+      this._dom.container.classList.remove('playing');
     } else {
-      this._dom.classList.add('playing');
+      this._dom.container.classList.add('playing');
     }
   }
 
@@ -47,15 +51,15 @@ class ListViewEntry {
     this._isSelected = status;
 
     if (!status) {
-      this._dom.classList.remove('selected');
+      this._dom.container.classList.remove('selected');
     } else {
-      this._dom.classList.add('selected');
+      this._dom.container.classList.add('selected');
     }
   }
 
 
   addColumn(column) {
-    this._dom.appendChild(column);
+    this._dom.container.appendChild(column);
   }
 
 
@@ -65,8 +69,13 @@ class ListViewEntry {
 
 
   get dom() {
+    return this._dom.container;
+  }
+
+
+  get domFragment() {
     const fragment = document.createDocumentFragment();
-    fragment.appendChild(this._dom);
+    fragment.appendChild(this._dom.container);
     return fragment;
   }
 

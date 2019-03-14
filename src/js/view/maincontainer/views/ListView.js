@@ -500,7 +500,7 @@ class ListView extends SceneView {
             listViewEntry.addColumn(col);
           }
 
-          fragment.appendChild(listViewEntry.dom);
+          fragment.appendChild(listViewEntry.domFragment);
         }
 
         this._dom.container.appendChild(fragment);

@@ -197,7 +197,7 @@ class SceneView {
       return;
     }
 
-    const relativeDelta = this._tracks[index]._dom.offsetTop + this._tracks[index]._dom.scrollHeight / 2;
+    const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
     this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
   }
 
