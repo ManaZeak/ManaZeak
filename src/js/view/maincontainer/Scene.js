@@ -14,14 +14,19 @@ class Scene {
     this._scene = document.getElementById('scene');
     this._optionButton = document.getElementById('scene-view-option');
     this.view = {};
-    this._viewSwitcher = new ViewSwitcherContext({
-      target: this._scene,
-      url: 'contexts/changeview/'
-    });
 
     this._sceneCommands = document.getElementById('scene-commands');
     this._activeViewLabel = this._sceneCommands.childNodes[1];
+    this._viewSwitcher = new ViewSwitcherContext({
+      target: document.body,
+      url: 'contexts/changeview/'
+    });
+
+
+    this._sceneManipulations = document.getElementById('scene-manipulation');
+    this._centerOnTop = document.getElementById('center-on-top');
     this._centerOnActiveTrack = document.getElementById('center-on-track');
+    this._centerOnBottom = document.getElementById('center-on-bottom');
 
     this._events();
   }
@@ -36,9 +41,21 @@ class Scene {
       }
     });
 
+    this._centerOnTop.addEventListener('click', () => {
+      this.view.centerOn({
+        position: 'top'
+      });
+    });
+
     this._centerOnActiveTrack.addEventListener('click', () => {
       this.view.centerOn({
         index: this.view.playingTrackIndex
+      });
+    });
+
+    this._centerOnBottom.addEventListener('click', () => {
+      this.view.centerOn({
+        position: 'bottom'
       });
     });
 
@@ -94,6 +111,7 @@ class Scene {
   addView(node) {
     this._scene.innerHTML = '';
     this._scene.appendChild(this._sceneCommands);
+    this._scene.appendChild(this._sceneManipulations);
     this._scene.appendChild(this._optionButton);
 
     const fragment = document.createDocumentFragment();
