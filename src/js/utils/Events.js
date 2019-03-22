@@ -1,12 +1,14 @@
 'use strict';
 
+
 class Events {
-  /**
-   * @summary Basic custom events system
+
+
+  /** @summary <h1>Custom events system</h1>
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Singleton class, Exposes an API to register/unregister events and fire them
-   **/
+   * @description <blockquote>Singleton class that exposes an API to register and unregister custom events.<br>
+   * When the event is fired, the singleton parse all its event to fire the needed callbacks.</blockquote> */
   constructor() {
     if (!!Events.instance) {
       return Events.instance;
@@ -19,10 +21,13 @@ class Events {
     return this;
   }
 
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
-  /**
-   * @method
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------  CLASS EXPOSED METHOD  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @method
    * @name register
    * @public
    * @memberof Events
@@ -32,16 +37,16 @@ class Events {
    * @param {object} options - The event options
    * @param {string} options.name - The event string identifier (use specific names)
    * @param {boolean} [options.oneShot=false] - Only register the event for one call. Automatically unregister after
-   * @returns {number} The event id (useful to unregister the registered event)
-   **/
+   * @param {function} callback - The callback to fire on event trigger
+   * @returns {number} The event id (useful to unregister the registered event) */
   register(options, callback) {
     if (typeof options !== 'object' || typeof options.name !== 'string' || typeof callback !== 'function') {
       return -1;
     }
-
+    // Create event entry if not already existing
     if (!this._events[options.name]) {
       this._events[options.name] = [];
-    } // Create event entry if not already existing
+    }
 
     this._events[options.name].push({
       id: this._eventUid,
@@ -53,22 +58,21 @@ class Events {
     if (options.oneShot) {
       this._events[options.name].oneShot = true;
     }
-
+    // Post increment to return the true event entry id, then increment
     this._eventUid++;
 
-    return this._eventUid; // Post increment to return the true event entry id, then increment
+    return this._eventUid;
   }
 
-  /**
-   * @method
+
+  /** @method
    * @name unregister
    * @public
    * @memberof Events
    * @author Arthur Beaulieu
    * @since September 2018
    * @description UnRegister a custom event using its id
-   * @param {number} uid - The event unique id
-   **/
+   * @param {number} uid - The event unique id */
   unregister(uid) {
     if (typeof uid !== 'number') {
       return;
@@ -87,29 +91,27 @@ class Events {
     }
   }
 
-  /**
-   * @method
+
+  /** @method
    * @name unregisterAll
    * @public
    * @memberof Events
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description UnRegister all custom event registered
-   **/
+   * @description UnRegister all custom event registered */
   unregisterAll() {
     this._events = {}; // Remove all entry
   }
 
-  /**
-   * @method
+
+  /** @method
    * @name fire
    * @public
    * @memberof Events
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Fire a custom event from its string identifier
-   * @param {string} eventName - The event string identifier
-   **/
+   * @param {string} eventName - The event string identifier */
   fire(eventName) {
     if (typeof eventName !== 'string') {
       return;
@@ -126,6 +128,9 @@ class Events {
       }
     }
   }
+
+
 }
+
 
 export default Events;
