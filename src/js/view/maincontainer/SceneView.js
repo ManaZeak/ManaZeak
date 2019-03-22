@@ -188,23 +188,32 @@ class SceneView {
   centerOn(options) {
     let index = -1;
 
-    if (options.index && options.index !== -1) {
-      index = options.index;
-    } else if (options.id) {
-      for (let i = 0; i < this._tracks.length; ++i) {
-        if (parseInt(this._tracks[i].id) === options.id) {
-          index = i;
-          break;
+    if (options.position) {
+      if (options.position === 'top') {
+        this._dom.container.scrollTop = 0;
+      } else if (options.position === 'bottom') {
+        const relativeDelta = this._tracks[this._tracks.length -1].dom.offsetTop + this._tracks[this._tracks.length -1].dom.scrollHeight / 2;
+        this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
+      }
+    } else {
+      if (options.index && options.index !== -1) {
+        index = options.index;
+      } else if (options.id) {
+        for (let i = 0; i < this._tracks.length; ++i) {
+          if (parseInt(this._tracks[i].id) === options.id) {
+            index = i;
+            break;
+          }
         }
       }
-    }
 
-    if (index === -1) {
-      return;
-    }
+      if (index === -1) {
+        return;
+      }
 
-    const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
-    this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
+      const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
+      this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
+    }
   }
 
   refreshView() {

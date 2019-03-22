@@ -62,6 +62,7 @@
       background: #1f2127;
       border: solid 1px black;
       border-radius: 5px;
+      border-top-right-radius: 0;
       top: 89px;
       height: auto;
       position: absolute;
@@ -88,6 +89,29 @@
           line-height: 30px;
           padding-left: $padding;
         }
+      }
+
+      &::before {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 8px 8px 8px;
+        border-color: transparent transparent $dark-alpha-light;
+        content: '';
+        position: absolute;
+        top: -9px;
+        cursor: pointer;
+        right: -1px;
+      }
+
+      &::after {
+        width: 60px; // Match with view switcher width
+        height: 40px;
+        content: '';
+        position: absolute;
+        right: 0;
+        top: - $topbar-height - 8px;
+        cursor: pointer;
       }
     }
 
