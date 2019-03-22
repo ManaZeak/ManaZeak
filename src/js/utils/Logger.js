@@ -1,13 +1,14 @@
 'use strict';
 
+
 class Logger {
-  /**
-   * @summary Logger system with feedback
+
+
+  /** @summary <h1>Logger system with feedback</h1>
    * @author Arthur Beaulieu
    * @since September 2018
    * @description <blockquote>Singleton class, Raise both a log and a user feeback depending on lang/*.json files
-   * (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript</blockquote>
-   **/
+   * (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript</blockquote> */
   constructor(options) {
     if (!!Logger.instance) {
       return Logger.instance;
@@ -29,7 +30,6 @@ class Logger {
       warning: '',
       error: ''
     };
-
     // Those value needs to match the ones in ***.scss for info, warning and error
     this._cssRules.info = 'color: rgb(44, 44, 48); font-weight: bold;';
     this._cssRules.warning = 'color: rgb(44, 44, 48); font-weight: bold;';
@@ -38,10 +38,13 @@ class Logger {
     return this;
   }
 
-  //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
-  /**
-   * @method
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @method
    * @name _getCallerName
    * @private
    * @memberof Logger
@@ -49,17 +52,16 @@ class Logger {
    * @since July 2018
    * @description Get caller function name depending on given browser
    * @param {object} browsers - Contains a browser list associated with a boolean to know which browser is in use
-   * @returns {string} The caller function name
-   **/
-  _getCallerName(browser) {
+   * @returns {string} The caller function name */
+  _getCallerName(browsers) {
     // Original code from: https://gist.github.com/irisli/716b6dacd3f151ce2b7e
     let caller = (new Error()).stack; // Create error and get its call stack
 
-    if (browser.firefox) {
+    if (browsers.firefox) {
       caller = caller.split('\n')[2]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
       caller = caller.replace(/\@+/, ' ('); // Change `@` to `(`
       caller += ')';
-    } else if (browser.chrome) {
+    } else if (browsers.chrome) {
       caller = caller.split('\n')[3]; // Get who called raise (0 = this, 1 = raise, 2 = raise caller)
       caller = caller.replace(/^Error\s+/, ''); // Remove Chrome `Error` string
       caller = caller.replace(/^\s+at./, ''); // Remove Chrome `at` string
@@ -68,10 +70,13 @@ class Logger {
     return `Raised from function ${caller}`;
   }
 
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
-  /**
-   * @method
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------------  RAISING ERROR  ---------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @method
    * @name raise
    * @public
    * @memberof Logger
@@ -80,8 +85,7 @@ class Logger {
    * @description Register a custom event using a name and a callback
    * @param {object} options - The error options
    * @param {string} options.code - The error key value in lang/*.json "errors" object
-   * @param {boolean} [options.frontend=false] - The event string identifier (use specific names)
-   **/
+   * @param {boolean} [options.frontend=false] - The event string identifier (use specific names) */
   raise(options) {
     let severity = '';
     let title = '';
@@ -131,6 +135,9 @@ class Logger {
       console.groupEnd();
     }
   }
+
+
 }
+
 
 export default Logger;
