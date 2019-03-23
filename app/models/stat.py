@@ -12,7 +12,7 @@ class MoodAverage(models.Model):
     b = models.FloatField()
 
 
-class TrackInScopeAverages(models.Model):
+class TrackInScopeStats(models.Model):
     ## The number of disc of the artist.
     totalDisc = models.IntegerField(null=True)
     ## the number of track in the album.

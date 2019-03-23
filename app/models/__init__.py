@@ -1,4 +1,4 @@
-from .stat import TrackInScopeAverages, MoodAverage
+from .stat import MoodAverage, TrackInScopeStats
 from .track import Artist, Track, Genre, FileType, Album
 from .security import InviteCode, Group, Permissions
 from .collections import Library, Playlist

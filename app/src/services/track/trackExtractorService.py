@@ -10,8 +10,13 @@ from mutagen.id3 import ID3, ID3NoHeaderError
 from mutagen.mp3 import MP3, BitrateMode
 
 from app.models import FileType
-from app.src.services.track.localTrack import LocalTrack, LocalArtist
+from app.src.dto.artist.localArtist import LocalArtist
+from app.src.dto.track.localTrack import LocalTrack
 
+
+# TODO : trouver l'album artist dans les tags (si ça existe -> sinon folder obligé)
+# TODO : process les path des tracks pour set les path des albums et des artists
+# TODO : 
 
 ## This class allows to extract teh metadata contained in a file and put it in a local track.
 class TrackExtractorService(object):
@@ -28,12 +33,7 @@ class TrackExtractorService(object):
         # --- FILE INFORMATION ---
         track.fileType = self.mp3formatId
         audioFile = MP3(trackPath)
-        track.location = trackPath
-        track.artistFolderName = self._extractNameArtistFolder(trackPath)
-        track.size = os.path.getsize(trackPath)
-        track.bitRate = audioFile.info.bitrate
-        track.duration = audioFile.info.length
-        track.sampleRate = audioFile.info.sample_rate
+        self._getBaseInfo(track, audioFile, trackPath)
 
         if audioFile.info.bitrate_mode == BitrateMode.UNKNOWN:
             track.bitRateMode = 0
@@ -65,6 +65,7 @@ class TrackExtractorService(object):
         # Extracting track year
         if 'TDRC' in audioTag and audioTag['TDRC'].text[0].get_text() != "":
             track.year = strip_tags(audioTag['TDRC'].text[0].get_text()[:4]).rstrip()  # Date of Recording
+            track.album.year = track.year
 
         # Extracting track number and total track
         if 'TRCK' in audioTag and audioTag['TRCK'].text[0] != "":
@@ -122,15 +123,26 @@ class TrackExtractorService(object):
             artists = strip_tags(audioTag['TPE1'].text[0])
             track.artists = self._getLocalArtistsFromTrack(artists)
 
+        # --- Adding album artist to structure ---
+        if 'TPE2' in audioTag:
+            albumArtist = strip_tags(audioTag['TPE2'].text[0])
+            track.albumArtist.addAlbumArtist(albumArtist, track.artistFolderName, 0)
+
         # Extracting composers
         if 'TCOM' in audioTag and audioTag['TCOM'].text[0] != "":
             composers = strip_tags(audioTag['TCOM'].text[0])
-            track.composers = self._getLocalArtistsFromTrack(composers)
+            track.composers = self._getLocalArtistsFromTrack(composers, True)
 
         # Extracting performers
         if 'TOPE' in audioTag and audioTag['TOPE'].text[0] != "":
             performers = strip_tags(audioTag['TOPE'].text[0])
             track.performers = self._getLocalArtistsFromTrack(performers)
+
+        # Extracting producer
+        if 'TPUB' in audioTag and audioTag['TPUB'].text[0] != '':
+            producer = strip_tags(audioTag['TPUB'].text[0])
+            track.producer = producer
+            track.album.producer = producer
 
         # --- Adding album to structure ---
         if 'TALB' in audioTag:
@@ -143,15 +155,13 @@ class TrackExtractorService(object):
     def extractFlacFile(self, trackPath):
         track = LocalTrack()
 
+        # FIXME : add producer to FLAC
+        track.producer = 'zeaz'
+
         audioTag = FLAC(trackPath)
 
         # --- FILE INFORMATION ---
-        track.location = trackPath
-        track.artistFolderName = self._extractNameArtistFolder(trackPath)
-        track.size = os.path.getsize(trackPath)
-        track.bitRate = audioTag.info.bitrate
-        track.duration = audioTag.info.length
-        track.sampleRate = audioTag.info.sample_rate
+        self._getBaseInfo(track, audioTag, trackPath)
         track.fileType = self.flacFormatId
 
         # Generating moodbar hash
@@ -171,6 +181,7 @@ class TrackExtractorService(object):
             trackDate = self._trimVorbisTag(audioTag['DATE'])
             if not trackDate == "":
                 track.year = trackDate  # Date of Recording
+                track.album.year = track.year
 
         if 'TRACKNUMBER' in audioTag:
             trackNumber = self._trimVorbisTag(audioTag['TRACKNUMBER'])
@@ -207,7 +218,7 @@ class TrackExtractorService(object):
         if 'COMPOSER' in audioTag:
             composers = self._trimVorbisTag(audioTag['COMPOSER'])
             if not composers == "":
-                track.composers = self._getLocalArtistsFromTrack(composers)
+                track.composers = self._getLocalArtistsFromTrack(composers, True)
 
         if 'PERFORMER' in audioTag:
             performers = self._trimVorbisTag(audioTag['PERFORMER'])
@@ -222,9 +233,14 @@ class TrackExtractorService(object):
             artists = self._trimVorbisTag(audioTag['ARTIST'])
             track.artists = self._getLocalArtistsFromTrack(artists)
 
+        if 'ALBUMARTIST' in audioTag:
+            albumArtist = self._trimVorbisTag(audioTag['ALBUMARTIST'])
+            track.albumArtist.addAlbumArtist(albumArtist, track.artistFolderName, 0)
+            track.album.artist = albumArtist
+
         if 'ALBUM' in audioTag:
             albumTitle = self._trimVorbisTag(audioTag['ALBUM'])
-            track.album = albumTitle.replace('\n', '')
+            track.album.title = albumTitle.replace('\n', '')
 
         return track
 
@@ -270,6 +286,19 @@ class TrackExtractorService(object):
                     img.write(picture)
             track.coverLocation = md5Name.hexdigest() + ".jpg"
 
+    ## Get the information about a file, same for MP3 and FLAC.
+    #   @param track the track object to be filled
+    def _getBaseInfo(self, track, audioTag, trackPath):
+        track.location = trackPath
+        track.artistFolderName = self._extractNameArtistFolder(trackPath)
+        track.album.folderName = self._extractNameAlbumFolder(trackPath)
+        track.size = os.path.getsize(trackPath)
+        track.bitRate = audioTag.info.bitrate
+        track.duration = audioTag.info.length
+        track.sampleRate = audioTag.info.sample_rate
+        track.album.location = self._extractPathAlbum(trackPath)
+        track.albumArtist.location = self._extractPathArtist(trackPath)
+
     @staticmethod
     ## Extract the artist folder name. Used later in the integration process.
     #   @param path the path of the track.
@@ -280,6 +309,27 @@ class TrackExtractorService(object):
         if len(path.parts) > 2:
             return path.parts[len(path.parts)-3]
         return ''
+
+    @staticmethod
+    ## Extract the artist folder name. Used later in the integration process.
+    #   @param path the path of the track.
+    #   @return the folder name of the artist.
+    def _extractNameAlbumFolder(path):
+        path = Path(path)
+        # If the path is long enough
+        if len(path.parts) > 1:
+            return path.parts[len(path.parts) - 2]
+        return ''
+
+    @staticmethod
+    def _extractPathAlbum(trackPath):
+        path = Path(trackPath)
+        return str(path.parent)
+
+    @staticmethod
+    def _extractPathArtist(trackPath):
+        path = Path(trackPath)
+        return str(path.parent.parent)
 
     @staticmethod
     ## Process a Vorbis tag to remove the useless info.
@@ -304,18 +354,30 @@ class TrackExtractorService(object):
         return artists
 
     @staticmethod
+    ## Split a string containing multiple artist names without splitting the ';' in parentheses
+    #   @param toSplit the string to split.
+    #   @return the artists in a table.
+    def _extractComposerFromList(toSplit):
+        # Splitting the string
+        artists = re.split(r';\s*(?![^()]*\))', toSplit)
+        # Cleaning it
+        for i in range(len(artists)):
+            artists[i] = artists[i].lstrip().rstrip()
+        return artists
+
+    @staticmethod
     ## Construct a table of local artists for a given string.
     #   @param tagString the tag string to transform into a table of local artists
     #   @return the list of the local artists
-    def _getLocalArtistsFromTrack(tagString):
+    def _getLocalArtistsFromTrack(tagString, isPerformer=False):
         localArtists = []
-        splitArtists = TrackExtractorService._extractArtistsFromList(tagString)
+        # The performer uses ; instead of ,
+        if isPerformer:
+            splitArtists = TrackExtractorService._extractComposerFromList(tagString)
+        else:
+            splitArtists = TrackExtractorService._extractArtistsFromList(tagString)
         for artist in splitArtists:
-            splitArtist = artist.split('(')
-            artist = LocalArtist()
-            artist.name = splitArtist[0].strip()
-            # If the artist has a real name
-            if len(splitArtist) > 1:
-                # Removing the last ')'
-                artist.realName = splitArtist[1].strip()[:-1]
+            localArtist = LocalArtist()
+            localArtist.addArtist(artist)
+            localArtists.append(localArtist)
         return localArtists

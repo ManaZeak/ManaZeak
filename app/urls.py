@@ -1,5 +1,6 @@
 from django.urls import path
 
+from app.src.services.admin.adminTools import AdminTools
 from app.src.services.collections.library.libraryService import LibraryService
 from app.src.services.collections.playlist.playlistService import PlaylistService
 from app.src.services.user.languageService import LanguageService
@@ -42,4 +43,7 @@ urlpatterns = [
 
     ############################ Contexts #############################
     path('contexts/queuecontext/', GenericViews.queueContext, name='queueContext'),  # send the new library template
+
+    ########################### Admin Tools ###########################
+    path('admin/reset/', AdminTools.resetInstance, name='reset')
 ]

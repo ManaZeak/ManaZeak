@@ -1,8 +1,13 @@
 ## This class is a copy of a Track object. This object has less impact in memory.
+from app.src.dto.album.localAlbum import LocalAlbum
+from app.src.dto.artist.localArtist import LocalArtist
+
+
 class LocalTrack(object):
 
     ## Constructor
     def __init__(self):
+        self.id = None
         ## The path of the track.
         self.location = ''
         ## The path of the cover.
@@ -11,10 +16,12 @@ class LocalTrack(object):
         self.title = ''
         ## The year of creation of the track (metadata).
         self.year = 0
-        ## The composer of the track.
+        ## The composers of the track.
         self.composers = []
-        ## The performer of the track.
+        ## The performers of the track.
         self.performers = []
+        ## The producer of the track
+        self.producer = ''
         ## The position of the track inside the album.
         self.number = 0
         ## The beats per minute of the track.
@@ -38,7 +45,7 @@ class LocalTrack(object):
         ## The artists linked to the track.
         self.artists = []
         ## The album linked to the track.
-        self.album = ''
+        self.album = LocalAlbum()
         ## The genre linked to the track.
         self.genres = []
         ## The file type linked to the track.
@@ -53,14 +60,5 @@ class LocalTrack(object):
         self.downloadCounter = 0
         ## The folder name of the artist containing the file
         self.artistFolderName = ''
-
-
-## This class is a lighter version of an artist stored in the database, used only for importing tracks to the database.
-class LocalArtist(object):
-
-    ## Constructor
-    def __init__(self):
-        ## The name of the artist
-        self.name = ""
-        ## The real name of the artist
-        self.realName = ""
+        ## The name of the album artist
+        self.albumArtist = LocalArtist()
