@@ -160,6 +160,21 @@ class UserInterface {
   }
 
 
+  /**
+   * @method
+   * @name updateQueueNumber
+   * @public
+   * @memberof UserInterface
+   * @author Arthur Beaulieu
+   * @since March 2019
+   * @description Updates the superscript queue length over the queue icon
+   * @param {array} queue - The current session queue
+   **/
+  updateQueueNumber(queue) {
+    this._footBar.updateQueueNumber(queue);
+  }
+
+
   getTrackById(id) {
     return this._scene.getTrackById(id);
   }

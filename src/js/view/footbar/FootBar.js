@@ -147,6 +147,33 @@ class FootBar {
   }
 
 
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------------  QUEUE METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name updateQueueNumber
+   * @public
+   * @memberof FootBar
+   * @author Arthur Beaulieu
+   * @since March 2019
+   * @description Updates the superscript queue length over the queue icon
+   * @param {array} queue - The current session queue
+   **/
+  updateQueueNumber(queue) {
+    let length = queue.length;
+
+    if (length === 0) {
+      length = '';
+    }
+
+    this._controls.queue.parentNode.dataset.before = length;
+  }
+
+
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  MOODBAR METHODS  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
