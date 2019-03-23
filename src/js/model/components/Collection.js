@@ -33,6 +33,7 @@ class Collection {
         LIBRARY_ID: playlist.id
       };
 
+      mzk.startLoading(true);
       mzk.komunikator.post('library/initialScan/', options)
         .then(() => {
           return this._checkScanStatus(playlist);

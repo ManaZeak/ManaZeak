@@ -44,8 +44,6 @@ class UserInterface {
     this._scene = new Scene();
     this._footBar = new FootBar();
 
-    this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
-
     this._loadingOverlay = document.createElement('DIV');
     this._loadingOverlay.className = 'mzk-loading-overlay';
   }
