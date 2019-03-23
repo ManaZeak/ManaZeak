@@ -19,6 +19,7 @@ class UserInterface {
     this._topBar = {};
     this._scene = {};
     this._footBar = {};
+    this._loadingOverlay = {};
 
     this._init();
   }
@@ -44,6 +45,9 @@ class UserInterface {
     this._footBar = new FootBar();
 
     this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
+
+    this._loadingOverlay = document.createElement('DIV');
+    this._loadingOverlay.className = 'mzk-loading-overlay';
   }
 
 
@@ -163,18 +167,44 @@ class UserInterface {
   }
 
 
-  startLoading() {
+  startLoading(lockView = false) {
     return new Promise(resolve => {
-      this._scene.startLoading()
-        .then(resolve);
+      if (lockView === false) {
+        this._topBar.startSpinner()
+          .then(resolve);
+      } else if (lockView === true) {
+        this._appendLoadingOverlay()
+          .then(resolve);
+      }
     });
   }
 
 
-  stopLoading() {
+  stopLoading(lockView = false) {
     return new Promise(resolve => {
-      this._scene.stopLoading()
-        .then(resolve);
+      if (lockView === false) {
+        this._topBar.stopSpinner()
+          .then(resolve);
+      } else if (lockView === true) {
+        this._removeLoadingOverlay()
+          .then(resolve);
+      }
+    });
+  }
+
+
+  _appendLoadingOverlay() {
+    return new Promise(resolve => {
+      document.body.appendChild(this._loadingOverlay);
+      resolve();
+    });
+  }
+
+
+  _removeLoadingOverlay() {
+    return new Promise(resolve => {
+      document.body.removeChild(this._loadingOverlay);
+      resolve();
     });
   }
 
