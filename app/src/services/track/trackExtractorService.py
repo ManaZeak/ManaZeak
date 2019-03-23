@@ -72,7 +72,7 @@ class TrackExtractorService(object):
             if "/" in audioTag['TRCK'].text[0]:  # Contains info about the album number of track
                 tags = strip_tags(audioTag['TRCK'].text[0]).rstrip().split('/')
                 track.number = tags[0]
-                track.totalTrack = tags[1]
+                track.trackTotal = tags[1]
             else:
                 track.number = strip_tags(audioTag['TRCK'].text[0]).rstrip()
 
@@ -147,7 +147,7 @@ class TrackExtractorService(object):
         # --- Adding album to structure ---
         if 'TALB' in audioTag:
             albumTitle = strip_tags(audioTag['TALB'].text[0]).rstrip()
-            track.album = albumTitle.replace('\n', '')
+            track.album.title = albumTitle.replace('\n', '')
 
         return track
 
@@ -207,7 +207,7 @@ class TrackExtractorService(object):
                 track.totalDisc = albumTotalDisc
 
         if 'TOTALTRACK' in audioTag:
-            track.totalTrack = self._trimVorbisTag(audioTag['TOTALTRACK'])
+            track.trackTotal = self._trimVorbisTag(audioTag['TOTALTRACK'])
 
         if 'BPM' in audioTag:
             track.bpm = self._trimVorbisTag(audioTag['BPM'])
@@ -290,6 +290,7 @@ class TrackExtractorService(object):
     #   @param track the track object to be filled
     def _getBaseInfo(self, track, audioTag, trackPath):
         track.location = trackPath
+        track.fileName = Path(trackPath).name
         track.artistFolderName = self._extractNameArtistFolder(trackPath)
         track.album.folderName = self._extractNameAlbumFolder(trackPath)
         track.size = os.path.getsize(trackPath)

@@ -23,7 +23,7 @@ class AvatarGenerator(object):
     #   @param imageSizePerCell number of pixels for the width and height of each square in the avatar
     def generateAvatar(self, username, avatarSize=15, imageSizePerCell=50):
         usernameHash = hashlib.md5(username.encode("utf-8")).hexdigest()
-        avatarPath = "static/imageGenerators/" + usernameHash + ".png"
+        avatarPath = "static/avatars/" + usernameHash + ".png"
         # Folder creation
         if not os.path.exists(os.path.dirname(avatarPath)):
             os.makedirs(os.path.dirname(avatarPath))

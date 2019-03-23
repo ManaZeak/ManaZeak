@@ -19,7 +19,7 @@ class ArtistImporter(AbstractDao):
         artistsRef = dict()
         loggerScan.info(str(len(artists)) + ' artists to import.')
         # Split the genre by the maximal object in a manual query (converting the dict into a list)
-        splicedArtists = ListUtils.chunksSet(list(artists.values()), Constants.REQUEST_PER_BATCH)
+        splicedArtists = ListUtils.chunksSet(list(artists.values()), Constants.PARAMS_PER_REQUEST)
         # Executing the query for each sub group of genre
         for subArtists in splicedArtists:
             # Merging the genre insert to the old ones
