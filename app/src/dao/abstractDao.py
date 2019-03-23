@@ -10,7 +10,7 @@ class AbstractDao(object, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     ## Execute the request to save the data into the database.
-    def _executeRequest(self, request):
+    def _executeRequest(self, objectToSave):
         raise NotImplementedError('The function needs an override.')
 
     @abc.abstractmethod

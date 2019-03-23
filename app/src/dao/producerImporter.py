@@ -9,6 +9,7 @@ from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
+
 ## Import some genre into the database.
 class ProducerImporter(AbstractDao):
 
@@ -19,7 +20,7 @@ class ProducerImporter(AbstractDao):
         producerRef = dict()
         loggerScan.info(str(len(producers)) + ' producers to import.')
         # Split the genre by the maximal object in a manual query
-        splicedProducersNames = ListUtils.chunksSet(producers, Constants.REQUEST_PER_BATCH)
+        splicedProducersNames = ListUtils.chunksSet(producers, Constants.PARAMS_PER_REQUEST)
         # Executing the query for each sub group of genre
         for subProducers in splicedProducersNames:
             # Merging the genre insert to the old ones

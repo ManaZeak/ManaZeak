@@ -19,7 +19,7 @@ class GenreImporter(AbstractDao):
         genreRef = dict()
         loggerScan.info(str(len(genres)) + ' genres to import.')
         # Split the genre by the maximal object in a manual query
-        splicedGenresNames = ListUtils.chunksSet(genres, Constants.REQUEST_PER_BATCH)
+        splicedGenresNames = ListUtils.chunksSet(genres, Constants.PARAMS_PER_REQUEST)
         # Executing the query for each sub group of genre
         for subGenres in splicedGenresNames:
             # Merging the genre insert to the old ones

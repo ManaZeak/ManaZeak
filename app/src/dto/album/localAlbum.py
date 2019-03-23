@@ -1,3 +1,8 @@
+import logging
+
+loggerScan = logging.getLogger('scan')
+
+
 ## Represents an album before it's inserted into the database.
 class LocalAlbum(object):
 
@@ -10,11 +15,25 @@ class LocalAlbum(object):
         self.year = None
         self.folderName = None
         self.location = None
+        self.albumId = None
 
-    ## Fill the id of the artists into the album.
+    ## Fill the ids of the artists into the album.
     #   @param artistRef the reference of the artists inserted.
     def fillArtistIdWithRef(self, artistRef):
-        self.artistId = artistRef[self.artist]
+        if self.artist in artistRef:
+            self.artistId = artistRef[self.artist]
 
+    ## Fill the ids of the producer into the album.
+    #   @param producerRef the reference of the producer inserted.
     def fillProducerIdWithRef(self, producerRef):
-        self.producerId = producerRef[self.producer]
+        if self.producer in producerRef:
+            self.producerId = producerRef[self.producer]
+
+    ## Find it's id into the data inserted into the database.
+    #   @param albumRef the reference of the album inserted.
+    def findId(self, albumRef):
+        loggerScan.info('Searching for : ' + self.location)
+        loggerScan.info(str(albumRef))
+        if self.location in albumRef:
+            loggerScan.info('found')
+            self.albumId = albumRef[self.location]

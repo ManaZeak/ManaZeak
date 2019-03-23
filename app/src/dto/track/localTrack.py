@@ -1,8 +1,10 @@
-## This class is a copy of a Track object. This object has less impact in memory.
+from datetime import datetime
+
 from app.src.dto.album.localAlbum import LocalAlbum
 from app.src.dto.artist.localArtist import LocalArtist
 
 
+## This class is a copy of a Track object. This object has less impact in memory.
 class LocalTrack(object):
 
     ## Constructor
@@ -12,6 +14,8 @@ class LocalTrack(object):
         self.location = ''
         ## The path of the cover.
         self.coverLocation = ''
+        ## The filename of the track.
+        self.fileName = ''
         ## The title of the app.
         self.title = ''
         ## The year of creation of the track (metadata).
@@ -20,10 +24,14 @@ class LocalTrack(object):
         self.composers = []
         ## The performers of the track.
         self.performers = []
-        ## The producer of the track
+        ## The producer of the track.
         self.producer = ''
+        ## The id of the producer.
+        self.producerId = None
         ## The position of the track inside the album.
         self.number = 0
+        ## The number of track in the album.
+        self.trackTotal = 0
         ## The beats per minute of the track.
         self.bpm = 0
         ## The lyrics of the track.
@@ -58,7 +66,11 @@ class LocalTrack(object):
         self.playCounter = 0
         ## The number of time the track has been downloaded.
         self.downloadCounter = 0
-        ## The folder name of the artist containing the file
+        ## The folder name of the artist containing the file.
         self.artistFolderName = ''
-        ## The name of the album artist
+        ## The name of the album artist.
         self.albumArtist = LocalArtist()
+        ## Any track using this object exists and has been rescanned.
+        self.scanned = True
+        ## The last modified date is now since we create the track
+        self.lastModified = datetime.now()

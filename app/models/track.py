@@ -111,7 +111,7 @@ class Track(models.Model):
     ## The file type linked to the track.
     fileType = models.ForeignKey(FileType, on_delete=models.CASCADE)
     ## The path of the cover.
-    cover = models.ForeignKey(Cover, on_delete=DO_NOTHING)
+    cover = models.ForeignKey(Cover, on_delete=DO_NOTHING, null=True)
     ## The track moodbar path.
     mood = models.URLField(max_length=1000, null=True)
     ## The duration of the track.
@@ -161,7 +161,7 @@ class Track(models.Model):
     ## The number of time the track has been downloaded.
     downloadCounter = models.IntegerField(default=0)
     ## The average value of the mood file
-    moodAverage = models.ForeignKey(MoodAverage, on_delete=DO_NOTHING)
+    moodAverage = models.ForeignKey(MoodAverage, on_delete=DO_NOTHING, null=True)
 
     #           FLAG
     ## If the track has been scanned by the rescan.
