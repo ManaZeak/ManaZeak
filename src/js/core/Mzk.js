@@ -200,6 +200,7 @@ class Mzk {
   _initUi() {
     return new Promise(resolve => {
       this.ui = new UserInterface();
+      this.ui.startLoading(true);
       resolve();
     });
   }
@@ -240,6 +241,7 @@ class Mzk {
           this.model.initCollection(collection)
             .then(playlist => {
               this.ui.initPlaylist(playlist);
+              this.ui.stopLoading(true);
               resolve();
             })
             .catch(errorKey => {

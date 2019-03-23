@@ -44,6 +44,7 @@ class TopBar {
   _init() {
     this._topbar = document.getElementById('topbar');
     this._avatar = document.getElementById('topbar-avatar');
+    this._spinner = document.getElementById('topbar-spinner');
 
     this._userMenu = new UserMenuContext({
       target: this._topbar,
@@ -65,6 +66,22 @@ class TopBar {
    **/
   _events() {
     this._avatar.addEventListener('click', this.toggleUserMenu.bind(this));
+  }
+
+
+  startSpinner() {
+    return new Promise(resolve => {
+      this._spinner.style.display = 'block';
+      resolve();
+    });
+  }
+
+
+  stopSpinner() {
+    return new Promise(resolve => {
+      this._spinner.style.display = 'none';
+      resolve();
+    });
   }
 
 
