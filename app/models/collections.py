@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import DO_NOTHING
 
-from app.models import Track, TrackInScopeAverages
+from app.models import Track, TrackInScopeStats
 
 
 ## This class describes the playlists in the database.
@@ -24,7 +24,7 @@ class Playlist(models.Model):
     ## The picture of the playlist
     picture = models.URLField(max_length=1000, null=True)
     ## Stat of the genre
-    stat = models.ForeignKey(TrackInScopeAverages, on_delete=DO_NOTHING)
+    stat = models.ForeignKey(TrackInScopeStats, on_delete=DO_NOTHING, null=True)
 
 
 ## This class describes a library.
@@ -32,7 +32,7 @@ class Library(models.Model):
     ## The library path.
     path = models.FilePathField(max_length=1000)
     ## The playlist associated to the library.
-    playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING)
+    playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING, null=True)
 
 
 ## This class is used to get the information about a library when the scan or the rescan takes place.

@@ -3,8 +3,10 @@ import multiprocessing
 from multiprocessing.pool import Pool
 
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
-from app.src.services.track.indexedTrackContainer import IndexedTrackContainer
+from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
+from app.src.services.track.localTrackImporter import LocalTrackImporter
 from app.src.services.track.trackExtractorService import TrackExtractorService
+from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
@@ -47,8 +49,11 @@ class LibraryIntegrationService(object):
         trackContainer.merge(trackContainers)
 
         loggerScan.info('Finished the extractions of all the tracks.')
-        loggerScan.info('Number of extracted tracks : ' + trackContainer.tracksInContainer)
+        loggerScan.info('Number of extracted tracks : ' + str(trackContainer.tracksInContainer))
 
+        # Launching the integration into the database
+        trackImporter = LocalTrackImporter(trackContainer)
+        trackImporter.insertLocalTracks()
         # raise UserException(ErrorEnum.NOT_IMPLEMENTED)
         # FIXME : integrates the data into the database
 
@@ -75,15 +80,4 @@ class LibraryIntegrationService(object):
     #   @param tracks the table of tracks to split
     #   @return a table of tables
     def _trackTableSplitter(tracks):
-        return list(LibraryIntegrationService._chunks(tracks, 200))
-
-    @staticmethod
-    ## Yield sub-table of a table of the given length
-    #   @param tracks the table to split
-    #   @param length the length of the chunks
-    #   @return chunks of the table of the length
-    def _chunks(tracks, length):
-        # For item i in a range that is a length of length,
-        for i in range(0, len(tracks), length):
-            # Create an index range for l of n items:
-            yield tracks[i:i + length]
+        return list(ListUtils.chunks(tracks, 200))

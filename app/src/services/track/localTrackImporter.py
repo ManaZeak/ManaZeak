@@ -1,7 +1,12 @@
 import collections
+import logging
 
-from app.models import Genre, Artist, Album
+from app.models import Artist, Album
+from app.src.dao.artistImporter import ArtistImporter
+from app.src.dao.genreImporter import GenreImporter
+from app.src.dao.producerImporter import ProducerImporter
 
+loggerScan = logging.getLogger('scan')
 
 ## This class process and insert into the database the local tracks.
 class LocalTrackImporter(object):
@@ -14,38 +19,43 @@ class LocalTrackImporter(object):
         self.artistReference = {}
         ## A dict containing the genre linked to their id
         self.genreReference = {}
+        ## A dict containing the producer linked to their id
+        self.producerReference = {}
         ## The container containing the track to insert
         self.trackContainer = trackContainer
 
-    ## Fill the references with the available data in the database.
-    def fillReferences(self):
-        # Getting the information from the database for the genres
-        self.cacheExistingGenre()
-        # Getting the information from the database for the artists
-        self.cacheExistingArtists()
-
-    ## Fill the reference for the genres
-    def cacheExistingGenre(self):
-        existingGenres = Genre.objects.filter(name__in=self.trackContainer.genres)
-        for existingGenre in existingGenres:
-            self.genreReference[existingGenre.name] = existingGenre.id
-
-    ## Fill the reference for the artists
-    def cacheExistingArtists(self):
-        existingArtists = Artist.objects.filter(name__in=self.trackContainer.artists)
-        for existingArtist in existingArtists:
-            self.artistReference[existingArtist] = existingArtist.id
-
-    ## Fill the reference for the albums
-    def cacheExistingAlbums(self):
-        existingAlbums = Album.objects.filter(title=self.trackContainer.album)
-        for existingAlbum in existingAlbums:
-            artistAlbums = self.albumReference[existingAlbum.artist.name]
-            artistAlbums[existingAlbum.title] = existingAlbum.id
-
     ## Insert or update the tracks in the database.
     def insertLocalTracks(self):
-        # Ajouter les genres
-        # Ajouter les artistes (composer + performer)
+        # Merge genre into the database and fill the reference
+        self._importGenre()
+        # Imports the artists (including composers and performers)
+        self._importArtists()
+        # Imports the producers
+        self._importProducers()
+        # FIXME : compléter les albums avec les références des artistes.
         # Ajouter les albums
+
+        # Ajouter les tracks FIXME: utiliser les location pour les clé uniques pour retrouver les id
         pass
+
+    ## Imports the genres of the indexed tracks.
+    def _importGenre(self):
+        genreImporter = GenreImporter()
+        self.genreReference = genreImporter.mergeGenres(self.trackContainer.genres)
+
+    ## Imports the artists of the indexed tracks.
+    def _importArtists(self):
+        artistImporter = ArtistImporter()
+        self.artistReference = artistImporter.mergeArtists(self.trackContainer.artists)
+
+    ## Imports the producers of the indexed tracks.
+    def _importProducers(self):
+        producerImporter = ProducerImporter()
+        self.producerReference = producerImporter.mergeProducer(self.trackContainer.producers)
+
+    ## Imports the albums of the indexed tracks
+    def _importAlbums(self):
+        # fill the albums with the references
+        for album in self.trackContainer.albums.values:
+            album.fillArtistIdWithRef(self.artistReference)
+            album.fillProducerIdWithRef(self.producerReference)
