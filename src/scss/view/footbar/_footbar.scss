@@ -89,11 +89,27 @@
 
       @import 'volumebar'; // Loading volumebar rules
 
-      #queue {
-        position: absolute;
-        right: 0;
-        height: $footbar-controls-scale;
-        margin: 0 $footbar-controls-margin;
+      .image-wrapper {
+        #queue {
+          position: absolute;
+          right: 0;
+          height: $footbar-controls-scale;
+          margin: 0 $footbar-controls-margin;
+        }
+
+        &::before {
+         content: attr(data-before); // To be retrieved in Js
+         position:absolute;
+         top: 5px;
+         right: -10px;
+         color: red;
+         border-radius: 50%;
+         height: 13px;
+         width: 13px;
+         font-size: 0.9em;
+         text-align: center;
+         text-shadow: #000 1px 0 5px;
+        }
       }
     }
 

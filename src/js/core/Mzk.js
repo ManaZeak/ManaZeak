@@ -598,6 +598,7 @@ class Mzk {
   next() {
     if (this.model.queue.length > 0) {
       mzk.changeTrack(this.model.getNextFromQueue());
+      this.ui.updateQueueNumber(this.model.queue);
       return;
     }
 
@@ -738,6 +739,7 @@ class Mzk {
 
     if (track) {
       this.model.appendToQueue(track.id);
+      this.ui.updateQueueNumber(this.model.queue);
     }
   }
 

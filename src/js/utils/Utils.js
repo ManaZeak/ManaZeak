@@ -234,6 +234,26 @@ class Utils {
   }
 
 
+  /** @method
+   * @name totalTracksDuration
+   * @public
+   * @memberof Utils
+   * @author Arthur Beaulieu
+   * @since March 2019
+   * @description Compute the total duration opf a given tracks array, formatting output as DD HH MM SS
+   * @param {array} tracks - The tracks to cumulate duration from
+   * @return {string} - The formatted total duration */
+  totalTracksDuration(tracks) {
+    let total = 0;
+
+    for (let i = 0; i < tracks.length; ++i) {
+      total += tracks[i].duration;
+    }
+
+    return this.secondsToTimecode(total);
+  }
+
+
   //  ------------------------------------------------------------------------------------------------//
   //  ----------------------------------  CLIENT SESSION UTILS  ------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
