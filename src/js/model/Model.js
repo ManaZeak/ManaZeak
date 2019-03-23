@@ -249,16 +249,21 @@ class Model {
    **/
   initCollection(response) {
     return new Promise((resolve, reject) => {
+      const resolvePromise = () => {
+        mzk.stopLoading(true);
+        resolve(this._collection.activePlaylist);
+      };
+
       if (response.DONE && response.ERROR_KEY === null) {
         if (response.COLLECTION.length === 0) {
+          // We start loading in Collection._initialScan, when the new library modal is triggered with good values
           this._collection.newLibrary()
-            .then(() => {
-              resolve(this._collection.activePlaylist);
-            });
+            .then(resolvePromise);
         } else {
-          this._collection.buildUserCollection(response)
+          mzk.startLoading(true)
             .then(() => {
-              resolve(this._collection.activePlaylist);
+              this._collection.buildUserCollection(response)
+                .then(resolvePromise);
             });
         }
       } else {

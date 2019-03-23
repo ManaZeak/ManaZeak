@@ -63,10 +63,10 @@ class Mzk {
         return this._initUser();
       })
       .then(() => {
-        return this._initModel();
+        return this._initUi();
       })
       .then(() => {
-        return this._initUi();
+        return this._initModel();
       })
       .then(() => {
         return this._initShortcut();
@@ -182,6 +182,7 @@ class Mzk {
   _initModel() {
     return new Promise(resolve => {
       this.model = new Model();
+      this.ui.updateVolume();
       resolve();
     });
   }
@@ -200,7 +201,6 @@ class Mzk {
   _initUi() {
     return new Promise(resolve => {
       this.ui = new UserInterface();
-      this.ui.startLoading(true);
       resolve();
     });
   }
@@ -240,9 +240,12 @@ class Mzk {
         .then(collection => {
           this.model.initCollection(collection)
             .then(playlist => {
-              this.ui.initPlaylist(playlist);
-              this.ui.stopLoading(true);
-              resolve();
+              this.startLoading(false)
+                .then(() => {
+                  this.ui.initPlaylist(playlist);
+                  this.stopLoading(false);
+                  resolve();
+                });
             })
             .catch(errorKey => {
               Logger.raise({
@@ -539,6 +542,23 @@ class Mzk {
         this.ui.updateProgress();
       });
   }
+
+
+  startLoading(lockView) {
+    return new Promise(resolve => {
+      this.ui.startLoading(lockView)
+        .then(resolve);
+    });
+  }
+
+
+  stopLoading(lockView) {
+    return new Promise(resolve => {
+      this.ui.stopLoading(lockView);
+      resolve();
+    });
+  }
+
 
   //  ------------------------------------------------------------------------------------------------//
   //  ------------------------------------  SCENE VIEW METHODS  ------------------------------------  //
