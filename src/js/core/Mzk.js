@@ -547,7 +547,9 @@ class Mzk {
   startLoading(lockView) {
     return new Promise(resolve => {
       this.ui.startLoading(lockView)
-        .then(resolve);
+        .then(() => {
+          return requestAnimationFrame(resolve);
+        });
     });
   }
 
@@ -576,13 +578,20 @@ class Mzk {
    * @param {string} newView - The new view string value in the global ViewEnum
    **/
   changeActiveView(newView) {
-    this.model.setActiveView(newView)
-      .then(() => {
-        this.ui.updateView(this.model.collection.activePlaylist);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    return new Promise(resolve => {
+      this.startLoading(true)
+        .then(() => {
+          return this.model.setActiveView(newView);
+        })
+        .then(() => {
+          this.ui.updateView(this.model.collection.activePlaylist);
+          this.stopLoading(true);
+          resolve();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   }
 
 

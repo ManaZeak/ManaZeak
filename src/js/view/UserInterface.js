@@ -209,7 +209,7 @@ class UserInterface {
   _appendLoadingOverlay() {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
-      resolve();
+      requestAnimationFrame(resolve);
     });
   }
 
