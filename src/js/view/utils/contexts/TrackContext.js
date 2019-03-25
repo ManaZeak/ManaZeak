@@ -1,4 +1,4 @@
-import ContextMenu from '../ContextMenu.js';
+import ContextMenu from '../overlays/ContextMenu.js';
 'use strict';
 
 

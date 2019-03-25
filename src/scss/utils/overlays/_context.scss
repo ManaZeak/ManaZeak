@@ -1,0 +1,331 @@
+.user-menu {
+  position: absolute;
+  right: $margin;
+  top: $topbar-height + 8px;
+  width: auto;
+  height: auto;
+  padding: 0 $margin;
+  border-radius: 5px;
+  background: $dark-solid;
+  z-index: 999;
+
+  .entry {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+      height: 20px;
+      width: 20px;
+    }
+
+    p {
+      line-height: 30px;
+      padding-left: $padding;
+    }
+  }
+
+  &::before {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent $dark-alpha-light;
+    content: '';
+    position: absolute;
+    top: -8px;
+    cursor: pointer;
+    right: 12px;
+  }
+}
+
+.change-view-context {
+  background: #1f2127;
+  border: solid 1px black;
+  border-radius: 5px 0 5px 5px;
+  top: 89px;
+  height: auto;
+  position: absolute;
+  right: 49px;
+  width: auto;
+  z-index: 665;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .entry {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+
+    img {
+      height: 20px;
+      width: 20px;
+    }
+
+    p {
+      line-height: 30px;
+      padding-left: $padding;
+    }
+  }
+
+  &::before {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent $dark-alpha-light;
+    content: '';
+    position: absolute;
+    top: -9px;
+    cursor: pointer;
+    right: -1px;
+  }
+}
+
+.track-context {
+  background: #1f2127;
+  border: solid 1px black;
+  border-radius: 5px;
+  top: 0;
+  height: auto;
+  position: absolute;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  width: 135px; // Match value in TrackContext.js if modified here
+  justify-content: center;
+  flex-direction: column;
+
+  .entry {
+    height: 30px; // Match value in TrackContext.js if modified here
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+
+    img {
+      height: 20px;
+      width: 20px;
+    }
+
+    p {
+      line-height: 30px;
+      padding-left: $padding;
+    }
+  }
+}
+
+.queue-context {
+  background: #1f2127;
+  border: solid 1px black;
+  border-radius: 5px;
+  bottom: $footbar-height + 8px;
+  height: auto;
+  position: absolute;
+  right: 0;
+  width: auto;
+  z-index: 800;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .track-container {
+    margin: $margin / 2;
+    position: relative;
+    min-height: 50px;
+    height: auto;
+    max-height: 66%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+
+    .queued-track {
+      height: 50px;
+      min-width: 275px;
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas: "img title" "img composer";
+      align-items: center;
+      margin: ($margin / 2) 0;
+
+      img {
+        grid-area: img;
+        height: 50px;
+        width: 50px;
+        justify-self: center;
+      }
+
+      p {
+        align-self: end;
+      }
+
+      p:first-child {
+        grid-area: title;
+      }
+
+      p:last-child {
+        grid-area: composer;
+      }
+    }
+
+    &::after {
+      content: '';
+      background: url('/static/img/player/queue.svg') no-repeat right;
+      background-size: 50px;
+      opacity: 0.05;
+      width: 100%;
+      height: 50px;
+      position: absolute;
+      top: 0;
+    }
+  }
+
+  .queue-status {
+    text-align: left;
+    padding: 8px;
+    border-top: solid 1px black;
+
+    p {
+      font-size: 0.9em;
+      height: 15px;
+      line-height: 15px;
+    }
+  }
+
+  &::before {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: $dark-alpha-light transparent transparent transparent;
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    cursor: pointer;
+    right: 8px;
+  }
+}
+
+#listview-context {
+  background: $dark-solid;
+  border: solid 1px black;
+  border-radius: 5px;
+  bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
+  height: auto;
+  position: absolute;
+  right: 5px;
+  width: 180px;
+  z-index: 665;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .checkbox-container {
+    margin: $margin;
+
+    label:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  button {
+    background: rgba(0, 0, 0, 1);
+    border: solid 1px black;
+    border-radius: 20px;
+    height: auto;
+    width: auto;
+    display: block;
+    font-size: 0.9em;
+    margin: 0 15px 15px;
+    padding: 5px 15px;
+    color: white;
+  }
+
+  img {
+    cursor: pointer;
+    bottom: $margin;
+    height: $aside-button-length;
+    position: absolute;
+    float: right;
+    right: (2 * $margin) + $aside-button-length;
+    width: $aside-button-length;
+    z-index: 666;
+  }
+
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: $dark-alpha-light transparent transparent transparent;
+    position: absolute;
+    right: 10.5px;
+    bottom: -8px;
+  }
+}
+
+.scene-options {
+  background: $dark-solid;
+  border: solid 1px black;
+  border-radius: 5px;
+  bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
+  height: auto;
+  position: absolute;
+  right: 5px;
+  width: 180px;
+  z-index: 665;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .checkbox-container {
+    margin: $margin;
+
+    label:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  button {
+    background: rgba(0, 0, 0, 1);
+    border: solid 1px black;
+    border-radius: 20px;
+    height: auto;
+    width: auto;
+    display: block;
+    font-size: 0.9em;
+    margin: 0 15px 15px;
+    padding: 5px 15px;
+    color: white;
+  }
+
+  img {
+    cursor: pointer;
+    bottom: $margin;
+    height: $aside-button-length;
+    position: absolute;
+    float: right;
+    right: (2 * $margin) + $aside-button-length;
+    width: $aside-button-length;
+    z-index: 666;
+  }
+
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: $dark-alpha-light transparent transparent transparent;
+    position: absolute;
+    right: 10.5px;
+    bottom: -8px;
+  }
+}

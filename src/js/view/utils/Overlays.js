@@ -1,28 +1,32 @@
 'use strict';
 
 
-class Modal {
+class Overlays {
+
+
   constructor(options) {
-    this._callback = options.callback;
     this._url = options.url;
     this._overlay = {};
     this._dom = {};
 
-    this._init();
+    this._fetchTemplate();
   }
 
 
-  _init() {
+  _fetchTemplate() {
     mzk.komunikator.getTemplate(this._url)
       .then((response) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(response, 'text/html');
 
-        this._overlay = doc.getElementsByClassName('modal-overlay')[0];
+        this._overlay = doc.getElementsByClassName('context-transparent-overlay')[0];
         this._dom = doc.getElementsByClassName(this._overlay.children[0].className)[0];
         this._events();
         this.setActions(doc);
-        this.open();
+
+        if (this._url.indexOf('modal') !== -1) {
+          this.open();
+        }
       });
   }
 
@@ -47,19 +51,20 @@ class Modal {
 
 
   open() {
-    Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
-    document.body.appendChild(this._overlay);
-    this._overlay.addEventListener('click', this._viewportClicked, false);
+    // Mandatory to override in children class
   }
 
 
   close() {
-    if (document.body.contains(this._overlay)) {
-      Shortcut.resumeAll();
-      document.body.removeChild(this._overlay);
-      this._overlay.removeEventListener('click', this._viewportClicked, false);
-    }
+    // Mandatory to override in children class
   }
+
+
+  get dom() {
+    return this._dom;
+  }
+
+
 }
 
-export default Modal;
+export default Overlays;

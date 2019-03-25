@@ -3,6 +3,7 @@ import Model from '../model/Model.js';
 import UserInterface from '../view/UserInterface.js';
 import User from './User.js';
 import Notification from "../view/utils/Notification";
+import NewLibraryModal from "../view/utils/modals/NewLibraryModal";
 'use strict';
 
 
@@ -319,8 +320,9 @@ class Mzk {
    * @since September 2018
    * @description Change the played track with the gievn one (using its ID)
    * @param {number} id - The track ID to request to the server
+   * @param {boolean} centerOn - Force reframe on target track
    **/
-  changeTrack(id, centerOn) {
+  changeTrack(id, centerOn = false) {
     let durationPlayed = 0;
 
     if (!isNaN(this.playerProgress)) {
@@ -606,7 +608,7 @@ class Mzk {
    **/
   next() {
     if (this.model.queue.length > 0) {
-      mzk.changeTrack(this.model.getNextFromQueue());
+      this.changeTrack(this.model.getNextFromQueue());
       this.ui.updateQueueNumber(this.model.queue);
       return;
     }
@@ -619,12 +621,12 @@ class Mzk {
         if (this.ui.isLastTrack()) {
           this.stopPlayback();
         } else {
-          mzk.changeTrack(this.ui.nextTrackId);
+          this.changeTrack(this.ui.nextTrackId);
         }
       } else if (repeatMode === 1) {
-        mzk.repeatTrack();
+        this.repeatTrack();
       } else if (repeatMode === 2) {
-        mzk.changeTrack(this.ui.nextTrackId);
+        this.changeTrack(this.ui.nextTrackId);
       } else {
         Logger.raise({
           code: 'NO_NEXT_TRACK',
@@ -660,12 +662,12 @@ class Mzk {
       if (this.ui.isFirstTrack()) {
         this.stopPlayback();
       } else {
-        mzk.changeTrack(this.ui.previousTrackId);
+        this.changeTrack(this.ui.previousTrackId);
       }
     } else if (repeatMode === 1) {
       mzk.repeatTrack();
     } else if (repeatMode === 2) {
-      mzk.changeTrack(this.ui.previousTrackId);
+      this.changeTrack(this.ui.previousTrackId);
     } else {
       Logger.raise({
         code: 'NO_NEXT_TRACK',
@@ -691,7 +693,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID, true);
         }
       })
       .catch(error => {
@@ -716,7 +718,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID, true);
         }
       })
       .catch(error => {
