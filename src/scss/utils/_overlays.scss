@@ -1,0 +1,18 @@
+.context-transparent-overlay {
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+  &.modal-dark-overlay {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+  }
+
+  @import "overlays/context";
+  @import "overlays/modal";
+}
