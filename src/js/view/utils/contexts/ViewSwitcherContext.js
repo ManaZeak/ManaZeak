@@ -15,7 +15,7 @@ class ViewSwitcherContext extends ContextMenu {
   setActions(doc) {
     const changeView = (newView) => {
       this.close();
-      mzk.changeActiveView(newView)
+      mzk.changeActiveView(newView);
     };
 
     this._views.track = doc.getElementsByClassName('track-view')[0];

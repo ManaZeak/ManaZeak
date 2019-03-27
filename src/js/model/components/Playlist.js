@@ -110,7 +110,7 @@ class Playlist {
           });
         }
 
-        let lastArtist = this._artists[this._artists.length - 1];
+        const lastArtist = this._artists[this._artists.length - 1];
         if (lastArtist !== undefined && lastArtist.name === rawArtistsArray[i].NAME) { // We need to albums properly only if matching
           this._concatRawIntoArtists(lastArtist, rawArtistsArray[i].ALBUMS[0], albums); // We send the first album of the newly created
         } else { // We create a new artist otherwise
@@ -141,7 +141,7 @@ class Playlist {
    * @param {array} newAlbums - the newly created albums
    **/
   _concatRawIntoArtists(lastArtist, rawAlbum, newAlbums) {
-    let lastAlbum = lastArtist.albums[lastArtist.albums.length - 1];
+    const lastAlbum = lastArtist.albums[lastArtist.albums.length - 1];
     if (lastAlbum !== undefined && lastAlbum.name === rawAlbum.NAME) { // If lastAlbum match, we concat it
       this._artists[this._artists.length - 1].albums[lastArtist.albums.length - 1].tracks = lastAlbum.tracks.concat(newAlbums[0].tracks);
       for (let k = 1; k < newAlbums.length; ++k) {
