@@ -26,6 +26,7 @@ class Scene {
     this._sceneManipulations = document.getElementById('scene-manipulation');
     this._centerOnTop = document.getElementById('center-on-top');
     this._centerOnActiveTrack = document.getElementById('center-on-track');
+    this._lockCenternOn = document.getElementById('lock-center-on-track');
     this._centerOnBottom = document.getElementById('center-on-bottom');
 
     this._events();
@@ -51,6 +52,17 @@ class Scene {
       this.view.centerOn({
         index: this.view.playingTrackIndex
       });
+    });
+
+    this._lockCenternOn.addEventListener('click', () => {
+      const pref = mzk.user.getPreference('lock-center-on-track');
+      if (pref === true) {
+        mzk.user.setPreference('lock-center-on-track', false);
+        this._lockCenternOn.src = '/static/img/actions/lock-off.svg';
+      } else {
+        mzk.user.setPreference('lock-center-on-track', true);
+        this._lockCenternOn.src = '/static/img/actions/lock-on.svg';
+      }
     });
 
     this._centerOnBottom.addEventListener('click', () => {

@@ -2,8 +2,6 @@
 
 
 class User {
-
-
   /** @summary <h1>ManaZeak's user class</h1>
    * @author Arthur Beaulieu
    * @since June 2018
@@ -36,6 +34,11 @@ class User {
     /** @private
      * @member {Array} - The user's permissions (4-grams items, see <code>app/utils.py:populateDB()</code>) */
     this._permissions = [];
+    /** @private
+     * @member {Object} - The user's preferences */
+    this._preferences = {
+      'lock-center-on-track': false
+    };
     /** @private
      * @member {String} - The user's username */
     this._username = '';
@@ -88,6 +91,22 @@ class User {
    * @returns {Boolean} True if user is granted, false otherwise */
   hasPermission(permissionCode) {
     return this._permissions.includes(permissionCode);
+  }
+
+
+  setPreference(key, value) {
+    if (this._preferences[key] !== undefined) {
+      this._preferences[key] = value;
+    }
+  }
+
+
+  getPreference(key) {
+    if (this._preferences[key] !== undefined) {
+      return this._preferences[key];
+    } else {
+      return undefined;
+    }
   }
 
 
