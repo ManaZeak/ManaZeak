@@ -3,7 +3,6 @@ import Model from '../model/Model.js';
 import UserInterface from '../view/UserInterface.js';
 import User from './User.js';
 import Notification from "../view/utils/Notification";
-import NewLibraryModal from "../view/utils/modals/NewLibraryModal";
 'use strict';
 
 
