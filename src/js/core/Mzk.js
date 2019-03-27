@@ -322,7 +322,7 @@ class Mzk {
    * @param {number} id - The track ID to request to the server
    * @param {boolean} centerOn - Force reframe on target track
    **/
-  changeTrack(id, centerOn = false) {
+  changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
     let durationPlayed = 0;
 
     if (!isNaN(this.playerProgress)) {
