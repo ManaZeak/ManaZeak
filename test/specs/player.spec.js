@@ -109,10 +109,10 @@ describe('Player unit tests', function() {
 
   it('Player playback | covers changeTrack(), pause(), play(), togglePlay()', function(done) {
     expect(player._player.src).toBe('');
-    player.changeTrack(/* local tst fq */)
+    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
       .then(() => {
         expect(player._player.src).not.toBe('');
-        expect(player._player.src).toBe(/* local tst fq */);
+        expect(player._player.src).toBe('/base/test/tracks/FrequencyTest.flac');
         expect(player._isPlaying).toBe(true);
         player.pause();
         expect(player._isPlaying).toBe(false);
@@ -126,6 +126,9 @@ describe('Player unit tests', function() {
         expect(player._isPlaying).toBe(true);
 
         done();
+      })
+      .catch(err => {
+        console.log(err);
       });
   });
 
@@ -140,7 +143,7 @@ describe('Player unit tests', function() {
       done();
     };
 
-    player.changeTrack(/* local tst fq */)
+    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
       .then(() => {
         window.setTimeout(() => {
           player.adjustProgress(50);
@@ -158,7 +161,7 @@ describe('Player unit tests', function() {
 
 
   it('Getter test | covers getIsPlaying(), getIsMuted(), getVolume(), getProgress(), getDuration(), getCurrentTime(), hasSource()', function(done) {
-    player.changeTrack(/* local tst fq */)
+    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
       .then(() => {
         expect(player.playing).toBe(true);
         player.pause();
