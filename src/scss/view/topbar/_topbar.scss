@@ -3,7 +3,7 @@ $topbar-transition: ($transition-duration * 2);
 $topbar-loader: $topbar-height - 10px;
 
 #topbar {
-  background: $bar-alpha;
+  background: $mzk-color-bg;
   display: flex;
   height: $topbar-height;
   width: 100%;
@@ -23,7 +23,7 @@ $topbar-loader: $topbar-height - 10px;
 
     &:after {
       content: '';
-      border-top: 1px solid lime;
+      border-top: 1px solid $mzk-color-primary;
       position:absolute;
       width: $topbar-loader;
       border-radius: 100%;
