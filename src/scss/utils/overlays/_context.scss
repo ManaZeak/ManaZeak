@@ -6,7 +6,7 @@
   height: auto;
   padding: 0 $margin;
   border-radius: 5px;
-  background: $dark-solid;
+  background: $mzk-color-bg-dark;
   z-index: 999;
 
   .entry {
@@ -31,7 +31,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent $dark-alpha-light;
+    border-color: transparent transparent $mzk-color-bg-dark-alpha-75;
     content: '';
     position: absolute;
     top: -8px;
@@ -77,7 +77,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent $dark-alpha-light;
+    border-color: transparent transparent $mzk-color-bg-dark-alpha-75;
     content: '';
     position: absolute;
     top: -9px;
@@ -203,7 +203,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $dark-alpha-light transparent transparent transparent;
+    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
     content: '';
     position: absolute;
     bottom: -8px;
@@ -213,7 +213,7 @@
 }
 
 #listview-context {
-  background: $dark-solid;
+  background: $mzk-color-bg-dark;
   border: solid 1px black;
   border-radius: 5px;
   bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
@@ -264,7 +264,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $dark-alpha-light transparent transparent transparent;
+    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
     position: absolute;
     right: 10.5px;
     bottom: -8px;
@@ -272,7 +272,7 @@
 }
 
 .scene-options {
-  background: $dark-solid;
+  background: $mzk-color-bg-dark;
   border: solid 1px black;
   border-radius: 5px;
   bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
@@ -323,7 +323,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $dark-alpha-light transparent transparent transparent;
+    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
     position: absolute;
     right: 10.5px;
     bottom: -8px;
