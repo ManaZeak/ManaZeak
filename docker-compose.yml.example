@@ -58,9 +58,27 @@ services:
         image: syncthing/syncthing:latest
         container_name: manazeak_syncthing
         # network_mode: "host" # For local discovery
+#        environment:
+#            - PUID=1000
         volumes:
             - /PATH/TO/MUSIC:/ManaZeak
         ports:
             - "127.0.0.1:8384:8384"
             - "22000:22000"
             - "21027:21027/udp"
+
+#    transmission:
+#        image: linuxserver/transmission
+#        environment:
+#          - PUID=1000
+#          - PGID=1000
+#          - TZ=Europe/Paris
+#        volumes:
+#          - /PATH/TO/TR_CONFIG:/config
+#          - /PATH/TO/TR_DOWNLOADS:/downloads
+#          - /PATH/TO/TR_TORRENTS:/watch
+#        ports:
+#          - 9091:9091
+#          - 51413:51413
+#          - 51413:51413/udp
+#        restart: unless-stopped
