@@ -37,7 +37,7 @@
    id="namedview40"
    showgrid="false"
    inkscape:zoom="0.65352597"
-   inkscape:cx="-556.21354"
+   inkscape:cx="-801.80439"
    inkscape:cy="180.55901"
    inkscape:window-x="0"
    inkscape:window-y="0"
@@ -45,18 +45,18 @@
    inkscape:current-layer="Capa_1" />
 <g
    id="g7"
-   style="fill:#00ff00;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none"
+   style="fill:#56d45b;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none"
    transform="matrix(0.80508201,0,0,0.80508201,35.194606,35.194203)">
 	<g
    id="_x32_37._Locked"
-   style="fill:#00ff00;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none">
+   style="fill:#56d45b;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none">
 		<g
    id="g4"
-   style="fill:#00ff00;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none">
+   style="fill:#56d45b;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none">
 			<path
    d="M 274.765,141.3 V 94.205 C 274.765,42.172 232.583,0 180.559,0 128.527,0 86.354,42.172 86.354,94.205 V 141.3 c -17.34,0 -31.4,14.06 -31.4,31.4 v 157.016 c 0,17.344 14.06,31.402 31.4,31.402 h 188.411 c 17.341,0 31.398,-14.059 31.398,-31.402 V 172.7 c 10e-4,-17.34 -14.057,-31.4 -31.398,-31.4 z M 117.756,94.205 c 0,-34.69 28.12,-62.803 62.803,-62.803 34.685,0 62.805,28.112 62.805,62.803 V 141.3 H 117.756 Z m 157.009,235.51 H 86.354 V 172.708 H 274.765 Z M 164.858,262.558 v 20.054 c 0,8.664 7.035,15.701 15.701,15.701 8.664,0 15.701,-7.037 15.701,-15.701 v -20.054 c 9.337,-5.441 15.701,-15.456 15.701,-27.046 0,-17.348 -14.062,-31.41 -31.402,-31.41 -17.34,0 -31.4,14.062 -31.4,31.41 0,11.59 6.358,21.605 15.699,27.046 z"
    id="path2"
-   style="fill:#00ff00;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none"
+   style="fill:#56d45b;fill-opacity:1;stroke-width:1.61474233;stroke-miterlimit:4;stroke-dasharray:none"
    inkscape:connector-curvature="0" />
 		</g>
 	</g>
