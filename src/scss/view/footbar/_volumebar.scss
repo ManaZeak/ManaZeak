@@ -13,7 +13,7 @@
   }
 
   #volumebar-container {
-    background-color: #aaaabe;
+    background-color: $mzk-color-text-icons;
     border-radius: 4px;
     cursor: pointer;
     pointer-events: initial;
@@ -24,7 +24,7 @@
     margin-right: auto;
 
     #volumebar-current {
-      background-color: rgb(255, 0, 0);
+      background-color: $mzk-color-primary;
       border-radius: $mzk-border-radius 0 0 $mzk-border-radius;
       bottom: 0;
       height: 100%;
@@ -38,7 +38,7 @@
     }
 
     #volumebar-thumb {
-      background-color: white;
+      background-color: $mzk-color-text-lighter;
       border-radius: 50%;
       bottom: 0;
       height: 12px;
@@ -52,7 +52,7 @@
     }
 
     &:hover > #volumebar-current {
-      background-color: $mzk-anti-accent-color;
+      background-color: $mzk-color-secondary;
     }
     &:hover > #volumebar-thumb {
       opacity: 1;

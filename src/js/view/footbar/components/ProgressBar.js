@@ -132,7 +132,8 @@ class ProgressBar {
       mzk.mute();
       this._isDragging = true;
       this._stopAnimation();
-      this._setProgressFromEvent(event.clientX);
+      const progress = this._getProgressFromEvent(event.clientX);
+      this.setProgress(progress);
     }
   }
 
@@ -152,7 +153,8 @@ class ProgressBar {
       this._isDragging = false;
       mzk.unmute();
       this._startAnimation();
-      this._setProgressFromEvent(event.clientX);
+      const progress = this._getProgressFromEvent(event.clientX);
+      mzk.setProgress(Utils.precisionRound(progress, 3));
     }
   }
 
@@ -170,7 +172,8 @@ class ProgressBar {
   _mouseMove(event) {
     if (this._isActive) {
       if (this._isDragging) {
-        this._setProgressFromEvent(event.clientX);
+        const progress = this._getProgressFromEvent(event.clientX);
+        this.setProgress(progress);
       }
 
       if (this._isMouseOver) {
@@ -217,6 +220,7 @@ class ProgressBar {
    **/
   _animate() {
     this.setProgress(mzk.playerProgress);
+    this._rafId = requestAnimationFrame(this._animate.bind(this));
   }
 
 
@@ -232,7 +236,6 @@ class ProgressBar {
   _startAnimation() {
     if (this._isActive) {
       this._animate();
-      this._rafId = requestAnimationFrame(this._startAnimation.bind(this));
     }
   }
 
@@ -508,7 +511,7 @@ class ProgressBar {
 
   /**
    * @method
-   * @name _setProgressFromEvent
+   * @name _getProgressFromEvent
    * @private
    * @memberof ProgressBar
    * @author Arthur Beaulieu
@@ -516,19 +519,19 @@ class ProgressBar {
    * @description Move the progress along its track
    * @param {number} xPos - The mouse X position on screen
    **/
-  _setProgressFromEvent(xPos) {
+  _getProgressFromEvent(xPos) {
     const boundRect = this._progress.track.getBoundingClientRect();
-    let distance = ((xPos - boundRect.left) * 100) / boundRect.width;
+    let percentage = ((xPos - boundRect.left) * 100) / boundRect.width;
 
-    if (distance < 0) {
-      distance = 0;
+    if (percentage < 0) {
+      percentage = 0;
     }
 
-    if (distance > 100) {
-      distance = 100;
+    if (percentage > 100) {
+      percentage = 100;
     }
 
-    mzk.setProgress(Utils.precisionRound(distance, 3));
+    return percentage;
   }
 
 

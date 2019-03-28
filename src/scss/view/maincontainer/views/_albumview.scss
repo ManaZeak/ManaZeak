@@ -122,11 +122,11 @@
             }
 
             &.selected {
-              background-color: $green-darker-alpha-light !important; // Important to 'z-index' over playing bg-color
+              background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
             }
 
             &.playing {
-              background-color: $blue-darker-alpha-light;
+              background-color: $mzk-color-secondary-alpha-50;
               box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
 
               &::after {
