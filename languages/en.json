@@ -26,6 +26,31 @@
         "message": "Something went wrong back side of the moon.",
         "severity": "error"
       },
+      "MEDIA_SRC_NOT_SUPPORTED_ERROR": {
+        "title": "Track not found",
+        "message": "The media could not be loaded because the source path doesn't exists on the server.",
+        "severity": "info"
+      },
+      "MEDIA_DECODE_ERROR": {
+        "title": "Media decode error",
+        "message": "The media playback was aborted due to a corruption problem or because the media used features your browser did not support.",
+        "severity": "info"
+      },
+      "MEDIA_ABORT_ERROR": {
+        "title": "Playback aborted",
+        "message": "The media playback was aborted by the client.",
+        "severity": "info"
+      },
+      "MEDIA_NETWORK_ERROR": {
+        "title": "Media network error",
+        "message": "A network error caused the media download to fail. Please check your internet connection.",
+        "severity": "info"
+      },
+      "MEDIA_UNKNOWN_ERROR": {
+        "title": "Unknown media error",
+        "message": "An unknown media error occurred on the HTML player. Please notify an admin about the failing track.",
+        "severity": "warning"
+      },
       "INVALID_PROGRESS": {
         "title": "Invalid progress value",
         "message": "The value given to set the progress is not a number.",
@@ -60,6 +85,11 @@
         "title": "No track to play next",
         "message": "Please select a track or open a playlist to play a track.",
         "severity": "info"
+      },
+      "INVALID_SHUFFLE_MODE": {
+        "title": "Invalid shuffle mode",
+        "message": "Something went wrong with the shuffle value. Contact an administrator (support@manazeak.org)",
+        "severity": "warning"
       }
     },
     "backend":  {

@@ -1,7 +1,7 @@
 import SceneView from '../SceneView';
-import TrackContext from './TrackContext.js';
+import TrackContext from '../../utils/contexts/TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
-import ScrollBar from "../../../utils/ScrollBar";
+import ScrollBar from "../../utils/ScrollBar";
 'use strict';
 
 
@@ -86,7 +86,6 @@ class AlbumView extends SceneView {
     albumInfo.classList.add('album-info');
 
     const albumName = document.createElement('H1');
-//    albumName.innerHTML = `${album.name} - ${album.year}`;
     albumName.innerHTML = `${album.name} - ${album.tracks[0].year}`;
 
     albumInfo.appendChild(albumName);
@@ -105,7 +104,7 @@ class AlbumView extends SceneView {
         trackNumber: k
       });
       this._tracks.push(albumViewEntry);
-      albumTracks.appendChild(albumViewEntry.getDom());
+      albumTracks.appendChild(albumViewEntry.domFragment);
       ++this._trackDatasetId;
 
       if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {
@@ -156,14 +155,6 @@ class AlbumView extends SceneView {
     this.initTracksState();
     delete this._trackDatasetId;
   }
-
-  stopPlayback() {
-    if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
-      this._tracks[this._playingTrackIndex].setPlaying(false); // Remove the flag
-      this._playingTrackIndex = -1;
-    }
-  }
-
 }
 
 export default AlbumView;

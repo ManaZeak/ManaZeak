@@ -1,63 +1,70 @@
 'use strict';
 
-class ContextMenu {
+
+class Overlays {
 
 
   constructor(options) {
-    this._target = options.target;
     this._url = options.url;
     this._overlay = {};
     this._dom = {};
 
-    this._init();
+    this._fetchTemplate();
   }
 
-  _init() {
+
+  _fetchTemplate() {
     mzk.komunikator.getTemplate(this._url)
       .then((response) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(response, 'text/html');
 
-        this._overlay = doc.getElementsByClassName('transparent-overlay')[0];
+        this._overlay = doc.getElementsByClassName('context-transparent-overlay')[0];
         this._dom = doc.getElementsByClassName(this._overlay.children[0].className)[0];
         this._events();
         this.setActions(doc);
+
+        if (this._url.indexOf('modal') !== -1) {
+          this.open();
+        }
       });
   }
 
-  setActions() {
-
-  }
 
   _events() {
     this._viewportClicked = this._viewportClicked.bind(this);
   }
 
+
   _viewportClicked(event) {
     event.stopImmediatePropagation();
 
-    if (!event.target.closest(this._overlay.children[0].className)) {
+    if (event.target === this._overlay) {
       this.close();
     }
   }
 
+
+  setActions() {
+    // Mandatory to override in children class
+  }
+
+
   open() {
-    this._target.appendChild(this._overlay);
-    this._overlay.addEventListener('click', this._viewportClicked, false);
+    // Mandatory to override in children class
   }
 
 
   close() {
-    if (this._target.contains(this._overlay)) {
-      this._target.removeChild(this._overlay);
-      this._overlay.removeEventListener('click', this._viewportClicked, false);
-    }
+    // Mandatory to override in children class
   }
 
 
   get dom() {
     return this._dom;
   }
+
+
 }
 
-export default ContextMenu;
+export default Overlays;

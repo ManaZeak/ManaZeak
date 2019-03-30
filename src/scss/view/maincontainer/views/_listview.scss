@@ -45,11 +45,11 @@ $listview-track-height: 40px;
 
       &.dragElem {
         opacity: 0.4;
-        background: red;
+        background: $mzk-color-anti-primary;
       }
 
       &.over {
-        border-left: 2px solid blue;
+        border-left: 2px solid $mzk-color-secondary;
       }
 
       .listview-resize-handle {
@@ -114,7 +114,7 @@ $listview-track-height: 40px;
     z-index: 633;
 
     .track {
-      background: $darker-alpha;
+      background: $mzk-color-bg-darker-alpha-25;
       box-sizing: border-box;
       cursor: pointer;
       display: grid;
@@ -147,7 +147,7 @@ $listview-track-height: 40px;
       }
 
       &:nth-child(2n) {
-        background: $dark-alpha;
+        background: $mzk-color-bg-dark-alpha-25;
       }
 
       &:last-child {
@@ -155,11 +155,11 @@ $listview-track-height: 40px;
       }
 
       &.selected {
-        background-color: $green-darker-alpha-light !important; // Important to 'z-index' over playing bg-color
+        background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
       }
 
       &.playing {
-        background-color: $blue-darker-alpha-light;
+        background-color: $mzk-color-secondary-alpha-50;
         box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
 
         &::before {
