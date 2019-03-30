@@ -13,6 +13,22 @@ $aside-button-length: 25px;
   transition: all $scene-transition ease-in-out 0s;
   z-index: 600;
 
+  #scene-manipulation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: $main-container-icon-margin;
+    height: 90px;
+    margin: auto;
+    width: $aside-button-length;
+
+    img {
+      cursor: pointer;
+      height: $aside-button-length;
+      width: $aside-button-length;
+    }
+  }
+
   #scene-view-option {
     cursor: pointer;
     bottom: $main-container-icon-margin;
@@ -51,9 +67,9 @@ $aside-button-length: 25px;
 
   #scene-commands {
     position: absolute;
-    right: 0;
+    right: $margin-offset + ($main-container-icon-margin * 2);
     height: $margin-offset + ($main-container-icon-margin * 2);
-    width: auto;
+    width: 60px;
     top: 0;
     display: inline-flex;
     align-items: center;
@@ -64,12 +80,13 @@ $aside-button-length: 25px;
       display: flex;
       align-items: center;
       cursor: pointer;
+      @include user-select(none);
 
       &:after {
         content: '';
         border-style: solid;
         border-width: 6px 6px 0 6px;
-        border-color: $mzk-bg-darker transparent transparent transparent;
+        border-color: $mzk-color-bg-dark transparent transparent transparent;
         margin-left: 10px;
       }
     }

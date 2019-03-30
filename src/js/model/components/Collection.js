@@ -1,4 +1,5 @@
 import Playlist from './Playlist.js';
+import NewLibraryModal from "../../view/utils/modals/NewLibraryModal";
 'use strict';
 
 class Collection {
@@ -29,9 +30,10 @@ class Collection {
   _initialScan(playlist) {
     return new Promise((resolve) => {
       const options = {
-        LIBRARY_ID: playlist.getId()
+        LIBRARY_ID: playlist.id
       };
 
+      mzk.startLoading(true);
       mzk.komunikator.post('library/initialScan/', options)
         .then(() => {
           return this._checkScanStatus(playlist);
@@ -56,7 +58,7 @@ class Collection {
     return new Promise((resolve, reject) => {
       let intervalId = -1;
       const options = {
-        PLAYLIST_ID: playlist.getId()
+        PLAYLIST_ID: playlist.id
       };
 
       const checkStatus = () => {
@@ -177,8 +179,6 @@ class Collection {
           this._buildPlaylist(response);
           this._initialScan(this._playlists[0])
             .then(() => {
-              Shortcut.resumeAll(); // Restore all shortcuts
-              mzk.view.removeOverlay(); // Remove modal from main container
               resolve();
             });
         } else {
@@ -208,8 +208,7 @@ class Collection {
           });
       };
 
-      Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
-      mzk.view.displayModal({
+      new NewLibraryModal({
         url: 'modals/newlibrary',
         callback: checkModalValues
       });

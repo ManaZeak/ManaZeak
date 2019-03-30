@@ -1,13 +1,14 @@
-import ContextMenu from '../../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../overlays/ContextMenu.js';
 'use strict';
 
 
 class TrackContext extends ContextMenu {
+
+
   constructor(options) {
     super(options);
 
     this._targetId = -1;
-
     this._commands = {
       playPause: {},
       stop: {},
@@ -36,7 +37,6 @@ class TrackContext extends ContextMenu {
 
   _addToQueue(event) {
     event.stopImmediatePropagation();
-
     mzk.addTrackToQueue(this._targetId);
     this.close();
   }
@@ -57,8 +57,21 @@ class TrackContext extends ContextMenu {
 
   open(event, id) {
     this._targetId = id;
-    this._dom.style.left = `${event.clientX}px`;
-    this._dom.style.top = `${event.clientY}px`;
+    const pos = {
+      x: event.clientX,
+      y: event.clientY
+    };
+    // Avoid X overflow : X pos + context width
+    if (event.clientX + 135 > document.body.clientWidth) {
+      pos.x -= 135;
+    }
+    // Avoid Y overflow : Y pos + context height + footbar height
+    if (event.clientY + (Object.keys(this._commands).length * 30) + 80 > document.body.clientHeight) {
+      pos.y -= (Object.keys(this._commands).length * 30);
+    }
+
+    this._dom.style.left = `${pos.x}px`;
+    this._dom.style.top = `${pos.y}px`;
     this._target.appendChild(this._overlay);
     this._overlay.addEventListener('click', this._viewportClicked, false);
   }

@@ -15,14 +15,15 @@
    y="0px"
    viewBox="0 0 100 100"
    xml:space="preserve"
-   inkscape:version="0.92.2 2405546, 2018-03-11"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
    width="100%"
    height="100%"
    sodipodi:docname="repeat-one.svg"><metadata
    id="metadata47"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs45" /><sodipodi:namedview
+   id="defs45">
+</defs><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
    borderopacity="1"
@@ -36,7 +37,7 @@
    id="namedview43"
    showgrid="false"
    inkscape:zoom="5.2151263"
-   inkscape:cx="19.387578"
+   inkscape:cx="-11.388283"
    inkscape:cy="44.075158"
    inkscape:window-x="0"
    inkscape:window-y="0"
@@ -80,25 +81,23 @@
 
 
 
-<g
-   id="g833"
-   transform="translate(-19.077507,19.077501)"><circle
-     id="path3001"
-     style="fill:#36e737;fill-opacity:0.92156863;stroke:#9696aa;stroke-width:6.34714794;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-     cx="69.077507"
-     cy="30.922499"
-     r="27.74892" /><text
-     id="text3771"
-     y="44.889393"
-     x="56.220215"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.20399666px;line-height:0%;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.76699972"
-     xml:space="preserve"><tspan
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:42.40800095px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.76699972"
-       y="44.889393"
-       x="56.220215"
-       id="tspan3773"
-       sodipodi:role="line">1</tspan></text>
-</g>
+<circle
+   r="27.74892"
+   cy="50"
+   cx="50"
+   style="fill:#56d45b;fill-opacity:1;stroke:#9696aa;stroke-width:6.34714794;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+   id="path3001" /><text
+   xml:space="preserve"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.20399666px;line-height:0%;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.76699972"
+   x="37.142708"
+   y="63.966892"
+   id="text3771"><tspan
+     sodipodi:role="line"
+     id="tspan3773"
+     x="37.142708"
+     y="63.966892"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:42.40800095px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.76699972">1</tspan></text>
+
 
 
 

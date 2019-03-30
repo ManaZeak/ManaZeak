@@ -2,8 +2,6 @@
 
 
 class User {
-
-
   /** @summary <h1>ManaZeak's user class</h1>
    * @author Arthur Beaulieu
    * @since June 2018
@@ -37,23 +35,19 @@ class User {
      * @member {Array} - The user's permissions (4-grams items, see <code>app/utils.py:populateDB()</code>) */
     this._permissions = [];
     /** @private
+     * @member {Object} - The user's preferences */
+    this._preferences = {
+      'lock-center-on-track': false
+    };
+    /** @private
      * @member {String} - The user's username */
     this._username = '';
   }
 
 
-  //  ----  PUBLIC METHODS  ----  //
-
-
-  /** @method
-   * @name hasPermission
-   * @memberof User
-   * @description <blockquote>Test if the user has a given permission, using the 4-grams defined in <code>app/utils.py:populateDB()</code>.</blockquote>
-   * @param {String} permissionCode - The permission code to test, it must be a four caps letters
-   * @returns {Boolean} True if user is granted, false otherwise */
-  hasPermission(permissionCode) {
-    return this._permissions.includes(permissionCode);
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  -----------------------------------  INIT SESSION METHODS  -----------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /** @method
@@ -84,32 +78,51 @@ class User {
   }
 
 
-  //  ----  GETTER  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  PERMISSION METHODS  ------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
-  /** <strong>getter:godfatherName</strong>
-   * @type {String} */
-  get godfatherName() {
-    return this._godfatherName;
+  /** @method
+   * @name hasPermission
+   * @memberof User
+   * @description <blockquote>Test if the user has a given permission, using the 4-grams defined in <code>app/utils.py:populateDB()</code>.</blockquote>
+   * @param {String} permissionCode - The permission code to test, it must be a four caps letters
+   * @returns {Boolean} True if user is granted, false otherwise */
+  hasPermission(permissionCode) {
+    return this._permissions.includes(permissionCode);
   }
 
 
-  /** <strong>getter:id</strong>
-   * @type {Number} */
-  get id() {
-    return this._id;
+  setPreference(key, value) {
+    if (this._preferences[key] !== undefined) {
+      this._preferences[key] = value;
+    }
   }
 
 
-  /** <strong>getter:username</strong>
-   * @type {String} */
-  get username() {
-    return this._username;
+  getPreference(key) {
+    if (this._preferences[key] !== undefined) {
+      return this._preferences[key];
+    } else {
+      return undefined;
+    }
   }
 
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @public
+   * @member {string} - The user's avatar url path */
   get avatarPath() {
     return this._avatarPath;
   }
+
+
 }
+
 
 export default User;
