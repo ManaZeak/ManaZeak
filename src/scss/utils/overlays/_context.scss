@@ -112,6 +112,14 @@
       width: 20px;
     }
 
+    &.add-to-queue::after {
+      content: '+';
+      left: 28px;
+      position: absolute;
+      bottom: -4px;
+      color: $mzk-color-primary;
+    }
+
     p {
       line-height: 30px;
       padding-left: $padding;
