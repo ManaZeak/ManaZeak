@@ -1,26 +1,29 @@
 module.exports = function(config) {
   config.set({
-    singleRun: true,
+    basePath: '../..',
+    singleRun: false,
     browsers: ['Firefox'],
     frameworks: ['jasmine'],
     files: [
-      './static/test/test-context.js'
-      //'./static/js/core/**/*.js'
+      './test-context.js'
     ],
+    proxies: {
+      '/static/': '/base/test/static/'
+    },
     reporters: ['progress', 'coverage'],
     preprocessors: {
-      './static/test/test-context.js': ['webpack']
+      './test-context.js': ['webpack', 'sourcemap']
       //'./static/js/core/**/*.js': ['webpack', 'sourcemap', 'coverage']
     },
     babelPreprocessor: {
       options: {
         presets: ["env"],
-        sourceMap: 'inline'
+        sourceMap: true
       }
     },
     coverageReporter: {
       type : 'lcov',
-      dir : './static/test/coverage/',
+      dir : './coverage/',
       subdir: (browser) => {
         // normalization process to keep a consistent browser name across different OS
         return browser.split(/[ /-]/)[0];

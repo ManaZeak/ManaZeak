@@ -12,21 +12,23 @@ class Komunikator {
    * Because it uses <code>Promise</code>, success and errors are to be handled in the caller function, using <code>.then()</code> and <code>.catch()</code>.<br>
    * This object is a <a href="Mzk.html" target="_blank">Mzk</a>'s attribute, that can be used from anywhere (<code>mzk.komunikator</code>).<br>
    * Refer to <code>app/url.py</code> for available urls to control ManaZeak.</blockquote>
-   * @param {Object} options - The komunikator's parameters
-   * @param {String} options.csrfToken - The user's csrf token (must be extracted from browser's cookies before) */
+   * @param {object} options - The komunikator's parameters
+   * @param {string} options.csrfToken - The user's csrf token (must be extracted from browser's cookies before) */
   constructor(options) {
     /** @private
-     * @member {String} - The user's csrf token */
+     * @member {string} - The user's csrf token */
     this._csrfToken = options.csrfToken;
     /** @private
-     * @member {Array} - The HTTP headers that are used in <code>GET</code> and <code>POST</code> requests */
+     * @member {array} - The HTTP headers that are used in <code>GET</code> and <code>POST</code> requests */
     this._headers = [];
 
     this._init();
   }
 
 
-  //  ----  PRIVATE METHODS  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /** @method
@@ -41,6 +43,32 @@ class Komunikator {
     this._headers.push(['X-CSRFToken', this._csrfToken]); // this._headers[2]
   }
 
+
+  /** @method
+   * @name _handleErrorCode
+   * @private
+   * @memberof Komunikator
+   * @description <blockquote>This method is called whenever a server request didn't went well.
+   * In case a request (from any type) fails, its HTTP status code have to be handle in the method,
+   * so the reject code can be handled in the UI.</blockquote>
+   * @param {Number} code - The HTTP error code to handle
+   * @param {Function} reject - The request <code>Promise</code> reject callback */
+  _handleErrorCode(code, reject) {
+    if (code === 404) {
+      reject('URL_NOT_FOUND');
+    } else if (code === 403) {
+      reject('ACCESS_FORBIDDEN');
+    } else if (code === 500) {
+      reject('INTERNAL_ERROR');
+    } else {
+      reject('UNKNOWN_ERROR');
+    }
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ----------------------------  PROMISE RESOLVE FORMATTING METHODS  ----------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /** @method
@@ -99,29 +127,9 @@ class Komunikator {
   }
 
 
-  /** @method
-   * @name _handleErrorCode
-   * @private
-   * @memberof Komunikator
-   * @description <blockquote>This method is called whenever a server request didn't went well.
-   * In case a request (from any type) fails, its HTTP status code have to be handle in the method,
-   * so the reject code can be handled in the UI.</blockquote>
-   * @param {Number} code - The HTTP error code to handle
-   * @param {Function} reject - The request <code>Promise</code> reject callback */
-  _handleErrorCode(code, reject) {
-    if (code === 404) {
-      reject('URL_NOT_FOUND');
-    } else if (code === 403) {
-      reject('ACCESS_FORBIDDEN');
-    } else if (code === 500) {
-      reject('INTERNAL_ERROR');
-    } else {
-      reject('UNKNOWN_ERROR');
-    }
-  }
-
-
-  //  ----  PUBLIC METHODS  ----  //
+  //  ------------------------------------------------------------------------------------------------//
+  //  --------------------------------  HTTP SERVER CALLS METHODS  ---------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
   /** @method

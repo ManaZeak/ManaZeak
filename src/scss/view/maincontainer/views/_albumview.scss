@@ -14,7 +14,7 @@
     h1 {
       font-size: 3.66em;
       line-height: 2em;
-      color: $lighter-solid;
+      color: $mzk-color-text-light;
     }
 
     .album {
@@ -38,16 +38,17 @@
         justify-self: end;
         line-height: 2.8em;
         margin: 0 25px;
-        text-align: center;
+        text-align: right;
         
         span {
-          background: $lighter-alpha-strong;
+          background: $mzk-color-text-light-alpha-10;
           padding: 7px;
           line-height: 1em;
           font-size: 1em;
           border-radius: 5px;
           margin: 3.5px;
           cursor: pointer;
+          display: inline-block;
         }
       }
 
@@ -60,7 +61,7 @@
           font-size: 2em;
           line-height: 2em;
           padding-left: 25px;
-          color: $lighter-solid;
+          color: $mzk-color-text-light;
         }
 
         .tracks-container {
@@ -68,9 +69,8 @@
           grid-gap: 8px 12px;
           padding: 25px;
           grid-template-columns: repeat(2, 1fr);
-          min-height: 66%;
           grid-auto-flow: column;
-          border-left: solid 1px $lighter-alpha-strong;
+          border-left: solid 1px $mzk-color-text-light-alpha-10;
 
           .track {
             max-width: 500px;
@@ -80,7 +80,7 @@
             width: 100%;
             height: 55px;
             padding: 7px 15px;
-            background: $lighter-alpha-strong;
+            background: $mzk-color-text-light-alpha-10;
             position: relative;
             display: grid;
             grid-template-columns: 2fr 14fr;
@@ -122,11 +122,11 @@
             }
 
             &.selected {
-              background-color: $green-darker-alpha-light !important; // Important to 'z-index' over playing bg-color
+              background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
             }
 
             &.playing {
-              background-color: $blue-darker-alpha-light;
+              background-color: $mzk-color-secondary-alpha-50;
               box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
 
               &::after {
