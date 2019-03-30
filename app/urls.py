@@ -25,9 +25,10 @@ urlpatterns = [
 
     ####################### Modal templates ##########################
     url(r'^modals/newlibrary/$', views.newLibraryModal, name='newLibrary'),  # send the new library template
-    url(r'^modals/usermenu/$', views.userMenuContext, name='userMenu'),  # send the new library template
-    url(r'^modals/changeview/$', views.changeViewContext, name='changeView'),  # send the new library template
 
+    ####################### Context templates ##########################
+    url(r'^contexts/usermenu/$', views.userMenuContext, name='userMenu'),  # send the new library template
+    url(r'^contexts/changeview/$', views.changeViewContext, name='changeView'),  # send the new library template
     url(r'^contexts/trackcontext/$', views.trackContext, name='trackContext'),  # send the new library template
     url(r'^contexts/queuecontext/$', views.queueContext, name='queueContext'),  # send the new library template
 

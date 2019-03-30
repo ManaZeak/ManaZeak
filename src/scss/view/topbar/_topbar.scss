@@ -1,14 +1,37 @@
 $topbar-margin: (2 * $margin);
 $topbar-transition: ($transition-duration * 2);
+$topbar-loader: $topbar-height - 10px;
 
 #topbar {
-  background: $bar-alpha;
+  background: $mzk-color-bg;
   display: flex;
   height: $topbar-height;
   width: 100%;
   z-index: 700;
 
   @include user-select(none);
+
+  div#topbar-spinner {
+    align-self: center;
+    display: none;
+    right: 70px;
+    width: $topbar-loader;
+    height: $topbar-loader;
+    position:absolute;
+    border: 1px solid rgba(125, 125, 125, 0.1);
+    border-radius: 100%;
+
+    &:after {
+      content: '';
+      border-top: 1px solid $mzk-color-primary;
+      position:absolute;
+      width: $topbar-loader;
+      border-radius: 100%;
+      height: $topbar-loader;
+      transition: 0.3s transform ease-in-out;
+      animation: spin 1s linear infinite;
+    }
+  }
 
   img#topbar-logo {
     align-self: center;

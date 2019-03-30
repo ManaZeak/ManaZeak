@@ -13,7 +13,7 @@
    height="100"
    id="svg3130"
    version="1.1"
-   inkscape:version="0.92.2 2405546, 2018-03-11"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
    sodipodi:docname="nav-up.svg">
   <defs
      id="defs3132" />
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="-13.261853"
+     inkscape:cx="29.506004"
      inkscape:cy="44.062074"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -52,20 +52,10 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-952.36218)">
-    <g
-       id="g1161"
-       transform="matrix(0,2.6545432,-2.6545432,0,93.321152,959.04668)"
-       style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:1.26913893;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
-      <path
-         inkscape:connector-curvature="0"
-         d="M 32.135,16.817 H 0.5 c -0.276,0 -0.5,-0.224 -0.5,-0.5 0,-0.276 0.224,-0.5 0.5,-0.5 h 31.635 c 0.276,0 0.5,0.224 0.5,0.5 0,0.276 -0.224,0.5 -0.5,0.5 z"
-         id="path1157"
-         style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:1.26913893;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         d="m 13.037,29.353 c -0.128,0 -0.256,-0.049 -0.354,-0.146 L 0.146,16.669 C 0.053,16.575 0,16.448 0,16.315 0,16.182 0.053,16.055 0.146,15.961 L 12.684,3.429 c 0.195,-0.195 0.512,-0.195 0.707,0 0.195,0.195 0.195,0.512 0,0.707 L 1.207,16.315 13.391,28.499 c 0.195,0.195 0.195,0.512 0,0.707 -0.098,0.098 -0.226,0.147 -0.354,0.147 z"
-         id="path1159"
-         style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:1.26913893;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
+    <path
+       style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:2.89382076;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1159"
+       d="m 20.28202,1016.659 c 0,-0.2919 0.111728,-0.5837 0.332902,-0.8072 l 28.588457,-28.58618 c 0.214333,-0.21205 0.503912,-0.3329 0.807171,-0.3329 0.30326,0 0.592838,0.12085 0.807172,0.3329 l 28.574776,28.58848 c 0.444629,0.4446 0.444629,1.1674 0,1.6121 -0.444629,0.4446 -1.167434,0.4446 -1.612063,0 L 50.01055,989.68486 22.229265,1017.4662 c -0.44463,0.4446 -1.167435,0.4446 -1.612063,0 -0.223454,-0.2235 -0.335182,-0.5154 -0.335182,-0.8072 z"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
