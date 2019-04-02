@@ -745,10 +745,29 @@ class Mzk {
    * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
    **/
   addTrackToQueue(datasetId) {
-    const track = this.ui.getTrackById(datasetId);
+    const selection = this.ui.activeView.selection;
+    // User has no selection : we simply adds the datasetId to the queue
+    if (selection.length === 0) {
+      console.log('No selection');
+      const track = this.ui.getTrackById(datasetId);
 
-    if (track) {
-      this.model.appendToQueue(track.id);
+      if (track) {
+        this.model.appendToQueue(track.id);
+        this.ui.updateQueueNumber(this.model.queue);
+      }
+    } else {
+      // Checking if the datasetId isn't in selection, so we can append it to the selection array
+      if (selection.indexOf(Number(datasetId)) === -1) {
+        selection.push(datasetId);
+      }
+      // Parsing selection to append track in the proper order
+      for (let i = 0; i < selection.length; ++i) {
+        const track = this.ui.getTrackById(selection[i]);
+
+        if (track) {
+          this.model.appendToQueue(track.id);
+        }
+      }
       this.ui.updateQueueNumber(this.model.queue);
     }
   }
