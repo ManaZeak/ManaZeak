@@ -319,7 +319,10 @@ class Model {
   }
 
   appendToQueue(id) {
-    this._queue.push(id);
+    // Queue is exclusive. To make it an option, just change the test
+    if (this._queue.indexOf(id) === -1) {
+      this._queue.push(id);
+    }
   }
 
   getNextFromQueue() {
