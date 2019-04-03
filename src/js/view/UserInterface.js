@@ -151,12 +151,7 @@ class UserInterface {
    **/
   updateProgress() { // Called onClick
     const progress = mzk.model.player.progress;
-    this._footBar.progressBar.deactivateTransitions(); // Must disable transition when called
     this._footBar.progressBar.setProgress(progress);
-
-    setTimeout(() => { // Restore transitions
-      this._footBar.progressBar.activateTransitions();
-    }, 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
 
