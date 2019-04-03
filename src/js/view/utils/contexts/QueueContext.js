@@ -1,15 +1,21 @@
-import ContextMenu from '../../../utils/feedback/ContextMenu.js';
+import ContextMenu from '../ContextMenu.js';
 'use strict';
 
 
 class QueueContext extends ContextMenu {
+
+
   constructor(options) {
     super(options);
   }
 
+
   setActions(doc) {
     this._dom.container = doc.getElementsByClassName('track-container')[0];
+    this._dom.status = doc.getElementsByClassName('queue-status')[0];
+    this._emptyContainer = doc.getElementsByClassName('track-container')[0].children[0];
   }
+
 
   _fillQueuedTracks(tracks) {
     this._dom.container.innerHTML = '';
@@ -17,7 +23,6 @@ class QueueContext extends ContextMenu {
     for (let i = 0; i < tracks.length; ++i) {
       const uiTrack = document.createElement('DIV');
       uiTrack.classList.add('queued-track');
-      console.log(tracks[i]);
 
       const cover = document.createElement('IMG');
 
@@ -40,9 +45,15 @@ class QueueContext extends ContextMenu {
     }
   }
 
+
   open(options) {
     if (options.queue.length > 0) {
       this._fillQueuedTracks(options.queue);
+      this._dom.status.innerHTML = `${options.queue.length} queued tracks (${Utils.totalTracksDuration(options.queue)})`;
+    } else if (options.queue.length === 0) {
+      this._dom.status.innerHTML = 'No tracks in the queue';
+      this._dom.container.innerHTML = '';
+      this._dom.container.appendChild(this._emptyContainer);
     }
 
     this._dom.style.right = `${options.rightOffset}px`;

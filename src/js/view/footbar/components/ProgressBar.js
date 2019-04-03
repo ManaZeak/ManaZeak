@@ -2,11 +2,13 @@
 
 
 class ProgressBar {
+
+
   /**
    * @summary Interactive Progress Bar
    * @author Arthur Beaulieu
    * @since August 2018
-   * @description Handle the progress over a track
+   * @description <blockquote>Handle the progress over a track</blockquote>
    **/
   constructor() {
     this._progress = {
@@ -18,7 +20,7 @@ class ProgressBar {
       moodbar: {},
       left: {},
       right: {}
-    }; // DOM elements
+    };
     this._topbarLogo = {};
     this._rafId = null;
     this._duration = 0;
@@ -30,7 +32,11 @@ class ProgressBar {
     this._init();
   }
 
-  //  ----  PRIVATE METHODS  ----  //
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
 
   /**
    * @method
@@ -39,7 +45,7 @@ class ProgressBar {
    * @memberof ProgressBar
    * @author Arthur Beaulieu
    * @since August 2018
-   * @description Init the progress bar dom and events
+   * @description Init the progress bar DOM and events
    **/
   _init() {
     this._progress.container = document.getElementById('progress-container');
@@ -61,6 +67,7 @@ class ProgressBar {
     this._updateMouseOver = this._updateMouseOver.bind(this);
   }
 
+
   /**
    * @method
    * @name _addEvents
@@ -72,11 +79,12 @@ class ProgressBar {
    **/
   _addEvents() {
     this._progress.container.addEventListener('mousedown', this._mouseDown);
-    this._progress.container.addEventListener('mouseover', this._updateMouseOver);
-    this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
+    //this._progress.container.addEventListener('mouseover', this._updateMouseOver);
+    //this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
     window.addEventListener('mousemove', this._mouseMove);
     window.addEventListener('mouseup', this._mouseUp);
   }
+
 
   /**
    * @method
@@ -85,15 +93,92 @@ class ProgressBar {
    * @memberof ProgressBar
    * @author Arthur Beaulieu
    * @since August 2018
-   * @description Remove mouse events when ProgressBar is desactivated
+   * @description Remove mouse events when ProgressBar is deactivated
    **/
   _removeEvents() {
     this._progress.container.removeEventListener('mousedown', this._mouseDown);
-    this._progress.container.removeEventListener('mouseover', this._updateMouseOver);
-    this._progress.container.removeEventListener('mouseleave', this._updateMouseOver);
+    //this._progress.container.removeEventListener('mouseover', this._updateMouseOver);
+    //this._progress.container.removeEventListener('mouseleave', this._updateMouseOver);
     window.removeEventListener('mousemove', this._mouseMove);
     window.removeEventListener('mouseup', this._mouseUp);
   }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------------  MOUSE EVENTS  ---------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name _mouseDown
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Handle the mouse down event
+   * @param {object} event - The mouse event object
+   **/
+  _mouseDown(event) {
+    if (!this._isDragging &&
+      (event.target.id === 'progress-container' ||
+        event.target.id === 'progress-track' ||
+        event.target.id === 'progress-current' ||
+        event.target.id === 'progress-moodbar' ||
+        event.target.id === 'progress-thumb' ||
+        event.target.id === 'moodbarThumb' ||
+        event.target.tagName === 'rect')) {
+
+      mzk.mute();
+      this._isDragging = true;
+      this._stopAnimation();
+      this._setProgressFromEvent(event.clientX);
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _mouseUp
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Handle the mouse up event
+   * @param {object} event - The mouse event object
+   **/
+  _mouseUp(event) {
+    if (this._isDragging) { // User has released progress thumb
+      this._isDragging = false;
+      mzk.unmute();
+      this._startAnimation();
+      this._setProgressFromEvent(event.clientX);
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _mouseMove
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Handle the mouse move event
+   * @param {object} event - The mouse event object
+   **/
+  _mouseMove(event) {
+    if (this._isActive) {
+      if (this._isDragging) {
+        this._setProgressFromEvent(event.clientX);
+      }
+
+      if (this._isMouseOver) {
+        this._updateHoverTimecode(event.clientX);
+      }
+    }
+  }
+
 
   /**
    * @method
@@ -114,6 +199,232 @@ class ProgressBar {
       this._isMouseOver = false;
     }
   }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  ANIMATION METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name _animate
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Set the progress bar completion according to the Mzk player progress value
+   **/
+  _animate() {
+    this.setProgress(mzk.playerProgress);
+  }
+
+
+  /**
+   * @method
+   * @name _startAnimation
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Use RequestAnimationFrame to render and setProgress most of the frames
+   **/
+  _startAnimation() {
+    if (this._isActive) {
+      this._animate();
+      this._rafId = requestAnimationFrame(this._startAnimation.bind(this));
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _stopAnimation
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Cancel animation frame if needed
+   **/
+  _stopAnimation() {
+    if (!this._isActive) {
+      cancelAnimationFrame(this._rafId);
+    }
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ----------------------------------  TRANSITIONS METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name activateTransitions
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Enable the transition on the ProgressBar
+   **/
+  activateTransitions() {
+    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+  }
+
+
+  /**
+   * @method
+   * @name deactivateTransitions
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Disable the transition on the ProgressBar
+   **/
+  deactivateTransitions() {
+    // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
+    // Lag duration will be equal to the transition time otherwise
+    // Reset left and width transition to default, match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+    this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.4s ease 0s';
+    this._progress.current.style.transition = 'width 0s ease 0s';
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -----------------------------------  ACTIVATION METHODS  -------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name activate
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Activate the ProgressBar, set it visible, add animations and add mouse events
+   **/
+  activate() {
+    this._isActive = true;
+    this.setVisibility(true);
+    this._startAnimation();
+    this.activateTransitions();
+    this._addEvents();
+  }
+
+
+  /**
+   * @method
+   * @name deactivate
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Deactivate the ProgressBar, set it invisible, remove animations and remove mouse events
+   **/
+  deactivate() {
+    this._isActive = false;
+    this.setVisibility(false);
+    this._resetTimecode();
+    this._removeEvents();
+    this._stopAnimation();
+
+    setTimeout(() => { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
+      this.deactivateTransitions();
+    }, 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
+  }
+
+
+  /**
+   * @method
+   * @name toggleActive
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Toggle the ProgressBar active status
+   **/
+  toggleActive() {
+    if (!this._isActive) {
+      this.activate();
+    } else {
+      this.deactivate();
+    }
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------  UI MANIPULATIONS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name setVisibility
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Set the visibility status of the ProgressBar
+   * @param {boolean} isVisible - The visibility state
+   **/
+  setVisibility(isVisible) {
+    if (isVisible) {
+      this._progress.moodbar.style.height = '25px'; // Match value w/ the one in view/components/_progressbar.scss ($progress-moodbar-height)
+      this._progress.moodbar.style.opacity = '1';
+      this._progress.moodbar.style.cursor = 'pointer';
+      this._progress.track.style.opacity = '1';
+      this._progress.track.style.cursor = 'pointer';
+      this._progress.left.style.opacity = '1';
+      this._progress.right.style.opacity = '1';
+      this._topbarLogo.style.opacity = '1';
+    } else {
+      this._progress.moodbar.style.height = '0';
+      this._progress.moodbar.style.opacity = '0';
+      this._progress.moodbar.style.cursor = 'default';
+      this._progress.track.style.opacity = '0';
+      this._progress.track.style.cursor = 'default';
+      this._progress.left.style.opacity = '0';
+      this._progress.right.style.opacity = '0';
+      this._topbarLogo.style.opacity = '0';
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _resetTimecode
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Set UI values to default `--:--`
+   **/
+  _resetTimecode() {
+    setTimeout(() => {
+      this._progress.left.innerHTML = '--:--';
+      this._progress.right.innerHTML = '--:--';
+      this._progress.hover.innerHTML = '--:--';
+    }, 500); // Match value with the one in scss/view/components/_progresbar.scss -> $footbar-transition
+  }
+
+
+  /**
+   * @method
+   * @name updateDuration
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Update the duration values
+   * @param {number} duration - The track duration in seconds
+   **/
+  updateDuration(duration) {
+    this._duration = duration;
+    this._progress.right.innerHTML = Utils.secondsToTimecode(duration);
+  }
+
 
   /**
    * @method
@@ -140,285 +451,11 @@ class ProgressBar {
     this._progress.hover.innerHTML = Utils.secondsToTimecode((percentage * this._duration) / 100);
   }
 
-  /**
-   * @method
-   * @name _mouseDown
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Handle the mouse down event
-   * @param {object} event - The mouse event object
-   **/
-  _mouseDown(event) {
-    if (!this._isDragging &&
-      (event.target.id === 'progress-container' ||
-        event.target.id === 'progress-track' ||
-        event.target.id === 'progress-current' ||
-        event.target.id === 'progress-moodbar' ||
-        event.target.id === 'progress-thumb' ||
-        event.target.id === 'moodbarThumb' ||
-        event.target.tagName === 'rect')) {
 
-      mzk.mute();
-      this._isDragging = true;
-      this._stopAnimation();
-      this._moveProgress(event.clientX);
-    }
-  }
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------  PROGRESS MANIPULATIONS  -----------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
-  /**
-   * @method
-   * @name _mouseUp
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Handle the mouse up event
-   * @param {object} event - The mouse event object
-   **/
-  _mouseUp(event) {
-    if (this._isDragging) { // User has released progress thumb
-      mzk.unmute();
-      this._isDragging = false;
-      this._startAnimation();
-      this._moveProgress(event.clientX);
-    }
-  }
-
-  /**
-   * @method
-   * @name _mouseMove
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Handle the mouse move event
-   * @param {object} event - The mouse event object
-   **/
-  _mouseMove(event) {
-    if (this._isActive && this._isDragging) { // User is draging progress thumb
-      this._moveProgress(event.clientX);
-    } else if (this._isActive && this._isMouseOver) { // Hover on progress track
-      this._updateHoverTimecode(event.clientX);
-    }
-  }
-
-  /**
-   * @method
-   * @name _moveProgress
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Move the progress along its track
-   * @param {number} xPos - The mouse X position on screen
-   **/
-  _moveProgress(xPos) {
-    const boundRect = this._progress.track.getBoundingClientRect();
-    let distance = ((xPos - boundRect.left) * 100) / boundRect.width;
-
-    if (distance < 0) {
-      distance = 0;
-    }
-    if (distance > 100) {
-      distance = 100;
-    }
-
-    mzk.setProgress(Utils.precisionRound(distance, 3));
-  }
-
-  /**
-   * @method
-   * @name _animate
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Set the progress bar completion according to the Mzk player progress value
-   **/
-  _animate() {
-    this.setProgress(mzk.getProgress());
-  }
-
-  /**
-   * @method
-   * @name _startAnimation
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Use RequestAnimationFrame to render and setProgress most of the frames
-   **/
-  _startAnimation() {
-    if (this._isActive) {
-      this._animate();
-      this._rafId = requestAnimationFrame(this._startAnimation.bind(this));
-    }
-  }
-
-  /**
-   * @method
-   * @name _stopAnimation
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Cancel animation frame if needed
-   **/
-  _stopAnimation() {
-    if (!this._isActive) {
-      cancelAnimationFrame(this._rafId);
-    }
-  }
-
-  /**
-   * @method
-   * @name _resetTimecode
-   * @private
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Set UI values to default `--:--`
-   **/
-  _resetTimecode() {
-    setTimeout(function() {
-      this._progress.left.innerHTML = '--:--';
-      this._progress.right.innerHTML = '--:--';
-      this._progress.hover.innerHTML = '--:--';
-    }.bind(this), 500); // Match value with the one in scss/view/components/_progresbar.scss -> $footbar-transition
-  }
-
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-  /**
-   * @method
-   * @name resetProgressBar
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Reset the progress bar to its initial state and desactivate its events and transitions
-   **/
-  resetProgressBar() {
-    this.setProgress(0);
-    this.desactivate();
-  }
-
-  /**
-   * @method
-   * @name activateTransitions
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Enable the transition on the ProgressBar
-   **/
-  activateTransitions() {
-    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-  }
-
-  /**
-   * @method
-   * @name desactivateTransitions
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Disable the transition on the ProgressBar
-   **/
-  desactivateTransitions() {
-    // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
-    // Lag duration will be equal to the transition time otherwise
-    // Reset left and width transition to default, match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-    this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.4s ease 0s';
-    this._progress.current.style.transition = 'width 0s ease 0s';
-  }
-
-  /**
-   * @method
-   * @name toggleActive
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Toggle the ProgressBar active status
-   **/
-  toggleActive() {
-    if (!this._isActive) {
-      this.activate();
-    } else {
-      this.desactivate();
-    }
-  }
-
-  /**
-   * @method
-   * @name activate
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Activate the ProgressBar, set it visible, add animations and add mouse events
-   **/
-  activate() {
-    this._isActive = true;
-    this.setVisibility(true);
-    this._startAnimation();
-    this.activateTransitions();
-    this._addEvents();
-  }
-
-  /**
-   * @method
-   * @name desactivate
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Desactivate the ProgressBar, set it invisible, remove animations and remove mouse events
-   **/
-  desactivate() {
-    this._isActive = false;
-    this.setVisibility(false);
-    this._resetTimecode();
-    this._removeEvents();
-    this._stopAnimation();
-
-    setTimeout(() => { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
-      this.desactivateTransitions();
-    }, 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
-  }
-
-  /**
-   * @method
-   * @name adjustProgress
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Add/Substract a completion percentage to the ProgressBar
-   * @param {number} amount - The percentage amount to add/substract in range float[-100,100]
-   **/
-  adjustProgress(amount) {
-    this.setProgress(0 + amount);
-  }
-
-  /**
-   * @method
-   * @name updateDuration
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Update the duration values
-   * @param {number} duration - The track duration in seconds
-   **/
-  updateDuration(duration) {
-    this._duration = duration;
-    this._progress.right.innerHTML = Utils.secondsToTimecode(duration);
-  }
 
   /**
    * @method
@@ -438,56 +475,76 @@ class ProgressBar {
     }
   }
 
+
   /**
    * @method
-   * @name setVisibility
+   * @name adjustProgress
    * @public
    * @memberof ProgressBar
    * @author Arthur Beaulieu
    * @since August 2018
-   * @description Set the visibility status of the ProgressBar
-   * @param {boolean} isVisible - The visibility state
+   * @description Add/Substract a completion percentage to the ProgressBar
+   * @param {number} amount - The percentage amount to add/substract in range float[-100,100]
    **/
-  setVisibility(isVisible) {
-    if (isVisible) {
-      this._progress.moodbar.style.height = '25px'; // Match value w/ the one in view/components/_progresbar.scss ($progress-moodbar-height)
-      this._progress.moodbar.style.opacity = '1';
-      this._progress.moodbar.style.cursor = 'pointer';
-      this._progress.track.style.opacity = '1';
-      this._progress.track.style.cursor = 'pointer';
-      this._progress.left.style.opacity = '1';
-      this._progress.right.style.opacity = '1';
-      this._topbarLogo.style.opacity = '1';
-    } else {
-      this._progress.moodbar.style.height = '0';
-      this._progress.moodbar.style.opacity = '0';
-      this._progress.moodbar.style.cursor = 'default';
-      this._progress.track.style.opacity = '0';
-      this._progress.track.style.cursor = 'default';
-      this._progress.left.style.opacity = '0';
-      this._progress.right.style.opacity = '0';
-      this._topbarLogo.style.opacity = '0';
-    }
+  adjustProgress(amount) {
+    this.setProgress(amount);
   }
 
-  //  ----  GETTER METHODS   ----  //
 
-  getMoodbarContainer() {
+  /**
+   * @method
+   * @name resetProgressBar
+   * @public
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Reset the progress bar to its initial state and deactivate its events and transitions
+   **/
+  resetProgressBar() {
+    this.setProgress(0);
+    this.deactivate();
+  }
+
+
+  /**
+   * @method
+   * @name _setProgressFromEvent
+   * @private
+   * @memberof ProgressBar
+   * @author Arthur Beaulieu
+   * @since August 2018
+   * @description Move the progress along its track
+   * @param {number} xPos - The mouse X position on screen
+   **/
+  _setProgressFromEvent(xPos) {
+    const boundRect = this._progress.track.getBoundingClientRect();
+    let distance = ((xPos - boundRect.left) * 100) / boundRect.width;
+
+    if (distance < 0) {
+      distance = 0;
+    }
+
+    if (distance > 100) {
+      distance = 100;
+    }
+
+    mzk.setProgress(Utils.precisionRound(distance, 3));
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @public
+   * @member {object} - The ProgressBar moodbar DOM container */
+  get moodbarContainer() {
     return this._progress.moodbar;
   }
 
 
-  //  ----  SETTER METHODS   ----  //
-
-  setIsActive(isActive) {
-    this._isActive = isActive;
-  }
-  setIsMouseOver(isMouseOver) {
-    this._isMouseOver = isMouseOver;
-  }
-  setIsDragging(isDragging) {
-    this._isDragging = isDragging;
-  }
 }
+
 
 export default ProgressBar;

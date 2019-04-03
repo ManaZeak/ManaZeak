@@ -1,4 +1,5 @@
 import Playlist from './Playlist.js';
+import NewLibraryModal from "../../view/utils/modals/NewLibraryModal";
 'use strict';
 
 class Collection {
@@ -29,7 +30,7 @@ class Collection {
   _initialScan(playlist) {
     return new Promise((resolve) => {
       const options = {
-        LIBRARY_ID: playlist.getId()
+        LIBRARY_ID: playlist.id
       };
 
       mzk.komunikator.post('lib/initialScan/', options)
@@ -56,7 +57,7 @@ class Collection {
     return new Promise((resolve, reject) => {
       let intervalId = -1;
       const options = {
-        PLAYLIST_ID: playlist.getId()
+        PLAYLIST_ID: playlist.id
       };
 
       const checkStatus = () => {
@@ -67,7 +68,7 @@ class Collection {
               playlist.getArtistsFromServer(response)
                 .then(resolve)
                 .catch(errorCode => {
-                  Errors.raise({
+                  Logger.raise({
                     code: errorCode,
                     frontend: false
                   });
@@ -76,7 +77,7 @@ class Collection {
             }
           })
           .catch(errorCode => {
-            Errors.raise({
+            Logger.raise({
               code: errorCode,
               frontend: true
             });
@@ -177,12 +178,10 @@ class Collection {
           this._buildPlaylist(response);
           this._initialScan(this._playlists[0])
             .then(() => {
-              Shortcut.resumeAll(); // Restore all shortcuts
-              mzk.view.removeOverlay(); // Remove modal from main container
               resolve();
             });
         } else {
-          Errors.raise({
+          Logger.raise({
             code: response.ERROR_KEY,
             frontend: false
           });
@@ -201,16 +200,15 @@ class Collection {
             checkServerResponse(response);
           })
           .catch(response => {
-            Errors.raise({
+            Logger.raise({
               code: response,
               frontend: true
             });
           });
       };
 
-      Shortcut.pauseAll(); // Pause all shortcuts (espascially the stop propagation)
-      mzk.view.displayModal({
-        url: 'modals/newLibrary/',
+      new NewLibraryModal({
+        url: 'modals/newLibrary',
         callback: checkModalValues
       });
     });
