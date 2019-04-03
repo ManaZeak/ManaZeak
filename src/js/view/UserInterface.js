@@ -238,6 +238,13 @@ class UserInterface {
 
 
   /** @public
+   * @member {object} - The mzk footbar */
+  get footBar() {
+    return this._footBar;
+  }
+
+
+  /** @public
    * @member {object} - The scene current active view */
   get activeView() {
     return this._scene.view;

@@ -329,3 +329,42 @@
     bottom: -8px;
   }
 }
+
+.playback-rate-context {
+  align-items: center;
+  background-color: $mzk-color-bg;
+  border-top-left-radius: $mzk-border-radius;
+  border-top-right-radius: $mzk-border-radius;
+  bottom: $footbar-height;
+  display: flex;
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  transition: height 0.25s ease, opacity 0.25s ease;
+  width: auto; // Volumebar width and speedometer icon only
+
+  img {
+    height: 50%;
+    margin: 0 (2 * $footbar-controls-margin);
+    @include user-select(none);
+  }
+
+  div#playback-rate-text {
+    position: absolute;
+    color: $mzk-color-text-darker;
+    top: 3px;
+    left: calc(50% - 10px);
+    width: 20px;
+    text-align: center;
+    font-size: 0.8em;
+  }
+
+  img#reset-playback-rate {
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - (15px / 2));
+    height: 15px;
+    margin: 0;
+  }
+}

@@ -410,10 +410,26 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Triggered when the player reached the end of a track
-   **/
+   * @description Triggered when the player reached the end of a track **/
   trackEnded() {
     mzk.next();
+  }
+
+
+  /**
+   * @method
+   * @name setPlaybackRate
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since April 2019
+   * @description Alter the player's playback rate
+   * @param {number} value - The playback rate value to set in range float[0.25, 2] **/
+  setPlaybackRate(value) {
+    this.model.player.setPlaybackRate(value)
+      .then(playbackRate => {
+        this.ui.footBar.updatePlaybackRate(playbackRate);
+      });
   }
 
 
@@ -748,7 +764,6 @@ class Mzk {
     const selection = this.ui.activeView.selection;
     // User has no selection : we simply adds the datasetId to the queue
     if (selection.length === 0) {
-      console.log('No selection');
       const track = this.ui.getTrackById(datasetId);
 
       if (track) {
@@ -948,9 +963,17 @@ class Mzk {
 
 
   /** @public
-   * @member {boolean} - The player plaing state */
+   * @member {boolean} - The player playing state */
   get playerPlaying() {
     return this.model.player.isPlaying;
+  }
+
+
+
+  /** @public
+   * @member {boolean} - The player playback rate in range float[0.25, 2] */
+  get playbackRate() {
+    return this.model.player.playbackRate;
   }
 
 

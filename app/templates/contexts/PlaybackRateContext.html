@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<div class="context-transparent-overlay">
+  <div class="playback-rate-context">
+    <img id="volumebar-img" src="{% static "img/player/playbackrate-turtle.svg" %}" alt="player-volume">
+    <div id="playback-rate-text">1</div>
+    <div id="playback-rate-container">
+      <div id="playback-rate-thumb"></div>
+      <div id="playback-rate-current"></div>
+    </div>
+    <img id="reset-playback-rate" src="{% static "img/actions/stretch-x.svg" %}" alt="player-volume">
+    <img id="volumebar-img" src="{% static "img/player/playbackrate-hare.svg" %}" alt="player-volume">
+  </div>
+</div>

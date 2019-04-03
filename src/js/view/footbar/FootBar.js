@@ -1,6 +1,7 @@
 import VolumeBar from './components/VolumeBar.js';
 import ProgressBar from './components/ProgressBar.js';
 import QueueContext from '../utils/contexts/QueueContext.js';
+import PlaybackRateContext from '../utils/contexts/PlaybackRateContext.js';
 'use strict';
 
 
@@ -24,6 +25,7 @@ class FootBar {
       next: {},
       repeat: {},
       shuffle: {},
+      speedometer: {},
       queue: {}
     };
     /** @private
@@ -32,6 +34,9 @@ class FootBar {
     /** @private
      * @member {object} - The progress bar object */
     this._progressBar = {};
+    /** @private
+     * @member {object} - The PlaybackRate context */
+    this._playbackRateContext = {};
     /** @private
      * @member {object} - The Queue context */
     this._queueContext = {};
@@ -62,10 +67,15 @@ class FootBar {
     this._controls.next = document.getElementById('next');
     this._controls.repeat = document.getElementById('repeat');
     this._controls.shuffle = document.getElementById('shuffle');
+    this._controls.speedometer = document.getElementById('speedometer');
     this._controls.queue = document.getElementById('queue');
 
     this._volumeBar = new VolumeBar();
     this._progressBar = new ProgressBar();
+    this._playbackRateContext = new PlaybackRateContext({
+      target: document.body,
+      url: 'contexts/PlaybackRateContext/'
+    });
     this._queueContext = new QueueContext({
       target: document.body,
       url: 'contexts/queuecontext/'
@@ -107,6 +117,20 @@ class FootBar {
       mzk.toggleShuffleMode();
     });
 
+    this._controls.speedometer.addEventListener('click', () => {
+      if (document.body.contains(this._playbackRateContext.dom)) {
+        this._playbackRateContext.close();
+        this._playbackRateContext = null;
+      } else {
+        const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const clientRectangle = this._controls.speedometer.getBoundingClientRect();
+
+        this._playbackRateContext.open({
+          rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width + 5)
+        });
+      }
+    });
+
     this._controls.queue.addEventListener('click', () => {
       if (document.body.contains(this._queueContext.dom)) {
         this._queueContext.close();
@@ -143,6 +167,13 @@ class FootBar {
       this._controls.play.src = '../../static/img/player/pause.svg';
     } else {
       this._controls.play.src = '../../static/img/player/play.svg';
+    }
+  }
+
+
+  updatePlaybackRate(playbackRate) {
+    if (this._playbackRateContext !== null) {
+      this._playbackRateContext.updatePlaybackRate(playbackRate);
     }
   }
 
