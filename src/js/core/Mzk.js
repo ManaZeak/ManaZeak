@@ -692,7 +692,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          this.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID);
         }
       })
       .catch(error => {
@@ -717,7 +717,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          this.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID);
         }
       })
       .catch(error => {
