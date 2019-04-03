@@ -175,7 +175,7 @@ class ProgressBar {
         cancelAnimationFrame(this._rafId);
         this._rafId = -1;
       }
-      
+
       const progress = this._getProgressFromEvent(event.clientX);
       requestAnimationFrame(() => {
         this.setProgress(progress);

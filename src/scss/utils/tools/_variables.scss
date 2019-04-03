@@ -13,6 +13,8 @@ $footbar-controls-scale: 50%; // Usefull for volume bar image
 $footbar-controls-margin: 5px;
 $footbar-progress-height: 30px;
 $footbar-sides-width: 85px;
+$footbar-icons-size: 33px;
+$footbar-volumebar-width: 170px;
 $moodbar-height: 25px;
 $footbar-transition: ($transition-duration * 2);
 $progress-transition: $footbar-transition; // Variable defined in _footbar.scss
