@@ -13,7 +13,7 @@ class Model {
     this._player = {};
     this._collection = {};
     this._queue = [];
-    this._activeTrack = null;
+    this._playingTrack = null;
 
     this._init();
   }
@@ -34,6 +34,22 @@ class Model {
     this._collection = new Collection();
   }
 
+
+  _getQueuedTracks() {
+    const queuedTracks = [];
+    for (let i = 0; i < this._queue.length; ++i) {
+      const index = this._queue[i];
+      const track = this.getTrackById(index);
+
+      if (track) {
+        queuedTracks.push(track);
+      }
+    }
+
+    return queuedTracks;
+  }
+
+
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
   //  --------------------------------  PLAYER METHODS  ---------------------------------  //
@@ -51,7 +67,7 @@ class Model {
    **/
   changeTrack(id, url) {
     return new Promise(resolve => {
-      this._activeTrack = this.getTrackById(id);
+      this._playingTrack = this.getTrackById(id);
       this._player.changeTrack(url).then(resolve);
     });
   }
@@ -87,7 +103,7 @@ class Model {
   stopPlayback() {
     return new Promise(resolve => {
       this._player.stop();
-      this._activeTrack = null;
+      this._playingTrack = null;
       resolve();
     });
   }
@@ -174,7 +190,7 @@ class Model {
    **/
   setVolume(volume) {
     return new Promise(resolve => {
-      this._player.setVolume(volume);
+      this._player.volume = volume;
       resolve();
     });
   }
@@ -210,7 +226,7 @@ class Model {
    **/
   setProgress(progress) {
     return new Promise(resolve => {
-      this._player.setProgress(progress);
+      this._player.progress = progress;
       resolve();
     });
   }
@@ -233,16 +249,21 @@ class Model {
    **/
   initCollection(response) {
     return new Promise((resolve, reject) => {
+      const resolvePromise = () => {
+        mzk.stopLoading(true);
+        resolve(this._collection.activePlaylist);
+      };
+
       if (response.DONE && response.ERROR_KEY === null) {
         if (response.COLLECTION.length === 0) {
+          // We start loading in Collection._initialScan, when the new library modal is triggered with good values
           this._collection.newLibrary()
-            .then(() => {
-              resolve(this._collection.activePlaylist);
-            });
+            .then(resolvePromise);
         } else {
-          this._collection.buildUserCollection(response)
+          mzk.startLoading(true)
             .then(() => {
-              resolve(this._collection.activePlaylist);
+              this._collection.buildUserCollection(response)
+                .then(resolvePromise);
             });
         }
       } else {
@@ -251,16 +272,6 @@ class Model {
     });
   }
 
-  setActiveView(newView) {
-    return new Promise((resolve) => {
-      this._collection.activePlaylist.activeView = newView;
-      resolve();
-    });
-  }
-
-  get activeView() {
-    return this._collection.activePlaylist.activeView;
-  }
 
   /**
    * @method
@@ -296,6 +307,13 @@ class Model {
     });
   }
 
+  toggleShuffleMode() {
+    return new Promise(resolve => {
+      this._collection.activePlaylist.toggleShuffleMode();
+      resolve(this._collection.activePlaylist.shuffleMode);
+    });
+  }
+
   repeatTrack() {
     this._player.repeatTrack();
   }
@@ -314,43 +332,51 @@ class Model {
     return id;
   }
 
+
+  setActiveView(newView) {
+    return new Promise((resolve) => {
+      this._collection.activePlaylist.activeView = newView;
+      resolve();
+    });
+  }
+
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get repeatMode() {
     return this._collection.activePlaylist.repeatMode;
   }
 
-  get queuedTracks() {
-    const queuedTracks = [];
-
-    for (let i = 0; i < this._queue.length; ++i) {
-      const index = this._queue[i];
-
-      const track = this.getTrackById(index);
-
-      if (track) {
-        queuedTracks.push(track);
-      }
-    }
-
-    return queuedTracks;
+  get shuffleMode() {
+    return this._collection.activePlaylist.shuffleMode;
   }
 
-  getVolume() {
-    return this._player.getVolume();
+  get id() {
+    return this._collection.activePlaylist.id;
   }
-  getPlayer() {
+
+  get player() {
     return this._player;
   }
-  getCollection() {
+
+  get activeView() {
+      return this._collection.activePlaylist.activeView;
+  }
+
+  get collection() {
     return this._collection;
   }
-  getActiveTrack() {
-    return this._activeTrack;
+
+  get playingTrack() {
+    return this._playingTrack;
   }
 
   get queue() {
     return this._queue;
+  }
+
+  get queuedTracks() {
+    return this._getQueuedTracks();
   }
 }
 

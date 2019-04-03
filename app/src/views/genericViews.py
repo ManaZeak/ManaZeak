@@ -29,7 +29,7 @@ class GenericViews(object):
     #   @param request request given by the front
     #   @return the user menu template
     def userMenuContext(request):
-        return render(request, 'modals/userMenu.html')
+        return render(request, 'contexts/usermenucontext.html')
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
@@ -37,7 +37,7 @@ class GenericViews(object):
     #   @param request request given by the front
     #   @return the user menu template
     def changeViewContext(request):
-        return render(request, 'modals/changeView.html')
+        return render(request, 'contexts/changeviewcontext.html')
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')

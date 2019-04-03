@@ -1,18 +1,24 @@
-import Player from '../../../src/js/core/Player.js';
+import Player from '../../src/js/core/Player.js';
 
 window.mzk = {};
-var player = {};
+let player = {};
 
 describe('Player unit tests', function() {
+
 
   beforeEach(function() {
     player = new Player();
   });
 
+
   afterEach(function() {
-    let previousPlayer = document.getElementById('mzk-audio-player');
-    if (previousPlayer) { document.body.removeChild(previousPlayer); }
+    const previousPlayer = document.getElementById('mzk-audio-player');
+
+    if (previousPlayer) {
+      document.body.removeChild(previousPlayer);
+    }
   });
+
 
   it('Instanciation and initialization | covers Player constructor', function(done) {
     expect(player).not.toBe(null); // Player object has been created
@@ -24,30 +30,32 @@ describe('Player unit tests', function() {
     done();
   });
 
-  it('Volume modification | covers setVolume()', function(done) {
-    player.setVolume(-100); // OOB (lower overflow) setVolume()
+
+  it('Volume modification | covers volume setter', function(done) {
+    player.volume = -100; // OOB (lower overflow)
     expect(player._volume).toBe(0);
     expect(player._player.volume).toBe(0);
     expect(player._isMuted).toBe(true);
-    player.setVolume(100); // OOB (higher overflow) setVolume()
+    player.volume = 100; // OOB (higher overflow)
     expect(player._volume).toBe(1);
     expect(player._player.volume).toBe(1);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0); // Regular setVolume() to zero
+    player.volume = 0;
     expect(player._volume).toBe(0);
     expect(player._player.volume).toBe(0);
     expect(player._isMuted).toBe(true);
-    player.setVolume(0.5); // Regular setVolume() to half
+    player.volume = 0.5; // Half
     expect(player._volume).toBe(0.5);
     expect(player._player.volume).toBe(0.5);
     expect(player._isMuted).toBe(false);
-    player.setVolume(1); // Regular setVolume() to half
+    player.volume = 1;
     expect(player._volume).toBe(1);
     expect(player._player.volume).toBe(1);
     expect(player._isMuted).toBe(false);
 
     done();
   });
+
 
   it('Volume modification | covers adjustVolume()', function(done) {
     player.adjustVolume(-100); // OOB (lower overflow) adjustVolume()
@@ -68,8 +76,9 @@ describe('Player unit tests', function() {
     done();
   });
 
+
   it('Volume modification | covers mute(), unmute(), toggleMute()', function(done) {
-    player.setVolume(0.9);
+    player.volume = 0.9;
     player.mute(); // Mute player action
     expect(player._volume).toBe(0.9); // Old volume value has been stored
     expect(player._player.volume).toBe(0);
@@ -78,13 +87,13 @@ describe('Player unit tests', function() {
     expect(player._volume).toBe(0.9);
     expect(player._player.volume).toBe(0.9);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0);
+    player.volume = 0;
     expect(player._isMuted).toBe(true);
     player.unmute(); // UnMute player action
     expect(player._volume).toBe(0.5); // Player restore default half volume value
     expect(player._player.volume).toBe(0.5);
     expect(player._isMuted).toBe(false);
-    player.setVolume(0.9);
+    player.volume = 0.9;
     player.toggleMute();
     expect(player._volume).toBe(0.9); // Old volume value has been stored
     expect(player._player.volume).toBe(0);
@@ -94,15 +103,16 @@ describe('Player unit tests', function() {
     expect(player._player.volume).toBe(0.9);
     expect(player._isMuted).toBe(false);
 
-    done()
+    done();
   });
+
 
   it('Player playback | covers changeTrack(), pause(), play(), togglePlay()', function(done) {
     expect(player._player.src).toBe('');
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
         expect(player._player.src).not.toBe('');
-        expect(player._player.src).toBe('http://static.kevvv.in/sounds/callmemaybe.mp3');
+        expect(player._player.src).toBe(/* local tst fq */);
         expect(player._isPlaying).toBe(true);
         player.pause();
         expect(player._isPlaying).toBe(false);
@@ -118,7 +128,8 @@ describe('Player unit tests', function() {
         done();
       });
   });
-/*
+
+
   it('Player playback progress | covers adjustProgress(), repeatTrack(), stop(), trackEnded evt', function(done) {
     window.mzk.trackEnded = function() {
       expect(player._isPlaying).toBe(false);
@@ -129,44 +140,45 @@ describe('Player unit tests', function() {
       done();
     };
 
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
-        setTimeout(() => {
-            player.adjustProgress(50);
-            expect(Math.round(player._player.currentTime)).toBe(97);
-            player.repeatTrack();
-            expect(Math.round(player._player.currentTime)).toBe(0);
-            player.adjustProgress(-1000);
-            expect(Math.round(player._player.currentTime)).toBe(0);
-            player.adjustProgress(1000);
-            expect(Math.round(player._player.currentTime)).toBe(0);
+        window.setTimeout(() => {
+          player.adjustProgress(50);
+          expect(Math.round(player._player.currentTime)).toBe(97);
+          player.repeatTrack();
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          player.adjustProgress(-1000);
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          player.adjustProgress(1000);
+          expect(Math.round(player._player.currentTime)).toBe(0);
+          done();
         }, 500);
       });
   });
 
+
   it('Getter test | covers getIsPlaying(), getIsMuted(), getVolume(), getProgress(), getDuration(), getCurrentTime(), hasSource()', function(done) {
-    player.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3')
+    player.changeTrack(/* local tst fq */)
       .then(() => {
-        expect(player.getIsPlaying()).toBe(true);
+        expect(player.playing).toBe(true);
         player.pause();
-        expect(player.getIsPlaying()).toBe(false);
+        expect(player.playing).toBe(false);
         player.play();
-        expect(player.getIsMuted()).toBe(false);
+        expect(player.muted).toBe(false);
         player.mute();
-        expect(player.getIsMuted()).toBe(true);
-        expect(player.getVolume()).toBe(1);
+        expect(player.muted).toBe(true);
+        expect(player.volume).toBe(1);
         player.unmute();
-        expect(player.getIsMuted()).toBe(false);
-        expect(player.getVolume()).toBe(1);
+        expect(player.muted).toBe(false);
+        expect(player.volume).toBe(1);
 
         window.setTimeout(function() {
-          expect(Math.round(player.getProgress() * 100)).toBe(6);
-          expect(Math.round(player.getDuration())).toBe(193);
+          expect(Math.round(player.progress * 100)).toBe(8);
+          expect(Math.round(player.duration)).toBe(193);
           expect(player.hasSource()).toBe(true);
 
           done();
         }, 200);
       });
   });
-*/
 });

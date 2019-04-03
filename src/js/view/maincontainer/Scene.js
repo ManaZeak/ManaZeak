@@ -1,6 +1,6 @@
 import ListView from './views/ListView.js';
 import AlbumView from './views/AlbumView.js';
-import ViewSwitcher from './ViewSwitcher.js';
+import ViewSwitcherContext from '../utils/contexts/ViewSwitcherContext.js';
 'use strict';
 
 class Scene {
@@ -14,17 +14,23 @@ class Scene {
     this._scene = document.getElementById('scene');
     this._optionButton = document.getElementById('scene-view-option');
     this.view = {};
-    this._viewSwitcher = new ViewSwitcher({
-      target: this._scene,
-      url: 'modals/changeView/'
-    });
 
     this._sceneCommands = document.getElementById('scene-commands');
     this._activeViewLabel = this._sceneCommands.childNodes[1];
+    this._viewSwitcher = new ViewSwitcherContext({
+      target: document.body,
+      url: 'contexts/changeview/'
+    });
+
+
+    this._sceneManipulations = document.getElementById('scene-manipulation');
+    this._centerOnTop = document.getElementById('center-on-top');
     this._centerOnActiveTrack = document.getElementById('center-on-track');
+    this._centerOnBottom = document.getElementById('center-on-bottom');
 
     this._events();
   }
+
 
   _events() {
     this._activeViewLabel.addEventListener('click', () => {
@@ -35,9 +41,21 @@ class Scene {
       }
     });
 
+    this._centerOnTop.addEventListener('click', () => {
+      this.view.centerOn({
+        position: 'top'
+      });
+    });
+
     this._centerOnActiveTrack.addEventListener('click', () => {
       this.view.centerOn({
         index: this.view.playingTrackIndex
+      });
+    });
+
+    this._centerOnBottom.addEventListener('click', () => {
+      this.view.centerOn({
+        position: 'bottom'
       });
     });
 
@@ -46,8 +64,9 @@ class Scene {
     });
   }
 
+
   _optionClicked() {
-    let sceneContext = this._scene.querySelector('#scene-context');
+    let sceneContext = this._scene.querySelector('.scene-options');
 
     if (sceneContext !== null) { // Close context
       sceneContext.parentNode.remove();
@@ -56,15 +75,15 @@ class Scene {
 
     // Otherwise, append context, and fill it with its content
     const overlay = document.createElement('DIV');
-    overlay.classList.add('transparent-overlay');
+    overlay.classList.add('context-transparent-overlay'); // TODO move this else where no ? like in viewoptionscontext maybe ?
     overlay.addEventListener('click', (event) => {
-      if (!event.target.closest('#scene-context')) {
+      if (!event.target.closest('.scene-options')) {
         sceneContext.parentNode.remove();
       }
     }, true);
 
     sceneContext = document.createElement('DIV');
-    sceneContext.id = 'scene-context';
+    sceneContext.className = 'scene-options';
 
     overlay.appendChild(sceneContext);
     this._scene.appendChild(overlay);
@@ -73,9 +92,11 @@ class Scene {
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 
+
   stopPlayback() {
     this.view.stopPlayback(); // Warning, this is specific to listView so far
   }
+
 
   /**
    * @method
@@ -90,6 +111,7 @@ class Scene {
   addView(node) {
     this._scene.innerHTML = '';
     this._scene.appendChild(this._sceneCommands);
+    this._scene.appendChild(this._sceneManipulations);
     this._scene.appendChild(this._optionButton);
 
     const fragment = document.createDocumentFragment();
@@ -97,13 +119,6 @@ class Scene {
     this._scene.appendChild(fragment);
   }
 
-  extend() {
-    this.view.refreshView();
-  }
-
-  retract() {
-    this.view.refreshView();
-  }
 
   /**
    * @method
@@ -131,33 +146,37 @@ class Scene {
       this._activeViewLabel.innerHTML = 'Artists';
     }
 
-    this.addView(this.view.getDOMFragment());
-    this.view.addTracks(playlist.getArtists());
+    this.addView(this.view.dom);
+    this.view.addTracks(playlist.artists);
   }
+
 
   changeTrack(id) {
     this.view.changeTrack(id);
   }
 
+
+  centerOn(index) {
+    this.view.centerOn({
+      index: index
+    });
+  }
+
+
   getTrackById(id) {
     return this.view.getTrackById(id);
   }
 
-  getNextTrackId() {
-    return this.view.getNextTrackId();
+
+  isFirstTrack() {
+    return this.view.isFirstTrack();
   }
 
-  getPreviousTrackId() {
-    return this.view.getPreviousTrackId();
-  }
-
-  getFirstTrackId() {
-    return this.view.getFirstTrackId();
-  }
 
   isLastTrack() {
     return this.view.isLastTrack();
   }
+
 
   startLoading() {
     return new Promise(resolve => {
@@ -178,6 +197,21 @@ class Scene {
         }
         resolve();
     });
+  }
+
+
+  get nextTrackId() {
+    return this.view.nextTrackId;
+  }
+
+
+  get previousTrackId() {
+    return this.view.previousTrackId;
+  }
+
+
+  get firstTrackId() {
+    return this.view.firstTrackId;
   }
 }
 
