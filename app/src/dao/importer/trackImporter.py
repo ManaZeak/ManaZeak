@@ -13,12 +13,12 @@ loggerScan = logging.getLogger('scan')
 
 ## Import some tracks into the database.
 class TrackImporter(AbstractDao):
-# TODO: Add cover to track.
+    # TODO: Add cover to track.
 
     ## Merge the tracks into the database.
     #   @param track a list of tracks to import.
     #   @return a dict containing the track path linked to their id.
-    def mergeTrack(self, tracks):
+    def importTracks(self, tracks):
         loggerScan.info(str(len(tracks)) + ' tracks to import.')
         # Split the genre by the maximal object in a manual query
         splicedTracks = ListUtils.chunks(tracks, Constants.PARAMS_PER_REQUEST)
@@ -43,11 +43,13 @@ class TrackImporter(AbstractDao):
                'scanned=EXCLUDED.scanned, album_id=EXCLUDED.album_id, cover_id=EXCLUDED.cover_id, ' \
                '"fileType_id"=EXCLUDED."fileType_id", "moodAverage_id"=EXCLUDED."moodAverage_id", ' \
                'producer_id=EXCLUDED.producer_id ' \
-               'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'
-                                                          ' %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '
-                                                          '%s)'] * len(tracks)))
+               'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s, %s, '
+                                                          '%s, %s, %s, %s, %s, %s, %s, '
+                                                          '%s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
 
     ## Execute the sql request and returns the results.
+    #   @param tracks the tracks to be upsert into the database.
+    #   @return the track location linked to the track id.
     def _executeRequest(self, tracks):
         trackRef = dict()
         # Generating the request
@@ -59,8 +61,7 @@ class TrackImporter(AbstractDao):
             # Executing the query and fill the reference
             cursor.execute(sql, params)
             for row in cursor.fetchall():
-                loggerScan.info(str(row))
-                # trackRef[row[1]] = row[0]
+                trackRef[row[1]] = row[0]
         return trackRef
 
     ## Prepares the tracks for the upsert.
@@ -68,10 +69,10 @@ class TrackImporter(AbstractDao):
         params = []
         for track in tracks:
             tmp = [track.location, track.fileName, track.size, track.moodbar, track.duration, track.bitRate,
-                           track.bitRateMode, track.sampleRate, track.title, int(track.year),
-                           track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
-                           track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
-                           track.producerId, track.playCounter]
+                   track.bitRateMode, track.sampleRate, track.title, int(track.year),
+                   track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
+                   track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
+                   track.producerId, track.playCounter]
             loggerScan.info(tmp)
             params.extend(tmp)
         return params

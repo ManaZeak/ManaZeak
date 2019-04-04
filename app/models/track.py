@@ -62,8 +62,6 @@ class Artist(models.Model):
     realName = models.CharField(max_length=1000, null=True)
     ## The description of the album
     description = models.CharField(max_length=1000, null=True)
-    ## The genre linked to the track.
-    genres = models.ManyToManyField(Genre)
 
     #       STATS
     ## Stat of the artist
@@ -166,5 +164,3 @@ class Track(models.Model):
     #           FLAG
     ## If the track has been scanned by the rescan.
     scanned = models.BooleanField(default=False)
-    ## A hash for linking the imported tracks to the tracks to import FIXME: voir si avec ça ou non
-    # importHash = models.IntegerField()

@@ -1,10 +1,10 @@
 import logging
 
-from app.src.dao.albumImporter import AlbumImporter
-from app.src.dao.artistImporter import ArtistImporter
-from app.src.dao.genreImporter import GenreImporter
-from app.src.dao.producerImporter import ProducerImporter
-from app.src.dao.trackImporter import TrackImporter
+from app.src.dao.importer.albumImporter import AlbumImporter
+from app.src.dao.importer.artistImporter import ArtistImporter
+from app.src.dao.importer.genreImporter import GenreImporter
+from app.src.dao.importer.producerImporter import ProducerImporter
+from app.src.dao.importer.trackImporter import TrackImporter
 
 
 loggerScan = logging.getLogger('scan')
@@ -29,6 +29,7 @@ class LocalTrackImporter(object):
     ## Insert or update the tracks in the database.
     def insertLocalTracks(self):
         loggerScan.info('Starting to insert the tracks into the database.')
+        # Inserting the objects into the database.
         # Merge genre into the database and fill the reference
         self._importGenre()
         # Imports the artists (including composers and performers)
@@ -39,22 +40,28 @@ class LocalTrackImporter(object):
         self._importAlbums()
         # Imports the tracks
         self._importTracks()
+        # Creating the links between the objects inserted.
+
         loggerScan.info('The insert of objects into the database is finished')
 
     ## Imports the genres of the indexed tracks.
     def _importGenre(self):
         genreImporter = GenreImporter()
-        self.genreReference = genreImporter.mergeGenres(self.trackContainer.genres)
+        self.genreReference = genreImporter.importGenres(self.trackContainer.genres)
 
     ## Imports the artists of the indexed tracks.
     def _importArtists(self):
         artistImporter = ArtistImporter()
-        self.artistReference = artistImporter.mergeArtists(self.trackContainer.artists)
+        self.artistReference = artistImporter.importArtists(self.trackContainer.artists)
 
     ## Imports the producers of the indexed tracks.
     def _importProducers(self):
         producerImporter = ProducerImporter()
-        self.producerReference = producerImporter.mergeProducer(self.trackContainer.producers)
+        self.producerReference = producerImporter.importProducers(self.trackContainer.producers)
+        # Find the id of each track producer.
+        for track in self.trackContainer.tracks[0]:
+            if track.producer in self.producerReference:
+                track.producerId = self.producerReference[track.producer]
 
     ## Imports the albums of the indexed tracks
     def _importAlbums(self):
@@ -64,15 +71,23 @@ class LocalTrackImporter(object):
             self.trackContainer.albums[album].fillProducerIdWithRef(self.producerReference)
         albumImporter = AlbumImporter()
         self.albumReference = albumImporter.importAlbums(self.trackContainer.albums)
-
-    def _importTracks(self):
-        # FIXME : remplir la ref des track par ce qu'on a dans les ref
         # Find the id of each album.
         for album in self.trackContainer.albums:
             self.trackContainer.albums[album].findId(self.albumReference)
-        # Find the id of each track producer.
-        for track in self.trackContainer.tracks[0]:
-            if track.producer in self.producerReference:
-                track.producerId = self.producerReference[track.producer]
+
+    ## Imports the tracks into the database.
+    def _importTracks(self):
         trackImporter = TrackImporter()
-        trackImporter.mergeTrack(self.trackContainer.tracks[0])
+        trackReference = trackImporter.importTracks(self.trackContainer.tracks[0])
+        # Find the id for each track
+        for track in self.trackContainer.tracks:
+            track.id = trackReference[track.location]
+
+    ## Insert the id of genres and track into the link table.
+    def _linkTracksToGenres(self):
+        # Creating a list of tuples of {trackId, genreId}
+        tracksToLink = []
+        for track in self.trackContainer.tracks:
+            for genre in track.genres:
+                tracksToLink.append((track.id, self.genreReference[genre]))
+

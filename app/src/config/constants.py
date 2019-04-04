@@ -2,6 +2,3 @@
 class Constants(object):
     ## Number of request in a single SQL batch
     PARAMS_PER_REQUEST = 5000
-
-
-
