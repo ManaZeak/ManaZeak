@@ -57,8 +57,16 @@ class PlaylistService(object):
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
     ## Send a request to the nginx server to send a song to the user
+    #   @param request the request of the user.
+    #   @param path the path of the track requested by the user.
     def getTrack(request, path):
-        logger.info('asked for :' + path)
         response = HttpResponse()
         response['X-Accel-Redirect'] = '/library/%s' % path
         return response
+
+    @staticmethod
+    ## Get the tracks of a playlist.
+    #   @param request the request containing the id of the playlist.
+    #   @return the tracks of the playlist.
+    def getTracks(request):
+        pass

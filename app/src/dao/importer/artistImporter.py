@@ -9,13 +9,14 @@ from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
+
 ## Import some artists into the database.
 class ArtistImporter(AbstractDao):
 
     ## Merge the artists into the database.
     #   @param artists a set containing the artists to insert into the database.
     #   @return a dict containing the artists name linked to its id.
-    def mergeArtists(self, artists):
+    def importArtists(self, artists):
         artistsRef = dict()
         loggerScan.info(str(len(artists)) + ' artists to import.')
         # Split the genre by the maximal object in a manual query (converting the dict into a list)
