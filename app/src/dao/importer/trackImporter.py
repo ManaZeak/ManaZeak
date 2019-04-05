@@ -56,7 +56,6 @@ class TrackImporter(AbstractDao):
         trackRef = dict()
         # Generating the request
         sql = self._generateRequest(tracks)
-        loggerScan.info(str(len(tracks)))
         # Getting the parameters
         params = self._generateParams(tracks)
         with closing(connection.cursor()) as cursor:

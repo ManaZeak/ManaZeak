@@ -5,7 +5,10 @@ from app.src.dao.importer.artistImporter import ArtistImporter
 from app.src.dao.importer.genreImporter import GenreImporter
 from app.src.dao.importer.producerImporter import ProducerImporter
 from app.src.dao.importer.trackImporter import TrackImporter
+from app.src.dao.linker.artistToTrackLinker import ArtistToTrackLinker
+from app.src.dao.linker.composerToTrackLinker import ComposerToTrackLinker
 from app.src.dao.linker.genreToTrackLinker import GenreToTrackLinker
+from app.src.dao.linker.performerToTrackLinker import PerformerToTrackLinker
 
 loggerScan = logging.getLogger('scan')
 
@@ -41,7 +44,14 @@ class LocalTrackImporter(object):
         # Imports the tracks
         self._importTracks()
         # Creating the links between the objects inserted.
+        # Creating the links between tracks and genres.
         self._linkTracksToGenres()
+        # Creating the links between tracks and artists.
+        self._linkTracksToArtists()
+        # Creating the links between tracks and composers.
+        self._linkTracksToComposers()
+        # Creating the links between tracks and performers.
+        self._linkTracksToPerformer()
         loggerScan.info('The insert of objects into the database is finished')
 
     ## Imports the genres of the indexed tracks.
@@ -93,4 +103,32 @@ class LocalTrackImporter(object):
         linker = GenreToTrackLinker()
         linker.linkGenreToTracks(tracksToLink)
 
+    ## Insert the id of artists and the track into the link table.
+    def _linkTracksToArtists(self):
+        # Creating a list of tuples of (trackId, artistId)
+        tracksToLink = []
+        for track in self.trackContainer.tracks[0]:
+            for artist in track.artists:
+                tracksToLink.append((track.id, self.artistReference[artist.name]))
+        linker = ArtistToTrackLinker()
+        linker.linkArtistToTracks(tracksToLink)
 
+    ## Insert the id of composer and the track into the link table.
+    def _linkTracksToComposers(self):
+        # Creating a list of tuples of (trackId, composerId)
+        tracksToLink = []
+        for track in self.trackContainer.tracks[0]:
+            for composer in track.composers:
+                tracksToLink.append((track.id, self.artistReference[composer.name]))
+        linker = ComposerToTrackLinker()
+        linker.linkArtistToTracks(tracksToLink)
+
+    ## Insert the id of performer and the track into the link table.
+    def _linkTracksToPerformer(self):
+        # Creating a list of tuples of (trackId, performerId)
+        tracksToLink = []
+        for track in self.trackContainer.tracks[0]:
+            for performer in track.performers:
+                tracksToLink.append((track.id, self.artistReference[performer.name]))
+        linker = PerformerToTrackLinker()
+        linker.linkArtistToTracks(tracksToLink)
