@@ -1,4 +1,7 @@
 import logging
+from contextlib import closing
+
+from django.db import connection
 
 from app.src.config.constants import Constants
 from app.src.dao.abstractDao import AbstractDao
@@ -21,13 +24,25 @@ class GenreToTrackLinker(AbstractDao):
     ## Generating the request for inserting the links into the database.
     #   @param links the object to insert into the database.
     def _generateRequest(self, links):
-        return 'INSERT INTO app_producer (name) VALUES {} ' \
-               'ON CONFLICT (name) ' \
-               'DO UPDATE SET name = EXCLUDED.name returning id, name'.format(', '.join(['(%s)'] * len(genres)))
+        return 'INSERT INTO app_track_genres (track_id, genre_id) VALUES {} '\
+            .format(', '.join(['(%s, %s)'] * len(links)))
 
-    def _executeRequest(self, objectsToSave):
-        sql = self._generateRequest()
+    ## Inserting the object into the database.
+    #   @param links the links between the tracks and the genres.
+    def _executeRequest(self, links):
+        # Generating the sql request
+        sql = self._generateRequest(links)
+        # Generating the params for the request
+        params = self._generateParams(links)
+        with closing(connection.cursor()) as cursor:
+            # Executing the query and fill the reference
+            cursor.execute(sql, params)
 
-
-    def _generateParams(self, objectsToSave):
-        pass
+    ## Generate the list containing the params of the sql request.
+    #   @param links the links to be inserted into the database.
+    #   @return the params of the sql request.
+    def _generateParams(self, links):
+        params = []
+        for link in links:
+            params.extend([link[0], link[1]])
+        return params
