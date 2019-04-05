@@ -32,7 +32,5 @@ class LocalAlbum(object):
     ## Find it's id into the data inserted into the database.
     #   @param albumRef the reference of the album inserted.
     def findId(self, albumRef):
-        loggerScan.info('Searching for : ' + self.location)
         if self.location in albumRef:
-            loggerScan.info('found')
             self.albumId = albumRef[self.location]
