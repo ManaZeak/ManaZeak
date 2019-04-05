@@ -22,9 +22,11 @@ class TrackImporter(AbstractDao):
         loggerScan.info(str(len(tracks)) + ' tracks to import.')
         # Split the genre by the maximal object in a manual query
         splicedTracks = ListUtils.chunks(tracks, Constants.PARAMS_PER_REQUEST)
+        trackReference = dict()
         # Executing the query for each sub group of genre
         for subTracks in splicedTracks:
-            self._executeRequest(subTracks)
+            trackReference = {**self._executeRequest(subTracks), **trackReference}
+        return trackReference
 
     ## Generate a sql request with the given params
     def _generateRequest(self, tracks):
@@ -68,11 +70,9 @@ class TrackImporter(AbstractDao):
     def _generateParams(self, tracks):
         params = []
         for track in tracks:
-            tmp = [track.location, track.fileName, track.size, track.moodbar, track.duration, track.bitRate,
-                   track.bitRateMode, track.sampleRate, track.title, int(track.year),
-                   track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
-                   track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
-                   track.producerId, track.playCounter]
-            loggerScan.info(tmp)
-            params.extend(tmp)
+            params.extend([track.location, track.fileName, track.size, track.moodbar, track.duration, track.bitRate,
+                           track.bitRateMode, track.sampleRate, track.title, int(track.year),
+                           track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
+                           track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
+                           track.producerId, track.playCounter])
         return params
