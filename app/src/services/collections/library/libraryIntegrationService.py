@@ -53,7 +53,8 @@ class LibraryIntegrationService(object):
 
         # Launching the integration into the database
         trackImporter = LocalTrackImporter(trackContainer)
-        trackImporter.insertLocalTracks()
+        trackImporter.insertLocalTracks(library.playlist.id)
+
         # raise UserException(ErrorEnum.NOT_IMPLEMENTED)
         # FIXME : integrates the data into the database
 
