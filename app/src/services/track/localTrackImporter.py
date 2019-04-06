@@ -10,6 +10,7 @@ from app.src.dao.linker.artistToTrackLinker import ArtistToTrackLinker
 from app.src.dao.linker.composerToTrackLinker import ComposerToTrackLinker
 from app.src.dao.linker.genreToTrackLinker import GenreToTrackLinker
 from app.src.dao.linker.performerToTrackLinker import PerformerToTrackLinker
+from app.src.dao.linker.playlistToTrackLinker import PlaylistToTrackLinker
 
 loggerScan = logging.getLogger('scan')
 
@@ -31,7 +32,7 @@ class LocalTrackImporter(object):
         self.trackContainer = trackContainer
 
     ## Insert or update the tracks in the database.
-    def insertLocalTracks(self):
+    def insertLocalTracks(self, playlistId):
         loggerScan.info('Starting to insert the tracks into the database.')
         # Inserting the objects into the database.
         # Merge genre into the database and fill the reference
@@ -55,6 +56,8 @@ class LocalTrackImporter(object):
         self._linkTracksToComposers()
         # Creating the links between tracks and performers.
         self._linkTracksToPerformer()
+        # Creating the links between the playlist and the track
+        self._linkPlaylistToTrack(playlistId)
         loggerScan.info('The insert of objects into the database is finished')
 
     ## Imports the genres of the indexed tracks.
@@ -143,3 +146,11 @@ class LocalTrackImporter(object):
                 tracksToLink.append((track.id, self.artistReference[performer.name]))
         linker = PerformerToTrackLinker()
         linker.linkArtistToTracks(tracksToLink)
+
+    def _linkPlaylistToTrack(self, playlistId):
+        # Creating a list of tuples of (playlistId, trackId)
+        tracksToLink = []
+        for track in self.trackContainer.tracks[0]:
+            tracksToLink.append((playlistId, track.id))
+        linker = PlaylistToTrackLinker()
+        linker.linkPlaylistToTracks(tracksToLink)
