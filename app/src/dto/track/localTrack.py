@@ -9,11 +9,14 @@ class LocalTrack(object):
 
     ## Constructor
     def __init__(self):
+        ## The id of track
         self.id = None
         ## The path of the track.
         self.location = ''
         ## The path of the cover.
         self.coverLocation = ''
+        ## The cover id
+        self.coverId = None
         ## The filename of the track.
         self.fileName = ''
         ## The title of the app.

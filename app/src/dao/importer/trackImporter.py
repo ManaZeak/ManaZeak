@@ -32,7 +32,8 @@ class TrackImporter(AbstractDao):
     def _generateRequest(self, tracks):
         return 'INSERT INTO app_track (location, "fileName", "fileSize", mood, duration, "bitRate", "bitRateMode", ' \
                '"sampleRate", title, year, lyrics, comment, "trackNumber", "trackTotal", ' \
-               '"discNumber", bpm, "downloadCounter", scanned, album_id, "fileType_id", producer_id, "playCounter") ' \
+               '"discNumber", bpm, "downloadCounter", scanned, album_id, "fileType_id", producer_id,' \
+               ' "playCounter", cover_id) ' \
                'VALUES {} ' \
                'ON CONFLICT (location) ' \
                'DO UPDATE SET location=EXCLUDED.location, "fileName"=EXCLUDED."fileName", ' \
@@ -47,7 +48,7 @@ class TrackImporter(AbstractDao):
                'producer_id=EXCLUDED.producer_id ' \
                'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s, %s, '
                                                           '%s, %s, %s, %s, %s, %s, %s, '
-                                                          '%s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
+                                                          '%s, %s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
 
     ## Execute the sql request and returns the results.
     #   @param tracks the tracks to be upsert into the database.
@@ -73,5 +74,5 @@ class TrackImporter(AbstractDao):
                            track.bitRateMode, track.sampleRate, track.title, int(track.year),
                            track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
                            track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
-                           track.producerId, track.playCounter])
+                           track.producerId, track.playCounter, track.coverId])
         return params
