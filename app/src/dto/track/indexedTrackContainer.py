@@ -20,6 +20,8 @@ class IndexedTrackContainer(object):
         self.artists = dict()
         ## The albums names present in the indexed tracks.
         self.albums = dict()
+        ## The cover location present in the indexed tracks.
+        self.covers = set()
         ## The number of track inside the container.
         self.tracksInContainer = 0
 
@@ -45,6 +47,7 @@ class IndexedTrackContainer(object):
             # Adding the objects
             self.tracks.append(container[0].tracks)
             self.genres.update(container[0].genres)
+            self.covers.update(container[0].covers)
             self.producers.update(container[0].producers)
             self.artists = {**self.artists, **container[0].artists}
             self.albums = {**self.albums, **container[0].albums}
@@ -71,6 +74,8 @@ class IndexedTrackContainer(object):
         self.producers.add(track.producer)
         # Adding the album
         self._addAlbumToAlbums(track.album)
+        # Adding the cover
+        self.covers.add(track.coverLocation)
         # Incrementing the number of track in the container
         self.tracksInContainer += 1
 

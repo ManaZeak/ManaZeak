@@ -2,6 +2,7 @@ import logging
 
 from app.src.dao.importer.albumImporter import AlbumImporter
 from app.src.dao.importer.artistImporter import ArtistImporter
+from app.src.dao.importer.coverImporter import CoverImporter
 from app.src.dao.importer.genreImporter import GenreImporter
 from app.src.dao.importer.producerImporter import ProducerImporter
 from app.src.dao.importer.trackImporter import TrackImporter
@@ -41,6 +42,8 @@ class LocalTrackImporter(object):
         self._importProducers()
         # Imports the albums
         self._importAlbums()
+        # Imports the covers
+        self._importCovers()
         # Imports the tracks
         self._importTracks()
         # Creating the links between the objects inserted.
@@ -73,7 +76,7 @@ class LocalTrackImporter(object):
             if track.producer in self.producerReference:
                 track.producerId = self.producerReference[track.producer]
 
-    ## Imports the albums of the indexed tracks
+    ## Imports the albums of the indexed tracks.
     def _importAlbums(self):
         # fill the albums with the references
         for track in self.trackContainer.tracks[0]:
@@ -84,6 +87,14 @@ class LocalTrackImporter(object):
         # Find the id of each album.
         for track in self.trackContainer.tracks[0]:
             track.album.findId(self.albumReference)
+
+    ## Imports the cover of the indexed tracks.
+    def _importCovers(self):
+        coverImporter = CoverImporter()
+        coverReference = coverImporter.importCovers(self.trackContainer.covers)
+        # Filling the id of the covers in the track object.
+        for track in self.trackContainer.tracks[0]:
+            track.coverId = coverReference[track.coverLocation]
 
     ## Imports the tracks into the database.
     def _importTracks(self):

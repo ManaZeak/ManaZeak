@@ -7,13 +7,13 @@ from app.models import MoodAverage, TrackInScopeStats
 ## This class is describing the table fileType.
 class FileType(models.Model):
     ## The name of the file type (mp3, flac...).
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=10)
 
 
 ## The object representing an extracted cover
 class Cover(models.Model):
     ## The path of the cover
-    location = models.URLField(max_length=1000, null=True)
+    location = models.URLField(max_length=1000, null=True, unique=True)
 
 
 ## The producer of a track or an album.
