@@ -483,14 +483,14 @@ class Player {
       if (percentage === 0) {
         _setPlaybackRate(0.5);
       } else if (percentage > 0 && percentage < 50) {
-        /* Result = ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow; */
+        /* Result := ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow */
         const formattedPercentage = percentage * 2; // Format [0, 50] to [0, 100]
         const value = (formattedPercentage / 100) * (1 - 0.5) + 0.5;
         _setPlaybackRate(value);
       } else if (percentage === 50) {
         _setPlaybackRate(1);
       } else if (percentage > 50 && percentage < 100) {
-        /* Result := ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow; */
+        /* Result := ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow */
         const formattedPercentage = (percentage * 2) - 100; // Format [0, 50] to [0, 100]
         const value = (formattedPercentage / 100) + 1;
         _setPlaybackRate(value);
