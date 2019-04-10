@@ -30,7 +30,7 @@ class PlaybackRateContext extends ContextMenu {
       requestAnimationFrame(() => {
         this._dom.container.style.opacity = `1`;
         requestAnimationFrame(() => {
-          this._dom.container.style.height = `50px`;
+          this._dom.container.style.transform = `translateY(0)`;
         });
 
         setTimeout(() => {
@@ -46,7 +46,7 @@ class PlaybackRateContext extends ContextMenu {
       requestAnimationFrame(() => {
         this._dom.container.style.opacity = `0`;
         requestAnimationFrame(() => {
-          this._dom.container.style.height = `0`;
+          this._dom.container.style.transform = `translateY(50px)`;
         });
       });
 

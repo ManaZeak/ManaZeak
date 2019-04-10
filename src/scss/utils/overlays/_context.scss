@@ -379,10 +379,11 @@
   border-top-right-radius: $mzk-border-radius;
   bottom: $footbar-height;
   display: flex;
-  height: 0;
+  height: 50px;
   opacity: 0;
   position: absolute;
-  transition: height 0.25s ease, opacity 0.25s ease;
+  transform: translateY(50px);
+  transition: transform .1s ease-out, opacity .1s ease-in;
   width: auto; // Volumebar width and speedometer icon only
 
   img {
