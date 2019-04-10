@@ -140,7 +140,7 @@ class FootBar {
 
         this._queueContext.open({
           rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width),
-          queue: mzk.model.queuedTracks
+          queuedTracks: mzk.model.queuedTracks
         });
       }
     });

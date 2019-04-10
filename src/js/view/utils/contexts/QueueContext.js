@@ -53,14 +53,11 @@ class QueueContext extends ContextMenu {
 
       const actions = document.createElement('DIV');
       const navUp = document.createElement('IMG');
-      const remove = document.createElement('IMG');
       const navDown = document.createElement('IMG');
       navUp.src = '/static/img/navigation/nav-up.svg';
-      remove.src = '/static/img/actions/delete.svg';
       navDown.src = '/static/img/navigation/nav-down.svg';
       this._moveTrackInQueueEvents(navDown, navUp, i);
       actions.appendChild(navUp);
-      //actions.appendChild(remove);
       actions.appendChild(navDown);
 
 
@@ -85,8 +82,8 @@ class QueueContext extends ContextMenu {
   }
 
 
-  open(options) { // TODO change to queue queuedTracks
-    this._fillQueueTracksContainer(options.queue);
+  open(options) {
+    this._fillQueueTracksContainer(options.queuedTracks);
 
     this._dom.style.right = `${options.rightOffset}px`;
     this._target.appendChild(this._overlay);
