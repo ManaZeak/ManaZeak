@@ -170,6 +170,11 @@ class UserInterface {
   }
 
 
+  updateQueuedTracks(queuedTracks) {
+    this._footBar.updateQueuedTracks(queuedTracks);
+  }
+
+
   getTrackById(id) {
     return this._scene.getTrackById(id);
   }
