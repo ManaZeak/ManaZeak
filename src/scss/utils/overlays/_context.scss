@@ -116,6 +116,14 @@
       line-height: 30px;
       padding-left: $padding;
     }
+
+    &.add-to-queue::before {
+      content: '+';
+      color: #56D45B;
+      position: absolute;
+      font-weight: bold;
+      left: 2px;
+    }
   }
 }
 
@@ -146,11 +154,11 @@
 
     .queued-track {
       height: 50px;
-      min-width: 275px;
+      width: 330px;
       display: grid;
-      grid-template-columns: 70px 1fr;
+      grid-template-columns: 70px 1fr 30px;
       grid-template-rows: 1fr 1fr;
-      grid-template-areas: "img title" "img composer";
+      grid-template-areas: "img title nav" "img composer nav";
       align-items: center;
       margin: ($margin / 2) 0;
 
@@ -163,26 +171,60 @@
 
       p {
         align-self: end;
+
+        &:first-child {
+          grid-area: title;
+        }
+
+        &:last-child {
+          grid-area: composer;
+        }
       }
 
-      p:first-child {
-        grid-area: title;
+      div {
+        grid-area: nav;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+
+        img {
+          height: 25px;
+          width: 25px;
+          cursor: pointer;
+        }
       }
 
-      p:last-child {
-        grid-area: composer;
-      }
-    }
+      &:first-child {
+        div {
+          height: 100%;
+          justify-content: flex-end;
 
-    &::after {
-      content: '';
-      background: url('/static/img/player/queue.svg') no-repeat right;
-      background-size: 50px;
-      opacity: 0.05;
-      width: 100%;
-      height: 50px;
-      position: absolute;
-      top: 0;
+          & img:first-child {
+            display: none;
+          }
+        }
+      }
+
+      &:last-child {
+        div {
+          height: 100%;
+          justify-content: flex-start;
+
+          & img:last-child {
+            display: none;
+          }
+        }
+      }
+
+      &::before {
+        content: attr(data-before); // Attribute set in Js
+        position: absolute;
+        color: $mzk-color-primary;
+        right: 0;
+        width: 25px;
+        text-align: center;
+        font-size: 0.9em;
+      }
     }
   }
 

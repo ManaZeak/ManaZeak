@@ -35,23 +35,6 @@ class Model {
   }
 
 
-  _getQueuedTracks() {
-    const queuedTracks = [];
-    for (let i = 0; i < this._queue.length; ++i) {
-      const index = this._queue[i];
-      const track = this.getTrackById(index);
-
-      if (track) {
-        queuedTracks.push(track);
-      }
-    }
-
-    return queuedTracks;
-  }
-
-
-  //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
   //  --------------------------------  PLAYER METHODS  ---------------------------------  //
 
   /**
@@ -314,9 +297,11 @@ class Model {
     });
   }
 
+
   repeatTrack() {
     this._player.repeatTrack();
   }
+
 
   appendToQueue(id) {
     // Queue is exclusive. To make it an option, just change the test
@@ -324,6 +309,7 @@ class Model {
       this._queue.push(id);
     }
   }
+
 
   getNextFromQueue() {
     const id = this._queue[0];
@@ -333,6 +319,57 @@ class Model {
     }
 
     return id;
+  }
+
+
+  swapQueueUp(index) {
+    if (this._queue.length > index) {
+      const swap = this._queue[index - 1];
+      this._queue[index - 1] = this._queue[index];
+      this._queue[index] = swap;
+    }
+
+    mzk.setQueueFromArray(this._getQueuedTracks());
+  }
+
+
+  swapQueueDown(index) {
+    if (index >= 0) {
+      const swap = this._queue[index + 1];
+      this._queue[index + 1] = this._queue[index];
+      this._queue[index] = swap;
+    }
+
+    mzk.setQueueFromArray(this._getQueuedTracks());
+  }
+
+  setQueueFromArray(queuedTracks) {
+    return new Promise(resolve => {
+      this._queue = []; // Clear old queue
+
+      for (let i = 0; i < queuedTracks.length; ++i) {
+        if (this._queue.indexOf(queuedTracks[i].id) === -1) {
+          this._queue.push(queuedTracks[i].id);
+        }
+      }
+
+      resolve(queuedTracks);
+    });
+  }
+
+
+  _getQueuedTracks() {
+    const queuedTracks = [];
+    for (let i = 0; i < this._queue.length; ++i) {
+      const index = this._queue[i];
+      const track = this.getTrackById(index);
+
+      if (track) {
+        queuedTracks.push(track);
+      }
+    }
+
+    return queuedTracks;
   }
 
 
