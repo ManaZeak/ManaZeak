@@ -171,6 +171,9 @@
 
       p {
         align-self: end;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
 
         &:first-child {
           grid-area: title;
