@@ -101,6 +101,10 @@ elif [ $1 = "sonar-scanner" ]; then
         eval "node_modules/sonar-scanner/bin/sonar-scanner -D sonar.login=$2"
     fi
 
+elif [ $1 = 'gource' ]; then
+    eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --user-image-dir ./static/img/about -r 60"
+    echo -e "If nothing happens, please ensure you have gource installed on your system."
+
 elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
     printf -- "#  ManaZeak-cli v$vmzk, available commands:\n#\n"
     printf -- "#  ./mzk.sh init : Run the initialisation wizard\n"
