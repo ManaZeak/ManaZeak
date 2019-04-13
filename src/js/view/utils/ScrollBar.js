@@ -106,8 +106,11 @@ class ScrollBar {
     this._wrapper.firstChild.style.scrollBehavior = 'inherit';
     this._bar.classList.add('scrollbar-grabbed');
     document.body.classList.add('scrollbar-grabbed');
-    document.addEventListener('mousemove', this._drag);
-    document.addEventListener('mouseup', this._stopDrag);
+
+    requestAnimationFrame(() => {
+      document.addEventListener('mousemove', this._drag);
+      document.addEventListener('mouseup', this._stopDrag);
+    });
   }
 
   /**
