@@ -390,6 +390,7 @@
   width: auto; // Volumebar width and speedometer icon only
 
   img {
+    cursor: pointer;
     height: 50%;
     margin: 0 (2 * $footbar-controls-margin);
     @include user-select(none);
