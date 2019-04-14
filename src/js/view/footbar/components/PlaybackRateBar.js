@@ -18,7 +18,9 @@ class PlaybackRateBar {
       current: {},
       thumb: {},
       text: {},
-      reset: {}
+      reset: {},
+      slower: {},
+      faster: {}
     };
     /** @private
      * @member {boolean} - Flag to notify that user is currently dragging the volume bar thumb */
@@ -49,7 +51,9 @@ class PlaybackRateBar {
       current: document.getElementById('playback-rate-current'),
       thumb: document.getElementById('playback-rate-thumb'),
       text: document.getElementById('playback-rate-text'),
-      reset: document.getElementById('reset-playback-rate')
+      reset: document.getElementById('reset-playback-rate'),
+      slower: document.getElementById('playback-rate-slower'),
+      faster: document.getElementById('playback-rate-faster')
     };
   }
 
@@ -66,6 +70,8 @@ class PlaybackRateBar {
   _events() {
     this._playbackRate.container.addEventListener('mousedown', this._mouseDown.bind(this));
     this._playbackRate.reset.addEventListener('click', this._resetPlaybackRate.bind(this));
+    this._playbackRate.slower.addEventListener('click', this._adjustPlaybackRateSlower.bind(this));
+    this._playbackRate.faster.addEventListener('click', this._adjustPlaybackRateFaster.bind(this));
 
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
@@ -166,8 +172,46 @@ class PlaybackRateBar {
   }
 
 
+  _getPlaybackRateFromProgress() {
+    const boundRectContainer = this._playbackRate.container.getBoundingClientRect();
+    const boundRectProgress = this._playbackRate.current.getBoundingClientRect();
+    let toLeftInPr = (boundRectProgress.width * 100) / boundRectContainer.width; // Get width percentage depending on container width
+    // OOB protection
+    if (toLeftInPr > 100) {
+      toLeftInPr = 100;
+    }
+    if (toLeftInPr < 0) {
+      toLeftInPr = 0;
+    }
+
+    return toLeftInPr / 100;
+  }
+
+
   _resetPlaybackRate() {
     mzk.setPlaybackRate(0.5);
+  }
+
+
+  _adjustPlaybackRateSlower() {
+    const progressPercentage = Utils.precisionRound(this._getPlaybackRateFromProgress(), 2);
+
+    if (progressPercentage - 0.1 >= 0) {
+      mzk.setPlaybackRate(progressPercentage - 0.1);
+    } else {
+      mzk.setPlaybackRate(0);
+    }
+  }
+
+
+  _adjustPlaybackRateFaster() {
+    const progressPercentage = Utils.precisionRound(this._getPlaybackRateFromProgress(), 2);
+
+    if (progressPercentage + 0.05 < 1) { // .05 because range from [1, 2] is twice larger than [.5, 1]
+      mzk.setPlaybackRate(progressPercentage + 0.05);
+    } else {
+      mzk.setPlaybackRate(1);
+    }
   }
 
 
@@ -182,10 +226,18 @@ class PlaybackRateBar {
    * @param {number} percentage - The playback rate converted in %
    **/
   updatePlaybackRate(percentage, playbackRate) {
+    percentage = Utils.precisionRound(percentage, 2);
     percentage *= 100;
+    // Restore style to default in all case
+    this._playbackRate.current.classList.remove('full');
+    this._playbackRate.current.style.border = `solid 1px #0F8489`; // Match value with #playback-rate-current style
 
     if (percentage > 97 && percentage <= 100) { // Add border radius on right side
       this._playbackRate.current.classList.add('full');
+    }
+
+    if (percentage === 0) {
+      this._playbackRate.current.style.border = `none`;
     }
 
     this._playbackRate.current.style.width = `${percentage}%`;
