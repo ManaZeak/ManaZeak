@@ -75,20 +75,20 @@ class LocalTrackImporter(object):
         producerImporter = ProducerImporter()
         self.producerReference = producerImporter.importProducers(self.trackContainer.producers)
         # Find the id of each track producer.
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             if track.producer in self.producerReference:
                 track.producerId = self.producerReference[track.producer]
 
     ## Imports the albums of the indexed tracks.
     def _importAlbums(self):
         # fill the albums with the references
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             track.album.fillArtistIdWithRef(self.artistReference)
             track.album.fillProducerIdWithRef(self.producerReference)
         albumImporter = AlbumImporter()
         self.albumReference = albumImporter.importAlbums(self.trackContainer.albums)
         # Find the id of each album.
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             track.album.findId(self.albumReference)
 
     ## Imports the cover of the indexed tracks.
@@ -96,22 +96,22 @@ class LocalTrackImporter(object):
         coverImporter = CoverImporter()
         coverReference = coverImporter.importCovers(self.trackContainer.covers)
         # Filling the id of the covers in the track object.
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             track.coverId = coverReference[track.coverLocation]
 
     ## Imports the tracks into the database.
     def _importTracks(self):
         trackImporter = TrackImporter()
-        trackReference = trackImporter.importTracks(self.trackContainer.tracks[0])
+        trackReference = trackImporter.importTracks(self.trackContainer.tracks)
         # Find the id for each track
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             track.id = trackReference[track.location]
 
     ## Insert the id of genres and track into the link table.
     def _linkTracksToGenres(self):
         # Creating a list of tuples of (trackId, genreId)
         tracksToLink = []
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             for genre in track.genres:
                 tracksToLink.append((track.id, self.genreReference[genre]))
         linker = GenreToTrackLinker()
@@ -121,7 +121,7 @@ class LocalTrackImporter(object):
     def _linkTracksToArtists(self):
         # Creating a list of tuples of (trackId, artistId)
         tracksToLink = []
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             for artist in track.artists:
                 tracksToLink.append((track.id, self.artistReference[artist.name]))
         linker = ArtistToTrackLinker()
@@ -131,7 +131,7 @@ class LocalTrackImporter(object):
     def _linkTracksToComposers(self):
         # Creating a list of tuples of (trackId, composerId)
         tracksToLink = []
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             for composer in track.composers:
                 tracksToLink.append((track.id, self.artistReference[composer.name]))
         linker = ComposerToTrackLinker()
@@ -141,7 +141,7 @@ class LocalTrackImporter(object):
     def _linkTracksToPerformer(self):
         # Creating a list of tuples of (trackId, performerId)
         tracksToLink = []
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             for performer in track.performers:
                 tracksToLink.append((track.id, self.artistReference[performer.name]))
         linker = PerformerToTrackLinker()
@@ -150,7 +150,7 @@ class LocalTrackImporter(object):
     def _linkPlaylistToTrack(self, playlistId):
         # Creating a list of tuples of (playlistId, trackId)
         tracksToLink = []
-        for track in self.trackContainer.tracks[0]:
+        for track in self.trackContainer.tracks:
             tracksToLink.append((playlistId, track.id))
         linker = PlaylistToTrackLinker()
         linker.linkPlaylistToTracks(tracksToLink)

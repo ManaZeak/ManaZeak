@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import math
 import os
 import re
@@ -13,10 +14,7 @@ from app.models import FileType
 from app.src.dto.artist.localArtist import LocalArtist
 from app.src.dto.track.localTrack import LocalTrack
 
-
-# TODO : trouver l'album artist dans les tags (si ça existe -> sinon folder obligé)
-# TODO : process les path des tracks pour set les path des albums et des artists
-# TODO : 
+loggerScan = logging.getLogger('scan')
 
 ## This class allows to extract teh metadata contained in a file and put it in a local track.
 class TrackExtractorService(object):
@@ -136,7 +134,7 @@ class TrackExtractorService(object):
         # Extracting performers
         if 'TOPE' in audioTag and audioTag['TOPE'].text[0] != "":
             performers = strip_tags(audioTag['TOPE'].text[0])
-            track.performers = self._getLocalArtistsFromTrack(performers)
+            track.performers = self._getLocalArtistsFromTrack(performers, True)
 
         # Extracting producer
         if 'TPUB' in audioTag and audioTag['TPUB'].text[0] != '':
@@ -154,9 +152,6 @@ class TrackExtractorService(object):
     ## Extract the metadata contained in a flac file
     def extractFlacFile(self, trackPath):
         track = LocalTrack()
-
-        # FIXME : add producer to FLAC
-        track.producer = 'zeaz'
 
         audioTag = FLAC(trackPath)
 
@@ -222,8 +217,14 @@ class TrackExtractorService(object):
 
         if 'PERFORMER' in audioTag:
             performers = self._trimVorbisTag(audioTag['PERFORMER'])
-            if not performers == "":
-                track.performers = self._getLocalArtistsFromTrack(performers)
+            if performers != "":
+                track.performers = self._getLocalArtistsFromTrack(performers, True)
+
+        if 'PRODUCER' in audioTag:
+            producer = self._trimVorbisTag(audioTag['PRODUCER'])
+            if producer != "":
+                track.producer = producer
+                track.album.producer = producer
 
         if 'GENRE' in audioTag:
             genres = self._trimVorbisTag(audioTag['GENRE']).rstrip().split(',')
@@ -348,7 +349,7 @@ class TrackExtractorService(object):
     #   @return the artists in a table.
     def _extractArtistsFromList(toSplit):
         # Splitting the string
-        artists = re.split(r',\s*(?![^()]*\))', toSplit)
+        artists = re.split(r';\s*(?![^()]*\))', toSplit)
         # Cleaning it
         for i in range(len(artists)):
             artists[i] = artists[i].lstrip().rstrip()

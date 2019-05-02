@@ -1,7 +1,5 @@
 import logging
-
-from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.exceptions.userException import UserException
+import itertools
 
 loggerScan = logging.getLogger('scan')
 
@@ -37,21 +35,24 @@ class IndexedTrackContainer(object):
     ## Merge IndexedTrackContainer together.
     #   @param containers a table of containers to merge.
     def merge(self, containers):
+        loggerScan.info("Merging the containers.")
         # Going through all the containers given
+        # FIXME : voir pour utiliser extends au lieu de append (fix flatten de liste)
         for container in containers:
-            # If the container is empty we do nothing
-            if len(container) == 0:
-                continue
-            elif len(container) > 1:  # If there is more than 1 container, return an error.
-                raise UserException(ErrorEnum.UNEXPECTED_STATE)
-            # Adding the objects
-            self.tracks.append(container[0].tracks)
-            self.genres.update(container[0].genres)
-            self.covers.update(container[0].covers)
-            self.producers.update(container[0].producers)
-            self.artists = {**self.artists, **container[0].artists}
-            self.albums = {**self.albums, **container[0].albums}
-            self.tracksInContainer += container[0].tracksInContainer
+            loggerScan.info('The container size is : ' + str(len(container)))
+            for subContainer in container:
+                loggerScan.info('Adding ' + str(len(subContainer.tracks)) + ' tracks.')
+                self.tracks.append(subContainer.tracks)
+                self.genres.update(subContainer.genres)
+                self.covers.update(subContainer.covers)
+                self.producers.update(subContainer.producers)
+                self.artists = {**self.artists, **subContainer.artists}
+                self.albums = {**self.albums, **subContainer.albums}
+                self.tracksInContainer += subContainer.tracksInContainer
+        # Flatten the tracks, for some reason there is some nested lists
+        loggerScan.info(str(len(self.tracks)))
+        self.tracks = list(itertools.chain.from_iterable(self.tracks))
+        loggerScan.info(str(len(self.tracks)))
 
     ## Add the information about the track into the references.
     #   @param track the LocalTrack to get the metadata to add to the reference.
