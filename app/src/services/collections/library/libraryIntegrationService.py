@@ -2,6 +2,8 @@ import logging
 import multiprocessing
 from multiprocessing.pool import Pool
 
+from django import db
+
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
 from app.src.services.track.localTrackImporter import LocalTrackImporter
@@ -36,10 +38,13 @@ class LibraryIntegrationService(object):
         self.statusHelper = LibraryStatusHelper(library)
         self.statusHelper.initScanStatus(totalTracks)
 
+        # Closing all the connection with the database for avoiding problems with the active transaction
+        db.connections.close_all()
+
         # Setting up the process pool
         processToLaunch = multiprocessing.cpu_count()
         processPool = Pool(processes=processToLaunch)
-
+        loggerScan.info('Preparing ' + str(processToLaunch) + ' processes.')
         # Launch process to extract the metadata contained in the flac and mp3 files
         trackContainers = [processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(mp3Files)),
                            processPool.map(self.extractMetaDataFromTracks, self._trackTableSplitter(flacFiles))]
@@ -54,9 +59,6 @@ class LibraryIntegrationService(object):
         # Launching the integration into the database
         trackImporter = LocalTrackImporter(trackContainer)
         trackImporter.insertLocalTracks(library.playlist.id)
-
-        # raise UserException(ErrorEnum.NOT_IMPLEMENTED)
-        # FIXME : integrates the data into the database
 
     ## Extract the information contained in the tracks into a object.
     #   @param tracksPath a table containing the tracks path to extract
