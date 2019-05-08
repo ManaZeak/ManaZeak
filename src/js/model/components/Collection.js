@@ -113,15 +113,15 @@ class Collection {
    **/
   _buildPlaylist(playlist) {
     const options = {
-      id: playlist.INFO.ID,
-      isLibrary: playlist.INFO.IS_LIBRARY,
-      isPublic: playlist.INFO.IS_PUBLIC,
-      name: playlist.INFO.NAME,
-      description: playlist.INFO.DESCRIPTION,
-      owner: playlist.INFO.OWNER,
-      averagBitRate: playlist.INFO.AVERAGE_BITRATE,
-      totalDuration: playlist.INFO.TOTAL_DURATION,
-      totalTrack: playlist.INFO.TOTAL_TRACK
+      id: playlist.ID,
+      isLibrary: playlist.IS_LIBRARY,
+      isPublic: playlist.IS_PUBLIC,
+      name: playlist.NAME,
+      description: playlist.DESCRIPTION,
+      owner: playlist.OWNER,
+      averagBitRate: 0, // playlist.INFO.AVERAGE_BITRATE,
+      totalDuration: playlist.TOTAL_DURATION,
+      totalTrack: 0, //playlist.INFO.TOTAL_TRACK
     };
 
     this._playlists.push(new Playlist(options));

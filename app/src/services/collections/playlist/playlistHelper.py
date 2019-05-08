@@ -34,9 +34,9 @@ class PlayListHelper(object):
             'DESCRIPTION': playlist.description,
             'IS_PUBLIC': playlist.isPublic,
             'IS_LIBRARY': playlist.isLibrary,
-            'TOTAL_TRACK': playlist.totalTracks,
+            # 'TOTAL_TRACK': playlist.totalTracks,
             'TOTAL_DURATION': playlist.listeningTime,
-            'AVERAGE_BITRATE': playlist.averageBitRate,
+            # 'AVERAGE_BITRATE': playlist.averageBitRate,
             'OWNER': playlist.owner.username,
         }
 
