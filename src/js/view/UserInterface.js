@@ -151,12 +151,7 @@ class UserInterface {
    **/
   updateProgress() { // Called onClick
     const progress = mzk.model.player.progress;
-    this._footBar.progressBar.deactivateTransitions(); // Must disable transition when called
     this._footBar.progressBar.setProgress(progress);
-
-    setTimeout(() => { // Restore transitions
-      this._footBar.progressBar.activateTransitions();
-    }, 50); // 5 is fine, but 50 is more 'lag friendly'
   }
 
 
@@ -172,6 +167,11 @@ class UserInterface {
    **/
   updateQueueNumber(queue) {
     this._footBar.updateQueueNumber(queue);
+  }
+
+
+  updateQueuedTracks(queuedTracks) {
+    this._footBar.updateQueuedTracks(queuedTracks);
   }
 
 
@@ -209,7 +209,7 @@ class UserInterface {
   _appendLoadingOverlay() {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
-      resolve();
+      requestAnimationFrame(resolve);
     });
   }
 
@@ -240,6 +240,13 @@ class UserInterface {
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @public
+   * @member {object} - The mzk footbar */
+  get footBar() {
+    return this._footBar;
+  }
 
 
   /** @public

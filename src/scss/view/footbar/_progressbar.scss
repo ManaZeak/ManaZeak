@@ -10,7 +10,7 @@
   z-index: 733;
 
   #progress-track {
-    background-color: #555555;
+    background-color: $mzk-color-bg-dark;
     height: $progress-track-height;
     opacity: 0;
     position: relative;
@@ -19,7 +19,7 @@
     z-index: 734; // To make thumb appear always on top of moodbar
 
     #progress-current {
-      background-color: lime;
+      background-color: $mzk-color-primary;
       height: 100%;
       transition: width 0s ease 0s;
       border-top-right-radius: 0;
@@ -27,7 +27,7 @@
     }
 
     #progress-thumb {
-      background-color: white;
+      background-color: $mzk-color-text-lighter;
       border-radius: 50%;
       bottom: -4px;
       height: $progress-thumb-height;
@@ -40,13 +40,17 @@
     }
 
     &:hover {
+      #progress-current {
+        background-color: $mzk-color-secondary;
+      }
+
       #progress-thumb {
         opacity: 1;
       }
     }
 
     #progress-hover {
-      background-color: grey;
+      background-color: $mzk-color-text-icons;
       border: solid 1px black;
       border-radius: 3px;
       bottom: 8px;
@@ -67,7 +71,7 @@
   }
 
   #progress-moodbar {
-    background-color: black;
+    background-color: $mzk-color-bg-dark;
     height: 0; // Height is set in ProgressBar.js
     opacity: 0;
     transition: height $footbar-transition ease 0s, opacity $footbar-transition ease 0s;

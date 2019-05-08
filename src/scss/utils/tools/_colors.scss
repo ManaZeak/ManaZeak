@@ -1,0 +1,85 @@
+//---------------//
+// Global Colors //
+//---------------//
+$mzk-color-primary-lighter: #AFF2B3;
+$mzk-color-primary-light: #7DE484;
+$mzk-color-primary: #56D45B;
+$mzk-color-primary-dark: #37C340;
+$mzk-color-primary-darker: #12B31D;
+
+$mzk-color-anti-primary-lighter: #FFBAB8;
+$mzk-color-anti-primary-light: #FF8F8C;
+$mzk-color-anti-primary: #FF6B67;
+$mzk-color-anti-primary-dark: #F74B46;
+$mzk-color-anti-primary-darker: #E31C17;
+
+$mzk-color-secondary-lighter: #A8E4E7;
+$mzk-color-secondary-light: #71C9CD;
+$mzk-color-secondary: #48ABAF;
+$mzk-color-secondary-dark: #2B9196;
+$mzk-color-secondary-darker: #0F8489;
+
+$mzk-color-anti-primary-lighter: #FFD9B8;
+$mzk-color-anti-primary-light: #FFC18C;
+$mzk-color-anti-secondary: #FFAD67;
+$mzk-color-anti-primary-dark: #F79846;
+$mzk-color-anti-primary-darker: #E37517;
+
+$mzk-color-primary-alpha-75: rgba(86, 212, 91, 0.75);
+$mzk-color-primary-alpha-50: rgba(86, 212, 91, 0.5);
+$mzk-color-primary-alpha-25: rgba(86, 212, 91, 0.25);
+$mzk-color-primary-alpha-10: rgba(86, 212, 91, 0.1);
+
+$mzk-color-anti-primary-alpha-75: rgba(255, 107, 103, 0.75);
+$mzk-color-anti-primary-alpha-50: rgba(255, 107, 103, 0.5);
+$mzk-color-anti-primary-alpha-25: rgba(255, 107, 103, 0.25);
+$mzk-color-anti-primary-alpha-10: rgba(255, 107, 103, 0.1);
+
+$mzk-color-secondary-alpha-75: rgba(72, 171, 175, 0.75);
+$mzk-color-secondary-alpha-50: rgba(72, 171, 175, 0.5);
+$mzk-color-secondary-alpha-25: rgba(72, 171, 175, 0.25);
+$mzk-color-secondary-alpha-10: rgba(72, 171, 175, 0.1);
+
+$mzk-color-anti-primary-alpha-75: rgba(255, 173, 103, 0.75);
+$mzk-color-anti-primary-alpha-50: rgba(255, 173, 103, 0.5);
+$mzk-color-anti-primary-alpha-25: rgba(255, 173, 103, 0.25);
+$mzk-color-anti-primary-alpha-10: rgba(255, 173, 103, 0.1);
+
+//--------------------//
+// Global Backgrounds //
+//--------------------//
+$mzk-color-bg: #1D1E25;
+$mzk-color-bg-lighter: #3C405D;
+$mzk-color-bg-light: #21252B;
+$mzk-color-bg-dark: #0F1015;
+$mzk-color-bg-darker: #060609;
+
+$mzk-color-bg-dark-alpha-75: rgba(31, 33, 39, 0.75);
+$mzk-color-bg-dark-alpha-50: rgba(31, 33, 39, 0.5);
+$mzk-color-bg-dark-alpha-25: rgba(31, 33, 39, 0.25);
+$mzk-color-bg-dark-alpha-10: rgba(31, 33, 39, 0.1);
+
+$mzk-color-bg-darker-alpha-75: rgba(14, 15, 20, 0.75);
+$mzk-color-bg-darker-alpha-50: rgba(14, 15, 20, 0.5);
+$mzk-color-bg-darker-alpha-25: rgba(14, 15, 20, 0.25);
+$mzk-color-bg-darker-alpha-10: rgba(14, 15, 20, 0.1);
+
+
+//------------//
+// Main texts //
+//------------//
+$mzk-color-icons: #AAAABE;
+
+$mzk-color-text: #E7E9E7;
+$mzk-color-ng-text: $mzk-color-bg;
+$mzk-color-text-icons: $mzk-color-icons;
+
+$mzk-color-text-lighter: #FFFFFF;
+$mzk-color-text-light: #E3E3FF;
+$mzk-color-text-dark: #D4D4EE;
+$mzk-color-text-darker: #CCCCDD;
+
+$mzk-color-text-light-alpha-75: rgba(231, 233, 239, 0.75);
+$mzk-color-text-light-alpha-50: rgba(231, 233, 239, 0.5);
+$mzk-color-text-light-alpha-25: rgba(231, 233, 239, 0.25);
+$mzk-color-text-light-alpha-10: rgba(231, 233, 239, 0.1);
