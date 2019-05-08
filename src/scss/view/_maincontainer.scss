@@ -15,10 +15,11 @@
   top: 0;
   width: 100%;
   z-index: 9999;
+  cursor: progress;
 
   &::before {
     content: '';
-    background-color: lime;
+    background-color: $mzk-color-primary;
     height: $margin * 2;
     left: calc(50% - (#{$margin} / 2));
     position: absolute;

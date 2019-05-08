@@ -1,4 +1,4 @@
-import ContextMenu from '../ContextMenu.js';
+import ContextMenu from '../overlays/ContextMenu.js';
 'use strict';
 
 
@@ -14,6 +14,7 @@ class ViewSwitcherContext extends ContextMenu {
 
   setActions(doc) {
     const changeView = (newView) => {
+      this.close();
       mzk.changeActiveView(newView);
     };
 

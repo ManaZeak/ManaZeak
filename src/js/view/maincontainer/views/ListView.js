@@ -337,7 +337,7 @@ class ListView extends SceneView {
         col.classList.add(column.name.toLowerCase());
 
         const track = this._tracks[this._dom.container.childNodes[i].dataset.id];
-        const columnValue = track.get(column.name.toLowerCase());
+        const columnValue = track.getTagValue(column.name.toLowerCase());
 
         if (column.name.toLowerCase() === 'duration') {
           col.innerHTML = Utils.secondsToTimecode(columnValue);

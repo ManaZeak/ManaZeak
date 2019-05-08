@@ -62,6 +62,7 @@ services:
 #            - PUID=1000
         volumes:
             - /PATH/TO/MUSIC:/ManaZeak
+            - /PATH/TO/PICTURES:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
         ports:
             - "127.0.0.1:8384:8384"
             - "22000:22000"

@@ -1,9 +1,9 @@
+@import "tools/colors";
 @import "tools/variables";
 @import "tools/global";
 @import "tools/mixins";
 @import "tools/keyframes";
 @import "feedback/notification";
 @import "feedback/tooltip";
-@import "feedback/context";
-@import "tools/modal";
 @import "tools/scrollbar";
+@import "overlays";

@@ -1,5 +1,7 @@
+@import 'playbackratebar';
+
 #footbar {
-  background: $bar-alpha;
+  background: $mzk-color-bg;
   bottom: 0;
   display: flex;
   height: $footbar-height; // Defined in utils/tools/_variables.scss
@@ -63,14 +65,24 @@
 
         #shuffle {
           position: absolute;
-          left: calc(33px + #{$footbar-controls-margin});
+          left: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
         }
       }
 
-      div:last-child {
+      .queue {
         position: absolute;
         right: 0;
-        width: 35px;
+        width: $footbar-icons-size;
+
+        img {
+          height: 100% !important;
+        }
+      }
+
+      .speedometer {
+        position: absolute;
+        right: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
+        width: $footbar-icons-size;
 
         img {
           height: 100% !important;
@@ -79,7 +91,7 @@
 
       .shuffle-left {
         position: absolute;
-        left: calc(33px + #{$footbar-controls-margin});
+        left: calc(#{$footbar-icons-size} + #{2 * $footbar-controls-margin});
       }
 
       .repeat-left {
@@ -102,7 +114,7 @@
          position:absolute;
          top: 5px;
          right: -10px;
-         color: red;
+         color: $mzk-color-primary;
          border-radius: 50%;
          height: 13px;
          width: 13px;

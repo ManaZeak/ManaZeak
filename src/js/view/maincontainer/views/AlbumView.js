@@ -86,7 +86,6 @@ class AlbumView extends SceneView {
     albumInfo.classList.add('album-info');
 
     const albumName = document.createElement('H1');
-//    albumName.innerHTML = `${album.name} - ${album.year}`;
     albumName.innerHTML = `${album.name} - ${album.tracks[0].year}`;
 
     albumInfo.appendChild(albumName);
@@ -97,6 +96,7 @@ class AlbumView extends SceneView {
     const genres = document.createElement('DIV');
     genres.classList.add('genre-badges');
     const genresObject = {};
+    let isHq = true;
 
     for (let k = 0; k < album.tracks.length; ++k) {
       const albumViewEntry = new AlbumViewEntry({
@@ -114,6 +114,17 @@ class AlbumView extends SceneView {
         genreBadge.innerHTML = album.tracks[k].genre;
         genres.appendChild(genreBadge);
       }
+
+      if (album.tracks[k].bitrate < 320000) {
+        isHq = false;
+      }
+    }
+
+    if (isHq === true) {
+      const hq = document.createElement('IMG');
+      hq.classList.add('hq-badge');
+      hq.src = '/static/img/tag/hq.svg';
+      uiAlbum.appendChild(hq);
     }
 
     albumTracks.setAttribute('style', `grid-template-rows: repeat(${Math.round(album.tracks.length / 2)}, auto);`);

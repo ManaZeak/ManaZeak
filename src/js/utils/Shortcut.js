@@ -68,9 +68,9 @@ class Shortcut {
    * @description Test keyboard event to fire stored shortcut accordingly
    * @param {object} event - The Keyboard event from this._addEvents() */
   _testShortcuts(event) {
-    if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
-      event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
-    }
+    //if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
+    //  event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
+    //}
 
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
       this._multiKeyTest(event);
@@ -93,6 +93,7 @@ class Shortcut {
       const shortcut = this._singleKey[i];
 
       if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
+        this._preventDefaultOnEvent(event);
         shortcut.fire(this);
         return;
       }
@@ -113,11 +114,10 @@ class Shortcut {
       const shortcut = this._multiKey[i];
 
       if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-        if (shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) {
-          return;
-        } else if (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) {
-          return;
-        } else if (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true) {
+        if ((shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) ||
+           (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) ||
+           (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true)) {
+          this._preventDefaultOnEvent(event);
           return;
         }
       }
@@ -255,6 +255,11 @@ class Shortcut {
         }
       }
     }
+  }
+
+
+  _preventDefaultOnEvent(event) {
+    event.preventDefault();
   }
 
 

@@ -55,3 +55,10 @@ class GenericViews(object):
     def queueContext(request):
         return render(request, 'contexts/queuecontext.html')
 
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    ## Send the change view context HTML template
+    #   @param request request given by the front
+    #   @return the user menu template
+    def playbackRateContext(request):
+        return render(request, 'contexts/PlaybackRateContext.html')

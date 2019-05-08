@@ -78,6 +78,7 @@ class Playlist {
       });
   }
 
+
   /**
    * @method
    * @name _convertRawArtists
@@ -109,16 +110,48 @@ class Playlist {
           });
         }
 
-        this._artists.push({
-          ids: rawArtistsArray[i].IDS,
-          name: rawArtistsArray[i].NAME,
-          albums: albums
-        });
+        const lastArtist = this._artists[this._artists.length - 1];
+        if (lastArtist !== undefined && lastArtist.name === rawArtistsArray[i].NAME) { // We need to albums properly only if matching
+          this._concatRawIntoArtists(lastArtist, rawArtistsArray[i].ALBUMS[0], albums); // We send the first album of the newly created
+        } else { // We create a new artist otherwise
+          this._artists.push({
+            ids: rawArtistsArray[i].IDS,
+            name: rawArtistsArray[i].NAME,
+            albums: albums
+          });
+        }
       }
 
       resolve();
     });
   }
+
+
+  /**
+   * @method
+   * @name _concatRawIntoArtists
+   * @private
+   * @memberof Playlist
+   * @author Arthur Beaulieu
+   * @since March 2019
+   * @description <blockquote>Concat raw albums in registered last artists (to keep artists integrity over lazy-loading).
+   * We need to connect here the first block with the last previous loaded block in Playlist internals.</blockquote>
+   * @param {object} lastArtist - the last registered artists (shortcut use)
+   * @param {object} rawAlbum - the first raw album newly created from lazy-loading
+   * @param {array} newAlbums - the newly created albums
+   **/
+  _concatRawIntoArtists(lastArtist, rawAlbum, newAlbums) {
+    const lastAlbum = lastArtist.albums[lastArtist.albums.length - 1];
+    if (lastAlbum !== undefined && lastAlbum.name === rawAlbum.NAME) { // If lastAlbum match, we concat it
+      this._artists[this._artists.length - 1].albums[lastArtist.albums.length - 1].tracks = lastAlbum.tracks.concat(newAlbums[0].tracks);
+      for (let k = 1; k < newAlbums.length; ++k) {
+         this._artists[this._artists.length - 1].albums.push(newAlbums[k]);
+      }
+    } else {// We concat albums into album otherwise
+      this._artists[this._artists.length - 1].albums = lastArtist.albums.concat(newAlbums);
+    }
+  }
+
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
 

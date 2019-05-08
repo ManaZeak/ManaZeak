@@ -319,8 +319,9 @@ class Mzk {
    * @since September 2018
    * @description Change the played track with the gievn one (using its ID)
    * @param {number} id - The track ID to request to the server
+   * @param {boolean} centerOn - Force reframe on target track
    **/
-  changeTrack(id, centerOn) {
+  changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
     let durationPlayed = 0;
 
     if (!isNaN(this.playerProgress)) {
@@ -409,10 +410,26 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Triggered when the player reached the end of a track
-   **/
+   * @description Triggered when the player reached the end of a track **/
   trackEnded() {
     mzk.next();
+  }
+
+
+  /**
+   * @method
+   * @name setPlaybackRate
+   * @public
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since April 2019
+   * @description Alter the player's playback rate
+   * @param {number} value - The playback rate value to set in range float[0.25, 2] **/
+  setPlaybackRate(value) {
+    this.model.player.setPlaybackRate(value)
+      .then(playbackRate => {
+        this.ui.footBar.updatePlaybackRate(playbackRate);
+      });
   }
 
 
@@ -547,7 +564,9 @@ class Mzk {
   startLoading(lockView) {
     return new Promise(resolve => {
       this.ui.startLoading(lockView)
-        .then(resolve);
+        .then(() => {
+          return requestAnimationFrame(resolve);
+        });
     });
   }
 
@@ -576,13 +595,20 @@ class Mzk {
    * @param {string} newView - The new view string value in the global ViewEnum
    **/
   changeActiveView(newView) {
-    this.model.setActiveView(newView)
-      .then(() => {
-        this.ui.updateView(this.model.collection.activePlaylist);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    return new Promise(resolve => {
+      this.startLoading(true)
+        .then(() => {
+          return this.model.setActiveView(newView);
+        })
+        .then(() => {
+          this.ui.updateView(this.model.collection.activePlaylist);
+          this.stopLoading(true);
+          resolve();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   }
 
 
@@ -597,7 +623,7 @@ class Mzk {
    **/
   next() {
     if (this.model.queue.length > 0) {
-      mzk.changeTrack(this.model.getNextFromQueue());
+      this.changeTrack(this.model.getNextFromQueue());
       this.ui.updateQueueNumber(this.model.queue);
       return;
     }
@@ -610,12 +636,12 @@ class Mzk {
         if (this.ui.isLastTrack()) {
           this.stopPlayback();
         } else {
-          mzk.changeTrack(this.ui.nextTrackId);
+          this.changeTrack(this.ui.nextTrackId);
         }
       } else if (repeatMode === 1) {
-        mzk.repeatTrack();
+        this.repeatTrack();
       } else if (repeatMode === 2) {
-        mzk.changeTrack(this.ui.nextTrackId);
+        this.changeTrack(this.ui.nextTrackId);
       } else {
         Logger.raise({
           code: 'NO_NEXT_TRACK',
@@ -651,12 +677,12 @@ class Mzk {
       if (this.ui.isFirstTrack()) {
         this.stopPlayback();
       } else {
-        mzk.changeTrack(this.ui.previousTrackId);
+        this.changeTrack(this.ui.previousTrackId);
       }
     } else if (repeatMode === 1) {
       mzk.repeatTrack();
     } else if (repeatMode === 2) {
-      mzk.changeTrack(this.ui.previousTrackId);
+      this.changeTrack(this.ui.previousTrackId);
     } else {
       Logger.raise({
         code: 'NO_NEXT_TRACK',
@@ -682,7 +708,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID);
         }
       })
       .catch(error => {
@@ -707,7 +733,7 @@ class Mzk {
          *     TRACK_ID   : int
          * } */
         if (response.DONE) {
-          mzk.changeTrack(response.TRACK_ID, true);
+          this.changeTrack(response.TRACK_ID);
         }
       })
       .catch(error => {
@@ -735,12 +761,38 @@ class Mzk {
    * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
    **/
   addTrackToQueue(datasetId) {
-    const track = this.ui.getTrackById(datasetId);
+    const selection = this.ui.activeView.selection;
+    // User has no selection : we simply adds the datasetId to the queue
+    if (selection.length === 0) {
+      const track = this.ui.getTrackById(datasetId);
 
-    if (track) {
-      this.model.appendToQueue(track.id);
+      if (track) {
+        this.model.appendToQueue(track.id);
+        this.ui.updateQueueNumber(this.model.queue);
+      }
+    } else {
+      // Checking if the datasetId isn't in selection, so we can append it to the selection array
+      if (selection.indexOf(Number(datasetId)) === -1) {
+        selection.push(datasetId);
+      }
+      // Parsing selection to append track in the proper order
+      for (let i = 0; i < selection.length; ++i) {
+        const track = this.ui.getTrackById(selection[i]);
+
+        if (track) {
+          this.model.appendToQueue(track.id);
+        }
+      }
       this.ui.updateQueueNumber(this.model.queue);
     }
+  }
+
+
+  setQueueFromArray(queue) {
+    this.model.setQueueFromArray(queue)
+      .then(queuedTracks => {
+        this.ui.updateQueuedTracks(queuedTracks);
+      });
   }
 
 
@@ -919,9 +971,17 @@ class Mzk {
 
 
   /** @public
-   * @member {boolean} - The player plaing state */
+   * @member {boolean} - The player playing state */
   get playerPlaying() {
     return this.model.player.isPlaying;
+  }
+
+
+
+  /** @public
+   * @member {boolean} - The player playback rate in range float[0.25, 2] */
+  get playbackRate() {
+    return this.model.player.playbackRate;
   }
 
 

@@ -1,4 +1,4 @@
-import ContextMenu from '../ContextMenu.js';
+import ContextMenu from '../overlays/ContextMenu.js';
 'use strict';
 
 
@@ -17,12 +17,25 @@ class QueueContext extends ContextMenu {
   }
 
 
+  _fillQueueTracksContainer(queuedTracks) {
+    if (queuedTracks.length > 0) {
+      this._fillQueuedTracks(queuedTracks);
+      this._dom.status.innerHTML = `${queuedTracks.length} queued tracks (${Utils.totalTracksDuration(queuedTracks)})`;
+    } else if (queuedTracks.length === 0) {
+      this._dom.status.innerHTML = 'No tracks in the queue';
+      this._dom.container.innerHTML = '';
+      this._dom.container.appendChild(this._emptyContainer);
+    }
+  }
+
+
   _fillQueuedTracks(tracks) {
     this._dom.container.innerHTML = '';
 
     for (let i = 0; i < tracks.length; ++i) {
       const uiTrack = document.createElement('DIV');
       uiTrack.classList.add('queued-track');
+      uiTrack.dataset.before = i + 1;
 
       const cover = document.createElement('IMG');
 
@@ -38,23 +51,39 @@ class QueueContext extends ContextMenu {
       const artist = document.createElement('P');
       artist.innerHTML = tracks[i].artist;
 
+      const actions = document.createElement('DIV');
+      const navUp = document.createElement('IMG');
+      const navDown = document.createElement('IMG');
+      navUp.src = '/static/img/navigation/nav-up.svg';
+      navDown.src = '/static/img/navigation/nav-down.svg';
+      this._moveTrackInQueueEvents(navDown, navUp, i);
+      actions.appendChild(navUp);
+      actions.appendChild(navDown);
+
+
       uiTrack.appendChild(cover);
       uiTrack.appendChild(title);
       uiTrack.appendChild(artist);
+      uiTrack.appendChild(actions);
+
       this._dom.container.appendChild(uiTrack);
     }
   }
 
 
+  _moveTrackInQueueEvents(navDown, navUp, index) {
+    navDown.addEventListener('click', () => {
+      mzk.model.swapQueueDown(index);
+    });
+
+    navUp.addEventListener('click', () => {
+      mzk.model.swapQueueUp(index);
+    });
+  }
+
+
   open(options) {
-    if (options.queue.length > 0) {
-      this._fillQueuedTracks(options.queue);
-      this._dom.status.innerHTML = `${options.queue.length} queued tracks (${Utils.totalTracksDuration(options.queue)})`;
-    } else if (options.queue.length === 0) {
-      this._dom.status.innerHTML = 'No tracks in the queue';
-      this._dom.container.innerHTML = '';
-      this._dom.container.appendChild(this._emptyContainer);
-    }
+    this._fillQueueTracksContainer(options.queuedTracks);
 
     this._dom.style.right = `${options.rightOffset}px`;
     this._target.appendChild(this._overlay);
@@ -68,6 +97,13 @@ class QueueContext extends ContextMenu {
       this._overlay.removeEventListener('click', this._viewportClicked, false);
     }
   }
+
+
+  updateQueuedTracks(queuedTracks) {
+    this._fillQueueTracksContainer(queuedTracks);
+  }
+
+
 }
 
 export default QueueContext;

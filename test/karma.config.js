@@ -1,21 +1,24 @@
 module.exports = function(config) {
   config.set({
-    singleRun: true,
+    basePath: '../..',
+    singleRun: false,
     browsers: ['Firefox'],
     frameworks: ['jasmine'],
     files: [
       './test-context.js'
-      //'./static/js/core/**/*.js'
     ],
+    proxies: {
+      '/static/': '/base/test/static/'
+    },
     reporters: ['progress', 'coverage'],
     preprocessors: {
-      './test-context.js': ['webpack']
+      './test-context.js': ['webpack', 'sourcemap']
       //'./static/js/core/**/*.js': ['webpack', 'sourcemap', 'coverage']
     },
     babelPreprocessor: {
       options: {
         presets: ["env"],
-        sourceMap: 'inline'
+        sourceMap: true
       }
     },
     coverageReporter: {
