@@ -16,6 +16,7 @@ from app.src.dto.track.localTrack import LocalTrack
 
 loggerScan = logging.getLogger('scan')
 
+
 ## This class allows to extract teh metadata contained in a file and put it in a local track.
 class TrackExtractorService(object):
 
@@ -125,6 +126,7 @@ class TrackExtractorService(object):
         if 'TPE2' in audioTag:
             albumArtist = strip_tags(audioTag['TPE2'].text[0])
             track.albumArtist.addAlbumArtist(albumArtist, track.artistFolderName, 0)
+            track.album.artist = albumArtist
 
         # Extracting composers
         if 'TCOM' in audioTag and audioTag['TCOM'].text[0] != "":
