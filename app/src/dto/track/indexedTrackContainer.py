@@ -37,22 +37,15 @@ class IndexedTrackContainer(object):
     def merge(self, containers):
         loggerScan.info("Merging the containers.")
         # Going through all the containers given
-        # FIXME : voir pour utiliser extends au lieu de append (fix flatten de liste)
         for container in containers:
-            loggerScan.info('The container size is : ' + str(len(container)))
             for subContainer in container:
-                loggerScan.info('Adding ' + str(len(subContainer.tracks)) + ' tracks.')
-                self.tracks.append(subContainer.tracks)
+                self.tracks.extend(subContainer.tracks)
                 self.genres.update(subContainer.genres)
                 self.covers.update(subContainer.covers)
                 self.producers.update(subContainer.producers)
                 self.artists = {**self.artists, **subContainer.artists}
                 self.albums = {**self.albums, **subContainer.albums}
                 self.tracksInContainer += subContainer.tracksInContainer
-        # Flatten the tracks, for some reason there is some nested lists
-        loggerScan.info(str(len(self.tracks)))
-        self.tracks = list(itertools.chain.from_iterable(self.tracks))
-        loggerScan.info(str(len(self.tracks)))
 
     ## Add the information about the track into the references.
     #   @param track the LocalTrack to get the metadata to add to the reference.
