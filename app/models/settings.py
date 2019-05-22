@@ -13,6 +13,13 @@ class ApplicationConfiguration(models.Model):
     defaultGroup = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
 
+class Config(models.Model):
+    ## The code of the configuration
+    code = models.CharField(max_length=50, unique=True, null=False)
+    ## The value of the configuration
+    value = models.CharField(max_length=200, null=False)
+
+
 ## This class stores the preferences and the information about a user.
 class UserSetting(models.Model):
     ## The invite code of the user.
