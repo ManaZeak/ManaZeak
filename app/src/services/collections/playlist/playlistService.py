@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse
 
 from app.models.collections import Playlist
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
+from app.src.services.config.configService import ConfigService
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
@@ -65,8 +66,17 @@ class PlaylistService(object):
         return response
 
     @staticmethod
-    ## Get the tracks of a playlist.
-    #   @param request the request containing the id of the playlist.
-    #   @return the tracks of the playlist.
-    def getTracks(request):
-        pass
+    @login_required(redirect_field_name='', login_url='app:login')
+    ## Send a part of the library to the js.
+    #   @param request the request containing the last id of the track to start the loading.
+    #   @return a json with the track info.
+    def lazyLoadPlaylist(request):
+        user = request.user
+        try:
+            # Checking if the request is correct
+            FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['LAST_TRACK_ID', 'PLAYLIST_ID'])
+            tracksToGet = ConfigService.getNumberOfTracksReturnedByLazyLoad()
+
+            # FIXME : récupérer le nombre d'élements a récup depuis la BDD via les objet de config.
+        except UserException as e:
+            return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist, user)

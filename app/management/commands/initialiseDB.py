@@ -3,6 +3,8 @@ import logging
 from django.core.management import BaseCommand
 
 from app.models import Group, ApplicationConfiguration, Permissions, FileType
+from app.models.settings import Config
+from app.src.config.configEnum import ConfigEnum
 
 logger = logging.getLogger('django')
 
@@ -107,9 +109,21 @@ class Command(BaseCommand):
         appConf.save()
 
     @staticmethod
-    ## This function generate the default file types the application can handle.
+    ## This function generates the default file types the application can handle.
     def _generateDefaultFileTypes():
         if FileType.objects.all().count() > 0:
             return
         FileType(name="mp3").save()
         FileType(name="flac").save()
+
+    @staticmethod
+    ## This function generates the default configuration of the application.
+    def _generateDefaultConf():
+        logger.info('Generating default conf.')
+        insertAll = False
+        if Config.objects.all().count() == 0:
+            insertAll = True
+        if insertAll or Config.objects.filter(code=ConfigEnum.TRACK_IN_LAZY.value).count() == 0:
+            configObject = Config()
+            configObject.code = ConfigEnum.TRACK_IN_LAZY.value
+            configObject.value = '300'
