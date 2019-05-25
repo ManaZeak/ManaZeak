@@ -29,6 +29,7 @@ urlpatterns = [
     ########################### Playlists ###########################
     path('playlist/getUserPlaylists/', PlaylistService.getUserPlaylists, name='getUserPlaylists'),
     path('playlist/getTrack/<path:path>/', PlaylistService.getTrack, name='getTrack'),
+    path('playlist/simplifiedLazyLoading/', PlaylistService.lazyLoadPlaylist, name='lazyLoading'),
 
     ############################# Modals #############################
     path('modals/userMenu/', GenericViews.userMenuContext, name='userMenu'),
