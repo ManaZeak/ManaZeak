@@ -60,7 +60,7 @@ class Playlist {
         if (response.DONE) {
           this._convertRawArtists(response.RESULT)
             .then(() => {
-              this._getArtistsLazyLoad(response.OFFSET);
+              this._getArtistsLazyLoad(offset +  response.OFFSET);
             });
         } else {
           if (response.ERROR_MSG === undefined) { // Successfully loaded all
