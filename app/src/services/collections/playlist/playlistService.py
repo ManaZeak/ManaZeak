@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 
 from app.models.collections import Playlist
+from app.src.dao.playlist.lazyTrackGetterInPlaylist import LazyTrackGetterInPlaylist
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
 from app.src.services.config.configService import ConfigService
 from app.src.utils.errors.errorHandler import ErrorHandler
@@ -74,9 +75,14 @@ class PlaylistService(object):
         user = request.user
         try:
             # Checking if the request is correct
-            FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['LAST_TRACK_ID', 'PLAYLIST_ID'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['OFFSET', 'PLAYLIST_ID'])
+            offset = int(response['OFFSET'])
+            playlistId = int(response['PLAYLIST_ID'])
             tracksToGet = ConfigService.getNumberOfTracksReturnedByLazyLoad()
-
-            # FIXME : récupérer le nombre d'élements a récup depuis la BDD via les objet de config.
+            lazyPlaylistDao = LazyTrackGetterInPlaylist()
+            lazyFragment = lazyPlaylistDao.getLazyFragment(tracksToGet, offset, playlistId)
+            return JsonResponse(
+                {**lazyFragment.generateJson(), **ErrorHandler.createStandardStateMessage(True)}
+            )
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist, user)

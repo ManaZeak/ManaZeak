@@ -126,4 +126,4 @@ class Command(BaseCommand):
         if insertAll or Config.objects.filter(code=ConfigEnum.TRACK_IN_LAZY.value).count() == 0:
             configObject = Config()
             configObject.code = ConfigEnum.TRACK_IN_LAZY.value
-            configObject.value = '300'
+            configObject.value = '5000'
