@@ -115,7 +115,7 @@ class Playlist {
           this._concatRawIntoArtists(lastArtist, rawArtistsArray[i].ALBUMS[0], albums); // We send the first album of the newly created
         } else { // We create a new artist otherwise
           this._artists.push({
-            ids: rawArtistsArray[i].IDS,
+            ids: rawArtistsArray[i].ID,
             name: rawArtistsArray[i].NAME,
             albums: albums
           });
