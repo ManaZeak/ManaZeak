@@ -3,6 +3,7 @@ from django.urls import path
 from app.src.services.admin.adminTools import AdminTools
 from app.src.services.collections.library.libraryService import LibraryService
 from app.src.services.collections.playlist.playlistService import PlaylistService
+from app.src.services.track.trackService import TrackService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
@@ -31,6 +32,9 @@ urlpatterns = [
     path('playlist/getTrack/<path:path>/', PlaylistService.getTrack, name='getTrack'),
     path('playlist/simplifiedLazyLoading/', PlaylistService.lazyLoadPlaylist, name='lazyLoading'),
 
+    ############################# Tracks #############################
+    path('track/getPath/', TrackService.getTrack, name='getTrack'),  # FIXME : to be renamed to get track playback
+
     ############################# Modals #############################
     path('modals/userMenu/', GenericViews.userMenuContext, name='userMenu'),
     path('modals/changeView/', GenericViews.changeViewContext, name='userMenu'),
@@ -47,4 +51,5 @@ urlpatterns = [
 
     ########################### Admin Tools ###########################
     path('admin/reset/', AdminTools.resetInstance, name='reset')
+    path('admin/toggleInvite/', )
 ]
