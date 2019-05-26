@@ -20,7 +20,7 @@ logger = logging.getLogger('users')
 ## Render the user form login views
 #   @param view object (given by django)
 #   @return the form for logging in
-class Login(View):
+class LoginView(View):
     form_class = UserLoginForm
     template_name = 'login.html'
 
