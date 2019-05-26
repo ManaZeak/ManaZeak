@@ -175,7 +175,7 @@ class Collection {
       const checkServerResponse = (response) => {
         if (response.DONE) {
           this._activePlaylist = 0;
-          this._buildPlaylist(response);
+          this._buildPlaylist(response.INFO);
           this._initialScan(this._playlists[0])
             .then(() => {
               resolve();
