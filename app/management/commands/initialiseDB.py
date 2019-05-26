@@ -19,6 +19,7 @@ class Command(BaseCommand):
         self._groupGenerator()
         self._generateApplicationConfiguration()
         self._generateDefaultFileTypes()
+        self._generateDefaultConf()
         logger.info('Inserted all the default objects into the database')
 
     ## Generate the default group for the application
@@ -127,3 +128,4 @@ class Command(BaseCommand):
             configObject = Config()
             configObject.code = ConfigEnum.TRACK_IN_LAZY.value
             configObject.value = '5000'
+            configObject.save()

@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
@@ -7,12 +9,11 @@ from app.src.security.permissionHandler import PermissionHandler
 from app.src.utils.applicationConfigurationManager import ApplicationConfigurationManager
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
-
-
-## This class handles the user signup.
 from app.src.utils.userSettingsManager import UserSettingsManager
 
+logger = logging.getLogger('users')
 
+## This class handles the user signup.
 class UserSignupService(object):
 
     ## This method insert a user and all the linked objects into the database.

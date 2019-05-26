@@ -1,5 +1,3 @@
-
-
 ## This class allows to throw an exception when the user has insufficient permissions
 class UserException(Exception):
 
