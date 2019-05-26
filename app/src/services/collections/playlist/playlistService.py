@@ -81,6 +81,15 @@ class PlaylistService(object):
             tracksToGet = ConfigService.getNumberOfTracksReturnedByLazyLoad()
             lazyPlaylistDao = LazyTrackGetterInPlaylist()
             lazyFragment = lazyPlaylistDao.getLazyFragment(tracksToGet, offset, playlistId)
+            # FIXME : temp solution be be redone!
+            json = lazyFragment.generateJson()
+            if json == {}:
+                return JsonResponse(
+                    {
+                        'DONE': False,
+                        'ERROR_KEY': None,
+                    }
+                )
             return JsonResponse(
                 {**lazyFragment.generateJson(), **ErrorHandler.createStandardStateMessage(True)}
             )
