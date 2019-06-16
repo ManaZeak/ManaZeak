@@ -14,40 +14,40 @@ class FlacTagExtractor(AbstractTagExtractor):
 
     def extractTitle(self):
         if 'TITLE' in self.audioTag:
-            trackTitle = TrackExtractorHelper._trimVorbisTag(self.audioTag['TITLE'])
+            trackTitle = TrackExtractorHelper.trimVorbisTag(self.audioTag['TITLE'])
             if trackTitle != "":
                 self.track.title = trackTitle
 
     def extractYear(self):
         if 'DATE' in self.audioTag:
-            trackDate = TrackExtractorHelper._trimVorbisTag(self.audioTag['DATE'])
-            if not trackDate == "":
+            trackDate = TrackExtractorHelper.trimVorbisTag(self.audioTag['DATE'])
+            if trackDate != "":
                 self.track.year = trackDate  # Date of Recording
                 self.track.album.year = self.track.year
 
     def extractTrackNumber(self):
         if 'TRACKNUMBER' in self.audioTag:
-            trackNumber = TrackExtractorHelper._trimVorbisTag(self.audioTag['TRACKNUMBER'])
-            if not trackNumber == "":
+            trackNumber = TrackExtractorHelper.trimVorbisTag(self.audioTag['TRACKNUMBER'])
+            if trackNumber != "":
                 self.track.number = trackNumber
 
     def extractBpm(self):
         if 'BPM' in self.audioTag:
-            self.track.bpm = TrackExtractorHelper._trimVorbisTag(self.audioTag['BPM'])
+            self.track.bpm = TrackExtractorHelper.trimVorbisTag(self.audioTag['BPM'])
 
     def extractComment(self):
         if 'COMMENT' in self.audioTag:
-            trackComment = TrackExtractorHelper._trimVorbisTag(self.audioTag['COMMENT'])
+            trackComment = TrackExtractorHelper.trimVorbisTag(self.audioTag['COMMENT'])
             self.track.comment = trackComment
 
     def extractLyrics(self):
         if 'LYRICS' in self.audioTag:
-            self.track.lyrics = TrackExtractorHelper._trimVorbisTag(self.audioTag['LYRICS'])
+            self.track.lyrics = TrackExtractorHelper.trimVorbisTag(self.audioTag['LYRICS'])
 
     def extractDiscNumber(self):
         if 'DISCNUMBER' in self.audioTag:
-            discNumber = TrackExtractorHelper._trimVorbisTag(self.audioTag['DISCNUMBER'])
-            if not discNumber == "":
+            discNumber = TrackExtractorHelper.trimVorbisTag(self.audioTag['DISCNUMBER'])
+            if discNumber != "":
                 try:
                     discNumber = int(discNumber)
                 except ValueError:
@@ -56,41 +56,41 @@ class FlacTagExtractor(AbstractTagExtractor):
 
     def extractGenre(self):
         if 'GENRE' in self.audioTag:
-            genres = TrackExtractorHelper._trimVorbisTag(self.audioTag['GENRE']).rstrip().split(',')
+            genres = TrackExtractorHelper.trimVorbisTag(self.audioTag['GENRE']).rstrip().split(',')
             self.track.genres = genres
 
     def extractArtist(self):
         if 'ARTIST' in self.audioTag:  # Check if artist exists
-            artists = TrackExtractorHelper._trimVorbisTag(self.audioTag['ARTIST'])
-            self.track.artists = TrackExtractorHelper._getLocalArtistsFromTrack(artists)
+            artists = TrackExtractorHelper.trimVorbisTag(self.audioTag['ARTIST'])
+            self.track.artists = TrackExtractorHelper.getLocalArtistsFromTrack(artists)
 
     def extractComposer(self):
         if 'COMPOSER' in self.audioTag:
-            composers = TrackExtractorHelper._trimVorbisTag(self.audioTag['COMPOSER'])
-            if not composers == "":
-                self.track.composers = TrackExtractorHelper._getLocalArtistsFromTrack(composers, True)
+            composers = TrackExtractorHelper.trimVorbisTag(self.audioTag['COMPOSER'])
+            if composers != "":
+                self.track.composers = TrackExtractorHelper.getLocalArtistsFromTrack(composers, True)
 
     def extractPerformer(self):
         if 'PERFORMER' in self.audioTag:
-            performers = TrackExtractorHelper._trimVorbisTag(self.audioTag['PERFORMER'])
+            performers = TrackExtractorHelper.trimVorbisTag(self.audioTag['PERFORMER'])
             if performers != "":
-                self.track.performers = TrackExtractorHelper._getLocalArtistsFromTrack(performers, True)
+                self.track.performers = TrackExtractorHelper.getLocalArtistsFromTrack(performers, True)
 
     def extractProducer(self):
         if 'PRODUCER' in self.audioTag:
-            producer = TrackExtractorHelper._trimVorbisTag(self.audioTag['PRODUCER'])
+            producer = TrackExtractorHelper.trimVorbisTag(self.audioTag['PRODUCER'])
             if producer != "":
                 self.track.producer = producer
                 self.track.album.producer = producer
 
     def extractAlbum(self):
         if 'ALBUM' in self.audioTag:
-            albumTitle = TrackExtractorHelper._trimVorbisTag(self.audioTag['ALBUM'])
+            albumTitle = TrackExtractorHelper.trimVorbisTag(self.audioTag['ALBUM'])
             self.track.album.title = albumTitle.replace('\n', '')
 
     def extractAlbumArtist(self):
         if 'ALBUMARTIST' in self.audioTag:
-            albumArtist = TrackExtractorHelper._trimVorbisTag(self.audioTag['ALBUMARTIST'])
+            albumArtist = TrackExtractorHelper.trimVorbisTag(self.audioTag['ALBUMARTIST'])
             self.track.albumArtist.addAlbumArtist(albumArtist, self.track.artistFolderName, 0)
             self.track.album.artist = albumArtist
 

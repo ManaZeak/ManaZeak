@@ -1,10 +1,5 @@
 from django.urls import path, include
 
-from app.src.services.admin.adminService import AdminService
-from app.src.services.admin.adminTools import AdminTools
-from app.src.services.collections.library.libraryService import LibraryService
-from app.src.services.collections.playlist.playlistService import PlaylistService
-from app.src.services.config.configService import ConfigService
 from app.src.services.track.trackService import TrackService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService

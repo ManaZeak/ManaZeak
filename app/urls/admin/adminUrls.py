@@ -3,7 +3,6 @@ from django.urls import path
 from app.src.services.admin.adminService import AdminService
 from app.src.services.admin.adminTools import AdminTools
 from app.src.services.config.configService import ConfigService
-from app.src.views.genericViews import GenericViews
 
 app_name = 'app'
 
