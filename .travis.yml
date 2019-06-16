@@ -18,5 +18,5 @@ addons:
     organization: "manazeak"
     token: $SONARCLOUDKEY
 script:
-  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
+  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" | cat > report.txt"
   - sonar-scanner
