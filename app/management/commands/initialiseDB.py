@@ -114,8 +114,8 @@ class Command(BaseCommand):
     def _generateDefaultFileTypes():
         if FileType.objects.all().count() > 0:
             return
-        FileType(name="mp3").save()
-        FileType(name="flac").save()
+        FileType(name="mp3", id=1).save(force_insert=True)
+        FileType(name="flac", id=2).save(force_insert=True)
 
     @staticmethod
     ## This function generates the default configuration of the application.

@@ -35,9 +35,9 @@ class PlaylistService(object):
             helper.getPlaylistsInformation(playlists, playlistsInfo)
             # Getting all the available playlists
             playlists = (
-                    Playlist.objects.filter(isPublic=True) |
-                    Playlist.objects.filter(isLibrary=True) |
-                    Playlist.objects.filter(owner=user)
+                Playlist.objects.filter(isPublic=True) |
+                Playlist.objects.filter(isLibrary=True) |
+                Playlist.objects.filter(owner=user)
             )
             # removing the playlist already in the queryset if there is any
             if len(playlists) > 0:

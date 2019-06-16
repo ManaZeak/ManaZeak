@@ -1,5 +1,4 @@
 import logging
-import itertools
 
 loggerScan = logging.getLogger('scan')
 
