@@ -10,12 +10,12 @@ before_script:
   - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
 install:
   - pip install -r requirements.txt
-  - mv docker-compose.yml.travis docker-compose.yml
-  - docker-compose build
-  - docker-compose up -d
+  #- mv docker-compose.yml.travis docker-compose.yml
+  #- docker-compose build
+  #- docker-compose up -d
   - pwd
   - ls
-  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" > report.txt"
+  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 addons:
   sonarcloud:
     organization: "manazeak"
