@@ -13,12 +13,10 @@ install:
   #- mv docker-compose.yml.travis docker-compose.yml
   #- docker-compose build
   #- docker-compose up -d
-  - pwd
-  - ls
-  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 addons:
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
 script:
+  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
   - sonar-scanner
