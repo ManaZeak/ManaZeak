@@ -10,6 +10,7 @@ before_script:
   - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
 install:
   - pip install -r requirements.txt
+  - mv docker-compose.yml.travis docker-compose.yml
   - docker-compose build
   - docker-compose up -d
   - "pylint <module_or_package> -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" > report.txt"
