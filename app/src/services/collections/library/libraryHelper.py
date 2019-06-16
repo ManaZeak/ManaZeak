@@ -48,7 +48,7 @@ class LibraryHelper(object):
         mp3Files = []
         flacFiles = []
         # Going through all the files of the library.
-        for root, dirs, files in os.walk(path):
+        for root, _, files in os.walk(path):
             for file in files:
                 if file.lower().endswith('.mp3'):
                     mp3Files.append(os.path.join(root, file))

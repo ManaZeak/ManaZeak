@@ -4,6 +4,7 @@ from multiprocessing.pool import Pool
 
 from django import db
 
+from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
 from app.src.services.track.localTrackImporter import LocalTrackImporter
@@ -71,10 +72,10 @@ class LibraryIntegrationService(object):
             return
         if tracksPath[0].endswith('mp3'):
             for trackPath in tracksPath:
-                container.addTrack(self.trackExtractorService.extractMp3File(trackPath))
+                container.addTrack(self.trackExtractorService.extractTrack(TrackFileTypeEnum.MP3, trackPath))
         elif tracksPath[0].endswith('flac'):
             for trackPath in tracksPath:
-                container.addTrack(self.trackExtractorService.extractFlacFile(trackPath))
+                container.addTrack(self.trackExtractorService.extractTrack(TrackFileTypeEnum.FLAC, trackPath))
         self.statusHelper.updateCounter(container.tracksInContainer)
         return container
 

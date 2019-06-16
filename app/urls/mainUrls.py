@@ -28,17 +28,17 @@ urlpatterns = [
 
     ########################### Libraries ###########################
     # FIXME : change to library
-    path('lib/', include('app.urls.collection.library.libraryUrls')),
+    path('lib/', include('app.urls.collection.library.libraryUrls', namespace='library')),
 
     ########################### Playlists ###########################
-    path('playlist/', include('app.urls.collection.playlist.playlistUrls')),
+    path('playlist/', include('app.urls.collection.playlist.playlistUrls', namespace='playlist')),
 
     ############################# Tracks #############################
     path('track/getPath/', TrackService.getTrack, name='getTrack'),  # FIXME : to be renamed to get track playback
 
     ############################# Modals #############################
     # FIXME: remove the 's'
-    path('modals/', include('app.urls.modal.')),
+    path('modals/', include('app.urls.modal.modalUrls', namespace='modal')),
 
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),
@@ -48,8 +48,8 @@ urlpatterns = [
 
     ############################ Contexts #############################
     # FIXME : remove the 's'
-    path('contexts/', include('app.urls.context.contextUrls')),
+    path('contexts/', include('app.urls.context.contextUrls', namespace='context')),
 
     ########################### Admin Tools ###########################
-    path('admin/', include('app.urls.admin.adminUrls')),
+    path('admin/', include('app.urls.admin.adminUrls', namespace='admin')),
 ]
