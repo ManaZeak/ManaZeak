@@ -13,7 +13,7 @@ install:
   - mv docker-compose.yml.travis docker-compose.yml
   - docker-compose build
   - docker-compose up -d
-  - "pylint <module_or_package> -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" > report.txt"
+  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" > report.txt"
 addons:
   sonarcloud:
     organization: "manazeak"
