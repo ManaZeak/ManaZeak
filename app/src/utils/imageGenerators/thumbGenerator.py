@@ -1,5 +1,5 @@
-import PIL
 import logging
+import PIL
 
 from PIL import Image
 

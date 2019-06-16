@@ -2,10 +2,11 @@ import hashlib
 import os
 import re
 
+from pathlib import Path
+
 from django.utils.html import strip_tags
 
 from app.src.dto.artist.localArtist import LocalArtist
-from pathlib import Path
 
 
 ## Helper for extracting the tag tracks.
