@@ -8,12 +8,11 @@ from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
 
-
-## This class allows to get some configuration objects of the database.
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 
+## This class allows to get some configuration objects of the database.
 class ConfigService(object):
 
     @staticmethod
