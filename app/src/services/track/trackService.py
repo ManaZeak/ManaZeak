@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
@@ -11,6 +13,8 @@ from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 
+logger = logging.getLogger('django')
+
 ## This class is used for the interactions between the user and the tracks.
 class TrackService(object):
 
@@ -18,18 +22,18 @@ class TrackService(object):
     @login_required(redirect_field_name='', login_url='app:login')
     ## This method allows the user to play a track.
     #   @param request the track requested by the user.
-    def getTrack(request):
+    def getTrack(request, trackId):
         user = request.user
         try:
             # Checking the user permission
             PermissionHandler.hasPermission(PermissionEnum.PLAY, user)
             # Checking if the request is correct
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['TRACK_ID'])
-            trackId = int(response['TRACK_ID'])
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
             # Getting the track from the db
             track = Track.objects.get(id=trackId)
-            redirectedResponse = HttpResponse()
+            redirectedResponse = HttpResponse(status=200)
             redirectedResponse['X-Accel-Redirect'] = track.location
+            redirectedResponse['Content-Type'] = 'application/octet-stream'
             return redirectedResponse
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist, user)

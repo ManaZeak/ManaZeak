@@ -29,7 +29,7 @@ urlpatterns = [
     path('playlist/', include('app.urls.collection.playlist.playlistUrls', namespace='playlist')),
 
     ############################# Tracks #############################
-    path('track/getPath/', TrackService.getTrack, name='getTrack'),  # FIXME : to be renamed to get track playback
+    path('track/get/<int:trackId>/', TrackService.getTrack, name='getTrack'),  # FIXME : to be renamed to get track playback
 
     ############################# Modals #############################
     # FIXME: remove the 's'
