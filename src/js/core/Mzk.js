@@ -335,7 +335,7 @@ class Mzk {
       PREVIOUS: false
     };
 
-    this.komunikator.post('track/getPath/', options)
+    this.komunikator.post(`track/get/${id}`, options)
       .then(track => {
         return this.model.changeTrack(id, track.TRACK_PATH);
       })
