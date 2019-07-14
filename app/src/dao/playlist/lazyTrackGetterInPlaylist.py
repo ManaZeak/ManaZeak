@@ -3,12 +3,11 @@ from contextlib import closing
 
 from django.db import connection
 
-
-## This class fetch the tracks for the load of a library.
 from app.src.dto.collection.lazyPlaylist import LazyPlaylist
 
 logger = logging.getLogger('django')
 
+## This class fetch the tracks for the load of a library.
 class LazyTrackGetterInPlaylist(object):
 
     ## Return a piece of the tracks of the database.
@@ -82,11 +81,11 @@ class LazyTrackGetterInPlaylist(object):
             LEFT JOIN app_track_performers atp on track.id = atp.track_id
             LEFT JOIN app_artist performer on atp.artist_id = performer.id
             JOIN app_artist artist on ata.artist_id = artist.id
-            JOIN app_track_genres atg on track.id = atg.track_id
-            JOIN app_genre genre on atg.genre_id = genre.id
+            LEFT JOIN app_track_genres atg on track.id = atg.track_id
+            LEFT JOIN app_genre genre on atg.genre_id = genre.id
             JOIN app_album album on track.album_id = album.id
-            JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
-            JOIN app_cover cover on track.cover_id = cover.id
+            LEFT JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
+            LEFT JOIN app_cover cover on track.cover_id = cover.id
             WHERE playlist_id = %s
             ORDER BY album_art.name, album.year, track."discNumber", track."trackNumber",
                 artist.name, composer.name, performer.name
@@ -108,11 +107,11 @@ class LazyTrackGetterInPlaylist(object):
                 LEFT JOIN app_track_performers atp on track.id = atp.track_id
                 LEFT JOIN app_artist performer on atp.artist_id = performer.id
                 JOIN app_artist artist on ata.artist_id = artist.id
-                JOIN app_track_genres atg on track.id = atg.track_id
-                JOIN app_genre genre on atg.genre_id = genre.id
+                LEFT JOIN app_track_genres atg on track.id = atg.track_id
+                LEFT JOIN app_genre genre on atg.genre_id = genre.id
                 JOIN app_album album on track.album_id = album.id
-                JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
-                JOIN app_cover cover on track.cover_id = cover.id
+                LEFT JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
+                LEFT JOIN app_cover cover on track.cover_id = cover.id
                 WHERE playlist_id = %s
                 ORDER BY album_art.name, album.year, track."discNumber", track."trackNumber",
                     artist.name, composer.name, performer.name
