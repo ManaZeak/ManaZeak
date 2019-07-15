@@ -328,14 +328,14 @@ class Mzk {
       durationPlayed = this.playerProgress;
     }
 
-    const options = {
+    /*const options = {
       TRACK_ID: id,
       LAST_TRACK_PATH: this.model.player.getSource(),
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
-    };
+    };*/
 
-    this.komunikator.post(`track/get/${id}`, options)
+    this.komunikator.get(`track/get/${id}/`)
       .then(track => {
         return this.model.changeTrack(id, track.TRACK_PATH);
       })
