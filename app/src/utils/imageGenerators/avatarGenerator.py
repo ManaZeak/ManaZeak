@@ -62,7 +62,7 @@ class AvatarGenerator(object):
         # If pixel is 1, color*pixel = color and palette[color] = some color
         avatar = [[self.palette[color * pixel] for pixel in row] for row in avatarBin]
         avatar = self._resizeAvatar(avatar, avatarSize, imageSizePerCell)
-        png.from_array(avatar, 'RGB').save(avatarPath)
+        #png.from_array(avatar, 'RGB').save(avatarPath)
         return avatarPath
 
     @staticmethod
