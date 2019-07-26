@@ -103,7 +103,6 @@ class ScrollBar {
    **/
   _barClicked(event) {
     this._lastPageY = event.pageY;
-    this._wrapper.firstChild.style.scrollBehavior = 'inherit';
     this._bar.classList.add('scrollbar-grabbed');
     document.body.classList.add('scrollbar-grabbed');
 
@@ -123,7 +122,6 @@ class ScrollBar {
    * @description Remove document events when bar is released
    **/
   _stopDrag() {
-    this._wrapper.firstChild.style.scrollBehavior = 'smooth';
     this._bar.classList.remove('scrollbar-grabbed');
     document.body.classList.remove('scrollbar-grabbed');
     document.removeEventListener('mousemove', this._drag);
