@@ -2,6 +2,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from urllib.parse import quote
 
 from app.models import Track
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
@@ -34,7 +35,7 @@ class TrackService(object):
             # Getting the track from the db
             track = Track.objects.get(id=trackId)
             redirectedResponse = HttpResponse(status=200)
-            redirectedResponse['X-Accel-Redirect'] = track.location
+            redirectedResponse['X-Accel-Redirect'] = quote(track.location)
             redirectedResponse['Content-Disposition'] = "inline"
             # Selecting the content type of the audio file.
             if track.fileType.id == TrackFileTypeEnum.MP3.value:
