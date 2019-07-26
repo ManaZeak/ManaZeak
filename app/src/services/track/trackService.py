@@ -35,7 +35,7 @@ class TrackService(object):
             track = Track.objects.get(id=trackId)
             redirectedResponse = HttpResponse(status=200)
             redirectedResponse['X-Accel-Redirect'] = track.location
-            redirectedResponse["Content-Disposition"] = "inline"
+            redirectedResponse['Content-Disposition'] = "inline"
             # Selecting the content type of the audio file.
             if track.fileType.id == TrackFileTypeEnum.MP3.value:
                 redirectedResponse['Content-Type'] = 'audio/mpeg'
