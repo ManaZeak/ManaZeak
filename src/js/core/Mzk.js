@@ -322,19 +322,18 @@ class Mzk {
    * @param {boolean} centerOn - Force reframe on target track
    **/
   changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
-    let durationPlayed = 0;
+    /*let durationPlayed = 0; // TODO migrate in websocket
 
     if (!isNaN(this.playerProgress)) {
       durationPlayed = this.playerProgress;
     }
 
-    /*const options = { // TODO migrate in websocket
+    const options = {
       TRACK_ID: id,
       LAST_TRACK_PATH: this.model.player.getSource(),
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
     };*/
-
     this.model.changeTrack(id, `track/get/${id}/`)
       .then(() => {
         this.ui.changeTrack(this.model.playingTrack);
