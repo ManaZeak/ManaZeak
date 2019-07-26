@@ -328,17 +328,14 @@ class Mzk {
       durationPlayed = this.playerProgress;
     }
 
-    /*const options = {
+    /*const options = { // TODO migrate in websocket
       TRACK_ID: id,
       LAST_TRACK_PATH: this.model.player.getSource(),
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
     };*/
 
-    this.komunikator.get(`track/get/${id}/`)
-      .then(track => {
-        return this.model.changeTrack(id, track.TRACK_PATH);
-      })
+    this.model.changeTrack(id, `track/get/${id}/`)
       .then(() => {
         this.ui.changeTrack(this.model.playingTrack);
 
