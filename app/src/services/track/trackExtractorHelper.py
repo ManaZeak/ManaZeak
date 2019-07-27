@@ -18,6 +18,7 @@ class TrackExtractorHelper(object):
     def getBaseInfo(track, audioTag, trackPath):
         track.location = trackPath
         track.fileName = Path(trackPath).name
+        track.moodbar = TrackExtractorHelper._computeMoodbarPath(track)
         track.artistFolderName = TrackExtractorHelper._extractNameArtistFolder(trackPath)
         track.album.folderName = TrackExtractorHelper._extractNameAlbumFolder(trackPath)
         track.size = os.path.getsize(trackPath)
@@ -26,15 +27,6 @@ class TrackExtractorHelper(object):
         track.sampleRate = audioTag.info.sample_rate
         track.album.location = TrackExtractorHelper._extractPathAlbum(trackPath)
         track.albumArtist.location = TrackExtractorHelper._extractPathArtist(trackPath)
-
-    @staticmethod
-    ## Compute the moodbar path with the location of the track and assign it to the track.
-    #   @param track the track to compute.
-    def computeMoodbarPath(track):
-        # Generating moodbar hash
-        path = track.location.encode("ascii", "ignore")
-        md5 = hashlib.md5(path).hexdigest()
-        track.moodbar = "../static/mood/" + md5 + ".mood"
 
     @staticmethod
     ## Process a Vorbis tag to remove the useless info.
@@ -62,6 +54,16 @@ class TrackExtractorHelper(object):
             localArtist.addArtist(artist)
             localArtists.append(localArtist)
         return localArtists
+
+    @staticmethod
+    ## Compute the moodbar path with the location of the track and assign it to the track.
+    #   @param track the track to compute.
+    #   @return the track moodbar path.
+    def _computeMoodbarPath(track):
+        # Generating moodbar hash
+        path = track.location.encode("ascii", "ignore")
+        md5 = hashlib.md5(path).hexdigest()
+        return "../static/mood/" + md5 + ".mood"
 
     @staticmethod
     def _extractPathAlbum(trackPath):
@@ -105,7 +107,7 @@ class TrackExtractorHelper(object):
         path = Path(path)
         # If the path is long enough
         if len(path.parts) > 2:
-            return path.parts[len(path.parts)-3]
+            return path.parts[len(path.parts) - 3]
         return ''
 
     @staticmethod
