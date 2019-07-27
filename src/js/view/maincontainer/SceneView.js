@@ -114,7 +114,7 @@ class SceneView {
       }
 
       this._click.timeoutId = setTimeout(() => {
-        this._click.dbclick = false; // Desactivate double click lock
+        this._click.dbclick = false; // Deactivate double click lock
       }, 300);
     } else { // Dble click
       this._playTrack(targetId);
