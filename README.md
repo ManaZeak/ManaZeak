@@ -1,5 +1,5 @@
 <p align="center" style="margin-bottom: 25px">
-    <img src="/static/img/logo/manazeak-floyd-bg.png" width="740" height="419" />
+    <img src="/static/img/logo/manazeak-logo.png" width="250" height="250" />
 </p>
 
 [![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
