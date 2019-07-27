@@ -9,4 +9,5 @@ app_name = 'app'
 urlpatterns = [
     path('get/<int:trackId>/', TrackService.getTrack, name='getTrack'),
     path('random/', PlaybackService.getRandomTrack, name='getRandom'),
+    path('shuffle/', PlaybackService.getShuffleAlbum, name='getShuffle'),
 ]

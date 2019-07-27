@@ -1,6 +1,8 @@
 ## This class controls the playback of the application.
 from django.http import JsonResponse
 
+from app.models import AlbumShuffle
+from app.src.dao.track.shuffleFirstAlbumTrackGetter import ShuffleFirstAlbumTrackGetter
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.playback.playbackHelper import PlaybackHelper
@@ -19,14 +21,17 @@ class PlaybackService(object):
     def getRandomTrack(request):
         user = request.user
         try:
+            # Checking the front request
             result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['PLAYLIST_ID'])
             PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+            # Getting a random track from the database.
             track_id = PlaybackHelper.getRandomTrack(result['PLAYLIST_ID'])
             if track_id is None:
                 raise UserException(ErrorEnum.DB_ERROR)
             response = {
                 'TRACK_ID': track_id,
             }
+            # Sending the track to the front.
             return JsonResponse(
                 {**response, **ErrorHandler.createStandardStateMessage(True)}
             )
@@ -34,4 +39,27 @@ class PlaybackService(object):
             return JsonResponse(
                 ErrorHandler.createStandardStateMessage(
                     False, e.errorType, PlaybackService.getRandomTrack, user)
+            )
+
+    @staticmethod
+    ## Fetch a shuffled first track of an album
+    def getShuffleAlbum(request):
+        user = request.user
+        try:
+            # Checking the front request
+            result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['PLAYLIST_ID'])
+            PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+            # Getting a shuffled first album track from the database.
+            playlistId = result['PLAYLIST_ID']
+            trackId = PlaybackHelper.getShuffledFirstAlbumTrack(playlistId)
+            # Insert in the database the track selected.
+            PlaybackHelper.addTrackToAlbumShuffle(playlistId, trackId, user)
+            # Return to the front the selected track
+            return JsonResponse(
+                {**{'TRACK_ID': trackId}, **ErrorHandler.createStandardStateMessage(True)}
+            )
+        except UserException as e:
+            return JsonResponse(
+                ErrorHandler.createStandardStateMessage(
+                    False, e.errorType, PlaybackService.getShuffleAlbum, user)
             )
