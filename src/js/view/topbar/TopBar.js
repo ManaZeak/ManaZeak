@@ -48,7 +48,7 @@ class TopBar {
 
     this._userMenu = new UserMenuContext({
       target: this._topbar,
-      url: 'contexts/usermenu/'
+      url: 'contexts/userMenu/'
     });
 
     this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates

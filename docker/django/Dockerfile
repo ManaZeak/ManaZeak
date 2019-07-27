@@ -18,6 +18,7 @@ ENV PACKAGES="\
   python3-dev \
   musl-dev \
   linux-headers \
+  libffi-dev \
 "
 
 RUN echo \

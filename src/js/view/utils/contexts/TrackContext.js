@@ -19,7 +19,7 @@ class TrackContext extends ContextMenu {
 
 
   _togglePlay() {
-    mzk.changeTrack(this._targetId);
+    mzk.changeTrack(mzk.ui.getTrackById(this._targetId).id);
     this.close();
   }
 

@@ -322,7 +322,7 @@ class Mzk {
    * @param {boolean} centerOn - Force reframe on target track
    **/
   changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
-    let durationPlayed = 0;
+    /*let durationPlayed = 0; // TODO migrate in websocket
 
     if (!isNaN(this.playerProgress)) {
       durationPlayed = this.playerProgress;
@@ -333,12 +333,8 @@ class Mzk {
       LAST_TRACK_PATH: this.model.player.getSource(),
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
-    };
-
-    this.komunikator.post('track/getPath/', options)
-      .then(track => {
-        return this.model.changeTrack(id, track.TRACK_PATH);
-      })
+    };*/
+    this.model.changeTrack(id, `track/get/${id}/`)
       .then(() => {
         this.ui.changeTrack(this.model.playingTrack);
 
@@ -697,7 +693,7 @@ class Mzk {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('player/randomNext/', options)
+    this.komunikator.post('track/random/', options)
       .then(response => {
         /* response = {
          *     DONE       : bool
@@ -722,7 +718,7 @@ class Mzk {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('player/shuffleNext/', options)
+    this.komunikator.post('track/shuffle/', options)
       .then(response => {
         /* response = {
          *     DONE       : bool

@@ -1,0 +1,95 @@
+from app.src.dto.artist.LocalLazyArtist import LocalLazyArtist
+
+
+## This class describe a track object in the lazy loading of the list view.
+class LocalLazyTrack(object):
+
+    ## Constructor.
+    def __init__(self):
+        ## The track id.
+        self.id = None
+        ## The track title.
+        self.title = None
+        ## The track year.
+        self.year = None
+        ## The track bitrate.
+        self.bitrate = None
+        ## The track duration.
+        self.duration = None
+        ## The track cover.
+        self.cover = None
+        ## The track moodbar.
+        self.moodbar = None
+        ## The track genre.
+        self.genre = None
+        ## The track artists.
+        self.artists = []
+        ## The track composers.
+        self.composers = []
+        ## The track performers.
+        self.performers = []
+        ## The last artist id.
+        self.lastArtistId = None
+        ## The composers id.
+        self.composersIds = set()
+        ## The performers id.
+        self.performersIds = set()
+
+    ## Generate the JSON object of the track.
+    def generateJson(self):
+        return {
+            'ID': self.id,
+            'TITLE': self.title,
+            'YEAR': self.year,
+            'COMPOSERS': [composer.generateJson() for composer in self.composers],
+            'PERFORMERS': [performer.generateJson() for performer in self.performers],
+            'BITRATE': self.bitrate,
+            'DURATION': self.duration,
+            'COVER': self.cover,
+            'GENRE': self.genre,
+            'MOODBAR': self.moodbar,
+        }
+
+    ## Add the artist information to a track.
+    def addArtistsFromRow(self, row):
+        artistId = row[13]
+        if self.lastArtistId is None or self.lastArtistId == artistId:
+            artistName = row[14]
+            self._createArtist(artistId, artistName)
+
+    ## Add the composer and the performer to a track.
+    def addComposerAndPerformerFromRow(self, row):
+        composerId = row[16]
+        # If the composer doesn't exist, we create it.
+        if composerId not in self.composersIds:
+            composerName = row[15]
+            self._createComposer(composerId, composerName)
+        performerId = row[17]
+        ## If the performer doesn't exist, we create it.
+        if performerId not in self.composersIds:
+            performerName = row[18]
+            self._createPerformer(performerId, performerName)
+
+    ## Creates a new artist and add it to the artist list.
+    def _createArtist(self, artistId, artistName):
+        artist = LocalLazyArtist()
+        artist.id = artistId
+        artist.name = artistName
+        self.lastArtistId = artistId
+        self.artists.append(artist)
+
+    ## Creates a new composer and add it to the composer list.
+    def _createComposer(self, composerId, composerName):
+        composer = LocalLazyArtist()
+        composer.id = composerId
+        composer.name = composerName
+        self.composersIds.add(composerId)
+        self.composers.append(composer)
+
+    ## Creates a new performer and add it to the performer list.
+    def _createPerformer(self, performerId, performerName):
+        performer = LocalLazyArtist()
+        performer.id = performerId
+        performer.name = performerName
+        self.performersIds.add(performerId)
+        self.performers.append(performer)
