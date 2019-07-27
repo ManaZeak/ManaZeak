@@ -23,9 +23,14 @@ Once dependencies requirements are met, clone the project to your machine and in
 
 ``cd ManaZeak``
 
+To make ManaZeak work, it need three absolute path, leading to respectively :
+
+- the database path, where the database will be held ;
+- the path to your musical library ;
+
 `` ./mzk.sh init``
 
-This will prompt you a wizard, to fill the database path and the library root path. Then you can run the app:
+This will prompt you a wizard, to fill the previously listed pathes. Then you can run the app:
 
 ``./mzk.sh dev`` or ``./mkz.sh prod``
 
