@@ -693,7 +693,7 @@ class Mzk {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('player/randomNext/', options)
+    this.komunikator.post('track/random/', options)
       .then(response => {
         /* response = {
          *     DONE       : bool
@@ -718,7 +718,7 @@ class Mzk {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('player/shuffleNext/', options)
+    this.komunikator.post('track/shuffle/', options)
       .then(response => {
         /* response = {
          *     DONE       : bool
