@@ -115,7 +115,7 @@ class AlbumView extends SceneView {
         genres.appendChild(genreBadge);
       }
 
-      if (album.tracks[k].bitrate < 320000) {
+      if (album.tracks[k].bitrate <= 320000) {
         isHq = false;
       }
     }
