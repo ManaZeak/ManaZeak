@@ -33,8 +33,7 @@ class Collection {
         LIBRARY_ID: playlist.id
       };
 
-      mzk.startLoading(true);
-      mzk.komunikator.post('library/initialScan/', options)
+      mzk.komunikator.post('lib/initialScan/', options)
         .then(() => {
           return this._checkScanStatus(playlist);
         })
@@ -114,15 +113,15 @@ class Collection {
    **/
   _buildPlaylist(playlist) {
     const options = {
-      id: playlist.INFO.ID,
-      isLibrary: playlist.INFO.IS_LIBRARY,
-      isPublic: playlist.INFO.IS_PUBLIC,
-      name: playlist.INFO.NAME,
-      description: playlist.INFO.DESCRIPTION,
-      owner: playlist.INFO.OWNER,
-      averagBitRate: playlist.INFO.AVERAGE_BITRATE,
-      totalDuration: playlist.INFO.TOTAL_DURATION,
-      totalTrack: playlist.INFO.TOTAL_TRACK
+      id: playlist.ID,
+      isLibrary: playlist.IS_LIBRARY,
+      isPublic: playlist.IS_PUBLIC,
+      name: playlist.NAME,
+      description: playlist.DESCRIPTION,
+      owner: playlist.OWNER,
+      averagBitRate: 0, // playlist.INFO.AVERAGE_BITRATE,
+      totalDuration: playlist.TOTAL_DURATION,
+      totalTrack: 0, //playlist.INFO.TOTAL_TRACK
     };
 
     this._playlists.push(new Playlist(options));
@@ -176,7 +175,7 @@ class Collection {
       const checkServerResponse = (response) => {
         if (response.DONE) {
           this._activePlaylist = 0;
-          this._buildPlaylist(response);
+          this._buildPlaylist(response.INFO);
           this._initialScan(this._playlists[0])
             .then(() => {
               resolve();
@@ -196,7 +195,7 @@ class Collection {
           CONVERT: false
         };
 
-        mzk.komunikator.post('library/new/', options)
+        mzk.komunikator.post('lib/new/', options)
           .then(response => {
             checkServerResponse(response);
           })
@@ -209,7 +208,7 @@ class Collection {
       };
 
       new NewLibraryModal({
-        url: 'modals/newlibrary',
+        url: 'modals/newLibrary',
         callback: checkModalValues
       });
     });

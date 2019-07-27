@@ -1,6 +1,4 @@
-<p align="center" style="margin-bottom: 25px">
-    <img src="/static/img/logo/manazeak-floyd-bg.png" width="740" height="419" />
-</p>
+# ManaZeak
 
 [![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak?ref=badge_shield)
@@ -23,9 +21,14 @@ Once dependencies requirements are met, clone the project to your machine and in
 
 ``cd ManaZeak``
 
+To make ManaZeak work, it need three absolute path, leading to respectively :
+
+- the database path, where the database will be held ;
+- the path to your musical library ;
+
 `` ./mzk.sh init``
 
-This will prompt you a wizard, to fill the database path and the library root path. Then you can run the app:
+This will prompt you a wizard, to fill the previously listed pathes. Then you can run the app:
 
 ``./mzk.sh dev`` or ``./mkz.sh prod``
 
@@ -54,3 +57,7 @@ However, if not everything went as expected, you might check the [Troubleshootin
 [Armand Vignat](https://github.com/avignat) |
 [Guilhem Piat](https://github.com/Syncrossus) |
 [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
+
+<p style="margin-bottom: 25px">
+    <img src="/static/img/logo/manazeak-logo.png" width="125" height="125" />
+</p>
