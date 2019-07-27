@@ -408,7 +408,7 @@ class Mzk {
    * @since September 2018
    * @description Triggered when the player reached the end of a track **/
   trackEnded() {
-    mzk.next();
+    mzk.next(true);
   }
 
 
@@ -616,8 +616,9 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since October 2018
    * @description Change the player track using the next one in the current view
+   * isUserRq -> user has clicked on next
    **/
-  next() {
+  next(isUserRq) {
     if (this.model.queue.length > 0) {
       this.changeTrack(this.model.getNextFromQueue());
       this.ui.updateQueueNumber(this.model.queue);
@@ -645,7 +646,11 @@ class Mzk {
         });
       }
     } else if (shuffleMode === 1) { // Shuffle
-      mzk.playShuffleTrackInPlaylist();
+      if (isUserRq === true) {
+        this.changeTrack(this.ui.nextTrackId);
+      } else {
+        mzk.playShuffleTrackInPlaylist();
+      }
     } else if (shuffleMode === 2) { // Random
       mzk.playRandomTrackInPlaylist();
     } else {
