@@ -48,13 +48,19 @@ class Track {
     for (let i = 0; i < this.composersArray.length - 1; ++i) {
       composers += `${this.composersArray[i].NAME}, `;
     }
-    composers += this.composersArray[this.composersArray.length - 1].NAME;
+
+    if (this.composersArray.length > 0) {
+      composers += this.composersArray[this.composersArray.length - 1].NAME;
+    }
     this.composers = composers;
 
     for (let i = 0; i < this.performersArray.length - 1; ++i) {
       performers += `${this.performersArray[i].NAME}, `;
     }
-    performers += this.performersArray[this.performersArray.length - 1].NAME;
+
+    if (this.performersArray.length > 0) {
+      performers += this.performersArray[this.performersArray.length - 1].NAME;
+    }
     this.performers = performers;
   }
 }
