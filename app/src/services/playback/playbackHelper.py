@@ -35,3 +35,12 @@ class PlaybackHelper(object):
         albumShuffle.trackId = track
         albumShuffle.playlistId = playlist
         albumShuffle.save()
+
+    @staticmethod
+    def checkIfAlbumShuffleIsFinished(playlistId, user):
+        playlist = Playlist.objects.get(id=playlistId)
+        trackInPlaylist = Track.objects.filter(playlist=playlist, trackNumber=1)
+        trackInAlbumShuffle = AlbumShuffle.objects.filter(playlistId=playlist, userId=user)
+        # If all the first track are in the shuffle, reset the shuffle.
+        if trackInPlaylist == trackInAlbumShuffle:
+            AlbumShuffle.objects.filter(playlistId=playlist, userId=user).delete()
