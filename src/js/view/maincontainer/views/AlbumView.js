@@ -75,7 +75,7 @@ class AlbumView extends SceneView {
     const albumCover = document.createElement('IMG');
 
     if (album.tracks[0].cover !== '') {
-      albumCover.src = `/static/img/covers/${album.tracks[0].cover}`;
+      albumCover.src = `/static/covers/${album.tracks[0].cover}`;
     } else {
       albumCover.src = '/static/img/default/cover.svg';
     }
