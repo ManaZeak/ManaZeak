@@ -7,6 +7,7 @@ from app.src.dto.collection.lazyPlaylist import LazyPlaylist
 
 logger = logging.getLogger('django')
 
+
 ## This class fetch the tracks for the load of a library.
 class LazyTrackGetterInPlaylist(object):
 
