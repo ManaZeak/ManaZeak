@@ -40,7 +40,7 @@ class QueueContext extends ContextMenu {
       const cover = document.createElement('IMG');
 
       if (tracks[i].cover) {
-        cover.src = `/static/img/covers/${tracks[i].cover}`;
+        cover.src = `/static/covers/${tracks[i].cover}`;
       } else {
         cover.src = `/static/img/default/cover.svg`;
       }
