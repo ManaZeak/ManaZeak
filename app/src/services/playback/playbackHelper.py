@@ -1,5 +1,8 @@
-from app.models import Playlist
+from builtins import staticmethod
+
+from app.models import Playlist, Track, AlbumShuffle
 from app.src.dao.track.randomTrackGetter import RandomTrackGetter
+from app.src.dao.track.shuffleFirstAlbumTrackGetter import ShuffleFirstAlbumTrackGetter
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
@@ -13,3 +16,22 @@ class PlaybackHelper(object):
         if Playlist.objects.filter(id=playlistId).count() == 0:
             raise UserException(ErrorEnum.DB_ERROR)
         return RandomTrackGetter.getRandomTrack(playlistId)[0]
+
+    @staticmethod
+    ## Get a shuffled first album track.
+    #   @return the id of the track selected.
+    def getShuffledFirstAlbumTrack(playlistId):
+        if Playlist.objects.filter(id=playlistId).count() == 0:
+            raise UserException(ErrorEnum.DB_ERROR)
+        return ShuffleFirstAlbumTrackGetter.getShuffledFirstAlbumTrack(playlistId)[0]
+
+    @staticmethod
+    ## Add a track to the album shuffle history.
+    def addTrackToAlbumShuffle(playlistId, trackId, user):
+        playlist = Playlist.objects.get(id=playlistId)
+        track = Track.objects.get(id=trackId)
+        albumShuffle = AlbumShuffle()
+        albumShuffle.userId = user
+        albumShuffle.trackId = track
+        albumShuffle.playlistId = playlist
+        albumShuffle.save()
