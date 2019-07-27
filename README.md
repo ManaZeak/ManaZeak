@@ -1,6 +1,4 @@
-<p align="center" style="margin-bottom: 25px">
-    <img src="/static/img/logo/manazeak-logo.png" width="250" height="250" />
-</p>
+# ManaZeak
 
 [![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak?ref=badge_shield)
@@ -54,3 +52,7 @@ However, if not everything went as expected, you might check the [Troubleshootin
 [Armand Vignat](https://github.com/avignat) |
 [Guilhem Piat](https://github.com/Syncrossus) |
 [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
+
+<p style="margin-bottom: 25px">
+    <img src="/static/img/logo/manazeak-logo.png" width="125" height="125" />
+</p>
