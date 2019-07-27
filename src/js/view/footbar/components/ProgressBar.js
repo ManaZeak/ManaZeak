@@ -170,15 +170,20 @@ class ProgressBar {
    * @param {object} event - The mouse event object
    **/
   _mouseMove(event) {
-    if (this._isActive) {
-      if (this._isDragging) {
-        const progress = this._getProgressFromEvent(event.clientX);
-        this.setProgress(progress);
+    if (this._isDragging) {
+      if (this._rafId !== -1) {
+        cancelAnimationFrame(this._rafId);
+        this._rafId = -1;
       }
 
-      if (this._isMouseOver) {
-        this._updateHoverTimecode(event.clientX);
-      }
+      const progress = this._getProgressFromEvent(event.clientX);
+      requestAnimationFrame(() => {
+        this.setProgress(progress);
+      });
+    }
+
+    if (this._isActive && this._isMouseOver) {
+      this._updateHoverTimecode(event.clientX);
     }
   }
 
@@ -257,44 +262,6 @@ class ProgressBar {
 
 
   //  ------------------------------------------------------------------------------------------------//
-  //  ----------------------------------  TRANSITIONS METHODS  -------------------------------------  //
-  //  ------------------------------------------------------------------------------------------------//
-
-
-  /**
-   * @method
-   * @name activateTransitions
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Enable the transition on the ProgressBar
-   **/
-  activateTransitions() {
-    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-  }
-
-
-  /**
-   * @method
-   * @name deactivateTransitions
-   * @public
-   * @memberof ProgressBar
-   * @author Arthur Beaulieu
-   * @since August 2018
-   * @description Disable the transition on the ProgressBar
-   **/
-  deactivateTransitions() {
-    // Here we need to set transition value to 0s to avoid lag on current and thumb when progress bar is active
-    // Lag duration will be equal to the transition time otherwise
-    // Reset left and width transition to default, match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
-    this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.4s ease 0s';
-    this._progress.current.style.transition = 'width 0s ease 0s';
-  }
-
-
-  //  ------------------------------------------------------------------------------------------------//
   //  -----------------------------------  ACTIVATION METHODS  -------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
 
@@ -312,7 +279,6 @@ class ProgressBar {
     this._isActive = true;
     this.setVisibility(true);
     this._startAnimation();
-    this.activateTransitions();
     this._addEvents();
   }
 
@@ -327,6 +293,9 @@ class ProgressBar {
    * @description Deactivate the ProgressBar, set it invisible, remove animations and remove mouse events
    **/
   deactivate() {
+    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in view/_footbar.scss ($footbar-transition)
+
     this._isActive = false;
     this.setVisibility(false);
     this._resetTimecode();
@@ -334,8 +303,9 @@ class ProgressBar {
     this._stopAnimation();
 
     setTimeout(() => { // Delay no animation style for thumb and current (both come at 0% in 0.5s interval)
-      this.deactivateTransitions();
-    }, 500); // Use same timeout value as the transition value set in resetProgressBar(), so animation can run properly
+      this._progress.thumb.style.transition = 'left 0s ease 0s, opacity 0.4s ease 0s';
+      this._progress.current.style.transition = 'width 0s ease 0s';
+    }, 500);
   }
 
 

@@ -1,6 +1,7 @@
 import VolumeBar from './components/VolumeBar.js';
 import ProgressBar from './components/ProgressBar.js';
 import QueueContext from '../utils/contexts/QueueContext.js';
+import PlaybackRateContext from '../utils/contexts/PlaybackRateContext.js';
 'use strict';
 
 
@@ -24,6 +25,7 @@ class FootBar {
       next: {},
       repeat: {},
       shuffle: {},
+      speedometer: {},
       queue: {}
     };
     /** @private
@@ -32,6 +34,9 @@ class FootBar {
     /** @private
      * @member {object} - The progress bar object */
     this._progressBar = {};
+    /** @private
+     * @member {object} - The PlaybackRate context */
+    this._playbackRateContext = {};
     /** @private
      * @member {object} - The Queue context */
     this._queueContext = {};
@@ -62,10 +67,15 @@ class FootBar {
     this._controls.next = document.getElementById('next');
     this._controls.repeat = document.getElementById('repeat');
     this._controls.shuffle = document.getElementById('shuffle');
+    this._controls.speedometer = document.getElementById('speedometer');
     this._controls.queue = document.getElementById('queue');
 
     this._volumeBar = new VolumeBar();
     this._progressBar = new ProgressBar();
+    this._playbackRateContext = new PlaybackRateContext({
+      target: document.body,
+      url: 'contexts/PlaybackRateContext/'
+    });
     this._queueContext = new QueueContext({
       target: document.body,
       url: 'contexts/queuecontext/'
@@ -107,6 +117,20 @@ class FootBar {
       mzk.toggleShuffleMode();
     });
 
+    this._controls.speedometer.addEventListener('click', () => {
+      if (document.body.contains(this._playbackRateContext.dom)) {
+        this._playbackRateContext.close();
+        this._playbackRateContext = null;
+      } else {
+        const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const clientRectangle = this._controls.speedometer.getBoundingClientRect();
+
+        this._playbackRateContext.open({
+          rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width + 5)
+        });
+      }
+    });
+
     this._controls.queue.addEventListener('click', () => {
       if (document.body.contains(this._queueContext.dom)) {
         this._queueContext.close();
@@ -116,7 +140,7 @@ class FootBar {
 
         this._queueContext.open({
           rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width),
-          queue: mzk.model.queuedTracks
+          queuedTracks: mzk.model.queuedTracks
         });
       }
     });
@@ -143,6 +167,13 @@ class FootBar {
       this._controls.play.src = '../../static/img/player/pause.svg';
     } else {
       this._controls.play.src = '../../static/img/player/play.svg';
+    }
+  }
+
+
+  updatePlaybackRate(playbackRate) {
+    if (this._playbackRateContext !== null) {
+      this._playbackRateContext.updatePlaybackRate(playbackRate);
     }
   }
 
@@ -174,6 +205,12 @@ class FootBar {
   }
 
 
+  updateQueuedTracks(queuedTracks) {
+    if (this._queueContext.isOpen() === true) {
+      this._queueContext.updateQueuedTracks(queuedTracks);
+    }
+  }
+
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  MOODBAR METHODS  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
@@ -193,42 +230,47 @@ class FootBar {
   renderMoodFile(url) {
     mzk.komunikator.getBinaryResponse(url)
       .then((responseText) => {
-        const rgb = [...Array((responseText.length / 3))];
+        try {
+          const rgb = [...Array((responseText.length / 3))];
 
-        for (let i = 0; i < rgb.length; ++i) {
-          // `& 0xff` Force 8bit long integer (to fit rgb range of values)
-          const r = responseText.charCodeAt(i * 3) & 0xff;
-          const g = responseText.charCodeAt((i * 3) + 1) & 0xff;
-          const b = responseText.charCodeAt((i * 3) + 2) & 0xff;
+          for (let i = 0; i < rgb.length; ++i) {
+            // `& 0xff` Force 8bit long integer (to fit rgb range of values)
+            const r = responseText.charCodeAt(i * 3) & 0xff;
+            const g = responseText.charCodeAt((i * 3) + 1) & 0xff;
+            const b = responseText.charCodeAt((i * 3) + 2) & 0xff;
 
-          rgb[i] = { // Enhancement : Have fun here w/ colors and pref
-            offset: `${(i / rgb.length * 100)}%`,
-            color: `rgba(${r}, ${g}, ${b}, 1)`
-          };
+            rgb[i] = { // Enhancement : Have fun here w/ colors and pref
+              offset: `${(i / rgb.length * 100)}%`,
+              color: `rgba(${r}, ${g}, ${b}, 1)`
+            };
+          }
+
+          const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
+
+          svg.append('linearGradient')
+            .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
+            .attr('gradientUnits', 'userSpaceOnUse')
+            .selectAll('stop')
+            .data(rgb)
+            .enter()
+            .append('stop')
+            .attr('offset', d => {
+              return d.offset;
+            })
+            .attr('stop-color', d => {
+              return d.color;
+            });
+
+          svg.append('rect')
+            .attr('fill', `url(#moodbar-gradient-${url[0] + url[1]})`)
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('height', '100%')
+            .attr('width', '100%');
+        } catch (e) {
+          // TODO catch this under a local storage property (debug one)
+          //console.error(`FootBar.renderMoodFile\n\tCan not render moodbar, invalid format.\n\t${e}`)
         }
-
-        const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
-
-        svg.append('linearGradient')
-          .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
-          .attr('gradientUnits', 'userSpaceOnUse')
-          .selectAll('stop')
-          .data(rgb)
-          .enter()
-          .append('stop')
-          .attr('offset', d => {
-            return d.offset;
-          })
-          .attr('stop-color', d => {
-            return d.color;
-          });
-
-        svg.append('rect')
-          .attr('fill', `url(#moodbar-gradient-${url[0] + url[1]})`)
-          .attr('x', 0)
-          .attr('y', 0)
-          .attr('height', '100%')
-          .attr('width', '100%');
       });
   }
 

@@ -1,11 +1,12 @@
-Django==1.11.8
-django-compressor
-django-libsass
+Django==2.2.2
+channels
 psycopg2
 mutagen
-django-sass-processor
 requests
 python-crontab
 psutil
 pypng
 pylint
+pytest
+pytest-cov
+pytest-django
