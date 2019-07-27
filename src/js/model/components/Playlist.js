@@ -47,12 +47,12 @@ class Playlist {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Fetch a bunch of tracks
-   * @param {number} step - The lazy load call number
+   * @param {number} offset - The lazy load offset (begin at 0, then from server response)
    **/
-  _getArtistsLazyLoad(step) {
+  _getArtistsLazyLoad(offset) {
     const options = {
       PLAYLIST_ID: this._id,
-      REQUEST_NUMBER: step
+      OFFSET: offset
     };
 
     mzk.komunikator.post('playlist/simplifiedLazyLoading/', options)
@@ -60,7 +60,7 @@ class Playlist {
         if (response.DONE) {
           this._convertRawArtists(response.RESULT)
             .then(() => {
-              this._getArtistsLazyLoad(step + 1);
+              this._getArtistsLazyLoad(offset +  response.OFFSET);
             });
         } else {
           if (response.ERROR_MSG === undefined) { // Successfully loaded all
@@ -115,7 +115,7 @@ class Playlist {
           this._concatRawIntoArtists(lastArtist, rawArtistsArray[i].ALBUMS[0], albums); // We send the first album of the newly created
         } else { // We create a new artist otherwise
           this._artists.push({
-            ids: rawArtistsArray[i].IDS,
+            ids: rawArtistsArray[i].ID,
             name: rawArtistsArray[i].NAME,
             albums: albums
           });

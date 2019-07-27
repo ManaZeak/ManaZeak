@@ -1,9 +1,9 @@
 .new-library {
   font-family: Helvetica, serif;
-  color: black;
-  background: white;
+  color: $mzk-color-text;
+  background: $mzk-color-bg;
   border-radius: 15px;
-  box-shadow: 0 0 2em red;
+  box-shadow: 0 0 1em $mzk-color-primary-alpha-50;
   min-height: 250px;
   min-width: 350px;
   max-width: 550px;
@@ -58,8 +58,8 @@
     }
 
     input {
-      background-color: white;
-      color: black;
+      background-color: $mzk-color-bg;
+      color: $mzk-color-text;
       padding: 0 10px;
       border: none;
       height: 35px;
@@ -71,7 +71,7 @@
       padding: 0.2em 0.4em;
       margin: 0;
       font-size: 85%;
-      background-color: rgba(27,31,35,0.05);
+      background-color: $mzk-color-bg-dark-alpha-10;
       border-radius: 3px;
       font-family: monospace, serif;
       color: #cb345b;
@@ -79,21 +79,21 @@
   }
 
   .footer {
-    background-color: white;
+    background-color: $mzk-color-bg;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 60px;
 
     button {
-      background-color: purple;
+      background-color: $mzk-color-primary;
       border: none;
       height: 35px;
       width: auto;
       padding: 0 20px;
       border-radius: 15px;
       cursor: pointer;
-      color: white;
+      color: $mzk-color-ng-text;
       text-decoration : none;
       outline: none;
       transition: all 0.1s ease 0s;
@@ -103,7 +103,7 @@
       }
 
       &:active {
-        background-color: blue;
+        background-color: $mzk-color-secondary;
       }
     }
   }

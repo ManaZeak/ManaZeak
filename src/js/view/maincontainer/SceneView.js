@@ -114,7 +114,7 @@ class SceneView {
       }
 
       this._click.timeoutId = setTimeout(() => {
-        this._click.dbclick = false; // Desactivate double click lock
+        this._click.dbclick = false; // Deactivate double click lock
       }, 300);
     } else { // Dble click
       this._playTrack(targetId);
@@ -189,23 +189,9 @@ class SceneView {
     let index = -1;
 
     if (options.position) {
-      if (options.position === 'top') {
-        this._dom.container.scrollTop = 0;
-      } else if (options.position === 'bottom') {
-        const relativeDelta = this._tracks[this._tracks.length -1].dom.offsetTop + this._tracks[this._tracks.length -1].dom.scrollHeight / 2;
-        this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
-      }
+      this._boundCentering(options.position);
     } else {
-      if (options.index && options.index !== -1) {
-        index = options.index;
-      } else if (options.id) {
-        for (let i = 0; i < this._tracks.length; ++i) {
-          if (parseInt(this._tracks[i].id) === options.id) {
-            index = i;
-            break;
-          }
-        }
-      }
+      index = this._getIndexToCenterOn(options);
 
       if (index === -1) {
         return;
@@ -214,6 +200,32 @@ class SceneView {
       const relativeDelta = this._tracks[index].dom.offsetTop + this._tracks[index].dom.scrollHeight / 2;
       this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
     }
+  }
+
+  _boundCentering(position) {
+    if (position === 'top') {
+      this._dom.container.scrollTop = 0;
+    } else if (position === 'bottom') {
+      const relativeDelta = this._tracks[this._tracks.length -1].dom.offsetTop + this._tracks[this._tracks.length -1].dom.scrollHeight / 2;
+      this._dom.container.scrollTop = relativeDelta - this._dom.container.clientHeight / 2;
+    }
+  }
+
+  _getIndexToCenterOn(options) {
+    let index = -1;
+
+    if (options.index && options.index !== -1) {
+      index = options.index;
+    } else if (options.id) {
+      for (let i = 0; i < this._tracks.length; ++i) {
+        if (parseInt(this._tracks[i].id) === options.id) {
+          index = i;
+          break;
+        }
+      }
+    }
+
+    return index;
   }
 
   refreshView() {

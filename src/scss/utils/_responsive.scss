@@ -52,6 +52,10 @@
       width: inherit !important;
       margin-bottom: 33px !important;
 
+      h1 {
+        text-align: center;
+      }
+
       .album-info {
         width: calc(100% - 18px) !important;
 
@@ -72,10 +76,14 @@
       }
 
       img {
-        width: 120px !important;
-        height: 120px !important;
+        width: 66% !important;
+        height: auto !important;
         margin: 0 auto !important;
         display: flex !important;
+
+        &.hq-badge {
+          width: 30px !important;
+        }
       }
 
       .genre-badge {
