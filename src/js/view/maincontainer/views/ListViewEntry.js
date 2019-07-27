@@ -11,13 +11,14 @@ class ListViewEntry {
     if (typeof options !== 'object') {
       return;
     }
+
     this.artist = options.track.artist || '';
     this.album = options.track.album.NAME || '';
-    this.composer = options.track.composer || '';
+    this.composer = options.track.composers || '';
     this.duration = options.track.duration || '';
     this.genre = options.track.genre || '';
     this.id = options.track.id || '';
-    this.performer = options.track.performer || '';
+    this.performer = options.track.performers || '';
     this.title = options.track.title || '';
     this.year = options.track.year || '';
     this.bitrate = options.track.bitrate || '';

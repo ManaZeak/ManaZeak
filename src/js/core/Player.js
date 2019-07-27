@@ -23,6 +23,9 @@ class Player {
       /** @private
        * @member {boolean} - The player's is playing flag */
     this._isPlaying = false; // Playback flag
+      /** @private
+       * @member {number} - The player's playback rate float[0.25, 2] */
+    this._playbackRate = 1; // Playback flag
 
     this._init(); // Init player object
     this._events(); // Listen to events
@@ -229,11 +232,14 @@ class Player {
         startPlayback();
       };
 
+      const tmpPlaybackRate = this._playbackRate;
+
       if (this._isPlaying) { // Stop any previous playback
         this.stop();
       }
 
       this._player.src = url; // Set new track url
+      this._player.playbackRate = tmpPlaybackRate;
 
       if (Utils.isMobileDevice()) {
         startPlayback();
@@ -465,6 +471,39 @@ class Player {
   }
 
 
+  setPlaybackRate(percentage) {
+    const _setPlaybackRate = (value) => {
+      this._playbackRate = value;
+      this._player.playbackRate = value;
+    };
+
+    return new Promise(resolve => {
+      percentage *= 100;
+
+      if (percentage === 0) {
+        _setPlaybackRate(0.5);
+      } else if (percentage > 0 && percentage < 50) {
+        /* Result := ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow */
+        const formattedPercentage = percentage * 2; // Format [0, 50] to [0, 100]
+        const value = (formattedPercentage / 100) * (1 - 0.5) + 0.5;
+        _setPlaybackRate(value);
+      } else if (percentage === 50) {
+        _setPlaybackRate(1);
+      } else if (percentage > 50 && percentage < 100) {
+        /* Result := ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow */
+        const formattedPercentage = (percentage * 2) - 100; // Format [0, 50] to [0, 100]
+        const value = (formattedPercentage / 100) + 1;
+        _setPlaybackRate(value);
+
+      } else if (percentage === 100) {
+        _setPlaybackRate(2);
+      }
+
+      resolve(percentage / 100);
+    });
+  }
+
+
   //  ------------------------------------------------------------------------------------------------//
   //  --------------------------------------  SOURCE METHODS  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
@@ -541,6 +580,13 @@ class Player {
    * @member {number} - The current loaded track's float duration */
   get duration() {
     return this._player.duration;
+  }
+
+
+  /** @public
+   * @member {number} - The player's playback rate */
+  get playbackRate() {
+    return this._playbackRate;
   }
 
 
