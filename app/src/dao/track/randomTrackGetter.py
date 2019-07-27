@@ -1,9 +1,11 @@
+import logging
 from builtins import staticmethod
 from contextlib import closing
 
 from django.db import connection
 
 
+loggerScan = logging.getLogger('scan')
 ## Get a random track in a playlist.
 class RandomTrackGetter(object):
 
@@ -16,6 +18,7 @@ class RandomTrackGetter(object):
     ## Execute the sql request.
     def _executeRequest(playlistId):
         with closing(connection.cursor()) as cursor:
+            loggerScan.info(str(playlistId))
             cursor.execute(RandomTrackGetter._generateRequest(), [playlistId, playlistId])
             return cursor.fetchall()[0]
 

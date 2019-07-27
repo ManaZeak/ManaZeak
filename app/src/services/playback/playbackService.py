@@ -1,8 +1,6 @@
 ## This class controls the playback of the application.
 from django.http import JsonResponse
 
-from app.models import AlbumShuffle
-from app.src.dao.track.shuffleFirstAlbumTrackGetter import ShuffleFirstAlbumTrackGetter
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.playback.playbackHelper import PlaybackHelper
@@ -54,6 +52,7 @@ class PlaybackService(object):
             trackId = PlaybackHelper.getShuffledFirstAlbumTrack(playlistId)
             # Insert in the database the track selected.
             PlaybackHelper.addTrackToAlbumShuffle(playlistId, trackId, user)
+            PlaybackHelper.checkIfAlbumShuffleIsFinished(playlistId, user)
             # Return to the front the selected track
             return JsonResponse(
                 {**{'TRACK_ID': trackId}, **ErrorHandler.createStandardStateMessage(True)}
