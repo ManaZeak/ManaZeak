@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vmzk="0.1.2"
+vmzk="0.2.0"
 mzkdir=$(dirname $0)
 
 createNecessaryFiles() {
