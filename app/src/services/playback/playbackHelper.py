@@ -12,4 +12,4 @@ class PlaybackHelper(object):
     def getRandomTrack(playlistId):
         if Playlist.objects.filter(id=playlistId).count() == 0:
             raise UserException(ErrorEnum.DB_ERROR)
-        return RandomTrackGetter.getRandomTrack()[0]
+        return RandomTrackGetter.getRandomTrack(playlistId)[0]

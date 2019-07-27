@@ -9,15 +9,15 @@ class RandomTrackGetter(object):
 
     @staticmethod
     ## Get a random track in a playlist.
-    def getRandomTrack():
-        return RandomTrackGetter._executeRequest()
+    def getRandomTrack(playlistId):
+        return RandomTrackGetter._executeRequest(playlistId)
 
     @staticmethod
     ## Execute the sql request.
-    def _executeRequest():
+    def _executeRequest(playlistId):
         with closing(connection.cursor()) as cursor:
-            cursor.execute(RandomTrackGetter._generateRequest())
-            return cursor.fetchall()
+            cursor.execute(RandomTrackGetter._generateRequest(), [playlistId, playlistId])
+            return cursor.fetchall()[0]
 
     @staticmethod
     ## Generate the request for getting
@@ -25,11 +25,11 @@ class RandomTrackGetter(object):
         return '''
             SELECT app_track.id FROM app_track
             JOIN app_playlist_tracks apt on app_track.id = apt.track_id
-            WHERE apt.playlist_id = 1
+            WHERE apt.playlist_id = %s
             OFFSET floor(random() * (
                 SELECT count(1) FROM app_track
                 JOIN app_playlist_tracks apt on app_track.id = apt.track_id
-                WHERE apt.playlist_id = 1
+                WHERE apt.playlist_id = %s
                 )
             ) LIMIT 1
             '''
