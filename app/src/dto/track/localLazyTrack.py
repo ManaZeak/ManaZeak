@@ -66,7 +66,7 @@ class LocalLazyTrack(object):
             self._createComposer(composerId, composerName)
         performerId = row[17]
         ## If the performer doesn't exist, we create it.
-        if performerId not in self.composersIds:
+        if performerId not in self.performersIds:
             performerName = row[18]
             self._createPerformer(performerId, performerName)
 

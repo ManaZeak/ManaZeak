@@ -3,12 +3,10 @@ from contextlib import closing
 
 from django.db import connection
 
-## Get the first track of a random album.
-from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.exceptions.userException import UserException
-
 loggerScan = logging.getLogger('scan')
 
+
+## Get the first track of a random album.
 class ShuffleFirstAlbumTrackGetter(object):
 
     @staticmethod
