@@ -112,17 +112,17 @@
       width: 20px;
     }
 
-    &.add-to-queue::after {
-      content: '+';
-      left: 28px;
-      position: absolute;
-      bottom: -4px;
-      color: $mzk-color-primary;
-    }
-
     p {
       line-height: 30px;
       padding-left: $padding;
+    }
+
+    &.add-to-queue::before {
+      content: '+';
+      color: #56D45B;
+      position: absolute;
+      font-weight: bold;
+      left: 2px;
     }
   }
 }
@@ -154,11 +154,11 @@
 
     .queued-track {
       height: 50px;
-      min-width: 275px;
+      width: 330px;
       display: grid;
-      grid-template-columns: 70px 1fr;
+      grid-template-columns: 70px 1fr 30px;
       grid-template-rows: 1fr 1fr;
-      grid-template-areas: "img title" "img composer";
+      grid-template-areas: "img title nav" "img composer nav";
       align-items: center;
       margin: ($margin / 2) 0;
 
@@ -171,26 +171,63 @@
 
       p {
         align-self: end;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:first-child {
+          grid-area: title;
+        }
+
+        &:last-child {
+          grid-area: composer;
+        }
       }
 
-      p:first-child {
-        grid-area: title;
+      div {
+        grid-area: nav;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+
+        img {
+          height: 25px;
+          width: 25px;
+          cursor: pointer;
+        }
       }
 
-      p:last-child {
-        grid-area: composer;
-      }
-    }
+      &:first-child {
+        div {
+          height: 100%;
+          justify-content: flex-end;
 
-    &::after {
-      content: '';
-      background: url('/static/img/player/queue.svg') no-repeat right;
-      background-size: 50px;
-      opacity: 0.05;
-      width: 100%;
-      height: 50px;
-      position: absolute;
-      top: 0;
+          & img:first-child {
+            display: none;
+          }
+        }
+      }
+
+      &:last-child {
+        div {
+          height: 100%;
+          justify-content: flex-start;
+
+          & img:last-child {
+            display: none;
+          }
+        }
+      }
+
+      &::before {
+        content: attr(data-before); // Attribute set in Js
+        position: absolute;
+        color: $mzk-color-primary;
+        right: 0;
+        width: 25px;
+        text-align: center;
+        font-size: 0.9em;
+      }
     }
   }
 
@@ -335,5 +372,46 @@
     position: absolute;
     right: 10.5px;
     bottom: -8px;
+  }
+}
+
+.playback-rate-context {
+  align-items: center;
+  background-color: $mzk-color-bg;
+  border-top-left-radius: $mzk-border-radius;
+  border-top-right-radius: $mzk-border-radius;
+  bottom: $footbar-height;
+  display: flex;
+  height: 50px;
+  opacity: 0;
+  position: absolute;
+  transform: translateY(50px);
+  transition: transform .1s ease-out, opacity .1s ease-in;
+  width: auto; // Volumebar width and speedometer icon only
+
+  img {
+    cursor: pointer;
+    height: 50%;
+    margin: 0 (2 * $footbar-controls-margin);
+    @include user-select(none);
+  }
+
+  div#playback-rate-text {
+    position: absolute;
+    color: $mzk-color-text-darker;
+    top: 3px;
+    left: calc(50% - 10px);
+    width: 20px;
+    text-align: center;
+    font-size: 0.8em;
+  }
+
+  img#reset-playback-rate {
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - (15px / 2));
+    height: 15px;
+    margin: 0;
   }
 }

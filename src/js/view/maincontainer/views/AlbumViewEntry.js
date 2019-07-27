@@ -8,7 +8,7 @@ class AlbumViewEntry {
     }
 
     this._artist = options.track.artist || '';
-    this._composer = options.track.composer || '';
+    this._composer = options.track.composers || '';
     this._duration = options.track.duration || '';
     this._id = options.track.id || '';
     this._title = options.track.title || '';

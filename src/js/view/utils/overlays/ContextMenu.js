@@ -25,6 +25,11 @@ class ContextMenu extends Overlays {
   }
 
 
+  isOpen() {
+    return document.body.contains(this._overlay);
+  }
+
+
 }
 
 export default ContextMenu;

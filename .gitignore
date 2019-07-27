@@ -124,3 +124,8 @@ static/img/covers/**
 static/lib/**
 
 *.mood
+
+coverage.xml
+.coverage
+/static/avatars/
+/static/covers/
