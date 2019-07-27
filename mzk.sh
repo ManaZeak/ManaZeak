@@ -102,11 +102,11 @@ elif [ $1 = "sonar-scanner" ]; then
     fi
 
 elif [ $1 = 'gource' ]; then
-    eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --user-image-dir ./static/img/about -r 60"
+    eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --title 'ManaZeak - version $vmzk' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about -r 60"
     echo -e "If nothing happens, please ensure you have gource installed on your system."
 
 elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
-    printf -- "#  ManaZeak-cli v$vmzk, available commands:\n#\n"
+    printf -- "#  ManaZeak-cli $vmzk, available commands:\n#\n"
     printf -- "#  ./mzk.sh init : Run the initialisation wizard\n"
     printf -- "#  ./mzk.sh build : Build ManaZeak\n#\n"
     printf -- "#  ./mzk.sh dev : Run a dev environment\n"
