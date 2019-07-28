@@ -20,6 +20,7 @@ class UserInterface {
     this._scene = {};
     this._footBar = {};
     this._loadingOverlay = {};
+    this._titleAnimationId = -1;
 
     this._init();
   }
@@ -64,6 +65,7 @@ class UserInterface {
   changeTrack(track) {
     this.clearMoodbar();
     this.togglePlay();
+    this._setPageTitle(track.title);
     this._scene.changeTrack(track.id);
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
@@ -103,6 +105,7 @@ class UserInterface {
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.progressBar.resetProgressBar();
     this._scene.stopPlayback();
+    this._clearPageTitle();
   }
 
 
@@ -234,6 +237,24 @@ class UserInterface {
 
   updateView(playlist) {
     this._scene.updateView(playlist);
+  }
+
+  _setPageTitle(title){
+      this._clearPageTitle();
+      this._setPageTitleAnimation(`${title}               `);
+  }
+
+  _setPageTitleAnimation(title){
+        document.title = title;
+        this._titleAnimationId = setTimeout(function () {
+            this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
+        }.bind(this), 500);
+  }
+
+  _clearPageTitle(){
+      document.title = 'ManaZeak';
+      clearTimeout(this._titleAnimationId);
+      this._titleAnimationId = -1;
   }
 
 
