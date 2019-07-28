@@ -25,16 +25,17 @@ class Playlist {
     this._name = options.name;
     this._description = options.description;
     this._owner = options.owner;
-    this._avgBitrate = options.averagBitRate;
+    this._avgBitrate = options.averageBitRate;
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
     this._shuffleMode = 0; // 0 = off | 1 = shuffle | 2 = random
     this._activeView = ViewEnum.ListView;
 
+    this._loadedTracks = 0;
+
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
-    this._tracks = [];
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -60,6 +61,7 @@ class Playlist {
         if (response.DONE) {
           this._convertRawArtists(response.RESULT)
             .then(() => {
+              mzk.ui.updateLoadingOverlay(Utils.precisionRound((this._loadedTracks * 100/ this._totalTrack), 2));
               this._getArtistsLazyLoad(offset +  response.OFFSET);
             });
         } else {
@@ -103,6 +105,7 @@ class Playlist {
             }));
           }
 
+          this._loadedTracks += rawArtistsArray[i].ALBUMS[j].TRACKS.length;
           albums.push({
             id: rawArtistsArray[i].ALBUMS[j].ID,
             name: rawArtistsArray[i].ALBUMS[j].NAME,

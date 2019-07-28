@@ -100,16 +100,15 @@ class Collection {
    * @since September 2018
    * @description Builds a new playlist from a server response
    * @param {object} playlist - The raw playlist to build
-   * @param {object} playlist.INFO - The playlist information
-   * @param {number} playlist.INFO.ID - The playlist id
-   * @param {boolean} playlist.INFO.IS_LIBRARY - The playlist id
-   * @param {boolean} playlist.INFO.IS_PUBLIC - The playlist id
-   * @param {string} playlist.INFO.NAME - The playlist name
-   * @param {string} playlist.INFO.DESCRIPTION - The playlist description
-   * @param {string} playlist.INFO.OWNER - The playlist owner
-   * @param {number} playlist.INFO.AVERAGE_BITRATE - The playlist average bitrate
-   * @param {number} playlist.INFO.TOTAL_DURATION - The playlist total duration
-   * @param {number} playlist.INFO.TOTAL_TRACK - The playlist total track
+   * @param {number} playlist.ID - The playlist id
+   * @param {boolean} playlist.IS_LIBRARY - The playlist id
+   * @param {boolean} playlist.IS_PUBLIC - The playlist id
+   * @param {string} playlist.NAME - The playlist name
+   * @param {string} playlist.DESCRIPTION - The playlist description
+   * @param {string} playlist.OWNER - The playlist owner
+   * @param {number} playlist.AVERAGE_BITRATE - The playlist average bitrate
+   * @param {number} playlist.TOTAL_DURATION - The playlist total duration
+   * @param {number} playlist.TOTAL_TRACK - The playlist total track
    **/
   _buildPlaylist(playlist) {
     const options = {
@@ -119,9 +118,9 @@ class Collection {
       name: playlist.NAME,
       description: playlist.DESCRIPTION,
       owner: playlist.OWNER,
-      averagBitRate: 0, // playlist.INFO.AVERAGE_BITRATE,
+      averageBitRate: 0, // playlist.INFO.AVERAGE_BITRATE,
       totalDuration: playlist.TOTAL_DURATION,
-      totalTrack: 0, //playlist.INFO.TOTAL_TRACK
+      totalTrack: playlist.TOTAL_TRACK
     };
 
     this._playlists.push(new Playlist(options));

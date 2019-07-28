@@ -30,7 +30,7 @@
   }
 
   &::after {
-    content: 'Loading...';
+    content: attr(data-before);
     color: white;
     font-style: italic;
     left: 0;

@@ -46,6 +46,7 @@ class UserInterface {
 
     this._loadingOverlay = document.createElement('DIV');
     this._loadingOverlay.className = 'mzk-loading-overlay';
+    this._loadingOverlay.setAttribute('data-before', 'Loading...');
   }
 
 
@@ -184,7 +185,7 @@ class UserInterface {
     return new Promise(resolve => {
       if (lockView === false) {
         this._topBar.startSpinner()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._appendLoadingOverlay()
           .then(resolve);
@@ -197,7 +198,7 @@ class UserInterface {
     return new Promise(resolve => {
       if (lockView === false) {
         this._topBar.stopSpinner()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._removeLoadingOverlay()
           .then(resolve);
@@ -210,6 +211,16 @@ class UserInterface {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
       requestAnimationFrame(resolve);
+    });
+  }
+
+
+  updateLoadingOverlay(progress) {
+    return new Promise(resolve => {
+      if (document.body.contains(this._loadingOverlay)) {
+        this._loadingOverlay.setAttribute('data-before', `Loading... ${progress}%`);
+        requestAnimationFrame(resolve);
+      }
     });
   }
 
