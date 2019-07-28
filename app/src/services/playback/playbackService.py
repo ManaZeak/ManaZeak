@@ -1,4 +1,4 @@
-## This class controls the playback of the application.
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from app.src.security.permissionEnum import PermissionEnum
@@ -11,9 +11,11 @@ from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 
+## This class controls the playback of the application.
 class PlaybackService(object):
 
     @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
     ## Fetch a random track of the database.
     #   @param request the request of the front.
     def getRandomTrack(request):
@@ -34,12 +36,10 @@ class PlaybackService(object):
                 {**response, **ErrorHandler.createStandardStateMessage(True)}
             )
         except UserException as e:
-            return JsonResponse(
-                ErrorHandler.createStandardStateMessage(
-                    False, e.errorType, PlaybackService.getRandomTrack, user)
-            )
+            return ErrorHandler.generateJsonResponseFromException(e, PlaybackService.getRandomTrack, user)
 
     @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
     ## Fetch a shuffled first track of an album
     def getShuffleAlbum(request):
         user = request.user
@@ -58,7 +58,4 @@ class PlaybackService(object):
                 {**{'TRACK_ID': trackId}, **ErrorHandler.createStandardStateMessage(True)}
             )
         except UserException as e:
-            return JsonResponse(
-                ErrorHandler.createStandardStateMessage(
-                    False, e.errorType, PlaybackService.getShuffleAlbum, user)
-            )
+            return ErrorHandler.generateJsonResponseFromException(e, PlaybackService.getShuffleAlbum, user)
