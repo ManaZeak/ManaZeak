@@ -283,6 +283,24 @@ class Utils {
   }
 
 
+  /**
+   * @method
+   * @name imageUrlExists
+   * @public
+   * @memberof Utils
+   * @author Arthur Beaulieu
+   * @since July 2019
+   * @description Get all session cookies
+   * @param {string} url - The url to test image for
+   * @return {boolean} - The existence or not of an image on instance
+   **/
+  imageUrlExists(url) {
+    const img = new Image();
+    img.src = url;
+    return (img.height !== 0);
+  }
+
+
 }
 
 
