@@ -45,6 +45,8 @@ urlpatterns = [
     # FIXME : remove the 's'
     path('contexts/', include('app.urls.context.contextUrls', namespace='context')),
 
+    path('view/', include('app.urls.view.mainPageUrls', namespace='views')),
+
     ########################### Admin Tools ###########################
     path('admin/', include('app.urls.admin.adminUrls', namespace='admin')),
 ]
