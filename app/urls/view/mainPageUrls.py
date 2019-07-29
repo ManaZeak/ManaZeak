@@ -10,4 +10,5 @@ app_name = 'app'
 urlpatterns = [
     path('mainPage/layout/', GenericViews.getMainPage, name='getMainPage'),
     path('mainPage/roll/', MainPageService.getRandomObjects, name='getTrack'),
+    path('mainPage/collection/', MainPageService.getLibrariesAndPlaylistForUser, name='getCollections')
 ]
