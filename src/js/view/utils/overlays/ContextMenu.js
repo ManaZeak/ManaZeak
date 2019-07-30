@@ -11,16 +11,26 @@ class ContextMenu extends Overlays {
   }
 
 
-  open() {
+  open(options) {
+    if (this._open) {
+      this._open(options);
+    }
+
     document.body.appendChild(this._overlay);
     this._overlay.addEventListener('click', this._viewportClicked, false);
+    window.addEventListener('resize', this.close.bind(this), false);
   }
 
 
-  close() {
+  close(options) {
+    if (this._close) {
+      this._close(options);
+    }
+
     if (document.body.contains(this._overlay)) {
       document.body.removeChild(this._overlay);
       this._overlay.removeEventListener('click', this._viewportClicked, false);
+      window.removeEventListener('resize', this.close.bind(this), false);
     }
   }
 

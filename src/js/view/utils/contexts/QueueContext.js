@@ -82,23 +82,13 @@ class QueueContext extends ContextMenu {
   }
 
 
-  open(options) {
+  _open(options) {
     this._fillQueueTracksContainer(options.queuedTracks);
-
     this._dom.style.right = `${options.rightOffset}px`;
     this._target.appendChild(this._overlay);
-    this._overlay.addEventListener('click', this._viewportClicked, false);
   }
 
-
-  close() {
-    if (this._target.contains(this._overlay)) {
-      this._target.removeChild(this._overlay);
-      this._overlay.removeEventListener('click', this._viewportClicked, false);
-    }
-  }
-
-
+  
   updateQueuedTracks(queuedTracks) {
     this._fillQueueTracksContainer(queuedTracks);
   }

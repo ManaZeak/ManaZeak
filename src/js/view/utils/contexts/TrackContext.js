@@ -55,15 +55,22 @@ class TrackContext extends ContextMenu {
   }
 
 
-  open(event, id) {
+  _open(event, id) {
     this._targetId = id;
     const pos = {
       x: event.clientX,
       y: event.clientY
     };
+
+    this._dom.style.left = '0';
+    this._dom.style.top = '0';
+    this._target.appendChild(this._overlay);
+    const contextWidth = getComputedStyle(this._overlay.children[0]).width;
+    const offset = parseInt(contextWidth.substring(0, contextWidth.length - 2)); // Removing px from string
+
     // Avoid X overflow : X pos + context width
-    if (event.clientX + 135 > document.body.clientWidth) {
-      pos.x -= 135;
+    if (event.clientX + offset > document.body.clientWidth) {
+      pos.x -= offset;
     }
     // Avoid Y overflow : Y pos + context height + footbar height
     if (event.clientY + (Object.keys(this._commands).length * 30) + 80 > document.body.clientHeight) {
@@ -73,15 +80,13 @@ class TrackContext extends ContextMenu {
     this._dom.style.left = `${pos.x}px`;
     this._dom.style.top = `${pos.y}px`;
     this._target.appendChild(this._overlay);
-    this._overlay.addEventListener('click', this._viewportClicked, false);
   }
 
 
-  close() {
+  _close() {
     if (this._target.contains(this._overlay)) {
       this._targetId = -1;
       this._target.removeChild(this._overlay);
-      this._overlay.removeEventListener('click', this._viewportClicked, false);
     }
   }
 }
