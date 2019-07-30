@@ -89,13 +89,13 @@
             cursor: pointer;
             border-radius: 5px;
             width: 100%;
-            height: 55px;
-            padding: 7px 15px;
+            height: calc(3 * 1.66em) + #{$mzk-padding};
+            padding: ($mzk-padding / 2) $mzk-padding;
             background: $mzk-color-text-light-alpha-10;
             position: relative;
             display: grid;
-            grid-template-columns: 2fr 14fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 2fr 16fr;
+            grid-template-rows: repeat(3, 1.6em);
 
             &::before {
               font-size: 1.66em;
@@ -109,8 +109,9 @@
             }
 
             p {
-              font-weight: 800;
-              padding-left: 7px;
+              align-self: center;
+              grid-column: 2;
+              padding-left: $mzk-padding;
               text-overflow: ellipsis;
               white-space: nowrap;
               overflow: hidden;
@@ -119,7 +120,7 @@
             p:first-child {
               align-self: end;
               grid-column: 1;
-              grid-row: 1 / span 2;
+              grid-row: 1 / span 3;
               font-weight: inherit;
               padding-left: 0;
               text-overflow: inherit;
@@ -127,9 +128,20 @@
               overflow: inherit;
             }
 
+            p.track-title {
+              font-weight: 800;
+            }
+
+            p.track-artist,
             p:last-child {
-              color: #ccc;
               font-weight: inherit;
+              padding-left: ($mzk-padding * 2);
+            }
+
+            p.track-artist:before,
+            p:last-child:before {
+              content: attr(data-label);
+              font-style: italic;
             }
 
             &.selected {

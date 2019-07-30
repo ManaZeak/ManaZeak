@@ -30,40 +30,6 @@ $notification-margin: 10px;
 $notification-border-thick: 3px;
 $notification-border-std: 1px;
 
-div, span, h1, h2, h3, h4, h5, h6, p, blockquote, a, cite, code, pre, em, q, small, strong, sub, sup, b, u, i {
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  margin: 0;
-  padding: 0;
-  vertical-align: baseline;
-}
-
-*, *:before, *:after { box-sizing: border-box; }
-
-html {
-    font-family: Helvetica, sans-serif;
-}
-
-body {
-    font-size:   $font-size;
-    line-height: $line-spacing;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color:       $color-dark-text;
-    font-weight: bold;
-}
-
-button {
-    background-color: transparent;
-    border:           $border-thickness solid $color-dark-border;
-    border-radius:    $border-radius;
-    cursor:           pointer;
-    padding:          ($notification-padding / 2) $notification-padding;
-}
-
-
 /* Notification style code begin here */
 .notification-container {
   align-items: flex-end;
@@ -157,6 +123,11 @@ button {
     }
 
     button {
+      background-color: transparent;
+      border:           $border-thickness solid $color-dark-border;
+      border-radius:    $border-radius;
+      cursor:           pointer;
+      padding:          ($notification-padding / 2) $notification-padding;
       font-size:     0.9em;
       margin-bottom: 0;
       padding: 	   ($notification-padding / 6) ($notification-padding / 2);

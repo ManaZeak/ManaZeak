@@ -15,7 +15,10 @@ class AlbumViewEntry {
     this._trackNumber = options.trackNumber;
     this._dom = {
       container: {},
-      duration: {}
+      duration: {},
+      title: {},
+      artist: {},
+      composer: {}
     };
 
     this._dom.container = document.createElement('DIV');
@@ -36,13 +39,21 @@ class AlbumViewEntry {
     this._dom.duration.innerHTML = Utils.secondsToTimecode(this._duration);
 
     this._dom.title = document.createElement('P');
+    this._dom.title.classList.add('track-title');
     this._dom.title.innerHTML = this._title;
 
+    this._dom.artist = document.createElement('P');
+    this._dom.artist.classList.add('track-artist');
+    this._dom.artist.dataset.label = 'Artist: ';
+    this._dom.artist.innerHTML = this._artist;
+
     this._dom.composer = document.createElement('P');
-    this._dom.composer.innerHTML = `${this._artist} - ${this._composer}`;
+    this._dom.composer.dataset.label = 'Composer: ';
+    this._dom.composer.innerHTML = this._composer;
 
     this._dom.container.appendChild(this._dom.duration);
     this._dom.container.appendChild(this._dom.title);
+    this._dom.container.appendChild(this._dom.artist);
     this._dom.container.appendChild(this._dom.composer);
   }
 
