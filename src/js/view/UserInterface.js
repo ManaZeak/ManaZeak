@@ -66,7 +66,7 @@ class UserInterface {
   changeTrack(track) {
     this.clearMoodbar();
     this.togglePlay();
-    this._setPageTitle(track.title);
+    this._setPageTitle(`${track.artist} - ${track.title}`);
     this._scene.changeTrack(track.id);
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
@@ -250,22 +250,24 @@ class UserInterface {
     this._scene.updateView(playlist);
   }
 
-  _setPageTitle(title){
-      this._clearPageTitle();
-      this._setPageTitleAnimation(`${title}               `);
+  _setPageTitle(title) {
+    // Remove any existing setTimeout before applying another
+    this._clearPageTitle();
+    // Launch recursive animation
+    this._setPageTitleAnimation(`♪ ${title} `);
   }
 
-  _setPageTitleAnimation(title){
-        document.title = title;
-        this._titleAnimationId = setTimeout(function () {
-            this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
-        }.bind(this), 500);
+  _setPageTitleAnimation(title) {
+    document.title = title;
+    this._titleAnimationId = setTimeout(() => {
+      this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
+    }, 350);
   }
 
-  _clearPageTitle(){
-      document.title = 'ManaZeak';
-      clearTimeout(this._titleAnimationId);
-      this._titleAnimationId = -1;
+  _clearPageTitle() {
+    document.title = 'ManaZeak';
+    clearTimeout(this._titleAnimationId);
+    this._titleAnimationId = -1;
   }
 
 

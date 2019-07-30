@@ -69,35 +69,34 @@ class AlbumView extends SceneView {
   }
 
   _buildAlbum(album) {
+    // Create album container
     const uiAlbum = document.createElement('DIV');
     uiAlbum.classList.add('album');
-
+    // Set cover for album entry
     const albumCover = document.createElement('IMG');
-
-    if (album.tracks[0].cover && Utils.imageUrlExists(`/static/covers/${album.tracks[0].cover}`)) {
+    if (album.tracks[0].cover) {
       albumCover.src = `/static/covers/${album.tracks[0].cover}`;
     } else {
       albumCover.src = '/static/img/default/cover.svg';
     }
-
     uiAlbum.appendChild(albumCover);
-
+    // Right side of layout container (year, title, tracks)
     const albumInfo = document.createElement('DIV');
     albumInfo.classList.add('album-info');
-
+    // Album title concatenated with its year
     const albumName = document.createElement('H1');
     albumName.innerHTML = `${album.name} - ${album.tracks[0].year}`;
-
     albumInfo.appendChild(albumName);
-
+    // Create album tracks container
     const albumTracks = document.createElement('DIV');
     albumTracks.classList.add('tracks-container');
-
+    // Create genres container (spans in it are automatically taken into a single genre)
     const genres = document.createElement('DIV');
     genres.classList.add('genre-badges');
+    // Genre object will store all unique album's track genre
     const genresObject = {};
     let isHq = true;
-
+    // Iterate over album tracks to create track entries and compute album genres
     for (let k = 0; k < album.tracks.length; ++k) {
       const albumViewEntry = new AlbumViewEntry({
         track: album.tracks[k],
@@ -107,29 +106,34 @@ class AlbumView extends SceneView {
       this._tracks.push(albumViewEntry);
       albumTracks.appendChild(albumViewEntry.domFragment);
       ++this._trackDatasetId;
-
-      if (!genresObject[album.tracks[k].genre] && album.tracks[k].genre !== '') {
-        genresObject[album.tracks[k].genre] = 1;
-        const genreBadge = document.createElement('SPAN');
-        genreBadge.innerHTML = album.tracks[k].genre;
-        genres.appendChild(genreBadge);
+      // Split genre into array and try to insert them if not already existing in genres
+      if (album.tracks[k].genre && !genresObject[album.tracks[k].genre]) {
+        let genreArray = album.tracks[k].genre.split('; ');
+        // Iterate over splited array
+        for (let j = 0; j < genreArray.length; ++j)  {
+          if (genreArray[j] && !genresObject[genreArray[j]]) {
+            genresObject[genreArray[j]] = 1;
+            const genreBadge = document.createElement('SPAN');
+            genreBadge.innerHTML = genreArray[j];
+            genres.appendChild(genreBadge);
+          }
+        }
       }
-
+      // Do not append the hq badge if at least one file is under or equal to 320 kbps
       if (album.tracks[k].bitrate <= 320000) {
         isHq = false;
       }
     }
-
+    // Append the hq badge if album if higher than mp3 320kbps
     if (isHq === true) {
       const hq = document.createElement('IMG');
       hq.classList.add('hq-badge');
       hq.src = '/static/img/tag/hq.svg';
       uiAlbum.appendChild(hq);
     }
-
+    // Set layout configuration depending on track count and build layout into album container
     albumTracks.setAttribute('style', `grid-template-rows: repeat(${Math.round(album.tracks.length / 2)}, auto);`);
     albumInfo.appendChild(albumTracks);
-
     uiAlbum.appendChild(genres);
     uiAlbum.appendChild(albumInfo);
 

@@ -373,6 +373,24 @@ class Model {
   }
 
 
+  isLastAlbumTrack(id) {
+    // TODO get total track from serv and ask for track in model instead of getTrack
+    for (let i = 0; i < this._collection._playlists.length; ++i) {
+      for (let j = 0; j < this._collection._playlists[i]._artists.length; ++j) {
+        for (let k = 0; k < this._collection._playlists[i]._artists[j].albums.length; ++k) {
+          for (let l = 0; l < this._collection._playlists[i]._artists[j].albums[k].tracks.length; ++l) {
+            if (this._collection._playlists[i]._artists[j].albums[k].tracks[l].id === id && this._collection._playlists[i]._artists[j].albums[k].tracks.length - 1 === l) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+
   setActiveView(newView) {
     return new Promise((resolve) => {
       this._collection.activePlaylist.activeView = newView;

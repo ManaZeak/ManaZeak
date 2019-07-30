@@ -61,7 +61,8 @@ class Playlist {
         if (response.DONE) {
           this._convertRawArtists(response.RESULT)
             .then(() => {
-              mzk.ui.updateLoadingOverlay(Utils.precisionRound((this._loadedTracks * 100/ this._totalTrack), 2));
+              // TODO proper method to compute lazy loading completion
+              //mzk.ui.updateLoadingOverlay(Utils.precisionRound((this._loadedTracks * 100/ this._totalTrack), 2));
               this._getArtistsLazyLoad(offset +  response.OFFSET);
             });
         } else {
