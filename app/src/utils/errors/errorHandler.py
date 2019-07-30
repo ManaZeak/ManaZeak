@@ -41,6 +41,17 @@ class ErrorHandler(object):
         )
 
     @staticmethod
+    ## This function generate a dict containing the default status information
+    def generateStatusMessage(isDone, errorType=None, caller=None, user=None):
+        # Logging the error
+        if errorType is not None:
+            ErrorHandler._formatLogErrorMessage(errorType, caller, user)
+        return {
+            'DONE': isDone,
+            'ERROR_KEY': errorType.name,
+        }
+
+    @staticmethod
     ## This function create the formatted log for the serer in case of an error.
     #   @param errorType the member of the errorEnum containing the information about it.
     #   @param caller the function that caused the error.
