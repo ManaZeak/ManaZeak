@@ -39,7 +39,7 @@ class QueueContext extends ContextMenu {
 
       const cover = document.createElement('IMG');
 
-      if (tracks[i].cover) {
+      if (tracks[i].cover && Utils.imageUrlExists(`/static/covers/${tracks[i].cover}`) === true) {
         cover.src = `/static/covers/${tracks[i].cover}`;
       } else {
         cover.src = `/static/img/default/cover.svg`;
