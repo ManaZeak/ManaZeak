@@ -10,7 +10,8 @@ class Track {
    * @param {string} options.album - Track album
    * @param {string} options.artist - Track artist
    * @param {object} options.rawTrack - Raw track server response
-   * @param {number} options.rawTrack.BITRATE - Track bitrate (kbps)
+   * @param {array} options.rawTrack.ARTIST - Track arttist
+   * @param {number} options.rawTrack.BITRATE - Track bitrate (bps)
    * @param {string} options.rawTrack.COMPOSERS - Track composer
    * @param {string} options.rawTrack.COVER - Track cover url
    * @param {number} options.rawTrack.DURATION - Track duration
@@ -22,20 +23,21 @@ class Track {
    * @param {number} options.rawTrack.YEAR - Track year
    **/
   constructor(options) {
+    this.title = options.rawTrack.TITLE;
+    this.artist = options.rawTrack.ARTIST; // Warn -> this is ALBUM ARTIST, json to come
     this.album = options.album;
-    this.artist = options.artist;
-    this.bitrate = options.rawTrack.BITRATE;
-    this.composersArray = options.rawTrack.COMPOSERS;
-    this.composers = '';
-    this.cover = options.rawTrack.COVER;
-    this.duration = options.rawTrack.DURATION;
-    this.genre = options.rawTrack.GENRE;
-    this.id = options.rawTrack.ID;
-    this.moodbar = options.rawTrack.MOODBAR;
+    this.year = options.rawTrack.YEAR;
+    this.albumArtist = options.albumArtist; // Warn -> this is ALBUM ARTIST, json to come
     this.performersArray = options.rawTrack.PERFORMERS;
     this.performers = '';
-    this.title = options.rawTrack.TITLE;
-    this.year = options.rawTrack.YEAR;
+    this.composersArray = options.rawTrack.COMPOSERS;
+    this.composers = '';
+    this.genre = options.rawTrack.GENRE;
+    this.cover = options.rawTrack.COVER;
+    this.id = options.rawTrack.ID;
+    this.bitrate = options.rawTrack.BITRATE;
+    this.moodbar = options.rawTrack.MOODBAR;
+    this.duration = options.rawTrack.DURATION;
 
     this._joinPerfoCompo();
   }

@@ -1,4 +1,5 @@
 import ContextMenu from '../overlays/ContextMenu.js';
+import ScrollBar from "../ScrollBar.js";
 'use strict';
 
 
@@ -86,9 +87,14 @@ class QueueContext extends ContextMenu {
     this._fillQueueTracksContainer(options.queuedTracks);
     this._dom.style.right = `${options.rightOffset}px`;
     this._target.appendChild(this._overlay);
+
+    this._scrollBar = new ScrollBar({
+      target: this._dom.container
+    });
+    this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
   }
 
-  
+
   updateQueuedTracks(queuedTracks) {
     this._fillQueueTracksContainer(queuedTracks);
   }

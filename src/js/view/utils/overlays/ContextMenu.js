@@ -1,4 +1,4 @@
-import Overlays from '../Overlays.js';
+  import Overlays from '../Overlays.js';
 'use strict';
 
 
@@ -11,9 +11,9 @@ class ContextMenu extends Overlays {
   }
 
 
-  open(options) {
+  open(event, options) {
     if (this._open) {
-      this._open(options);
+      this._open(event, options);
     }
 
     document.body.appendChild(this._overlay);
@@ -22,9 +22,9 @@ class ContextMenu extends Overlays {
   }
 
 
-  close(options) {
+  close(event, options) {
     if (this._close) {
-      this._close(options);
+      this._close(event, options);
     }
 
     if (document.body.contains(this._overlay)) {

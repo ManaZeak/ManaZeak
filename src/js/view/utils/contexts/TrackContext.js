@@ -32,6 +32,7 @@ class TrackContext extends ContextMenu {
 
   _download() {
     mzk.download(this._targetId);
+    this.close();
   }
 
 
