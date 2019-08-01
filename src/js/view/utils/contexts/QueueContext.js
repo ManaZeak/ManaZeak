@@ -1,3 +1,4 @@
+import QueueEntry from "./entries/QueueEntry.js";
 import ContextMenu from '../overlays/ContextMenu.js';
 import ScrollBar from "../ScrollBar.js";
 'use strict';
@@ -8,6 +9,10 @@ class QueueContext extends ContextMenu {
 
   constructor(options) {
     super(options);
+
+    this._isFirstCall = true;
+    // Contains all queued Track object in an array
+    this._queuedTracks = [];
   }
 
 
@@ -19,79 +24,51 @@ class QueueContext extends ContextMenu {
 
 
   _fillQueueTracksContainer(queuedTracks) {
-    if (queuedTracks.length > 0) {
+    if (queuedTracks.length > 0 && queuedTracks.length < 1000) {
+      this._dom.container.innerHTML = '';
       this._fillQueuedTracks(queuedTracks);
       this._dom.status.innerHTML = `${queuedTracks.length} queued tracks (${Utils.totalTracksDuration(queuedTracks)})`;
     } else if (queuedTracks.length === 0) {
-      this._dom.status.innerHTML = 'No tracks in the queue';
       this._dom.container.innerHTML = '';
       this._dom.container.appendChild(this._emptyContainer);
+      this._dom.status.innerHTML = 'No tracks in the queue';
+    } else if (queuedTracks.length >= 1000) { // No more than 1k tracks per batch (even if 1k is mega overkill...)
+      Logger.raise({
+        code: 'TOO_MUCH_TRACK_TO_ADD_TO_QUEUE',
+        frontend: true
+      });
     }
   }
 
 
   _fillQueuedTracks(tracks) {
-    this._dom.container.innerHTML = '';
+    this._queuedTracks = []; // Clear any previous Track in memory
 
     for (let i = 0; i < tracks.length; ++i) {
-      const uiTrack = document.createElement('DIV');
-      uiTrack.classList.add('queued-track');
-      uiTrack.dataset.before = i + 1;
-
-      const cover = document.createElement('IMG');
-
-      if (tracks[i].cover && Utils.imageUrlExists(`/static/covers/${tracks[i].cover}`) === true) {
-        cover.src = `/static/covers/${tracks[i].cover}`;
-      } else {
-        cover.src = `/static/img/default/cover.svg`;
-      }
-
-      const title = document.createElement('P');
-      title.innerHTML = tracks[i].title;
-
-      const artist = document.createElement('P');
-      artist.innerHTML = tracks[i].artist;
-
-      const actions = document.createElement('DIV');
-      const navUp = document.createElement('IMG');
-      const navDown = document.createElement('IMG');
-      navUp.src = '/static/img/navigation/nav-up.svg';
-      navDown.src = '/static/img/navigation/nav-down.svg';
-      this._moveTrackInQueueEvents(navDown, navUp, i);
-      actions.appendChild(navUp);
-      actions.appendChild(navDown);
-
-
-      uiTrack.appendChild(cover);
-      uiTrack.appendChild(title);
-      uiTrack.appendChild(artist);
-      uiTrack.appendChild(actions);
-
-      this._dom.container.appendChild(uiTrack);
+      this._queuedTracks.push(new QueueEntry({
+        renderTo: this._dom.container,
+        track: tracks[i],
+        i: i
+      }));
     }
   }
 
 
-  _moveTrackInQueueEvents(navDown, navUp, index) {
-    navDown.addEventListener('click', () => {
-      mzk.model.swapQueueDown(index);
-    });
-
-    navUp.addEventListener('click', () => {
-      mzk.model.swapQueueUp(index);
-    });
-  }
-
-
   _open(options) {
+    this._dom.container.innerHTML = '';
     this._fillQueueTracksContainer(options.queuedTracks);
     this._dom.style.right = `${options.rightOffset}px`;
     this._target.appendChild(this._overlay);
 
-    this._scrollBar = new ScrollBar({
-      target: this._dom.container
-    });
-    this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
+    if (this._isFirstCall === true) {
+      this._isFirstCall = false;
+      this._scrollBar = new ScrollBar({
+        target: this._dom.container
+      });
+      this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
+    } else {
+      this._scrollBar.update();
+    }
   }
 
 

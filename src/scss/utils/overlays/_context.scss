@@ -133,7 +133,7 @@
   border-radius: 5px;
   bottom: $footbar-height + 8px;
   height: auto;
-  max-height: 66%;
+  max-height: 500px;
   position: absolute;
   right: 0;
   width: auto;
@@ -144,57 +144,80 @@
 
   .track-container {
     margin: $margin / 2;
-    position: relative;
     min-height: 50px;
+    max-height: 500px;
     height: auto;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
 
     .queued-track {
-      height: 50px;
+      background-color: $mzk-color-bg-dark;
+      border-radius: $mzk-border-radius;
+      height: 75px;
       width: 330px;
       display: grid;
-      grid-template-columns: 70px 1fr 30px;
-      grid-template-rows: 1fr 1fr;
-      grid-template-areas: "img title nav" "img composer nav";
+      grid-template-columns: 70px 1fr 25px;
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-areas: "img title nav" "img artist nav" "position artist nav";
       align-items: center;
       margin: ($margin / 2) 0;
 
       img {
         grid-area: img;
-        height: 50px;
-        width: 50px;
+        height: 40px;
+        width: 40px;
         justify-self: center;
+        align-self: end;
       }
 
       p {
-        align-self: end;
+        align-self: center;
+        font-size: .9em;
+        line-height: 1.4em;
         text-overflow: ellipsis;
+        grid-area: artist;
         white-space: nowrap;
         overflow: hidden;
 
-        &:first-child {
+        &.title {
+          font-size: 1em;
+          font-style: italic;
           grid-area: title;
+          line-height: 1;
+          align-self: end;
         }
+      }
 
-        &:last-child {
-          grid-area: composer;
-        }
+      p.position {
+        align-self: center;
+        color: $mzk-color-primary;
+        grid-area: position;
+        line-height: 1;
+        text-align: center;
       }
 
       div {
         grid-area: nav;
-        display: flex;
-        flex-direction: column;
-        align-items: end;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas: "up" "trash" "down";
 
         img {
           height: 25px;
           width: 25px;
           cursor: pointer;
+
+          &.up {
+            grid-area: up;
+          }
+
+          &.down {
+            grid-area: down;
+          }
+
+          &.trash {
+            grid-area: trash;
+          }
         }
       }
 
@@ -203,7 +226,7 @@
           height: 100%;
           justify-content: flex-end;
 
-          & img:first-child {
+          & img.up {
             display: none;
           }
         }
@@ -214,20 +237,16 @@
           height: 100%;
           justify-content: flex-start;
 
-          & img:last-child {
+          & img.down {
             display: none;
           }
         }
       }
+    }
 
-      &::before {
-        content: attr(data-before); // Attribute set in Js
-        position: absolute;
-        color: $mzk-color-primary;
-        right: 0;
-        width: 25px;
-        text-align: center;
-        font-size: 0.9em;
+    div {
+      div.scrollbar-content {
+        max-height: 450px;
       }
     }
   }

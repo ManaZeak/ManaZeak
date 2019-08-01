@@ -90,6 +90,11 @@
         "title": "Invalid shuffle mode",
         "message": "Something went wrong with the shuffle value. Contact an administrator (support@manazeak.org)",
         "severity": "warning"
+      },
+      "TOO_MUCH_TRACK_TO_ADD_TO_QUEUE": {
+        "title": "Too much track to queue",
+        "message": "You want to add more than 1000 tracks and it is not a reasonable action, either for you and me.",
+        "severity": "info"
       }
     },
     "backend":  {
