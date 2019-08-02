@@ -154,6 +154,10 @@
     height: auto;
     overflow: auto;
 
+    p.italic {
+      line-height: 50px;
+    }
+
     .queued-track {
       background-color: $mzk-color-bg-dark;
       border-radius: $mzk-border-radius;
