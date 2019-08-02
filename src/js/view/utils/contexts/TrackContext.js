@@ -10,11 +10,21 @@ class TrackContext extends ContextMenu {
 
     this._targetId = -1;
     this._commands = {
-      playPause: {},
-      stop: {},
+      controls: {
+        playPause: {},
+        stop: {},
+        next: {},
+        previous: {}
+      },
       download: {},
       queue: {}
     };
+  }
+
+
+  _previous() {
+    mzk.previousTrackInView();
+    this.close();
   }
 
 
@@ -26,6 +36,12 @@ class TrackContext extends ContextMenu {
 
   _stop() {
     mzk.stopPlayback();
+    this.close();
+  }
+
+
+  _next() {
+    mzk.next();
     this.close();
   }
 
@@ -44,13 +60,17 @@ class TrackContext extends ContextMenu {
 
 
   setActions(doc) {
-    this._commands.playPause = doc.getElementsByClassName('play-pause')[0];
-    this._commands.stop = doc.getElementsByClassName('stop')[0];
+    this._commands.controls.previous = doc.getElementsByClassName('previous')[0];
+    this._commands.controls.playPause = doc.getElementsByClassName('play-pause')[0];
+    this._commands.controls.stop = doc.getElementsByClassName('stop')[0];
+    this._commands.controls.next = doc.getElementsByClassName('next')[0];
     this._commands.download = doc.getElementsByClassName('download')[0];
     this._commands.queue = doc.getElementsByClassName('add-to-queue')[0];
 
-    this._commands.playPause.addEventListener('click', this._togglePlay.bind(this), false);
-    this._commands.stop.addEventListener('click', this._stop.bind(this), false);
+    this._commands.controls.previous.addEventListener('click', this._previous.bind(this), false);
+    this._commands.controls.playPause.addEventListener('click', this._togglePlay.bind(this), false);
+    this._commands.controls.stop.addEventListener('click', this._stop.bind(this), false);
+    this._commands.controls.next.addEventListener('click', this._next.bind(this), false);
     this._commands.download.addEventListener('click', this._download.bind(this), false);
     this._commands.queue.addEventListener('click', this._addToQueue.bind(this), false);
   }

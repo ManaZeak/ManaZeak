@@ -100,21 +100,26 @@
   justify-content: center;
   flex-direction: column;
 
+  hr {
+    height: 1px;
+    color: $mzk-color-bg-light;
+  }
+
   .entry {
     height: 30px; // Match value in TrackContext.js if modified here
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 5px;
 
     img {
       height: 20px;
+      margin: 0 10px;
       width: 20px;
     }
 
     p {
       line-height: 30px;
-      padding-left: $padding;
     }
 
     &.add-to-queue::before {
@@ -122,7 +127,7 @@
       color: #56D45B;
       position: absolute;
       font-weight: bold;
-      left: 2px;
+      left: 5px;
     }
   }
 }
