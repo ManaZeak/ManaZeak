@@ -1,7 +1,9 @@
 import hashlib
 import os
-import random
 import png  # requires pypng
+import random
+
+from itertools import chain
 
 
 ##  This class contains a simple avatar creation utility function.
@@ -60,16 +62,11 @@ class AvatarGenerator(object):
         # creating actual RGB avatar
         # color is in [1;5]. If pixel is 0, color*pixel = 0 and palette[0] = white
         # If pixel is 1, color*pixel = color and palette[color] = some color
-        avatar3d = [[self.palette[color * pixel]
+        avatar = [[self.palette[color * pixel]
                     for pixel in row] for row in avatarBin]
-        avatar3d = self._resizeAvatar(avatar3d, avatarSize, imageSizePerCell)
+        avatar = self._resizeAvatar(avatar, avatarSize, imageSizePerCell)
 
-        avatar = []
-        for row in avatar3d:
-            newrow = []
-            for px in row:
-                newrow += list(px)
-            avatar.append(newrow)
+        avatar = [chain(*row) for row in avatar]
 
         png.from_array(avatar, 'RGB').save(avatarPath)
         return avatarPath
