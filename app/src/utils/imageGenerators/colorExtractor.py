@@ -8,7 +8,7 @@ class ColorExtractor(object):
     @staticmethod
     ## compresses color by a specified factor
     # @param pixel an RGB triple to compress
-    # @oaram level the desired amount of compression
+    # @param level the desired amount of compression
     def _compressColor(pixel, level=16):
         r, g, b = pixel
         r = min(ceil(r / level) * level, 255)
