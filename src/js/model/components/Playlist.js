@@ -101,7 +101,7 @@ class Playlist {
           for (let k = 0; k < rawArtistsArray[i].ALBUMS[j].TRACKS.length; ++k) {
             tracks.push(new Track({
               album: rawArtistsArray[i].ALBUMS[j],
-              artist: rawArtistsArray[i].NAME,
+              albumArtist: rawArtistsArray[i].NAME,
               rawTrack: rawArtistsArray[i].ALBUMS[j].TRACKS[k]
             }));
           }

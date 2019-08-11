@@ -13,7 +13,7 @@ $listview-track-height: 40px;
     width: 1px;
     height: calc(100% - 50px);
     top: 45px;
-    position:absolute;
+    position: absolute;
     z-index: 9999;
     background: lime;
   }
@@ -104,8 +104,6 @@ $listview-track-height: 40px;
   }
 
   .track-container {
-    box-sizing: border-box;
-    font-family: Helvetica, serif;
     height: calc(100% - #{$listview-track-height});
     overflow-x: hidden;
     overflow-y: auto;

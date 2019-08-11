@@ -343,6 +343,16 @@ class Model {
     mzk.setQueueFromArray(this._getQueuedTracks());
   }
 
+
+  removeFromQueue(index) {
+    if (index >= 0 && index < this._queue.length) {
+      this._queue.splice(index, 1);
+    }
+
+    mzk.setQueueFromArray(this._getQueuedTracks());
+  }
+
+
   setQueueFromArray(queuedTracks) {
     return new Promise(resolve => {
       this._queue = []; // Clear old queue

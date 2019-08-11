@@ -1,8 +1,11 @@
+*, *:before, *:after { box-sizing: border-box; margin: 0; }
+
 html, body {
   color: $mzk-color-text-light;
-  font-family: Segoe, Helvetica, serif;
+  font-family: SegoeUI, Helvetica, serif;
+  font-size:   $mzk-font-size;
+  line-height: $mzk-font-size;
   height: 100%;
-  line-height: 1;
   margin: 0;
   overflow: hidden;
   padding: 0;

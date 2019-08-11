@@ -162,6 +162,11 @@ class ScrollBar {
       }
     });
   }
+
+
+  update() {
+    this._updateScrollBar();
+  }
 }
 
 export default ScrollBar;

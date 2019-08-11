@@ -129,7 +129,6 @@ class SceneView {
     }
 
     this._trimSelection();
-    console.log(this._selection)
   }
 
 

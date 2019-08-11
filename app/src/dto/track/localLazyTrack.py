@@ -1,5 +1,9 @@
+import logging
+
 from app.src.dto.artist.LocalLazyArtist import LocalLazyArtist
 
+
+logger = logging.getLogger('django')
 
 ## This class describe a track object in the lazy loading of the list view.
 class LocalLazyTrack(object):
@@ -43,6 +47,7 @@ class LocalLazyTrack(object):
             'YEAR': self.year,
             'COMPOSERS': [composer.generateJson() for composer in self.composers],
             'PERFORMERS': [performer.generateJson() for performer in self.performers],
+            'ARTISTS': [artist.generateJson() for artist in self.artists],
             'BITRATE': self.bitrate,
             'DURATION': self.duration,
             'COVER': self.cover,
@@ -73,6 +78,7 @@ class LocalLazyTrack(object):
     ## Creates a new artist and add it to the artist list.
     def _createArtist(self, artistId, artistName):
         artist = LocalLazyArtist()
+        logger.info('GET THE INFO of the artist and see why duplicate')
         artist.id = artistId
         artist.name = artistName
         self.lastArtistId = artistId
