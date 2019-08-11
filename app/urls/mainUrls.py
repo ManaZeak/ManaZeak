@@ -49,4 +49,5 @@ urlpatterns = [
 
     ########################### Admin Tools ###########################
     path('admin/', include('app.urls.admin.adminUrls', namespace='admin')),
+    path('dump/', include('app.urls.dump.dumpUrls', namespace='dump')),
 ]

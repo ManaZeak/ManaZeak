@@ -6,6 +6,19 @@ from math import ceil
 class ColorExtractor(object):
 
     @staticmethod
+    ## Extracts and returns the dominant color from an image (RGB)
+    # @param filePath path of the target image
+    def extractDominantColor(filePath):
+        with open(filePath, 'rb') as f:
+            img = ColorExtractor._readImg(f)
+        img = ColorExtractor._convertImage(img, ColorExtractor._compressColor, (32,))
+        img = ColorExtractor._convertImage(img, ColorExtractor._rgbToHsv)
+
+        domColor = ColorExtractor._findDomColor(ColorExtractor._histogram(img))
+        domColor = ColorExtractor._hsvToRgb(domColor)
+        return domColor
+
+    @staticmethod
     ## compresses color by a specified factor
     # @param pixel an RGB triple to compress
     # @param level the desired amount of compression
@@ -149,17 +162,4 @@ class ColorExtractor(object):
             scores[score] = colors[i]
 
         domColor = scores[max(scores.keys())]
-        return domColor
-
-    @staticmethod
-    ## Extracts and returns the dominant color from an image (RGB)
-    # @param fname path of the target image
-    def extractDominantColor(fname):
-        with open(fname, 'rb') as f:
-            img = ColorExtractor._readImg(f)
-        img = ColorExtractor._convertImage(img, ColorExtractor._compressColor, (32,))
-        img = ColorExtractor._convertImage(img, ColorExtractor._rgbToHsv)
-
-        domColor = ColorExtractor._findDomColor(ColorExtractor._histogram(img))
-        domColor = ColorExtractor._hsvToRgb(domColor)
         return domColor
