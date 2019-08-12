@@ -19,12 +19,11 @@ class PlaybackRateContext extends ContextMenu {
   }
 
 
-  open(options) {
+  _open(options) {
     if (this._animationLockId === -1) {
       this._animationLockId = 42;
       this._dom.container.style.right = `${options.rightOffset}px`;
       this._target.appendChild(this._overlay);
-      this._overlay.addEventListener('click', this._viewportClicked, false);
       this._playbackRateBar = new PlaybackRateBar();
 
       requestAnimationFrame(() => {
@@ -41,18 +40,17 @@ class PlaybackRateContext extends ContextMenu {
   }
 
 
-  close() {
+  _close() {
     if (this._target.contains(this._overlay) && this._animationLockId === -1) {
+      // Animate playback rate arrival on UI
       requestAnimationFrame(() => {
         this._dom.container.style.opacity = `0`;
         requestAnimationFrame(() => {
           this._dom.container.style.transform = `translateY(50px)`;
         });
       });
-
+      // Actually remove after approximately after translation of 250 ms
       this._animationLockId = setTimeout(() => {
-        this._target.removeChild(this._overlay);
-        this._overlay.removeEventListener('click', this._viewportClicked, false);
         this._animationLockId = -1;
         this._playbackRateBar = null;
       }, 250);

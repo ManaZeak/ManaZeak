@@ -320,6 +320,7 @@ class Mzk {
    * @description Change the played track with the gievn one (using its ID)
    * @param {number} id - The track ID to request to the server
    * @param {boolean} centerOn - Force reframe on target track
+   * @param {boolean} centerOn - Force reframe on target track
    **/
   changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
     /*let durationPlayed = 0; // TODO migrate in websocket
@@ -408,7 +409,7 @@ class Mzk {
    * @since September 2018
    * @description Triggered when the player reached the end of a track **/
   trackEnded() {
-    mzk.next(true);
+    mzk.next();
   }
 
 
@@ -592,6 +593,8 @@ class Mzk {
    **/
   changeActiveView(newView) {
     return new Promise(resolve => {
+      // Only changing view if the new view is not the current one
+      if (this.model.activeView !== newView) {
       this.startLoading(true)
         .then(() => {
           return this.model.setActiveView(newView);
@@ -604,6 +607,9 @@ class Mzk {
         .catch(error => {
           console.log(error);
         });
+      } else {
+        resolve();
+      }
     });
   }
 
@@ -616,9 +622,9 @@ class Mzk {
    * @author Arthur Beaulieu
    * @since October 2018
    * @description Change the player track using the next one in the current view
-   * isUserRq -> user has clicked on next
+   * isUserRequest -> user has clicked on next
    **/
-  next(isUserRq) {
+  next(isUserRequest) {
     if (this.model.queue.length > 0) {
       this.changeTrack(this.model.getNextFromQueue());
       this.ui.updateQueueNumber(this.model.queue);
@@ -646,10 +652,11 @@ class Mzk {
         });
       }
     } else if (shuffleMode === 1) { // Shuffle
-      if (isUserRq === true) {
-        this.changeTrack(this.ui.nextTrackId);
-      } else {
+      // Spec is shuffle if user play next, normal playback in album otherwise, only if current is not the last track of album
+      if (isUserRequest === true || this.model.isLastAlbumTrack(this.model.playingTrack.id)) {
         mzk.playShuffleTrackInPlaylist();
+      } else {
+        this.changeTrack(this.ui.nextTrackId);
       }
     } else if (shuffleMode === 2) { // Random
       mzk.playRandomTrackInPlaylist();
@@ -762,29 +769,30 @@ class Mzk {
    * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
    **/
   addTrackToQueue(datasetId) {
-    const selection = this.ui.activeView.selection;
-    // User has no selection : we simply adds the datasetId to the queue
-    if (selection.length === 0) {
-      const track = this.ui.getTrackById(datasetId);
+    const addTrack = (id) => {
+      const track = this.ui.getTrackById(id);
 
       if (track) {
         this.model.appendToQueue(track.id);
         this.ui.updateQueueNumber(this.model.queue);
       }
-    } else {
-      // Checking if the datasetId isn't in selection, so we can append it to the selection array
-      if (selection.indexOf(Number(datasetId)) === -1) {
-        selection.push(datasetId);
-      }
-      // Parsing selection to append track in the proper order
-      for (let i = 0; i < selection.length; ++i) {
-        const track = this.ui.getTrackById(selection[i]);
+    };
 
-        if (track) {
-          this.model.appendToQueue(track.id);
+    const selection = this.ui.activeView.selection;
+    // User has no selection : we simply adds the datasetId to the queue
+    if (selection.length === 0) {
+      addTrack(datasetId);
+    } else {
+      // When right clicked outside of the current selection : add the track the user was pointing
+      if (selection.indexOf(Number(datasetId)) === -1) {
+        addTrack(datasetId);
+      } else { // When right clicked over the current selection : append the user selection in the queue
+        //selection.push(datasetId);
+        // Parsing selection to append track in the proper order
+        for (let i = 0; i < selection.length; ++i) {
+          addTrack(selection[i]);
         }
       }
-      this.ui.updateQueueNumber(this.model.queue);
     }
   }
 

@@ -2,7 +2,7 @@ import os
 
 from django.utils.html import strip_tags
 
-from app.models import Library
+from app.models import Library, Playlist
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
 

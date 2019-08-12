@@ -51,7 +51,9 @@ class TopBar {
       url: 'contexts/userMenu/'
     });
 
-    this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
+    if (Utils.imageUrlExists(`../../${mzk.user.avatarPath}`) === true) {
+      this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
+    }
   }
 
 

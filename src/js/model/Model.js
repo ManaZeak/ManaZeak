@@ -343,6 +343,16 @@ class Model {
     mzk.setQueueFromArray(this._getQueuedTracks());
   }
 
+
+  removeFromQueue(index) {
+    if (index >= 0 && index < this._queue.length) {
+      this._queue.splice(index, 1);
+    }
+
+    mzk.setQueueFromArray(this._getQueuedTracks());
+  }
+
+
   setQueueFromArray(queuedTracks) {
     return new Promise(resolve => {
       this._queue = []; // Clear old queue
@@ -370,6 +380,24 @@ class Model {
     }
 
     return queuedTracks;
+  }
+
+
+  isLastAlbumTrack(id) {
+    // TODO get total track from serv and ask for track in model instead of getTrack
+    for (let i = 0; i < this._collection._playlists.length; ++i) {
+      for (let j = 0; j < this._collection._playlists[i]._artists.length; ++j) {
+        for (let k = 0; k < this._collection._playlists[i]._artists[j].albums.length; ++k) {
+          for (let l = 0; l < this._collection._playlists[i]._artists[j].albums[k].tracks.length; ++l) {
+            if (this._collection._playlists[i]._artists[j].albums[k].tracks[l].id === id && this._collection._playlists[i]._artists[j].albums[k].tracks.length - 1 === l) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
 

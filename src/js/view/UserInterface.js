@@ -20,6 +20,7 @@ class UserInterface {
     this._scene = {};
     this._footBar = {};
     this._loadingOverlay = {};
+    this._titleAnimationId = -1;
 
     this._init();
   }
@@ -46,6 +47,7 @@ class UserInterface {
 
     this._loadingOverlay = document.createElement('DIV');
     this._loadingOverlay.className = 'mzk-loading-overlay';
+    this._loadingOverlay.setAttribute('data-before', 'Loading...');
   }
 
 
@@ -64,6 +66,7 @@ class UserInterface {
   changeTrack(track) {
     this.clearMoodbar();
     this.togglePlay();
+    this._setPageTitle(`${track.artist} - ${track.title}`);
     this._scene.changeTrack(track.id);
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
@@ -103,6 +106,7 @@ class UserInterface {
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.progressBar.resetProgressBar();
     this._scene.stopPlayback();
+    this._clearPageTitle();
   }
 
 
@@ -184,7 +188,7 @@ class UserInterface {
     return new Promise(resolve => {
       if (lockView === false) {
         this._topBar.startSpinner()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._appendLoadingOverlay()
           .then(resolve);
@@ -197,7 +201,7 @@ class UserInterface {
     return new Promise(resolve => {
       if (lockView === false) {
         this._topBar.stopSpinner()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._removeLoadingOverlay()
           .then(resolve);
@@ -210,6 +214,16 @@ class UserInterface {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
       requestAnimationFrame(resolve);
+    });
+  }
+
+
+  updateLoadingOverlay(progress) {
+    return new Promise(resolve => {
+      if (document.body.contains(this._loadingOverlay)) {
+        this._loadingOverlay.setAttribute('data-before', `Loading... ${progress}%`);
+        requestAnimationFrame(resolve);
+      }
     });
   }
 
@@ -234,6 +248,26 @@ class UserInterface {
 
   updateView(playlist) {
     this._scene.updateView(playlist);
+  }
+
+  _setPageTitle(title) {
+    // Remove any existing setTimeout before applying another
+    this._clearPageTitle();
+    // Launch recursive animation
+    this._setPageTitleAnimation(`♪ ${title} `);
+  }
+
+  _setPageTitleAnimation(title) {
+    document.title = title;
+    this._titleAnimationId = setTimeout(() => {
+      this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
+    }, 350);
+  }
+
+  _clearPageTitle() {
+    document.title = 'ManaZeak';
+    clearTimeout(this._titleAnimationId);
+    this._titleAnimationId = -1;
   }
 
 

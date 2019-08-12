@@ -62,3 +62,8 @@ class GenericViews(object):
     #   @return the user menu template
     def playbackRateContext(request):
         return render(request, 'contexts/PlaybackRateContext.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getMainPage(request):
+        return  render(request, 'views/mainpage.html')

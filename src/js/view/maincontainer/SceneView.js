@@ -9,7 +9,7 @@ class SceneView {
     this._selection = [];
     this._click = { // Object to handle click events on track entries
       dbclick: false,
-      targetId: -1,
+      index: -1,
       timeoutId: -1
     };
 
@@ -24,106 +24,113 @@ class SceneView {
     }
   }
 
-  _simpleClick(targetId) {
-    const isTargetSelected = this._tracks[targetId].selected; // Saving target selection state before unselecting all
+  _simpleClick(index) {
+    const isTargetSelected = this._tracks[index].selected; // Saving target selection state before unselecting all
     this.unselectAll();
-
-    if (isTargetSelected) {
-      this._tracks[targetId].selected = false; // Restore previous state to properly use in Normal click behavior condition
-      this._selection.splice(this._selection.indexOf(targetId), 1);
+    // Remove selection on track if it was already selected before click
+    if (isTargetSelected === true) {
+      this._removeFromSelection(index);
+    } else {
+      this._addToSelection(index);
     }
   }
 
-  _playTrack(targetId) {
+  _playTrack(index) {
     clearTimeout(this._click.timeoutId);
     this.stopPlayback();
-    this._tracks[targetId].selected = true;
-    this._selection.push(parseInt(targetId, 10));
-    mzk.changeTrack(this._tracks[targetId].id);
+    this._addToSelection(index);
+    mzk.changeTrack(this._tracks[index].id);
   }
 
-  _toggleSelected(targetId) {
-    mzk.ui.startLoading()
-      .then(() => {
-        if (this._tracks[targetId].selected) {
-          this._tracks[targetId].selected = false;
-          this._selection.splice(this._selection.indexOf(targetId), 1);
-        } else {
-          this._tracks[targetId].selected = true;
-          this._selection.push(parseInt(targetId, 10));
-        }
-
-        mzk.ui.stopLoading();
-      });
+  _addToSelection(index) {
+    this._tracks[index].selected = true;
+    this._selection.push(parseInt(index, 10));
+    this._trimSelection();
   }
 
-  _controlShiftClick(targetId) {
-    mzk.ui.startLoading()
-      .then(() => {
-        let start = 0;
-        let end = 0;
+  _removeFromSelection(index) {
+    this._tracks[index].selected = false;
+    this._selection.splice(this._selection.indexOf(index), 1);
+    this._trimSelection();
+  }
 
-        if (parseInt(targetId, 10) < this._selection[0]) { // Compare to this._selection[0] since this._selection is always ordered
-          start = parseInt(targetId, 10);
-          end = this._selection[0];
-        } else if (parseInt(targetId, 10) > this._selection[this._selection.length - 1]) { // Same here with greater index in this._selection
-          start = this._selection[this._selection.length - 1] + 1; // +1  to avoid first item repetition
-          end = parseInt(targetId, 10) + 1; // +1 to not forget the targetId too
-        }
+  _trimSelection() {
+    // Sort selection ids
+    this._selection.sort((a, b) => {
+      return (a - b);
+    });
+    // Removing all duplicates
+    this._selection = [...new Set(this._selection)];
+  }
 
-        for (let i = start; i < end; ++i) { // Loop to fill in between items
-          this._tracks[i].selected = true;
-          this._selection.push(i);
-        }
+  _toggleSelected(index) {
+    if (this._tracks[index].selected) {
+      this._removeFromSelection(index);
+    } else {
+      this._addToSelection(index);
+    }
+  }
 
-        mzk.ui.stopLoading();
-      });
+  _controlShiftClick(index) {
+    let start = 0;
+    let end = 0;
+
+    if (parseInt(index, 10) < this._selection[0]) { // Compare to this._selection[0] since this._selection is always ordered
+      start = parseInt(index, 10);
+      end = this._selection[0];
+    } else if (parseInt(index, 10) > this._selection[this._selection.length - 1]) { // Same here with greater index in this._selection
+      start = this._selection[this._selection.length - 1] + 1; // +1  to avoid first item repetition
+      end = parseInt(index, 10);
+    }
+
+    for (let i = start; i <= end; ++i) { // Loop to fill in between items
+      this._addToSelection(i);
+    }
   }
 
   _trackClicked(event) {
-    event.stopPropagation(); // Block window click listener
+    event.stopPropagation(); // Block click listener
 
     const closest = event.target.closest('.track');
-    let targetId = 0;
+    let index = 0;
 
     if (closest === null) {
       this.unselectAll();
       return;
     } else {
-      targetId = closest.dataset.id;
+      index = closest.dataset.id;
     }
 
     if (Utils.isMobileDevice()) { // Mobile Click
       this.unselectAll();
-      this._playTrack(targetId);
+      this._playTrack(index);
       return;
     }
 
-    if (!this._click.dbclick || this._click.targetId !== targetId) { // Second test force dbclick to occur on same track
+    if (!this._click.dbclick || this._click.index !== index) { // Second test force dbclick to occur on same track
       this._click.dbclick = true; // Activate double click lock
-      this._click.targetId = targetId;
+      this._click.index = index;
 
-      if (!event.ctrlKey) { // Simple click unselects all, return to avoid side effects. Unselect then done
-        this._simpleClick(targetId);
+      if (!event.ctrlKey) { // Simple click
+        this._simpleClick(index);
       }
 
       if (event.ctrlKey && event.shiftKey && this._selection.length > 0) { // Ctrl + Shift + Click : fill selection in between target and closest selectioned track
-        this._controlShiftClick(targetId);
-      } else { // Ctrl click behavior (+ normal click behavior toggle selected)
-        this._toggleSelected(targetId);
+        this._controlShiftClick(index);
+      } else if (event.ctrlKey) { // Ctrl click behavior
+        this._toggleSelected(index);
       }
 
       this._click.timeoutId = setTimeout(() => {
         this._click.dbclick = false; // Deactivate double click lock
       }, 300);
     } else { // Dble click
-      this._playTrack(targetId);
+      this._playTrack(index);
     }
 
-    this._selection.sort((a, b) => {
-      return (a - b);
-    });
+    this._trimSelection();
   }
+
 
   stopPlayback() {
     if (this._tracks[this._playingTrackIndex]) { // Testing if a track is flagged playing
@@ -141,11 +148,11 @@ class SceneView {
   }
 
   changeTrack(id) {
-    let targetId = 0;
+    let index = 0;
 
     for ( let i = 0; i < this._tracks.length; ++i) {
       if (this._tracks[i].id === id) {
-        targetId = i;
+        index = i;
         break;
       }
     }
@@ -156,9 +163,9 @@ class SceneView {
           this._tracks[this._playingTrackIndex].playing = false;
         }
 
-        this._playingTrackIndex = targetId;
+        this._playingTrackIndex = index;
         this._click.dbclick = false;
-        this._tracks[targetId].playing = true;
+        this._tracks[index].playing = true;
         mzk.ui.stopLoading();
       });
   }

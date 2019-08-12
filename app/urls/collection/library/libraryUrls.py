@@ -10,4 +10,5 @@ urlpatterns = [
     path('initialScan/', LibraryService.initialScan, name='initialScan'),
     # FIXME : to be moved into the new library action.
     path('delete/<int:libraryId>/', LibraryService.deleteLibrary, name='deleteLibrary'),
+    path('checkScanStatus/', LibraryService.getLibraryScanStatus, name='libraryScanStatus'),
 ]
