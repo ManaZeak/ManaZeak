@@ -66,7 +66,7 @@ class UserInterface {
   changeTrack(track) {
     this.clearMoodbar();
     this.togglePlay();
-    this._setPageTitle(`${track.artist} - ${track.title}`);
+    this._setPageTitle(`${track.artists} - ${track.title}`);
     this._scene.changeTrack(track.id);
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
