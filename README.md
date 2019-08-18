@@ -62,6 +62,7 @@ However, if not everything went as expected, you might check the [Troubleshootin
 [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) |
 [Armand Vignat](https://github.com/avignat) |
 [Guilhem Piat](https://github.com/Syncrossus) |
+[Raphael Beekmann](https://github.com/Asiberus) |
 [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
 
 <p style="margin-bottom: 25px">
