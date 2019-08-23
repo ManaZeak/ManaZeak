@@ -14,6 +14,7 @@ install:
   - mkdir database
   - docker-compose build
   - docker-compose up -d
+  - sudo rm -rf database
 addons:
   sonarcloud:
     organization: "manazeak"
