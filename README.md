@@ -15,24 +15,30 @@ ManaZeak shall be installed on a Linux distribution with the following packages 
 ``docker-compose``
 ``npm``
 
-Once dependencies requirements are met, clone the project to your machine and init the ManaZeak app:
+Once dependencies requirements are met, ensure you have properly added your user to the docker group, then clone the project to your machine and init the ManaZeak app:
+
+``sudo usermod -aG docker $USER``
 
 ``git clone https://github.com/Squadella/ManaZeak``
 
 ``cd ManaZeak``
 
-To make ManaZeak work, it need three absolute path, leading to respectively :
+To make ManaZeak work, it need two absolute path, leading respectively to :
 
 - the database path, where the database will be held ;
 - the path to your musical library ;
 
-`` ./mzk.sh init``
+``./mzk.sh init``
 
-This will prompt you a wizard, to fill the previously listed pathes. Then you can run the app:
+This will prompt you a wizard, to fill the previously listed pathes. When done, you might use the following command to build the docker containers and install the required dependancies (might take a while depending on your internet connection speed) :
+
+``./mzk.sh build ``
+
+When all is clear, you can run the app:
 
 ``./mzk.sh dev`` or ``./mkz.sh prod``
 
-Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/)
+Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/). If you want further details about the ```.mzk.sh``` script, you can check the [wiki entry](https://github.com/ManaZeak/ManaZeak/wiki/Script-mzk.sh) that gives details about each available command from this script.
 
 The first user that will sign in into the app will be the app administrator. When the first user log in ManaZeak, he will be ask to create a library. 
 
@@ -56,6 +62,7 @@ However, if not everything went as expected, you might check the [Troubleshootin
 [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) |
 [Armand Vignat](https://github.com/avignat) |
 [Guilhem Piat](https://github.com/Syncrossus) |
+[Raphael Beekmann](https://github.com/Asiberus) |
 [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
 
 <p style="margin-bottom: 25px">
