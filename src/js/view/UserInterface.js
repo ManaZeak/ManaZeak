@@ -56,6 +56,26 @@ class UserInterface {
 
   /**
    * @method
+   * @name buildMainPage
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description
+   **/
+  buildMainPage() {
+    mzk.komunikator.getTemplate('view/mainPage/layout/')
+      .then((response) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response, 'text/html');
+        const container = doc.getElementsByClassName('main-page')[0];
+        this._scene.addView(container);
+      });
+  }
+
+
+  /**
+   * @method
    * @name changeTrack
    * @public
    * @memberof View
@@ -120,7 +140,7 @@ class UserInterface {
    * @description Init the given playlist into the scene/view
    * @param {object} playlist - The playlist to init the view with
    **/
-  initPlaylist(playlist) {
+  setLibraryView(playlist) {
     this._scene.updateView(playlist);
   }
 

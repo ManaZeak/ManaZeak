@@ -66,4 +66,9 @@ class GenericViews(object):
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getMainPage(request):
-        return  render(request, 'views/mainpage.html')
+        return render(request, 'views/mainpage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getLibraryPage(request):
+        return render(request, 'views/librarypage.html')

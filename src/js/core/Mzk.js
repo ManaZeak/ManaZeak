@@ -236,13 +236,41 @@ class Mzk {
    **/
   _startApp() {
     return new Promise((resolve, reject) => {
+      this._buildMainPage()
+        .then(this._buildCollection.bind(this))
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name _buildMainPage
+   * @private
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description
+   * @returns {Promise} - A promise that resolve when logic has been executed
+   **/
+  _buildMainPage() {
+    return new Promise((resolve) => {
+      //this.ui.buildMainPage();
+      resolve();
+    });
+  }
+
+
+  _buildCollection() {
+    return new Promise((resolve, reject) => {
       this.komunikator.get('playlist/getUserPlaylists/')
         .then(collection => {
           this.model.initCollection(collection)
             .then(playlist => {
               this.startLoading(false)
                 .then(() => {
-                  this.ui.initPlaylist(playlist);
+                  this.ui.setLibraryView(playlist);
                   this.stopLoading(false);
                   resolve();
                 });
@@ -596,13 +624,16 @@ class Mzk {
       // Only changing view if the new view is not the current one
       if (this.model.activeView !== newView) {
       this.startLoading(true)
-        .then(() => {
-          return this.model.setActiveView(newView);
-        })
+        .then(this.model.setActiveView.bind(this.model, newView))
         .then(() => {
           this.ui.updateView(this.model.collection.activePlaylist);
-          this.stopLoading(true);
-          resolve();
+          Events.register({
+            name: 'SceneView',
+            oneShot: true
+          }, () => {
+            this.stopLoading(true);
+            resolve();
+          });
         })
         .catch(error => {
           console.log(error);
