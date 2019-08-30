@@ -256,7 +256,7 @@ class Mzk {
    **/
   _buildMainPage() {
     return new Promise((resolve) => {
-      //this.ui.buildMainPage();
+      this.ui.buildMainPage();
       resolve();
     });
   }
@@ -270,7 +270,7 @@ class Mzk {
             .then(playlist => {
               this.startLoading(false)
                 .then(() => {
-                  this.ui.setLibraryView(playlist);
+                  //this.ui.setLibraryView(playlist);
                   this.stopLoading(false);
                   resolve();
                 });
