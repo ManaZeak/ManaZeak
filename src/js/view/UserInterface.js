@@ -61,16 +61,26 @@ class UserInterface {
    * @memberof View
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description
+   * @description Set the scene with the MainPageView
    **/
-  buildMainPage() {
-    mzk.komunikator.getTemplate('view/mainPage/layout/')
-      .then((response) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(response, 'text/html');
-        const container = doc.getElementsByClassName('main-page')[0];
-        this._scene.addView(container);
+  setSceneView(options) {
+    return new Promise(resolve => {
+      Events.register({ // Views class themselves has to fire a SceneViewReady event when init is done
+        name: 'SceneViewReady',
+        oneShot: true
+      }, () => {
+        this.stopLoading(true);
+        resolve();
       });
+
+      if (options.name === 'MainPage') {
+        this.startLoading(true)
+          .then(this._scene.setMainPageView.bind(this._scene));
+      } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
+        this.startLoading(true)
+          .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));
+      }
+    });
   }
 
 
@@ -127,21 +137,6 @@ class UserInterface {
     this._footBar.progressBar.resetProgressBar();
     this._scene.stopPlayback();
     this._clearPageTitle();
-  }
-
-
-  /**
-   * @method
-   * @name initPlaylist
-   * @public
-   * @memberof View
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Init the given playlist into the scene/view
-   * @param {object} playlist - The playlist to init the view with
-   **/
-  setLibraryView(playlist) {
-    this._scene.updateView(playlist);
   }
 
 
@@ -224,7 +219,7 @@ class UserInterface {
           .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._removeLoadingOverlay()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       }
     });
   }
@@ -234,16 +229,6 @@ class UserInterface {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
       requestAnimationFrame(resolve);
-    });
-  }
-
-
-  updateLoadingOverlay(progress) {
-    return new Promise(resolve => {
-      if (document.body.contains(this._loadingOverlay)) {
-        this._loadingOverlay.setAttribute('data-before', `Loading... ${progress}%`);
-        requestAnimationFrame(resolve);
-      }
     });
   }
 
@@ -265,10 +250,6 @@ class UserInterface {
     return this._scene.isLastTrack();
   }
 
-
-  updateView(playlist) {
-    this._scene.updateView(playlist);
-  }
 
   _setPageTitle(title) {
     // Remove any existing setTimeout before applying another

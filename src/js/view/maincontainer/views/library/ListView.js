@@ -63,7 +63,7 @@ class ListView extends LibraryViews {
           url: 'contexts/trackcontext/'
         });
 
-        Events.fire('SceneView');
+        Events.fire('SceneViewReady');
         this._listViewEvents();
         this._initHeader();
       });

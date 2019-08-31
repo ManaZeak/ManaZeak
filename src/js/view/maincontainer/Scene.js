@@ -1,6 +1,6 @@
 import ListView from './views/library/ListView.js';
 import AlbumView from './views/library/AlbumView.js';
-import ViewSwitcherContext from '../utils/contexts/ViewSwitcherContext.js';
+import MainPageView from './views/MainPageView.js';
 'use strict';
 
 class Scene {
@@ -13,6 +13,7 @@ class Scene {
   constructor() {
     this._scene = document.getElementById('scene');
     this.view = {};
+    this._sceneViewType = '';
 
     this._sceneCommands = {};
     this._optionButton = {};
@@ -20,11 +21,6 @@ class Scene {
 
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-
-  stopPlayback() {
-    this.view.stopPlayback(); // Warning, this is specific to listView so far
-  }
 
 
   /**
@@ -46,7 +42,31 @@ class Scene {
 
   /**
    * @method
-   * @name updateView
+   * @name setMainPageView
+   * @public
+   * @memberof Scene
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Add a new view in the scene (only append the DOM element)
+   * @param {object} node - The DOM node to append to the scene
+   **/
+  setMainPageView(node) {
+    this._sceneViewType = 'MainPageView';
+    this._scene.innerHTML = '';
+    this.view = new MainPageView();
+
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name updateLibraryView
    * @public
    * @memberof Scene
    * @author Arthur Beaulieu
@@ -54,7 +74,8 @@ class Scene {
    * @description MUST BE CALLED AFTER APPENDING LIBRARYPAGE HTML TEMPLATE TO THE DOM - Update the current view with the given playlist (collection editing mode)
    * @param {object} playlist - The playlist to update the view with
    **/
-  updateView(playlist) { // TODO rename updateLibraryView
+  updateLibraryView(playlist) {
+    this._sceneViewType = 'LibraryView';
     this._scene.innerHTML = '';
     const options = {
       playingTrackIndex: this.view.playingTrackIndex,
@@ -73,7 +94,7 @@ class Scene {
     }
 
     Events.register({
-      name: 'SceneView',
+      name: 'SceneViewReady',
       oneShot: true
     }, () => {
       this.addView(this.view.dom);
@@ -82,67 +103,80 @@ class Scene {
   }
 
 
+  stopPlayback() {
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.stopPlayback(); // Warning, this is specific to listView so far
+    }
+  }
+
+
   changeTrack(id) {
-    this.view.changeTrack(id);
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.changeTrack(id);
+    }
   }
 
 
   centerOn(index) {
-    this.view.centerOn({
-      index: index
-    });
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.centerOn({
+        index: index
+      });
+    }
   }
 
 
   getTrackById(id) {
-    return this.view.getTrackById(id);
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.getTrackById(id);
+    } else {
+      return -1;
+    }
   }
 
 
   isFirstTrack() {
-    return this.view.isFirstTrack();
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.isFirstTrack();
+    } else {
+      return -1;
+    }
   }
 
 
   isLastTrack() {
-    return this.view.isLastTrack();
-  }
-
-
-  startLoading() {
-    return new Promise(resolve => {
-      const spinner = document.createElement('DIV');
-      spinner.id = 'loading-spinner';
-      this._scene.appendChild(spinner);
-      setTimeout(() => {
-        resolve();
-      }, 50); // Ensure spinner has started its animation before resolving the promise
-    });
-  }
-
-  stopLoading() {
-    return new Promise(resolve => {
-        const spinner = this._scene.querySelector("#loading-spinner");
-        if (spinner != null) {
-            this._scene.removeChild(spinner);
-        }
-        resolve();
-    });
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.isLastTrack();
+    } else {
+      return -1;
+    }
   }
 
 
   get nextTrackId() {
-    return this.view.nextTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.nextTrackId;
+    } else {
+      return -1;
+    }
   }
 
 
   get previousTrackId() {
-    return this.view.previousTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.previousTrackId;
+    } else {
+      return -1;
+    }
   }
 
 
   get firstTrackId() {
-    return this.view.firstTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.firstTrackId;
+    } else {
+      return -1;
+    }
   }
 }
 

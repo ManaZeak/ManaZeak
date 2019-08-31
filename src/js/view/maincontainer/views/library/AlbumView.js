@@ -39,7 +39,7 @@ class AlbumView extends LibraryViews {
           url: 'contexts/trackcontext/'
         });
 
-        Events.fire('SceneView');
+        Events.fire('SceneViewReady');
         this._albumViewEvents();
       });
   }
