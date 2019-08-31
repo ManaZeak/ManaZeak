@@ -245,10 +245,6 @@ class Mzk {
    **/
   _buildCollection() {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.ui.setSceneView({ playlist: this.model.collection.activePlaylist })
-      }, 5000);
-
       this.ui.startLoading(false) // First we put the loading spinner aside User PP
         .then(this.komunikator.get.bind(this.komunikator, 'playlist/getUserPlaylists/')) // Get user collection from server
         .then(collection => {

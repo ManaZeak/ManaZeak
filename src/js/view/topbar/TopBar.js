@@ -120,6 +120,24 @@ class TopBar {
   }
 
 
+  /**
+   * @method
+   * @name toggleUserMenu
+   * @public
+   * @memberof TopBar
+   * @author Arthur Beaulieu
+   * @since August 2019
+   * @description Set the main page button visibility (hidden when main page is current view, visible otherwise)
+   **/
+  set mainPageButtonVisibility(visible) {
+    if (visible === true) {
+      this._mainPage.style.opacity = '1';
+    } else {
+      this._mainPage.style.opacity = '0';
+    }
+  }
+
+
 }
 
 

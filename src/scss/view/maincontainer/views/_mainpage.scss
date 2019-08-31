@@ -8,13 +8,13 @@
 
 .mp-collection {
   border-right: solid $mzk-border-width $mzk-color-icons;
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  padding: $mzk-padding-scene;
+  overflow: hidden;
   width: $mzk-mp-aside-width;
 
   .mp-collection-group {
+    margin: $mzk-padding-scene;
+
     h3 {
       color: $mzk-color-text;
       font-weight: lighter;
@@ -36,6 +36,7 @@
     ul {
       font-size: .9rem;
       margin-bottom: (2 * $mzk-margin);
+      overflow: hidden;
       padding: 0;
 
       li {
@@ -73,13 +74,13 @@
           font-size: .9em;
           font-style: italic;
           font-weight: inherit;
-          padding-left: (2 * $mzk-padding);
+          padding-left: $mzk-padding;
 
           &.mp-collection-title {
             color: $mzk-color-text;
             font-style: inherit;
             font-weight: bold;
-            padding-left: $mzk-padding;
+            padding-left: 0;
           }
         }
       }
@@ -90,18 +91,16 @@
 /* Suggestion land */
 
 .mp-suggestion {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  padding: $mzk-padding-scene;
+  justify-content: space-around;
+  padding: 0 $mzk-padding-scene;
   width: calc(100% - (2 * #{$mzk-mp-aside-width}));
 
-  .mp-suggestions-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100%;
-    width: 100%;
 
     h1 {
+      font-size: 1.7rem;
       margin-bottom: $mzk-margin;
       text-align: center;
 
@@ -126,7 +125,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: (2 * $mzk-margin);
+      margin-bottom: $mzk-margin;
       padding: $mzk-padding;
 
       .mp-suggestion-item {
@@ -168,7 +167,6 @@
         }
       }
     }
-  }
 }
 
 /* Discover land */

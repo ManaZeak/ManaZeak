@@ -258,12 +258,14 @@ class UserInterface {
     this._setPageTitleAnimation(`♪ ${title} `);
   }
 
+
   _setPageTitleAnimation(title) {
     document.title = title;
     this._titleAnimationId = setTimeout(() => {
       this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
     }, 350);
   }
+
 
   _clearPageTitle() {
     document.title = 'ManaZeak';
