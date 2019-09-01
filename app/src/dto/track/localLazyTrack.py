@@ -58,7 +58,7 @@ class LocalLazyTrack(object):
     ## Add the artist information to a track.
     def addArtistsFromRow(self, row):
         artistId = row[13]
-        if self.lastArtistId is None or self.lastArtistId == artistId:
+        if self.lastArtistId is None or self.lastArtistId != artistId:
             artistName = row[14]
             self._createArtist(artistId, artistName)
 

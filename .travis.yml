@@ -11,8 +11,10 @@ before_script:
 install:
   - pip install -r requirements.txt
   - mv docker-compose.yml.travis docker-compose.yml
+  - mkdir database
   - docker-compose build
   - docker-compose up -d
+  - sudo rm -rf database
 addons:
   sonarcloud:
     organization: "manazeak"
