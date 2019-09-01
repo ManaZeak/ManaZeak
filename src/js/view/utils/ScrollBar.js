@@ -70,6 +70,7 @@ class ScrollBar {
     window.addEventListener('resize', this._updateScrollBar.bind(this));
     this._container.addEventListener('scroll', this._updateScrollBar.bind(this));
     this._container.addEventListener('mouseenter', this._updateScrollBar.bind(this));
+//    this._container.addEventListener('mousemove', this._updateScrollBar.bind(this));
     this._bar.addEventListener('mousedown', this._barClicked.bind(this));
   }
 

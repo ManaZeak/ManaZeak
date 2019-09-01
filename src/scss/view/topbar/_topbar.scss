@@ -40,10 +40,9 @@ $topbar-loader: $topbar-height - 10px;
     cursor: pointer;
     height: $topbar-height;
     left: $mzk-margin;
+    opacity: 0; // Mzk starts with main page -> button doesn't appear at first
     position: absolute;
     width: auto;
-
-    transition: opacity $topbar-transition ease 0s;
   }
 
   img#topbar-logo {

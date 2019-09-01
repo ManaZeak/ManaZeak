@@ -102,3 +102,13 @@
     }
   }
 }
+
+@media only screen and (max-width: 1000px) {
+  .mp-suggestion {
+    width: calc(100% - 370px);
+  }
+
+  .mp-discover {
+    display: none;
+  }
+}

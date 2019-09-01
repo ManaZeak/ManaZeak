@@ -1,4 +1,4 @@
-import CollectionGroupEntry from "./CollectionGroupEntry";
+import CollectionEntry from "./CollectionEntry";
 import ScrollBar from "../../../utils/ScrollBar";
 'use strict';
 
@@ -17,6 +17,7 @@ class CollectionGroup {
       toggleImage: null,
       elements: null
     };
+
     this._entries = [];
     this._visible = true;
 
@@ -40,7 +41,7 @@ class CollectionGroup {
 
     this._dom.elements = document.createElement('UL');
     for (let i = 0; i < this._items.length; ++i) {
-      const element = new CollectionGroupEntry({
+      const element = new CollectionEntry({
         entry: this._items[i]
       });
 

@@ -1,5 +1,6 @@
 import SceneView from '../SceneView';
 import CollectionGroup from "./mainpage/CollectionGroup";
+import SuggestionGroup from "./mainpage/SuggestionGroup";
 import ScrollBar from "../../utils/ScrollBar";
 'use strict';
 
@@ -19,7 +20,8 @@ class MainPageView extends SceneView {
 
     this._fetchWrapper()
       .then(this._fillCollection.bind(this))
-      .then(this._fillSuggestion.bind(this));
+      .then(this._fillSuggestion.bind(this))
+      .then(this._mainPageReady);
   }
 
 
@@ -35,7 +37,6 @@ class MainPageView extends SceneView {
           this._dom.suggestion = doc.getElementsByClassName('mp-suggestion')[0];
           this._dom.discover = doc.getElementsByClassName('mp-discover')[0];
 
-          Events.fire('SceneViewReady');
           resolve();
         });
     });
@@ -44,143 +45,86 @@ class MainPageView extends SceneView {
 
   _fillCollection() {
     return new Promise(resolve => {
-      //mzk.komunikator.get('view/mainPage/collection/')
-        //.then(response => {
-          //console.log(response);
-      // TMP stuff to be replaced with server call
-        const options = {
-          libraries : [
-            {
-              id: 11,
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Compilations',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }
-          ],
-          playlists: [
-            {
-              id: 11,
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }, {
-              name: 'ManaZeak Artists',
-              duration: 15050,
-              img: 'static/img/logo/manazeak-logo.svg',
-              stats: {
-                tracks: 50,
-                artists: 20,
-                albums: 40
-              }
-            }
-          ]
-        };
+      mzk.komunikator.get('view/mainPage/collection/')
+        .then(response => {
+          if (response.LIBRARY.length > 0) {
+            const libraries = new CollectionGroup({
+              label: 'Libraries',
+              items: response.LIBRARY
+            });
+            this._dom.collection.appendChild(libraries.dom);
+          }
 
-        if (options.libraries.length > 0) {
-          const libraries = new CollectionGroup({
-            label: 'Libraries',
-            items: options.libraries
+          if (response.PLAYLISTS.length > 0) {
+            const libraries = new CollectionGroup({
+              label: 'Playlists',
+              items: response.PLAYLIST
+            });
+            this._dom.collection.appendChild(libraries.dom);
+          }
+
+          new ScrollBar({
+            target: this._dom.collection
           });
-          this._dom.collection.appendChild(libraries.dom);
-        }
-
-        if (options.libraries.length > 0) {
-          const libraries = new CollectionGroup({
-            label: 'Playlists',
-            items: options.playlists
-          });
-          this._dom.collection.appendChild(libraries.dom);
-        }
-
-        new ScrollBar({
-          target: this._dom.collection
-        });
-        this._dom.collection = this._dom.collection.firstElementChild.firstElementChild;
-
+          this._dom.collection = this._dom.collection.firstElementChild.firstElementChild;
           resolve();
-        //});
+        });
     });
   }
 
 
   _fillSuggestion() {
     return new Promise(resolve => {
-      //const options = {
-        //NUMBER_OF_ELEMENT: '5'
-      //};
+      const options = {
+        NUMBER_OF_ELEMENT: 6
+      };
 
-      //mzk.komunikator.post('view/mainPage/roll/', options)
-        //.then(response => {
-          const scrollTarget = this._dom.suggestion.getElementsByClassName('mp-suggestions-container')[0];
-          console.dir(scrollTarget);
-          this._scrollBar = new ScrollBar({
+      mzk.komunikator.post('view/mainPage/roll/', options)
+        .then(response => {
+          if (response.ARTISTS.length > 0) {
+            const artists = new SuggestionGroup({
+              label: 'Artists',
+              type: 'artist',
+              items: response.ARTISTS
+            });
+            this._dom.suggestion.appendChild(artists.dom);
+          }
+
+          if (response.ALBUMS.length > 0) {
+            const albums = new SuggestionGroup({
+              label: 'Albums',
+              type: 'album',
+              items: response.ALBUMS
+            });
+            this._dom.suggestion.appendChild(albums.dom);
+          }
+
+          if (response.GENRES.length > 0) {
+            const genres = new SuggestionGroup({
+              label: 'Genres',
+              type: 'genre',
+              items: response.GENRES
+            });
+            this._dom.suggestion.appendChild(genres.dom);
+          }
+
+          new ScrollBar({
             target: this._dom.suggestion
           });
-          this._dom.suggestion = this._dom.suggestion.firstElementChild.firstElementChild; // ScrollBar creates two wrappers
-
+          this._dom.suggestion = this._dom.suggestion.firstElementChild.firstElementChild;
           resolve();
-        //});
+        });
     });
   }
 
 
   get dom() {
     return this._dom.wrapper;
+  }
+
+
+  _mainPageReady() {
+    Events.fire('SceneViewReady');
   }
 
   
