@@ -6,6 +6,7 @@ from app.src.views.genericViews import GenericViews
 app_name = 'app'
 
 urlpatterns = [
+    path('party/layout/', GenericViews.getPartyPage, name='getPartyPage'),
     path('library/layout/', GenericViews.getLibraryPage, name='getLibraryPage'),
     path('mainPage/layout/', GenericViews.getMainPage, name='getMainPage'),
     path('mainPage/roll/', MainPageService.getRandomObjects, name='getTrack'),

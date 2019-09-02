@@ -1,0 +1,108 @@
+.party-view-wrapper {
+  align-items: center;
+  background-color: $mzk-color-bg;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
+
+  .party-view-container {
+    display: flex;
+    height: 60%;
+    width: 90%;
+
+.pv-current-track {
+        display: flex;
+        width: 80%;
+      }
+
+      .pv-current-album {
+        overflow-y: hidden;
+        width: 20%;
+      }
+
+      .pv-current-track div {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 35px;
+      }
+
+      .pv-current-track .pv-album-description {
+        align-items: center;
+      }
+
+      .pv-current-track .pv-album-description p {
+        margin: 2px;
+      }
+
+      img {
+        box-shadow: 0 0 10px 0 white;
+        height: 500px;
+        margin: 10px 0 20px 0;
+        width: 500px;
+      }
+
+      h1, h2 {
+        margin: 20px 0;
+      }
+
+      h2 {
+        font-style: italic;
+        padding-left: 35px;
+      }
+
+      h2 span {
+        font-style: normal;
+        margin: 0 10px;
+      }
+
+      h2 span.badge {
+        background-color: rgba(127, 127, 127, .5);
+        border-radius: 5px;
+        cursor: pointer;
+        font-style: normal;
+        padding: 10px;
+      }
+
+      .pv-tracklist {
+        height: 100%;
+        overflow-y: hidden;
+        padding: 20px;
+      }
+
+      .pv-album-track {
+        background-color: rgba(100, 100, 100, .2);
+        border-radius: 5px;
+        box-shadow: 0 0 10px 0 transparent;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin: 10px 0;
+
+        transition: box-shadow .5s ease-out;
+      }
+
+      .pv-album-track:active,
+      .pv-album-track:focus,
+      .pv-album-track:hover {
+        box-shadow: 0 0 10px 0 white;
+      }
+
+      .pv-album-track:nth-child(2n) {
+        background-color: rgba(100, 100, 100, .1);
+      }
+
+      .pv-album-track p {
+        margin: 0;
+      }
+
+      .pv-album-track p:last-child {
+        padding-left: 1.2rem;
+      }
+  }
+}

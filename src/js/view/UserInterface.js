@@ -77,6 +77,10 @@ class UserInterface {
         this._topBar.mainPageButtonVisibility = false;
         this.startLoading(true)
           .then(this._scene.setMainPageView.bind(this._scene));
+      } else if (options.name === 'Party') {
+        this._topBar.mainPageButtonVisibility = true;
+        this.startLoading(true)
+          .then(this._scene.setPartyView.bind(this._scene));
       } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
         this._topBar.mainPageButtonVisibility = true;
         this.startLoading(true)

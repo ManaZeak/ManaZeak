@@ -1,6 +1,7 @@
 import ListView from './views/library/ListView.js';
 import AlbumView from './views/library/AlbumView.js';
 import MainPageView from './views/MainPageView.js';
+import PartyView from './views/PartyView.js';
 'use strict';
 
 class Scene {
@@ -32,11 +33,17 @@ class Scene {
    * @since September 2018
    * @description Add a new view in the scene (only append the DOM element)
    * @param {object} node - The DOM node to append to the scene
+   * @param {boolean} isGlobal - Does view needs to be appended to the document or to the scene
    **/
-  addView(node) {
+  addView(node, isGlobal = false) {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
-    this._scene.appendChild(fragment);
+
+    if (isGlobal === false) {
+      this._scene.appendChild(fragment);
+    } else {
+      document.body.appendChild(fragment);
+    }
   }
 
 
@@ -60,6 +67,29 @@ class Scene {
       oneShot: true
     }, () => {
       this.addView(this.view.dom);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name setPartyView
+   * @public
+   * @memberof Scene
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Add a new view in the scene (only append the DOM element)
+   **/
+  setPartyView() {
+    this._sceneViewType = 'PartyView';
+    this._scene.innerHTML = '';
+    this.view = new PartyView();
+
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom, true);
     });
   }
 

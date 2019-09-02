@@ -2,6 +2,7 @@ import SceneView from '../SceneView';
 import CollectionGroup from "./mainpage/CollectionGroup";
 import SuggestionGroup from "./mainpage/SuggestionGroup";
 import ScrollBar from "../../utils/ScrollBar";
+import DiscoverEntry from "./mainpage/DiscoverEntry";
 'use strict';
 
 
@@ -21,6 +22,7 @@ class MainPageView extends SceneView {
     this._fetchWrapper()
       .then(this._fillCollection.bind(this))
       .then(this._fillSuggestion.bind(this))
+      .then(this._fillDiscover.bind(this))
       .then(this._mainPageReady);
   }
 
@@ -118,8 +120,15 @@ class MainPageView extends SceneView {
   }
 
 
-  get dom() {
-    return this._dom.wrapper;
+  _fillDiscover() {
+    return new Promise(resolve => {
+      const discoverEntry = new DiscoverEntry({
+        type: 'PartyView'
+      });
+      this._dom.discover.appendChild(discoverEntry.dom);
+
+      resolve();
+    });
   }
 
 
@@ -127,7 +136,12 @@ class MainPageView extends SceneView {
     Events.fire('SceneViewReady');
   }
 
-  
+
+  get dom() {
+    return this._dom.wrapper;
+  }
+
+
 }
 
 
