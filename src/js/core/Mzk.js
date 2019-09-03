@@ -56,24 +56,13 @@ class Mzk {
     this.cookies = Utils.getCookies(); // Get user cookies
 
     this._initKomunikator()
-      .then(() => {
-        return this._initLang();
-      })
-      .then(() => {
-        return this._initUser();
-      })
-      .then(() => {
-        return this._initUi();
-      })
-      .then(() => {
-        return this._initModel();
-      })
-      .then(() => {
-        return this._initShortcut();
-      })
-      .then(() => {
-        return this._startApp();
-      })
+      .then(this._initLang.bind(this))
+      .then(this._initUser.bind(this))
+      .then(this._initUi.bind(this))
+      .then(this._initModel.bind(this))
+      .then(this._initShortcut.bind(this))
+      .then(Events.fire.bind(Events, 'MzkInitDone'))
+      .then(this._startApp.bind(this))
       .catch(() => {
         Logger.raise({
           code: 'FATAL_ERROR',
@@ -236,29 +225,38 @@ class Mzk {
    **/
   _startApp() {
     return new Promise((resolve, reject) => {
-      this.komunikator.get('playlist/getUserPlaylists/')
+      this.ui.setSceneView({ name: 'MainPage' }) // Init ManaZeak with the MainPage
+        .then(this._buildCollection.bind(this)) // Load in background the user collection so libraries are available from MainPage
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name _buildCollection
+   * @private
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Build the user collection of libraries and playlist (to be used in LibraryViews mode)
+   * @returns {Promise} - A promise that resolve when logic has been executed, rejected otherwise
+   **/
+  _buildCollection() {
+    return new Promise((resolve, reject) => {
+      this.ui.startLoading(false) // First we put the loading spinner aside User PP
+        .then(this.komunikator.get.bind(this.komunikator, 'playlist/getUserPlaylists/')) // Get user collection from server
         .then(collection => {
-          this.model.initCollection(collection)
-            .then(playlist => {
-              this.startLoading(false)
-                .then(() => {
-                  this.ui.initPlaylist(playlist);
-                  this.stopLoading(false);
-                  resolve();
-                });
-            })
-            .catch(errorKey => {
-              Logger.raise({
-                code: errorKey,
-                frontend: false
-              });
-              reject();
-            });
+          return this.model.initCollection(collection); // Store them in the model so any library views can be built
         })
+        .then(this.ui.stopLoading.bind(this.ui, false)) // We then stop the loading spinner
+        .then(resolve)
         .catch(errorKey => {
+          this.ui.stopLoading(false); // Stop the spinner in case of failure too
           Logger.raise({
             code: errorKey,
-            frontend: true
+            frontend: false
           });
           reject();
         });
@@ -558,24 +556,6 @@ class Mzk {
   }
 
 
-  startLoading(lockView) {
-    return new Promise(resolve => {
-      this.ui.startLoading(lockView)
-        .then(() => {
-          return requestAnimationFrame(resolve);
-        });
-    });
-  }
-
-
-  stopLoading(lockView) {
-    return new Promise(resolve => {
-      this.ui.stopLoading(lockView);
-      resolve();
-    });
-  }
-
-
   //  ------------------------------------------------------------------------------------------------//
   //  ------------------------------------  SCENE VIEW METHODS  ------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
@@ -583,30 +563,31 @@ class Mzk {
 
   /**
    * @method
-   * @name changeActiveView
+   * @name changeActiveLibraryView
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since November 2018
-   * @description Set a new active view to the active playlist
+   * @description Set a new active view to the active playlist (available in LibraryViews mode)
    * @param {string} newView - The new view string value in the global ViewEnum
    **/
-  changeActiveView(newView) {
+  changeActiveLibraryView(newView) {
     return new Promise(resolve => {
       // Only changing view if the new view is not the current one
       if (this.model.activeView !== newView) {
-      this.startLoading(true)
-        .then(() => {
-          return this.model.setActiveView(newView);
-        })
-        .then(() => {
-          this.ui.updateView(this.model.collection.activePlaylist);
-          this.stopLoading(true);
-          resolve();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        this.model.setActiveView(newView)
+          .then(() => {
+            this.ui.setSceneView({
+              playlist: this.model.collection.activePlaylist
+            });
+            Events.register({
+              name: 'SceneViewReady',
+              oneShot: true
+            }, resolve);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         resolve();
       }
@@ -701,45 +682,27 @@ class Mzk {
 
 
   playRandomTrackInPlaylist() {
-    const options = {
-      PLAYLIST_ID: this.model.id
-    };
-
-    this.komunikator.post('track/random/', options)
-      .then(response => {
-        /* response = {
-         *     DONE       : bool
-         *     ERROR_H1   : string
-         *     ERROR_MSG  : string
-         *
-         *     IS_LAST    : bool
-         *     TRACK_ID   : int
-         * } */
-        if (response.DONE) {
-          this.changeTrack(response.TRACK_ID);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this._playRandomizedTrack('random');
   }
 
 
   playShuffleTrackInPlaylist() {
+    this._playRandomizedTrack('shuffle');
+  }
+
+
+  // Verb is shuffle or random only
+  _playRandomizedTrack(verb) {
+    if (verb !== 'shuffle' && verb !== 'random') {
+      return;
+    }
+
     const options = {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('track/shuffle/', options)
+    this.komunikator.post(`track/${verb}/`, options)
       .then(response => {
-        /* response = {
-         *     DONE       : bool
-         *     ERROR_H1   : string
-         *     ERROR_MSG  : string
-         *
-         *     IS_LAST    : bool
-         *     TRACK_ID   : int
-         * } */
         if (response.DONE) {
           this.changeTrack(response.TRACK_ID);
         }
@@ -748,9 +711,6 @@ class Mzk {
         console.log(error);
       });
   }
-
-
-
 
 
   //  ------------------------------------------------------------------------------------------------//

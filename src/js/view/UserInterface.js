@@ -56,6 +56,42 @@ class UserInterface {
 
   /**
    * @method
+   * @name buildMainPage
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Set the scene with the MainPageView
+   **/
+  setSceneView(options) {
+    return new Promise(resolve => {
+      Events.register({ // Views class themselves has to fire a SceneViewReady event when init is done
+        name: 'SceneViewReady',
+        oneShot: true
+      }, () => {
+        this.stopLoading(true);
+        resolve();
+      });
+
+      if (options.name === 'MainPage') {
+        this._topBar.mainPageButtonVisibility = false;
+        this.startLoading(true)
+          .then(this._scene.setMainPageView.bind(this._scene));
+      } else if (options.name === 'Party') {
+        this._topBar.mainPageButtonVisibility = true;
+        this.startLoading(true)
+          .then(this._scene.setPartyView.bind(this._scene));
+      } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
+        this._topBar.mainPageButtonVisibility = true;
+        this.startLoading(true)
+          .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));
+      }
+    });
+  }
+
+
+  /**
+   * @method
    * @name changeTrack
    * @public
    * @memberof View
@@ -107,21 +143,6 @@ class UserInterface {
     this._footBar.progressBar.resetProgressBar();
     this._scene.stopPlayback();
     this._clearPageTitle();
-  }
-
-
-  /**
-   * @method
-   * @name initPlaylist
-   * @public
-   * @memberof View
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Init the given playlist into the scene/view
-   * @param {object} playlist - The playlist to init the view with
-   **/
-  initPlaylist(playlist) {
-    this._scene.updateView(playlist);
   }
 
 
@@ -204,7 +225,7 @@ class UserInterface {
           .then(requestAnimationFrame(resolve));
       } else if (lockView === true) {
         this._removeLoadingOverlay()
-          .then(resolve);
+          .then(requestAnimationFrame(resolve));
       }
     });
   }
@@ -214,16 +235,6 @@ class UserInterface {
     return new Promise(resolve => {
       document.body.appendChild(this._loadingOverlay);
       requestAnimationFrame(resolve);
-    });
-  }
-
-
-  updateLoadingOverlay(progress) {
-    return new Promise(resolve => {
-      if (document.body.contains(this._loadingOverlay)) {
-        this._loadingOverlay.setAttribute('data-before', `Loading... ${progress}%`);
-        requestAnimationFrame(resolve);
-      }
     });
   }
 
@@ -246,10 +257,6 @@ class UserInterface {
   }
 
 
-  updateView(playlist) {
-    this._scene.updateView(playlist);
-  }
-
   _setPageTitle(title) {
     // Remove any existing setTimeout before applying another
     this._clearPageTitle();
@@ -257,12 +264,14 @@ class UserInterface {
     this._setPageTitleAnimation(`♪ ${title} `);
   }
 
+
   _setPageTitleAnimation(title) {
     document.title = title;
     this._titleAnimationId = setTimeout(() => {
       this._setPageTitleAnimation(`${title.substr(1)}${title.substr(0, 1)}`);
     }, 350);
   }
+
 
   _clearPageTitle() {
     document.title = 'ManaZeak';

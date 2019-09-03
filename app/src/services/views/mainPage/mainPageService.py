@@ -37,7 +37,7 @@ class MainPageService(object):
                 'PLAYLISTS': playlists,
             }
             return JsonResponse(
-                {{**data, **ErrorHandler.createStandardStateMessage(True)}}
+                {**data, **ErrorHandler.createStandardStateMessage(True)}
             )
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, MainPageService.getLibrariesAndPlaylistForUser,
@@ -63,7 +63,7 @@ class MainPageService(object):
                 'PRODUCERS': producers,
             }
             return JsonResponse(
-                {{**data, **ErrorHandler.createStandardStateMessage(True)}}
+                {**data, **ErrorHandler.createStandardStateMessage(True)}
             )
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, MainPageService.getRandomObjects, user)

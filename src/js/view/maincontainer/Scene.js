@@ -1,6 +1,7 @@
-import ListView from './views/ListView.js';
-import AlbumView from './views/AlbumView.js';
-import ViewSwitcherContext from '../utils/contexts/ViewSwitcherContext.js';
+import ListView from './views/library/ListView.js';
+import AlbumView from './views/library/AlbumView.js';
+import MainPageView from './views/MainPageView.js';
+import PartyView from './views/PartyView.js';
 'use strict';
 
 class Scene {
@@ -12,102 +13,15 @@ class Scene {
    **/
   constructor() {
     this._scene = document.getElementById('scene');
-    this._optionButton = document.getElementById('scene-view-option');
     this.view = {};
+    this._sceneViewType = '';
 
-    this._sceneCommands = document.getElementById('scene-commands');
-    this._activeViewLabel = this._sceneCommands.childNodes[1];
-    this._viewSwitcher = new ViewSwitcherContext({
-      target: document.body,
-      url: 'contexts/changeview/'
-    });
-
-
-    this._sceneManipulations = document.getElementById('scene-manipulation');
-    this._centerOnTop = document.getElementById('center-on-top');
-    this._centerOnActiveTrack = document.getElementById('center-on-track');
-    this._lockCenternOn = document.getElementById('lock-center-on-track');
-    this._centerOnBottom = document.getElementById('center-on-bottom');
-
-    this._events();
+    this._sceneCommands = {};
+    this._optionButton = {};
   }
 
-
-  _events() {
-    this._activeViewLabel.addEventListener('click', () => {
-      if (this._scene.contains(this._viewSwitcher.dom)) {
-        this._viewSwitcher.close();
-      } else {
-        this._viewSwitcher.open();
-      }
-    });
-
-    this._centerOnTop.addEventListener('click', () => {
-      this.view.centerOn({
-        position: 'top'
-      });
-    });
-
-    this._centerOnActiveTrack.addEventListener('click', () => {
-      this.view.centerOn({
-        index: this.view.playingTrackIndex
-      });
-    });
-
-    this._lockCenternOn.addEventListener('click', () => {
-      const pref = mzk.user.getPreference('lock-center-on-track');
-      if (pref === true) {
-        mzk.user.setPreference('lock-center-on-track', false);
-        this._lockCenternOn.src = '/static/img/actions/lock-off.svg';
-      } else {
-        mzk.user.setPreference('lock-center-on-track', true);
-        this._lockCenternOn.src = '/static/img/actions/lock-on.svg';
-      }
-    });
-
-    this._centerOnBottom.addEventListener('click', () => {
-      this.view.centerOn({
-        position: 'bottom'
-      });
-    });
-
-    this._optionButton.addEventListener('click', () => {
-      this._optionClicked();
-    });
-  }
-
-
-  _optionClicked() {
-    let sceneContext = this._scene.querySelector('.scene-options');
-
-    if (sceneContext !== null) { // Close context
-      sceneContext.parentNode.remove();
-      return;
-    }
-
-    // Otherwise, append context, and fill it with its content
-    const overlay = document.createElement('DIV');
-    overlay.classList.add('context-transparent-overlay'); // TODO move this else where no ? like in viewoptionscontext maybe ?
-    overlay.addEventListener('click', (event) => {
-      if (!event.target.closest('.scene-options')) {
-        sceneContext.parentNode.remove();
-      }
-    }, true);
-
-    sceneContext = document.createElement('DIV');
-    sceneContext.className = 'scene-options';
-
-    overlay.appendChild(sceneContext);
-    this._scene.appendChild(overlay);
-    this.view.fillContext(sceneContext);
-  }
 
   //  --------------------------------  PUBLIC METHODS  ---------------------------------  //
-
-
-  stopPlayback() {
-    this.view.stopPlayback(); // Warning, this is specific to listView so far
-  }
 
 
   /**
@@ -119,111 +33,180 @@ class Scene {
    * @since September 2018
    * @description Add a new view in the scene (only append the DOM element)
    * @param {object} node - The DOM node to append to the scene
+   * @param {boolean} isGlobal - Does view needs to be appended to the document or to the scene
    **/
-  addView(node) {
-    this._scene.innerHTML = '';
-    this._scene.appendChild(this._sceneCommands);
-    this._scene.appendChild(this._sceneManipulations);
-    this._scene.appendChild(this._optionButton);
-
+  addView(node, isGlobal = false) {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
-    this._scene.appendChild(fragment);
+
+    if (isGlobal === false) {
+      this._scene.appendChild(fragment);
+    } else {
+      document.body.appendChild(fragment);
+    }
   }
 
 
   /**
    * @method
-   * @name updateView
+   * @name setMainPageView
    * @public
    * @memberof Scene
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Update the current view with the given playlist
+   * @description Add a new view in the scene (only append the DOM element)
+   * @param {object} node - The DOM node to append to the scene
+   **/
+  setMainPageView(node) {
+    this._sceneViewType = 'MainPageView';
+    this._scene.innerHTML = '';
+    this.view = new MainPageView();
+
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name setPartyView
+   * @public
+   * @memberof Scene
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Add a new view in the scene (only append the DOM element)
+   **/
+  setPartyView() {
+    this._sceneViewType = 'PartyView';
+    this._scene.innerHTML = '';
+    this.view = new PartyView();
+
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom, true);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name updateLibraryView
+   * @public
+   * @memberof Scene
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description MUST BE CALLED AFTER APPENDING LIBRARYPAGE HTML TEMPLATE TO THE DOM - Update the current view with the given playlist (collection editing mode)
    * @param {object} playlist - The playlist to update the view with
    **/
-  updateView(playlist) {
+  updateLibraryView(playlist) {
+    this._sceneViewType = 'LibraryView';
+    this._scene.innerHTML = '';
     const options = {
       playingTrackIndex: this.view.playingTrackIndex,
-      selection: this.view.selection
+      selection: this.view.selection,
+      viewLabel: ''
     };
 
     if (playlist.activeView === 'ListView') {
+      options.viewLabel = 'List';
       this.view = new ListView(options);
-      this._activeViewLabel.innerHTML = 'Tracks';
     }
 
     else if (playlist.activeView === 'AlbumView') {
+      options.viewLabel = 'Artists';
       this.view = new AlbumView(options);
-      this._activeViewLabel.innerHTML = 'Artists';
     }
 
-    this.addView(this.view.dom);
-    this.view.addTracks(playlist.artists);
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom);
+      this.view.addTracks(playlist.artists);
+    });
+  }
+
+
+  stopPlayback() {
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.stopPlayback(); // Warning, this is specific to listView so far
+    }
   }
 
 
   changeTrack(id) {
-    this.view.changeTrack(id);
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.changeTrack(id);
+    }
   }
 
 
   centerOn(index) {
-    this.view.centerOn({
-      index: index
-    });
+    if (this._sceneViewType === 'LibraryView') {
+      this.view.centerOn({
+        index: index
+      });
+    }
   }
 
 
   getTrackById(id) {
-    return this.view.getTrackById(id);
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.getTrackById(id);
+    } else {
+      return -1;
+    }
   }
 
 
   isFirstTrack() {
-    return this.view.isFirstTrack();
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.isFirstTrack();
+    } else {
+      return -1;
+    }
   }
 
 
   isLastTrack() {
-    return this.view.isLastTrack();
-  }
-
-
-  startLoading() {
-    return new Promise(resolve => {
-      const spinner = document.createElement('DIV');
-      spinner.id = 'loading-spinner';
-      this._scene.appendChild(spinner);
-      setTimeout(() => {
-        resolve();
-      }, 50); // Ensure spinner has started its animation before resolving the promise
-    });
-  }
-
-  stopLoading() {
-    return new Promise(resolve => {
-        const spinner = this._scene.querySelector("#loading-spinner");
-        if (spinner != null) {
-            this._scene.removeChild(spinner);
-        }
-        resolve();
-    });
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.isLastTrack();
+    } else {
+      return -1;
+    }
   }
 
 
   get nextTrackId() {
-    return this.view.nextTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.nextTrackId;
+    } else {
+      return -1;
+    }
   }
 
 
   get previousTrackId() {
-    return this.view.previousTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.previousTrackId;
+    } else {
+      return -1;
+    }
   }
 
 
   get firstTrackId() {
-    return this.view.firstTrackId;
+    if (this._sceneViewType === 'LibraryView') {
+      return this.view.firstTrackId;
+    } else {
+      return -1;
+    }
   }
 }
 

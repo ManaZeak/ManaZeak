@@ -51,7 +51,7 @@ class Events {
     this._events[options.name].push({
       id: this._eventUid,
       name: options.name,
-      oneShot: false,
+      oneShot: options.oneShot,
       callback: callback
     });
 
