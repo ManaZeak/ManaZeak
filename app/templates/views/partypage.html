@@ -6,19 +6,19 @@
       <div class="pv-album-description">
         <h2>1973 – Dark Side Of The Moon</h2>
         <img src="https://miro.medium.com/max/2480/1*8FkvzbSdSJ4HNxtuZo5kLg.jpeg" alt="">
-        <p>Label:  Harvest Records</p>
-        <p>Total duration: 42:58</p>
+        <h4>Harvest Records</h4>
+        <h4>42:58</h4>
       </div>
       <div class="">
         <h1>10 – Brain Damage</h1>
-        <h2>Artist: <span>Pink Floyd</span></h2>
-        <h2>Composer: <span>David Gilmour</span><span>Roger Waters</span></h2>
-        <h2>Producer: Pink Floyd</h2>
-        <h2>Genre: <span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
+        <h2 class="label">Artist: <span>Pink Floyd</span></h2>
+        <h2 class="label">Composer: <span>David Gilmour, Roger Waters</span></h2>
+        <h2 class="label">Producer: <span>Pink Floyd</span></h2>
+        <h2 class="label">Duration: <span>3:50</span></h2>
+        <h2 class="label">Genre: <span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
       </div>
     </div>
     <div class="pv-current-album">
-      <h2>Tracklist:</h2>
       <div class="pv-tracklist">
         <div class="pv-album-track">
           <p>01 – Speak To Me</p>
@@ -62,5 +62,15 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="party-view-controls">
+      <img src="{% static "img/navigation/home.svg" %}" class="pv-controls-home">
+      <img src="{% static "img/player/shuffle-random-on.svg" %}">
+  </div>
+  <div class="party-view-starfield">
+    <div class="pv-star-layer"></div>
+    <div class="pv-star-layer"></div>
+    <div class="pv-star-layer"></div>
+    <div class="pv-star-layer"></div>
   </div>
 </div>

@@ -15,6 +15,7 @@ class Scene {
     this._scene = document.getElementById('scene');
     this.view = {};
     this._sceneViewType = '';
+    this._isFullScreenView = false;
 
     this._sceneCommands = {};
     this._optionButton = {};
@@ -58,6 +59,11 @@ class Scene {
    * @param {object} node - The DOM node to append to the scene
    **/
   setMainPageView(node) {
+    if (this._isFullScreenView === true) {
+      this._isFullScreenView = false;
+      document.body.removeChild(this.view.dom); // Remove current view from document
+    }
+
     this._sceneViewType = 'MainPageView';
     this._scene.innerHTML = '';
     this.view = new MainPageView();
@@ -81,6 +87,7 @@ class Scene {
    * @description Add a new view in the scene (only append the DOM element)
    **/
   setPartyView() {
+    this._isFullScreenView = true;
     this._sceneViewType = 'PartyView';
     this._scene.innerHTML = '';
     this.view = new PartyView();
@@ -105,6 +112,11 @@ class Scene {
    * @param {object} playlist - The playlist to update the view with
    **/
   updateLibraryView(playlist) {
+    if (this._isFullScreenView === true) {
+      this._isFullScreenView = false;
+      document.body.removeChild(this.view.dom); // Remove current view from document
+    }
+
     this._sceneViewType = 'LibraryView';
     this._scene.innerHTML = '';
     const options = {

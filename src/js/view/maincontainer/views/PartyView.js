@@ -10,10 +10,12 @@ class PartyView extends SceneView {
 
     this._dom = {
       container: null,
-      tracklistContainer: null
+      tracklistContainer: null,
+      home: null
     };
 
     this._fetchWrapper()
+      .then(this._events.bind(this))
       .then(this._partyViewReady);
   }
 
@@ -27,15 +29,23 @@ class PartyView extends SceneView {
 
           this._dom.container = doc.getElementsByClassName('party-view-wrapper')[0];
           this._dom.tracklistContainer = doc.getElementsByClassName('pv-current-album')[0].children[1];
+          this._dom.home = doc.getElementsByClassName('pv-controls-home')[0];
 
-          console.log(this._dom)
-/*          new ScrollBar({
+          /*          new ScrollBar({
             target: this._dom.tracklistContainer
           });
           this._dom.tracklistContainer = this._dom.tracklistContainer.firstElementChild.firstElementChild;
 */
           resolve();
         });
+    });
+  }
+
+
+  _events() {
+    return new Promise(resolve => {
+      this._dom.home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
+      resolve();
     });
   }
 
