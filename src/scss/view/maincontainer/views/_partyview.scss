@@ -100,8 +100,8 @@
 
       .pv-tracklist {
         height: 100%;
-        overflow-y: hidden;
-        margin: 0 20px 0 60px;
+        overflow: hidden;
+        margin: 0 0 0 40px;
 
         .pv-album-track {
           background-color: $mzk-color-bg-dark-alpha-75;
@@ -109,10 +109,10 @@
           box-shadow: 0 0 10px 0 transparent;
           cursor: pointer;
           padding: ($mzk-margin - 2px) ($mzk-padding * 2);
-          margin: $mzk-margin;
+          margin: ($mzk-margin / 2) ($mzk-margin * 2.5);
 
-          transition: background-color .5s ease-out,
-                      box-shadow .5s ease-out;
+          transition: background-color $mzk-animation-duration ease-out,
+                      box-shadow $mzk-animation-duration ease-out;
 
           p {
             font-size: .95rem;

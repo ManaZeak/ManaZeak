@@ -28,14 +28,14 @@ class PartyView extends SceneView {
           const doc = parser.parseFromString(response, 'text/html');
 
           this._dom.container = doc.getElementsByClassName('party-view-wrapper')[0];
-          this._dom.tracklistContainer = doc.getElementsByClassName('pv-current-album')[0].children[1];
+          this._dom.tracklistContainer = doc.getElementsByClassName('pv-current-album')[0].children[0];
           this._dom.home = doc.getElementsByClassName('pv-controls-home')[0];
 
-          /*          new ScrollBar({
+          new ScrollBar({
             target: this._dom.tracklistContainer
           });
           this._dom.tracklistContainer = this._dom.tracklistContainer.firstElementChild.firstElementChild;
-*/
+
           resolve();
         });
     });
