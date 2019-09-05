@@ -165,6 +165,11 @@
             background-color: $mzk-color-bg-darker;
           }
 
+          &.pv-paused {
+            border: solid 1px $mzk-color-secondary-alpha-25;
+            box-shadow: 0 0 10px 0 $mzk-color-secondary;
+          }
+
           &.pv-playing {
             border: solid 1px $mzk-color-primary-alpha-25;
             box-shadow: 0 0 10px 0 $mzk-color-primary;
@@ -189,10 +194,15 @@
 
   .party-view-controls {
     align-items: center;
+    background: $mzk-color-bg-dark-alpha-50;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     bottom: 0;
     display: flex;
+    padding: 0 10px;
     position: absolute;
     z-index: 999;
+
 
     img {
       cursor: pointer;
