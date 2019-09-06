@@ -25,16 +25,31 @@ class SuggestionEntry {
 
     if (this._type === 'artist') {
       this._dom.container.dataset.id = this._entry.ARTIST_ID;
-      this._dom.img.src = this._entry.ARTIST_PP || 'static/img/tag/artist.svg';
       this._dom.name.innerHTML = this._entry.ARTIST_NAME;
+
+      if (Utils.imageUrlExists(this._entry.ARTIST_PP) === true) {
+        this._dom.img.src = this._entry.ARTIST_PP;
+      } else {
+        this._dom.img.src = 'static/img/tag/artist.svg';
+      }
     } else if (this._type === 'album') {
       this._dom.container.dataset.id = this._entry.ALBUM_ID;
-      this._dom.img.src = this._entry.ALBUM_COVER || 'static/img/tag/album.svg';
       this._dom.name.innerHTML = this._entry.ALBUM_TITLE;
+
+      if (Utils.imageUrlExists(this._entry.ARTIST_PP) === true) {
+        this._dom.img.src = this._entry.ALBUM_COVER;
+      } else {
+        this._dom.img.src = 'static/img/tag/album.svg';
+      }
     } else if (this._type === 'genre') {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
-      this._dom.img.src = this._entry.GENRE_IMAGE || 'static/img/tag/genre.svg';
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
+
+      if (Utils.imageUrlExists(this._entry.ARTIST_PP) === true) {
+        this._dom.img.src = this._entry.GENRE_IMAGE;
+      } else {
+        this._dom.img.src = 'static/img/tag/genre.svg';
+      }
     }
 
     this._dom.container.appendChild(this._dom.img);
