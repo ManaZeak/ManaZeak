@@ -22,48 +22,26 @@
       margin: 20px 0;
     }
 
-    // Left side of PV : Album cover and info + playing track detailled info
+    // Left side of PV : Album cover and info + playing track detailed info
 
     .pv-current-track {
       display: flex;
       width: 80%;
 
-      div {
-        align-items: flex-start;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 35px;
-      }
-
-      img {
-        box-shadow: 0 0 10px 0 $mzk-color-primary-alpha-25;
-        height: auto;
-        margin: 10px 0 20px 0;
-        width: 450px;
-      }
-
-      h1 {
-        margin: 0 0 ($mzk-margin * 5); // Bottom margin on track title
-      }
-
       h2 {
-        font-style: italic;
-        padding-left: 35px;
+        font-size: 1.4rem;
+        line-height: 1.4rem;
         margin: $mzk-margin 0;
 
         span {
-          font-size: 1.4rem;
-          font-style: normal;
-          margin: 0 10px;
+          margin: 0 $mzk-margin $mzk-margin 0;
 
           &.badge {
             background-color: rgba(127, 127, 127, .5);
             border-radius: $mzk-border-radius;
             cursor: pointer;
-            font-size: 1.1em;
             font-style: normal;
-            padding: ($mzk-padding / 2);
+            padding: ($mzk-padding - 2);
           }
         }
 
@@ -82,11 +60,62 @@
 
       .pv-album-description {
         align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 35px 35px 35px 70px;
 
+        img {
+          box-shadow: 0 0 10px 0 $mzk-color-primary-alpha-25;
+          height: auto;
+          margin: 10px 0 20px 0;
+          width: 450px;
+        }
 
         p {
           margin: 2px;
+        }
+      }
+
+      .pv-track-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 20px;
+
+        h1 {
+          margin: 0 0 ($mzk-margin * 5); // Bottom margin on track title
+        }
+
+        .pv-track-tags {
+          display: flex;
+
+          .pv-tag-labels {
+            align-items: flex-end;
+            display: flex;
+            flex-direction: column;
+            margin-left: ($mzk-margin * 2);
+
+            h2 {
+              font-style: italic;
+            }
+          }
+
+          .pv-tag-values {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+
+            h2 {
+              padding-left: 20px;
+
+              &:last-child { // Genre
+                display: flex;
+                flex-wrap: wrap;
+                margin: 40px 0 0 0;
+              }
+            }
+          }
         }
       }
     }
@@ -94,7 +123,7 @@
     // Album tracklist
 
     .pv-current-album {
-      border-left: solid 1px $mzk-color-icons;
+      border-left: solid 1px $mzk-color-text-light-alpha-25;
       overflow-y: hidden;
       width: 20%;
 
@@ -104,15 +133,16 @@
         margin: 0 0 0 40px;
 
         .pv-album-track {
-          background-color: $mzk-color-bg-dark-alpha-75;
+          background-color: $mzk-color-bg-dark;
+          border: solid 1px $mzk-color-text-light-alpha-25;
           border-radius: $mzk-border-radius;
-          box-shadow: 0 0 10px 0 transparent;
+          box-shadow: 0 0 3px 0 transparent;
           cursor: pointer;
-          padding: ($mzk-margin - 2px) ($mzk-padding * 2);
+          padding: ($mzk-margin - 2px) ($mzk-padding * 2) ($mzk-margin - 2px) $mzk-margin; // Reducing margin left to be left justified
           margin: ($mzk-margin / 2) ($mzk-margin * 2.5);
 
-          transition: background-color $mzk-animation-duration ease-out,
-                      box-shadow $mzk-animation-duration ease-out;
+          transition: border $mzk-animation-duration ease-out,
+          box-shadow $mzk-animation-duration ease-out;
 
           p {
             font-size: .95rem;
@@ -127,17 +157,32 @@
           &:active,
           &:focus,
           &:hover {
-            background-color: $mzk-color-bg-dark-alpha-90;
-            box-shadow: 0 0 10px 0 $mzk-color-primary-alpha-50;
+            border: solid 1px $mzk-color-text-light-alpha-25;
+            box-shadow: 0 0 10px 0 $mzk-color-secondary;
           }
 
           &:nth-child(2n) {
-            background-color: $mzk-color-bg-darker-alpha-75;
+            background-color: $mzk-color-bg-darker;
+          }
 
-            &:active,
-            &:focus,
-            &:hover {
-              background-color: $mzk-color-bg-dark-alpha-90;
+          &.pv-paused {
+            border: solid 1px $mzk-color-secondary-alpha-25;
+            box-shadow: 0 0 10px 0 $mzk-color-secondary;
+          }
+
+          &.pv-playing {
+            border: solid 1px $mzk-color-primary-alpha-25;
+            box-shadow: 0 0 10px 0 $mzk-color-primary;
+
+            &::before {
+              content: '';
+              background: url(/static/img/player/play.svg);
+              height: 25px;
+              width: 25px;
+              opacity: 0.5;
+              margin-top: 0;
+              position: absolute;
+              right: 28px;
             }
           }
         }
@@ -149,10 +194,15 @@
 
   .party-view-controls {
     align-items: center;
+    background: $mzk-color-bg-dark-alpha-50;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     bottom: 0;
     display: flex;
+    padding: 0 10px;
     position: absolute;
     z-index: 999;
+
 
     img {
       cursor: pointer;

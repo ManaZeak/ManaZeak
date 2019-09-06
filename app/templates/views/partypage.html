@@ -9,13 +9,24 @@
         <h4>Harvest Records</h4>
         <h4>42:58</h4>
       </div>
-      <div class="">
-        <h1>10 – Brain Damage</h1>
-        <h2 class="label">Artist: <span>Pink Floyd</span></h2>
-        <h2 class="label">Composer: <span>David Gilmour, Roger Waters</span></h2>
-        <h2 class="label">Producer: <span>Pink Floyd</span></h2>
-        <h2 class="label">Duration: <span>3:50</span></h2>
-        <h2 class="label">Genre: <span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
+      <div class="pv-track-info">
+        <h1>09 – Brain Damage</h1>
+        <div class="pv-track-tags">
+            <div class="pv-tag-labels">
+              <h2 class="label">Artist:</h2>
+              <h2 class="label">Composer:</h2>
+              <h2 class="label">Producer:</h2>
+              <h2 class="label">Duration:</h2>
+              <h2 class="label">Genre:</h2>
+            </div>
+            <div class="pv-tag-values">
+              <h2>Pink Floyd</h2>
+              <h2>David Gilmour, Roger Waters</h2>
+              <h2>Pink Floyd</h2>
+              <h2>3:50</h2>
+              <h2><span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
+            </div>
+        </div>
       </div>
     </div>
     <div class="pv-current-album">
@@ -52,7 +63,7 @@
           <p>08 – Any Colour You Like</p>
           <p>Pink Floyd</p>
         </div>
-        <div class="pv-album-track">
+        <div class="pv-album-track pv-playing">
           <p>09 – Brain Damage</p>
           <p>Pink Floyd</p>
         </div>
@@ -64,8 +75,9 @@
     </div>
   </div>
   <div class="party-view-controls">
-      <img src="{% static "img/navigation/home.svg" %}" class="pv-controls-home">
-      <img src="{% static "img/player/shuffle-random-on.svg" %}">
+      <img src="{% static "img/navigation/home.svg" %}" class="pv-controls-home" alt="pv-home-page">
+      <img src="{% static "img/player/shuffle-random-on.svg" %}" alt="pv-roll-album">
+      <img src="{% static "img/player/pause.svg" %}" class="pv-play-pause" alt="pv-play-pause">
   </div>
   <div class="party-view-starfield">
     <div class="pv-star-layer"></div>

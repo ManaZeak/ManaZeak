@@ -333,16 +333,18 @@ class Mzk {
       TRACK_PERCENTAGE: durationPlayed,
       PREVIOUS: false
     };*/
-    this.model.changeTrack(id, `track/get/${id}/`)
-      .then(() => {
-        this.ui.changeTrack(this.model.playingTrack);
+    if (id !== -1) {
+      this.model.changeTrack(id, `track/get/${id}/`)
+        .then(() => {
+          this.ui.changeTrack(this.model.playingTrack);
 
-        if (centerOn === true) {
-          this.ui.activeView.centerOn({
-            id: id
-          });
-        }
-      });
+          if (centerOn === true) {
+            this.ui.activeView.centerOn({
+              id: id
+            });
+          }
+        });
+    }
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
     //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
