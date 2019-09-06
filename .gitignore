@@ -130,3 +130,4 @@ coverage.xml
 .coverage
 /static/avatars/
 /static/covers/
+/static/pictures/**

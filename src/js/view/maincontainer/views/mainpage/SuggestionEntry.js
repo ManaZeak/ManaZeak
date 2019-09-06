@@ -25,14 +25,17 @@ class SuggestionEntry {
 
     if (this._type === 'artist') {
       this._dom.container.dataset.id = this._entry.ARTIST_ID;
+      this._dom.img.src = this._entry.ARTIST_PP || 'static/img/tag/artist.svg';
+      this._dom.name.innerHTML = this._entry.ARTIST_NAME;
     } else if (this._type === 'album') {
       this._dom.container.dataset.id = this._entry.ALBUM_ID;
+      this._dom.img.src = this._entry.ALBUM_COVER || 'static/img/tag/album.svg';
+      this._dom.name.innerHTML = this._entry.ALBUM_TITLE;
     } else if (this._type === 'genre') {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
+      this._dom.img.src = this._entry.GENRE_IMAGE || 'static/img/tag/genre.svg';
+      this._dom.name.innerHTML = this._entry.GENRE_NAME;
     }
-
-    this._dom.img.src = this._entry.ARTIST_PP || 'static/img/tag/artist.svg';
-    this._dom.name.innerHTML = this._entry.ARTIST_NAME; // TODO adapt to alb and genre
 
     this._dom.container.appendChild(this._dom.img);
     this._dom.container.appendChild(this._dom.name);
