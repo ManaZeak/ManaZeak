@@ -52,9 +52,10 @@ class MainPageService(object):
             # If the number of element is too big, reject the request
             if response['NUMBER_OF_ELEMENT'] > 10:
                 raise UserException(ErrorEnum.SUSPICIOUS_OPERATION)
-            artists = MainPageHelper.getRandomArtists(response['NUMBER_OF_ELEMENT'])
-            albums = []
-            genres = []
+            numberOfElements = response['NUMBER_OF_ELEMENT']
+            artists = MainPageHelper.getRandomArtists(numberOfElements)
+            albums = MainPageHelper.getRandomAlbums(numberOfElements)
+            genres = MainPageHelper.getRandomGenres(numberOfElements)
             producers = []
             data = {
                 'ARTISTS': artists,

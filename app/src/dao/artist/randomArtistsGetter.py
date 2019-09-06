@@ -3,15 +3,13 @@ from contextlib import closing
 from django.db import connection
 
 from app.src.dao.abstractDao import AbstractDao
-
-
-## Get a list of random artists.
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 
 
+## Get a list of random artists.
 class RandomArtistsGetter(AbstractDao):
 
-    picturePath = '/pictures/ArtistsProfile/'
+    picturePath = '../static/pictures/ArtistsProfile/'
 
     def getRandomArtists(self, numberOfElements):
         artists = []
@@ -20,7 +18,8 @@ class RandomArtistsGetter(AbstractDao):
             artist = MainPageArtist()
             artist.id = row[0]
             artist.name = row[1]
-            #artist.picture = self.picturePath + artist.name + '.jpg' # TODO test image existence, otherwise fallback on default cover
+            # if
+            artist.picture = self.picturePath + artist.name + '.jpg' # TODO test image existence, otherwise fallback on default cover
             artists.append(artist)
         return artists
 
@@ -32,7 +31,9 @@ class RandomArtistsGetter(AbstractDao):
 
     def _generateRequest(self, numberOfElements):
         return '''
-            SELECT id, name FROM app_artist OFFSET floor(random() * ( SELECT count(1) FROM app_artist)) LIMIT %s
+            SELECT id, name FROM app_artist WHERE location IS NOT NULL 
+            OFFSET floor(random() * ( SELECT count(1) FROM app_artist WHERE location IS NOT NULL ))
+            LIMIT %s
         '''
 
     def _generateParams(self, numberOfElements):
