@@ -36,7 +36,7 @@ class SuggestionEntry {
       this._dom.container.dataset.id = this._entry.ALBUM_ID;
       this._dom.name.innerHTML = this._entry.ALBUM_TITLE;
 
-      if (Utils.imageUrlExists(this._entry.ARTIST_PP) === true) {
+      if (Utils.imageUrlExists(this._entry.ALBUM_COVER) === true) {
         this._dom.img.src = this._entry.ALBUM_COVER;
       } else {
         this._dom.img.src = 'static/img/tag/album.svg';
@@ -45,7 +45,7 @@ class SuggestionEntry {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
 
-      if (Utils.imageUrlExists(this._entry.ARTIST_PP) === true) {
+      if (Utils.imageUrlExists(this._entry.GENRE_IMAGE) === true) {
         this._dom.img.src = this._entry.GENRE_IMAGE;
       } else {
         this._dom.img.src = 'static/img/tag/genre.svg';

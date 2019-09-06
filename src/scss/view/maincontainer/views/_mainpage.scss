@@ -134,13 +134,13 @@
       padding: $mzk-padding;
 
       .mp-suggestion-item {
+        align-items: center;
         background-color: transparent;
         border-radius: 0;
         box-shadow: 0 0 0 0 transparent;
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         margin: 0 $mzk-margin;
         padding: 5px;
         position: relative;
@@ -160,8 +160,8 @@
 
         img {
           border-radius: $mzk-border-radius;
-          height: 120px;
-          width: 120px;
+          height: 100px;
+          width: 100px;
         }
 
         p {
