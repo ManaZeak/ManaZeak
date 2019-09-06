@@ -88,7 +88,7 @@ class LazyTrackGetterInPlaylist(object):
             LEFT JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
             LEFT JOIN app_cover cover on track.cover_id = cover.id
             WHERE playlist_id = %s
-            ORDER BY album_art.name, album.year, track_id, track."discNumber", track."trackNumber",
+            ORDER BY album_art.name, album.year, track."discNumber", track."trackNumber", track_id, 
                 artist.name, composer.name, performer.name
             OFFSET %s
             LIMIT %s

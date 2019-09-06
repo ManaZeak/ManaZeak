@@ -232,22 +232,14 @@ class Model {
    **/
   initCollection(response) {
     return new Promise((resolve, reject) => {
-      const resolvePromise = () => {
-        mzk.stopLoading(true);
-        resolve(this._collection.activePlaylist);
-      };
-
       if (response.DONE && response.ERROR_KEY === null) {
         if (response.COLLECTION.length === 0) {
           // We start loading in Collection._initialScan, when the new library modal is triggered with good values
           this._collection.newLibrary()
-            .then(resolvePromise);
+            .then(resolve);
         } else {
-          mzk.startLoading(true)
-            .then(() => {
-              this._collection.buildUserCollection(response)
-                .then(resolvePromise);
-            });
+          this._collection.buildUserCollection(response)
+            .then(resolve);
         }
       } else {
         reject(response.ERROR_KEY);

@@ -213,6 +213,17 @@ class Collection {
     });
   }
 
+  getPlaylistFromId(id) {
+    for (let i = 0; i < this._playlists.length; ++i) {
+      if (this._playlists[i].id === id) {
+        return this._playlists[i];
+      }
+    }
+
+    return null;
+  }
+
+
   //  --------------------------------  GETTER METHODS   --------------------------------  //
 
   get activePlaylist() {

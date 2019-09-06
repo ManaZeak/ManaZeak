@@ -85,6 +85,7 @@ class QueueEntry {
 
     this._dom.nav.trash.addEventListener('click', () => {
       mzk.model.removeFromQueue(index);
+      mzk.ui.updateQueueNumber(mzk.model.queue);
     });
   }
 }

@@ -19,8 +19,8 @@ class RandomArtistsGetter(AbstractDao):
         for row in rows:
             artist = MainPageArtist()
             artist.id = row[0]
-            artist.name = row[0]
-            artist.picture = self.picturePath + artist.name + '.jpg'
+            artist.name = row[1]
+            #artist.picture = self.picturePath + artist.name + '.jpg' # TODO test image existence, otherwise fallback on default cover
             artists.append(artist)
         return artists
 

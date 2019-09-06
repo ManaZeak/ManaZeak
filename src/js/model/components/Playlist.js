@@ -19,7 +19,7 @@ class Playlist {
    * @param {number} options.totalTrack - The playlist total track
    **/
   constructor(options) {
-    this._id = options.id;
+    this._id = options.id || -1;
     this._isLibrary = options.isLibrary;
     this._isPublic = options.isPublic;
     this._name = options.name;

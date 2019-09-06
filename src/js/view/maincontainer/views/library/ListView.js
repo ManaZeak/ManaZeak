@@ -1,12 +1,12 @@
-import SceneView from '../SceneView';
+import LibraryViews from '../LibraryViews';
 import ListViewEntry from './ListViewEntry';
-import ScrollBar from '../../utils/ScrollBar.js';
-import TrackContext from "../../utils/contexts/TrackContext";
+import ScrollBar from '../../../utils/ScrollBar.js';
+import TrackContext from "../../../utils/contexts/TrackContext";
 
-import listview from '../../../../../static/json/default/listview.json';
+import listview from '../../../../../../static/json/default/listview.json';
 'use strict';
 
-class ListView extends SceneView {
+class ListView extends LibraryViews {
   /**
    * @summary ListView for mzk Scene
    * @author Arthur Beaulieu
@@ -35,39 +35,42 @@ class ListView extends SceneView {
       header: {},
       container: {}
     };
-    this._init();
-    this._events();
 
+    this._init();
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   _init() {
-    this._dom.fragment = document.createDocumentFragment();
-    this._dom.wrapper = document.createElement('DIV');
-    this._dom.header = document.createElement('DIV');
-    this._dom.container = document.createElement('DIV');
+    this.buildDom() // Parent class call
+      .then((viewControls) => {
+        this._dom.fragment = document.createDocumentFragment();
+        this._dom.wrapper = document.createElement('DIV');
+        this._dom.header = document.createElement('DIV');
+        this._dom.container = document.createElement('DIV');
 
-    this._dom.wrapper.classList.add('listview');
-    this._dom.header.classList.add('header');
-    this._dom.container.classList.add('track-container');
+        this._dom.wrapper.classList.add('listview');
+        this._dom.header.classList.add('header');
+        this._dom.container.classList.add('track-container');
 
-    this._dom.wrapper.appendChild(this._dom.header);
-    this._dom.wrapper.appendChild(this._dom.container);
-    this._dom.fragment.appendChild(this._dom.wrapper);
+        this._dom.wrapper.appendChild(viewControls);
+        this._dom.wrapper.appendChild(this._dom.header);
+        this._dom.wrapper.appendChild(this._dom.container);
+        this._dom.fragment.appendChild(this._dom.wrapper);
 
-    this._trackContext = new TrackContext({
-      target: this._dom.container,
-      url: 'contexts/trackcontext/'
-    });
+        this._trackContext = new TrackContext({
+          target: this._dom.container,
+          url: 'contexts/trackcontext/'
+        });
 
-    setTimeout(() => {
-      this._initHeader();
-    }, 0); // Wait that header has been added to the DOM
+        Events.fire('SceneViewReady');
+        this._listViewEvents();
+        this._initHeader();
+      });
   }
 
 
-  _events() {
+  _listViewEvents() {
     this._dom.container.addEventListener('click', (event) => {
       this._trackClicked(event);
     });
@@ -517,6 +520,32 @@ class ListView extends SceneView {
       .finally(() => {
         mzk.ui.stopLoading();
       });
+  }
+
+
+  _optionClicked() {
+    let sceneContext = this._dom.wrapper.querySelector('.scene-options');
+
+    if (sceneContext !== null) { // Close context
+      sceneContext.parentNode.remove();
+      return;
+    }
+
+    // Otherwise, append context, and fill it with its content
+    const overlay = document.createElement('DIV');
+    overlay.classList.add('context-transparent-overlay'); // TODO move this else where no ? like in viewoptionscontext maybe ?
+    overlay.addEventListener('click', (event) => {
+      if (!event.target.closest('.scene-options')) {
+        sceneContext.parentNode.remove();
+      }
+    }, true);
+
+    sceneContext = document.createElement('DIV');
+    sceneContext.className = 'scene-options';
+
+    overlay.appendChild(sceneContext);
+    this._dom.wrapper.appendChild(overlay);
+    this.fillContext(sceneContext);
   }
 
 

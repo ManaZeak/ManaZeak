@@ -1,5 +1,6 @@
-@import './views/listview'; // Loading list view rules
-@import './views/albumview'; // Loading album view rules
+@import './views/librarypage'; // Loading library viewing rules
+@import './views/mainpage';
+@import './views/partyview';
 
 $scene-transition: ($transition-duration * 4);
 $margin-offset: 25px; // Offset to match arrow icons size in main container
@@ -69,7 +70,7 @@ $aside-button-length: 25px;
     position: absolute;
     right: $margin-offset + ($main-container-icon-margin * 2);
     height: $margin-offset + ($main-container-icon-margin * 2);
-    width: 60px;
+    width: auto;
     top: 0;
     display: inline-flex;
     align-items: center;

@@ -1,11 +1,11 @@
-import SceneView from '../SceneView';
-import TrackContext from '../../utils/contexts/TrackContext.js';
+import LibraryViews from '../LibraryViews';
+import TrackContext from '../../../utils/contexts/TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
-import ScrollBar from "../../utils/ScrollBar";
+import ScrollBar from "../../../utils/ScrollBar";
 'use strict';
 
 
-class AlbumView extends SceneView {
+class AlbumView extends LibraryViews {
 
 
   constructor(options) {
@@ -13,28 +13,38 @@ class AlbumView extends SceneView {
 
     this._dom = {
       fragment: {},
-      container: {}
+      container: {},
+      wrapper: {}
     };
 
     this._trackContext = {};
 
     this._init();
-    this._events();
   }
 
   _init() {
-    this._dom.fragment = document.createDocumentFragment();
-    this._dom.container = document.createElement('DIV');
-    this._dom.container.classList.add('albumview');
-    this._dom.fragment.appendChild(this._dom.container);
+    this.buildDom() // Parent class call
+      .then((viewControls) => {
+        this._dom.fragment = document.createDocumentFragment();
+        this._dom.wrapper = document.createElement('DIV');
+        this._dom.container = document.createElement('DIV');
+        this._dom.container.classList.add('albumview');
 
-    this._trackContext = new TrackContext({
-      target: this._dom.container,
-      url: 'contexts/trackcontext/'
-    });
+        this._dom.wrapper.appendChild(viewControls);
+        this._dom.fragment.appendChild(this._dom.container);
+        this._dom.fragment.appendChild(this._dom.wrapper);
+
+        this._trackContext = new TrackContext({
+          target: this._dom.container,
+          url: 'contexts/trackcontext/'
+        });
+
+        Events.fire('SceneViewReady');
+        this._albumViewEvents();
+      });
   }
 
-  _events() {
+  _albumViewEvents() {
     this._dom.container.addEventListener('click', event => {
       this._trackClicked(event);
     });
