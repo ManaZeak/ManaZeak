@@ -31,8 +31,8 @@ class SuggestionEntry {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
     }
 
-    this._dom.img.src = this._entry.PICTURE || 'static/img/tag/artist.svg';
-    this._dom.name.innerHTML = this._entry.NAME;
+    this._dom.img.src = this._entry.ARTIST_PP || 'static/img/tag/artist.svg';
+    this._dom.name.innerHTML = this._entry.ARTIST_NAME; // TODO adapt to alb and genre
 
     this._dom.container.appendChild(this._dom.img);
     this._dom.container.appendChild(this._dom.name);
