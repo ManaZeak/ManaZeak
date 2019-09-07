@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,6 +14,7 @@ from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
+loggerDjango = logging.getLogger('django')
 
 ## Generate response for the main page of the application.
 class MainPageService(object):
@@ -47,11 +50,12 @@ class MainPageService(object):
     def getRandomObjects(request):
         user = request.user
         try:
+            loggerDjango.info("Getting the main page.")
             # Checking the response from the front.
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['NUMBER_OF_ELEMENT'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['NUMBER_OF_ELEMENT'])
             # If the number of element is too big, reject the request
             if response['NUMBER_OF_ELEMENT'] > 10:
-                raise UserException(ErrorEnum.SUSPICIOUS_OPERATION)
+                raise UserException(ErrorEnum.SUSPICIOUS_OPERATION, user)
             numberOfElements = response['NUMBER_OF_ELEMENT']
             artists = MainPageHelper.getRandomArtists(numberOfElements)
             albums = MainPageHelper.getRandomAlbums(numberOfElements)

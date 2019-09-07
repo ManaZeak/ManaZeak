@@ -27,7 +27,7 @@ class PlaylistService(object):
         user = request.user
         try:
             helper = PlayListHelper()
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Getting all the available ordered playlists
             playlists = helper.getOrderedPlaylist(user)
             # Getting the information about the ordered playlists
@@ -75,10 +75,11 @@ class PlaylistService(object):
         user = request.user
         try:
             # Checking if the request is correct
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['OFFSET', 'PLAYLIST_ID'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user,
+                                                        ['OFFSET', 'PLAYLIST_ID'])
             offset = int(response['OFFSET'])
             playlistId = int(response['PLAYLIST_ID'])
-            tracksToGet = ConfigService.getNumberOfTracksReturnedByLazyLoad()
+            tracksToGet = ConfigService.getNumberOfTracksReturnedByLazyLoad(user)
             lazyPlaylistDao = LazyTrackGetterInPlaylist()
             lazyFragment = lazyPlaylistDao.getLazyFragment(tracksToGet, offset, playlistId)
             # FIXME : temp solution to be redone!

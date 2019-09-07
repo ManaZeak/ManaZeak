@@ -36,9 +36,9 @@ class LibraryHelper(object):
     @staticmethod
     ## Check if a folder exists, throw an exception if it doesn't.
     #   @param folderPath the path to the folder to check
-    def checkFolder(folderPath):
+    def checkFolder(folderPath, user):
         if not os.path.isdir(folderPath):
-            raise UserException(ErrorEnum.DIR_NOT_FOUND)
+            raise UserException(ErrorEnum.DIR_NOT_FOUND, user)
 
     @staticmethod
     ## Indexes all the tracks contained in the library

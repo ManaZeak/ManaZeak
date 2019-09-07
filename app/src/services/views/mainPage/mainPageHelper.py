@@ -1,9 +1,9 @@
-## Helper class for the main page.
 from app.src.dao.album.randomAlbumGetter import RandomAlbumGetter
 from app.src.dao.artist.randomArtistsGetter import RandomArtistsGetter
 from app.src.dao.genre.randomGenreGetter import RandomGenreGetter
 
 
+## Helper class for the main page.
 class MainPageHelper(object):
 
     @staticmethod

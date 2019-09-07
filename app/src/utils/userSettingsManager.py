@@ -1,3 +1,5 @@
+import logging
+
 from app.models.security import Group
 from app.models.settings import UserSetting
 from app.src.utils.applicationConfigurationManager import ApplicationConfigurationManager
@@ -8,6 +10,7 @@ from app.src.utils.imageGenerators.avatarGenerator import AvatarGenerator
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
+logger = logging.getLogger('django')
 
 class UserSettingsManager(object):
 
@@ -18,8 +21,13 @@ class UserSettingsManager(object):
     def createUserSettings(user, inviteCodeUsed, inviteCode):
         userPref = UserSetting()
         userPref.user = user
-        # Setting the user avatar
-        userPref.avatar = AvatarGenerator().generateAvatar(user.username)
+
+        try:
+            # Setting the user avatar
+            userPref.avatar = AvatarGenerator().generateAvatar(user.username)
+        except Exception as e:
+            logger.warning("Error during the genration of the avatar : " + str(e))
+
         if inviteCodeUsed is not None:
             userPref.usedInviteCode = inviteCodeUsed
         userPref.inviteCode = inviteCode
@@ -38,4 +46,4 @@ class UserSettingsManager(object):
         if userSettings is not None:
             return UserSetting.objects.get(user=user)
         else:
-            raise UserException(ErrorEnum.UNKNOWN_USER_SETTINGS)
+            raise UserException(ErrorEnum.UNKNOWN_USER_SETTINGS, user)

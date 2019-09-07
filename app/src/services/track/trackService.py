@@ -43,7 +43,7 @@ class TrackService(object):
             elif track.fileType.id == TrackFileTypeEnum.FLAC.value:
                 redirectedResponse['Content-Type'] = 'audio/flac'
             else:
-                raise UserException(ErrorEnum.BAD_FORMAT)
+                raise UserException(ErrorEnum.BAD_FORMAT, user)
             return redirectedResponse
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist, user)

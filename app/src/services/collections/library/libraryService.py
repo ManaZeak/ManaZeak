@@ -43,7 +43,7 @@ class LibraryService(object):
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             # Checking if the directory given exists
             dirPath = response['URL']
-            LibraryHelper.checkFolder(dirPath)
+            LibraryHelper.checkFolder(dirPath, user)
             # Check if the library has sounds in it
             LibraryHelper.indexFileInLibrary(dirPath)
             # Saving the library into the database and getting its info
@@ -67,19 +67,19 @@ class LibraryService(object):
         try:
             loggerDjango.info('Asked for the initial scan')
             # Checking the request from the front and getting the json object
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['LIBRARY_ID'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['LIBRARY_ID'])
             # Check if the user has the permission to do this action
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             libraryId = response['LIBRARY_ID']
             # Raising an error if the library isn't found
             if Library.objects.filter(id=libraryId) == 0:
-                raise UserException(ErrorEnum.DB_ERROR)
+                raise UserException(ErrorEnum.DB_ERROR, user)
             # Getting the library object
             library = Library.objects.get(id=libraryId)
             # Setting the library flag as in scan -> locking all the other functions altering the library
             LibraryStatusHelper.startLibraryScan(library)
             # Checking if the given folder of the library is existing
-            LibraryHelper.checkFolder(library.path)
+            LibraryHelper.checkFolder(library.path, user)
             loggerScan.info('Starting indexing files.')
             # Indexing the audio files of the library
             mp3Files, flacFiles = LibraryHelper.indexFileInLibrary(library.path)
@@ -114,7 +114,7 @@ class LibraryService(object):
             FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             if libraryId is None:
-                raise UserException(ErrorEnum.VALUE_ERROR)
+                raise UserException(ErrorEnum.VALUE_ERROR, user)
             library = LibraryHelper.getLibraryFromId(libraryId)
             loggerDjango.info('Deleting the library : ' + library.playlist.name)
             LibraryHelper.deleteLibrary(library, LibraryStatusHelper.getLibraryScanStatus(library))

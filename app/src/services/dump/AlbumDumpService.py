@@ -46,7 +46,7 @@ class AlbumDumpService(object):
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Checking the artist id
             if Artist.objects.filter(id=artistId).count() == 0:
-                raise UserException(ErrorEnum.DB_ERROR)
+                raise UserException(ErrorEnum.DB_ERROR, user)
             # Getting all the albums for the artist
             albums = Album.objects.filter(releaseArtist=artistId)
             albumsDump = AlbumDumpService._generateJsonForAlbums(albums)

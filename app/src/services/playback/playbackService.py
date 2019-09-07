@@ -22,12 +22,12 @@ class PlaybackService(object):
         user = request.user
         try:
             # Checking the front request
-            result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['PLAYLIST_ID'])
+            result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
             PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
             # Getting a random track from the database.
             track_id = PlaybackHelper.getRandomTrack(result['PLAYLIST_ID'])
             if track_id is None:
-                raise UserException(ErrorEnum.DB_ERROR)
+                raise UserException(ErrorEnum.DB_ERROR, user)
             response = {
                 'TRACK_ID': track_id,
             }
@@ -45,7 +45,7 @@ class PlaybackService(object):
         user = request.user
         try:
             # Checking the front request
-            result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['PLAYLIST_ID'])
+            result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
             PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
             # Getting a shuffled first album track from the database.
             playlistId = result['PLAYLIST_ID']

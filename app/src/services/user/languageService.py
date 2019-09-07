@@ -28,7 +28,7 @@ class LanguageService(object):
         user = request.user
         try:
             response = FrontRequestChecker.checkRequest(
-                RequestMethodEnum.POST, request, ['LANG'])
+                RequestMethodEnum.POST, request, user, ['LANG'])
             requestedLang = response['LANG']
             if LanguageService._checkLanguage(requestedLang):
                 jsonFile = os.path.join(pathToLang, requestedLang + ".json")

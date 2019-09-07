@@ -35,9 +35,9 @@ class ErrorHandler(object):
             }
 
     @staticmethod
-    def generateJsonResponseFromException(exception, caller, user):
+    def generateJsonResponseFromException(exception, caller):
         return JsonResponse(
-            ErrorHandler.createStandardStateMessage(False, exception.errorType, caller, user)
+            ErrorHandler.createStandardStateMessage(False, exception.errorType, caller, exception.user)
         )
 
     @staticmethod
