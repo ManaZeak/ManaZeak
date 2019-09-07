@@ -66,7 +66,7 @@ class AvatarGenerator(object):
                     for pixel in row] for row in avatarBin]
         avatar = self._resizeAvatar(avatar, avatarSize, imageSizePerCell)
 
-        avatar = [chain(*row) for row in avatar]
+        avatar = [list(chain(*row)) for row in avatar]
 
         png.from_array(avatar, 'RGB').save(avatarPath)
         return avatarPath
