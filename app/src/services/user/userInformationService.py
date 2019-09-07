@@ -28,7 +28,7 @@ class UserInformationService(object):
         try:
             # Checking if the request is correct
             FrontRequestChecker.checkRequest(
-                RequestMethodEnum.GET, request)
+                RequestMethodEnum.GET, request, user)
             # Returning the information about the user with a standard response
             return JsonResponse(
                 {

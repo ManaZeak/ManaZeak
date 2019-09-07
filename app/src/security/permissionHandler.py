@@ -21,7 +21,7 @@ class PermissionHandler(object):
             if permission.code == requiredPermission.value:
                 return
         # We raise an exception if the user doesn't have the permission
-        raise UserException(ErrorEnum.PERMISSION_ERROR)
+        raise UserException(ErrorEnum.PERMISSION_ERROR, user)
 
     @staticmethod
     ## Check if a user posses a permission
