@@ -1,3 +1,5 @@
+import logging
+
 from django.http import JsonResponse
 
 from app.src.utils.errors.errorHandler import ErrorHandler
@@ -5,12 +7,19 @@ from app.src.utils.exceptions.userException import UserException
 
 ## Decorator used to handle the request of the front.
 #   This is used to handle the errors
-def frontRequest(func):
+class FrontRequest(object):
+
+    def __init__(self, func):
+        self.func = func
 
     ## The default function that will be called.
-    def inner1(*args, **kwargs):
+    def __call__(self, *args, **kwargs):
+        loggerDjango = logging.getLogger('django')
+        loggerDjango.info("entering decorator")
         try:
-            returnValue = func(*args, **kwargs)
+            returnValue = self.func(*args, **kwargs)
+            if returnValue is None:
+                return JsonResponse(ErrorHandler.createStandardStateMessage(True))
             return JsonResponse({**returnValue, **ErrorHandler.createStandardStateMessage(True)})
         except UserException as e:
-            return ErrorHandler.generateJsonResponseFromException(e, func)
+            return ErrorHandler.generateJsonResponseFromException(e, self.func)

@@ -13,6 +13,7 @@ from app.src.services.collections.library.libraryHelper import LibraryHelper
 from app.src.services.collections.library.libraryIntegrationService import LibraryIntegrationService
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
+from app.src.utils.decorators import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
@@ -33,29 +34,26 @@ class LibraryService(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
     ## Creates a library for all the users (only the admin can perform this)
     def createLibrary(request):
         user = request.user
-        try:
-            # Checking the request from the front and getting the json object
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['URL', 'NAME'])
-            # Checking if the user has the permission to do this action
-            PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
-            # Checking if the directory given exists
-            dirPath = response['URL']
-            LibraryHelper.checkFolder(dirPath, user)
-            # Check if the library has sounds in it
-            LibraryHelper.indexFileInLibrary(dirPath)
-            # Saving the library into the database and getting its info
-            data = LibraryHelper.createAndSaveLibraryFromRequest(response, user)
-            loggerDjango.info('Created the library : ' + strip_tags(response['NAME']))
-            # Returning a standard response to the front with the library info
-            return JsonResponse(
-                {**data, **ErrorHandler.createStandardStateMessage(True)}
-            )
-        except UserException as e:
-            # Handle the errors and send the result to the front
-            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.createLibrary, user)
+        # Checking the request from the front and getting the json object
+        response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['URL', 'NAME'])
+        # Checking if the user has the permission to do this action
+        PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
+        # Checking if the directory given exists
+        dirPath = response['URL']
+        LibraryHelper.checkFolder(dirPath, user)
+        # Check if the library has sounds in it
+        LibraryHelper.indexFileInLibrary(dirPath)
+        # Saving the library into the database and getting its info
+        data = LibraryHelper.createAndSaveLibraryFromRequest(response, user)
+        loggerDjango.info('Created the library : ' + strip_tags(response['NAME']))
+        # Returning a standard response to the front with the library info
+        return JsonResponse(
+            {**data, **ErrorHandler.createStandardStateMessage(True)}
+        )
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
@@ -104,23 +102,20 @@ class LibraryService(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
     ## Delete the given library
     #   @param request a GET request from the front
     #   @param libraryId the id of the library
     def deleteLibrary(request, libraryId):
         user = request.user
-        try:
-            # Checking if the method is called correctly and the user has the permissions
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
-            PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
-            if libraryId is None:
-                raise UserException(ErrorEnum.VALUE_ERROR, user)
-            library = LibraryHelper.getLibraryFromId(libraryId)
-            loggerDjango.info('Deleting the library : ' + library.playlist.name)
-            LibraryHelper.deleteLibrary(library, LibraryStatusHelper.getLibraryScanStatus(library))
-            return JsonResponse(ErrorHandler.createStandardStateMessage(True))
-        except UserException as e:
-            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.deleteLibrary, user)
+        # Checking if the method is called correctly and the user has the permissions
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+        PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
+        if libraryId is None:
+            raise UserException(ErrorEnum.VALUE_ERROR, user)
+        library = LibraryHelper.getLibraryFromId(libraryId)
+        loggerDjango.info('Deleting the library : ' + library.playlist.name)
+        LibraryHelper.deleteLibrary(library, LibraryStatusHelper.getLibraryScanStatus(library))
 
     @staticmethod
     def getLibraryScanStatus(request):
@@ -137,4 +132,4 @@ class LibraryService(object):
                 {{**data, **ErrorHandler.generateStatusMessage(scanStatus.isScanned)}}
             )
         except UserException as e:
-            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.getLibraryScanStatus, user)
+            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.getLibraryScanStatus)

@@ -46,4 +46,4 @@ class TrackService(object):
                 raise UserException(ErrorEnum.BAD_FORMAT, user)
             return redirectedResponse
         except UserException as e:
-            return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist, user)
+            return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist)
