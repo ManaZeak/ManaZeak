@@ -22,7 +22,7 @@ class AlbumDumpService(object):
         user = request.user
         try:
             # Checking if the request is correct
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Checking the permission of the user
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Getting the albums in base.
@@ -42,7 +42,7 @@ class AlbumDumpService(object):
         user = request.user
         try:
             # Checking the user request and the permission
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Checking the artist id
             if Artist.objects.filter(id=artistId).count() == 0:

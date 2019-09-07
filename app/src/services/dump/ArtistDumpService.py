@@ -22,7 +22,7 @@ class ArtistDumpService(object):
     def dumpAllArtists(request):
         user = request.user
         try:
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Getting all the artists available in the database.
             artists = Artist.objects.all()

@@ -22,7 +22,7 @@ class GenreDumpService(object):
         user = request.user
         try:
             # Check the request and the user permissions
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Getting the genres of the genres
             genres = Genre.objects.all()

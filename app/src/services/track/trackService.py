@@ -31,7 +31,7 @@ class TrackService(object):
             # Checking the user permission
             PermissionHandler.hasPermission(PermissionEnum.PLAY, user)
             # Checking if the request is correct
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Getting the track from the db
             track = Track.objects.get(id=trackId)
             redirectedResponse = HttpResponse(status=200)

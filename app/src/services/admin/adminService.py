@@ -23,7 +23,7 @@ class AdminService(object):
             # Check the user permission
             PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
             # Check if the request is ok
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Toggles the invite mode
             config = ApplicationConfigurationManager.getApplicationConfiguration()
             config.inviteCodeEnabled = not config.inviteCodeEnabled

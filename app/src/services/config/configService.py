@@ -20,7 +20,7 @@ class ConfigService(object):
     def isInviteCodeEnabled(request):
         try:
             # Checking the request
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Getting the configuration
             conf = ApplicationConfigurationManager.getApplicationConfiguration()
             data = {

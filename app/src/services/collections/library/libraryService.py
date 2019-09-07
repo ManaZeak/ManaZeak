@@ -38,7 +38,7 @@ class LibraryService(object):
         user = request.user
         try:
             # Checking the request from the front and getting the json object
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['URL', 'NAME'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['URL', 'NAME'])
             # Checking if the user has the permission to do this action
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             # Checking if the directory given exists
@@ -111,7 +111,7 @@ class LibraryService(object):
         user = request.user
         try:
             # Checking if the method is called correctly and the user has the permissions
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             if libraryId is None:
                 raise UserException(ErrorEnum.VALUE_ERROR, user)
@@ -127,7 +127,7 @@ class LibraryService(object):
         user = request.user
         try:
             # Checking if the front send a correct
-            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, ['PLAYLIST_ID'])
+            response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
             libraryId = PlayListHelper.getPlaylistFromId(response['PLAYLIST_ID'])
             scanStatus = LibraryStatusHelper.getLibraryScanStatus(libraryId)
             data = {

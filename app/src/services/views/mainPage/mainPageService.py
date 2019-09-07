@@ -26,7 +26,7 @@ class MainPageService(object):
         user = request.user
         try:
             # Checking if the user request is correct.
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
             # Get the libraries.
             librariesInBase = Playlist.objects.filter(isLibrary=True)
             libs = []

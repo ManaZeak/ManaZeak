@@ -22,11 +22,8 @@ class UserSettingsManager(object):
         userPref = UserSetting()
         userPref.user = user
 
-        try:
-            # Setting the user avatar
-            userPref.avatar = AvatarGenerator().generateAvatar(user.username)
-        except Exception as e:
-            logger.warning("Error during the genration of the avatar : " + str(e))
+        # Setting the user avatar
+        userPref.avatar = AvatarGenerator().generateAvatar(user.username)
 
         if inviteCodeUsed is not None:
             userPref.usedInviteCode = inviteCodeUsed
