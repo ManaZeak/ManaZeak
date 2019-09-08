@@ -65,7 +65,7 @@ class UserInterface {
    **/
   setSceneView(options) {
     return new Promise(resolve => {
-      Events.register({ // Views class themselves has to fire a SceneViewReady event when init is done
+      Events.register({ // Views class themselves must fire a SceneViewReady event when ready
         name: 'SceneViewReady',
         oneShot: true
       }, () => {
@@ -73,16 +73,24 @@ class UserInterface {
         resolve();
       });
 
+      this._topBar.mainPageButtonVisibility = true; // Append button by default (remove only if MainPage)
       if (options.name === 'MainPage') {
         this._topBar.mainPageButtonVisibility = false;
         this.startLoading(true)
           .then(this._scene.setMainPageView.bind(this._scene));
       } else if (options.name === 'Party') {
-        this._topBar.mainPageButtonVisibility = true;
         this.startLoading(true)
           .then(this._scene.setPartyView.bind(this._scene));
-      } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
-        this._topBar.mainPageButtonVisibility = true;
+      } else if (options.name === 'SingleArtist') {
+        this.startLoading(true)
+          .then(this._scene.setArtistView.bind(this._scene, options.artist));
+      } else if (options.name === 'SingleAlbum') {
+        this.startLoading(true)
+          .then(this._scene.setAlbumView.bind(this._scene, options.album));
+      } else if (options.name === 'SingleGenre') {
+        this.startLoading(true)
+          .then(this._scene.setGenreView.bind(this._scene, options.genre));
+      } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) { // Handle library views
         this.startLoading(true)
           .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));
       }

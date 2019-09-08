@@ -2,7 +2,11 @@ import ListView from './views/library/ListView.js';
 import AlbumView from './views/library/AlbumView.js';
 import MainPageView from './views/MainPageView.js';
 import PartyView from './views/PartyView.js';
+import SingleArtistView from './views/tagviews/SingleArtistView.js';
+import SingleAlbumView from './views/tagviews/SingleAlbumView.js';
+import SingleGenreView from './views/tagviews/SingleGenreView.js';
 'use strict';
+
 
 class Scene {
   /**
@@ -17,8 +21,27 @@ class Scene {
     this._sceneViewType = '';
     this._isFullScreenView = false;
 
+
     this._sceneCommands = {};
     this._optionButton = {};
+  }
+
+
+  _removeFullView() {
+    if (this._isFullScreenView === true) {
+      this._isFullScreenView = false;
+      document.body.removeChild(this.view.dom); // Remove current view from document
+    }
+  }
+
+
+  _registerViewReady() {
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom);
+    });
   }
 
 
@@ -59,21 +82,11 @@ class Scene {
    * @param {object} node - The DOM node to append to the scene
    **/
   setMainPageView(node) {
-    if (this._isFullScreenView === true) {
-      this._isFullScreenView = false;
-      document.body.removeChild(this.view.dom); // Remove current view from document
-    }
-
+    this._removeFullView();
     this._sceneViewType = 'MainPageView';
     this._scene.innerHTML = '';
     this.view = new MainPageView();
-
-    Events.register({
-      name: 'SceneViewReady',
-      oneShot: true
-    }, () => {
-      this.addView(this.view.dom);
-    });
+    this._registerViewReady();
   }
 
 
@@ -87,19 +100,40 @@ class Scene {
    * @description Add a new view in the scene (only append the DOM element)
    **/
   setPartyView() {
+    this._removeFullView();
     this._isFullScreenView = true;
     this._sceneViewType = 'PartyView';
     this._scene.innerHTML = '';
     this.view = new PartyView();
-
-    Events.register({
-      name: 'SceneViewReady',
-      oneShot: true
-    }, () => {
-      this.addView(this.view.dom, true);
-    });
+    this._registerViewReady();
   }
 
+
+  setArtistView(artist) {
+    this._removeFullView();
+    this._sceneViewType = 'SingleArtistView';
+    this._scene.innerHTML = '';
+    this.view = new SingleArtistView(artist);
+    this._registerViewReady();
+  }
+
+
+  setAlbumView(album) {
+    this._removeFullView();
+    this._sceneViewType = 'SingleAlbumView';
+    this._scene.innerHTML = '';
+    this.view = new SingleAlbumView(album);
+    this._registerViewReady();
+  }
+
+
+  setGenreView(genre) {
+    this._removeFullView();
+    this._sceneViewType = 'SingleGenreView';
+    this._scene.innerHTML = '';
+    this.view = new SingleGenreView(genre);
+    this._registerViewReady();
+  }
 
   /**
    * @method
@@ -112,11 +146,7 @@ class Scene {
    * @param {object} playlist - The playlist to update the view with
    **/
   updateLibraryView(playlist) {
-    if (this._isFullScreenView === true) {
-      this._isFullScreenView = false;
-      document.body.removeChild(this.view.dom); // Remove current view from document
-    }
-
+    this._removeFullView();
     this._sceneViewType = 'LibraryView';
     this._scene.innerHTML = '';
     const options = {
@@ -135,13 +165,7 @@ class Scene {
       this.view = new AlbumView(options);
     }
 
-    Events.register({
-      name: 'SceneViewReady',
-      oneShot: true
-    }, () => {
-      this.addView(this.view.dom);
-      this.view.addTracks(playlist.artists);
-    });
+    this._registerViewReady();
   }
 
 

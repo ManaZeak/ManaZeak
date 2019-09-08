@@ -58,9 +58,40 @@ class SuggestionEntry {
 
 
   _events() {
-    this._dom.container.addEventListener('click', () => {
-      // TODO : wait for backend to offer get (depends on this type)
-    }, false);
+    if (this._type === 'artist') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleArtist',
+          artist: {
+            id: this._entry.ARTIST_ID,
+            name: this._entry.ARTIST_NAME,
+            pp: this._entry.ARTIST_PP
+          }
+        });
+      }, false);
+    } else if (this._type === 'album') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleAlbum',
+          album: {
+            id: this._entry.ALBUM_ID,
+            title: this._entry.ALBUM_TITLE,
+            cover: this._entry.ALBUM_COVER
+          }
+        });
+      }, false);
+    } else if (this._type === 'genre') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleGenre',
+          genre: {
+            id: this._entry.GENRE_ID,
+            name: this._entry.GENRE_NAME,
+            img: this._entry.GENRE_IMAGE
+          }
+        });
+      }, false);
+    }
   }
 
 
