@@ -40,6 +40,8 @@ class MainPageService(object):
 
     @staticmethod
     @FrontRequest
+    ## Return a selection of randoms objects for the main age display.
+    #   @param request the front request.
     def getRandomObjects(request):
         user = request.user
         loggerDjango.info("Getting the main page.")

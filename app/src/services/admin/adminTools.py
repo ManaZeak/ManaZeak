@@ -2,6 +2,7 @@ from django.http import JsonResponse
 
 from app.models import TrackInScopeStats, Track, Genre, Library, Playlist, Album, Artist
 from app.models.collections import LibraryScanStatus
+from app.models.track import Producer
 
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
@@ -29,6 +30,7 @@ class AdminTools(object):
             Album.objects.all().delete()
             Artist.objects.all().delete()
             TrackInScopeStats.objects.all().delete()
+            Producer.objects.all().delete()
             # Return a standard response
             return JsonResponse(ErrorHandler.createStandardStateMessage(True))
         except UserException as e:

@@ -1,3 +1,5 @@
+from builtins import staticmethod
+
 from app.src.dao.album.randomAlbumGetter import RandomAlbumGetter
 from app.src.dao.artist.randomArtistsGetter import RandomArtistsGetter
 from app.src.dao.genre.randomGenreGetter import RandomGenreGetter
@@ -41,3 +43,7 @@ class MainPageHelper(object):
         for genre in genreFromDb:
             genres.append(genre.getJsonObject())
         return genres
+
+    @staticmethod
+    def getRandomProducers(numberToGet):
+        pass
