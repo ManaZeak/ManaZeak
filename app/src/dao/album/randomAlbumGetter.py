@@ -17,7 +17,7 @@ class RandomAlbumGetter(AbstractDaoGetter):
         rows = self._executeRequest(numberOfElements)
         for row in rows:
             album = MainPageAlbum()
-
+            album.buildFromRandomAlbumDao(row)
             albums.append(album)
         return albums
 
