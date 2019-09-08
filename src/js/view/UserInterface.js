@@ -90,6 +90,15 @@ class UserInterface {
       } else if (options.name === 'SingleGenre') {
         this.startLoading(true)
           .then(this._scene.setGenreView.bind(this._scene, options.genre));
+      } else if (options.name === 'AllArtists') {
+        this.startLoading(true)
+          .then(this._scene.setArtistsView.bind(this._scene));
+      } else if (options.name === 'AllAlbums') {
+        this.startLoading(true)
+          .then(this._scene.setAlbumsView.bind(this._scene));
+      } else if (options.name === 'AllGenres') {
+        this.startLoading(true)
+          .then(this._scene.setGenresView.bind(this._scene));
       } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) { // Handle library views
         this.startLoading(true)
           .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));

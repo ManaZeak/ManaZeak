@@ -5,6 +5,9 @@ import PartyView from './views/PartyView.js';
 import SingleArtistView from './views/tagviews/SingleArtistView.js';
 import SingleAlbumView from './views/tagviews/SingleAlbumView.js';
 import SingleGenreView from './views/tagviews/SingleGenreView.js';
+import AllArtistsView from './views/tagviews/AllArtistsView.js';
+import AllAlbumsView from './views/tagviews/AllAlbumsView.js';
+import AllGenresView from './views/tagviews/AllGenresView.js';
 'use strict';
 
 
@@ -131,6 +134,32 @@ class Scene {
     this._sceneViewType = 'SingleGenreView';
     this._scene.innerHTML = '';
     this.view = new SingleGenreView(genre);
+    this._registerViewReady();
+  }
+
+  setArtistsView() {
+    this._removeFullView();
+    this._sceneViewType = 'AllArtistsView';
+    this._scene.innerHTML = '';
+    this.view = new AllArtistsView();
+    this._registerViewReady();
+  }
+
+
+  setAlbumsView() {
+    this._removeFullView();
+    this._sceneViewType = 'AllAlbumsView';
+    this._scene.innerHTML = '';
+    this.view = new AllAlbumsView();
+    this._registerViewReady();
+  }
+
+
+  setGenresView() {
+    this._removeFullView();
+    this._sceneViewType = 'AllGenresView';
+    this._scene.innerHTML = '';
+    this.view = new AllGenresView();
     this._registerViewReady();
   }
 

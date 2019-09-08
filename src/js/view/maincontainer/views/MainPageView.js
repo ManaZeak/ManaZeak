@@ -86,7 +86,7 @@ class MainPageView extends SceneView {
           if (response.ARTISTS.length > 0) {
             const artists = new SuggestionGroup({
               label: 'Artists',
-              type: 'artist',
+              type: 'Artists',
               items: response.ARTISTS
             });
             this._dom.suggestion.appendChild(artists.dom);
@@ -95,7 +95,7 @@ class MainPageView extends SceneView {
           if (response.ALBUMS.length > 0) {
             const albums = new SuggestionGroup({
               label: 'Albums',
-              type: 'album',
+              type: 'Albums',
               items: response.ALBUMS
             });
             this._dom.suggestion.appendChild(albums.dom);
@@ -104,7 +104,7 @@ class MainPageView extends SceneView {
           if (response.GENRES.length > 0) {
             const genres = new SuggestionGroup({
               label: 'Genres',
-              type: 'genre',
+              type: 'Genres',
               items: response.GENRES
             });
             this._dom.suggestion.appendChild(genres.dom);

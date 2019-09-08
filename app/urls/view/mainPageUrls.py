@@ -10,6 +10,9 @@ urlpatterns = [
     path('tag/singleArtist/', GenericViews.getSingleArtistPage, name='getSingleArtistPage'),
     path('tag/singleAlbum/', GenericViews.getSingleAlbumPage, name='getSingleAlbumPage'),
     path('tag/singleGenre/', GenericViews.getSingleGenrePage, name='getSingleGenrePage'),
+    path('tag/allArtists/', GenericViews.getAllArtistsPage, name='getAllArtistsPage'),
+    path('tag/allAlbums/', GenericViews.getAllAlbumsPage, name='getAllAlbumsPage'),
+    path('tag/allGenres/', GenericViews.getAllGenresPage, name='getAllGenresPage'),
 
     path('party/layout/', GenericViews.getPartyPage, name='getPartyPage'),
     path('library/layout/', GenericViews.getLibraryPage, name='getLibraryPage'),

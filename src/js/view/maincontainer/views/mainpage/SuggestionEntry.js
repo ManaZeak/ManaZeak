@@ -3,7 +3,7 @@ class SuggestionEntry {
 
   constructor(options) {
     this._entry = options.entry;
-    this._type = options.type;
+    this._groupType = options.type;
 
     this._dom = {
       container: null,
@@ -23,7 +23,7 @@ class SuggestionEntry {
 
     this._dom.container.classList.add('mp-suggestion-item');
 
-    if (this._type === 'artist') {
+    if (this._groupType === 'Artists') {
       this._dom.container.dataset.id = this._entry.ARTIST_ID;
       this._dom.name.innerHTML = this._entry.ARTIST_NAME;
 
@@ -32,7 +32,7 @@ class SuggestionEntry {
       } else {
         this._dom.img.src = 'static/img/tag/artist.svg';
       }
-    } else if (this._type === 'album') {
+    } else if (this._groupType === 'Albums') {
       this._dom.container.dataset.id = this._entry.ALBUM_ID;
       this._dom.name.innerHTML = this._entry.ALBUM_TITLE;
 
@@ -41,7 +41,7 @@ class SuggestionEntry {
       } else {
         this._dom.img.src = 'static/img/tag/album.svg';
       }
-    } else if (this._type === 'genre') {
+    } else if (this._groupType === 'Genres') {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
 
@@ -58,7 +58,7 @@ class SuggestionEntry {
 
 
   _events() {
-    if (this._type === 'artist') {
+    if (this._groupType === 'Artists') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleArtist',
@@ -69,7 +69,7 @@ class SuggestionEntry {
           }
         });
       }, false);
-    } else if (this._type === 'album') {
+    } else if (this._groupType === 'Albums') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleAlbum',
@@ -80,7 +80,7 @@ class SuggestionEntry {
           }
         });
       }, false);
-    } else if (this._type === 'genre') {
+    } else if (this._groupType === 'Genres') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleGenre',

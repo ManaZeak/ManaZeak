@@ -54,7 +54,9 @@ class SuggestionGroup {
 
   _events() {
     this._dom.seeMore.addEventListener('click', () => {
-      // TODO : wait for backend to offer getArtists, getAlbums and getGenres
+      mzk.ui.setSceneView({
+        name: `All${this._type}`
+      });
     }, false);
   }
 

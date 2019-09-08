@@ -96,3 +96,20 @@ class GenericViews(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleGenrePage(request):
         return render(request, 'views/tags/singlegenrepage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllArtistsPage(request):
+        return render(request, 'views/tags/allartistspage.html')
+
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllAlbumsPage(request):
+        return render(request, 'views/tags/allalbumspage.html')
+
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllGenresPage(request):
+        return render(request, 'views/tags/allgenrespage.html')
