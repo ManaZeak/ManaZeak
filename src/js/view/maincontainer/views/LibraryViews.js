@@ -68,12 +68,13 @@ class LibraryViews extends SceneView {
     });
 
     this._lockCenternOn.addEventListener('click', () => {
-      const pref = mzk.user.getPreference('lock-center-on-track');
+      const prefName = 'lock-center-on-track';
+      const pref = mzk.user.getPreference(prefName);
       if (pref === true) {
-        mzk.user.setPreference('lock-center-on-track', false);
+        mzk.user.setPreference(prefName, false);
         this._lockCenternOn.src = '/static/img/actions/lock-off.svg';
       } else {
-        mzk.user.setPreference('lock-center-on-track', true);
+        mzk.user.setPreference(prefName, true);
         this._lockCenternOn.src = '/static/img/actions/lock-on.svg';
       }
     });
@@ -330,7 +331,7 @@ _simpleClick(index) {
   }
 
 
-getTrackById(id) {
+  getTrackById(id) {
     return this._tracks[id];
   }
 

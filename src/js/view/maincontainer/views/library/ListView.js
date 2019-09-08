@@ -26,6 +26,7 @@ class ListView extends LibraryViews {
       this._columns = listview.defaultColumns;
     }
 
+    this._playlist = options.playlist;
     this._availableColumns = listview.availableColumns;
     this._trackContext = {}; // Context menu clicked on a track
     this._draggedColumn = null; // Currently dragged column
@@ -63,9 +64,10 @@ class ListView extends LibraryViews {
           url: 'contexts/trackcontext/'
         });
 
-        Events.fire('SceneViewReady');
         this._listViewEvents();
         this._initHeader();
+        this.addTracks(this._playlist.artists);
+        Events.fire('SceneViewReady');
       });
   }
 

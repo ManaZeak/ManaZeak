@@ -21,7 +21,6 @@ class Scene {
     this._sceneViewType = '';
     this._isFullScreenView = false;
 
-
     this._sceneCommands = {};
     this._optionButton = {};
   }
@@ -150,6 +149,7 @@ class Scene {
     this._sceneViewType = 'LibraryView';
     this._scene.innerHTML = '';
     const options = {
+      playlist: playlist,
       playingTrackIndex: this.view.playingTrackIndex,
       selection: this.view.selection,
       viewLabel: ''
