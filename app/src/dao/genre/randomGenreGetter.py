@@ -15,10 +15,7 @@ class RandomGenreGetter(AbstractDaoGetter):
         rows = self._executeRequest(numberOfElements)
         for row in rows:
             genre = MainPageGenre()
-            genre.id = row[0]
-            genre.name = row[1]
-            genre.description = row[2]
-            genre.description = row[3]  # TODO trouver le bon path des picture d'alb (constant?)
+            genre.buildFromRandomGenreDao(row)
             genres.append(genre)
         return genres
 
@@ -30,7 +27,7 @@ class RandomGenreGetter(AbstractDaoGetter):
 
     def _generateRequest(self):
         return '''
-            SELECT id, name, description, picture FROM app_genre
+            SELECT id, name, description FROM app_genre
             OFFSET floor(random() * ( SELECT count(1) FROM app_genre))
             LIMIT %s
         '''

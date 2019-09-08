@@ -16,6 +16,7 @@ class MainPageAlbum(object):
         self.title = sqlRow[1]
         self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[2]
 
+    ## Initialise the album object with data returned from the orm.
     def buildFromOrmAlbum(self, album):
         self.id = album.id
         self.title = album.title

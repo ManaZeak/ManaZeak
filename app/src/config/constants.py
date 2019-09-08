@@ -6,3 +6,5 @@ class Constants(object):
     ARTIST_PICTURE_LOCATION = 'static/pictures/ArtistsProfile/'
     ## Album cover root location
     ALBUM_COVER_LOCATION = 'static/covers/'
+    ## Genre cover root location
+    GENRE_COVER_LOCATION = 'static/pictures/GenresLogo/'
