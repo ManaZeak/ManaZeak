@@ -17,9 +17,7 @@ class RandomAlbumGetter(AbstractDaoGetter):
         rows = self._executeRequest(numberOfElements)
         for row in rows:
             album = MainPageAlbum()
-            album.id = row[0]
-            album.title = row[1]
-            album.picture = self.picturePath + row[2]  # TODO trouver le bon path des picture d'alb (constant?)
+
             albums.append(album)
         return albums
 
