@@ -1,6 +1,5 @@
-import png
-
 from math import ceil
+import png
 
 
 class ColorExtractor(object):

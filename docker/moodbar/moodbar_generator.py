@@ -25,9 +25,7 @@ def generate_moodbar(file):
 def list_songs(path):
     for root, dirs, files in os.walk(path):
         for name in files:
-            if name.endswith('mp3'):
-                yield join(root, name)
-            elif name.endswith('flac'):
+            if name.endswith('mp3') or name.endswith('flac'):
                 yield join(root, name)
 
 

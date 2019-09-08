@@ -24,11 +24,11 @@ class PlaybackService(object):
         result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting a random track from the database.
-        track_id = PlaybackHelper.getRandomTrack(result['PLAYLIST_ID'])
-        if track_id is None:
+        trackId = PlaybackHelper.getRandomTrack(result['PLAYLIST_ID'])
+        if trackId is None:
             raise UserException(ErrorEnum.DB_ERROR, user)
         return {
-            'TRACK_ID': track_id,
+            'TRACK_ID': trackId,
         }
 
     @staticmethod

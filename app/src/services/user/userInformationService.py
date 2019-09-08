@@ -1,18 +1,13 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
 from app.models import Permissions
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.utils.decorators import FrontRequest
-from app.src.utils.errors.errorHandler import ErrorHandler
-from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
-
 from app.src.utils.requestMethodEnum import RequestMethodEnum
-
 from app.src.utils.userSettingsManager import UserSettingsManager
 
 logger = logging.getLogger('django')

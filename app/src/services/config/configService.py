@@ -20,7 +20,7 @@ class ConfigService(object):
     def isInviteCodeEnabled(request):
         try:
             # Checking the request
-            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+            FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
             # Getting the configuration
             conf = ApplicationConfigurationManager.getApplicationConfiguration()
             data = {
@@ -32,7 +32,7 @@ class ConfigService(object):
             )
         except UserException as e:
             # Handle the errors and send the response to the front.
-            return ErrorHandler.generateJsonResponseFromException(e, ConfigService.isInviteCodeEnabled, None)
+            return ErrorHandler.generateJsonResponseFromException(e, ConfigService.isInviteCodeEnabled)
 
     @staticmethod
     ## Return the number of tracks returned by the lazy loading.

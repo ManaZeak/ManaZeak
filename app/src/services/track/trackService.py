@@ -1,8 +1,9 @@
 import logging
 
+from urllib.parse import quote
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from urllib.parse import quote
 
 from app.models import Track
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum

@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from app.src.services.track.trackService import TrackService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
@@ -9,7 +8,6 @@ from app.src.views.genericViews import GenericViews
 from app.src.views.signupView import SignupView
 
 ## The name of the app linked to the urls
-
 app_name = 'app'
 
 ## The different pattern of the urls of the application.

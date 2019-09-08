@@ -95,7 +95,7 @@ class LibraryService(object):
             # Rollback the previous operation done before
             LibraryHelper.abortLibraryInitialScan(library, e)
             # Handle the errors and send the result to the front
-            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.initialScan, user)
+            return ErrorHandler.generateJsonResponseFromException(e, LibraryService.initialScan)
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
