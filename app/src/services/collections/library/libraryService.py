@@ -50,10 +50,7 @@ class LibraryService(object):
         # Saving the library into the database and getting its info
         data = LibraryHelper.createAndSaveLibraryFromRequest(response, user)
         loggerDjango.info('Created the library : ' + strip_tags(response['NAME']))
-        # Returning a standard response to the front with the library info
-        return JsonResponse(
-            {**data, **ErrorHandler.createStandardStateMessage(True)}
-        )
+        return data
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
