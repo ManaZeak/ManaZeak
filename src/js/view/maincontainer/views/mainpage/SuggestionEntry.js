@@ -46,7 +46,7 @@ class SuggestionEntry {
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
 
       if (this._entry.GENRE_LOGO !== null) {
-        this._dom.img.src = this._entry.GENRE_IMAGE;
+        this._dom.img.src = this._entry.GENRE_LOGO;
       } else {
         this._dom.img.src = 'static/img/tag/genre.svg';
       }
