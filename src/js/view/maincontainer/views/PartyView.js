@@ -45,7 +45,6 @@ class PartyView extends SceneView {
 
   _fillAlbumInternals() {
     return new Promise(resolve => {
-      console.log(this._dom.tracklistContainer)
       // TODO receive from JSON and build entries
       for (let i = 0; i < this._dom.tracklistContainer.children.length; ++i) {
         if (this._dom.tracklistContainer.children[i].classList.contains('pv-playing')) {

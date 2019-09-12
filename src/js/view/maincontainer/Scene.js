@@ -61,7 +61,7 @@ class Scene {
    * @param {object} node - The DOM node to append to the scene
    * @param {boolean} isGlobal - Does view needs to be appended to the document or to the scene
    **/
-  addView(node, isGlobal = false) {
+  addView(node, isGlobal = this._isFullScreenView) {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(node);
 
