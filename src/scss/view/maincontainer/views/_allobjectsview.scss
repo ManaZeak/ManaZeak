@@ -8,19 +8,40 @@
 
     h1 {
       border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
-      font-size: 2.2rem;
-      line-height: 2.2rem;
-      margin-bottom: 2.2rem;
+      color: $mzk-color-text-light;
+      font-size: 2.6rem;
+      line-height: 2.6rem;
+      margin-bottom: 2.6rem;
       padding: $mzk-padding $mzk-padding $mzk-padding ($mzk-padding * 2);
     }
 
-    div {
-      margin-bottom: ($mzk-margin * 3);
+    .allart-letter-artists {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: ($mzk-margin * 5); // Leave room for tooltip
 
-      img {
-        cursor: pointer;
-        padding: ($mzk-margin / 2);
-        width: 80px;
+      transition: background-color $mzk-animation-duration ease-out,
+                  border-radius $mzk-animation-duration ease,
+                  box-shadow $mzk-animation-duration ease-in;
+
+      div {
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 0 0 0 transparent;
+
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: $mzk-color-primary-alpha-10;
+          border-radius: $mzk-border-radius;
+          box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
+        }
+
+        img {
+          cursor: pointer;
+          padding: ($mzk-margin / 2);
+          width: 80px;
+        }
       }
     }
   }

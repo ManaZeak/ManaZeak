@@ -79,11 +79,18 @@ class AllArtistsView {
         letter.innerHTML = keys[i].toUpperCase();
 
         const letterArtistsWrapper = document.createElement('DIV');
+        letterArtistsWrapper.classList.add('allart-letter-artists');
         for (let j = 0; j < this._letterGroups[keys[i]].length; ++j) {
+          const imgContainer = document.createElement('DIV');
           const artistImg = document.createElement('IMG');
+
           artistImg.src = this._letterGroups[keys[i]][j].ARTIST_PP;
-          artistImg.dataset.id = this._letterGroups[keys[i]][j].ARTIST_ID;
-          letterArtistsWrapper.appendChild(artistImg);
+          imgContainer.classList.add('tooltip-bottom');
+          imgContainer.dataset.tooltip = this._letterGroups[keys[i]][j].ARTIST_NAME;
+          imgContainer.dataset.id = this._letterGroups[keys[i]][j].ARTIST_ID;
+
+          imgContainer.appendChild(artistImg);
+          letterArtistsWrapper.appendChild(imgContainer);
         }
 
         container.appendChild(letter);
