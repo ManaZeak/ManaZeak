@@ -20,7 +20,7 @@ class SingleGenreView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/singleGenre/')
+      mzk.komunikator.getTemplate('view/single/genre/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');

@@ -20,7 +20,7 @@ class SingleAlbumView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/singleAlbum/')
+      mzk.komunikator.getTemplate('view/single/album/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');

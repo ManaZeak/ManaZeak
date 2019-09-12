@@ -21,7 +21,7 @@ class SingleArtistView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/singleArtist/')
+      mzk.komunikator.getTemplate('view/single/artist/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');

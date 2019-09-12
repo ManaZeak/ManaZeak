@@ -16,7 +16,7 @@ class AllArtistsView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/allArtists/')
+      mzk.komunikator.getTemplate('view/all/artist/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');

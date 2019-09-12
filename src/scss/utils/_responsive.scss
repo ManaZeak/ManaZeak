@@ -6,23 +6,36 @@
   #volumebar-wrapper {
     display: none !important;
   }
-
-  #topbar {
-    img#topbar-logo {
-      left: 10px !important;
-    }
-  }
-
+  
   #scene {
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
+    padding: 0;
+
+    #scene-commands {
+      right: $mzk-margin;
+    }
 
     #scene-view-option {
       display: none !important;
     }
 
+    #scene-manipulation {
+      left: $mzk-margin;
+      height: $margin-offset + ($main-container-icon-margin * 2);
+      bottom: inherit;
+      right: inherit;
+      top: 0;
+      display: flex;
+      align-items: center;
+      width: auto;
+
+      img {
+        margin: 0 ($mzk-margin / 2);
+      }
+    }
+
     .albumview {
+      padding-top: $margin-offset + ($main-container-icon-margin * 2);
+
       .genre-badges {
         text-align: center;
       }
@@ -41,9 +54,7 @@
   }
 
   .shuffle-left {
-    left: 0 !important;
-    bottom: -25px;
-    z-index: -1;
+    left: $footbar-icons-size !important;
   }
 
   .artist {
@@ -93,6 +104,8 @@
   }
 
   .listview {
+    padding-top: $margin-offset + ($main-container-icon-margin * 2);
+
     .header {
       display: none;
     }
@@ -100,6 +113,55 @@
     .track-container {
       height: inherit !important;
     }
+  }
+
+  .main-page {
+    display: block;
+
+    .mp-collection {
+      border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+      border-right: none;
+      height: 20%;
+      margin: 0;
+      padding-top: 10px;
+      width: 100%;
+
+      .mp-collection-group {
+        margin-bottom: 0;
+        margin-left: 10px;
+
+        ul {
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .mp-suggestion {
+      height: 80%;
+      width: 100%;
+
+      .mp-suggestion-group {
+        margin: 0;
+        padding-top: ($mzk-padding * 2);
+
+        .mp-suggestion-item-container {
+          padding: 10px 10px 10px 0;
+        }
+
+        .mp-suggestion-item {
+          width: 140px;
+
+          img {
+            height: 130px;
+            width: 130px;
+          }
+        }
+      }
+    }
+  }
+
+  .context-transparent-overlay .change-view-context {
+    right: $mzk-margin + 8px; // ::before element
   }
 }
 

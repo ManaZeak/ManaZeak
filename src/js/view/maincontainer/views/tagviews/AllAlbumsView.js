@@ -16,7 +16,7 @@ class AllAlbumsView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/allAlbums/')
+      mzk.komunikator.getTemplate('view/all/album/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');

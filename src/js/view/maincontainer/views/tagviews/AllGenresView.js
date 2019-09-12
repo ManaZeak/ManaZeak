@@ -16,7 +16,7 @@ class AllGenresView {
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/tag/allGenres/')
+      mzk.komunikator.getTemplate('view/all/genre/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');
