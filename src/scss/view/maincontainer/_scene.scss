@@ -1,6 +1,7 @@
 @import './views/librarypage'; // Loading library viewing rules
 @import './views/mainpage';
 @import './views/partyview';
+@import './views/allobjectsview';
 
 $scene-transition: ($transition-duration * 4);
 $margin-offset: 25px; // Offset to match arrow icons size in main container

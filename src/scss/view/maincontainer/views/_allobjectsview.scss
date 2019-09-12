@@ -1,0 +1,27 @@
+.all-artists-page {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  .allart-letter-container {
+    height: auto;
+
+    h1 {
+      border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+      font-size: 2.2rem;
+      line-height: 2.2rem;
+      margin-bottom: 2.2rem;
+      padding: $mzk-padding $mzk-padding $mzk-padding ($mzk-padding * 2);
+    }
+
+    div {
+      margin-bottom: ($mzk-margin * 3);
+
+      img {
+        cursor: pointer;
+        padding: ($mzk-margin / 2);
+        width: 80px;
+      }
+    }
+  }
+}
