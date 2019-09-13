@@ -1,5 +1,6 @@
 import CollectionEntry from "./CollectionEntry";
 import ScrollBar from "../../../utils/ScrollBar";
+import DiscoverEntry from "./DiscoverEntry";
 'use strict';
 
 
@@ -34,19 +35,27 @@ class CollectionGroup {
 
     this._dom.toggleImage = document.createElement('IMG');
     this._dom.toggleImage.src = 'static/img/navigation/collapse.svg';
-    this._dom.title.innerHTML = this._label;
+    this._dom.title.innerHTML = this._label; // TODO replace with nls
 
     this._dom.toggle.appendChild(this._dom.toggleImage);
     this._dom.title.appendChild(this._dom.toggle);
 
     this._dom.elements = document.createElement('UL');
-    for (let i = 0; i < this._items.length; ++i) {
-      const element = new CollectionEntry({
-        entry: this._items[i]
-      });
 
-      this._entries.push(element);
-      this._dom.elements.appendChild(element.dom);
+    if (this._label === 'PlaybackModes') {
+      const partyView = new DiscoverEntry({
+        type: 'PartyView'
+      });
+      this._dom.elements.appendChild(partyView.dom);
+    } else {
+      for (let i = 0; i < this._items.length; ++i) {
+        const element = new CollectionEntry({
+          entry: this._items[i]
+        });
+
+        this._entries.push(element);
+        this._dom.elements.appendChild(element.dom);
+      }
     }
 
     this._dom.container.appendChild(this._dom.title);

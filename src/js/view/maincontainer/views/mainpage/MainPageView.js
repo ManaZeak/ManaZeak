@@ -15,14 +15,12 @@ class MainPageView extends SceneView {
     this._dom = {
       wrapper: null,
       collection: null,
-      suggestion: null,
-      discover: null
+      suggestion: null
     };
 
     this._fetchWrapper()
       .then(this._fillCollection.bind(this))
       .then(this._fillSuggestion.bind(this))
-      .then(this._fillDiscover.bind(this))
       .then(this._mainPageReady);
   }
 
@@ -62,8 +60,13 @@ class MainPageView extends SceneView {
               label: 'Playlists',
               items: response.PLAYLIST
             });
-            this._dom.collection.appendChild(libraries.dom);
           }
+
+          const playbackModes = new CollectionGroup({
+            label: 'PlaybackModes'
+          });
+
+          this._dom.collection.appendChild(playbackModes.dom);
 
           new ScrollBar({
             target: this._dom.collection
@@ -78,7 +81,7 @@ class MainPageView extends SceneView {
   _fillSuggestion() {
     return new Promise(resolve => {
       const options = {
-        NUMBER_OF_ELEMENT: 6
+        NUMBER_OF_ELEMENT: 9
       };
 
       mzk.komunikator.post('view/mainPage/roll/', options)
@@ -116,18 +119,6 @@ class MainPageView extends SceneView {
           this._dom.suggestion = this._dom.suggestion.firstElementChild.firstElementChild;
           resolve();
         });
-    });
-  }
-
-
-  _fillDiscover() {
-    return new Promise(resolve => {
-      const discoverEntry = new DiscoverEntry({
-        type: 'PartyView'
-      });
-      this._dom.discover.appendChild(discoverEntry.dom);
-
-      resolve();
     });
   }
 

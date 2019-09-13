@@ -16,18 +16,23 @@ class DiscoverEntry {
 
 
   _init() {
-    this._dom.container = document.createElement('DIV');
+    this._dom.container = document.createElement('LI');
     this._dom.img = document.createElement('IMG');
-    this._dom.title = document.createElement('H2');
+    this._dom.title = document.createElement('P');
+    this._dom.desc = document.createElement('P');
+    this._dom.title = document.createElement('P');
 
-    this._dom.container.classList.add('mp-discover-item');
+    this._dom.title.classList.add('mp-collection-title');
+
     if (this._type === 'PartyView') {
       this._dom.img.src = 'static/img/actions/party.svg';
       this._dom.title.innerHTML = this._type; // TODO handle nls here from type value
+      this._dom.desc.innerHTML = 'Enjoy random albums fullscreen, perfect for background use'; // TODO handle nls
     }
 
     this._dom.container.appendChild(this._dom.img);
     this._dom.container.appendChild(this._dom.title);
+    this._dom.container.appendChild(this._dom.desc);
   }
 
 

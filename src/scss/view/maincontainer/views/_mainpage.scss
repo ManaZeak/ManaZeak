@@ -97,7 +97,7 @@
 
 .mp-suggestion {
   height: 100%;
-  width: calc(100% - (2 * #{$mzk-mp-aside-width}));
+  width: calc(100% - #{$mzk-mp-aside-width});
 
   .mp-suggestion-group {
     min-height: calc(100% / 3);
@@ -171,50 +171,6 @@
           text-align: center;
         }
       }
-    }
-  }
-}
-
-/* Discover land */
-
-.mp-discover {
-  align-items: center;
-  border-left: solid $mzk-border-width $mzk-color-icons;
-  display: flex;
-  height: 100%;
-  width: $mzk-mp-aside-width;
-
-  .mp-discover-item {
-    background-color: transparent;
-    border-radius: 0;
-    box-shadow: 0 0 0 0 transparent;
-    cursor: pointer;
-    display: grid;
-    grid-template-areas: "img title" "img desc";
-    margin: 20px;
-    padding: 10px;
-
-    transition: background-color $mzk-animation-duration ease-out,
-                border-radius $mzk-animation-duration ease,
-                box-shadow $mzk-animation-duration ease-in;
-
-    img {
-      height: 33px;
-      grid-area: img;
-      width: 33px;
-    }
-
-    h2 {
-      line-height: 33px;
-      padding: 0 $mzk-padding;
-    }
-
-    &:active,
-    &:focus,
-    &:hover {
-      background-color: $mzk-color-primary-alpha-10;
-      border-radius: $mzk-border-radius;
-      box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
     }
   }
 }

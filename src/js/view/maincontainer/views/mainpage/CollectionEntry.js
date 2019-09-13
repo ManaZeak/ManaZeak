@@ -25,8 +25,6 @@ class CollectionEntry {
     this._dom.duration = document.createElement('P');
 
     this._dom.container.dataset.id = this._entry.ID;
-
-    //this._dom.image.src = this._entry.img;
     this._dom.image.src = this._entry.IMG || 'static/img/logo/manazeak-logo-square.svg';
     this._dom.title.innerHTML = this._entry.NAME;
     this._dom.title.classList.add('mp-collection-title');
