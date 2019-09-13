@@ -78,7 +78,7 @@ class GenericViews(object):
     def getLibraryPage(request):
         return render(request, 'views/libraryPage.html')
 
-    # New url to process
+    # TODO New url to process
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleArtistPage(request):
