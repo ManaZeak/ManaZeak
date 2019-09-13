@@ -10,10 +10,6 @@ class AllGenresView extends AllTagsView {
       type: 'genre'
     });
 
-    this._dom = {
-      wrapper: null
-    };
-
     this._init()
       .then(this._processAllGenres.bind(this))
       .then(this._viewReady.bind(this));

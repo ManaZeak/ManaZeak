@@ -11,11 +11,61 @@
       color: $mzk-color-text-light;
       font-size: 2.6rem;
       line-height: 2.6rem;
-      margin: 0 85% 2.6rem calc(2.6rem / 2);
+      margin: 0 75% 2.6rem calc(2.6rem / 2);
       padding: ($mzk-padding * 2);
     }
 
     .allart-letter-artists {
+      display: flex;
+      flex-wrap: wrap;
+      margin: ($mzk-margin * 5); // Leave room for tooltip
+
+      transition: background-color $mzk-animation-duration ease-out,
+                  border-radius $mzk-animation-duration ease,
+                  box-shadow $mzk-animation-duration ease-in;
+
+      div {
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 0 0 0 transparent;
+
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: $mzk-color-primary-alpha-10;
+          border-radius: $mzk-border-radius;
+          box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
+        }
+
+        img {
+          cursor: pointer;
+          padding: ($mzk-margin / 2);
+          width: 80px;
+        }
+      }
+    }
+  }
+}
+
+
+.all-albums-page {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  .allalb-year-container {
+    height: auto;
+
+    h1 {
+      border-bottom: solid ($mzk-border-width * 2) $mzk-color-text-light;
+      color: $mzk-color-text-light;
+      font-size: 2.6rem;
+      line-height: 2.6rem;
+      margin: 0 75% 2.6rem calc(2.6rem / 2);
+      padding: ($mzk-padding * 2);
+    }
+
+    .allalb-year-albums {
       display: flex;
       flex-wrap: wrap;
       margin: ($mzk-margin * 5); // Leave room for tooltip

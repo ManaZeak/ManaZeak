@@ -8,6 +8,7 @@ class MainPageAlbum(object):
     def __init__(self):
         self.id = None
         self.title = None
+        self.year = None # TODO j'ai rajouté year un peu au blair, à toi de voir si c'est clair
         self.picture = None
 
     ## Initialise the album object with data returned from the database.
@@ -20,6 +21,7 @@ class MainPageAlbum(object):
     def buildFromOrmAlbum(self, album):
         self.id = album.id
         self.title = album.title
+        self.year = album.year
         self.picture = Constants.ALBUM_COVER_LOCATION + album.track_set.first().cover.location
 
     ## Generate a json object from an object.
@@ -27,6 +29,7 @@ class MainPageAlbum(object):
         return {
             'ALBUM_ID': self.id,
             'ALBUM_TITLE': self.title,
+            'ALBUM_YEAR': self.year,
             'ALBUM_COVER': self.picture,
             'STATS': None,
         }
