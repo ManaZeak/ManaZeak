@@ -1,13 +1,13 @@
 import ListView from './views/library/ListView.js';
 import AlbumView from './views/library/AlbumView.js';
-import MainPageView from './views/MainPageView.js';
-import PartyView from './views/PartyView.js';
-import SingleArtistView from './views/tagviews/SingleArtistView.js';
-import SingleAlbumView from './views/tagviews/SingleAlbumView.js';
-import SingleGenreView from './views/tagviews/SingleGenreView.js';
-import AllArtistsView from './views/tagviews/AllArtistsView.js';
-import AllAlbumsView from './views/tagviews/AllAlbumsView.js';
-import AllGenresView from './views/tagviews/AllGenresView.js';
+import MainPageView from './views/mainpage/MainPageView.js';
+import PartyView from './views/party/PartyView.js';
+import SingleArtistView from './views/tag/SingleArtistView.js';
+import SingleAlbumView from './views/tag/SingleAlbumView.js';
+import SingleGenreView from './views/tag/SingleGenreView.js';
+import AllArtistsView from './views/tag/all/AllArtistsView.js';
+import AllAlbumsView from './views/tag/all/AllAlbumsView.js';
+import AllGenresView from './views/tag/all/AllGenresView.js';
 'use strict';
 
 

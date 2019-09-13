@@ -1,5 +1,5 @@
-import SceneView from "../SceneView";
-import ScrollBar from "../../utils/ScrollBar";
+import SceneView from "../../SceneView";
+import ScrollBar from "../../../utils/ScrollBar";
 
 
 class PartyView extends SceneView {

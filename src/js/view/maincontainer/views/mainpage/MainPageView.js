@@ -1,8 +1,8 @@
-import SceneView from '../SceneView';
-import CollectionGroup from "./mainpage/CollectionGroup";
-import SuggestionGroup from "./mainpage/SuggestionGroup";
-import ScrollBar from "../../utils/ScrollBar";
-import DiscoverEntry from "./mainpage/DiscoverEntry";
+import SceneView from '../../SceneView';
+import CollectionGroup from "./CollectionGroup";
+import SuggestionGroup from "./SuggestionGroup";
+import ScrollBar from "../../../utils/ScrollBar";
+import DiscoverEntry from "./DiscoverEntry";
 'use strict';
 
 

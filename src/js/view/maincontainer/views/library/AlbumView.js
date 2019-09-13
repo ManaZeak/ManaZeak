@@ -1,4 +1,4 @@
-import LibraryViews from '../LibraryViews';
+import LibraryViews from './LibraryViews';
 import TrackContext from '../../../utils/contexts/TrackContext.js';
 import AlbumViewEntry from "./AlbumViewEntry";
 import ScrollBar from "../../../utils/ScrollBar";

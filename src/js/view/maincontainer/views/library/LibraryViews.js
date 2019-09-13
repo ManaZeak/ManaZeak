@@ -1,5 +1,5 @@
-import SceneView from '../SceneView';
-import ViewSwitcherContext from "../../utils/contexts/ViewSwitcherContext";
+import SceneView from '../../SceneView';
+import ViewSwitcherContext from "../../../utils/contexts/ViewSwitcherContext";
 'use strict';
 
 class LibraryViews extends SceneView {
