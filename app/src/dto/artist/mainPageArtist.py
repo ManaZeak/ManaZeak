@@ -38,7 +38,16 @@ class MainPageArtist(object):
     ## Generate the path of the artist picture and checks if it exists.
     #   @return the path if it exists.
     def _generatePicturePath(self):
-        imagePath = Constants.ARTIST_PICTURE_LOCATION + self.name + '.jpg'
+        # TODO à bouger dans une class utils je pense (same pour genre)
+        sanitizedName = ''
+        forbiddenChars = ['*', '/', '\\', ':', ';', '?', '<', '>', '\"', '|', '\'']
+        for x in range(0, len(self.name)):
+            if self.name[x] in forbiddenChars:
+                sanitizedName += '-'
+            else:
+                sanitizedName += self.name[x]
+
+        imagePath = Constants.ARTIST_PICTURE_LOCATION + sanitizedName + '.jpg'  # TODO j'ai add l'ext mais ça serait mieux d'etre géré avec le mimetype
         if not path.exists('/' + imagePath):
             return None
         else:

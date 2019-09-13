@@ -27,7 +27,7 @@ class SuggestionEntry {
       this._dom.container.dataset.id = this._entry.ARTIST_ID;
       this._dom.name.innerHTML = this._entry.ARTIST_NAME;
 
-      if (this._entry.ARTIST_PP !== null && this._entry.ARTIST_PP !== undefined) {
+      if (this._entry.ARTIST_PP !== null) {
         this._dom.img.src = this._entry.ARTIST_PP;
       } else {
         this._dom.img.src = 'static/img/tag/artist.svg';
@@ -36,7 +36,7 @@ class SuggestionEntry {
       this._dom.container.dataset.id = this._entry.ALBUM_ID;
       this._dom.name.innerHTML = this._entry.ALBUM_TITLE;
 
-      if (this._entry.ALBUM_COVER !== null && this._entry.ALBUM_COVER !== undefined) {
+      if (this._entry.ALBUM_COVER !== null) {
         this._dom.img.src = this._entry.ALBUM_COVER;
       } else {
         this._dom.img.src = 'static/img/tag/album.svg';
@@ -44,8 +44,7 @@ class SuggestionEntry {
     } else if (this._groupType === 'Genres') {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
-
-      if (this._entry.GENRE_LOGO !== null && this._entry.GENRE_LOGO !== undefined) {
+      if (this._entry.GENRE_LOGO !== null) {
         this._dom.img.src = this._entry.GENRE_LOGO;
       } else {
         this._dom.img.src = 'static/img/tag/genre.svg';

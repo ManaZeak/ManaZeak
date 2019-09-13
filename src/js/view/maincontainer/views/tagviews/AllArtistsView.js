@@ -60,7 +60,7 @@ class AllArtistsView {
           if (alphaNumericalGroup.length > 0) {
             this._letterGroups['0-9'] = alphaNumericalGroup;
           }
-
+          // Resolve promise to build UI
           resolve();
         });
     });
@@ -70,7 +70,7 @@ class AllArtistsView {
   _fillAllArtists() {
     return new Promise((resolve, reject) => {
       const keys = Object.keys(this._letterGroups);
-
+      // Iterate over letter groups object
       for (let i = 0; i < keys.length; ++i) {
         const container = document.createElement('DIV');
         const letter = document.createElement('H1');
@@ -84,10 +84,26 @@ class AllArtistsView {
           const imgContainer = document.createElement('DIV');
           const artistImg = document.createElement('IMG');
 
-          artistImg.src = this._letterGroups[keys[i]][j].ARTIST_PP;
           imgContainer.classList.add('tooltip-bottom');
           imgContainer.dataset.tooltip = this._letterGroups[keys[i]][j].ARTIST_NAME;
           imgContainer.dataset.id = this._letterGroups[keys[i]][j].ARTIST_ID;
+
+          if (this._letterGroups[keys[i]][j].ARTIST_PP !== null) {
+            artistImg.src = this._letterGroups[keys[i]][j].ARTIST_PP;
+          } else {
+            artistImg.src = 'static/img/tag/artist.svg';
+          }
+
+          imgContainer.addEventListener('click', () => {
+            mzk.ui.setSceneView({
+              name: 'SingleArtist',
+              artist: {
+                id: this._letterGroups[keys[i]][j].ARTIST_ID,
+                name: this._letterGroups[keys[i]][j].ARTIST_NAME,
+                pp: this._letterGroups[keys[i]][j].ARTIST_PP
+              }
+            });
+          }, false);
 
           imgContainer.appendChild(artistImg);
           letterArtistsWrapper.appendChild(imgContainer);
