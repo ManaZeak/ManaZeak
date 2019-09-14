@@ -127,6 +127,7 @@
     }
 
     .mp-suggestion-item-container {
+      align-items: flex-start;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
