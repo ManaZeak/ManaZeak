@@ -185,16 +185,22 @@ class Scene {
     };
 
     if (playlist.activeView === 'ListView') {
-      options.viewLabel = 'List';
+      options.viewLabel = 'ListView';
       this.view = new ListView(options);
     }
 
     else if (playlist.activeView === 'AlbumView') {
-      options.viewLabel = 'Artists';
+      options.viewLabel = 'DetailsView';
       this.view = new AlbumView(options);
     }
-
-    this._registerViewReady();
+    // For Library view, we must register a custom resolution for SceneViewReady
+    Events.register({
+      name: 'SceneViewReady',
+      oneShot: true
+    }, () => {
+      this.addView(this.view.dom);
+      this.view.refreshView(); // Mainly tu update ListView column header
+    });
   }
 
 

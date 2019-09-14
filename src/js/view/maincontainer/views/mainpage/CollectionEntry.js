@@ -29,7 +29,7 @@ class CollectionEntry {
     this._dom.title.innerHTML = this._entry.NAME;
     this._dom.title.classList.add('mp-collection-title');
     //this._dom.stats.innerHTML = `${this._entry.stats.tracks} tracks, ${this._entry.stats.albums} albums, ${this._entry.stats.artists} artists`;
-    this._dom.stats.innerHTML = `${this._entry.TOTAL_TRACK} tracks`;
+    this._dom.stats.innerHTML = `${this._entry.TOTAL_TRACK} ${mzk.lang.playlist.tracks}`;
     this._dom.duration.innerHTML = Utils.secondsToTimecode(this._entry.TOTAL_DURATION);
 
     this._dom.container.appendChild(this._dom.image);

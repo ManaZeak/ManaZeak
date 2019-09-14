@@ -19,6 +19,11 @@ class TrackContext extends ContextMenu {
       download: {},
       queue: {}
     };
+
+    this._text = {
+      download: {},
+      queue: {}
+    };
   }
 
 
@@ -67,6 +72,9 @@ class TrackContext extends ContextMenu {
     this._commands.download = doc.getElementsByClassName('download')[0];
     this._commands.queue = doc.getElementsByClassName('add-to-queue')[0];
 
+    this._text.download = doc.getElementsByClassName('track-download')[0];
+    this._text.queue = doc.getElementsByClassName('track-queue')[0];
+
     this._commands.controls.previous.addEventListener('click', this._previous.bind(this), false);
     this._commands.controls.playPause.addEventListener('click', this._togglePlay.bind(this), false);
     this._commands.controls.stop.addEventListener('click', this._stop.bind(this), false);
@@ -97,6 +105,9 @@ class TrackContext extends ContextMenu {
     if (event.clientY + (Object.keys(this._commands).length * 30) + 80 > document.body.clientHeight) {
       pos.y -= (Object.keys(this._commands).length * 30);
     }
+
+    this._text.download.innerHTML = mzk.lang.context.track.download;
+    this._text.queue.innerHTML = mzk.lang.context.track.queue;
 
     this._dom.style.left = `${pos.x}px`;
     this._dom.style.top = `${pos.y}px`;

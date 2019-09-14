@@ -13,11 +13,18 @@ class UserMenuContext extends ContextMenu {
    **/
   constructor(options) {
     super(options);
+
+    this._logOut = null;
+    this._logOutText = null;
   }
 
 
   setActions(doc) {
     this._logOut = doc.getElementsByClassName('log-out')[0];
+    this._logOutText = doc.getElementsByClassName('log-out-text')[0];
+
+    this._logOutText.innerHTML = mzk.lang.user.logout;
+
     this._logOut.addEventListener('click', () => {
       mzk.logOut();
     }, true);

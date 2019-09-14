@@ -64,8 +64,8 @@ class ListView extends LibraryViews {
           url: 'contexts/trackcontext/'
         });
 
-        this._listViewEvents();
         this._initHeader();
+        this._listViewEvents();
         this.addTracks(this._playlist.artists);
         Events.fire('SceneViewReady');
       });
@@ -120,7 +120,7 @@ class ListView extends LibraryViews {
 
       column.classList.add(this._columns[i].name.toLowerCase());
       column.setAttribute('draggable', 'true');
-      column.innerHTML = this._columns[i].name;
+      column.innerHTML = mzk.lang.listview[this._columns[i].name.toLowerCase()];
       column.dataset.id = i;
 
       stretch.classList.add('listview-stretch-button');
@@ -293,7 +293,7 @@ class ListView extends LibraryViews {
       const column = this._dom.header.childNodes[i];
       column.style = ''; // Remove old remaining width style value
       column.className = this._columns[i].name.toLowerCase();
-      column.childNodes[0].nodeValue = this._columns[i].name; // Don't innerHTML to avoid remove of stretch and resize handles. childNodes[0] is #text node
+      column.childNodes[0].nodeValue = mzk.lang.listview[this._columns[i].name.toLowerCase()]; // Don't innerHTML to avoid remove of stretch and resize handles. childNodes[0] is #text node
       column.dataset.id = i;
     }
   }
@@ -562,7 +562,7 @@ class ListView extends LibraryViews {
       const input = document.createElement('INPUT');
 
       input.id = 'context-' + this._availableColumns[i].name;
-      text.innerHTML = this._availableColumns[i].name;
+      text.innerHTML = mzk.lang.listview[this._availableColumns[i].name.toLowerCase()];
       text.setAttribute('for', `context-${this._availableColumns[i].name}`);
       input.setAttribute('type', 'checkbox');
 
@@ -599,7 +599,7 @@ class ListView extends LibraryViews {
     context.appendChild(checkBoxes);
 
     const stretchAll = document.createElement('BUTTON');
-    stretchAll.innerHTML = 'Stretch All Columns';
+    stretchAll.innerHTML = mzk.lang.listview.stretchall;
     context.appendChild(stretchAll);
 
     stretchAll.addEventListener('click', (event) => {

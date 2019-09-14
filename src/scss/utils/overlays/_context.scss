@@ -1,11 +1,11 @@
 .user-menu {
   position: absolute;
-  right: $margin;
-  top: $topbar-height + 8px;
+  right: $mzk-padding;
+  top: ($topbar-height + $mzk-margin);
   width: auto;
   height: auto;
-  padding: 0 $margin;
-  border-radius: 5px;
+  padding: 0 $padding;
+  border-radius: $mzk-border-radius;
   background: $mzk-color-bg-dark;
   z-index: 999;
 
@@ -100,17 +100,16 @@
   justify-content: center;
   flex-direction: column;
 
-  hr {
-    height: 1px;
-    color: $mzk-color-bg-light;
-  }
-
   .entry {
     height: 30px; // Match value in TrackContext.js if modified here
     display: flex;
     align-items: center;
     cursor: pointer;
     padding: 0 5px;
+
+    &:first-child {
+      border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+    }
 
     img {
       height: 20px;
@@ -348,7 +347,7 @@
 .scene-options {
   background: $mzk-color-bg-dark;
   border: solid 1px black;
-  border-radius: 5px;
+  border-radius: $mzk-border-radius;
   bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
   height: auto;
   position: absolute;
@@ -370,7 +369,7 @@
   button {
     background: rgba(0, 0, 0, 1);
     border: solid 1px black;
-    border-radius: 20px;
+    border-radius: $mzk-border-radius;
     height: auto;
     width: auto;
     display: block;

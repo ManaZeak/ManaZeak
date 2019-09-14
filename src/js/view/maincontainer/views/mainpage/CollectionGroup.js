@@ -35,7 +35,7 @@ class CollectionGroup {
 
     this._dom.toggleImage = document.createElement('IMG');
     this._dom.toggleImage.src = 'static/img/navigation/collapse.svg';
-    this._dom.title.innerHTML = this._label; // TODO replace with nls
+    this._dom.title.innerHTML = mzk.lang.mainpage.collection[this._label];
 
     this._dom.toggle.appendChild(this._dom.toggleImage);
     this._dom.title.appendChild(this._dom.toggle);

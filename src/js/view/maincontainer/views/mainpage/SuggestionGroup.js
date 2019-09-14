@@ -42,8 +42,8 @@ class SuggestionGroup {
       this._dom.itemsContainer.appendChild(element.dom);
     }
 
-    this._dom.title.innerHTML = this._label;
-    this._dom.seeMore.innerHTML = 'see more';
+    this._dom.title.innerHTML = mzk.lang.playlist[this._label.toLowerCase()];
+    this._dom.seeMore.innerHTML = mzk.lang.mainpage.suggestion.seemore;
 
     this._dom.title.appendChild(this._dom.seeMore);
 

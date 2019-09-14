@@ -73,9 +73,11 @@ class LibraryViews extends SceneView {
       if (pref === true) {
         mzk.user.setPreference(prefName, false);
         this._lockCenternOn.src = '/static/img/actions/lock-off.svg';
+        this._lockCenternOn.parentNode.dataset.tooltip = mzk.lang.libraryview.lockcenter.off;
       } else {
         mzk.user.setPreference(prefName, true);
         this._lockCenternOn.src = '/static/img/actions/lock-on.svg';
+        this._lockCenternOn.parentNode.dataset.tooltip = mzk.lang.libraryview.lockcenter.on;
       }
     });
 
@@ -85,9 +87,11 @@ class LibraryViews extends SceneView {
       });
     });
 
-    this._optionButton.addEventListener('click', () => {
-      this._optionClicked();
-    });
+    if (this._activeViewLabel === 'ListView') {
+      this._optionButton.addEventListener('click', () => {
+        this._optionClicked();
+      });
+    }
   }
 
 
@@ -107,8 +111,14 @@ class LibraryViews extends SceneView {
           this._lockCenternOn = doc.getElementById('lock-center-on-track');
           this._centerOnBottom = doc.getElementById('center-on-bottom');
 
+          this._setLangFeedback();
+
           this._activeView = this._sceneCommands.childNodes[1];
-          this._activeView.innerHTML = this._activeViewLabel;
+          this._activeView.innerHTML = mzk.lang.libraryview[this._activeViewLabel];
+
+          if (this._activeViewLabel === 'DetailsView') {
+            this._optionButton.style.display = 'none';
+          }
 
           fragment.appendChild(this._optionButton);
           fragment.appendChild(this._sceneCommands);
@@ -123,7 +133,27 @@ class LibraryViews extends SceneView {
   }
 
 
-_simpleClick(index) {
+  _setLangFeedback() {
+    this._centerOnTop.parentNode.dataset.tooltip = mzk.lang.libraryview.centertop;
+    this._centerOnActiveTrack.parentNode.dataset.tooltip = mzk.lang.libraryview.centertrack;
+    this._lockCenternOn.parentNode.dataset.tooltip = mzk.lang.libraryview.lockcenter.off; // Auto center is off by default
+    this._centerOnBottom.parentNode.dataset.tooltip = mzk.lang.libraryview.centerbottom;
+
+    if (Utils.isMobileDevice() === true) {
+      this._centerOnTop.parentNode.classList.add('tooltip-bottom');
+      this._centerOnActiveTrack.parentNode.classList.add('tooltip-bottom');
+      this._lockCenternOn.parentNode.classList.add('tooltip-bottom');
+      this._centerOnBottom.parentNode.classList.add('tooltip-bottom');
+    } else {
+      this._centerOnTop.parentNode.classList.add('tooltip-left');
+      this._centerOnActiveTrack.parentNode.classList.add('tooltip-left');
+      this._lockCenternOn.parentNode.classList.add('tooltip-left');
+      this._centerOnBottom.parentNode.classList.add('tooltip-left');
+    }
+  }
+
+
+  _simpleClick(index) {
     const isTargetSelected = this._tracks[index].selected; // Saving target selection state before unselecting all
     this.unselectAll();
     // Remove selection on track if it was already selected before click

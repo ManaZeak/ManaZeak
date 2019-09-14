@@ -1,83 +1,80 @@
 {
   "player": {
     "repeat": {
-      "off": "Repeat off",
-      "one": "Repeat track",
-      "all": "Repeat playlist"
+      "off": "Sans répétition",
+      "one": "Répéter la piste",
+      "all": "Répéter la liste de lecture"
     },
     "shuffle": {
-      "off": "Random off",
-      "shuffle": "Shuffle off",
-      "on": "Random on"
+      "off": "Lecture normale",
+      "shuffle": "Shuffle actif",
+      "on": "Aléatoire actif"
     },
     "volume": {
-      "mute": "Mute",
-      "unmute": "Unmute"
+      "mute": "Couper le son",
+      "unmute": "Activer le son"
     },
-    "speedometer": "Playback rate",
+    "speedometer": "Vitesse du lecteur",
     "queue": "Queue"
   },
   "playlist": {
-    "tracks": "tracks",
-    "artists": "Artists",
+    "tracks": "pistes",
+    "artists": "Artistes",
     "albums": "Albums",
     "genres": "Genres"
   },
   "user": {
-    "logout": "Disconnect"
+    "logout": "Déconnexion"
   },
   "mainpage": {
     "collection": {
       "Libraries": "Libraries",
       "Playlists": "Playlists",
-      "PlaybackModes": "Playback modes"
+      "PlaybackModes": "Modes de lecture"
     },
     "discover": {
       "pv": {
-        "title": "Party View",
-        "desc": "Enjoy random albums fullscreen, perfect for background use"
+        "title": "Découverte",
+        "desc": "Lecture d'albums aléatoire en plein écran, parfait pour les soirées"
       }
     },
     "suggestion": {
-      "seemore": "see more"
+      "seemore": "voir plus"
     }
   },
   "libraryview": {
-    "ListView": "List view",
-    "DetailsView": "Details view",
-    "centertop": "Go to top",
-    "centertrack": "Go to track",
+    "ListView": "Liste",
+    "DetailsView": "Details",
+    "centertop": "Aller en haut",
+    "centertrack": "Aller à la piste",
     "lockcenter": {
-      "off": "Auto center off",
-      "on": "Auto center on"
+      "off": "Sans auto centrage",
+      "on": "Avec auto centrage"
     },
-    "centerbottom": "Go to bottom"
+    "centerbottom": "Aller en bas"
   },
   "listview": {
-    "duration": "Duration",
-    "title": "Title",
-    "artists": "Artists",
-    "year": "Year",
+    "duration": "Durée",
+    "title": "Titre",
+    "artists": "Artistes",
+    "year": "Année",
     "album": "Album",
-    "composers": "Composers",
-    "performers": "Performers",
+    "composers": "Compositeurs",
+    "performers": "Interprètes",
     "genre": "Genre",
-    "bitrate": "BitRate",
-    "stretchall": "Stretch all columns"
-  },
-  "partyview": {
-
+    "bitrate": "Débit",
+    "stretchall": "Étendre les colonnes"
   },
   "context": {
     "queue": {
-      "notracks": "No tracks in the queue",
-      "queuedtrack": "queued track",
-      "queuedtracks": "queued tracks",
-      "help": "Use the right click on a track and select 'Add to queue'"
+      "notracks": "Pas de pistes dans la queue",
+      "queuedtrack": "piste dans la queue",
+      "queuedtracks": "pistes dans la queue",
+      "help": "Utilisez le click droit sur une piste et sélectionner 'Ajouter à la queue'"
     },
     "track":  {
-     "download": "Download",
-      "queue": "Add to queue"
+     "download": "Télécharger",
+      "queue": "Ajouter à la queue"
     }
   },
   "errors":{

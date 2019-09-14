@@ -26,6 +26,7 @@ class VolumeBar {
 
     this._init();
     this._events();
+    this._setLangFeedback();
   }
 
 
@@ -69,6 +70,13 @@ class VolumeBar {
 
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
+  }
+
+
+  _setLangFeedback() {
+    // Singe dom element is an image, we put tooltip on parent wrapper
+    this._volume.image.parentNode.classList.add('tooltip-top');
+    this._volume.image.parentNode.dataset.tooltip = mzk.lang.player.volume.mute; // Volume is not muted by default
   }
 
 
@@ -193,12 +201,15 @@ class VolumeBar {
     if (volume === 0 || (typeof isMuted === 'boolean' && isMuted === true)) {
       removeFullClass();
       this._volume.image.src = '/static/img/player/volume-mute.svg';
+      this._volume.image.parentNode.dataset.tooltip = mzk.lang.player.volume.unmute; // Volume is not muted by default
     } else if (volume > 0 && volume < 50) {
       removeFullClass();
       this._volume.image.src = '/static/img/player/volume-half.svg';
+      this._volume.image.parentNode.dataset.tooltip = mzk.lang.player.volume.mute; // Volume is not muted by default
     } else {
       removeFullClass();
       this._volume.image.src = '/static/img/player/volume-full.svg';
+      this._volume.image.parentNode.dataset.tooltip = mzk.lang.player.volume.mute; // Volume is not muted by default
     }
 
     if (volume > 97 && volume <= 100) { // Add border radius on right side

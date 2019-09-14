@@ -25,13 +25,20 @@ class QueueContext extends ContextMenu {
 
   _fillQueueTracksContainer(queuedTracks) {
     if (queuedTracks.length > 0 && queuedTracks.length < 1000) {
+      // Handle lang plural
+      let label = mzk.lang.context.queue.queuedtracks;
+      if (queuedTracks.length === 1) {
+        label = mzk.lang.context.queue.queuedtrack;
+      }
+      // Operate on queue context container
       this._dom.container.innerHTML = '';
       this._fillQueuedTracks(queuedTracks);
-      this._dom.status.innerHTML = `${queuedTracks.length} queued tracks (${Utils.totalTracksDuration(queuedTracks)})`;
-    } else if (queuedTracks.length === 0) {
+      this._dom.status.innerHTML = `${queuedTracks.length} ${label} (${Utils.totalTracksDuration(queuedTracks)})`;
+    } else if (queuedTracks.length === 0) { // No track in queue
       this._dom.container.innerHTML = '';
+      this._emptyContainer.innerHTML = mzk.lang.context.queue.help;
       this._dom.container.appendChild(this._emptyContainer);
-      this._dom.status.innerHTML = 'No tracks in the queue';
+      this._dom.status.innerHTML = mzk.lang.context.queue.notracks;
     } else if (queuedTracks.length >= 1000) { // No more than 1k tracks per batch (even if 1k is mega overkill...)
       Logger.raise({
         code: 'TOO_MUCH_TRACK_TO_ADD_TO_QUEUE',

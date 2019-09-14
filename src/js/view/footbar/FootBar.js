@@ -43,6 +43,7 @@ class FootBar {
 
     this._init();
     this._events();
+    this._setLangFeedback();
   }
 
 
@@ -72,10 +73,12 @@ class FootBar {
 
     this._volumeBar = new VolumeBar();
     this._progressBar = new ProgressBar();
+
     this._playbackRateContext = new PlaybackRateContext({
       target: document.body,
       url: 'contexts/PlaybackRateContext/'
     });
+
     this._queueContext = new QueueContext({
       target: document.body,
       url: 'contexts/queuecontext/'
@@ -146,6 +149,21 @@ class FootBar {
     });
   }
 
+
+  _setLangFeedback() {
+    // Singe each dom element of this is an image, we put tooltip on parent wrapper
+    this._controls.repeat.parentNode.classList.add('tooltip-top');
+    this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.off; // Repeat is off by default
+
+    this._controls.shuffle.parentNode.classList.add('tooltip-top');
+    this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.off; // Shuffle is off by default
+
+    this._controls.speedometer.parentNode.classList.add('tooltip-top');
+    this._controls.speedometer.parentNode.dataset.tooltip = mzk.lang.player.speedometer;
+
+    this._controls.queue.parentNode.classList.add('tooltip-top');
+    this._controls.queue.parentNode.dataset.tooltip = mzk.lang.player.queue;
+  }
 
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  CONTROLS METHODS  -------------------------------------  //
@@ -299,10 +317,13 @@ class FootBar {
   set repeatMode(value) {
     if (value === 0) {
       this._controls.repeat.src = '/static/img/player/repeat-off.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.off;
     } else if (value === 1) {
       this._controls.repeat.src = '/static/img/player/repeat-one.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.one;
     } else if (value === 2) {
       this._controls.repeat.src = '/static/img/player/repeat-all.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.all;
     }
   }
 
@@ -312,9 +333,12 @@ class FootBar {
   set shuffleMode(value) {
     if (value === 0) {
       this._controls.shuffle.src = '/static/img/player/shuffle-off.svg';
+      this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.off;
     } else if (value === 1) {
       this._controls.shuffle.src = '/static/img/player/shuffle-on.svg';
+      this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.shuffle;
     } else if (value === 2) {
+      this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.on;
       this._controls.shuffle.src = '/static/img/player/shuffle-random-on.svg';
     }
   }

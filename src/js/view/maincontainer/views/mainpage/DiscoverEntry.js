@@ -26,8 +26,8 @@ class DiscoverEntry {
 
     if (this._type === 'PartyView') {
       this._dom.img.src = 'static/img/actions/party.svg';
-      this._dom.title.innerHTML = this._type; // TODO handle nls here from type value
-      this._dom.desc.innerHTML = 'Enjoy random albums fullscreen, perfect for background use'; // TODO handle nls
+      this._dom.title.innerHTML = mzk.lang.mainpage.discover.pv.title;
+      this._dom.desc.innerHTML = mzk.lang.mainpage.discover.pv.desc;
     }
 
     this._dom.container.appendChild(this._dom.img);

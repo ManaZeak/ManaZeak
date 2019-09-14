@@ -25,7 +25,7 @@ class AlbumView extends LibraryViews {
   }
 
   _init() {
-    this.buildDom() // Parent class call
+    this.buildDom() // Pare nt class call
       .then((viewControls) => {
         this._dom.fragment = document.createDocumentFragment();
         this._dom.wrapper = document.createElement('DIV');
