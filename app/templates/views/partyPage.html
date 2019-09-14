@@ -1,5 +1,5 @@
+{% load i18n %}
 {% load staticfiles %}
-
 <div class="party-view-wrapper">
   <div class="party-view-container">
     <div class="pv-current-track">
@@ -13,11 +13,11 @@
         <h1>09 – Brain Damage</h1>
         <div class="pv-track-tags">
             <div class="pv-tag-labels">
-              <h2 class="label">Artist:</h2>
-              <h2 class="label">Composer:</h2>
-              <h2 class="label">Producer:</h2>
-              <h2 class="label">Duration:</h2>
-              <h2 class="label">Genre:</h2>
+              <h2 class="label">{% trans 'Artist' %}:</h2>
+              <h2 class="label">{% trans 'Composer' %}:</h2>
+              <h2 class="label">{% trans 'Producer' %}:</h2>
+              <h2 class="label">{% trans 'Duration' %}:</h2>
+              <h2 class="label">{% trans 'Genre' %}:</h2>
             </div>
             <div class="pv-tag-values">
               <h2>Pink Floyd</h2>

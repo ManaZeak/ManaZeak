@@ -23,7 +23,7 @@ class LanguageService(object):
     #   - the user locale (LANG)
     #   @return a default json response and the json file containing all the language keys and strings.
     def selectLanguage(request):
-        pathToLang = "/ManaZeak/static/json/lang/"
+        pathToLang = "/ManaZeak/static/locale/front/"
         user = request.user
         response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['LANG'])
         requestedLang = response['LANG']

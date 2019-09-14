@@ -73,13 +73,16 @@ elif [ $1 = "clean" ]; then
     echo -e "\e[93mWARNING\e[39m Images haven't been removed"
     printf "Use docker rmi \$(docker images -q) to remove every image on the system\n"
 
-elif [ $1 = "cleandoc" ]; then
-    echo -e "Cleaning ManaZeak documentation"
-    eval "rm -r ./doc/frontend/ ./doc/backend/"
-
 elif [ $1 = "repy" ]; then
     eval "docker kill manazeak_app 2>/dev/null"
     eval "docker start -i manazeak_app"
+
+elif [ $1 = "gen-translation" ]; then
+    eval "python manage.py makemessages -l 'fr'"
+    eval "python manage.py makemessages -l 'es'"
+
+elif [ $1 = "compile-translation" ]; then
+    eval "python manage.py compilemessages" # Run compilemessages from manage.py
 
 elif [ $1 = "test" ]; then
     eval "npm run test" # See package.json for test
@@ -92,6 +95,9 @@ elif [ $1 = "doc" ]; then
     echo -e "Generation done. If the backend documentation failed, ensure you have doxygen installed on your system."
     echo -e "You can now check the page ./doc/index.html to watch the documentation! glhf"
 
+elif [ $1 = "cleandoc" ]; then
+    echo -e "Cleaning ManaZeak documentation"
+    eval "rm -r ./doc/frontend/ ./doc/backend/"
 
 elif [ $1 = "sonar-scanner" ]; then
     if [ -z "$2" ]; then
@@ -114,9 +120,11 @@ elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
     printf -- "#  ./mzk.sh prod : Run a production environment\n#\n"
     printf -- "#  ./mzk.sh stop : Stop ManaZeak application\n"
     printf -- "#  ./mzk.sh clean : Remove ManaZeak containers\n"
-    printf -- "#  ./mzk.sh cleandoc : Clear the ManaZeak documentation\n"
     printf -- "#  ./mzk.sh repy : Run the manazeak container in interactive mode\n#\n"
+    printf -- "#  ./mzk.sh gen-translation : Generate the po django translation template file so you can translate keys\n#\n"
+    printf -- "#  ./mzk.sh compile-translation : Compile po files into mo files for django\n#\n"
     printf -- "#  ./mzk.sh doc : Generates both the Python and JavaScript documentations\n"
+    printf -- "#  ./mzk.sh cleandoc : Clear the ManaZeak documentation\n"
     printf -- "#  ./mzk.sh test : Run all unit tests\n"
     printf -- "#  ./mzk.sh sonar-scanner xxx: Perform a sonare-scanner on the folder. Require an API key (xxx) as second parameter\n#\n"
     printf -- "#  ./mzk.sh --help : Display the script usage  (or -h)\n"

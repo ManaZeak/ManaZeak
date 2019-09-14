@@ -25,7 +25,7 @@ class QueueContext extends ContextMenu {
 
   _fillQueueTracksContainer(queuedTracks) {
     if (queuedTracks.length > 0 && queuedTracks.length < 1000) {
-      // Handle lang plural
+      // Handle front plural
       let label = mzk.lang.context.queue.queuedtracks;
       if (queuedTracks.length === 1) {
         label = mzk.lang.context.queue.queuedtrack;

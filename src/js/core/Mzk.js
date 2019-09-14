@@ -128,7 +128,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Init the lang keys and attach them to this
+   * @description Init the front keys and attach them to this
    * @returns {Promise} - A promise that resolve when logic has been executed
    **/
   _initLang() {

@@ -1,10 +1,10 @@
+{% load i18n %}
 {% load staticfiles %}
-
 <div class="context-transparent-overlay">
   <div class="user-menu">
     <div class="entry log-out" data-perm="NONE">
       <img src="{% static "img/actions/logout.svg" %}" alt="logout">
-      <p class="log-out-text">Log Out</p>
+      <p class="log-out-text">{% trans 'Log Out' %}</p>
     </div>
   </div>
 </div>

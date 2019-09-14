@@ -1,5 +1,5 @@
+{% load i18n %}
 {% load staticfiles %}
-
 <div class="context-transparent-overlay">
   <div class="track-context">
     <div class="entry" data-view="ListView">
@@ -10,11 +10,11 @@
     </div>
     <div class="entry download" data-view="ListView">
       <img src="{% static "img/actions/download.svg" %}" alt="download">
-      <p class="track-download">Download</p>
+      <p class="track-download">{% trans 'Download' %}</p>
     </div>
     <div class="entry add-to-queue" data-view="ListView">
       <img src="{% static "img/player/queue.svg" %}" alt="logout">
-      <p class="track-queue">Add to queue</p>
+      <p class="track-queue">{% trans 'Add to queue' %}</p>
     </div>
   </div>
 </div>

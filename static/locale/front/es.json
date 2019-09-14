@@ -1,14 +1,14 @@
 {
   "player": {
     "repeat": {
-      "off": "Sans répétition",
-      "one": "Répéter la piste",
-      "all": "Répéter la liste de lecture"
+      "off": "Sin repetición",
+      "one": "Repetir la pista",
+      "all": "Répetir lista de reproducción"
     },
     "shuffle": {
-      "off": "Lecture normale",
-      "shuffle": "Shuffle actif",
-      "on": "Aléatoire actif"
+      "off": "Lectura normal",
+      "shuffle": "Shuffle activo",
+      "on": "Aleatorio activo"
     },
     "volume": {
       "mute": "Couper le son",
