@@ -14,18 +14,48 @@ class UserMenuContext extends ContextMenu {
   constructor(options) {
     super(options);
 
-    this._logOut = null;
-    this._logOutText = null;
+    this._container = {};
+
+    this._admin = {};
+    this._community = {};
+    this._logOut = {};
   }
 
 
   setActions(doc) {
-    this._logOut = doc.getElementsByClassName('log-out')[0];
-    this._logOutText = doc.getElementsByClassName('log-out-text')[0];
+    this._container = doc.getElementsByClassName('user-menu')[0];
 
-    this._logOutText.innerHTML = mzk.lang.user.logout;
+    this._admin = doc.getElementsByClassName('admin')[0];
+    this._community = doc.getElementsByClassName('community')[0];
+    this._logOut = doc.getElementsByClassName('log-out')[0];
+
+    if (!mzk.user.hasPermission('ADMV')) {
+      this._container.removeChild(this._admin);
+    }
+
+    this._userMenuEvents();
+  }
+
+
+  _userMenuEvents() {
+    if (mzk.user.hasPermission('ADMV')) {
+      this._admin.addEventListener('click', () => {
+        this.close();
+        mzk.ui.setSceneView({
+          name: `AdminView`
+        });
+      }, true);
+    }
+
+    this._community.addEventListener('click', () => {
+      this.close();
+      mzk.ui.setSceneView({
+        name: `CommunityView`
+      });
+    }, true);
 
     this._logOut.addEventListener('click', () => {
+      // TODO Put dim (long transition) modal with confirm log out (bc context entries are tight)
       mzk.logOut();
     }, true);
   }

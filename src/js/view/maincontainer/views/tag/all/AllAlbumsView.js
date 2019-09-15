@@ -17,7 +17,7 @@ class AllAlbumsView extends AllTagsView {
     this._init()
       .then(this._processAllAlbums.bind(this))
       .then(this._buildView.bind(this))
-      .then(this._viewReady.bind(this));
+      .then(this._viewReady);
   }
 
 
@@ -77,7 +77,14 @@ class AllAlbumsView extends AllTagsView {
           }
 
           imgContainer.addEventListener('click', () => {
-
+            mzk.ui.setSceneView({
+              name: 'SingleAlbum',
+              album: {
+                id: this._yearGroups[keys[i]][j].ALBUM_ID,
+                title: this._yearGroups[keys[i]][j].ALBUM_TITLE,
+                cover: this._yearGroups[keys[i]][j].ALBUM_COVER
+              }
+            });
           }, false);
 
           imgContainer.appendChild(artistImg);

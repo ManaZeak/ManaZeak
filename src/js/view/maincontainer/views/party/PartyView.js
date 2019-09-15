@@ -21,7 +21,7 @@ class PartyView extends SceneView {
     this._fetchWrapper()
       .then(this._fillAlbumInternals.bind(this))
       .then(this._events.bind(this))
-      .then(this._partyViewReady);
+      .then(this._viewReady);
   }
 
 
@@ -68,11 +68,6 @@ class PartyView extends SceneView {
       this._dom.playPause.addEventListener('click', this._togglePlay.bind(this), false);
       resolve();
     });
-  }
-
-
-  _partyViewReady() {
-    Events.fire('SceneViewReady');
   }
 
 

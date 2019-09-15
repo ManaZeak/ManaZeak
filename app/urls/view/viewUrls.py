@@ -17,4 +17,8 @@ urlpatterns = [
     path('library/layout/', GenericViews.getLibraryPage, name='getLibraryPage'),
     ## Layout for the party view.
     path('party/layout/', GenericViews.getPartyPage, name='getPartyPage'),
+    # Layout for admin view
+    path('admin/layout/', GenericViews.getAdminPage, name='reset'),
+    # Layout for community view
+    path('community/layout/', GenericViews.getCommunityPage, name='reset'),
 ]

@@ -102,6 +102,12 @@ class UserInterface {
       } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) { // Handle library views
         this.startLoading(true)
           .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));
+      } else if (options.name === 'AdminView') {
+        this.startLoading(true)
+          .then(this._scene.setAdminView.bind(this._scene));
+      } else if (options.name === 'CommunityView') {
+        this.startLoading(true)
+          .then(this._scene.setCommunityView.bind(this._scene));
       }
     });
   }

@@ -108,3 +108,13 @@ class GenericViews(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getAllGenresPage(request):
         return render(request, 'views/tags/allGenresPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAdminPage(request):
+        return render(request, 'views/admin/adminpage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getCommunityPage(request):
+        return render(request, 'views/community/communitypage.html')

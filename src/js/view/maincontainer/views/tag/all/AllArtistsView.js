@@ -16,7 +16,7 @@ class AllArtistsView extends AllTagsView {
     this._init()
       .then(this._processAllArtists.bind(this))
       .then(this._buildView.bind(this))
-      .then(this._viewReady.bind(this));
+      .then(this._viewReady);
   }
 
 

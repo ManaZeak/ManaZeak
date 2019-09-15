@@ -21,7 +21,7 @@ class MainPageView extends SceneView {
     this._fetchWrapper()
       .then(this._fillCollection.bind(this))
       .then(this._fillSuggestion.bind(this))
-      .then(this._mainPageReady);
+      .then(this._viewReady);
   }
 
 
@@ -120,11 +120,6 @@ class MainPageView extends SceneView {
           resolve();
         });
     });
-  }
-
-
-  _mainPageReady() {
-    Events.fire('SceneViewReady');
   }
 
 

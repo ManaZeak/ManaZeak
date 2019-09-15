@@ -16,7 +16,7 @@ class SingleGenreView extends SingleTagView {
 
     this._init()
       .then(this._processGenre.bind(this))
-      .then(this._viewReady.bind(this));
+      .then(this._viewReady);
   }
 
 

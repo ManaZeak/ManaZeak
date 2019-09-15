@@ -23,9 +23,6 @@
     "albums": "Albums",
     "genres": "Genres"
   },
-  "user": {
-    "logout": "Disconnect"
-  },
   "mainpage": {
     "collection": {
       "Libraries": "Libraries",

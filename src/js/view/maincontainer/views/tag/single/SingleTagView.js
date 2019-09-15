@@ -1,11 +1,15 @@
+import SceneView from "../../../SceneView";
+import Scene from "../../../Scene";
 'use strict';
 
 
 // This mother class is a way to proxify the fetch layout and content for single tag views
-class SingleTagView {
+class SingleTagView extends SceneView {
 
 
   constructor(options) {
+    super(options);
+
     this._type = options.type;
 
     this._dom = {
@@ -49,12 +53,6 @@ class SingleTagView {
           resolve(/*response*/);
       //  }).catch(reject);
     });
-  }
-
-
-
-  _viewReady() {
-    Events.fire('SceneViewReady');
   }
 
 

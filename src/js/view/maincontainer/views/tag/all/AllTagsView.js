@@ -1,11 +1,14 @@
+import SceneView from "../../../SceneView";
 'use strict';
 
 
 // This mother class is a way to proxify the fetch layout and content for all tag views
-class AllTagsView {
+class AllTagsView extends SceneView {
 
 
   constructor(options) {
+    super(options);
+
     this._type = options.type;
 
     this._dom = {
@@ -49,12 +52,6 @@ class AllTagsView {
           resolve(response);
         }).catch(reject);
     });
-  }
-
-
-
-  _viewReady() {
-    Events.fire('SceneViewReady');
   }
 
 

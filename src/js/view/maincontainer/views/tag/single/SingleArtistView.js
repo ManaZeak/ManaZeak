@@ -16,7 +16,7 @@ class SingleArtistView extends SingleTagView {
 
     this._init()
       .then(this._processArtist.bind(this))
-      .then(this._viewReady.bind(this));
+      .then(this._viewReady);
   }
 
 

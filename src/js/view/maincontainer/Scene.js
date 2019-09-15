@@ -1,5 +1,3 @@
-import ListView from './views/library/ListView.js';
-import AlbumView from './views/library/AlbumView.js';
 import MainPageView from './views/mainpage/MainPageView.js';
 import PartyView from './views/party/PartyView.js';
 import SingleArtistView from './views/tag/single/SingleArtistView.js';
@@ -8,6 +6,10 @@ import SingleGenreView from './views/tag/single/SingleGenreView.js';
 import AllArtistsView from './views/tag/all/AllArtistsView.js';
 import AllAlbumsView from './views/tag/all/AllAlbumsView.js';
 import AllGenresView from './views/tag/all/AllGenresView.js';
+import ListView from './views/library/ListView.js';
+import AlbumView from './views/library/AlbumView.js';
+import AdminView from './views/admin/AdminView.js';
+import CommunityView from './views/community/CommunityView.js';
 'use strict';
 
 
@@ -201,6 +203,24 @@ class Scene {
       this.addView(this.view.dom);
       this.view.refreshView(); // Mainly tu update ListView column header
     });
+  }
+
+
+  setAdminView() {
+    this._removeFullView();
+    this._sceneViewType = 'AdminView';
+    this._scene.innerHTML = '';
+    this.view = new AdminView();
+    this._registerViewReady();
+  }
+
+
+  setCommunityView() {
+    this._removeFullView();
+    this._sceneViewType = 'CommunityView';
+    this._scene.innerHTML = '';
+    this.view = new CommunityView();
+    this._registerViewReady();
   }
 
 

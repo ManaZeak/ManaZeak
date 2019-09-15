@@ -16,7 +16,7 @@ class SingleAlbumView extends SingleTagView {
 
     this._init()
       .then(this._processAlbum.bind(this))
-      .then(this._viewReady.bind(this));
+      .then(this._viewReady);
   }
 
 
