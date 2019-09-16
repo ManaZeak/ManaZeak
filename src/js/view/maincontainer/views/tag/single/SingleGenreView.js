@@ -12,7 +12,7 @@ class SingleGenreView extends SingleTagView {
 
     this._id = options.id;
     this._name = options.name;
-    this._img = options.img;
+    this._logo = options.logo;
 
     this._init()
       .then(this._processGenre.bind(this))
@@ -20,9 +20,8 @@ class SingleGenreView extends SingleTagView {
   }
 
 
-  _processGenre(response) {
+  _processGenre() {
     return new Promise(resolve => {
-      //console.log(this);
       resolve();
     });
   }

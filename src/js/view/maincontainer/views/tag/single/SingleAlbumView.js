@@ -20,9 +20,8 @@ class SingleAlbumView extends SingleTagView {
   }
 
 
-  _processAlbum(response) {
+  _processAlbum() {
     return new Promise(resolve => {
-      //console.log(this);
       resolve();
     });
   }

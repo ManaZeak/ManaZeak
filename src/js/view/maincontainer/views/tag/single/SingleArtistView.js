@@ -20,9 +20,8 @@ class SingleArtistView extends SingleTagView {
   }
 
 
-  _processArtist(response) {
+  _processArtist() {
     return new Promise(resolve => {
-      //console.log(this);
       resolve();
     });
   }

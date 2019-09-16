@@ -86,7 +86,7 @@ class SuggestionEntry {
           genre: {
             id: this._entry.GENRE_ID,
             name: this._entry.GENRE_NAME,
-            img: this._entry.GENRE_IMAGE
+            logo: this._entry.GENRE_LOGO
           }
         });
       }, false);
