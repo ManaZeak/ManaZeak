@@ -1,4 +1,5 @@
 ## This object is used to describe an album in the lazy loading of the list view.
+from app.models import Track
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 
 
@@ -33,14 +34,19 @@ class LocalLazyAlbum(object):
         trackId = row[5]
         # This is a new track creating it.
         if self.lastTrackId is None or self.lastTrackId != trackId:
-            self._createTrack(trackId, row)
+            self._createTrackFromRow(trackId, row)
         # Adding the track artist.
         self.tracks[self.lastTrackPosition].addArtistsFromRow(row)
         # Adding the composer and the performer.
         self.tracks[self.lastTrackPosition].addComposerAndPerformerFromRow(row)
 
+    ## Add the track to the album object
+    def addTrackFromOrm(self):
+        for track in Track.objects.filter(album_id=self.id).order_by('trackNumber'):
+            self.tracks.append(self._createTrackFromOrm(track))
+
     ## Creating a track object from the sql row
-    def _createTrack(self, trackId, row):
+    def _createTrackFromRow(self, trackId, row):
         track = LocalLazyTrack()
         track.id = trackId
         track.title = row[6]
@@ -53,3 +59,19 @@ class LocalLazyAlbum(object):
         self.lastTrackId = trackId
         self.lastTrackPosition += 1
         self.tracks.append(track)
+
+    @staticmethod
+    ## Creating a track object from the orm track
+    def _createTrackFromOrm(track):
+        trackLazy = LocalLazyTrack()
+        trackLazy.id = track.id
+        trackLazy.title = track.title
+        trackLazy.year = track.year
+        trackLazy.bitrate = track.bitRate
+        trackLazy.duration = track.duration
+        trackLazy.cover = track.cover.location
+        trackLazy.moodbar = track.mood
+        trackLazy.genre = []
+        for genre in track.genres.all():
+            trackLazy.genre.append(genre.name)
+        return trackLazy

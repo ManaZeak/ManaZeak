@@ -2,7 +2,7 @@ from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 
 
 ## This object describes an artist in the lazy loading of an artist.
-class LocalLazyAlbumArtist (object):
+class LocalLazyAlbumArtist(object):
 
     ## Constructor
     def __init__(self):
@@ -51,6 +51,17 @@ class LocalLazyAlbumArtist (object):
             # Adding the created album to the dict containing the albums of the current year
             self.albumOfSameYear[albumId] = self.lastAlbumPosition
         self.albums[self.lastAlbumPosition].addTrackFromRow(row)
+
+    ## Creates a artist from the ORM object.
+    def addArtistFromOrm(self, artist):
+        # Setting the information of the artist
+        self.id = artist.id
+        self.name = artist.name
+        # Setting the information of the albums of the artist
+        for album in artist.album_release_artist.all():
+            self._createAlbum(album.id, album.title, album.year)
+            # Getting the tracks of the album
+            self.albums[self.lastAlbumPosition].addTrackFromOrm()
 
     ## Creates a new album object and add it to the list.
     def _createAlbum(self, albumId, albumTitle, albumYear):
