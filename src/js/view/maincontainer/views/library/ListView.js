@@ -44,7 +44,7 @@ class ListView extends LibraryViews {
 
   _init() {
     this.buildDom() // Parent class call
-      .then((viewControls) => {
+      .then((container) => {
         this._dom.fragment = document.createDocumentFragment();
         this._dom.wrapper = document.createElement('DIV');
         this._dom.header = document.createElement('DIV');
@@ -54,10 +54,11 @@ class ListView extends LibraryViews {
         this._dom.header.classList.add('header');
         this._dom.container.classList.add('track-container');
 
-        this._dom.wrapper.appendChild(viewControls);
         this._dom.wrapper.appendChild(this._dom.header);
         this._dom.wrapper.appendChild(this._dom.container);
-        this._dom.fragment.appendChild(this._dom.wrapper);
+
+        container.appendChild(this._dom.wrapper);
+        this._dom.fragment.appendChild(container);
 
         this._trackContext = new TrackContext({
           target: this._dom.container,

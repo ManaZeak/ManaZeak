@@ -20,7 +20,7 @@ class SingleGenreView extends SingleTagView {
   }
 
 
-  _processGenre() {
+  _processGenre(response) {
     return new Promise(resolve => {
       resolve();
     });

@@ -1,2 +1,7 @@
 @import './listview';
 @import './albumview';
+
+.library-page {
+  height: 100%;
+  padding: ($mzk-padding * 5) - 1;
+}

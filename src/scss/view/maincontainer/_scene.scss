@@ -1,6 +1,7 @@
 @import './views/librarypage'; // Loading library viewing rules
 @import './views/mainpage';
 @import './views/partyview';
+@import './views/singleobjectview';
 @import './views/allobjectsview';
 
 $scene-transition: ($transition-duration * 4);
@@ -10,7 +11,6 @@ $aside-button-length: 25px;
 #scene {
   width: 100%;
   position: relative;
-  padding: $margin-offset + ($main-container-icon-margin * 2);
   height: 100%;
   transition: all $scene-transition ease-in-out 0s;
   z-index: 701;

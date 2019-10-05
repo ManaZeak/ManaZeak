@@ -47,11 +47,11 @@ class SingleTagView extends SceneView {
 
   _getSingle() {
     return new Promise((resolve, reject) => {
-      //mzk.komunikator.get(`view/all/${this._type}`)
-      //  .then(response => {
+      mzk.komunikator.get(`view/single/${this._type}/${this._id}`)
+        .then(response => {
           // Resolve promise to build UI in child class
-          resolve(/*response*/);
-      //  }).catch(reject);
+          resolve(response);
+        }).catch(reject);
     });
   }
 

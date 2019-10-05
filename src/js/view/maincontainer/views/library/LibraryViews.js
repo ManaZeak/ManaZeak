@@ -101,7 +101,7 @@ class LibraryViews extends SceneView {
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');
-          const fragment = document.createDocumentFragment();
+          const container = doc.getElementsByClassName('library-page')[0];
 
           this._optionButton = doc.getElementById('scene-view-option');
           this._sceneCommands = doc.getElementById('scene-commands');
@@ -119,14 +119,15 @@ class LibraryViews extends SceneView {
           if (this._activeViewLabel === 'DetailsView') {
             this._optionButton.style.display = 'none';
           }
-
-          fragment.appendChild(this._optionButton);
-          fragment.appendChild(this._sceneCommands);
-          fragment.appendChild(this._sceneManipulations);
+/*
+          container.appendChild(this._optionButton);
+          container.appendChild(this._sceneCommands);
+          container.appendChild(this._sceneManipulations);
+*/
 
           this._events();
 
-          resolve(fragment);
+          resolve(container);
         })
         .catch(reject);
     });

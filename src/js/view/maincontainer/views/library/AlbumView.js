@@ -26,15 +26,16 @@ class AlbumView extends LibraryViews {
 
   _init() {
     this.buildDom() // Pare nt class call
-      .then((viewControls) => {
+      .then((container) => {
         this._dom.fragment = document.createDocumentFragment();
         this._dom.wrapper = document.createElement('DIV');
         this._dom.container = document.createElement('DIV');
         this._dom.container.classList.add('albumview');
 
-        this._dom.wrapper.appendChild(viewControls);
-        this._dom.fragment.appendChild(this._dom.container);
-        this._dom.fragment.appendChild(this._dom.wrapper);
+        container.appendChild(this._dom.container);
+        container.appendChild(this._dom.wrapper);
+
+        this._dom.fragment.appendChild(container);
 
         this._trackContext = new TrackContext({
           target: this._dom.container,

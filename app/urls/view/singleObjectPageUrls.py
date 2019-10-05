@@ -10,6 +10,8 @@ app_name = 'app'
 urlpatterns = [
     path('artist/layout/', GenericViews.getSingleArtistPage, name='getSingleArtistPage'),
     path('artist/<int:artistId>/', ArtistService.getArtist, name='getArtist'),
+
     path('album/layout/', GenericViews.getSingleAlbumPage, name='getSingleAlbumPage'),
+
     path('genre/layout/', GenericViews.getSingleGenrePage, name='getSingleGenrePage'),
 ]

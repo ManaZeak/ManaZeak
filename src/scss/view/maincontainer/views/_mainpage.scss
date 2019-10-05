@@ -1,6 +1,7 @@
 .main-page {
   display: flex;
   height: 100%;
+  padding: 0;
   width: 100%;
 }
 
@@ -10,15 +11,16 @@
   border-right: solid $mzk-border-width $mzk-color-icons;
   height: 100%;
   overflow: hidden;
+  padding-top: ($mzk-padding * 3);
   width: $mzk-mp-aside-width;
 
   .mp-collection-group {
-    margin: $mzk-margin;
+    margin: 0 $mzk-margin $mzk-margin ($mzk-margin * 2);
 
     h3 {
       color: $mzk-color-text;
       font-weight: lighter;
-      margin-bottom: $mzk-margin;
+      margin: 0;
       text-align: left;
 
       span {
@@ -35,7 +37,6 @@
 
     ul {
       font-size: .9rem;
-      margin-bottom: (2 * $mzk-margin);
       overflow: hidden;
       padding: 0;
 
@@ -86,10 +87,6 @@
         }
       }
     }
-
-    &:first-child {
-      margin-top: 0;
-    }
   }
 }
 
@@ -100,8 +97,15 @@
   width: calc(100% - #{$mzk-mp-aside-width});
 
   .mp-suggestion-group {
-    min-height: calc(100% / 3);
     margin: 0 $mzk-padding-scene;
+
+    &:first-child {
+      padding-top: ($mzk-padding * 3);
+    }
+
+    &:last-child {
+      padding-bottom: ($mzk-padding * 3);
+    }
 
     h1 {
       font-size: 1.7rem;
@@ -145,7 +149,7 @@
         margin: 0 $mzk-margin;
         padding: 5px;
         position: relative;
-        width: 130px;
+        width: 140px;
 
         transition: background-color $mzk-animation-duration ease-out,
                     border-radius $mzk-animation-duration ease,
@@ -162,8 +166,8 @@
         img {
           background-color: $mzk-color-bg;
           border-radius: $mzk-border-radius;
-          height: 100px;
-          width: 100px;
+          height: 120px;
+          width: 120px;
         }
 
         p {
