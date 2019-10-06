@@ -75,10 +75,38 @@ class LocalLazyTrack(object):
             performerName = row[18]
             self._createPerformer(performerId, performerName)
 
+    @staticmethod
+    ## Creating a track object from the orm track
+    def createTrackFromOrm(track):
+        trackLazy = LocalLazyTrack()
+        trackLazy.id = track.id
+        trackLazy.title = track.title
+        trackLazy.year = track.year
+        trackLazy.bitrate = track.bitRate
+        trackLazy.duration = track.duration
+        trackLazy.cover = track.cover.location
+        trackLazy.moodbar = track.mood
+        trackLazy.addRelatedInfoFromOrm(track)
+        return trackLazy
+
+    ## Adds the information linked to the track. (Performer, artists, composer...)
+    def addRelatedInfoFromOrm(self, track):
+        self.genre = []
+        # Adding the artist from the track.
+        for artist in track.artists.all():
+            self._createArtist(artist.id, artist.name)
+        # Adding the composers from the track.
+        for composer in track.composers.all():
+            self._createComposer(composer.id, composer.name)
+        # Adding the performers from the track.
+        for performer in track.performers.all():
+            self._createPerformer(performer.id, performer.name)
+        for genre in track.genres.all():
+            self.genre.append(genre.name)
+
     ## Creates a new artist and add it to the artist list.
     def _createArtist(self, artistId, artistName):
         artist = LocalLazyArtist()
-        logger.info('GET THE INFO of the artist and see why duplicate')
         artist.id = artistId
         artist.name = artistName
         self.lastArtistId = artistId

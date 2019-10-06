@@ -52,5 +52,7 @@ class ArtistService(object):
         # Getting the album of the artist in the database.
         albums = LocalLazyAlbumArtist()
         albums.addArtistFromOrm(artist)
-        return albums.generateJson()
+        return {
+            'ARTIST': albums.generateJson(),
+        }
 

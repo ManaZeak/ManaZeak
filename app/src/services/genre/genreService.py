@@ -1,9 +1,13 @@
-from app.models import Genre
+from django.contrib.auth.decorators import login_required
+
+from app.models import Genre, Track
 from app.src.dto.genre.MainPageGenre import MainPageGenre
+from app.src.dto.track.localLazyTrack import LocalLazyTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.utils.decorators import FrontRequest
-
+from app.src.utils.errors.errorEnum import ErrorEnum
+from app.src.utils.exceptions.userException import UserException
 
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
@@ -13,7 +17,9 @@ from app.src.utils.requestMethodEnum import RequestMethodEnum
 class GenreService(object):
 
     @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
+    ## Get all the genres available in the database.
     def getAllGenres(request):
         user = request.user
         # Checking if the request is correct.
@@ -28,4 +34,25 @@ class GenreService(object):
             genres.append(genreDto.getJsonObject())
         return {
             'GENRES': genres,
+        }
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    ## Get the track related to a genre.
+    def getGenre(request, genreId):
+        user = request.user
+        # Checking if the request is correct.
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
+        # Checking if the user has the permission
+        PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+        if Genre.objects.filter(id=genreId).count() == 0:
+            raise UserException(ErrorEnum.DB_ERROR, user)
+        tracksDb = Track.objects.filter(genres__id=genreId).order_by('artists__name', 'album__year',
+                                                                     'album__title', 'trackNumber')
+        tracks = []
+        for track in tracksDb:
+            tracks.append(LocalLazyTrack.createTrackFromOrm(track).generateJson())
+        return {
+            'TRACKS': tracks,
         }

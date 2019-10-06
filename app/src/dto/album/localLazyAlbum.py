@@ -43,7 +43,15 @@ class LocalLazyAlbum(object):
     ## Add the track to the album object
     def addTrackFromOrm(self):
         for track in Track.objects.filter(album_id=self.id).order_by('trackNumber'):
-            self.tracks.append(self._createTrackFromOrm(track))
+            self.tracks.append(LocalLazyTrack.createTrackFromOrm(track))
+
+    ## Create an album object from the orm.
+    def createAlbumFromOrm(self, album):
+        self.id = album.id
+        self.title = album.title
+        self.year = album.year
+        # Creating the track from the orm
+        self.addTrackFromOrm()
 
     ## Creating a track object from the sql row
     def _createTrackFromRow(self, trackId, row):
@@ -59,19 +67,3 @@ class LocalLazyAlbum(object):
         self.lastTrackId = trackId
         self.lastTrackPosition += 1
         self.tracks.append(track)
-
-    @staticmethod
-    ## Creating a track object from the orm track
-    def _createTrackFromOrm(track):
-        trackLazy = LocalLazyTrack()
-        trackLazy.id = track.id
-        trackLazy.title = track.title
-        trackLazy.year = track.year
-        trackLazy.bitrate = track.bitRate
-        trackLazy.duration = track.duration
-        trackLazy.cover = track.cover.location
-        trackLazy.moodbar = track.mood
-        trackLazy.genre = []
-        for genre in track.genres.all():
-            trackLazy.genre.append(genre.name)
-        return trackLazy
