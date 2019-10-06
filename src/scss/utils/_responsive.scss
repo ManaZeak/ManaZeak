@@ -11,6 +11,13 @@
     .album-header {
       padding: 0 10%;
     }
+
+    .album-tracks {
+      .track {
+        margin: ($mzk-margin / 2) 10% !important;
+        width: calc(80% - #{2 * $mzk-margin}) !important;
+      }
+    }
   }
 }
 
@@ -196,9 +203,21 @@
 
     .album-info {
       padding-left: $mzk-padding !important;
+      width: calc(100% - 240px) !important;
 
       h1 {
         margin-top: 0 !important;
+      }
+
+      .album-detailed-info {
+        display: none !important;
+      }
+    }
+
+    .album-tracks {
+      .track {
+        margin: ($mzk-margin / 2) !important;
+        width: calc(100% - #{2 * $mzk-margin}) !important;
       }
     }
   }

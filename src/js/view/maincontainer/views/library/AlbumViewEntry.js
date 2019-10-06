@@ -1,8 +1,10 @@
+import TrackEntry from "../utils/TrackEntry";
 'use strict';
 
 
-class AlbumViewEntry {
+class AlbumViewEntry extends TrackEntry {
   constructor(options) {
+    super(options);
     if (typeof options !== 'object') {
       return;
     }
@@ -13,20 +15,10 @@ class AlbumViewEntry {
     this._id = options.track.id || '';
     this._title = options.track.title || '';
     this._trackNumber = options.trackNumber;
-    this._dom = {
-      container: {},
-      duration: {},
-      title: {},
-      artists: {},
-      composer: {}
-    };
-
-    this._dom.container = document.createElement('DIV');
-    this._dom.container.classList.add('track');
-    this._dom.container.dataset.id = options.datasetId;
-
-    this._isSelected = false;
-    this._isPlaying = false;
+    this._dom.duration = {};
+    this._dom.title = {};
+    this._dom.artists = {};
+    this._dom.composer = {};
 
     this._init();
   }
@@ -58,58 +50,11 @@ class AlbumViewEntry {
   }
 
 
-  _setIsPlaying(status) {
-    this._isPlaying = status;
-
-    if (!status) {
-      this._dom.container.classList.remove('playing');
-    } else {
-      this._dom.container.classList.add('playing');
-    }
-  }
-
-
-  _setIsSelected(status) {
-    this._isSelected = status;
-
-    if (!status) {
-      this._dom.container.classList.remove('selected');
-    } else {
-      this._dom.container.classList.add('selected');
-    }
-  }
-
-
   get id() {
     return this._id;
   }
 
 
-  get selected() {
-    return this._isSelected;
-  }
-
-
-  get dom() {
-    return this._dom.container;
-  }
-
-
-  get domFragment() {
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(this._dom.container);
-    return fragment;
-  }
-
-
-  set selected(status) {
-    this._setIsSelected(status);
-  }
-
-
-  set playing(status) {
-    this._setIsPlaying(status);
-  }
 }
 
 

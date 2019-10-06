@@ -225,14 +225,14 @@ class Scene {
 
 
   stopPlayback() {
-    if (this._sceneViewType === 'LibraryView') {
+    if (this._sceneViewType === 'LibraryView' || this._sceneViewType === 'SingleAlbumView') {
       this.view.stopPlayback(); // Warning, this is specific to listView so far
     }
   }
 
 
   changeTrack(id) {
-    if (this._sceneViewType === 'LibraryView') {
+    if (this._sceneViewType === 'LibraryView' || this._sceneViewType === 'SingleAlbumView') {
       this.view.changeTrack(id);
     }
   }

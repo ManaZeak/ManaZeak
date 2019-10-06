@@ -280,7 +280,7 @@ class LibraryViews extends SceneView {
   changeTrack(id) {
     let index = 0;
 
-    for ( let i = 0; i < this._tracks.length; ++i) {
+    for (let i = 0; i < this._tracks.length; ++i) {
       if (this._tracks[i].id === id) {
         index = i;
         break;
