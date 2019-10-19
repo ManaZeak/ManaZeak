@@ -1,9 +1,13 @@
 ## This object is used to describe an album in the lazy loading of the list view.
+import logging
+
 from app.models import Track
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 
+logger = logging.getLogger('django')
 
 class LocalLazyAlbum(object):
+
 
     ## Constructor
     def __init__(self):
@@ -73,7 +77,16 @@ class LocalLazyAlbum(object):
         track.duration = row[9]
         track.cover = row[10]
         track.moodbar = row[11]
-        track.genre = row[12]
+        track.genre = self._splitGenre(row[12])
         self.lastTrackId = trackId
         self.lastTrackPosition += 1
         self.tracks.append(track)
+
+    def _splitGenre(self, genre):
+        logger.info('info1 : ' + str(genre))
+        if genre is None:
+            return None
+        tmp = genre.split('; ')
+        tmp.sort()
+        logger.info('info2 : ' + str(tmp))
+        return tmp

@@ -56,7 +56,7 @@ class FlacTagExtractor(AbstractTagExtractor):
 
     def extractGenre(self):
         if 'GENRE' in self.audioTag:
-            genres = TrackExtractorHelper.trimVorbisTag(self.audioTag['GENRE']).rstrip().split(';')
+            genres = TrackExtractorHelper.trimVorbisTag(self.audioTag['GENRE']).rstrip().split('; ')
             self.track.genres = genres
 
     def extractArtist(self):

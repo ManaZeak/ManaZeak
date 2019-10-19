@@ -79,7 +79,7 @@ class Mp3TagExtractor(AbstractTagExtractor):
 
     def extractGenre(self):
         if 'TCON' in self.audioTag:
-            genres = strip_tags(self.audioTag['TCON'].text[0]).rstrip().split(';')
+            genres = strip_tags(self.audioTag['TCON'].text[0]).rstrip().split('; ')
             self.track.genres = genres
 
     def extractArtist(self):
