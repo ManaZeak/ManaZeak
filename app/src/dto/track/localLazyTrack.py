@@ -74,6 +74,7 @@ class LocalLazyTrack(object):
             newGenre.id = splitGenre[0]
             newGenre.name = splitGenre[1]
             self.genres.append(newGenre)
+        self.genres.sort(key=lambda genreTmp: genreTmp.name)
 
     ## Add the composer and the performer to a track.
     def addComposerAndPerformerFromRow(self, row):
