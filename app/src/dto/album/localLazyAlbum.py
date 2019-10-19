@@ -19,6 +19,16 @@ class LocalLazyAlbum(object):
         self.lastTrackPosition = -1
         ## The last track id.
         self.lastTrackId = None
+        ## The duration of the album
+        self.duration = None
+        ## The release artist
+        self.releaseArtist = None
+        ## The label
+        self.label = None
+        ## The country where the album were released
+        self.country = None
+        ## The genres contained in the album.
+        self.genres = []
 
     ## Generate the JSON object of a album.
     def generateJson(self):

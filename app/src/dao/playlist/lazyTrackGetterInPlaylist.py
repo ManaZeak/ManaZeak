@@ -67,7 +67,7 @@ class LazyTrackGetterInPlaylist(object):
                    track.duration track_duration,
                    cover.location track_cover,
                    track.mood track_moodbar,
-                   genre.name track_genre,
+                   string_agg(genre.name, ';') track_genre,
                    artist.id artist_id,
                    artist.name artist_name,
                    composer.name composer_name,
@@ -88,7 +88,11 @@ class LazyTrackGetterInPlaylist(object):
             LEFT JOIN app_artist album_art on album."releaseArtist_id" = album_art.id
             LEFT JOIN app_cover cover on track.cover_id = cover.id
             WHERE playlist_id = %s
-            ORDER BY album_art.name, album.year, track."discNumber", track."trackNumber", track_id,
+            GROUP BY album_art.id, album_art.name, album.id, album.title, album.year, track.id, track.title,
+                     track.year, track."bitRate", track.duration, cover.location, track.mood, artist.id, artist.name,
+                     composer.name, composer.id, performer.id, performer.name, track."discNumber", track."trackNumber",
+                     apt.track_id, artist.name, composer.name, performer.name
+            ORDER BY album_art.name, album.year, track."discNumber", track."trackNumber", apt.track_id,
                 artist.name, composer.name, performer.name
             OFFSET %s
             LIMIT %s
