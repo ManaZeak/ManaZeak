@@ -33,7 +33,8 @@ class Track {
     this.composers = '';
     this.performersArray = options.rawTrack.PERFORMERS;
     this.performers = '';
-    this.genre = options.rawTrack.GENRE;
+    this.genreArray = options.rawTrack.GENRE;
+    this.genre = '';
     this.cover = options.rawTrack.COVER;
     this.id = options.rawTrack.ID;
     this.bitrate = options.rawTrack.BITRATE;
@@ -43,20 +44,22 @@ class Track {
     this._joinArrayIntoString('artistsArray', 'artists');
     this._joinArrayIntoString('composersArray', 'composers');
     this._joinArrayIntoString('performersArray', 'performers');
+    this._joinArrayIntoString('genreArray', 'genres');
   }
 
 
   _joinArrayIntoString(arrayKey, stringKey) {
-    let outString = '';
-
-    outString += this[arrayKey][0].NAME;
-    for (let i = 1; i < this[arrayKey].length; ++i) {
-      if (outString.indexOf(this[arrayKey][i].NAME) === -1) {
-        outString += `, ${this[arrayKey][i].NAME}`;
+    if (this[arrayKey].length > 0) {
+      let outString = '';
+      outString += this[arrayKey][0].NAME;
+      for (let i = 1; i < this[arrayKey].length; ++i) {
+        if (outString.indexOf(this[arrayKey][i].NAME) === -1) {
+          outString += `, ${this[arrayKey][i].NAME}`;
+        }
       }
-    }
 
-    this[stringKey] = outString;
+      this[stringKey] = outString;
+    }
   }
 }
 

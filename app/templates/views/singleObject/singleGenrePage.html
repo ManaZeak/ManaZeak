@@ -1,2 +1,32 @@
 {% load staticfiles %}
-<div class="single-genre-page"></div>
+<div class="single-genre-page">
+    <div class="album-header">
+        <div class="album-cover-container">
+            <img src="{% static 'img/object/album.svg' %}" class="album-cover">
+        </div>
+        <div class="album-info">
+            <div class="album-main-info">
+                <h1 class="album-title">Album Title</h1>
+                <h2 class="album-artist">Album Artist</h2>
+                <h2 class="album-year-label"><i>2018 – UKF Records</i></h2>
+            </div>
+            <div class="album-detailed-info">
+                <div class="labels">
+                    <h4>&nbsp;</h4>
+                    <h4>Country</h4>
+                    <h4>Genre</h4>
+                </div>
+                <div class="values">
+                    <h4 class="album-track-composition">18 tracks – 1 hr 13 min</h4>
+                    <h4 class="album-country">France</h4>
+                    <h4 class="album-genres">Progressive Rock</h4>
+                </div>
+            </div>
+            <div class="album-controls">
+                <button class="play-album">PLAY</button>
+                <span><img src="{% static 'img/actions/more-hori.svg' %}"></span>
+            </div>
+        </div>
+    </div>
+    <div class="album-tracks"></div>
+</div>

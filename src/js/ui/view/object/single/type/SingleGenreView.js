@@ -1,4 +1,6 @@
 import SingleTagView from "../SingleTagView";
+import ScrollBar from "../../../../component/bar/ScrollBar";
+import SingleGenreViewTrackEntry from "../entry/SingleGenreViewTrackEntry";
 'use strict';
 
 
@@ -22,6 +24,7 @@ class SingleGenreView extends SingleTagView {
 
   _processGenre(response) {
     return new Promise(resolve => {
+      console.log(response)
       resolve();
     });
   }

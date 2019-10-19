@@ -121,14 +121,13 @@ class AlbumView extends LibraryViews {
       albumTracks.appendChild(albumViewEntry.domFragment);
       ++this._trackDatasetId;
       // Split genre into array and try to insert them if not already existing in genres
-      if (album.tracks[k].genre && !genresObject[album.tracks[k].genre]) {
-        let genreArray = album.tracks[k].genre.split('; ');
+      if (album.tracks[k].genreArray.length > 0) {
         // Iterate over splited array
-        for (let j = 0; j < genreArray.length; ++j)  {
-          if (genreArray[j] && !genresObject[genreArray[j]]) {
-            genresObject[genreArray[j]] = 1;
+        for (let j = 0; j < album.tracks[k].genreArray.length; ++j)  {
+          if (album.tracks[k].genreArray[j] && !genresObject[album.tracks[k].genreArray[j].NAME]) {
+            genresObject[album.tracks[k].genreArray[j].NAME] = 1;
             const genreBadge = document.createElement('SPAN');
-            genreBadge.innerHTML = genreArray[j];
+            genreBadge.innerHTML = album.tracks[k].genreArray[j].NAME;
             genres.appendChild(genreBadge);
           }
         }
