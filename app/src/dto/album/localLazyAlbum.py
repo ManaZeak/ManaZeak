@@ -49,6 +49,7 @@ class LocalLazyAlbum(object):
         # This is a new track creating it.
         if self.lastTrackId is None or self.lastTrackId != trackId:
             self._createTrackFromRow(trackId, row)
+            self.tracks[self.lastTrackPosition].addGenreFromRow(row)
         # Adding the track artist.
         self.tracks[self.lastTrackPosition].addArtistsFromRow(row)
         # Adding the composer and the performer.
@@ -77,16 +78,7 @@ class LocalLazyAlbum(object):
         track.duration = row[9]
         track.cover = row[10]
         track.moodbar = row[11]
-        track.genre = self._splitGenre(row[12])
         self.lastTrackId = trackId
         self.lastTrackPosition += 1
         self.tracks.append(track)
 
-    def _splitGenre(self, genre):
-        logger.info('info1 : ' + str(genre))
-        if genre is None:
-            return None
-        tmp = genre.split('; ')
-        tmp.sort()
-        logger.info('info2 : ' + str(tmp))
-        return tmp

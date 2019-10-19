@@ -1,7 +1,7 @@
 import logging
 
 from app.src.dto.artist.LocalLazyArtist import LocalLazyArtist
-
+from app.src.dto.genre.localLazyGenre import LocalLazyGenre
 
 logger = logging.getLogger('django')
 
@@ -25,7 +25,7 @@ class LocalLazyTrack(object):
         ## The track moodbar.
         self.moodbar = None
         ## The track genre.
-        self.genre = None
+        self.genres = []
         ## The track artists.
         self.artists = []
         ## The track composers.
@@ -51,7 +51,7 @@ class LocalLazyTrack(object):
             'BITRATE': self.bitrate,
             'DURATION': self.duration,
             'COVER': self.cover,
-            'GENRE': self.genre,
+            'GENRE': [genre.generateJson() for genre in self.genres],
             'MOODBAR': self.moodbar,
         }
 
@@ -61,6 +61,19 @@ class LocalLazyTrack(object):
         if self.lastArtistId is None or self.lastArtistId != artistId:
             artistName = row[14]
             self._createArtist(artistId, artistName)
+
+    def addGenreFromRow(self, row):
+        genres = row[12].split(';')
+        # if the genre is empty
+        if genres is None or genres[0] == '|':
+            return None
+        for genre in genres:
+            splitGenre = genre.split('|')
+            newGenre = LocalLazyGenre()
+            logger.info(str(splitGenre))
+            newGenre.id = splitGenre[0]
+            newGenre.name = splitGenre[1]
+            self.genres.append(newGenre)
 
     ## Add the composer and the performer to a track.
     def addComposerAndPerformerFromRow(self, row):

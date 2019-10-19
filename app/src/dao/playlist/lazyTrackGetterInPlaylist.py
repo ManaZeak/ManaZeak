@@ -67,7 +67,7 @@ class LazyTrackGetterInPlaylist(object):
                    track.duration track_duration,
                    cover.location track_cover,
                    track.mood track_moodbar,
-                   string_agg(genre.name, '; ') track_genre,
+                   string_agg(concat(genre.id,'|',genre.name), ';') track_genre,
                    artist.id artist_id,
                    artist.name artist_name,
                    composer.name composer_name,
