@@ -1,8 +1,8 @@
 import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
-import UserInterface from '../view/UserInterface.js';
+import UserInterface from '../ui/UserInterface.js';
 import User from './User.js';
-import Notification from "../view/utils/Notification";
+import Notification from "../ui/component/Notification";
 'use strict';
 
 
@@ -362,7 +362,7 @@ class Mzk {
    **/
   repeatTrack() {
     this.model.repeatTrack();
-    // No need to update the view since the current track didn't changed
+    // No need to update the ui since the current track didn't changed
   }
 
 
@@ -570,12 +570,12 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since November 2018
-   * @description Set a new active view to the active playlist (available in LibraryViews mode)
-   * @param {string} newView - The new view string value in the global ViewEnum
+   * @description Set a new active ui to the active playlist (available in LibraryViews mode)
+   * @param {string} newView - The new ui string value in the global ViewEnum
    **/
   changeActiveLibraryView(newView) {
     return new Promise(resolve => {
-      // Only changing view if the new view is not the current one
+      // Only changing ui if the new ui is not the current one
       if (this.model.activeView !== newView) {
         this.model.setActiveView(newView)
           .then(() => {
@@ -604,7 +604,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the next one in the current view
+   * @description Change the player track using the next one in the current ui
    * isUserRequest -> user has clicked on next
    **/
   next(isUserRequest) {
@@ -659,7 +659,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the previous one in the current view
+   * @description Change the player track using the previous one in the current ui
    **/
   previousTrackInView() {
     const repeatMode = this.model.repeatMode;
@@ -727,7 +727,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the previous one in the current view
+   * @description Change the player track using the previous one in the current ui
    * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
    **/
   addTrackToQueue(datasetId) {
@@ -779,7 +779,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since January 2019
-   * @description Serve the user a download of the current selection in the active view. If no selection, it serve the right-clicked track
+   * @description Serve the user a download of the current selection in the active ui. If no selection, it serve the right-clicked track
    * @param {string} id - The track dataset id (DOM dataset id) that triggered the context (see <code>if</code> condition)
    **/
   download(id) {

@@ -4,7 +4,7 @@ import Utils from './utils/Utils.js';
 import Logger from './utils/Logger.js';
 import Events from './utils/Events.js';
 import Shortcut from './utils/Shortcut.js';
-import Notification from './view/utils/Notification.js';
+import Notification from './ui/component/Notification.js';
 import Mzk from './core/Mzk.js';
 'use strict';
 

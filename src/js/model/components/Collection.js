@@ -1,5 +1,5 @@
 import Playlist from './Playlist.js';
-import NewLibraryModal from "../../view/utils/modals/NewLibraryModal";
+import NewLibraryModal from "../../ui/modal/NewLibraryModal";
 'use strict';
 
 class Collection {
@@ -207,7 +207,7 @@ class Collection {
       };
 
       new NewLibraryModal({
-        url: 'modals/newLibrary',
+        url: 'modal/newLibrary',
         callback: checkModalValues
       });
     });

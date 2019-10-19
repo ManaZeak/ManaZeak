@@ -29,7 +29,7 @@ class Player {
 
     this._init(); // Init player object
     this._events(); // Listen to events
-    this._attach(); // Attach HTML audio tag to the DOM
+    this._attach(); // Attach HTML audio object to the DOM
   }
 
 
@@ -45,10 +45,10 @@ class Player {
    * @memberof Player
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Build player tag and set loop/volume values
+   * @description Build player object and set loop/volume values
    **/
   _init() {
-    this._player = document.createElement('AUDIO'); // Create HTML audio tag
+    this._player = document.createElement('AUDIO'); // Create HTML audio object
     this._player.id = 'mzk-audio-player'; // Assign player ID
     this.volume = 1; // Initialize volume to its maximum value, prefs
   }

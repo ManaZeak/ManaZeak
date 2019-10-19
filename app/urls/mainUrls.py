@@ -31,7 +31,7 @@ urlpatterns = [
 
     ############################# Modals #############################
     # FIXME: remove the 's'
-    path('modals/', include('app.urls.modal.modalUrls', namespace='modal')),
+    path('modal/', include('app.urls.modal.modalUrls', namespace='modal')),
 
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),
@@ -41,7 +41,7 @@ urlpatterns = [
 
     ############################ Contexts #############################
     # FIXME : remove the 's'
-    path('contexts/', include('app.urls.context.contextUrls', namespace='context')),
+    path('context/', include('app.urls.context.contextUrls', namespace='context')),
 
     path('view/', include('app.urls.view.viewUrls', namespace='views')),
 
