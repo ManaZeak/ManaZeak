@@ -26,7 +26,7 @@ class GenreService(object):
         FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request)
         # Checking if the user has the permission
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
-        genreInDb = Genre.objects.all()
+        genreInDb = Genre.objects.all().order_by('name')
         genres = []
         for genre in genreInDb:
             genreDto = MainPageGenre()

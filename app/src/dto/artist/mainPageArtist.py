@@ -40,7 +40,7 @@ class MainPageArtist(object):
     def _generatePicturePath(self):
         # TODO à bouger dans une class utils je pense (same pour genre)
         sanitizedName = ''
-        forbiddenChars = ['*', '/', '\\', ':', ';', '?', '<', '>', '\"', '|', '\'']
+        forbiddenChars = ['*', '/', '\\', ':', ';', '?', '<', '>', '|']
         for x in range(0, len(self.name)):
             if self.name[x] in forbiddenChars:
                 sanitizedName += '-'
