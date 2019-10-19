@@ -63,6 +63,7 @@ class LocalLazyTrack(object):
             self._createArtist(artistId, artistName)
 
     def addGenreFromRow(self, row):
+        logger.info('line for trk : ' + str(self.title) + ' : ' + str(row))
         genres = row[12].split(';')
         # if the genre is empty
         if genres is None or genres[0] == '|':
