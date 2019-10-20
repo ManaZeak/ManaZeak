@@ -1,7 +1,9 @@
 from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 
-
 ## This object describes an artist in the lazy loading of an artist.
+from app.src.dto.artist.mainPageArtist import MainPageArtist
+
+
 class LocalLazyAlbumArtist(object):
 
     ## Constructor
@@ -23,10 +25,19 @@ class LocalLazyAlbumArtist(object):
 
     ## Generate the JSON object of an albumArtist.
     def generateJson(self):
+        totalTrack = 0
+        for album in self.albums:
+            totalTrack += album.getNumberOfTracks()
+
         return {
             'ID': self.id,
             'NAME': self.name,
             'ALBUMS': [album.generateJson() for album in self.albums],
+            'PP': MainPageArtist.generatePicturePath(self.name),
+            # 'LANGUAGE': Le pays unique dans la liste de trk des albums
+            'TOTAL_RELEASED_ALBUM': len(self.albums),
+            'TOTAL_RELEASED_TRACK': totalTrack,
+            #'TRACKS':
         }
 
     ## Add the information contained by a row into the albums.

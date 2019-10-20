@@ -37,6 +37,7 @@ class AlbumService(object):
     @FrontRequest
     ## Get information about an album.
     def getAlbum(request, albumId):
+        # FIXME : add label, Language/country
         user = request.user
         AlbumService._checkPermissionAndRequest(request, user)
         # Getting the album of the user

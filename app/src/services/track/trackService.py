@@ -7,6 +7,9 @@ from django.http import HttpResponse
 
 from app.models import Track
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
+from app.src.dao.track.randomTrackFromArtistGetter import RandomTrackFromArtistGetter
+from app.src.dto.track.localLazyTrack import LocalLazyTrack
+from app.src.dto.track.localTrack import LocalTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.collections.playlist.playlistService import PlaylistService
@@ -18,6 +21,7 @@ from app.src.utils.requestMethodEnum import RequestMethodEnum
 
 
 logger = logging.getLogger('django')
+
 
 ## This class is used for the interactions between the user and the tracks.
 class TrackService(object):
@@ -48,3 +52,16 @@ class TrackService(object):
             return redirectedResponse
         except UserException as e:
             return ErrorHandler.generateJsonResponseFromException(e, PlaylistService.lazyLoadPlaylist)
+
+    @staticmethod
+    ## Fetch a random track of the database.
+    #   @param request the request of the front.
+    def getRandomTracksFromArtist(artist):
+        # Getting a random track from the database.
+        randomTrackGetter = RandomTrackFromArtistGetter()
+        row = randomTrackGetter.getRandomTrackFromArtist(artist)
+        tracksDb = Track.objects.filter(id__in=row)
+        tracks = []
+        for track in tracksDb:
+            tracks.append(LocalLazyTrack.createTrackFromOrm(track))
+        return [track.generateJson() for track in tracks]

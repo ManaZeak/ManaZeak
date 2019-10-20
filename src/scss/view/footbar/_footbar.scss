@@ -1,13 +1,24 @@
 @import 'playbackratebar';
 
 #footbar {
-  background: $mzk-color-bg;
   bottom: 0;
+  display: flex;
+  height: $footbar-height;
+  position: absolute;
+  width: 100%;
+}
+
+.footbar-track-preview {
+  height: $footbar-height;
+  width: $mzk-mp-aside-width;
+}
+
+.footbar-controls {
+  background: $mzk-color-bg;
   display: flex;
   height: $footbar-height; // Defined in utils/tools/_variables.scss
   justify-content: center;
-  position: absolute;
-  width: 100%;
+  width: calc(100% - #{$mzk-mp-aside-width});
   z-index: 700;
 
   .left,

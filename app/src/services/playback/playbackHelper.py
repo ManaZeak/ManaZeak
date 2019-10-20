@@ -12,17 +12,17 @@ class PlaybackHelper(object):
     @staticmethod
     ## Get a random track in a playlist.
     #   @return the id of the track selected.
-    def getRandomTrack(playlistId):
+    def getRandomTrack(playlistId, user):
         if Playlist.objects.filter(id=playlistId).count() == 0:
-            raise UserException(ErrorEnum.DB_ERROR)
+            raise UserException(ErrorEnum.DB_ERROR, user)
         return RandomTrackGetter.getRandomTrack(playlistId)[0]
 
     @staticmethod
     ## Get a shuffled first album track.
     #   @return the id of the track selected.
-    def getShuffledFirstAlbumTrack(playlistId):
+    def getShuffledFirstAlbumTrack(playlistId, user):
         if Playlist.objects.filter(id=playlistId).count() == 0:
-            raise UserException(ErrorEnum.DB_ERROR)
+            raise UserException(ErrorEnum.DB_ERROR, user)
         return ShuffleFirstAlbumTrackGetter.getShuffledFirstAlbumTrack(playlistId)[0]
 
     @staticmethod

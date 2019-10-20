@@ -8,7 +8,6 @@ logger = logging.getLogger('django')
 
 class LocalLazyAlbum(object):
 
-
     ## Constructor
     def __init__(self):
         ## The album id.
@@ -65,8 +64,13 @@ class LocalLazyAlbum(object):
         self.id = album.id
         self.title = album.title
         self.year = album.year
+
         # Creating the track from the orm
         self.addTrackFromOrm()
+
+    ## Get the number of track of the album.
+    def getNumberOfTracks(self):
+        return len(self.tracks)
 
     ## Creating a track object from the sql row
     def _createTrackFromRow(self, trackId, row):

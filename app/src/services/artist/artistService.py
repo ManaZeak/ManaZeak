@@ -5,6 +5,7 @@ from app.src.dto.artist.localLazyAlbumArtist import LocalLazyAlbumArtist
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
+from app.src.services.track.trackService import TrackService
 from app.src.utils.decorators import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
@@ -54,5 +55,6 @@ class ArtistService(object):
         albums.addArtistFromOrm(artist)
         return {
             'ARTIST': albums.generateJson(),
+            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artist)
         }
 
