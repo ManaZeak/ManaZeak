@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 
-from app.models import Genre, Track
+from app.models import Genre, Track, Artist
 from app.src.dto.genre.MainPageGenre import MainPageGenre
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 from app.src.security.permissionEnum import PermissionEnum
@@ -48,11 +48,19 @@ class GenreService(object):
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         if Genre.objects.filter(id=genreId).count() == 0:
             raise UserException(ErrorEnum.DB_ERROR, user)
+        genre = Genre.objects.get(id=genreId)
         tracksDb = Track.objects.filter(genres__id=genreId).order_by('artists__name', 'album__year',
                                                                      'album__title', 'trackNumber')
+        artistNumber = Artist.objects.filter(track__genres=genre).distinct().count()
         tracks = []
         for track in tracksDb:
             tracks.append(LocalLazyTrack.createTrackFromOrm(track).generateJson())
         return {
-            'TRACKS': tracks,
+            'GENRE': {
+                'ID': genre.id,
+                'TRACKS': tracks,
+                'NAME': genre.name,
+                'PICTURE': MainPageGenre.generateGenrePicturePath(genre.name),
+                'TOTAL_ARTIST': artistNumber,
+            }
         }
