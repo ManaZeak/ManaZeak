@@ -42,9 +42,23 @@ class IndexedTrackContainer(object):
                 self.genres.update(subContainer.genres)
                 self.covers.update(subContainer.covers)
                 self.producers.update(subContainer.producers)
-                self.artists = {**self.artists, **subContainer.artists}
+                self._mergeArtists(self.artists, subContainer.artists)
+                # self.artists = {**self.artists, **subContainer.artists}
                 self.albums = {**self.albums, **subContainer.albums}
                 self.tracksInContainer += subContainer.tracksInContainer
+
+    @staticmethod
+    def _mergeArtists(containerTarget, containerToMerge):
+        for toMerge in containerToMerge.keys():
+            # If the object is already in the dict merging
+            if toMerge in containerTarget:
+                # If the object we are merging have a location
+                if containerTarget[toMerge].location is not None:
+                    containerTarget[toMerge].location = containerToMerge[toMerge].location
+                    containerTarget[toMerge].folderName = containerToMerge[toMerge].folderName
+                # The object without location are not merged since they are already in the object
+            else:
+                containerTarget[toMerge] = containerToMerge[toMerge]
 
     ## Add the information about the track into the references.
     #   @param track the LocalTrack to get the metadata to add to the reference.
@@ -86,7 +100,6 @@ class IndexedTrackContainer(object):
                     self.artists[artist.name].folderName = artist.folderName
                 if self.artists[artist.name].location is None:
                     self.artists[artist.name].location = artist.location
-
         else:
             # Creating the artist in the element to save
             self.artists[artist.name] = artist

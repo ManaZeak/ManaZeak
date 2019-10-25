@@ -1,7 +1,7 @@
 import logging
 
 from app.src.dao.importer.albumImporter import AlbumImporter
-from app.src.dao.importer.artistImporter import ArtistImporter
+from app.src.dao.importer.albumArtistImporter import AlbumArtistImporter
 from app.src.dao.importer.coverImporter import CoverImporter
 from app.src.dao.importer.genreImporter import GenreImporter
 from app.src.dao.importer.producerImporter import ProducerImporter
@@ -67,7 +67,7 @@ class LocalTrackImporter(object):
 
     ## Imports the artists of the indexed tracks.
     def _importArtists(self):
-        artistImporter = ArtistImporter()
+        artistImporter = AlbumArtistImporter()
         self.artistReference = artistImporter.importArtists(self.trackContainer.artists)
 
     ## Imports the producers of the indexed tracks.

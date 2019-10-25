@@ -10,6 +10,9 @@ from app.src.dto.artist.localArtist import LocalArtist
 
 
 ## Helper for extracting the tag tracks.
+from app.src.dto.country.localCountry import LocalCountry
+
+
 class TrackExtractorHelper(object):
 
     @staticmethod
@@ -54,6 +57,19 @@ class TrackExtractorHelper(object):
             localArtist.addArtist(artist)
             localArtists.append(localArtist)
         return localArtists
+
+    @staticmethod
+    ## Construct a table of local country with a list of countries.
+    #   @param tagString the string containing the countries
+    #   @return a table of local countries.
+    def getLocalCountriesFromTrack(tagString):
+        countries = []
+        countriesTag = tagString.split('; ')
+        for country in countriesTag:
+            localCountry = LocalCountry()
+            localCountry.name = country
+            countries.append(country)
+        return countries
 
     @staticmethod
     ## Compute the moodbar path with the location of the track and assign it to the track.

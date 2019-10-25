@@ -52,6 +52,8 @@ class TrackExtractorService(object):
         trackExtractor.extractAlbum()
         trackExtractor.extractAlbumArtist()
         trackExtractor.extractCover(self.coverPath)
+        trackExtractor.extractLabel()
+        trackExtractor.extractCountry()
 
         return track
 

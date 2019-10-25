@@ -59,6 +59,13 @@ class AbstractTagExtractor(object, metaclass=abc.ABCMeta):
     def extractAlbumArtist(self):
         raise NotImplementedError('The function needs an override.')
 
+    ## Extract the label of the track.
+    def extractLabel(self):
+        raise NotImplementedError('The function needs an override.')
+
+    def extractCountry(self):
+        raise NotImplementedError('The function needs an override.')
+
     ## Extract the track cover.
     def extractCover(self, coverPath):
         raise NotImplementedError('The function needs an override.')

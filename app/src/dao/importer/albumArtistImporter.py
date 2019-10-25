@@ -11,7 +11,7 @@ loggerScan = logging.getLogger('scan')
 
 
 ## Import some artists into the database.
-class ArtistImporter(AbstractDao):
+class AlbumArtistImporter(AbstractDao):
 
     ## Merge the artists into the database.
     #   @param artists a set containing the artists to insert into the database.

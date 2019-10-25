@@ -1,5 +1,6 @@
 import hashlib
 import os
+from itertools import count
 
 from app.src.services.track.trackExtractorHelper import TrackExtractorHelper
 from app.src.utils.tagExtractor.abstractTagExtractor import AbstractTagExtractor
@@ -93,6 +94,15 @@ class FlacTagExtractor(AbstractTagExtractor):
             albumArtist = TrackExtractorHelper.trimVorbisTag(self.audioTag['ALBUMARTIST'])
             self.track.albumArtist.addAlbumArtist(albumArtist, self.track.artistFolderName, 0)
             self.track.album.artist = albumArtist
+
+    def extractLabel(self):
+        if 'LABEL' in self.audioTag:
+            self.track.label.name = TrackExtractorHelper.trimVorbisTag(self.audioTag['LABEL'])
+
+    def extractCountry(self):
+        if 'LANGUAGE' in self.audioTag:
+            countries = TrackExtractorHelper.trimVorbisTag(self.audioTag['LANGUAGE'])
+            self.track.country = TrackExtractorHelper.getLocalCountriesFromTrack(countries)
 
     def extractCover(self, coverPath):
         # Getting the image

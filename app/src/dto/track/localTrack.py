@@ -5,6 +5,10 @@ from app.src.dto.artist.localArtist import LocalArtist
 
 
 ## This class is a copy of a Track object. This object has less impact in memory.
+from app.src.dto.country.localCountry import LocalCountry
+from app.src.dto.label.localLazyLabel import LocalLazyLabel
+
+
 class LocalTrack(object):
 
     ## Constructor
@@ -73,6 +77,10 @@ class LocalTrack(object):
         self.artistFolderName = ''
         ## The name of the album artist.
         self.albumArtist = LocalArtist()
+        ## The label of the track
+        self.label = LocalLazyLabel()
+        ## The country of the track artist
+        self.country = []
         ## Any track using this object exists and has been rescanned.
         self.scanned = True
         ## The last modified date is now since we create the track
