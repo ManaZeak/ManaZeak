@@ -5,6 +5,7 @@ from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
+from app.src.services.views.mainPage.mainPageHelper import MainPageHelper
 from app.src.utils.decorators import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
@@ -44,6 +45,20 @@ class AlbumService(object):
         if Album.objects.filter(id=albumId).count() == 0:
             raise UserException(ErrorEnum.DB_ERROR, user)
         albumDb = Album.objects.get(id=albumId)
+        album = LocalLazyAlbum()
+        album.createAlbumFromOrm(albumDb)
+        return {
+            'ALBUM': album.generateJson()
+        }
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    def getRandomAlbum(request):
+        user = request.user
+        AlbumService._checkPermissionAndRequest(request, user)
+        album = MainPageHelper.getRandomAlbums(1)
+        albumDb = Album.objects.get(id=album[0]['ALBUM_ID'])
         album = LocalLazyAlbum()
         album.createAlbumFromOrm(albumDb)
         return {

@@ -15,6 +15,7 @@ class MainPageAlbum(object):
     def buildFromRandomAlbumDao(self, sqlRow):
         self.id = sqlRow[0]
         self.title = sqlRow[1]
+        self.year = sqlRow[3]
         self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[2]
 
     ## Initialise the album object with data returned from the orm.
