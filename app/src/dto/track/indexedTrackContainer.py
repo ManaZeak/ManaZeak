@@ -51,12 +51,11 @@ class IndexedTrackContainer(object):
     def _mergeArtists(containerTarget, containerToMerge):
         if 'Queens Of The Stone Age' in containerTarget:
             loggerScan.info(
-                'Queens Of The Stone Age in the target with : ' + containerTarget['Queens Of The Stone Age'].location)
+                'Queens Of The Stone Age in the target with : ' + str(containerTarget['Queens Of The Stone Age'].location))
         else:
             loggerScan.info('Queens Of The Stone Age not in the container destination.')
         if 'Queens Of The Stone Age' in containerToMerge:
-            loggerScan.info('Queens Of The Stone Age in the to merge with : ' + containerToMerge[
-                'Queens Of The Stone Age'].location)
+            loggerScan.info('Queens Of The Stone Age in the to merge with : ' + str(containerToMerge['Queens Of The Stone Age'].location))
         else:
             loggerScan.info('Queens Of The Stone Age not in the container to merge.')
 
@@ -74,7 +73,7 @@ class IndexedTrackContainer(object):
                 containerTarget[toMerge] = containerToMerge[toMerge]
         if 'Queens Of The Stone Age' in containerTarget:
             loggerScan.info(
-                'AT THE END Queens Of The Stone Age in the target with : ' + containerTarget['Queens Of The Stone Age'].location)
+                'AT THE END Queens Of The Stone Age in the target with : ' + str(containerTarget['Queens Of The Stone Age'].location))
         else:
             loggerScan.info('AT THE END Queens Of The Stone Age not in the container destination.')
 
