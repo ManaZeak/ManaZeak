@@ -61,9 +61,9 @@ class IndexedTrackContainer(object):
 
         for toMerge in containerToMerge.keys():
             # If the object is already in the dict merging and the location
-            if toMerge in containerTarget and containerToMerge[toMerge].location is not None:
+            if toMerge in containerTarget:
                 # If the object we are merging doesn't have a location
-                if containerTarget[toMerge].location is None or containerTarget[toMerge].location == '':
+                if containerTarget[toMerge].location is None and containerToMerge[toMerge].location is not None:
                     containerTarget[toMerge].location = containerToMerge[toMerge].location
                     containerTarget[toMerge].folderName = containerToMerge[toMerge].folderName
                 # The object with location are merged since they are already in the object
