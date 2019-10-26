@@ -49,17 +49,34 @@ class IndexedTrackContainer(object):
 
     @staticmethod
     def _mergeArtists(containerTarget, containerToMerge):
+        if 'Queens Of The Stone Age' in containerTarget:
+            loggerScan.info(
+                'Queens Of The Stone Age in the target with : ' + containerTarget['Queens Of The Stone Age'].location)
+        else:
+            loggerScan.info('Queens Of The Stone Age not in the container destination.')
+        if 'Queens Of The Stone Age' in containerToMerge:
+            loggerScan.info('Queens Of The Stone Age in the to merge with : ' + containerToMerge[
+                'Queens Of The Stone Age'].location)
+        else:
+            loggerScan.info('Queens Of The Stone Age not in the container to merge.')
+
         for toMerge in containerToMerge.keys():
-            # If the object is already in the dict merging
-            if toMerge in containerTarget:
+            # If the object is already in the dict merging and the location
+            if toMerge in containerTarget \
+                    and (containerToMerge[toMerge].location is not None or containerToMerge[toMerge].location == ''):
                 # If the object we are merging doesn't have a location
-                if containerTarget[toMerge].location is None:
+                if containerTarget[toMerge].location is None or containerTarget[toMerge].location == '':
                     containerTarget[toMerge].location = containerToMerge[toMerge].location
                     containerTarget[toMerge].folderName = containerToMerge[toMerge].folderName
                 # The object with location are merged since they are already in the object
             else:
                 # Creating the object that doesn't exists.
                 containerTarget[toMerge] = containerToMerge[toMerge]
+        if 'Queens Of The Stone Age' in containerTarget:
+            loggerScan.info(
+                'AT THE END Queens Of The Stone Age in the target with : ' + containerTarget['Queens Of The Stone Age'].location)
+        else:
+            loggerScan.info('AT THE END Queens Of The Stone Age not in the container destination.')
 
     ## Add the information about the track into the references.
     #   @param track the LocalTrack to get the metadata to add to the reference.
