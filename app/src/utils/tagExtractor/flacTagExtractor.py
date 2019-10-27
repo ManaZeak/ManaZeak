@@ -1,10 +1,11 @@
 import hashlib
+import logging
 import os
-from itertools import count
 
 from app.src.services.track.trackExtractorHelper import TrackExtractorHelper
 from app.src.utils.tagExtractor.abstractTagExtractor import AbstractTagExtractor
 
+loggerScan = logging.getLogger('scan')
 
 ## Extract the tag of a flac file.
 class FlacTagExtractor(AbstractTagExtractor):
@@ -102,7 +103,7 @@ class FlacTagExtractor(AbstractTagExtractor):
     def extractCountry(self):
         if 'LANGUAGE' in self.audioTag:
             countries = TrackExtractorHelper.trimVorbisTag(self.audioTag['LANGUAGE'])
-            self.track.country = TrackExtractorHelper.getLocalCountriesFromTrack(countries)
+            self.track.countries = TrackExtractorHelper.getLocalCountriesFromTrack(countries)
 
     def extractCover(self, coverPath):
         # Getting the image

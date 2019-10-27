@@ -4,11 +4,10 @@ from app.src.dto.album.localAlbum import LocalAlbum
 from app.src.dto.artist.localArtist import LocalArtist
 
 
-## This class is a copy of a Track object. This object has less impact in memory.
-from app.src.dto.country.localCountry import LocalCountry
 from app.src.dto.label.localLazyLabel import LocalLazyLabel
 
 
+## This class is a copy of a Track object. This object has less impact in memory.
 class LocalTrack(object):
 
     ## Constructor

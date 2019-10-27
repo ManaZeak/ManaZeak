@@ -11,7 +11,6 @@ from app.src.utils.tagExtractor.abstractTagExtractor import AbstractTagExtractor
 ## Extract a mp3 track.
 class Mp3TagExtractor(AbstractTagExtractor):
 
-
     def __init__(self, track, audioTag):
         self.track = track
         self.audioTag = audioTag
@@ -122,4 +121,4 @@ class Mp3TagExtractor(AbstractTagExtractor):
     def extractCountry(self):
         if 'TLAN' in self.audioTag:
             countries = self.audioTag['TLAN'].text[0].rstrip()
-            self.track.country = TrackExtractorHelper.getLocalCountriesFromTrack(countries)
+            self.track.countries = TrackExtractorHelper.getLocalCountriesFromTrack(countries)

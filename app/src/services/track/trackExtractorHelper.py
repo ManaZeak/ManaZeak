@@ -68,7 +68,7 @@ class TrackExtractorHelper(object):
         for country in countriesTag:
             localCountry = LocalCountry()
             localCountry.name = country
-            countries.append(country)
+            countries.append(localCountry)
         return countries
 
     @staticmethod
