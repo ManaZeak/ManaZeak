@@ -1,17 +1,14 @@
 import logging
-from contextlib import closing
-
-from django.db import connection
 
 from app.src.config.constants import Constants
-from app.src.dao.abstractDao import AbstractDao
+from app.src.dao.importer.abstractDaoImporter import AbstractDaoImporter
 from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
 
 ## Import some artists into the database.
-class AlbumArtistImporter(AbstractDao):
+class AlbumArtistImporter(AbstractDaoImporter):
 
     ## Merge the artists into the database.
     #   @param artists a set containing the artists to insert into the database.
@@ -33,20 +30,6 @@ class AlbumArtistImporter(AbstractDao):
                'DO UPDATE SET name = EXCLUDED.name, "realName" = EXCLUDED."realName", location = EXCLUDED.location, ' \
                '"folderName" = EXCLUDED."folderName"' \
                'returning id, name'.format(', '.join(['(%s, %s, %s, %s)'] * len(artists)))
-
-    ## Execute the sql request and returns the results.
-    def _executeRequest(self, artists):
-        artistRef = dict()
-        # Generating the request
-        sql = self._generateRequest(artists)
-        # Getting the parameters
-        params = self._generateParams(artists)
-        with closing(connection.cursor()) as cursor:
-            # Executing the query and fill the reference
-            cursor.execute(sql, params)
-            for row in cursor.fetchall():
-                artistRef[row[1]] = row[0]
-        return artistRef
 
     ## Prepares the genres for the upsert.
     def _generateParams(self, artists):

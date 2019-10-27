@@ -15,6 +15,15 @@ class Cover(models.Model):
     ## The path of the cover
     location = models.URLField(max_length=1000, null=True, unique=True)
 
+## The country of a track.
+class Country(models.Model):
+    ## The name of the country
+    name = models.CharField(max_length=1000, unique=True)
+
+## The label of a track.
+class Label(models.Model):
+    ## The name of the label
+    name = models.CharField(max_length=1000, unique=True)
 
 ## The producer of a track or an album.
 class Producer(models.Model):
@@ -152,6 +161,10 @@ class Track(models.Model):
     performers = models.ManyToManyField(Artist, related_name='performer_artists')
     ## The artists linked to the track.
     artists = models.ManyToManyField(Artist)
+    ## The label of the track
+    label = models.ForeignKey(Label, on_delete=DO_NOTHING, null=True)
+    ## The country of the track
+    countries = models.ManyToManyField(Country)
 
     #           METADATA NOT IN FILE
     ## The number of time the track has been played.

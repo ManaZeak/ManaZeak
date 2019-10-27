@@ -1,18 +1,14 @@
 import logging
 
-from contextlib import closing
-
-from django.db import connection
-
 from app.src.config.constants import Constants
-from app.src.dao.abstractDao import AbstractDao
+from app.src.dao.importer.abstractDaoImporter import AbstractDaoImporter
 from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
 
 ## Import some tracks into the database.
-class TrackImporter(AbstractDao):
+class TrackImporter(AbstractDaoImporter):
     # TODO: Add cover to track.
 
     ## Merge the tracks into the database.
@@ -49,22 +45,6 @@ class TrackImporter(AbstractDao):
                'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s, %s, '
                                                           '%s, %s, %s, %s, %s, %s, %s, '
                                                           '%s, %s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
-
-    ## Execute the sql request and returns the results.
-    #   @param tracks the tracks to be upsert into the database.
-    #   @return the track location linked to the track id.
-    def _executeRequest(self, tracks):
-        trackRef = dict()
-        # Generating the request
-        sql = self._generateRequest(tracks)
-        # Getting the parameters
-        params = self._generateParams(tracks)
-        with closing(connection.cursor()) as cursor:
-            # Executing the query and fill the reference
-            cursor.execute(sql, params)
-            for row in cursor.fetchall():
-                trackRef[row[1]] = row[0]
-        return trackRef
 
     ## Prepares the tracks for the upsert.
     def _generateParams(self, tracks):

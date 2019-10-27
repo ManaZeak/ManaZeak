@@ -19,6 +19,10 @@ class IndexedTrackContainer(object):
         self.albums = dict()
         ## The cover location present in the indexed tracks.
         self.covers = set()
+        ## The labels names present in the indexed tracks.
+        self.labels = set()
+        ## The countries names present in the indexed tracks.
+        self.countries = set()
         ## The number of track inside the container.
         self.tracksInContainer = 0
 
@@ -42,23 +46,15 @@ class IndexedTrackContainer(object):
                 self.genres.update(subContainer.genres)
                 self.covers.update(subContainer.covers)
                 self.producers.update(subContainer.producers)
+                self.countries.update(subContainer.countries)
+                self.labels.update(subContainer.labels)
                 self._mergeArtists(self.artists, subContainer.artists)
-                # self.artists = {**self.artists, **subContainer.artists}
                 self.albums = {**self.albums, **subContainer.albums}
                 self.tracksInContainer += subContainer.tracksInContainer
 
     @staticmethod
+    ## Merge two dicts containing local artists together. This allows to not override any artist location.
     def _mergeArtists(containerTarget, containerToMerge):
-        if 'Queens Of The Stone Age' in containerTarget:
-            loggerScan.info(
-                'Queens Of The Stone Age in the target with : ' + str(containerTarget['Queens Of The Stone Age'].location))
-        else:
-            loggerScan.info('Queens Of The Stone Age not in the container destination.')
-        if 'Queens Of The Stone Age' in containerToMerge:
-            loggerScan.info('Queens Of The Stone Age in the to merge with : ' + str(containerToMerge['Queens Of The Stone Age'].location))
-        else:
-            loggerScan.info('Queens Of The Stone Age not in the container to merge.')
-
         for toMerge in containerToMerge.keys():
             # If the object is already in the dict merging and the location
             if toMerge in containerTarget:
@@ -70,11 +66,6 @@ class IndexedTrackContainer(object):
             else:
                 # Creating the object that doesn't exists.
                 containerTarget[toMerge] = containerToMerge[toMerge]
-        if 'Queens Of The Stone Age' in containerTarget:
-            loggerScan.info(
-                'AT THE END Queens Of The Stone Age in the target with : ' + str(containerTarget['Queens Of The Stone Age'].location))
-        else:
-            loggerScan.info('AT THE END Queens Of The Stone Age not in the container destination.')
 
     ## Add the information about the track into the references.
     #   @param track the LocalTrack to get the metadata to add to the reference.
@@ -99,6 +90,12 @@ class IndexedTrackContainer(object):
         self._addAlbumToAlbums(track.album)
         # Adding the cover
         self.covers.add(track.coverLocation)
+        # Adding the label
+        if track.label.name is not None:
+            self.labels.add(track.label.name)
+        # Adding the country
+        for country in track.countries:
+            self.countries.add(country.name)
         # Incrementing the number of track in the container
         self.tracksInContainer += 1
 

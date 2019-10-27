@@ -79,8 +79,10 @@ class LocalTrack(object):
         self.albumArtist = LocalArtist()
         ## The label of the track
         self.label = LocalLazyLabel()
+        ## The id of the label
+        self.labelId = None
         ## The country of the track artist
-        self.country = []
+        self.countries = []
         ## Any track using this object exists and has been rescanned.
         self.scanned = True
         ## The last modified date is now since we create the track

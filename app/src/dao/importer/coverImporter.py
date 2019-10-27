@@ -1,17 +1,14 @@
 import logging
-from contextlib import closing
-
-from django.db import connection
 
 from app.src.config.constants import Constants
-from app.src.dao.abstractDao import AbstractDao
+from app.src.dao.importer.abstractDaoImporter import AbstractDaoImporter
 from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
 
 ## Import some genre into the database.
-class CoverImporter(AbstractDao):
+class CoverImporter(AbstractDaoImporter):
 
     ## Merge the covers into the database.
     #   @param covers a set containing the covers to insert into the database.
@@ -32,20 +29,6 @@ class CoverImporter(AbstractDao):
         return 'INSERT INTO app_cover (location) VALUES {} ON CONFLICT (location) ' \
                'DO UPDATE SET location = EXCLUDED.location returning id, location' \
             .format(', '.join(['(%s)'] * len(covers)))
-
-    ## Execute the sql request and returns the results.
-    def _executeRequest(self, covers):
-        genreRef = dict()
-        # Generating the request
-        sql = self._generateRequest(covers)
-        # Getting the parameters
-        params = self._generateParams(covers)
-        with closing(connection.cursor()) as cursor:
-            # Executing the query and fill the reference
-            cursor.execute(sql, params)
-            for row in cursor.fetchall():
-                genreRef[row[1]] = row[0]
-        return genreRef
 
     ## Prepares the genres for the upsert.
     def _generateParams(self, covers):
