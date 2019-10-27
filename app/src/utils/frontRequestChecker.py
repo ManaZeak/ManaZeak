@@ -42,8 +42,6 @@ class FrontRequestChecker(object):
     def _checkRequestPOST(request, expectedKeys, user):
         # Parsing the request
         parsedRequest = json.loads(request.body)
-
-        loggerDjango.info("wtf: " + str(parsedRequest))
         # Checking if all the keys are present
         for key in expectedKeys:
             if key not in parsedRequest:

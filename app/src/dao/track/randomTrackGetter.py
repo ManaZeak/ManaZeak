@@ -18,7 +18,6 @@ class RandomTrackGetter(object):
     ## Execute the sql request.
     def _executeRequest(playlistId):
         with closing(connection.cursor()) as cursor:
-            loggerScan.info(str(playlistId))
             cursor.execute(RandomTrackGetter._generateRequest(), [playlistId, playlistId])
             return cursor.fetchall()[0]
 
