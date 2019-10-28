@@ -288,6 +288,7 @@ class Model {
         try {
           set.push(new Track({
             album: options.album,
+            albumArtist: options.albumArtist,
             rawTrack: options.tracks[i]
           }));
         } catch(e) {

@@ -10,7 +10,7 @@ class SingleAlbumViewTrackEntry extends TrackEntry {
       datasetId: options.trackNumber - 1
     });
 
-    this._id = options.track.ID;
+    this._id = options.track.id;
     this._track = options.track;
     this._trackNumber = options.trackNumber;
 
@@ -23,10 +23,10 @@ class SingleAlbumViewTrackEntry extends TrackEntry {
     number.innerHTML = this._trackNumber;
 
     let duration = document.createElement('P');
-    duration.innerHTML = Utils.secondsToTimecode(this._track.DURATION);
+    duration.innerHTML = Utils.secondsToTimecode(this._track.duration);
 
     let title = document.createElement('P');
-    title.innerHTML = this._track.TITLE;
+    title.innerHTML = this._track.title;
 
     this._dom.container.appendChild(number);
     this._dom.container.appendChild(title);

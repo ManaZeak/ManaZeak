@@ -27,8 +27,6 @@ class SingleAlbumView extends SingleTagView {
       tracksContainer: null
     };
 
-    this.selection = [];
-
     this._init()
       .then(this._processAlbum.bind(this))
       .then(this._singleAlbumEvents.bind(this))
@@ -40,6 +38,7 @@ class SingleAlbumView extends SingleTagView {
     return new Promise(resolve => {
       mzk.model.makeTransitiveSet({
         tracks: response.ALBUM.TRACKS,
+        albumArtist: response.ALBUM.ALBUM_ARTIST,
         album: response.ALBUM.NAME })
         .then(set => {
           this._dom.play = this._dom.wrapper.getElementsByClassName('play-album')[0];
@@ -51,8 +50,6 @@ class SingleAlbumView extends SingleTagView {
           this._dom.country = this._dom.wrapper.getElementsByClassName('album-country')[0];
           this._dom.genres = this._dom.wrapper.getElementsByClassName('album-genres')[0];
           this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('album-tracks')[0];
-
-          console.log(set)
 
           this._dom.cover.src = this._cover;
           this._dom.title.innerHTML = this._title;
@@ -69,10 +66,10 @@ class SingleAlbumView extends SingleTagView {
             }
           }
     */
-          for (let i = 0; i < response.ALBUM.TRACKS.length; ++i) {
+          for (let i = 0; i < set.length; ++i) {
             let entry = new SingleAlbumViewTrackEntry({
               trackNumber: i + 1,
-              track: response.ALBUM.TRACKS[i]
+              track: set[i]
             });
 
             this._tracks.push(entry);
@@ -96,7 +93,7 @@ class SingleAlbumView extends SingleTagView {
 
       this._dom.play.addEventListener('click', () => {
         mzk.changeTrack(this.firstTrackId)
-      }, false)
+      }, false);
       resolve();
     });
   }
