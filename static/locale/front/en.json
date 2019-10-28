@@ -19,9 +19,9 @@
   },
   "playlist": {
     "tracks": "tracks",
-    "artists": "Artists",
-    "albums": "Albums",
-    "genres": "Genres"
+    "artists": "artists",
+    "albums": "albums",
+    "genres": "genres"
   },
   "mainpage": {
     "collection": {
