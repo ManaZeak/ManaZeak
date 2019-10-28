@@ -64,8 +64,6 @@ class SingleGenreView extends SingleTagView {
             target: this._dom.trackContainer
           });
 
-          console.log(response)
-          console.log(set)
           resolve();
         });
     });
