@@ -24,6 +24,7 @@ class AlbumView extends LibraryViews {
     this._init();
   }
 
+
   _init() {
     this.buildDom() // Pare nt class call
       .then((container) => {
@@ -48,6 +49,7 @@ class AlbumView extends LibraryViews {
       });
   }
 
+
   _albumViewEvents() {
     this._dom.container.addEventListener('click', event => {
       this._trackClicked(event);
@@ -64,6 +66,7 @@ class AlbumView extends LibraryViews {
     });
   }
 
+
   _contextClicked(event) {
     if (event.target.closest('.track')) {
       if (event.target.className !== 'track') {
@@ -74,13 +77,16 @@ class AlbumView extends LibraryViews {
     }
   }
 
+
   optionsClicked() {
 
   }
 
+
   _fillOptionsContext() {
 
   }
+
 
   _buildAlbum(album) {
     // Create album container
@@ -153,6 +159,7 @@ class AlbumView extends LibraryViews {
     return uiAlbum;
   }
 
+
   addTracks(artists) {
     this._trackDatasetId = 0; // Need to be attached to this, and must be deleted after user (at the end of this method)
     const firstCall = (this._tracks.length === 0);
@@ -181,9 +188,11 @@ class AlbumView extends LibraryViews {
       this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
     }
 
-    this.initTracksState();
+    this.initViewState();
     delete this._trackDatasetId;
   }
+
+
 }
 
 export default AlbumView;

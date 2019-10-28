@@ -1,10 +1,9 @@
-import SceneView from "../../SceneView";
-import Scene from "../../../controller/Scene";
+import PlayableView from "../../PlayableView";
 'use strict';
 
 
 // This mother class is a way to proxify the fetch layout and content for single object views
-class SingleTagView extends SceneView {
+class SingleTagView extends PlayableView {
 
 
   constructor(options) {

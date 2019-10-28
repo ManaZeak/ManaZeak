@@ -518,7 +518,7 @@ class ListView extends LibraryViews {
           this._dom.container = this._dom.container.firstChild.firstChild; // ScrollBar creates two wrappers
         }
 
-        this.initTracksState();
+        this.initViewState();
       })
       .finally(() => {
         mzk.ui.stopLoading();

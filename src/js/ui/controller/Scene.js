@@ -181,9 +181,10 @@ class Scene {
     this._scene.innerHTML = '';
     const options = {
       playlist: playlist,
+      lockCenterOnFlag: mzk.user.getPreference('lock-center-on-track'),
       playingTrackIndex: this.view.playingTrackIndex,
       selection: this.view.selection,
-      viewLabel: ''
+      viewLabel: '' // TBD in setLangFeedback of view
     };
 
     if (playlist.activeView === 'ListView') {
@@ -239,65 +240,39 @@ class Scene {
 
 
   centerOn(index) {
-    if (this._sceneViewType === 'LibraryView') {
-      this.view.centerOn({
-        index: index
-      });
-    }
+    this.view.centerOn({
+      index: index
+    });
   }
 
 
   getTrackById(id) {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.getTrackById(id);
-    } else {
-      return -1;
-    }
+    return this.view.getTrackById(id);
   }
 
 
   isFirstTrack() {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.isFirstTrack();
-    } else {
-      return -1;
-    }
+    return this.view.isFirstTrack();
   }
 
 
   isLastTrack() {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.isLastTrack();
-    } else {
-      return -1;
-    }
+    return this.view.isLastTrack();
   }
 
 
   get nextTrackId() {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.nextTrackId;
-    } else {
-      return -1;
-    }
+    return this.view.nextTrackId;
   }
 
 
   get previousTrackId() {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.previousTrackId;
-    } else {
-      return -1;
-    }
+    return this.view.previousTrackId;
   }
 
 
   get firstTrackId() {
-    if (this._sceneViewType === 'LibraryView') {
-      return this.view.firstTrackId;
-    } else {
-      return -1;
-    }
+    return this.view.firstTrackId;
   }
 }
 

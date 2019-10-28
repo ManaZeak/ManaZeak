@@ -1,5 +1,6 @@
 import Player from '../core/Player.js';
 import Collection from './components/Collection.js';
+import Track from "./components/Track";
 'use strict';
 
 class Model {
@@ -12,6 +13,7 @@ class Model {
   constructor() {
     this._player = {};
     this._collection = {};
+    this._transitiveSet = []; // Custom view need transitive set of track
     this._queue = [];
     this._playingTrack = null;
 
@@ -274,6 +276,30 @@ class Model {
 
     return null;
   }
+
+
+  //  --------------------------------  TRANSITIVE SETS METHOD  ---------------------------------  //
+
+
+  makeTransitiveSet(options) {
+    return new Promise((resolve, reject) => {
+      let set = [];
+      for (let i = 0; i < options.tracks.length; ++i) {
+        try {
+          set.push(new Track({
+            album: options.album,
+            rawTrack: options.tracks[i]
+          }));
+        } catch(e) {
+          reject(e)
+        }
+      }
+
+      this._transitiveSet.push(set);
+      resolve(set);
+    });
+  }
+
 
   toggleRepeatMode() {
     return new Promise(resolve => {
