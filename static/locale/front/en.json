@@ -21,7 +21,11 @@
     "tracks": "tracks",
     "artists": "artists",
     "albums": "albums",
-    "genres": "genres"
+    "genres": "genres",
+    "Tracks": "Tracks",
+    "Artists": "Artists",
+    "Albums": "Albums",
+    "Aenres": "Genres"
   },
   "mainpage": {
     "collection": {
