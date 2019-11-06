@@ -1,0 +1,86 @@
+.aside {
+  height: calc(100% - 40px);
+  width: $mzk-mp-aside-width;
+  position: absolute;
+  background-color: $mzk-color-bg;
+  border-left: solid $mzk-border-width $mzk-color-bg-light;
+  right: 0;
+  top: 40px;
+  overflow: hidden;
+  padding-top: ($mzk-padding * 3);
+
+.mp-collection-group {
+    margin: 0 $mzk-margin $mzk-margin ($mzk-margin * 2);
+
+    h3 {
+      color: $mzk-color-text;
+      font-weight: lighter;
+      margin: 0;
+      text-align: left;
+
+      span {
+        line-height: 100%;
+        vertical-align: text-bottom;
+
+        img {
+          cursor: pointer;
+          height: 1rem;
+          margin-left: 1rem;
+        }
+      }
+    }
+
+    ul {
+      font-size: .9rem;
+      overflow: hidden;
+      padding: 0;
+
+      li {
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 0 0 0 transparent;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        grid-template-rows: repeat(3, 20px);
+        padding: ($mzk-margin / 2) $mzk-margin ($mzk-margin / 2) 0;
+        margin: $mzk-margin;
+        width: 90%;
+
+        transition: background-color $mzk-animation-duration ease-out,
+                    border-radius $mzk-animation-duration ease,
+                    box-shadow $mzk-animation-duration ease-in;
+
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: $mzk-color-primary-alpha-10;
+          border-radius: $mzk-border-radius;
+          box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
+        }
+
+        img {
+          align-self: center;
+          height: 40px;
+          justify-self: center;
+          grid-row: 1 / span 3;
+        }
+
+        p {
+          color: $mzk-color-text-darker;
+          font-size: .9em;
+          font-style: italic;
+          font-weight: inherit;
+          padding-left: (2 * $mzk-padding);
+
+          &.mp-collection-title {
+            color: $mzk-color-text;
+            font-style: inherit;
+            font-weight: bold;
+            padding-left: $mzk-padding;
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@
   display: flex;
   height: $footbar-height;
   position: absolute;
-  width: 100%;
+  width: calc(100% - #{$mzk-mp-aside-width});
 }
 
 .footbar-track-preview {
@@ -18,7 +18,7 @@
   display: flex;
   height: $footbar-height; // Defined in utils/tools/_variables.scss
   justify-content: center;
-  width: calc(100% - #{$mzk-mp-aside-width});
+  width: 100%;
   z-index: 700;
 
   .left,

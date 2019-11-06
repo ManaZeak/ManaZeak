@@ -1,6 +1,7 @@
 import TopBar from './controller/TopBar.js';
 import Scene from './controller/Scene.js';
 import FootBar from './controller/FootBar.js';
+import Aside from './controller/Aside.js';
 'use strict';
 
 
@@ -15,10 +16,10 @@ class UserInterface {
    * This class is meant to be accessed from anywhere in the app, since it is attached to the Mzk object.</blockquote>
    **/
   constructor() {
-    this._mainContainer = {};
     this._topBar = {};
     this._scene = {};
     this._footBar = {};
+    this._aside = {};
     this._loadingOverlay = {};
     this._titleAnimationId = -1;
 
@@ -39,11 +40,10 @@ class UserInterface {
    * @description Init the View object width TopBar, FootBar and Scene
    **/
   _init() {
-    this._mainContainer = document.getElementById('mainContainer'); // Used when switching Discover (anciennement modes (partyview, managotit etc))
-
     this._topBar = new TopBar();
     this._scene = new Scene();
     this._footBar = new FootBar();
+    this._aside = new Aside();
 
     this._loadingOverlay = document.createElement('DIV');
     this._loadingOverlay.className = 'mzk-loading-overlay';

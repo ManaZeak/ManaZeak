@@ -9,6 +9,9 @@ html, body {
   overflow: hidden;
   padding: 0;
   width: 100%;
+
+  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
+  position: absolute;
 }
 
 input[type=text],

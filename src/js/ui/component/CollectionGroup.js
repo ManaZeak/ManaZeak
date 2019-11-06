@@ -1,5 +1,5 @@
 import CollectionEntry from "./entry/CollectionEntry";
-import ScrollBar from "../../component/bar/ScrollBar";
+import ScrollBar from "./bar/ScrollBar";
 import DiscoverEntry from "./entry/DiscoverEntry";
 'use strict';
 

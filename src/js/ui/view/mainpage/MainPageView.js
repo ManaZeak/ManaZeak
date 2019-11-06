@@ -1,8 +1,8 @@
 import SceneView from '../SceneView';
-import CollectionGroup from "./CollectionGroup";
+import CollectionGroup from "../../component/CollectionGroup";
 import SuggestionGroup from "./SuggestionGroup";
 import ScrollBar from "../../component/bar/ScrollBar";
-import DiscoverEntry from "./entry/DiscoverEntry";
+import DiscoverEntry from "../../component/entry/DiscoverEntry";
 'use strict';
 
 
@@ -19,7 +19,6 @@ class MainPageView extends SceneView {
     };
 
     this._fetchWrapper()
-      .then(this._fillCollection.bind(this))
       .then(this._fillSuggestion.bind(this))
       .then(this._viewReady);
   }
@@ -37,41 +36,6 @@ class MainPageView extends SceneView {
           this._dom.suggestion = doc.getElementsByClassName('mp-suggestion')[0];
           this._dom.discover = doc.getElementsByClassName('mp-discover')[0];
 
-          resolve();
-        });
-    });
-  }
-
-
-  _fillCollection() {
-    return new Promise(resolve => {
-      mzk.komunikator.get('view/mainPage/collection/')
-        .then(response => {
-          if (response.LIBRARY.length > 0) {
-            const libraries = new CollectionGroup({
-              label: 'Libraries',
-              items: response.LIBRARY
-            });
-            this._dom.collection.appendChild(libraries.dom);
-          }
-
-          if (response.PLAYLISTS.length > 0) {
-            const libraries = new CollectionGroup({
-              label: 'Playlists',
-              items: response.PLAYLIST
-            });
-          }
-
-          const playbackModes = new CollectionGroup({
-            label: 'PlaybackModes'
-          });
-
-          this._dom.collection.appendChild(playbackModes.dom);
-
-          new ScrollBar({
-            target: this._dom.collection
-          });
-          this._dom.collection = this._dom.collection.firstElementChild.firstElementChild;
           resolve();
         });
     });

@@ -9,11 +9,11 @@ $margin-offset: 25px; // Offset to match arrow icons size in main container
 $aside-button-length: 25px;
 
 #scene {
-  width: 100%;
   position: relative;
-  height: 100%;
+  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
   transition: all $scene-transition ease-in-out 0s;
   z-index: 701;
+  width: calc(100% - #{$mzk-mp-aside-width});
 
   #scene-manipulation {
     position: absolute;
