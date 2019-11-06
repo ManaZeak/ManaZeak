@@ -44,7 +44,7 @@ class Track {
     this._joinArrayIntoString('artistsArray', 'artists');
     this._joinArrayIntoString('composersArray', 'composers');
     this._joinArrayIntoString('performersArray', 'performers');
-    this._joinArrayIntoString('genreArray', 'genres');
+    this._joinArrayIntoString('genreArray', 'genre');
   }
 
 

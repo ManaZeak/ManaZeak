@@ -47,7 +47,7 @@
   top: 89px;
   height: auto;
   position: absolute;
-  right: 49px;
+  right: calc(49px + #{$mzk-mp-aside-width});
   width: auto;
   z-index: 665;
   display: flex;
