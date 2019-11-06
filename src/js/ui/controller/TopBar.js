@@ -16,9 +16,6 @@ class TopBar {
      * @member {object} - The TopBar DOM element */
     this._topbar = {};
     /** @private
-     * @member {object} - The button to display the main page in scene */
-    this._mainPage = {};
-    /** @private
      * @member {object} - The user avatar image DOM element */
     this._avatar = {};
     /** @private
@@ -46,7 +43,6 @@ class TopBar {
    **/
   _init() {
     this._topbar = document.getElementById('topbar');
-    this._mainPage = document.getElementById('topbar-main-page');
     this._avatar = document.getElementById('topbar-avatar');
     this._spinner = document.getElementById('topbar-spinner');
 
@@ -72,12 +68,6 @@ class TopBar {
    **/
   _events() {
     this._avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);
-
-    Events.register({
-      name: 'MzkInitDone'
-    }, () => {
-      this._mainPage.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
-    });
   }
 
 
@@ -116,24 +106,6 @@ class TopBar {
       this._userMenu.close();
     } else {
       this._userMenu.open();
-    }
-  }
-
-
-  /**
-   * @method
-   * @name toggleUserMenu
-   * @public
-   * @memberof TopBar
-   * @author Arthur Beaulieu
-   * @since August 2019
-   * @description Set the main page button visibility (hidden when main page is current ui, visible otherwise)
-   **/
-  set mainPageButtonVisibility(visible) {
-    if (visible === true) {
-      this._mainPage.style.opacity = '1';
-    } else {
-      this._mainPage.style.opacity = '0';
     }
   }
 

@@ -6,11 +6,15 @@ class Aside {
 
   constructor() {
     this._dom = {
+      home: null,
       collection: null
     };
 
-    this._dom.collection = document.getElementsByClassName('aside')[0];
+    this._dom.home = document.getElementsByClassName('aside-main-page')[0];
+    this._dom.collection = document.getElementsByClassName('aside-content')[0];
+
     this._fillCollection();
+    this._events();
   }
 
 
@@ -46,6 +50,24 @@ class Aside {
           resolve();
         });
     });
+  }
+
+
+  _events() {
+    Events.register({
+      name: 'MzkInitDone'
+    }, () => {
+      this._dom.home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
+    });
+  }
+
+
+  set homeButtonSrcOnMainPage(mainPageOn) {
+    if (mainPageOn === true) {
+      this._dom.home.src = '/static/img/navigation/home.svg';
+    } else {
+      this._dom.home.src = '/static/img/player/shuffle-random-on.svg';
+    }
   }
 
 

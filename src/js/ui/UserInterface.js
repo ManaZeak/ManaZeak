@@ -73,9 +73,9 @@ class UserInterface {
         resolve();
       });
 
-      this._topBar.mainPageButtonVisibility = true; // Append button by default (remove only if MainPage)
+      this._aside.homeButtonSrcOnMainPage = true; // Append button by default (remove only if MainPage)
       if (options.name === 'MainPage') {
-        this._topBar.mainPageButtonVisibility = false;
+        this._aside.homeButtonSrcOnMainPage = false;
         this.startLoading(true)
           .then(this._scene.setMainPageView.bind(this._scene));
       } else if (options.name === 'Party') {
