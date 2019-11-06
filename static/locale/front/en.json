@@ -28,6 +28,8 @@
     "Genres": "Genres"
   },
   "mainpage": {
+    "reroll": "Roll suggestions",
+    "goto": "Home",
     "collection": {
       "Libraries": "Libraries",
       "Playlists": "Playlists",

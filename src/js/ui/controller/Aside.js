@@ -14,6 +14,7 @@ class Aside {
     this._dom.collection = document.getElementsByClassName('aside-content')[0];
 
     this._fillCollection();
+    this._setLangFeedback();
     this._events();
   }
 
@@ -62,11 +63,19 @@ class Aside {
   }
 
 
+  _setLangFeedback() {
+    this._dom.home.parentNode.classList.add('tooltip-left');
+    this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
+  }
+
+
   set homeButtonSrcOnMainPage(mainPageOn) {
     if (mainPageOn === true) {
       this._dom.home.src = '/static/img/navigation/home.svg';
+      this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.goto;
     } else {
       this._dom.home.src = '/static/img/player/shuffle-random-on.svg';
+      this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
     }
   }
 

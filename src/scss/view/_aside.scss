@@ -6,7 +6,6 @@
   border-left: solid $mzk-border-width $mzk-color-bg-light;
   right: 0;
   top: 40px;
-  overflow: hidden;
 
   .app-controls {
     align-items: center;
@@ -14,9 +13,13 @@
     height: 50px;
     padding: 0 $mzk-padding;
 
-    img {
-      cursor: pointer;
+    div {
       height: 80%;
+
+      img {
+        cursor: pointer;
+        height: 100%;
+      }
     }
   }
 
