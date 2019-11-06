@@ -6,7 +6,7 @@
     border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
     display: flex;
     height: 300px;
-    padding: 0 20%;
+    padding: 0 5%;
 
     div {
       display: flex;
@@ -147,9 +147,8 @@
       display: flex;
       height: 40px;
       line-height: 40px;
-      margin: ($mzk-margin / 2) 20%;
+      margin: ($mzk-margin / 2) 5%;
       user-select: none;
-      width: 60%;
 
       &:nth-child(2n) {
         background: $mzk-color-bg-dark-alpha-25;
@@ -204,7 +203,7 @@
     border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
     display: flex;
     height: 300px;
-    padding: 0 20%;
+    padding: 0 5%;
 
     div {
       display: flex;
@@ -296,9 +295,8 @@
       display: flex;
       height: 40px;
       line-height: 40px;
-      margin: ($mzk-margin / 2) 20%;
+      margin: ($mzk-margin / 2) 5%;
       user-select: none;
-      width: 60%;
 
       &:nth-child(2n) {
         background: $mzk-color-bg-dark-alpha-25;
@@ -353,7 +351,7 @@
     border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
     display: flex;
     height: 300px;
-    padding: 0 20%;
+    padding: 0 5%;
 
     div {
       display: flex;
@@ -445,9 +443,8 @@
       display: flex;
       height: 40px;
       line-height: 40px;
-      margin: ($mzk-margin / 2) 20%;
+      margin: ($mzk-margin / 2) 5%;
       user-select: none;
-      width: 60%;
 
       &:nth-child(2n) {
         background: $mzk-color-bg-dark-alpha-25;
