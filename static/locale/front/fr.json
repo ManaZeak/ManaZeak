@@ -19,9 +19,13 @@
   },
   "playlist": {
     "tracks": "pistes",
-    "artists": "Artistes",
-    "albums": "Albums",
-    "genres": "Genres"
+    "artists": "artistes",
+    "albums": "albums",
+    "genres": "genres",
+    "Tracks": "Pistes",
+    "Artists": "Artistes",
+    "Albums": "Albums",
+    "Genres": "Genres"
   },
   "mainpage": {
     "collection": {
