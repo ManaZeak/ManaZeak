@@ -1,8 +1,6 @@
 import SceneView from '../SceneView';
-import CollectionGroup from "../../component/CollectionGroup";
 import SuggestionGroup from "./SuggestionGroup";
 import ScrollBar from "../../component/bar/ScrollBar";
-import DiscoverEntry from "../../component/entry/DiscoverEntry";
 'use strict';
 
 
@@ -14,7 +12,6 @@ class MainPageView extends SceneView {
 
     this._dom = {
       wrapper: null,
-      collection: null,
       suggestion: null
     };
 
@@ -32,7 +29,6 @@ class MainPageView extends SceneView {
           const doc = parser.parseFromString(response, 'text/html');
 
           this._dom.wrapper = doc.getElementsByClassName('main-page')[0];
-          this._dom.collection = doc.getElementsByClassName('mp-collection')[0];
           this._dom.suggestion = doc.getElementsByClassName('mp-suggestion')[0];
           this._dom.discover = doc.getElementsByClassName('mp-discover')[0];
 

@@ -1,4 +1,5 @@
 import PlayableView from "../../PlayableView";
+import TrackContext from "../../../context/TrackContext";
 'use strict';
 
 
@@ -14,6 +15,8 @@ class SingleTagView extends PlayableView {
     this._dom = {
       wrapper: null
     };
+
+    this._trackContext = {}; // Context menu clicked on a track
   }
 
 
@@ -44,6 +47,7 @@ class SingleTagView extends PlayableView {
     });
   }
 
+
   _getSingle() {
     return new Promise((resolve, reject) => {
       mzk.komunikator.get(`view/single/${this._type}/${this._id}`)
@@ -52,6 +56,45 @@ class SingleTagView extends PlayableView {
           resolve(response);
         }).catch(reject);
     });
+  }
+
+
+  _setupContext() {
+    this._trackContext = new TrackContext({
+      target: this._dom.trackContainer,
+      url: 'context/trackcontext/'
+    });
+  }
+
+
+  _singleTagEvents() {
+    return new Promise((resolve) => {
+      this._dom.trackContainer.addEventListener('click', (event) => {
+        this._trackClicked(event);
+      });
+
+      this._dom.play.addEventListener('click', () => {
+        mzk.changeTrack(this.firstTrackId)
+      }, false);
+
+      this._dom.trackContainer.addEventListener('contextmenu', event => {
+        event.preventDefault();
+
+        if (this._dom.trackContainer.contains(this._trackContext.dom)) {
+          this._trackContext.close();
+        } else {
+          this._contextClicked(event);
+        }
+      });
+      resolve();
+    });
+  }
+
+
+  _contextClicked(event) {
+    if (event.target.closest('.track')) {
+      this._trackContext.open(event, event.target.parentNode.dataset.id);
+    }
   }
 
 

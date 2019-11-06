@@ -19,9 +19,6 @@ class SingleGenreViewTrackEntry extends TrackEntry {
 
 
   _init() {
-    let number = document.createElement('P');
-    number.innerHTML = this._trackNumber;
-
     let duration = document.createElement('P');
     duration.innerHTML = Utils.secondsToTimecode(this._track.duration);
 
@@ -31,7 +28,6 @@ class SingleGenreViewTrackEntry extends TrackEntry {
     let artist = document.createElement('P');
     artist.innerHTML = this._track.artists;
 
-    this._dom.container.appendChild(number);
     this._dom.container.appendChild(title);
     this._dom.container.appendChild(artist);
     this._dom.container.appendChild(duration);

@@ -22,12 +22,13 @@ class SingleGenreView extends SingleTagView {
       trackCompo: null,
       country: null,
       play: null,
-      tracksContainer: null
+      trackContainer: null
     };
 
     this._init()
       .then(this._processGenre.bind(this))
-      .then(this._singleGenreEvents.bind(this))
+      .then(this._setupContext.bind(this))
+      .then(this._singleTagEvents.bind(this))
       .then(this._viewReady);
   }
 
@@ -68,21 +69,6 @@ class SingleGenreView extends SingleTagView {
         });
     });
   }
-
-
-  _singleGenreEvents() {
-    return new Promise((resolve) => {
-      this._dom.trackContainer.addEventListener('click', (event) => {
-        this._trackClicked(event);
-      });
-
-      this._dom.play.addEventListener('click', () => {
-        mzk.changeTrack(this.firstTrackId)
-      }, false);
-      resolve();
-    });
-  }
-
 
 
   get dom() {

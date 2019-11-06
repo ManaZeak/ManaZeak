@@ -17,6 +17,7 @@ $tooltip-text: $mzk-color-text;
     border-radius: $mzk-border-radius;
     opacity: 1;
     visibility: visible;
+    z-index: 999;
   }
 
   /* Base styles for the tooltip's content area */
