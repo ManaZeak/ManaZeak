@@ -31,6 +31,11 @@ class Scene {
   }
 
 
+  _setAsideToggle(state) {
+    mzk.ui.aside.enabled = state;
+  }
+
+
   _removeFullView() {
     if (this._isFullScreenView === true) {
       this._isFullScreenView = false;
@@ -86,6 +91,7 @@ class Scene {
    * @param {object} node - The DOM node to append to the scene
    **/
   setMainPageView(node) {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'MainPageView';
     this._scene.innerHTML = '';
@@ -114,6 +120,7 @@ class Scene {
 
 
   setArtistView(artist) {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'SingleArtistView';
     this._scene.innerHTML = '';
@@ -123,6 +130,7 @@ class Scene {
 
 
   setAlbumView(album) {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'SingleAlbumView';
     this._scene.innerHTML = '';
@@ -132,6 +140,7 @@ class Scene {
 
 
   setGenreView(genre) {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'SingleGenreView';
     this._scene.innerHTML = '';
@@ -140,6 +149,7 @@ class Scene {
   }
 
   setArtistsView() {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'AllArtistsView';
     this._scene.innerHTML = '';
@@ -149,6 +159,7 @@ class Scene {
 
 
   setAlbumsView() {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'AllAlbumsView';
     this._scene.innerHTML = '';
@@ -158,6 +169,7 @@ class Scene {
 
 
   setGenresView() {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'AllGenresView';
     this._scene.innerHTML = '';
@@ -176,6 +188,7 @@ class Scene {
    * @param {object} playlist - The playlist to update the ui with
    **/
   updateLibraryView(playlist) {
+    this._setAsideToggle(false);
     this._removeFullView();
     this._sceneViewType = 'LibraryView';
     this._scene.innerHTML = '';
@@ -208,6 +221,7 @@ class Scene {
 
 
   setAdminView() {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'AdminView';
     this._scene.innerHTML = '';
@@ -217,6 +231,7 @@ class Scene {
 
 
   setCommunityView() {
+    this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'CommunityView';
     this._scene.innerHTML = '';

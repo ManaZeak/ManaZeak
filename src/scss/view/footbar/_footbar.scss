@@ -2,10 +2,12 @@
 
 #footbar {
   bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   height: $footbar-height;
   position: absolute;
-  width: calc(100% - #{$mzk-mp-aside-width});
+  width: calc(100% - var(--mzk-aside-width));
 }
 
 .footbar-track-preview {

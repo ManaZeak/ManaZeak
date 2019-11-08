@@ -36,11 +36,10 @@ $topbar-loader: $topbar-height - 10px;
     }
   }
 
-  img#topbar-main-page {
+  img#topbar-home-button {
     cursor: pointer;
     height: $topbar-height;
     left: $mzk-margin;
-    opacity: 0; // Mzk starts with main page -> button doesn't appear at first
     position: absolute;
     width: auto;
   }

@@ -19,6 +19,9 @@ class TopBar {
      * @member {object} - The user avatar image DOM element */
     this._avatar = {};
     /** @private
+     * @member {object} - The home button */
+    this._home = {};
+    /** @private
      * @member {object} - The user context menu object */
     this._userMenu = {};
 
@@ -45,6 +48,7 @@ class TopBar {
     this._topbar = document.getElementById('topbar');
     this._avatar = document.getElementById('topbar-avatar');
     this._spinner = document.getElementById('topbar-spinner');
+    this._home = document.getElementById('topbar-home-button');
 
     this._userMenu = new UserMenuContext({
       target: this._topbar,
@@ -54,6 +58,8 @@ class TopBar {
     if (Utils.imageUrlExists(`../../${mzk.user.avatarPath}`) === true) {
       this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
     }
+
+    this._setLangFeedback();
   }
 
 
@@ -67,6 +73,12 @@ class TopBar {
    * @description Handle the UserMenu toggle state on avatar clicked
    **/
   _events() {
+    Events.register({
+      name: 'MzkInitDone'
+    }, () => {
+      this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
+    });
+
     this._avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);
   }
 
@@ -106,6 +118,24 @@ class TopBar {
       this._userMenu.close();
     } else {
       this._userMenu.open();
+    }
+  }
+
+
+  _setLangFeedback() {
+    // TODO handle proper tooltips in corner
+    //this._home.parentNode.classList.add('tooltip-right');
+    //this._home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
+  }
+
+
+  set homeButtonSrcOnMainPage(mainPageOn) {
+    if (mainPageOn === true) {
+      this._home.src = '/static/img/navigation/home.svg';
+      //this._home.parentNode.dataset.tooltip = mzk.lang.mainpage.goto;
+    } else {
+      this._home.src = '/static/img/player/shuffle-random-on.svg';
+      //this._home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
     }
   }
 

@@ -6,15 +6,28 @@ class Aside {
 
   constructor() {
     this._dom = {
-      home: null,
-      collection: null
+      container: null,
+      collection: null,
+      collapser: null,
+      controls: null,
+      expander: null // We must have a local expander image to add as an absolute to the UI when collapsed
     };
 
-    this._dom.home = document.getElementsByClassName('aside-main-page')[0];
+    this._dom.container = document.getElementsByClassName('aside')[0];
     this._dom.collection = document.getElementsByClassName('aside-content')[0];
+    this._dom.controls = document.getElementsByClassName('app-controls')[0];
+    this._dom.collapser = document.getElementsByClassName('aside-toggle')[0];
+
+    this._dom.expander = document.createElement('DIV');
+    this._dom.expander.appendChild(document.createElement('IMG'));
+    this._dom.expander.classList.add('aside-expander');
+    this._dom.expander.firstChild.src = 'static/img/navigation/nav-left.svg';
+
+    this._isCollapsed = false; // Aside is expanded by default
+
+    this._toggleAside = this._toggleAside.bind(this); // To add/remove event on it
 
     this._fillCollection();
-    this._setLangFeedback();
     this._events();
   }
 
@@ -55,27 +68,35 @@ class Aside {
 
 
   _events() {
-    Events.register({
-      name: 'MzkInitDone'
-    }, () => {
-      this._dom.home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
-    });
+    this._dom.collapser.addEventListener('click', this._toggleAside, false);
   }
 
 
-  _setLangFeedback() {
-    this._dom.home.parentNode.classList.add('tooltip-left');
-    this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
-  }
-
-
-  set homeButtonSrcOnMainPage(mainPageOn) {
-    if (mainPageOn === true) {
-      this._dom.home.src = '/static/img/navigation/home.svg';
-      this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.goto;
+  _toggleAside(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this._isCollapsed === true) {
+      this._isCollapsed = false;
+      document.documentElement.style.setProperty('--mzk-aside-width', '20%');
+      document.body.removeChild(this._dom.expander);
+      this._dom.expander.removeEventListener('click', this._toggleAside, false);
     } else {
-      this._dom.home.src = '/static/img/player/shuffle-random-on.svg';
-      this._dom.home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
+      this._isCollapsed = true;
+      document.documentElement.style.setProperty('--mzk-aside-width', '0');
+      document.body.appendChild(this._dom.expander);
+      this._dom.expander.addEventListener('click', this._toggleAside, false);
+    }
+  }
+
+
+  set enabled(state) {
+    this._isAsideAvailable = state;
+    if (this._isAsideAvailable === true) {
+      this._dom.collapser.style.cursor = 'pointer';
+      this._dom.collapser.addEventListener('click', this._toggleAside, false);
+    } else {
+      this._dom.collapser.style.cursor = 'not-allowed';
+      this._dom.collapser.removeEventListener('click', this._toggleAside, false);
     }
   }
 

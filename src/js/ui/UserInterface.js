@@ -73,9 +73,9 @@ class UserInterface {
         resolve();
       });
 
-      this._aside.homeButtonSrcOnMainPage = true; // Append button by default (remove only if MainPage)
+      this._topBar.homeButtonSrcOnMainPage = true; // Append button by default (remove only if MainPage)
       if (options.name === 'MainPage') {
-        this._aside.homeButtonSrcOnMainPage = false;
+        this._topBar.homeButtonSrcOnMainPage = false;
         this.startLoading(true)
           .then(this._scene.setMainPageView.bind(this._scene));
       } else if (options.name === 'Party') {
@@ -314,6 +314,10 @@ class UserInterface {
     return this._footBar;
   }
 
+
+  get aside() {
+    return this._aside;
+  }
 
   /** @public
    * @member {object} - The scene current active ui */

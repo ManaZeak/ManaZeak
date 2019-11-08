@@ -1,11 +1,28 @@
+.aside-expander {
+  position: absolute;
+  top: calc(#{$topbar-height} + #{$mzk-padding});
+  right: $mzk-padding;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  z-index: 999;
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .aside {
   height: calc(100% - 40px);
-  width: $mzk-mp-aside-width;
+  width: var(--mzk-aside-width);
   position: absolute;
   background-color: $mzk-color-bg;
   border-left: solid $mzk-border-width $mzk-color-bg-light;
   right: 0;
   top: 40px;
+
+  transition: width ($mzk-animation-duration / 1.75) ease-in-out;
 
   .app-controls {
     align-items: center;
