@@ -47,7 +47,7 @@
   top: 89px;
   height: auto;
   position: absolute;
-  right: calc(49px + #{$mzk-mp-aside-width});
+  right: calc(49px + var(--mzk-aside-width));
   width: auto;
   z-index: 665;
   display: flex;
@@ -351,7 +351,7 @@
   bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
   height: auto;
   position: absolute;
-  right: 5px;
+  right: calc(5px + var(--mzk-aside-width));
   width: 180px;
   z-index: 665;
   display: flex;

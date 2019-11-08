@@ -527,7 +527,7 @@ class ListView extends LibraryViews {
 
 
   _optionClicked() {
-    let sceneContext = this._dom.wrapper.querySelector('.scene-options');
+    let sceneContext = document.querySelector('.scene-options');
 
     if (sceneContext !== null) { // Close context
       sceneContext.parentNode.remove();
@@ -547,7 +547,7 @@ class ListView extends LibraryViews {
     sceneContext.className = 'scene-options';
 
     overlay.appendChild(sceneContext);
-    this._dom.wrapper.appendChild(overlay);
+    document.body.appendChild(overlay);
     this.fillContext(sceneContext);
   }
 
