@@ -36,12 +36,18 @@ $topbar-loader: $topbar-height - 10px;
     }
   }
 
-  img#topbar-home-button {
+  div#home-container {
     cursor: pointer;
+    display: flex;
+    align-items: center;
     height: $topbar-height;
-    left: $mzk-margin;
+    width: 40px;
     position: absolute;
-    width: auto;
+    left: $mzk-margin;
+
+    img#topbar-home-button {
+      height: 80%;
+    }
   }
 
   img#topbar-logo {
