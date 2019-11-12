@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 
 from app.models import Album
+from app.src.dto.album.albumDto import AlbumDto
 from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.security.permissionEnum import PermissionEnum
@@ -38,15 +39,10 @@ class AlbumService(object):
     @FrontRequest
     ## Get information about an album.
     def getAlbum(request, albumId):
-        # FIXME : add label, Language/country
         user = request.user
         AlbumService._checkPermissionAndRequest(request, user)
-        # Getting the album of the user
-        if Album.objects.filter(id=albumId).count() == 0:
-            raise UserException(ErrorEnum.DB_ERROR, user)
-        albumDb = Album.objects.get(id=albumId)
-        album = LocalLazyAlbum()
-        album.createAlbumFromOrm(albumDb)
+        album = AlbumDto()
+        album.loadAlbumFromOrm(albumId, user)
         return {
             'ALBUM': album.generateJson()
         }

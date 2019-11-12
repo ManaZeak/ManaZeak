@@ -5,6 +5,11 @@ class LocalLazyArtist(object):
         self.id = None
         self.name = None
 
+    ## Loads an artist from the ORM artist object.
+    def loadFromArtist(self, artist):
+        self.id = artist.id
+        self.name = artist.name
+
     ## Generate the json object of an artist.
     def generateJson(self):
         return {

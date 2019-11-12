@@ -1,4 +1,3 @@
-## This object is used to describe an album in the lazy loading of the list view.
 import logging
 
 from app.models import Track
@@ -6,6 +5,7 @@ from app.src.dto.track.localLazyTrack import LocalLazyTrack
 
 logger = logging.getLogger('django')
 
+## This object is used to describe an album in the lazy loading of the list view.
 class LocalLazyAlbum(object):
 
     ## Constructor
@@ -22,16 +22,6 @@ class LocalLazyAlbum(object):
         self.lastTrackPosition = -1
         ## The last track id.
         self.lastTrackId = None
-        ## The duration of the album
-        self.duration = None
-        ## The release artist
-        self.releaseArtist = None
-        ## The label
-        self.label = None
-        ## The country where the album were released
-        self.country = None
-        ## The genres contained in the album.
-        self.genres = []
 
     ## Generate the JSON object of a album.
     def generateJson(self):

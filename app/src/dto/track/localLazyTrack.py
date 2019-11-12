@@ -1,6 +1,6 @@
 import logging
 
-from app.src.dto.artist.LocalLazyArtist import LocalLazyArtist
+from app.src.dto.artist.localLazyArtist import LocalLazyArtist
 from app.src.dto.genre.localLazyGenre import LocalLazyGenre
 
 logger = logging.getLogger('django')
@@ -104,18 +104,25 @@ class LocalLazyTrack(object):
 
     ## Adds the information linked to the track. (Performer, artists, composer...)
     def addRelatedInfoFromOrm(self, track):
-        self.genre = []
         # Adding the artist from the track.
         for artist in track.artists.all():
-            self._createArtist(artist.id, artist.name)
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(artist)
+            self.artists.append(localArtist)
         # Adding the composers from the track.
         for composer in track.composers.all():
-            self._createComposer(composer.id, composer.name)
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(composer)
+            self.composers.append(localArtist)
         # Adding the performers from the track.
         for performer in track.performers.all():
-            self._createPerformer(performer.id, performer.name)
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(performer)
+            self.composers.append(localArtist)
         for genre in track.genres.all():
-            self.genre.append(genre.name)
+            localGenre = LocalLazyGenre()
+            localGenre.loadFromGenre(genre)
+            self.genres.append(localGenre)
 
     ## Creates a new artist and add it to the artist list.
     def _createArtist(self, artistId, artistName):

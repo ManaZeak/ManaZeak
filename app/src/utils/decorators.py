@@ -1,5 +1,3 @@
-import logging
-
 from django.http import JsonResponse
 
 from app.src.utils.errors.errorHandler import ErrorHandler
@@ -14,8 +12,6 @@ class FrontRequest(object):
 
     ## The default function that will be called.
     def __call__(self, *args, **kwargs):
-        loggerDjango = logging.getLogger('django')
-        loggerDjango.info("entering decorator")
         try:
             returnValue = self.func(*args, **kwargs)
             if returnValue is None:

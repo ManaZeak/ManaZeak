@@ -8,7 +8,7 @@ class MainPageAlbum(object):
     def __init__(self):
         self.id = None
         self.title = None
-        self.year = None # TODO j'ai rajouté year un peu au blair, à toi de voir si c'est clair
+        self.year = None
         self.picture = None
 
     ## Initialise the album object with data returned from the database.
