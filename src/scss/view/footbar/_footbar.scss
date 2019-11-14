@@ -8,6 +8,8 @@
   height: $footbar-height;
   position: absolute;
   width: calc(100% - var(--mzk-aside-width));
+  
+  transition: width $mzk-animation-duration ease-in-out;
 }
 
 .footbar-track-preview {
