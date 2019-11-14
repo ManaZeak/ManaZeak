@@ -58,7 +58,7 @@ class AlbumDto(object):
         self.title = album.title
         self.year = album.year
         self.description = album.description
-        self.cover = album.cover.location
+        #self.cover = album.cover.location
 
     ## Generate a JSON from the object
     def generateJson(self):
