@@ -13,6 +13,8 @@ $aside-button-length: 25px;
   height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
   z-index: 701;
   width: calc(100% - var(--mzk-aside-width));
+  
+  transition: width $mzk-animation-duration ease-in-out;
 
   #scene-manipulation {
     position: absolute;
