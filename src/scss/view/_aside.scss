@@ -22,7 +22,7 @@
   right: 0;
   top: 40px;
 
-  transition: width ($mzk-animation-duration / 1.75) ease-in-out;
+  transition: width $mzk-animation-duration ease-in-out;
 
   .app-controls {
     align-items: center;
