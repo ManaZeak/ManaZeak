@@ -76,17 +76,16 @@ class Aside {
     event.preventDefault();
     event.stopPropagation();
     
-    var root = document.querySelector(':root');
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
-      root.style.setProperty('--mzk-aside-width', '20%');
       document.body.removeChild(this._dom.expander);
       this._dom.expander.removeEventListener('click', this._toggleAside, false);
+      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '20%') });
     } else {
       this._isCollapsed = true;
-      root.style.setProperty('--mzk-aside-width', '0');
       document.body.appendChild(this._dom.expander);
       this._dom.expander.addEventListener('click', this._toggleAside, false);
+      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '0') });
     }
   }
 
