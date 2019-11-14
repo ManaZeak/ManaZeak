@@ -75,7 +75,7 @@ class Aside {
   _toggleAside(event) {
     event.preventDefault();
     event.stopPropagation();
-    
+    document.querySelector(':root').style.removeProperty('--mzk-aside-width')
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
       document.body.removeChild(this._dom.expander);
@@ -85,7 +85,7 @@ class Aside {
       this._isCollapsed = true;
       document.body.appendChild(this._dom.expander);
       this._dom.expander.addEventListener('click', this._toggleAside, false);
-      requestAnimationFrame(() => { document.querySelector(':root').style.removeProperty('--mzk-aside-width') });
+      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '0') });
     }
   }
 
