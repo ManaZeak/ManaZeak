@@ -85,7 +85,7 @@ class Aside {
       this._isCollapsed = true;
       document.body.appendChild(this._dom.expander);
       this._dom.expander.addEventListener('click', this._toggleAside, false);
-      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '0') });
+      requestAnimationFrame(() => { document.querySelector(':root').style.removeProperty('--mzk-aside-width') });
     }
   }
 
