@@ -75,14 +75,16 @@ class Aside {
   _toggleAside(event) {
     event.preventDefault();
     event.stopPropagation();
+    
+    var root = document.querySelector(':root');
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
-      document.documentElement.style.setProperty('--mzk-aside-width', '20%');
+      root.style.setProperty('--mzk-aside-width', '20%');
       document.body.removeChild(this._dom.expander);
       this._dom.expander.removeEventListener('click', this._toggleAside, false);
     } else {
       this._isCollapsed = true;
-      document.documentElement.style.setProperty('--mzk-aside-width', '0');
+      root.style.setProperty('--mzk-aside-width', '0');
       document.body.appendChild(this._dom.expander);
       this._dom.expander.addEventListener('click', this._toggleAside, false);
     }
