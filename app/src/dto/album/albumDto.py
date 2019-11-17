@@ -1,6 +1,8 @@
 from app.models import Album, Track
 
 from app.src.dto.artist.localLazyArtist import LocalLazyArtist
+from app.src.dto.country.localCountry import LocalCountry
+from app.src.dto.label.localLazyLabel import LocalLazyLabel
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 
 from app.src.utils.errors.errorEnum import ErrorEnum
@@ -25,13 +27,15 @@ class AlbumDto(object):
         ## The release artist
         self.releaseArtist = LocalLazyArtist()
         ## The label
-        self.label = None
+        self.label = LocalLazyLabel()
         ## The country where the album were released.
-        self.country = None
+        self.countries = set()
         ## The cover of the album
         self.cover = None
         ## The genres contained in the album.
         self.genres = set()
+        ## The total duration of the album
+        self.duration = 0
         ## The tracks of the album. A table of LocalLazyTracks.
         self.tracks = []
 
@@ -47,10 +51,21 @@ class AlbumDto(object):
         # Getting the release artist
         self.releaseArtist.loadFromArtist(album.releaseArtist)
         # Getting the tracks of the album
+        first = True
         for track in Track.objects.filter(album_id=self.id).order_by('trackNumber'):
+            # Getting the label of the first track
+            if first:
+                self.label.loadLabelFromOrm(track)
+                for country in track.countries.all():
+                    localCountry = LocalCountry()
+                    localCountry.loadCountryFromOrm(country)
+                    self.countries.add(localCountry)
+                first = False
             localTrack = LocalLazyTrack.createTrackFromOrm(track)
             self.tracks.append(localTrack)
-            self.genres.update(localTrack.genres)
+            for genre in localTrack.genres:
+                self.genres.add(genre)
+            self.duration += track.duration
 
     ## Load an album from an album object.
     def _loadAlbum(self, album):
@@ -67,6 +82,10 @@ class AlbumDto(object):
             'NAME': self.title,
             'YEAR': self.year,
             'COVER': self.cover,
+            'ALBUM_ARTIST': self.releaseArtist.generateJson(),
+            'LABEL': self.label.generateJson(),
+            'DURATION': self.duration,
+            'COUNTRY': [country.generateJson() for country in self.countries],
             'TRACKS': [track.generateJson() for track in self.tracks],
             'GENRES': [genre.generateJson() for genre in self.genres],
         }

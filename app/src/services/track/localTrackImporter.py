@@ -14,6 +14,7 @@ from app.src.dao.linker.countryToTrackLinker import CountryToTrackLinker
 from app.src.dao.linker.genreToTrackLinker import GenreToTrackLinker
 from app.src.dao.linker.performerToTrackLinker import PerformerToTrackLinker
 from app.src.dao.linker.playlistToTrackLinker import PlaylistToTrackLinker
+from app.src.dao.script.findAlbumCoversFromTrack import FindAlbumCoversFromTrack
 
 loggerScan = logging.getLogger('scan')
 
@@ -64,6 +65,7 @@ class LocalTrackImporter(object):
         self._importTracks()
         # Creating the links between the objects inserted.
         self._linkObjects(playlistId)
+
         loggerScan.info('The insert of objects into the database is finished')
 
     ## Imports the genres of the indexed tracks.
@@ -153,6 +155,7 @@ class LocalTrackImporter(object):
         self._linkTracksToPerformer(performerToLink)
         self._linkCountryToTrack(countryToLink)
         self._linkPlaylistToTrack(playlistToLink)
+        self._findAlbumCovers()
 
     @staticmethod
     ## Insert the id of genres and track into the link table.
@@ -188,3 +191,10 @@ class LocalTrackImporter(object):
     def _linkCountryToTrack(countryToLink):
         linker = CountryToTrackLinker()
         linker.linkCountryToTracks(countryToLink)
+
+    @staticmethod
+    def _findAlbumCovers():
+        loggerScan.info('Starting to link the album to theirs covers.')
+        linker = FindAlbumCoversFromTrack()
+        linker.executeRequest()
+        loggerScan.info('Album linked to their covers successfully.')

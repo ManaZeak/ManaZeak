@@ -5,9 +5,11 @@ class LocalLazyLabel(object):
         self.name = None
         self.id = None
 
-    @staticmethod
-    def createLabelFromOrm(album):
-        pass
+    def loadLabelFromOrm(self, track):
+        label = track.label
+        if label is not None:
+            self.id = label.id
+            self.name = label.name
 
     ## Generate the JSON object of a album.
     def generateJson(self):

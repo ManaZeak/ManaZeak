@@ -1,3 +1,7 @@
+import logging
+
+loggerScan = logging.getLogger('scan')
+
 class LocalLazyGenre(object):
 
     ## Constructor
@@ -17,3 +21,13 @@ class LocalLazyGenre(object):
             'NAME': self.name,
         }
 
+    ## Recreating the hash for set.
+    def __hash__(self):
+        return hash(str(self.id))
+
+    ## Recreating the equals operator for the set.
+    def __eq__(self, other):
+        if isinstance(other, LocalLazyGenre):
+            return self.__hash__() == other.__hash__()
+        else:
+            return False
