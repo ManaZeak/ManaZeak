@@ -13,8 +13,6 @@ class SingleGenreView extends SingleTagView {
     });
 
     this._id = options.id;
-    this._name = options.name;
-    this._logo = options.logo;
 
     this._dom = {
       cover: null,
@@ -46,9 +44,9 @@ class SingleGenreView extends SingleTagView {
           this._dom.country = this._dom.wrapper.getElementsByClassName('album-country')[0];
           this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('album-tracks')[0];
 
-          this._dom.cover.src = this._logo;
-          this._dom.title.innerHTML = this._name;
-          this._dom.trackCompo.innerHTML = `${response.GENRE.TRACKS.length} ${mzk.lang.playlist.tracks} – ${response.GENRE.DURATION}`;
+          this._dom.cover.src = response.GENRE.PICTURE;
+          this._dom.title.innerHTML = response.GENRE.NAME;
+          this._dom.trackCompo.innerHTML = `${response.GENRE.TOTAL_ARTIST} ${mzk.lang.playlist.artists} – ${response.GENRE.TRACKS.length} ${mzk.lang.playlist.tracks} – ${response.GENRE.DURATION}`;
           this._dom.country.innerHTML = response.GENRE.COUNTRY;
 
           for (let i = 0; i < set.length; ++i) {

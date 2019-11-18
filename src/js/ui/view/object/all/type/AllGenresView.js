@@ -50,11 +50,7 @@ class AllGenresView extends AllTagsView {
         container.addEventListener('click', () => {
           mzk.ui.setSceneView({
             name: 'SingleGenre',
-            genre: {
-              id: this._genres[i].GENRE_ID,
-              name: this._genres[i].GENRE_NAME,
-              logo: this._genres[i].GENRE_LOGO
-            }
+            id: this._genres[i].GENRE_ID
           });
         }, false);
 

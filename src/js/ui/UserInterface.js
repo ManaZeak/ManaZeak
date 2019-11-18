@@ -83,13 +83,13 @@ class UserInterface {
           .then(this._scene.setPartyView.bind(this._scene));
       } else if (options.name === 'SingleArtist') {
         this.startLoading(true)
-          .then(this._scene.setArtistView.bind(this._scene, options.artist));
+          .then(this._scene.setArtistView.bind(this._scene, options));
       } else if (options.name === 'SingleAlbum') {
         this.startLoading(true)
-          .then(this._scene.setAlbumView.bind(this._scene, options.album));
+          .then(this._scene.setAlbumView.bind(this._scene, options));
       } else if (options.name === 'SingleGenre') {
         this.startLoading(true)
-          .then(this._scene.setGenreView.bind(this._scene, options.genre));
+          .then(this._scene.setGenreView.bind(this._scene, options));
       } else if (options.name === 'AllArtists') {
         this.startLoading(true)
           .then(this._scene.setArtistsView.bind(this._scene));

@@ -13,8 +13,6 @@ class SingleAlbumView extends SingleTagView {
     });
 
     this._id = options.id;
-    this._title = options.title;
-    this._cover = options.cover;
 
     this._dom = {
       cover: null,
@@ -52,9 +50,20 @@ class SingleAlbumView extends SingleTagView {
           this._dom.genres = this._dom.wrapper.getElementsByClassName('album-genres')[0];
           this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('album-tracks')[0];
 
-          this._dom.cover.src = this._cover;
-          this._dom.title.innerHTML = this._title;
-          this._dom.albumArtist.innerHTML = response.ALBUM.ALBUM_ARTIST.NAME;
+          this._dom.cover.src = response.ALBUM.COVER;
+          this._dom.title.innerHTML = response.ALBUM.NAME;
+
+          const link = document.createElement('A');
+          link.innerHTML = response.ALBUM.ALBUM_ARTIST.NAME;
+          link.dataset.id = response.ALBUM.ALBUM_ARTIST.ID;
+          link.addEventListener('click', function() {
+            mzk.ui.setSceneView({
+              name: 'SingleArtist',
+              id: this.dataset.id
+            });
+          }.bind(link), false);
+          this._dom.albumArtist.appendChild(link);
+
           this._dom.yearLabel.innerHTML = `<i>${response.ALBUM.YEAR} – ${response.ALBUM.LABEL.NAME || 'Not on label'}</i>`;
           this._dom.trackCompo.innerHTML = `${response.ALBUM.TRACKS.length} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ALBUM.DURATION)}`;
 
@@ -69,11 +78,23 @@ class SingleAlbumView extends SingleTagView {
 
           this._dom.genres.innerHTML = '';
           for (let i = 0; i < response.ALBUM.GENRES.length; ++i) {
+            const link = document.createElement('A');
+            link.innerHTML = response.ALBUM.GENRES[i].NAME;
+            link.dataset.id = response.ALBUM.GENRES[i].ID;
+            link.addEventListener('click', function() {
+              mzk.ui.setSceneView({
+                name: 'SingleGenre',
+                id: this.dataset.id
+              });
+            }.bind(link), false);
+            this._dom.genres.appendChild(link);
+            /*
             if (i + 1 === response.ALBUM.GENRES.length) {
-              this._dom.genres.innerHTML += response.ALBUM.GENRES[i].NAME;
+              this._dom.genres.innerHTML += link.outerHTML;
             } else {
-              this._dom.genres.innerHTML += `${response.ALBUM.GENRES[i].NAME}, `;
+              this._dom.genres.innerHTML += `${link.outerHTML}, `;
             }
+*/
           }
 
           for (let i = 0; i < set.length; ++i) {

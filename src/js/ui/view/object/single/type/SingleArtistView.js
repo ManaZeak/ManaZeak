@@ -13,8 +13,6 @@ class SingleArtistView extends SingleTagView {
     });
 
     this._id = options.id;
-    this._name = options.name;
-    this._pp = options.pp;
 
     this._dom = {
       cover: null,
@@ -51,11 +49,14 @@ class SingleArtistView extends SingleTagView {
           this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sp-artist-albums')[0];
           this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('sp-artist-random-tracks')[0];
 
-          this._dom.cover.src = this._pp;
-          this._dom.title.innerHTML = this._name;
+          if (response.ARTIST.PP !== null && Utils.imageUrlExists(response.ARTIST.PP) === true) {
+            this._dom.cover.src = response.ARTIST.PP;
+          }
+
+          this._dom.title.innerHTML = response.ARTIST.NAME;
           this._dom.artistLabel.innerHTML = response.ARTIST.ALBUM_ARTIST;
           this._dom.yearLabel.innerHTML = `<i>${response.ARTIST.ALBUMS[0].YEAR} – ${response.ARTIST.ALBUMS[response.ARTIST.ALBUMS.length -1].YEAR}</i>`;
-          this._dom.trackCompo.innerHTML = `${response.ARTIST.ALBUMS.length} ${mzk.lang.playlist.albums} – ${response.ARTIST.TOTAL_TRACKS} ${mzk.lang.playlist.tracks} – ${response.ARTIST.DURATION}`;
+          this._dom.trackCompo.innerHTML = `${response.ARTIST.TOTAL_RELEASED_ALBUM} ${mzk.lang.playlist.albums} – ${response.ARTIST.TOTAL_RELEASED_TRACK} ${mzk.lang.playlist.tracks} – ${response.ARTIST.DURATION}`;
           this._dom.country.innerHTML = response.ARTIST.COUNTRY;
           this._dom.genres.innerHTML = response.ARTIST.GENRES;
 
@@ -77,11 +78,7 @@ class SingleArtistView extends SingleTagView {
             album.addEventListener('click', () => {
               mzk.ui.setSceneView({
                 name: 'SingleAlbum',
-                album: {
-                  id: response.ARTIST.ALBUMS[i].ID,
-                  title: response.ARTIST.ALBUMS[i].NAME,
-                  cover: response.ARTIST.ALBUMS[i].COVER
-                }
+                id: response.ARTIST.ALBUMS[i].ID
               });
             }, false);
 

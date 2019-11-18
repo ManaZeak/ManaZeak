@@ -79,11 +79,7 @@ class AllAlbumsView extends AllTagsView {
           imgContainer.addEventListener('click', () => {
             mzk.ui.setSceneView({
               name: 'SingleAlbum',
-              album: {
-                id: this._yearGroups[keys[i]][j].ALBUM_ID,
-                title: this._yearGroups[keys[i]][j].ALBUM_TITLE,
-                cover: this._yearGroups[keys[i]][j].ALBUM_COVER
-              }
+              id: this._yearGroups[keys[i]][j].ALBUM_ID
             });
           }, false);
 

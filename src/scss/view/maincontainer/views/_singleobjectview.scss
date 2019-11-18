@@ -248,6 +248,34 @@
         padding-top: ($mzk-padding * 1.5);
       }
 
+      .album-artist {
+        color: $mzk-color-text-darker;
+        cursor: pointer;
+
+        transition: color $mzk-animation-duration ease;
+
+        &:active,
+        &:focus,
+        &:hover {
+          color: $mzk-color-primary;
+        }
+      }
+
+      .album-genres {
+        a {
+          color: white;
+          cursor: pointer;
+
+          transition: color $mzk-animation-duration ease;
+
+          &:active,
+          &:focus,
+          &:hover {
+            color: $mzk-color-primary;
+          }
+        }
+      }
+
       .album-main-info {
         flex-direction: column;
       }

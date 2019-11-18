@@ -61,33 +61,21 @@ class SuggestionEntry {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleArtist',
-          artist: {
-            id: this._entry.ARTIST_ID,
-            name: this._entry.ARTIST_NAME,
-            pp: this._entry.ARTIST_PP
-          }
+          id: this._entry.ARTIST_ID
         });
       }, false);
     } else if (this._groupType === 'Albums') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleAlbum',
-          album: {
-            id: this._entry.ALBUM_ID,
-            title: this._entry.ALBUM_TITLE,
-            cover: this._entry.ALBUM_COVER
-          }
+          id: this._entry.ALBUM_ID
         });
       }, false);
     } else if (this._groupType === 'Genres') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleGenre',
-          genre: {
-            id: this._entry.GENRE_ID,
-            name: this._entry.GENRE_NAME,
-            logo: this._entry.GENRE_LOGO
-          }
+          id: this._entry.GENRE_ID
         });
       }, false);
     }
