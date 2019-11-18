@@ -23,6 +23,8 @@ class UserInterface {
     this._loadingOverlay = {};
     this._titleAnimationId = -1;
 
+    this._viewHistory = [];
+
     this._init();
   }
 
@@ -65,6 +67,8 @@ class UserInterface {
    **/
   setSceneView(options) {
     return new Promise(resolve => {
+      this._updateViewHistory(options);
+
       Events.register({ // Views class themselves must fire a SceneViewReady event when ready
         name: 'SceneViewReady',
         oneShot: true
@@ -302,6 +306,16 @@ class UserInterface {
     this._titleAnimationId = -1;
   }
 
+
+  _updateViewHistory(options) {
+    if (options.name === 'MainPage') {
+      this._viewHistory = [];
+    } else {
+      this._viewHistory.push(options);
+    }
+
+    this._topBar.updateViewBreadcrumbs(this._viewHistory);
+  }
 
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  GETTER / SETTER  --------------------------------------  //

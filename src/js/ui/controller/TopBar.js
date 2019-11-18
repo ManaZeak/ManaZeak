@@ -24,6 +24,9 @@ class TopBar {
     /** @private
      * @member {object} - The user context menu object */
     this._userMenu = {};
+    /** @private
+     * @member {object} - The user context menu object */
+    this._breadcrumbs = {};
 
     this._init();
     this._events();
@@ -49,6 +52,7 @@ class TopBar {
     this._avatar = document.getElementById('topbar-avatar');
     this._spinner = document.getElementById('topbar-spinner');
     this._home = document.getElementById('topbar-home-button');
+    this._breadcrumbs = document.getElementsByClassName('topbar-view-breadcrumbs')[0];
 
     this._userMenu = new UserMenuContext({
       target: this._topbar,
@@ -96,6 +100,26 @@ class TopBar {
       this._spinner.style.opacity = '0';
       resolve();
     });
+  }
+
+
+  updateViewBreadcrumbs(views) {
+    this._breadcrumbs.innerHTML = '';
+    for (let i = 0; i < views.length; ++i) {
+      const link = document.createElement('A');
+      link.innerHTML = views[i].uiName;
+      link.dataset.id = views[i].id;
+      link.dataset.name = views[i].name;
+      link.addEventListener('click', function() {
+        mzk.ui.setSceneView({
+          name: this.dataset.name,
+          uiName: this.innerHTML,
+          id: this.dataset.id
+        });
+      }.bind(link), false);
+
+      this._breadcrumbs.appendChild(link);
+    }
   }
 
 

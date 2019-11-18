@@ -78,6 +78,7 @@ class SingleArtistView extends SingleTagView {
             album.addEventListener('click', () => {
               mzk.ui.setSceneView({
                 name: 'SingleAlbum',
+                uiName: response.ARTIST.ALBUMS[i].NAME,
                 id: response.ARTIST.ALBUMS[i].ID
               });
             }, false);

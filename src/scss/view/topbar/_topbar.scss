@@ -53,11 +53,46 @@ $topbar-loader: $topbar-height - 10px;
   img#topbar-logo {
     align-self: center;
     position: absolute;
-    left: calc(50% - (#{$mzk-text-logo-width} / 2));
+    right: 60px;
     opacity: 0;
     width: $mzk-text-logo-width;
 
     transition: opacity $topbar-transition ease 0s;
+  }
+
+  .topbar-view-breadcrumbs {
+    left: 40px + 2 * $mzk-margin;
+    line-height: $topbar-height;
+    position: absolute;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: calc(100% - 60px - var(--mzk-aside-width));
+    text-overflow: ellipsis;
+    direction: rtl; // Reverse ellipsis
+    text-align: left;
+
+    a {
+      color: $mzk-color-text-lighter;
+      cursor: pointer;
+
+      transition: color $mzk-animation-duration ease;
+
+      &:active,
+      &:focus,
+      &:hover {
+        color: $mzk-color-primary;
+      }
+
+      &::after {
+        content: '>';
+        margin: $mzk-margin;
+      }
+
+      &:last-child::after {
+        content: '';
+        margin: 0;
+      }
+    }
   }
 
   img#topbar-avatar {

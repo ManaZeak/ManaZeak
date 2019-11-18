@@ -61,6 +61,7 @@ class SuggestionEntry {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleArtist',
+          uiName: this._entry.ARTIST_NAME,
           id: this._entry.ARTIST_ID
         });
       }, false);
@@ -68,6 +69,7 @@ class SuggestionEntry {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleAlbum',
+          uiName: this._entry.ALBUM_TITLE,
           id: this._entry.ALBUM_ID
         });
       }, false);
@@ -75,6 +77,7 @@ class SuggestionEntry {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleGenre',
+          uiName: this._entry.GENRE_NAME,
           id: this._entry.GENRE_ID
         });
       }, false);

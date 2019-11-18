@@ -59,6 +59,7 @@ class SingleAlbumView extends SingleTagView {
           link.addEventListener('click', function() {
             mzk.ui.setSceneView({
               name: 'SingleArtist',
+              uiName: this.innerHTML,
               id: this.dataset.id
             });
           }.bind(link), false);
@@ -72,7 +73,7 @@ class SingleAlbumView extends SingleTagView {
             if (i + 1 === response.ALBUM.COUNTRY.length) {
               this._dom.country.innerHTML = `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].NAME}.svg" alt="artist-origin-country" />`;
             } else {
-              this._dom.country.innerHTML += `${response.ALBUM.COUNTRY[i].NAME} – `;
+              this._dom.country.innerHTML += `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].NAME}.svg" alt="artist-origin-country" /> – `;
             }
           }
 
@@ -84,17 +85,11 @@ class SingleAlbumView extends SingleTagView {
             link.addEventListener('click', function() {
               mzk.ui.setSceneView({
                 name: 'SingleGenre',
+                uiName: this.innerHTML,
                 id: this.dataset.id
               });
             }.bind(link), false);
             this._dom.genres.appendChild(link);
-            /*
-            if (i + 1 === response.ALBUM.GENRES.length) {
-              this._dom.genres.innerHTML += link.outerHTML;
-            } else {
-              this._dom.genres.innerHTML += `${link.outerHTML}, `;
-            }
-*/
           }
 
           for (let i = 0; i < set.length; ++i) {
