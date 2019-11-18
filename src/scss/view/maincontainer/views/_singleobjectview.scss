@@ -237,6 +237,11 @@
 
       h4 {
         padding-left: ($mzk-padding * 2);
+
+        img {
+          cursor: pointer;
+          height: 1.125rem;
+        }
       }
 
       p {

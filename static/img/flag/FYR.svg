@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1680" height="840" version="1.1" viewBox="0 0 444.5 222.25" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(0 -74.75)">
+<rect x=".00023893" y="74.75" width="444.5" height="222.25" fill="#d82126" style="paint-order:normal"/>
+<g transform="translate(-4315.2 175.56)" fill="#f8e92e">
+<path d="m4557.9 22.562-242.67-123.38h66.675z" style="paint-order:normal"/>
+<path d="m4557.9-1.9408-242.67 123.38h66.675z" style="paint-order:normal"/>
+<path d="m4517 22.562 242.67-123.38h-66.675z" style="paint-order:normal"/>
+<path d="m4517-1.9408 242.67 123.38h-66.675z" style="paint-order:normal"/>
+<path d="m4537.4-13.502-22.225-87.313h44.45z" style="paint-order:normal"/>
+<path d="m4537.4 34.123 22.225 87.313h-44.45z" style="paint-order:normal"/>
+<path d="m4537.4 10.311-222.25 22.225v-44.45z" style="paint-order:normal"/>
+<path d="m4537.4 10.311 222.25 22.225v-44.45z" style="paint-order:normal"/>
+</g>
+<circle cx="222.25" cy="185.87" r="39.688" fill="#d82126" style="paint-order:normal"/>
+<circle cx="222.25" cy="185.87" r="31.75" fill="#f8e92e" style="paint-order:normal"/>
+</g>
+</svg>

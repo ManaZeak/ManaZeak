@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Capa_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 512 341.32599"
+   xml:space="preserve"
+   sodipodi:docname="DMA.svg"
+   width="512"
+   height="341.32599"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
+   id="metadata77"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs75" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="736"
+   inkscape:window-height="480"
+   id="namedview73"
+   showgrid="false"
+   fit-margin-top="0"
+   fit-margin-left="0"
+   fit-margin-right="0"
+   fit-margin-bottom="0"
+   inkscape:zoom="0.4609375"
+   inkscape:cx="256"
+   inkscape:cy="170.66299"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="Capa_1" />
+<rect
+   y="0"
+   style="fill:#496e2d"
+   width="512"
+   height="341.32599"
+   id="rect2"
+   x="0" />
+<polygon
+   points="0,266.666 0,288 512,288 512,266.666 512,245.334 512,224 0,224 0,245.334 "
+   id="polygon4"
+   transform="translate(0,-85.336998)" />
+<rect
+   y="138.66299"
+   style="fill:#ffda44"
+   width="512"
+   height="21.337"
+   id="rect6"
+   x="0" />
+<rect
+   y="181.32599"
+   style="fill:#f0f0f0"
+   width="512"
+   height="21.337"
+   id="rect8"
+   x="0" />
+<rect
+   x="224"
+   y="0"
+   width="64"
+   height="341.32599"
+   id="rect10" />
+<rect
+   x="224"
+   y="0"
+   style="fill:#ffda44"
+   width="21.326"
+   height="341.32599"
+   id="rect12" />
+<rect
+   x="266.67401"
+   y="0"
+   style="fill:#f0f0f0"
+   width="21.326"
+   height="341.32599"
+   id="rect14" />
+<circle
+   style="fill:#d80027"
+   cx="256"
+   cy="170.66299"
+   r="81.619003"
+   id="circle16" />
+<g
+   id="g40"
+   transform="translate(0,-85.336998)">
+	<path
+   style="fill:#496e2d"
+   d="m 274.596,265.107 c -6.071,-12.142 -13.963,-24.449 -13.963,-24.449 0,0 0.196,-5.603 0.196,-8.942 0,-5.03 -4.077,-9.107 -9.107,-9.107 -4.765,0 -8.668,3.661 -9.067,8.321 -3.746,0.245 -6.712,3.352 -6.712,7.161 0,2.769 1.569,5.168 3.864,6.368 1.141,-2.669 3.376,-4.753 6.141,-5.703 0.45,0.37 0.935,0.698 1.451,0.977 l 1.166,0.559 c 0,0 -4.326,12.193 -4.326,18.745 0,18.416 12.142,24.095 12.142,24.095 v 0.19 l -6.071,6.069 h 12.142 v -12.142 l 6.071,6.072 c 0.057,-0.115 11.503,-7.354 6.073,-18.214 z"
+   id="path18"
+   inkscape:connector-curvature="0" />
+	<polygon
+   style="fill:#496e2d"
+   points="267.703,197.72 260.47,202.976 263.234,211.478 256,206.224 248.766,211.478 251.53,202.976 244.297,197.72 253.237,197.72 256,189.217 258.763,197.72 "
+   id="polygon20" />
+	<polygon
+   style="fill:#496e2d"
+   points="231.211,201.972 228.449,210.474 235.682,215.729 226.743,215.73 223.979,224.233 221.216,215.73 212.276,215.729 219.509,210.474 216.746,201.972 223.978,207.226 "
+   id="polygon22" />
+	<polygon
+   style="fill:#496e2d"
+   points="204.188,226.861 206.952,235.363 215.891,235.363 208.659,240.618 211.423,249.121 204.188,243.867 196.955,249.12 199.718,240.618 192.486,235.363 201.425,235.363 "
+   id="polygon24" />
+	<polygon
+   style="fill:#496e2d"
+   points="196.955,262.88 204.188,268.134 211.421,262.879 208.659,271.382 215.893,276.637 206.952,276.638 204.188,285.139 201.425,276.637 192.486,276.637 199.718,271.383 "
+   id="polygon26" />
+	<polygon
+   style="fill:#496e2d"
+   points="212.275,296.271 221.216,296.271 223.979,287.767 226.743,296.27 235.682,296.27 228.449,301.526 231.211,310.028 223.978,304.774 216.746,310.028 219.509,301.527 "
+   id="polygon28" />
+	<polygon
+   style="fill:#496e2d"
+   points="244.297,314.281 251.53,309.025 248.766,300.522 256,305.776 263.233,300.522 260.47,309.025 267.703,314.28 258.763,314.281 256,322.783 253.237,314.281 "
+   id="polygon30" />
+	<polygon
+   style="fill:#496e2d"
+   points="280.789,310.029 283.551,301.526 276.317,296.271 285.257,296.27 288.02,287.767 290.784,296.271 299.724,296.271 292.491,301.527 295.254,310.028 288.022,304.774 "
+   id="polygon32" />
+	<polygon
+   style="fill:#496e2d"
+   points="307.812,285.139 305.048,276.638 296.107,276.638 303.341,271.382 300.577,262.88 307.812,268.134 315.044,262.88 312.282,271.382 319.514,276.637 310.575,276.637 "
+   id="polygon34" />
+	<polygon
+   style="fill:#496e2d"
+   points="315.045,249.12 307.812,243.866 300.578,249.121 303.341,240.618 296.107,235.364 305.048,235.363 307.811,226.861 310.575,235.363 319.514,235.363 312.282,240.618 "
+   id="polygon36" />
+	<polygon
+   style="fill:#496e2d"
+   points="299.724,215.729 290.784,215.729 288.022,224.233 285.257,215.73 276.317,215.73 283.551,210.474 280.789,201.973 288.022,207.226 295.254,201.972 292.491,210.474 "
+   id="polygon38" />
+</g>
+<g
+   id="g42"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g44"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g46"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g48"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g50"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g52"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g54"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g56"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g58"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g60"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g62"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g64"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g66"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g68"
+   transform="translate(0,-85.336998)">
+</g>
+<g
+   id="g70"
+   transform="translate(0,-85.336998)">
+</g>
+</svg>
