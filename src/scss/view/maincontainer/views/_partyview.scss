@@ -165,18 +165,29 @@
             background-color: $mzk-color-bg-darker;
           }
 
-          &.pv-paused {
-            border: solid 1px $mzk-color-secondary-alpha-25;
-            box-shadow: 0 0 10px 0 $mzk-color-secondary;
-          }
-
-          &.pv-playing {
+          &.playing {
             border: solid 1px $mzk-color-primary-alpha-25;
             box-shadow: 0 0 10px 0 $mzk-color-primary;
 
             &::before {
               content: '';
               background: url(/static/img/player/play.svg);
+              height: 25px;
+              width: 25px;
+              opacity: 0.5;
+              margin-top: 0;
+              position: absolute;
+              right: 28px;
+            }
+          }
+
+          &.paused {
+            border: solid 1px $mzk-color-secondary-alpha-25;
+            box-shadow: 0 0 10px 0 $mzk-color-secondary;
+
+            &::before {
+              content: '';
+              background: url(/static/img/player/pause.svg);
               height: 25px;
               width: 25px;
               opacity: 0.5;

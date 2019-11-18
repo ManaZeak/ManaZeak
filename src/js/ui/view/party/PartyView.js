@@ -1,8 +1,10 @@
-import SceneView from "../SceneView";
+import PlayableView from "../PlayableView";
+import PartyViewTrackEntry from "./entry/PartyViewTrackEntry";
+import Track from "../../../model/components/Track";
 import ScrollBar from "../../component/bar/ScrollBar";
 
 
-class PartyView extends SceneView {
+class PartyView extends PlayableView {
 
 
   constructor(options) {
@@ -16,7 +18,8 @@ class PartyView extends SceneView {
       playPause: null
     };
 
-    this._playingTrack = null;
+    this._playingTrackIndex = 0;
+    this._tracks = [];
 
     this._fetchWrapper()
       .then(this._fillAlbumInternals.bind(this))
@@ -44,20 +47,33 @@ class PartyView extends SceneView {
 
 
   _fillAlbumInternals() {
-    return new Promise(resolve => {
-      // TODO receive from JSON and build entry
-      for (let i = 0; i < this._dom.tracklistContainer.children.length; ++i) {
-        if (this._dom.tracklistContainer.children[i].classList.contains('pv-playing')) {
-          this._dom.playingTrack = this._dom.tracklistContainer.children[i];
-        }
-      }
+    return new Promise((resolve, reject) => {
+      mzk.komunikator.get(`view/single/album/random`)
+        .then(response => {
+          mzk.model.makeTransitiveSet({
+            tracks: response.ALBUM.TRACKS,
+            albumArtist: response.ALBUM.ALBUM_ARTIST,
+            album: response.ALBUM.NAME
+          }).then(set => {
+            for (let i = 0; i < set.length; ++i) {
+              let entry = new PartyViewTrackEntry({
+                trackId: set[i].id,
+                trackNumber: i + 1,
+                trackTitle: set[i].title,
+                trackArtist: set[i].artists
+              });
 
-      new ScrollBar({
-        target: this._dom.tracklistContainer
-      });
-      this._dom.tracklistContainer = this._dom.tracklistContainer.firstElementChild.firstElementChild;
+              this._tracks.push(entry);
+              this._dom.tracklistContainer.appendChild(entry.domFragment);
+            }
 
-      resolve();
+            new ScrollBar({
+              target: this._dom.tracklistContainer
+            });
+            this._dom.tracklistContainer = this._dom.tracklistContainer.firstElementChild.firstElementChild;
+            resolve();
+          });
+        }).catch(reject);
     });
   }
 
@@ -66,6 +82,9 @@ class PartyView extends SceneView {
     return new Promise(resolve => {
       this._dom.home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
       this._dom.playPause.addEventListener('click', this._togglePlay.bind(this), false);
+      this._dom.tracklistContainer.addEventListener('click', (event) => {
+        this._trackClicked(event);
+      });
       resolve();
     });
   }
@@ -74,17 +93,14 @@ class PartyView extends SceneView {
   _togglePlay() {
     mzk.togglePlay();
     const isPlaying = mzk.model.player.playing;
-    // TODO use const when ui is built from server call
     if (this.isPlaying === true) {
       this.isPlaying = false;
-      this._dom.playingTrack.classList.remove('pv-paused');
-      this._dom.playingTrack.classList.add('pv-playing');
-      this._dom.playPause.src = 'static/img/player/pause.svg';
+      this._tracks[this._playingTrackIndex].dom.classList.add('paused');
+      this._dom.playPause.src = 'static/img/player/play.svg';
     } else {
       this.isPlaying = true;
-      this._dom.playingTrack.classList.remove('pv-playing');
-      this._dom.playingTrack.classList.add('pv-paused');
-      this._dom.playPause.src = 'static/img/player/play.svg';
+      this._tracks[this._playingTrackIndex].dom.classList.remove('paused');
+      this._dom.playPause.src = 'static/img/player/pause.svg';
     }
   }
 

@@ -114,7 +114,7 @@ class Scene {
     this._isFullScreenView = true;
     this._sceneViewType = 'PartyView';
     this._scene.innerHTML = '';
-    this.view = new PartyView();
+    this.view = new PartyView({});
     this._registerViewReady();
   }
 

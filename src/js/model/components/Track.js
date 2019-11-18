@@ -61,6 +61,23 @@ class Track {
       this[stringKey] = outString;
     }
   }
+
+
+  static joinArrayIntoString(nameArray) {
+    if (nameArray.length > 0) {
+      let outString = '';
+      outString += nameArray[0].NAME;
+      for (let i = 1; i < nameArray.length; ++i) {
+        if (outString.indexOf(nameArray[i].NAME) === -1) {
+          outString += `, ${nameArray[i].NAME}`;
+        }
+      }
+
+      return outString;
+    }
+
+    return '';
+  }
 }
 
 export default Track;

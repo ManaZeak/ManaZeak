@@ -62,7 +62,6 @@ class PlayableView extends SceneView {
     }
   }
 
-
   changeTrack(id) {
     let index = 0;
 
