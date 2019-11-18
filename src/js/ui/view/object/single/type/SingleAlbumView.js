@@ -54,19 +54,28 @@ class SingleAlbumView extends SingleTagView {
 
           this._dom.cover.src = this._cover;
           this._dom.title.innerHTML = this._title;
-          this._dom.albumArtist.innerHTML = response.ALBUM.ALBUM_ARTIST;
-          this._dom.yearLabel.innerHTML = `<i>${response.ALBUM.YEAR} – ${response.ALBUM.LABEL}</i>`;
-          this._dom.trackCompo.innerHTML = `${response.ALBUM.TRACKS.length} ${mzk.lang.playlist.tracks} – ${response.ALBUM.DURATION}`;
-          this._dom.country.innerHTML = response.ALBUM.COUNTRY;
-    /*
-          for (let i = 0; i < response.ALBUM.GENRES.length; ++i) {
-            if (i + 1 === response.ALBUM.GENRES.length) {
-              this._dom.genres.innerHTML += `${response.ALBUM.GENRES[i]}, `;
+          this._dom.albumArtist.innerHTML = response.ALBUM.ALBUM_ARTIST.NAME;
+          this._dom.yearLabel.innerHTML = `<i>${response.ALBUM.YEAR} – ${response.ALBUM.LABEL.NAME || 'Not on label'}</i>`;
+          this._dom.trackCompo.innerHTML = `${response.ALBUM.TRACKS.length} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ALBUM.DURATION)}`;
+
+          this._dom.country.innerHTML = response.ALBUM.COUNTRY.length > 0 ? '' : 'No country';
+          for (let i = 0; i < response.ALBUM.COUNTRY.length; ++i) {
+            if (i + 1 === response.ALBUM.COUNTRY.length) {
+              this._dom.country.innerHTML = response.ALBUM.COUNTRY[i];
             } else {
-              this._dom.genres.innerHTML += response.ALBUM.GENRES[i];
+              this._dom.country.innerHTML += `${response.ALBUM.COUNTRY[i]}, `;
             }
           }
-    */
+
+          this._dom.genres.innerHTML = '';
+          for (let i = 0; i < response.ALBUM.GENRES.length; ++i) {
+            if (i + 1 === response.ALBUM.GENRES.length) {
+              this._dom.genres.innerHTML += response.ALBUM.GENRES[i].NAME;
+            } else {
+              this._dom.genres.innerHTML += `${response.ALBUM.GENRES[i].NAME}, `;
+            }
+          }
+
           for (let i = 0; i < set.length; ++i) {
             let entry = new SingleAlbumViewTrackEntry({
               trackNumber: i + 1,
