@@ -107,7 +107,7 @@ class TopBar {
     this._breadcrumbs.innerHTML = '';
     // Only process if there are views in history
     if (views.length > 0) {
-      for (let i = 0; i < views.length - 1; i++) {
+      for (let i = 0; i < views.length - 1; ++i) {
         const link = document.createElement('A');
         link.innerHTML = views[i].uiName;
         link.dataset.id = views[i].id;
