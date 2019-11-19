@@ -55,8 +55,8 @@ class AlbumService(object):
         AlbumService._checkPermissionAndRequest(request, user)
         album = MainPageHelper.getRandomAlbums(1)
         albumDb = Album.objects.get(id=album[0]['ALBUM_ID'])
-        album = LocalLazyAlbum()
-        album.createAlbumFromOrm(albumDb)
+        album = AlbumDto()
+        album.loadAlbumFromOrm(albumDb.id, user)
         return {
             'ALBUM': album.generateJson()
         }
