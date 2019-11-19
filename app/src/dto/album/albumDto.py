@@ -74,7 +74,7 @@ class AlbumDto(object):
         self.title = album.title
         self.year = album.year
         self.description = album.description
-        self.cover = CoverPathGenerator.generateCoverPathForAlbum(album.cover.location)
+        self.cover = CoverPathGenerator.generateCoverPathForAlbum(album.cover)
 
     ## Generate a JSON from the object
     def generateJson(self):
