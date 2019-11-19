@@ -3,5 +3,7 @@ class CoverPathGenerator(object):
 
     @staticmethod
     ## Generate a cover path for an album.
-    def generateCoverPathForAlbum(coverName):
+    def generateCoverPathForAlbum(cover):
+        if cover is None:
+            return None
         return '/static/covers/' + coverName
