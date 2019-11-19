@@ -1,5 +1,6 @@
 from app.src.dao.script.abstractScript import AbstractScript
 
+
 ## Find the cover of an album for the tracks of the album.
 class FindAlbumCoversFromTrack(AbstractScript):
 

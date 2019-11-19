@@ -4,6 +4,7 @@ from app.src.dto.artist.localLazyArtist import LocalLazyArtist
 from app.src.dto.country.localCountry import LocalCountry
 from app.src.dto.label.localLazyLabel import LocalLazyLabel
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
@@ -73,7 +74,7 @@ class AlbumDto(object):
         self.title = album.title
         self.year = album.year
         self.description = album.description
-        #self.cover = album.cover.location
+        self.cover = CoverPathGenerator.generateCoverPathForAlbum(album.cover.location)
 
     ## Generate a JSON from the object
     def generateJson(self):
