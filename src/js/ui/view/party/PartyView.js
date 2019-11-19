@@ -15,7 +15,11 @@ class PartyView extends PlayableView {
       tracklistContainer: null,
       playingTrack: null,
       home: null,
-      playPause: null
+      playPause: null,
+      albumMainInfo: null,
+      albumCover: null,
+      albumLabel: null,
+      albumDuration: null
     };
 
     this._playingTrackIndex = 0;
@@ -39,6 +43,10 @@ class PartyView extends PlayableView {
           this._dom.tracklistContainer = doc.getElementsByClassName('pv-current-album')[0].children[0];
           this._dom.home = doc.getElementsByClassName('pv-controls-home')[0];
           this._dom.playPause = doc.getElementsByClassName('pv-play-pause')[0];
+          this._dom.albumMainInfo = doc.getElementsByClassName('pv-album-main-info')[0];
+          this._dom.albumCover = doc.getElementsByClassName('pv-album-cover')[0];
+          this._dom.albumLabel = doc.getElementsByClassName('pv-album-label')[0];
+          this._dom.albumDuration = doc.getElementsByClassName('pv-album-duration')[0];
 
           resolve();
         });
@@ -66,6 +74,12 @@ class PartyView extends PlayableView {
               this._tracks.push(entry);
               this._dom.tracklistContainer.appendChild(entry.domFragment);
             }
+
+            console.log(set, response)
+            this._dom.albumMainInfo.innerHTML = `${response.ALBUM.YEAR} – ${response.ALBUM.NAME}`;
+            this._dom.albumCover.src = response.ALBUM.COVER;
+            this._dom.albumLabel.innerHTML = response.ALBUM.LABEL.NAME;
+            this._dom.albumDuration.innerHTML = Utils.secondsToTimecode(response.ALBUM.DURATION);
 
             new ScrollBar({
               target: this._dom.tracklistContainer
