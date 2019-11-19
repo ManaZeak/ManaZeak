@@ -105,20 +105,26 @@ class TopBar {
 
   updateViewBreadcrumbs(views) {
     this._breadcrumbs.innerHTML = '';
-    for (let i = 0; i < views.length; ++i) {
-      const link = document.createElement('A');
-      link.innerHTML = views[i].uiName;
-      link.dataset.id = views[i].id;
-      link.dataset.name = views[i].name;
-      link.addEventListener('click', function() {
-        mzk.ui.setSceneView({
-          name: this.dataset.name,
-          uiName: this.innerHTML,
-          id: this.dataset.id
-        });
-      }.bind(link), false);
-
-      this._breadcrumbs.appendChild(link);
+    // Only process if there are views in history
+    if (views.length > 0) {
+      for (let i = 0; i < views.length - 1; i++) {
+        const link = document.createElement('A');
+        link.innerHTML = views[i].uiName;
+        link.dataset.id = views[i].id;
+        link.dataset.name = views[i].name;
+        link.addEventListener('click', function() {
+          mzk.ui.setSceneView({
+            name: this.dataset.name,
+            uiName: this.innerHTML,
+            id: this.dataset.id
+          });
+        }.bind(link), false);
+        this._breadcrumbs.appendChild(link);
+      }
+      // Last element should not be clickable to avoid reloading the same page in breadcrumbs path
+      const text = document.createElement('P');
+      text.innerHTML = views[views.length - 1].uiName;
+      this._breadcrumbs.appendChild(text);
     }
   }
 

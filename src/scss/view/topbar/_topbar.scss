@@ -93,6 +93,10 @@ $topbar-loader: $topbar-height - 10px;
         margin: 0;
       }
     }
+
+    p {
+      display: inline;
+    }
   }
 
   img#topbar-avatar {
