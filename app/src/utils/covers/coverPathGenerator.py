@@ -6,4 +6,4 @@ class CoverPathGenerator(object):
     def generateCoverPathForAlbum(cover):
         if cover is None:
             return None
-        return '/static/covers/' + coverName
+        return 'static/covers/' + coverName
