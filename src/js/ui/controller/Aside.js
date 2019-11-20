@@ -1,5 +1,6 @@
 import CollectionGroup from "../component/CollectionGroup";
 import ScrollBar from "../component/bar/ScrollBar";
+import TrackPreview from "../component/TrackPreview";
 
 class Aside {
 
@@ -10,13 +11,17 @@ class Aside {
       collection: null,
       collapser: null,
       controls: null,
-      expander: null // We must have a local expander image to add as an absolute to the UI when collapsed
+      expander: null, // We must have a local expander image to add as an absolute to the UI when collapsed,
+      trackPreview: null // This is the DOM element, not the component (see _trackPreview internal)
     };
+    // Aside components
+    this._trackPreview = null;
 
     this._dom.container = document.getElementsByClassName('aside')[0];
     this._dom.collection = document.getElementsByClassName('aside-content')[0];
     this._dom.controls = document.getElementsByClassName('app-controls')[0];
     this._dom.collapser = document.getElementsByClassName('aside-toggle')[0];
+    this._dom.trackPreview = document.getElementsByClassName('aside-track-preview')[0];
 
     this._dom.expander = document.createElement('DIV');
     this._dom.expander.appendChild(document.createElement('IMG'));
@@ -28,6 +33,7 @@ class Aside {
     this._toggleAside = this._toggleAside.bind(this); // To add/remove event on it
 
     this._fillCollection();
+    this._initTrackPreview();
     this._events();
   }
 
@@ -72,6 +78,13 @@ class Aside {
   }
 
 
+  _initTrackPreview() {
+    this._trackPreview = new TrackPreview({
+      container: this._dom.trackPreview
+    });
+  }
+
+
   _toggleAside(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -87,6 +100,16 @@ class Aside {
       this._dom.expander.addEventListener('click', this._toggleAside, false);
       requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '0') });
     }
+  }
+
+
+  setTrackPreview(track) {
+    this._trackPreview.setTrack(track);
+  }
+
+
+  resetTrackPreview() {
+    this._trackPreview.resetTrack();
   }
 
 

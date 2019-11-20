@@ -133,6 +133,7 @@ class UserInterface {
     this._scene.changeTrack(track.id);
     this._footBar.renderMoodFile(track.moodbar);
     this._footBar.progressBar.updateDuration(mzk.model.player.duration);
+    this._aside.setTrackPreview(track);
   }
 
 
@@ -168,6 +169,7 @@ class UserInterface {
     this.clearMoodbar();
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.progressBar.resetProgressBar();
+    this._aside.resetTrackPreview();
     this._scene.stopPlayback();
     this._clearPageTitle();
   }
@@ -311,7 +313,18 @@ class UserInterface {
     if (options.name === 'MainPage') {
       this._viewHistory = [];
     } else {
-      this._viewHistory.push(options);
+      // We must exclude duplicate keys by their display name which remains the most consistent (imagine basing this on ID..)
+      let duplicateFlag = false;
+      for (let i = 0; i < this._viewHistory.length; ++i) {
+        if (this._viewHistory[i].name === options.name) {
+          duplicateFlag = true;
+          break;
+        }
+      }
+      // Only push if candidate is not a duplicated element
+      if (duplicateFlag === false) {
+        this._viewHistory.push(options);
+      }
     }
 
     this._topBar.updateViewBreadcrumbs(this._viewHistory);
