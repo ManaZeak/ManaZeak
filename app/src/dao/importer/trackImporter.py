@@ -29,7 +29,7 @@ class TrackImporter(AbstractDaoImporter):
         return 'INSERT INTO app_track (location, "fileName", "fileSize", mood, duration, "bitRate", "bitRateMode", ' \
                '"sampleRate", title, year, lyrics, comment, "trackNumber", "trackTotal", ' \
                '"discNumber", bpm, "downloadCounter", scanned, album_id, "fileType_id", producer_id,' \
-               ' "playCounter", cover_id) ' \
+               ' "playCounter", cover_id, label_id) ' \
                'VALUES {} ' \
                'ON CONFLICT (location) ' \
                'DO UPDATE SET location=EXCLUDED.location, "fileName"=EXCLUDED."fileName", ' \
@@ -41,10 +41,10 @@ class TrackImporter(AbstractDaoImporter):
                '"discNumber"=EXCLUDED."discNumber", bpm=EXCLUDED.bpm, "downloadCounter"=EXCLUDED."downloadCounter", ' \
                'scanned=EXCLUDED.scanned, album_id=EXCLUDED.album_id, cover_id=EXCLUDED.cover_id, ' \
                '"fileType_id"=EXCLUDED."fileType_id", "moodAverage_id"=EXCLUDED."moodAverage_id", ' \
-               'producer_id=EXCLUDED.producer_id ' \
+               'producer_id=EXCLUDED.producer_id, label_id=EXCLUDED.label_id ' \
                'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s, %s, '
                                                           '%s, %s, %s, %s, %s, %s, %s, '
-                                                          '%s, %s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
+                                                          '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'] * len(tracks)))
 
     ## Prepares the tracks for the upsert.
     def _generateParams(self, tracks):
@@ -54,5 +54,5 @@ class TrackImporter(AbstractDaoImporter):
                            track.bitRateMode, track.sampleRate, track.title, int(track.year),
                            track.lyrics, track.comment, int(track.number), track.trackTotal, track.discNumber,
                            track.bpm, track.downloadCounter, track.scanned, track.album.albumId, track.fileType,
-                           track.producerId, track.playCounter, track.coverId])
+                           track.producerId, track.playCounter, track.coverId, track.labelId])
         return params
