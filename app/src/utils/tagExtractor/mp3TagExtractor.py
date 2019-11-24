@@ -79,8 +79,8 @@ class Mp3TagExtractor(AbstractTagExtractor):
 
     def extractGenre(self):
         if 'TCON' in self.audioTag:
-            genres = strip_tags(self.audioTag['TCON'].text[0]).rstrip().split('; ')
-            self.track.genres = genres
+            genres = strip_tags(self.audioTag['TCON'].text[0]).rstrip()
+            self.track.genres = TrackExtractorHelper.getLocalGenresFromTrack(genres)
 
     def extractArtist(self):
         if 'TPE1' in self.audioTag:  # Check if artist exists
@@ -90,12 +90,12 @@ class Mp3TagExtractor(AbstractTagExtractor):
     def extractComposer(self):
         if 'TCOM' in self.audioTag and self.audioTag['TCOM'].text[0] != "":
             composers = strip_tags(self.audioTag['TCOM'].text[0])
-            self.track.composers = TrackExtractorHelper.getLocalArtistsFromTrack(composers, True)
+            self.track.composers = TrackExtractorHelper.getLocalArtistsFromTrack(composers)
 
     def extractPerformer(self):
         if 'TOPE' in self.audioTag and self.audioTag['TOPE'].text[0] != "":
             performers = strip_tags(self.audioTag['TOPE'].text[0])
-            self.track.performers = TrackExtractorHelper.getLocalArtistsFromTrack(performers, True)
+            self.track.performers = TrackExtractorHelper.getLocalArtistsFromTrack(performers)
 
     def extractProducer(self):
         if 'TPUB' in self.audioTag and self.audioTag['TPUB'].text[0] != '':

@@ -5,7 +5,7 @@ from app.src.dto.genre.MainPageGenre import MainPageGenre
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
-from app.src.utils.decorators import FrontRequest
+from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 

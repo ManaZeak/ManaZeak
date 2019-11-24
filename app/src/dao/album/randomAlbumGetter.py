@@ -1,15 +1,9 @@
-from contextlib import closing
-
-from django.db import connection
-
 from app.src.dao.abstractDaoGetter import AbstractDaoGetter
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 
 
 ## Get a list of random albums.
 class RandomAlbumGetter(AbstractDaoGetter):
-
-    picturePath = '../static/pictures/ArtistsProfile/'
 
     ## Get a table of MainPageAlbum for the front.
     def getRandomArtists(self, numberOfElements):
@@ -21,12 +15,6 @@ class RandomAlbumGetter(AbstractDaoGetter):
             albums.append(album)
         return albums
 
-    def _executeRequest(self, numberOfElements):
-        # Getting the sql request
-        with closing(connection.cursor()) as cursor:
-            cursor.execute(self._generateRequest(), self._generateParams(numberOfElements))
-            return cursor.fetchall()
-
     def _generateRequest(self):
         return '''
             SELECT album_id, alb.title, ac.location, alb.year FROM app_album alb
@@ -36,6 +24,3 @@ class RandomAlbumGetter(AbstractDaoGetter):
             OFFSET floor(random() * ( SELECT count(1) FROM music.public.app_album))
             LIMIT %s
         '''
-
-    def _generateParams(self, numberOfElements):
-        return [numberOfElements]

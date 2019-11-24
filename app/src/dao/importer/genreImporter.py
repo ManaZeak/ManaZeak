@@ -26,12 +26,13 @@ class GenreImporter(AbstractDaoImporter):
 
     ## Generate a sql request with the given params
     def _generateRequest(self, genres):
-        return 'INSERT INTO app_genre (name) VALUES {} ON CONFLICT (name) ' \
-              'DO UPDATE SET name = EXCLUDED.name returning id, name'.format(', '.join(['(%s)'] * len(genres)))
+        return 'INSERT INTO app_genre (name, picture) VALUES {} ON CONFLICT (name) ' \
+               'DO UPDATE SET name = EXCLUDED.name, picture = EXCLUDED.picture ' \
+               'returning id, name'.format(', '.join(['(%s, %s)'] * len(genres)))
 
     ## Prepares the genres for the upsert.
     def _generateParams(self, genres):
         params = []
-        for name in genres:
-            params.extend([name])
+        for genre in genres:
+            params.extend([genre.name, genre.coverName])
         return params

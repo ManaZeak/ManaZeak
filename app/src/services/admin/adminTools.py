@@ -4,7 +4,7 @@ from app.models.track import Producer, Cover
 
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
-from app.src.utils.decorators import FrontRequest
+from app.src.utils.decorators.frontRequest import FrontRequest
 
 
 ## Gives some tools to the admin to execute special actions.

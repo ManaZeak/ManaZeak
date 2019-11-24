@@ -7,7 +7,7 @@ from app.models.collections import Playlist
 from app.src.dao.playlist.lazyTrackGetterInPlaylist import LazyTrackGetterInPlaylist
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
 from app.src.services.config.configService import ConfigService
-from app.src.utils.decorators import FrontRequest
+from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker

@@ -1,4 +1,5 @@
-from django.urls import path
+import debug_toolbar
+from django.urls import path, include
 
 from app.src.services.admin.adminService import AdminService
 from app.src.services.admin.adminTools import AdminTools
@@ -11,5 +12,7 @@ urlpatterns = [
     path('reset/', AdminTools.resetInstance, name='reset'),
     path('toggleInvite/', AdminService.toggleInviteMode, name='toggleInvite'),
     # FIXME: to be moved into confs
-    path('isInviteEnabled/', ConfigService.isInviteCodeEnabled, name='inviteEnabled')
+    path('isInviteEnabled/', ConfigService.isInviteCodeEnabled, name='inviteEnabled'),
+    # Page for logging the performance of the application.
+    path('benchLogger/', include(debug_toolbar.urls)),
 ]

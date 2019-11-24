@@ -1,9 +1,9 @@
 from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 
-## This object describes an artist in the lazy loading of an artist.
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 
 
+## This object describes an artist in the lazy loading of an artist.
 class LocalLazyAlbumArtist(object):
 
     ## Constructor

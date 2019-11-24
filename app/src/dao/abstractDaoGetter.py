@@ -1,4 +1,7 @@
 import abc
+from contextlib import closing
+
+from django.db import connection
 
 
 class AbstractDaoGetter(object, metaclass=abc.ABCMeta):
@@ -8,12 +11,14 @@ class AbstractDaoGetter(object, metaclass=abc.ABCMeta):
     def _generateRequest(self):
         raise NotImplementedError('The function needs an override.')
 
-    @abc.abstractmethod
     ## Execute the request to save the data into the database.
-    def _executeRequest(self, objectsToSave):
-        raise NotImplementedError('The function needs an override.')
+    def _executeRequest(self, numberOfElements):
+        # Getting the sql request
+        with closing(connection.cursor()) as cursor:
+            cursor.execute(self._generateRequest(), self._generateParams(numberOfElements))
+            return cursor.fetchall()
 
-    @abc.abstractmethod
+    @staticmethod
     ## Prepares the parameters to be send to the request.
-    def _generateParams(self, objectsToSave):
-        raise NotImplementedError('The function needs an override.')
+    def _generateParams(objectsToGet):
+        return [objectsToGet]

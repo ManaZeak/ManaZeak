@@ -64,22 +64,22 @@ class SingleArtistView extends SingleTagView {
             let album = document.createElement('DIV');
             album.classList.add('sp-artist-album');
 
-            album.dataset.id = response.ARTIST.ALBUMS[i].ID;
+            album.dataset.id = response.ARTIST.ALBUMS[i].ALBUM_ID;
 
             let albumTitle = document.createElement('P');
-            albumTitle.innerHTML = response.ARTIST.ALBUMS[i].NAME;
+            albumTitle.innerHTML = response.ARTIST.ALBUMS[i].ALBUM_TITLE;
 
             let albumCover = document.createElement('IMG');
-            albumCover.src = 'static/img/object/album.svg';
+            albumCover.src = response.ARTIST.ALBUMS[i].ALBUM_COVER;
 
             let albumYear = document.createElement('P');
-            albumYear.innerHTML = response.ARTIST.ALBUMS[i].YEAR;
+            albumYear.innerHTML = response.ARTIST.ALBUMS[i].ALBUM_YEAR;
 
             album.addEventListener('click', () => {
               mzk.ui.setSceneView({
                 name: 'SingleAlbum',
-                uiName: response.ARTIST.ALBUMS[i].NAME,
-                id: response.ARTIST.ALBUMS[i].ID
+                uiName: response.ARTIST.ALBUMS[i].ALBUM_TITLE,
+                id: response.ARTIST.ALBUMS[i].ALBUM_ID
               });
             }, false);
 

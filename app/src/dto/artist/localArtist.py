@@ -1,3 +1,7 @@
+from app.src.config.constants import Constants
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
+
+
 ## Represents an artist before it's inserted into the database.
 class LocalArtist(object):
 
@@ -9,6 +13,7 @@ class LocalArtist(object):
         self.folderSize = None
         self.location = None
         self.isAlbumArtist = False
+        self.picture = None
 
     def addArtist(self, name):
         self._extractNameAndRealName(name)
@@ -26,3 +31,4 @@ class LocalArtist(object):
         if len(splitArtist) > 1:
             # Removing the last ')'
             self.realName = splitArtist[1].strip()[:-1]
+        self.picture = CoverPathGenerator.sanitizeName(self.name) + Constants.JPG

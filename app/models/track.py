@@ -15,15 +15,18 @@ class Cover(models.Model):
     ## The path of the cover
     location = models.URLField(max_length=1000, null=True, unique=True)
 
+
 ## The country of a track.
 class Country(models.Model):
     ## The name of the country
     name = models.CharField(max_length=1000, unique=True)
 
+
 ## The label of a track.
 class Label(models.Model):
     ## The name of the label
     name = models.CharField(max_length=1000, unique=True)
+
 
 ## The producer of a track or an album.
 class Producer(models.Model):

@@ -1,7 +1,3 @@
-from contextlib import closing
-
-from django.db import connection
-
 from app.src.dao.abstractDaoGetter import AbstractDaoGetter
 from app.src.dto.genre.MainPageGenre import MainPageGenre
 
@@ -19,18 +15,9 @@ class RandomGenreGetter(AbstractDaoGetter):
             genres.append(genre)
         return genres
 
-    def _executeRequest(self, numberOfElements):
-        # Getting the sql request
-        with closing(connection.cursor()) as cursor:
-            cursor.execute(self._generateRequest(), self._generateParams(numberOfElements))
-            return cursor.fetchall()
-
     def _generateRequest(self):
         return '''
             SELECT id, name, description FROM app_genre
             OFFSET floor(random() * ( SELECT count(1) FROM app_genre))
             LIMIT %s
         '''
-
-    def _generateParams(self, numberOfElements):
-        return [numberOfElements]

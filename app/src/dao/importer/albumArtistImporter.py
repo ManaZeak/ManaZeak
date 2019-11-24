@@ -26,14 +26,15 @@ class AlbumArtistImporter(AbstractDaoImporter):
 
     ## Generate a sql request with the given params
     def _generateRequest(self, artists):
-        return 'INSERT INTO app_artist (name, "realName", "folderName", location) VALUES {} ON CONFLICT (name) ' \
+        return 'INSERT INTO app_artist (name, "realName", "folderName", location, picture) ' \
+               'VALUES {} ON CONFLICT (name) ' \
                'DO UPDATE SET name = EXCLUDED.name, "realName" = EXCLUDED."realName", location = EXCLUDED.location, ' \
-               '"folderName" = EXCLUDED."folderName"' \
-               'returning id, name'.format(', '.join(['(%s, %s, %s, %s)'] * len(artists)))
+               '"folderName" = EXCLUDED."folderName", picture = EXCLUDED.picture ' \
+               'returning id, name'.format(', '.join(['(%s, %s, %s, %s, %s)'] * len(artists)))
 
     ## Prepares the genres for the upsert.
     def _generateParams(self, artists):
         params = []
         for artist in artists:
-            params.extend([artist.name, artist.realName, artist.folderName, artist.location])
+            params.extend([artist.name, artist.realName, artist.folderName, artist.location, artist.picture])
         return params

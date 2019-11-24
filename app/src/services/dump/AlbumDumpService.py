@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from app.models import Album, Artist
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
-from app.src.utils.decorators import FrontRequest
+from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker

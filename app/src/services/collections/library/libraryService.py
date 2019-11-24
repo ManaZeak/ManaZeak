@@ -13,7 +13,7 @@ from app.src.services.collections.library.libraryHelper import LibraryHelper
 from app.src.services.collections.library.libraryIntegrationService import LibraryIntegrationService
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
-from app.src.utils.decorators import FrontRequest
+from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException

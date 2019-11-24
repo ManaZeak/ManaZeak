@@ -141,7 +141,7 @@ class LocalTrackImporter(object):
         # Filling the references
         for track in self.trackContainer.tracks:
             for genre in track.genres:
-                genreToLink.append((track.id, self.genreReference[genre]))
+                genreToLink.append((track.id, self.genreReference[genre.name]))
             for artist in track.artists:
                 artistToLink.append((track.id, self.artistReference[artist.name]))
             for composer in track.composers:
