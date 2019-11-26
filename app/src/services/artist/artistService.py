@@ -15,6 +15,7 @@ from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
+
 ## Defines the action of the user interacting with artists.
 class ArtistService(object):
 
@@ -31,6 +32,10 @@ class ArtistService(object):
         # Getting the artists.
         artistsInDb = Artist.objects.filter(location__isnull=False)
         artists = []
+        if len(artists) == 0:
+            return {
+                'ARTISTS': [],
+            }
         for artist in artistsInDb:
             artistDto = MainPageArtist()
             artistDto.buildFromOrmArtistObject(artist)

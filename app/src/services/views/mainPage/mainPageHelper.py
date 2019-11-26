@@ -50,10 +50,15 @@ class MainPageHelper(object):
 
     @staticmethod
     def getRandomComposer(numberToGet):
-        artistInDb = Artist.objects.first()
-        artistDto = MainPageArtist()
-        artistDto.buildFromOrmArtistObject(artistInDb)
-        return artistDto.getJsonObject()
+        if Artist.objects.all().count() > 0:
+            artistInDb = Artist.objects.first()
+            artistDto = MainPageArtist()
+            artistDto.buildFromOrmArtistObject(artistInDb)
+            return artistDto.getJsonObject()
+        else:
+            return {
+
+            }
 
     @staticmethod
     def getRandomProducers(numberToGet):

@@ -44,9 +44,13 @@ class ComposerService(object):
         # Checking the permission.
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting the artists.
+        if Artist.objects.count() == 0:
+            return {
+                'COMPOSER': None,
+            }
         artistInDb = Artist.objects.first()
         artistDto = MainPageArtist()
         artistDto.buildFromOrmArtistObject(artistInDb)
         return {
-            'COMPOSER': artistDto.getJsonObject()
+            'COMPOSER': artistDto.getJsonObject(),
         }
