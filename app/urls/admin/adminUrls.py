@@ -1,4 +1,3 @@
-import debug_toolbar
 from django.urls import path, include
 
 from app.src.services.admin.adminService import AdminService
@@ -14,5 +13,4 @@ urlpatterns = [
     # FIXME: to be moved into confs
     path('isInviteEnabled/', ConfigService.isInviteCodeEnabled, name='inviteEnabled'),
     # Page for logging the performance of the application.
-    path('benchLogger/', include(debug_toolbar.urls)),
 ]

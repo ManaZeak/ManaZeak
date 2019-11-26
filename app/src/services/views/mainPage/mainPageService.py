@@ -54,10 +54,12 @@ class MainPageService(object):
         artists = MainPageHelper.getRandomArtists(numberOfElements)
         albums = MainPageHelper.getRandomAlbums(numberOfElements)
         genres = MainPageHelper.getRandomGenres(numberOfElements)
+        composers = MainPageHelper.getRandomComposer(numberOfElements)
         producers = []
         return {
             'ARTISTS': artists,
             'GENRES': genres,
             'ALBUMS': albums,
             'PRODUCERS': producers,
+            'COMPOSERS': composers,
         }

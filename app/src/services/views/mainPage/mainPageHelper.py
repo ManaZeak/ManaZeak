@@ -1,11 +1,15 @@
 from builtins import staticmethod
 
+from app.models import Artist
 from app.src.dao.album.randomAlbumGetter import RandomAlbumGetter
 from app.src.dao.artist.randomArtistsGetter import RandomArtistsGetter
 from app.src.dao.genre.randomGenreGetter import RandomGenreGetter
 
 
 ## Helper class for the main page.
+from app.src.dto.artist.mainPageArtist import MainPageArtist
+
+
 class MainPageHelper(object):
 
     @staticmethod
@@ -43,6 +47,13 @@ class MainPageHelper(object):
         for genre in genreFromDb:
             genres.append(genre.getJsonObject())
         return genres
+
+    @staticmethod
+    def getRandomComposer(numberToGet):
+        artistInDb = Artist.objects.first()
+        artistDto = MainPageArtist()
+        artistDto.buildFromOrmArtistObject(artistInDb)
+        return artistDto.getJsonObject()
 
     @staticmethod
     def getRandomProducers(numberToGet):

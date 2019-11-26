@@ -23,7 +23,7 @@ class LibraryStatusHelper(object):
     def endLibraryScan(self):
         scanStatus = LibraryStatusHelper.getLibraryScanStatus(self.library)
         if scanStatus.isScanned:
-            raise UserException(ErrorEnum.UNEXPECTED_STATE)
+            raise UserException(ErrorEnum.UNEXPECTED_STATE, None)
         scanStatus.isScanned = True
         scanStatus.save()
 

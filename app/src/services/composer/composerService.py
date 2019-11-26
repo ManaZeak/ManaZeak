@@ -33,3 +33,20 @@ class ComposerService(object):
         return {
             'COMPOSERS': artists,
         }
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    def getComposer(request, composerId):
+        user = request.user
+        # Checking the request.
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+        # Checking the permission.
+        PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+        # Getting the artists.
+        artistInDb = Artist.objects.first()
+        artistDto = MainPageArtist()
+        artistDto.buildFromOrmArtistObject(artistInDb)
+        return {
+            'COMPOSER': artistDto.getJsonObject()
+        }

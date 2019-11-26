@@ -61,6 +61,9 @@ class LibraryIntegrationService(object):
         trackImporter = LocalTrackImporter(trackContainer)
         trackImporter.insertLocalTracks(library.playlist.id)
 
+        #Finishing the scan
+        self.statusHelper.endLibraryScan()
+
     ## Extract the information contained in the tracks into a object.
     #   @param tracksPath a table containing the tracks path to extract
     #   @return a table a local tracks
