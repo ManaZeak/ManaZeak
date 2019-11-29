@@ -32,7 +32,7 @@ class ArtistService(object):
         # Getting the artists.
         artistsInDb = Artist.objects.filter(location__isnull=False)
         artists = []
-        if len(artists) == 0:
+        if len(artistsInDb) == 0:
             return {
                 'ARTISTS': [],
             }
