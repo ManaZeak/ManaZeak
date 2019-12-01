@@ -11,6 +11,7 @@ class CoverPathGenerator(object):
     def generateCoverPathForAlbum(cover):
         if cover is None:
             return None
+        # FIXME : use a CONSTANT !
         return 'static/covers/' + cover.location
 
     @staticmethod

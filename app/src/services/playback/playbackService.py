@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.playback.playbackHelper import PlaybackHelper
+from app.src.services.random.getter.randomTrackGetterService import RandomTrackGetterService
 from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
@@ -24,7 +25,7 @@ class PlaybackService(object):
         result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting a random track from the database.
-        trackId = PlaybackHelper.getRandomTrack(result['PLAYLIST_ID'], user)
+        trackId = RandomTrackGetterService.getRandomTrackSortedByName(1).first().id
         if trackId is None:
             raise UserException(ErrorEnum.DB_ERROR, user)
         return {
@@ -48,5 +49,5 @@ class PlaybackService(object):
         PlaybackHelper.checkIfAlbumShuffleIsFinished(playlistId, user)
         # Return to the front the selected track
         return {
-            'TRACK_ID': trackId
+            'TRACK_ID': trackId,
         }

@@ -115,7 +115,6 @@ class LocalTrackImporter(object):
 
     ## Update the track with the information of the other tables.
     def _updateDtoWithDbIds(self):
-        loggerScan.info(str(self.labelReference))
         for track in self.trackContainer.tracks:
             # Finding the cover id.
             if track.coverLocation in self.coverPathReference:
@@ -127,7 +126,6 @@ class LocalTrackImporter(object):
                 track.producerId = self.producerReference[track.producer]
             # Finding the label id.
             if track.label is not None and track.label.name in self.labelReference:
-                loggerScan.info(track.label)
                 track.labelId = self.labelReference[track.label.name]
 
     ## Creates tuples of trackId, objectId for linking the tracks to database objects.

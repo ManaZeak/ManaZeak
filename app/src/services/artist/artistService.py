@@ -1,17 +1,12 @@
 from django.contrib.auth.decorators import login_required
 
 from app.models import Artist
-from app.src.dto.album.albumDto import AlbumDto
 from app.src.dto.artist.artistDto import ArtistDto
-from app.src.dto.artist.localLazyAlbumArtist import LocalLazyAlbumArtist
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.track.trackService import TrackService
-from app.src.utils.decorators.bench import Bench
 from app.src.utils.decorators.frontRequest import FrontRequest
-from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 

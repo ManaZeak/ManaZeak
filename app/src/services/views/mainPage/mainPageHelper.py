@@ -1,13 +1,13 @@
-from builtins import staticmethod
-
 from app.models import Artist
-from app.src.dao.album.randomAlbumGetter import RandomAlbumGetter
-from app.src.dao.artist.randomArtistsGetter import RandomArtistsGetter
-from app.src.dao.genre.randomGenreGetter import RandomGenreGetter
+from app.src.dto.album.mainPageAlbum import MainPageAlbum
+from app.src.dto.artist.mainPageArtist import MainPageArtist
+from app.src.dto.genre.MainPageGenre import MainPageGenre
+from app.src.services.random.getter.randomAlbumGetterService import RandomAlbumGetterService
+from app.src.services.random.getter.randomArtistGetterService import RandomArtistGetterService
 
 
 ## Helper class for the main page.
-from app.src.dto.artist.mainPageArtist import MainPageArtist
+from app.src.services.random.getter.randomGenreGetterService import RandomGenreGetterService
 
 
 class MainPageHelper(object):
@@ -17,10 +17,11 @@ class MainPageHelper(object):
     #   @param numberToGet The number of elements to get.
     #   @return A json containing the artist's information.
     def getRandomArtists(numberToGet):
-        randomArtistsGetter = RandomArtistsGetter()
-        artistsFromDb = randomArtistsGetter.getRandomArtists(numberToGet)
+        artistsFromDb = RandomArtistGetterService.getArtistsSortedByName(numberToGet)
         artists = []
-        for artist in artistsFromDb:
+        for artistDb in artistsFromDb:
+            artist = MainPageArtist()
+            artist.buildFromOrmArtistObject(artistDb)
             artists.append(artist.getJsonObject())
         return artists
 
@@ -29,10 +30,11 @@ class MainPageHelper(object):
     #   @param numberToGet The number of elements to get.
     #   @return A json containing the album's information.
     def getRandomAlbums(numberToGet):
-        randomAlbumGetter = RandomAlbumGetter()
-        albumFromDb = randomAlbumGetter.getRandomArtists(numberToGet)
+        albumsFromDb = RandomAlbumGetterService.getAlbumsSortedByArtist(numberToGet)
         albums = []
-        for album in albumFromDb:
+        for albumDb in albumsFromDb:
+            album = MainPageAlbum()
+            album.buildFromOrmAlbum(albumDb)
             albums.append(album.getJsonObject())
         return albums
 
@@ -41,10 +43,11 @@ class MainPageHelper(object):
     #   @param numberToGet The number of elements to get.
     #   @return A json containing the album's information.
     def getRandomGenres(numberToGet):
-        randomGenreGetter = RandomGenreGetter()
-        genreFromDb = randomGenreGetter.getRandomGenres(numberToGet)
+        genreFromDb = RandomGenreGetterService.getRandomGenreSortedByName(numberToGet)
         genres = []
-        for genre in genreFromDb:
+        for genreDb in genreFromDb:
+            genre = MainPageGenre()
+            genre.buildFromOrmGenre(genreDb)
             genres.append(genre.getJsonObject())
         return genres
 

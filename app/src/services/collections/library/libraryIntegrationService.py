@@ -7,6 +7,7 @@ from django import db
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
+from app.src.services.random.randomGenerator import RandomGenerator
 from app.src.services.track.localTrackImporter import LocalTrackImporter
 from app.src.services.track.trackExtractorService import TrackExtractorService
 from app.src.utils.listUtils import ListUtils
@@ -61,7 +62,11 @@ class LibraryIntegrationService(object):
         trackImporter = LocalTrackImporter(trackContainer)
         trackImporter.insertLocalTracks(library.playlist.id)
 
-        #Finishing the scan
+        # Creating the random tables
+        randFiller = RandomGenerator(library.playlist.id)
+        randFiller.fillAllRandomTables()
+
+        # Finishing the scan
         self.statusHelper.endLibraryScan()
 
     ## Extract the information contained in the tracks into a object.

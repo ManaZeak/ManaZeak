@@ -9,7 +9,6 @@ from app.models import Track
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
 from app.src.dao.track.randomTrackFromArtistGetter import RandomTrackFromArtistGetter
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
-from app.src.dto.track.localTrack import LocalTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.collections.playlist.playlistService import PlaylistService
