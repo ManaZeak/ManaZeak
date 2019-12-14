@@ -12,6 +12,7 @@ from app.src.dto.track.localLazyTrack import LocalLazyTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.collections.playlist.playlistService import PlaylistService
+from app.src.services.random.getter.randomTrackGetterService import RandomTrackGetterService
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.errors.errorHandler import ErrorHandler
 from app.src.utils.exceptions.userException import UserException
@@ -55,11 +56,9 @@ class TrackService(object):
     @staticmethod
     ## Fetch a random track of the database.
     #   @param request the request of the front.
-    def getRandomTracksFromArtist(artist):
+    def getRandomTracksFromArtist(artistId, numberToGet):
         # Getting a random track from the database.
-        randomTrackGetter = RandomTrackFromArtistGetter()
-        row = randomTrackGetter.getRandomTrackFromArtist(artist)
-        tracksDb = Track.objects.filter(id__in=row)
+        tracksDb = RandomTrackGetterService.getRandomTrackSortedByArtist(numberToGet, artistId)
         tracks = []
         for track in tracksDb:
             tracks.append(LocalLazyTrack.createTrackFromOrm(track))

@@ -54,6 +54,6 @@ class ArtistService(object):
         artist.loadArtistFromDb(artistId)
         return {
             'ARTIST': artist.generateJson(),
-            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artist)
+            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
         }
 

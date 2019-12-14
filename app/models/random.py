@@ -10,6 +10,11 @@ class RandomTrackSortedByName(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=DO_NOTHING)
     hashIndex = models.IntegerField(db_index=True)
 
+class RandomTrackSortedByArtist(models.Model):
+    track = models.ForeignKey(Track, on_delete=DO_NOTHING)
+    playlist = models.ForeignKey(Playlist, on_delete=DO_NOTHING)
+    hashIndex = models.IntegerField(db_index=True)
+
 ## This class represents the table for storing contiguous sequence for selecting albums.
 class RandomAlbumSortedByArtist(models.Model):
     album = models.ForeignKey(Album, on_delete=DO_NOTHING)
