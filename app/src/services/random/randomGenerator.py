@@ -1,7 +1,9 @@
+from app.models.random import RandomArtistSortedByName
 from app.src.services.random.generator.album.randomAlbumSortedByArtistGenerator \
     import RandomAlbumSortedByArtistGenerator
-from app.src.services.random.generator.artist.randomArtistSortedByNameGenerator \
-    import RandomArtistSortedByNameGenerator
+from app.src.services.random.generator.artist.randomArtistSortedByNameGenerator import RandomArtistSortedByNameGenerator
+from app.src.services.random.generator.artist.randomReleaseArtistSortedByNameGenerator \
+    import RandomReleaseArtistSortedByNameGenerator
 from app.src.services.random.generator.genre.randomGenreSortedByNameGenerator import RandomGenreSortedByNameGenerator
 from app.src.services.random.generator.track.randomTrackSortedByArtistGenerator import \
     RandomTrackSortedByArtistGenerator
@@ -27,8 +29,9 @@ class RandomGenerator(object):
 
     ## Fill the tables linked to the artists.
     def _fillRandomArtist(self):
-        generator = RandomArtistSortedByNameGenerator()
-        generator.fillTableRandom(self.playlistId)
+        randomGenerators = [RandomReleaseArtistSortedByNameGenerator(), RandomArtistSortedByNameGenerator()]
+        for randGen in randomGenerators:
+            randGen.fillTableRandom(self.playlistId)
 
     ## Fill the tables linked to the albums.
     def _fillRandomAlbum(self):

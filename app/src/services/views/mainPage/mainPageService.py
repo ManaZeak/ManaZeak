@@ -51,15 +51,12 @@ class MainPageService(object):
         if response['NUMBER_OF_ELEMENT'] > 10:
             raise UserException(ErrorEnum.SUSPICIOUS_OPERATION, user)
         numberOfElements = response['NUMBER_OF_ELEMENT']
-        artists = MainPageHelper.getRandomArtists(numberOfElements)
-        albums = MainPageHelper.getRandomAlbums(numberOfElements)
-        genres = MainPageHelper.getRandomGenres(numberOfElements)
-        composers = MainPageHelper.getRandomComposer(numberOfElements)
         producers = []
         return {
-            'ARTISTS': artists,
-            'GENRES': genres,
-            'ALBUMS': albums,
+            'ARTISTS': MainPageHelper.getRandomReleaseArtists(numberOfElements),
+            'GENRES': MainPageHelper.getRandomGenres(numberOfElements),
+            'ALBUMS': MainPageHelper.getRandomAlbums(numberOfElements),
             'PRODUCERS': producers,
-            'COMPOSERS': composers,
+            'COMPOSERS': MainPageHelper.getRandomComposer(numberOfElements),
+            'ALL_ARTISTS': MainPageHelper.getRandomArtists(numberOfElements),
         }

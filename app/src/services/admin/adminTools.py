@@ -1,7 +1,7 @@
 from app.models import TrackInScopeStats, Track, Genre, Library, Playlist, Album, Artist, RandomAlbumSortedByArtist, \
     RandomTrackSortedByName, RandomGenreSortedByName
 from app.models.collections import LibraryScanStatus
-from app.models.random import RandomArtistSortedByName, RandomTrackSortedByArtist
+from app.models.random import RandomReleaseArtistSortedByName, RandomTrackSortedByArtist, RandomArtistSortedByName
 from app.models.track import Producer, Cover
 
 from app.src.security.permissionEnum import PermissionEnum
@@ -20,7 +20,8 @@ class AdminTools(object):
         # Checking the user permissions
         PermissionHandler.checkPermission(PermissionEnum.ADMIN_VIEW, user)
         # Deleting the tables
-        objectsToDelete = [LibraryScanStatus, Library, RandomAlbumSortedByArtist, RandomArtistSortedByName,
+        objectsToDelete = [LibraryScanStatus, Library, RandomAlbumSortedByArtist, RandomReleaseArtistSortedByName,
+                           RandomArtistSortedByName,
                            RandomTrackSortedByName, RandomGenreSortedByName, RandomTrackSortedByArtist,
                            Playlist, Track, Genre, Album, Artist, TrackInScopeStats, Cover, Producer]
         for table in objectsToDelete:

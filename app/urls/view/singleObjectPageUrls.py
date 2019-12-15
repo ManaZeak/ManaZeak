@@ -13,10 +13,13 @@ app_name = 'app'
 urlpatterns = [
     path('artist/layout/', GenericViews.getSingleArtistPage, name='getSingleArtistPage'),
     path('artist/<int:artistId>/', ArtistService.getArtist, name='getSingleArtist'),
+
     path('album/layout/', GenericViews.getSingleAlbumPage, name='getSingleAlbumPage'),
     path('album/<int:albumId>/', AlbumService.getAlbum, name='getSingleAlbum'),
     path('album/random/', AlbumService.getRandomAlbum, name='getRandomAlbum'),
+
     path('genre/layout/', GenericViews.getSingleGenrePage, name='getSingleGenrePage'),
     path('genre/<int:genreId>/', GenreService.getGenre, name='getSingleGenre'),
+
     path('composer/<int:composerId>', ComposerService.getComposer, name='getSingleComposer'),
 ]

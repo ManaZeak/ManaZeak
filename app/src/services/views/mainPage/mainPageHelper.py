@@ -13,17 +13,20 @@ from app.src.services.random.getter.randomGenreGetterService import RandomGenreG
 class MainPageHelper(object):
 
     @staticmethod
-    ## Get a number of random artists.
+    ## Get a number of random release artists.
+    #   @param numberToGet The number of elements to get.
+    #   @return A json containing the artist's information.
+    def getRandomReleaseArtists(numberToGet):
+        artistsDb = RandomArtistGetterService.getReleaseArtistsSortedByName(numberToGet)
+        return MainPageHelper._buildArtistsJsonFromRandom(artistsDb)
+
+    @staticmethod
+    ## Get a number of artists.
     #   @param numberToGet The number of elements to get.
     #   @return A json containing the artist's information.
     def getRandomArtists(numberToGet):
-        artistsFromDb = RandomArtistGetterService.getArtistsSortedByName(numberToGet)
-        artists = []
-        for artistDb in artistsFromDb:
-            artist = MainPageArtist()
-            artist.buildFromOrmArtistObject(artistDb)
-            artists.append(artist.getJsonObject())
-        return artists
+        artistsDb = RandomArtistGetterService.getArtistsSortedByName(numberToGet)
+        return MainPageHelper._buildArtistsJsonFromRandom(artistsDb)
 
     @staticmethod
     ## Get a number of random albums.
@@ -66,3 +69,13 @@ class MainPageHelper(object):
     @staticmethod
     def getRandomProducers(numberToGet):
         pass
+
+
+    @staticmethod
+    def _buildArtistsJsonFromRandom(artistsDb):
+        artists = []
+        for artistDb in artistsDb:
+            artist = MainPageArtist()
+            artist.buildFromOrmArtistObject(artistDb)
+            artists.append(artist.getJsonObject())
+        return artists

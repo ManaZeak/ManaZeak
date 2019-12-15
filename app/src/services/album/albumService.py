@@ -2,14 +2,11 @@ from django.contrib.auth.decorators import login_required
 
 from app.models import Album
 from app.src.dto.album.albumDto import AlbumDto
-from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
-from app.src.services.views.mainPage.mainPageHelper import MainPageHelper
+from app.src.services.random.getter.randomAlbumGetterService import RandomAlbumGetterService
 from app.src.utils.decorators.frontRequest import FrontRequest
-from app.src.utils.errors.errorEnum import ErrorEnum
-from app.src.utils.exceptions.userException import UserException
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
 
@@ -53,10 +50,8 @@ class AlbumService(object):
     def getRandomAlbum(request):
         user = request.user
         AlbumService._checkPermissionAndRequest(request, user)
-        album = MainPageHelper.getRandomAlbums(1)
-        albumDb = Album.objects.get(id=album[0]['ALBUM_ID'])
-        album = AlbumDto()
-        album.loadAlbumFromOrm(albumDb.id, user)
+        album = RandomAlbumGetterService.getAlbumsSortedByArtist(1)
+        album.loadAlbumFromOrm(album, user)
         return {
             'ALBUM': album.generateJson()
         }
