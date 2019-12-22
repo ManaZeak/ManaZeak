@@ -2,7 +2,7 @@ import TrackEntry from "../../../../component/entry/TrackEntry";
 'use strict';
 
 
-class SingleArtistViewTrackEntry extends TrackEntry {
+class SingleReleaseArtistViewTrackEntry extends TrackEntry {
 
 
   constructor(options) {
@@ -42,4 +42,4 @@ class SingleArtistViewTrackEntry extends TrackEntry {
 }
 
 
-export default SingleArtistViewTrackEntry;
+export default SingleReleaseArtistViewTrackEntry;

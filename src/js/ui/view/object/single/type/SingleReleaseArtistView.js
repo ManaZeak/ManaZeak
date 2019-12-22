@@ -1,10 +1,10 @@
 import SingleTagView from "../SingleTagView";
-import SingleArtistViewTrackEntry from "../entry/SingleArtistViewTrackEntry";
+import SingleReleaseArtistViewTrackEntry from "../entry/SingleReleaseArtistViewTrackEntry";
 import ScrollBar from "../../../../component/bar/ScrollBar";
 'use strict';
 
 
-class SingleArtistView extends SingleTagView {
+class SingleReleaseArtistView extends SingleTagView {
 
 
   constructor(options) {
@@ -90,7 +90,7 @@ class SingleArtistView extends SingleTagView {
           }
 
           for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleArtistViewTrackEntry({
+            let entry = new SingleReleaseArtistViewTrackEntry({
               trackNumber: i + 1,
               track: set[i]
             });
@@ -117,4 +117,4 @@ class SingleArtistView extends SingleTagView {
 }
 
 
-export default SingleArtistView;
+export default SingleReleaseArtistView;

@@ -3,7 +3,7 @@ import ScrollBar from "../../../../component/bar/ScrollBar";
 'use strict';
 
 
-class AllArtistsView extends AllTagsView {
+class AllReleaseArtistsView extends AllTagsView {
 
 
   constructor() {
@@ -116,4 +116,4 @@ class AllArtistsView extends AllTagsView {
 }
 
 
-export default AllArtistsView;
+export default AllReleaseArtistsView;
