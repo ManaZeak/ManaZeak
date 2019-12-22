@@ -23,7 +23,7 @@ class SuggestionEntry {
 
     this._dom.container.classList.add('mp-suggestion-item');
 
-    if (this._groupType === 'Artists') {
+    if (this._groupType === 'ReleaseArtists' || this._groupType === 'Artists') {
       this._dom.container.dataset.id = this._entry.ARTIST_ID;
       this._dom.name.innerHTML = this._entry.ARTIST_NAME;
 
@@ -57,7 +57,15 @@ class SuggestionEntry {
 
 
   _events() {
-    if (this._groupType === 'Artists') {
+    if (this._groupType === 'ReleaseArtists') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleReleaseArtist',
+          uiName: this._entry.ARTIST_NAME,
+          id: this._entry.ARTIST_ID
+        });
+      }, false);
+    } else if (this._groupType === 'Artists') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleArtist',

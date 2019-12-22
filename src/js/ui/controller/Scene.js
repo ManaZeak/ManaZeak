@@ -1,8 +1,10 @@
 import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
+import SingleArtistView from '../view/object/single/type/SingleArtistView.js';
 import SingleReleaseArtistView from '../view/object/single/type/SingleReleaseArtistView.js';
 import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
 import SingleGenreView from '../view/object/single/type/SingleGenreView.js';
+import AllArtistsView from '../view/object/all/type/AllArtistsView.js';
 import AllReleaseArtistsView from '../view/object/all/type/AllReleaseArtistsView.js';
 import AllAlbumsView from '../view/object/all/type/AllAlbumsView.js';
 import AllGenresView from '../view/object/all/type/AllGenresView.js';
@@ -122,6 +124,16 @@ class Scene {
   setArtistView(artist) {
     this._setAsideToggle(true);
     this._removeFullView();
+    this._sceneViewType = 'SingleArtistView';
+    this._scene.innerHTML = '';
+    this.view = new SingleArtistView(artist);
+    this._registerViewReady();
+  }
+
+
+  setReleaseArtistView(artist) {
+    this._setAsideToggle(true);
+    this._removeFullView();
     this._sceneViewType = 'SingleReleaseArtistView';
     this._scene.innerHTML = '';
     this.view = new SingleReleaseArtistView(artist);
@@ -149,6 +161,16 @@ class Scene {
   }
 
   setArtistsView() {
+    this._setAsideToggle(true);
+    this._removeFullView();
+    this._sceneViewType = 'AllArtistsView';
+    this._scene.innerHTML = '';
+    this.view = new AllArtistsView();
+    this._registerViewReady();
+  }
+
+
+  setReleaseArtistsView() {
     this._setAsideToggle(true);
     this._removeFullView();
     this._sceneViewType = 'AllReleaseArtistsView';

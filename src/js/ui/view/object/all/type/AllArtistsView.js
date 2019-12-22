@@ -3,12 +3,12 @@ import ScrollBar from "../../../../component/bar/ScrollBar";
 'use strict';
 
 
-class AllReleaseArtistsView extends AllTagsView {
+class AllArtistsView extends AllTagsView {
 
 
   constructor() {
     super({
-      type: 'releaseArtist'
+      type: 'artist'
     });
 
     this._letterGroups = {}; // The object that contains each individual first letter items
@@ -87,8 +87,8 @@ class AllReleaseArtistsView extends AllTagsView {
 
           imgContainer.addEventListener('click', () => {
             mzk.ui.setSceneView({
-              name: 'SingleReleaseArtist',
-                uiName: this._letterGroups[keys[i]][j].ARTIST_NAME,
+              name: 'SingleArtist',
+              uiName: this._letterGroups[keys[i]][j].ARTIST_NAME,
               id: this._letterGroups[keys[i]][j].ARTIST_ID
             });
           }, false);
@@ -116,4 +116,4 @@ class AllReleaseArtistsView extends AllTagsView {
 }
 
 
-export default AllReleaseArtistsView;
+export default AllArtistsView;

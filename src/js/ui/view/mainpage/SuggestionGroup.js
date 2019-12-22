@@ -56,7 +56,7 @@ class SuggestionGroup {
     this._dom.seeMore.addEventListener('click', () => {
       mzk.ui.setSceneView({
         name: `All${this._type}`,
-        uiName: `All ${mzk.lang.playlist[this._type]}`
+        uiName: `All ${mzk.lang.playlist[this._label]}` // TODO proper nls handling (for the all prefix)
       });
     }, false);
   }

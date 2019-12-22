@@ -46,6 +46,15 @@ class MainPageView extends SceneView {
 
       mzk.komunikator.post('view/mainPage/roll/', options)
         .then(response => {
+          if (response.RELEASE_ARTISTS.length > 0) {
+            const artists = new SuggestionGroup({
+              label: 'Release Artists',
+              type: 'ReleaseArtists',
+              items: response.RELEASE_ARTISTS
+            });
+            this._dom.suggestion.appendChild(artists.dom);
+          }
+
           if (response.ARTISTS.length > 0) {
             const artists = new SuggestionGroup({
               label: 'Artists',

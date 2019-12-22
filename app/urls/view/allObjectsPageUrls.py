@@ -21,7 +21,7 @@ urlpatterns = [
     path('genre/', GenreService.getAllGenres, name='getAllGenres'),
 
     path('artist/layout/', AllObjectView.getAllArtist, name='getAllArtistPage'),
-    path('artist/', AlbumService.getAllAlbums, name='getAllArtist'),
+    path('artist/', ArtistService.getAllArtists, name='getAllArtist'),
 
     # FIXME : faire la page get label
 

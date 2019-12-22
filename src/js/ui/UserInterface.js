@@ -88,6 +88,9 @@ class UserInterface {
       } else if (options.name === 'SingleArtist') {
         this.startLoading(true)
           .then(this._scene.setArtistView.bind(this._scene, options));
+      } else if (options.name === 'SingleReleaseArtist') {
+        this.startLoading(true)
+          .then(this._scene.setReleaseArtistView.bind(this._scene, options));
       } else if (options.name === 'SingleAlbum') {
         this.startLoading(true)
           .then(this._scene.setAlbumView.bind(this._scene, options));
@@ -97,6 +100,9 @@ class UserInterface {
       } else if (options.name === 'AllArtists') {
         this.startLoading(true)
           .then(this._scene.setArtistsView.bind(this._scene));
+      } else if (options.name === 'AllReleaseArtists') {
+        this.startLoading(true)
+          .then(this._scene.setReleaseArtistsView.bind(this._scene));
       } else if (options.name === 'AllAlbums') {
         this.startLoading(true)
           .then(this._scene.setAlbumsView.bind(this._scene));
