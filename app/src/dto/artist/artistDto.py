@@ -32,10 +32,13 @@ class ArtistDto(object):
             if first:
                 self.id = row[0]
                 self.name = row[1]
-                self.picture = Constants.ARTIST_PICTURE_LOCATION + row[2]
+                if row[2] is not None:
+                    self.picture = Constants.ARTIST_PICTURE_LOCATION + row[2]
             # Adding the number of track and the total duration of the album.
-            self.totalDuration += row[7]
-            self.numberOfTracks += row[8]
+            if row[7] is not None:
+                self.totalDuration += row[7]
+            if row[8] is not None:
+                self.numberOfTracks += row[8]
             # Creating the info about the album
             album = MainPageAlbum()
             album.buildFromArtistDao(row)

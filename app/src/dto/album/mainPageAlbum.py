@@ -30,7 +30,8 @@ class MainPageAlbum(object):
         self.id = sqlRow[3]
         self.title = sqlRow[4]
         self.year = sqlRow[5]
-        self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[6]
+        if sqlRow[6] is not None:
+            self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[6]
 
     ## Generate a json object from an object.
     def getJsonObject(self):

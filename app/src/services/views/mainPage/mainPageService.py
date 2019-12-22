@@ -53,10 +53,10 @@ class MainPageService(object):
         numberOfElements = response['NUMBER_OF_ELEMENT']
         producers = []
         return {
-            'ARTISTS': MainPageHelper.getRandomReleaseArtists(numberOfElements),
+            'RELEASE_ARTISTS': MainPageHelper.getRandomReleaseArtists(numberOfElements),
             'GENRES': MainPageHelper.getRandomGenres(numberOfElements),
             'ALBUMS': MainPageHelper.getRandomAlbums(numberOfElements),
             'PRODUCERS': producers,
             'COMPOSERS': MainPageHelper.getRandomComposer(numberOfElements),
-            'ALL_ARTISTS': MainPageHelper.getRandomArtists(numberOfElements),
+            'ARTISTS': MainPageHelper.getRandomArtists(numberOfElements),
         }

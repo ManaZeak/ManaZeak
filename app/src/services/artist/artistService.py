@@ -18,7 +18,7 @@ class ArtistService(object):
     @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
     ## Get all the artists available in the database.
-    def getAllArtists(request):
+    def getAllReleaseArtists(request):
         user = request.user
         # Checking the request.
         FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
@@ -43,7 +43,7 @@ class ArtistService(object):
     @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
     ## Get all the album and the track of an artist.
-    def getArtist(request, artistId):
+    def getReleaseArtist(request, artistId):
         user = request.user
         # Checking the front request
         FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
@@ -57,3 +57,20 @@ class ArtistService(object):
             'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
         }
 
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    def getArtist(request, artistId):
+        # FIXME : ajouter les albums liés.
+        user = request.user
+        # Checking the front request
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+        # Checking the user permission
+        PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+        # Getting the artist
+        artist = ArtistDto()
+        artist.loadArtistFromDb(artistId)
+        return {
+            'ARTIST': artist.generateJson(),
+            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
+        }

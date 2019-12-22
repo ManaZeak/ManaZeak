@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 
-## this class is used fir rendering all the templates in the application
+## this class is used for rendering all the templates in the application
 class GenericViews(object):
 
     @staticmethod
@@ -77,37 +77,6 @@ class GenericViews(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getLibraryPage(request):
         return render(request, 'views/libraryPage.html')
-
-    # TODO New url to process
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleArtistPage(request):
-        return render(request, 'views/singleObject/singleReleaseArtistPage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleAlbumPage(request):
-        return render(request, 'views/singleObject/singleAlbumPage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleGenrePage(request):
-        return render(request, 'views/singleObject/singleGenrePage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getAllArtistsPage(request):
-        return render(request, 'views/tags/allReleaseArtistsPage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getAllAlbumsPage(request):
-        return render(request, 'views/tags/allAlbumsPage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getAllGenresPage(request):
-        return render(request, 'views/tags/allGenresPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
