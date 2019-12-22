@@ -11,8 +11,8 @@ app_name = 'app'
 ## Contains the views and the urls for single object display.
 #   One genre, album or artist.
 urlpatterns = [
-    path('artist/layout/', GenericViews.getSingleArtistPage, name='getSingleArtistPage'),
-    path('artist/<int:artistId>/', ArtistService.getArtist, name='getSingleArtist'),
+    path('releaseArtist/layout/', GenericViews.getSingleArtistPage, name='getSingleArtistPage'),
+    path('releaseArtist/<int:artistId>/', ArtistService.getArtist, name='getSingleArtist'),
 
     path('album/layout/', GenericViews.getSingleAlbumPage, name='getSingleAlbumPage'),
     path('album/<int:albumId>/', AlbumService.getAlbum, name='getSingleAlbum'),

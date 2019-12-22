@@ -82,7 +82,7 @@ class GenericViews(object):
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleArtistPage(request):
-        return render(request, 'views/singleObject/singleArtistPage.html')
+        return render(request, 'views/singleObject/singleReleaseArtistPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
@@ -97,7 +97,7 @@ class GenericViews(object):
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getAllArtistsPage(request):
-        return render(request, 'views/tags/allArtistsPage.html')
+        return render(request, 'views/tags/allReleaseArtistsPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
