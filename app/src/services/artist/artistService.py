@@ -26,18 +26,7 @@ class ArtistService(object):
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting the artists.
         artistsInDb = Artist.objects.filter(location__isnull=False)
-        artists = []
-        if len(artistsInDb) == 0:
-            return {
-                'ARTISTS': [],
-            }
-        for artist in artistsInDb:
-            artistDto = MainPageArtist()
-            artistDto.buildFromOrmArtistObject(artist)
-            artists.append(artistDto.getJsonObject())
-        return {
-            'ARTISTS': artists,
-        }
+        return ArtistService._getArtistJson(artistsInDb)
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
@@ -73,4 +62,32 @@ class ArtistService(object):
         return {
             'ARTIST': artist.generateJson(),
             'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
+        }
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    def getAllArtists(request):
+        user = request.user
+        # Checking the request.
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+        # Checking the permission.
+        PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
+        # Getting the artists.
+        artistsInDb = Artist.objects.filter()
+        return ArtistService._getArtistJson(artistsInDb)
+
+    @staticmethod
+    def _getArtistJson(artistsInDb):
+        artists = []
+        if len(artistsInDb) == 0:
+            return {
+                'ARTISTS': [],
+            }
+        for artist in artistsInDb:
+            artistDto = MainPageArtist()
+            artistDto.buildFromOrmArtistObject(artist)
+            artists.append(artistDto.getJsonObject())
+        return {
+            'ARTISTS': artists,
         }

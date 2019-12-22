@@ -18,3 +18,8 @@ class AllObjectView(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getAllGenresPage(request):
         return render(request, 'views/tags/allGenresPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllArtist(request):
+        return render(request, 'views/tags/allArtistPage.html')

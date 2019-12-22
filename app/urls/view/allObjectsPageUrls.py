@@ -20,8 +20,8 @@ urlpatterns = [
     path('genre/layout/', AllObjectView.getAllGenresPage, name='getAllGenresPage'),
     path('genre/', GenreService.getAllGenres, name='getAllGenres'),
 
-
-    # FIXME : faire la page get artist
+    path('artist/layout/', AllObjectView.getAllArtist, name='getAllArtistPage'),
+    path('artist/', AlbumService.getAllAlbums, name='getAllArtist'),
 
     # FIXME : faire la page get label
 
