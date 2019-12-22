@@ -8,7 +8,7 @@ class AllArtistsView extends AllTagsView {
 
   constructor() {
     super({
-      type: 'artist'
+      type: 'releaseArtist'
     });
 
     this._letterGroups = {}; // The object that contains each individual first letter items

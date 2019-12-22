@@ -9,7 +9,7 @@ class SingleArtistView extends SingleTagView {
 
   constructor(options) {
     super({
-      type: 'artist'
+      type: 'releaseArtist'
     });
 
     this._id = options.id;
