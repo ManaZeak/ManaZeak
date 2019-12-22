@@ -2,12 +2,14 @@ from app.models import Artist
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 from app.src.dto.genre.MainPageGenre import MainPageGenre
+from app.src.dto.label.mainPageLabel import MainPageLabel
 from app.src.services.random.getter.randomAlbumGetterService import RandomAlbumGetterService
 from app.src.services.random.getter.randomArtistGetterService import RandomArtistGetterService
 
 
 ## Helper class for the main page.
 from app.src.services.random.getter.randomGenreGetterService import RandomGenreGetterService
+from app.src.services.random.getter.randomLabelGetterService import RandomLabelGetterService
 
 
 class MainPageHelper(object):
@@ -70,6 +72,15 @@ class MainPageHelper(object):
     def getRandomProducers(numberToGet):
         pass
 
+    @staticmethod
+    def getRandomLabels(numberToGet):
+        labelsFomDb = RandomLabelGetterService.getRandomLabelSortedByNames(numberToGet)
+        albums = []
+        for labelDb in labelsFomDb:
+            album = MainPageLabel()
+            album.loadFromOrm(labelDb)
+            albums.append(album.getJsonObject())
+        return albums
 
     @staticmethod
     def _buildArtistsJsonFromRandom(artistsDb):

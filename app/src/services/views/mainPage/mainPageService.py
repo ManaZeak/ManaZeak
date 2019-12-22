@@ -59,4 +59,5 @@ class MainPageService(object):
             'PRODUCERS': producers,
             'COMPOSERS': MainPageHelper.getRandomComposer(numberOfElements),
             'ARTISTS': MainPageHelper.getRandomArtists(numberOfElements),
+            'LABELS': MainPageHelper.getRandomLabels(numberOfElements),
         }

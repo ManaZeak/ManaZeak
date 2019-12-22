@@ -29,12 +29,18 @@ class CoverPathGenerator(object):
             return coverPath
         return None
 
-
     @staticmethod
     ## Generate the path of the artist picture and checks if it exists.
     #   @return the path if it exists.
     def generatePicturePath(name):
         imagePath = Constants.ARTIST_PICTURE_LOCATION + CoverPathGenerator.sanitizeName(name) + '.jpg'
+        if not path.exists('/' + imagePath):
+            return None
+        return imagePath
+
+    @staticmethod
+    def generateLabelPicturePath(name):
+        imagePath = Constants.LABELS_COVER_LOCATION + CoverPathGenerator.sanitizeName(name) + '.jpg'
         if not path.exists('/' + imagePath):
             return None
         return imagePath

@@ -8,6 +8,8 @@ class Constants(object):
     ALBUM_COVER_LOCATION = 'static/covers/'
     ## Genre cover root location
     GENRE_COVER_LOCATION = 'static/pictures/GenresLogo/'
+    ## Labels cover root location
+    LABELS_COVER_LOCATION = 'static/pictures/LabelsLogo/'
     ## Forbidden chars
     FORBIDDEN_CHARS = ['*', '/', '\\', ':', ';', '?', '<', '>', '|']
     ## JPG extension
