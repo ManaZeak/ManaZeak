@@ -65,6 +65,10 @@
   overflow: hidden;
   width: 100%;
 
+  .all-objects-header {
+    margin: 3%;
+  }
+
   .allalb-year-container {
     height: auto;
 
@@ -82,14 +86,14 @@
       flex-wrap: wrap;
       margin: ($mzk-margin * 5); // Leave room for tooltip
 
-      transition: background-color $mzk-animation-duration ease-out,
-                  border-radius $mzk-animation-duration ease,
-                  box-shadow $mzk-animation-duration ease-in;
-
       div {
         background-color: transparent;
         border-radius: 0;
         box-shadow: 0 0 0 0 transparent;
+
+        transition: background-color $mzk-animation-duration ease-out,
+                    border-radius $mzk-animation-duration ease,
+                    box-shadow $mzk-animation-duration ease-in;
 
         &:active,
         &:focus,
@@ -104,6 +108,11 @@
           cursor: pointer;
           margin: ($mzk-margin / 2);
           width: 100px;
+        }
+
+        p {
+          text-align: center;
+          margin-bottom: $mzk-margin;
         }
       }
     }

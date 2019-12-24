@@ -27,7 +27,7 @@
     "Artists": "Artistes",
     "Release Artists": "Auteurs",
     "Albums": "Albums",
-    "Labels": "Maison de disque",
+    "Labels": "Maisons de disque",
     "Genres": "Genres"
   },
   "mainpage": {
@@ -56,6 +56,10 @@
     "artists": {
       "title": "Artistes",
       "description": "Vous trouverez ici tous les artistes de la librairie ManaZeak, qu'ils soient compositeurs, producteurs, artiste invité ou tout autre type! À cet instant, ManaZeak compte"
+    },
+    "albums": {
+      "title": "Albums",
+      "description": "Voici la liste de toutes les œuvres musicales publiées par des auteurs dans la librairie ManaZeak! À cet instant, ManaZeak compte"
     }
   },
   "libraryview": {

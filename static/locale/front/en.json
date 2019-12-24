@@ -27,7 +27,7 @@
     "Artists": "Artists",
     "Release Artists": "Release artists",
     "Albums": "Albums",
-    "Labels": "Record company",
+    "Labels": "Record companies",
     "Genres": "Genres"
   },
   "mainpage": {
@@ -51,11 +51,15 @@
   "allObjectsView": {
     "releaseArtists": {
       "title": "Release Artists",
-      "description": "Hear the world of artists that made musical creations in the form of a release! Currently, ManaZeak contains"
+      "description": "Hear the world of artists that made musical creations in the form of a release! To this day, ManaZeak contains"
     },
     "artists": {
       "title": "Artists",
-      "description": "You'll find here a collection of all artists that are in the ManaZeak libraries, regardless they are composers, producers, featured artists or else! Currently, ManaZeak contains"
+      "description": "You'll find here a collection of all artists that are in the ManaZeak libraries, regardless they are composers, producers, featured artists or else! To this day, ManaZeak contains"
+    },
+    "albums": {
+      "title": "Albums",
+      "description": "Here is the list of all the musical creations published by release artists in ManaZeak! To this day, ManaZeak contains"
     }
   },
   "libraryview": {

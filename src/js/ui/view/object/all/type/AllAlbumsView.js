@@ -23,6 +23,8 @@ class AllAlbumsView extends AllTagsView {
 
   _processAllAlbums(response) {
     return new Promise(resolve => {
+      this._dom.title.innerHTML = mzk.lang.allObjectsView.albums.title;
+      this._dom.description.innerHTML = `${mzk.lang.allObjectsView.albums.description} ${response.ALBUMS.length} ${mzk.lang.playlist.albums}.`;
       this._albums = response.ALBUMS; // Raw albums are artist / alphabeticaly rodered
       // Double sort to first sort alphabetically by title, then by year (most recent first)
       this._albums.sort((a, b) => (a.ALBUM_TITLE < b.ALBUM_TITLE) ? 1 : -1);
@@ -64,17 +66,21 @@ class AllAlbumsView extends AllTagsView {
 
         for (let j = 0; j < this._yearGroups[keys[i]].length; ++j) {
           const imgContainer = document.createElement('DIV');
-          const artistImg = document.createElement('IMG');
-
+          const albumImg = document.createElement('IMG');
+          const albumName = document.createElement('P');
+/* TODO change data in tooltip
           imgContainer.classList.add('tooltip-bottom');
           imgContainer.dataset.tooltip = `${this._yearGroups[keys[i]][j].ALBUM_TITLE}`;
+*/
           imgContainer.dataset.id = this._yearGroups[keys[i]][j].ALBUM_ID;
 
           if (this._yearGroups[keys[i]][j].ALBUM_COVER !== null) {
-            artistImg.src = this._yearGroups[keys[i]][j].ALBUM_COVER;
+            albumImg.src = this._yearGroups[keys[i]][j].ALBUM_COVER;
           } else {
-            artistImg.src = 'static/img/object/album.svg';
+            albumImg.src = 'static/img/object/album.svg';
           }
+
+          albumName.innerHTML = this._yearGroups[keys[i]][j].ALBUM_TITLE;
 
           imgContainer.addEventListener('click', () => {
             mzk.ui.setSceneView({
@@ -84,7 +90,8 @@ class AllAlbumsView extends AllTagsView {
             });
           }, false);
 
-          imgContainer.appendChild(artistImg);
+          imgContainer.appendChild(albumImg);
+          imgContainer.appendChild(albumName);
           requestAnimationFrame(() => {
             letterArtistsWrapper.appendChild(imgContainer);
           });
