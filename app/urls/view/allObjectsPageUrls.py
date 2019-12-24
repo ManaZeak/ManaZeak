@@ -14,14 +14,18 @@ urlpatterns = [
     path('releaseArtist/layout/', AllObjectView.getAllReleaseArtistsPage, name='getAllReleaseArtistPage'),
     path('releaseArtist/', ArtistService.getAllReleaseArtists, name='getAllReleaseArtists'),
 
+    path('artist/layout/', AllObjectView.getAllArtist, name='getAllArtistPage'),
+    path('artist/', ArtistService.getAllArtists, name='getAllArtist'),
+
     path('album/layout/', AllObjectView.getAllAlbumsPage, name='getAllAlbumsPage'),
     path('album/', AlbumService.getAllAlbums, name='getAllAlbums'),
 
+    path('producer/layout/', AllObjectView.getAllProducersPage, name='getAllGenresPage'),
+
+    path('label/layout/', AllObjectView.getAllLabelsPage, name='getAllGenresPage'),
+
     path('genre/layout/', AllObjectView.getAllGenresPage, name='getAllGenresPage'),
     path('genre/', GenreService.getAllGenres, name='getAllGenres'),
-
-    path('artist/layout/', AllObjectView.getAllArtist, name='getAllArtistPage'),
-    path('artist/', ArtistService.getAllArtists, name='getAllArtist'),
 
     # FIXME : faire la page get label
 

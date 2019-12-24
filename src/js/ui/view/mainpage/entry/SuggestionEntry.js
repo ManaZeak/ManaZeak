@@ -90,6 +90,14 @@ class SuggestionEntry {
           id: this._entry.ALBUM_ID
         });
       }, false);
+    } else if (this._groupType === 'Producers') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleProducer',
+          uiName: this._entry.PRODUCER_NAME,
+          id: this._entry.PRODUCER_ID
+        });
+      }, false);
     } else if (this._groupType === 'Labels') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({

@@ -12,15 +12,25 @@ class SingleObjectViews(object):
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getSingleArtistPage(request):
+        return render(request, 'views/singleObject/singleArtistPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleAlbumPage(request):
         return render(request, 'views/singleObject/singleAlbumPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleGenrePage(request):
-        return render(request, 'views/singleObject/singleGenrePage.html')
+    def getSingleProducerPage(request):
+        return render(request, 'views/singleObject/singleProducerPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleArtistPage(request):
-        return render(request, 'views/singleObject/singleArtistPage.html')
+    def getSingleLabelPage(request):
+        return render(request, 'views/singleObject/singleLabelPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getSingleGenrePage(request):
+        return render(request, 'views/singleObject/singleGenrePage.html')

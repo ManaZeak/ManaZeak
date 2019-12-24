@@ -22,11 +22,14 @@
     "releaseArtists": "auteurs",
     "artists": "artistes",
     "albums": "albums",
+    "producers": "producers",
+    "labels": "labels",
     "genres": "genres",
     "Tracks": "Pistes",
-    "Artists": "Artistes",
     "Release Artists": "Auteurs",
+    "Artists": "Artistes",
     "Albums": "Albums",
+    "Producers": "Producers",
     "Labels": "Maisons de disque",
     "Genres": "Genres"
   },
@@ -60,6 +63,14 @@
     "albums": {
       "title": "Albums",
       "description": "Voici la liste de toutes les œuvres musicales publiées par des auteurs dans la librairie ManaZeak! À cet instant, ManaZeak compte"
+    },
+    "producers": {
+      "title": "Producteurs",
+      "description": "Les producteurs sont des musiciens qui conduisent un enregistrement de la génèse du projet à sa vente, en contrôlant toutes les étapes de fabrications d'une œuvre. À cet instant, ManaZeak compte"
+    },
+    "labels": {
+      "title": "Maisons de disque",
+      "description": "Les maisons de disques sont des entreprises qui produisent des artistes et leurs œuvres, classés au sein de catalogues. À cet instant, ManaZeak compte"
     },
     "genres": {
       "title": "Genres",

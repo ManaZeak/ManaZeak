@@ -14,6 +14,9 @@ urlpatterns = [
     path('releaseArtist/layout/', SingleObjectViews.getSingleReleaseArtistPage, name='getSingleReleaseArtistPage'),
     path('releaseArtist/<int:artistId>/', ArtistService.getReleaseArtist, name='getSingleReleaseArtist'),
 
+    path('artist/layout/', SingleObjectViews.getSingleArtistPage, name='getSingleArtistPage'),
+    path('artist/<int:artistId>/', ArtistService.getArtist, name='getArtist'),
+
     path('album/layout/', SingleObjectViews.getSingleAlbumPage, name='getSingleAlbumPage'),
     path('album/<int:albumId>/', AlbumService.getAlbum, name='getSingleAlbum'),
     path('album/random/', AlbumService.getRandomAlbum, name='getRandomAlbum'),
@@ -21,8 +24,9 @@ urlpatterns = [
     path('genre/layout/', SingleObjectViews.getSingleGenrePage, name='getSingleGenrePage'),
     path('genre/<int:genreId>/', GenreService.getGenre, name='getSingleGenre'),
 
-    path('artist/layout/', SingleObjectViews.getSingleArtistPage, name='getSingleArtistPage'),
-    path('artist/<int:artistId>/', ArtistService.getArtist, name='getArtist'),
+    path('producer/layout/', SingleObjectViews.getSingleProducerPage, name='getSingleProducerPage'),
+
+    path('label/layout/', SingleObjectViews.getSingleLabelPage, name='getSingleLabelPage'),
 
     # FIXME : faire la page get label
 

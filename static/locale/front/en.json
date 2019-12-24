@@ -61,6 +61,14 @@
       "title": "Albums",
       "description": "Here is the list of all the musical creations published by release artists in ManaZeak! To this day, ManaZeak contains"
     },
+    "producers": {
+      "title": "Producers",
+      "description": "Producers are musicians that conducts a release from the original idea to its selling, having a look on all the production steps. To this day, ManaZeak contains"
+    },
+    "labels": {
+      "title": "Record companies",
+      "description": "Labels, also refereed as record companies gather artists and produce releases, ordered in catalogs. To this day, ManaZeak contains"
+    },
     "genres": {
       "title": "Genres",
       "description": "Why not exploring ManaZeak's library using its musical genres and styles? To this day, ManaZeak contains"

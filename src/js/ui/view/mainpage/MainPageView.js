@@ -74,6 +74,16 @@ class MainPageView extends SceneView {
           }
 
 
+          if (response.PRODUCERS.length > 0) {
+            const albums = new SuggestionGroup({
+              label: 'Producers',
+              type: 'Producers',
+              items: response.PRODUCERS
+            });
+            this._dom.suggestion.appendChild(albums.dom);
+          }
+
+
           if (response.LABELS.length > 0) {
             const albums = new SuggestionGroup({
               label: 'Labels',

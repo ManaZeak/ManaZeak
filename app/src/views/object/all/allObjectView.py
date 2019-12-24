@@ -16,6 +16,16 @@ class AllObjectView(object):
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllProducersPage(request):
+        return render(request, 'views/tags/allProducersPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllLabelsPage(request):
+        return render(request, 'views/tags/allLabelsPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
     def getAllGenresPage(request):
         return render(request, 'views/tags/allGenresPage.html')
 

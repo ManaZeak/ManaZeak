@@ -94,6 +94,9 @@ class UserInterface {
       } else if (options.name === 'SingleAlbum') {
         this.startLoading(true)
           .then(this._scene.setAlbumView.bind(this._scene, options));
+      } else if (options.name === 'SingleProducer') {
+        this.startLoading(true)
+          .then(this._scene.setProducerView.bind(this._scene, options));
       } else if (options.name === 'SingleLabel') {
         this.startLoading(true)
           .then(this._scene.setLabelView.bind(this._scene, options));
@@ -109,6 +112,12 @@ class UserInterface {
       } else if (options.name === 'AllAlbums') {
         this.startLoading(true)
           .then(this._scene.setAlbumsView.bind(this._scene));
+      } else if (options.name === 'AllProducers') {
+        this.startLoading(true)
+          .then(this._scene.setProducersView.bind(this._scene));
+      } else if (options.name === 'AllLabels') {
+        this.startLoading(true)
+          .then(this._scene.setLabelsView.bind(this._scene));
       } else if (options.name === 'AllGenres') {
         this.startLoading(true)
           .then(this._scene.setGenresView.bind(this._scene));

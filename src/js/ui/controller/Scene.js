@@ -3,10 +3,14 @@ import PartyView from '../view/party/PartyView.js';
 import SingleArtistView from '../view/object/single/type/SingleArtistView.js';
 import SingleReleaseArtistView from '../view/object/single/type/SingleReleaseArtistView.js';
 import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
+import SingleProducerView from '../view/object/single/type/SingleProducerView.js';
+import SingleLabelView from '../view/object/single/type/SingleLabelView.js';
 import SingleGenreView from '../view/object/single/type/SingleGenreView.js';
 import AllArtistsView from '../view/object/all/type/AllArtistsView.js';
 import AllReleaseArtistsView from '../view/object/all/type/AllReleaseArtistsView.js';
 import AllAlbumsView from '../view/object/all/type/AllAlbumsView.js';
+import AllProducersView from '../view/object/all/type/AllProducersView.js';
+import AllLabelsView from '../view/object/all/type/AllLabelsView.js';
 import AllGenresView from '../view/object/all/type/AllGenresView.js';
 import ListView from '../view/library/type/ListView.js';
 import AlbumView from '../view/library/type/AlbumView.js';
@@ -151,6 +155,16 @@ class Scene {
   }
 
 
+  setProducerView(album) {
+    this._setAsideToggle(true);
+    this._removeFullView();
+    this._sceneViewType = 'SingleProducerView';
+    this._scene.innerHTML = '';
+    this.view = new SingleProducerView(album);
+    this._registerViewReady();
+  }
+
+
   setLabelView(album) {
     this._setAsideToggle(true);
     this._removeFullView();
@@ -197,6 +211,26 @@ class Scene {
     this._sceneViewType = 'AllAlbumsView';
     this._scene.innerHTML = '';
     this.view = new AllAlbumsView();
+    this._registerViewReady();
+  }
+
+
+  setProducersView() {
+    this._setAsideToggle(true);
+    this._removeFullView();
+    this._sceneViewType = 'AllProducersView';
+    this._scene.innerHTML = '';
+    this.view = new AllProducersView();
+    this._registerViewReady();
+  }
+
+
+  setLabelsView() {
+    this._setAsideToggle(true);
+    this._removeFullView();
+    this._sceneViewType = 'AllLabelsView';
+    this._scene.innerHTML = '';
+    this.view = new AllLabelsView();
     this._registerViewReady();
   }
 
