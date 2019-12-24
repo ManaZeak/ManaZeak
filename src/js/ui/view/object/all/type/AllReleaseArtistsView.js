@@ -22,6 +22,8 @@ class AllReleaseArtistsView extends AllTagsView {
 
   _processAllArtists(response) {
     return new Promise(resolve => {
+      this._dom.title.innerHTML = mzk.lang.allObjectsView.releaseArtists.title;
+      this._dom.description.innerHTML = `${mzk.lang.allObjectsView.releaseArtists.description} ${response.ARTISTS.length} ${mzk.lang.playlist.releaseArtists}.`;
       // Separate response into letterKey objects
       let letters = '';
       for (let i = 0; i < response.ARTISTS.length; ++i) {
@@ -74,9 +76,11 @@ class AllReleaseArtistsView extends AllTagsView {
         for (let j = 0; j < this._letterGroups[keys[i]].length; ++j) {
           const imgContainer = document.createElement('DIV');
           const artistImg = document.createElement('IMG');
-
+          const artistName = document.createElement('P');
+/* TODO change data in tooltip
           imgContainer.classList.add('tooltip-bottom');
           imgContainer.dataset.tooltip = this._letterGroups[keys[i]][j].ARTIST_NAME;
+*/
           imgContainer.dataset.id = this._letterGroups[keys[i]][j].ARTIST_ID;
 
           if (this._letterGroups[keys[i]][j].ARTIST_PP !== null) {
@@ -84,6 +88,8 @@ class AllReleaseArtistsView extends AllTagsView {
           } else {
             artistImg.src = 'static/img/object/artist.svg';
           }
+
+          artistName.innerHTML = this._letterGroups[keys[i]][j].ARTIST_NAME;
 
           imgContainer.addEventListener('click', () => {
             mzk.ui.setSceneView({
@@ -94,6 +100,7 @@ class AllReleaseArtistsView extends AllTagsView {
           }, false);
 
           imgContainer.appendChild(artistImg);
+          imgContainer.appendChild(artistName);
           requestAnimationFrame(() => {
             letterArtistsWrapper.appendChild(imgContainer);
           });

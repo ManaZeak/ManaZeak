@@ -19,6 +19,7 @@
   },
   "playlist": {
     "tracks": "pistes",
+    "releaseArtists": "auteurs",
     "artists": "artistes",
     "albums": "albums",
     "genres": "genres",
@@ -45,6 +46,16 @@
     },
     "suggestion": {
       "seemore": "voir plus"
+    }
+  },
+  "allObjectsView": {
+    "releaseArtists": {
+      "title": "Auteurs",
+      "description": "Écoutez l'univers des artistes qui ont produit des œuvres musicales sous la forme d'albums! À cet instant, ManaZeak compte"
+    },
+    "artists": {
+      "title": "Artistes",
+      "description": "Vous trouverez ici tous les artistes de la librairie ManaZeak, qu'ils soient compositeurs, producteurs, artiste invité ou tout autre type! À cet instant, ManaZeak compte"
     }
   },
   "libraryview": {

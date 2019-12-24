@@ -19,6 +19,7 @@
   },
   "playlist": {
     "tracks": "tracks",
+    "releaseArtists": "release artists",
     "artists": "artists",
     "albums": "albums",
     "genres": "genres",
@@ -45,6 +46,16 @@
     },
     "suggestion": {
       "seemore": "see more"
+    }
+  },
+  "allObjectsView": {
+    "releaseArtists": {
+      "title": "Release Artists",
+      "description": "Hear the world of artists that made musical creations in the form of a release! Currently, ManaZeak contains"
+    },
+    "artists": {
+      "title": "Artists",
+      "description": "You'll find here a collection of all artists that are in the ManaZeak libraries, regardless they are composers, producers, featured artists or else! Currently, ManaZeak contains"
     }
   },
   "libraryview": {

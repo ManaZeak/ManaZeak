@@ -12,7 +12,9 @@ class AllTagsView extends SceneView {
     this._type = options.type;
 
     this._dom = {
-      wrapper: null
+      wrapper: null,
+      title: null,
+      description: null
     };
   }
 
@@ -33,8 +35,10 @@ class AllTagsView extends SceneView {
           try {
             const parser = new DOMParser();
             const doc = parser.parseFromString(response, 'text/html');
-            const wrapperClass = `all-${this._type}s-page`;
-            this._dom.wrapper = doc.getElementsByClassName(wrapperClass)[0];
+            
+            this._dom.wrapper = doc.getElementsByClassName(`all-${this._type}s-page`)[0];
+            this._dom.title = doc.getElementsByClassName(`all-objects-title`)[0];
+            this._dom.description = doc.getElementsByClassName(`all-objects-description`)[0];
 
             resolve();
           } catch (error) {
