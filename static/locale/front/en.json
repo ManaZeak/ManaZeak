@@ -24,8 +24,9 @@
     "genres": "genres",
     "Tracks": "Tracks",
     "Artists": "Artists",
-    "Release Artists": "Release Artists",
+    "Release Artists": "Release artists",
     "Albums": "Albums",
+    "Labels": "Record company",
     "Genres": "Genres"
   },
   "mainpage": {

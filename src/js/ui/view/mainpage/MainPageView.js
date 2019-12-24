@@ -73,6 +73,17 @@ class MainPageView extends SceneView {
             this._dom.suggestion.appendChild(albums.dom);
           }
 
+
+          if (response.LABELS.length > 0) {
+            const albums = new SuggestionGroup({
+              label: 'Labels',
+              type: 'Labels',
+              items: response.LABELS
+            });
+            this._dom.suggestion.appendChild(albums.dom);
+          }
+
+
           if (response.GENRES.length > 0) {
             const genres = new SuggestionGroup({
               label: 'Genres',

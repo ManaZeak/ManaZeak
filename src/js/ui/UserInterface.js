@@ -94,6 +94,9 @@ class UserInterface {
       } else if (options.name === 'SingleAlbum') {
         this.startLoading(true)
           .then(this._scene.setAlbumView.bind(this._scene, options));
+      } else if (options.name === 'SingleLabel') {
+        this.startLoading(true)
+          .then(this._scene.setLabelView.bind(this._scene, options));
       } else if (options.name === 'SingleGenre') {
         this.startLoading(true)
           .then(this._scene.setGenreView.bind(this._scene, options));

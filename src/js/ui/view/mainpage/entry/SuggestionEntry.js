@@ -41,6 +41,15 @@ class SuggestionEntry {
       } else {
         this._dom.img.src = 'static/img/object/album.svg';
       }
+    } else if (this._groupType === 'Labels') {
+      this._dom.container.dataset.id = this._entry.LABEL_ID;
+      this._dom.name.innerHTML = this._entry.LABEL_NAME;
+
+      if (this._entry.LABEL_PP !== null) {
+        this._dom.img.src = this._entry.LABEL_PP;
+      } else {
+        this._dom.img.src = 'static/img/object/label.svg';
+      }
     } else if (this._groupType === 'Genres') {
       this._dom.container.dataset.id = this._entry.GENRE_ID;
       this._dom.name.innerHTML = this._entry.GENRE_NAME;
@@ -79,6 +88,14 @@ class SuggestionEntry {
           name: 'SingleAlbum',
           uiName: this._entry.ALBUM_TITLE,
           id: this._entry.ALBUM_ID
+        });
+      }, false);
+    } else if (this._groupType === 'Labels') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleLabel',
+          uiName: this._entry.LABEL_NAME,
+          id: this._entry.LABEL_ID
         });
       }, false);
     } else if (this._groupType === 'Genres') {

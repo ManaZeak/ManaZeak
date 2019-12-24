@@ -151,6 +151,16 @@ class Scene {
   }
 
 
+  setLabelView(album) {
+    this._setAsideToggle(true);
+    this._removeFullView();
+    this._sceneViewType = 'SingleLabelView';
+    this._scene.innerHTML = '';
+    this.view = new SingleLabelView(album);
+    this._registerViewReady();
+  }
+
+
   setGenreView(genre) {
     this._setAsideToggle(true);
     this._removeFullView();
@@ -159,6 +169,7 @@ class Scene {
     this.view = new SingleGenreView(genre);
     this._registerViewReady();
   }
+
 
   setArtistsView() {
     this._setAsideToggle(true);
