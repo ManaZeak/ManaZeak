@@ -22,6 +22,8 @@ class AllLabelsView extends AllTagsView {
 
   _processAllLabels(response) {
     return new Promise(resolve => {
+      this._dom.title.innerHTML = mzk.lang.allObjectsView.labels.title;
+      this._dom.description.innerHTML = `${mzk.lang.allObjectsView.labels.description} ${response.LABELS.length} ${mzk.lang.playlist.labels}.`;
       // Separate response into letterKey objects
       let letters = '';
       for (let i = 0; i < response.LABELS.length; ++i) {
