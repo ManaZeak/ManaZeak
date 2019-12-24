@@ -22,8 +22,9 @@ class AllGenresView extends AllTagsView {
 
   _processAllGenres(response) {
     return new Promise(resolve => {
+      this._dom.title.innerHTML = mzk.lang.allObjectsView.genres.title;
+      this._dom.description.innerHTML = `${mzk.lang.allObjectsView.genres.description} ${response.GENRES.length} ${mzk.lang.playlist.genres}.`;
       this._genres = response.GENRES;
-      console.log(response)
       resolve();
     });
   }
@@ -31,7 +32,7 @@ class AllGenresView extends AllTagsView {
 
   _buildView() {
     return new Promise(resolve => {
-      const genresContainer = this._dom.wrapper.firstElementChild;
+      const genresContainer = this._dom.wrapper.lastElementChild;
       for (let i = 0; i < this._genres.length; ++i) {
         const container = document.createElement('DIV');
         const logo = document.createElement('IMG');

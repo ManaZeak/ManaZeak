@@ -60,6 +60,10 @@
     "albums": {
       "title": "Albums",
       "description": "Here is the list of all the musical creations published by release artists in ManaZeak! To this day, ManaZeak contains"
+    },
+    "genres": {
+      "title": "Genres",
+      "description": "Why not exploring ManaZeak's library using its musical genres and styles? To this day, ManaZeak contains"
     }
   },
   "libraryview": {

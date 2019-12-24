@@ -60,6 +60,10 @@
     "albums": {
       "title": "Albums",
       "description": "Voici la liste de toutes les œuvres musicales publiées par des auteurs dans la librairie ManaZeak! À cet instant, ManaZeak compte"
+    },
+    "genres": {
+      "title": "Genres",
+      "description": "Pourquoi ne pas explorer la librairie de ManaZeak en regardant les genres et styles musicaux qui la compose ? À cet instant, ManaZeak compte"
     }
   },
   "libraryview": {
