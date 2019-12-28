@@ -24,13 +24,22 @@ class SingleAlbumViewTrackEntry extends TrackEntry {
 
     let duration = document.createElement('P');
     duration.innerHTML = Utils.secondsToTimecode(this._track.duration);
+    duration.style.gridColumn = "3";
+    duration.style.gridRow = "1 / span 2";
+    duration.style.textAlign = "center";
 
     let title = document.createElement('P');
     title.innerHTML = this._track.title;
 
+    let artist = document.createElement('P');
+    artist.innerHTML = this._track.artists;
+    artist.style.gridColumn = "2";
+    artist.style.marginTop = "0";
+
     this._dom.container.appendChild(number);
     this._dom.container.appendChild(title);
     this._dom.container.appendChild(duration);
+    this._dom.container.appendChild(artist);
   }
 
 

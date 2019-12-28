@@ -328,11 +328,14 @@
     div.track {
       background: $mzk-color-bg-darker-alpha-25;
       cursor: pointer;
-      display: flex;
-      height: 35px;
+      display: grid;
+      grid-template-columns: 50px 1fr 100px;
+      grid-template-rows: repeat(2, 1fr);
       align-items: center;
       margin: ($mzk-margin / 2) 5%;
       user-select: none;
+
+      transition: background-color $mzk-animation-duration ease-in;
 
       &:nth-child(2n) {
         background: $mzk-color-bg-dark-alpha-25;
@@ -360,19 +363,13 @@
       }
 
       p {
+        margin: 6px 0 3px 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: calc(100% - 150px);
 
         &:first-child {
           text-align: center;
-          width: 50px;
-        }
-
-        &:last-child {
-          text-align: center;
-          width: 100px;
         }
       }
     }
