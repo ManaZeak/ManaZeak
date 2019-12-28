@@ -80,57 +80,10 @@ class UserInterface {
       this._topBar.homeButtonSrcOnMainPage = true; // Append button by default (remove only if MainPage)
       if (options.name === 'MainPage') {
         this._topBar.homeButtonSrcOnMainPage = false;
-        this.startLoading(true)
-          .then(this._scene.setMainPageView.bind(this._scene));
-      } else if (options.name === 'Party') {
-        this.startLoading(true)
-          .then(this._scene.setPartyView.bind(this._scene));
-      } else if (options.name === 'SingleArtist') {
-        this.startLoading(true)
-          .then(this._scene.setArtistView.bind(this._scene, options));
-      } else if (options.name === 'SingleReleaseArtist') {
-        this.startLoading(true)
-          .then(this._scene.setReleaseArtistView.bind(this._scene, options));
-      } else if (options.name === 'SingleAlbum') {
-        this.startLoading(true)
-          .then(this._scene.setAlbumView.bind(this._scene, options));
-      } else if (options.name === 'SingleProducer') {
-        this.startLoading(true)
-          .then(this._scene.setProducerView.bind(this._scene, options));
-      } else if (options.name === 'SingleLabel') {
-        this.startLoading(true)
-          .then(this._scene.setLabelView.bind(this._scene, options));
-      } else if (options.name === 'SingleGenre') {
-        this.startLoading(true)
-          .then(this._scene.setGenreView.bind(this._scene, options));
-      } else if (options.name === 'AllArtists') {
-        this.startLoading(true)
-          .then(this._scene.setArtistsView.bind(this._scene));
-      } else if (options.name === 'AllReleaseArtists') {
-        this.startLoading(true)
-          .then(this._scene.setReleaseArtistsView.bind(this._scene));
-      } else if (options.name === 'AllAlbums') {
-        this.startLoading(true)
-          .then(this._scene.setAlbumsView.bind(this._scene));
-      } else if (options.name === 'AllProducers') {
-        this.startLoading(true)
-          .then(this._scene.setProducersView.bind(this._scene));
-      } else if (options.name === 'AllLabels') {
-        this.startLoading(true)
-          .then(this._scene.setLabelsView.bind(this._scene));
-      } else if (options.name === 'AllGenres') {
-        this.startLoading(true)
-          .then(this._scene.setGenresView.bind(this._scene));
-      } else if (typeof options.playlist === 'object' && options.playlist.id !== -1) { // Handle library views
-        this.startLoading(true)
-          .then(this._scene.updateLibraryView.bind(this._scene, options.playlist));
-      } else if (options.name === 'AdminView') {
-        this.startLoading(true)
-          .then(this._scene.setAdminView.bind(this._scene));
-      } else if (options.name === 'CommunityView') {
-        this.startLoading(true)
-          .then(this._scene.setCommunityView.bind(this._scene));
       }
+
+      this.startLoading(true)
+        .then(this._scene.setSceneView.bind(this._scene, options.name, options));
     });
   }
 

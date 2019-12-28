@@ -1,21 +1,6 @@
-import MainPageView from '../view/mainpage/MainPageView.js';
-import PartyView from '../view/party/PartyView.js';
-import SingleArtistView from '../view/object/single/type/SingleArtistView.js';
-import SingleReleaseArtistView from '../view/object/single/type/SingleReleaseArtistView.js';
-import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
-import SingleProducerView from '../view/object/single/type/SingleProducerView.js';
-import SingleLabelView from '../view/object/single/type/SingleLabelView.js';
-import SingleGenreView from '../view/object/single/type/SingleGenreView.js';
-import AllArtistsView from '../view/object/all/type/AllArtistsView.js';
-import AllReleaseArtistsView from '../view/object/all/type/AllReleaseArtistsView.js';
-import AllAlbumsView from '../view/object/all/type/AllAlbumsView.js';
-import AllProducersView from '../view/object/all/type/AllProducersView.js';
-import AllLabelsView from '../view/object/all/type/AllLabelsView.js';
-import AllGenresView from '../view/object/all/type/AllGenresView.js';
 import ListView from '../view/library/type/ListView.js';
 import AlbumView from '../view/library/type/AlbumView.js';
-import AdminView from '../view/admin/AdminView.js';
-import CommunityView from '../view/community/CommunityView.js';
+import ViewFactory from '../view/ViewFactory';
 'use strict';
 
 
@@ -86,163 +71,26 @@ class Scene {
   }
 
 
-  /**
-   * @method
-   * @name setMainPageView
-   * @public
-   * @memberof Scene
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Add a new ui in the scene (only append the DOM element)
-   * @param {object} node - The DOM node to append to the scene
-   **/
-  setMainPageView(node) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'MainPageView';
-    this._scene.innerHTML = '';
-    this.view = new MainPageView();
-    this._registerViewReady();
+  setSceneView(type, options) {
+    this._removeFullView(); // Clean existing view
+    this._scene.innerHTML = ''; // Clear any DOM in scene
+    this._registerViewReady(); // Prepare scene to receive the `SceneViewReady` event (from any instantiated view)
+
+    if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
+      this.updateLibraryView(options.playlist);
+    } else {
+      this.view = new ViewFactory(type, options);
+
+      if (this.view === null) {
+        this.setSceneView({ name: 'MainPage' });
+      } else {
+        this._sceneViewType = `${type}View`;
+        this._setAsideToggle(!this.view.asideLock); // Depends on view (for ex lib view can't allow aside's toggle (too costly render)
+      }
+    }
   }
 
 
-  /**
-   * @method
-   * @name setPartyView
-   * @public
-   * @memberof Scene
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Add a new ui in the scene (only append the DOM element)
-   **/
-  setPartyView() {
-    this._removeFullView();
-    this._isFullScreenView = true;
-    this._sceneViewType = 'PartyView';
-    this._scene.innerHTML = '';
-    this.view = new PartyView({});
-    this._registerViewReady();
-  }
-
-
-  setArtistView(artist) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleArtistView';
-    this._scene.innerHTML = '';
-    this.view = new SingleArtistView(artist);
-    this._registerViewReady();
-  }
-
-
-  setReleaseArtistView(artist) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleReleaseArtistView';
-    this._scene.innerHTML = '';
-    this.view = new SingleReleaseArtistView(artist);
-    this._registerViewReady();
-  }
-
-
-  setAlbumView(album) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleAlbumView';
-    this._scene.innerHTML = '';
-    this.view = new SingleAlbumView(album);
-    this._registerViewReady();
-  }
-
-
-  setProducerView(album) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleProducerView';
-    this._scene.innerHTML = '';
-    this.view = new SingleProducerView(album);
-    this._registerViewReady();
-  }
-
-
-  setLabelView(album) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleLabelView';
-    this._scene.innerHTML = '';
-    this.view = new SingleLabelView(album);
-    this._registerViewReady();
-  }
-
-
-  setGenreView(genre) {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'SingleGenreView';
-    this._scene.innerHTML = '';
-    this.view = new SingleGenreView(genre);
-    this._registerViewReady();
-  }
-
-
-  setArtistsView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllArtistsView';
-    this._scene.innerHTML = '';
-    this.view = new AllArtistsView();
-    this._registerViewReady();
-  }
-
-
-  setReleaseArtistsView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllReleaseArtistsView';
-    this._scene.innerHTML = '';
-    this.view = new AllReleaseArtistsView();
-    this._registerViewReady();
-  }
-
-
-  setAlbumsView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllAlbumsView';
-    this._scene.innerHTML = '';
-    this.view = new AllAlbumsView();
-    this._registerViewReady();
-  }
-
-
-  setProducersView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllProducersView';
-    this._scene.innerHTML = '';
-    this.view = new AllProducersView();
-    this._registerViewReady();
-  }
-
-
-  setLabelsView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllLabelsView';
-    this._scene.innerHTML = '';
-    this.view = new AllLabelsView();
-    this._registerViewReady();
-  }
-
-
-  setGenresView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AllGenresView';
-    this._scene.innerHTML = '';
-    this.view = new AllGenresView();
-    this._registerViewReady();
-  }
 
   /**
    * @method
@@ -284,26 +132,6 @@ class Scene {
       this.addView(this.view.dom);
       this.view.refreshView(); // Mainly tu update ListView column header
     });
-  }
-
-
-  setAdminView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'AdminView';
-    this._scene.innerHTML = '';
-    this.view = new AdminView();
-    this._registerViewReady();
-  }
-
-
-  setCommunityView() {
-    this._setAsideToggle(true);
-    this._removeFullView();
-    this._sceneViewType = 'CommunityView';
-    this._scene.innerHTML = '';
-    this.view = new CommunityView();
-    this._registerViewReady();
   }
 
 

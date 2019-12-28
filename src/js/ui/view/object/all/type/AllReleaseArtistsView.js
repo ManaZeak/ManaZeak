@@ -94,7 +94,7 @@ class AllReleaseArtistsView extends AllTagsView {
           imgContainer.addEventListener('click', () => {
             mzk.ui.setSceneView({
               name: 'SingleReleaseArtist',
-                uiName: this._letterGroups[keys[i]][j].ARTIST_NAME,
+              uiName: this._letterGroups[keys[i]][j].ARTIST_NAME,
               id: this._letterGroups[keys[i]][j].ARTIST_ID
             });
           }, false);
