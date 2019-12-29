@@ -1,5 +1,6 @@
 import ListView from '../view/library/type/ListView.js';
 import AlbumView from '../view/library/type/AlbumView.js';
+import UserIDModal from '../modal/UserIDModal';
 import ViewFactory from '../view/ViewFactory';
 'use strict';
 
@@ -90,6 +91,15 @@ class Scene {
     }
   }
 
+
+  setModal(options) {
+    return new Promise((resolve, reject) => {
+      new UserIDModal({
+        url: 'modal/userID'
+      });
+      resolve();
+    });
+  }
 
 
   /**

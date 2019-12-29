@@ -27,6 +27,7 @@ class UserMenuContext extends ContextMenu {
 
     this._admin = doc.getElementsByClassName('admin')[0];
     this._community = doc.getElementsByClassName('community')[0];
+    this._userid = doc.getElementsByClassName('userid')[0];
     this._logOut = doc.getElementsByClassName('log-out')[0];
 
     if (!mzk.user.hasPermission('ADMV')) {
@@ -53,6 +54,13 @@ class UserMenuContext extends ContextMenu {
       mzk.ui.setSceneView({
         name: `Community`,
         uiName: mzk.lang.communityView.title
+      });
+    }, true);
+
+    this._userid.addEventListener('click', () => {
+      this.close();
+      mzk.ui.setModal({
+        name: `UserID`
       });
     }, true);
 

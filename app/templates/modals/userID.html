@@ -1,0 +1,16 @@
+{% load i18n %}
+<div class="context-transparent-overlay modal-dark-overlay">
+  <div class="new-library">
+    <div class="header">
+      <p>{% trans 'My ID' %}</p>
+      <span id="user-id-close-top" class="close">&#10006;</span>
+    </div>
+    <div class="container">
+      <p class="description">{% trans 'The following string is your unique ID in ManaZeak. You can give it to your friends so they can sign into ManaZeak aswell and enjoy the music here!' %}</p>
+      <input id="user-id" type="text" name="user-id" value="{% trans 'Waiting for the server to load your ID' %}" disabled />
+    </div>
+    <div class="footer">
+      <button id="user-id-close-bottom">{% trans 'Close' %}</button>
+    </div>
+  </div>
+</div>

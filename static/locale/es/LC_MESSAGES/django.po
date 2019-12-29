@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-15 09:40+0000\n"
+"POT-Creation-Date: 2019-12-29 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ManaZeak/settings.py:116
+#: ManaZeak/settings.py:115
 msgid "English"
 msgstr ""
 
-#: ManaZeak/settings.py:117
+#: ManaZeak/settings.py:116
 msgid "French"
+msgstr ""
+
+#: ManaZeak/settings.py:117
+msgid "Español"
 msgstr ""
 
 #: app/templates/contexts/changeViewContext.html:7
@@ -52,14 +56,19 @@ msgid "Add to queue"
 msgstr ""
 
 #: app/templates/contexts/userMenuContext.html:7
-msgid "Community"
-msgstr ""
-
-#: app/templates/contexts/userMenuContext.html:11
 msgid "Admin"
 msgstr ""
 
+#: app/templates/contexts/userMenuContext.html:11
+msgid "Community"
+msgstr ""
+
 #: app/templates/contexts/userMenuContext.html:15
+#: app/templates/modals/userID.html:5
+msgid "My ID"
+msgstr ""
+
+#: app/templates/contexts/userMenuContext.html:19
 msgid "Log Out"
 msgstr ""
 
@@ -126,6 +135,20 @@ msgstr ""
 
 #: app/templates/modals/newLibrary.html:17
 msgid "Create"
+msgstr ""
+
+#: app/templates/modals/userID.html:9
+msgid ""
+"The following string is your unique ID in ManaZeak. You can give it to your "
+"friends so they can sign into ManaZeak aswell and enjoy the music here!"
+msgstr ""
+
+#: app/templates/modals/userID.html:10
+msgid "Waiting for the server to load your ID"
+msgstr ""
+
+#: app/templates/modals/userID.html:13
+msgid "Close"
 msgstr ""
 
 #: app/templates/signup.html:9

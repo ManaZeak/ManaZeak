@@ -90,6 +90,22 @@ class UserInterface {
 
   /**
    * @method
+   * @name buildMainPage
+   * @public
+   * @memberof View
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Set the scene with the MainPageView
+   **/
+  setModal(options) {
+    return new Promise((resolve, reject) => {
+      this._scene.setModal(options).then(resolve).catch(reject);
+    });
+  }
+
+
+  /**
+   * @method
    * @name changeTrack
    * @public
    * @memberof View

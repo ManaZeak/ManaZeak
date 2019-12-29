@@ -10,4 +10,5 @@ urlpatterns = [
     path('userMenu/', GenericViews.userMenuContext, name='userMenu'),
     path('changeView/', GenericViews.changeViewContext, name='userMenu'),
     path('newLibrary/', GenericViews.newLibraryModal, name='newLibraryModal'),
+    path('userID/', GenericViews.userIDModal, name='userIDModal'),
 ]

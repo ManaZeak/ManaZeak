@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-15 09:40+0000\n"
+"POT-Creation-Date: 2019-12-29 10:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ManaZeak/settings.py:116
+#: ManaZeak/settings.py:115
 msgid "English"
 msgstr "Anglais"
 
-#: ManaZeak/settings.py:117
+#: ManaZeak/settings.py:116
 msgid "French"
 msgstr "Français"
+
+#: ManaZeak/settings.py:117
+msgid "Español"
+msgstr "Espagnol"
 
 #: app/templates/contexts/changeViewContext.html:7
 #: app/templates/views/libraryPage.html:5
@@ -53,14 +57,19 @@ msgid "Add to queue"
 msgstr "Ajouter à la queue"
 
 #: app/templates/contexts/userMenuContext.html:7
-msgid "Community"
-msgstr "Communauté"
-
-#: app/templates/contexts/userMenuContext.html:11
 msgid "Admin"
 msgstr "Administration"
 
+#: app/templates/contexts/userMenuContext.html:11
+msgid "Community"
+msgstr "Communauté"
+
 #: app/templates/contexts/userMenuContext.html:15
+#: app/templates/modals/userID.html:5
+msgid "My ID"
+msgstr "Mon identifiant"
+
+#: app/templates/contexts/userMenuContext.html:19
 msgid "Log Out"
 msgstr "Deconexion"
 
@@ -133,6 +142,20 @@ msgstr "Chemin de la librairie"
 #: app/templates/modals/newLibrary.html:17
 msgid "Create"
 msgstr "Créer"
+
+#: app/templates/modals/userID.html:9
+msgid ""
+"The following string is your unique ID in ManaZeak. You can give it to your "
+"friends so they can sign into ManaZeak aswell and enjoy the music here!"
+msgstr "La chaîne de caractères suivante représente votre identifiant unique sur ManaZeak. En la donnant à des amis, vous leurs permettez d'accéder et de profiter de toute la musique sur cette plateforme!"
+
+#: app/templates/modals/userID.html:10
+msgid "Waiting for the server to load your ID"
+msgstr "En attente de réponse du serveur"
+
+#: app/templates/modals/userID.html:13
+msgid "Close"
+msgstr "Fermer"
 
 #: app/templates/signup.html:9
 msgid "ManaZeak signup"
