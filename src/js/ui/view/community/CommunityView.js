@@ -22,7 +22,7 @@ class CommunityView extends SceneView {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');
 
-          this._dom.wrapper = doc.getElementsByClassName('community-ui-wrapper')[0];
+          this._dom.wrapper = doc.getElementsByClassName('community-view-wrapper')[0];
 
           resolve();
         });

@@ -42,7 +42,8 @@ class UserMenuContext extends ContextMenu {
       this._admin.addEventListener('click', () => {
         this.close();
         mzk.ui.setSceneView({
-          name: `Admin`
+          name: `Admin`,
+          uiName: mzk.lang.adminView.title
         });
       }, true);
     }
@@ -50,7 +51,8 @@ class UserMenuContext extends ContextMenu {
     this._community.addEventListener('click', () => {
       this.close();
       mzk.ui.setSceneView({
-        name: `Community`
+        name: `Community`,
+        uiName: mzk.lang.communityView.title
       });
     }, true);
 

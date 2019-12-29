@@ -100,6 +100,12 @@
   "partyview": {
 
   },
+  "adminView": {
+    "title": "Admin"
+  },
+  "communityView": {
+    "title": "Community"
+  },
   "context": {
     "queue": {
       "notracks": "No tracks in the queue",

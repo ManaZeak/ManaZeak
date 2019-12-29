@@ -100,6 +100,12 @@
     "bitrate": "Débit",
     "stretchall": "Étendre les colonnes"
   },
+  "adminView": {
+    "title": "Administration"
+  },
+  "communityView": {
+    "title": "Communauté"
+  },
   "context": {
     "queue": {
       "notracks": "Pas de pistes dans la queue",

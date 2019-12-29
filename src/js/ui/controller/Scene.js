@@ -106,7 +106,6 @@ class Scene {
     this._setAsideToggle(false);
     this._removeFullView();
     this._sceneViewType = 'LibraryView';
-    this._scene.innerHTML = '';
     const options = {
       playlist: playlist,
       lockCenterOnFlag: mzk.user.getPreference('lock-center-on-track'),
