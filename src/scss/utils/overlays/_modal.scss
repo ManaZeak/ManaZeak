@@ -76,6 +76,16 @@
       font-family: monospace, serif;
       color: #cb345b;
     }
+
+    span { /* only for user id modal */
+      display: flex;
+
+      img {
+        cursor: not-allowed; /* must be set to pointer in Js when user id went back from server */
+        margin: 0 $mzk-margin;
+        width: 35px;
+      }
+    }
   }
 
   .footer {

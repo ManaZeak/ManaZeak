@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load staticfiles %}
 <div class="context-transparent-overlay modal-dark-overlay">
   <div class="new-library">
     <div class="header">
@@ -7,7 +8,10 @@
     </div>
     <div class="container">
       <p class="description">{% trans 'The following string is your unique ID in ManaZeak. You can give it to your friends so they can sign into ManaZeak aswell and enjoy the music here!' %}</p>
-      <input id="user-id" type="text" name="user-id" value="{% trans 'Waiting for the server to load your ID' %}" disabled />
+      <span>
+        <input id="user-id" type="text" name="user-id" value="{% trans 'Waiting for the server to load your ID' %}" disabled />
+        <img src="{% static 'img/actions/copy.svg' %}" id="copy-id" />
+      </span>
     </div>
     <div class="footer">
       <button id="user-id-close-bottom">{% trans 'Close' %}</button>

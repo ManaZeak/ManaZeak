@@ -214,6 +214,16 @@
         "title": "Too much track to queue",
         "message": "Vous voulez ajouter plus de 1000 pistes dans la queue et ce n'est ni raisonable pour vous, ni pour moi.",
         "severity": "info"
+      },
+      "COPY_SUCCESS": {
+        "title": "Copié dans le presse-papier!",
+        "message": "Votre presse-papier contiens désormais ce que vous souhaitiez.",
+        "severity": "success"
+      },
+      "COPY_ERROR": {
+        "title": "Impossible de copier dans le presse-papier",
+        "message": "Quelque chose d'inatendu est survenu. Essayez de nouveau sur un vrai navigateur ou contactez le support.",
+        "severity": "error"
       }
     },
     "backend":  {

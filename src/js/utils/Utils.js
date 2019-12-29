@@ -254,6 +254,35 @@ class Utils {
   }
 
 
+  copyTextToClipboard(text) {
+    if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+      let textarea = document.createElement("textarea");
+      let error = false;
+      textarea.textContent = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        return document.execCommand("copy"); // Security exception may be thrown by some browsers.
+      } catch (err) {
+        error = true;
+        Logger.raise({
+          code: 'COPY_ERROR',
+          frontend: true
+        });
+        return false;
+      } finally {
+        document.body.removeChild(textarea);
+        if (!error) {
+          Logger.raise({
+            code: 'COPY_SUCCESS',
+            frontend: true
+          });
+        }
+      }
+    }
+  }
+
+
   //  ------------------------------------------------------------------------------------------------//
   //  ----------------------------------  CLIENT SESSION UTILS  ------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//

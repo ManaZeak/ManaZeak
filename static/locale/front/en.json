@@ -214,6 +214,16 @@
         "title": "Too much track to queue",
         "message": "You want to add more than 1000 tracks and it is not a reasonable action, either for you and me.",
         "severity": "info"
+      },
+      "COPY_SUCCESS": {
+        "title": "Copied to your clipboard!",
+        "message": "Your clipboard now contains whatever you requested.",
+        "severity": "success"
+      },
+      "COPY_ERROR": {
+        "title": "Can not copy to clipboard",
+        "message": "Something unexpected happened. Please try this on another true web browser or contact support.",
+        "severity": "error"
       }
     },
     "backend":  {
