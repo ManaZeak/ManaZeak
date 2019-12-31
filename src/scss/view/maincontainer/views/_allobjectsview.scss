@@ -1,7 +1,4 @@
-.all-releaseArtists-page,
-.all-artists-page,
-.all-producers-page,
-.all-labels-page {
+.all-objects-page {
   height: 100%;
   overflow: hidden;
   width: 100%;
@@ -10,7 +7,7 @@
     margin: 3%;
   }
 
-  .allart-letter-container {
+  .groups-wrapper {
     height: auto;
 
     h1 {
@@ -22,7 +19,7 @@
       padding: ($mzk-padding * 2);
     }
 
-    .allart-letter-artists {
+    .objects-wrapper {
       display: flex;
       flex-wrap: wrap;
       margin: 3%;
@@ -57,75 +54,6 @@
         }
       }
     }
-  }
-}
-
-
-.all-albums-page {
-  height: 100%;
-  overflow: hidden;
-  width: 100%;
-
-  .all-objects-header {
-    margin: 3%;
-  }
-
-  .allalb-year-container {
-    height: auto;
-
-    h1 {
-      border-bottom: solid ($mzk-border-width * 2) $mzk-color-text-light;
-      color: $mzk-color-text-light;
-      font-size: 2.6rem;
-      line-height: 2.6rem;
-      margin: 0 75% 2.6rem calc(2.6rem / 2);
-      padding: ($mzk-padding * 2);
-    }
-
-    .allalb-year-albums {
-      display: flex;
-      flex-wrap: wrap;
-      margin: ($mzk-margin * 5); // Leave room for tooltip
-
-      div {
-        background-color: transparent;
-        border-radius: 0;
-        box-shadow: 0 0 0 0 transparent;
-
-        transition: background-color $mzk-animation-duration ease-out,
-                    border-radius $mzk-animation-duration ease,
-                    box-shadow $mzk-animation-duration ease-in;
-
-        &:active,
-        &:focus,
-        &:hover {
-          background-color: $mzk-color-primary-alpha-10;
-          border-radius: $mzk-border-radius;
-          box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
-        }
-
-        img {
-          background-color: $mzk-color-bg;
-          cursor: pointer;
-          margin: ($mzk-margin / 2);
-          width: 100px;
-        }
-
-        p {
-          text-align: center;
-          margin-bottom: $mzk-margin;
-        }
-      }
-    }
-  }
-}
-
-.all-genres-page {
-  height: 100%;
-  width: 100%;
-
-  .all-objects-header {
-    margin: 3%;
   }
 
   .genres-container {

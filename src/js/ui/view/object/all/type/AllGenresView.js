@@ -9,6 +9,7 @@ class AllGenresView extends AllTagsView {
   constructor() {
     super({
       type: 'genre'
+      // Do not send a sort key nor keys to keep manual control over this view instantiation
     });
 
     this._genres = [];
@@ -67,11 +68,6 @@ class AllGenresView extends AllTagsView {
 
       resolve();
     });
-  }
-
-
-  get dom() {
-    return this._dom.wrapper;
   }
 
 
