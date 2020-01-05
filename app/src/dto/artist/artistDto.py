@@ -25,7 +25,7 @@ class ArtistDto(object):
     def loadArtistFromDb(self, artistId):
         # Getting the album asked by the user
         dao = ArtistGetter()
-        rows = dao.getArtist(artistId)
+        rows = dao.executeRequest(artistId)
         first = True
         for row in rows:
             # Adding the artist information

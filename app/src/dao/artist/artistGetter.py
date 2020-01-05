@@ -3,9 +3,6 @@ from app.src.dao.abstractDaoGetter import AbstractDaoGetter
 ## Get the information about an artist.
 class ArtistGetter(AbstractDaoGetter):
 
-    def getArtist(self, artistId):
-        return self._executeRequest(artistId)
-
     def _generateRequest(self):
         return '''
             SELECT art.id, art.name, art.picture, alb.id, alb.title, alb.year, ac.location,

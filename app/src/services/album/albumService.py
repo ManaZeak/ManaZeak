@@ -39,7 +39,7 @@ class AlbumService(object):
         user = request.user
         AlbumService._checkPermissionAndRequest(request, user)
         album = AlbumDto()
-        album.loadAlbumFromOrm(albumId, user)
+        album.loadAlbumFromIdWithOrm(albumId, user)
         return {
             'ALBUM': album.generateJson()
         }
@@ -50,8 +50,10 @@ class AlbumService(object):
     def getRandomAlbum(request):
         user = request.user
         AlbumService._checkPermissionAndRequest(request, user)
-        album = RandomAlbumGetterService.getAlbumsSortedByArtist(1)
-        album.loadAlbumFromOrm(album, user)
+        albumDb = RandomAlbumGetterService.getAlbumsSortedByArtist(1)
+        album = AlbumDto()
+        if albumDb.count() == 1:
+            album.loadAlbumFromOrm(albumDb.get())
         return {
             'ALBUM': album.generateJson()
         }

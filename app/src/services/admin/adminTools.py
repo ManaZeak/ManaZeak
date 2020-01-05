@@ -3,7 +3,7 @@ from app.models import TrackInScopeStats, Track, Genre, Library, Playlist, Album
 from app.models.collections import LibraryScanStatus
 from app.models.random import RandomReleaseArtistSortedByName, RandomTrackSortedByArtist, RandomArtistSortedByName, \
     RandomLabelSortedByName
-from app.models.track import Producer, Cover
+from app.models.track import Producer, Cover, Label
 
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
@@ -24,6 +24,6 @@ class AdminTools(object):
         objectsToDelete = [LibraryScanStatus, Library, RandomAlbumSortedByArtist, RandomReleaseArtistSortedByName,
                            RandomArtistSortedByName, RandomLabelSortedByName,
                            RandomTrackSortedByName, RandomGenreSortedByName, RandomTrackSortedByArtist,
-                           Playlist, Track, Genre, Album, Artist, TrackInScopeStats, Cover, Producer]
+                           Playlist, Track, Genre, Album, Artist, TrackInScopeStats, Cover, Producer, Label]
         for table in objectsToDelete:
             table.objects.all().delete()

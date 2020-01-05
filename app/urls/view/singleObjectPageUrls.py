@@ -4,6 +4,7 @@ from app.src.services.album.albumService import AlbumService
 from app.src.services.artist.artistService import ArtistService
 from app.src.services.composer.composerService import ComposerService
 from app.src.services.genre.genreService import GenreService
+from app.src.services.label.labelService import LabelService
 from app.src.views.object.single.singleObjectViews import SingleObjectViews
 
 app_name = 'app'
@@ -27,6 +28,7 @@ urlpatterns = [
     path('producer/layout/', SingleObjectViews.getSingleProducerPage, name='getSingleProducerPage'),
 
     path('label/layout/', SingleObjectViews.getSingleLabelPage, name='getSingleLabelPage'),
+    path('label/<int:labelId>/', LabelService.getLabel, name='getSingleLabel'),
 
     # FIXME : faire la page get label
 

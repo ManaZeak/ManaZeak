@@ -41,12 +41,16 @@ class AlbumDto(object):
         self.tracks = []
 
     ## Load an album with the ORM with the album id
-    def loadAlbumFromOrm(self, albumId, user):
+    def loadAlbumFromIdWithOrm(self, albumId, user):
         # Getting the album of the user
         if Album.objects.filter(id=albumId).count() == 0:
             raise UserException(ErrorEnum.DB_ERROR, user)
         # Getting the album from the database.
         album = Album.objects.get(id=albumId)
+        self.loadAlbumFromOrm(album)
+
+    ## Load an album with the orm object.
+    def loadAlbumFromOrm(self, album):
         # Loading the information of the album
         self._loadAlbum(album)
         # Getting the release artist
