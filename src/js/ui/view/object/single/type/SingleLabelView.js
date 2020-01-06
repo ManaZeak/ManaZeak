@@ -36,13 +36,12 @@ class SingleLabelView extends SingleTagView {
   _processLabel(response) {
     return new Promise(resolve => {
       mzk.model.makeTransitiveSet({
-        tracks: response.RANDOM_TRACKS })
+        tracks: [] })
         .then(set => {
           this._dom.play = this._dom.wrapper.getElementsByClassName('play-album')[0];
           this._dom.cover = this._dom.wrapper.getElementsByClassName('label-pp')[0];
           this._dom.title = this._dom.wrapper.getElementsByClassName('artist-title')[0];
           this._dom.artistLabel = this._dom.wrapper.getElementsByClassName('artist-labels')[0];
-          this._dom.yearLabel = this._dom.wrapper.getElementsByClassName('artist-years')[0];
           this._dom.trackCompo = this._dom.wrapper.getElementsByClassName('artist-track-composition')[0];
           this._dom.country = this._dom.wrapper.getElementsByClassName('artist-country')[0];
           this._dom.genres = this._dom.wrapper.getElementsByClassName('artist-genres')[0];
@@ -54,39 +53,38 @@ class SingleLabelView extends SingleTagView {
           }
 
           this._dom.title.innerHTML = response.LABEL.NAME;
-          this._dom.artistLabel.innerHTML = response.ARTIST.ALBUM_ARTIST;
-          this._dom.yearLabel.innerHTML = `<i>${response.ARTIST.ALBUMS[0].YEAR} – ${response.ARTIST.ALBUMS[response.ARTIST.ALBUMS.length -1].YEAR}</i>`;
-          this._dom.trackCompo.innerHTML = `${response.ARTIST.TOTAL_RELEASED_ALBUM} ${mzk.lang.playlist.albums} – ${response.ARTIST.TOTAL_RELEASED_TRACK} ${mzk.lang.playlist.tracks} – ${response.ARTIST.DURATION}`;
-          this._dom.country.innerHTML = response.ARTIST.COUNTRY;
-          this._dom.genres.innerHTML = response.ARTIST.GENRES;
+          this._dom.artistLabel.innerHTML = response.LABEL.ALBUM_ARTIST;
+          this._dom.trackCompo.innerHTML = `${response.LABEL.TOTAL_RELEASED_ALBUM} ${mzk.lang.playlist.albums} – ${response.LABEL.TOTAL_RELEASED_TRACK} ${mzk.lang.playlist.tracks} – ${response.LABEL.DURATION}`;
+          this._dom.country.innerHTML = response.LABEL.COUNTRY;
+          this._dom.genres.innerHTML = response.LABEL.GENRES;
 
-          for (let i = 0; i < response.LABEL.ALBUMS.length; ++i) {
-            let album = document.createElement('DIV');
-            album.classList.add('sp-artist-album');
+          for (let i = 0; i < response.LABEL.ARTISTS.length; ++i) {
+            let artist = document.createElement('DIV');
+            artist.classList.add('sp-artist-album');
 
-            album.dataset.id = response.LABEL.ALBUMS[i].ALBUM_ID;
+            artist.dataset.id = response.LABEL.ARTISTS[i].ID;
 
             let albumTitle = document.createElement('P');
-            albumTitle.innerHTML = response.LABEL.ALBUMS[i].ALBUM_TITLE;
+            albumTitle.innerHTML = response.LABEL.ARTISTS[i].NAME;
 
             let albumCover = document.createElement('IMG');
-            albumCover.src = response.LABEL.ALBUMS[i].ALBUM_COVER;
+            if (response.LABEL.ARTISTS[i].PP === null) {
+              albumCover.src = 'static/img/object/artist.svg';
+            } else {
+              albumCover.src = response.LABEL.ARTISTS[i].PP;
+            }
 
-            let albumYear = document.createElement('P');
-            albumYear.innerHTML = response.LABEL.ALBUMS[i].ALBUM_YEAR;
-
-            album.addEventListener('click', () => {
+            artist.addEventListener('click', () => {
               mzk.ui.setSceneView({
-                name: 'SingleAlbum',
-                uiName: response.LABEL.ALBUMS[i].ALBUM_TITLE,
-                id: response.LABEL.ALBUMS[i].ALBUM_ID
+                name: 'SingleArtist',
+                uiName: response.LABEL.ARTISTS[i].NAME,
+                id: response.LABEL.ARTISTS[i].ID
               });
             }, false);
 
-            album.appendChild(albumTitle);
-            album.appendChild(albumCover);
-            album.appendChild(albumYear);
-            this._dom.albumContainer.appendChild(album);
+            artist.appendChild(albumTitle);
+            artist.appendChild(albumCover);
+            this._dom.albumContainer.appendChild(artist);
           }
 
           for (let i = 0; i < set.length; ++i) {

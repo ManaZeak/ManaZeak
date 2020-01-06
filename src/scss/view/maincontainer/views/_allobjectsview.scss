@@ -20,14 +20,19 @@
     }
 
     .objects-wrapper {
+      align-items: flex-start;
       display: flex;
       flex-wrap: wrap;
+      justify-content: flex-start;
       margin: 3%;
 
       div {
         background-color: transparent;
         border-radius: 0;
         box-shadow: 0 0 0 0 transparent;
+        margin: 0 2px;
+        text-align: center;
+        width: 13%;
 
         transition: background-color $mzk-animation-duration ease-out,
                     border-radius $mzk-animation-duration ease,
@@ -45,10 +50,11 @@
           background-color: $mzk-color-bg;
           cursor: pointer;
           margin: ($mzk-margin / 2);
-          width: 100px;
+          width: 90%;
         }
 
         p {
+          font-size: .9rem;
           text-align: center;
           margin-bottom: $mzk-margin;
         }

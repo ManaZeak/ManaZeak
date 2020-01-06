@@ -204,7 +204,7 @@ class AllTagsView extends SceneView {
       imgContainer.classList.add('tooltip-bottom');
       imgContainer.dataset.tooltip = this._letterGroups[keys[i]][j].ARTIST_NAME; */
     // Define picture or set fallback
-    if (element[this._keys.PP] !== null && Utils.imageUrlExists(element[this._keys.PP]) === true) {
+    if (element[this._keys.PP] !== null) {
       pp.src = element[this._keys.PP];
     } else {
       pp.src = `static/img/object/${this._keys.defaultSVG}.svg`;
