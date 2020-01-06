@@ -55,7 +55,7 @@ class SingleLabelView extends SingleTagView {
           this._dom.title.innerHTML = response.LABEL.NAME;
           this._dom.artistLabel.innerHTML = response.LABEL.ALBUM_ARTIST;
           this._dom.trackCompo.innerHTML = `${response.LABEL.TOTAL_RELEASED_ALBUM} ${mzk.lang.playlist.albums} – ${response.LABEL.TOTAL_RELEASED_TRACK} ${mzk.lang.playlist.tracks} – ${response.LABEL.DURATION}`;
-          this._dom.country.innerHTML = response.LABEL.COUNTRY;
+          this._dom.country.innerHTML = response.LABEL.COUNTRY || `<img src="static/img/object/flag.svg" style="height:20px;" />`;
           this._dom.genres.innerHTML = response.LABEL.GENRES;
 
           for (let i = 0; i < response.LABEL.ARTISTS.length; ++i) {
