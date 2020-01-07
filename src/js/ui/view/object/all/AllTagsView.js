@@ -101,7 +101,7 @@ class AllTagsView extends SceneView {
         if (letters.indexOf(letterKey) === -1) {
           letters += letterKey;
           this._letterGroups[letterKey] = [ response[this._keys.OBJECTS][i] ]; // Index the artists by unique letters.
-        } else {
+        } else if (letterKey !== '') { // Avoid empty artist name bug (even if it must not happens IRL...)
           this._letterGroups[letterKey].push(response[this._keys.OBJECTS][i]); // Add to the existing list
         }
       }
