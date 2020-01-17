@@ -95,7 +95,8 @@
     align-items: flex-end;
     border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
     display: flex;
-    height: 220px;
+    flex-wrap: wrap;
+    height: auto;
 
     .sp-artist-album {
       align-items: center;
