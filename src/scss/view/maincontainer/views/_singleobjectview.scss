@@ -3,6 +3,7 @@
 .single-producer-page,
 .single-label-page {
   height: 100%;
+  overflow: hidden;
   width: 100%;
 
   .sp-artist-header {
@@ -96,7 +97,8 @@
     border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
     display: flex;
     flex-wrap: wrap;
-    height: auto;
+    height: 470px;
+    overflow: hidden;
 
     .sp-artist-album {
       align-items: center;
