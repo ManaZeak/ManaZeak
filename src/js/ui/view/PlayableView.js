@@ -79,6 +79,10 @@ class PlayableView extends SceneView {
     this._playingTrackIndex = index;
     this._click.dbclick = false;
     this._tracks[index].playing = true;
+
+    if (this.updateViewWithTrackInfo) {
+      this.updateViewWithTrackInfo();
+    }
   }
 
 

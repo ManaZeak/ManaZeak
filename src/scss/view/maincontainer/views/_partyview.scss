@@ -64,12 +64,13 @@
         flex-direction: column;
         justify-content: center;
         padding: 35px 35px 35px 70px;
+        width: 40%;
 
         img {
           box-shadow: 0 0 10px 0 $mzk-color-primary-alpha-25;
           height: auto;
           margin: 10px 0 20px 0;
-          width: 450px;
+          width: 100%;
         }
 
         p {

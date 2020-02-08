@@ -10,7 +10,7 @@
         <h4 class="pv-album-duration">42:58</h4>
       </div>
       <div class="pv-track-info">
-        <h1>09 – Brain Damage</h1>
+          <h1><span class="pv-track-number">09  – </span><span class="pv-track-title">Brain Damage</span></h1>
         <div class="pv-track-tags">
             <div class="pv-tag-labels">
               <h2 class="label">{% trans 'Artist' %}:</h2>
@@ -20,11 +20,11 @@
               <h2 class="label">{% trans 'Genre' %}:</h2>
             </div>
             <div class="pv-tag-values">
-              <h2>Pink Floyd</h2>
-              <h2>David Gilmour, Roger Waters</h2>
-              <h2>Pink Floyd</h2>
-              <h2>3:50</h2>
-              <h2><span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
+              <h2 class="pv-track-artist">Pink Floyd</h2>
+              <h2 class="pv-track-composer">David Gilmour, Roger Waters</h2>
+              <h2 class="pv-track-producer">Pink Floyd</h2>
+              <h2 class="pv-track-duration">3:50</h2>
+              <h2 class="pv-track-genre"><span class="badge">Classic Rock</span><span class="badge">Progressive Rock</span></h2>
             </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
   </div>
   <div class="party-view-controls">
       <img src="{% static "img/navigation/home.svg" %}" class="pv-controls-home" alt="pv-home-page">
-      <img src="{% static "img/player/shuffle-random-on.svg" %}" alt="pv-roll-album">
+      <img src="{% static "img/player/shuffle-random-on.svg" %}" class="pv-roll-album" alt="pv-roll-album">
       <img src="{% static "img/player/play.svg" %}" class="pv-play-pause" alt="pv-play-pause">
   </div>
   <div class="party-view-starfield">
