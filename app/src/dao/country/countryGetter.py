@@ -13,7 +13,7 @@ class CountryGetter(AbstractDaoGetter):
             JOIN app_album alb on trk.album_id = alb.id
             JOIN app_artist art on alb."releaseArtist_id" = art.id
             JOIN app_cover cov on trk.cover_id = cov.id
-            WHERE country_id = 13
+            WHERE country_id = %s
             GROUP BY cnt.id, cnt.name, album_id, alb.title, alb.year, art.id, art.name, cov.location
             ORDER BY art.name, alb.year, alb.title
         '''
