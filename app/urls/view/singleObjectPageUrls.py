@@ -32,7 +32,7 @@ urlpatterns = [
     path('label/<int:labelId>/', LabelService.getLabel, name='getSingleLabel'),
 
     path('country/layout/', SingleObjectViews.getSingleCountryPage, name='getSingleCountryPage'),
-    path('country/', CountryService.getCountry, name='getSingleCountry'),
+    path('country/<int:countryId>/', CountryService.getCountry, name='getSingleCountry'),
 
     # FIXME : faire la page get producer
 
