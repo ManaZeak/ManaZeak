@@ -33,6 +33,14 @@ class GenericViews(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    ## Send the user ID HTML template
+    #   @param request request given by the front
+    #   @return the new library template
+    def tapBpm(request):
+        return render(request, 'modals/tapBpm.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
     ## Send the user menu context HTML template
     #   @param request request given by the front
     #   @return the user menu template

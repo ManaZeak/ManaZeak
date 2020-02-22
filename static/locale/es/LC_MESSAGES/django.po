@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-29 10:43+0000\n"
+"POT-Creation-Date: 2020-02-22 14:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,6 +55,10 @@ msgstr ""
 msgid "Add to queue"
 msgstr ""
 
+#: app/templates/contexts/trackContext.html:21
+msgid "Tap BPM"
+msgstr ""
+
 #: app/templates/contexts/userMenuContext.html:7
 msgid "Admin"
 msgstr ""
@@ -64,7 +68,7 @@ msgid "Community"
 msgstr ""
 
 #: app/templates/contexts/userMenuContext.html:15
-#: app/templates/modals/userID.html:5
+#: app/templates/modals/userID.html:6
 msgid "My ID"
 msgstr ""
 
@@ -137,17 +141,37 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: app/templates/modals/userID.html:9
+#: app/templates/modals/tapBpm.html:6
+msgid "Tap BPM (Beat Per Minute)"
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:10
+msgid ""
+"Use the following box to click in rhythm with the music to determine the "
+"track BPM. The longer you click in rhythm, the precise the BPM gets. Use the "
+"reset button if you made a mistake. When you're done clicking, press the "
+"Send button to submit the value."
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:16
+msgid "Reset"
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:17
+msgid "Send"
+msgstr ""
+
+#: app/templates/modals/userID.html:10
 msgid ""
 "The following string is your unique ID in ManaZeak. You can give it to your "
 "friends so they can sign into ManaZeak aswell and enjoy the music here!"
 msgstr ""
 
-#: app/templates/modals/userID.html:10
+#: app/templates/modals/userID.html:12
 msgid "Waiting for the server to load your ID"
 msgstr ""
 
-#: app/templates/modals/userID.html:13
+#: app/templates/modals/userID.html:17
 msgid "Close"
 msgstr ""
 

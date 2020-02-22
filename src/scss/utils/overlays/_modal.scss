@@ -86,6 +86,27 @@
         width: 35px;
       }
     }
+
+    .bpm-click-container {
+      align-items: center;
+      background-color: $mzk-color-bg-dark-alpha-90;
+      border: dashed 3px $mzk-border-color;
+      border-radius: 15px;
+      display: flex;
+      height: 13rem;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      width: 85%;
+      @include user-select(none);
+
+      span {
+        color: $mzk-color-secondary;
+        display: block;
+        font-size: 2.33em;
+      }
+    }
   }
 
   .footer {
@@ -118,4 +139,3 @@
     }
   }
 }
-

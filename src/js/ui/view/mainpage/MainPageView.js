@@ -103,6 +103,15 @@ class MainPageView extends SceneView {
             this._dom.suggestion.appendChild(genres.dom);
           }
 
+          if (response.LABELS.length > 0) {
+            const albums = new SuggestionGroup({
+              label: 'Languages',
+              type: 'Languages',
+              items: response.LABELS
+            });
+            this._dom.suggestion.appendChild(albums.dom);
+          }
+
           new ScrollBar({
             target: this._dom.suggestion
           });

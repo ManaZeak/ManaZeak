@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-29 10:42+0000\n"
+"POT-Creation-Date: 2020-02-22 14:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,10 @@ msgstr "Télécharger"
 msgid "Add to queue"
 msgstr "Ajouter à la queue"
 
+#: app/templates/contexts/trackContext.html:21
+msgid "Tap BPM"
+msgstr "Déterminer le BPM"
+
 #: app/templates/contexts/userMenuContext.html:7
 msgid "Admin"
 msgstr "Administration"
@@ -65,7 +69,7 @@ msgid "Community"
 msgstr "Communauté"
 
 #: app/templates/contexts/userMenuContext.html:15
-#: app/templates/modals/userID.html:5
+#: app/templates/modals/userID.html:6
 msgid "My ID"
 msgstr "Mon identifiant"
 
@@ -143,17 +147,44 @@ msgstr "Chemin de la librairie"
 msgid "Create"
 msgstr "Créer"
 
-#: app/templates/modals/userID.html:9
+#: app/templates/modals/tapBpm.html:6
+msgid "Tap BPM (Beat Per Minute)"
+msgstr "Détermine le BPM (Beat Per Minute)"
+
+#: app/templates/modals/tapBpm.html:10
+msgid ""
+"Use the following box to click in rhythm with the music to determine the "
+"track BPM. The longer you click in rhythm, the precise the BPM gets. Use the "
+"reset button if you made a mistake. When you're done clicking, press the "
+"Send button to submit the value."
+msgstr ""
+"Utilisez la boite suivant pour cliquer en rythme avec la musique pour en "
+"déterminer le BPM ; plus vous cliquerez longtemps, plus le BPM sera précis. "
+"Utilisez le bouton Reinitialisaer pour remmettre le compteur à zéro. Lorsque vous avez "
+"terminé, cliquer sur le boutton envoyer pour soumettre le nouveau BPM."
+
+#: app/templates/modals/tapBpm.html:16
+msgid "Reset"
+msgstr "Reinitialiser"
+
+#: app/templates/modals/tapBpm.html:17
+msgid "Send"
+msgstr "Envoyer"
+
+#: app/templates/modals/userID.html:10
 msgid ""
 "The following string is your unique ID in ManaZeak. You can give it to your "
 "friends so they can sign into ManaZeak aswell and enjoy the music here!"
-msgstr "La chaîne de caractères suivante représente votre identifiant unique sur ManaZeak. En la donnant à des amis, vous leurs permettez d'accéder et de profiter de toute la musique sur cette plateforme!"
+msgstr ""
+"La chaîne de caractères suivante représente votre identifiant unique sur "
+"ManaZeak. En la donnant à des amis, vous leurs permettez d'accéder et de "
+"profiter de toute la musique sur cette plateforme!"
 
-#: app/templates/modals/userID.html:10
+#: app/templates/modals/userID.html:12
 msgid "Waiting for the server to load your ID"
 msgstr "En attente de réponse du serveur"
 
-#: app/templates/modals/userID.html:13
+#: app/templates/modals/userID.html:17
 msgid "Close"
 msgstr "Fermer"
 

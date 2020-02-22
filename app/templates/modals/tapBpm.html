@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="context-transparent-overlay modal-dark-overlay">
+  <div class="new-library">
+    <div class="header">
+      <p>{% trans 'Tap BPM (Beat Per Minute)' %}</p>
+      <span id="user-id-close-top" class="close">&#10006;</span>
+    </div>
+    <div class="container">
+      <p class="description">{% trans "Use the following box to click in rhythm with the music to determine the track BPM. The longer you click in rhythm, the precise the BPM gets. Use the reset button if you made a mistake. When you're done clicking, press the Send button to submit the value." %}</p>
+      <div class="bpm-click-container">
+        <p><span class="bpm-value">0</span> BPM</p>
+      </div>
+    </div>
+    <div class="footer">
+      <button id="reset-bpm">{% trans 'Reset' %}</button>
+      <button id="send-bpm">{% trans 'Send' %}</button>
+    </div>
+  </div>
+</div>

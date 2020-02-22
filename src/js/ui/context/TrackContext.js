@@ -17,12 +17,14 @@ class TrackContext extends ContextMenu {
         previous: {}
       },
       download: {},
-      queue: {}
+      queue: {},
+      tapBpm: {}
     };
 
     this._text = {
       download: {},
-      queue: {}
+      queue: {},
+      tapBpm: {}
     };
   }
 
@@ -64,6 +66,12 @@ class TrackContext extends ContextMenu {
   }
 
 
+  _tapBpm() {
+    mzk.tapBpmForId(this._targetId);
+    this.close();
+  }
+
+
   setActions(doc) {
     this._commands.controls.previous = doc.getElementsByClassName('previous')[0];
     this._commands.controls.playPause = doc.getElementsByClassName('play-pause')[0];
@@ -71,9 +79,11 @@ class TrackContext extends ContextMenu {
     this._commands.controls.next = doc.getElementsByClassName('next')[0];
     this._commands.download = doc.getElementsByClassName('download')[0];
     this._commands.queue = doc.getElementsByClassName('add-to-queue')[0];
+    this._commands.tapBpm = doc.getElementsByClassName('tap-bpm')[0];
 
     this._text.download = doc.getElementsByClassName('track-download')[0];
     this._text.queue = doc.getElementsByClassName('track-queue')[0];
+    this._text.tapBpm = doc.getElementsByClassName('track-tap-bpm')[0];
 
     this._commands.controls.previous.addEventListener('click', this._previous.bind(this), false);
     this._commands.controls.playPause.addEventListener('click', this._togglePlay.bind(this), false);
@@ -81,6 +91,7 @@ class TrackContext extends ContextMenu {
     this._commands.controls.next.addEventListener('click', this._next.bind(this), false);
     this._commands.download.addEventListener('click', this._download.bind(this), false);
     this._commands.queue.addEventListener('click', this._addToQueue.bind(this), false);
+    this._commands.tapBpm.addEventListener('click', this._tapBpm.bind(this), false);
   }
 
 

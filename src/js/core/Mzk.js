@@ -3,6 +3,7 @@ import Model from '../model/Model.js';
 import UserInterface from '../ui/UserInterface.js';
 import User from './User.js';
 import Notification from "../ui/component/Notification";
+import TapBpmModal from "../ui/modal/TapBpmModal";
 'use strict';
 
 
@@ -819,6 +820,34 @@ class Mzk {
       .catch(error => {
         console.log(error);
       });
+  }
+
+
+  tapBpmForId(id) {
+    const checkModalValues = (formValues) => {
+      const options = {
+        NAME: formValues.name,
+        URL: formValues.path,
+        CONVERT: false
+      };
+/*
+      mzk.komunikator.post('lib/new/', options)
+        .then(response => {
+          checkServerResponse(response);
+        })
+        .catch(response => {
+          Logger.raise({
+            code: response,
+            frontend: true
+          });
+        });
+*/
+    };
+
+    new TapBpmModal({
+      url: 'modal/tapBpm',
+      callback: checkModalValues
+    });
   }
 
 
