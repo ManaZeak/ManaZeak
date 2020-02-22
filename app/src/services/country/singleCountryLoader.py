@@ -42,6 +42,7 @@ class SingleCountryLoader(object):
         album = MainPageAlbum()
         album.id = row[2]
         album.title = row[3]
+        album.year = row[4]
         album.picture = CoverPathGenerator.getCoverPathAlbum(row[7])
         self.country.artists[self.lastArtistIndex].albums.append(album)
 
