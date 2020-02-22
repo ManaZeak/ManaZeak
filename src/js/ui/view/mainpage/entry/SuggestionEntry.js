@@ -58,6 +58,14 @@ class SuggestionEntry {
       } else {
         this._dom.img.src = 'static/img/object/genre.svg';
       }
+    } else if (this._groupType === 'Countries') {
+      this._dom.container.dataset.id = this._entry.COUNTRY_ID;
+      this._dom.name.innerHTML = this._entry.COUNTRY_CODE;
+      if (this._entry.COUNTRY_FLAG !== null) {
+        this._dom.img.src = this._entry.COUNTRY_FLAG;
+      } else {
+        this._dom.img.src = 'static/img/object/flag.svg';
+      }
     }
 
     this._dom.container.appendChild(this._dom.img);

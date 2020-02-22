@@ -103,13 +103,13 @@ class MainPageView extends SceneView {
             this._dom.suggestion.appendChild(genres.dom);
           }
 
-          if (response.LABELS.length > 0) {
-            const albums = new SuggestionGroup({
-              label: 'Languages',
-              type: 'Languages',
-              items: response.LABELS
+          if (response.COUNTRIES.length > 0) {
+            const country = new SuggestionGroup({
+              label: 'Countries',
+              type: 'Countries',
+              items: response.COUNTRIES
             });
-            this._dom.suggestion.appendChild(albums.dom);
+            this._dom.suggestion.appendChild(country.dom);
           }
 
           new ScrollBar({
