@@ -60,6 +60,7 @@ class SuggestionEntry {
       }
     } else if (this._groupType === 'Countries') {
       this._dom.container.dataset.id = this._entry.COUNTRY_ID;
+      this._dom.container.classList.add('country');
       this._dom.name.innerHTML = mzk.lang.countries[this._entry.COUNTRY_CODE];
       if (this._entry.COUNTRY_FLAG !== null) {
         this._dom.img.src = this._entry.COUNTRY_FLAG;
