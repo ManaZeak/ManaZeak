@@ -5,6 +5,7 @@ import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
 import SingleProducerView from '../view/object/single/type/SingleProducerView.js';
 import SingleLabelView from '../view/object/single/type/SingleLabelView.js';
 import SingleGenreView from '../view/object/single/type/SingleGenreView.js';
+import SingleCountryView from '../view/object/single/type/SingleCountryView.js';
 /* All objects views */
 import AllReleaseArtistsView from '../view/object/all/type/AllReleaseArtistsView.js';
 import AllArtistsView from '../view/object/all/type/AllArtistsView.js';
@@ -26,6 +27,7 @@ const Classes = {
   SingleProducerView,
   SingleLabelView,
   SingleGenreView,
+  SingleCountryView,
   AllReleaseArtistsView,
   AllArtistsView,
   AllAlbumsView,
