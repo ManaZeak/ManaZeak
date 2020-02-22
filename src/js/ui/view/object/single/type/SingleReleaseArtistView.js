@@ -89,25 +89,6 @@ class SingleReleaseArtistView extends SingleTagView {
             this._dom.albumContainer.appendChild(album);
           }
 
-
-          new ScrollBar({
-            target: this._dom.albumContainer
-          });        
-        
-          for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleReleaseArtistViewTrackEntry({
-              trackNumber: i + 1,
-              track: set[i]
-            });
-
-            this._tracks.push(entry);
-            this._dom.trackContainer.appendChild(entry.domFragment);
-          }
-
-          new ScrollBar({
-            target: this._dom.trackContainer
-          });
-
           resolve();
         });
     });
