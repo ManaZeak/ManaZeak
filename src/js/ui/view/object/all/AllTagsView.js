@@ -210,7 +210,12 @@ class AllTagsView extends SceneView {
       pp.src = `static/img/object/${this._keys.defaultSVG}.svg`;
     }
 
-    name.innerHTML = element[this._keys.NAME];
+    if (this._type === 'country') {
+      name.innerHTML = mzk.lang.countries[element.COUNTRY_CODE];
+    } else {
+      name.innerHTML = element[this._keys.NAME];
+    }
+
     container.dataset.id = element[this._keys.ID];
     container.addEventListener('click', () => {
       mzk.ui.setSceneView({

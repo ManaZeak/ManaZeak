@@ -73,6 +73,10 @@
     "genres": {
       "title": "Genres",
       "description": "Why not exploring ManaZeak's library using its musical genres and styles? To this day, ManaZeak contains"
+    },
+    "countrys": {
+      "title": "Countries",
+      "description": "You can here browse ManaZeak through countries. To this day, ManaZeak contains"
     }
   },
   "libraryview": {
