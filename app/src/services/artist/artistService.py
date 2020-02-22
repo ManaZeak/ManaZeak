@@ -25,7 +25,7 @@ class ArtistService(object):
         # Checking the permission.
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting the artists.
-        artistsInDb = Artist.objects.filter(location__isnull=False)
+        artistsInDb = Artist.objects.filter(location__isnull=False).order_by('name')
         return ArtistService._getArtistJson(artistsInDb)
 
     @staticmethod
