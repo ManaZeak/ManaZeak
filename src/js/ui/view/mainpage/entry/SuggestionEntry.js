@@ -60,7 +60,7 @@ class SuggestionEntry {
       }
     } else if (this._groupType === 'Countries') {
       this._dom.container.dataset.id = this._entry.COUNTRY_ID;
-      this._dom.name.innerHTML = this._entry.COUNTRY_CODE;
+      this._dom.name.innerHTML = mzk.lang.countries[this._entry.COUNTRY_CODE];
       if (this._entry.COUNTRY_FLAG !== null) {
         this._dom.img.src = this._entry.COUNTRY_FLAG;
       } else {
@@ -120,6 +120,14 @@ class SuggestionEntry {
           name: 'SingleGenre',
           uiName: this._entry.GENRE_NAME,
           id: this._entry.GENRE_ID
+        });
+      }, false);
+    } else if (this._groupType === 'Countries') {
+      this._dom.container.addEventListener('click', () => {
+        mzk.ui.setSceneView({
+          name: 'SingleCountry',
+          uiName: this._entry.COUNTRY_CODE,
+          id: this._entry.COUNTRY_ID
         });
       }, false);
     }
