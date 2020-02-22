@@ -83,9 +83,9 @@ class SingleReleaseArtistView extends SingleTagView {
               });
             }, false);
 
-            album.appendChild(albumTitle);
-            album.appendChild(albumCover);
             album.appendChild(albumYear);
+            album.appendChild(albumCover);
+            album.appendChild(albumTitle);
             this._dom.albumContainer.appendChild(album);
           }
 
