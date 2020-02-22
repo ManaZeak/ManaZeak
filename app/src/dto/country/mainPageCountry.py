@@ -20,7 +20,7 @@ class MainPageCountry(AbstractDto):
     ## Generating the json for a response.
     def generateJson(self):
         return {
-            'ID': self.id,
-            'CODE': self.code,
-            'IMAGE': self.image,
+            'COUNTRY_ID': self.id,
+            'COUNTRY_CODE': self.code,
+            'COUNTRY_FLAG': self.image,
         }
