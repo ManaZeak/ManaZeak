@@ -14,5 +14,5 @@ class ArtistCountryDto(AbstractDto):
             'ARTIST_ID': self.id,
             'ARTIST_NAME': self.name,
             'ARTIST_PP': self.picture,
-            'ARTIST_ALBUM': [album.generateJson() for album in self.albums]
+            'ARTIST_ALBUMS': [album.getJsonObject() for album in self.albums]
         }

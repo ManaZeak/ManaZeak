@@ -1,13 +1,15 @@
+import logging
+
 from app.src.dao.country.countryGetter import CountryGetter
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.dto.artist.artistCountryDto import ArtistCountryDto
-from app.src.dto.artist.mainPageArtist import MainPageArtist
 from app.src.dto.country.countryDto import CountryDto
-
-## Loads all the information about a country.
 from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 
 
+logger = logging.getLogger('django')
+
+## Loads all the information about a country.
 class SingleCountryLoader(object):
 
     def __init__(self):
@@ -30,9 +32,10 @@ class SingleCountryLoader(object):
     ## Loads the artist from the sql row.
     def _loadArtistFromRow(self, row):
         artistId = row[5]
+        logger.info(row[5])
         # If the artist doesn't exit, we create it.
         if self.lastArtistId is None or self.lastArtistId != artistId:
-            self._loadArtistFromRow(row)
+            self._buildArtistFromRow(row)
 
     ## Construct album from the sql row.
     def _loadAlbumFromRow(self, row):
@@ -40,15 +43,16 @@ class SingleCountryLoader(object):
         album.id = row[2]
         album.title = row[3]
         album.picture = CoverPathGenerator.getCoverPathAlbum(row[7])
-        self.country.artists[self.lastArtistId].albums.append(album)
+        self.country.artists[self.lastArtistIndex].albums.append(album)
 
     ## Construct a artist from the sql row.
-    def _loadArtistFromRow(self, row):
+    def _buildArtistFromRow(self, row):
         self.lastArtistIndex += 1
         artist = ArtistCountryDto()
         artist.id = row[5]
         artist.name = row[6]
         artist.picture = CoverPathGenerator.generateArtistPicturePath(artist.name)
+        self.lastArtistId = artist.id
         self.country.artists.append(artist)
 
     def _loadCountryFromRow(self, row):
