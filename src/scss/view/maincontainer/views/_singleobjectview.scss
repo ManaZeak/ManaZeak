@@ -272,6 +272,7 @@
         a {
           color: white;
           cursor: pointer;
+          padding: 0 ($mzk-padding / 2);
 
           transition: color $mzk-animation-duration ease;
 
@@ -279,6 +280,14 @@
           &:focus,
           &:hover {
             color: $mzk-color-primary;
+          }
+
+          &:first-child {
+            padding-left: 0;
+          }
+
+          &:last-child {
+            padding-right: 0;
           }
         }
       }

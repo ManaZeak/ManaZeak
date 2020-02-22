@@ -71,9 +71,9 @@ class SingleAlbumView extends SingleTagView {
           this._dom.country.innerHTML = response.ALBUM.COUNTRY.length > 0 ? '' : 'No country';
           for (let i = 0; i < response.ALBUM.COUNTRY.length; ++i) {
             if (i + 1 === response.ALBUM.COUNTRY.length) {
-              this._dom.country.innerHTML = `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].NAME}.svg" alt="artist-origin-country" />`;
+              this._dom.country.innerHTML = `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].CODE}.svg" alt="artist-origin-country" />`;
             } else {
-              this._dom.country.innerHTML += `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].NAME}.svg" alt="artist-origin-country" /> – `;
+              this._dom.country.innerHTML += `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].CODE}.svg" alt="artist-origin-country" /> – `;
             }
           }
 

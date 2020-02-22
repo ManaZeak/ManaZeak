@@ -43,7 +43,12 @@ class TapBpmModal extends Modal {
 		}
 
 	  if (this._ts.previous !== 0) {
-		  this._bpm.innerHTML = Math.round(60000 * this._count / (this._ts.current - this._ts.first));
+	    let bpm = 60000 * this._count / (this._ts.current - this._ts.first);
+      if (bpm % 1 > 0.5) {
+        this._bpm.innerHTML = Math.ceil(bpm);
+      } else {
+        this._bpm.innerHTML = Math.round(bpm);
+      }
 	  }
 	  // Store the old timestamp
 	  this._ts.previous = this._ts.current;
