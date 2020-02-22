@@ -45,5 +45,5 @@ class LabelArtistLoader(object):
         artist = ArtistDto()
         artist.id = row[6]
         artist.name = row[7]
-        artist.picture = CoverPathGenerator.generatePicturePath(row[8])
+        artist.picture = CoverPathGenerator.generateArtistPicturePath(row[8])
         return artist

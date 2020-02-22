@@ -1,10 +1,8 @@
 from app.src.dto.AbstractDto import AbstractDto
-
-
-## DTO for the country information
 from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 
 
+## DTO for the country information
 class MainPageCountry(AbstractDto):
 
     def __init__(self):

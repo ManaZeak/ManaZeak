@@ -1,10 +1,11 @@
 from app.src.config.constants import Constants
 from app.src.dao.artist.artistGetter import ArtistGetter
+from app.src.dto.AbstractDto import AbstractDto
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 
 
 ## Represents all the information about an artist.
-class ArtistDto(object):
+class ArtistDto(AbstractDto):
 
     ## Constructor
     def __init__(self):

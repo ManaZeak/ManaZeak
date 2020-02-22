@@ -34,3 +34,8 @@ class SingleObjectViews(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleGenrePage(request):
         return render(request, 'views/singleObject/singleGenrePage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getSingleCountryPage(request):
+        return render(request, 'views/singleObject/singleCountryPage.html')

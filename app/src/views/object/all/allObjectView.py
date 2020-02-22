@@ -33,3 +33,8 @@ class AllObjectView(object):
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getAllArtist(request):
         return render(request, 'views/tags/allArtistsPage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAllCountriesPage(request):
+        return render(request, 'views/tags/allCountriesPage.html')

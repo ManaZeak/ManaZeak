@@ -3,6 +3,7 @@ from django.urls import path
 from app.src.services.album.albumService import AlbumService
 from app.src.services.artist.artistService import ArtistService
 from app.src.services.composer.composerService import ComposerService
+from app.src.services.country.countryService import CountryService
 from app.src.services.genre.genreService import GenreService
 from app.src.services.label.labelService import LabelService
 from app.src.views.object.all.allObjectView import AllObjectView
@@ -29,9 +30,10 @@ urlpatterns = [
     path('label/layout/', AllObjectView.getAllLabelsPage, name='getAllLabelsPage'),
     path('label/', LabelService.getAllLabel, name='getAllLabels'),
 
-    # FIXME : faire la page get producer
+    path('country/layout/', AllObjectView.getAllCountriesPage, name='getAllCountriesPage'),
+    path('country/', CountryService.getAllCountries, name="getAllCountries"),
 
-    # FIXME : faire la page get country
+    # FIXME : faire la page get producer
 
     path('composer/', ComposerService.getAllComposers, name='getAllComposers'),
 ]
