@@ -57,7 +57,7 @@ class LibraryHelper(object):
                     flacFiles.append(os.path.join(root, file))
         # If there is no file throw an exception
         if len(mp3Files) == 0 and len(flacFiles) == 0:
-            raise UserException(ErrorEnum.EMPTY_LIBRARY)
+            raise UserException(ErrorEnum.EMPTY_LIBRARY, None)
         # return the track found
         return mp3Files, flacFiles
 
@@ -68,7 +68,7 @@ class LibraryHelper(object):
     def getLibraryFromId(libraryId):
         # The library doesn't exist
         if Library.objects.filter(id=libraryId).count() != 1:
-            raise UserException(ErrorEnum.DB_ERROR)
+            raise UserException(ErrorEnum.DB_ERROR, None)
         return Library.objects.get(id=libraryId)
 
     @staticmethod

@@ -1,4 +1,3 @@
-from app.models.random import RandomArtistSortedByName
 from app.src.services.random.generator.album.randomAlbumSortedByArtistGenerator \
     import RandomAlbumSortedByArtistGenerator
 from app.src.services.random.generator.artist.randomArtistSortedByNameGenerator import RandomArtistSortedByNameGenerator

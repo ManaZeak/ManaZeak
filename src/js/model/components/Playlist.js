@@ -55,7 +55,7 @@ class Playlist {
       PLAYLIST_ID: this._id,
       OFFSET: offset
     };
-
+_convertRawArtists
     mzk.komunikator.post('playlist/simplifiedLazyLoading/', options)
       .then((response) => {
         if (response.DONE) {
