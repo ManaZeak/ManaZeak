@@ -13,6 +13,7 @@ import AllAlbumsView from '../view/object/all/type/AllAlbumsView.js';
 import AllProducersView from '../view/object/all/type/AllProducersView.js';
 import AllLabelsView from '../view/object/all/type/AllLabelsView.js';
 import AllGenresView from '../view/object/all/type/AllGenresView.js';
+import AllCountriesView from '../view/object/all/type/AllCountriesView.js';
 /* Generic views */
 import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
@@ -34,6 +35,7 @@ const Classes = {
   AllProducersView,
   AllLabelsView,
   AllGenresView,
+  AllCountriesView,
   MainPageView,
   PartyView,
   AdminView,
