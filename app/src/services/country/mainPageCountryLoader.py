@@ -19,6 +19,6 @@ class MainPageCountryLoader(object):
     def _loadCountryFromOrm(self, countryDb):
         country = MainPageCountry()
         country.id = countryDb.id
-        country.code = countryDb.code
+        country.code = countryDb.name
         country.image = CoverPathGenerator.generateCountryPicturePath(country.code)
         self.countries.append(country)

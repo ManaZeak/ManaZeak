@@ -26,7 +26,9 @@ class CountryService(object):
         # Getting the countries
         mainPageCountry = MainPageCountryLoader()
         mainPageCountry.loadAllCountries()
-        return [country.generateJson() for country in mainPageCountry.countries]
+        return {
+            'COUNTRIES': [country.generateJson() for country in mainPageCountry.countries]
+        }
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
