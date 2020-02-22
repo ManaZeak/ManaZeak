@@ -1,5 +1,8 @@
+from app.src.dto.AbstractDto import AbstractDto
+
+
 ## Describes a country of an artist.
-class LocalCountry(object):
+class LocalCountry(AbstractDto):
 
     def __init__(self):
         self.id = None
@@ -14,5 +17,5 @@ class LocalCountry(object):
     def generateJson(self):
         return {
             'ID': self.id,
-            'NAME': self.name,
+            'CODE': self.name,
         }

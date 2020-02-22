@@ -60,4 +60,5 @@ class MainPageService(object):
             'COMPOSERS': MainPageHelper.getRandomComposer(numberOfElements),
             'ARTISTS': MainPageHelper.getRandomArtists(numberOfElements),
             'LABELS': MainPageHelper.getRandomLabels(numberOfElements),
+            'COUNTRIES': MainPageHelper.getRandomCountries(numberOfElements),
         }

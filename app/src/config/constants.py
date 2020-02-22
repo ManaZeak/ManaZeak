@@ -10,7 +10,11 @@ class Constants(object):
     GENRE_COVER_LOCATION = 'static/pictures/GenresLogo/'
     ## Labels cover root location
     LABELS_COVER_LOCATION = 'static/pictures/LabelsLogo/'
+    ## Country image location.
+    COUNTRY_COVER_LOCATION = 'static/img/flag/'
     ## Forbidden chars
     FORBIDDEN_CHARS = ['*', '/', '\\', ':', ';', '?', '<', '>', '|']
     ## JPG extension
     JPG = '.jpg'
+    ## SVG extension
+    SVG = '.svg'

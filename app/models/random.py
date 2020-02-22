@@ -5,7 +5,7 @@ from app.models import Track, Album, Artist, Playlist, Genre
 
 
 ## This class represents the table for storing the contiguous sequence for selecting tracks.
-from app.models.track import Label
+from app.models.track import Label, Country
 
 
 class RandomTrackSortedByName(models.Model):
@@ -46,5 +46,11 @@ class RandomGenreSortedByName(models.Model):
 ## This class represents the table for storing contiguous sequence for selecting labels.
 class RandomLabelSortedByName(models.Model):
     label = models.ForeignKey(Label, on_delete=DO_NOTHING)
+    playlist = models.ForeignKey(Playlist, on_delete=DO_NOTHING)
+    hashIndex = models.IntegerField(db_index=True)
+
+## This class represents the table for storing contiguous sequence for selecting countries.
+class RandomCountrySortedByName(models.Model):
+    country = models.ForeignKey(Country, on_delete=DO_NOTHING)
     playlist = models.ForeignKey(Playlist, on_delete=DO_NOTHING)
     hashIndex = models.IntegerField(db_index=True)

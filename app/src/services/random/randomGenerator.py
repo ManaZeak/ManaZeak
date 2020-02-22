@@ -3,6 +3,8 @@ from app.src.services.random.generator.album.randomAlbumSortedByArtistGenerator 
 from app.src.services.random.generator.artist.randomArtistSortedByNameGenerator import RandomArtistSortedByNameGenerator
 from app.src.services.random.generator.artist.randomReleaseArtistSortedByNameGenerator \
     import RandomReleaseArtistSortedByNameGenerator
+from app.src.services.random.generator.country.randomCountrySortedByNameGenerator import \
+    RandomCountrySortedByNameGenerator
 from app.src.services.random.generator.genre.randomGenreSortedByNameGenerator import RandomGenreSortedByNameGenerator
 from app.src.services.random.generator.label.RandomLabelSortedByNameGenerator import RandomLabelSortedByNameGenerator
 from app.src.services.random.generator.track.randomTrackSortedByArtistGenerator import \
@@ -28,6 +30,8 @@ class RandomGenerator(object):
         self._fillRandomGenre()
         # Fill the random labels tables.
         self._fillRandomLabel()
+        # Fill the random countries tables.
+        self._fillRandomCountry()
 
     ## Fill the tables linked to the artists.
     def _fillRandomArtist(self):
@@ -54,4 +58,9 @@ class RandomGenerator(object):
     ## Fill the tables linked to the labels.
     def _fillRandomLabel(self):
         randGenerator = RandomLabelSortedByNameGenerator()
+        randGenerator.fillTableRandom(self.playlistId)
+
+    ## Fill the tables linked to the countries.
+    def _fillRandomCountry(self):
+        randGenerator = RandomCountrySortedByNameGenerator()
         randGenerator.fillTableRandom(self.playlistId)

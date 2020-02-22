@@ -10,7 +10,7 @@ class MainPageLabelLoader(object):
     ## Loads all the label and create main
     def loadAllLabels():
         mainPageLabels = []
-        labels = Label.objects.all()
+        labels = Label.objects.all().order_by('name')
         for label in labels:
             mainPageLabels.append(MainPageLabelLoader.createMainPageAlbumFromOrm(label))
         return mainPageLabels

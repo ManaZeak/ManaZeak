@@ -1,6 +1,7 @@
 from app.models import Artist
 from app.src.dto.album.mainPageAlbum import MainPageAlbum
 from app.src.dto.artist.mainPageArtist import MainPageArtist
+from app.src.dto.country.mainPageCountry import MainPageCountry
 from app.src.dto.genre.MainPageGenre import MainPageGenre
 from app.src.dto.label.mainPageLabel import MainPageLabel
 from app.src.services.random.getter.randomAlbumGetterService import RandomAlbumGetterService
@@ -8,6 +9,7 @@ from app.src.services.random.getter.randomArtistGetterService import RandomArtis
 
 
 ## Helper class for the main page.
+from app.src.services.random.getter.randomCountryGetterService import RandomCountryGetterService
 from app.src.services.random.getter.randomGenreGetterService import RandomGenreGetterService
 from app.src.services.random.getter.randomLabelGetterService import RandomLabelGetterService
 
@@ -67,6 +69,16 @@ class MainPageHelper(object):
             return {
 
             }
+
+    @staticmethod
+    def getRandomCountries(numberToGet):
+        countriesFromDb = RandomCountryGetterService.getRandomCountrySortedByName(numberToGet)
+        countries = []
+        for country in countriesFromDb:
+            mainPageCountry = MainPageCountry()
+            mainPageCountry.loadFromOrm(country)
+            countries.append(mainPageCountry.generateJson())
+        return countries
 
     @staticmethod
     def getRandomProducers(numberToGet):
