@@ -37,7 +37,7 @@ class TapBpmModal extends Modal {
     sendBottom.addEventListener('click', this._sendBpm.bind(this));
     this._bpmClickContainer.addEventListener('click', this._tap.bind(this));
 
-    mzk.komunikator.get(`track/getBpm/${this._trackId}/`)
+    mzk.komunikator.get(`track/getBpm/${mzk.ui.getTrackById(this._trackId).id}/`)
       .then(response => {
         trackTitle.innerHTML = response.TRACK_TITLE;
         trackArtist.innerHTML = response.TRACK_ARTIST;
