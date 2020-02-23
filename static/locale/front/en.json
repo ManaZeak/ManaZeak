@@ -31,6 +31,9 @@
     "Genres": "Genres",
     "Countries": "Countries"
   },
+  "tags": {
+    "notSet": "not set"
+  },
   "mainpage": {
     "reroll": "Roll suggestions",
     "goto": "Home",
@@ -119,7 +122,7 @@
       "help": "Use the right click on a track and select 'Add to queue'"
     },
     "track":  {
-     "download": "Download",
+      "download": "Download",
       "queue": "Add to queue"
     }
   },

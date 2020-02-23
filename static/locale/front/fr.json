@@ -34,6 +34,9 @@
     "Genres": "Genres",
     "Countries": "Pays"
   },
+  "tags": {
+    "notSet": "pas défini"
+  },
   "mainpage": {
     "reroll": "Changer les suggestions",
     "goto": "Accueil",

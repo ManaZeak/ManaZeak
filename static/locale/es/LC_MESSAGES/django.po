@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-22 14:41+0000\n"
+"POT-Creation-Date: 2020-02-23 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,6 +146,22 @@ msgid "Tap BPM (Beat Per Minute)"
 msgstr ""
 
 #: app/templates/modals/tapBpm.html:10
+msgid "Track title"
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:11
+msgid "Track artist"
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:12
+msgid "Current BPM: "
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:12
+msgid "no set"
+msgstr ""
+
+#: app/templates/modals/tapBpm.html:13
 msgid ""
 "Use the following box to click in rhythm with the music to determine the "
 "track BPM. The longer you click in rhythm, the precise the BPM gets. Use the "
@@ -153,11 +169,11 @@ msgid ""
 "Send button to submit the value."
 msgstr ""
 
-#: app/templates/modals/tapBpm.html:16
+#: app/templates/modals/tapBpm.html:19
 msgid "Reset"
 msgstr ""
 
-#: app/templates/modals/tapBpm.html:17
+#: app/templates/modals/tapBpm.html:20
 msgid "Send"
 msgstr ""
 

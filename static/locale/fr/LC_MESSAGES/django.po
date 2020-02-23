@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-22 14:41+0000\n"
+"POT-Creation-Date: 2020-02-23 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,6 +152,22 @@ msgid "Tap BPM (Beat Per Minute)"
 msgstr "Détermine le BPM (Beat Per Minute)"
 
 #: app/templates/modals/tapBpm.html:10
+msgid "Track title"
+msgstr "Titre de la piste"
+
+#: app/templates/modals/tapBpm.html:11
+msgid "Track artist"
+msgstr "Artiste de la piste"
+
+#: app/templates/modals/tapBpm.html:12
+msgid "Current BPM: "
+msgstr "BPM actuel : "
+
+#: app/templates/modals/tapBpm.html:12
+msgid "no set"
+msgstr "pas défini"
+
+#: app/templates/modals/tapBpm.html:13
 msgid ""
 "Use the following box to click in rhythm with the music to determine the "
 "track BPM. The longer you click in rhythm, the precise the BPM gets. Use the "
@@ -160,14 +176,15 @@ msgid ""
 msgstr ""
 "Utilisez la boite suivant pour cliquer en rythme avec la musique pour en "
 "déterminer le BPM ; plus vous cliquerez longtemps, plus le BPM sera précis. "
-"Utilisez le bouton Reinitialisaer pour remmettre le compteur à zéro. Lorsque vous avez "
-"terminé, cliquer sur le boutton envoyer pour soumettre le nouveau BPM."
+"Utilisez le bouton Reinitialisaer pour remmettre le compteur à zéro. Lorsque "
+"vous avez terminé, cliquer sur le boutton envoyer pour soumettre le nouveau "
+"BPM."
 
-#: app/templates/modals/tapBpm.html:16
+#: app/templates/modals/tapBpm.html:19
 msgid "Reset"
 msgstr "Reinitialiser"
 
-#: app/templates/modals/tapBpm.html:17
+#: app/templates/modals/tapBpm.html:20
 msgid "Send"
 msgstr "Envoyer"
 

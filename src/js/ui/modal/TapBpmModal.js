@@ -41,7 +41,7 @@ class TapBpmModal extends Modal {
       .then(response => {
         trackTitle.innerHTML = response.TRACK_TITLE;
         trackArtist.innerHTML = response.TRACK_ARTIST;
-        trackBpm.innerHTML = response.TRACK_BPM;
+        trackBpm.innerHTML = response.TRACK_BPM === null ? mzk.lang.tags.notSet : response.TRACK_BPM;
       })
       .catch(err => {
         console.error(err);
