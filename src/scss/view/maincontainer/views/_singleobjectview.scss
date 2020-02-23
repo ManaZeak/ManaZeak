@@ -546,3 +546,79 @@
     }
   }
 }
+
+.single-country-page {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  .sp-country-header {
+    height: 100%;
+    width: 25%;
+
+    .sp-country-flag-container img {
+      width: 90%;
+    }
+  }
+
+  .sp-country-artists {
+    height: 100%;
+    padding: $mzk-padding;
+    width: 75%;
+
+    .artist {
+      display: flex;
+      height: 16rem;
+      width: 100%;
+
+      .artist-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 16rem;
+
+        img {
+          height: 12rem;
+        }
+
+        h3 {
+          margin: $mzk-margin 0;
+        }
+      }
+
+      .artist-albums {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+        grid-gap: .5rem;
+        padding: $mzk-padding;
+        width: calc(100% - 16rem);
+
+        .album {
+          align-items: center;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+
+          transition: background-color $mzk-animation-duration ease-out,
+                      border-radius $mzk-animation-duration ease,
+                      box-shadow $mzk-animation-duration ease-in;
+
+          &:active,
+          &:focus,
+          &:hover {
+            background-color: $mzk-color-primary-alpha-10;
+            border-radius: $mzk-border-radius;
+            box-shadow: 0 0 10px -2px $mzk-color-primary;
+          }
+
+          img {
+            height: 6rem;
+          }
+        }
+      }
+    }
+  }
+}

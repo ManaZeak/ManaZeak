@@ -1,6 +1,5 @@
 import SingleTagView from "../SingleTagView";
 import ScrollBar from "../../../../component/bar/ScrollBar";
-import SingleAlbumViewTrackEntry from "../entry/SingleAlbumViewTrackEntry";
 'use strict';
 
 
@@ -15,14 +14,9 @@ class SingleCountryView extends SingleTagView {
     this._id = options.id;
 
     this._dom = {
-      cover: null,
-      title: null,
-      albumArtist: null,
-      yearLabel: null,
-      trackCompo: null,
-      country: null,
-      genres: null,
-      tracksContainer: null
+      flag: null,
+      name: null,
+      artistContainer: null
     };
 
     this._init()
@@ -36,18 +30,67 @@ class SingleCountryView extends SingleTagView {
   _processCountry(response) {
     return new Promise(resolve => {
 
-      this._dom.play = this._dom.wrapper.getElementsByClassName('play-album')[0];
-      this._dom.cover = this._dom.wrapper.getElementsByClassName('album-cover')[0];
-      this._dom.title = this._dom.wrapper.getElementsByClassName('album-title')[0];
-      this._dom.albumArtist = this._dom.wrapper.getElementsByClassName('album-artist')[0];
-      this._dom.yearLabel = this._dom.wrapper.getElementsByClassName('album-year-label')[0];
-      this._dom.trackCompo = this._dom.wrapper.getElementsByClassName('album-track-composition')[0];
-      this._dom.country = this._dom.wrapper.getElementsByClassName('album-country')[0];
-      this._dom.genres = this._dom.wrapper.getElementsByClassName('album-genres')[0];
-      this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('album-tracks')[0];
+      this._dom.flag = this._dom.wrapper.getElementsByClassName('sp-country-flag')[0];
+      this._dom.name = this._dom.wrapper.getElementsByClassName('sp-country-name')[0];
+      this._dom.artistContainer = this._dom.wrapper.getElementsByClassName('sp-country-artists')[0];
 
-      //this._dom.cover.src = response.ALBUM.COVER;
-      //this._dom.title.innerHTML = response.ALBUM.NAME;
+      this._dom.flag.src = `static/img/flag/${response.COUNTRY_CODE}.svg`;
+      this._dom.name.innerHTML = mzk.lang.countries[response.COUNTRY_CODE];
+
+      for (let i = 0; i < response.COUNTRY_ARTISTS.length; ++i) {
+        const container = document.createElement('DIV');
+
+        container.classList.add('artist');
+
+        const artistInfo = document.createElement('DIV');
+        const artistPp = document.createElement('IMG');
+        const artistName = document.createElement('H3');
+
+        artistInfo.classList.add('artist-info');
+        artistPp.src = response.COUNTRY_ARTISTS[i].ARTIST_PP;
+        artistName.innerHTML = response.COUNTRY_ARTISTS[i].ARTIST_NAME;
+
+        artistInfo.appendChild(artistPp);
+        artistInfo.appendChild(artistName);
+        container.appendChild(artistInfo);
+
+        const artistAlbums = document.createElement('DIV');
+        artistAlbums.classList.add('artist-albums');
+
+        for (let j = 0; j < 7; ++j) {
+          const album = document.createElement('DIV');
+          const albumYear = document.createElement('P');
+          const albumCover = document.createElement('IMG');
+          const albumTitle = document.createElement('P');
+
+          album.classList.add('album');
+          album.dataset.id = response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_ID;
+          albumYear.innerHTML = response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_YEAR;
+          albumCover.src = response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_COVER;
+          albumTitle.innerHTML = response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_TITLE;
+
+          album.addEventListener('click', () => {
+            mzk.ui.setSceneView({
+              name: 'SingleAlbum',
+              uiName: response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_TITLE,
+              id: response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS[j].ALBUM_ID
+            });
+          }, false);
+
+          album.appendChild(albumYear);
+          album.appendChild(albumCover);
+          album.appendChild(albumTitle);
+          artistAlbums.appendChild(album);
+        }
+
+        container.appendChild(artistAlbums);
+        this._dom.artistContainer.appendChild(container);
+      }
+
+      new ScrollBar({
+        target: this._dom.artistContainer
+      });
+      console.log(response)
 
       resolve();
     });
