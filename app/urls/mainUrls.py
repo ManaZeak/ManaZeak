@@ -1,5 +1,6 @@
 from django.urls import path, include
 
+from app.src.services.invite.InviteCodeService import InviteCodeService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
@@ -38,6 +39,7 @@ urlpatterns = [
 
     ########################## User Settings ##########################
     path('user/getInformation/', UserInformationService.getUserInformation, name='getUserInformation'),
+    path('user/getInviteCode/', InviteCodeService.getInviteCode, name='getInviteCode'),
 
     ############################ Contexts #############################
     # FIXME : remove the 's'

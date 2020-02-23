@@ -14,6 +14,10 @@ class InviteCodeManager(object):
             return None
         return InviteCode.objects.get(code=code, used=False)
 
+    @staticmethod
+    def getInviteCodeForUser(user):
+        return InviteCode.objects.get(user=user, used=False)
+
     ## Generate a new invite code for the new user and update the godfather invite code
     #   @param newUser the user that has been created
     #   @param godfatherUser the user that has invited the new user
