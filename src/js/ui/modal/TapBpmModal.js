@@ -87,7 +87,7 @@ class TapBpmModal extends Modal {
 
   _sendBpm() {
     const options = {
-      TRACK_ID: this._trackId,
+      TRACK_ID: mzk.ui.getTrackById(this._trackId).id,
       BPM: this._bpm.innerHTML
     };
 
@@ -95,6 +95,7 @@ class TapBpmModal extends Modal {
       .then(this.close.bind(this))
       .catch(err => {
         console.error(err);
+        this.close();
       });
   }
 
