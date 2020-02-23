@@ -57,7 +57,8 @@ class SingleCountryView extends SingleTagView {
         const artistAlbums = document.createElement('DIV');
         artistAlbums.classList.add('artist-albums');
 
-        for (let j = 0; j < 7; ++j) {
+        const len = response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS.length > 7 ? 7 : response.COUNTRY_ARTISTS[i].ARTIST_ALBUMS.length;
+        for (let j = 0; j < len; ++j) {
           const album = document.createElement('DIV');
           const albumYear = document.createElement('P');
           const albumCover = document.createElement('IMG');

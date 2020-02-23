@@ -554,10 +554,17 @@
 
   .sp-country-header {
     height: 100%;
+    padding: $mzk-padding;
+    text-align: center;
     width: 25%;
 
-    .sp-country-flag-container img {
-      width: 90%;
+    .sp-country-flag-container {
+      display: flex;
+      justify-content: center;
+
+      img {
+        width: 90%;
+      }
     }
   }
 
