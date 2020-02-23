@@ -19,9 +19,16 @@ class UserIDModal extends Modal {
 
     closeTop.addEventListener('click', this.close.bind(this));
     closeBottom.addEventListener('click', this.close.bind(this));
-    /* mzk.komunikator.get('user/godfatherid') TODO backend */
-    /* put listener in then of fetch id promise */
-    copy.addEventListener('click', Utils.copyTextToClipboard.bind(Utils, this._userID.value));
+
+    mzk.komunikator.get('user/getInviteCode')
+      .then(response => {
+        this._userID.value = response.INVITE_CODE;
+        copy.style.cursor = 'copy';
+        copy.addEventListener('click', Utils.copyTextToClipboard.bind(Utils, this._userID.value));
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
 

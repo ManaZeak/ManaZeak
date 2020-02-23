@@ -30,6 +30,10 @@ class UserMenuContext extends ContextMenu {
     this._userid = doc.getElementsByClassName('userid')[0];
     this._logOut = doc.getElementsByClassName('log-out')[0];
 
+    if (!mzk.user.hasPermission('SPON')) {
+      this._container.removeChild(this._userid);
+    }
+
     if (!mzk.user.hasPermission('ADMV')) {
       this._container.removeChild(this._admin);
     }
