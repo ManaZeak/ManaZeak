@@ -824,29 +824,9 @@ class Mzk {
 
 
   tapBpmForId(id) {
-    const checkModalValues = (formValues) => {
-      const options = {
-        NAME: formValues.name,
-        URL: formValues.path,
-        CONVERT: false
-      };
-/*
-      mzk.komunikator.post('lib/new/', options)
-        .then(response => {
-          checkServerResponse(response);
-        })
-        .catch(response => {
-          Logger.raise({
-            code: response,
-            frontend: true
-          });
-        });
-*/
-    };
-
     new TapBpmModal({
       url: 'modal/tapBpm',
-      callback: checkModalValues
+      trackId: id
     });
   }
 

@@ -83,7 +83,6 @@ class TrackContext extends ContextMenu {
 
     this._text.download = doc.getElementsByClassName('track-download')[0];
     this._text.queue = doc.getElementsByClassName('track-queue')[0];
-    this._text.tapBpm = doc.getElementsByClassName('track-tap-bpm')[0];
 
     this._commands.controls.previous.addEventListener('click', this._previous.bind(this), false);
     this._commands.controls.playPause.addEventListener('click', this._togglePlay.bind(this), false);
@@ -91,7 +90,14 @@ class TrackContext extends ContextMenu {
     this._commands.controls.next.addEventListener('click', this._next.bind(this), false);
     this._commands.download.addEventListener('click', this._download.bind(this), false);
     this._commands.queue.addEventListener('click', this._addToQueue.bind(this), false);
-    this._commands.tapBpm.addEventListener('click', this._tapBpm.bind(this), false);
+
+    if (mzk.user.hasPermission('TAGE')) {
+      this._text.tapBpm = doc.getElementsByClassName('track-tap-bpm')[0];
+      this._commands.tapBpm.addEventListener('click', this._tapBpm.bind(this), false);
+    } else {
+      this._commands.tapBpm.parentNode.removeChild(this._commands.tapBpm);
+    }
+
   }
 
 

@@ -77,7 +77,7 @@
       color: #cb345b;
     }
 
-    span { /* only for user id modal */
+    span.user-id-input { /* only for user id modal */
       display: flex;
 
       img {
@@ -85,6 +85,20 @@
         margin: 0 $mzk-margin;
         width: 35px;
       }
+    }
+
+    #track-title,
+    #track-artist,
+    #track-current-bpm-text {
+      text-align: center;
+    }
+
+    #track-current-bpm-text {
+      margin: $mzk-margin 0;
+    }
+
+    span#track-current-bpm {
+      color: $mzk-color-secondary;
     }
 
     .bpm-click-container {

@@ -8,6 +8,7 @@ class TapBpmModal extends Modal {
   constructor(options) {
     super(options);
 
+    this._trackId = options.trackId;
     this._bpmClickContainer = null;
     this._bpm = null;
 		this._count = 0;
@@ -24,6 +25,9 @@ class TapBpmModal extends Modal {
     const closeTop = doc.getElementById('user-id-close-top');
     const resetBottom = doc.getElementById('reset-bpm');
     const sendBottom = doc.getElementById('send-bpm');
+    const trackTitle = doc.getElementById('track-title');
+    const trackArtist = doc.getElementById('track-artist');
+    const trackBpm = doc.getElementById('track-current-bpm');
 
     this._bpmClickContainer = doc.getElementsByClassName('bpm-click-container')[0];
     this._bpm = doc.getElementsByClassName('bpm-value')[0];
@@ -32,6 +36,16 @@ class TapBpmModal extends Modal {
     resetBottom.addEventListener('click', this._resetBpm.bind(this));
     sendBottom.addEventListener('click', this._sendBpm.bind(this));
     this._bpmClickContainer.addEventListener('click', this._tap.bind(this));
+
+    mzk.komunikator.get(`track/getBpm/${this._trackId}`)
+      .then(response => {
+        trackTitle.innerHTML = response.TRACK_TITLE;
+        trackArtist.innerHTML = response.TRACK_ARTIST;
+        trackBpm.innerHTML = response.TRACK_BPM;
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
 
@@ -72,7 +86,16 @@ class TapBpmModal extends Modal {
 
 
   _sendBpm() {
-    this.close();
+    const options = {
+      TRACK_ID: this._trackId,
+      BPM: this._bpm.innerHTML
+    };
+
+    mzk.komunikator.post('track/setBpm', options)
+      .then(this.close.bind(this))
+      .catch(err => {
+        console.error(err);
+      });
   }
 
 
