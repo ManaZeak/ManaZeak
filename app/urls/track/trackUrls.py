@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Setting the BPM
     path('setBpm/', BpmService.setTrackBpm, name='setBpm'),
+    path('getBpm/<int:trackId>/', BpmService.getTrackBpm, name='getBpm'),
 ]
