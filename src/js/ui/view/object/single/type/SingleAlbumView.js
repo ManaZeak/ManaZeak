@@ -69,7 +69,7 @@ class SingleAlbumView extends SingleTagView {
           label.dataset.id = response.ALBUM.LABEL.ID;
           label.innerHTML = response.ALBUM.LABEL.NAME;
 
-          if (response.ALBUM.LABEL.NAME === response.ALBUM.ALBUM_ARTIST.NAME) {
+          if (response.ALBUM.LABEL.NAME === response.ALBUM.ALBUM_ARTIST.NAME && !response.ALBUM.LABEL.NAME.includes(' Records')) {
             label.innerHTML = mzk.lang.tags.Selfreleased;
           }
 
