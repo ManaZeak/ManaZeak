@@ -90,7 +90,7 @@ class PartyView extends PlayableView {
 
             this._dom.tracklistContainer.innerHTML = '';
             for (let i = 0; i < set.length; ++i) {
-              let entry = new PartyViewTrackEntry({
+              const entry = new PartyViewTrackEntry({
                 trackId: set[i].id,
                 trackNumber: i + 1,
                 trackTitle: set[i].title,

@@ -50,7 +50,7 @@ class SingleGenreView extends SingleTagView {
           this._dom.country.innerHTML = response.GENRE.COUNTRY;
 
           for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleGenreViewTrackEntry({
+            const entry = new SingleGenreViewTrackEntry({
               trackNumber: i + 1,
               track: set[i]
             });

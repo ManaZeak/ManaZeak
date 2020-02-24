@@ -59,15 +59,14 @@ class SingleLabelView extends SingleTagView {
           this._dom.genres.innerHTML = response.LABEL.GENRES;
 
           for (let i = 0; i < response.LABEL.ARTISTS.length; ++i) {
-            let artist = document.createElement('DIV');
+            const artist = document.createElement('DIV');
             artist.classList.add('sp-artist-album');
-
             artist.dataset.id = response.LABEL.ARTISTS[i].ID;
 
-            let albumTitle = document.createElement('P');
+            const albumTitle = document.createElement('P');
             albumTitle.innerHTML = response.LABEL.ARTISTS[i].NAME;
 
-            let albumCover = document.createElement('IMG');
+            const albumCover = document.createElement('IMG');
             if (response.LABEL.ARTISTS[i].PP === null) {
               albumCover.src = 'static/img/object/artist.svg';
             } else {
@@ -88,7 +87,7 @@ class SingleLabelView extends SingleTagView {
           }
 
           for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleReleaseArtistViewTrackEntry({
+            const entry = new SingleReleaseArtistViewTrackEntry({
               trackNumber: i + 1,
               track: set[i]
             });

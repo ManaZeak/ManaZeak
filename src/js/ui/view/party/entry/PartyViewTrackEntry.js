@@ -20,10 +20,10 @@ class PartyViewTrackEntry extends TrackEntry {
 
 
   _init() {
-    let trackNumberTitle = document.createElement('P');
+    const trackNumberTitle = document.createElement('P');
     trackNumberTitle.innerHTML = `${this._trackNumber} – ${this._trackTitle}`;
 
-    let artist = document.createElement('P');
+    const artist = document.createElement('P');
     artist.innerHTML = this._trackArtist;
 
     this._dom.container.appendChild(trackNumberTitle);

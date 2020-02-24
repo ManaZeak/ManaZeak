@@ -49,9 +49,7 @@ class Utils {
           for (i = pos1; i < pos2; i++) {
             this[i] = this[i + 1];
           }
-        }
-        // move element up and shift other elements down
-        else {
+        } else { // move element up and shift other elements down
           for (i = pos1; i > pos2; i--) {
             this[i] = this[i - 1];
           }
@@ -256,7 +254,7 @@ class Utils {
 
   copyTextToClipboard(text) {
     if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-      let textarea = document.createElement("textarea");
+      const textarea = document.createElement("textarea");
       let error = false;
       textarea.textContent = text;
       document.body.appendChild(textarea);

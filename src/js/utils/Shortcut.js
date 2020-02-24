@@ -68,10 +68,6 @@ class Shortcut {
    * @description Test keyboard event to fire stored shortcut accordingly
    * @param {object} event - The Keyboard event from this._addEvents() */
   _testShortcuts(event) {
-    //if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
-    //  event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
-    //}
-
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
       this._multiKeyTest(event);
     } else { // Single key shortcut
@@ -113,13 +109,12 @@ class Shortcut {
     for (let i = 0; i < this._multiKey.length; ++i) {
       const shortcut = this._multiKey[i];
 
-      if (!shortcut.pause && shortcut.key === event.key.toLowerCase()) {
-        if ((shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) ||
-           (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) ||
-           (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true)) {
-          this._preventDefaultOnEvent(event);
-          return;
-        }
+      if (!shortcut.pause && shortcut.key === event.key.toLowerCase() &&
+          (shortcut.modifierCount === 1 && this._singleModifierTrigger(event, shortcut) === true) ||
+          (shortcut.modifierCount === 2 && this._doubleModifiersTrigger(event, shortcut) === true) ||
+          (shortcut.modifierCount === 3 && this._tripleModifiersTrigger(event, shortcut) === true)) {
+        this._preventDefaultOnEvent(event);
+        return;
       }
     }
   }
@@ -205,9 +200,17 @@ class Shortcut {
       shiftKey: /shift/i.test(keyString)
     };
 
-    if (modifiers.ctrlKey) ++count;
-    if (modifiers.altKey) ++count;
-    if (modifiers.shiftKey) ++count;
+    if (modifiers.ctrlKey) {
+      ++count;
+    }
+
+    if (modifiers.altKey) {
+      ++count;
+    }
+
+    if (modifiers.shiftKey) {
+      ++count;
+    }
 
     return count;
   }

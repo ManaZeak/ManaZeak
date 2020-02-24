@@ -61,18 +61,17 @@ class SingleProducerView extends SingleTagView {
           this._dom.genres.innerHTML = response.ARTIST.GENRES;
 
           for (let i = 0; i < response.ARTIST.ALBUMS.length; ++i) {
-            let album = document.createElement('DIV');
+            const album = document.createElement('DIV');
             album.classList.add('sp-artist-album');
-
             album.dataset.id = response.ARTIST.ALBUMS[i].ALBUM_ID;
 
-            let albumTitle = document.createElement('P');
+            const albumTitle = document.createElement('P');
             albumTitle.innerHTML = response.ARTIST.ALBUMS[i].ALBUM_TITLE;
 
-            let albumCover = document.createElement('IMG');
+            const albumCover = document.createElement('IMG');
             albumCover.src = response.ARTIST.ALBUMS[i].ALBUM_COVER;
 
-            let albumYear = document.createElement('P');
+            const albumYear = document.createElement('P');
             albumYear.innerHTML = response.ARTIST.ALBUMS[i].ALBUM_YEAR;
 
             album.addEventListener('click', () => {
@@ -90,7 +89,7 @@ class SingleProducerView extends SingleTagView {
           }
 
           for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleReleaseArtistViewTrackEntry({
+            const entry = new SingleReleaseArtistViewTrackEntry({
               trackNumber: i + 1,
               track: set[i]
             });
