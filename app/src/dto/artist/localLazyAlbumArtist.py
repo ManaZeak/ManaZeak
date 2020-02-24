@@ -1,6 +1,5 @@
 from app.src.dto.album.localLazyAlbum import LocalLazyAlbum
-
-from app.src.dto.artist.mainPageArtist import MainPageArtist
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 
 
 ## This object describes an artist in the lazy loading of an artist.
@@ -33,7 +32,7 @@ class LocalLazyAlbumArtist(object):
             'ID': self.id,
             'NAME': self.name,
             'ALBUMS': [album.generateJson() for album in self.albums],
-            'PP': MainPageArtist.generatePicturePath(self.name),
+            'PP': CoverPathGenerator.generateArtistPicturePath(self.name),
             # 'LANGUAGE': Le pays unique dans la liste de trk des albums
             'TOTAL_RELEASED_ALBUM': len(self.albums),
             'TOTAL_RELEASED_TRACK': totalTrack,
