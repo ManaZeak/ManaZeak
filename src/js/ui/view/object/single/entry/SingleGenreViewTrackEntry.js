@@ -19,13 +19,13 @@ class SingleGenreViewTrackEntry extends TrackEntry {
 
 
   _init() {
-    let duration = document.createElement('P');
+    const duration = document.createElement('P');
     duration.innerHTML = Utils.secondsToTimecode(this._track.duration);
 
-    let title = document.createElement('P');
+    const title = document.createElement('P');
     title.innerHTML = this._track.title;
 
-    let artist = document.createElement('P');
+    const artist = document.createElement('P');
     artist.innerHTML = this._track.artists;
 
     this._dom.container.appendChild(title);

@@ -40,7 +40,7 @@ class DiscoverEntry {
     this._dom.container.addEventListener('click', () => {
       mzk.ui.setSceneView({
         name: 'Party'
-      })
+      });
     }, false);
   }
 

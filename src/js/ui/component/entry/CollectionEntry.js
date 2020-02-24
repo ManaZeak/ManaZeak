@@ -28,7 +28,6 @@ class CollectionEntry {
     this._dom.image.src = this._entry.IMG || 'static/img/logo/manazeak-logo-square.svg';
     this._dom.title.innerHTML = this._entry.NAME;
     this._dom.title.classList.add('mp-collection-title');
-    //this._dom.stats.innerHTML = `${this._entry.stats.tracks} tracks, ${this._entry.stats.albums} albums, ${this._entry.stats.artists} artists`;
     this._dom.stats.innerHTML = `${this._entry.TOTAL_TRACK} ${mzk.lang.playlist.tracks}`;
     this._dom.duration.innerHTML = Utils.secondsToTimecode(this._entry.TOTAL_DURATION);
 

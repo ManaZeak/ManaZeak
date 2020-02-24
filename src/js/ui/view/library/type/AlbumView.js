@@ -78,16 +78,6 @@ class AlbumView extends LibraryViews {
   }
 
 
-  optionsClicked() {
-
-  }
-
-
-  _fillOptionsContext() {
-
-  }
-
-
   _buildAlbum(album) {
     // Create album container
     const uiAlbum = document.createElement('DIV');

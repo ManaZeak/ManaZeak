@@ -151,17 +151,18 @@ class FootBar {
 
 
   _setLangFeedback() {
+    const direction = 'tooltip-top';
     // Singe each dom element of this is an image, we put tooltip on parent wrapper
-    this._controls.repeat.parentNode.classList.add('tooltip-top');
+    this._controls.repeat.parentNode.classList.add(direction);
     this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.off; // Repeat is off by default
 
-    this._controls.shuffle.parentNode.classList.add('tooltip-top');
+    this._controls.shuffle.parentNode.classList.add(direction);
     this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.off; // Shuffle is off by default
 
-    this._controls.speedometer.parentNode.classList.add('tooltip-top');
+    this._controls.speedometer.parentNode.classList.add(direction);
     this._controls.speedometer.parentNode.dataset.tooltip = mzk.lang.player.speedometer;
 
-    this._controls.queue.parentNode.classList.add('tooltip-top');
+    this._controls.queue.parentNode.classList.add(direction);
     this._controls.queue.parentNode.dataset.tooltip = mzk.lang.player.queue;
   }
 

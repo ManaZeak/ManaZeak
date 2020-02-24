@@ -4,10 +4,10 @@
 class SceneView {
 
 
-  constructor(options) {
+  constructor() {
     this._dom = {
       container: null
-    }
+    };
     // No global initialization required
   }
 

@@ -91,7 +91,6 @@ class SingleCountryView extends SingleTagView {
       new ScrollBar({
         target: this._dom.artistContainer
       });
-      console.log(response)
 
       resolve();
     });

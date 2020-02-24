@@ -51,10 +51,11 @@ class Aside {
           }
 
           if (response.PLAYLISTS.length > 0) {
-            const libraries = new CollectionGroup({
+            const playlists = new CollectionGroup({
               label: 'Playlists',
               items: response.PLAYLIST
             });
+            this._dom.collection.appendChild(playlists.dom);
           }
 
           const playbackModes = new CollectionGroup({
@@ -88,17 +89,22 @@ class Aside {
   _toggleAside(event) {
     event.preventDefault();
     event.stopPropagation();
-    document.querySelector(':root').style.removeProperty('--mzk-aside-width')
+    const width = '--mzk-aside-width';
+    document.querySelector(':root').style.removeProperty(width);
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
       document.body.removeChild(this._dom.expander);
       this._dom.expander.removeEventListener('click', this._toggleAside, false);
-      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '20%') });
+      requestAnimationFrame(() => {
+        document.querySelector(':root').style.setProperty(width, '20%');
+      });
     } else {
       this._isCollapsed = true;
       document.body.appendChild(this._dom.expander);
       this._dom.expander.addEventListener('click', this._toggleAside, false);
-      requestAnimationFrame(() => { document.querySelector(':root').style.setProperty('--mzk-aside-width', '0') });
+      requestAnimationFrame(() => {
+        document.querySelector(':root').style.setProperty(width, '0');
+      });
     }
   }
 

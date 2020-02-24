@@ -51,7 +51,7 @@ class AllTagsView extends SceneView {
           try {
             const parser = new DOMParser();
             const doc = parser.parseFromString(response, 'text/html');
-            
+
             this._dom.wrapper = doc.getElementsByClassName(`${this._type}s`)[0];
             this._dom.title = doc.getElementsByClassName(`all-objects-title`)[0];
             this._dom.description = doc.getElementsByClassName(`all-objects-description`)[0];

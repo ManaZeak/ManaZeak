@@ -92,8 +92,8 @@ class Scene {
   }
 
 
-  setModal(options) {
-    return new Promise((resolve, reject) => {
+  setModal() {
+    return new Promise(resolve => {
       new UserIDModal({
         url: 'modal/userID'
       });
@@ -127,9 +127,7 @@ class Scene {
     if (playlist.activeView === 'ListView') {
       options.viewLabel = 'ListView';
       this.view = new ListView(options);
-    }
-
-    else if (playlist.activeView === 'AlbumView') {
+    } else if (playlist.activeView === 'AlbumView') {
       options.viewLabel = 'DetailsView';
       this.view = new AlbumView(options);
     }

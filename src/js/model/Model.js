@@ -273,7 +273,7 @@ class Model {
         }
       }
     }
-  
+
     return null;
   }
 
@@ -283,7 +283,7 @@ class Model {
 
   makeTransitiveSet(options) {
     return new Promise((resolve, reject) => {
-      let set = [];
+      const set = [];
       for (let i = 0; i < options.tracks.length; ++i) {
         try {
           set.push(new Track({
@@ -292,7 +292,7 @@ class Model {
             rawTrack: options.tracks[i]
           }));
         } catch(e) {
-          reject(e)
+          reject(e);
         }
       }
 

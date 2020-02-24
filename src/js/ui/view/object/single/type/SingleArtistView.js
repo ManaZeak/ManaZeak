@@ -1,6 +1,4 @@
 import SingleTagView from "../SingleTagView";
-import SingleReleaseArtistViewTrackEntry from "../entry/SingleReleaseArtistViewTrackEntry";
-import ScrollBar from "../../../../component/bar/ScrollBar";
 'use strict';
 
 

@@ -10,6 +10,10 @@ class ScrollBar {
    * @param {object} options.target - The DOM node to add a ScrollBar to
    **/
   constructor(options) {
+    this._const = {
+      grabbed: 'scrollbar-grabbed'
+    };
+
     this._target = options.target; // Parent div to put the ScrollBar in
     this._wrapper = {}; // Wrap both container and ScrollBar
     this._container = {}; // Content to scroll + browser ScrollBar (18px offset)
@@ -70,7 +74,6 @@ class ScrollBar {
     window.addEventListener('resize', this._updateScrollBar.bind(this));
     this._container.addEventListener('scroll', this._updateScrollBar.bind(this));
     this._container.addEventListener('mouseenter', this._updateScrollBar.bind(this));
-//    this._container.addEventListener('mousemove', this._updateScrollBar.bind(this));
     this._bar.addEventListener('mousedown', this._barClicked.bind(this));
   }
 
@@ -104,8 +107,8 @@ class ScrollBar {
    **/
   _barClicked(event) {
     this._lastPageY = event.pageY;
-    this._bar.classList.add('scrollbar-grabbed');
-    document.body.classList.add('scrollbar-grabbed');
+    this._bar.classList.add(this._const.grabbed);
+    document.body.classList.add(this._const.grabbed);
 
     requestAnimationFrame(() => {
       document.addEventListener('mousemove', this._drag);
@@ -123,8 +126,8 @@ class ScrollBar {
    * @description Remove document events when bar is released
    **/
   _stopDrag() {
-    this._bar.classList.remove('scrollbar-grabbed');
-    document.body.classList.remove('scrollbar-grabbed');
+    this._bar.classList.remove(this._const.grabbed);
+    document.body.classList.remove(this._const.grabbed);
     document.removeEventListener('mousemove', this._drag);
     document.removeEventListener('mouseup', this._stopDrag);
   }

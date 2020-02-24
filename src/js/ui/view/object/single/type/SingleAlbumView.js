@@ -85,7 +85,11 @@ class SingleAlbumView extends SingleTagView {
           this._dom.yearLabel.appendChild(label);
           this._dom.trackCompo.innerHTML = `${response.ALBUM.TRACKS.length} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ALBUM.DURATION)}`;
 
-          this._dom.country.innerHTML = response.ALBUM.COUNTRY.length > 0 ? '' : 'No country';
+          this._dom.country.innerHTML = 'No country';
+          if (response.ALBUM.COUNTRY.length > 0) {
+            this._dom.country.innerHTML =  '';
+          }
+
           for (let i = 0; i < response.ALBUM.COUNTRY.length; ++i) {
             const flag = document.createElement('IMG');
             flag.dataset.id = response.ALBUM.COUNTRY[i].ID;
@@ -102,21 +106,21 @@ class SingleAlbumView extends SingleTagView {
 
           this._dom.genres.innerHTML = '';
           for (let i = 0; i < response.ALBUM.GENRES.length; ++i) {
-            const link = document.createElement('A');
-            link.innerHTML = response.ALBUM.GENRES[i].NAME;
-            link.dataset.id = response.ALBUM.GENRES[i].ID;
-            link.addEventListener('click', function() {
+            const genreLink = document.createElement('A');
+            genreLink.innerHTML = response.ALBUM.GENRES[i].NAME;
+            genreLink.dataset.id = response.ALBUM.GENRES[i].ID;
+            genreLink.addEventListener('click', function() {
               mzk.ui.setSceneView({
                 name: 'SingleGenre',
                 uiName: this.innerHTML,
                 id: this.dataset.id
               });
-            }.bind(link), false);
-            this._dom.genres.appendChild(link);
+            }.bind(genreLink), false);
+            this._dom.genres.appendChild(genreLink);
           }
 
           for (let i = 0; i < set.length; ++i) {
-            let entry = new SingleAlbumViewTrackEntry({
+            const entry = new SingleAlbumViewTrackEntry({
               trackNumber: i + 1,
               track: set[i]
             });

@@ -74,7 +74,7 @@ class SingleTagView extends PlayableView {
       });
 
       this._dom.play.addEventListener('click', () => {
-        mzk.changeTrack(this.firstTrackId)
+        mzk.changeTrack(this.firstTrackId);
       }, false);
 
       this._dom.trackContainer.addEventListener('contextmenu', event => {

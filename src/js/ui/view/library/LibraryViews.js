@@ -118,21 +118,23 @@ class LibraryViews extends PlayableView {
     this._centerOnBottom.parentNode.dataset.tooltip = mzk.lang.libraryview.centerbottom;
 
     if (Utils.isMobileDevice() === true) {
-      this._centerOnTop.parentNode.classList.add('tooltip-bottom');
-      this._centerOnActiveTrack.parentNode.classList.add('tooltip-bottom');
-      this._lockCenternOn.parentNode.classList.add('tooltip-bottom');
-      this._centerOnBottom.parentNode.classList.add('tooltip-bottom');
+      const bottom = 'tooltip-bottom';
+      this._centerOnTop.parentNode.classList.add(bottom);
+      this._centerOnActiveTrack.parentNode.classList.add(bottom);
+      this._lockCenternOn.parentNode.classList.add(bottom);
+      this._centerOnBottom.parentNode.classList.add(bottom);
     } else {
-      this._centerOnTop.parentNode.classList.add('tooltip-left');
-      this._centerOnActiveTrack.parentNode.classList.add('tooltip-left');
-      this._lockCenternOn.parentNode.classList.add('tooltip-left');
-      this._centerOnBottom.parentNode.classList.add('tooltip-left');
+      const left = 'tooltip-left';
+      this._centerOnTop.parentNode.classList.add(left);
+      this._centerOnActiveTrack.parentNode.classList.add(left);
+      this._lockCenternOn.parentNode.classList.add(left);
+      this._centerOnBottom.parentNode.classList.add(left);
     }
   }
 
 
   addTracks() {
-
+    // Method must be implement in chil class
   }
 
 

@@ -39,9 +39,14 @@ class TapBpmModal extends Modal {
 
     mzk.komunikator.get(`track/getBpm/${mzk.ui.getTrackById(this._trackId).id}/`)
       .then(response => {
+        let trackBpm = response.TRACK_BPM;
+        if (response.TRACK_BPM === null) {
+          trackBpm = mzk.lang.tags.notSet;
+        }
+
         trackTitle.innerHTML = response.TRACK_TITLE;
         trackArtist.innerHTML = response.TRACK_ARTIST;
-        trackBpm.innerHTML = response.TRACK_BPM === null ? mzk.lang.tags.notSet : response.TRACK_BPM;
+        trackBpm.innerHTML = trackBpm;
       })
       .catch(err => {
         console.error(err);
@@ -57,7 +62,7 @@ class TapBpmModal extends Modal {
 		}
 
 	  if (this._ts.previous !== 0) {
-	    let bpm = 60000 * this._count / (this._ts.current - this._ts.first);
+	    const bpm = 60000 * this._count / (this._ts.current - this._ts.first);
       if (bpm % 1 > 0.5) {
         this._bpm.innerHTML = Math.ceil(bpm);
       } else {

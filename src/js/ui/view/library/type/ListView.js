@@ -294,7 +294,8 @@ class ListView extends LibraryViews {
       const column = this._dom.header.childNodes[i];
       column.style = ''; // Remove old remaining width style value
       column.className = this._columns[i].name.toLowerCase();
-      column.childNodes[0].nodeValue = mzk.lang.listview[this._columns[i].name.toLowerCase()]; // Don't innerHTML to avoid remove of stretch and resize handles. childNodes[0] is #text node
+      // Don't innerHTML to avoid remove of stretch and resize handles. childNodes[0] is #text node
+      column.childNodes[0].nodeValue = mzk.lang.listview[this._columns[i].name.toLowerCase()];
       column.dataset.id = i;
     }
   }
@@ -562,7 +563,7 @@ class ListView extends LibraryViews {
       const text = document.createElement('LABEL');
       const input = document.createElement('INPUT');
 
-      input.id = 'context-' + this._availableColumns[i].name;
+      input.id = `context-${this._availableColumns[i].name}`;
       text.innerHTML = mzk.lang.listview[this._availableColumns[i].name.toLowerCase()];
       text.setAttribute('for', `context-${this._availableColumns[i].name}`);
       input.setAttribute('type', 'checkbox');

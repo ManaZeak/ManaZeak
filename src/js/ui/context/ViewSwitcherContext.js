@@ -14,7 +14,7 @@ class ViewSwitcherContext extends ContextMenu {
     this._text = {
       track: {},
       album: {}
-    }
+    };
   }
 
   setActions(doc) {

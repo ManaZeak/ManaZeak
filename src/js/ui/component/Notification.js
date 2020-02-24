@@ -181,10 +181,7 @@ class Notification {
       // Update counter DOM element
       if (notification.requestCount > 1) {
         this._decrementRequestCounter(notification, true);
-      }
-
-      // Remove notification element from the DOM tree
-      else if (!closeFired) {
+      } else if (!closeFired) { // Remove notification element from the DOM tree
         closeFired = true;
         window.clearTimeout(notification.timeoutID); // Clear life cycle timeout
         notification.dom.close.removeEventListener('click', _close); // Avoid error when spam clicking the close button
@@ -451,10 +448,7 @@ class Notification {
       // Update existing counter
       if (notification.dom.counter) {
         notification.dom.counter.innerHTML = notification.requestCount;
-      }
-
-      // Create counter DOm element
-      else {
+      } else { // Create counter DOM element
         notification.dom.counter = document.createElement('DIV');
         notification.dom.counter.classList.add('counter');
         notification.dom.counter.innerHTML = notification.requestCount;
@@ -499,10 +493,7 @@ class Notification {
     // Update counter DOM element
     if (notification.requestCount > 1) {
       notification.dom.counter.innerHTML = notification.requestCount;
-    }
-
-    // Remove counter element from the DOM tree
-    else {
+    } else { // Remove counter element from the DOM tree
       notification.dom.removeChild(notification.dom.counter);
       delete notification.dom.counter;
     }
@@ -527,10 +518,7 @@ class Notification {
     // This notification as still more than one cycle to live
     if (notification.requestCount > 1) {
       this._decrementRequestCounter(notification);
-    }
-
-    // This notification reached the end of its life cycle
-    else {
+    } else { // This notification reached the end of its life cycle
       if (notification.renderTo.contains(notification.dom)) {
         window.clearTimeout(notification.timeoutID);
         if (notification.sticky) { // FadeOut/Dim depending on sticky behavior
@@ -696,10 +684,7 @@ class Notification {
     // Create a new notification in the container: No notification with the same ID is already open
     if (!this._active[notification.id]) {
       this._start(notification);
-    }
-
-    // Use existing notification: increment request count and reset timeout
-    else {
+    } else { // Use existing notification: increment request count and reset timeout
       this._resetTimeout(this._active[notification.id]);
       this._incrementRequestCounter(this._active[notification.id]);
       notification = {}; // Clear local new notification since it already exists in this._active

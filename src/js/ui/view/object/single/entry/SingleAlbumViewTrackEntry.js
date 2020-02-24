@@ -19,19 +19,19 @@ class SingleAlbumViewTrackEntry extends TrackEntry {
 
 
   _init() {
-    let number = document.createElement('P');
+    const number = document.createElement('P');
     number.innerHTML = this._trackNumber;
 
-    let duration = document.createElement('P');
+    const duration = document.createElement('P');
     duration.innerHTML = Utils.secondsToTimecode(this._track.duration);
     duration.style.gridColumn = "3";
     duration.style.gridRow = "1 / span 2";
     duration.style.textAlign = "center";
 
-    let title = document.createElement('P');
+    const title = document.createElement('P');
     title.innerHTML = this._track.title;
 
-    let artist = document.createElement('P');
+    const artist = document.createElement('P');
     artist.innerHTML = this._track.artists;
     artist.style.gridColumn = "2";
     artist.style.marginTop = "0";

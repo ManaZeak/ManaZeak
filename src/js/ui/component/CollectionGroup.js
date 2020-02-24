@@ -1,5 +1,4 @@
 import CollectionEntry from "./entry/CollectionEntry";
-import ScrollBar from "./bar/ScrollBar";
 import DiscoverEntry from "./entry/DiscoverEntry";
 'use strict';
 
