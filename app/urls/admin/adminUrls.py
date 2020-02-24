@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 
 from app.src.services.admin.adminService import AdminService
 from app.src.services.admin.adminTools import AdminTools

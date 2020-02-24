@@ -55,3 +55,12 @@ class CoverPathGenerator(object):
         if not path.exists('/' + imagePath):
             return None
         return imagePath
+
+    ## Generate the path of the artist picture and checks if it exists.
+    #   @return the path if it exists.
+    @staticmethod
+    def generateGenrePicturePath(name):
+        imagePath = Constants.GENRE_COVER_LOCATION + CoverPathGenerator.sanitizeName(name) + Constants.JPG
+        if not path.exists('/' + imagePath):
+            return None
+        return imagePath

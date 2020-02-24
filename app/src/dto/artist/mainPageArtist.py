@@ -4,6 +4,9 @@ from app.src.config.constants import Constants
 
 
 ## Artist representation for the main page.
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
+
+
 class MainPageArtist(object):
 
     ## Constructor
@@ -17,14 +20,14 @@ class MainPageArtist(object):
     def buildFromRandomArtistsGetter(self, sqlRow):
         self.id = sqlRow[0]
         self.name = sqlRow[1]
-        self.picture = self.generatePicturePath(self.name)
+        self.picture = CoverPathGenerator.generateArtistPicturePath(self.name)
 
     ## Build an artist object from an orm artist object.
     #   @param artist the artist object of the ORM.
     def buildFromOrmArtistObject(self, artist):
         self.id = artist.id
         self.name = artist.name
-        self.picture = self.generatePicturePath(self.name)
+        self.picture = CoverPathGenerator.generateArtistPicturePath(self.name)
 
     ## Generate a json object from an object.
     def getJsonObject(self):
@@ -34,22 +37,3 @@ class MainPageArtist(object):
             'ARTIST_PP': self.picture,
             'STATS': None,
         }
-
-    @staticmethod
-    ## Generate the path of the artist picture and checks if it exists.
-    #   @return the path if it exists.
-    def generatePicturePath(name):
-        # TODO à bouger dans une class utils je pense (same pour genre)
-        sanitizedName = ''
-        forbiddenChars = ['*', '/', '\\', ':', ';', '?', '<', '>', '|']
-        for x in range(0, len(name)):
-            if name[x] in forbiddenChars:
-                sanitizedName += '-'
-            else:
-                sanitizedName += name[x]
-
-        imagePath = Constants.ARTIST_PICTURE_LOCATION + sanitizedName + '.jpg'  # TODO j'ai add l'ext mais ça serait mieux d'etre géré avec le mimetype
-        if not path.exists('/' + imagePath):
-            return None
-        else:
-            return imagePath

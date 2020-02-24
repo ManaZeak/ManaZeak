@@ -1,4 +1,5 @@
 from app.models import Album, Track
+from app.src.dto.abstractDto import AbstractDto
 
 from app.src.dto.artist.localLazyArtist import LocalLazyArtist
 from app.src.dto.country.localCountry import LocalCountry
@@ -11,7 +12,7 @@ from app.src.utils.exceptions.userException import UserException
 
 
 # This class represents the complete information about an album.
-class AlbumDto(object):
+class AlbumDto(AbstractDto):
 
     ## Constructor
     def __init__(self):

@@ -18,3 +18,5 @@ class Constants(object):
     JPG = '.jpg'
     ## SVG extension
     SVG = '.svg'
+    ## Message when a function is called from an abstract.
+    NOT_IMPLEMENTED = 'This function needs an override.'

@@ -4,6 +4,7 @@ from abc import ABC
 
 from django.db import transaction
 
+from app.src.config.constants import Constants
 from app.src.dao.script.random.createRandomTempSequence import CreateRandomTempSequence
 
 loggerScan = logging.getLogger('scan')
@@ -33,14 +34,14 @@ class AbstractRandomGenerator(ABC):
     @abc.abstractmethod
     ## Get the sequence name to create into the database.
     def _getSequenceName(self):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
 
     @abc.abstractmethod
     ## Get the filler object for executing the sql.
     def _getFillRandomObject(self):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
 
     @abc.abstractmethod
     ## Get the name of the table that is filled.
     def _getRandomName(self):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
