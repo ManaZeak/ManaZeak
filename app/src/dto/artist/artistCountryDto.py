@@ -1,4 +1,4 @@
-from app.src.dto.AbstractDto import AbstractDto
+from app.src.dto.abstractDto import AbstractDto
 
 ## Store the artist for the country view.
 class ArtistCountryDto(AbstractDto):

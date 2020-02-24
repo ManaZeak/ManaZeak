@@ -1,4 +1,4 @@
-from app.src.dto.AbstractDto import AbstractDto
+from app.src.dto.abstractDto import AbstractDto
 
 
 ## Describes a country of an artist.

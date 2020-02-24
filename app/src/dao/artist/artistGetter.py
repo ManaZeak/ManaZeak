@@ -12,5 +12,5 @@ class ArtistGetter(AbstractDaoGetter):
             LEFT JOIN app_cover ac on alb.cover_id = ac.id
             WHERE art.id = %s
             GROUP BY art.id, art.name, art.picture, alb.id, alb.title, alb.year, ac.location
-            ORDER BY art.name, year, title 
+            ORDER BY art.name, year, title
         '''

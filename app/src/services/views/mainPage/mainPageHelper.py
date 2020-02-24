@@ -82,6 +82,7 @@ class MainPageHelper(object):
 
     @staticmethod
     def getRandomProducers(numberToGet):
+        # FIXME : to be implemented
         pass
 
     @staticmethod

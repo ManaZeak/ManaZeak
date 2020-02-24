@@ -26,7 +26,8 @@ class AlbumImporter(AbstractDaoImporter):
     ## Generating the sql request
     #   @param albums a list of album object to insert.
     def _generateRequest(self, albums):
-        return 'INSERT INTO app_album ("folderName", title, year, "releaseArtist_id", location, producer_id) VALUES {}' \
+        return 'INSERT INTO app_album ("folderName", title, year, "releaseArtist_id", location, producer_id) ' \
+                'VALUES {}' \
                 'ON CONFLICT (location)' \
                 'DO UPDATE SET "folderName" = EXCLUDED."folderName", title = EXCLUDED."title", year = EXCLUDED.year,' \
                 '"releaseArtist_id" = EXCLUDED."releaseArtist_id" ' \

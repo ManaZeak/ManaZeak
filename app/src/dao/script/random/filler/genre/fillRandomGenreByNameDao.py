@@ -6,7 +6,7 @@ class FillRandomGenreByNameDao(AbstractScriptWithRequestParam):
 
     def _generateRequest(self):
         return '''
-            INSERT INTO app_randomgenresortedbyname (id, "hashIndex", genre_id, playlist_id) 
+            INSERT INTO app_randomgenresortedbyname (id, "hashIndex", genre_id, playlist_id)
                 SELECT id_seq, NEXTVAL('random_temp_genres'), id, playlist_id FROM (
                     SELECT NEXTVAL('app_randomgenresortedbyname_id_seq') id_seq,
                             app_genre.id,

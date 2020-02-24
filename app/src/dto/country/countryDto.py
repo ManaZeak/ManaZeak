@@ -1,4 +1,4 @@
-from app.src.dto.AbstractDto import AbstractDto
+from app.src.dto.abstractDto import AbstractDto
 
 
 ## DTO for the detail on a country.

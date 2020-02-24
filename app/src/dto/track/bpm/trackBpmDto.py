@@ -1,4 +1,4 @@
-from app.src.dto.AbstractDto import AbstractDto
+from app.src.dto.abstractDto import AbstractDto
 
 ## Contains the information about a track and it's BPM.
 class TrackBpmDto(AbstractDto):

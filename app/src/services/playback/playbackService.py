@@ -22,6 +22,7 @@ class PlaybackService(object):
     def getRandomTrack(request):
         user = request.user
         # Checking the front request
+        # TODO : check what's happening here !
         result = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['PLAYLIST_ID'])
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting a random track from the database.

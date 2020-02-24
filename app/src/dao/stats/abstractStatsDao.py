@@ -1,5 +1,7 @@
 import abc
 
+from app.src.config.constants import Constants
+
 
 class AbstractStatsDao(object, metaclass=abc.ABCMeta):
 
@@ -39,21 +41,21 @@ class AbstractStatsDao(object, metaclass=abc.ABCMeta):
     ## Generate the request for the DAO to count the number of discs.
     #   @param scopeObjectId the object considered as an entry point for the scope.
     def countDiscNumber(scopeObjectId):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
 
     @staticmethod
     @abc.abstractmethod
     ## Generate the request for the DAO to count the number of tracks in the scope.
     #   @param scopeObjectId the object considered as an entry point for the scope.
     def countTrackNumber(scopeObjectId):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
 
     @staticmethod
     @abc.abstractmethod
     ## Generate the request for the DAO to sum the data contained in the tracks.
     #   @param scopeObjectId the object considered as an entry point for the scope.
     def sumInfoOnTracks(scopeObjectId):
-        raise NotImplementedError('The function needs an override.')
+        raise NotImplementedError(Constants.NOT_IMPLEMENTED)
 
     @staticmethod
     @abc.abstractmethod
