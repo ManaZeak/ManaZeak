@@ -3,12 +3,10 @@
  * @type {Readonly<{REPEAT_VIEW: number, NO_REPEAT: number, REPEAT_TRACK: number}>}
  */
 const RepeatModeEnum = Object.freeze({
-    // The repeat mode is disabled.
-    NO_REPEAT: 0,
-    // Repeating the current track.
-    REPEAT_TRACK: 1,
-    // Repeating all the tracks in the view.
-    REPEAT_VIEW: 2
+    NO_REPEAT: 0, // The repeat mode is disabled
+    REPEAT_TRACK: 1, // Repeating the current track
+    REPEAT_VIEW: 2 // Repeating all the tracks in the view
 });
+
 
 export default RepeatModeEnum;

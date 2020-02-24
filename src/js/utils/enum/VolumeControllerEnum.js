@@ -3,12 +3,10 @@
  * @type {Readonly<{BIG: number, SMALL: number, HUGE: number}>}
  */
 const VolumeControllerEnum = Object.freeze({
-    // Move the volume a little bit.
-    SMALL: 0.01,
-    // Move the volume.
-    BIG: 0.1,
-    // Move the volume a lot
-    HUGE: 0.25
+    SMALL: 0.01, // 1% volume update
+    BIG: 0.1, // 10% volume update
+    HUGE: 0.25 // 25% volume update
 });
+
 
 export default VolumeControllerEnum;

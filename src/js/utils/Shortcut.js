@@ -68,6 +68,10 @@ class Shortcut {
    * @description Test keyboard event to fire stored shortcut accordingly
    * @param {object} event - The Keyboard event from this._addEvents() */
   _testShortcuts(event) {
+    if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // Allow hard refresh
+      event.preventDefault();
+    }
+
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
       this._multiKeyTest(event);
     } else { // Single key shortcut

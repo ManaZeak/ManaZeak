@@ -1,7 +1,6 @@
+import HttpErrorCodeEnum from "../utils/enum/HttpErrorCodeEnum";
 'use strict';
 
-
-import HttpErrorCodeEnum from "./HttpErrorCodeEnum";
 
 class Komunikator {
 

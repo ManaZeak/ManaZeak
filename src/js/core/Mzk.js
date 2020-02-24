@@ -4,10 +4,11 @@ import UserInterface from '../ui/UserInterface.js';
 import User from './User.js';
 import Notification from "../ui/component/Notification";
 import TapBpmModal from "../ui/modal/TapBpmModal";
-import RepeatModeEnum from "../utils/enums/RepeatModeEnum";
-import PlaybackModeEnum from "../utils/enums/PlaybackModeEnum";
-import VolumeControllerEnum from "../utils/enums/VolumeControllerEnum";
-import ProgressControllerEnum from "../utils/enums/ProgressControllerEnum";
+
+import RepeatModeEnum from "../utils/enum/RepeatModeEnum";
+import PlaybackModeEnum from "../utils/enum/PlaybackModeEnum";
+import VolumeControllerEnum from "../utils/enum/VolumeControllerEnum";
+import ProgressControllerEnum from "../utils/enum/ProgressControllerEnum";
 'use strict';
 
 
