@@ -97,7 +97,7 @@ class Utils {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Do a Math.round with a given precision (ie amount of integers after the coma)
-   * @param {nunmber} value - The value to precisely round
+   * @param {number} value - The value to precisely round
    * @param {number} precision - The number of integers after the coma
    * @return {number} - The rounded value */
   precisionRound(value, precision) {

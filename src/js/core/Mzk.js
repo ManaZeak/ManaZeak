@@ -4,6 +4,10 @@ import UserInterface from '../ui/UserInterface.js';
 import User from './User.js';
 import Notification from "../ui/component/Notification";
 import TapBpmModal from "../ui/modal/TapBpmModal";
+import RepeatModeEnum from "../utils/enums/RepeatModeEnum";
+import PlaybackModeEnum from "../utils/enums/PlaybackModeEnum";
+import VolumeControllerEnum from "../utils/enums/VolumeControllerEnum";
+import ProgressControllerEnum from "../utils/enums/ProgressControllerEnum";
 'use strict';
 
 
@@ -618,16 +622,16 @@ class Mzk {
     const repeatMode = this.model.repeatMode;
     const shuffleMode = this.model.shuffleMode;
 
-    if (shuffleMode === 0) {
-      if (repeatMode === 0) {
+    if (shuffleMode === PlaybackModeEnum.NORMAL) {
+      if (repeatMode === RepeatModeEnum.NO_REPEAT) {
         if (this.ui.isLastTrack()) {
           this.stopPlayback();
         } else {
           this.changeTrack(this.ui.nextTrackId);
         }
-      } else if (repeatMode === 1) {
+      } else if (repeatMode === RepeatModeEnum.REPEAT_TRACK) {
         this.repeatTrack();
-      } else if (repeatMode === 2) {
+      } else if (repeatMode === RepeatModeEnum.REPEAT_VIEW) {
         this.changeTrack(this.ui.nextTrackId);
       } else {
         Logger.raise({
@@ -635,14 +639,14 @@ class Mzk {
           frontend: true
         });
       }
-    } else if (shuffleMode === 1) { // Shuffle
+    } else if (shuffleMode === PlaybackModeEnum.SHUFFLE) { // Shuffle
       // Spec is shuffle if user play next, normal playback in album otherwise, only if current is not the last track of album
       if (isUserRequest === true || this.model.isLastAlbumTrack(this.model.playingTrack.id)) {
         mzk.playShuffleTrackInPlaylist();
       } else {
         this.changeTrack(this.ui.nextTrackId);
       }
-    } else if (shuffleMode === 2) { // Random
+    } else if (shuffleMode === PlaybackModeEnum.RANDOM) { // Random
       mzk.playRandomTrackInPlaylist();
     } else {
       Logger.raise({
@@ -665,15 +669,15 @@ class Mzk {
   previousTrackInView() {
     const repeatMode = this.model.repeatMode;
 
-    if (repeatMode === 0) {
+    if (repeatMode === RepeatModeEnum.NO_REPEAT) {
       if (this.ui.isFirstTrack()) {
         this.stopPlayback();
       } else {
         this.changeTrack(this.ui.previousTrackId);
       }
-    } else if (repeatMode === 1) {
+    } else if (repeatMode === RepeatModeEnum.REPEAT_TRACK) {
       mzk.repeatTrack();
-    } else if (repeatMode === 2) {
+    } else if (repeatMode === RepeatModeEnum.REPEAT_VIEW) {
       this.changeTrack(this.ui.previousTrackId);
     } else {
       Logger.raise({
@@ -865,56 +869,56 @@ class Mzk {
   reloadShortcuts() {
     Shortcut.unregisterAll();
 
-    // Multi keys shortcuts must be declared before simple ones, to respect the trigger ordre
+    // Multi keys shortcuts must be declared before simple ones, to respect the trigger order
 
     // Volume control
     Shortcut.register('Ctrl+Shift+ArrowDown', () => {
-      this.adjustVolume(-0.25);
+      this.adjustVolume(-VolumeControllerEnum.HUGE);
     });
 
     Shortcut.register('Ctrl+Shift+ArrowUp', () => {
-      this.adjustVolume(0.25);
+      this.adjustVolume(VolumeControllerEnum.HUGE);
     });
 
     Shortcut.register('Ctrl+ArrowDown', () => {
-      this.adjustVolume(-0.1);
+      this.adjustVolume(-VolumeControllerEnum.BIG);
     });
 
     Shortcut.register('Ctrl+ArrowUp', () => {
-      this.adjustVolume(0.1);
+      this.adjustVolume(VolumeControllerEnum.BIG);
     });
 
     Shortcut.register('ArrowDown', () => {
-      this.adjustVolume(-0.01);
+      this.adjustVolume(-VolumeControllerEnum.SMALL);
     });
 
     Shortcut.register('ArrowUp', () => {
-      this.adjustVolume(0.01);
+      this.adjustVolume(VolumeControllerEnum.SMALL);
     });
 
     // Progress control
     Shortcut.register('Ctrl+Shift+ArrowLeft', () => {
-      this.adjustProgress(-25);
+      this.adjustProgress(-ProgressControllerEnum.HUGE_JUMP);
     });
 
     Shortcut.register('Ctrl+Shift+ArrowRight', () => {
-      this.adjustProgress(25);
+      this.adjustProgress(ProgressControllerEnum.HUGE_JUMP);
     });
 
     Shortcut.register('Ctrl+ArrowLeft', () => {
-      this.adjustProgress(-10);
+      this.adjustProgress(-ProgressControllerEnum.BIG_JUMP);
     });
 
     Shortcut.register('Ctrl+ArrowRight', () => {
-      this.adjustProgress(10);
+      this.adjustProgress(ProgressControllerEnum.BIG_JUMP);
     });
 
     Shortcut.register('ArrowLeft', () => {
-      this.adjustProgress(-1);
+      this.adjustProgress(-ProgressControllerEnum.SMALL_JUMP);
     });
 
     Shortcut.register('ArrowRight', () => {
-      this.adjustProgress(1);
+      this.adjustProgress(ProgressControllerEnum.SMALL_JUMP);
     });
 
     // Playback control

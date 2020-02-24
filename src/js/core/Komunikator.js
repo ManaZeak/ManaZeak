@@ -1,6 +1,8 @@
 'use strict';
 
 
+import HttpErrorCodeEnum from "./HttpErrorCodeEnum";
+
 class Komunikator {
 
 
@@ -54,11 +56,11 @@ class Komunikator {
    * @param {Number} code - The HTTP error code to handle
    * @param {Function} reject - The request <code>Promise</code> reject callback */
   _handleErrorCode(code, reject) {
-    if (code === 404) {
+    if (code === HttpErrorCodeEnum.NOT_FOUND) {
       reject('URL_NOT_FOUND');
-    } else if (code === 403) {
+    } else if (code === HttpErrorCodeEnum.FORBIDDEN) {
       reject('ACCESS_FORBIDDEN');
-    } else if (code === 500) {
+    } else if (code === HttpErrorCodeEnum.INTERNAL_ERROR) {
       reject('INTERNAL_ERROR');
     } else {
       reject('UNKNOWN_ERROR');
@@ -119,7 +121,7 @@ class Komunikator {
    * @param {Function} resolve - The request <code>Promise</code> resolve callback
    * @param {Function} reject - The request <code>Promise</code> reject callback */
   _resolveAsBinary(response, resolve, reject) {
-    if (response.status === 200) {
+    if (response.status === HttpErrorCodeEnum.OK) {
       resolve(response.responseText);
     } else {
       this._handleErrorCode(response.status, reject);
@@ -174,7 +176,7 @@ class Komunikator {
       xhr.open('GET', url, true);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
       xhr.onreadystatechange = response => { // Keep old js function definition since this is the request response object
-        if (response.target.readyState === 4 && response.target.status === 200) {
+        if (response.target.readyState === 4 && response.target.status === HttpErrorCodeEnum.OK) {
           this._resolveAsBinary(response.target, resolve, reject);
         }
       };
