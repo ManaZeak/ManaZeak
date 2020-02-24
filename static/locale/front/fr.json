@@ -79,6 +79,10 @@
     "genres": {
       "title": "Genres",
       "description": "Pourquoi ne pas explorer la librairie de ManaZeak en regardant les genres et styles musicaux qui la compose ? À cet instant, ManaZeak compte"
+    },
+    "countrys": {
+      "title": "Pays",
+      "description": "Explorez les musiques du monde en cherchant les artistes en fonction de leur pays d'origine. À cet instant, ManaZeak compte"
     }
   },
   "libraryview": {
