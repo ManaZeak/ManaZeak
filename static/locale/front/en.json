@@ -32,7 +32,8 @@
     "Countries": "Countries"
   },
   "tags": {
-    "notSet": "not set"
+    "notSet": "not set",
+    "Selfreleased": "Self-released"
   },
   "mainpage": {
     "reroll": "Roll suggestions",

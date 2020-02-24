@@ -65,16 +65,39 @@ class SingleAlbumView extends SingleTagView {
           }.bind(link), false);
           this._dom.albumArtist.appendChild(link);
 
-          this._dom.yearLabel.innerHTML = `<i>${response.ALBUM.YEAR} – ${response.ALBUM.LABEL.NAME || 'Not on label'}</i>`;
+          const label = document.createElement('SPAN');
+          label.dataset.id = response.ALBUM.LABEL.ID;
+          label.innerHTML = response.ALBUM.LABEL.NAME;
+
+          if (response.ALBUM.LABEL.NAME === response.ALBUM.ALBUM_ARTIST.NAME) {
+            label.innerHTML = mzk.lang.tags.Selfreleased;
+          }
+
+          label.addEventListener('click', () => {
+            mzk.ui.setSceneView({
+              name: 'SingleLabel',
+              uiName: response.ALBUM.LABEL.NAME,
+              id: response.ALBUM.LABEL.ID
+            });
+          }, false);
+
+          this._dom.yearLabel.innerHTML = `<i>${response.ALBUM.YEAR} – </i>`;
+          this._dom.yearLabel.appendChild(label);
           this._dom.trackCompo.innerHTML = `${response.ALBUM.TRACKS.length} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ALBUM.DURATION)}`;
 
           this._dom.country.innerHTML = response.ALBUM.COUNTRY.length > 0 ? '' : 'No country';
           for (let i = 0; i < response.ALBUM.COUNTRY.length; ++i) {
-            if (i + 1 === response.ALBUM.COUNTRY.length) {
-              this._dom.country.innerHTML = `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].CODE}.svg" alt="artist-origin-country" />`;
-            } else {
-              this._dom.country.innerHTML += `<img src="static/img/flag/${response.ALBUM.COUNTRY[i].CODE}.svg" alt="artist-origin-country" /> – `;
-            }
+            const flag = document.createElement('IMG');
+            flag.dataset.id = response.ALBUM.COUNTRY[i].ID;
+            flag.src = `static/img/flag/${response.ALBUM.COUNTRY[i].CODE}.svg`;
+            flag.addEventListener('click', () => {
+              mzk.ui.setSceneView({
+                name: 'SingleCountry',
+                uiName: response.ALBUM.COUNTRY[i].CODE,
+                id: response.ALBUM.COUNTRY[i].ID
+              });
+            }, false);
+            this._dom.country.appendChild(flag);
           }
 
           this._dom.genres.innerHTML = '';

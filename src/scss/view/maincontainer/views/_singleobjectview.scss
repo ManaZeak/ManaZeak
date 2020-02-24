@@ -301,6 +301,22 @@
 
       .album-main-info {
         flex-direction: column;
+
+        .album-year-label span {
+          cursor: pointer;
+          font-style: italic;
+          margin: 0;
+
+          transition: background-color $mzk-animation-duration ease-out,
+                      border-radius $mzk-animation-duration ease,
+                      box-shadow $mzk-animation-duration ease-in;
+
+          &:active,
+          &:focus,
+          &:hover {
+            color: $mzk-color-primary;
+          }
+        }
       }
 
       .album-controls {

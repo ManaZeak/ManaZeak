@@ -35,7 +35,8 @@
     "Countries": "Pays"
   },
   "tags": {
-    "notSet": "pas défini"
+    "notSet": "pas défini",
+    "Selfreleased": "Auto-produit"
   },
   "mainpage": {
     "reroll": "Changer les suggestions",
