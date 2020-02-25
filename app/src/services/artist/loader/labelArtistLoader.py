@@ -2,7 +2,6 @@ from app.src.dto.artist.artistDto import ArtistDto
 from app.src.services.album.loader.labelAlbumLoader import LabelAlbumLoader
 from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 
-
 ## This class allows to load an artist from the SQL request loading a label.
 class LabelArtistLoader(object):
 
@@ -36,5 +35,5 @@ class LabelArtistLoader(object):
         artist = ArtistDto()
         artist.id = row[6]
         artist.name = row[7]
-        artist.picture = CoverPathGenerator.generateArtistPicturePath(row[8])
+        artist.picture = CoverPathGenerator.generateArtistPicturePath(row[7])
         return artist
