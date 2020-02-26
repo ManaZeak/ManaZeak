@@ -5,6 +5,7 @@ from app.src.dto.genre.MainPageGenre import MainPageGenre
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
@@ -60,7 +61,7 @@ class GenreService(object):
                 'ID': genre.id,
                 'TRACKS': tracks,
                 'NAME': genre.name,
-                'PICTURE': MainPageGenre.generateGenrePicturePath(genre.name),
+                'PICTURE': CoverPathGenerator.generateGenrePicturePath(genre.name),
                 'TOTAL_ARTIST': artistNumber,
             }
         }

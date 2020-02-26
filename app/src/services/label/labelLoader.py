@@ -1,6 +1,7 @@
 from app.src.dao.label.labelDtoGetter import LabelDtoGetter
 from app.src.dto.label.labelDto import LabelDto
 from app.src.services.artist.loader.labelArtistLoader import LabelArtistLoader
+from app.src.utils.covers.coverPathGenerator import CoverPathGenerator
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
@@ -35,3 +36,4 @@ class LabelLoader(object):
         row = rows[0]
         self.label.id = row[0]
         self.label.name = row[1]
+        self.label.picture = CoverPathGenerator.generateLabelPicturePath(self.label.name)
