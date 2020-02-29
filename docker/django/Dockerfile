@@ -19,6 +19,8 @@ ENV PACKAGES="\
   musl-dev \
   linux-headers \
   libffi-dev \
+  jpeg-dev \
+  zlib-dev\
 "
 
 RUN echo \

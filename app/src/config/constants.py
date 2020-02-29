@@ -12,6 +12,8 @@ class Constants(object):
     LABELS_COVER_LOCATION = 'static/pictures/LabelsLogo/'
     ## Country image location.
     COUNTRY_COVER_LOCATION = 'static/img/flag/'
+    ## Thumb root location
+    ROOT_THUMB_LOCATION = 'static/thumb/'
     ## Forbidden chars
     FORBIDDEN_CHARS = ['*', '/', '\\', ':', ';', '?', '<', '>', '|']
     ## JPG extension

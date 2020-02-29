@@ -10,3 +10,4 @@ pylint
 pytest
 pytest-cov
 pytest-django
+Pillow

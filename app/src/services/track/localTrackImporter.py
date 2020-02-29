@@ -15,6 +15,7 @@ from app.src.dao.linker.genreToTrackLinker import GenreToTrackLinker
 from app.src.dao.linker.performerToTrackLinker import PerformerToTrackLinker
 from app.src.dao.linker.playlistToTrackLinker import PlaylistToTrackLinker
 from app.src.dao.script.findAlbumCoversFromTrack import FindAlbumCoversFromTrack
+from app.src.services.thumbs.artistThumbnailService import ArtistThumbnailService
 
 loggerScan = logging.getLogger('scan')
 

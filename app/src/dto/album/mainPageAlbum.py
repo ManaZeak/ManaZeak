@@ -2,6 +2,10 @@ from app.src.config.constants import Constants
 
 
 ## Artist representation for the main page.trackNumber
+from app.src.services.thumbs.coverThumbnailService import CoverThumbnailService
+from app.src.utils.imageGenerators.thumbSizeEnum import ThumbSizeEnum
+
+
 class MainPageAlbum(object):
 
     ## Constructor
@@ -16,14 +20,15 @@ class MainPageAlbum(object):
         self.id = sqlRow[0]
         self.title = sqlRow[1]
         self.year = sqlRow[3]
-        self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[2]
+        self.picture = CoverThumbnailService.getThumbnailForCover(sqlRow[2], ThumbSizeEnum.SMALL)
 
     ## Initialise the album object with data returned from the orm.
     def buildFromOrmAlbum(self, album):
         self.id = album.id
         self.title = album.title
         self.year = album.year
-        self.picture = Constants.ALBUM_COVER_LOCATION + album.track_set.first().cover.location
+        self.picture = CoverThumbnailService.getThumbnailForCover(
+            album.track_set.first().cover.location, ThumbSizeEnum.SMALL)
 
     ## Initialise the album from an artist getter DAO line.
     def buildFromArtistDao(self, sqlRow):
@@ -31,7 +36,7 @@ class MainPageAlbum(object):
         self.title = sqlRow[4]
         self.year = sqlRow[5]
         if sqlRow[6] is not None:
-            self.picture = Constants.ALBUM_COVER_LOCATION + sqlRow[6]
+            self.picture = CoverThumbnailService.getThumbnailForCover(sqlRow[6], ThumbSizeEnum.SMALL)
 
     ## Generate a json object from an object.
     def getJsonObject(self):

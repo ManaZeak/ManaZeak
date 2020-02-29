@@ -131,3 +131,4 @@ coverage.xml
 /static/avatars/
 /static/covers/
 /static/pictures/**
+/static/thumb/**

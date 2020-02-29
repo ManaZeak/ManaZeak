@@ -8,6 +8,7 @@ from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
 from app.src.services.random.randomGenerator import RandomGenerator
+from app.src.services.thumbs.thumbnailService import ThumbnailService
 from app.src.services.track.localTrackImporter import LocalTrackImporter
 from app.src.services.track.trackExtractorService import TrackExtractorService
 from app.src.utils.listUtils import ListUtils
@@ -65,6 +66,10 @@ class LibraryIntegrationService(object):
         # Creating the random tables
         randFiller = RandomGenerator(library.playlist.id)
         randFiller.fillAllRandomTables()
+
+        # Starting the process (fork) for generating the thumbnails
+        ThumbnailService.startProcessRegenThumbnails()
+        loggerScan.info('Starting the process of thumbnail generation.')
 
         # Finishing the scan
         self.statusHelper.endLibraryScan()
