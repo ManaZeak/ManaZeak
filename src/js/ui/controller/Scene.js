@@ -2,6 +2,7 @@ import ListView from '../view/library/type/ListView.js';
 import AlbumView from '../view/library/type/AlbumView.js';
 import UserIDModal from '../modal/UserIDModal';
 import ViewFactory from '../view/ViewFactory';
+import AboutModal from "../modal/AboutModal";
 'use strict';
 
 
@@ -92,11 +93,18 @@ class Scene {
   }
 
 
-  setModal() {
+  setModal(options) {
     return new Promise(resolve => {
-      new UserIDModal({
-        url: 'modal/userID'
-      });
+      if (options.name === 'UserID') {
+        new UserIDModal({
+          url: 'modal/userID'
+        });
+      } else if (options.name === 'About') {
+        new AboutModal({
+          url: 'modal/about'
+        });
+      }
+
       resolve();
     });
   }

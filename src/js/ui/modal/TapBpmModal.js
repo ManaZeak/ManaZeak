@@ -11,13 +11,13 @@ class TapBpmModal extends Modal {
     this._trackId = options.trackId;
     this._bpmClickContainer = null;
     this._bpm = null;
-		this._count = 0;
-		// Timestamps
-		this._ts = {
-			current: 0,
-			previous: 0,
-			first: 0
-		};
+    this._count = 0;
+    // Timestamps
+    this._ts = {
+        current: 0,
+        previous: 0,
+        first: 0
+    };
   }
 
 
@@ -54,23 +54,24 @@ class TapBpmModal extends Modal {
 
 
   _tap() {
-		this._ts.current = Date.now();
-		// Store the first timestamp of the tap sequence on first click
-		if (this._ts.first === 0) {
-			this._ts.first = this._ts.current;
-		}
+    this._ts.current = Date.now();
+    // Store the first timestamp of the tap sequence on first click
+    if (this._ts.first === 0) {
+        this._ts.first = this._ts.current;
+    }
 
-	  if (this._ts.previous !== 0) {
-	    const bpm = 60000 * this._count / (this._ts.current - this._ts.first);
+    if (this._ts.previous !== 0) {
+    const bpm = 60000 * this._count / (this._ts.current - this._ts.first);
       if (bpm % 1 > 0.5) {
         this._bpm.innerHTML = Math.ceil(bpm);
       } else {
         this._bpm.innerHTML = Math.round(bpm);
       }
-	  }
-	  // Store the old timestamp
-	  this._ts.previous = this._ts.current;
-		++this._count;
+    }
+
+    // Store the old timestamp
+    this._ts.previous = this._ts.current;
+    ++this._count;
 
     this._bpmClickContainer.style.border = 'dashed 3px #F74B46'; // Color is mzk-color-anti-primary-dark
     setTimeout(() => {
@@ -80,10 +81,10 @@ class TapBpmModal extends Modal {
 
 
   _resetBpm() {
-		this._count = 0;
-		this._ts.current = 0;
-		this._ts.previous = 0;
-		this._ts.first = 0;
+    this._count = 0;
+    this._ts.current = 0;
+    this._ts.previous = 0;
+    this._ts.first = 0;
     this._bpm.innerHTML = '0';
     this._bpmClickContainer.style.border = 'dashed 3px #0F1015';
   }

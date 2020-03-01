@@ -153,3 +153,99 @@
     }
   }
 }
+
+.about-modal {
+  font-family: Helvetica, serif;
+  color: $mzk-color-text;
+  background: $mzk-color-bg;
+  border-radius: 15px;
+  box-shadow: 0 0 1em $mzk-color-primary-alpha-50;
+  height: 80%;
+  position: relative;
+  width: 35%;
+  z-index: 800;
+
+  div:last-child {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  .header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 60px;
+
+    p {
+      font-size: 20px;
+      height: 60px;
+      line-height: 60px;
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    span.close {
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      height: 60px;
+      line-height: 60px;
+      top: 0;
+    }
+  }
+
+  .container {
+    background-color: rgba(0, 0, 250, 0.08);
+    height: calc(100% - (2 * 60px));
+    padding: 25px;
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    img.logo {
+      height: 100px;
+      margin-bottom: 2 * $mzk-margin;
+    }
+
+    h4 {
+      margin-bottom: 2 * $mzk-margin;
+      text-align: center;
+    }
+
+    p {
+      padding-bottom: 2 * $mzk-padding;
+      text-align: justify;
+      text-indent: 2rem;
+    }
+  }
+
+  .footer {
+    background-color: $mzk-color-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+
+    button {
+      background-color: $mzk-color-primary;
+      border: none;
+      height: 35px;
+      width: auto;
+      padding: 0 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      color: $mzk-color-ng-text;
+      text-decoration : none;
+      outline: none;
+      transition: all 0.1s ease 0s;
+
+      &::-moz-focus-inner {
+        border: 0;
+      }
+
+      &:active {
+        background-color: $mzk-color-secondary;
+      }
+    }
+  }
+}

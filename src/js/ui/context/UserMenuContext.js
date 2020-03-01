@@ -18,6 +18,7 @@ class UserMenuContext extends ContextMenu {
 
     this._admin = {};
     this._community = {};
+    this._about = {};
     this._logOut = {};
   }
 
@@ -28,14 +29,15 @@ class UserMenuContext extends ContextMenu {
     this._admin = doc.getElementsByClassName('admin')[0];
     this._community = doc.getElementsByClassName('community')[0];
     this._userid = doc.getElementsByClassName('userid')[0];
+    this._about = doc.getElementsByClassName('about')[0];
     this._logOut = doc.getElementsByClassName('log-out')[0];
-
-    if (!mzk.user.hasPermission('SPON')) {
-      this._container.removeChild(this._userid);
-    }
 
     if (!mzk.user.hasPermission('ADMV')) {
       this._container.removeChild(this._admin);
+    }
+
+    if (!mzk.user.hasPermission('SPON')) {
+      this._container.removeChild(this._userid);
     }
 
     this._userMenuEvents();
@@ -61,10 +63,19 @@ class UserMenuContext extends ContextMenu {
       });
     }, true);
 
-    this._userid.addEventListener('click', () => {
+    if (mzk.user.hasPermission('SPON')) {
+      this._userid.addEventListener('click', () => {
+        this.close();
+        mzk.ui.setModal({
+          name: `UserID`
+        });
+      }, true);
+    }
+
+    this._about.addEventListener('click', () => {
       this.close();
       mzk.ui.setModal({
-        name: `UserID`
+        name: `About`
       });
     }, true);
 
