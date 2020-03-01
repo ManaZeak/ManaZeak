@@ -1,10 +1,12 @@
 import abc
+import logging
 from os import path
 from pathlib import Path
 
 from app.src.config.constants import Constants
 from app.src.utils.imageGenerators.thumbGenerator import ThumbGenerator
 
+logger = logging.getLogger('scan')
 
 ## This class allows to manage thumbnails.
 class AbstractThumbGenerator(object, metaclass=abc.ABCMeta):
@@ -23,8 +25,11 @@ class AbstractThumbGenerator(object, metaclass=abc.ABCMeta):
         # Checking if the source picture exists.
         coverFile = Path(coverPath)
         if coverFile.exists():
-            # Generating the thumbnail
-            ThumbGenerator.generateThumb(coverPath, self._getPathThumbnail(coverPath), self.size.value)
+            try:
+                # Generating the thumbnail
+                ThumbGenerator.generateThumb(coverPath, self._getPathThumbnail(coverPath), self.size.value)
+            except Exception as e:
+                logger.error('The cover at ' + coverPath + ' can''t be saved.', e)
 
     ## Generate the path of the thumbnail.
     def _getDirectoryPathThumbnail(self):

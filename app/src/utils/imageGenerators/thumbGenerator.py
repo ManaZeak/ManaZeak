@@ -22,7 +22,4 @@ class ThumbGenerator(object):
             logger.warning('Thumbnail generation failure: image too small. Image size: ' +
                            str(img.size) + " | thumbnail size: " + str(newSize))
         else:
-            try:
-                img.resize(newSize, Image.ANTIALIAS).save(thumbPath)
-            except Exception:
-                logger.info('The cover at ' + coverPath + ' can''t be saved.')
+            img.resize(newSize, Image.ANTIALIAS).save(thumbPath)
