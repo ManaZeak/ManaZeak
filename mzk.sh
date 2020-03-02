@@ -126,6 +126,7 @@ elif [ $1 = "--help" ] || [ $1 = "-h" ]; then
     printf -- "#  ./mzk.sh doc : Generates both the Python and JavaScript documentations\n"
     printf -- "#  ./mzk.sh cleandoc : Clear the ManaZeak documentation\n"
     printf -- "#  ./mzk.sh test : Run all unit tests\n"
+    printf -- "#  ./mzk.sh gource : Run gource for the repository (require gource to be instaled)\n"
     printf -- "#  ./mzk.sh sonar-scanner xxx: Perform a sonare-scanner on the folder. Require an API key (xxx) as second parameter\n#\n"
     printf -- "#  ./mzk.sh --help : Display the script usage  (or -h)\n"
     printf -- "#  ./mzk.sh --version : Display the version number (or -v)\n"
