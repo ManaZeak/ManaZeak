@@ -121,6 +121,19 @@ input[type=checkbox]:checked:disabled + label:before {
   border-color: $mzk-color-primary;
 }
 
+a {
+  color: $mzk-color-text;
+  text-decoration: none;
+
+  transition: color $mzk-animation-duration;
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: $mzk-color-primary;
+}
+
 p.italic {
   font-style: italic;
 }

@@ -8,7 +8,7 @@ class ThumbSizeEnum(Enum):
     TINY = (80, 80)
     ## A small thumbnail (120x120). Used on the main page for example.
     SMALL = (120, 120)
-    ## A normal thumbnail (285x285). Used on the detail views.
+    ## A normal thumbnail (285x285). Used on the detail sceneviews.
     MEDIUM = (285, 285)
-    ## A large thumbnail (400x400). Used on the detail views.
+    ## A large thumbnail (400x400). Used on the detail sceneviews.
     LARGE = (400, 400)

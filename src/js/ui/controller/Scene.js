@@ -9,7 +9,7 @@ import SuggestionModal from "../modal/SuggestionModal";
 
 class Scene {
   /**
-   * @summary ManaZeak main scene to renders views in
+   * @summary ManaZeak main scene to renders sceneviews in
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Handle the main scene

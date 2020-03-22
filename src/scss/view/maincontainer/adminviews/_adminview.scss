@@ -1,0 +1,37 @@
+.admin-view-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  .admin-menu {
+    border-right: solid $mzk-border-width $mzk-color-bg-lighter;
+    margin: $mzk-padding-scene 0 $mzk-padding-scene $mzk-padding-scene;
+    padding: $mzk-padding;
+    text-align: right;
+    width: 15rem;
+
+    .admin-entry {
+      align-items: center;
+      display: flex;
+      height: 3rem;
+      justify-content: flex-end;
+      padding: 10px;
+
+      transition: font-size $mzk-animation-duration;
+
+      &.active {
+        font-size: 2rem;
+
+        a {
+          color: $mzk-color-primary;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  .admin-scene {
+    padding: $mzk-padding-scene;
+    width: calc(100% - 15rem);
+  }
+}

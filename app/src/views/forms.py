@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-## @package app.views.forms
+## @package app.sceneviews.forms
 # This package contains all the forms of the application
 
 

@@ -4,7 +4,7 @@ from django.views.generic import ListView
 
 from app.models import ApplicationConfiguration
 
-## @package app.views
+## @package app.sceneviews
 #   This package handle the main view of the application
 
 

@@ -10,7 +10,7 @@ from app.src.views.object.all.allObjectView import AllObjectView
 
 app_name = 'app'
 
-## Contains the views and the urls for single object display.
+## Contains the sceneviews and the urls for single object display.
 #   One genre, album or artist.
 urlpatterns = [
     path('releaseArtist/layout/', AllObjectView.getAllReleaseArtistsPage, name='getAllReleaseArtistPage'),

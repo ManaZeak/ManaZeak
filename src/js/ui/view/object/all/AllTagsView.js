@@ -3,7 +3,7 @@ import ScrollBar from "../../../component/bar/ScrollBar";
 'use strict';
 
 
-// This mother class is a way to proxify the fetch layout and content for all object views
+// This mother class is a way to proxify the fetch layout and content for all object sceneviews
 class AllTagsView extends SceneView {
 
 

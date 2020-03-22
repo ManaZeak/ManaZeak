@@ -1,4 +1,4 @@
-/* Single object views */
+/* Single object sceneviews */
 import SingleReleaseArtistView from '../view/object/single/type/SingleReleaseArtistView.js';
 import SingleArtistView from '../view/object/single/type/SingleArtistView.js';
 import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
@@ -6,7 +6,7 @@ import SingleProducerView from '../view/object/single/type/SingleProducerView.js
 import SingleLabelView from '../view/object/single/type/SingleLabelView.js';
 import SingleGenreView from '../view/object/single/type/SingleGenreView.js';
 import SingleCountryView from '../view/object/single/type/SingleCountryView.js';
-/* All objects views */
+/* All objects sceneviews */
 import AllReleaseArtistsView from '../view/object/all/type/AllReleaseArtistsView.js';
 import AllArtistsView from '../view/object/all/type/AllArtistsView.js';
 import AllAlbumsView from '../view/object/all/type/AllAlbumsView.js';
@@ -14,7 +14,7 @@ import AllProducersView from '../view/object/all/type/AllProducersView.js';
 import AllLabelsView from '../view/object/all/type/AllLabelsView.js';
 import AllGenresView from '../view/object/all/type/AllGenresView.js';
 import AllCountriesView from '../view/object/all/type/AllCountriesView.js';
-/* Generic views */
+/* Generic sceneviews */
 import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
 import AdminView from '../view/admin/AdminView.js';

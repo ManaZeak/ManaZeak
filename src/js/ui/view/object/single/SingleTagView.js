@@ -3,7 +3,7 @@ import TrackContext from "../../../context/TrackContext";
 'use strict';
 
 
-// This mother class is a way to proxify the fetch layout and content for single object views
+// This mother class is a way to proxify the fetch layout and content for single object sceneviews
 class SingleTagView extends PlayableView {
 
 

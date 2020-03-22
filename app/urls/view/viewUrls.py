@@ -19,6 +19,10 @@ urlpatterns = [
     path('party/layout/', GenericViews.getPartyPage, name='getPartyPage'),
     # Layout for admin view
     path('admin/layout/', GenericViews.getAdminPage, name='reset'),
+    path('admin/overview/layout/', GenericViews.getAdminOverviewPage, name='reset'),
+    path('admin/database/layout/', GenericViews.getAdminDatabasePage, name='reset'),
+    path('admin/user/layout/', GenericViews.getAdminUserPage, name='reset'),
+    path('admin/suggestion/layout/', GenericViews.getAdminSuggestionPage, name='reset'),
     # Layout for community view
     path('community/layout/', GenericViews.getCommunityPage, name='reset'),
 ]

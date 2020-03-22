@@ -254,7 +254,7 @@ class Mzk {
       this.ui.startLoading(false) // First we put the loading spinner aside User PP
         .then(this.komunikator.get.bind(this.komunikator, 'playlist/getUserPlaylists/')) // Get user collection from server
         .then(collection => {
-          return this.model.initCollection(collection); // Store them in the model so any library views can be built
+          return this.model.initCollection(collection); // Store them in the model so any library sceneviews can be built
         })
         .then(this.ui.stopLoading.bind(this.ui, false)) // We then stop the loading spinner
         .then(resolve)

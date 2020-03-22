@@ -117,5 +117,25 @@ class GenericViews(object):
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAdminOverviewPage(request):
+        return render(request, 'views/admin/views/adminoverviewpage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAdminDatabasePage(request):
+        return render(request, 'views/admin/views/admindatabasepage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAdminUserPage(request):
+        return render(request, 'views/admin/views/adminuserpage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getAdminSuggestionPage(request):
+        return render(request, 'views/admin/views/adminsuggestionpage.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
     def getCommunityPage(request):
         return render(request, 'views/community/communitypage.html')

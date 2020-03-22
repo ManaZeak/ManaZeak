@@ -110,7 +110,7 @@ class TopBar {
 
   updateViewBreadcrumbs(views) {
     this._breadcrumbs.innerHTML = '';
-    // Only process if there are views in history
+    // Only process if there are sceneviews in history
     if (views.length > 0) {
       for (let i = 0; i < views.length - 1; ++i) {
         const link = document.createElement('A');
