@@ -22,6 +22,9 @@ class TopBar {
      * @member {object} - The home button */
     this._home = {};
     /** @private
+     * @member {object} - The suggestion button */
+    this._suggestion = {};
+    /** @private
      * @member {object} - The user context menu object */
     this._userMenu = {};
     /** @private
@@ -52,6 +55,7 @@ class TopBar {
     this._avatar = document.getElementById('topbar-avatar');
     this._spinner = document.getElementById('topbar-spinner');
     this._home = document.getElementById('topbar-home-button');
+    this._suggestion = document.getElementById('topbar-suggestion-button');
     this._breadcrumbs = document.getElementsByClassName('topbar-view-breadcrumbs')[0];
 
     this._userMenu = new UserMenuContext({
@@ -81,6 +85,7 @@ class TopBar {
       name: 'MzkInitDone'
     }, () => {
       this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
+      this._suggestion.addEventListener('click', mzk.ui.setModal.bind(mzk.ui, { name: 'Suggestion' }), false);
     });
 
     this._avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);

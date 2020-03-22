@@ -49,6 +49,14 @@ class GenericViews(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    ## Send the about modal
+    #   @param request request given by the front
+    #   @return the suggestion template
+    def suggestionModal(request):
+        return render(request, 'modals/suggestion.html')
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
     ## Send the user menu context HTML template
     #   @param request request given by the front
     #   @return the user menu template

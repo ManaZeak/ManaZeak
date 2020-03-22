@@ -3,6 +3,7 @@ import AlbumView from '../view/library/type/AlbumView.js';
 import UserIDModal from '../modal/UserIDModal';
 import ViewFactory from '../view/ViewFactory';
 import AboutModal from "../modal/AboutModal";
+import SuggestionModal from "../modal/SuggestionModal";
 'use strict';
 
 
@@ -102,6 +103,10 @@ class Scene {
       } else if (options.name === 'About') {
         new AboutModal({
           url: 'modal/about'
+        });
+      } else if (options.name === 'Suggestion') {
+        new SuggestionModal({
+          url: 'modal/suggestion'
         });
       }
 

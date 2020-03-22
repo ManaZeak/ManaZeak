@@ -36,7 +36,8 @@ $topbar-loader: $topbar-height - 10px;
     }
   }
 
-  div#home-container {
+  div#home-container,
+  div#suggestion-container {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -45,8 +46,13 @@ $topbar-loader: $topbar-height - 10px;
     position: absolute;
     left: $mzk-margin;
 
-    img#topbar-home-button {
+    img {
       height: 80%;
+    }
+
+    &#suggestion-container {
+      left: $mzk-margin + 40px;
+      img { height: 75%; } // Reduce optical effect on idea icon
     }
   }
 
@@ -61,7 +67,7 @@ $topbar-loader: $topbar-height - 10px;
   }
 
   .topbar-view-breadcrumbs {
-    left: 40px + 2 * $mzk-margin;
+    left: 80px + 2 * $mzk-margin;
     line-height: $topbar-height;
     position: absolute;
     white-space: nowrap;
