@@ -12,7 +12,7 @@
   min-width: 20%;
   position: relative;
   text-align: justify;
-  width: 50%;
+  width: 35%;
   z-index: 800;
 
   .header {
@@ -164,8 +164,6 @@
 }
 
 .user-id-modal {
-  width: 35%;
-
   .container {
     align-items: center;
     display: flex;
@@ -187,7 +185,7 @@
 }
 
 .about-modal {
-  width: 65%;
+  width: 40%;
 
   .container {
     * {
@@ -209,8 +207,6 @@
 }
 
 .suggestion-modal {
-  width: 35%;
-  
   .container {
     textarea {
       border: solid 1px $mzk-color-bg-lighter;
