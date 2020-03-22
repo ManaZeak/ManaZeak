@@ -22,15 +22,15 @@ class TapBpmModal extends Modal {
 
 
   setActions(doc) {
-    const closeTop = doc.getElementById('user-id-close-top');
-    const resetBottom = doc.getElementById('reset-bpm');
-    const sendBottom = doc.getElementById('send-bpm');
-    const trackTitle = doc.getElementById('track-title');
-    const trackArtist = doc.getElementById('track-artist');
-    const trackBpm = doc.getElementById('track-current-bpm');
+    const closeTop = doc.getElementById('tap-bpm-header-close');
+    const resetBottom = doc.getElementById('tap-bpm-reset');
+    const sendBottom = doc.getElementById('tap-bpm-send');
+    const trackTitle = doc.getElementById('tap-bpm-track-title');
+    const trackArtist = doc.getElementById('tap-bpm-track-artist');
+    const trackBpm = doc.getElementById('tap-bpm-track-bpm');
 
-    this._bpmClickContainer = doc.getElementsByClassName('bpm-click-container')[0];
-    this._bpm = doc.getElementsByClassName('bpm-value')[0];
+    this._bpmClickContainer = doc.getElementsByClassName('tap-bpm-click-container')[0];
+    this._bpm = doc.getElementsByClassName('tap-bpm-value')[0];
 
     closeTop.addEventListener('click', this.close.bind(this));
     resetBottom.addEventListener('click', this._resetBpm.bind(this));

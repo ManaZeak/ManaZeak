@@ -1,23 +1,23 @@
 {% load i18n %}
 {% load staticfiles %}
 <div class="context-transparent-overlay modal-dark-overlay">
-  <div class="new-library">
+  <div class="modal tap-bpm-modal">
     <div class="header">
       <p>{% trans 'Tap BPM (Beat Per Minute)' %}</p>
-      <span id="user-id-close-top" class="close">&#10006;</span>
+      <span id="tap-bpm-header-close" class="close">&#10006;</span>
     </div>
     <div class="container">
-      <h4 id="track-title">{% trans 'Track title' %}</h4>
-      <h4 id="track-artist">{% trans 'Track artist' %}</h4>
-      <h3 id="track-current-bpm-text">{% trans 'Current BPM: ' %}<span id="track-current-bpm">{% trans 'no set' %}</span></h3>
-      <p class="description">{% trans "Use the following box to click in rhythm with the music to determine the track BPM. The longer you click in rhythm, the precise the BPM gets. Use the reset button if you made a mistake. When you're done clicking, press the Send button to submit the value." %}</p>
-      <div class="bpm-click-container">
-        <p><span class="bpm-value">0</span> BPM</p>
+      <h4 id="tap-bpm-track-title">{% trans 'Track title' %}</h4>
+      <h4 id="tap-bpm-track-artist">{% trans 'Track artist' %}</h4>
+      <h3 class="tap-bpm-track-bpm-text">{% trans 'Current BPM: ' %}<span id="tap-bpm-track-bpm">{% trans 'no set' %}</span></h3>
+      <p>{% trans "Use the following box to click in rhythm with the music to determine the track BPM. The longer you click in rhythm, the precise the BPM gets. Use the reset button if you made a mistake. When you're done clicking, press the Send button to submit the value." %}</p>
+      <div class="tap-bpm-click-container">
+        <p><span class="tap-bpm-value">0</span> BPM</p>
       </div>
     </div>
     <div class="footer">
-      <button id="reset-bpm">{% trans 'Reset' %}</button>
-      <button id="send-bpm">{% trans 'Send' %}</button>
+      <button id="tap-bpm-reset">{% trans 'Reset' %}</button>
+      <button id="tap-bpm-send" class="primary">{% trans 'Send' %}</button>
     </div>
   </div>
 </div>

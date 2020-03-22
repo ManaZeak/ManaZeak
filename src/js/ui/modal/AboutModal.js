@@ -11,8 +11,8 @@ class AboutModal extends Modal {
 
 
   setActions(doc) {
-    const closeTop = doc.getElementById('about-close-top');
-    const close = doc.getElementById('close');
+    const closeTop = doc.getElementById('about-header-close');
+    const close = doc.getElementById('about-close');
 
     closeTop.addEventListener('click', this.close.bind(this), false);
     close.addEventListener('click', this.close.bind(this), false);

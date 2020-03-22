@@ -11,9 +11,10 @@ class SuggestionModal extends Modal {
 
 
   setActions(doc) {
-    const closeTop = doc.getElementById('about-close-top');
-    const close = doc.getElementById('close');
-    const submit = doc.getElementById('submit');
+    const closeTop = doc.getElementById('suggestion-header-close');
+    const close = doc.getElementById('suggestion-close');
+    const suggestion = doc.getElementById('suggestion-field');
+    const submit = doc.getElementById('suggestion-submit');
 
     closeTop.addEventListener('click', this.close.bind(this), false);
     close.addEventListener('click', this.close.bind(this), false);

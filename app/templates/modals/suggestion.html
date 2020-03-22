@@ -1,19 +1,19 @@
 {% load i18n %}
 {% load staticfiles %}
 <div class="context-transparent-overlay modal-dark-overlay">
-  <div class="suggestion-modal">
+  <div class="modal suggestion-modal">
     <div class="header">
       <p>{% trans 'Make a suggestion' %}</p>
-      <span id="about-close-top" class="close">&#10006;</span>
+      <span id="suggestion-header-close" class="close">&#10006;</span>
     </div>
     <div class="container">
       <p>{% trans 'ManaZeak library is missing an absolute MUST HAVE artist/album/track you know ? You think a feature is clearly missing from ManaZeak to be just perfect ? Fine, your contribution will surely be rewarded in a way! Just write down your idea in the following field and submit it so it can be intergrated!' %}</p>
-      <textarea id="suggestion-field" alt="suggestion-field"></textarea>
+      <textarea id="suggestion-field"></textarea>
       <p>{% trans 'Whatever may be your suggestion, we trully thank you for your contribution to make ManaZeak the best!' %}</p>
     </div>
     <div class="footer">
-      <button id="close">{% trans 'Close' %}</button>
-      <button id="submit">{% trans 'Submit' %}</button>
+      <button id="suggestion-close">{% trans 'Close' %}</button>
+      <button id="suggestion-submit" class="primary">{% trans 'Submit' %}</button>
     </div>
   </div>
 </div>

@@ -9,15 +9,12 @@ class NewLibraryModal extends Modal {
 
 
   setActions(doc) {
-    const close = doc.getElementById('new-library-close');
-    const create = doc.getElementById('create-new-library');
-    const libraryName = doc.getElementById('library-name');
-    const libraryPath = doc.getElementById('library-path');
+    const close = doc.getElementById('new-library-header-close');
+    const create = doc.getElementById('new-library-create');
+    const libraryName = doc.getElementById('new-library-name');
+    const libraryPath = doc.getElementById('new-library-path');
 
-    close.addEventListener('click', () => {
-      this.close();
-    });
-
+    close.addEventListener('click', this.close.bind(this), false);
     create.addEventListener('click', () => {
       this._callback({
         name: libraryName.value,

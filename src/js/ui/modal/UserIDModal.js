@@ -12,8 +12,8 @@ class UserIDModal extends Modal {
 
 
   setActions(doc) {
-    const closeTop = doc.getElementById('user-id-close-top');
-    const closeBottom = doc.getElementById('user-id-close-bottom');
+    const closeTop = doc.getElementById('user-id-header-close');
+    const closeBottom = doc.getElementById('user-id-close');
     this._userID = doc.getElementById('user-id');
     const copy = doc.getElementById('copy-id');
 
