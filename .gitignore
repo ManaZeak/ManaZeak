@@ -117,6 +117,7 @@ log/**
 doc/**
 doc/python/**
 node_modules/**
+plugins/**
 static/dist/**
 static/mood/**
 static/img/avatars/**
