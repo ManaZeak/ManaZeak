@@ -1,12 +1,12 @@
 .user-menu {
   position: absolute;
-  right: $mzk-padding;
-  top: ($topbar-height + $mzk-margin);
+  right: var(--mzk-padding);
+  top: calc(var(--mzk-topbar-height) + var(--mzk-margin));
   width: auto;
   height: auto;
-  padding: 0 $padding;
-  border-radius: $mzk-border-radius;
-  background: $mzk-color-bg-dark;
+  padding: 0 var(--mzk-padding);
+  border-radius: var(--mzk-border-radius);
+  background: var(--mzk-color-bg-dark);
   z-index: 999;
 
   .entry {
@@ -22,7 +22,7 @@
 
     p {
       line-height: 30px;
-      padding-left: $padding;
+      padding-left: var(--mzk-padding);
     }
   }
 
@@ -31,7 +31,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent $mzk-color-bg-dark-alpha-75;
+    border-color: transparent transparent var(--mzk-color-bg-dark-alpha-75);
     content: '';
     position: absolute;
     top: -8px;
@@ -68,7 +68,7 @@
 
     p {
       line-height: 30px;
-      padding-left: $padding;
+      padding-left: var(--mzk-padding);
     }
   }
 
@@ -77,7 +77,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent $mzk-color-bg-dark-alpha-75;
+    border-color: transparent transparent var(--mzk-color-bg-dark-alpha-75);
     content: '';
     position: absolute;
     top: -9px;
@@ -108,7 +108,7 @@
     padding: 0 5px;
 
     &:first-child {
-      border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+      border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-25);
     }
 
     img {
@@ -135,7 +135,7 @@
   background: #1f2127;
   border: solid 1px black;
   border-radius: 5px;
-  bottom: $footbar-height + 8px;
+  bottom: calc(var(--mzk-footbar-height) + 8px);
   height: auto;
   max-height: 500px;
   position: absolute;
@@ -147,7 +147,7 @@
   flex-direction: column;
 
   .track-container {
-    margin: $margin / 2;
+    margin: var(--mzk-margin-small);
     min-height: 50px;
     max-height: 500px;
     height: auto;
@@ -158,8 +158,8 @@
     }
 
     .queued-track {
-      background-color: $mzk-color-bg-dark;
-      border-radius: $mzk-border-radius;
+      background-color: var(--mzk-color-bg-dark);
+      border-radius: var(--mzk-border-radius);
       height: 75px;
       width: 330px;
       display: grid;
@@ -167,7 +167,7 @@
       grid-template-rows: repeat(3, 1fr);
       grid-template-areas: "img title nav" "img artist nav" "position artist nav";
       align-items: center;
-      margin: ($margin / 2) 0;
+      margin: var(--mzk-margin-small) 0;
 
       img {
         grid-area: img;
@@ -197,7 +197,7 @@
 
       p.position {
         align-self: center;
-        color: $mzk-color-primary;
+        color: var(--mzk-color-primary);
         grid-area: position;
         line-height: 1;
         text-align: center;
@@ -276,7 +276,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
+    border-color: var(--mzk-color-bg-dark-alpha-75) transparent transparent transparent;
     content: '';
     position: absolute;
     bottom: -8px;
@@ -286,10 +286,10 @@
 }
 
 #listview-context {
-  background: $mzk-color-bg-dark;
+  background: var(--mzk-color-bg-dark);
   border: solid 1px black;
   border-radius: 5px;
-  bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
+  bottom: calc(2 * var(--mzk-main-container-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
   height: auto;
   position: absolute;
   right: 5px;
@@ -300,7 +300,7 @@
   flex-direction: column;
 
   .checkbox-container {
-    margin: $margin;
+    margin: var(--mzk-margin);
 
     label:last-child {
       margin-bottom: 0;
@@ -322,12 +322,12 @@
 
   img {
     cursor: pointer;
-    bottom: $margin;
-    height: $aside-button-length;
+    bottom: var(--mzk-margin);
+    height: var(--mzk-aside-button-length);
     position: absolute;
     float: right;
-    right: (2 * $margin) + $aside-button-length;
-    width: $aside-button-length;
+    right: calc(var(--mzk-margin-big) + var(--mzk-aside-button-length));
+    width: var(--mzk-aside-button-length);
     z-index: 666;
   }
 
@@ -337,7 +337,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
+    border-color: var(--mzk-color-bg-dark-alpha-75) transparent transparent transparent;
     position: absolute;
     right: 10.5px;
     bottom: -8px;
@@ -345,10 +345,10 @@
 }
 
 .scene-options {
-  background: $mzk-color-bg-dark;
+  background: var(--mzk-color-bg-dark);
   border: solid 1px black;
-  border-radius: $mzk-border-radius;
-  bottom: 2 * $main-container-icon-margin + $aside-button-length + $footbar-height;
+  border-radius: var(--mzk-border-radius);
+  bottom: calc(2 * var(--mzk-main-container-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
   height: auto;
   position: absolute;
   right: calc(5px + var(--mzk-aside-width));
@@ -359,7 +359,7 @@
   flex-direction: column;
 
   .checkbox-container {
-    margin: $margin;
+    margin: var(--mzk-margin);
 
     label:last-child {
       margin-bottom: 0;
@@ -369,7 +369,7 @@
   button {
     background: rgba(0, 0, 0, 1);
     border: solid 1px black;
-    border-radius: $mzk-border-radius;
+    border-radius: var(--mzk-border-radius);
     height: auto;
     width: auto;
     display: block;
@@ -381,12 +381,12 @@
 
   img {
     cursor: pointer;
-    bottom: $margin;
-    height: $aside-button-length;
+    bottom: var(--mzk-margin);
+    height: var(--mzk-aside-button-length);
     position: absolute;
     float: right;
-    right: (2 * $margin) + $aside-button-length;
-    width: $aside-button-length;
+    right: calc(var(--mzk-margin-big) + var(--mzk-aside-button-length));
+    width: var(--mzk-aside-button-length);
     z-index: 666;
   }
 
@@ -396,7 +396,7 @@
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: $mzk-color-bg-dark-alpha-75 transparent transparent transparent;
+    border-color: var(--mzk-color-bg-dark-alpha-75) transparent transparent transparent;
     position: absolute;
     right: 10.5px;
     bottom: -8px;
@@ -405,10 +405,10 @@
 
 .playback-rate-context {
   align-items: center;
-  background-color: $mzk-color-bg;
-  border-top-left-radius: $mzk-border-radius;
-  border-top-right-radius: $mzk-border-radius;
-  bottom: $footbar-height;
+  background-color: var(--mzk-color-bg);
+  border-top-left-radius: var(--mzk-border-radius);
+  border-top-right-radius: var(--mzk-border-radius);
+  bottom: var(--mzk-footbar-height);
   display: flex;
   height: 50px;
   opacity: 0;
@@ -420,13 +420,13 @@
   img {
     cursor: pointer;
     height: 50%;
-    margin: 0 (2 * $footbar-controls-margin);
+    margin: 0 calc(2 * var(--mzk-footbar-controls-margin));
     @include user-select(none);
   }
 
   div#playback-rate-text {
     position: absolute;
-    color: $mzk-color-text-darker;
+    color: var(--mzk-color-text-darker);
     top: 3px;
     left: calc(50% - 10px);
     width: 20px;

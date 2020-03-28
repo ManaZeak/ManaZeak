@@ -6,18 +6,18 @@ $border-thickness: 1px;
 
 $color-dark-text: rgb(20, 20, 20);
 $color-dark-border: rgb(20, 20, 20);
-$color-info: $mzk-color-secondary;
-$color-info-light: $mzk-color-secondary-light;
-$color-info-lighter: $mzk-color-secondary-lighter;
-$color-success: $mzk-color-primary;
-$color-success-light: $mzk-color-primary-light;
-$color-success-lighter: $mzk-color-primary-lighter;
-$color-warning: $mzk-color-anti-primary;
-$color-warning-light: $mzk-color-anti-primary-light;
-$color-warning-lighter: $mzk-color-anti-primary-lighter;
-$color-error: $mzk-color-anti-primary;
-$color-error-light: $mzk-color-anti-primary-light;
-$color-error-lighter: $mzk-color-anti-primary-lighter;
+$color-info: var(--mzk-color-secondary);
+$color-info-light: var(--mzk-color-secondary-light);
+$color-info-lighter: var(--mzk-color-secondary-lighter);
+$color-success: var(--mzk-color-primary);
+$color-success-light: var(--mzk-color-primary-light);
+$color-success-lighter: var(--mzk-color-primary-lighter);
+$color-warning: var(--mzk-color-anti-secondary);
+$color-warning-light: var(--mzk-color-anti-secondary-light);
+$color-warning-lighter: var(--mzk-color-anti-secondary-lighter);
+$color-error: var(--mzk-color-anti-primary);
+$color-error-light: var(--mzk-color-anti-primary-light);
+$color-error-lighter: var(--mzk-color-anti-primary-lighter);
 
 /* Notification specific variables */
 $notification-max-width: 345px;

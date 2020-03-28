@@ -5,50 +5,49 @@
 @import 'sceneviews/allobjectsview';
 @import 'adminviews/adminview';
 
-$scene-transition: ($transition-duration * 4);
+$scene-transition: var(--mzk-animation-duration-long);
 $margin-offset: 25px; // Offset to match arrow icons size in main container
-$aside-button-length: 25px;
 
 #scene {
   position: relative;
-  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
+  height: calc(100% - (var(--mzk-topbar-height) + var(--mzk-footbar-height)));
   z-index: 701;
   width: calc(100% - var(--mzk-aside-width));
   
-  transition: width $mzk-animation-duration ease-in-out;
+  transition: width var(--mzk-animation-duration) ease-in-out;
 
   #scene-manipulation {
     position: absolute;
     top: 0;
     bottom: 0;
-    right: $main-container-icon-margin;
+    right: var(--mzk-main-container-icon-margin);
     height: 90px;
     margin: auto;
-    width: $aside-button-length;
+    width: var(--mzk-aside-button-length);
 
     img {
       cursor: pointer;
-      height: $aside-button-length;
-      width: $aside-button-length;
+      height: var(--mzk-aside-button-length);
+      width: var(--mzk-aside-button-length);
     }
   }
 
   #scene-view-option {
     cursor: pointer;
-    bottom: $main-container-icon-margin;
-    height: $aside-button-length;
+    bottom: var(--mzk-main-container-icon-margin);
+    height: var(--mzk-aside-button-length);
     position: absolute;
-    right: $main-container-icon-margin;
-    width: $aside-button-length;
+    right: var(--mzk-main-container-icon-margin);
+    width: var(--mzk-aside-button-length);
     z-index: 666;
   }
 
   #loading-spinner {
     bottom: 20px;
-    height: $aside-button-length;
+    height: var(--mzk-aside-button-length);
     position: absolute;
     right: 20px;
-    width: $aside-button-length;
+    width: var(--mzk-aside-button-length);
     z-index: 699;
 
     &:before {
@@ -59,11 +58,11 @@ $aside-button-length: 25px;
       border-top-color: transparent;
       box-sizing: border-box;
       content: '';
-      right: -($aside-button-length / 2);
-      bottom: -($aside-button-length / 2);
-      height: ($aside-button-length + $padding);
+      right: - calc(var(--mzk-aside-button-length) / 2);
+      bottom: - calc(var(--mzk-aside-button-length) / 2);
+      height: calc(var(--mzk-aside-button-length) + var(--mzk-padding));
       position: absolute;
-      width: ($aside-button-length + $padding);
+      width: calc(var(--mzk-aside-button-length) + var(--mzk-padding));
 
       animation: listview-loading-spin 1.5s linear infinite;
     }
@@ -71,15 +70,15 @@ $aside-button-length: 25px;
 
   #scene-commands {
     position: absolute;
-    right: $margin-offset + ($main-container-icon-margin * 2);
-    height: $margin-offset + ($main-container-icon-margin * 2);
+    right: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
+    height: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
     width: auto;
     top: 0;
     display: inline-flex;
     align-items: center;
 
     span {
-      line-height: $margin-offset + ($main-container-icon-margin * 2);
+      line-height: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
       font-size: 0.9em;
       display: flex;
       align-items: center;
@@ -90,7 +89,7 @@ $aside-button-length: 25px;
         content: '';
         border-style: solid;
         border-width: 6px 6px 0 6px;
-        border-color: $mzk-color-bg-dark transparent transparent transparent;
+        border-color: var(--mzk-color-bg-dark) transparent transparent transparent;
         margin-left: 10px;
       }
     }

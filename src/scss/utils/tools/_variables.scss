@@ -1,39 +1,50 @@
-$topbar-height: 40px;
-$footbar-height: 80px;
-$aside-width: 18%;
-$margin: 15px;
-$padding: 10px;
-$transition-duration: 0.2s;
-$mzk-text-logo-width: 145px;
-$main-container-icon-margin: (8 * $margin) / 10;
-$aside-transition: ($transition-duration * 4);
-$aside-button-length: 25px;
-$footbar-controls-height: 50px;
-$footbar-controls-scale: 50%; // Usefull for volume bar image
-$footbar-controls-margin: 5px;
-$footbar-progress-height: 30px;
-$footbar-sides-width: 85px;
-$footbar-icons-size: 33px;
-$footbar-volumebar-width: 170px;
-$moodbar-height: 25px;
-$footbar-transition: ($transition-duration * 2);
-$progress-transition: $footbar-transition; // Variable defined in _footbar.scss
-$progress-height: $moodbar-height; // Variable defined in _footbar.scss
-$progress-track-height: 6px;
-$progress-thumb-height: 12px;
-
-$mzk-animation-duration: 0.2s;
-$mzk-border-color:     $mzk-color-bg-dark;
-$mzk-border-color-neg: $mzk-color-text-icons;
-$mzk-border-width:     1px;
-$mzk-border-radius:    3px;
-$mzk-padding:          10px;
-$mzk-margin:           10px;
-$mzk-font-size: 1em;
-
-$mzk-padding-scene: 25px;
-$mzk-mp-aside-width: 25%;
-
 :root {
+  /* Global styling */
+
+  --mzk-animation-duration: 0.2s;
+  --mzk-animation-duration-short: calc(var(--mzk-animation-duration) / 2);
+  --mzk-animation-duration-long: calc(var(--mzk-animation-duration) * 2);
+
+  --mzk-border-width: 1px;
+  --mzk-border-jumbo-width: 3px;
+  --mzk-border-radius: 3px;
+  --mzk-border-color: var(--mzk-color-bg-dark);
+
+  --mzk-font-size: 1em;
+
+  --mzk-padding: 10px;
+  --mzk-padding-tiny: calc(var(--mzk-padding) / 4);
+  --mzk-padding-small: calc(var(--mzk-padding) / 2);
+  --mzk-padding-big: calc(var(--mzk-padding) * 2);
+  --mzk-padding-huge: calc(var(--mzk-padding) * 4);
+
+  --mzk-margin: 10px;
+  --mzk-margin-tiny: calc(var(--mzk-margin) / 4);
+  --mzk-margin-small: calc(var(--mzk-margin) / 2);
+  --mzk-margin-big: calc(var(--mzk-margin) * 2);
+  --mzk-margin-huge: calc(var(--mzk-margin) * 4);
+
+  --mzk-logo-text-width: 145px;
+
+  /* Components variables */
+
+  --mzk-topbar-height: 40px;
+
+  --mzk-footbar-height: 80px;
+  --mzk-footbar-transition: var(--mzk-animation-duration-long);
+  --mzk-footbar-moodbar-height: 25px;
+  --mzk-footbar-controls-height: 50px;
+  --mzk-footbar-controls-scale: 50%; // Usefull for volume bar image
+  --mzk-footbar-controls-margin: 5px;
+  --mzk-footbar-progress-height: 30px;
+  --mzk-footbar-sides-width: 85px;
+  --mzk-footbar-icons-size: 33px;
+  --mzk-footbar-volumebar-width: 170px;
+  --mzk-progress-track-height: 6px;
+  --mzk-progress-thumb-height: 12px;
+
   --mzk-aside-width: 20%;
+  --mzk-aside-button-length: 25px;
+
+  --mzk-main-container-icon-margin: 8px;
 }

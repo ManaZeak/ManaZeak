@@ -3,5 +3,5 @@
 
 .library-page {
   height: 100%;
-  padding: ($mzk-padding * 5) - 1;
+  padding: var(--mzk-padding-huge);
 }

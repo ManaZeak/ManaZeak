@@ -7,11 +7,6 @@ class SingleObjectViews(object):
     # TODO New url to process
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
-    def getSingleReleaseArtistPage(request):
-        return render(request, 'views/singleObject/singleReleaseArtistPage.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='login.html', login_url='app:login')
     def getSingleArtistPage(request):
         return render(request, 'views/singleObject/singleArtistPage.html')
 

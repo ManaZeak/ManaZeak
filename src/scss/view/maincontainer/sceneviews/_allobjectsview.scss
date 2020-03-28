@@ -11,12 +11,12 @@
     height: auto;
 
     h1 {
-      border-bottom: solid ($mzk-border-width * 2) $mzk-color-text-light;
-      color: $mzk-color-text-light;
+      border-bottom: solid var(--mzk-border-jumbo-width) var(--mzk-color-text-light);
+      color: var(--mzk-color-text-light);
       font-size: 2.6rem;
       line-height: 2.6rem;
       margin: 0 75% 2.6rem calc(2.6rem / 2);
-      padding: ($mzk-padding * 2);
+      padding: var(--mzk-padding-big);
     }
 
     .objects-wrapper {
@@ -34,29 +34,29 @@
         text-align: center;
         width: 8%;
 
-        transition: background-color $mzk-animation-duration ease-out,
-                    border-radius $mzk-animation-duration ease,
-                    box-shadow $mzk-animation-duration ease-in;
+        transition: background-color var(--mzk-animation-duration) ease-out,
+                    border-radius var(--mzk-animation-duration) ease,
+                    box-shadow var(--mzk-animation-duration) ease-in;
 
         &:active,
         &:focus,
         &:hover {
-          background-color: $mzk-color-primary-alpha-10;
-          border-radius: $mzk-border-radius;
-          box-shadow: 0 0 $mzk-margin -2px $mzk-color-primary;
+          background-color: var(--mzk-color-primary-alpha-10);
+          border-radius: var(--mzk-border-radius);
+          box-shadow: 0 0 var(--mzk-margin) -2px var(--mzk-color-primary);
         }
 
         img {
-          background-color: $mzk-color-bg;
+          background-color: var(--mzk-color-bg);
           cursor: pointer;
-          margin: ($mzk-margin / 2);
+          margin: var(--mzk-margin-small);
           width: 90%;
         }
 
         p {
           font-size: .9rem;
           text-align: center;
-          margin-bottom: $mzk-margin;
+          margin-bottom: var(--mzk-margin);
         }
       }
     }
@@ -74,26 +74,26 @@
       border-radius: 0;
       box-shadow: 0 0 0 0 transparent;
       cursor: pointer;
-      padding: $mzk-padding;
-      margin: $mzk-margin;
+      padding: var(--mzk-padding);
+      margin: var(--mzk-margin);
       width: 180px;
 
-      transition: background-color $mzk-animation-duration ease-out,
-                  border-radius $mzk-animation-duration ease,
-                  box-shadow $mzk-animation-duration ease-in;
+      transition: background-color var(--mzk-animation-duration) ease-out,
+                  border-radius var(--mzk-animation-duration) ease,
+                  box-shadow var(--mzk-animation-duration) ease-in;
 
       &:active,
       &:focus,
       &:hover {
-        background-color: $mzk-color-primary-alpha-10;
-        border-radius: $mzk-border-radius;
-        box-shadow: 0 0 10px -2px $mzk-color-primary;
+        background-color: var(--mzk-color-primary-alpha-10);
+        border-radius: var(--mzk-border-radius);
+        box-shadow: 0 0 10px -2px var(--mzk-color-primary);
       }
 
       img {
-        background-color: $mzk-color-bg;
-        border: solid $mzk-border-width $mzk-color-text-light-alpha-10;
-        border-radius: $mzk-border-radius;
+        background-color: var(--mzk-color-bg);
+        border: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-10);
+        border-radius: var(--mzk-border-radius);
         height: 160px;
         width: 160px;
       }

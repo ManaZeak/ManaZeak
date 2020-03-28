@@ -1,5 +1,5 @@
 #playback-rate-container {
-  background-color: $mzk-color-text-icons;
+  background-color: var(--mzk-color-icons);
   border-radius: 4px;
   cursor: pointer;
     pointer-events: initial;
@@ -10,9 +10,9 @@
     margin-right: auto;
 
     #playback-rate-current {
-      background-color: $mzk-color-primary;
-      border-radius: $mzk-border-radius 0 0 $mzk-border-radius;
-      border-right: solid $mzk-border-width $mzk-color-secondary-darker;
+      background-color: var(--mzk-color-primary);
+      border-radius: var(--mzk-border-radius) 0 0 var(--mzk-border-radius);
+      border-right: solid var(--mzk-border-width) var(--mzk-color-secondary-darker);
       bottom: 0;
       height: 100%;
       position: absolute;
@@ -21,11 +21,11 @@
     }
 
     #playback-rate-current.full {
-      border-radius: $mzk-border-radius;
+      border-radius: var(--mzk-border-radius);
     }
 
     #playback-rate-thumb {
-      background-color: $mzk-color-text-lighter;
+      background-color: var(--mzk-color-text-lighter);
       border-radius: 50%;
       bottom: 0;
       height: 12px;
@@ -40,7 +40,7 @@
     }
 
     &:hover > #playback-rate-current {
-      background-color: $mzk-color-secondary;
+      background-color: var(--mzk-color-secondary);
     }
     &:hover > #playback-rate-thumb {
       opacity: 1;

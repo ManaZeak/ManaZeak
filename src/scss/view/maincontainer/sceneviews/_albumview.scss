@@ -14,7 +14,7 @@
     h1 {
       font-size: 3.66em;
       line-height: 2em;
-      color: $mzk-color-text-light;
+      color: var(--mzk-color-text-light);
     }
 
     .album {
@@ -52,7 +52,7 @@
         text-align: right;
         
         span {
-          background: $mzk-color-text-light-alpha-10;
+          background: var(--mzk-color-text-light-alpha-10);
           padding: 7px;
           line-height: 1em;
           font-size: 1em;
@@ -72,7 +72,7 @@
           font-size: 2em;
           line-height: 2em;
           padding-left: 25px;
-          color: $mzk-color-text-light;
+          color: var(--mzk-color-text-light);
         }
 
         .tracks-container {
@@ -81,7 +81,7 @@
           padding: 25px;
           grid-template-columns: repeat(2, 1fr);
           grid-auto-flow: column;
-          border-left: solid 1px $mzk-color-text-light-alpha-10;
+          border-left: solid 1px var(--mzk-color-text-light-alpha-10);
 
           .track {
             max-width: 500px;
@@ -89,9 +89,9 @@
             cursor: pointer;
             border-radius: 5px;
             width: 100%;
-            height: calc(3 * 1.66em) + #{$mzk-padding};
-            padding: ($mzk-padding / 2) $mzk-padding;
-            background: $mzk-color-text-light-alpha-10;
+            height: calc(3 * 1.66em + var(--mzk-padding));
+            padding: var(--mzk-padding-small) var(--mzk-padding);
+            background: var(--mzk-color-text-light-alpha-10);
             position: relative;
             display: grid;
             grid-template-columns: 2fr 16fr;
@@ -111,7 +111,7 @@
             p {
               align-self: center;
               grid-column: 2;
-              padding-left: $mzk-padding;
+              padding-left: var(--mzk-padding);
               text-overflow: ellipsis;
               white-space: nowrap;
               overflow: hidden;
@@ -135,7 +135,7 @@
             p.track-artist,
             p:last-child {
               font-weight: inherit;
-              padding-left: ($mzk-padding * 2);
+              padding-left: var(--mzk-padding-big);
             }
 
             p.track-artist:before,
@@ -145,12 +145,12 @@
             }
 
             &.selected {
-              background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
+              background-color: var(--mzk-color-primary-alpha-50) !important; // Important to 'z-index' over playing bg-color
             }
 
             &.playing {
-              background-color: $mzk-color-secondary-alpha-50;
-              box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
+              background-color: var(--mzk-color-secondary-alpha-50);
+              box-shadow: 0 0 var(--mzk-margin) rgba(255, 255, 255, 0.1);
 
               &::after {
                 content: '';

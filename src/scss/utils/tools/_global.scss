@@ -1,9 +1,9 @@
 *, *:before, *:after { box-sizing: border-box; margin: 0; }
 
 html, body {
-  color: $mzk-color-text-light;
+  color: var(--mzk-color-text);
   font-family: SegoeUI, Helvetica, serif;
-  font-size:   $mzk-font-size;
+  font-size: var(--mzk-font-size);
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -14,67 +14,86 @@ html, body {
   position: absolute;
 }
 
+a {
+  color: var(--mzk-color-text);
+  text-decoration: none;
+
+  transition: color var(--mzk-animation-duration);
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: var(--mzk-color-primary);
+  }
+}
+
+p.italic {
+  font-style: italic;
+}
+
+
 input[type=text],
 input[type=password] {
-    background:    transparent;
-    border:        0;
-    border-bottom: solid $mzk-border-width $mzk-color-text-icons;
-    color:         $mzk-color-text-icons;
-    padding:       $mzk-padding / 2;
-    text-align:    center;
-    transition:    $mzk-animation-duration;
+  background: transparent;
+  border: 0;
+  border-bottom: solid var(--mzk-border-width) var(--mzk-color-icons);
+  color: var(--mzk-color-icons);
+  padding: var(--mzk-padding-small);
+  text-align: center;
+  transition: var(--mzk-animation-duration);
 
-    &:active,
-    &:focus {
-        color: $mzk-color-text-light;
-    }
+  &:active,
+  &:focus {
+    color: var(--mzk-color-text-light);
+  }
 
-    &:active,
-    &:focus,
-    &:hover {
-        border-bottom: solid 1px $mzk-color-text-light;
-    }
+  &:active,
+  &:focus,
+  &:hover {
+    border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light);
+  }
 }
 
 button {
-    background:    transparent;
-    margin:        25px 10px;
-    padding:       10px 25px;
-    color:         $mzk-color-text-icons;
-    border-radius: 6px;
-    border:        solid 1px $mzk-color-text-icons;
-    cursor:        pointer;
-    transition:    $mzk-animation-duration;
+  background: transparent;
+  margin: var(--mzk-margin-big) var(--mzk-margin);
+  padding: var(--mzk-padding) var(--mzk-padding-big);
+  color: var(--mzk-color-icons);
+  border-radius: var(--mzk-border-radius);
+  border: solid var(--mzk-border-width) var(--mzk-color-icons);
+  cursor: pointer;
 
-    &:active,
-    &:focus,
-    &:hover {
-        border:     solid 1px $mzk-color-text-light;
-        box-shadow: 0 0 1px $mzk-color-text-light;
-        color:      $mzk-color-text-light;
-    }
+  transition: var(--mzk-animation-duration);
+
+  &:active,
+  &:focus,
+  &:hover {
+    border: solid var(--mzk-border-width) var(--mzk-color-text-light);
+    box-shadow: 0 0 1px var(--mzk-color-text-light);
+    color: var(--mzk-color-text-light);
+  }
 }
 
 textarea {
-    background:    transparent;
-    border:        solid 1px $mzk-color-text-icons;
-    border-radius: $mzk-border-radius;
-    box-sizing:    border-box;
-    color:         $mzk-color-text-icons;
-    padding:       $mzk-padding / 2;
-    resize:        none;
-    transition:    0.2s ease;
+  background: transparent;
+  border: solid var(--mzk-border-width) var(--mzk-color-icons);
+  border-radius: var(--mzk-border-radius);
+  box-sizing: border-box;
+  color: var(--mzk-color-icons);
+  padding: var(--mzk-padding-small);
+  resize: none;
+  transition: var(--mzk-animation-duration) ease;
 
-    &:active,
-    &:focus,
-    &:hover {
-        border:     solid 1px $mzk-color-text-light;
-        box-shadow: 0 0 1px $mzk-color-text-light;
-        color:      $mzk-color-text-light;
-    }
+  &:active,
+  &:focus,
+  &:hover {
+    border: solid var(--mzk-border-width) var(--mzk-color-text-light);
+    box-shadow: 0 0 1px var(--mzk-color-text-light);
+    color: var(--mzk-color-text-light);
+  }
 }
 
-/* Checkbox from https://codepen.io/zFunx/pen/dWbevd */
+/* Custom checkbox from https://codepen.io/zFunx/pen/dWbevd */
 input[type=checkbox] {
   display: none;
 }
@@ -86,17 +105,18 @@ input[type=checkbox] + label {
   padding: 0;
 
   &:before {
+    content: '\2714';
     border: 0.1em solid #000;
     border-radius: 0.2em;
     color: transparent;
-    content: "\2714";
     display: inline-block;
     height: 1em;
     line-height: 1em;
     margin-right: 7px;
-    transition: .2s;
     vertical-align: top;
     width: 1em;
+
+    transition: var(--mzk-animation-duration);
   }
 
   &:active:before {
@@ -106,36 +126,19 @@ input[type=checkbox] + label {
 
 input[type=checkbox]:disabled + label:before {
   transform: scale(1);
-  border-color: #aaa;
+  border-color: var(--mzk-border-color);
 }
 
 input[type=checkbox]:checked + label:before {
-  background-color: $mzk-color-primary;
-  border-color: $mzk-color-primary;
-  color: black;
+  background-color: var(--mzk-color-primary);
+  border-color: var(--mzk-color-primary);
+  color: var(--mzk-color-text-negative);
 }
 
 input[type=checkbox]:checked:disabled + label:before {
   transform: scale(1);
-  background-color: $mzk-color-primary;
-  border-color: $mzk-color-primary;
-}
-
-a {
-  color: $mzk-color-text;
-  text-decoration: none;
-
-  transition: color $mzk-animation-duration;
-}
-
-a:active,
-a:focus,
-a:hover {
-  color: $mzk-color-primary;
-}
-
-p.italic {
-  font-style: italic;
+  background-color: var(--mzk-color-primary);
+  border-color: var(--mzk-color-primary);
 }
 
 [draggable] {

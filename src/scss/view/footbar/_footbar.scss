@@ -5,22 +5,22 @@
   left: 0;
   right: 0;
   display: flex;
-  height: $footbar-height;
+  height: var(--mzk-footbar-height);
   position: absolute;
   width: calc(100% - var(--mzk-aside-width));
   
-  transition: width $mzk-animation-duration ease-in-out;
+  transition: width var(--mzk-animation-duration) ease-in-out;
 }
 
 .footbar-track-preview {
-  height: $footbar-height;
-  width: $mzk-mp-aside-width;
+  height: var(--mzk-footbar-height);
+  width: var(--mzk-aside-width);
 }
 
 .footbar-controls {
-  background: $mzk-color-bg;
+  background: var(--mzk-color-bg);
   display: flex;
-  height: $footbar-height; // Defined in utils/tools/_variables.scss
+  height: var(--mzk-footbar-height);
   justify-content: center;
   width: 100%;
   z-index: 700;
@@ -29,14 +29,14 @@
   .right {
     align-items: flex-end;
     display: flex;
-    height: ($footbar-controls-height + $footbar-progress-height);
-    width: $footbar-sides-width;
+    height: var(--mzk-footbar-controls-height) + var(--mzk-footbar-progress-height);
+    width: var(--mzk-footbar-sides-width);
 
     p {
-      height: $moodbar-height;
-      line-height: $moodbar-height;
+      height: var(--mzk-footbar-moodbar-height);
+      line-height: var(--mzk-footbar-moodbar-height);
       opacity: 0;
-      transition: opacity $footbar-transition linear;
+      transition: opacity var(--mzk-footbar-transition) linear;
     }
   }
 
@@ -44,19 +44,19 @@
     justify-content: flex-end;
 
     p {
-      margin-right: $margin;
+      margin-right: var(--mzk-margin);
     }
   }
 
   .center {
     height: 100%;
     max-width: 1000px;
-    width: calc(100% - (#{$footbar-sides-width} * 2));
+    width: calc(100% - (var(--mzk-footbar-sides-width) * 2));
 
     #controls-container {
       align-items: center;
       display: flex;
-      height: $footbar-controls-height;
+      height: var(--mzk-footbar-controls-height);
       justify-content: center;
       width: 100%;
       position: relative;
@@ -69,7 +69,7 @@
       img {
         cursor: pointer;
         height: 100%;
-        margin: 0 $footbar-controls-margin;
+        margin: 0 var(--mzk-footbar-controls-margin);
         user-select: none;
         -moz-user-select: none;
 
@@ -80,14 +80,14 @@
 
         #shuffle {
           position: absolute;
-          left: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
+          left: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
         }
       }
 
       .queue {
         position: absolute;
         right: 0;
-        width: $footbar-icons-size;
+        width: var(--mzk-footbar-icons-size);
 
         img {
           height: 100% !important;
@@ -96,8 +96,8 @@
 
       .speedometer {
         position: absolute;
-        right: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
-        width: $footbar-icons-size;
+        right: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+        width: var(--mzk-footbar-icons-size);
 
         img {
           height: 100% !important;
@@ -106,7 +106,7 @@
 
       .shuffle-left {
         position: absolute;
-        left: calc(#{$footbar-icons-size} + #{2 * $footbar-controls-margin});
+        left: calc(var(--mzk-footbar-icons-size) + 2 * var(--mzk-footbar-controls-margin));
       }
 
       .repeat-left {
@@ -120,8 +120,8 @@
         #queue {
           position: absolute;
           right: 0;
-          height: $footbar-controls-scale;
-          margin: 0 $footbar-controls-margin;
+          height: var(--mzk-footbar-controls-scale);
+          margin: 0 var(--mzk-footbar-controls-margin);
         }
 
         &::before {
@@ -129,7 +129,7 @@
          position:absolute;
          top: 5px;
          right: -10px;
-         color: $mzk-color-primary;
+         color: var(--mzk-color-primary);
          border-radius: 50%;
          height: 13px;
          width: 13px;
@@ -145,7 +145,7 @@
 
   .right {
     p {
-      margin-left: $margin;
+      margin-left: var(--mzk-margin);
     }
   }
 }

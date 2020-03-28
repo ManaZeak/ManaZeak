@@ -4,9 +4,9 @@
   width: 100%;
 
   .admin-menu {
-    border-right: solid $mzk-border-width $mzk-color-bg-lighter;
-    margin: $mzk-padding-scene 0 $mzk-padding-scene $mzk-padding-scene;
-    padding: $mzk-padding;
+    border-right: solid var(--mzk-border-width) var(--mzk-color-bg-lighter);
+    margin: var(--mzk-padding-big) 0 var(--mzk-padding-big) var(--mzk-padding-big);
+    padding: var(--mzk-padding);
     text-align: right;
     width: 15rem;
 
@@ -17,13 +17,13 @@
       justify-content: flex-end;
       padding: 10px;
 
-      transition: font-size $mzk-animation-duration;
+      transition: font-size var(--mzk-animation-duration);
 
       &.active {
         font-size: 2rem;
 
         a {
-          color: $mzk-color-primary;
+          color: var(--mzk-color-primary);
           cursor: default;
         }
       }
@@ -31,7 +31,7 @@
   }
 
   .admin-scene {
-    padding: $mzk-padding-scene;
+    padding: var(--mzk-padding-big);
     width: calc(100% - 15rem);
   }
 }

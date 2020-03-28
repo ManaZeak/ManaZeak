@@ -1,10 +1,10 @@
 #volumebar-wrapper {
   height: 100%;
   text-align: center;
-  width: $footbar-volumebar-width;
+  width: var(--mzk-footbar-volumebar-width);
   display: flex;
   position: absolute;
-  right: calc((2 * #{$footbar-icons-size}) + (2 * #{$footbar-controls-margin}));
+  right: calc((2 * var(--mzk-footbar-icons-size)) + (2 * var(--mzk-footbar-controls-margin)));
   align-items: center;
 
   div.image-wrapper {
@@ -13,7 +13,7 @@
   }
 
   #volumebar-container {
-    background-color: $mzk-color-text-icons;
+    background-color: var(--mzk-color-icons);
     border-radius: 4px;
     cursor: pointer;
     pointer-events: initial;
@@ -24,9 +24,9 @@
     margin-right: auto;
 
     #volumebar-current {
-      background-color: $mzk-color-primary;
-      border-radius: $mzk-border-radius 0 0 $mzk-border-radius;
-      border-right: solid $mzk-border-width $mzk-color-secondary-darker;
+      background-color: var(--mzk-color-primary);
+      border-radius: var(--mzk-border-radius) 0 0 var(--mzk-border-radius);
+      border-right: solid var(--mzk-border-width) var(--mzk-color-secondary-darker);
       bottom: 0;
       height: 100%;
       position: absolute;
@@ -35,11 +35,11 @@
     }
 
     #volumebar-current.full {
-      border-radius: $mzk-border-radius;
+      border-radius: var(--mzk-border-radius);
     }
 
     #volumebar-thumb {
-      background-color: $mzk-color-text-lighter;
+      background-color: var(--mzk-color-text-lighter);
       border-radius: 50%;
       bottom: 0;
       height: 12px;
@@ -53,7 +53,7 @@
     }
 
     &:hover > #volumebar-current {
-      background-color: $mzk-color-secondary;
+      background-color: var(--mzk-color-secondary);
     }
     &:hover > #volumebar-thumb {
       opacity: 1;

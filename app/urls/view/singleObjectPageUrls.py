@@ -13,7 +13,7 @@ app_name = 'app'
 ## Contains the sceneviews and the urls for single object display.
 #   One genre, album or artist.
 urlpatterns = [
-    path('releaseArtist/layout/', SingleObjectViews.getSingleReleaseArtistPage, name='getSingleReleaseArtistPage'),
+    path('releaseArtist/layout/', SingleObjectViews.getSingleArtistPage, name='getSingleReleaseArtistPage'),
     path('releaseArtist/<int:artistId>/', ArtistService.getArtist, name='getSingleReleaseArtist'),
 
     path('artist/layout/', SingleObjectViews.getSingleArtistPage, name='getSingleArtistPage'),
@@ -35,8 +35,6 @@ urlpatterns = [
     path('country/<int:countryId>/', CountryService.getCountry, name='getSingleCountry'),
 
     # FIXME : faire la page get producer
-
-    # FIXME : faire la page get country
 
     path('composer/<int:composerId>', ComposerService.getComposer, name='getSingleComposer'),
 ]

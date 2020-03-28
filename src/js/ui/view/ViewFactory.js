@@ -1,5 +1,4 @@
 /* Single object sceneviews */
-import SingleReleaseArtistView from '../view/object/single/type/SingleReleaseArtistView.js';
 import SingleArtistView from '../view/object/single/type/SingleArtistView.js';
 import SingleAlbumView from '../view/object/single/type/SingleAlbumView.js';
 import SingleProducerView from '../view/object/single/type/SingleProducerView.js';
@@ -22,7 +21,6 @@ import CommunityView from '../view/community/CommunityView.js';
 
 
 const Classes = {
-  SingleReleaseArtistView,
   SingleArtistView,
   SingleAlbumView,
   SingleProducerView,

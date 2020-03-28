@@ -1,8 +1,8 @@
 /* Tooltip */
 $tooltip-width: 150px;
 $tooltip-arrow: 6px;
-$tooltip-bg: $mzk-color-bg;
-$tooltip-text: $mzk-color-text;
+$tooltip-bg: var(--mzk-color-bg);
+$tooltip-text: var(--mzk-color-text);
 
 /* Base styles for the parent element */
 [data-tooltip] {
@@ -13,8 +13,8 @@ $tooltip-text: $mzk-color-text;
   &:active::after,
   &:hover::after,
   &:focus::after {
-    border: solid $mzk-border-width $mzk-color-text-light-alpha-10;
-    border-radius: $mzk-border-radius;
+    border: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-10);
+    border-radius: var(--mzk-border-radius);
     opacity: 1;
     visibility: visible;
     z-index: 999;
@@ -22,13 +22,13 @@ $tooltip-text: $mzk-color-text;
 
   /* Base styles for the tooltip's content area */
   &::after {
-    @include tooltip-animation($mzk-animation-duration / 2);
+    @include tooltip-animation(var(--mzk-animation-duration-short));
     background-color: $tooltip-bg;
     color: $tooltip-text;
     content: attr(data-tooltip);
     font-size: $font-size;
     opacity: 0;
-    padding: $padding;
+    padding: var(--mzk-padding);
     pointer-events: none;
     position: absolute;
     text-align: center;

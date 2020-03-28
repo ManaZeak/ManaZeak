@@ -30,11 +30,11 @@ class SingleArtistView extends SingleTagView {
   _processArtist(response) {
     return new Promise(resolve => {
       this._dom.pp = this._dom.wrapper.getElementsByClassName('sa-artist-pp')[0];
-      this._dom.title = this._dom.wrapper.getElementsByClassName('artist-title')[0];
-      this._dom.yearLabel = this._dom.wrapper.getElementsByClassName('artist-years')[0];
-      this._dom.trackCompo = this._dom.wrapper.getElementsByClassName('artist-track-composition')[0];
-      this._dom.country = this._dom.wrapper.getElementsByClassName('artist-country')[0];
-      this._dom.genres = this._dom.wrapper.getElementsByClassName('artist-genres')[0];
+      this._dom.title = this._dom.wrapper.getElementsByClassName('sa-artist-name')[0];
+      this._dom.yearLabel = this._dom.wrapper.getElementsByClassName('sa-active-year')[0];
+      this._dom.trackCompo = this._dom.wrapper.getElementsByClassName('sa-composition')[0];
+      this._dom.country = this._dom.wrapper.getElementsByClassName('sa-artist-countries')[0];
+      this._dom.genres = this._dom.wrapper.getElementsByClassName('sa-artist-genres')[0];
       this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sa-right')[0];
 
       if (response.ARTIST.ARTIST_PP !== null) {

@@ -12,35 +12,35 @@
   width: 100%;
 
   .mp-suggestion-group {
-    margin: 0 $mzk-padding-scene;
+    margin: 0 var(--mzk-padding-big);
 
     &:first-child {
-      padding-top: ($mzk-padding * 3);
+      padding-top: var(--mzk-padding-huge);
     }
 
     &:last-child {
-      padding-bottom: ($mzk-padding * 3);
+      padding-bottom: var(--mzk-padding-huge);
     }
 
     h1 {
       font-size: 1.7rem;
       line-height: 1.7rem;
-      margin-bottom: $mzk-margin;
+      margin-bottom: var(--mzk-margin);
       text-align: center;
 
       span {
-        color: $mzk-color-text-darker;
+        color: var(--mzk-color-text-darker);
         cursor: pointer;
         font-size: .9rem;
         font-style: italic;
         margin-left: 2rem;
 
-        transition: color $mzk-animation-duration ease-out;
+        transition: color var(--mzk-animation-duration) ease-out;
 
         &:active,
         &:focus,
         &:hover {
-          color: $mzk-color-primary;
+          color: var(--mzk-color-primary);
         }
       }
     }
@@ -50,8 +50,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: $mzk-margin;
-      padding: $mzk-padding;
+      margin-bottom: var(--mzk-margin);
+      padding: var(--mzk-padding);
 
       .mp-suggestion-item {
         align-items: center;
@@ -61,26 +61,26 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        margin: 0 $mzk-margin;
+        margin: 0 var(--mzk-margin);
         padding: 5px;
         position: relative;
         width: 140px;
 
-        transition: background-color $mzk-animation-duration ease-out,
-                    border-radius $mzk-animation-duration ease,
-                    box-shadow $mzk-animation-duration ease-in;
+        transition: background-color var(--mzk-animation-duration) ease-out,
+                    border-radius var(--mzk-animation-duration) ease,
+                    box-shadow var(--mzk-animation-duration) ease-in;
 
         &:active,
         &:focus,
         &:hover {
-          background-color: $mzk-color-primary-alpha-10;
-          border-radius: $mzk-border-radius;
-          box-shadow: 0 0 10px -2px $mzk-color-primary;
+          background-color: var(--mzk-color-primary-alpha-10);
+          border-radius: var(--mzk-border-radius);
+          box-shadow: 0 0 10px -2px var(--mzk-color-primary);
         }
 
         img {
-          background-color: $mzk-color-bg;
-          border-radius: $mzk-border-radius;
+          background-color: var(--mzk-color-bg);
+          border-radius: var(--mzk-border-radius);
           height: 120px;
           width: 120px;
         }

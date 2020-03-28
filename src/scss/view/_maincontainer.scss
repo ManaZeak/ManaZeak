@@ -2,7 +2,7 @@
 
 #mainContainer {
   background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
-  height: calc(100% - (#{$topbar-height} + #{$footbar-height}));
+  height: calc(100% - (var(--mzk-topbar-height) + var(--footbar-height)));
   position: absolute;
   width: 100%;
 }
@@ -19,12 +19,12 @@
 
   &::before {
     content: '';
-    background-color: $mzk-color-primary;
-    height: $margin * 2;
-    left: calc(50% - (#{$margin} / 2));
+    background-color: var(--mzk-color-primary);
+    height: var(--mzk-margin-big);
+    left: calc(50% - var(--mzk-margin-small));
     position: absolute;
     top: 50%;
-    width: $margin * 2;
+    width: var(--mzk-margin-big);
     border-radius: $border-radius;
     animation: rotate-plane 1.2s infinite ease-in-out;
   }

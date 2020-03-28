@@ -66,7 +66,7 @@ class TrackPreview {
       // Restore DOM initial state
       this._dom.cover.dataset.id = '';
       this._dom.cover.dataset.name = '';
-    }, 200); // Tihs timeout value must properly match the $mzk-animation-duration variable in _variables.scss
+    }, 200); // Tihs timeout value must properly match the var(--mzk-animation-duration) variable in _variables.scss
   }
 
 }

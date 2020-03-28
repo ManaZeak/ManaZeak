@@ -293,8 +293,8 @@ class ProgressBar {
    * @description Deactivate the ProgressBar, set it invisible, remove animations and remove mouse events
    **/
   deactivate() {
-    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in ui/_footbar.scss ($footbar-transition)
-    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in ui/_footbar.scss ($footbar-transition)
+    this._progress.thumb.style.transition = 'left 0.4s ease 0s, opacity 0.4s ease 0s'; // Match transition duration w/ the one in ui/_footbar.scss (var(--mzk-footbar-transition))
+    this._progress.current.style.transition = 'width 0.4s ease 0s'; // Match transition duration w/ the one in ui/_footbar.scss (var(--mzk-footbar-transition))
 
     this._isActive = false;
     this.setVisibility(false);
@@ -379,7 +379,7 @@ class ProgressBar {
       this._progress.left.innerHTML = '--:--';
       this._progress.right.innerHTML = '--:--';
       this._progress.hover.innerHTML = '--:--';
-    }, 500); // Match value with the one in scss/ui/components/_progresbar.scss -> $footbar-transition
+    }, 500); // Match value with the one in scss/ui/components/_progresbar.scss -> var(--mzk-footbar-transition)
   }
 
 

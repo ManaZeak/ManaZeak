@@ -4,9 +4,9 @@
   --modal-title-size: 1.3rem;
   --modal-hf-container-height: calc(3 * var(--modal-title-size)); // Modal Header/Footer height relative to title size
 
-  background: $mzk-color-bg;
+  background: var(--mzk-color-bg);
   border-radius: var(--modal-radius);
-  box-shadow: 0 0 1em $mzk-color-primary-alpha-50;
+  box-shadow: 0 0 1em var(--mzk-color-primary-alpha-50);
   max-width: 85%;
   min-height: 250px;
   min-width: 20%;
@@ -30,18 +30,18 @@
       right: var(--modal-title-size);
       top: var(--modal-title-size);
 
-      transition: color $mzk-animation-duration ease-out;
+      transition: color var(--mzk-animation-duration) ease-out;
 
       &:active,
       &:focus,
       &:hover {
-        color: $mzk-color-anti-primary;
+        color: var(--mzk-color-anti-primary);
       }
     }
   }
 
   .container {
-    background-color: $mzk-color-bg-complementary;
+    background-color: var(--mzk-color-bg-galaxy);
     display: flex;
     flex-direction: column;
     height: calc(100% - (2 * var(--modal-hf-container-height)));
@@ -49,7 +49,7 @@
     padding: var(--modal-padding);
 
     p {
-      margin-bottom: $mzk-margin;
+      margin-bottom: var(--mzk-margin);
       text-indent: 1rem;
     }
   }
@@ -61,26 +61,26 @@
     height: var(--modal-hf-container-height);
 
     button {
-      border-radius: $mzk-border-radius;
+      border-radius: var(--mzk-border-radius);
       cursor: pointer;
       height: 55%;
       outline: none;
       text-decoration : none;
 
-      transition: background-color $mzk-animation-duration;
+      transition: background-color var(--mzk-animation-duration);
 
       &.primary {
-        background-color: $mzk-color-primary;
-        border-color: $mzk-color-primary;
-        color: $mzk-color-ng-text;
+        background-color: var(--mzk-color-primary);
+        border-color: var(--mzk-color-primary);
+        color: var(--mzk-color-text-negative);
       }
 
       &:active,
       &:focus,
       &:hover {
-        background-color: $mzk-color-secondary;
-        border-color: $mzk-color-secondary;
-        color: $mzk-color-ng-text;
+        background-color: var(--mzk-color-secondary);
+        border-color: var(--mzk-color-secondary);
+        color: var(--mzk-color-text-negative);
       }
     }
   }
@@ -92,25 +92,25 @@
     display: flex;
 
     label {
-      margin-top: $mzk-margin;
+      margin-top: var(--mzk-margin);
     }
 
     input {
-      background-color: $mzk-color-bg;
-      color: $mzk-color-text;
-      padding: 0 $mzk-padding;
+      background-color: var(--mzk-color-bg);
+      color: var(--mzk-color-text);
+      padding: 0 var(--mzk-padding);
       border-radius: 5px;
-      border: solid 1px $mzk-color-bg-lighter;
+      border: solid 1px var(--mzk-color-bg-lighter);
       height: 1.66rem;
       width: 75%;
-      margin: $mzk-margin 0;
+      margin: var(--mzk-margin) 0;
     }
 
     code {
       padding: 0.2em 0.4em;
       margin: 0;
       font-size: 85%;
-      background-color: $mzk-color-bg-dark-alpha-10;
+      background-color: var(--mzk-color-bg-dark-alpha-10);
       border-radius: 3px;
       font-family: monospace, serif;
       color: #cb345b;
@@ -123,7 +123,7 @@
 
   .container {
     h3.tap-bpm-track-bpm-text {
-      margin: $mzk-margin 0;
+      margin: var(--mzk-margin) 0;
     }
 
     p {
@@ -131,20 +131,20 @@
     }
 
     span#tap-bpm-track-bpm {
-      color: $mzk-color-secondary;
+      color: var(--mzk-color-secondary);
     }
 
     .tap-bpm-click-container {
       align-items: center;
-      background-color: $mzk-color-bg-dark-alpha-90;
-      border: dashed 3px $mzk-border-color;
+      background-color: var(--mzk-color-bg-dark-alpha-90);
+      border: dashed var(--mzk-border-jumbo-width) var(--mzk-border-color);
       border-radius: var(--modal-radius);
       display: flex;
       height: 13rem;
       justify-content: center;
       margin-left: auto;
       margin-right: auto;
-      margin-top: $mzk-margin;
+      margin-top: var(--mzk-margin);
       width: 85%;
 
       @include user-select(none);
@@ -155,7 +155,7 @@
       }
 
       span {
-        color: $mzk-color-secondary;
+        color: var(--mzk-color-secondary);
         display: block;
         font-size: 4em;
       }
@@ -177,7 +177,7 @@
 
       img {
         cursor: not-allowed; /* Must be set to 'pointer' in Js when user id went back from server */
-        margin: 0 $mzk-margin;
+        margin: 0 var(--mzk-margin);
         width: 35px;
       }
     }
@@ -189,7 +189,7 @@
 
   .container {
     * {
-      margin-bottom: $mzk-margin;
+      margin-bottom: var(--mzk-margin);
     }
 
     img {
@@ -209,10 +209,10 @@
 .suggestion-modal {
   .container {
     textarea {
-      border: solid 1px $mzk-color-bg-lighter;
+      border: solid 1px var(--mzk-color-bg-lighter);
       height: 6rem;
-      padding: $mzk-padding;
-      margin: (2 * $mzk-margin) 0;
+      padding: var(--mzk-padding);
+      margin: var(--mzk-margin-big) 0;
       width: 100%;
     }
   }

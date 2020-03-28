@@ -8,7 +8,7 @@
   width: 100%;
 
   .sp-artist-header {
-    border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+    border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-25);
     display: flex;
     height: 300px;
     padding: 0 5%;
@@ -33,19 +33,19 @@
     .artist-info {
       flex-direction: column;
       justify-content: space-around;
-      padding-left: ($mzk-padding * 3);
+      padding-left: var(--mzk-padding-huge);
       width: calc(100% - 300px);
 
       h1 {
-        margin-bottom: $mzk-margin;
+        margin-bottom: var(--mzk-margin);
       }
 
       h2 {
-        color: $mzk-color-text-darker;
+        color: var(--mzk-color-text-darker);
       }
 
       h4 {
-        padding-left: ($mzk-padding * 2);
+        padding-left: var(--mzk-padding-big);
 
         img {
           cursor: pointer;
@@ -60,7 +60,7 @@
       }
 
       p {
-        padding-top: ($mzk-padding * 1.5);
+        padding-top: var(--mzk-padding);
       }
 
       .artist-main-info {
@@ -89,7 +89,7 @@
 
       button,
       span {
-        margin: 0 $mzk-margin;
+        margin: 0 var(--mzk-margin);
 
         &:last-child {
           padding: 0;
@@ -106,7 +106,7 @@
 
   .sp-artist-albums {
     align-items: flex-start;
-    border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+    border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-25);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: .5rem;
@@ -123,27 +123,27 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      margin: $mzk-margin;
-      padding: $mzk-padding;
+      margin: var(--mzk-margin);
+      padding: var(--mzk-padding);
       position: relative;
       text-align: center;
       width: 150px;
 
-      transition: background-color $mzk-animation-duration ease-out,
-                  border-radius $mzk-animation-duration ease,
-                  box-shadow $mzk-animation-duration ease-in;
+      transition: background-color var(--mzk-animation-duration) ease-out,
+                  border-radius var(--mzk-animation-duration) ease,
+                  box-shadow var(--mzk-animation-duration) ease-in;
 
       &:active,
       &:focus,
       &:hover {
-        background-color: $mzk-color-primary-alpha-10;
-        border-radius: $mzk-border-radius;
-        box-shadow: 0 0 10px -2px $mzk-color-primary;
+        background-color: var(--mzk-color-primary-alpha-10);
+        border-radius: var(--mzk-border-radius);
+        box-shadow: 0 0 10px -2px var(--mzk-color-primary);
       }
 
         img {
-          background-color: $mzk-color-bg;
-          border-radius: $mzk-border-radius;
+          background-color: var(--mzk-color-bg);
+          border-radius: var(--mzk-border-radius);
           height: 120px;
           width: 120px;
         }
@@ -163,25 +163,25 @@
     overflow: hidden;
 
     div.track {
-      background: $mzk-color-bg-darker-alpha-25;
+      background: var(--mzk-color-bg-darker-alpha-25);
       cursor: pointer;
       display: flex;
       height: 35px;
       align-items: center;
-      margin: ($mzk-margin / 2) 5%;
+      margin: var(--mzk-margin-small) 5%;
       user-select: none;
 
       &:nth-child(2n) {
-        background: $mzk-color-bg-dark-alpha-25;
+        background: var(--mzk-color-bg-dark-alpha-25);
       }
 
       &.selected {
-        background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
+        background-color: var(--mzk-color-primary-alpha-50) !important; // Important to 'z-index' over playing bg-color
       }
 
       &.playing {
-        background-color: $mzk-color-secondary-alpha-50;
-        box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
+        background-color: var(--mzk-color-secondary-alpha-50);
+        box-shadow: 0 0 var(--mzk-margin) rgba(255, 255, 255, 0.1);
 
         &::before {
           content: '';
@@ -203,12 +203,12 @@
         width: calc(100% - 150px);
 
         &:first-child {
-          margin-left: $mzk-margin;
+          margin-left: var(--mzk-margin);
         }
 
         &:last-child {
           text-align: right;
-          margin-right: $mzk-margin;
+          margin-right: var(--mzk-margin);
           width: 100px;
         }
       }
@@ -230,7 +230,7 @@
     width: 30%;
 
     .sa-pp-container {
-      padding: 2 * $mzk-padding 0;
+      padding: var(--mzk-padding-big) 0;
 
       img {
         width: 85%;
@@ -238,15 +238,15 @@
     }
 
     .sa-artist-info {
-      padding: $mzk-padding / 2;
+      padding: var(--mzk-padding-small);
 
       .sa-info-header {
-        margin-bottom: $mzk-margin * 2;
+        margin-bottom: var(--mzk-margin-big);
       }
 
       .sa-info-content {
         h4 {
-          margin-bottom: $mzk-margin / 2;
+          margin-bottom: var(--mzk-margin-small);
         }
 
         img {
@@ -256,7 +256,7 @@
 
         a {
           cursor: pointer;
-          margin: 0 $mzk-margin / 2;
+          margin: 0 var(--mzk-margin-small);
 
           &:first-child {
             margin-left: 0;
@@ -270,7 +270,7 @@
     width: 70%;
 
     h3 {
-      margin: 2 * $mzk-margin $mzk-margin $mzk-margin;
+      margin: var(--mzk-margin-big) var(--mzk-margin) var(--mzk-margin);
       font-style: italic;
     }
 
@@ -289,27 +289,27 @@
         display: flex;
         flex-direction: column;
         height: max-content;
-        margin: $mzk-margin;
-        padding: $mzk-padding;
+        margin: var(--mzk-margin);
+        padding: var(--mzk-padding);
         position: relative;
         text-align: center;
         width: 150px;
 
-        transition: background-color $mzk-animation-duration ease-out,
-                    border-radius $mzk-animation-duration ease,
-                    box-shadow $mzk-animation-duration ease-in;
+        transition: background-color var(--mzk-animation-duration) ease-out,
+                    border-radius var(--mzk-animation-duration) ease,
+                    box-shadow var(--mzk-animation-duration) ease-in;
 
         &:active,
         &:focus,
         &:hover {
-          background-color: $mzk-color-primary-alpha-10;
-          border-radius: $mzk-border-radius;
-          box-shadow: 0 0 10px -2px $mzk-color-primary;
+          background-color: var(--mzk-color-primary-alpha-10);
+          border-radius: var(--mzk-border-radius);
+          box-shadow: 0 0 10px -2px var(--mzk-color-primary);
         }
 
         img {
-          background-color: $mzk-color-bg;
-          border-radius: $mzk-border-radius;
+          background-color: var(--mzk-color-bg);
+          border-radius: var(--mzk-border-radius);
           height: 120px;
           width: 120px;
         }
@@ -350,7 +350,7 @@
       align-items: center;
       flex-direction: column;
       justify-content: space-evenly;
-      margin: (2 * $mzk-margin) 0;
+      margin: var(--mzk-margin-big) 0;
       width: 100%;
 
       img {
@@ -364,17 +364,17 @@
       justify-content: space-around;
 
       h1 {
-        margin-bottom: $mzk-margin;
+        margin-bottom: var(--mzk-margin);
         text-align: center;
       }
 
       h2 {
-        color: $mzk-color-text-darker;
+        color: var(--mzk-color-text-darker);
         text-align: center;
       }
 
       h4 {
-        padding: ($mzk-padding / 4) 0;
+        padding: var(--mzk-padding-tiny) 0;
         text-align: center;
 
         img {
@@ -384,19 +384,19 @@
       }
 
       p {
-        padding-top: ($mzk-padding * 1.5);
+        padding-top: var(--mzk-padding);
       }
 
       .album-artist {
-        color: $mzk-color-text-darker;
+        color: var(--mzk-color-text-darker);
         cursor: pointer;
 
-        transition: color $mzk-animation-duration ease;
+        transition: color var(--mzk-animation-duration) ease;
 
         &:active,
         &:focus,
         &:hover {
-          color: $mzk-color-primary;
+          color: var(--mzk-color-primary);
         }
       }
 
@@ -404,14 +404,14 @@
         a {
           color: white;
           cursor: pointer;
-          padding: 0 ($mzk-padding / 2);
+          padding: 0 var(--mzk-padding-small);
 
-          transition: color $mzk-animation-duration ease;
+          transition: color var(--mzk-animation-duration) ease;
 
           &:active,
           &:focus,
           &:hover {
-            color: $mzk-color-primary;
+            color: var(--mzk-color-primary);
           }
 
           &:first-child {
@@ -432,14 +432,14 @@
           font-style: italic;
           margin: 0;
 
-          transition: background-color $mzk-animation-duration ease-out,
-                      border-radius $mzk-animation-duration ease,
-                      box-shadow $mzk-animation-duration ease-in;
+          transition: background-color var(--mzk-animation-duration) ease-out,
+                      border-radius var(--mzk-animation-duration) ease,
+                      box-shadow var(--mzk-animation-duration) ease-in;
 
           &:active,
           &:focus,
           &:hover {
-            color: $mzk-color-primary;
+            color: var(--mzk-color-primary);
           }
         }
       }
@@ -451,7 +451,7 @@
 
       .album-detailed-info {
         flex-direction: column;
-        margin: (2 * $mzk-margin) 0;
+        margin: var(--mzk-margin-big) 0;
 
         & > div {
           flex-direction: column;
@@ -468,7 +468,7 @@
 
       button,
       span {
-        margin: 0 $mzk-margin;
+        margin: 0 var(--mzk-margin);
 
         &:last-child {
           padding: 0;
@@ -491,28 +491,28 @@
     width: 65%;
 
     div.track {
-      background: $mzk-color-bg-darker-alpha-25;
+      background: var(--mzk-color-bg-darker-alpha-25);
       cursor: pointer;
       display: grid;
       grid-template-columns: 50px 1fr 100px;
       grid-template-rows: repeat(2, 1fr);
       align-items: center;
-      margin: ($mzk-margin / 2) $mzk-margin ($mzk-margin / 2) 0;
+      margin: var(--mzk-margin-small) var(--mzk-margin) var(--mzk-margin-small) 0;
       user-select: none;
 
-      transition: background-color $mzk-animation-duration ease-in;
+      transition: background-color var(--mzk-animation-duration) ease-in;
 
       &:nth-child(2n) {
-        background: $mzk-color-bg-dark-alpha-25;
+        background: var(--mzk-color-bg-dark-alpha-25);
       }
 
       &.selected {
-        background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
+        background-color: var(--mzk-color-primary-alpha-50) !important; // Important to 'z-index' over playing bg-color
       }
 
       &.playing {
-        background-color: $mzk-color-secondary-alpha-50;
-        box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
+        background-color: var(--mzk-color-secondary-alpha-50);
+        box-shadow: 0 0 var(--mzk-margin) rgba(255, 255, 255, 0.1);
 
         &::before {
           content: '';
@@ -546,7 +546,7 @@
   width: 100%;
 
   .album-header {
-    border-bottom: solid $mzk-border-width $mzk-color-text-light-alpha-25;
+    border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-25);
     display: flex;
     height: 300px;
     padding: 0 5%;
@@ -570,23 +570,23 @@
     .album-info {
       flex-direction: column;
       justify-content: space-around;
-      padding-left: ($mzk-padding * 3);
+      padding-left: var(--mzk-padding-huge);
       width: calc(100% - 300px);
 
       h1 {
-        margin-bottom: $mzk-margin;
+        margin-bottom: var(--mzk-margin);
       }
 
       h2 {
-        color: $mzk-color-text-darker;
+        color: var(--mzk-color-text-darker);
       }
 
       h4 {
-        padding-left: ($mzk-padding * 2);
+        padding-left: var(--mzk-padding-big);
       }
 
       p {
-        padding-top: ($mzk-padding * 1.5);
+        padding-top: var(--mzk-padding);
       }
 
       .album-main-info {
@@ -615,7 +615,7 @@
 
       button,
       span {
-        margin: 0 $mzk-margin;
+        margin: 0 var(--mzk-margin);
 
         &:last-child {
           padding: 0;
@@ -636,25 +636,25 @@
     overflow: hidden;
 
     div.track {
-      background: $mzk-color-bg-darker-alpha-25;
+      background: var(--mzk-color-bg-darker-alpha-25);
       cursor: pointer;
       display: flex;
       height: 35px;
       align-items: center;
-      margin: ($mzk-margin / 3) 5%;
+      margin: var(--mzk-margin-small) 5%;
       user-select: none;
 
       &:nth-child(2n) {
-        background: $mzk-color-bg-dark-alpha-25;
+        background: var(--mzk-color-bg-dark-alpha-25);
       }
 
       &.selected {
-        background-color: $mzk-color-primary-alpha-50 !important; // Important to 'z-index' over playing bg-color
+        background-color: var(--mzk-color-primary-alpha-50) !important; // Important to 'z-index' over playing bg-color
       }
 
       &.playing {
-        background-color: $mzk-color-secondary-alpha-50;
-        box-shadow: 0 0 $margin rgba(255, 255, 255, 0.1);
+        background-color: var(--mzk-color-secondary-alpha-50);
+        box-shadow: 0 0 var(--mzk-margin) rgba(255, 255, 255, 0.1);
 
         &::before {
           content: '';
@@ -676,12 +676,12 @@
         width: calc(100% - 150px);
 
         &:first-child {
-          margin-left: $mzk-margin;
+          margin-left: var(--mzk-margin);
         }
 
         &:last-child {
           text-align: right;
-          margin-right: $mzk-margin;
+          margin-right: var(--mzk-margin);
           width: 100px;
         }
       }
@@ -696,7 +696,7 @@
 
   .sp-country-header {
     height: 100%;
-    padding: $mzk-padding;
+    padding: var(--mzk-padding);
     text-align: center;
     width: 25%;
 
@@ -712,7 +712,7 @@
 
   .sp-country-artists {
     height: 100%;
-    padding: $mzk-padding;
+    padding: var(--mzk-padding);
     width: 75%;
 
     .artist {
@@ -733,7 +733,7 @@
         }
 
         h3 {
-          margin: $mzk-margin 0;
+          margin: var(--mzk-margin) 0;
         }
       }
 
@@ -741,7 +741,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
         grid-gap: .5rem;
-        padding: $mzk-padding;
+        padding: var(--mzk-padding);
         width: calc(100% - 16rem);
 
         .album {
@@ -751,16 +751,16 @@
           flex-direction: column;
           justify-content: flex-start;
 
-          transition: background-color $mzk-animation-duration ease-out,
-                      border-radius $mzk-animation-duration ease,
-                      box-shadow $mzk-animation-duration ease-in;
+          transition: background-color var(--mzk-animation-duration) ease-out,
+                      border-radius var(--mzk-animation-duration) ease,
+                      box-shadow var(--mzk-animation-duration) ease-in;
 
           &:active,
           &:focus,
           &:hover {
-            background-color: $mzk-color-primary-alpha-10;
-            border-radius: $mzk-border-radius;
-            box-shadow: 0 0 10px -2px $mzk-color-primary;
+            background-color: var(--mzk-color-primary-alpha-10);
+            border-radius: var(--mzk-border-radius);
+            box-shadow: 0 0 10px -2px var(--mzk-color-primary);
           }
 
           img {
