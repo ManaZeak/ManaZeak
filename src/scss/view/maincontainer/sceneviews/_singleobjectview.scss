@@ -1,5 +1,5 @@
 .single-releaseArtist-page,
-.single-artist-page,
+//.single-artist-page,
 .single-producer-page,
 .single-lang-page,
 .single-label-page {
@@ -210,6 +210,120 @@
           text-align: right;
           margin-right: $mzk-margin;
           width: 100px;
+        }
+      }
+    }
+  }
+}
+
+.single-artist-page {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  .sa-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 30%;
+
+    .sa-pp-container {
+      padding: 2 * $mzk-padding 0;
+
+      img {
+        width: 85%;
+      }
+    }
+
+    .sa-artist-info {
+      padding: $mzk-padding / 2;
+
+      .sa-info-header {
+        margin-bottom: $mzk-margin * 2;
+      }
+
+      .sa-info-content {
+        h4 {
+          margin-bottom: $mzk-margin / 2;
+        }
+
+        img {
+          cursor: pointer;
+          height: 1rem;
+        }
+
+        a {
+          cursor: pointer;
+          margin: 0 $mzk-margin / 2;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .sa-right {
+    width: 70%;
+
+    h3 {
+      margin: 2 * $mzk-margin $mzk-margin $mzk-margin;
+      font-style: italic;
+    }
+
+    .sa-artist-albums {
+      display: flex;
+      height: 33%;
+      flex-wrap: wrap;
+      overflow: auto;
+
+      .sa-album {
+        align-items: center;
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 0 0 0 transparent;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: max-content;
+        margin: $mzk-margin;
+        padding: $mzk-padding;
+        position: relative;
+        text-align: center;
+        width: 150px;
+
+        transition: background-color $mzk-animation-duration ease-out,
+                    border-radius $mzk-animation-duration ease,
+                    box-shadow $mzk-animation-duration ease-in;
+
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: $mzk-color-primary-alpha-10;
+          border-radius: $mzk-border-radius;
+          box-shadow: 0 0 10px -2px $mzk-color-primary;
+        }
+
+        img {
+          background-color: $mzk-color-bg;
+          border-radius: $mzk-border-radius;
+          height: 120px;
+          width: 120px;
+        }
+
+        p {
+          font-size: .9rem;
+          margin-top: 5px;
+          text-align: center;
+
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
         }
       }
     }

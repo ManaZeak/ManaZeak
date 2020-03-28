@@ -1,33 +1,20 @@
 {% load staticfiles %}
 <div class="single-artist-page">
-    <div class="sp-artist-header">
-        <div class="artist-cover-container">
-            <img src="{% static 'img/object/artist.svg' %}" class="artist-pp" alt="artist-profile-pic">
+    <div class="sa-left">
+        <div class="sa-pp-container">
+            <img src="{% static 'img/object/artist.svg' %}" class="sa-artist-pp" alt="artist-profile-pic">
         </div>
-        <div class="artist-info">
-            <div class="artist-main-info">
+        <div class="sa-artist-info">
+            <div class="sa-info-header">
                 <h1 class="artist-title">Artist Name</h1>
                 <h2 class="artist-years">1992 – 2020</h2>
-                <h2 class="artist-labels"><em>Never Say Die, UKF Records</em></h2>
             </div>
-            <div class="artist-detailed-info">
-                <div class="labels">
-                    <h4>&nbsp;</h4>
-                    <h4>Country</h4>
-                    <h4>Genre</h4>
-                </div>
-                <div class="values">
-                    <h4 class="artist-track-composition">14 albums – 18 tracks – 1 hr 13 min</h4>
-                    <h4 class="artist-country"></h4>
-                    <h4 class="artist-genres"></h4>
-                </div>
-            </div>
-            <div class="artist-controls">
-                <button class="play-album">PLAY</button>
-                <span><img src="{% static 'img/actions/more-hori.svg' %}" alt="options"></span>
+            <div class="sa-info-content">
+                <h4 class="artist-track-composition">0 albums – 0 tracks – 00:00</h4>
+                <h4 class="artist-country"></h4>
+                <h4 class="artist-genres"></h4>
             </div>
         </div>
     </div>
-    <div class="sp-artist-albums"></div>
-    <div class="sp-artist-random-tracks"></div>
+    <div class="sa-right"></div>
 </div>

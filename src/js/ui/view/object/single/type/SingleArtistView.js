@@ -13,43 +13,35 @@ class SingleArtistView extends SingleTagView {
     this._id = options.id;
 
     this._dom = {
-      cover: null,
+      pp: null,
       title: null,
       trackCompo: null,
-      artistLabel: null,
       country: null,
-      play: null,
-      albumContainer: null,
-      trackContainer: null
+      albumContainer: null
     };
 
     this._init()
       .then(this._processArtist.bind(this))
       .then(this._setupContext.bind(this))
-      .then(this._singleTagEvents.bind(this))
       .then(this._viewReady);
   }
 
 
   _processArtist(response) {
     return new Promise(resolve => {
-      this._dom.play = this._dom.wrapper.getElementsByClassName('play-album')[0];
-      this._dom.cover = this._dom.wrapper.getElementsByClassName('artist-pp')[0];
+      this._dom.pp = this._dom.wrapper.getElementsByClassName('sa-artist-pp')[0];
       this._dom.title = this._dom.wrapper.getElementsByClassName('artist-title')[0];
-      this._dom.artistLabel = this._dom.wrapper.getElementsByClassName('artist-labels')[0];
       this._dom.yearLabel = this._dom.wrapper.getElementsByClassName('artist-years')[0];
       this._dom.trackCompo = this._dom.wrapper.getElementsByClassName('artist-track-composition')[0];
       this._dom.country = this._dom.wrapper.getElementsByClassName('artist-country')[0];
       this._dom.genres = this._dom.wrapper.getElementsByClassName('artist-genres')[0];
-      this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sp-artist-albums')[0];
-      this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('sp-artist-random-tracks')[0];
+      this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sa-right')[0];
 
       if (response.ARTIST.ARTIST_PP !== null) {
-        this._dom.cover.src = response.ARTIST.ARTIST_PP;
+        this._dom.pp.src = response.ARTIST.ARTIST_PP;
       }
 
       this._dom.title.innerHTML = response.ARTIST.ARTIST_NAME;
-      this._dom.artistLabel.innerHTML = response.ARTIST.ARTIST_NAME;
       this._dom.yearLabel.innerHTML = `<i>${response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR} – ${response.ARTIST.ARTIST_ALBUMS[response.ARTIST.ARTIST_ALBUMS.length -1].ALBUM_YEAR}</i>`;
       this._dom.trackCompo.innerHTML = `${response.ARTIST.ARTIST_ALBUMS.length} ${mzk.lang.playlist.albums} – ${response.ARTIST.NUMBER_TRACKS} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ARTIST.TOTAL_DURATION)}`;
 
@@ -70,12 +62,12 @@ class SingleArtistView extends SingleTagView {
       }
 
       for (let i = 0; i < response.ARTIST.ARTIST_GENRES.length; ++i) {
-        const link = document.createElement('SPAN');
+        const link = document.createElement('A');
         link.innerHTML = response.ARTIST.ARTIST_GENRES[i].NAME;
         link.dataset.id = response.ARTIST.ARTIST_GENRES[i].ID;
         link.addEventListener('click', function() {
           mzk.ui.setSceneView({
-            name: 'SingleCountry',
+            name: 'SingleGenre',
             uiName: this.innerHTML,
             id: this.dataset.id
           });
@@ -83,9 +75,12 @@ class SingleArtistView extends SingleTagView {
         this._dom.genres.appendChild(link);
       }
 
-      for (let i = 0; i < response.ARTIST.ARTIST_ALBUMS.length; ++i) {
+      const releasedAlbums = document.createElement('DIV');
+      releasedAlbums.classList.add('sa-artist-albums');
+
+      for (let i = response.ARTIST.ARTIST_ALBUMS.length - 1; i >= 0; --i) {
         const album = document.createElement('DIV');
-        album.classList.add('sp-artist-album');
+        album.classList.add('sa-album');
         album.dataset.id = response.ARTIST.ARTIST_ALBUMS[i].ALBUM_ID;
 
         const albumTitle = document.createElement('P');
@@ -108,8 +103,13 @@ class SingleArtistView extends SingleTagView {
         album.appendChild(albumYear);
         album.appendChild(albumCover);
         album.appendChild(albumTitle);
-        this._dom.albumContainer.appendChild(album);
+        releasedAlbums.appendChild(album);
       }
+
+      const sectionTitle = document.createElement('H3');
+      sectionTitle.innerHTML = 'Released album';
+      this._dom.albumContainer.appendChild(sectionTitle);
+      this._dom.albumContainer.appendChild(releasedAlbums);
 
       resolve();
     });

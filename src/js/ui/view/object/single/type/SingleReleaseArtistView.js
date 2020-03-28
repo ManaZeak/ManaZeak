@@ -26,7 +26,6 @@ class SingleReleaseArtistView extends SingleTagView {
     this._init()
       .then(this._processArtist.bind(this))
       .then(this._setupContext.bind(this))
-      .then(this._singleTagEvents.bind(this))
       .then(this._viewReady);
   }
 
