@@ -14,7 +14,7 @@ class DetailedArtistGetter(AbstractDaoGetter):
             LEFT JOIN app_genre gen on app_track_genres.genre_id = gen.id
             LEFT JOIN app_track_countries atc on trk.id = atc.track_id
             LEFT JOIN app_country cou on atc.country_id = cou.id
-            WHERE art.id = 943
+            WHERE art.id = %s
             GROUP BY art.id, art.name, art.picture, alb.id, alb.title, alb.year, ac.location, cou.id, cou.name,
              gen.id, gen.name
             ORDER BY art.name, alb.year, title, cou.name, gen.name
