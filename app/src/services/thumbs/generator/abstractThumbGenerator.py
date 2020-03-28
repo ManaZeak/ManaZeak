@@ -29,7 +29,7 @@ class AbstractThumbGenerator(object, metaclass=abc.ABCMeta):
                 # Generating the thumbnail
                 ThumbGenerator.generateThumb(coverPath, self._getPathThumbnail(coverPath), self.size.value)
             except Exception as e:
-                logger.error('The cover at ' + coverPath + ' can''t be saved.')
+                logger.error('The cover at ' + coverPath + ' can\'t be saved.')
 
     ## Generate the path of the thumbnail.
     def _getDirectoryPathThumbnail(self):

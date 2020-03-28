@@ -5,6 +5,7 @@ from app.src.dto.artist.artistDto import ArtistDto
 from app.src.dto.artist.mainPageArtist import MainPageArtist
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
+from app.src.services.artist.loader.detailedArtistLoader import DetailArtistLoader
 from app.src.services.track.trackService import TrackService
 from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.frontRequestChecker import FrontRequestChecker
@@ -31,37 +32,17 @@ class ArtistService(object):
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
-    ## Get all the album and the track of an artist.
-    def getReleaseArtist(request, artistId):
-        user = request.user
-        # Checking the front request
-        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
-        # Checking the user permission
-        PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
-        # Getting the artist
-        artist = ArtistDto()
-        artist.loadArtistFromDb(artistId)
-        return {
-            'ARTIST': artist.generateJson(),
-            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
-        }
-
-    @staticmethod
-    @login_required(redirect_field_name='', login_url='app:login')
-    @FrontRequest
     def getArtist(request, artistId):
-        # FIXME : ajouter les albums liés.
         user = request.user
         # Checking the front request
         FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
         # Checking the user permission
         PermissionHandler.checkPermission(PermissionEnum.PLAY, user)
         # Getting the artist
-        artist = ArtistDto()
-        artist.loadArtistFromDb(artistId)
+        artistLoader = DetailArtistLoader()
+        artistLoader.loadDetailArtistWithId(artistId)
         return {
-            'ARTIST': artist.generateJson(),
-            'RANDOM_TRACKS': TrackService.getRandomTracksFromArtist(artistId, 5)
+            'ARTIST': artistLoader.detailedArtists.generateJson()
         }
 
     @staticmethod

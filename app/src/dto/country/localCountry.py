@@ -19,3 +19,14 @@ class LocalCountry(AbstractDto):
             'ID': self.id,
             'CODE': self.name,
         }
+
+    ## Recreating the hash for set.
+    def __hash__(self):
+        return hash(str(self.id))
+
+    ## Recreating the equals operator for the set.
+    def __eq__(self, other):
+        if isinstance(other, LocalCountry):
+            return self.__hash__() == other.__hash__()
+        else:
+            return False

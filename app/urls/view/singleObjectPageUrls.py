@@ -14,7 +14,7 @@ app_name = 'app'
 #   One genre, album or artist.
 urlpatterns = [
     path('releaseArtist/layout/', SingleObjectViews.getSingleReleaseArtistPage, name='getSingleReleaseArtistPage'),
-    path('releaseArtist/<int:artistId>/', ArtistService.getReleaseArtist, name='getSingleReleaseArtist'),
+    path('releaseArtist/<int:artistId>/', ArtistService.getArtist, name='getSingleReleaseArtist'),
 
     path('artist/layout/', SingleObjectViews.getSingleArtistPage, name='getSingleArtistPage'),
     path('artist/<int:artistId>/', ArtistService.getArtist, name='getArtist'),

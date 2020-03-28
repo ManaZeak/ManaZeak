@@ -1,8 +1,10 @@
 import logging
 
+from app.src.dto.abstractDto import AbstractDto
+
 loggerScan = logging.getLogger('scan')
 
-class LocalLazyGenre(object):
+class LocalLazyGenre(AbstractDto):
 
     ## Constructor
     def __init__(self):
