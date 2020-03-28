@@ -58,7 +58,7 @@ class SingleAlbumView extends SingleTagView {
           link.dataset.id = response.ALBUM.ALBUM_ARTIST.ID;
           link.addEventListener('click', function() {
             mzk.ui.setSceneView({
-              name: 'SingleReleaseArtist',
+              name: 'SingleArtist',
               uiName: this.innerHTML,
               id: this.dataset.id
             });

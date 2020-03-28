@@ -52,8 +52,36 @@ class SingleArtistView extends SingleTagView {
       this._dom.artistLabel.innerHTML = response.ARTIST.ARTIST_NAME;
       this._dom.yearLabel.innerHTML = `<i>${response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR} – ${response.ARTIST.ARTIST_ALBUMS[response.ARTIST.ARTIST_ALBUMS.length -1].ALBUM_YEAR}</i>`;
       this._dom.trackCompo.innerHTML = `${response.ARTIST.ARTIST_ALBUMS.length} ${mzk.lang.playlist.albums} – ${response.ARTIST.NUMBER_TRACKS} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ARTIST.TOTAL_DURATION)}`;
-      this._dom.country.innerHTML = response.ARTIST.COUNTRY;
-      this._dom.genres.innerHTML = response.ARTIST.GENRES;
+
+      for (let i = 0; i < response.ARTIST.ARTIST_COUNTRIES.length; ++i) {
+        const link = document.createElement('A');
+        const flag = document.createElement('IMG');
+        link.dataset.id = response.ARTIST.ARTIST_COUNTRIES[i].ID;
+        flag.src = `static/img/flag/${response.ARTIST.ARTIST_COUNTRIES[i].CODE}.svg`;
+        link.addEventListener('click', function() {
+          mzk.ui.setSceneView({
+            name: 'SingleCountry',
+            uiName: response.ARTIST.ARTIST_COUNTRIES[i].CODE,
+            id: this.dataset.id
+          });
+        }.bind(link), false);
+        link.appendChild(flag);
+        this._dom.country.appendChild(link);
+      }
+
+      for (let i = 0; i < response.ARTIST.ARTIST_GENRES.length; ++i) {
+        const link = document.createElement('SPAN');
+        link.innerHTML = response.ARTIST.ARTIST_GENRES[i].NAME;
+        link.dataset.id = response.ARTIST.ARTIST_GENRES[i].ID;
+        link.addEventListener('click', function() {
+          mzk.ui.setSceneView({
+            name: 'SingleCountry',
+            uiName: this.innerHTML,
+            id: this.dataset.id
+          });
+        }.bind(link), false);
+        this._dom.genres.appendChild(link);
+      }
 
       for (let i = 0; i < response.ARTIST.ARTIST_ALBUMS.length; ++i) {
         const album = document.createElement('DIV');

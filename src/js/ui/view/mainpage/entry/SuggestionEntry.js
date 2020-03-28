@@ -75,15 +75,7 @@ class SuggestionEntry {
 
 
   _events() {
-    if (this._groupType === 'ReleaseArtists') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleReleaseArtist',
-          uiName: this._entry.ARTIST_NAME,
-          id: this._entry.ARTIST_ID
-        });
-      }, false);
-    } else if (this._groupType === 'Artists') {
+    if (this._groupType === 'ReleaseArtists' || this._groupType === 'Artists') {
       this._dom.container.addEventListener('click', () => {
         mzk.ui.setSceneView({
           name: 'SingleArtist',

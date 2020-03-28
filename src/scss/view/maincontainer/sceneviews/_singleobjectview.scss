@@ -46,6 +46,17 @@
 
       h4 {
         padding-left: ($mzk-padding * 2);
+
+        img {
+          cursor: pointer;
+          height: 1rem; /* Fit flag size to line height */
+        }
+
+        span {
+          &:first-child {
+            margin-left: 0;
+          }
+        }
       }
 
       p {
