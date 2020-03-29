@@ -10,7 +10,7 @@ html, body {
   padding: 0;
   width: 100%;
 
-  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
+  background-image: linear-gradient(var(--mzk-color-gradient-max), var(--mzk-color-gradient-min) 85%);
   position: absolute;
 }
 
@@ -27,11 +27,6 @@ a {
   }
 }
 
-p.italic {
-  font-style: italic;
-}
-
-
 input[type=text],
 input[type=password] {
   background: transparent;
@@ -40,6 +35,7 @@ input[type=password] {
   color: var(--mzk-color-icons);
   padding: var(--mzk-padding-small);
   text-align: center;
+
   transition: var(--mzk-animation-duration);
 
   &:active,
@@ -101,7 +97,7 @@ input[type=checkbox] {
 input[type=checkbox] + label {
   cursor: pointer;
   display: block;
-  margin: 7px;
+  margin: var(--mzk-margin);
   padding: 0;
 
   &:before {
@@ -147,4 +143,8 @@ input[type=checkbox]:checked:disabled + label:before {
   user-select: none;
   /* Required to make elements draggable in old WebKit */
   -webkit-user-drag: element;
+}
+
+.italic {
+  font-style: italic;
 }

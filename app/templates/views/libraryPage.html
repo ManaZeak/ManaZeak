@@ -1,14 +1,14 @@
 {% load i18n %}
 {% load staticfiles %}
 <div class="library-page">
-    <div id="scene-commands">
+    <div id="scene-commands" class="scene-commands">
         <span>{% trans 'List view' %}</span>
     </div>
-    <div id="scene-manipulation">
+    <div id="scene-manipulation" class="scene-manipulation">
         <div><img src="{% static "img/navigation/nav-up.svg" %}" id="center-on-top" alt="center-on-top"></div>
         <div><img src="{% static "img/actions/stretch-y.svg" %}" id="center-on-track" alt="center-on-track"></div>
         <div><img src="{% static "img/actions/lock-off.svg" %}" id="lock-center-on-track" alt="lock-center-on-track"></div>
         <div><img src="{% static "img/navigation/nav-down.svg" %}" id="center-on-bottom" alt="center-on-bottom"></div>
     </div>
-    <img src="{% static "img/actions/option-gear.svg" %}" id="scene-view-option" alt="scene-view-option">
+    <img src="{% static "img/actions/option-gear.svg" %}" id="scene-view-option" class="scene-view-option" alt="scene-view-option">
 </div>

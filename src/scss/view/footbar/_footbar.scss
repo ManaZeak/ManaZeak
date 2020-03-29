@@ -1,151 +1,149 @@
 @import 'playbackratebar';
 
-#footbar {
+.footbar {
+  --moodbar-max-size: 1000px;
+
+  display: flex;
   bottom: 0;
+  height: var(--mzk-footbar-height);
   left: 0;
-  right: 0;
-  display: flex;
-  height: var(--mzk-footbar-height);
   position: absolute;
+  right: 0;
   width: calc(100% - var(--mzk-aside-width));
-  
-  transition: width var(--mzk-animation-duration) ease-in-out;
-}
 
-.footbar-track-preview {
-  height: var(--mzk-footbar-height);
-  width: var(--mzk-aside-width);
-}
+  @include transition(width var(--mzk-animation-duration) ease-in-out);
 
-.footbar-controls {
-  background: var(--mzk-color-bg);
-  display: flex;
-  height: var(--mzk-footbar-height);
-  justify-content: center;
-  width: 100%;
-  z-index: 700;
-
-  .left,
-  .right {
-    align-items: flex-end;
+  .footbar-controls {
+    background: var(--mzk-color-bg);
     display: flex;
-    height: var(--mzk-footbar-controls-height) + var(--mzk-footbar-progress-height);
-    width: var(--mzk-footbar-sides-width);
+    height: var(--mzk-footbar-height);
+    justify-content: center;
+    width: 100%;
+    z-index: 700;
 
-    p {
-      height: var(--mzk-footbar-moodbar-height);
-      line-height: var(--mzk-footbar-moodbar-height);
-      opacity: 0;
-      transition: opacity var(--mzk-footbar-transition) linear;
-    }
-  }
-
-  .left {
-    justify-content: flex-end;
-
-    p {
-      margin-right: var(--mzk-margin);
-    }
-  }
-
-  .center {
-    height: 100%;
-    max-width: 1000px;
-    width: calc(100% - (var(--mzk-footbar-sides-width) * 2));
-
-    #controls-container {
-      align-items: center;
+    .left,
+    .right {
+      align-items: flex-end;
       display: flex;
-      height: var(--mzk-footbar-controls-height);
-      justify-content: center;
-      width: 100%;
-      position: relative;
+      height: var(--mzk-footbar-controls-height) + var(--mzk-footbar-progress-height);
+      width: var(--mzk-footbar-sides-width);
 
-      div.image-wrapper {
-        cursor: pointer;
-        height: 50%;
+      p {
+        height: var(--mzk-footbar-moodbar-height);
+        line-height: var(--mzk-footbar-moodbar-height);
+        opacity: 0;
+
+        @include transition(opacity var(--mzk-footbar-transition) linear);
       }
+    }
 
-      img {
-        cursor: pointer;
-        height: 100%;
-        margin: 0 var(--mzk-footbar-controls-margin);
-        user-select: none;
-        -moz-user-select: none;
+    .left {
+      justify-content: flex-end;
 
-        #repeat {
+      p {
+        margin-right: var(--mzk-margin);
+      }
+    }
+
+    .center {
+      height: 100%;
+      max-width: var(--moodbar-max-size);
+      width: calc(100% - (var(--mzk-footbar-sides-width) * 2));
+
+      #controls-container {
+        align-items: center;
+        display: flex;
+        height: var(--mzk-footbar-controls-height);
+        justify-content: center;
+        width: 100%;
+        position: relative;
+
+        div.image-wrapper {
+          cursor: pointer;
+          height: 50%;
+        }
+
+        img {
+          cursor: pointer;
+          height: 100%;
+          margin: 0 var(--mzk-footbar-controls-margin);
+          user-select: none;
+          -moz-user-select: none;
+
+          #repeat {
+            position: absolute;
+            left: 0;
+          }
+
+          #shuffle {
+            position: absolute;
+            left: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+          }
+        }
+
+        .queue {
+          position: absolute;
+          right: 0;
+          width: var(--mzk-footbar-icons-size);
+
+          img {
+            height: 100% !important;
+          }
+        }
+
+        .speedometer {
+          position: absolute;
+          right: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+          width: var(--mzk-footbar-icons-size);
+
+          img {
+            height: 100% !important;
+          }
+        }
+
+        .shuffle-left {
+          position: absolute;
+          left: calc(var(--mzk-footbar-icons-size) + 2 * var(--mzk-footbar-controls-margin));
+        }
+
+        .repeat-left {
           position: absolute;
           left: 0;
         }
 
-        #shuffle {
-          position: absolute;
-          left: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+        @import 'volumebar'; // Loading volumebar rules
+
+        .image-wrapper {
+          #queue {
+            position: absolute;
+            right: 0;
+            height: var(--mzk-footbar-controls-scale);
+            margin: 0 var(--mzk-footbar-controls-margin);
+          }
+
+          &::before {
+           content: attr(data-before); // To be retrieved in Js
+           position:absolute;
+           top: 5px;
+           right: -10px;
+           color: var(--mzk-color-primary);
+           border-radius: 50%;
+           height: 13px;
+           width: 13px;
+           font-size: 0.9em;
+           text-align: center;
+           text-shadow: #000 1px 0 5px;
+          }
         }
       }
 
-      .queue {
-        position: absolute;
-        right: 0;
-        width: var(--mzk-footbar-icons-size);
-
-        img {
-          height: 100% !important;
-        }
-      }
-
-      .speedometer {
-        position: absolute;
-        right: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
-        width: var(--mzk-footbar-icons-size);
-
-        img {
-          height: 100% !important;
-        }
-      }
-
-      .shuffle-left {
-        position: absolute;
-        left: calc(var(--mzk-footbar-icons-size) + 2 * var(--mzk-footbar-controls-margin));
-      }
-
-      .repeat-left {
-        position: absolute;
-        left: 0;
-      }
-
-      @import 'volumebar'; // Loading volumebar rules
-
-      .image-wrapper {
-        #queue {
-          position: absolute;
-          right: 0;
-          height: var(--mzk-footbar-controls-scale);
-          margin: 0 var(--mzk-footbar-controls-margin);
-        }
-
-        &::before {
-         content: attr(data-before); // To be retrieved in Js
-         position:absolute;
-         top: 5px;
-         right: -10px;
-         color: var(--mzk-color-primary);
-         border-radius: 50%;
-         height: 13px;
-         width: 13px;
-         font-size: 0.9em;
-         text-align: center;
-         text-shadow: #000 1px 0 5px;
-        }
-      }
+      @import 'progressbar'; // Loading progressbar rules
     }
 
-    @import 'progressbar'; // Loading progressbar rules
-  }
-
-  .right {
-    p {
-      margin-left: var(--mzk-margin);
+    .right {
+      p {
+        margin-left: var(--mzk-margin);
+      }
     }
   }
 }

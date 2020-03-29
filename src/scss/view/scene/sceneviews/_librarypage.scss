@@ -1,0 +1,67 @@
+@import './listview';
+@import './albumview';
+
+.library-page {
+  height: 100%;
+  padding: var(--mzk-padding-huge);
+
+  .scene-commands {
+    align-items: center;
+    display: inline-flex;
+    height: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
+    position: absolute;
+    right: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
+    top: 0;
+    width: auto;
+
+    span {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      font-size: .9em;
+      line-height: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
+
+      @include user-select(none);
+
+      &:after {
+        content: '';
+        border-color: var(--mzk-color-icons) transparent transparent transparent;
+        border-style: solid;
+        border-width: 6px 6px 0 6px;
+        margin-left: var(--mzk-margin);
+      }
+    }
+
+    img {
+      height: calc(49px / 2);
+      padding: 0 15px;
+      cursor: pointer;
+    }
+  }
+
+  .scene-manipulation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: var(--mzk-scene-icon-margin);
+    height: 90px;
+    margin: auto;
+    width: var(--mzk-aside-button-length);
+
+    img {
+      cursor: pointer;
+      height: var(--mzk-aside-button-length);
+      width: var(--mzk-aside-button-length);
+    }
+  }
+
+  .scene-view-option {
+    bottom: var(--mzk-scene-icon-margin);
+    cursor: pointer;
+    height: var(--mzk-aside-button-length);
+    position: absolute;
+    right: var(--mzk-scene-icon-margin);
+    width: var(--mzk-aside-button-length);
+    z-index: 666;
+  }
+}

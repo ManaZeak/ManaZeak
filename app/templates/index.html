@@ -10,19 +10,19 @@
     <link rel="stylesheet" type="text/css" href="{% static "dist/css/manazeak.bundle.css" %}">
   </head>
   <body>
-    <div id="topbar">
-      <div id="topbar-spinner"></div>
-      <div id="home-container">
-        <img src="{% static "img/navigation/home.svg" %}" class="topbar-home-button" id="topbar-home-button" alt="main-page">
+    <div id="topbar" class="topbar">
+      <div id="topbar-spinner" class="topbar-spinner"></div>
+      <div id="home-container" class="home-container">
+        <img src="{% static "img/navigation/home.svg" %}" id="topbar-home-button" class="topbar-home-button" alt="main-page">
       </div>
-      <div id="suggestion-container">
-        <img src="{% static "img/actions/suggestion.svg" %}" class="topbar-suggestion-button" id="topbar-suggestion-button" alt="suggestion">
+      <div id="suggestion-container" class="suggestion-container">
+        <img src="{% static "img/actions/suggestion.svg" %}" id="topbar-suggestion-button" class="topbar-suggestion-button" alt="suggestion">
       </div>
       <p class="topbar-view-breadcrumbs"></p>
-      <img src="{% static "img/logo/manazeak-text.svg" %}" id="topbar-logo" alt="manazeak-text-logo">
-      <img src="{% static "img/default/user.svg" %}" id="topbar-avatar" alt="user-avatar">
+      <img src="{% static "img/logo/manazeak-text.svg" %}" id="topbar-logo" class="topbar-logo" alt="manazeak-text-logo">
+      <img src="{% static "img/default/user.svg" %}" id="topbar-avatar" class="topbar-avatar" alt="user-avatar">
     </div>
-    <div id="scene"></div>
+    <div id="scene" class="scene"></div>
     <div class="aside">
       <div class="app-controls">
         <div>
@@ -44,7 +44,7 @@
         <img src="#" class ="track-preview-cover" alt="current-track-cover">
       </div>
     </div>
-    <div id="footbar">
+    <div id="footbar" class="footbar">
       <div class="footbar-controls">
         <div class="left">
           <p id="footbar-left"></p>

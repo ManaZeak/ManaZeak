@@ -289,7 +289,7 @@
   background: var(--mzk-color-bg-dark);
   border: solid 1px black;
   border-radius: 5px;
-  bottom: calc(2 * var(--mzk-main-container-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
+  bottom: calc(2 * var(--mzk-scene-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
   height: auto;
   position: absolute;
   right: 5px;
@@ -348,7 +348,7 @@
   background: var(--mzk-color-bg-dark);
   border: solid 1px black;
   border-radius: var(--mzk-border-radius);
-  bottom: calc(2 * var(--mzk-main-container-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
+  bottom: calc(2 * var(--mzk-scene-icon-margin) + var(--mzk-aside-button-length) + var(--mzk-footbar-height));
   height: auto;
   position: absolute;
   right: calc(5px + var(--mzk-aside-width));

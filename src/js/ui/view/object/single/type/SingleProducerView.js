@@ -20,8 +20,7 @@ class SingleProducerView extends SingleTagView {
       artistLabel: null,
       country: null,
       play: null,
-      albumContainer: null,
-      trackContainer: null
+      albumContainer: null
     };
 
     this._init()
@@ -43,7 +42,6 @@ class SingleProducerView extends SingleTagView {
       this._dom.country = this._dom.wrapper.getElementsByClassName('artist-country')[0];
       this._dom.genres = this._dom.wrapper.getElementsByClassName('artist-genres')[0];
       this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sp-artist-albums')[0];
-      this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('sp-artist-random-tracks')[0];
 
       if (response.ARTIST.PP !== null && Utils.imageUrlExists(response.ARTIST.PP) === true) {
         this._dom.cover.src = response.ARTIST.PP;
@@ -83,10 +81,6 @@ class SingleProducerView extends SingleTagView {
         album.appendChild(albumYear);
         this._dom.albumContainer.appendChild(album);
       }
-
-      new ScrollBar({
-        target: this._dom.trackContainer
-      });
 
       resolve();
     });

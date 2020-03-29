@@ -1,6 +1,6 @@
 /* Usefull classes and styles taken from MessCss */
 $font-size: 14px;
-$line-spacing: $font-size * (140 / 100);
+$line-spacing: calc(var(--mzk-font-size) * (140 / 100));
 $border-radius: 2px;
 $border-thickness: 1px;
 
@@ -80,7 +80,7 @@ $notification-border-std: 1px;
 
   transition: opacity 1s ease 0s;
 
-  @include box-shadow(0 0 $notification-margin, 0, 0, 0, 0.2);
+  @include box-shadow(0 0 $notification-margin, var(--mzk-color-bg-darker-alpha-25));
   @include user-select(none);
 
   h6 {

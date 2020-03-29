@@ -20,8 +20,7 @@ class SingleLabelView extends SingleTagView {
       artistLabel: null,
       country: null,
       play: null,
-      albumContainer: null,
-      trackContainer: null
+      albumContainer: null
     };
 
     this._init()
@@ -42,7 +41,6 @@ class SingleLabelView extends SingleTagView {
       this._dom.country = this._dom.wrapper.getElementsByClassName('artist-country')[0];
       this._dom.genres = this._dom.wrapper.getElementsByClassName('artist-genres')[0];
       this._dom.albumContainer = this._dom.wrapper.getElementsByClassName('sp-artist-albums')[0];
-      this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('sp-artist-random-tracks')[0];
 
       if (response.LABEL.PP !== null && Utils.imageUrlExists(response.LABEL.PP) === true) {
         this._dom.cover.src = response.LABEL.PP;
@@ -81,10 +79,6 @@ class SingleLabelView extends SingleTagView {
         artist.appendChild(albumCover);
         this._dom.albumContainer.appendChild(artist);
       }
-
-      new ScrollBar({
-        target: this._dom.trackContainer
-      });
 
       resolve();
     });

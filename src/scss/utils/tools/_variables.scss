@@ -1,5 +1,5 @@
-:root {
-  /* Global styling */
+:root { // Define colors in css root element
+/* ----------  Global styling  ---------- */
 
   --mzk-animation-duration: 0.2s;
   --mzk-animation-duration-short: calc(var(--mzk-animation-duration) / 2);
@@ -11,6 +11,8 @@
   --mzk-border-color: var(--mzk-color-bg-dark);
 
   --mzk-font-size: 1em;
+  --mzk-font-size-big: 1.6rem;
+  --mzk-font-size-small: .8rem;
 
   --mzk-padding: 10px;
   --mzk-padding-tiny: calc(var(--mzk-padding) / 4);
@@ -26,25 +28,26 @@
 
   --mzk-logo-text-width: 145px;
 
-  /* Components variables */
+/* ----------  Components variables  ---------- */
 
   --mzk-topbar-height: 40px;
 
   --mzk-footbar-height: 80px;
-  --mzk-footbar-transition: var(--mzk-animation-duration-long);
-  --mzk-footbar-moodbar-height: 25px;
-  --mzk-footbar-controls-height: 50px;
-  --mzk-footbar-controls-scale: 50%; // Usefull for volume bar image
-  --mzk-footbar-controls-margin: 5px;
-  --mzk-footbar-progress-height: 30px;
-  --mzk-footbar-sides-width: 85px;
-  --mzk-footbar-icons-size: 33px;
-  --mzk-footbar-volumebar-width: 170px;
   --mzk-progress-track-height: 6px;
   --mzk-progress-thumb-height: 12px;
+  --mzk-footbar-moodbar-height: 25px;
+  --mzk-footbar-controls-height: 50px;
+  --mzk-footbar-progress-height: 30px;
+  --mzk-footbar-sides-width: 85px;
+  --mzk-footbar-volumebar-width: 170px;
+  --mzk-footbar-icons-size: 33px;
+
+  --mzk-footbar-transition: var(--mzk-animation-duration-long);
+  --mzk-footbar-controls-scale: 50%; // Usefull for volume bar image
+  --mzk-footbar-controls-margin: 5px;
+
+  --mzk-scene-icon-margin: 8px;
 
   --mzk-aside-width: 20%;
   --mzk-aside-button-length: 25px;
-
-  --mzk-main-container-icon-margin: 8px;
 }

@@ -1,9 +1,7 @@
-$topbar-margin: var(--mzk-margin-big);
-$topbar-transition: var(--mzk-animation-duration-long);
-$topbar-loader: calc(var(--mzk-topbar-height) - 10px);
+.topbar {
+  --mzk-topbar-loader: calc(var(--mzk-topbar-height) - (var(--mzk-topbar-height) * .2));
 
-#topbar {
-  background: var(--mzk-color-bg);
+  background-color: var(--mzk-color-bg);
   display: flex;
   height: var(--mzk-topbar-height);
   width: 100%;
@@ -11,77 +9,71 @@ $topbar-loader: calc(var(--mzk-topbar-height) - 10px);
 
   @include user-select(none);
 
-  div#topbar-spinner {
+  .topbar-spinner {
     align-self: center;
-    border: 1px solid rgba(125, 125, 125, 0.1);
     border-radius: 100%;
     display: block;
-    height: $topbar-loader;
+    height: var(--mzk-topbar-loader);
     opacity: 0;
-    position:absolute;
-    right: 70px;
-    width: $topbar-loader;
+    position: absolute;
+    left: var(--mzk-margin); // Make spinner overlap home icon
+    width: var(--mzk-topbar-loader);
 
-    transition: opacity var(--mzk-animation-duration) ease-out;
+    @include transition(opacity var(--mzk-animation-duration-long) ease-out);
 
     &:after {
       content: '';
-      border-top: 1px solid var(--mzk-color-primary);
-      position:absolute;
-      width: $topbar-loader;
       border-radius: 100%;
-      height: $topbar-loader;
-      transition: 0.3s transform ease-in-out;
+      border-top: var(--mzk-border-width) solid var(--mzk-color-primary);
+      height: var(--mzk-topbar-loader);
+      position:absolute;
+      width: var(--mzk-topbar-loader);
+
       animation: spin 1s linear infinite;
+      @include transition(transform var(--mzk-animation-duration) ease-in-out);
     }
   }
 
-  div#home-container,
-  div#suggestion-container {
+  .home-container,
+  .suggestion-container {
+    align-items: center;
     cursor: pointer;
     display: flex;
-    align-items: center;
+    justify-content: center;
     height: var(--mzk-topbar-height);
-    width: 40px;
-    position: absolute;
     left: var(--mzk-margin);
+    position: absolute;
+    width: auto; // We want those containers to be square
 
     img {
       height: 80%;
     }
 
-    &#suggestion-container {
-      left: calc(var(--mzk-margin) + 40px);
-      img { height: 75%; } // Reduce optical effect on idea icon
+    &.suggestion-container {
+      left: calc(var(--mzk-margin) + var(--mzk-topbar-height)); // Override default value for left position
+
+      img { // Reduce optical effect on idea icon next to home/dice
+        height: 75%;
+      }
     }
   }
 
-  img#topbar-logo {
-    align-self: center;
-    position: absolute;
-    right: 60px;
-    opacity: 0;
-    width: var(--mzk-logo-text-width);
-
-    transition: opacity $topbar-transition ease 0s;
-  }
-
-  .topbar-view-breadcrumbs {
-    left: calc(80px + var(--mzk-margin-big));
-    line-height: var(--mzk-topbar-height);
-    position: absolute;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: calc(100% - 60px - var(--mzk-aside-width));
-    text-overflow: ellipsis;
+  .topbar-view-breadcrumbs { // Replace with tab system when ready
     direction: rtl; // Reverse ellipsis
+    left: calc((var(--mzk-topbar-height) * 2) + var(--mzk-margin)); // Two icons and two margins
+    line-height: var(--mzk-topbar-height);
+    max-width: calc(100% - (var(--mzk-margin-big) + var(--mzk-topbar-height)) - var(--mzk-aside-width));
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
     text-align: left;
+    white-space: nowrap;
 
     a {
       color: var(--mzk-color-text-lighter);
       cursor: pointer;
 
-      transition: color var(--mzk-animation-duration) ease;
+      @include transition(color var(--mzk-animation-duration) ease);
 
       &:active,
       &:focus,
@@ -105,14 +97,24 @@ $topbar-loader: calc(var(--mzk-topbar-height) - 10px);
     }
   }
 
-  img#topbar-avatar {
+  .topbar-logo {
+    align-self: center;
+    opacity: 0;
+    position: absolute;
+    right: calc(var(--mzk-margin-big) + var(--mzk-topbar-height)); // User pp size and two margins
+    width: var(--mzk-logo-text-width);
+
+    @include transition(opacity var(--mzk-animation-duration-long) ease);
+  }
+
+  .topbar-avatar {
+    cursor: pointer;
+    height: var(--mzk-topbar-height);
+    left: inherit;
+    opacity: 1;
     position: absolute;
     right: var(--mzk-margin);
     top: 0;
-    height: var(--mzk-topbar-height);
-    left: inherit;
-    width: auto;
-    opacity: 1;
-    cursor: pointer;
+    width: var(--mzk-topbar-height);
   }
 }

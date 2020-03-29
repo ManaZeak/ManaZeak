@@ -51,12 +51,7 @@ class TopBar {
    * @description Fill TopBar object with DOM object and create the UserMenu context
    **/
   _init() {
-    this._topbar = document.getElementById('topbar');
-    this._avatar = document.getElementById('topbar-avatar');
-    this._spinner = document.getElementById('topbar-spinner');
-    this._home = document.getElementById('topbar-home-button');
-    this._suggestion = document.getElementById('topbar-suggestion-button');
-    this._breadcrumbs = document.getElementsByClassName('topbar-view-breadcrumbs')[0];
+    this._getElementsFromDocument();
 
     this._userMenu = new UserMenuContext({
       target: this._topbar,
@@ -68,6 +63,16 @@ class TopBar {
     }
 
     this._setLangFeedback();
+  }
+
+
+  _getElementsFromDocument() {
+    this._topbar = document.getElementById('topbar');
+    this._avatar = document.getElementById('topbar-avatar');
+    this._spinner = document.getElementById('topbar-spinner');
+    this._home = document.getElementById('topbar-home-button');
+    this._suggestion = document.getElementById('topbar-suggestion-button');
+    this._breadcrumbs = document.getElementsByClassName('topbar-view-breadcrumbs')[0];
   }
 
 
@@ -83,7 +88,7 @@ class TopBar {
   _events() {
     Events.register({
       name: 'MzkInitDone'
-    }, () => {
+    }, () => { // Bind listeners when app is initialized
       this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
       this._suggestion.addEventListener('click', mzk.ui.setModal.bind(mzk.ui, { name: 'Suggestion' }), false);
     });
@@ -167,10 +172,8 @@ class TopBar {
   set homeButtonSrcOnMainPage(mainPageOn) {
     if (mainPageOn === true) {
       this._home.src = '/static/img/navigation/home.svg';
-      //this._home.parentNode.dataset.tooltip = mzk.lang.mainpage.goto;
     } else {
       this._home.src = '/static/img/player/shuffle-random-on.svg';
-      //this._home.parentNode.dataset.tooltip = mzk.lang.mainpage.reroll;
     }
   }
 

@@ -5,8 +5,6 @@
   width: 100%;
 }
 
-/* Suggestion land */
-
 .mp-suggestion {
   height: 100%;
   width: 100%;
@@ -23,17 +21,16 @@
     }
 
     h1 {
-      font-size: 1.7rem;
-      line-height: 1.7rem;
-      margin-bottom: var(--mzk-margin);
+      font-size: var(--mzk-font-size-big);
+      line-height: var(--mzk-font-size-big);
       text-align: center;
 
       span {
         color: var(--mzk-color-text-darker);
         cursor: pointer;
-        font-size: .9rem;
+        font-size: var(--mzk-font-size-small);
         font-style: italic;
-        margin-left: 2rem;
+        margin-left: var(--mzk-margin);
 
         transition: color var(--mzk-animation-duration) ease-out;
 
@@ -46,6 +43,8 @@
     }
 
     .mp-suggestion-item-container {
+      --mzk-mp-item-width: 10%;
+
       align-items: flex-start;
       display: flex;
       flex-wrap: wrap;
@@ -61,10 +60,11 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        margin: 0 var(--mzk-margin);
-        padding: 5px;
+        margin: 0 var(--mzk-margin-small);
+        min-width: 100px;
+        padding: var(--mzk-padding);
         position: relative;
-        width: 140px;
+        width: var(--mzk-mp-item-width);
 
         transition: background-color var(--mzk-animation-duration) ease-out,
                     border-radius var(--mzk-animation-duration) ease,
@@ -75,14 +75,15 @@
         &:hover {
           background-color: var(--mzk-color-primary-alpha-10);
           border-radius: var(--mzk-border-radius);
-          box-shadow: 0 0 10px -2px var(--mzk-color-primary);
+
+          @include box-shadow(0 0 10px 0, var(--mzk-color-primary));
         }
 
         img {
           background-color: var(--mzk-color-bg);
           border-radius: var(--mzk-border-radius);
-          height: 120px;
-          width: 120px;
+          height: calc(var(--mzk-mp-item-width) - var(--mzk-margin));
+          width: 100%;
         }
 
         &.country img {
@@ -90,10 +91,12 @@
         }
 
         p {
-          font-size: .9rem;
-          margin-top: 5px;
-          padding: 3px;
+          font-size: var(--mzk-font-size-small);
+          margin: 0 var(--mzk-magin-small);
+          padding-top: var(--mzk-padding-small);
           text-align: center;
+
+          @include clamp-line(2);
         }
       }
     }

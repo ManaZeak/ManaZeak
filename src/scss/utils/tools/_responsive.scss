@@ -39,7 +39,7 @@
 
     #scene-manipulation {
       left: var(--mzk-margin);
-      height: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
+      height: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
       bottom: inherit;
       right: inherit;
       top: 0;
@@ -53,7 +53,7 @@
     }
 
     .albumview {
-      padding-top: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
+      padding-top: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
 
       .genre-badges {
         text-align: center;
@@ -123,7 +123,7 @@
   }
 
   .listview {
-    padding-top: calc(#{$margin-offset} + (var(--mzk-main-container-icon-margin) * 2));
+    padding-top: calc(var(--mzk-margin-big) + (var(--mzk-scene-icon-margin) * 2));
 
     .header {
       display: none;
@@ -156,7 +156,6 @@
     }
 
     .mp-suggestion {
-      height: 80%;
       width: 100%;
 
       .mp-suggestion-group {
