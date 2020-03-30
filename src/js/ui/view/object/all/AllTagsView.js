@@ -218,8 +218,13 @@ class AllTagsView extends SceneView {
 
     container.dataset.id = element[this._keys.ID];
     container.addEventListener('click', () => {
+      let type = this._type.replace(/^\w/, c => c.toUpperCase());
+      if (this._type === 'releaseArtist') { // No specific view between artist and release artist
+        type = 'Artist';
+      }
+
       mzk.ui.setSceneView({
-        name: `Single${this._type.replace(/^\w/, c => c.toUpperCase())}`, // Capitalize first letter
+        name: `Single${type}`, // Capitalize first letter
         uiName: element[this._keys.NAME],
         id: element[this._keys.ID]
       });
