@@ -112,9 +112,8 @@
               align-self: center;
               grid-column: 2;
               padding-left: var(--mzk-padding);
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
+
+              @include text-ellipsis();
             }
 
             p:first-child {
@@ -123,9 +122,8 @@
               grid-row: 1 / span 3;
               font-weight: inherit;
               padding-left: 0;
-              text-overflow: inherit;
-              white-space: inherit;
-              overflow: inherit;
+
+              @include text-ellipsis();
             }
 
             p.track-title {

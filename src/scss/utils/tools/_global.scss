@@ -1,6 +1,7 @@
 *, *:before, *:after { box-sizing: border-box; margin: 0; }
 
 html, body {
+  background-image: linear-gradient(var(--mzk-color-gradient-max), var(--mzk-color-gradient-min) 85%);
   color: var(--mzk-color-text);
   font-family: SegoeUI, Helvetica, serif;
   font-size: var(--mzk-font-size);
@@ -8,17 +9,15 @@ html, body {
   margin: 0;
   overflow: hidden;
   padding: 0;
-  width: 100%;
-
-  background-image: linear-gradient(var(--mzk-color-gradient-max), var(--mzk-color-gradient-min) 85%);
   position: absolute;
+  width: 100%;
 }
 
 a {
   color: var(--mzk-color-text);
   text-decoration: none;
 
-  transition: color var(--mzk-animation-duration);
+  @include transition(color var(--mzk-animation-duration));
 
   &:active,
   &:focus,
@@ -36,7 +35,7 @@ input[type=password] {
   padding: var(--mzk-padding-small);
   text-align: center;
 
-  transition: var(--mzk-animation-duration);
+  @include transition(all var(--mzk-animation-duration));
 
   &:active,
   &:focus {
@@ -52,14 +51,14 @@ input[type=password] {
 
 button {
   background: transparent;
+  border: solid var(--mzk-border-width) var(--mzk-color-icons);
+  border-radius: var(--mzk-border-radius);
+  color: var(--mzk-color-icons);
+  cursor: pointer;
   margin: var(--mzk-margin-big) var(--mzk-margin);
   padding: var(--mzk-padding) var(--mzk-padding-big);
-  color: var(--mzk-color-icons);
-  border-radius: var(--mzk-border-radius);
-  border: solid var(--mzk-border-width) var(--mzk-color-icons);
-  cursor: pointer;
 
-  transition: var(--mzk-animation-duration);
+  @include transition(all var(--mzk-animation-duration));
 
   &:active,
   &:focus,
@@ -78,7 +77,8 @@ textarea {
   color: var(--mzk-color-icons);
   padding: var(--mzk-padding-small);
   resize: none;
-  transition: var(--mzk-animation-duration) ease;
+
+  @include transition(all var(--mzk-animation-duration));
 
   &:active,
   &:focus,
@@ -103,7 +103,7 @@ input[type=checkbox] + label {
   &:before {
     content: '\2714';
     border: 0.1em solid #000;
-    border-radius: 0.2em;
+    border-radius: .2em;
     color: transparent;
     display: inline-block;
     height: 1em;
@@ -121,8 +121,8 @@ input[type=checkbox] + label {
 }
 
 input[type=checkbox]:disabled + label:before {
-  transform: scale(1);
   border-color: var(--mzk-border-color);
+  transform: scale(1);
 }
 
 input[type=checkbox]:checked + label:before {
@@ -132,17 +132,16 @@ input[type=checkbox]:checked + label:before {
 }
 
 input[type=checkbox]:checked:disabled + label:before {
-  transform: scale(1);
   background-color: var(--mzk-color-primary);
   border-color: var(--mzk-color-primary);
+  transform: scale(1);
 }
 
 [draggable] {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
   /* Required to make elements draggable in old WebKit */
   -webkit-user-drag: element;
+
+  @include user-select(none);
 }
 
 .italic {

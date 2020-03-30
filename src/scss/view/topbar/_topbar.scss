@@ -65,9 +65,8 @@
     max-width: calc(100% - (var(--mzk-margin-big) + var(--mzk-topbar-height)) - var(--mzk-aside-width));
     overflow: hidden;
     position: absolute;
-    text-overflow: ellipsis;
-    text-align: left;
-    white-space: nowrap;
+
+    @include text-ellipsis();
 
     a {
       color: var(--mzk-color-text-lighter);

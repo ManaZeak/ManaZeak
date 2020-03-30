@@ -1,7 +1,4 @@
-.single-releaseArtist-page,
-//.single-artist-page,
 .single-producer-page,
-.single-lang-page,
 .single-label-page {
   height: 100%;
   overflow: hidden;
@@ -169,7 +166,7 @@
   .sa-left {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     width: 30%;
 
@@ -280,7 +277,7 @@
     flex-direction: column;
     height: 100%;
     padding: 0 2.5%;
-    width: 35%;
+    width: 30%;
 
     div {
       display: flex;
@@ -428,7 +425,7 @@
     height: 100%;
     overflow: hidden;
     padding-right: 2.5%;
-    width: 65%;
+    width: 70%;
 
     div.track {
       background: var(--mzk-color-bg-darker-alpha-25);
@@ -469,9 +466,8 @@
 
       p {
         margin: 6px 0 3px 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+
+        @include text-ellipsis();
 
         &:first-child {
           text-align: center;
@@ -610,10 +606,9 @@
       }
 
       p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
         width: calc(100% - 150px);
+
+        @include text-ellipsis();
 
         &:first-child {
           margin-left: var(--mzk-margin);

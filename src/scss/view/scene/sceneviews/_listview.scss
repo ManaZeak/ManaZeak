@@ -32,16 +32,14 @@ $listview-track-height: 40px;
     width: 100%;
     z-index: 633;
 
-    -webkit-user-select: none;
-    -moz-user-select: none;
+    @include user-select(none);
 
     div {
       cursor: move;
-      overflow: hidden;
       padding: 0 $listview-padding;
       position: relative;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+
+      @include text-ellipsis();
 
       &.dragElem {
         opacity: 0.4;
@@ -138,10 +136,9 @@ $listview-track-height: 40px;
       }
 
       div {
-        overflow: hidden;
         padding: 0 $listview-padding;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+
+        @include text-ellipsis();
       }
 
       &:nth-child(2n) {
