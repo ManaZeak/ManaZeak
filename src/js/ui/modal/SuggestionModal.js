@@ -18,7 +18,17 @@ class SuggestionModal extends Modal {
 
     closeTop.addEventListener('click', this.close.bind(this), false);
     close.addEventListener('click', this.close.bind(this), false);
-    submit.addEventListener('click', this.close.bind(this), false);
+    submit.addEventListener('click', this._submitSuggestion.bind(this, suggestion), false);
+  }
+
+
+  _submitSuggestion(suggestion) {
+    const options = {
+      SUGGESTION: suggestion.value
+    };
+
+    mzk.komunikator.post('suggestion/create/', options)
+      .finally(this.close.bind(this));
   }
 
 

@@ -11,12 +11,13 @@
   &::before {
     content: '';
     background-color: var(--mzk-color-primary);
+    border-radius: var(--mzk-border-radius);
     height: var(--mzk-margin-big);
     left: calc(50% - var(--mzk-margin-small));
     position: absolute;
     top: 50%;
     width: var(--mzk-margin-big);
-    border-radius: var(--mzk-border-radius);
+
     animation: rotate-plane 1.2s infinite ease-in-out; // Custom keyframe
   }
 
@@ -25,8 +26,8 @@
     color: var(--mzk-color-text);
     font-style: italic;
     left: 0;
-    text-align: center;
     position: absolute;
+    text-align: center;
     top: 55%;
     width: 100%;
   }
@@ -42,7 +43,7 @@
 
   &.modal-dark-overlay {
     align-items: center;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--mzk-color-bg-darker-alpha-50);
     display: flex;
     justify-content: center;
   }
