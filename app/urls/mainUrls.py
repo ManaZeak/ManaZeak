@@ -30,6 +30,9 @@ urlpatterns = [
     ############################# Tracks #############################
     path('track/', include('app.urls.track.trackUrls', namespace='track')),
 
+    ########################### Suggestion ###########################
+    path('suggestion/', include('app.urls.suggestion.suggestionUrls', namespace='suggestion')),
+
     ############################# Modals #############################
     # FIXME: remove the 's'
     path('modal/', include('app.urls.modal.modalUrls', namespace='modal')),

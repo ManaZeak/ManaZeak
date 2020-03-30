@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from app.src.services.views.mainPage.mainPageService import MainPageService
 from app.src.views.genericViews import GenericViews
 
 app_name = 'app'
