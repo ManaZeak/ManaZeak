@@ -52,7 +52,11 @@
 /* ----------  Background colors  ---------- */
 
   --mzk-color-bg: #1D1E25;
-  --mzk-color-bg-galaxy: rgba(0, 0, 249, 0.08);
+  --mzk-color-bg-alpha-90: rgba(29, 30, 37, .9);
+  --mzk-color-bg-alpha-75: rgba(29, 30, 37, .75);
+  --mzk-color-bg-alpha-50: rgba(29, 30, 37, .5);
+  --mzk-color-bg-alpha-25: rgba(29, 30, 37, .25);
+  --mzk-color-bg-alpha-10: rgba(29, 30, 37, .1);
 
   --mzk-color-bg-lighter: #3C405D;
   --mzk-color-bg-lighter-alpha-90: rgba(60, 64, 93, .9);
@@ -84,10 +88,17 @@
 
   --mzk-color-gradient-min: var(--mzk-color-bg-darker);
   --mzk-color-gradient-max: var(--mzk-color-bg-lighter);
+  --mzk-color-bg-galaxy: rgba(0, 0, 249, 0.08);
 
 /* ----------  Text colors  ---------- */
 
   --mzk-color-text: #E7E9E7;
+  --mzk-color-text-alpha-90: rgba(231, 233, 231, .9);
+  --mzk-color-text-alpha-75: rgba(231, 233, 231, .75);
+  --mzk-color-text-alpha-50: rgba(231, 233, 231, .5);
+  --mzk-color-text-alpha-25: rgba(231, 233, 231, .25);
+  --mzk-color-text-alpha-10: rgba(231, 233, 231, .1);
+
   --mzk-color-text-negative: var(--mzk-color-bg);
 
   --mzk-color-text-lighter: #FFFFFF;

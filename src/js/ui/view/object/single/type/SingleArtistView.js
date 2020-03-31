@@ -1,4 +1,5 @@
 import SingleTagView from "../SingleTagView";
+import JumboImageModal from "../../../../modal/JumboImageModal";
 'use strict';
 
 
@@ -41,8 +42,21 @@ class SingleArtistView extends SingleTagView {
         this._dom.pp.src = response.ARTIST.ARTIST_PP;
       }
 
+      let activeYears = `${response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR} – ${response.ARTIST.ARTIST_ALBUMS[response.ARTIST.ARTIST_ALBUMS.length -1].ALBUM_YEAR}`;
+      if (response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR === response.ARTIST.ARTIST_ALBUMS[response.ARTIST.ARTIST_ALBUMS.length -1].ALBUM_YEAR) {
+        activeYears = response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR;
+      }
+
+      this._dom.pp.addEventListener('click', () => {
+        this._albumCoverModal = new JumboImageModal({
+          url: 'modal/jumboImage',
+          src: this._dom.pp.src,
+          description: `<b>${response.ARTIST.ARTIST_NAME}</b><small>${activeYears}</small>`
+        });
+      }, false);
+
       this._dom.title.innerHTML = response.ARTIST.ARTIST_NAME;
-      this._dom.yearLabel.innerHTML = `<i>${response.ARTIST.ARTIST_ALBUMS[0].ALBUM_YEAR} – ${response.ARTIST.ARTIST_ALBUMS[response.ARTIST.ARTIST_ALBUMS.length -1].ALBUM_YEAR}</i>`;
+      this._dom.yearLabel.innerHTML = `<i>${activeYears}</i>`;
       this._dom.trackCompo.innerHTML = `${response.ARTIST.ARTIST_ALBUMS.length} ${mzk.lang.playlist.albums} – ${response.ARTIST.NUMBER_TRACKS} ${mzk.lang.playlist.tracks} – ${Utils.secondsToTimecode(response.ARTIST.TOTAL_DURATION)}`;
 
       for (let i = 0; i < response.ARTIST.ARTIST_COUNTRIES.length; ++i) {

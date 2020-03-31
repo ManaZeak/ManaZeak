@@ -30,7 +30,7 @@
       right: var(--modal-title-size);
       top: var(--modal-title-size);
 
-      transition: color var(--mzk-animation-duration) ease-out;
+      @include transition(color var(--mzk-animation-duration) ease-out);
 
       &:active,
       &:focus,
@@ -209,11 +209,70 @@
 .suggestion-modal {
   .container {
     textarea {
-      border: solid 1px var(--mzk-color-bg-lighter);
+      border: solid var(--mzk-margin) var(--mzk-color-bg-lighter);
       height: 6rem;
       padding: var(--mzk-padding);
       margin: var(--mzk-margin-big) 0;
       width: 100%;
     }
+  }
+}
+
+.album-cover-modal {
+  height: 100%;
+
+  .close {
+    // We align cross with center of user avatr in topbar for more smoothiness
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: var(--mzk-topbar-height);
+    justify-content: center;
+    position: absolute;
+    right: var(--mzk-margin);
+    top: 0;
+    width: var(--mzk-topbar-height);
+
+    @include transition(color var(--mzk-animation-duration) ease-out);
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: var(--mzk-color-anti-primary);
+    }
+  }
+
+  .album-cover {
+    height: 100%;
+
+    img {
+      height: 100%;
+      max-width: 1000px;
+      padding: var(--mzk-padding);
+    }
+  }
+
+  &:hover .album-description {
+    opacity: 1;
+  }
+
+  .album-description {
+    align-items: center;
+    background-color: var(--mzk-color-bg-alpha-75);
+    border-radius: var(--mzk-border-radius);
+    bottom: calc(var(--mzk-margin) * 2);
+    display: flex;
+    left: 0;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    opacity: 0;
+    padding: var(--mzk-padding);
+    position: absolute;
+    right: 0;
+    width: 50%;
+
+    @include transition(opacity var(--mzk-animation-duration) ease-out);
   }
 }

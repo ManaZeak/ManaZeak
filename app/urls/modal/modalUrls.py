@@ -14,4 +14,5 @@ urlpatterns = [
     path('tapBpm/', GenericViews.tapBpmModal, name='tapBpmModal'),
     path('about/', GenericViews.aboutModal, name='aboutModal'),
     path('suggestion/', GenericViews.suggestionModal, name='SuggestionModal'),
+    path('jumboImage/', GenericViews.jumboImageModal, name='jumboImageModal'),
 ]

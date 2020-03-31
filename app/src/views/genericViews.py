@@ -53,7 +53,15 @@ class GenericViews(object):
     #   @param request request given by the front
     #   @return the suggestion template
     def suggestionModal(request):
-        return render(request, 'modals/suggestion.html')
+        return render(request, 'modals/suggestion.html')\
+
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    ## Send the about modal
+    #   @param request request given by the front
+    #   @return the album cover template
+    def jumboImageModal(request):
+        return render(request, 'modals/jumboimage.html')
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')

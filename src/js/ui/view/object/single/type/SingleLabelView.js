@@ -1,5 +1,5 @@
 import SingleTagView from "../SingleTagView";
-import ScrollBar from "../../../../component/bar/ScrollBar";
+import JumboImageModal from "../../../../modal/JumboImageModal";
 'use strict';
 
 
@@ -26,7 +26,6 @@ class SingleLabelView extends SingleTagView {
     this._init()
       .then(this._processLabel.bind(this))
       .then(this._setupContext.bind(this))
-      .then(this._singleTagEvents.bind(this))
       .then(this._viewReady);
   }
 
@@ -45,6 +44,14 @@ class SingleLabelView extends SingleTagView {
       if (response.LABEL.PP !== null && Utils.imageUrlExists(response.LABEL.PP) === true) {
         this._dom.cover.src = response.LABEL.PP;
       }
+
+      this._dom.cover.addEventListener('click', () => {
+        this._albumCoverModal = new JumboImageModal({
+          url: 'modal/jumboImage',
+          src: this._dom.cover.src,
+          description: `<b>${response.LABEL.NAME}</b><small>${response.LABEL.TOTAL_RELEASED_ALBUM} ${mzk.lang.playlist.albums}</small>`
+        });
+      }, false);
 
       this._dom.title.innerHTML = response.LABEL.NAME;
       this._dom.artistLabel.innerHTML = response.LABEL.ALBUM_ARTIST;

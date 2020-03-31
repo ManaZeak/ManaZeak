@@ -1,6 +1,7 @@
 import SingleTagView from "../SingleTagView";
 import ScrollBar from "../../../../component/bar/ScrollBar";
 import SingleAlbumViewTrackEntry from "../entry/SingleAlbumViewTrackEntry";
+import JumboImageModal from "../../../../modal/JumboImageModal";
 'use strict';
 
 
@@ -24,6 +25,8 @@ class SingleAlbumView extends SingleTagView {
       genres: null,
       tracksContainer: null
     };
+
+    this._albumCoverModal = null;
 
     this._init()
       .then(this._processAlbum.bind(this))
@@ -50,8 +53,16 @@ class SingleAlbumView extends SingleTagView {
           this._dom.genres = this._dom.wrapper.getElementsByClassName('album-genres')[0];
           this._dom.trackContainer = this._dom.wrapper.getElementsByClassName('album-tracks')[0];
 
-          this._dom.cover.src = response.ALBUM.COVER;
           this._dom.title.innerHTML = response.ALBUM.NAME;
+          this._dom.cover.src = response.ALBUM.COVER;
+
+          this._dom.cover.addEventListener('click', () => {
+            this._albumCoverModal = new JumboImageModal({
+              url: 'modal/jumboImage',
+              src: this._dom.cover.src,
+              description: `<b>${response.ALBUM.YEAR} – ${response.ALBUM.NAME}</b><small>${response.ALBUM.ALBUM_ARTIST.NAME}</small>`
+            });
+          }, false);
 
           const link = document.createElement('A');
           link.innerHTML = response.ALBUM.ALBUM_ARTIST.NAME;
