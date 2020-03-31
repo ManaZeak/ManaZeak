@@ -21,9 +21,16 @@
     }
 
     h1 {
+      border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-alpha-25);
       font-size: var(--mzk-font-size-big);
       line-height: var(--mzk-font-size-big);
-      text-align: center;
+      margin-top: var(--mzk-margin-big);
+      text-align: left;
+      width: 50%;
+
+      &:first-child {
+        margin-top: 0;
+      }
 
       span {
         color: var(--mzk-color-text-darker);
@@ -43,12 +50,12 @@
     }
 
     .mp-suggestion-item-container {
-      --mzk-mp-item-width: 10%;
+      --mzk-mp-item-width: calc((100% / 9) - (var(--mzk-margin-small) * 2));
 
       align-items: flex-start;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
       margin-bottom: var(--mzk-margin);
       padding: var(--mzk-padding);
 
