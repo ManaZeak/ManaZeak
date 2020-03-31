@@ -277,7 +277,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 0 2.5%;
     width: 30%;
 
     div {
@@ -289,6 +288,7 @@
       flex-direction: column;
       justify-content: space-evenly;
       margin: var(--mzk-margin-big) 0;
+      padding: 0 var(--mzk-padding-big);
       width: 100%;
 
       img {

@@ -243,11 +243,12 @@
   }
 
   .album-cover {
+    align-items: center;
+    display: flex;
     height: 100%;
 
     img {
       height: 100%;
-      max-width: 1000px;
       padding: var(--mzk-padding);
     }
   }
@@ -273,6 +274,7 @@
     right: 0;
     width: 50%;
 
+    @include box-shadow(0 0 5px, var(--mzk-color-text-lighter-alpha-25));
     @include transition(opacity var(--mzk-animation-duration) ease-out);
   }
 }
