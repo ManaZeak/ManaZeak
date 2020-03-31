@@ -120,8 +120,8 @@ class SingleArtistView extends SingleTagView {
         releasedAlbums.appendChild(album);
       }
 
-      const sectionTitle = document.createElement('H3');
-      sectionTitle.innerHTML = 'Released album';
+      const sectionTitle = document.createElement('H1');
+      sectionTitle.innerHTML = 'Released album'; // TODO nls this
       this._dom.albumContainer.appendChild(sectionTitle);
       this._dom.albumContainer.appendChild(releasedAlbums);
 

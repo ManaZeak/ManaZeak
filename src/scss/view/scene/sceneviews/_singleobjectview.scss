@@ -211,9 +211,12 @@
   .sa-right {
     width: 70%;
 
-    h3 {
-      margin: var(--mzk-margin-big) var(--mzk-margin) var(--mzk-margin);
-      font-style: italic;
+    h1 {
+      border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-alpha-25);
+      font-size: var(--mzk-font-size-big);
+      margin-top: var(--mzk-margin-big);
+      text-align: left;
+      width: 50%;
     }
 
     .sa-artist-albums {
@@ -231,7 +234,7 @@
         display: flex;
         flex-direction: column;
         height: max-content;
-        margin: var(--mzk-margin);
+        margin: var(--mzk-margin) var(--mzk-margin-small);
         padding: var(--mzk-padding);
         position: relative;
         text-align: center;
@@ -262,6 +265,11 @@
           text-align: center;
 
           @include clamp-line(2);
+
+          &:first-child {
+            margin-top: 0;
+            margin-bottom: 5px;
+          }
         }
       }
     }
