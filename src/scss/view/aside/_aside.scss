@@ -54,19 +54,19 @@
       h3 {
         color: var(--mzk-color-text);
         font-weight: lighter;
-        margin: var(--mzk-margin) 0;
+        margin: 0;
         text-align: left;
 
         .group-image {
           line-height: 100%;
           opacity: 0;
           vertical-align: text-bottom;
-          width: 0;
 
           @include transition(opacity var(--mzk-animation-duration) ease-out);
 
           img {
             height: 1rem;
+            width: 0;
           }
         }
 
@@ -77,7 +77,7 @@
           img {
             cursor: pointer;
             height: 1rem;
-            margin-left: 1rem;
+            margin-left: var(--mzk-margin);
           }
         }
       }
@@ -198,11 +198,15 @@
           display: flex;
           font-size: 0; // Hide text on collapsed aside
           justify-content: center;
+          margin: var(--mzk-margin) 0;
           margin-right: var(--mzk-margin-big);
 
           .group-image {
             opacity: 1;
-            width: auto;
+
+            img {
+              width: auto;
+            }
           }
 
           img {
