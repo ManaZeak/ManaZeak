@@ -115,6 +115,11 @@ class Scene {
   }
 
 
+  update() {
+    this.view.update();
+  }
+
+
   /**
    * @method
    * @name updateLibraryView

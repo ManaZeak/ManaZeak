@@ -29,11 +29,13 @@
   .app-controls {
     align-items: center;
     display: flex;
-    height: var(--mzk-aside-icon-size);
-    padding: 0 var(--mzk-padding);
+    height: var(--mzk-topbar-height);
+    margin: var(--mzk-margin-small) 0;
 
-    div {
-      height: 80%;
+    .aside-collapser {
+      height: 100%;
+
+      @include transition(transform var(--mzk-animation-duration) ease-in-out);
 
       img {
         cursor: pointer;
@@ -46,16 +48,29 @@
     height: calc(100% - var(--mzk-aside-icon-size) - var(--mzk-footbar-height));
     padding-top: var(--mzk-padding);
 
-    .mp-collection-group {
+    .aside-item-group {
       margin: 0 var(--mzk-margin) var(--mzk-margin) var(--mzk-margin-big);
 
       h3 {
         color: var(--mzk-color-text);
         font-weight: lighter;
-        margin: 0;
+        margin: var(--mzk-margin) 0;
         text-align: left;
 
-        span {
+        .group-image {
+          line-height: 100%;
+          opacity: 0;
+          vertical-align: text-bottom;
+          width: 0;
+
+          @include transition(opacity var(--mzk-animation-duration) ease-out);
+
+          img {
+            height: 1rem;
+          }
+        }
+
+        .group-collapser  {
           line-height: 100%;
           vertical-align: text-bottom;
 
@@ -156,6 +171,55 @@
     img {
       cursor: pointer;
       height: 100%;
+    }
+  }
+
+/* Set of rules to describe collapsed aside behavior */
+
+  &.collapsed {
+    .app-controls {
+      .aside-collapser {
+        transform: rotate(180deg);
+
+        img {
+          cursor: pointer;
+          height: 100%;
+        }
+      }
+    }
+
+    .aside-content {
+      padding-top: 0;
+
+      .aside-item-group {
+        margin: 0;
+
+        h3 {
+          display: flex;
+          font-size: 0; // Hide text on collapsed aside
+          justify-content: center;
+          margin-right: var(--mzk-margin-big);
+
+          .group-image {
+            opacity: 1;
+            width: auto;
+          }
+
+          img {
+            margin: 0;
+          }
+        }
+
+        ul {
+          font-size: 0;
+
+          li {
+            grid-template-columns: calc(var(--mzk-topbar-height) + var(--mzk-margin));
+            grid-template-rows: var(--mzl-topbar-height);
+            margin: 0;
+          }
+        }
+      }
     }
   }
 }

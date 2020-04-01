@@ -16,8 +16,14 @@ class SceneView {
     return null;
   }
 
+
   fillContext() {
     return null;
+  }
+
+
+  update() {
+
   }
 
 
@@ -25,6 +31,8 @@ class SceneView {
     Events.fire('SceneViewReady');
   }
 
+
 }
+
 
 export default SceneView;

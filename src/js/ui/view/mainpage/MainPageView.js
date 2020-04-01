@@ -15,6 +15,8 @@ class MainPageView extends SceneView {
       suggestion: null
     };
 
+    this._scrollBar = null;
+
     this._fetchWrapper()
       .then(this._fillSuggestion.bind(this))
       .then(this._viewReady);
@@ -112,13 +114,23 @@ class MainPageView extends SceneView {
             this._dom.suggestion.appendChild(country.dom);
           }
 
-          new ScrollBar({
+          this._scrollBar = new ScrollBar({
             target: this._dom.suggestion
           });
           this._dom.suggestion = this._dom.suggestion.firstElementChild.firstElementChild;
+
+          new ResizeObserver(() => {
+            this._scrollBar.update();
+          }).observe(this._dom.suggestion);
+
           resolve();
         });
     });
+  }
+
+
+  update() {
+    this._scrollBar.update();
   }
 
 

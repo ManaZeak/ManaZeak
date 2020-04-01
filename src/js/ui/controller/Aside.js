@@ -11,7 +11,6 @@ class Aside {
       collection: null,
       collapser: null,
       controls: null,
-      expander: null, // We must have a local expander image to add as an absolute to the UI when collapsed,
       trackPreview: null // This is the DOM element, not the component (see _trackPreview internal)
     };
     // Aside components
@@ -20,13 +19,8 @@ class Aside {
     this._dom.container = document.getElementsByClassName('aside')[0];
     this._dom.collection = document.getElementsByClassName('aside-content')[0];
     this._dom.controls = document.getElementsByClassName('app-controls')[0];
-    this._dom.collapser = document.getElementsByClassName('aside-toggle')[0];
+    this._dom.collapser = document.getElementById('aside-toggle');
     this._dom.trackPreview = document.getElementsByClassName('aside-track-preview')[0];
-
-    this._dom.expander = document.createElement('DIV');
-    this._dom.expander.appendChild(document.createElement('IMG'));
-    this._dom.expander.classList.add('aside-expander');
-    this._dom.expander.firstChild.src = 'static/img/navigation/nav-left.svg';
 
     this._isCollapsed = false; // Aside is expanded by default
 
@@ -91,19 +85,20 @@ class Aside {
     event.stopPropagation();
     const width = '--mzk-aside-width';
     document.querySelector(':root').style.removeProperty(width);
+    mzk.ui.update();
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
-      document.body.removeChild(this._dom.expander);
-      this._dom.expander.removeEventListener('click', this._toggleAside, false);
+      this._dom.container.classList.remove('collapsed');
       requestAnimationFrame(() => {
         document.querySelector(':root').style.setProperty(width, '20%');
       });
     } else {
       this._isCollapsed = true;
-      document.body.appendChild(this._dom.expander);
-      this._dom.expander.addEventListener('click', this._toggleAside, false);
+      this._dom.container.classList.add('collapsed');
       requestAnimationFrame(() => {
-        document.querySelector(':root').style.setProperty(width, '0');
+        const style = getComputedStyle(document.documentElement);/*document.querySelector(':root').style;*/
+        const reducedWidth = `calc(${style.getPropertyValue('--mzk-topbar-height')} + ${style.getPropertyValue('--mzk-margin')})`;
+        document.querySelector(':root').style.setProperty(width, reducedWidth);
       });
     }
   }
