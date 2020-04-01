@@ -1,6 +1,7 @@
 import PlayableView from "../PlayableView";
 import PartyViewTrackEntry from "./entry/PartyViewTrackEntry";
 import ScrollBar from "../../component/bar/ScrollBar";
+import JumboImageModal from "../../modal/JumboImageModal";
 
 
 class PartyView extends PlayableView {
@@ -102,9 +103,17 @@ class PartyView extends PlayableView {
             }
 
             this._dom.albumMainInfo.innerHTML = `${response.ALBUM.YEAR} – ${response.ALBUM.NAME}`;
-            this._dom.albumCover.src = response.ALBUM.COVER;
             this._dom.albumLabel.innerHTML = response.ALBUM.LABEL.NAME;
             this._dom.albumDuration.innerHTML = Utils.secondsToTimecode(response.ALBUM.DURATION);
+            this._dom.albumCover.src = response.ALBUM.COVER;
+
+            this._dom.albumCover.addEventListener('click', () => {
+              this._albumCoverModal = new JumboImageModal({
+                url: 'modal/jumboImage',
+                src: this._dom.albumCover.src,
+                description: `<b>${response.ALBUM.YEAR} – ${response.ALBUM.NAME}</b><small>${response.ALBUM.ALBUM_ARTIST.NAME}</small>`
+              });
+            }, false);
 
             this._dom.trackContainer.style.display = 'none';
 
