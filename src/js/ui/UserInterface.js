@@ -176,11 +176,6 @@ class UserInterface {
   }
 
 
-  update() {
-    this._scene.update();
-  }
-
-
   clearMoodbar() {
     d3.selectAll('.moodbar svg g').remove();
   }

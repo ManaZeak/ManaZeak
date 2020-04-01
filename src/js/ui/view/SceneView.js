@@ -22,11 +22,6 @@ class SceneView {
   }
 
 
-  update() {
-
-  }
-
-
   _viewReady() {
     Events.fire('SceneViewReady');
   }

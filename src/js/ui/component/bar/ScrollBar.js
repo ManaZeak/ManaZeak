@@ -24,6 +24,8 @@ class ScrollBar {
     this._init();
     this._events();
     this._updateScrollBar();
+
+    new ResizeObserver(this.update.bind(this)).observe(this._target);
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //

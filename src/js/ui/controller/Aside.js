@@ -85,7 +85,6 @@ class Aside {
     event.stopPropagation();
     const width = '--mzk-aside-width';
     document.querySelector(':root').style.removeProperty(width);
-    mzk.ui.update();
     if (this._isCollapsed === true) {
       this._isCollapsed = false;
       this._dom.container.classList.remove('collapsed');

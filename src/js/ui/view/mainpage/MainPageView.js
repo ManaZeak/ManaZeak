@@ -119,18 +119,9 @@ class MainPageView extends SceneView {
           });
           this._dom.suggestion = this._dom.suggestion.firstElementChild.firstElementChild;
 
-          new ResizeObserver(() => {
-            this._scrollBar.update();
-          }).observe(this._dom.suggestion);
-
           resolve();
         });
     });
-  }
-
-
-  update() {
-    this._scrollBar.update();
   }
 
 
