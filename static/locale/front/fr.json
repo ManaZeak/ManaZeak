@@ -87,6 +87,9 @@
       "description": "Explorez les musiques du monde en cherchant les artistes en fonction de leur pays d'origine. À cet instant, ManaZeak compte"
     }
   },
+  "singleObjectView": {
+    "releasedAlbums": "En tant qu'auteur"
+  },
   "libraryview": {
     "ListView": "Liste",
     "DetailsView": "Details",

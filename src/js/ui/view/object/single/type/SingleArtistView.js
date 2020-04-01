@@ -1,5 +1,6 @@
 import SingleTagView from "../SingleTagView";
 import JumboImageModal from "../../../../modal/JumboImageModal";
+import ScrollBar from "../../../../component/bar/ScrollBar";
 'use strict';
 
 
@@ -121,9 +122,16 @@ class SingleArtistView extends SingleTagView {
       }
 
       const sectionTitle = document.createElement('H1');
-      sectionTitle.innerHTML = 'Released album'; // TODO nls this
+      sectionTitle.innerHTML = `${mzk.lang.singleObjectView.releasedAlbums}`;
+      const totalReleases = document.createElement('SPAN');
+      totalReleases.innerHTML = `${response.ARTIST.ARTIST_ALBUMS.length - 1} ${mzk.lang.playlist.albums}`;
+      sectionTitle.appendChild(totalReleases);
       this._dom.albumContainer.appendChild(sectionTitle);
       this._dom.albumContainer.appendChild(releasedAlbums);
+
+      new ScrollBar({
+        target: releasedAlbums
+      });
 
       resolve();
     });

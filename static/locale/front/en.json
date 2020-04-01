@@ -84,6 +84,9 @@
       "description": "You can here browse ManaZeak through countries. To this day, ManaZeak contains"
     }
   },
+  "singleObjectView": {
+    "releasedAlbums": "Released albums"
+  },
   "libraryview": {
     "ListView": "List view",
     "DetailsView": "Details view",

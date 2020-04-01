@@ -37,7 +37,9 @@
         cursor: pointer;
         font-size: var(--mzk-font-size-small);
         font-style: italic;
+        line-height: var(--mzk-font-size-big);
         margin-left: var(--mzk-margin);
+        text-align: right;
 
         transition: color var(--mzk-animation-duration) ease-out;
 

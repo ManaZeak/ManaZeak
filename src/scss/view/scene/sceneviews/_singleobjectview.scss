@@ -217,13 +217,23 @@
       margin-top: var(--mzk-margin-big);
       text-align: left;
       width: 50%;
+
+      span {
+        color: var(--mzk-color-text-darker);
+        font-size: var(--mzk-font-size-small);
+        font-style: italic;
+        line-height: var(--mzk-font-size-big);
+        margin-left: var(--mzk-margin);
+      }
     }
 
     .sa-artist-albums {
-      display: flex;
       height: 33%;
-      flex-wrap: wrap;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+      /* Cliping mask to smooth to transparency bottom of albums */
+      -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
+         color-stop(0.00, rgba(0, 0, 0, 1)), color-stop(0.92, rgba(0, 0, 0, 1)), color-stop(1.00, rgba(0, 0, 0, 0)));
 
       .sa-album {
         align-items: center;
@@ -231,14 +241,14 @@
         border-radius: 0;
         box-shadow: 0 0 0 0 transparent;
         cursor: pointer;
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
         height: max-content;
         margin: var(--mzk-margin) var(--mzk-margin-small);
         padding: var(--mzk-padding);
         position: relative;
         text-align: center;
-        width: 150px;
+        width: calc(100% / 7 - (var(--mzk-margin-small) * 2) - var(--mzk-margin-small));
 
         transition: background-color var(--mzk-animation-duration) ease-out,
                     border-radius var(--mzk-animation-duration) ease,
@@ -255,8 +265,8 @@
         img {
           background-color: var(--mzk-color-bg);
           border-radius: var(--mzk-border-radius);
-          height: 120px;
-          width: 120px;
+          height: auto;
+          width: 100%
         }
 
         p {
