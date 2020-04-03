@@ -29,11 +29,15 @@ class TrackPreview {
     this._dom.cover.addEventListener('click', function() {
       // Preventing unexpected behavior
       if (this.src !== '' && this.dataset.id && this.dataset.name) {
-        mzk.ui.setSceneView({
-          name: 'SingleAlbum',
-          uiName: this.dataset.name,
-          id: this.dataset.id
-        });
+        if (mzk.ui.aside.collapsed === true) {
+          mzk.ui.aside.open();
+        } else {
+          mzk.ui.setSceneView({
+            name: 'SingleAlbum',
+            uiName: this.dataset.name,
+            id: this.dataset.id
+          });
+        }
       }
     }, false);
   }

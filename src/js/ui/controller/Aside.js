@@ -110,19 +110,36 @@ class Aside {
   _toggleAside(event) {
     event.preventDefault();
     event.stopPropagation();
-    const width = '--mzk-aside-width';
-    document.querySelector(':root').style.removeProperty(width);
+
     if (this._isCollapsed === true) {
+      this.open();
+    } else {
+      this.close();
+    }
+  }
+
+
+  open() {
+    if (this._isCollapsed === true) {
+      const width = '--mzk-aside-width'; // Must match variable in _variables.scss
+      document.querySelector(':root').style.removeProperty(width); // Clear previous aside value
       this._isCollapsed = false;
       this._dom.container.classList.remove('collapsed');
       requestAnimationFrame(() => {
         document.querySelector(':root').style.setProperty(width, '19%');
       });
-    } else {
+    }
+  }
+
+
+  close() {
+    if (this._isCollapsed === false) {
+      const width = '--mzk-aside-width'; // Must match variable in _variables.scss
+      document.querySelector(':root').style.removeProperty(width); // Clear previous aside value
       this._isCollapsed = true;
       this._dom.container.classList.add('collapsed');
       requestAnimationFrame(() => {
-        const style = getComputedStyle(document.documentElement);/*document.querySelector(':root').style;*/
+        const style = getComputedStyle(document.documentElement);
         const reducedWidth = style.getPropertyValue('--mzk-topbar-height');
         document.querySelector(':root').style.setProperty(width, reducedWidth);
       });
@@ -137,6 +154,11 @@ class Aside {
 
   resetTrackPreview() {
     this._trackPreview.resetTrack();
+  }
+
+
+  get collapsed() {
+    return this._isCollapsed;
   }
 
 
