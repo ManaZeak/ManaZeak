@@ -1,6 +1,7 @@
 import CollectionGroup from "../component/CollectionGroup";
 import ScrollBar from "../component/bar/ScrollBar";
 import TrackPreview from "../component/TrackPreview";
+import UserMenuContext from "../context/UserMenuContext";
 
 class Aside {
 
@@ -8,6 +9,8 @@ class Aside {
   constructor() {
     this._dom = {
       container: null,
+      avatar: null,
+      username: null,
       collection: null,
       collapser: null,
       controls: null,
@@ -21,6 +24,19 @@ class Aside {
     this._dom.controls = document.getElementsByClassName('app-controls')[0];
     this._dom.collapser = document.getElementById('aside-toggle');
     this._dom.trackPreview = document.getElementsByClassName('aside-track-preview')[0];
+    this._dom.avatar = document.getElementById('aside-user-pp');
+    this._dom.username = document.getElementById('aside-user-name');
+
+    if (Utils.imageUrlExists(`../../${mzk.user.avatarPath}`) === true) {
+      this._dom.avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
+    }
+
+    this._dom.username.innerHTML = mzk.user.username;
+
+    this._userMenu = new UserMenuContext({
+      target: this._dom.container,
+      url: 'context/userMenu/'
+    });
 
     this._isCollapsed = false; // Aside is expanded by default
 
@@ -41,6 +57,10 @@ class Aside {
               label: 'Libraries',
               items: response.LIBRARY
             });
+
+            new ScrollBar({
+              target: libraries.elements
+            });
             this._dom.collection.appendChild(libraries.dom);
           }
 
@@ -58,9 +78,6 @@ class Aside {
 
           this._dom.collection.appendChild(playbackModes.dom);
 
-          new ScrollBar({
-            target: this._dom.collection
-          });
           this._dom.collection = this._dom.collection.firstElementChild.firstElementChild;
           resolve();
         });
@@ -70,6 +87,16 @@ class Aside {
 
   _events() {
     this._dom.collapser.addEventListener('click', this._toggleAside, false);
+    this._dom.avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);
+  }
+
+
+  toggleUserMenu() {
+    if (this._dom.container.contains(this._userMenu.dom)) {
+      this._userMenu.close();
+    } else {
+      this._userMenu.open();
+    }
   }
 
 
@@ -89,14 +116,14 @@ class Aside {
       this._isCollapsed = false;
       this._dom.container.classList.remove('collapsed');
       requestAnimationFrame(() => {
-        document.querySelector(':root').style.setProperty(width, '20%');
+        document.querySelector(':root').style.setProperty(width, '19%');
       });
     } else {
       this._isCollapsed = true;
       this._dom.container.classList.add('collapsed');
       requestAnimationFrame(() => {
         const style = getComputedStyle(document.documentElement);/*document.querySelector(':root').style;*/
-        const reducedWidth = `calc(${style.getPropertyValue('--mzk-topbar-height')} + ${style.getPropertyValue('--mzk-margin')})`;
+        const reducedWidth = style.getPropertyValue('--mzk-topbar-height');
         document.querySelector(':root').style.setProperty(width, reducedWidth);
       });
     }

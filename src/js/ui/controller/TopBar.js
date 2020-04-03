@@ -52,23 +52,12 @@ class TopBar {
    **/
   _init() {
     this._getElementsFromDocument();
-
-    this._userMenu = new UserMenuContext({
-      target: this._topbar,
-      url: 'context/userMenu/'
-    });
-
-    if (Utils.imageUrlExists(`../../${mzk.user.avatarPath}`) === true) {
-      this._avatar.src = `../../${mzk.user.avatarPath}`; // Since img is in app/templates
-    }
-
     this._setLangFeedback();
   }
 
 
   _getElementsFromDocument() {
     this._topbar = document.getElementById('topbar');
-    this._avatar = document.getElementById('topbar-avatar');
     this._spinner = document.getElementById('topbar-spinner');
     this._home = document.getElementById('topbar-home-button');
     this._suggestion = document.getElementById('topbar-suggestion-button');
@@ -92,8 +81,6 @@ class TopBar {
       this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
       this._suggestion.addEventListener('click', mzk.ui.setModal.bind(mzk.ui, { name: 'Suggestion' }), false);
     });
-
-    this._avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);
   }
 
 
@@ -142,24 +129,6 @@ class TopBar {
   //  ------------------------------------------------------------------------------------------------//
   //  ----------------------------------------  USER MENU  -----------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
-
-
-  /**
-   * @method
-   * @name toggleUserMenu
-   * @public
-   * @memberof TopBar
-   * @author Arthur Beaulieu
-   * @since September 2018
-   * @description Toggle the UserMenu
-   **/
-  toggleUserMenu() {
-    if (this._topbar.contains(this._userMenu.dom)) {
-      this._userMenu.close();
-    } else {
-      this._userMenu.open();
-    }
-  }
 
 
   _setLangFeedback() {

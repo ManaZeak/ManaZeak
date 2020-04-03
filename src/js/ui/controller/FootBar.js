@@ -264,6 +264,7 @@ class FootBar {
             };
           }
 
+          d3.select(this._progressBar.moodbarContainer.childNodes[1]).selectAll('g');
           const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
 
           svg.append('linearGradient')

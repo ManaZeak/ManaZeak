@@ -4,10 +4,11 @@
   background-color: var(--mzk-color-bg);
   display: flex;
   height: var(--mzk-topbar-height);
-  width: 100%;
+  width: calc(100% - var(--mzk-aside-width));
   z-index: 700;
 
   @include user-select(none);
+  @include transition(width var(--mzk-animation-duration) ease-in-out);
 
   .topbar-spinner {
     align-self: center;

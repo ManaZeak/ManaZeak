@@ -19,25 +19,28 @@
         <img src="{% static "img/actions/suggestion.svg" %}" id="topbar-suggestion-button" class="topbar-suggestion-button" alt="suggestion">
       </div>
       <p class="topbar-view-breadcrumbs"></p>
+      <!-- Toptbar-logo is by default hidden under Aside, but revealed when collapsed -->
       <img src="{% static "img/logo/manazeak-text.svg" %}" id="topbar-logo" class="topbar-logo" alt="manazeak-text-logo">
-      <img src="{% static "img/default/user.svg" %}" id="topbar-avatar" class="topbar-avatar" alt="user-avatar">
     </div>
     <div id="scene" class="scene"></div>
     <div class="aside">
+      <div class="aside-user-container">
+        <img src="{% static "img/default/user.svg" %}" id="aside-user-pp" alt="">
+        <h2 id="aside-user-name">Username</h2>
+      </div>
       <div class="app-controls">
         <div class="aside-collapser">
           <img src="{% static "img/navigation/nav-right.svg" %}" id="aside-toggle" class="aside-toggle" alt="aside-toggle">
         </div>
-        <div>
-        </div>
+        <img src="{% static "img/logo/manazeak-text.svg" %}" id="aside-logo" class="aside-logo" alt="manazeak-aside-text-logo">
       </div>
       <div class="aside-content"></div>
       <div class="aside-track-preview">
         <div class="track-preview-info">
-            <a class="track-preview-title"></a>
-            <a class="track-preview-yearalbum"></a>
-            <a class="track-preview-artist"></a>
-            <a class="track-preview-composer"></a>
+          <a class="track-preview-title"></a>
+          <a class="track-preview-yearalbum"></a>
+          <a class="track-preview-artist"></a>
+          <a class="track-preview-composer"></a>
         </div>
         <img src="#" class ="track-preview-cover" alt="current-track-cover">
       </div>

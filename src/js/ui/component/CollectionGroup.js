@@ -51,6 +51,7 @@ class CollectionGroup {
     this._dom.elements = document.createElement('UL');
 
     if (this._label === 'PlaybackModes') {
+      this._dom.container.classList.add('playback-modes');
       this._dom.groupImage.src = 'static/img/object/modes.svg';
       const partyView = new DiscoverEntry({
         type: 'PartyView'
@@ -59,13 +60,32 @@ class CollectionGroup {
     } else {
       this._dom.groupImage.src = 'static/img/object/collection.svg';
       for (let i = 0; i < this._items.length; ++i) {
+        this._items[i].DESC = `${this._items[i].TOTAL_TRACK} ${mzk.lang.playlist.tracks}`;
         const element = new CollectionEntry({
-          entry: this._items[i]
+          entry: this._items[i],
+          callback: (id) => {
+            mzk.ui.setSceneView({ playlist: mzk.model.collection.getPlaylistFromId(parseInt(id)) })
+          }
         });
 
         this._entries.push(element);
         this._dom.elements.appendChild(element.dom);
       }
+
+      const newPl = new CollectionEntry({
+        entry: {
+          IMG: '/static/img/actions/new.svg',
+          NAME: 'New playlist',
+          DESC: 'Public or private, yours!'
+        },
+        callback: () => {
+          console.log('Playlist coming next release');
+        }
+      });
+
+      newPl.dom.classList.add('new-playlist');
+      this._entries.push(newPl);
+      this._dom.elements.appendChild(newPl.dom);
     }
 
     this._dom.container.appendChild(this._dom.title);
@@ -92,6 +112,10 @@ class CollectionGroup {
     return this._dom.container;
   }
 
+
+  get elements() {
+    return this._dom.elements;
+  }
 
 }
 

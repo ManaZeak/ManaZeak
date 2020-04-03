@@ -122,6 +122,11 @@ class User {
   }
 
 
+  get username() {
+    return this._username;
+  }
+
+
 }
 
 

@@ -22,6 +22,8 @@ class ProgressBar {
       right: {}
     };
     this._topbarLogo = {};
+    this._asideLogo = {};
+
     this._rafId = null;
     this._duration = 0;
 
@@ -56,7 +58,9 @@ class ProgressBar {
     this._progress.moodbar = document.getElementById('progress-moodbar');
     this._progress.left = document.getElementById('footbar-left');
     this._progress.right = document.getElementById('footbar-right');
+
     this._topbarLogo = document.getElementById('topbar-logo');
+    this._asideLogo = document.getElementById('aside-logo');
 
     this._resetTimecode();
 
@@ -352,6 +356,7 @@ class ProgressBar {
       this._progress.left.style.opacity = '1';
       this._progress.right.style.opacity = '1';
       this._topbarLogo.style.opacity = '1';
+      this._asideLogo.style.opacity = '1';
     } else {
       this._progress.moodbar.style.height = '0';
       this._progress.moodbar.style.opacity = '0';
@@ -361,6 +366,7 @@ class ProgressBar {
       this._progress.left.style.opacity = '0';
       this._progress.right.style.opacity = '0';
       this._topbarLogo.style.opacity = '0';
+      this._asideLogo.style.opacity = '0';
     }
   }
 
