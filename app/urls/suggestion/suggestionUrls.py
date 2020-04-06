@@ -11,4 +11,6 @@ urlpatterns = [
     path('get/', SuggestionService.getUserSuggestions, name='getSuggestions'),
     ## Get all the suggestions.
     path('getAll/', SuggestionService.getAllSuggestion, name='getAllSuggestions'),
+    ## Change the status of a wish.
+    path('changeStatus/', SuggestionService.changeSuggestionStatus, name='changeSuggestionStatus'),
 ]

@@ -48,6 +48,7 @@ class SuggestionService(object):
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
+    ## Get all the users suggestions.
     def getAllSuggestion(request):
         # Getting the user.
         user = request.user
@@ -61,3 +62,18 @@ class SuggestionService(object):
             'SUGGESTIONS': [suggestion.generateJson() for suggestion in suggestions]
         }
 
+    @staticmethod
+    @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
+    ## Change the status of a suggestion.
+    def changeSuggestionStatus(request):
+        # Getting the user.
+        user = request.user
+        # Checking the permission of the user
+        PermissionHandler.checkPermission(PermissionEnum.WISH_REVIEW, user)
+        # Check the request of the user.
+        response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['SUGGESTION_ID', 'STATUS'])
+        # Getting the suggestion and the status
+        suggestionId = int(response['SUGGESTION_ID'])
+        status = bool(response['STATUS'])
+        SuggestionManager.changeStatusSuggestion(suggestionId, status, user)
