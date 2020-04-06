@@ -20,6 +20,7 @@ class Command(BaseCommand):
         self._generateApplicationConfiguration()
         self._generateDefaultFileTypes()
         self._generateDefaultConf()
+        self._generateConfigSuggestion()
         logger.info('Inserted all the default objects into the database')
 
     ## Generate the default group for the application
