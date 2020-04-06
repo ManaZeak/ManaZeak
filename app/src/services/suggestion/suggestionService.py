@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.html import strip_tags
 
+from app.src.constants.suggestionTypeEnum import SuggestionTypeEnum
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 
@@ -18,7 +19,7 @@ class SuggestionService(object):
     @login_required(redirect_field_name='', login_url='app:login')
     @FrontRequest
     ## Create a wish for a user.
-    def createSuggestion(request):
+    def createGeneralSuggestion(request):
         # Getting the user.
         user = request.user
         # Checking the permission of the user.
@@ -26,7 +27,7 @@ class SuggestionService(object):
         # Check the request of the user.
         response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['SUGGESTION'])
         # Creates the wish into the database.
-        SuggestionManager.createSuggestion(strip_tags(response['SUGGESTION']), user)
+        SuggestionManager.createSuggestion(strip_tags(response['SUGGESTION']), user, SuggestionTypeEnum.GENERAL)
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')

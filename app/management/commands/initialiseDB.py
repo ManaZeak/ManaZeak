@@ -3,7 +3,7 @@ import logging
 from django.core.management import BaseCommand
 
 from app.models import Group, ApplicationConfiguration, Permissions, FileType
-from app.models.settings import Config, SuggestionStatus
+from app.models.settings import Config, SuggestionStatus, SuggestionType
 from app.src.config.configEnum import ConfigEnum
 
 logger = logging.getLogger('django')
@@ -117,6 +117,9 @@ class Command(BaseCommand):
             SuggestionStatus(label='Submitted', id=1).save(force_insert=True)
             SuggestionStatus(label='Accepted', id=2).save(force_insert=True)
             SuggestionStatus(label='Refused', id=3).save(force_insert=True)
+        if SuggestionType.objects.all().count() == 0:
+            SuggestionType(label='General', id=1).save(force_insert=True)
+            SuggestionType(label='Artist', id=2).save(force_insert=True)
 
     @staticmethod
     ## This function generates the default file types the application can handle.

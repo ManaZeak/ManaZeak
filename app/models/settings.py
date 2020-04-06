@@ -24,14 +24,21 @@ class SuggestionStatus(models.Model):
     ## The name of the status.
     label = models.CharField(max_length=20, null=False, unique=True)
 
-## This class describes a user's wish.
+## This class describes a suggestion type.
+class SuggestionType(models.Model):
+    ## The type of the suggestion
+    label = models.CharField(max_length=20, null=False, unique=True)
+
+## This class describes a user's suggestion.
 class Suggestion(models.Model):
-    ## The text value of the wish.
+    ## The text value of the suggestion.
     text = models.CharField(max_length=10000, null=False)
-    ## The status of the wish.
+    ## The status of the suggestion.
     status = models.ForeignKey(SuggestionStatus, on_delete=models.DO_NOTHING)
-    ## The user making the wish.
+    ## The user making the suggestion.
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    ## The type of the suggestion.
+    type = models.ForeignKey(SuggestionType, on_delete=models.DO_NOTHING)
     ## The date of the suggestion creation
     creationDate = models.DateTimeField(auto_now_add=True)
 

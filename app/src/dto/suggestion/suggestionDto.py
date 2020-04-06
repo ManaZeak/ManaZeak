@@ -6,6 +6,7 @@ class SuggestionDto(AbstractDto):
     def __init__(self):
         self.id = None
         self.status = None
+        self.type = None
         self.text = None
         self.creationDate = None
         self.user = None
@@ -18,6 +19,10 @@ class SuggestionDto(AbstractDto):
             'STATUS': {
                 'ID': self.status.id,
                 'LABEL': self.status.label,
+            },
+            'TYPE': {
+                'ID': self.type.id,
+                'LABEL': self.type.label,
             },
             'USER': {
                 'ID': self.user.id,

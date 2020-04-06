@@ -21,10 +21,11 @@ class SuggestionLoader(object):
         suggestions = []
         for suggestionDb in suggestionsDb:
             suggestion = SuggestionDto()
+            suggestion.id = suggestionDb.id
             suggestion.user = suggestionDb.user
             suggestion.creationDate = suggestionDb.creationDate
             suggestion.text = suggestionDb.text
             suggestion.status = suggestionDb.status
-            suggestion.statusLabel = suggestionDb.status.label
+            suggestion.type = suggestionDb.type
             suggestions.append(suggestion)
         return suggestions

@@ -1,5 +1,5 @@
 from app.models.settings import Suggestion
-from app.src.constants.wishStatusEnum import WishStatusEnum
+from app.src.constants.suggestionStatusEnum import SuggestionStatusEnum
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
@@ -11,11 +11,13 @@ class SuggestionManager(object):
     ## Creates and save a suggestion for a user.
     #   @param text the content of the suggestion.
     #   @param user the user creating the suggestion.
-    def createSuggestion(text, user):
+    #   @param suggestionType the enum filed containing the type of the enum.
+    def createSuggestion(text, user, suggestionType):
         suggestion = Suggestion()
         suggestion.user = user
         suggestion.text = text
-        suggestion.status_id = WishStatusEnum.SUBMITTED.value
+        suggestion.type_id = suggestionType.value
+        suggestion.status_id = SuggestionStatusEnum.SUBMITTED.value
         suggestion.save()
 
     @staticmethod
@@ -25,9 +27,9 @@ class SuggestionManager(object):
     #   @param user the user making the request.
     def changeStatusSuggestion(suggestionId, status, user):
         if status:
-            newWishStatus = WishStatusEnum.ACCEPTED
+            newWishStatus = SuggestionStatusEnum.ACCEPTED
         else:
-            newWishStatus = WishStatusEnum.REFUSED
+            newWishStatus = SuggestionStatusEnum.REFUSED
         if suggestionId is None:
             raise UserException(ErrorEnum.BAD_REQUEST, user)
         suggestion = Suggestion.objects.get(suggestionId)

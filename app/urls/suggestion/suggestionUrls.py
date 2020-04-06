@@ -6,7 +6,7 @@ app_name = 'app'
 
 urlpatterns = [
     ## Create a suggestion
-    path('create/', SuggestionService.createSuggestion, name='createSuggestion'),
+    path('create/', SuggestionService.createGeneralSuggestion, name='createSuggestion'),
     ## Get the suggestion of the current user
     path('get/', SuggestionService.getUserSuggestions, name='getSuggestions'),
     ## Get all the suggestions.
