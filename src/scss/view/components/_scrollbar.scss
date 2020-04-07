@@ -34,11 +34,15 @@
     &.hidden {
       display: none;
     }
+
+    &.always-visible {
+      opacity: 1;
+    }
   }
 
-  &:active .scroll,
-  &:focus .scroll,
-  &:hover .scroll {
+  &:active .scroll:not(.always-visible),
+  &:focus .scroll:not(.always-visible),
+  &:hover .scroll:not(.always-visible) {
     opacity: 1;
   }
 }

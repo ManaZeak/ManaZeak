@@ -18,6 +18,7 @@ import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
 import AdminView from '../view/admin/AdminView.js';
 import CommunityView from '../view/community/CommunityView.js';
+import UserHubView from './community/UserHubView.js';
 
 
 const Classes = {
@@ -37,7 +38,8 @@ const Classes = {
   MainPageView,
   PartyView,
   AdminView,
-  CommunityView
+  CommunityView,
+  UserHubView
 };
 
 

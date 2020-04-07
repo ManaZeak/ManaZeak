@@ -1,7 +1,7 @@
 import CollectionGroup from "../component/CollectionGroup";
 import ScrollBar from "../component/bar/ScrollBar";
 import TrackPreview from "../component/TrackPreview";
-import UserMenuContext from "../context/UserMenuContext";
+
 
 class Aside {
 
@@ -32,11 +32,6 @@ class Aside {
     }
 
     this._dom.username.innerHTML = mzk.user.username;
-
-    this._userMenu = new UserMenuContext({
-      target: this._dom.container,
-      url: 'context/userMenu/'
-    });
 
     this._isCollapsed = false; // Aside is expanded by default
 
@@ -87,16 +82,12 @@ class Aside {
 
   _events() {
     this._dom.collapser.addEventListener('click', this._toggleAside, false);
-    this._dom.avatar.addEventListener('click', this.toggleUserMenu.bind(this), false);
-  }
-
-
-  toggleUserMenu() {
-    if (this._dom.container.contains(this._userMenu.dom)) {
-      this._userMenu.close();
-    } else {
-      this._userMenu.open();
-    }
+    this._dom.avatar.addEventListener('click', () => {
+      mzk.ui.setSceneView({
+        name: `UserHub`,
+        uiName: mzk.lang.communityView.title
+      });
+    }, false);
   }
 
 

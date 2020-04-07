@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/suggestion/layout/', GenericViews.getAdminSuggestionPage, name='reset'),
     # Layout for community view
     path('community/layout/', GenericViews.getCommunityPage, name='reset'),
+    path('community/userhub/layout', GenericViews.getUserHubPage, name='userHub'),
 ]

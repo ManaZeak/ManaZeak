@@ -1,4 +1,3 @@
-import UserMenuContext from '../context/UserMenuContext.js';
 'use strict';
 
 
@@ -24,9 +23,6 @@ class TopBar {
     /** @private
      * @member {object} - The suggestion button */
     this._suggestion = {};
-    /** @private
-     * @member {object} - The user context menu object */
-    this._userMenu = {};
     /** @private
      * @member {object} - The user context menu object */
     this._breadcrumbs = {};

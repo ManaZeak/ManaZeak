@@ -177,6 +177,7 @@ class UserInterface {
 
 
   clearMoodbar() {
+    /* TODO call for method to create in ProgressBar */
     d3.selectAll('.moodbar svg g').remove();
   }
 

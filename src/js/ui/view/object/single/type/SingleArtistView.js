@@ -130,7 +130,8 @@ class SingleArtistView extends SingleTagView {
       this._dom.albumContainer.appendChild(releasedAlbums);
 
       new ScrollBar({
-        target: releasedAlbums
+        target: releasedAlbums,
+        alwaysVisible: true
       });
 
       resolve();

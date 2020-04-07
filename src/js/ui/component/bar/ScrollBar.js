@@ -15,6 +15,7 @@ class ScrollBar {
     };
 
     this._target = options.target; // Parent div to put the ScrollBar in
+    this._alwaysVisible = options.alwaysVisible;
     this._wrapper = {}; // Wrap both container and ScrollBar
     this._container = {}; // Content to scroll + browser ScrollBar (18px offset)
     this._bar = {}; // ScrollBar itself
@@ -56,11 +57,18 @@ class ScrollBar {
     fragment.appendChild(this._wrapper);
     // Append fragment to DOM target
     this._target.appendChild(fragment);
-    this._target.insertAdjacentHTML('beforeend', '<div class="scroll"></div>'); // Append scroll as last child
+    let alwaysVisibleClass = '';
+    if (this._alwaysVisible) {
+      alwaysVisibleClass = 'always-visible';
+    }
+    // Append scroll as last child
+    this._target.insertAdjacentHTML('beforeend', `<div class="scroll ${alwaysVisibleClass}"></div>`);
     this._bar = this._target.lastChild; // Get content from line just over this!
     // Methods auto binding with this to be able to add/remove listeners easily
     this._drag = this._drag.bind(this);
     this._stopDrag = this._stopDrag.bind(this);
+    // Ensure parent has time to build to its max height before first update
+    setTimeout(this._updateScrollBar.bind(this), 100);
   }
 
   /**

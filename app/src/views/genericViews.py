@@ -65,14 +65,6 @@ class GenericViews(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
-    ## Send the user menu context HTML template
-    #   @param request request given by the front
-    #   @return the user menu template
-    def userMenuContext(request):
-        return render(request, 'contexts/userMenuContext.html')
-
-    @staticmethod
-    @login_required(redirect_field_name='', login_url='app:login')
     ## Send the change view context HTML template
     #   @param request request given by the front
     #   @return the user menu template
@@ -146,4 +138,9 @@ class GenericViews(object):
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getCommunityPage(request):
-        return render(request, 'views/community/communitypage.html')
+        return render(request, 'views/community/communitypage.html')\
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getUserHubPage(request):
+        return render(request, 'views/community/userhubpage.html')
