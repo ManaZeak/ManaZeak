@@ -6,7 +6,7 @@ $scene-transition: var(--mzk-animation-duration-long);
   height: calc(100% - (var(--mzk-topbar-height) + var(--mzk-footbar-height)));
   position: relative;
   width: calc(100% - var(--mzk-aside-width));
-  z-index: 701;
+  z-index: 750;
 
   @include transition(width var(--mzk-animation-duration) ease-in-out);
 
