@@ -57,7 +57,7 @@ class AdminSuggestionView extends AdminSceneView {
     accept.addEventListener('click', () => {
       const options = {
         SUGGESTION_ID: suggestion.ID,
-        STATUS: 'ACCEPTED'
+        STATUS: true
       };
       mzk.komunikator.post('suggestion/changeStatus/', options)
         .then(() => {
@@ -76,7 +76,7 @@ class AdminSuggestionView extends AdminSceneView {
     refuse.addEventListener('click', () => {
       const options = {
         SUGGESTION_ID: suggestion.ID,
-        STATUS: 'REFUSED'
+        STATUS: false
       };
       mzk.komunikator.post('suggestion/changeStatus/', options)
         .then(() => {

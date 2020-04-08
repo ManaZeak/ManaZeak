@@ -32,6 +32,6 @@ class SuggestionManager(object):
             newWishStatus = SuggestionStatusEnum.REFUSED
         if suggestionId is None:
             raise UserException(ErrorEnum.BAD_REQUEST, user)
-        suggestion = Suggestion.objects.get(suggestionId)
+        suggestion = Suggestion.objects.get(id=suggestionId)
         suggestion.status_id = newWishStatus.value
         suggestion.save()
