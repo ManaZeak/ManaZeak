@@ -114,7 +114,10 @@
     "stretchall": "Étendre les colonnes"
   },
   "adminView": {
-    "title": "Administration"
+    "title": "Administration",
+    "suggestion": {
+      "madeBy": "Suggestion proposée par"
+    }
   },
   "communityView": {
     "title": "Communauté"

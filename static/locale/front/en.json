@@ -114,7 +114,10 @@
 
   },
   "adminView": {
-    "title": "Admin"
+    "title": "Admin",
+    "suggestion": {
+      "madeBy": "Suggestion from"
+    }
   },
   "communityView": {
     "title": "Community"

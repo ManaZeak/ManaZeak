@@ -152,7 +152,7 @@ class Mzk {
 
     return new Promise(resolve => {
       const options = {
-        LANG: (navigator.language || navigator.userLanguage)
+        LANG: navigator.language
       };
 
       this.komunikator.post('language/', options)

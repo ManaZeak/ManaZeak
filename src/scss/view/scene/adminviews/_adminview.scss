@@ -35,3 +35,63 @@
     width: calc(100% - 15rem);
   }
 }
+
+.admin-suggestion-page {
+
+  .admin-suggestion-item {
+    border: solid var(--mzk-border-width) var(--mzk-border-color);
+    border-radius: var(--mzk-border-jumbo-radius);
+    font-size: .9em;
+    margin: var(--mzk-margin);
+    padding: var(--mzk-padding);
+    position: relative;
+
+    transition: background-color var(--mzk-animation-duration) ease-in,
+                border-color var(--mzk-animation-duration) ease-in;
+
+    &.submitted {
+      background-color: var(--mzk-color-anti-secondary-alpha-25);
+      border-color: var(--mzk-color-anti-secondary-darker);
+    }
+
+    &.accepted {
+      background-color: var(--mzk-color-primary-alpha-25);
+      border-color: var(--mzk-color-primary-darker);
+    }
+
+    &.refused {
+      background-color: var(--mzk-color-anti-primary-alpha-25);
+      border-color: var(--mzk-color-anti-primary-darker);
+    }
+
+    p.admin-suggestion-date-author {
+      span {
+        font-weight: bold;
+      }
+    }
+
+    p.admin-suggestion-value {
+      font-size: 1.3rem;
+      font-style: italic;
+      font-weight: bold;
+      margin-top: var(--mzk-margin);
+      padding: 0 var(--mzk-padding);
+    }
+
+    p.admin-suggestion-buttons {
+      text-align: right;
+
+      img {
+        cursor: pointer;
+        height: 1rem;
+      }
+    }
+
+    p.admin-suggestion-type {
+      font-weight: bold;
+      position: absolute;
+      right: var(--mzk-padding);
+      top: var(--mzk-padding);
+    }
+  }
+}
