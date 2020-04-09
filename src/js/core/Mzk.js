@@ -41,6 +41,8 @@ class Mzk {
     /** @public
      * @member {object} - ManaZeak User Interface */
     this.ui = {};
+    // Make mzk available application wide
+    window.mzk = this;
   }
 
 

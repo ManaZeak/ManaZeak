@@ -58,6 +58,11 @@ class TopBar {
     this._home = document.getElementById('topbar-home-button');
     this._suggestion = document.getElementById('topbar-suggestion-button');
     this._breadcrumbs = document.getElementsByClassName('topbar-view-breadcrumbs')[0];
+
+    if (!mzk.user.hasPermission('WISH')) {
+      this._breadcrumbs.style.left = window.getComputedStyle(this._suggestion.parentNode).left;
+      this._topbar.removeChild(this._suggestion.parentNode);
+    }
   }
 
 
@@ -75,7 +80,10 @@ class TopBar {
       name: 'MzkInitDone'
     }, () => { // Bind listeners when app is initialized
       this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
-      this._suggestion.addEventListener('click', mzk.ui.setModal.bind(mzk.ui, { name: 'Suggestion' }), false);
+
+      if (mzk.user.hasPermission('WISH')) {
+        this._suggestion.addEventListener('click', mzk.ui.setModal.bind(mzk.ui, {name: 'Suggestion'}), false);
+      }
     });
   }
 

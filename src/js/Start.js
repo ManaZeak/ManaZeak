@@ -32,6 +32,6 @@ window.ViewEnum = Object.freeze({
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  window.mzk = new Mzk();
+  const mzk = new Mzk();
   mzk.start();
 });
