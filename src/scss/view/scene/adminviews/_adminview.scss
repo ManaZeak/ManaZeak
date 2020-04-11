@@ -31,18 +31,23 @@
   }
 
   .admin-scene {
-    padding: var(--mzk-padding-big);
     width: calc(100% - 15rem);
   }
 }
 
 .admin-suggestion-page {
+  height: 100%;
+  overflow-y: auto;
+
+  h1 {
+    margin: var(--mzk-margin-big) var(--mzk-margin);
+  }
 
   .admin-suggestion-item {
     border: solid var(--mzk-border-width) var(--mzk-border-color);
     border-radius: var(--mzk-border-jumbo-radius);
     font-size: .9em;
-    margin: var(--mzk-margin);
+    margin: var(--mzk-margin-big);
     padding: var(--mzk-padding);
     position: relative;
 
@@ -75,6 +80,7 @@
       font-style: italic;
       font-weight: bold;
       margin-top: var(--mzk-margin);
+      overflow-wrap: break-word;
       padding: 0 var(--mzk-padding);
     }
 

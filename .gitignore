@@ -124,6 +124,7 @@ static/img/avatars/**
 static/img/covers/**
 static/lib/**
 static/zip/**
+static/plugins/**
 
 *.mood
 

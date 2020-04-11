@@ -51,6 +51,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "cssnano": "^4.1.7",
+    "html-webpack-plugin": "^4.2.0",
     "jasmine": "^3.2.0",
     "jasmine-core": "^3.2.1",
     "jsdoc": "^3.6.3",
@@ -62,7 +63,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^3.0.5",
     "mini-css-extract-plugin": "^0.4.5",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "3.0.0",
     "sass-loader": "^7.1.0",
@@ -72,5 +73,8 @@
     "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "update": "^0.7.4"
   }
 }

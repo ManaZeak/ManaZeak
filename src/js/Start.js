@@ -1,5 +1,3 @@
-import '../scss/style.scss';
-
 import Utils from './utils/Utils.js';
 import Logger from './utils/Logger.js';
 import Events from './utils/Events.js';

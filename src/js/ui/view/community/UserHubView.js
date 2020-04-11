@@ -66,6 +66,15 @@ class UserHubView extends SceneView {
         mzk.ui.setModal({
           name: `UserID`
         });
+
+        var a = document.createElement('DIV');
+        a.classList.add('worldmap');
+        document.body.appendChild(a);
+        new MzkWorldMap({
+          assetsUrl: 'static/plugins/MzkWorldMap/',
+          renderTo: a,
+          countryClicked: null
+        });
       }, true);
     } else {
       this._dom.wrapper.removeChild(this._dom.userid);
