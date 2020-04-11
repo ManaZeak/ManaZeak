@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load mzkWorldMapTag %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +9,7 @@
     <title>ManaZeak</title>
     <link rel="icon" type="image/png" href="{% static "img/logo/manazeak-logo-square.svg" %}">
     <link rel="stylesheet" type="text/css" href="{% static "dist/css/manazeak.bundle.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "dist/css/mzkworldmap.bundle.css" %}">
+    {% mzkWorldMapIncludeCss %}
   </head>
   <body>
     <div id="topbar" class="topbar">
