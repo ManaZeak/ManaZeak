@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="512pt"
-   viewBox="0 -64 512 512"
-   width="512pt"
+   height="32pt"
+   viewBox="0 -64 32 32"
+   width="32pt"
    version="1.1"
    id="svg14"
    sodipodi:docname="idcard.svg"
@@ -22,6 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,16 +41,16 @@
      inkscape:window-height="1013"
      id="namedview16"
      showgrid="false"
-     inkscape:zoom="0.34570313"
-     inkscape:cx="-121.49153"
-     inkscape:cy="341.33333"
+     inkscape:zoom="11.0625"
+     inkscape:cx="48.554998"
+     inkscape:cy="15.822134"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg14" />
   <g
      id="g863"
-     transform="matrix(0.75706215,0,0,0.75706215,62.192082,46.64406)">
+     transform="matrix(0.05006636,0,0,0.05006636,3.1830114,-57.612742)">
     <path
        inkscape:connector-curvature="0"
        id="path2"

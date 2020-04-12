@@ -9,9 +9,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="512pt"
-   viewBox="0 -23 512 512"
-   width="512pt"
+   height="32"
+   viewBox="0 -23 23.999999 23.999999"
+   width="32"
    version="1.1"
    id="svg24"
    sodipodi:docname="collection.svg"
@@ -24,6 +24,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -158,16 +159,17 @@
      inkscape:window-height="1013"
      id="namedview26"
      showgrid="false"
-     inkscape:zoom="0.34570313"
-     inkscape:cx="-172.11299"
-     inkscape:cy="341.33333"
+     inkscape:zoom="5.53125"
+     inkscape:cx="0.66908078"
+     inkscape:cy="3.7676273"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg24" />
+     inkscape:current-layer="svg24"
+     units="px" />
   <g
      id="g4975"
-     transform="matrix(0.76694916,0,0,0.76694916,59.661007,54.290354)">
+     transform="matrix(0.03750582,0,0,0.03750582,2.3985106,-19.739368)">
     <path
        style="fill:url(#linearGradient4942);fill-opacity:1;stroke:none"
        id="path2"

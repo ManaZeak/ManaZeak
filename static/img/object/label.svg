@@ -13,16 +13,15 @@
    id="Layer_1"
    x="0px"
    y="0px"
-   viewBox="0 0 493 493"
-   style="enable-background:new 0 0 493 493;"
+   viewBox="0 0 30.8125 30.8125"
    xml:space="preserve"
-   width="512"
-   height="512"
+   width="32"
+   height="32"
    sodipodi:docname="label.svg"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
    id="metadata17"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
    id="defs15">
 	
 	
@@ -41,16 +40,16 @@
    inkscape:window-height="1013"
    id="namedview13"
    showgrid="false"
-   inkscape:zoom="0.65186406"
-   inkscape:cx="182.83851"
-   inkscape:cy="250.28114"
+   inkscape:zoom="7.3749999"
+   inkscape:cx="76.698485"
+   inkscape:cy="18.797465"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
    inkscape:current-layer="Layer_1" />
 <g
    id="g819"
-   transform="matrix(0.93123325,0,0,0.93123325,51.339909,-5.7805488)"><path
+   transform="matrix(0.06373494,0,0,0.06373494,2.0492125,-1.8601938)"><path
      d="m 391.13073,143.1208 h -18.23432 l -20.37542,65.07892 c -1.53717,4.90172 -6.08594,8.24271 -11.23078,8.24271 H 77.853081 c -5.144828,0 -9.693609,-3.34099 -11.230783,-8.24271 L 46.246898,143.1208 H 28.012563 c -6.496914,0 -11.764088,5.26717 -11.764088,11.76408 v 232.05055 c 0,6.49692 5.267174,11.76409 11.764088,11.76409 H 391.13073 c 6.49692,0 11.7641,-5.26717 11.7641,-11.76409 V 154.88488 c 0,-6.49691 -5.26718,-11.76408 -11.7641,-11.76408 z M 281.10514,354.01952 H 138.03815 c -31.4807,0 -57.095035,-25.6065 -57.095035,-57.0872 0,-31.4807 25.614335,-57.0872 57.095035,-57.0872 31.47285,0 57.08719,25.6065 57.08719,57.0872 0,12.53268 -4.05469,24.13207 -10.93275,33.55903 h 50.75811 c -6.87807,-9.42696 -10.93276,-21.02635 -10.93276,-33.55903 0,-31.4807 25.61435,-57.0872 57.0872,-57.0872 31.4807,0 57.09504,25.6065 57.09504,57.0872 0,31.4807 -25.61434,57.0872 -57.09504,57.0872 z"
      id="path2"
      style="fill:#aaaabe;fill-opacity:1;stroke-width:0.78427255"

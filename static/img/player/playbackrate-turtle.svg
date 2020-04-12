@@ -7,12 +7,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 26 26"
+   viewBox="0 0 32 32"
    enable-background="new 0 0 26 26"
    version="1.1"
    id="svg4"
-   sodipodi:docname="Turtle-595b40b65ba036ed117d4ce9.svg"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+   sodipodi:docname="playbackrate-turtle.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   width="32"
+   height="32">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -21,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,15 +43,15 @@
      id="namedview6"
      showgrid="false"
      inkscape:zoom="18.153846"
-     inkscape:cx="2.3991192"
-     inkscape:cy="9.2755339"
+     inkscape:cx="1.4351361"
+     inkscape:cy="15.885703"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg4" />
   <g
      id="g842"
-     transform="matrix(0.95113306,0,0,0.95113306,0.61077324,0.15955896)">
+     transform="matrix(1.1700075,0,0,1.1700075,0.7597688,0.20472125)">
     <g
        style="fill:#aaaabe;fill-opacity:1"
        id="g818">

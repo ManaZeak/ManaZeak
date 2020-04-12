@@ -146,7 +146,7 @@ class TopBar {
     if (mainPageOn === true) {
       this._home.src = '/static/img/navigation/home.svg';
     } else {
-      this._home.src = '/static/img/player/shuffle-random-on.svg';
+      this._home.src = '/static/img/actions/random-roll.svg';
     }
   }
 

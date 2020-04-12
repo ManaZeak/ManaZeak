@@ -12,9 +12,9 @@
    enable-background="new 0 0 99.894 99.894"
    id="svg12"
    sodipodi:docname="volume-full.svg"
-   inkscape:version="0.92.2 2405546, 2018-03-11"
-   width="100%"
-   height="100%">
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   width="32"
+   height="32">
   <metadata
      id="metadata18">
     <rdf:RDF>
@@ -23,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,16 +42,17 @@
      inkscape:window-height="1013"
      id="namedview14"
      showgrid="false"
-     inkscape:zoom="4.7250086"
-     inkscape:cx="9.290993"
-     inkscape:cy="37.07528"
+     inkscape:zoom="25.75"
+     inkscape:cx="16"
+     inkscape:cy="16"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg12" />
+     inkscape:current-layer="svg12"
+     units="px" />
   <g
      id="g36"
-     transform="matrix(0.14186737,0,0,0.14186737,-35.120493,-35.122337)"
+     transform="matrix(0.13473464,0,0,0.14247002,-30.840851,-35.483937)"
      style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:20.46436691;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
     <g
        id="background"

@@ -71,6 +71,10 @@ class Aside {
             label: 'PlaybackModes'
           });
 
+          new ScrollBar({
+            target: playbackModes.elements
+          });
+
           this._dom.collection.appendChild(playbackModes.dom);
 
           this._dom.collection = this._dom.collection.firstElementChild.firstElementChild;
