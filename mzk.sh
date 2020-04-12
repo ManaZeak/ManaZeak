@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vmzk="0.2.0"
+vmzk="0.2.1"
 mzkdir=$(dirname $0)
 
 createNecessaryFiles() {
@@ -113,7 +113,8 @@ elif [ "$1" = "plugin" ]; then
         echo -e "Install MzkWorldMap plugin"
         if [ ! -d "plugins/MzkWorldMap" ]; then
           eval "git clone https://github.com/ManaZeak/MzkWorldMap.git plugins/MzkWorldMap/"
-          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py -i ./static/"
+          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --install ./static/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkWorldMap"
         else
           echo -e "Plugin already installed"
         fi
@@ -124,10 +125,24 @@ elif [ "$1" = "plugin" ]; then
       if [ "$3" = "MzkWorldMap" ]; then
         echo -e "Uninstall MzkWorldMap plugin"
         if [ -d "plugins/MzkWorldMap" ]; then
-          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py -u ./static/"
+          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --uninstall ./static/"
           eval "rm -rvf plugins/MzkWorldMap/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to remove MzkWorldMap bundles"
         else
           echo -e "Plugin doesn't exists"
+        fi
+      else
+        echo -e "Missing plugin name"
+      fi
+    elif [ "$2" = "update" ]; then
+      if [ "$3" = "MzkWorldMap" ]; then
+        echo -e "Update MzkWorldMap plugin"
+        if [ -d "plugins/MzkWorldMap" ]; then
+          eval "cd plugins/MzkWorldMap && git pull origin master && cd ../../"
+          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --pull ./static/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkWorldMap"
+        else
+          echo -e "Plugin not installed"
         fi
       else
         echo -e "Missing plugin name"

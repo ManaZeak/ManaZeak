@@ -51,6 +51,10 @@
       "pv": {
         "title": "Découverte",
         "desc": "Lecture d'albums aléatoire en plein écran, parfait pour les soirées"
+      },
+      "wmv": {
+        "title": "MzkWorldMap",
+        "desc": "Parcourir le globe pour découvrir les musiques du monde"
       }
     },
     "suggestion": {

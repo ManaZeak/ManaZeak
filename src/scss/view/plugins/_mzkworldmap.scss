@@ -1,0 +1,35 @@
+.mzkworldmap-view-wrapper {
+  align-items: center;
+  background-color: var(--mzk-color-bg-darker);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
+
+  .mzkworldmap-view-controls {
+    align-items: center;
+    background: var(--mzk-color-bg-dark-alpha-50);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    bottom: 0;
+    display: flex;
+    padding: 0 10px;
+    position: absolute;
+    z-index: 999;
+
+    img {
+      cursor: pointer;
+      height: 33px;
+      margin: var(--mzk-margin);
+      width: auto;
+
+      &:first-child {
+        height: 50px;
+      }
+    }
+  }
+}

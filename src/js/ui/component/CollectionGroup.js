@@ -53,10 +53,18 @@ class CollectionGroup {
     if (this._label === 'PlaybackModes') {
       this._dom.container.classList.add('playback-modes');
       this._dom.groupImage.src = 'static/img/object/modes.svg';
+
       const partyView = new DiscoverEntry({
         type: 'PartyView'
       });
       this._dom.elements.appendChild(partyView.dom);
+
+      if (window.MzkWorldMap) {
+        const mzkWorldMapView = new DiscoverEntry({
+          type: 'MzkWorldMapView'
+        });
+        this._dom.elements.appendChild(mzkWorldMapView.dom);
+      }
     } else {
       this._dom.groupImage.src = 'static/img/object/collection.svg';
       for (let i = 0; i < this._items.length; ++i) {

@@ -25,9 +25,13 @@ class DiscoverEntry {
     this._dom.title.classList.add('mp-collection-title');
 
     if (this._type === 'PartyView') {
-      this._dom.img.src = 'static/img/actions/party.svg';
+      this._dom.img.src = 'static/img/partyview/party.svg';
       this._dom.title.innerHTML = mzk.lang.mainpage.discover.pv.title;
       this._dom.desc.innerHTML = mzk.lang.mainpage.discover.pv.desc;
+    } else if (this._type === 'MzkWorldMapView') {
+      this._dom.img.src = 'static/img/views/worldmapview.svg';
+      this._dom.title.innerHTML = mzk.lang.mainpage.discover.wmv.title;
+      this._dom.desc.innerHTML = mzk.lang.mainpage.discover.wmv.desc;
     }
 
     this._dom.container.appendChild(this._dom.img);
@@ -38,9 +42,15 @@ class DiscoverEntry {
 
   _events() {
     this._dom.container.addEventListener('click', () => {
-      mzk.ui.setSceneView({
-        name: 'Party'
-      });
+      if (this._type === 'PartyView') {
+        mzk.ui.setSceneView({
+          name: 'Party'
+        });
+      } else if (this._type === 'MzkWorldMapView') {
+        mzk.ui.setSceneView({
+          name: 'MzkWorldMap'
+        });
+      }
     }, false);
   }
 

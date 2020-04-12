@@ -48,6 +48,10 @@
       "pv": {
         "title": "Party View",
         "desc": "Play random albums with animation"
+      },
+      "wmv": {
+        "title": "MzkWorldMap",
+        "desc": "Browse Earth to discover music"
       }
     },
     "suggestion": {

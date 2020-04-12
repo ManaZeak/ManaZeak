@@ -43,7 +43,11 @@ class Scene {
       name: 'SceneViewReady',
       oneShot: true
     }, () => {
-      this.addView(this.view.dom);
+      if (this.view.dom) {
+        this.addView(this.view.dom);
+      } else {
+        //console.error('Undefined dom element for View');
+      }
     });
   }
 
@@ -85,6 +89,7 @@ class Scene {
       this.view = new ViewFactory(type, options);
 
       if (this.view === null) {
+        // console.log('invalid view name');
         this.setSceneView({ name: 'MainPage' });
       } else {
         this._sceneViewType = `${type}View`;

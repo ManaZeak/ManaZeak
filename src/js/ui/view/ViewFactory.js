@@ -16,6 +16,7 @@ import AllCountriesView from '../view/object/all/type/AllCountriesView.js';
 /* Generic sceneviews */
 import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
+import MzkWorldMapView from '../view/plugins/MzkWorldMapView.js';
 import AdminView from '../view/admin/AdminView.js';
 import CommunityView from '../view/community/CommunityView.js';
 import UserHubView from './community/UserHubView.js';
@@ -37,6 +38,7 @@ const Classes = {
   AllCountriesView,
   MainPageView,
   PartyView,
+  MzkWorldMapView,
   AdminView,
   CommunityView,
   UserHubView
