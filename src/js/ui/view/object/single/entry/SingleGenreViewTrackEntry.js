@@ -18,6 +18,11 @@ class SingleGenreViewTrackEntry extends TrackEntry {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _init() {
     const duration = document.createElement('P');
     duration.innerHTML = Utils.secondsToTimecode(this._track.duration);

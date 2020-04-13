@@ -25,6 +25,11 @@ class AlbumView extends LibraryViews {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _init() {
     this.buildDom() // Pare nt class call
       .then((container) => {

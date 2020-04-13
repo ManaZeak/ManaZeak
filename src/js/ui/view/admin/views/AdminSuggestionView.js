@@ -11,14 +11,22 @@ class AdminSuggestionView extends AdminSceneView {
     this._submitted = [];
     this._accepted = [];
     this._refused = [];
+
     this._scrollBar = null;
 
     this._init()
-      .then(this._initSuggestionView.bind(this));
+      .then(this._initAdminSuggestionView.bind(this));
   }
 
 
-  _initSuggestionView() {
+  destroy() {
+    super.destroy();
+    this._scrollBar.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
+  _initAdminSuggestionView() {
     return new Promise((resolve, reject) => {
       mzk.komunikator.get('suggestion/getAll/')
         .then(response => {

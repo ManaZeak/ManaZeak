@@ -20,10 +20,26 @@ class AdminView extends SceneView {
 
     this._activeAdminViewLabel = null;
     this._activeAdminView = null;
+    // Event binding
+    this._setOverview = this._setOverview.bind(this);
+    this._setDatabase = this._setDatabase.bind(this);
+    this._setUser = this._setUser.bind(this);
+    this._setSuggestion = this._setSuggestion.bind(this);
 
     this._fetchWrapper()
-      .then(this._adminViewEvents.bind(this))
+      .then(this._addAdminViewEvents.bind(this))
       .then(this._viewReady);
+  }
+
+
+  destroy() {
+    if (this._activeAdminView) {
+      this._activeAdminView.destroy();
+    }
+
+    super.destroy();
+    this._removeAdminViewEvents();
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -52,19 +68,52 @@ class AdminView extends SceneView {
   }
 
 
-  _adminViewEvents() {
-    this._dom.menu.overview.addEventListener('click', this._setAdminView.bind(this, 'overview'), false);
-    this._dom.menu.database.addEventListener('click', this._setAdminView.bind(this, 'database'), false);
-    this._dom.menu.user.addEventListener('click', this._setAdminView.bind(this, 'user'), false);
-    this._dom.menu.suggestion.addEventListener('click', this._setAdminView.bind(this, 'suggestion'), false);
+  _addAdminViewEvents() {
+    this._dom.menu.overview.addEventListener('click', this._setOverview, false);
+    this._dom.menu.database.addEventListener('click', this._setDatabase, false);
+    this._dom.menu.user.addEventListener('click', this._setUser, false);
+    this._dom.menu.suggestion.addEventListener('click', this._setSuggestion, false);
+  }
+
+
+  _removeAdminViewEvents() {
+    this._dom.menu.overview.removeEventListener('click', this._setOverview, false);
+    this._dom.menu.database.removeEventListener('click', this._setDatabase, false);
+    this._dom.menu.user.removeEventListener('click', this._setUser, false);
+    this._dom.menu.suggestion.removeEventListener('click', this._setSuggestion, false);
+  }
+
+
+  _setOverview() {
+    this._setAdminView('overview');
+  }
+
+
+  _setDatabase() {
+    this._setAdminView('database');
+  }
+
+
+  _setUser() {
+    this._setAdminView('user');
+  }
+
+
+  _setSuggestion() {
+    this._setAdminView('suggestion');
   }
 
 
   _setAdminView(view) {
+    if (this._activeAdminView) { // Clean previous view if any
+      this._activeAdminView.destroy(); // Call for destructor
+      this._activeAdminView = null; // Un-reference previous view
+    }
+
     this._dom.menu[this._activeAdminViewLabel].classList.remove('active');
     this._dom.menu[view].classList.add('active');
-    this._activeAdminViewLabel = view; // Save new active view
-    this._dom.scene.innerHTML = '';
+    this._activeAdminViewLabel = view; // Save new active view label
+    this._dom.scene.innerHTML = ''; // Clear admin scene inner html
     this._activeAdminView = new AdminViewFactory(this._activeAdminViewLabel, this._dom.scene);
   }
 

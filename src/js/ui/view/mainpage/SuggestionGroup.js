@@ -18,8 +18,20 @@ class SuggestionGroup {
 
     this._entries = [];
 
+    this._seeMoreForType = this._seeMoreForType.bind(this);
+
     this._init();
-    this._events();
+    this._addEvents();
+  }
+
+
+  destroy() {
+    for (let i = 0; i < this._entries.length; ++i) {
+      this._entries[i].destroy();
+    }
+
+    this._removeEvents();
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -52,13 +64,21 @@ class SuggestionGroup {
   }
 
 
-  _events() {
-    this._dom.seeMore.addEventListener('click', () => {
-      mzk.ui.setSceneView({
-        name: `All${this._type}`,
-        uiName: `All ${mzk.lang.playlist[this._label]}` // TODO proper nls handling (for the all prefix)
-      });
-    }, false);
+  _addEvents() {
+    this._dom.seeMore.addEventListener('click', this._seeMoreForType, false);
+  }
+
+
+  _removeEvents() {
+    this._dom.seeMore.removeEventListener('click', this._seeMoreForType, false);
+  }
+
+
+  _seeMoreForType() {
+    mzk.ui.setSceneView({
+      name: `All${this._type}`,
+      uiName: `All ${mzk.lang.playlist[this._label]}` // TODO proper nls handling (for the all prefix)
+    });
   }
 
 

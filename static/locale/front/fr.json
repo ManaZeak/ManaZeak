@@ -442,6 +442,11 @@
         "title": "Impossible de copier dans le presse-papier",
         "message": "Quelque chose d'inatendu est survenu. Essayez de nouveau sur un vrai navigateur ou contactez le support.",
         "severity": "error"
+      },
+      "MISSING_DOM_ELEMENTS": {
+        "title": "Élement du DOM manquant",
+        "message": "La page de ManaZeak semble compromise. Contactez le support.",
+        "severity": "error"
       }
     },
     "backend":  {

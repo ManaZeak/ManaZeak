@@ -15,11 +15,25 @@ class MainPageView extends SceneView {
       suggestion: null
     };
 
+    this._suggestionGroups = [];
+
     this._scrollBar = null;
 
     this._fetchWrapper()
       .then(this._fillSuggestion.bind(this))
       .then(this._viewReady);
+  }
+
+
+  destroy() {
+    this._scrollBar.destroy();
+
+    for (let i = 0; i < this._suggestionGroups.length; ++i) {
+      this._suggestionGroups[i].destroy();
+    }
+
+    super.destroy();
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -54,6 +68,7 @@ class MainPageView extends SceneView {
               type: 'ReleaseArtists',
               items: response.RELEASE_ARTISTS
             });
+            this._suggestionGroups.push(artists);
             this._dom.suggestion.appendChild(artists.dom);
           }
 
@@ -63,6 +78,7 @@ class MainPageView extends SceneView {
               type: 'Artists',
               items: response.ARTISTS
             });
+            this._suggestionGroups.push(artists);
             this._dom.suggestion.appendChild(artists.dom);
           }
 
@@ -72,27 +88,30 @@ class MainPageView extends SceneView {
               type: 'Albums',
               items: response.ALBUMS
             });
+            this._suggestionGroups.push(albums);
             this._dom.suggestion.appendChild(albums.dom);
           }
 
 
           if (response.PRODUCERS.length > 0) {
-            const albums = new SuggestionGroup({
+            const producers = new SuggestionGroup({
               label: 'Producers',
               type: 'Producers',
               items: response.PRODUCERS
             });
-            this._dom.suggestion.appendChild(albums.dom);
+            this._suggestionGroups.push(producers);
+            this._dom.suggestion.appendChild(producers.dom);
           }
 
 
           if (response.LABELS.length > 0) {
-            const albums = new SuggestionGroup({
+            const labels = new SuggestionGroup({
               label: 'Labels',
               type: 'Labels',
               items: response.LABELS
             });
-            this._dom.suggestion.appendChild(albums.dom);
+            this._suggestionGroups.push(labels);
+            this._dom.suggestion.appendChild(labels.dom);
           }
 
 
@@ -102,16 +121,18 @@ class MainPageView extends SceneView {
               type: 'Genres',
               items: response.GENRES
             });
+            this._suggestionGroups.push(genres);
             this._dom.suggestion.appendChild(genres.dom);
           }
 
           if (response.COUNTRIES.length > 0) {
-            const country = new SuggestionGroup({
+            const countries = new SuggestionGroup({
               label: 'Countries',
               type: 'Countries',
               items: response.COUNTRIES
             });
-            this._dom.suggestion.appendChild(country.dom);
+            this._suggestionGroups.push(countries);
+            this._dom.suggestion.appendChild(countries.dom);
           }
 
           this._scrollBar = new ScrollBar({

@@ -7,24 +7,61 @@ class AdminDatabaseView extends AdminSceneView {
   constructor(options) {
     super(options);
 
-    this._rescanButton = null;
-    this._regenAllThumbsButton = null;
-
+    this._dom = {
+      buttons: {
+        rescan: null,
+        regenAllThumbs: null
+      }
+    };
+    // Event binding
+    this._rescan = this._rescan.bind(this);
+    this._regenAllThumbs = this._regenAllThumbs.bind(this);
+    // View init sequence
     this._init()
       .then(this._getInternals.bind(this))
-      .then(this._events.bind(this));
+      .then(this._addEvents.bind(this))
+      .catch(errorCode => {
+        Logger.raise({
+          code: errorCode,
+          frontend: true
+        });
+      });
+  }
+
+
+  destroy() {
+    super.destroy();
+    this._removeEvents();
+    this._dom = null;
+    Utils.removeAllObjectKeys(this);
   }
 
 
   _getInternals() {
-    this._rescanButton = this._dom.wrapper.getElementsByClassName('database-rescan')[0];
-    this._regenAllThumbsButton = this._dom.wrapper.getElementsByClassName('database-regen-all-thumbs')[0];
+    return new Promise((resolve, reject) => {
+      this._dom.buttons.rescan = this._dom.wrapper.getElementsByClassName('database-rescan')[0];
+      this._dom.buttons.regenAllThumbs = this._dom.wrapper.getElementsByClassName('database-regen-all-thumbs')[0];
+      // Check proper DOM construction or reject if missing DOM elements
+      Object.keys(this._dom.buttons).forEach(key => {
+        // If one of playbackRate is null, reject
+        if (this._dom.buttons[key] === null) {
+          reject('MISSING_DOM_ELEMENTS');
+        }
+      });
+      resolve();
+    });
   }
 
 
-  _events(doc) {
-    this._rescanButton.addEventListener('click', this._rescan.bind(this), false);
-    this._regenAllThumbsButton.addEventListener('click', this._regenAllThumbs.bind(this), false);
+  _addEvents() {
+    this._dom.buttons.rescan.addEventListener('click', this._rescan, false);
+    this._dom.buttons.regenAllThumbs.addEventListener('click', this._regenAllThumbs, false);
+  }
+
+
+  _removeEvents() {
+    this._dom.buttons.rescan.removeEventListener('click', this._rescan, false);
+    this._dom.buttons.regenAllThumbs.removeEventListener('click', this._regenAllThumbs, false);
   }
 
 

@@ -40,6 +40,12 @@ class ListView extends LibraryViews {
     this._init();
   }
 
+
+  destroy() {
+    super.destroy();
+  }
+
+
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   _init() {

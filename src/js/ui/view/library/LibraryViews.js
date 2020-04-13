@@ -26,6 +26,11 @@ class LibraryViews extends PlayableView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _events() {
     this._activeView.addEventListener('click', () => {
       if (document.body.contains(this._viewSwitcher.dom)) {

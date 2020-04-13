@@ -12,6 +12,11 @@ class SceneView {
   }
 
 
+  destroy() {
+    this._dom.container = null;
+  }
+
+
   refreshView() {
     return null;
   }

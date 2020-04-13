@@ -18,6 +18,11 @@ class SingleAlbumViewTrackEntry extends TrackEntry {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _init() {
     const number = document.createElement('P');
     number.innerHTML = this._trackNumber;

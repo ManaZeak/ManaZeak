@@ -36,6 +36,11 @@ class SingleAlbumView extends SingleTagView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _processAlbum(response) {
     return new Promise(resolve => {
       mzk.model.makeTransitiveSet({

@@ -31,6 +31,11 @@ class SingleGenreView extends SingleTagView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _processGenre(response) {
     return new Promise(resolve => {
       mzk.model.makeTransitiveSet({

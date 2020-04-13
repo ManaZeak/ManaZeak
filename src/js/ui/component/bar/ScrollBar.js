@@ -1,6 +1,9 @@
 'use strict';
 
+
 class ScrollBar {
+
+
   /**
    * @summary Custom JavaScript ScrollBar for any conatiner
    * @author Arthur Beaulieu
@@ -21,15 +24,28 @@ class ScrollBar {
     this._bar = {}; // ScrollBar itself
     this._scrollRatio = 0;
     this._lastPageY = 0;
-
+    // Event binding
+    this._drag = this._drag.bind(this);
+    this._stopDrag = this._stopDrag.bind(this);
+    this._updateScrollBar = this._updateScrollBar.bind(this);
+    this._barClicked = this._barClicked.bind(this);
+    // Component initialisation
     this._init();
-    this._events();
+    this._addEvents();
     this._updateScrollBar();
 
     new ResizeObserver(this.update.bind(this)).observe(this._target);
   }
 
+
+  destroy() {
+    this._removeEvents();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
+
 
   /**
    * @method
@@ -64,28 +80,44 @@ class ScrollBar {
     // Append scroll as last child
     this._target.insertAdjacentHTML('beforeend', `<div class="scroll ${alwaysVisibleClass}"></div>`);
     this._bar = this._target.lastChild; // Get content from line just over this!
-    // Methods auto binding with this to be able to add/remove listeners easily
-    this._drag = this._drag.bind(this);
-    this._stopDrag = this._stopDrag.bind(this);
     // Ensure parent has time to build to its max height before first update
     setTimeout(this._updateScrollBar.bind(this), 100);
   }
 
+
   /**
    * @method
-   * @name _events
+   * @name _addEvents
    * @private
    * @memberof ScrollBar
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Handle ScrollBar mouse events
    **/
-  _events() {
-    window.addEventListener('resize', this._updateScrollBar.bind(this));
-    this._container.addEventListener('scroll', this._updateScrollBar.bind(this));
-    this._container.addEventListener('mouseenter', this._updateScrollBar.bind(this));
-    this._bar.addEventListener('mousedown', this._barClicked.bind(this));
+  _addEvents() {
+    window.addEventListener('resize', this._updateScrollBar, false);
+    this._container.addEventListener('scroll', this._updateScrollBar, false);
+    this._container.addEventListener('mouseenter', this._updateScrollBar, false);
+    this._bar.addEventListener('mousedown', this._barClicked, false);
   }
+
+
+  /**
+   * @method
+   * @name _removeEvents
+   * @private
+   * @memberof ScrollBar
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Handle ScrollBar mouse events
+   **/
+  _removeEvents() {
+    window.removeEventListener('resize', this._updateScrollBar, false);
+    this._container.removeEventListener('scroll', this._updateScrollBar, false);
+    this._container.removeEventListener('mouseenter', this._updateScrollBar, false);
+    this._bar.removeEventListener('mousedown', this._barClicked, false);
+  }
+
 
   /**
    * @method
@@ -179,8 +211,12 @@ class ScrollBar {
 
 
   update() {
-    this._updateScrollBar();
+    if (this._container) {
+      this._updateScrollBar();
+    }
   }
+
+
 }
 
 export default ScrollBar;

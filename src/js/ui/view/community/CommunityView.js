@@ -15,6 +15,12 @@ class CommunityView extends SceneView {
   }
 
 
+  destroy() {
+    super.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   _fetchWrapper() {
     return new Promise(resolve => {
       mzk.komunikator.getTemplate('view/community/layout/')

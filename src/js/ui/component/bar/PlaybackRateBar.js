@@ -8,11 +8,11 @@ class PlaybackRateBar {
    * @summary UI VolumeBar
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description <blockquote>Interactive volume bar that is linked to ManaZeak logic</blockquote>
+   * @description <blockquote>Interactive playback rate bar that is linked to ManaZeak logic</blockquote>
    **/
   constructor() {
     /** @private
-     * @member {object} - The VolumeBar DOM elements (image, wrapper, container, current, thumb) */
+     * @member {object} - The VolumeBar DOM elements */
     this._playbackRate = {
       container: {},
       current: {},
@@ -25,9 +25,28 @@ class PlaybackRateBar {
     /** @private
      * @member {boolean} - Flag to notify that user is currently dragging the volume bar thumb */
     this._isDragging = false;
+    // Event binding
+    this._mouseMove = this._mouseMove.bind(this);
+    this._mouseUp = this._mouseUp.bind(this);
+    this._mouseDown = this._mouseDown.bind(this);
+    this._resetPlaybackRate = this._resetPlaybackRate.bind(this);
+    this._adjustPlaybackRateSlower = this._adjustPlaybackRateSlower.bind(this);
+    this._adjustPlaybackRateFaster = this._adjustPlaybackRateFaster.bind(this);
+    // Init plabackratebar
+    this._init()
+      .then(this._addEvents.bind(this))
+      .catch(errorCode => {
+        Logger.raise({
+          code: errorCode,
+          frontend: true
+        });
+      });
+  }
 
-    this._init();
-    this._events();
+
+  destroy() {
+    this._removeEvents();
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -36,25 +55,28 @@ class PlaybackRateBar {
   //  ------------------------------------------------------------------------------------------------//
 
 
-  /**
-   * @method
-   * @name _init
-   * @private
-   * @memberof VolumeBar
-   * @author Arthur Beaulieu
-   * @since July 2018
-   * @description Build VolumeBar object from DOM
-   **/
   _init() {
-    this._playbackRate = {
-      container: document.getElementById('playback-rate-container'),
-      current: document.getElementById('playback-rate-current'),
-      thumb: document.getElementById('playback-rate-thumb'),
-      text: document.getElementById('playback-rate-text'),
-      reset: document.getElementById('reset-playback-rate'),
-      slower: document.getElementById('playback-rate-slower'),
-      faster: document.getElementById('playback-rate-faster')
-    };
+    return new Promise((resolve, reject) => {
+      // All playback rate elements are in <code>app/templates/index.html</code>
+      this._playbackRate = {
+        container: document.getElementById('playback-rate-container'),
+        current: document.getElementById('playback-rate-current'),
+        thumb: document.getElementById('playback-rate-thumb'),
+        text: document.getElementById('playback-rate-text'),
+        reset: document.getElementById('reset-playback-rate'),
+        slower: document.getElementById('playback-rate-slower'),
+        faster: document.getElementById('playback-rate-faster')
+      };
+      // Check proper DOM construction or reject if missing DOM elements
+      Object.keys(this._playbackRate).forEach(key => {
+        // If one of playbackRate is null, reject
+        if (this._playbackRate[key] === null) {
+          reject('MISSING_DOM_ELEMENTS');
+        }
+      });
+      // Init successful
+      resolve();
+    });
   }
 
 
@@ -67,14 +89,19 @@ class PlaybackRateBar {
    * @since July 2018
    * @description Attach mouse events to the DOM elements
    **/
-  _events() {
-    this._playbackRate.container.addEventListener('mousedown', this._mouseDown.bind(this));
-    this._playbackRate.reset.addEventListener('click', this._resetPlaybackRate.bind(this));
-    this._playbackRate.slower.addEventListener('click', this._adjustPlaybackRateSlower.bind(this));
-    this._playbackRate.faster.addEventListener('click', this._adjustPlaybackRateFaster.bind(this));
+  _addEvents() {
+    this._playbackRate.container.addEventListener('mousedown', this._mouseDown, false);
+    this._playbackRate.reset.addEventListener('click', this._resetPlaybackRate, false);
+    this._playbackRate.slower.addEventListener('click', this._adjustPlaybackRateSlower, false);
+    this._playbackRate.faster.addEventListener('click', this._adjustPlaybackRateFaster, false);
+  }
 
-    this._mouseMove = this._mouseMove.bind(this);
-    this._mouseUp = this._mouseUp.bind(this);
+
+  _removeEvents() {
+    this._playbackRate.container.removeEventListener('mousedown', this._mouseDown, false);
+    this._playbackRate.reset.removeEventListener('click', this._resetPlaybackRate, false);
+    this._playbackRate.slower.removeEventListener('click', this._adjustPlaybackRateSlower, false);
+    this._playbackRate.faster.removeEventListener('click', this._adjustPlaybackRateFaster, false);
   }
 
 

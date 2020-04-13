@@ -41,6 +41,12 @@ class PartyView extends PlayableView {
   }
 
 
+  destroy() {
+    super.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   _fetchWrapper() {
     return new Promise(resolve => {
       mzk.komunikator.getTemplate('view/party/layout/')

@@ -33,6 +33,11 @@ class PlayableView extends SceneView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _addToSelection(index) {
     this._tracks[index].selected = true;
     this._selection.push(parseInt(index, 10));

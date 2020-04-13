@@ -442,6 +442,11 @@
         "title": "Can not copy to clipboard",
         "message": "Something unexpected happened. Please try this on another true web browser or contact support.",
         "severity": "error"
+      },
+      "MISSING_DOM_ELEMENTS": {
+        "title": "Missing DOM elements",
+        "message": "ManaZeak page seems to be compromised. Please contact support.",
+        "severity": "error"
       }
     },
     "backend":  {

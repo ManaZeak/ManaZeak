@@ -27,6 +27,11 @@ class SingleCountryView extends SingleTagView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _processCountry(response) {
     return new Promise(resolve => {
 

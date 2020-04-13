@@ -16,7 +16,7 @@ class Scene {
    **/
   constructor() {
     this._scene = document.getElementById('scene');
-    this.view = {};
+    this.view = null;
     this._sceneViewType = '';
     this._isFullScreenView = false;
 
@@ -34,6 +34,11 @@ class Scene {
     if (this._isFullScreenView === true) {
       this._isFullScreenView = false;
       document.body.removeChild(this.view.dom); // Remove current ui from document
+    }
+
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
     }
   }
 
@@ -79,13 +84,13 @@ class Scene {
 
 
   setSceneView(type, options) {
-    this._removeFullView(); // Clean existing view
     this._scene.innerHTML = ''; // Clear any DOM in scene
     this._registerViewReady(); // Prepare scene to receive the `SceneViewReady` event (from any instantiated view)
 
     if (typeof options.playlist === 'object' && options.playlist.id !== -1) {
       this.updateLibraryView(options.playlist);
     } else {
+      this._removeFullView(); // Clean existing view
       this.view = new ViewFactory(type, options);
 
       if (this.view === null) {
@@ -137,7 +142,6 @@ class Scene {
    **/
   updateLibraryView(playlist) {
     this._setAsideToggle(false);
-    this._removeFullView();
     this._sceneViewType = 'LibraryView';
     const options = {
       playlist: playlist,
@@ -146,6 +150,8 @@ class Scene {
       selection: this.view.selection,
       viewLabel: '' // TBD in setLangFeedback of view
     };
+
+    this._removeFullView(); // Clean existing view when info are consumed
 
     if (playlist.activeView === 'ListView') {
       options.viewLabel = 'ListView';

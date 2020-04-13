@@ -20,6 +20,11 @@ class SingleTagView extends PlayableView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _init() { // Must be called in child class when needed, and chain the specific ui initialization with then
     return new Promise((resolve, reject) => {
       this._fetchWrapper()

@@ -11,6 +11,12 @@ class AdminOverviewView extends AdminSceneView {
   }
 
 
+  destroy() {
+    super.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
 }
 
 

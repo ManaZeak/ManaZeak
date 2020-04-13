@@ -14,6 +14,13 @@ class TrackEntry {
   }
 
 
+  destroy() {
+    this._dom.container = null;
+    this._isSelected = null;
+    this._isPlaying = null;
+  }
+
+
   _setIsPlaying(status) {
     this._isPlaying = status;
 

@@ -16,6 +16,13 @@ class MzkWorldMapView extends SceneView {
   }
 
 
+  destroy() {
+    super.destroy();
+    this._mzkWorldMap.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   _fetchWrapper() {
     return new Promise(resolve => {
       mzk.komunikator.getTemplate('view/mzkworldmap/layout/')
@@ -41,8 +48,7 @@ class MzkWorldMapView extends SceneView {
   _events() {
     return new Promise(resolve => {
       this._dom.home.addEventListener('click', () => {
-        this._mzkWorldMap.destroy()
-          .then(mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }));
+        mzk.ui.setSceneView({ name: 'MainPage' });
       }, false);
 
       resolve();

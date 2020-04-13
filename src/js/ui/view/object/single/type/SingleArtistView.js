@@ -29,6 +29,11 @@ class SingleArtistView extends SingleTagView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _processArtist(response) {
     return new Promise(resolve => {
       this._dom.pp = this._dom.wrapper.getElementsByClassName('sa-artist-pp')[0];

@@ -30,6 +30,11 @@ class SingleLabelView extends SingleTagView {
   }
 
 
+  destroy() {
+    super.destroy();
+  }
+
+
   _processLabel(response) {
     return new Promise(resolve => {
       this._dom.play = this._dom.wrapper.getElementsByClassName('play-album')[0];

@@ -11,8 +11,21 @@ class SuggestionEntry {
       name: null
     };
 
+    this._setSingleArtist = this._setSingleArtist.bind(this);
+    this._setSingleAlbum = this._setSingleAlbum.bind(this);
+    this._setProducer = this._setProducer.bind(this);
+    this._setLabel = this._setLabel.bind(this);
+    this._setGenre = this._setGenre.bind(this);
+    this._setCountry = this._setCountry.bind(this);
+
     this._init();
-    this._events();
+    this._addEvents();
+  }
+
+
+  destroy() {
+    this._removeEvents();
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -74,56 +87,91 @@ class SuggestionEntry {
   }
 
 
-  _events() {
+  _addEvents() {
     if (this._groupType === 'ReleaseArtists' || this._groupType === 'Artists') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleArtist',
-          uiName: this._entry.ARTIST_NAME,
-          id: this._entry.ARTIST_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setSingleArtist, false);
     } else if (this._groupType === 'Albums') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleAlbum',
-          uiName: this._entry.ALBUM_TITLE,
-          id: this._entry.ALBUM_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setSingleAlbum, false);
     } else if (this._groupType === 'Producers') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleProducer',
-          uiName: this._entry.PRODUCER_NAME,
-          id: this._entry.PRODUCER_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setProducer, false);
     } else if (this._groupType === 'Labels') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleLabel',
-          uiName: this._entry.LABEL_NAME,
-          id: this._entry.LABEL_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setLabel, false);
     } else if (this._groupType === 'Genres') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleGenre',
-          uiName: this._entry.GENRE_NAME,
-          id: this._entry.GENRE_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setGenre, false);
     } else if (this._groupType === 'Countries') {
-      this._dom.container.addEventListener('click', () => {
-        mzk.ui.setSceneView({
-          name: 'SingleCountry',
-          uiName: this._entry.COUNTRY_CODE,
-          id: this._entry.COUNTRY_ID
-        });
-      }, false);
+      this._dom.container.addEventListener('click', this._setCountry, false);
     }
+  }
+
+
+  _removeEvents() {
+    if (this._groupType === 'ReleaseArtists' || this._groupType === 'Artists') {
+      this._dom.container.removeEventListener('click', this._setSingleArtist, false);
+    } else if (this._groupType === 'Albums') {
+      this._dom.container.removeEventListener('click', this._setSingleAlbum, false);
+    } else if (this._groupType === 'Producers') {
+      this._dom.container.removeEventListener('click', this._setProducer, false);
+    } else if (this._groupType === 'Labels') {
+      this._dom.container.removeEventListener('click', this._setLabel, false);
+    } else if (this._groupType === 'Genres') {
+      this._dom.container.removeEventListener('click', this._setGenre, false);
+    } else if (this._groupType === 'Countries') {
+      this._dom.container.removeEventListener('click', this._setCountry, false);
+    }
+  }
+
+
+  _setSingleArtist() {
+    mzk.ui.setSceneView({
+      name: 'SingleArtist',
+      uiName: this._entry.ARTIST_NAME,
+      id: this._entry.ARTIST_ID
+    });
+  }
+
+
+  _setSingleAlbum() {
+    mzk.ui.setSceneView({
+      name: 'SingleAlbum',
+      uiName: this._entry.ALBUM_TITLE,
+      id: this._entry.ALBUM_ID
+    });
+  }
+
+
+  _setProducer() {
+    mzk.ui.setSceneView({
+      name: 'SingleProducer',
+      uiName: this._entry.PRODUCER_NAME,
+      id: this._entry.PRODUCER_ID
+    });
+  }
+
+
+  _setLabel() {
+    mzk.ui.setSceneView({
+      name: 'SingleLabel',
+      uiName: this._entry.LABEL_NAME,
+      id: this._entry.LABEL_ID
+    });
+  }
+
+
+  _setGenre() {
+    mzk.ui.setSceneView({
+      name: 'SingleGenre',
+      uiName: this._entry.GENRE_NAME,
+      id: this._entry.GENRE_ID
+    });
+  }
+
+
+  _setCountry() {
+    mzk.ui.setSceneView({
+      name: 'SingleCountry',
+      uiName: this._entry.COUNTRY_CODE,
+      id: this._entry.COUNTRY_ID
+    });
   }
 
 
