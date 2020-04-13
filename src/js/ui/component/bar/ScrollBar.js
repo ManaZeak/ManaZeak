@@ -192,6 +192,7 @@ class ScrollBar {
     requestAnimationFrame(() => {
       if (this._scrollRatio >= 1) { // Hide scrollbar if no scrolling is possible
         this._bar.classList.add('hidden');
+        this._container.classList.add('no-scroll');
       } else {
         const height = (Math.max(this._scrollRatio * 100, 5) * ownHeight) / 100;
         let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
@@ -204,6 +205,7 @@ class ScrollBar {
         }
 
         this._bar.classList.remove('hidden');
+        this._container.classList.remove('no-scroll');
         this._bar.style.cssText = `height: ${height}px; top: ${top}px; right: ${right}px;`;
       }
     });

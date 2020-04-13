@@ -1,7 +1,7 @@
-import overviewView from './views/AdminOverviewView.js';
-import databaseView from './views/AdminDatabaseView.js';
-import userView from './views/AdminUserView.js';
-import suggestionView from './views/AdminSuggestionView.js';
+import overviewView from './view/AdminOverviewView.js';
+import databaseView from './view/AdminDatabaseView.js';
+import userView from './view/AdminUserView.js';
+import suggestionView from './view/AdminSuggestionView.js';
 
 
 const Classes = {

@@ -102,3 +102,19 @@
     }
   }
 }
+
+.admin-user-page {
+  .user-item {
+    background-color: var(--mzk-color-anti-secondary-alpha-25);
+    border-color: var(--mzk-color-anti-secondary-darker);
+    border: solid var(--mzk-border-width) var(--mzk-border-color);
+    border-radius: var(--mzk-border-jumbo-radius);
+    font-size: .9em;
+    margin: var(--mzk-margin-big);
+    padding: var(--mzk-padding);
+    position: relative;
+
+    transition: background-color var(--mzk-animation-duration) ease-in,
+                border-color var(--mzk-animation-duration) ease-in;
+  }
+}

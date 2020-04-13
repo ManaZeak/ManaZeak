@@ -142,7 +142,7 @@
           grid-template-rows: repeat(2, 25px);
           padding: var(--mzk-margin-small) var(--mzk-margin) var(--mzk-margin-small) 0;
           margin: var(--mzk-margin);
-          width: calc(100% - var(--mzk-margin) * 4);
+          width: calc(100% - var(--mzk-margin) * 2);
 
           @include transition(all var(--mzk-animation-duration) ease-out);
 

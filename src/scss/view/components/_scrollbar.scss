@@ -17,6 +17,10 @@
       padding: 0;
       position: relative;
       width: calc(100% + var(--browser-scrollbar-width));
+
+      &.no-scroll {
+        width: 100%;
+      }
     }
   }
 
