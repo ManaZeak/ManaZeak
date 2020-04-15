@@ -114,7 +114,6 @@ class UserInterface {
    * @description Change UI elements according to the new playing track informations
    **/
   changeTrack(track) {
-    this.clearMoodbar();
     this.togglePlay();
     this._setPageTitle(`${track.artists} - ${track.title}`);
     this._scene.changeTrack(track.id);
@@ -153,7 +152,6 @@ class UserInterface {
    * @description Updates UI element to match the player stand by state
    **/
   stopPlayback() {
-    this.clearMoodbar();
     this._footBar.updatePlayButton(false); // Send !isPlaying to restore play icon
     this._footBar.progressBar.resetProgressBar();
     this._aside.resetTrackPreview();
@@ -173,12 +171,6 @@ class UserInterface {
    **/
   updateVolume() {
     this._footBar.volumeBar.updateVolume(mzk.playerMuted, mzk.playerVolume);
-  }
-
-
-  clearMoodbar() {
-    /* TODO call for method to create in ProgressBar */
-    d3.selectAll('.moodbar svg g').remove();
   }
 
 

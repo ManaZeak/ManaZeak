@@ -35,7 +35,8 @@ class MzkWorldMapView extends SceneView {
           if (window.MzkWorldMap) {
             this._mzkWorldMap = new MzkWorldMap({
               assetsUrl: '/static/plugins/MzkWorldMap/',
-              renderTo: this._dom.wrapper
+              renderTo: this._dom.wrapper,
+              centerOn: 'FRA' // TODO why not get this from user on signup ?
             });
           }
 

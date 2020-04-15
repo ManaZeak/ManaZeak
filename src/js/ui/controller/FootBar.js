@@ -264,7 +264,9 @@ class FootBar {
             };
           }
 
-          d3.select(this._progressBar.moodbarContainer.childNodes[1]).selectAll('g');
+          d3.select(this._progressBar.moodbarContainer.childNodes[1])
+            .selectAll('g')
+            .remove();
           const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
 
           svg.append('linearGradient')
@@ -274,12 +276,8 @@ class FootBar {
             .data(rgb)
             .enter()
             .append('stop')
-            .attr('offset', d => {
-              return d.offset;
-            })
-            .attr('stop-color', d => {
-              return d.color;
-            });
+            .attr('offset', d => { return d.offset; })
+            .attr('stop-color', d => { return d.color; });
 
           svg.append('rect')
             .attr('fill', `url(#moodbar-gradient-${url[0] + url[1]})`)
@@ -293,6 +291,7 @@ class FootBar {
         }
       });
   }
+
 
 
   //  ------------------------------------------------------------------------------------------------//
