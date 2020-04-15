@@ -218,13 +218,9 @@
 
     img {
       cursor: pointer;
-      height: 33px;
+      height: 25px;
       margin: var(--mzk-margin);
       width: auto;
-
-      &:first-child { // Home icon has inner border instead of player ones
-        height: 50px;
-      }
     }
   }
 
