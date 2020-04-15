@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-23 10:59+0000\n"
+"POT-Creation-Date: 2020-04-15 19:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,23 +59,6 @@ msgstr ""
 msgid "Tap BPM"
 msgstr ""
 
-#: app/templates/contexts/userMenuContext.html:7
-msgid "Admin"
-msgstr ""
-
-#: app/templates/contexts/userMenuContext.html:11
-msgid "Community"
-msgstr ""
-
-#: app/templates/contexts/userMenuContext.html:15
-#: app/templates/modals/userID.html:6
-msgid "My ID"
-msgstr ""
-
-#: app/templates/contexts/userMenuContext.html:19
-msgid "Log Out"
-msgstr ""
-
 #: app/templates/login.html:9
 msgid "ManaZeak login"
 msgstr ""
@@ -112,6 +95,47 @@ msgstr ""
 msgid "can do for you"
 msgstr ""
 
+#: app/templates/modals/about.html:6
+msgid "About ManaZeak"
+msgstr ""
+
+#: app/templates/modals/about.html:12
+msgid ""
+"ManaZeak project started in september 2017, as a graduation project at <a "
+"href=\"https://www.esiea.fr/\" target=\"_blank\" rel=\"noopener noreferrer"
+"\">ESIEA Paris</a> created by four random music lovers ; Arthur Beaulieu, "
+"Pierre Bouniol, Pierre-Balthazar Donadieu de Lavit and Valentin Peiro. The "
+"projects amibition is to provide a whole library manager while using the "
+"tracks metadata to offer a unique navigation among it ; strict "
+"classification leads to an awesome experience."
+msgstr ""
+
+#: app/templates/modals/about.html:13
+msgid ""
+"The academic project succesfully ended in February 2018 but Arthur Beaulieu "
+"and Pierre Bouniol decided to keep the developement on track ever since to "
+"reach this ambition. On this journey to musical smoothiness, Armand Vignat "
+"brought his sharp skills in system administration to enhance the app "
+"deployement. Raphaël Beekman helped a lot for UI specifications and will for "
+"sure help again. Erwan Le Guern did not wrote any line yet, but gave so much "
+"of his time helping on defining what ManaZeak is. Finally, Laetitia Genin "
+"made the text logo of ManaZeak."
+msgstr ""
+
+#: app/templates/modals/about.html:14
+msgid ""
+"Despite the fact that this instance of ManaZeak is private, the source code "
+"of the application is open source and can be found on GitHub. We are "
+"currently two project maintainers, but any contribution of any kind is a "
+"great reward for us ! Feature ideas, pull request, wiki entries, discussion "
+"on features are welcome :) Contact us at support@manazeak.org"
+msgstr ""
+
+#: app/templates/modals/about.html:17 app/templates/modals/suggestion.html:15
+#: app/templates/modals/userID.html:17
+msgid "Close"
+msgstr ""
+
 #: app/templates/modals/newLibrary.html:5
 msgid "New library"
 msgstr ""
@@ -139,6 +163,29 @@ msgstr ""
 
 #: app/templates/modals/newLibrary.html:17
 msgid "Create"
+msgstr ""
+
+#: app/templates/modals/suggestion.html:6
+msgid "Make a suggestion"
+msgstr ""
+
+#: app/templates/modals/suggestion.html:10
+msgid ""
+"ManaZeak library is missing an absolute MUST HAVE artist/album/track you "
+"know ? You think a feature is clearly missing from ManaZeak to be just "
+"perfect ? Fine, your contribution will surely be rewarded in a way! Just "
+"write down your idea in the following field and submit it so it can be "
+"intergrated!"
+msgstr ""
+
+#: app/templates/modals/suggestion.html:12
+msgid ""
+"Whatever may be your suggestion, we trully thank you for your contribution "
+"to make ManaZeak the best!"
+msgstr ""
+
+#: app/templates/modals/suggestion.html:16
+msgid "Submit"
 msgstr ""
 
 #: app/templates/modals/tapBpm.html:6
@@ -177,6 +224,10 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
+#: app/templates/modals/userID.html:6
+msgid "My ID"
+msgstr ""
+
 #: app/templates/modals/userID.html:10
 msgid ""
 "The following string is your unique ID in ManaZeak. You can give it to your "
@@ -185,10 +236,6 @@ msgstr ""
 
 #: app/templates/modals/userID.html:12
 msgid "Waiting for the server to load your ID"
-msgstr ""
-
-#: app/templates/modals/userID.html:17
-msgid "Close"
 msgstr ""
 
 #: app/templates/signup.html:9
@@ -215,6 +262,26 @@ msgstr ""
 
 #: app/templates/signup.html:52
 msgid "Godfather ID"
+msgstr ""
+
+#: app/templates/views/admin/views/admindatabasepage.html:3
+msgid "Database"
+msgstr ""
+
+#: app/templates/views/admin/views/admindatabasepage.html:4
+msgid "Rescan library"
+msgstr ""
+
+#: app/templates/views/admin/views/admindatabasepage.html:5
+msgid "Regen all thumbnails"
+msgstr ""
+
+#: app/templates/views/admin/views/adminoverviewpage.html:3
+msgid "Overview"
+msgstr ""
+
+#: app/templates/views/admin/views/adminuserpage.html:3
+msgid "User"
 msgstr ""
 
 #: app/templates/views/partyPage.html:16

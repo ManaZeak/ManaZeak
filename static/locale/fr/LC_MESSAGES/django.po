@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-23 10:59+0000\n"
+"POT-Creation-Date: 2020-04-15 19:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,23 +60,6 @@ msgstr "Ajouter à la queue"
 msgid "Tap BPM"
 msgstr "Déterminer le BPM"
 
-#: app/templates/contexts/userMenuContext.html:7
-msgid "Admin"
-msgstr "Administration"
-
-#: app/templates/contexts/userMenuContext.html:11
-msgid "Community"
-msgstr "Communauté"
-
-#: app/templates/contexts/userMenuContext.html:15
-#: app/templates/modals/userID.html:6
-msgid "My ID"
-msgstr "Mon identifiant"
-
-#: app/templates/contexts/userMenuContext.html:19
-msgid "Log Out"
-msgstr "Deconexion"
-
 #: app/templates/login.html:9
 msgid "ManaZeak login"
 msgstr "ManaZeak connexion"
@@ -113,6 +96,47 @@ msgstr "Apprenez ici ce que"
 msgid "can do for you"
 msgstr "peux faire pour vous"
 
+#: app/templates/modals/about.html:6
+msgid "About ManaZeak"
+msgstr "À propos"
+
+#: app/templates/modals/about.html:12
+msgid ""
+"ManaZeak project started in september 2017, as a graduation project at <a "
+"href=\"https://www.esiea.fr/\" target=\"_blank\" rel=\"noopener noreferrer"
+"\">ESIEA Paris</a> created by four random music lovers ; Arthur Beaulieu, "
+"Pierre Bouniol, Pierre-Balthazar Donadieu de Lavit and Valentin Peiro. The "
+"projects amibition is to provide a whole library manager while using the "
+"tracks metadata to offer a unique navigation among it ; strict "
+"classification leads to an awesome experience."
+msgstr ""
+
+#: app/templates/modals/about.html:13
+msgid ""
+"The academic project succesfully ended in February 2018 but Arthur Beaulieu "
+"and Pierre Bouniol decided to keep the developement on track ever since to "
+"reach this ambition. On this journey to musical smoothiness, Armand Vignat "
+"brought his sharp skills in system administration to enhance the app "
+"deployement. Raphaël Beekman helped a lot for UI specifications and will for "
+"sure help again. Erwan Le Guern did not wrote any line yet, but gave so much "
+"of his time helping on defining what ManaZeak is. Finally, Laetitia Genin "
+"made the text logo of ManaZeak."
+msgstr ""
+
+#: app/templates/modals/about.html:14
+msgid ""
+"Despite the fact that this instance of ManaZeak is private, the source code "
+"of the application is open source and can be found on GitHub. We are "
+"currently two project maintainers, but any contribution of any kind is a "
+"great reward for us ! Feature ideas, pull request, wiki entries, discussion "
+"on features are welcome :) Contact us at support@manazeak.org"
+msgstr ""
+
+#: app/templates/modals/about.html:17 app/templates/modals/suggestion.html:15
+#: app/templates/modals/userID.html:17
+msgid "Close"
+msgstr "Fermer"
+
 #: app/templates/modals/newLibrary.html:5
 msgid "New library"
 msgstr "Nouvelle librairie"
@@ -146,6 +170,32 @@ msgstr "Chemin de la librairie"
 #: app/templates/modals/newLibrary.html:17
 msgid "Create"
 msgstr "Créer"
+
+#: app/templates/modals/suggestion.html:6
+msgid "Make a suggestion"
+msgstr "Faire une suggestion"
+
+#: app/templates/modals/suggestion.html:10
+msgid ""
+"ManaZeak library is missing an absolute MUST HAVE artist/album/track you "
+"know ? You think a feature is clearly missing from ManaZeak to be just "
+"perfect ? Fine, your contribution will surely be rewarded in a way! Just "
+"write down your idea in the following field and submit it so it can be "
+"intergrated!"
+msgstr "La librarie de ManaZeak ne contiens pas un titre, un album ou un "
+"artiste qui vous est culte ? Vous pensez que l'experience sur ManaZeak serait "
+"meilleure avec une de vos idée ? Nickel, écrivez dans la zone de texte suivante "
+"la teneur de votre envie, et nous tâcherons de l'intégrer au plus vite!"
+
+#: app/templates/modals/suggestion.html:12
+msgid ""
+"Whatever may be your suggestion, we trully thank you for your contribution "
+"to make ManaZeak the best!"
+msgstr "Quelque soit votre suggestion, nous vous remercions sincèrement de votre contribution pour améliorer ManaZeak!"
+
+#: app/templates/modals/suggestion.html:16
+msgid "Submit"
+msgstr "Soumettre"
 
 #: app/templates/modals/tapBpm.html:6
 msgid "Tap BPM (Beat Per Minute)"
@@ -188,6 +238,10 @@ msgstr "Reinitialiser"
 msgid "Send"
 msgstr "Envoyer"
 
+#: app/templates/modals/userID.html:6
+msgid "My ID"
+msgstr "Mon identifiant"
+
 #: app/templates/modals/userID.html:10
 msgid ""
 "The following string is your unique ID in ManaZeak. You can give it to your "
@@ -200,10 +254,6 @@ msgstr ""
 #: app/templates/modals/userID.html:12
 msgid "Waiting for the server to load your ID"
 msgstr "En attente de réponse du serveur"
-
-#: app/templates/modals/userID.html:17
-msgid "Close"
-msgstr "Fermer"
 
 #: app/templates/signup.html:9
 msgid "ManaZeak signup"
@@ -233,6 +283,30 @@ msgstr "S'inscrire"
 msgid "Godfather ID"
 msgstr "ID du parrain"
 
+#: app/templates/views/admin/views/admindatabasepage.html:3
+msgid "Database"
+msgstr "Base de données"
+
+#: app/templates/views/admin/views/admindatabasepage.html:4
+#, fuzzy
+#| msgid "New library"
+msgid "Rescan library"
+msgstr "Nouvelle librairie"
+
+#: app/templates/views/admin/views/admindatabasepage.html:5
+msgid "Regen all thumbnails"
+msgstr "Re-générer les miniatures"
+
+#: app/templates/views/admin/views/adminoverviewpage.html:3
+msgid "Overview"
+msgstr "Résumé"
+
+#: app/templates/views/admin/views/adminuserpage.html:3
+#, fuzzy
+#| msgid "Username"
+msgid "User"
+msgstr "Nom d'utilisateur"
+
 #: app/templates/views/partyPage.html:16
 msgid "Artist"
 msgstr "Artiste"
@@ -252,3 +326,12 @@ msgstr "Durée"
 #: app/templates/views/partyPage.html:20
 msgid "Genre"
 msgstr "Genre"
+
+#~ msgid "Admin"
+#~ msgstr "Administration"
+
+#~ msgid "Community"
+#~ msgstr "Communauté"
+
+#~ msgid "Log Out"
+#~ msgstr "Deconexion"
