@@ -21,7 +21,7 @@ class CountryToTrackLinker(AbstractLinkerDao):
     ## Generating the request for inserting the links into the database.
     #   @param links the object to insert into the database.
     def _generateRequest(self, links):
-        return 'INSERT INTO app_track_countries (track_id, country_id) VALUES {} '\
+        return 'INSERT INTO app_track_countries (track_id, country_id) VALUES {} ON CONFLICT DO NOTHING'\
             .format(', '.join(['(%s, %s)'] * len(links)))
 
 

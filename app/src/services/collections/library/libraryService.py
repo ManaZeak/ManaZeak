@@ -1,16 +1,13 @@
 import logging
-from multiprocessing import Process
-
-from django import db
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 
-from app.models import Library
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.collections.library.libraryHelper import LibraryHelper
 from app.src.services.collections.library.libraryIntegrationService import LibraryIntegrationService
+from app.src.services.collections.library.libraryRescanHelper import LibraryRescanHelper
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.services.collections.playlist.playlistHelper import PlayListHelper
 from app.src.utils.decorators.frontRequest import FrontRequest
@@ -27,10 +24,30 @@ loggerScan = logging.getLogger('scan')
 ## This class is used to manage the libraries of the application
 class LibraryService(object):
 
+    @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
     ## Rescan a library
-    def rescanLibrary(self, request):
-        pass  # FIXME: to be implemented
+    def rescanLibrary(request):
+        # Getting the user
+        user = request.user
+        # Checking the user permission
+        PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
+        # Checking if the request is correct
+        response = FrontRequestChecker.checkRequest(RequestMethodEnum.POST, request, user, ['LIBRARY_ID'])
+        # Getting the library id
+        libraryId = response['LIBRARY_ID']
+        # Getting the library from the database
+        library = LibraryHelper.getLibraryFromId(libraryId, user)
+        # Checking if the given folder of the library is existing
+        LibraryHelper.checkFolder(library.path, user)
+        rescan = LibraryRescanHelper()
+        rescan.scanModifiedFiles(library.path)
+        loggerScan.info("Found " + str(rescan.newFiles) + " new files and " + str(rescan.modifiedFiles)
+                        + " modified files.")
+        # Creating the integration service for tracks and preparing the process (fork)
+        LibraryIntegrationService.launchThreadedFileScan(library, rescan.mp3Files, rescan.flacFiles, rescan.newFiles,
+                                                         rescan.modifiedFiles, rescan.libScan, False)
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
@@ -66,31 +83,22 @@ class LibraryService(object):
             # Check if the user has the permission to do this action
             PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
             libraryId = response['LIBRARY_ID']
-            # Raising an error if the library isn't found
-            if Library.objects.filter(id=libraryId) == 0:
-                raise UserException(ErrorEnum.DB_ERROR, user)
-            # Getting the library object
-            library = Library.objects.get(id=libraryId)
+            # Checking if the library exists.
+            library = LibraryHelper.getLibraryFromId(libraryId, user)
             # Setting the library flag as in scan -> locking all the other functions altering the library
             LibraryStatusHelper.startLibraryScan(library)
+            # Creating the new library scan
+            libScan = LibraryStatusHelper.createLibraryScan()
             # Checking if the given folder of the library is existing
             LibraryHelper.checkFolder(library.path, user)
             loggerScan.info('Starting indexing files.')
             # Indexing the audio files of the library
             mp3Files, flacFiles = LibraryHelper.indexFileInLibrary(library.path)
             # Creating the integration service for tracks and preparing the process (fork)
-            integrationService = LibraryIntegrationService()
-            scanThread = Process(
-                target=integrationService.integrateTracksToLibraryProcess,
-                args=(library, mp3Files, flacFiles)
-            )
-            # Closing all connection to the database for avoiding to use the same connection between processes.
-            db.connections.close_all()
-            # Launching the process of integrating the track into the database.=
-            scanThread.start()
+            LibraryIntegrationService.launchThreadedFileScan(library, mp3Files, flacFiles,
+                                                             len(mp3Files) + len(flacFiles), 0, libScan, True)
             # Return a standard response, the front has to check if the scan is successful
             return JsonResponse(ErrorHandler.createStandardStateMessage(True))
-
         except UserException as e:
             # Rollback the previous operation done before
             LibraryHelper.abortLibraryInitialScan(library, e)
@@ -110,7 +118,7 @@ class LibraryService(object):
         PermissionHandler.checkPermission(PermissionEnum.LIBRARY_MANAGEMENT, user)
         if libraryId is None:
             raise UserException(ErrorEnum.VALUE_ERROR, user)
-        library = LibraryHelper.getLibraryFromId(libraryId)
+        library = LibraryHelper.getLibraryFromId(libraryId, user)
         loggerDjango.info('Deleting the library : ' + library.playlist.name)
         LibraryHelper.deleteLibrary(library, LibraryStatusHelper.getLibraryScanStatus(library))
 

@@ -16,7 +16,6 @@ urlpatterns = [
     path('regenerateThumbnails/', ThumbnailService.regeneratesAllThumbnailsAdmin, name='regenerateThumbs'),
 
     path('getAllUsers/', UserService.getAllUsers, name='getAllUsers'),
-
     # FIXME: to be moved into confs
     path('isInviteEnabled/', ConfigService.isInviteCodeEnabled, name='inviteEnabled'),
     # Page for logging the performance of the application.

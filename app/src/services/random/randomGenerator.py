@@ -1,3 +1,12 @@
+from app.src.dao.script.random.remover.album.deleteRandomAlbumByArtistDao import DeleteRandomAlbumByArtistDao
+from app.src.dao.script.random.remover.artist.deleteRandomArtistByNameDao import DeleteRandomArtistByNameDao
+from app.src.dao.script.random.remover.artist.deleteRandomReleaseArtistByNameDao import \
+    DeleteRandomReleaseArtistByNameDao
+from app.src.dao.script.random.remover.country.deleteRandomCountryByNameDao import DeleteRandomCountryByNameDao
+from app.src.dao.script.random.remover.genre.deleteRandomGenreByNameDao import DeleteRandomGenreByNameDao
+from app.src.dao.script.random.remover.label.deleteRandomLabelByNameDao import DeleteRandomLabelByNameDao
+from app.src.dao.script.random.remover.track.deleteRandomTrackByArtistDao import DeleteRandomTrackByArtistDao
+from app.src.dao.script.random.remover.track.deleteRandomTrackByNameDao import DeleteRandomTrackByNameDao
 from app.src.services.random.generator.album.randomAlbumSortedByArtistGenerator \
     import RandomAlbumSortedByArtistGenerator
 from app.src.services.random.generator.artist.randomArtistSortedByNameGenerator import RandomArtistSortedByNameGenerator
@@ -19,7 +28,10 @@ class RandomGenerator(object):
         self.playlistId = playlistId
 
     ## Fill all the tables for random objects.
-    def fillAllRandomTables(self):
+    def fillAllRandomTables(self, isInitScan):
+        # Delete all the data of the random tables
+        if not isInitScan:
+            self._removeAllRandomData()
         # Fill the random artists tables.
         self._fillRandomArtist()
         # Fill the random albums tables.
@@ -32,6 +44,15 @@ class RandomGenerator(object):
         self._fillRandomLabel()
         # Fill the random countries tables.
         self._fillRandomCountry()
+
+    @staticmethod
+    ## Delete all the data contained in the random tables.
+    def _removeAllRandomData():
+        randoms = [DeleteRandomAlbumByArtistDao(), DeleteRandomArtistByNameDao(), DeleteRandomReleaseArtistByNameDao(),
+                   DeleteRandomCountryByNameDao(), DeleteRandomGenreByNameDao(), DeleteRandomLabelByNameDao(),
+                   DeleteRandomTrackByArtistDao(), DeleteRandomTrackByNameDao()]
+        for random in randoms:
+            random.executeRequest()
 
     ## Fill the tables linked to the artists.
     def _fillRandomArtist(self):

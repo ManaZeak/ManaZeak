@@ -20,7 +20,7 @@ ENV PACKAGES="\
   linux-headers \
   libffi-dev \
   jpeg-dev \
-  zlib-dev\
+  zlib-dev \
 "
 
 RUN echo \

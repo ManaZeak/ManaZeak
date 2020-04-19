@@ -21,5 +21,5 @@ class PlaylistToTrackLinker(AbstractLinkerDao):
     ## Generating the request for inserting the links into the database.
     #   @param links the object to insert into the database.
     def _generateRequest(self, links):
-        return 'INSERT INTO app_playlist_tracks (track_id, playlist_id) VALUES {} '\
+        return 'INSERT INTO app_playlist_tracks (track_id, playlist_id) VALUES {} ON CONFLICT DO NOTHING '\
             .format(', '.join(['(%s, %s)'] * len(links)))

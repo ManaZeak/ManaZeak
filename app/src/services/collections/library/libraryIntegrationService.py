@@ -1,5 +1,6 @@
 import logging
 import multiprocessing
+from multiprocessing import Process
 from multiprocessing.pool import Pool
 
 from django import db
@@ -7,6 +8,7 @@ from django import db
 from app.src.constants.trackFileTypeEnum import TrackFileTypeEnum
 from app.src.services.collections.library.librarySatusHelper import LibraryStatusHelper
 from app.src.dto.track.indexedTrackContainer import IndexedTrackContainer
+from app.src.services.collections.library.libraryServiceHelper import LibraryServiceHelper
 from app.src.services.random.randomGenerator import RandomGenerator
 from app.src.services.thumbs.thumbnailService import ThumbnailService
 from app.src.services.track.localTrackImporter import LocalTrackImporter
@@ -19,15 +21,32 @@ loggerScan = logging.getLogger('scan')
 ## This class is used to integrates the audio file on the file system into the database.
 class LibraryIntegrationService(object):
 
-    def __init__(self):
+    def __init__(self, isInitScan):
         self.trackExtractorService = TrackExtractorService()
         self.statusHelper = None
+        self.isInitScan = isInitScan
+
+    @staticmethod
+    ## Launch the scan for the selected files in a thread (fork).
+    def launchThreadedFileScan(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan, isInitScan):
+        # Creating the integration service for tracks and preparing the process (fork)
+        integrationService = LibraryIntegrationService(isInitScan)
+        scanThread = Process(
+            target=integrationService.integrateTracksToLibraryProcess,
+            args=(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan)
+        )
+        # Closing all connection to the database for avoiding to use the same connection between processes.
+        db.connections.close_all()
+        # Launching the process of integrating the track into the database.=
+        scanThread.start()
 
     ## Integrates into the database the indexed tracks for the given library.
     #   @param library the library linked to the audio files to integrate.
     #   @param mp3Files the mp3 files to add to the library.
     #   @param flacFiles the flac files to add to the library.
-    def integrateTracksToLibraryProcess(self, library, mp3Files, flacFiles):
+    #   @param newFiles the number of new files integrated.
+    #   @param modifiedFiles the number of files modified.
+    def integrateTracksToLibraryProcess(self, library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan):
         # Getting information about the lib
         numberMp3 = len(mp3Files)
         numberFlac = len(flacFiles)
@@ -65,14 +84,16 @@ class LibraryIntegrationService(object):
 
         # Creating the random tables
         randFiller = RandomGenerator(library.playlist.id)
-        randFiller.fillAllRandomTables()
+        randFiller.fillAllRandomTables(self.isInitScan)
 
         # Starting the process (fork) for generating the thumbnails
         ThumbnailService.startProcessRegenThumbnails()
         loggerScan.info('Starting the process of thumbnail generation.')
 
         # Finishing the scan
-        self.statusHelper.endLibraryScan()
+        LibraryServiceHelper.saveScanEnded(newFiles, modifiedFiles, libScan)
+        if self.isInitScan:
+            self.statusHelper.endLibraryScan()
 
     ## Extract the information contained in the tracks into a object.
     #   @param tracksPath a table containing the tracks path to extract

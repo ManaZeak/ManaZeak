@@ -52,7 +52,6 @@ class LibraryHelper(object):
             for file in files:
                 if file.lower().endswith('.mp3'):
                     mp3Files.append(os.path.join(root, file))
-
                 if file.lower().endswith('.flac'):
                     flacFiles.append(os.path.join(root, file))
         # If there is no file throw an exception
@@ -65,10 +64,10 @@ class LibraryHelper(object):
     ## Get a library from it's id in the database.
     #   @param libraryId the library id to fetch.
     #   @return a library object.
-    def getLibraryFromId(libraryId):
+    def getLibraryFromId(libraryId, user):
         # The library doesn't exist
         if Library.objects.filter(id=libraryId).count() != 1:
-            raise UserException(ErrorEnum.DB_ERROR, None)
+            raise UserException(ErrorEnum.DB_ERROR, user)
         return Library.objects.get(id=libraryId)
 
     @staticmethod
