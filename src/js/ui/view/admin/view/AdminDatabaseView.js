@@ -66,7 +66,7 @@ class AdminDatabaseView extends AdminSceneView {
 
 
   _rescan() {
-    mzk.komunikator.get('admin/reset')
+    mzk.komunikator.get('lib/rescan')
       .then(res => console.log(res))
       .catch(err => console.error(err));
   }
