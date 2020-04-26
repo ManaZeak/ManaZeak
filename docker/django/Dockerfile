@@ -21,6 +21,7 @@ ENV PACKAGES="\
   libffi-dev \
   jpeg-dev \
   zlib-dev \
+  libmemcached-dev \
 "
 
 RUN echo \

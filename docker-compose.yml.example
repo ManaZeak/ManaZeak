@@ -27,10 +27,12 @@ services:
         links:
             - syncthing:st
             - db
+            - cache
         ports:
             - "127.0.0.1:8000:8000"
         depends_on:
             - db
+            - cache
 
     nginx:
         image: nginx:latest
@@ -67,6 +69,10 @@ services:
             - "127.0.0.1:8384:8384"
             - "22000:22000"
             - "21027:21027/udp"
+    cache:
+        image: memcached
+        container_name: manazeak_memcached
+        command: bash -c "memcached -I 5m -m 1000m"
 
 #    transmission:
 #        image: linuxserver/transmission

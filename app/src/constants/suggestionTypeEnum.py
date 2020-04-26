@@ -1,5 +1,6 @@
 from enum import unique, Enum
 
+
 @unique
 ## This enum represents the status of wishes in the database.
 class SuggestionTypeEnum(Enum):

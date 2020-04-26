@@ -12,3 +12,4 @@ pytest-cov
 pytest-django
 Pillow
 pytz
+django-pylibmc
