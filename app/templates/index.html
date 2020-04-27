@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load mzkWorldMapTag %}
+{% load mzkVisualizerTag %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,6 +11,7 @@
     <link rel="icon" type="image/png" href="{% static "img/logo/manazeak-logo-square.svg" %}">
     <link rel="stylesheet" type="text/css" href="{% static "dist/css/manazeak.bundle.css" %}">
     {% mzkWorldMapIncludeCss %}
+    {% mzkVisualizerIncludeCss %}
   </head>
   <body>
     <div id="topbar" class="topbar">
@@ -89,5 +91,6 @@
     <script type="text/javascript" src="{% static "lib/d3.v3.min.js" %}"></script>
     <script type="text/javascript" src="{% static "dist/js/manazeak.bundle.js" %}"></script>
     {% mzkWorldMapIncludeJs %}
+    {% mzkVisualizerIncludeJs %}
   </body>
 </html>

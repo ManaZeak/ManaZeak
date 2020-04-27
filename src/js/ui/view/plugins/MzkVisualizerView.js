@@ -1,7 +1,7 @@
 import SceneView from "../SceneView";
 
 
-class MzkWorldMapView extends SceneView {
+class MzkVisualizerView extends SceneView {
 
 
   constructor(options) {
@@ -21,28 +21,21 @@ class MzkWorldMapView extends SceneView {
 
   destroy() {
     super.destroy();
-    this._mzkWorldMap.destroy();
     Utils.removeAllObjectKeys(this);
   }
 
 
   _fetchWrapper() {
     return new Promise(resolve => {
-      mzk.komunikator.getTemplate('view/mzkworldmap/layout/')
+      mzk.komunikator.getTemplate('view/mzkvisualizer/layout/')
         .then((response) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');
-          this._dom.wrapper = doc.getElementsByClassName('mzkworldmap-view-wrapper')[0];
-          this._dom.home = doc.getElementsByClassName('mzkworldmap-controls-home')[0];
-          this._dom.flag = doc.getElementById('mzkworldmap-country-flag');
+          this._dom.wrapper = doc.getElementsByClassName('mzkvisualizer-view-wrapper')[0];
+          this._dom.home = doc.getElementsByClassName('mzkvisualizer-controls-home')[0];
 
-          if (window.MzkWorldMap) {
-            this._mzkWorldMap = new MzkWorldMap({
-              assetsUrl: '/static/plugins/MzkWorldMap/',
-              renderTo: this._dom.wrapper,
-              countryClicked: this._countryClicked.bind(this),
-              centerOn: 'FRA' // TODO why not get this from user on signup ?
-            });
+          if (window.MzkVisualizer) {
+            console.log('fire !');
           }
 
           resolve();
@@ -76,4 +69,4 @@ class MzkWorldMapView extends SceneView {
 }
 
 
-export default MzkWorldMapView;
+export default MzkVisualizerView;

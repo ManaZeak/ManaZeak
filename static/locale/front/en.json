@@ -50,8 +50,12 @@
         "desc": "Play random albums with animation"
       },
       "wmv": {
-        "title": "MzkWorldMap",
+        "title": "World Map",
         "desc": "Browse Earth to discover music"
+      },
+      "vzl": {
+        "title": "Visualization",
+        "desc": "Unique analysis based on playing track"
       }
     },
     "suggestion": {

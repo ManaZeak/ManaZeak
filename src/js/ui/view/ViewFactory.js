@@ -16,10 +16,12 @@ import AllCountriesView from '../view/object/all/type/AllCountriesView.js';
 /* Generic sceneviews */
 import MainPageView from '../view/mainpage/MainPageView.js';
 import PartyView from '../view/party/PartyView.js';
-import MzkWorldMapView from '../view/plugins/MzkWorldMapView.js';
 import AdminView from '../view/admin/AdminView.js';
 import CommunityView from '../view/community/CommunityView.js';
 import UserHubView from './community/UserHubView.js';
+/* Plugin specific pages */
+import MzkWorldMapView from '../view/plugins/MzkWorldMapView.js';
+import MzkVisualizerView from '../view/plugins/MzkVisualizerView.js';
 
 
 const Classes = {
@@ -39,6 +41,7 @@ const Classes = {
   MainPageView,
   PartyView,
   MzkWorldMapView,
+  MzkVisualizerView,
   AdminView,
   CommunityView,
   UserHubView

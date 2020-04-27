@@ -18,7 +18,8 @@ urlpatterns = [
     path('party/layout/', GenericViews.getPartyPage, name='getPartyPage'),
     # TODO je pense qu'on peux se faire un set d'url /plugins/
     ## Layout and overlay for MzkWorldMap plugin
-    path('mzkworldmap/layout/', GenericViews.getMzkWorldMapPage, name='getPartyPage'),
+    path('mzkworldmap/layout/', GenericViews.getMzkWorldMapPage, name='getMzkWorldMapPage'),
+    path('mzkvisualizer/layout/', GenericViews.getMzkVisualizerPage, name='getMzkVisualizerPage'),
     # Layout for admin view
     path('admin/layout/', GenericViews.getAdminPage, name='reset'),
     path('admin/overview/layout/', GenericViews.getAdminOverviewPage, name='reset'),

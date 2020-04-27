@@ -65,6 +65,13 @@ class CollectionGroup {
         });
         this._dom.elements.appendChild(mzkWorldMapView.dom);
       }
+
+      if (window.MzkVisualizer) {
+        const mzkVisualizerView = new DiscoverEntry({
+          type: 'MzkVisualizerView'
+        });
+        this._dom.elements.appendChild(mzkVisualizerView.dom);
+      }
     } else {
       this._dom.groupImage.src = 'static/img/object/collection.svg';
       for (let i = 0; i < this._items.length; ++i) {

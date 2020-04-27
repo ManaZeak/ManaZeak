@@ -118,6 +118,14 @@ elif [ "$1" = "plugin" ]; then
         else
           echo -e "Plugin already installed"
         fi
+      elif [ "$3" = "MzkVisualizer" ]; then
+        if [ ! -d "plugins/MzkVisualizer" ]; then
+          eval "git clone https://github.com/ManaZeak/MzkVisualizer.git plugins/MzkVisualizer/"
+          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --install ./static/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkVisualizer"
+        else
+          echo -e "Plugin already installed"
+        fi
       else
         echo -e "Missing plugin name"
       fi
@@ -131,6 +139,14 @@ elif [ "$1" = "plugin" ]; then
         else
           echo -e "Plugin doesn't exists"
         fi
+      elif [ "$3" = "MzkVisualizer" ]; then
+        if [ -d "plugins/MzkVisualizer" ]; then
+          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --uninstall ./static/"
+          eval "rm -rvf plugins/MzkVisualizer/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to remove MzkVisualizer bundles"
+        else
+          echo -e "Plugin doesn't exists"
+        fi
       else
         echo -e "Missing plugin name"
       fi
@@ -141,6 +157,15 @@ elif [ "$1" = "plugin" ]; then
           eval "cd plugins/MzkWorldMap && git pull origin master && cd ../../"
           eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --pull ./static/"
           echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkWorldMap"
+        else
+          echo -e "Plugin not installed"
+        fi
+      elif [ "$3" = "MzkVisualizer" ]; then
+        echo -e "Update MzkVisualizer plugin"
+        if [ -d "plugins/MzkVisualizer" ]; then
+          eval "cd plugins/MzkVisualizer && git pull origin master && cd ../../"
+          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --pull ./static/"
+          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkVisualizer"
         else
           echo -e "Plugin not installed"
         fi

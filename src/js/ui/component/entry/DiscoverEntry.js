@@ -32,6 +32,10 @@ class DiscoverEntry {
       this._dom.img.src = 'static/img/views/worldmapview.svg';
       this._dom.title.innerHTML = mzk.lang.mainpage.discover.wmv.title;
       this._dom.desc.innerHTML = mzk.lang.mainpage.discover.wmv.desc;
+    } else if (this._type === 'MzkVisualizerView') {
+      this._dom.img.src = 'static/img/views/visualizer.svg';
+      this._dom.title.innerHTML = mzk.lang.mainpage.discover.vzl.title;
+      this._dom.desc.innerHTML = mzk.lang.mainpage.discover.vzl.desc;
     }
 
     this._dom.container.appendChild(this._dom.img);
@@ -49,6 +53,10 @@ class DiscoverEntry {
       } else if (this._type === 'MzkWorldMapView') {
         mzk.ui.setSceneView({
           name: 'MzkWorldMap'
+        });
+      } else if (this._type === 'MzkVisualizerView') {
+        mzk.ui.setSceneView({
+          name: 'MzkVisualizer'
         });
       }
     }, false);

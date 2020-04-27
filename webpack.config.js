@@ -34,7 +34,17 @@ module.exports = env => {
   // Plugin loading
   const fs = require('fs');
   if (fs.existsSync('./plugins/MzkWorldMap/js/MzkWorldMap.js')) { // Bundle MzkWorldMap if existing
-    entry.mzkworldmap = ['./plugins/MzkWorldMap/js/MzkWorldMap.js', './plugins/MzkWorldMap/css/mzkworldmap.scss']
+    entry.mzkworldmap = [
+      './plugins/MzkWorldMap/js/MzkWorldMap.js',
+      './plugins/MzkWorldMap/css/mzkworldmap.scss'
+    ];
+  }
+
+  if (fs.existsSync('./plugins/MzkVisualizer/js/MzkVisualizer.js')) { // Bundle MzkVisualizer if existing
+    entry.mzkvisualizer = [
+      './plugins/MzkVisualizer/js/MzkVisualizer.js',
+      './plugins/MzkVisualizer/css/mzkvisualizer.scss'
+    ];
   }
 
   return {

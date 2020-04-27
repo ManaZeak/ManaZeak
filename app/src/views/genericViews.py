@@ -108,7 +108,12 @@ class GenericViews(object):
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
     def getMzkWorldMapPage(request):
-        return render(request, 'views/plugins/mzkWorldMapPage.html')
+        return render(request, 'views/plugins/mzkWorldMapPage.html')\
+
+    @staticmethod
+    @login_required(redirect_field_name='login.html', login_url='app:login')
+    def getMzkVisualizerPage(request):
+        return render(request, 'views/plugins/mzkVisualizerPage.html')
 
     @staticmethod
     @login_required(redirect_field_name='login.html', login_url='app:login')
