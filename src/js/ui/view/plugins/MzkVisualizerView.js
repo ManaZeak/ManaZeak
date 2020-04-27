@@ -32,10 +32,15 @@ class MzkVisualizerView extends SceneView {
           const parser = new DOMParser();
           const doc = parser.parseFromString(response, 'text/html');
           this._dom.wrapper = doc.getElementsByClassName('mzkvisualizer-view-wrapper')[0];
-          this._dom.home = doc.getElementsByClassName('mzkvisualizer-controls-home')[0];
 
           if (window.MzkVisualizer) {
-            console.log('fire !');
+            const waveformProgress = new MzkVisualizer({
+              type: 'frequencycircle',
+              player: mzk.model.player.player,
+              renderTo: this._dom.wrapper,
+              fftSize: 512,
+              image: 'static/plugins/MzkVisualizer/img/manazeak-logo-small.svg'
+            });
           }
 
           resolve();
@@ -46,18 +51,8 @@ class MzkVisualizerView extends SceneView {
 
   _events() {
     return new Promise(resolve => {
-      this._dom.home.addEventListener('click', () => {
-        mzk.ui.setSceneView({ name: 'MainPage' });
-      }, false);
-
       resolve();
     });
-  }
-
-
-  _countryClicked(info) {
-    this._dom.flag.src = `static/img/flag/${info.trigram}.svg`;
-    console.log(info)
   }
 
 

@@ -549,6 +549,13 @@ class Player {
 
 
   /** @public
+   * @member {number} - The HTMl audio player */
+  get player() {
+    return this._player;
+  }
+
+
+  /** @public
    * @member {boolean} - The player's playing state public accessor */
   get playing() {
     return this._isPlaying;
