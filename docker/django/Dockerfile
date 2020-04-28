@@ -52,7 +52,7 @@ RUN echo \
 RUN mkdir /ManaZeak
 RUN mkdir /library
 
-ADD . /ManaZeak
+ADD ./requirements.txt /ManaZeak/requirements.txt
 
 RUN pip install -r /ManaZeak/requirements.txt
 
