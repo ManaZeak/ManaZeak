@@ -26,7 +26,7 @@ class ThumbnailService(object):
         # Closing all connection to the database for avoiding to use the same connection between processes.
         db.connections.close_all()
         # Closing the connection to the cache for avoiding errors.
-        cache.cache.disconnect_all()
+        cache._cache.disconnect_all()
         # Launching the process of integrating the track into the database.
         scanThread.start()
 
