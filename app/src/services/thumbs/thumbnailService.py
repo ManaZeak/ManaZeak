@@ -9,6 +9,7 @@ from app.src.security.permissionHandler import PermissionHandler
 from app.src.services.thumbs.artistThumbnailService import ArtistThumbnailService
 from app.src.services.thumbs.coverThumbnailService import CoverThumbnailService
 from app.src.services.thumbs.labelThumbnailService import LabelThumbnailService
+from app.src.utils.cache.cacheUtils import CacheUtils
 from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.frontRequestChecker import FrontRequestChecker
 from app.src.utils.requestMethodEnum import RequestMethodEnum
@@ -26,7 +27,7 @@ class ThumbnailService(object):
         # Closing all connection to the database for avoiding to use the same connection between processes.
         db.connections.close_all()
         # Closing the connection to the cache for avoiding errors.
-        cache._cache.disconnect_all()
+        CacheUtils.disconnectAll()
         # Launching the process of integrating the track into the database.
         scanThread.start()
 
