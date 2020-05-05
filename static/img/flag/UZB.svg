@@ -1,205 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.32599"
-   xml:space="preserve"
-   sodipodi:docname="UZB.svg"
-   width="512"
-   height="341.32599"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata75"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs73" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview71"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.66299"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0"
-   style="fill:#d80027"
-   width="512"
-   height="341.32599"
-   id="rect2"
-   x="0" />
-<rect
-   y="237.44598"
-   style="fill:#6da544"
-   width="512"
-   height="103.88"
-   id="rect4"
-   x="0" />
-<rect
-   id="SVGCleanerId_0"
-   y="0"
-   style="fill:#338af3"
-   width="512"
-   height="104.515"
-   x="0" />
-<rect
-   y="125.54"
-   style="fill:#f0f0f0"
-   width="512"
-   height="89.655998"
-   id="rect7"
-   x="0" />
-<g
-   id="g10"
-   transform="translate(0,-85.336998)">
-	<rect
-   id="SVGCleanerId_0_1_"
-   y="85.336998"
-   style="fill:#338af3"
-   width="512"
-   height="104.515"
-   x="0" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="250">
+<rect width="500" height="250" fill="#1eb53a"/>
+<rect width="500" height="125" fill="#0099b5"/>
+<rect width="500" height="90" y="80" fill="#ce1126"/>
+<rect width="500" height="80" y="85" fill="#fff"/>
+<circle cx="70" cy="40" r="30" fill="#fff"/>
+<circle cx="80" cy="40" r="30" fill="#0099b5"/>
+<g fill="#fff" transform="translate(136,64)">
+<g id="s3">
+<g id="s">
+<g id="f">
+<g id="t">
+<path id="o" d="M0,-6V0H3" transform="rotate(18,0,-6)"/>
+<use xlink:href="#o" transform="scale(-1,1)"/>
 </g>
-<g
-   id="g38"
-   transform="translate(0,-85.336998)">
-	<path
-   style="fill:#f0f0f0"
-   d="m 188.688,137.589 c 0,-15.984 11.234,-29.339 26.236,-32.614 -2.306,-0.503 -4.698,-0.777 -7.155,-0.777 -18.442,0 -33.391,14.949 -33.391,33.391 0,18.442 14.949,33.391 33.391,33.391 2.458,0 4.85,-0.273 7.155,-0.777 -15.002,-3.275 -26.236,-16.63 -26.236,-32.614 z"
-   id="path12"
-   inkscape:connector-curvature="0" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="244.234,159.723 238.316,164.024 240.577,170.98 234.658,166.68 228.74,170.98 231.001,164.024 225.083,159.723 232.398,159.723 234.658,152.766 236.919,159.723 "
-   id="polygon14" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="267.581,159.723 261.663,164.024 263.924,170.98 258.006,166.68 252.088,170.98 254.348,164.024 248.431,159.723 255.745,159.723 258.006,152.766 260.266,159.723 "
-   id="polygon16" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="290.928,159.723 285.011,164.024 287.271,170.98 281.353,166.68 275.435,170.98 277.695,164.024 271.777,159.723 279.092,159.723 281.353,152.766 283.613,159.723 "
-   id="polygon18" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="314.277,159.723 308.358,164.024 310.619,170.98 304.7,166.68 298.782,170.98 301.044,164.024 295.125,159.723 302.439,159.723 304.7,152.766 306.962,159.723 "
-   id="polygon20" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="337.623,159.723 331.705,164.024 333.966,170.98 328.048,166.68 322.13,170.98 324.39,164.024 318.473,159.723 325.787,159.723 328.048,152.766 330.308,159.723 "
-   id="polygon22" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="267.581,135.438 261.663,139.738 263.924,146.695 258.006,142.396 252.088,146.695 254.348,139.738 248.431,135.438 255.745,135.438 258.006,128.482 260.266,135.438 "
-   id="polygon24" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="290.928,135.438 285.011,139.738 287.271,146.695 281.353,142.396 275.435,146.695 277.695,139.738 271.777,135.438 279.092,135.438 281.353,128.482 283.613,135.438 "
-   id="polygon26" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="314.277,135.438 308.358,139.738 310.619,146.695 304.7,142.396 298.782,146.695 301.044,139.738 295.125,135.438 302.439,135.438 304.7,128.482 306.962,135.438 "
-   id="polygon28" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="337.623,135.438 331.705,139.738 333.966,146.695 328.048,142.396 322.13,146.695 324.39,139.738 318.473,135.438 325.787,135.438 328.048,128.482 330.308,135.438 "
-   id="polygon30" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="290.928,111.154 285.011,115.454 287.271,122.411 281.353,118.111 275.435,122.411 277.695,115.454 271.777,111.154 279.092,111.154 281.353,104.198 283.613,111.154 "
-   id="polygon32" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="314.277,111.154 308.358,115.454 310.619,122.411 304.7,118.111 298.782,122.411 301.044,115.454 295.125,111.154 302.439,111.154 304.7,104.198 306.962,111.154 "
-   id="polygon34" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="337.623,111.154 331.705,115.454 333.966,122.411 328.048,118.111 322.13,122.411 324.39,115.454 318.473,111.154 325.787,111.154 328.048,104.198 330.308,111.154 "
-   id="polygon36" />
+<use xlink:href="#t" transform="rotate(72)"/>
 </g>
-<g
-   id="g40"
-   transform="translate(0,-85.336998)">
+<use xlink:href="#t" transform="rotate(-72)"/>
+<use xlink:href="#f" transform="rotate(144)"/>
 </g>
-<g
-   id="g42"
-   transform="translate(0,-85.336998)">
+<use xlink:href="#s" y="-24"/>
+<use xlink:href="#s" y="-48"/>
 </g>
-<g
-   id="g44"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g46"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g48"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g50"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g52"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g54"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g56"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g58"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g60"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g62"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g64"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g66"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g68"
-   transform="translate(0,-85.336998)">
+<use xlink:href="#s3" x="24"/>
+<use xlink:href="#s3" x="48"/>
+<use xlink:href="#s" x="-48"/>
+<use xlink:href="#s" x="-24"/>
+<use xlink:href="#s" x="-24" y="-24"/>
 </g>
 </svg>

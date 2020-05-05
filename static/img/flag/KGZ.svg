@@ -1,161 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.33701"
-   xml:space="preserve"
-   sodipodi:docname="KGZ.svg"
-   width="512"
-   height="341.33701"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata57"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs55" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview53"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.66801"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<g
-   id="g6"
-   transform="translate(0,-85.331001)">
-	<rect
-   y="85.331001"
-   style="fill:#d80027"
-   width="512"
-   height="341.33701"
-   id="rect2"
-   x="0" />
-	<circle
-   style="fill:#d80027"
-   cx="256"
-   cy="255.994"
-   r="170.66299"
-   id="circle4" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="450" viewBox="0 0 250 150">
+<clipPath id="c">
+<circle r="25"/>
+</clipPath>
+<rect width="250" height="150" fill="#e8112d"/>
+<g transform="translate(125,75)">
+<g id="r20" transform="scale(0.25)">
+<g id="r4">
+<path id="r1" d="m-8.4,108c8.4,22 -9.6,56 8.4,72c-6,-24 14-50 8.4,-72s-25.2,-22 -16.8,0z" fill="#ffef00"/>
+<use xlink:href="#r1" transform="rotate(90)"/>
+<use xlink:href="#r1" transform="rotate(180)"/>
+<use xlink:href="#r1" transform="rotate(270)"/>
 </g>
-<polygon
-   style="fill:#ffda44"
-   points="323.522,305.067 286.487,297.982 281.796,335.391 256,307.879 230.205,335.391 225.512,297.982 188.479,305.065 206.64,272.034 172.535,255.994 206.641,239.954 188.479,206.921 225.51,214.008 230.206,176.598 256,204.111 281.797,176.598 286.487,214.008 323.523,206.921 305.362,239.955 339.465,255.994 305.361,272.036 "
-   id="polygon8"
-   transform="translate(0,-85.331001)" />
-<circle
-   style="fill:#d80027"
-   cx="256"
-   cy="170.66299"
-   r="51.942001"
-   id="circle10" />
-<g
-   id="g20"
-   transform="translate(0,-85.331001)">
-	<path
-   style="fill:#ffda44"
-   d="m 230.029,255.994 c -1.251,0 -2.487,0.063 -3.705,0.186 0.045,7.195 2.648,13.779 6.947,18.894 2.294,-6.172 5.718,-11.799 10.035,-16.614 -4.126,-1.587 -8.6,-2.466 -13.277,-2.466 z"
-   id="path12"
-   inkscape:connector-curvature="0" />
-	<path
-   style="fill:#ffda44"
-   d="m 246.017,283.95 c 3.12,1.114 6.48,1.726 9.983,1.726 3.503,0 6.863,-0.611 9.983,-1.726 -1.701,-6.675 -5.212,-12.633 -9.983,-17.316 -4.771,4.683 -8.282,10.641 -9.983,17.316 z"
-   id="path14"
-   inkscape:connector-curvature="0" />
-	<path
-   style="fill:#ffda44"
-   d="M 281.702,241.159 C 276.57,232.288 266.985,226.314 256,226.314 c -10.985,0 -20.571,5.974 -25.704,14.845 9.356,0.048 18.129,2.591 25.704,6.984 7.574,-4.393 16.346,-6.936 25.702,-6.984 z"
-   id="path16"
-   inkscape:connector-curvature="0" />
-	<path
-   style="fill:#ffda44"
-   d="m 268.695,258.46 c 4.319,4.815 7.742,10.443 10.035,16.614 4.299,-5.116 6.902,-11.7 6.947,-18.894 -1.22,-0.121 -2.455,-0.186 -3.705,-0.186 -4.677,0 -9.152,0.879 -13.277,2.466 z"
-   id="path18"
-   inkscape:connector-curvature="0" />
+<use xlink:href="#r4" transform="rotate(18)"/>
+<use xlink:href="#r4" transform="rotate(36)"/>
+<use xlink:href="#r4" transform="rotate(54)"/>
+<use xlink:href="#r4" transform="rotate(72)"/>
 </g>
-<g
-   id="g22"
-   transform="translate(0,-85.331001)">
+<use xlink:href="#r20" transform="rotate(9)"/>
+<circle r="27" fill="#e8112d"/>
+<circle cy="-1.5" r="22.5" fill="#ffef00"/>
+<g id="x" fill="#e8112d" clip-path="url(#c)">
+<path d="M-23.055236,18a37.755236,37.755236 0 1,1 75.510472,0H52.760449a36.260449,36.260449 0 1,0 -72.520898,0z"/>
+<path d="M-17.601203,18a35.301203,35.301203 0 1,1 70.602406,0H53.424578a33.924578,33.924578 0 1,0 -67.849156,0z"/>
+<path d="M20.7,-15.052356a33.052356,33.052356 0 1,0 0,66.104712L22.5,49.819805a31.819805,31.819805 0 1,1 0,-63.63961z"/>
 </g>
-<g
-   id="g24"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g26"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g40"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g42"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g44"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g46"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g48"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g50"
-   transform="translate(0,-85.331001)">
+<use xlink:href="#x" transform="scale(-1,1)"/>
 </g>
 </svg>

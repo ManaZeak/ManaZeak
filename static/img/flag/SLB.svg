@@ -1,150 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.34201"
-   xml:space="preserve"
-   sodipodi:docname="SLB.svg"
-   width="512"
-   height="341.34201"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata55"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs53" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview51"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.67101"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0.0049996339"
-   style="fill:#496e2d"
-   width="512"
-   height="341.33701"
-   id="rect2"
-   x="0" />
-<polyline
-   style="fill:#0052b4"
-   points="0,426.663 0,85.329 512,85.329 "
-   id="polyline4"
-   transform="translate(0,-85.329)" />
-<polygon
-   style="fill:#ffda44"
-   points="45.255,426.663 512,115.499 512,85.329 466.745,85.329 0,396.494 0,426.663 "
-   id="polygon6"
-   transform="translate(0,-85.329)" />
-<g
-   id="g18"
-   transform="translate(0,-85.329)">
-	<polygon
-   style="fill:#f0f0f0"
-   points="107.374,124.543 93.971,134.28 99.091,150.037 85.688,140.299 72.283,150.037 77.403,134.28 64,124.543 80.567,124.543 85.688,108.787 90.808,124.543 "
-   id="polygon8" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="192,124.543 178.597,134.28 183.717,150.037 170.312,140.299 156.909,150.037 162.029,134.28 148.626,124.543 165.192,124.543 170.312,108.787 175.433,124.543 "
-   id="polygon10" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="107.374,207.045 93.971,216.783 99.091,232.54 85.688,222.801 72.283,232.54 77.403,216.783 64,207.045 80.567,207.045 85.688,191.289 90.808,207.045 "
-   id="polygon12" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="192,207.045 178.597,216.783 183.717,232.54 170.312,222.801 156.909,232.54 162.029,216.783 148.626,207.045 165.192,207.045 170.312,191.289 175.433,207.045 "
-   id="polygon14" />
-	<polygon
-   style="fill:#f0f0f0"
-   points="149.688,165.793 136.283,175.531 141.403,191.289 128,181.55 114.597,191.289 119.717,175.531 106.312,165.793 122.88,165.793 128,150.037 133.12,165.793 "
-   id="polygon16" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="400">
+<path d="M0,400V0H800z" fill="#0051ba"/>
+<path d="M0,400H800V0z" fill="#215b33"/>
+<path d="M0,400 800,0" stroke="#fcd116" stroke-width="36"/>
+<g transform="translate(140,120)">
+<g id="s" fill="#fff">
+<g id="f">
+<g id="t">
+<path id="o" d="M0,-40V0H20z" transform="rotate(18,0,-40)"/>
+<use xlink:href="#o" transform="scale(-1,1)"/>
 </g>
-<g
-   id="g20"
-   transform="translate(0,-85.329)">
+<use xlink:href="#t" transform="rotate(72)"/>
 </g>
-<g
-   id="g22"
-   transform="translate(0,-85.329)">
+<use xlink:href="#t" transform="rotate(-72)"/>
+<use xlink:href="#f" transform="rotate(144)"/>
 </g>
-<g
-   id="g24"
-   transform="translate(0,-85.329)">
+<g id="s2" transform="rotate(40.6)">
+<use id="s1" xlink:href="#s" x="-104" transform="rotate(-40.6,-104,0)"/>
+<use xlink:href="#s1" x="208"/>
 </g>
-<g
-   id="g26"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g40"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g42"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g44"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g46"
-   transform="translate(0,-85.329)">
-</g>
-<g
-   id="g48"
-   transform="translate(0,-85.329)">
+<use xlink:href="#s2" transform="scale(-1,1)"/>
 </g>
 </svg>

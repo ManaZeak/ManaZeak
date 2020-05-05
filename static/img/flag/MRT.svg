@@ -1,129 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.33701"
-   xml:space="preserve"
-   sodipodi:docname="MRT.svg"
-   width="512"
-   height="341.33701"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata45"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs43" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview41"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.66801"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0"
-   style="fill:#496e2d"
-   width="512"
-   height="341.33701"
-   id="rect2"
-   x="0" />
-<g
-   id="g8"
-   transform="translate(0,-85.331001)">
-	<path
-   style="fill:#ffda44"
-   d="m 256,298.851 c -45.956,0 -84.348,-32.298 -93.767,-75.429 -1.448,6.63 -2.233,13.507 -2.233,20.572 0,53.02 42.979,96 96,96 53.021,0 96,-42.98 96,-96 0,-7.066 -0.785,-13.942 -2.233,-20.572 -9.419,43.131 -47.811,75.429 -93.767,75.429 z"
-   id="path4"
-   inkscape:connector-curvature="0" />
-	<polygon
-   style="fill:#ffda44"
-   points="293.852,199.496 270.458,216.492 279.394,243.995 255.999,226.997 232.605,243.995 241.542,216.492 218.148,199.496 247.063,199.496 255.999,171.994 264.934,199.496 "
-   id="polygon6" />
-</g>
-<g
-   id="g10"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g12"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g14"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g16"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g18"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g20"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g22"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g24"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g26"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.331001)">
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="-72 -28 144 96">
+	<rect x="-72" y="-28" width="144" height="96" fill="#006233"/>
+	<circle cy="8" r="31" fill="#ffc400"/>
+	<circle r="30" fill="#006233"/>
+	<g id="c">
+		<path id="t" d="M 0,-12 v 12 h 6" transform="rotate(18 0,-12)" fill="#ffc400"/>
+		<use xlink:href="#t" transform="scale(-1,1)"/>
+	</g>
+	<use xlink:href="#c" transform="rotate(72)"/>
+	<use xlink:href="#c" transform="rotate(144)"/>
+	<use xlink:href="#c" transform="rotate(216)"/>
+	<use xlink:href="#c" transform="rotate(288)"/>
 </svg>

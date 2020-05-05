@@ -13,6 +13,8 @@ class MzkWorldMapView extends SceneView {
       flag: null
     };
 
+    this._opacityTimeoutId = -1;
+
     this._fetchWrapper()
       .then(this._events.bind(this))
       .then(this._viewReady);
@@ -21,6 +23,7 @@ class MzkWorldMapView extends SceneView {
 
   destroy() {
     super.destroy();
+    clearInterval(this._opacityTimeoutId);
     this._mzkWorldMap.destroy();
     Utils.removeAllObjectKeys(this);
   }
@@ -34,6 +37,7 @@ class MzkWorldMapView extends SceneView {
           const doc = parser.parseFromString(response, 'text/html');
           this._dom.wrapper = doc.getElementsByClassName('mzkworldmap-view-wrapper')[0];
           this._dom.home = doc.getElementsByClassName('mzkworldmap-controls-home')[0];
+          this._dom.flagContainer = doc.getElementsByClassName('mzkworldmap-country-flag-container')[0];
           this._dom.flag = doc.getElementById('mzkworldmap-country-flag');
 
           if (window.MzkWorldMap) {
@@ -41,11 +45,16 @@ class MzkWorldMapView extends SceneView {
               assetsUrl: '/static/plugins/MzkWorldMap/',
               renderTo: this._dom.wrapper,
               countryClicked: this._countryClicked.bind(this),
-              centerOn: 'FRA' // TODO why not get this from user on signup ?
+              centerOn: 'FRA' // TODO why not get this from user on signup ? Like fav country or else
             });
-          }
 
-          resolve();
+            this._dom.flagContainer.style.opacity = 1;
+            this._dom.flag.src = 'static/img/flag/FRA.svg';
+
+            resolve();
+          } else {
+            reject('MzkWorldMap plugin not installed on this instance of ManaZeak');
+          }
         });
     });
   }
@@ -63,8 +72,14 @@ class MzkWorldMapView extends SceneView {
 
 
   _countryClicked(info) {
-    this._dom.flag.src = `static/img/flag/${info.trigram}.svg`;
-    console.log(info)
+    console.log(info);
+    if (info.unselect === true) {
+      this._dom.flagContainer.style.opacity = 0;
+      this._opacityTimeoutId = setTimeout(() => { this._dom.flag.src = `static/img/default/location.svg`; }, 200); // 200ms to match mzk duration
+    } else {
+      this._dom.flagContainer.style.opacity = 1;
+      this._dom.flag.src = `static/img/flag/${info.trigram}.svg`;
+    }
   }
 
 

@@ -1,18 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1680" height="840" version="1.1" viewBox="0 0 444.5 222.25" xmlns="http://www.w3.org/2000/svg">
-<g transform="translate(0 -74.75)">
-<rect x=".00023893" y="74.75" width="444.5" height="222.25" fill="#d82126" style="paint-order:normal"/>
-<g transform="translate(-4315.2 175.56)" fill="#f8e92e">
-<path d="m4557.9 22.562-242.67-123.38h66.675z" style="paint-order:normal"/>
-<path d="m4557.9-1.9408-242.67 123.38h66.675z" style="paint-order:normal"/>
-<path d="m4517 22.562 242.67-123.38h-66.675z" style="paint-order:normal"/>
-<path d="m4517-1.9408 242.67 123.38h-66.675z" style="paint-order:normal"/>
-<path d="m4537.4-13.502-22.225-87.313h44.45z" style="paint-order:normal"/>
-<path d="m4537.4 34.123 22.225 87.313h-44.45z" style="paint-order:normal"/>
-<path d="m4537.4 10.311-222.25 22.225v-44.45z" style="paint-order:normal"/>
-<path d="m4537.4 10.311 222.25 22.225v-44.45z" style="paint-order:normal"/>
-</g>
-<circle cx="222.25" cy="185.87" r="39.688" fill="#d82126" style="paint-order:normal"/>
-<circle cx="222.25" cy="185.87" r="31.75" fill="#f8e92e" style="paint-order:normal"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="700" viewBox="0 0 56 28">
+<rect width="56" height="28" fill="#d20000"/>
+<g fill="#ffe600">
+<path d="M 0,0 8.4,0 28,13.5 47.6,0 56,0 0,28 8.4,28 28,14.5 47.6,28 56,28 z M 56,11.2 56,16.8 0,11.2 0,11.2 0,16.8 z M 25.2,0 28,12 30.8,0 z M 25.2,28 28,16 30.8,28 z"/>
+<circle cx="28" cy="14" r="4.5" stroke="#d20000"/>
 </g>
 </svg>

@@ -1,136 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.32599"
-   xml:space="preserve"
-   sodipodi:docname="PAN.svg"
-   width="512"
-   height="341.32599"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata47"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs45" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview43"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.663"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0"
-   style="fill:#f0f0f0"
-   width="512"
-   height="341.32599"
-   id="rect2"
-   x="0" />
-<path
-   style="fill:#0052b4"
-   d="m 256,170.663 c 0,0 0,85.304 0,170.663 H 0 V 170.663 h 85.337 c 81.597,0 170.663,0 170.663,0 z"
-   id="path4"
-   inkscape:connector-curvature="0" />
-<path
-   style="fill:#d80027"
-   d="M 512,2.0141602e-6 V 170.663 h -85.337 c -90.479,0 -170.663,0 -170.663,0 0,0 0,-90.322998 0,-170.6629979858399 z"
-   id="path6"
-   inkscape:connector-curvature="0" />
-<polygon
-   style="fill:#0052b4"
-   points="178.087,159.423 147.132,181.914 158.955,218.303 128,195.813 97.045,218.303 108.868,181.914 77.913,159.423 116.176,159.423 128,123.034 139.824,159.423 "
-   id="polygon8"
-   transform="translate(0,-85.336998)" />
-<polygon
-   style="fill:#d80027"
-   points="434.087,330.086 403.132,352.577 414.955,388.966 384,366.476 353.045,388.966 364.868,352.577 333.913,330.086 372.176,330.086 384,293.697 395.824,330.086 "
-   id="polygon10"
-   transform="translate(0,-85.336998)" />
-<g
-   id="g12"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g14"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g16"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g18"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g20"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g22"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g24"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g26"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g40"
-   transform="translate(0,-85.336998)">
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="450" height="300" viewBox="0 0 36 24">
+	<rect width="36" height="24" fill="#fff"/>
+	<g fill="#005293">
+		<g id="star" transform="translate(9,6)">
+			<g id="c">
+				<path id="t" d="M 0,-3 v 3 h 1.5 z" transform="rotate(18 0,-3)"/>
+				<use xlink:href="#t" transform="scale(-1,1)"/>
+			</g>
+			<use xlink:href="#c" transform="rotate(72)"/>
+			<use xlink:href="#c" transform="rotate(144)"/>
+			<use xlink:href="#c" transform="rotate(216)"/>
+			<use xlink:href="#c" transform="rotate(288)"/>
+		</g>
+		<rect y="12" width="18" height="12"/>
+	</g>
+	<g fill="#d21034">
+		<rect x="18" width="18" height="12"/>
+		<use xlink:href="#star" x="18" y="12"/>
+	</g>
 </svg>

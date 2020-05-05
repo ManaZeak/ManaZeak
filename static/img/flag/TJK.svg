@@ -1,166 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1
+.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1200" height="600" viewBox="0 0 1400 700">
+<title>Flag of Tajikistan</title>
+<rect width="1400" fill="#060" height="700"/>
+<rect width="1400" fill="#fff" height="500"/>
+<rect width="1400" fill="#c00" height="200"/>
+<g fill="#f8c300">
+<path d="M 672.0,340.7 a 12.5,12.5 0,0,1 23.3,5.9 v 50 h 9.4 v -50 a 12.5,12.5 0,0,1 23.3,-5.9 a 29.5,29.5 0,1,0 -56,0"/>
+<path d="M 678.7,327.65 a 20,20 0,0,1 21.3,9.55 a 20,20 0,0,1 21.3,-9.55 a 21.5,21.5 0,0,0 -42.6,0" fill="#fff"/>
+<path id="w" d="M 695.3,376.627 a 38,38 0 0 1 -63.845,24.316 a 39.5,39.5 0 0 1 -59.734,17.467 c 3.6496,36.426 58.252,28.989 62.32,-6.4288 17.154,30.115 54.873,21.49 65.91,-15.4 z"/>
+<use xlink:href="#w" transform="translate(700,0) scale(-1,1) translate(-700,0)"/>
+<path id="r" d="M 658.84,441.31 c -7.6181,16.446 -22.845,19.271 -36.164,5.9953 0,0 5.3539,-3.7831 11.086,-4.826 -1.0748,-4.5744 1.1291,-10.902 4.2354,-14.324 3.2575,2.2264 7.8036,6.6886 8.9598,11.874 8.0291,-1.0394 11.883,1.2815 11.883,1.2815 z"/>
+<use xlink:href="#r" transform="rotate(9.37, 700,804)"/>
+<use xlink:href="#r" transform="rotate(18.74, 700,804)"/>
+<path d="M 603,478 a 340,340 0 0 1 194,0" fill="none" stroke-width="16" stroke="#f8c300"/>
 
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.32599"
-   xml:space="preserve"
-   sodipodi:docname="TJK.svg"
-   width="512"
-   height="341.32599"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata61"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs59" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview57"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.663"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0"
-   style="fill:#f0f0f0"
-   width="512"
-   height="341.32599"
-   id="rect2"
-   x="0" />
-<rect
-   y="0"
-   style="fill:#d80027"
-   width="512"
-   height="113.775"
-   id="rect4"
-   x="0" />
-<rect
-   y="227.55099"
-   style="fill:#6da544"
-   width="512"
-   height="113.775"
-   id="rect6"
-   x="0" />
-<g
-   id="g24"
-   transform="translate(0,-85.336998)">
-	<polygon
-   style="fill:#ffda44"
-   points="285.682,275.292 273.809,281.229 256,263.421 238.191,281.229 226.318,275.292 226.318,300.522 285.682,300.522 "
-   id="polygon8" />
-	<polygon
-   style="fill:#ffda44"
-   points="204.058,279.344 196.825,284.599 199.588,293.101 192.355,287.846 185.121,293.101 187.884,284.599 180.651,279.344 189.591,279.344 192.355,270.84 195.118,279.344 "
-   id="polygon10" />
-	<polygon
-   style="fill:#ffda44"
-   points="212.624,249.662 205.391,254.917 208.154,263.421 200.921,258.165 193.687,263.421 196.45,254.917 189.217,249.662 198.157,249.662 200.921,241.16 203.684,249.662 "
-   id="polygon12" />
-	<polygon
-   style="fill:#ffda44"
-   points="237.112,227.401 229.879,232.656 232.642,241.16 225.409,235.904 218.175,241.16 220.938,232.656 213.705,227.401 222.645,227.401 225.409,218.899 228.172,227.401 "
-   id="polygon14" />
-	<polygon
-   style="fill:#ffda44"
-   points="307.942,279.344 315.175,284.599 312.412,293.101 319.645,287.846 326.879,293.101 324.116,284.599 331.349,279.344 322.409,279.344 319.645,270.84 316.882,279.344 "
-   id="polygon16" />
-	<polygon
-   style="fill:#ffda44"
-   points="299.376,249.662 306.609,254.917 303.846,263.421 311.079,258.165 318.313,263.421 315.55,254.917 322.783,249.662 313.843,249.662 311.079,241.16 308.316,249.662 "
-   id="polygon18" />
-	<polygon
-   style="fill:#ffda44"
-   points="274.888,227.401 282.121,232.656 279.358,241.16 286.591,235.904 293.825,241.16 291.062,232.656 298.295,227.401 289.355,227.401 286.591,218.899 283.828,227.401 "
-   id="polygon20" />
-	<polygon
-   style="fill:#ffda44"
-   points="267.704,216.27 260.47,221.526 263.233,230.028 256,224.774 248.767,230.028 251.53,221.526 244.296,216.27 253.237,216.27 256,207.767 258.763,216.27 "
-   id="polygon22" />
+<g transform="translate(700,380)">
+<g transform="translate(0,-140)">
+<polygon id="s" points="0,-513674 301930,415571 -488533,-158734 488533,-158734 -301930,415571" transform="scale(0.000048669)"/>
 </g>
-<g
-   id="g26"
-   transform="translate(0,-85.336998)">
+<g id="h">
+<use xlink:href="#s" transform="rotate(-30) translate(0,-140) rotate(30)"/>
+<use xlink:href="#s" transform="rotate(-60) translate(0,-140) rotate(60)"/>
+<use xlink:href="#s" transform="rotate(-90) translate(0,-140) rotate(90)"/>
 </g>
-<g
-   id="g28"
-   transform="translate(0,-85.336998)">
+<use xlink:href="#h" transform="scale(-1,1)"/>
 </g>
-<g
-   id="g30"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g40"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g42"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g44"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g46"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g48"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g50"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g52"
-   transform="translate(0,-85.336998)">
-</g>
-<g
-   id="g54"
-   transform="translate(0,-85.336998)">
 </g>
 </svg>

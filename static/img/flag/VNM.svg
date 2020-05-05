@@ -1,119 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.32599"
-   xml:space="preserve"
-   sodipodi:docname="VNM.svg"
-   width="512"
-   height="341.32599"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata41"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs39" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview37"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.663"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<polygon
-   style="fill:#d80027"
-   points="0,426.663 196.641,426.663 512,426.663 512,85.337 196.641,85.337 0,85.337 "
-   id="polygon2"
-   transform="translate(0,-85.337)" />
-<polygon
-   style="fill:#ffda44"
-   points="352,227.026 292.668,270.132 315.332,339.881 256,296.774 196.668,339.881 219.332,270.132 160,227.026 233.337,227.026 256,157.279 278.663,227.026 "
-   id="polygon4"
-   transform="translate(0,-85.337)" />
-<g
-   id="g6"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g8"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g10"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g12"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g14"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g16"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g18"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g20"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g22"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g24"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g26"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.337)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.337)">
-</g>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="900" height="600" viewBox="-15 -10 30 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+  <desc>Flag of Vietnam</desc>
+  <rect x="-20" y="-15" width="40" height="30" fill="#da251d" />
+  <g id="g" transform="translate(0,-6)">
+    <polyline id="g1" points="0,0 0,6 4,6" fill="#ff0" transform="rotate(18)" />
+    <use xlink:href="#g1" transform="scale(-1,1)" />
+  </g>
+  <g id="g2" transform="rotate(72)">
+    <use xlink:href="#g" />
+    <use xlink:href="#g" transform="rotate(72)" />
+  </g>
+  <use xlink:href="#g2" transform="scale(-1,1)" />
 </svg>

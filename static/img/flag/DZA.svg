@@ -1,136 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Capa_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 512 341.33701"
-   xml:space="preserve"
-   sodipodi:docname="DZA.svg"
-   width="512"
-   height="341.33701"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"><metadata
-   id="metadata47"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs45" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="736"
-   inkscape:window-height="480"
-   id="namedview43"
-   showgrid="false"
-   fit-margin-top="0"
-   fit-margin-left="0"
-   fit-margin-right="0"
-   fit-margin-bottom="0"
-   inkscape:zoom="0.4609375"
-   inkscape:cx="256"
-   inkscape:cy="170.66801"
-   inkscape:window-x="0"
-   inkscape:window-y="0"
-   inkscape:window-maximized="0"
-   inkscape:current-layer="Capa_1" />
-<rect
-   y="0"
-   style="fill:#496e2d"
-   width="512"
-   height="341.32599"
-   id="rect2"
-   x="0" />
-<rect
-   x="256"
-   y="0"
-   style="fill:#f0f0f0"
-   width="256"
-   height="341.33701"
-   id="rect4" />
-<g
-   id="g10"
-   transform="translate(0,-85.331001)">
-	<polygon
-   style="fill:#d80027"
-   points="255.989,235.201 270.013,254.481 256.011,273.777 278.682,266.396 292.707,285.676 292.693,261.835 315.362,254.454 292.684,247.1 292.669,223.259 278.666,242.554 "
-   id="polygon6" />
-	<path
-   style="fill:#d80027"
-   d="m 270.158,304.226 c -26.637,0 -48.232,-21.594 -48.232,-48.232 0,-26.638 21.594,-48.232 48.232,-48.232 8.306,0 16.12,2.1 22.943,5.797 -10.704,-10.467 -25.342,-16.927 -41.494,-16.927 -32.785,0 -59.362,26.577 -59.362,59.362 0,32.785 26.577,59.362 59.362,59.362 16.152,0 30.79,-6.461 41.494,-16.927 -6.823,3.698 -14.638,5.797 -22.943,5.797 z"
-   id="path8"
-   inkscape:connector-curvature="0" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 60 40">
+<clipPath id="c">
+<!-- Inner circle of crescent shifted right from center by 5*sqrt(3)-sqrt(39) = 2.415256 -->
+<path d="M0,0H60V40H0zM32.415256,28a8,8 0 1,0 0,-16a8,8 0 1,0 0,16"/>
+</clipPath>
+<path d="M0,0H60V40H0z" fill="#fff"/>
+<path d="M0,0H30V40H0z" fill="#006233"/>
+<g fill="#d21034">
+<circle cx="30" cy="20" r="10" clip-path="url(#c)"/>
+<!-- Distance between center of star and center of flag is 5*cos(36 deg) = 4.045085 -->
+<g transform="translate(34.045085,20)">
+<g id="f">
+<g id="t">
+<path d="M5,0H0V3z" transform="rotate(18,5,0)" id="o"/>
+<use xlink:href="#o" transform="scale(1,-1)"/>
 </g>
-<g
-   id="g12"
-   transform="translate(0,-85.331001)">
+<use xlink:href="#t" transform="rotate(72)"/>
 </g>
-<g
-   id="g14"
-   transform="translate(0,-85.331001)">
+<use xlink:href="#t" transform="rotate(-72)"/>
+<use xlink:href="#f" transform="rotate(144)"/>
 </g>
-<g
-   id="g16"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g18"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g20"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g22"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g24"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g26"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g28"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g30"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g32"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g34"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g36"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g38"
-   transform="translate(0,-85.331001)">
-</g>
-<g
-   id="g40"
-   transform="translate(0,-85.331001)">
 </g>
 </svg>
