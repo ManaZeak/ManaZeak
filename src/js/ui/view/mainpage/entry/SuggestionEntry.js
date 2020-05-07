@@ -72,14 +72,19 @@ class SuggestionEntry {
         this._dom.img.src = 'static/img/object/genre.svg';
       }
     } else if (this._groupType === 'Countries') {
+      const image = this._dom.img;
+      this._dom.img = document.createElement('DIV');
+      this._dom.img.classList.add('country-flag-wrapper');
       this._dom.container.dataset.id = this._entry.COUNTRY_ID;
       this._dom.container.classList.add('country');
       this._dom.name.innerHTML = mzk.lang.countries[this._entry.COUNTRY_CODE];
       if (this._entry.COUNTRY_FLAG !== null) {
-        this._dom.img.src = this._entry.COUNTRY_FLAG;
+        image.src = this._entry.COUNTRY_FLAG;
       } else {
-        this._dom.img.src = 'static/img/object/flag.svg';
+        image.src = 'static/img/object/flag.svg';
       }
+
+      this._dom.img.appendChild(image);
     }
 
     this._dom.container.appendChild(this._dom.img);

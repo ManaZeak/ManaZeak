@@ -99,6 +99,21 @@
           background-color: transparent;
         }
 
+        .country-flag-wrapper {
+          align-items: center;
+          display: flex;
+
+          &::after {
+            content: '';
+            display: block;
+            padding-bottom: 100%;
+          }
+
+          img {
+            height: inherit;
+          }
+        }
+
         p {
           font-size: var(--mzk-font-size-small);
           margin: 0 var(--mzk-magin-small);
