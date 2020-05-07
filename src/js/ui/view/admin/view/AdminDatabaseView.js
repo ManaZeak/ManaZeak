@@ -9,11 +9,13 @@ class AdminDatabaseView extends AdminSceneView {
 
     this._dom = {
       buttons: {
+        reset: null,
         rescan: null,
         regenAllThumbs: null
       }
     };
     // Event binding
+    this._reset = this._reset.bind(this);
     this._rescan = this._rescan.bind(this);
     this._regenAllThumbs = this._regenAllThumbs.bind(this);
     // View init sequence
@@ -39,6 +41,7 @@ class AdminDatabaseView extends AdminSceneView {
 
   _getInternals() {
     return new Promise((resolve, reject) => {
+      this._dom.buttons.reset = this._dom.wrapper.getElementsByClassName('database-reset')[0];
       this._dom.buttons.rescan = this._dom.wrapper.getElementsByClassName('database-rescan')[0];
       this._dom.buttons.regenAllThumbs = this._dom.wrapper.getElementsByClassName('database-regen-all-thumbs')[0];
       // Check proper DOM construction or reject if missing DOM elements
@@ -54,14 +57,23 @@ class AdminDatabaseView extends AdminSceneView {
 
 
   _addEvents() {
+    this._dom.buttons.reset.addEventListener('click', this._reset, false);
     this._dom.buttons.rescan.addEventListener('click', this._rescan, false);
     this._dom.buttons.regenAllThumbs.addEventListener('click', this._regenAllThumbs, false);
   }
 
 
   _removeEvents() {
+    this._dom.buttons.reset.removeEventListener('click', this._reset, false);
     this._dom.buttons.rescan.removeEventListener('click', this._rescan, false);
     this._dom.buttons.regenAllThumbs.removeEventListener('click', this._regenAllThumbs, false);
+  }
+
+
+  _reset() {
+    mzk.komunikator.get('admin/reset')
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
   }
 
 
