@@ -66,7 +66,11 @@ class AdminDatabaseView extends AdminSceneView {
 
 
   _rescan() {
-    mzk.komunikator.get('lib/rescan')
+    const options = {
+      LIBRARY_ID: mzk.model.libraryId
+    };
+
+    mzk.komunikator.post('lib/rescan/', options)
       .then(res => console.log(res))
       .catch(err => console.error(err));
   }

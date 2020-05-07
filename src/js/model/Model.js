@@ -450,6 +450,10 @@ class Model {
       return this._collection.activePlaylist.activeView;
   }
 
+  get libraryId() {
+    return this._collection._playlists[0].id;
+  }
+
   get collection() {
     return this._collection;
   }
