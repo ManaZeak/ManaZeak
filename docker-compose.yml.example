@@ -14,11 +14,12 @@ services:
     web:
         build:
             context: docker/django
+            target: app
         container_name: manazeak_app
         # Dev command
         # command: bash -c "python3 manage.py migrate && python3 manage.py initialiseDB && python3 manage.py runserver 0.0.0.0:8000"
         # Prod command
-        command: bash -c "python3 manage.py migrate && python3 manage.py initialiseDB && daphne -p 8000 -b 0.0.0.0 ManaZeak.asgi:application"
+        command: bash -c "python3 manage.py migrate && python3 manage.py initialiseDB && /root/.local/bin/daphne -p 8000 -b 0.0.0.0 ManaZeak.asgi:application"
         volumes:
             - /PATH/TO/MUSIC:/library
             - ./static:/static
@@ -50,6 +51,7 @@ services:
     moodbar:
         build:
             context: docker/moodbar
+            target: mood
         container_name: manazeak_moodbar
         volumes:
             - /PATH/TO/MUSIC:/library
