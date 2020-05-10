@@ -50,7 +50,7 @@ class AlbumView extends LibraryViews {
 
         this.addTracks(this._playlist.artists);
         this._albumViewEvents();
-        Events.fire('SceneViewReady');
+        Events.publish('SceneViewReady');
       });
   }
 

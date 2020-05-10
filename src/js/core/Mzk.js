@@ -69,7 +69,7 @@ class Mzk {
       .then(this._initUi.bind(this))
       .then(this._initModel.bind(this))
       .then(this._initShortcut.bind(this))
-      .then(Events.fire.bind(Events, 'MzkInitDone'))
+      .then(Events.publish.bind(Events, 'MzkInitDone'))
       .then(this._startApp.bind(this))
       .catch(() => {
         Logger.raise({
@@ -578,10 +578,7 @@ class Mzk {
             this.ui.setSceneView({
               playlist: this.model.collection.activePlaylist
             });
-            Events.register({
-              name: 'SceneViewReady',
-              oneShot: true
-            }, resolve);
+            Events.subscribe('SceneViewReady', resolve, true);
           })
           .catch(error => {
             console.log(error);

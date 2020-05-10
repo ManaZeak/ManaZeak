@@ -76,9 +76,8 @@ class TopBar {
    * @description Handle the UserMenu toggle state on avatar clicked
    **/
   _events() {
-    Events.register({
-      name: 'MzkInitDone'
-    }, () => { // Bind listeners when app is initialized
+    // Bind listeners when app is initialized
+    Events.subscribe('MzkInitDone', () => {
       this._home.addEventListener('click', mzk.ui.setSceneView.bind(mzk.ui, { name: 'MainPage' }), false);
 
       if (mzk.user.hasPermission('WISH')) {

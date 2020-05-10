@@ -74,7 +74,7 @@ class ListView extends LibraryViews {
         this._initHeader();
         this._listViewEvents();
         this.addTracks(this._playlist.artists);
-        Events.fire('SceneViewReady');
+        Events.publish('SceneViewReady');
       });
   }
 

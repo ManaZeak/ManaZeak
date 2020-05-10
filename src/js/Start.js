@@ -1,6 +1,6 @@
 import Utils from './utils/Utils.js';
 import Logger from './utils/Logger.js';
-import Events from './utils/Events.js';
+import CustomEvents from './utils/Events.js';
 import Shortcut from './utils/Shortcut.js';
 import Notification from './ui/component/Notification.js';
 import Mzk from './core/Mzk.js';
@@ -20,7 +20,7 @@ const notificationOptions = {
 
 window.Utils = new Utils();
 window.Logger = new Logger(loggerOptions);
-window.Events = new Events();
+window.Events = new CustomEvents();
 window.Shortcut = new Shortcut();
 window.Notification = new Notification(notificationOptions);
 

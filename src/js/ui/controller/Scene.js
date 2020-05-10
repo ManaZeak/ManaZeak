@@ -44,16 +44,13 @@ class Scene {
 
 
   _registerViewReady() {
-    Events.register({
-      name: 'SceneViewReady',
-      oneShot: true
-    }, () => {
+    Events.subscribe('SceneViewReady', () => {
       if (this.view.dom) {
         this.addView(this.view.dom);
       } else {
         //console.error('Undefined dom element for View');
       }
-    });
+    }, true);
   }
 
 
@@ -161,13 +158,10 @@ class Scene {
       this.view = new AlbumView(options);
     }
     // For Library ui, we must register a custom resolution for SceneViewReady
-    Events.register({
-      name: 'SceneViewReady',
-      oneShot: true
-    }, () => {
+    Events.subscribe('SceneViewReady', () => {
       this.addView(this.view.dom);
       this.view.refreshView(); // Mainly tu update ListView column header
-    });
+    }, true);
   }
 
 

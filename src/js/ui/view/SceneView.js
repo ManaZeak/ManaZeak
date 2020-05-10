@@ -28,7 +28,7 @@ class SceneView {
 
 
   _viewReady() {
-    Events.fire('SceneViewReady');
+    Events.publish('SceneViewReady');
   }
 
 

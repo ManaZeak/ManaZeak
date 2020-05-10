@@ -68,14 +68,11 @@ class UserInterface {
   setSceneView(options) {
     return new Promise(resolve => {
       this._updateViewHistory(options);
-
-      Events.register({ // Views class themselves must fire a SceneViewReady event when ready
-        name: 'SceneViewReady',
-        oneShot: true
-      }, () => {
+      // Views class themselves must fire a SceneViewReady event when ready
+      Events.subscribe('SceneViewReady', () => {
         this.stopLoading(true);
         resolve();
-      });
+      }, true);
 
       this._topBar.homeButtonSrcOnMainPage = true; // Append button by default (remove only if MainPage)
       if (options.name === 'MainPage') {

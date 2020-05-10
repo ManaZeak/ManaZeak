@@ -67,7 +67,7 @@ class Playlist {
             });
         } else {
           if (response.ERROR_MSG === undefined) { // Successfully loaded all
-            Events.fire(`TrackLoaded-${this._id}`);
+            Events.publish(`TrackLoaded-${this._id}`);
           } else {
             console.log('Error');
           }
@@ -175,14 +175,9 @@ class Playlist {
   getArtistsFromServer(response) {
     return new Promise((resolve, reject) => {
       if (response.DONE) {
-        const eventOptions = {
-          name: `TrackLoaded-${this._id}`,
-          oneShot: true // Event needs to be dismissed after request completion
-        };
-
-        Events.register(eventOptions, () => {
+        Events.subscribe(`TrackLoaded-${this._id}`, () => {
           resolve();
-        });
+        }, true); // Event needs to be dismissed after request completion
         this._getArtistsLazyLoad(0);
       } else {
         reject(response.ERROR_KEY);
