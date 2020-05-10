@@ -20,6 +20,12 @@ class Model {
     this._init();
   }
 
+
+  destroy() {
+    this._player.destroy();
+  }
+
+
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
   /**
