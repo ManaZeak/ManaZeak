@@ -1,6 +1,6 @@
 Django==2.2.4
 channels
-psycopg2
+psycopg2-binary
 mutagen
 requests
 python-crontab
