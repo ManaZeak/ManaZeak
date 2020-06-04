@@ -13,24 +13,24 @@ class FileType(models.Model):
 ## The object representing an extracted cover
 class Cover(models.Model):
     ## The path of the cover
-    location = models.URLField(max_length=1000, null=True, unique=True)
+    location = models.URLField(max_length=1000, null=True, unique=True, db_index=True)
 
 
 ## The country of a track.
 class Country(models.Model):
     ## The name of the country
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, db_index=True)
 
 
 ## The label of a track.
 class Label(models.Model):
     ## The name of the label
-    name = models.CharField(max_length=1000, unique=True)
+    name = models.CharField(max_length=1000, unique=True, db_index=True)
 
 
 ## The producer of a track or an album.
 class Producer(models.Model):
-    name = models.CharField(max_length=1000, unique=True, null=True)
+    name = models.CharField(max_length=1000, unique=True, null=True, db_index=True)
     ## The description of the album
     description = models.CharField(max_length=1000, null=True)
     ## The cover location
@@ -44,7 +44,7 @@ class Producer(models.Model):
 ## This class is describing the table genre.
 class Genre(models.Model):
     ## The genre name
-    name = models.CharField(max_length=1000, unique=True, null=True)
+    name = models.CharField(max_length=1000, unique=True, null=True, db_index=True)
     ## The description of the album
     description = models.CharField(max_length=1000, null=True)
     ## The cover location
@@ -59,7 +59,7 @@ class Genre(models.Model):
 class Artist(models.Model):
     #           FOLDER INFORMATION
     ## The path of the artist folder.
-    location = models.FilePathField(max_length=1000, unique=True, null=True)
+    location = models.FilePathField(max_length=1000, unique=True, null=True, db_index=True)
     ## The name of the artist.
     folderName = models.CharField(max_length=1000, unique=True, null=True)
     ## The size of the folder.
@@ -84,7 +84,7 @@ class Artist(models.Model):
 class Album(models.Model):
     #           FOLDER INFORMATION
     ## The path of the album folder.
-    location = models.FilePathField(max_length=1000, unique=True)
+    location = models.FilePathField(max_length=1000, unique=True, db_index=True)
     ## The folder name
     folderName = models.CharField(max_length=250)
     ## The size of the album folder.
@@ -113,7 +113,7 @@ class Album(models.Model):
 class Track(models.Model):
     #           FILE INFORMATION
     ## The path of the track.
-    location = models.FilePathField(max_length=1000, unique=True)
+    location = models.FilePathField(max_length=1000, unique=True, db_index=True)
     ## The file name
     fileName = models.CharField(max_length=250)
     ## The size of the track.
