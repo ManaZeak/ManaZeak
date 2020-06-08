@@ -32,16 +32,12 @@ class LibraryIntegrationService(object):
     def launchThreadedFileScan(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan, isInitScan):
         # Creating the integration service for tracks and preparing the process (fork)
         integrationService = LibraryIntegrationService(isInitScan)
-        # Configuring the process.
-        ctx = multiprocessing.get_context('spawn')
-        scanThread = ctx.Process(
+        scanThread = Process(
             target=integrationService.integrateTracksToLibraryProcess,
             args=(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan)
         )
         # Closing all connection to the database for avoiding to use the same connection between processes.
         db.connections.close_all()
-        # Closing the connection to the cache for avoiding bugs.
-        CacheUtils.disconnectAll()
         # Launching the process of integrating the track into the database.=
         scanThread.start()
 
