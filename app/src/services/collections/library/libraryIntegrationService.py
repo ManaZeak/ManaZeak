@@ -13,7 +13,6 @@ from app.src.services.random.randomGenerator import RandomGenerator
 from app.src.services.thumbs.thumbnailService import ThumbnailService
 from app.src.services.track.localTrackImporter import LocalTrackImporter
 from app.src.services.track.trackExtractorService import TrackExtractorService
-from app.src.utils.cache.cacheUtils import CacheUtils
 from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
@@ -38,7 +37,7 @@ class LibraryIntegrationService(object):
         )
         # Closing all connection to the database for avoiding to use the same connection between processes.
         db.connections.close_all()
-        # Launching the process of integrating the track into the database.=
+        # Launching the process of integrating the track into the database.
         scanThread.start()
 
     ## Integrates into the database the indexed tracks for the given library.
