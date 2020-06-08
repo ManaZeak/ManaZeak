@@ -32,7 +32,9 @@ class LibraryIntegrationService(object):
     def launchThreadedFileScan(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan, isInitScan):
         # Creating the integration service for tracks and preparing the process (fork)
         integrationService = LibraryIntegrationService(isInitScan)
-        scanThread = Process(
+        # Configuring the process.
+        ctx = multiprocessing.get_context('spawn')
+        scanThread = ctx.Process(
             target=integrationService.integrateTracksToLibraryProcess,
             args=(library, mp3Files, flacFiles, newFiles, modifiedFiles, libScan)
         )
