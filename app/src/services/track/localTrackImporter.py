@@ -1,4 +1,5 @@
 import logging
+import traceback
 
 from app.src.dao.importer.albumImporter import AlbumImporter
 from app.src.dao.importer.albumArtistImporter import AlbumArtistImporter
@@ -46,26 +47,30 @@ class LocalTrackImporter(object):
     def insertLocalTracks(self, playlistId):
         loggerScan.info('Starting to insert the tracks into the database.')
         # Inserting the objects into the database.
-        # Merge genre into the database and fill the reference
-        self._importGenre()
-        # Imports the artists (including composers and performers)
-        self._importArtists()
-        # Imports the producers
-        self._importProducers()
-        # Imports the albums
-        self._importAlbums()
-        # Imports the covers
-        self._importCovers()
-        # Imports the labels
-        self._importLabel()
-        # Imports the countries
-        self._importCountries()
-        # Link the previous objects to the tracks
-        self._updateDtoWithDbIds()
-        # Imports the tracks
-        self._importTracks()
-        # Creating the links between the objects inserted.
-        self._linkObjects(playlistId)
+        try:
+            # Merge genre into the database and fill the reference
+            self._importGenre()
+            # Imports the artists (including composers and performers)
+            self._importArtists()
+            # Imports the producers
+            self._importProducers()
+            # Imports the albums
+            self._importAlbums()
+            # Imports the covers
+            self._importCovers()
+            # Imports the labels
+            self._importLabel()
+            # Imports the countries
+            self._importCountries()
+            # Link the previous objects to the tracks
+            self._updateDtoWithDbIds()
+            # Imports the tracks
+            self._importTracks()
+            # Creating the links between the objects inserted.
+            self._linkObjects(playlistId)
+        except Exception as e:
+            loggerScan.error(str(traceback.format_exc()))
+            raise e
 
         loggerScan.info('The insert of objects into the database is finished')
 
