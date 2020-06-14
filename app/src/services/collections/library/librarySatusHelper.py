@@ -1,4 +1,4 @@
-from app.models.collections import LibraryScanStatus
+from app.models.collections import LibraryScanStatus, LibraryScan
 from app.src.utils.errors.errorEnum import ErrorEnum
 from app.src.utils.exceptions.userException import UserException
 
@@ -19,11 +19,11 @@ class LibraryStatusHelper(object):
         scanStatus.totalTracks = totalFiles
         scanStatus.save()
 
-    ## Set the status of the library to available.
+    ## Set the status of the library to available and add a scan history.
     def endLibraryScan(self):
         scanStatus = LibraryStatusHelper.getLibraryScanStatus(self.library)
         if scanStatus.isScanned:
-            raise UserException(ErrorEnum.UNEXPECTED_STATE)
+            raise UserException(ErrorEnum.UNEXPECTED_STATE, None)
         scanStatus.isScanned = True
         scanStatus.save()
 
@@ -52,11 +52,18 @@ class LibraryStatusHelper(object):
         scanStatus.save()
 
     @staticmethod
+    ## Creates and save a library scan.
+    def createLibraryScan():
+        libScan = LibraryScan()
+        libScan.save()
+        return libScan
+
+    @staticmethod
     ## Check if a scan is in progress, throw an exception if it's already in progress.
     def scanNotInProgress(library):
         isScanned = LibraryStatusHelper.getLibraryScanStatus(library).isScanned
         if not isScanned:
-            raise UserException(ErrorEnum.SCAN_IN_PROGRESS)
+            raise UserException(ErrorEnum.SCAN_IN_PROGRESS, None)
 
     @staticmethod
     ## Get the scan status of the library

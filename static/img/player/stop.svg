@@ -12,9 +12,9 @@
    enable-background="new 0 0 100.021 100.021"
    id="svg8"
    sodipodi:docname="stop.svg"
-   inkscape:version="0.92.2 2405546, 2018-03-11"
-   width="100%"
-   height="100%">
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   width="32"
+   height="32">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -23,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,22 +42,23 @@
      inkscape:window-height="1013"
      id="namedview10"
      showgrid="false"
-     inkscape:zoom="3.3368432"
-     inkscape:cx="-84.289495"
-     inkscape:cy="21.372529"
+     inkscape:zoom="22.627417"
+     inkscape:cx="22.014773"
+     inkscape:cy="17.227948"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="svg8"
+     units="px" />
   <g
      id="background"
-     transform="matrix(0.13814015,0,0,0.13814015,69.553444,-51.433164)" />
+     transform="matrix(0.14126717,0,0,0.14126717,70.039855,-53.56738)" />
   <g
      id="design"
-     transform="matrix(0.13814015,0,0,0.13814015,69.553444,-51.433164)" />
+     transform="matrix(0.14126717,0,0,0.14126717,70.039855,-53.56738)" />
   <path
      id="path818"
-     d="M 94.999127,95 H 5.0008725 V 5 H 94.999127 z M 9.7962955,90.205568 H 90.210157 V 9.795421 H 9.7962955 z"
+     d="M 96.01775,96.018643 H 3.9822496 V 3.9813568 H 96.01775 Z M 8.8862242,91.115682 H 91.120374 V 8.8853299 H 8.8862242 Z"
      inkscape:connector-curvature="0"
-     style="fill:#aaaabe;fill-opacity:1;stroke-width:3;stroke:#aaaabe;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+     style="fill:#aaaabe;fill-opacity:1;stroke:#aaaabe;stroke-width:3.06790948;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>

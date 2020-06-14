@@ -8,6 +8,8 @@ app_name = 'app'
 urlpatterns = [
     path('new/', LibraryService.createLibrary, name='createLibrary'),
     path('initialScan/', LibraryService.initialScan, name='initialScan'),
-    # FIXME : to be moved into the new library action.
+
     path('delete/<int:libraryId>/', LibraryService.deleteLibrary, name='deleteLibrary'),
+    path('checkScanStatus/', LibraryService.getLibraryScanStatus, name='libraryScanStatus'),
+    path('rescan/', LibraryService.rescanLibrary, name='rescanLibrary'),
 ]

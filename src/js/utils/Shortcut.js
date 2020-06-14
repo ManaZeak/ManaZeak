@@ -68,10 +68,6 @@ class Shortcut {
    * @description Test keyboard event to fire stored shortcut accordingly
    * @param {object} event - The Keyboard event from this._addEvents() */
   _testShortcuts(event) {
-    //if (!(event.ctrlKey && event.shiftKey && event.key === 'R')) { // DEVELOPEMENT test to keep hard refresh available
-    //  event.preventDefault(); // This is for PRODUCTION only, to prevent that browser shortcuts collide with user one
-    //}
-
     if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
       this._multiKeyTest(event);
     } else { // Single key shortcut
@@ -205,9 +201,17 @@ class Shortcut {
       shiftKey: /shift/i.test(keyString)
     };
 
-    if (modifiers.ctrlKey) ++count;
-    if (modifiers.altKey) ++count;
-    if (modifiers.shiftKey) ++count;
+    if (modifiers.ctrlKey) {
+      ++count;
+    }
+
+    if (modifiers.altKey) {
+      ++count;
+    }
+
+    if (modifiers.shiftKey) {
+      ++count;
+    }
 
     return count;
   }

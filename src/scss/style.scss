@@ -5,8 +5,6 @@
     900 - Notification
 */
 
-@import 'utils/tools';
-@import 'view/topbar/topbar';
-@import 'view/maincontainer';
-@import 'view/footbar/footbar';
-@import 'utils/responsive';
+@import 'utils/tools'; // Mzk style framework
+@import 'view/view'; // All Mzk views and components
+@import 'utils/tools/responsive'; // Responsive rules last to properly override standard rules

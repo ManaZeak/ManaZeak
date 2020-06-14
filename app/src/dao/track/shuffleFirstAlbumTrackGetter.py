@@ -40,7 +40,7 @@ class ShuffleFirstAlbumTrackGetter(object):
                  SELECT trk.id
                  FROM app_track trk
                           JOIN app_playlist_tracks apt on trk.id = apt.track_id
-                          JOIN (SELECT * FROM app_albumshuffle WHERE "playlistId_id" = %s) album 
+                          JOIN (SELECT * FROM app_albumshuffle WHERE "playlistId_id" = %s) album
                           on album."trackId_id" != trk.id
                  WHERE trk."trackNumber" = 1
                  GROUP BY trk.id

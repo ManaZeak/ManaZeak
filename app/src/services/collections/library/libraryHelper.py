@@ -36,9 +36,9 @@ class LibraryHelper(object):
     @staticmethod
     ## Check if a folder exists, throw an exception if it doesn't.
     #   @param folderPath the path to the folder to check
-    def checkFolder(folderPath):
+    def checkFolder(folderPath, user):
         if not os.path.isdir(folderPath):
-            raise UserException(ErrorEnum.DIR_NOT_FOUND)
+            raise UserException(ErrorEnum.DIR_NOT_FOUND, user)
 
     @staticmethod
     ## Indexes all the tracks contained in the library
@@ -52,12 +52,11 @@ class LibraryHelper(object):
             for file in files:
                 if file.lower().endswith('.mp3'):
                     mp3Files.append(os.path.join(root, file))
-
                 if file.lower().endswith('.flac'):
                     flacFiles.append(os.path.join(root, file))
         # If there is no file throw an exception
         if len(mp3Files) == 0 and len(flacFiles) == 0:
-            raise UserException(ErrorEnum.EMPTY_LIBRARY)
+            raise UserException(ErrorEnum.EMPTY_LIBRARY, None)
         # return the track found
         return mp3Files, flacFiles
 
@@ -65,10 +64,10 @@ class LibraryHelper(object):
     ## Get a library from it's id in the database.
     #   @param libraryId the library id to fetch.
     #   @return a library object.
-    def getLibraryFromId(libraryId):
+    def getLibraryFromId(libraryId, user):
         # The library doesn't exist
         if Library.objects.filter(id=libraryId).count() != 1:
-            raise UserException(ErrorEnum.DB_ERROR)
+            raise UserException(ErrorEnum.DB_ERROR, user)
         return Library.objects.get(id=libraryId)
 
     @staticmethod

@@ -7,7 +7,7 @@ class Logger {
   /** @summary <h1>Logger system with feedback</h1>
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description <blockquote>Singleton class, Raise both a log and a user feeback depending on lang/*.json files
+   * @description <blockquote>Singleton class, Raise both a log and a user feeback depending on front/*.json files
    * (all severity/key/value mut figure in it). The class also logs TypeErrors in JavaScript</blockquote> */
   constructor(options) {
     if (!!Logger.instance) {
@@ -84,7 +84,7 @@ class Logger {
    * @since September 2018
    * @description Register a custom event using a name and a callback
    * @param {object} options - The error options
-   * @param {string} options.code - The error key value in lang/*.json "errors" object
+   * @param {string} options.code - The error key value in front/*.json "errors" object
    * @param {boolean} [options.frontend=false] - The event string identifier (use specific names) */
   raise(options) {
     let severity = '';

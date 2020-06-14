@@ -1,19 +1,20 @@
+{% load i18n %}
 <div class="context-transparent-overlay modal-dark-overlay">
-    <div class="new-library">
-        <div class="header">
-            <p>New library</p>
-            <span id="new-library-close" class="close">&#10006;</span>
-        </div>
-        <div class="container">
-            <p class="description">You are about to create a new global library for ManaZeak. Every user will have access to it after its creation.</p>
-            <p class="description">Please fill the name and the path of the library. The path to give must begin with <code>/library/</code> and must define a folder that exists in the library path you set in the <code>docker-compose.yml</code> file.</p>
-            <label for="library-name"><strong>Library name</strong></label><br>
-            <input id="library-name" type="text" name="library-name"><br>
-            <label for="library-path"><strong>Library path</strong></label><br>
-            <input id="library-path" type="text" name="library-path">
-        </div>
-        <div class="footer">
-            <button id="create-new-library">Create</button>
-        </div>
+  <div class="modal new-library-modal">
+    <div class="header">
+      <p>{% trans 'New library' %}</p>
+      <span id="new-library-header-close" class="close">&#10006;</span>
     </div>
+    <div class="container">
+      <p>{% trans 'You are about to create a new global library for ManaZeak. Every user will have access to it after its creation.' %}</p>
+      <p>{% trans 'Please fill the name and the path of the library. The path to give must begin with <code>/library/</code> and must define a folder that exists in the library path you set in the <code>docker-compose.yml</code> file.' %}</p>
+      <label for="new-library-name"><strong>{% trans 'Library name' %}</strong></label>
+      <input id="new-library-name" type="text" name="library-name">
+      <label for="new-library-path"><strong>{% trans 'Library path' %}</strong></label>
+      <input id="new-library-path" type="text" name="library-path">
+    </div>
+    <div class="footer">
+      <button id="new-library-create" class="primary">{% trans 'Create' %}</button>
+    </div>
+  </div>
 </div>

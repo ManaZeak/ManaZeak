@@ -32,11 +32,11 @@ class ConfigService(object):
             )
         except UserException as e:
             # Handle the errors and send the response to the front.
-            return ErrorHandler.generateJsonResponseFromException(e, ConfigService.isInviteCodeEnabled, None)
+            return ErrorHandler.generateJsonResponseFromException(e, ConfigService.isInviteCodeEnabled)
 
     @staticmethod
     ## Return the number of tracks returned by the lazy loading.
-    def getNumberOfTracksReturnedByLazyLoad():
+    def getNumberOfTracksReturnedByLazyLoad(user):
         if Config.objects.filter(code=ConfigEnum.TRACK_IN_LAZY.name).count() != 1:
-            raise UserException(ErrorEnum.UNEXPECTED_STATE)
+            raise UserException(ErrorEnum.UNEXPECTED_STATE, user)
         return Config.objects.get(code=ConfigEnum.TRACK_IN_LAZY.name).value

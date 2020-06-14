@@ -1,135 +1,81 @@
 @mixin transition($transition) {
-    -webkit-transition: $transition;
-    -moz-transition:    $transition;
-    -o-transition:      $transition;
-    transition:         $transition;
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  transition: $transition;
 }
 
 @mixin user-select($value) {
-    -webkit-user-select: $value;
-    -moz-user-select:    $value;
-    -ms-user-select:     $value;
-    -o-user-select:      $value;
-    user-select:         $value;
+  -webkit-user-select: $value;
+  -moz-user-select: $value;
+  user-select: $value;
 }
 
-@mixin box-shadow($shadow, $r, $g, $b, $a) {
-    -webkit-box-shadow: $shadow rgba($r, $g, $b, $a);
-    -moz-box-shadow:    $shadow rgba($r, $g, $b, $a);
-    -o-box-shadow:      $shadow rgba($r, $g, $b, $a);
-    box-shadow:         $shadow rgba($r, $g, $b, $a);
+@mixin box-shadow($shadow, $color) {
+  -webkit-box-shadow: $shadow $color;
+  -moz-box-shadow: $shadow $color;
+  box-shadow: $shadow $color;
 }
 
 @mixin tooltip-animation($duration) {
-    transition:         opacity           $duration ease-in-out,
-                        visibility        $duration ease-in-out,
-                        transform         $duration cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  transition: opacity $duration ease-in-out,
+              visibility $duration ease-in-out,
+              transform $duration cubic-bezier(0.71, 1.7, 0.77, 1.24);
 
-    transform:         translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
-
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+@mixin text-ellipsis() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-@keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
+@mixin clamp-line($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
 }
 
-/* Firefox < 16 */
-@-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+/* Mixin for volumebar, progressbar, speedometer */
+@mixin bar-container() {
+  background-color: var(--mzk-color-icons);
+  border-radius: var(--mzk-border-radius);
+  cursor: pointer;
+  height: var(--mzk-bar-height);
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: initial;
+  position: relative;
+  width: 75%;
 }
 
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+@mixin bar-thumb() {
+  background-color: var(--mzk-color-text-lighter);
+  border-radius: 50%;
+  bottom: 0;
+  height: calc(var(--mzk-bar-height) * 2);
+  margin-left: calc(var(--mzk-bar-height) * -1);
+  margin-bottom: calc(var(--mzk-bar-height) / -2);
+  opacity: 0;
+  position: absolute;
+  width: calc(var(--mzk-bar-height) * 2);
+
+  @include transition(opacity var(--mzk-animation-duration) ease);
 }
 
-/*
-@keyframes text-moving {
-    0% {
-        opacity:   0;
-        transform: translateX(-200%);
-    }
+@mixin bar-current() {
+  background-color: var(--mzk-color-primary);
+  border-radius: var(--mzk-border-radius) 0 0 var(--mzk-border-radius);
+  border-right: solid var(--mzk-border-width) var(--mzk-color-secondary-darker);
+  bottom: 0;
+  height: 100%;
+  position: absolute;
 
-    2% {
-        opacity:   1;
-        transform: translateX(0px);
-    }
+  @include transition(background-color var(--mzk-animation-duration) ease);
 
-    93% {
-        opacity:   1;
-        transform: translateX(0px);
-    }
-
-    100% {
-        opacity:   0;
-        transform: translateX(300%);
-    }
-}
-
-@keyframes fade {
-    0% {
-        opacity: 0;
-    }
-
-    3% {
-        opacity: 1;
-    }
-
-    97% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(1000px) rotate(360deg);
-    }
-}
-
-@keyframes rise-blur {
-    0% {
-        transform: translateY(1000px) translateZ(0px);
-    }
-}
-
-@keyframes rise-closeup {
-    0% {
-        transform: translateY(1000px) translateZ(30px);
-    }
-}
-
-@keyframes wind {
-    100% {
-        transform: translateX(40px);
-    }
-}
-
-@keyframes wind-deux {
-    100% {
-        transform: translateX(-50px);
-    }
-}
-
-@keyframes lds-dual-ring {
-  0% {
-    -webkit-transform: rotate(0);
-    transform: rotate(0);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
+  &.full {
+    border-radius: var(--mzk-border-radius);
   }
 }
-*/

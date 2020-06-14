@@ -10,14 +10,14 @@ from app.src.utils.exceptions.userException import UserException
 from app.src.views.forms import UserLoginForm
 
 
-## @package app.views.loginView
+## @package app.sceneviews.loginView
 # This package is used for managing the user login and teh action associated with it
 
 
 logger = logging.getLogger('users')
 
 
-## Render the user form login views
+## Render the user form login sceneviews
 #   @param view object (given by django)
 #   @return the form for logging in
 class LoginView(View):

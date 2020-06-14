@@ -19,22 +19,23 @@ class Playlist {
    * @param {number} options.totalTrack - The playlist total track
    **/
   constructor(options) {
-    this._id = options.id;
+    this._id = options.id || -1;
     this._isLibrary = options.isLibrary;
     this._isPublic = options.isPublic;
     this._name = options.name;
     this._description = options.description;
     this._owner = options.owner;
-    this._avgBitrate = options.averagBitRate;
+    this._avgBitrate = options.averageBitRate;
     this._totalDuration = options.totalDuration;
     this._totalTrack = options.totalTrack;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
     this._shuffleMode = 0; // 0 = off | 1 = shuffle | 2 = random
     this._activeView = ViewEnum.ListView;
 
+    this._loadedTracks = 0;
+
     this._rawArtists = []; // Artist array that contains albums array that contains tracks array
     this._artists = [];
-    this._tracks = [];
   }
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
@@ -60,11 +61,13 @@ class Playlist {
         if (response.DONE) {
           this._convertRawArtists(response.RESULT)
             .then(() => {
+              // TODO proper method to compute lazy loading completion
+              //mzk.ui.updateLoadingOverlay(Utils.precisionRound((this._loadedTracks * 100/ this._totalTrack), 2));
               this._getArtistsLazyLoad(offset +  response.OFFSET);
             });
         } else {
           if (response.ERROR_MSG === undefined) { // Successfully loaded all
-            Events.fire(`TrackLoaded-${this._id}`);
+            Events.publish(`TrackLoaded-${this._id}`);
           } else {
             console.log('Error');
           }
@@ -98,11 +101,12 @@ class Playlist {
           for (let k = 0; k < rawArtistsArray[i].ALBUMS[j].TRACKS.length; ++k) {
             tracks.push(new Track({
               album: rawArtistsArray[i].ALBUMS[j],
-              artist: rawArtistsArray[i].NAME,
+              albumArtist: rawArtistsArray[i].NAME,
               rawTrack: rawArtistsArray[i].ALBUMS[j].TRACKS[k]
             }));
           }
 
+          this._loadedTracks += rawArtistsArray[i].ALBUMS[j].TRACKS.length;
           albums.push({
             id: rawArtistsArray[i].ALBUMS[j].ID,
             name: rawArtistsArray[i].ALBUMS[j].NAME,
@@ -171,14 +175,9 @@ class Playlist {
   getArtistsFromServer(response) {
     return new Promise((resolve, reject) => {
       if (response.DONE) {
-        const eventOptions = {
-          name: `TrackLoaded-${this._id}`,
-          oneShot: true // Event needs to be dismissed after request completion
-        };
-
-        Events.register(eventOptions, () => {
+        Events.subscribe(`TrackLoaded-${this._id}`, () => {
           resolve();
-        });
+        }, true); // Event needs to be dismissed after request completion
         this._getArtistsLazyLoad(0);
       } else {
         reject(response.ERROR_KEY);

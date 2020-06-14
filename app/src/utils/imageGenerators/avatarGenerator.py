@@ -1,6 +1,7 @@
 import hashlib
 import os
 import random
+from itertools import chain
 import png  # requires pypng
 
 
@@ -60,9 +61,13 @@ class AvatarGenerator(object):
         # creating actual RGB avatar
         # color is in [1;5]. If pixel is 0, color*pixel = 0 and palette[0] = white
         # If pixel is 1, color*pixel = color and palette[color] = some color
-        avatar = [[self.palette[color * pixel] for pixel in row] for row in avatarBin]
+        avatar = [[self.palette[color * pixel]
+                   for pixel in row] for row in avatarBin]
         avatar = self._resizeAvatar(avatar, avatarSize, imageSizePerCell)
-        #png.from_array(avatar, 'RGB').save(avatarPath)
+
+        avatar = [list(chain(*row)) for row in avatar]
+
+        png.from_array(avatar, 'RGB').save(avatarPath)
         return avatarPath
 
     @staticmethod

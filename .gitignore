@@ -117,11 +117,14 @@ log/**
 doc/frontend/**
 doc/python/**
 node_modules/**
+plugins/**
 static/dist/**
 static/mood/**
 static/img/avatars/**
 static/img/covers/**
 static/lib/**
+static/zip/**
+static/plugins/**
 
 *.mood
 
@@ -129,3 +132,5 @@ coverage.xml
 .coverage
 /static/avatars/
 /static/covers/
+/static/pictures/**
+/static/thumb/**

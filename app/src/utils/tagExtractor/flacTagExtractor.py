@@ -1,9 +1,11 @@
 import hashlib
+import logging
 import os
 
 from app.src.services.track.trackExtractorHelper import TrackExtractorHelper
 from app.src.utils.tagExtractor.abstractTagExtractor import AbstractTagExtractor
 
+loggerScan = logging.getLogger('scan')
 
 ## Extract the tag of a flac file.
 class FlacTagExtractor(AbstractTagExtractor):
@@ -56,8 +58,8 @@ class FlacTagExtractor(AbstractTagExtractor):
 
     def extractGenre(self):
         if 'GENRE' in self.audioTag:
-            genres = TrackExtractorHelper.trimVorbisTag(self.audioTag['GENRE']).rstrip().split(',')
-            self.track.genres = genres
+            genres = TrackExtractorHelper.trimVorbisTag(self.audioTag['GENRE']).rstrip()
+            self.track.genres = TrackExtractorHelper.getLocalGenresFromTrack(genres)
 
     def extractArtist(self):
         if 'ARTIST' in self.audioTag:  # Check if artist exists
@@ -68,13 +70,13 @@ class FlacTagExtractor(AbstractTagExtractor):
         if 'COMPOSER' in self.audioTag:
             composers = TrackExtractorHelper.trimVorbisTag(self.audioTag['COMPOSER'])
             if composers != "":
-                self.track.composers = TrackExtractorHelper.getLocalArtistsFromTrack(composers, True)
+                self.track.composers = TrackExtractorHelper.getLocalArtistsFromTrack(composers)
 
     def extractPerformer(self):
         if 'PERFORMER' in self.audioTag:
             performers = TrackExtractorHelper.trimVorbisTag(self.audioTag['PERFORMER'])
             if performers != "":
-                self.track.performers = TrackExtractorHelper.getLocalArtistsFromTrack(performers, True)
+                self.track.performers = TrackExtractorHelper.getLocalArtistsFromTrack(performers)
 
     def extractProducer(self):
         if 'PRODUCER' in self.audioTag:
@@ -93,6 +95,15 @@ class FlacTagExtractor(AbstractTagExtractor):
             albumArtist = TrackExtractorHelper.trimVorbisTag(self.audioTag['ALBUMARTIST'])
             self.track.albumArtist.addAlbumArtist(albumArtist, self.track.artistFolderName, 0)
             self.track.album.artist = albumArtist
+
+    def extractLabel(self):
+        if 'LABEL' in self.audioTag:
+            self.track.label.name = TrackExtractorHelper.trimVorbisTag(self.audioTag['LABEL'])
+
+    def extractCountry(self):
+        if 'LANGUAGE' in self.audioTag:
+            countries = TrackExtractorHelper.trimVorbisTag(self.audioTag['LANGUAGE'])
+            self.track.countries = TrackExtractorHelper.getLocalCountriesFromTrack(countries)
 
     def extractCover(self, coverPath):
         # Getting the image

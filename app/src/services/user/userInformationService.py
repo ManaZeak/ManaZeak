@@ -1,17 +1,13 @@
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
 from app.models import Permissions
 from app.src.security.permissionEnum import PermissionEnum
 from app.src.security.permissionHandler import PermissionHandler
-from app.src.utils.errors.errorHandler import ErrorHandler
-from app.src.utils.exceptions.userException import UserException
+from app.src.utils.decorators.frontRequest import FrontRequest
 from app.src.utils.frontRequestChecker import FrontRequestChecker
-
 from app.src.utils.requestMethodEnum import RequestMethodEnum
-
 from app.src.utils.userSettingsManager import UserSettingsManager
 
 logger = logging.getLogger('django')
@@ -22,25 +18,14 @@ class UserInformationService(object):
 
     @staticmethod
     @login_required(redirect_field_name='', login_url='app:login')
+    @FrontRequest
     ## Return all the information concerning a user to the front
     def getUserInformation(request):
         user = request.user
-        try:
-            # Checking if the request is correct
-            FrontRequestChecker.checkRequest(
-                RequestMethodEnum.GET, request)
-            # Returning the information about the user with a standard response
-            return JsonResponse(
-                {
-                    **UserInformationService._extractUserInformation(user),
-                    **ErrorHandler.createStandardStateMessage(True)
-                }
-            )
-        except UserException as e:
-            return JsonResponse(
-                ErrorHandler.createStandardStateMessage(
-                    False, e.errorType, UserInformationService.getUserInformation, user)
-            )
+        # Checking if the request is correct
+        FrontRequestChecker.checkRequest(RequestMethodEnum.GET, request, user)
+        # Returning the information about the user with a standard response
+        return UserInformationService._extractUserInformation(user)
 
     @staticmethod
     ## Extract the information about a user stored in the database

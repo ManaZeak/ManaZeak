@@ -35,10 +35,21 @@ class ErrorHandler(object):
             }
 
     @staticmethod
-    def generateJsonResponseFromException(exception, caller, user):
+    def generateJsonResponseFromException(exception, caller):
         return JsonResponse(
-            ErrorHandler.createStandardStateMessage(False, exception.errorType, caller, user)
+            ErrorHandler.createStandardStateMessage(False, exception.errorType, caller, exception.user)
         )
+
+    @staticmethod
+    ## This function generate a dict containing the default status information
+    def generateStatusMessage(isDone, errorType=None, caller=None, user=None):
+        # Logging the error
+        if errorType is not None:
+            ErrorHandler._formatLogErrorMessage(errorType, caller, user)
+        return {
+            'DONE': isDone,
+            'ERROR_KEY': errorType.name,
+        }
 
     @staticmethod
     ## This function create the formatted log for the serer in case of an error.

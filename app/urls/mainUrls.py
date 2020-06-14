@@ -1,6 +1,7 @@
 from django.urls import path, include
 
-from app.src.services.track.trackService import TrackService
+from app.src.services.collections.library.libraryService import LibraryService
+from app.src.services.invite.InviteCodeService import InviteCodeService
 from app.src.services.user.languageService import LanguageService
 from app.src.services.user.userInformationService import UserInformationService
 from app.src.views import loginView
@@ -31,20 +32,27 @@ urlpatterns = [
     ############################# Tracks #############################
     path('track/', include('app.urls.track.trackUrls', namespace='track')),
 
+    ########################### Suggestion ###########################
+    path('suggestion/', include('app.urls.suggestion.suggestionUrls', namespace='suggestion')),
+
     ############################# Modals #############################
     # FIXME: remove the 's'
-    path('modals/', include('app.urls.modal.modalUrls', namespace='modal')),
+    path('modal/', include('app.urls.modal.modalUrls', namespace='modal')),
 
     ############################ Language ############################
     path('language/', LanguageService.selectLanguage, name='language'),
 
     ########################## User Settings ##########################
     path('user/getInformation/', UserInformationService.getUserInformation, name='getUserInformation'),
+    path('user/getInviteCode/', InviteCodeService.getInviteCode, name='getInviteCode'),
 
     ############################ Contexts #############################
     # FIXME : remove the 's'
-    path('contexts/', include('app.urls.context.contextUrls', namespace='context')),
+    path('context/', include('app.urls.context.contextUrls', namespace='context')),
+
+    path('view/', include('app.urls.view.viewUrls', namespace='sceneviews')),
 
     ########################### Admin Tools ###########################
     path('admin/', include('app.urls.admin.adminUrls', namespace='admin')),
+    path('dump/', include('app.urls.dump.dumpUrls', namespace='dump')),
 ]

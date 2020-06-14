@@ -49,9 +49,7 @@ class Utils {
           for (i = pos1; i < pos2; i++) {
             this[i] = this[i + 1];
           }
-        }
-        // move element up and shift other elements down
-        else {
+        } else { // move element up and shift other elements down
           for (i = pos1; i > pos2; i--) {
             this[i] = this[i - 1];
           }
@@ -97,7 +95,7 @@ class Utils {
    * @author Arthur Beaulieu
    * @since September 2018
    * @description Do a Math.round with a given precision (ie amount of integers after the coma)
-   * @param {nunmber} value - The value to precisely round
+   * @param {number} value - The value to precisely round
    * @param {number} precision - The number of integers after the coma
    * @return {number} - The rounded value */
   precisionRound(value, precision) {
@@ -157,6 +155,16 @@ class Utils {
    * @return {boolean} - Client is in mobile state */
   isMobileDevice() {
     return (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement);
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------------  OBJECT UTILS ----------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  removeAllObjectKeys(object) {
+    Object.keys(object).forEach(key => { delete object[key]; });
   }
 
 
@@ -254,6 +262,35 @@ class Utils {
   }
 
 
+  copyTextToClipboard(text) {
+    if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+      const textarea = document.createElement("textarea");
+      let error = false;
+      textarea.textContent = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        return document.execCommand("copy"); // Security exception may be thrown by some browsers.
+      } catch (err) {
+        error = true;
+        Logger.raise({
+          code: 'COPY_ERROR',
+          frontend: true
+        });
+        return false;
+      } finally {
+        document.body.removeChild(textarea);
+        if (!error) {
+          Logger.raise({
+            code: 'COPY_SUCCESS',
+            frontend: true
+          });
+        }
+      }
+    }
+  }
+
+
   //  ------------------------------------------------------------------------------------------------//
   //  ----------------------------------  CLIENT SESSION UTILS  ------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
@@ -280,6 +317,24 @@ class Utils {
       });
     }
     return cookies;
+  }
+
+
+  /**
+   * @method
+   * @name imageUrlExists
+   * @public
+   * @memberof Utils
+   * @author Arthur Beaulieu
+   * @since July 2019
+   * @description Get all session cookies
+   * @param {string} url - The url to test image for
+   * @return {boolean} - The existence or not of an image on instance
+   **/
+  imageUrlExists(url) {
+    const img = new Image();
+    img.src = url;
+    return (img.height !== 0);
   }
 
 

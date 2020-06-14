@@ -1,0 +1,91 @@
+/* Tooltip */
+$tooltip-width: 150px;
+$tooltip-arrow: 6px;
+$tooltip-bg: var(--mzk-color-bg);
+$tooltip-text: var(--mzk-color-text);
+
+/* Base styles for the parent element */
+[data-tooltip] {
+  cursor: pointer;
+  position: relative;
+
+  /* Tooltip opened state */
+  &:active::after,
+  &:hover::after,
+  &:focus::after {
+    border: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-10);
+    border-radius: var(--mzk-border-radius);
+    opacity: 1;
+    visibility: visible;
+    z-index: 999;
+  }
+
+  /* Base styles for the tooltip's content area */
+  &::after {
+    @include tooltip-animation(var(--mzk-animation-duration-short));
+    background-color: $tooltip-bg;
+    color: $tooltip-text;
+    content: attr(data-tooltip);
+    font-size: $font-size;
+    opacity: 0;
+    padding: var(--mzk-padding);
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    visibility: hidden;
+    width: $tooltip-width;
+    z-index: 1000;
+  }
+
+  &.tooltip-top {
+    &:active::after, &:focus::after, &:hover::after {
+      transform: translateY(-($tooltip-arrow * 2));
+    }
+
+    &::after {
+      bottom: 100%;
+      left: 50%;
+      margin-left: -($tooltip-width / 2);
+    }
+  }
+
+  &.tooltip-bottom {
+    &:active::after, &:focus::after, &:hover::after {
+      transform: translateY($tooltip-arrow * 2);
+    }
+
+    &::after {
+      bottom: auto;
+      left: 50%;
+      margin-left: -($tooltip-width / 2);
+      top: 100%;
+    }
+  }
+
+  &.tooltip-left {
+    &:active::after, &:focus::after, &:hover::after {
+      transform: translateX(-($tooltip-arrow * 2));
+    }
+
+    &::after {
+      bottom: 50%;
+      left: auto;
+      margin-bottom: -($tooltip-width / 10);
+      margin-left: 0;
+      right: 100%;
+    }
+  }
+
+  &.tooltip-right {
+    &:active::after, &:focus::after, &:hover::after {
+      transform: translateX($tooltip-arrow * 2);
+    }
+
+    &::after {
+      bottom: 50%;
+      left: 100%;
+      margin-bottom: -($tooltip-width / 10);
+      margin-left: 0;
+    }
+  }
+}

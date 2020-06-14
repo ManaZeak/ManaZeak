@@ -3,7 +3,7 @@ import logging
 from django.core.management import BaseCommand
 
 from app.models import Group, ApplicationConfiguration, Permissions, FileType
-from app.models.settings import Config
+from app.models.settings import Config, SuggestionStatus, SuggestionType
 from app.src.config.configEnum import ConfigEnum
 
 logger = logging.getLogger('django')
@@ -20,6 +20,7 @@ class Command(BaseCommand):
         self._generateApplicationConfiguration()
         self._generateDefaultFileTypes()
         self._generateDefaultConf()
+        self._generateConfigSuggestion()
         logger.info('Inserted all the default objects into the database')
 
     ## Generate the default group for the application
@@ -41,61 +42,61 @@ class Command(BaseCommand):
     #   @param group the Group object of a user
     def _fillDefaultPermissions(group):
         if group.rank > 0:
-            group.permissions.add(Permissions.objects.get(code="LOGI"))
-            group.permissions.add(Permissions.objects.get(code="PLAY"))
-            group.permissions.add(Permissions.objects.get(code="PLST"))
-            group.permissions.add(Permissions.objects.get(code="DOWN"))
+            group.permissions.add(Permissions.objects.get(code='LOGI'))
+            group.permissions.add(Permissions.objects.get(code='PLAY'))
+            group.permissions.add(Permissions.objects.get(code='PLST'))
+            group.permissions.add(Permissions.objects.get(code='DOWN'))
         if group.rank > 1:
-            group.permissions.add(Permissions.objects.get(code="WISH"))
-            group.permissions.add(Permissions.objects.get(code="TAGS"))
-            group.permissions.add(Permissions.objects.get(code="UPLD"))
-            group.permissions.add(Permissions.objects.get(code="SPON"))
-            group.permissions.add(Permissions.objects.get(code="STAT"))
+            group.permissions.add(Permissions.objects.get(code='WISH'))
+            group.permissions.add(Permissions.objects.get(code='TAGS'))
+            group.permissions.add(Permissions.objects.get(code='UPLD'))
+            group.permissions.add(Permissions.objects.get(code='SPON'))
+            group.permissions.add(Permissions.objects.get(code='STAT'))
         if group.rank > 2:
-            group.permissions.add(Permissions.objects.get(code="STCH"))
-            group.permissions.add(Permissions.objects.get(code="STFA"))
-            group.permissions.add(Permissions.objects.get(code="WISR"))
-            group.permissions.add(Permissions.objects.get(code="STAL"))
+            group.permissions.add(Permissions.objects.get(code='STCH'))
+            group.permissions.add(Permissions.objects.get(code='STFA'))
+            group.permissions.add(Permissions.objects.get(code='WISR'))
+            group.permissions.add(Permissions.objects.get(code='STAL'))
         if group.rank > 3:
-            group.permissions.add(Permissions.objects.get(code="DESC"))
-            group.permissions.add(Permissions.objects.get(code="TAGE"))
-            group.permissions.add(Permissions.objects.get(code="UPAP"))
-            group.permissions.add(Permissions.objects.get(code="STAA"))
-            group.permissions.add(Permissions.objects.get(code="ADMV"))
-            group.permissions.add(Permissions.objects.get(code="GRPE"))
-            group.permissions.add(Permissions.objects.get(code="FTAL"))
-            group.permissions.add(Permissions.objects.get(code="LIBR"))
+            group.permissions.add(Permissions.objects.get(code='DESC'))
+            group.permissions.add(Permissions.objects.get(code='TAGE'))
+            group.permissions.add(Permissions.objects.get(code='UPAP'))
+            group.permissions.add(Permissions.objects.get(code='STAA'))
+            group.permissions.add(Permissions.objects.get(code='ADMV'))
+            group.permissions.add(Permissions.objects.get(code='GRPE'))
+            group.permissions.add(Permissions.objects.get(code='FTAL'))
+            group.permissions.add(Permissions.objects.get(code='LIBR'))
         if group.rank > 4:
-            group.permissions.add(Permissions.objects.get(code="GAPR"))
-            group.permissions.add(Permissions.objects.get(code="COIN"))
+            group.permissions.add(Permissions.objects.get(code='GAPR'))
+            group.permissions.add(Permissions.objects.get(code='COIN'))
 
     @staticmethod
     ## Generate the default permissions for the application
     def _permissionGenerator():
         if Permissions.objects.all().count() == 0:
-            Permissions(name="Login", code="LOGI").save()
-            Permissions(name="Music listening", code="PLAY").save()
-            Permissions(name="Playlist management", code="PLST").save()
-            Permissions(name="Download", code="DOWN").save()
-            Permissions(name="Wish creation", code="WISH").save()
-            Permissions(name="Tag submission", code="TAGS").save()
-            Permissions(name="Upload file", code='UPLD').save()
-            Permissions(name="Sponsor right", code='SPON').save()
-            Permissions(name="Stats access", code='STAT').save()
-            Permissions(name="Child stats access", code="STCH").save()
-            Permissions(name="Family stat access", code="STFA").save()
-            Permissions(name="Wish review", code="WISR").save()
-            Permissions(name="Access to library stats", code="STAL").save()
-            Permissions(name="Change genre or album description", code="DESC").save()
-            Permissions(name="Tag edition", code="TAGE").save()
-            Permissions(name="Upload aproval", code="UPAP").save()
-            Permissions(name="All stats", code="STAA").save()
-            Permissions(name="Access to adminView", code="ADMV").save()
-            Permissions(name="Edit user group", code="GRPE").save()
-            Permissions(name="Access to whole family tree", code="FTAL").save()
-            Permissions(name="Library management", code="LIBR").save()
-            Permissions(name="Grant admin privileges", code="GAPR").save()
-            Permissions(name="Coin gift", code="COIN").save()
+            Permissions(name='Login', code='LOGI').save()
+            Permissions(name='Music listening', code='PLAY').save()
+            Permissions(name='Playlist management', code='PLST').save()
+            Permissions(name='Download', code='DOWN').save()
+            Permissions(name='Wish creation', code='WISH').save()
+            Permissions(name='Tag submission', code='TAGS').save()
+            Permissions(name='Upload file', code='UPLD').save()
+            Permissions(name='Sponsor right', code='SPON').save()
+            Permissions(name='Stats access', code='STAT').save()
+            Permissions(name='Child stats access', code='STCH').save()
+            Permissions(name='Family stat access', code='STFA').save()
+            Permissions(name='Wish review', code='WISR').save()
+            Permissions(name='Access to library stats', code='STAL').save()
+            Permissions(name='Change genre or album description', code='DESC').save()
+            Permissions(name='Tag edition', code='TAGE').save()
+            Permissions(name='Upload aproval', code='UPAP').save()
+            Permissions(name='All stats', code='STAA').save()
+            Permissions(name='Access to adminView', code='ADMV').save()
+            Permissions(name='Edit user group', code='GRPE').save()
+            Permissions(name='Access to whole family tree', code='FTAL').save()
+            Permissions(name='Library management', code='LIBR').save()
+            Permissions(name='Grant admin privileges', code='GAPR').save()
+            Permissions(name='Coin gift', code='COIN').save()
             logger.info('Generated default permissions.')
 
     @staticmethod
@@ -110,12 +111,23 @@ class Command(BaseCommand):
         appConf.save()
 
     @staticmethod
+    ## This function inserts the suggestions of the user.
+    def _generateConfigSuggestion():
+        if SuggestionStatus.objects.all().count() == 0:
+            SuggestionStatus(label='Submitted', id=1).save(force_insert=True)
+            SuggestionStatus(label='Accepted', id=2).save(force_insert=True)
+            SuggestionStatus(label='Refused', id=3).save(force_insert=True)
+        if SuggestionType.objects.all().count() == 0:
+            SuggestionType(label='General', id=1).save(force_insert=True)
+            SuggestionType(label='Artist', id=2).save(force_insert=True)
+
+    @staticmethod
     ## This function generates the default file types the application can handle.
     def _generateDefaultFileTypes():
         if FileType.objects.all().count() > 0:
             return
-        FileType(name="mp3", id=1).save(force_insert=True)
-        FileType(name="flac", id=2).save(force_insert=True)
+        FileType(name='mp3', id=1).save(force_insert=True)
+        FileType(name='flac', id=2).save(force_insert=True)
 
     @staticmethod
     ## This function generates the default configuration of the application.

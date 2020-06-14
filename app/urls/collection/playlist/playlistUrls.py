@@ -7,6 +7,5 @@ app_name = 'app'
 ## The playlist URL.
 urlpatterns = [
     path('getUserPlaylists/', PlaylistService.getUserPlaylists, name='getUserPlaylists'),
-    path('getTrack/<path:path>/', PlaylistService.getTrack, name='getTrack'),
     path('simplifiedLazyLoading/', PlaylistService.lazyLoadPlaylist, name='lazyLoading'),
 ]

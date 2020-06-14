@@ -1,0 +1,53 @@
+.mzk-loading-overlay {
+  background-color: var(--mzk-color-bg-darker-alpha-75);
+  cursor: progress;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+  &::before {
+    content: '';
+    background-color: var(--mzk-color-primary);
+    border-radius: var(--mzk-border-radius);
+    height: var(--mzk-margin-big);
+    left: calc(50% - var(--mzk-margin-small));
+    position: absolute;
+    top: 50%;
+    width: var(--mzk-margin-big);
+
+    animation: rotate-plane 1.2s infinite ease-in-out; // Custom keyframe
+  }
+
+  &::after {
+    content: attr(data-before);
+    color: var(--mzk-color-text);
+    font-style: italic;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 55%;
+    width: 100%;
+  }
+}
+
+.context-transparent-overlay {
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+  &.modal-dark-overlay {
+    align-items: center;
+    background: var(--mzk-color-bg-darker-alpha-50);
+    display: flex;
+    justify-content: center;
+  }
+
+  @import 'context';
+  @import 'modal';
+}

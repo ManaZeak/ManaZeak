@@ -1,0 +1,580 @@
+{
+  "player": {
+    "repeat": {
+      "off": "Sans répétition",
+      "one": "Répéter la piste",
+      "all": "Répéter la liste de lecture"
+    },
+    "shuffle": {
+      "off": "Lecture normale",
+      "shuffle": "Shuffle actif",
+      "on": "Aléatoire actif"
+    },
+    "volume": {
+      "mute": "Couper le son",
+      "unmute": "Activer le son"
+    },
+    "speedometer": "Vitesse du lecteur",
+    "queue": "Queue"
+  },
+  "playlist": {
+    "tracks": "pistes",
+    "releaseArtists": "auteurs",
+    "artists": "artistes",
+    "albums": "albums",
+    "producers": "producers",
+    "labels": "labels",
+    "genres": "genres",
+    "countrys": "pays",
+    "Tracks": "Pistes",
+    "Release Artists": "Auteurs",
+    "Artists": "Artistes",
+    "Albums": "Albums",
+    "Producers": "Producers",
+    "Labels": "Maisons de disque",
+    "Genres": "Genres",
+    "Countries": "Pays"
+  },
+  "tags": {
+    "notSet": "pas défini",
+    "Selfreleased": "Auto-produit"
+  },
+  "mainpage": {
+    "reroll": "Changer les suggestions",
+    "goto": "Accueil",
+    "collection": {
+      "Libraries": "Libraries",
+      "Playlists": "Playlists",
+      "PlaybackModes": "Modes de lecture"
+    },
+    "discover": {
+      "pv": {
+        "title": "Découverte",
+        "desc": "Lecture d'albums aléatoire en plein écran, parfait pour les soirées"
+      },
+      "wmv": {
+        "title": "MzkWorldMap",
+        "desc": "Parcourir le globe pour découvrir les musiques du monde"
+      }
+    },
+    "suggestion": {
+      "seemore": "voir plus"
+    }
+  },
+  "allObjectsView": {
+    "releaseArtists": {
+      "title": "Auteurs",
+      "description": "Écoutez l'univers des artistes qui ont produit des œuvres musicales sous la forme d'albums! À cet instant, ManaZeak compte"
+    },
+    "artists": {
+      "title": "Artistes",
+      "description": "Vous trouverez ici tous les artistes de la librairie ManaZeak, qu'ils soient compositeurs, producteurs, artiste invité ou tout autre type! À cet instant, ManaZeak compte"
+    },
+    "albums": {
+      "title": "Albums",
+      "description": "Voici la liste de toutes les œuvres musicales publiées par des auteurs dans la librairie ManaZeak! À cet instant, ManaZeak compte"
+    },
+    "producers": {
+      "title": "Producteurs",
+      "description": "Les producteurs sont des musiciens qui conduisent un enregistrement de la génèse du projet à sa vente, en contrôlant toutes les étapes de fabrications d'une œuvre. À cet instant, ManaZeak compte"
+    },
+    "labels": {
+      "title": "Maisons de disque",
+      "description": "Les maisons de disques sont des entreprises qui produisent des artistes et leurs œuvres, classés au sein de catalogues. À cet instant, ManaZeak compte"
+    },
+    "genres": {
+      "title": "Genres",
+      "description": "Pourquoi ne pas explorer la librairie de ManaZeak en regardant les genres et styles musicaux qui la compose ? À cet instant, ManaZeak compte"
+    },
+    "countrys": {
+      "title": "Pays",
+      "description": "Explorez les musiques du monde en cherchant les artistes en fonction de leur pays d'origine. À cet instant, ManaZeak compte"
+    }
+  },
+  "singleObjectView": {
+    "releasedAlbums": "En tant qu'auteur"
+  },
+  "libraryview": {
+    "ListView": "Liste",
+    "DetailsView": "Details",
+    "centertop": "Aller en haut",
+    "centertrack": "Aller à la piste",
+    "lockcenter": {
+      "off": "Sans auto centrage",
+      "on": "Avec auto centrage"
+    },
+    "centerbottom": "Aller en bas"
+  },
+  "listview": {
+    "duration": "Durée",
+    "title": "Titre",
+    "artists": "Artistes",
+    "year": "Année",
+    "album": "Album",
+    "composers": "Compositeurs",
+    "performers": "Interprètes",
+    "genre": "Genre",
+    "bitrate": "Débit",
+    "stretchall": "Étendre les colonnes"
+  },
+  "adminView": {
+    "title": "Administration",
+    "suggestion": {
+      "madeBy": "Suggestion proposée par"
+    }
+  },
+  "communityView": {
+    "title": "Communauté"
+  },
+  "context": {
+    "queue": {
+      "notracks": "Pas de pistes dans la queue",
+      "queuedtrack": "piste dans la queue",
+      "queuedtracks": "pistes dans la queue",
+      "help": "Utilisez le click droit sur une piste et sélectionner 'Ajouter à la queue'"
+    },
+    "track":  {
+     "download": "Télécharger",
+      "queue": "Ajouter à la queue"
+    }
+  },
+  "countries": {
+    "AFG": "Afghanistan",
+    "AGO": "Angola",
+    "ALB": "Albanie",
+    "AND": "Andorre",
+    "ARE": "Émirats Arabes Unis",
+    "ARG": "Argentine",
+    "ARM": "Armenie",
+    "ATG": "Antigua-Et-Barbuda",
+    "AUS": "Australie",
+    "AUT": "Autriche",
+    "AZE": "Azerbaïdjan",
+    "BDI": "Burundi",
+    "BEL": "Belgique",
+    "BEN": "Bénin",
+    "BFA": "Burkina Faso",
+    "BGD": "Bangladesh",
+    "BGR": "Bulgarie",
+    "BHR": "Bahreïn",
+    "BHS": "Bahamas",
+    "BIH": "Bosnie-Herzégovine",
+    "BLR": "Biélorussie",
+    "BLZ": "Belize",
+    "BOL": "Bolivie",
+    "BRA": "Brésil",
+    "BRB": "Barbade",
+    "BRN": "Brunei",
+    "BTN": "Bhoutan",
+    "BWA": "Botswana",
+    "BZH": "Bretagne",
+    "CAF": "République Centrafricaine",
+    "CAN": "Canada",
+    "CHE": "Suisse",
+    "CHL": "Chili",
+    "CHN": "République Démocratique De Chine",
+    "CIV": "Côte d'Ivoire",
+    "CMR": "Cameroun",
+    "COD": "République Démocratique Du Congo",
+    "COG": "République Du Congo",
+    "COL": "Colombie",
+    "COM": "Comores",
+    "CPV": "Cap-Vert",
+    "CRI": "Costa Rica",
+    "CUB": "Cuba",
+    "CYP": "Chypre",
+    "CZE": "République Tchèque",
+    "DEU": "Allemagne",
+    "DJI": "Djibouti",
+    "DMA": "Dominique",
+    "DNK": "Danemark",
+    "DOM": "République Dominicaine",
+    "DZA": "Algerie",
+    "ECU": "Équateur",
+    "EGY": "Egypte",
+    "ERI": "Érythrée",
+    "ESP": "Espagne",
+    "EST": "Estonie",
+    "ETH": "Éthiopie",
+    "FIN": "Finlande",
+    "FJI": "Fidji",
+    "FRA": "France",
+    "FSM": "États Fédérés De Micronésie",
+    "FYR": "Macédoine",
+    "GAB": "Gabon",
+    "GBR": "Royaume-Uni",
+    "GEO": "Géorgie",
+    "GHA": "Ghana",
+    "GIN": "Guinée",
+    "GMB": "Gambie",
+    "GNB": "Guinée-Bissau",
+    "GNQ": "Guinée Équatoriale",
+    "GRC": "Grèce",
+    "GRD": "Grenade",
+    "GTM": "Guatemala",
+    "GUY": "Guyana",
+    "HND": "Honduras",
+    "HRV": "Croatie",
+    "HTI": "Haïti",
+    "HUN": "Hongrie",
+    "IDN": "Indonésie",
+    "IND": "Inde",
+    "IRL": "Irlande",
+    "IRN": "Iran",
+    "IRQ": "Irak",
+    "ISL": "Islande",
+    "ISR": "Israël",
+    "ITA": "Italie",
+    "JAM": "Jamaïque",
+    "JOR": "Jordanie",
+    "JPN": "Japon",
+    "KAZ": "Kazakhstan",
+    "KEN": "Kenya",
+    "KGZ": "Kirghizistan",
+    "KHM": "Cambodge",
+    "KIR": "Kiribati",
+    "KNA": "Saint-Christophe-Et-Niévès",
+    "KOR": "Corée Du Sud",
+    "KWT": "Koweït",
+    "LAO": "Laos",
+    "LBN": "Liban",
+    "LBR": "Liberia",
+    "LBY": "Libye",
+    "LCA": "Sainte-Lucie",
+    "LIE": "Liechtenstein",
+    "LKA": "Sri Lanka",
+    "LSO": "Lesotho",
+    "LTU": "Lituanie",
+    "LUX": "Luxembourg",
+    "LVA": "Lettonie",
+    "MAR": "Maroc",
+    "MCO": "Monaco",
+    "MDA": "République De Moldavie",
+    "MDG": "Madagascar",
+    "MDV": "Maldives",
+    "MEX": "Mexique",
+    "MHL": "Îles Marshall",
+    "MLI": "Mali",
+    "MLT": "Malte",
+    "MMR": "Birmanie",
+    "MNG": "Mongolie",
+    "MNP": "Îles Mariannes Du Nord",
+    "MOZ": "Mozambique",
+    "MRT": "Mauritanie",
+    "MUS": "Maurice",
+    "MWI": "Malawi",
+    "MYS": "Malaisie",
+    "NAM": "Namibie",
+    "NER": "Niger",
+    "NGA": "Nigeria",
+    "NIC": "Nicaragua",
+    "NLD": "Pays-Bas",
+    "NOR": "Norvège",
+    "NPL": "Népal",
+    "NRU": "Nauru",
+    "NZL": "Nouvelle-Zélande",
+    "OMN": "Oman",
+    "PAK": "Pakistan",
+    "PAN": "Panama",
+    "PER": "Pérou",
+    "PHL": "Philippines",
+    "PLW": "Palaos",
+    "PNG": "Papouasie-Nouvelle-Guinée",
+    "POL": "Pologne",
+    "PRI": "Porto Rico",
+    "PRK": "Corée du Nord",
+    "PRT": "Portugal",
+    "PRY": "Paraguay",
+    "QAT": "Qatar",
+    "ROU": "Roumanie",
+    "RUS": "Russie",
+    "RWA": "Rwanda",
+    "SAU": "Arabie Saoudite",
+    "SDN": "Soudan",
+    "SEN": "Sénégal",
+    "SGP": "Singapour",
+    "SLB": "Salomon",
+    "SLE": "Sierra Leone",
+    "SLV": "Salvador",
+    "SMR": "Saint-Marin",
+    "SOM": "Somalie",
+    "SRB": "Serbie",
+    "STP": "Sao Tomé-Et-Principe",
+    "SUR": "Suriname",
+    "SVK": "Slovaquie",
+    "SVN": "Slovénie",
+    "SWE": "Suède",
+    "SWZ": "Eswatini",
+    "SYC": "Seychelles",
+    "SYR": "Syrie",
+    "TCD": "Tchad",
+    "TGO": "Togo",
+    "THA": "Thaïlande",
+    "TJK": "Tadjikistan",
+    "TKM": "Turkménistan",
+    "TLS": "Timor Oriental",
+    "TON": "Tonga",
+    "TTO": "Trinité-Rt-Tobago",
+    "TUN": "Tunisie",
+    "TUR": "Turquie",
+    "TUV": "Tuvalu",
+    "TWN": "Taïwan",
+    "TZN": "Tanzanie",
+    "UGA": "Ouganda",
+    "UKR": "Ukraine",
+    "URY": "Uruguay",
+    "USA": "États-Unis",
+    "UZB": "Ouzbékistan",
+    "VAT": "Vatican",
+    "VCT": "Saint-Vincent-Et-Les-Grenadines",
+    "VEN": "Venezuela",
+    "VNM": "Viêt Nam",
+    "VUT": "Vanuatu",
+    "WSM": "Samoa",
+    "YEM": "Yémen",
+    "ZAF": "Afrique Du Sud",
+    "ZMB": "Zambie",
+    "ZWE": "Zimbabwe"
+  },
+  "errors":{
+    "frontend": {
+      "FATAL_ERROR": {
+        "title": "Fatal error",
+        "message": "Une erreur fatale est surcenue à l'initialisation de ManaZeak. Contactez le support.",
+        "severity": "error"
+      },
+      "UNKNOWN_ERROR": {
+        "title": "Unknown error",
+        "message": "Un comportement inattendu  s'est produit et n'ai pas géré correctement. Contactez le support.",
+        "severity": "error"
+      },
+      "ACCESS_FORBIDDEN": {
+        "title": "Access forbidden",
+        "message": "Vous n'avez pas accès à cette fonctionnalité de l'API.",
+        "severity": "error"
+      },
+      "URL_NOT_FOUND": {
+        "title": "URL not found",
+        "message": "La fonctionnalité de l'API n'existe pas.",
+        "severity": "error"
+      },
+      "INTERNAL_ERROR": {
+        "title": "Internal server error",
+        "message": "Quelque chose de térrible est arrivé du côté sombre de la lune.",
+        "severity": "error"
+      },
+      "MEDIA_SRC_NOT_SUPPORTED_ERROR": {
+        "title": "Track not found",
+        "message": "La piste demandée n'existe pas sur le serveur.",
+        "severity": "info"
+      },
+      "MEDIA_DECODE_ERROR": {
+        "title": "Media decode error",
+        "message": "La lecture à été interrompue à cause d'un fichier corrompu ou parceque le navigateur n'a pas pu décoder le fichier.",
+        "severity": "info"
+      },
+      "MEDIA_ABORT_ERROR": {
+        "title": "Playback aborted",
+        "message": "La lecture à été interrompue par le client.",
+        "severity": "info"
+      },
+      "MEDIA_NETWORK_ERROR": {
+        "title": "Media network error",
+        "message": "Une erreur réseau à provoqué l'échec du téléchargement de la piste. Testez votre connexion internet.",
+        "severity": "info"
+      },
+      "MEDIA_UNKNOWN_ERROR": {
+        "title": "Unknown media error",
+        "message": "Un erreur de lecture inconnue est survenue sur le lecteur HTML. Contactez le support.",
+        "severity": "warning"
+      },
+      "INVALID_PROGRESS": {
+        "title": "Invalid progress value",
+        "message": "La valeur de progression n'est pas un nombre.",
+        "severity": "warning"
+      },
+      "INVALID_VOLUME": {
+        "title": "Invalid volume value",
+        "message": "La valeur du volume n'est pas un nombre.",
+        "severity": "warning"
+      },
+      "INVALID_TRACK_URL": {
+        "title": "Invalid track url",
+        "message": "The url given to set the track is not a string, nor an url.",
+        "severity": "warning"
+      },
+      "CANT_STRETCH_COLUMN": {
+        "title": "Can't stretch this column",
+        "message": "La colonne à étendre est trop petite pour encaisser le dépassement. Cliquez 'Étendre toutes les colonnes' pour restaurer les colonnes.",
+        "severity": "warning"
+      },
+      "ALREADY_STRETCH": {
+        "title": "Layout already stretched",
+        "message": "La disposition des colonnes est déjà optimale. Redimensionnez une colonne individuellement pour changer cette disposition.",
+        "severity": "info"
+      },
+      "CANT_CENTER_TRACK": {
+        "title": "Can not center on given track",
+        "message": "L'identifiant de la piste à centrer est incorrect.",
+        "severity": "info"
+      },
+      "NO_NEXT_TRACK": {
+        "title": "No track to play next",
+        "message": "Ouvrez une collection ou selectionnez une piste à jouer.",
+        "severity": "info"
+      },
+      "INVALID_SHUFFLE_MODE": {
+        "title": "Invalid shuffle mode",
+        "message": "Something went wrong with the shuffle value. Contact an administrator (support@manazeak.org)",
+        "severity": "warning"
+      },
+      "TOO_MUCH_TRACK_TO_ADD_TO_QUEUE": {
+        "title": "Too much track to queue",
+        "message": "Vous voulez ajouter plus de 1000 pistes dans la queue et ce n'est ni raisonable pour vous, ni pour moi.",
+        "severity": "info"
+      },
+      "COPY_SUCCESS": {
+        "title": "Copié dans le presse-papier!",
+        "message": "Votre presse-papier contiens désormais ce que vous souhaitiez.",
+        "severity": "success"
+      },
+      "COPY_ERROR": {
+        "title": "Impossible de copier dans le presse-papier",
+        "message": "Quelque chose d'inatendu est survenu. Essayez de nouveau sur un vrai navigateur ou contactez le support.",
+        "severity": "error"
+      },
+      "MISSING_DOM_ELEMENTS": {
+        "title": "Élement du DOM manquant",
+        "message": "La page de ManaZeak semble compromise. Contactez le support.",
+        "severity": "error"
+      }
+    },
+    "backend":  {
+      "BAD_FORMAT":{
+        "title": "Wrong format",
+        "message": "Le serveur n'a pas su traiter la demande.",
+        "severity": "error"
+      },
+      "BAD_REQUEST":{
+        "title": "Bad request",
+        "message": "Le serveur attendait une autre requète pour cette demande.",
+        "severity": "error"
+      },
+      "DB_ERROR":{
+        "title": "Database error",
+        "message": "La base de donnée est corrompue.",
+        "severity": "error"
+      },
+      "FILE_NOT_FOUND":{
+        "title": "No such file",
+        "message": "Le serveur n'a pas trouvé le fichier demandé.",
+        "severity": "error"
+      },
+      "DIR_NOT_FOUND":{
+        "title": "No such directory",
+        "message": "Le serveur n'a pas trouvé le dossier demandé.",
+        "severity": "error"
+      },
+      "EMPTY_LIBRARY":{
+        "title": "The library is empty",
+        "message": "Il n'y a aucune piste dans cette librairie",
+        "severity": "warning"
+      },
+      "COVER_ERROR":{
+        "title": "Can't create file",
+        "message": "Le serveur n'a pas pu générer les pochettes des albums. Vérifiez les permissions sur le serveur.",
+        "severity": "error"
+      },
+      "PERMISSION_ERROR":{
+        "title": "Not permitted",
+        "message": "Vous n'ètes pas autorisés à faire cette demande.",
+        "severity": "error"
+      },
+      "SCAN_IN_PROGRESS":{
+        "title": "Library isn't ready",
+        "message": "Un scan est déjà en cours en arrière plan, soyez patient!",
+        "severity": "info"
+      },
+      "NO_HISTORY":{
+        "title": "Your history is empty",
+        "message": "Vous ne pouvez pas demander la piste précédente si vous n'en avez jamais écouté une seule!",
+        "severity": "info"
+      },
+      "NO_SAME_ARTIST":{
+        "title": "No results were found",
+        "message": "Impossible de trouver une piste du même artiste",
+        "severity": "info"
+      },
+      "NO_SAME_GENRE":{
+        "title": "No results were found",
+        "message": "Impossible de trouver une piste du même genre",
+        "severity": "info"
+      },
+      "NO_SAME_ALBUM":{
+        "title": "No results were found",
+        "message": "Impossible de trouver une piste du même album",
+        "severity": "info"
+      },
+      "SYNCTHING_ERROR":{
+        "title": "Failed to communicate with syncthing",
+        "message": "Verifiez que SyncThing est en cours de fonctionnement.",
+        "severity": "warning"
+      },
+      "USER_DELETE_ERROR":{
+        "title": "Can't delete this user",
+        "message": "Vous ne pouvez pas supprimer le compte de administrateur",
+        "severity": "error"
+      },
+      "NO_STATS":{
+        "title": "Can't display stats",
+        "message": "Utilisez l'interface utilisateur pour générer les statistiques.",
+        "severity": "info"
+      },
+      "BAD_FILENAME":{
+        "title": "The filename is invalid",
+        "message": "Le nom du fichier à uploader est invalide.",
+        "severity": "warning"
+      },
+      "FILE_EXISTS":{
+        "title": "File already exists",
+        "message": "Le fichier que vous souhaitez téléverser existe déjà sur le serveur",
+        "severity": "warning"
+      },
+      "VALUE_ERROR":{
+        "title": "Wrong value",
+        "message": "Valeur inattendue",
+        "severity": "error"
+      },
+      "DND_ERROR":{
+        "title": "The drag and drop hasn't been setup",
+        "message": "L'administrateur n'a pas configuré correctement le dossier tampon.",
+        "severity": "error"
+      },
+      "FORMAT_ERROR":{
+        "title": "The format provided doesn't have support",
+        "message": "L'extension de fichier n'est pas supportée.",
+        "severity": "error"
+      },
+      "DOWNLOAD_LIMIT":{
+        "title": "Your maximum download limith has been reached",
+        "message": "Vous ne pouvez pas télécharger autant de piste à la fois. Revoyez votre selection.",
+        "severity": "warning"
+      },
+      "DIR_CREATION_ERROR":{
+        "title": "Can't create a folder",
+        "message": "L'application n'a pas pu créer les dossier nécessaires. Contactez le support.",
+        "severity": "error"
+      },
+      "SUSPICIOUS_OPERATION": {
+        "title": "Votre compte à été suspendu",
+        "message": "Et vous savez très bien pourquoi!",
+        "severity": "error"
+      },
+      "NOT_IMPLEMENTED": {
+        "title": "The operation you asked isn't coded yet.",
+        "message": "La fonctionnalité que vous essayez d'utiliser n'existe pas encore.",
+        "severity": "info"
+      }
+    }
+  }
+}

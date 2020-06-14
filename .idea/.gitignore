@@ -1,3 +1,5 @@
 *.iml
 /misc.xml
 /modules.xml
+/sonarlint-state.xml
+/sonarlint.xml

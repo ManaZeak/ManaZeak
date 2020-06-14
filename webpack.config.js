@@ -1,8 +1,8 @@
 module.exports = env => {
-  const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+  const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // Js minify
   const MiniCssExtractPlugin = require("mini-css-extract-plugin");
   const CleanWebpackPlugin = require('clean-webpack-plugin');
-  const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+  const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin"); // CSS minifier
   const path = require('path');
 
   const SRC = path.resolve(__dirname, 'static');
@@ -13,16 +13,6 @@ module.exports = env => {
       loader: 'css-loader',
       options: {
         importLoaders: 1
-      }
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        plugins: (loader) => [
-          require('autoprefixer')({
-            browsers: ['last 2 versions']
-          })
-        ]
       }
     }
   ];
@@ -39,15 +29,35 @@ module.exports = env => {
       }
     });
   }
+  // Default entrypoint for ManaZeak
+  let entry = { manazeak: ['./src/js/Start.js', './src/scss/style.scss'] };
+  // Plugin loading
+  const fs = require('fs');
+  if (fs.existsSync('./plugins/MzkWorldMap/js/MzkWorldMap.js')) { // Bundle MzkWorldMap if existing
+    entry.mzkworldmap = [
+      './plugins/MzkWorldMap/js/MzkWorldMap.js',
+      './plugins/MzkWorldMap/css/mzkworldmap.scss'
+    ];
+  }
+
+  if (fs.existsSync('./plugins/MzkVisualizer/js/MzkVisualizer.js')) { // Bundle MzkVisualizer if existing
+    entry.mzkvisualizer = [
+      './plugins/MzkVisualizer/js/MzkVisualizer.js',
+      './plugins/MzkVisualizer/css/mzkvisualizer.scss'
+    ];
+  }
 
   return {
     mode: (env.prod === 'true') ? 'production' : 'development',
     watch: (env.prod !== 'true'),
-    entry: './src/js/Start.js',
-    devtool: 'inline-source-map',
+    entry: entry,
+    stats: {
+      warnings: (env.prod !== 'true'),
+    },
+    devtool: (env.prod === 'true') ? false : 'inline-source-map',
     output: {
       path: DIST,
-      filename: 'js/manazeak.bundle.js'
+      filename: 'js/[name].bundle.js'
     },
     module: {
       rules: [
@@ -68,7 +78,7 @@ module.exports = env => {
         dry: false
       }),
       new MiniCssExtractPlugin({
-          filename: 'css/manazeak.bundle.css'
+        filename: 'css/[name].bundle.css'
       })
     ],
     resolve: {
@@ -79,7 +89,7 @@ module.exports = env => {
       minimizer: [
         new UglifyJsPlugin(),
         new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\manazeak.bundle.css$/g,
+          assetNameRegExp: /\.css$/g,
           cssProcessor: require('cssnano'),
           cssProcessorPluginOptions: {
             preset: ['default', { discardComments: { removeAll: true } }]

@@ -7,7 +7,7 @@ class Permissions(models.Model):
     ## The name of the permission.
     name = models.CharField(max_length=1000)
     ## The code name of the permission.
-    code = models.CharField(max_length=4)
+    code = models.CharField(max_length=4, db_index=True)
 
 
 ## This class define the groups inside the app.

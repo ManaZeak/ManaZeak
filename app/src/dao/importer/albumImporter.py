@@ -1,17 +1,14 @@
 import logging
-from contextlib import closing
-
-from django.db import connection
 
 from app.src.config.constants import Constants
-from app.src.dao.abstractDao import AbstractDao
+from app.src.dao.importer.abstractDaoImporter import AbstractDaoImporter
 from app.src.utils.listUtils import ListUtils
 
 loggerScan = logging.getLogger('scan')
 
 
 ## Imports the album into the database.
-class AlbumImporter(AbstractDao):
+class AlbumImporter(AbstractDaoImporter):
 
     ## Imports the list of albums found into the database.
     #   @param albums a dict containing the album location linked to the album.
@@ -29,26 +26,12 @@ class AlbumImporter(AbstractDao):
     ## Generating the sql request
     #   @param albums a list of album object to insert.
     def _generateRequest(self, albums):
-        return 'INSERT INTO app_album ("folderName", title, year, "releaseArtist_id", location, producer_id) VALUES {}' \
+        return 'INSERT INTO app_album ("folderName", title, year, "releaseArtist_id", location, producer_id) ' \
+                'VALUES {}' \
                 'ON CONFLICT (location)' \
                 'DO UPDATE SET "folderName" = EXCLUDED."folderName", title = EXCLUDED."title", year = EXCLUDED.year,' \
                 '"releaseArtist_id" = EXCLUDED."releaseArtist_id" ' \
                'returning id, location'.format(', '.join(['(%s, %s, %s, %s, %s, %s)'] * len(albums)))
-
-    ## Executing the sql request.
-    #   @param albums a list of album object to insert.
-    def _executeRequest(self, albums):
-        albumRef = dict()
-        # Generating the request
-        sql = self._generateRequest(albums)
-        # Getting the parameters
-        params = self._generateParams(albums)
-        with closing(connection.cursor()) as cursor:
-            # Executing the query and fill the reference
-            cursor.execute(sql, params)
-            for row in cursor.fetchall():
-                albumRef[row[1]] = row[0]
-        return albumRef
 
     ## Generating the parameters of the request.
     #   @param albums a list of album object to insert.

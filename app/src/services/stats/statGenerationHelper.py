@@ -1,6 +1,3 @@
-from app.models import TrackInScopeStats
-
-
 ## The helper class for generating the stats on the object in the database.
 class StatGenerationHelper(object):
 

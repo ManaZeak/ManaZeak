@@ -1,8 +1,14 @@
 import Komunikator from './Komunikator.js';
 import Model from '../model/Model.js';
-import UserInterface from '../view/UserInterface.js';
+import UserInterface from '../ui/UserInterface.js';
 import User from './User.js';
-import Notification from "../view/utils/Notification";
+import Notification from "../ui/component/Notification";
+import TapBpmModal from "../ui/modal/TapBpmModal";
+
+import RepeatModeEnum from "../utils/enum/RepeatModeEnum";
+import PlaybackModeEnum from "../utils/enum/PlaybackModeEnum";
+import VolumeControllerEnum from "../utils/enum/VolumeControllerEnum";
+import ProgressControllerEnum from "../utils/enum/ProgressControllerEnum";
 'use strict';
 
 
@@ -35,6 +41,13 @@ class Mzk {
     /** @public
      * @member {object} - ManaZeak User Interface */
     this.ui = {};
+    // Make mzk available application wide
+    window.mzk = this;
+  }
+
+
+  destroy() {
+    this.model.destroy();
   }
 
 
@@ -56,24 +69,13 @@ class Mzk {
     this.cookies = Utils.getCookies(); // Get user cookies
 
     this._initKomunikator()
-      .then(() => {
-        return this._initLang();
-      })
-      .then(() => {
-        return this._initUser();
-      })
-      .then(() => {
-        return this._initUi();
-      })
-      .then(() => {
-        return this._initModel();
-      })
-      .then(() => {
-        return this._initShortcut();
-      })
-      .then(() => {
-        return this._startApp();
-      })
+      .then(this._initLang.bind(this))
+      .then(this._initUser.bind(this))
+      .then(this._initUi.bind(this))
+      .then(this._initModel.bind(this))
+      .then(this._initShortcut.bind(this))
+      .then(Events.publish.bind(Events, 'MzkInitDone'))
+      .then(this._startApp.bind(this))
       .catch(() => {
         Logger.raise({
           code: 'FATAL_ERROR',
@@ -139,7 +141,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since September 2018
-   * @description Init the lang keys and attach them to this
+   * @description Init the front keys and attach them to this
    * @returns {Promise} - A promise that resolve when logic has been executed
    **/
   _initLang() {
@@ -157,7 +159,7 @@ class Mzk {
 
     return new Promise(resolve => {
       const options = {
-        LANG: (navigator.language || navigator.userLanguage)
+        LANG: navigator.language
       };
 
       this.komunikator.post('language/', options)
@@ -236,29 +238,38 @@ class Mzk {
    **/
   _startApp() {
     return new Promise((resolve, reject) => {
-      this.komunikator.get('playlist/getUserPlaylists/')
+      this.ui.setSceneView({ name: 'MainPage' }) // Init ManaZeak with the MainPage
+        .then(this._buildCollection.bind(this)) // Load in background the user collection so libraries are available from MainPage
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /**
+   * @method
+   * @name _buildCollection
+   * @private
+   * @memberof Mzk
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Build the user collection of libraries and playlist (to be used in LibraryViews mode)
+   * @returns {Promise} - A promise that resolve when logic has been executed, rejected otherwise
+   **/
+  _buildCollection() {
+    return new Promise((resolve, reject) => {
+      this.ui.startLoading(false) // First we put the loading spinner aside User PP
+        .then(this.komunikator.get.bind(this.komunikator, 'playlist/getUserPlaylists/')) // Get user collection from server
         .then(collection => {
-          this.model.initCollection(collection)
-            .then(playlist => {
-              this.startLoading(false)
-                .then(() => {
-                  this.ui.initPlaylist(playlist);
-                  this.stopLoading(false);
-                  resolve();
-                });
-            })
-            .catch(errorKey => {
-              Logger.raise({
-                code: errorKey,
-                frontend: false
-              });
-              reject();
-            });
+          return this.model.initCollection(collection); // Store them in the model so any library sceneviews can be built
         })
+        .then(this.ui.stopLoading.bind(this.ui, false)) // We then stop the loading spinner
+        .then(resolve)
         .catch(errorKey => {
+          this.ui.stopLoading(false); // Stop the spinner in case of failure too
           Logger.raise({
             code: errorKey,
-            frontend: true
+            frontend: false
           });
           reject();
         });
@@ -320,30 +331,21 @@ class Mzk {
    * @description Change the played track with the gievn one (using its ID)
    * @param {number} id - The track ID to request to the server
    * @param {boolean} centerOn - Force reframe on target track
+   * @param {boolean} centerOn - Force reframe on target track
    **/
   changeTrack(id, centerOn = this.user.getPreference('lock-center-on-track')) {
-    /*let durationPlayed = 0; // TODO migrate in websocket
+    if (id !== -1) {
+      this.model.changeTrack(id, `track/get/${id}/`)
+        .then(() => {
+          this.ui.changeTrack(this.model.playingTrack);
 
-    if (!isNaN(this.playerProgress)) {
-      durationPlayed = this.playerProgress;
+          if (centerOn === true) {
+            this.ui.activeView.centerOn({
+              id: id
+            });
+          }
+        });
     }
-
-    const options = {
-      TRACK_ID: id,
-      LAST_TRACK_PATH: this.model.player.getSource(),
-      TRACK_PERCENTAGE: durationPlayed,
-      PREVIOUS: false
-    };*/
-    this.model.changeTrack(id, `track/get/${id}/`)
-      .then(() => {
-        this.ui.changeTrack(this.model.playingTrack);
-
-        if (centerOn === true) {
-          this.ui.activeView.centerOn({
-            id: id
-          });
-        }
-      });
 
     // Ci-gît ce petit banc de test, pour le lulz uniquement
     //.then(url => { return this.model.changeTrack('http://static.kevvv.in/sounds/callmemaybe.mp3') })
@@ -361,7 +363,7 @@ class Mzk {
    **/
   repeatTrack() {
     this.model.repeatTrack();
-    // No need to update the view since the current track didn't changed
+    // No need to update the ui since the current track didn't changed
   }
 
 
@@ -408,7 +410,7 @@ class Mzk {
    * @since September 2018
    * @description Triggered when the player reached the end of a track **/
   trackEnded() {
-    mzk.next(true);
+    mzk.next();
   }
 
 
@@ -557,24 +559,6 @@ class Mzk {
   }
 
 
-  startLoading(lockView) {
-    return new Promise(resolve => {
-      this.ui.startLoading(lockView)
-        .then(() => {
-          return requestAnimationFrame(resolve);
-        });
-    });
-  }
-
-
-  stopLoading(lockView) {
-    return new Promise(resolve => {
-      this.ui.stopLoading(lockView);
-      resolve();
-    });
-  }
-
-
   //  ------------------------------------------------------------------------------------------------//
   //  ------------------------------------  SCENE VIEW METHODS  ------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
@@ -582,28 +566,31 @@ class Mzk {
 
   /**
    * @method
-   * @name changeActiveView
+   * @name changeActiveLibraryView
    * @public
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since November 2018
-   * @description Set a new active view to the active playlist
-   * @param {string} newView - The new view string value in the global ViewEnum
+   * @description Set a new active ui to the active playlist (available in LibraryViews mode)
+   * @param {string} newView - The new ui string value in the global ViewEnum
    **/
-  changeActiveView(newView) {
+  changeActiveLibraryView(newView) {
     return new Promise(resolve => {
-      this.startLoading(true)
-        .then(() => {
-          return this.model.setActiveView(newView);
-        })
-        .then(() => {
-          this.ui.updateView(this.model.collection.activePlaylist);
-          this.stopLoading(true);
-          resolve();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      // Only changing ui if the new ui is not the current one
+      if (this.model.activeView !== newView) {
+        this.model.setActiveView(newView)
+          .then(() => {
+            this.ui.setSceneView({
+              playlist: this.model.collection.activePlaylist
+            });
+            Events.subscribe('SceneViewReady', resolve, true);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        resolve();
+      }
     });
   }
 
@@ -615,10 +602,10 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the next one in the current view
-   * isUserRq -> user has clicked on next
+   * @description Change the player track using the next one in the current ui
+   * isUserRequest -> user has clicked on next
    **/
-  next(isUserRq) {
+  next(isUserRequest) {
     if (this.model.queue.length > 0) {
       this.changeTrack(this.model.getNextFromQueue());
       this.ui.updateQueueNumber(this.model.queue);
@@ -628,16 +615,16 @@ class Mzk {
     const repeatMode = this.model.repeatMode;
     const shuffleMode = this.model.shuffleMode;
 
-    if (shuffleMode === 0) {
-      if (repeatMode === 0) {
+    if (shuffleMode === PlaybackModeEnum.NORMAL) {
+      if (repeatMode === RepeatModeEnum.NO_REPEAT) {
         if (this.ui.isLastTrack()) {
           this.stopPlayback();
         } else {
           this.changeTrack(this.ui.nextTrackId);
         }
-      } else if (repeatMode === 1) {
+      } else if (repeatMode === RepeatModeEnum.REPEAT_TRACK) {
         this.repeatTrack();
-      } else if (repeatMode === 2) {
+      } else if (repeatMode === RepeatModeEnum.REPEAT_VIEW) {
         this.changeTrack(this.ui.nextTrackId);
       } else {
         Logger.raise({
@@ -645,13 +632,14 @@ class Mzk {
           frontend: true
         });
       }
-    } else if (shuffleMode === 1) { // Shuffle
-      if (isUserRq === true) {
-        this.changeTrack(this.ui.nextTrackId);
-      } else {
+    } else if (shuffleMode === PlaybackModeEnum.SHUFFLE) { // Shuffle
+      // Spec is shuffle if user play next, normal playback in album otherwise, only if current is not the last track of album
+      if (isUserRequest === true || this.model.isLastAlbumTrack(this.model.playingTrack.id)) {
         mzk.playShuffleTrackInPlaylist();
+      } else {
+        this.changeTrack(this.ui.nextTrackId);
       }
-    } else if (shuffleMode === 2) { // Random
+    } else if (shuffleMode === PlaybackModeEnum.RANDOM) { // Random
       mzk.playRandomTrackInPlaylist();
     } else {
       Logger.raise({
@@ -669,20 +657,20 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the previous one in the current view
+   * @description Change the player track using the previous one in the current ui
    **/
   previousTrackInView() {
     const repeatMode = this.model.repeatMode;
 
-    if (repeatMode === 0) {
+    if (repeatMode === RepeatModeEnum.NO_REPEAT) {
       if (this.ui.isFirstTrack()) {
         this.stopPlayback();
       } else {
         this.changeTrack(this.ui.previousTrackId);
       }
-    } else if (repeatMode === 1) {
+    } else if (repeatMode === RepeatModeEnum.REPEAT_TRACK) {
       mzk.repeatTrack();
-    } else if (repeatMode === 2) {
+    } else if (repeatMode === RepeatModeEnum.REPEAT_VIEW) {
       this.changeTrack(this.ui.previousTrackId);
     } else {
       Logger.raise({
@@ -694,45 +682,27 @@ class Mzk {
 
 
   playRandomTrackInPlaylist() {
-    const options = {
-      PLAYLIST_ID: this.model.id
-    };
-
-    this.komunikator.post('track/random/', options)
-      .then(response => {
-        /* response = {
-         *     DONE       : bool
-         *     ERROR_H1   : string
-         *     ERROR_MSG  : string
-         *
-         *     IS_LAST    : bool
-         *     TRACK_ID   : int
-         * } */
-        if (response.DONE) {
-          this.changeTrack(response.TRACK_ID);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this._playRandomizedTrack('random');
   }
 
 
   playShuffleTrackInPlaylist() {
+    this._playRandomizedTrack('shuffle');
+  }
+
+
+  // Verb is shuffle or random only
+  _playRandomizedTrack(verb) {
+    if (verb !== 'shuffle' && verb !== 'random') {
+      return;
+    }
+
     const options = {
       PLAYLIST_ID: this.model.id
     };
 
-    this.komunikator.post('track/shuffle/', options)
+    this.komunikator.post(`track/${verb}/`, options)
       .then(response => {
-        /* response = {
-         *     DONE       : bool
-         *     ERROR_H1   : string
-         *     ERROR_MSG  : string
-         *
-         *     IS_LAST    : bool
-         *     TRACK_ID   : int
-         * } */
         if (response.DONE) {
           this.changeTrack(response.TRACK_ID);
         }
@@ -741,9 +711,6 @@ class Mzk {
         console.log(error);
       });
   }
-
-
-
 
 
   //  ------------------------------------------------------------------------------------------------//
@@ -758,33 +725,34 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since October 2018
-   * @description Change the player track using the previous one in the current view
+   * @description Change the player track using the previous one in the current ui
    * @param {string} datasetId - The track dataset id (DOM dataset id) to append to the queue
    **/
   addTrackToQueue(datasetId) {
-    const selection = this.ui.activeView.selection;
-    // User has no selection : we simply adds the datasetId to the queue
-    if (selection.length === 0) {
-      const track = this.ui.getTrackById(datasetId);
+    const addTrack = (id) => {
+      const track = this.ui.getTrackById(id);
 
       if (track) {
         this.model.appendToQueue(track.id);
         this.ui.updateQueueNumber(this.model.queue);
       }
-    } else {
-      // Checking if the datasetId isn't in selection, so we can append it to the selection array
-      if (selection.indexOf(Number(datasetId)) === -1) {
-        selection.push(datasetId);
-      }
-      // Parsing selection to append track in the proper order
-      for (let i = 0; i < selection.length; ++i) {
-        const track = this.ui.getTrackById(selection[i]);
+    };
 
-        if (track) {
-          this.model.appendToQueue(track.id);
+    const selection = this.ui.activeView.selection;
+    // User has no selection : we simply adds the datasetId to the queue
+    if (selection.length === 0) {
+      addTrack(datasetId);
+    } else {
+      // When right clicked outside of the current selection : add the track the user was pointing
+      if (selection.indexOf(Number(datasetId)) === -1) {
+        addTrack(datasetId);
+      } else { // When right clicked over the current selection : append the user selection in the queue
+        //selection.push(datasetId);
+        // Parsing selection to append track in the proper order
+        for (let i = 0; i < selection.length; ++i) {
+          addTrack(selection[i]);
         }
       }
-      this.ui.updateQueueNumber(this.model.queue);
     }
   }
 
@@ -809,7 +777,7 @@ class Mzk {
    * @memberof Mzk
    * @author Arthur Beaulieu
    * @since January 2019
-   * @description Serve the user a download of the current selection in the active view. If no selection, it serve the right-clicked track
+   * @description Serve the user a download of the current selection in the active ui. If no selection, it serve the right-clicked track
    * @param {string} id - The track dataset id (DOM dataset id) that triggered the context (see <code>if</code> condition)
    **/
   download(id) {
@@ -841,14 +809,21 @@ class Mzk {
           document.body.appendChild(button);
           button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
           document.body.removeChild(button);
-        }
-        else {
+        } else {
           console.log(response);
         }
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+
+  tapBpmForId(id) {
+    new TapBpmModal({
+      url: 'modal/tapBpm',
+      trackId: id
+    });
   }
 
 
@@ -886,56 +861,56 @@ class Mzk {
   reloadShortcuts() {
     Shortcut.unregisterAll();
 
-    // Multi keys shortcuts must be declared before simple ones, to respect the trigger ordre
+    // Multi keys shortcuts must be declared before simple ones, to respect the trigger order
 
     // Volume control
     Shortcut.register('Ctrl+Shift+ArrowDown', () => {
-      this.adjustVolume(-0.25);
+      this.adjustVolume(-VolumeControllerEnum.HUGE);
     });
 
     Shortcut.register('Ctrl+Shift+ArrowUp', () => {
-      this.adjustVolume(0.25);
+      this.adjustVolume(VolumeControllerEnum.HUGE);
     });
 
     Shortcut.register('Ctrl+ArrowDown', () => {
-      this.adjustVolume(-0.1);
+      this.adjustVolume(-VolumeControllerEnum.BIG);
     });
 
     Shortcut.register('Ctrl+ArrowUp', () => {
-      this.adjustVolume(0.1);
+      this.adjustVolume(VolumeControllerEnum.BIG);
     });
 
     Shortcut.register('ArrowDown', () => {
-      this.adjustVolume(-0.01);
+      this.adjustVolume(-VolumeControllerEnum.SMALL);
     });
 
     Shortcut.register('ArrowUp', () => {
-      this.adjustVolume(0.01);
+      this.adjustVolume(VolumeControllerEnum.SMALL);
     });
 
     // Progress control
     Shortcut.register('Ctrl+Shift+ArrowLeft', () => {
-      this.adjustProgress(-25);
+      this.adjustProgress(-ProgressControllerEnum.HUGE_JUMP);
     });
 
     Shortcut.register('Ctrl+Shift+ArrowRight', () => {
-      this.adjustProgress(25);
+      this.adjustProgress(ProgressControllerEnum.HUGE_JUMP);
     });
 
     Shortcut.register('Ctrl+ArrowLeft', () => {
-      this.adjustProgress(-10);
+      this.adjustProgress(-ProgressControllerEnum.BIG_JUMP);
     });
 
     Shortcut.register('Ctrl+ArrowRight', () => {
-      this.adjustProgress(10);
+      this.adjustProgress(ProgressControllerEnum.BIG_JUMP);
     });
 
     Shortcut.register('ArrowLeft', () => {
-      this.adjustProgress(-1);
+      this.adjustProgress(-ProgressControllerEnum.SMALL_JUMP);
     });
 
     Shortcut.register('ArrowRight', () => {
-      this.adjustProgress(1);
+      this.adjustProgress(ProgressControllerEnum.SMALL_JUMP);
     });
 
     // Playback control

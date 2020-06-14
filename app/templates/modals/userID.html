@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="context-transparent-overlay modal-dark-overlay">
+  <div class="modal user-id-modal">
+    <div class="header">
+      <p>{% trans 'My ID' %}</p>
+      <span id="user-id-header-close" class="close">&#10006;</span>
+    </div>
+    <div class="container">
+      <p>{% trans 'The following string is your unique ID in ManaZeak. You can give it to your friends so they can sign into ManaZeak aswell and enjoy the music here!' %}</p>
+      <span class="user-id-input">
+        <input id="user-id" type="text" name="user-id" value="{% trans 'Waiting for the server to load your ID' %}" disabled />
+        <img src="{% static 'img/actions/copy.svg' %}" id="copy-id" alt="clipboard-icon" />
+      </span>
+    </div>
+    <div class="footer">
+      <button id="user-id-close" class="primary">{% trans 'Close' %}</button>
+    </div>
+  </div>
+</div>

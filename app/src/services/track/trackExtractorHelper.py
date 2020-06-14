@@ -10,6 +10,10 @@ from app.src.dto.artist.localArtist import LocalArtist
 
 
 ## Helper for extracting the tag tracks.
+from app.src.dto.country.localCountry import LocalCountry
+from app.src.dto.genre.localGenre import LocalGenre
+
+
 class TrackExtractorHelper(object):
 
     @staticmethod
@@ -42,18 +46,38 @@ class TrackExtractorHelper(object):
     ## Construct a table of local artists for a given string.
     #   @param tagString the tag string to transform into a table of local artists
     #   @return the list of the local artists
-    def getLocalArtistsFromTrack(tagString, isPerformer=False):
+    def getLocalArtistsFromTrack(tagString):
         localArtists = []
-        # The performer uses ; instead of ,
-        if isPerformer:
-            splitArtists = TrackExtractorHelper._extractComposerFromList(tagString)
-        else:
-            splitArtists = TrackExtractorHelper._extractArtistsFromList(tagString)
+        splitArtists = TrackExtractorHelper._extractArtistsFromList(tagString)
         for artist in splitArtists:
             localArtist = LocalArtist()
             localArtist.addArtist(artist)
             localArtists.append(localArtist)
         return localArtists
+
+    @staticmethod
+    ## Construct a table of local country with a list of countries.
+    #   @param tagString the string containing the countries
+    #   @return a table of local countries.
+    def getLocalCountriesFromTrack(tagString):
+        countries = []
+        countriesTag = tagString.split('; ')
+        for country in countriesTag:
+            localCountry = LocalCountry()
+            localCountry.name = country
+            countries.append(localCountry)
+        return countries
+
+    @staticmethod
+    ## Construct the genres objects of a track.
+    def getLocalGenresFromTrack(tagString):
+        genres = []
+        genresTag = tagString.split(';')
+        for genre in genresTag:
+            localGenre = LocalGenre()
+            localGenre.loadGenreFromName(genre.strip())
+            genres.append(localGenre)
+        return genres
 
     @staticmethod
     ## Compute the moodbar path with the location of the track and assign it to the track.
@@ -80,18 +104,6 @@ class TrackExtractorHelper(object):
     #   @param toSplit the string to split.
     #   @return the artists in a table.
     def _extractArtistsFromList(toSplit):
-        # Splitting the string
-        artists = re.split(r';\s*(?![^()]*\))', toSplit)
-        # Cleaning it
-        for i in range(len(artists)):
-            artists[i] = artists[i].lstrip().rstrip()
-        return artists
-
-    @staticmethod
-    ## Split a string containing multiple artist names without splitting the ';' in parentheses
-    #   @param toSplit the string to split.
-    #   @return the artists in a table.
-    def _extractComposerFromList(toSplit):
         # Splitting the string
         artists = re.split(r';\s*(?![^()]*\))', toSplit)
         # Cleaning it

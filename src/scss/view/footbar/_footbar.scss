@@ -1,136 +1,142 @@
-@import 'playbackratebar';
+.footbar {
+  --moodbar-max-size: 1000px;
 
-#footbar {
-  background: $mzk-color-bg;
-  bottom: 0;
   display: flex;
-  height: $footbar-height; // Defined in utils/tools/_variables.scss
-  justify-content: center;
+  bottom: 0;
+  height: var(--mzk-footbar-height);
+  left: 0;
   position: absolute;
-  width: 100%;
-  z-index: 700;
+  right: 0;
+  width: calc(100% - var(--mzk-aside-width));
 
-  .left,
-  .right {
-    align-items: flex-end;
+  @include transition(width var(--mzk-animation-duration) ease-in-out);
+
+  .footbar-controls {
+    background: var(--mzk-color-bg);
     display: flex;
-    height: ($footbar-controls-height + $footbar-progress-height);
-    width: $footbar-sides-width;
+    height: var(--mzk-footbar-height);
+    justify-content: center;
+    width: 100%;
+    z-index: 700;
 
-    p {
-      height: $moodbar-height;
-      line-height: $moodbar-height;
-      opacity: 0;
-      transition: opacity $footbar-transition linear;
-    }
-  }
-
-  .left {
-    justify-content: flex-end;
-
-    p {
-      margin-right: $margin;
-    }
-  }
-
-  .center {
-    height: 100%;
-    max-width: 1000px;
-    width: calc(100% - (#{$footbar-sides-width} * 2));
-
-    #controls-container {
-      align-items: center;
+    .left,
+    .right {
+      align-items: flex-end;
       display: flex;
-      height: $footbar-controls-height;
-      justify-content: center;
-      width: 100%;
-      position: relative;
+      height: var(--mzk-footbar-controls-height) + var(--mzk-footbar-progress-height);
+      width: var(--mzk-footbar-sides-width);
 
-      div.image-wrapper {
-        cursor: pointer;
-        height: 50%;
-      }
+      p {
+        height: var(--mzk-footbar-moodbar-height);
+        line-height: var(--mzk-footbar-moodbar-height);
+        opacity: 0;
 
-      img {
-        cursor: pointer;
-        height: 100%;
-        margin: 0 $footbar-controls-margin;
-        user-select: none;
-        -moz-user-select: none;
-
-        #repeat {
-          position: absolute;
-          left: 0;
-        }
-
-        #shuffle {
-          position: absolute;
-          left: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
-        }
-      }
-
-      .queue {
-        position: absolute;
-        right: 0;
-        width: $footbar-icons-size;
-
-        img {
-          height: 100% !important;
-        }
-      }
-
-      .speedometer {
-        position: absolute;
-        right: calc(#{$footbar-icons-size} + #{$footbar-controls-margin});
-        width: $footbar-icons-size;
-
-        img {
-          height: 100% !important;
-        }
-      }
-
-      .shuffle-left {
-        position: absolute;
-        left: calc(#{$footbar-icons-size} + #{2 * $footbar-controls-margin});
-      }
-
-      .repeat-left {
-        position: absolute;
-        left: 0;
-      }
-
-      @import 'volumebar'; // Loading volumebar rules
-
-      .image-wrapper {
-        #queue {
-          position: absolute;
-          right: 0;
-          height: $footbar-controls-scale;
-          margin: 0 $footbar-controls-margin;
-        }
-
-        &::before {
-         content: attr(data-before); // To be retrieved in Js
-         position:absolute;
-         top: 5px;
-         right: -10px;
-         color: $mzk-color-primary;
-         border-radius: 50%;
-         height: 13px;
-         width: 13px;
-         font-size: 0.9em;
-         text-align: center;
-         text-shadow: #000 1px 0 5px;
-        }
+        @include transition(opacity var(--mzk-footbar-transition) linear);
       }
     }
 
-    @import 'progressbar'; // Loading progressbar rules
-  }
+    .left {
+      justify-content: flex-end;
 
-  .right {
-    p {
-      margin-left: $margin;
+      p {
+        margin-right: var(--mzk-margin);
+      }
+    }
+
+    .center {
+      height: 100%;
+      max-width: var(--moodbar-max-size);
+      width: calc(100% - (var(--mzk-footbar-sides-width) * 2));
+
+      .controls-container {
+        align-items: center;
+        display: flex;
+        height: var(--mzk-footbar-controls-height);
+        justify-content: center;
+        width: 100%;
+        position: relative;
+
+        img {
+          cursor: pointer;
+          height: 100%;
+          margin: 0 var(--mzk-footbar-controls-margin);
+
+          @include user-select(none);
+
+          .repeat {
+            left: 0;
+            position: absolute;
+          }
+
+          .shuffle {
+            left: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+            position: absolute;
+          }
+        }
+
+        .image-wrapper {
+          cursor: pointer;
+          height: 50%;
+
+          &::before {
+            content: attr(data-before); // To be retrieved in Js
+            border-radius: 50%;
+            color: var(--mzk-color-primary);
+            font-size: .9em;
+            height: 13px;
+            position:absolute;
+            right: -10px;
+            top: 5px;
+            text-align: center;
+            text-shadow: #000 1px 0 5px;
+            width: 13px;
+          }
+
+          &.shuffle {
+            left: calc(var(--mzk-footbar-icons-size) + 2 * var(--mzk-footbar-controls-margin));
+            position: absolute;
+          }
+
+          &.repeat {
+            left: 0;
+            position: absolute;
+          }
+
+          &.speedometer {
+            position: absolute;
+            right: calc(var(--mzk-footbar-icons-size) + var(--mzk-footbar-controls-margin));
+            width: var(--mzk-footbar-icons-size);
+
+            img {
+              height: 100% !important;
+            }
+          }
+
+          &.queue {
+            height: var(--mzk-footbar-controls-scale);
+            margin: 0 var(--mzk-footbar-controls-margin);
+            position: absolute;
+            right: 0;
+            width: var(--mzk-footbar-icons-size);
+
+            img {
+              height: 100% !important;
+            }
+          }
+        }
+
+        @import 'volumebar'; // Loading volumebar rules
+      }
+
+      @import 'progressbar'; // Loading progressbar rules
+    }
+
+    .right {
+      p {
+        margin-left: var(--mzk-margin);
+      }
     }
   }
 }
+
+@import 'playbackratebar';

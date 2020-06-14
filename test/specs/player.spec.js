@@ -1,6 +1,7 @@
 import Player from '../../src/js/core/Player.js';
 
 window.mzk = {};
+const audioFilePath = '/base/test/tracks/FrequencyTest.flac';
 let player = {};
 
 describe('Player unit tests', function() {
@@ -109,10 +110,10 @@ describe('Player unit tests', function() {
 
   it('Player playback | covers changeTrack(), pause(), play(), togglePlay()', function(done) {
     expect(player._player.src).toBe('');
-    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
+    player.changeTrack(audioFilePath)
       .then(() => {
         expect(player._player.src).not.toBe('');
-        expect(player._player.src).toBe('/base/test/tracks/FrequencyTest.flac');
+        expect(player._player.src).toBe(audioFilePath);
         expect(player._isPlaying).toBe(true);
         player.pause();
         expect(player._isPlaying).toBe(false);
@@ -143,7 +144,7 @@ describe('Player unit tests', function() {
       done();
     };
 
-    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
+    player.changeTrack(audioFilePath)
       .then(() => {
         window.setTimeout(() => {
           player.adjustProgress(50);
@@ -161,7 +162,7 @@ describe('Player unit tests', function() {
 
 
   it('Getter test | covers getIsPlaying(), getIsMuted(), getVolume(), getProgress(), getDuration(), getCurrentTime(), hasSource()', function(done) {
-    player.changeTrack('/base/test/tracks/FrequencyTest.flac')
+    player.changeTrack(audioFilePath)
       .then(() => {
         expect(player.playing).toBe(true);
         player.pause();

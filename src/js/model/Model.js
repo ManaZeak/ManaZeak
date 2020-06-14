@@ -1,5 +1,6 @@
 import Player from '../core/Player.js';
 import Collection from './components/Collection.js';
+import Track from "./components/Track";
 'use strict';
 
 class Model {
@@ -12,11 +13,18 @@ class Model {
   constructor() {
     this._player = {};
     this._collection = {};
+    this._transitiveSet = []; // Custom view need transitive set of track
     this._queue = [];
     this._playingTrack = null;
 
     this._init();
   }
+
+
+  destroy() {
+    this._player.destroy();
+  }
+
 
   //  --------------------------------  PRIVATE METHODS  --------------------------------  //
 
@@ -232,22 +240,14 @@ class Model {
    **/
   initCollection(response) {
     return new Promise((resolve, reject) => {
-      const resolvePromise = () => {
-        mzk.stopLoading(true);
-        resolve(this._collection.activePlaylist);
-      };
-
       if (response.DONE && response.ERROR_KEY === null) {
         if (response.COLLECTION.length === 0) {
           // We start loading in Collection._initialScan, when the new library modal is triggered with good values
           this._collection.newLibrary()
-            .then(resolvePromise);
+            .then(resolve);
         } else {
-          mzk.startLoading(true)
-            .then(() => {
-              this._collection.buildUserCollection(response)
-                .then(resolvePromise);
-            });
+          this._collection.buildUserCollection(response)
+            .then(resolve);
         }
       } else {
         reject(response.ERROR_KEY);
@@ -282,6 +282,31 @@ class Model {
 
     return null;
   }
+
+
+  //  --------------------------------  TRANSITIVE SETS METHOD  ---------------------------------  //
+
+
+  makeTransitiveSet(options) {
+    return new Promise((resolve, reject) => {
+      const set = [];
+      for (let i = 0; i < options.tracks.length; ++i) {
+        try {
+          set.push(new Track({
+            album: options.album,
+            albumArtist: options.albumArtist,
+            rawTrack: options.tracks[i]
+          }));
+        } catch(e) {
+          reject(e);
+        }
+      }
+
+      this._transitiveSet.push(set);
+      resolve(set);
+    });
+  }
+
 
   toggleRepeatMode() {
     return new Promise(resolve => {
@@ -343,6 +368,16 @@ class Model {
     mzk.setQueueFromArray(this._getQueuedTracks());
   }
 
+
+  removeFromQueue(index) {
+    if (index >= 0 && index < this._queue.length) {
+      this._queue.splice(index, 1);
+    }
+
+    mzk.setQueueFromArray(this._getQueuedTracks());
+  }
+
+
   setQueueFromArray(queuedTracks) {
     return new Promise(resolve => {
       this._queue = []; // Clear old queue
@@ -370,6 +405,24 @@ class Model {
     }
 
     return queuedTracks;
+  }
+
+
+  isLastAlbumTrack(id) {
+    // TODO get total track from serv and ask for track in model instead of getTrack
+    for (let i = 0; i < this._collection._playlists.length; ++i) {
+      for (let j = 0; j < this._collection._playlists[i]._artists.length; ++j) {
+        for (let k = 0; k < this._collection._playlists[i]._artists[j].albums.length; ++k) {
+          for (let l = 0; l < this._collection._playlists[i]._artists[j].albums[k].tracks.length; ++l) {
+            if (this._collection._playlists[i]._artists[j].albums[k].tracks[l].id === id && this._collection._playlists[i]._artists[j].albums[k].tracks.length - 1 === l) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
 
@@ -401,6 +454,10 @@ class Model {
 
   get activeView() {
       return this._collection.activePlaylist.activeView;
+  }
+
+  get libraryId() {
+    return this._collection._playlists[0].id;
   }
 
   get collection() {

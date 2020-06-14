@@ -1,4 +1,5 @@
 import json
+import logging
 from builtins import staticmethod
 
 from app.src.utils.errors.errorEnum import ErrorEnum
@@ -11,6 +12,7 @@ from app.src.utils.errors.errorEnum import ErrorEnum
 ## This class is used to verify the request coming from the front is correctly formatted.
 from app.src.utils.exceptions.userException import UserException
 
+loggerDjango = logging.getLogger('django')
 
 class FrontRequestChecker(object):
 
@@ -22,14 +24,14 @@ class FrontRequestChecker(object):
     #   @param expectedKeys the keys expected in the POST request if any
     #   @param user the user doing the request
     #   @return the response if the request is a POST nothing if it's a get.
-    def checkRequest(expectedRequestMethod, request, expectedKeys=None):
+    def checkRequest(expectedRequestMethod, request, user=None, expectedKeys=None):
         # Check if the request has the good method type
         if request.method != expectedRequestMethod.value:
-            raise UserException(ErrorEnum.BAD_REQUEST)
+            raise UserException(ErrorEnum.BAD_REQUEST, user)
 
         # Test the keys of the request
         if request.method == 'POST' and expectedKeys is not None:
-            return FrontRequestChecker._checkRequestPOST(request, expectedKeys)
+            return FrontRequestChecker._checkRequestPOST(request, expectedKeys, user)
 
     @staticmethod
     ## Check a request of the POST type.
@@ -37,14 +39,13 @@ class FrontRequestChecker(object):
     #   @param caller the function that called the analyser
     #   @param expectedKeys the key expected to be in the request
     #   @param user the user doing the action
-    def _checkRequestPOST(request, expectedKeys):
+    def _checkRequestPOST(request, expectedKeys, user):
         # Parsing the request
         parsedRequest = json.loads(request.body)
-
         # Checking if all the keys are present
         for key in expectedKeys:
             if key not in parsedRequest:
-                raise UserException(ErrorEnum.BAD_FORMAT)
+                raise UserException(ErrorEnum.BAD_FORMAT, user)
 
         # Creating the returning object
         return parsedRequest

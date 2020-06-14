@@ -1,5 +1,9 @@
-from app.src.dto.artist.LocalLazyArtist import LocalLazyArtist
+import logging
 
+from app.src.dto.artist.localLazyArtist import LocalLazyArtist
+from app.src.dto.genre.localLazyGenre import LocalLazyGenre
+
+logger = logging.getLogger('django')
 
 ## This class describe a track object in the lazy loading of the list view.
 class LocalLazyTrack(object):
@@ -21,7 +25,7 @@ class LocalLazyTrack(object):
         ## The track moodbar.
         self.moodbar = None
         ## The track genre.
-        self.genre = None
+        self.genres = []
         ## The track artists.
         self.artists = []
         ## The track composers.
@@ -43,19 +47,33 @@ class LocalLazyTrack(object):
             'YEAR': self.year,
             'COMPOSERS': [composer.generateJson() for composer in self.composers],
             'PERFORMERS': [performer.generateJson() for performer in self.performers],
+            'ARTISTS': [artist.generateJson() for artist in self.artists],
             'BITRATE': self.bitrate,
             'DURATION': self.duration,
             'COVER': self.cover,
-            'GENRE': self.genre,
+            'GENRE': [genre.generateJson() for genre in self.genres],
             'MOODBAR': self.moodbar,
         }
 
     ## Add the artist information to a track.
     def addArtistsFromRow(self, row):
         artistId = row[13]
-        if self.lastArtistId is None or self.lastArtistId == artistId:
+        if self.lastArtistId is None or self.lastArtistId != artistId:
             artistName = row[14]
             self._createArtist(artistId, artistName)
+
+    def addGenreFromRow(self, row):
+        genres = row[12].split(';')
+        # if the genre is empty
+        if genres is None or genres[0] == '|':
+            return None
+        for genre in genres:
+            splitGenre = genre.split('|')
+            newGenre = LocalLazyGenre()
+            newGenre.id = splitGenre[0]
+            newGenre.name = splitGenre[1]
+            self.genres.append(newGenre)
+        self.genres.sort(key=lambda genreTmp: genreTmp.name)
 
     ## Add the composer and the performer to a track.
     def addComposerAndPerformerFromRow(self, row):
@@ -69,6 +87,42 @@ class LocalLazyTrack(object):
         if performerId not in self.performersIds:
             performerName = row[18]
             self._createPerformer(performerId, performerName)
+
+    @staticmethod
+    ## Creating a track object from the orm track
+    def createTrackFromOrm(track):
+        trackLazy = LocalLazyTrack()
+        trackLazy.id = track.id
+        trackLazy.title = track.title
+        trackLazy.year = track.year
+        trackLazy.bitrate = track.bitRate
+        trackLazy.duration = track.duration
+        trackLazy.cover = track.cover.location
+        trackLazy.moodbar = track.mood
+        trackLazy.addRelatedInfoFromOrm(track)
+        return trackLazy
+
+    ## Adds the information linked to the track. (Performer, artists, composer...)
+    def addRelatedInfoFromOrm(self, track):
+        # Adding the artist from the track.
+        for artist in track.artists.all():
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(artist)
+            self.artists.append(localArtist)
+        # Adding the composers from the track.
+        for composer in track.composers.all():
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(composer)
+            self.composers.append(localArtist)
+        # Adding the performers from the track.
+        for performer in track.performers.all():
+            localArtist = LocalLazyArtist()
+            localArtist.loadFromArtist(performer)
+            self.composers.append(localArtist)
+        for genre in track.genres.all():
+            localGenre = LocalLazyGenre()
+            localGenre.loadFromGenre(genre)
+            self.genres.append(localGenre)
 
     ## Creates a new artist and add it to the artist list.
     def _createArtist(self, artistId, artistName):

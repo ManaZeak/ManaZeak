@@ -1,3 +1,4 @@
+import CustomEvents from "../utils/Events";
 'use strict';
 
 
@@ -27,9 +28,16 @@ class Player {
        * @member {number} - The player's playback rate float[0.25, 2] */
     this._playbackRate = 1; // Playback flag
 
+    this._playerEvents = new CustomEvents();
+
     this._init(); // Init player object
     this._events(); // Listen to events
-    this._attach(); // Attach HTML audio tag to the DOM
+    this._attach(); // Attach HTML audio object to the DOM
+  }
+
+
+  destroy() {
+    this._playerEvents.destroy();
   }
 
 
@@ -45,10 +53,10 @@ class Player {
    * @memberof Player
    * @author Arthur Beaulieu
    * @since July 2018
-   * @description Build player tag and set loop/volume values
+   * @description Build player object and set loop/volume values
    **/
   _init() {
-    this._player = document.createElement('AUDIO'); // Create HTML audio tag
+    this._player = document.createElement('AUDIO'); // Create HTML audio object
     this._player.id = 'mzk-audio-player'; // Assign player ID
     this.volume = 1; // Initialize volume to its maximum value, prefs
   }
@@ -64,8 +72,8 @@ class Player {
    * @description Listen to ended track event on audio player
    **/
   _events() {
-    this._player.addEventListener('ended', this._trackEnded.bind(this)); // Handle track end playback event
-    this._player.addEventListener('error', this._handleErrors.bind(this));
+    this._playerEvents.addEvent('ended', this._player, this._trackEnded, this); // Handle track end playback event
+    this._playerEvents.addEvent('error', this._player, this._handleErrors, this);
   }
 
 
@@ -214,37 +222,40 @@ class Player {
    **/
   changeTrack(url) {
     return new Promise((resolve) => {
-      if (typeof url !== 'string') { // Bad format value
+      // Invalid url type
+      if (typeof url !== 'string') {
         Logger.raise({
           code: 'INVALID_TRACK_URL',
           frontend: true
         });
         return;
       }
-
+      // Start playback callback used when player source has been loaded
       const startPlayback = () => {
         this.play(); // Call player play method (not actually play after that line)
         resolve(); // Resolve promise
       };
-
-      const loadedListener = () => {
-        this._player.removeEventListener('loadedmetadata', loadedListener); // Remove loaded track listener
-        startPlayback();
-      };
-
-      const tmpPlaybackRate = this._playbackRate;
-
-      if (this._isPlaying) { // Stop any previous playback
+      // Stop any previous playback before updating player
+      if (this._isPlaying) {
         this.stop();
       }
-
-      this._player.src = url; // Set new track url
-      this._player.playbackRate = tmpPlaybackRate;
-
+      // Set new track url and set playback rate according to internal value
+      this._player.src = url;
+      this._player.playbackRate = this._playbackRate;
+      // On mobile device, playback can be started right now
       if (Utils.isMobileDevice()) {
         startPlayback();
       } else {
-        this._player.addEventListener('loadedmetadata', loadedListener); // Add loaded track listener
+        let loadingEventId = -1;
+        const loadedListener = () => {
+          // Remove loaded track listener then star playback, raise error otherwise
+          if (this._playerEvents.removeEvent(loadingEventId)) {
+            startPlayback();
+          } else {
+            // TODO raise remove event error for desktop app
+          }
+        };
+        loadingEventId = this._playerEvents.addEvent('loadedmetadata', this._player, loadedListener, this);
       }
     });
   }
@@ -546,6 +557,13 @@ class Player {
   //  ------------------------------------------------------------------------------------------------//
   //  -------------------------------------  GETTER / SETTER  --------------------------------------  //
   //  ------------------------------------------------------------------------------------------------//
+
+
+  /** @public
+   * @member {number} - The HTMl audio player */
+  get player() {
+    return this._player;
+  }
 
 
   /** @public

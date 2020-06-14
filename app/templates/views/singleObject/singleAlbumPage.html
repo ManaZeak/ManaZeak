@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<div class="single-album-page">
+    <div class="album-header">
+        <div class="album-cover-container">
+            <img src="{% static 'img/object/album.svg' %}" class="album-cover" alt="album-cover">
+        </div>
+        <div class="album-info">
+            <div class="album-main-info">
+                <h1 class="album-title">Album Title</h1>
+                <h2 class="album-artist"></h2>
+                <h2 class="album-year-label"><em>Year – Label</em></h2>
+            </div>
+            <div class="album-detailed-info">
+                <h4 class="album-track-composition">track number – album duration</h4>
+                <h4 class="album-country">Artist country</h4>
+                <h4 class="album-genres">Album genres</h4>
+            </div>
+            <div class="album-controls">
+                <button class="play-album">PLAY</button>
+                <span><img src="{% static 'img/actions/more-hori.svg' %}" alt="options"></span>
+            </div>
+        </div>
+    </div>
+    <div class="album-tracks"></div>
+</div>

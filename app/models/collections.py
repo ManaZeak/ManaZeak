@@ -34,6 +34,14 @@ class Library(models.Model):
     ## The playlist associated to the library.
     playlist = models.ForeignKey(Playlist, on_delete=models.DO_NOTHING, null=True)
 
+## This class represents history of scans of the application.
+class LibraryScan(models.Model):
+    ## The date of the scan.
+    date = models.DateTimeField(auto_now_add=True)
+    ## The number of tracks added.
+    tracksAdded = models.IntegerField(null=True)
+    ## The number of modified tracks.
+    tracksModified = models.IntegerField(null=True)
 
 ## This class is used to get the information about a library when the scan or the rescan takes place.
 class LibraryScanStatus(models.Model):

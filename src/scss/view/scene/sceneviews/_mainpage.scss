@@ -1,0 +1,128 @@
+.main-page {
+  display: flex;
+  height: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+.mp-suggestion {
+  height: 100%;
+  width: 100%;
+
+  .mp-suggestion-group {
+    margin: 0 var(--mzk-padding-big);
+
+    &:first-child {
+      padding-top: var(--mzk-padding-big);
+    }
+
+    &:last-child {
+      padding-bottom: var(--mzk-padding-big);
+    }
+
+    h1 {
+      border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-alpha-25);
+      font-size: var(--mzk-font-size-big);
+      line-height: var(--mzk-font-size-big);
+      margin-top: var(--mzk-margin-big);
+      text-align: left;
+      width: 50%;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      span {
+        color: var(--mzk-color-text-darker);
+        cursor: pointer;
+        font-size: var(--mzk-font-size-small);
+        font-style: italic;
+        line-height: var(--mzk-font-size-big);
+        margin-left: var(--mzk-margin);
+        text-align: right;
+
+        transition: color var(--mzk-animation-duration) ease-out;
+
+        &:active,
+        &:focus,
+        &:hover {
+          color: var(--mzk-color-primary);
+        }
+      }
+    }
+
+    .mp-suggestion-item-container {
+      --mzk-mp-item-width: calc((100% / 9) - (var(--mzk-margin-small) * 2));
+
+      align-items: flex-start;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-bottom: var(--mzk-margin);
+      padding: var(--mzk-padding);
+
+      .mp-suggestion-item {
+        align-items: center;
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 0 0 0 transparent;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        margin: 0 var(--mzk-margin-small);
+        min-width: 100px;
+        padding: var(--mzk-padding);
+        position: relative;
+        width: var(--mzk-mp-item-width);
+
+        transition: background-color var(--mzk-animation-duration) ease-out,
+                    border-radius var(--mzk-animation-duration) ease,
+                    box-shadow var(--mzk-animation-duration) ease-in;
+
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: var(--mzk-color-primary-alpha-10);
+          border-radius: var(--mzk-border-radius);
+
+          @include box-shadow(0 0 10px 0, var(--mzk-color-primary));
+        }
+
+        img {
+          background-color: var(--mzk-color-bg);
+          border-radius: var(--mzk-border-radius);
+          height: calc(var(--mzk-mp-item-width) - var(--mzk-margin));
+          width: 100%;
+        }
+
+        &.country img {
+          background-color: transparent;
+        }
+
+        .country-flag-wrapper {
+          align-items: center;
+          display: flex;
+
+          &::after {
+            content: '';
+            display: block;
+            padding-bottom: 100%;
+          }
+
+          img {
+            height: inherit;
+          }
+        }
+
+        p {
+          font-size: var(--mzk-font-size-small);
+          margin: 0 var(--mzk-magin-small);
+          padding-top: var(--mzk-padding-small);
+          text-align: center;
+
+          @include clamp-line(2);
+        }
+      }
+    }
+  }
+}

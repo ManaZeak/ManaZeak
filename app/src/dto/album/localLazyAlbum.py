@@ -1,7 +1,11 @@
-## This object is used to describe an album in the lazy loading of the list view.
+import logging
+
+from app.models import Track
 from app.src.dto.track.localLazyTrack import LocalLazyTrack
 
+logger = logging.getLogger('django')
 
+## This object is used to describe an album in the lazy loading of the list view.
 class LocalLazyAlbum(object):
 
     ## Constructor
@@ -33,14 +37,33 @@ class LocalLazyAlbum(object):
         trackId = row[5]
         # This is a new track creating it.
         if self.lastTrackId is None or self.lastTrackId != trackId:
-            self._createTrack(trackId, row)
+            self._createTrackFromRow(trackId, row)
+            self.tracks[self.lastTrackPosition].addGenreFromRow(row)
         # Adding the track artist.
         self.tracks[self.lastTrackPosition].addArtistsFromRow(row)
         # Adding the composer and the performer.
         self.tracks[self.lastTrackPosition].addComposerAndPerformerFromRow(row)
 
+    ## Add the track to the album object
+    def addTrackFromOrm(self):
+        for track in Track.objects.filter(album_id=self.id).order_by('trackNumber'):
+            self.tracks.append(LocalLazyTrack.createTrackFromOrm(track))
+
+    ## Create an album object from the orm.
+    def createAlbumFromOrm(self, album):
+        self.id = album.id
+        self.title = album.title
+        self.year = album.year
+
+        # Creating the track from the orm
+        self.addTrackFromOrm()
+
+    ## Get the number of track of the album.
+    def getNumberOfTracks(self):
+        return len(self.tracks)
+
     ## Creating a track object from the sql row
-    def _createTrack(self, trackId, row):
+    def _createTrackFromRow(self, trackId, row):
         track = LocalLazyTrack()
         track.id = trackId
         track.title = row[6]
@@ -49,7 +72,7 @@ class LocalLazyAlbum(object):
         track.duration = row[9]
         track.cover = row[10]
         track.moodbar = row[11]
-        track.genre = row[12]
         self.lastTrackId = trackId
         self.lastTrackPosition += 1
         self.tracks.append(track)
+

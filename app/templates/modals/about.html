@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="context-transparent-overlay modal-dark-overlay">
+  <div class="modal about-modal">
+    <div class="header">
+      <p>{% trans 'About ManaZeak' %}</p>
+      <span id="about-header-close" class="close">&#10006;</span>
+    </div>
+    <div class="container">
+        <img src="{% static 'img/logo/manazeak-logo.svg' %}" alt="manazeak-logo">
+        <h4>ManaZeak – Version 0.2.1</h4>
+        <p>{% trans 'ManaZeak project started in september 2017, as a graduation project at <a href="https://www.esiea.fr/" target="_blank" rel="noopener noreferrer">ESIEA Paris</a> created by four random music lovers ; Arthur Beaulieu, Pierre Bouniol, Pierre-Balthazar Donadieu de Lavit and Valentin Peiro. The projects amibition is to provide a whole library manager while using the tracks metadata to offer a unique navigation among it ; strict classification leads to an awesome experience.' %}</p>
+        <p>{% trans 'The academic project succesfully ended in February 2018 but Arthur Beaulieu and Pierre Bouniol decided to keep the developement on track ever since to reach this ambition. On this journey to musical smoothiness, Armand Vignat brought his sharp skills in system administration to enhance the app deployement. Raphaël Beekman helped a lot for UI specifications and will for sure help again. Erwan Le Guern did not wrote any line yet, but gave so much of his time helping on defining what ManaZeak is. Finally, Laetitia Genin made the text logo of ManaZeak.' %}</p>
+        <p>{% trans 'Despite the fact that this instance of ManaZeak is private, the source code of the application is open source and can be found on GitHub. We are currently two project maintainers, but any contribution of any kind is a great reward for us ! Feature ideas, pull request, wiki entries, discussion on features are welcome :) Contact us at support@manazeak.org' %}</p>
+    </div>
+      <div class="footer">
+      <button id="about-close" class="primary">{% trans 'Close' %}</button>
+    </div>
+  </div>
+</div>
