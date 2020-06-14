@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
 
     db:
@@ -13,8 +13,8 @@ services:
 
     web:
         build:
-            context: .
-            dockerfile: docker/django/Dockerfile
+            context: docker/django
+            target: app
         container_name: manazeak_app
         # Dev command
         # command: bash -c "python3 manage.py migrate && python3 manage.py initialiseDB && python3 manage.py runserver 0.0.0.0:8000"
@@ -27,10 +27,12 @@ services:
         links:
             - syncthing:st
             - db
+            - cache
         ports:
             - "127.0.0.1:8000:8000"
         depends_on:
             - db
+            - cache
 
     nginx:
         image: nginx:latest
@@ -49,6 +51,7 @@ services:
     moodbar:
         build:
             context: docker/moodbar
+            target: mood
         container_name: manazeak_moodbar
         volumes:
             - ./music:/library
@@ -67,6 +70,11 @@ services:
             - "127.0.0.1:8384:8384"
             - "22000:22000"
             - "21027:21027/udp"
+
+    cache:
+        image: memcached
+        container_name: manazeak_memcached
+        command: bash -c "memcached -I 5m -m 1000m"
 
 #    transmission:
 #        image: linuxserver/transmission
