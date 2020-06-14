@@ -9,7 +9,7 @@ before_install:
 before_script:
   - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
 install:
-  - pip install -r requirements.txt
+  - pip install -r docker/django/requirements.txt
   - mv docker-compose.yml.travis docker-compose.yml
   - mkdir database
   - docker-compose build
