@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<RefData version="1.0" exporter="EA.25">
+	<DataSet name="Model Data Types - Code and DDL" table="t_datatypes" filter="Type='#Type#' and ProductName='#ProductName#' and DataType='#DataType#'" stoplist=";DatatypeID;">
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="byte"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Byte"/>
+			<Column name="DatatypeID" value="73"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="char"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Char"/>
+			<Column name="DatatypeID" value="74"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="int"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Integer"/>
+			<Column name="DatatypeID" value="75"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="short"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Short"/>
+			<Column name="DatatypeID" value="76"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="boolean"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Boolean"/>
+			<Column name="DatatypeID" value="77"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="long"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Long"/>
+			<Column name="DatatypeID" value="78"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="float"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Float"/>
+			<Column name="DatatypeID" value="79"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="double"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxPrec" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="DefaultLen" value="0"/>
+			<Column name="DefaultPrec" value="0"/>
+			<Column name="DefaultScale" value="0"/>
+			<Column name="User" value="0"/>
+			<Column name="GenericType" value="Double"/>
+			<Column name="DatatypeID" value="80"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoId"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="long"/>
+			<Column name="DatatypeID" value="955"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoCode"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="5"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="968"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoOuiNon"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="boolean"/>
+			<Column name="DatatypeID" value="975"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoDate"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="LocalDate"/>
+			<Column name="DatatypeID" value="977"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero15"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="15"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="long"/>
+			<Column name="DatatypeID" value="980"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero9"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="9"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="981"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero3"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="3"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="982"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero2"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="2"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="983"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte2"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="2"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="984"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoInt"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="1"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="987"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte50"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="50"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="988"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte200"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="200"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="989"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte500"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="500"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="990"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoPassword"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="500"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="997"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="String"/>
+			<Column name="DatatypeID" value="998"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero5"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="5"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="999"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero6"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="6"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="1000"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoDateTime"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="LocalDateTime"/>
+			<Column name="DatatypeID" value="1002"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoNumero1"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="1"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="int"/>
+			<Column name="DatatypeID" value="1007"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte1"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="1"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="1009"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte32"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="32"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="1010"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte100"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="100"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="1011"/>
+		</DataRow>
+		<DataRow>
+			<Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoTexte1000"/>
+			<Column name="Size" value="1"/>
+			<Column name="MaxLen" value="1000"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="string"/>
+			<Column name="DatatypeID" value="1012"/>
+		</DataRow>
+	</DataSet>
+</RefData>

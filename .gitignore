@@ -106,8 +106,8 @@ $RECYCLE.BIN/
 *.lnk
 
 ### Docker ###
-docker-compose.yml
 db_data
+.env
 
 /package-lock.json
 
