@@ -24,3 +24,18 @@ RUN mv /BOOT-INF/classes/* /app/
 RUN echo $(ls /app/)
 # Launching the app
 ENTRYPOINT ["java","-cp","app:app/lib/*","org.manazeak.manazeak.ManaZeakApplication"]
+
+# Creating the production image
+FROM adoptopenjdk/openjdk11:alpine-slim as app_debug
+# Getting the jar from the builder container.
+COPY --from=builder /ManaZeak/target/*.jar /manazeak.jar
+# Unpacking the jar
+RUN jar -xf manazeak.jar
+RUN mkdir app
+# Moving the app executable into a folder
+RUN mv /BOOT-INF/lib /app
+RUN mv /META-INF /app
+RUN mv /BOOT-INF/classes/* /app/
+RUN echo $(ls /app/)
+# Launching the app
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-cp","app:app/lib/*","org.manazeak.manazeak.ManaZeakApplication"]

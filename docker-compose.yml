@@ -10,16 +10,21 @@ services:
             POSTGRES_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ${DB_DATA}:/var/lib/postgresql/data
+        # ports:
+        #    - "5432:5432"
 
     back:
         build:
             context: back
-            target: app
+            target: ${BACK_TARGET}
         container_name: manazeak_app
         links:
             - db
         depends_on:
             - db
+        # Debug ports.
+        # ports:
+        #    - "5005:5005"
 
     nginx:
         image: nginx:latest

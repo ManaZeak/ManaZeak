@@ -134,3 +134,4 @@ coverage.xml
 /static/covers/
 /static/pictures/**
 /static/thumb/**
+/back/target/
