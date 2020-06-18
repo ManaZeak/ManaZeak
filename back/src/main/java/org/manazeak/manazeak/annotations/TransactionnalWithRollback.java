@@ -1,4 +1,4 @@
-package org.manazeak.manameax.annotations;
+package org.manazeak.manazeak.annotations;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation allows to rollback for every exception thrown by the application.
- *
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

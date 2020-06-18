@@ -1,19 +1,11 @@
 package org.manazeak.manazeak.dto.user;
 
 import org.manazeak.manazeak.dto.DtObject;
-import org.springframework.context.annotation.Bean;
-
-import java.io.Serializable;
 
 /**
  * Object containing the information to give to the front.
  */
 public class LightUserDto extends DtObject {
-
-    public LightUserDto(){
-        this.userId=1L;
-        this.username="cock";
-    }
 
     /**
      * The id of the user.
@@ -23,6 +15,11 @@ public class LightUserDto extends DtObject {
      * The username of the user.
      */
     private String username;
+
+    public LightUserDto() {
+        this.userId = 1L;
+        this.username = "cock";
+    }
 
     public Long getUserId() {
         return userId;
