@@ -16,10 +16,13 @@
     </facet>
     <facet type="web" name="Web">
       <configuration>
-        <webroots />
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp/WEB-INF" relative="/" />
+        </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/src/main/javagen" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -153,5 +156,9 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.6.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-test:5.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.3.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:Release" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:Release1" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:Release2" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:Release3" level="project" />
   </component>
 </module>

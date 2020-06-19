@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.controller.user;
+package org.manazeak.manazeak.controller.rest.user;
 
 import org.manazeak.manazeak.dto.user.LightUserDto;
 import org.slf4j.Logger;
@@ -16,9 +16,9 @@ import java.net.URISyntaxException;
  * This class handle the login of a user.
  */
 @RestController
-public class LoginController {
+public class LoginControllerRest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginControllerRest.class);
 
     @GetMapping("/test/")
     public String test() {

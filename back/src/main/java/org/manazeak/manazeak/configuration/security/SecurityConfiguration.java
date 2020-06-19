@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,6 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // pas de création de session (pas de cookie)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/test5/").anonymous()
+                .and()
+                .authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin();
@@ -52,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @param auth builder for the authentication.
      */
     @Autowired
-    public void configAuthentication(final AuthenticationManagerBuilder auth, final UserDetailsService userDetailsService) {
+    public void configAuthentication(final AuthenticationManagerBuilder auth, @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
         auth.authenticationProvider(authenticationProvider(userDetailsService));
     }
 
@@ -62,7 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @return Authentication provider.
      */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(final UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authenticationProvider(@Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());

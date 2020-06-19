@@ -10,8 +10,8 @@ services:
             POSTGRES_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ${DB_DATA}:/var/lib/postgresql/data
-        # ports:
-        #    - "5432:5432"
+        ports:
+            - "5432:5432"
 
     back:
         build:
@@ -23,8 +23,8 @@ services:
         depends_on:
             - db
         # Debug ports.
-        # ports:
-        #    - "5005:5005"
+        ports:
+            - "5005:5005"
 
     nginx:
         image: nginx:latest
