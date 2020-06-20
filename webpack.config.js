@@ -1,36 +1,34 @@
 module.exports = env => {
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
   const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // Js minify
   const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-  const CleanWebpackPlugin = require('clean-webpack-plugin');
   const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin"); // CSS minifier
   const path = require('path');
 
   const SRC = path.resolve(__dirname, 'static');
   const DIST = path.resolve(__dirname, 'static/dist');
 
-  const cssLoaders = [
-    {
-      loader: 'css-loader',
-      options: {
-        importLoaders: 1
-      }
+  const cssLoaders = [{
+    loader: 'css-loader',
+    options: {
+      importLoaders: 1
     }
-  ];
+  }];
 
   if (env.prod === 'true') {
-    cssLoaders.push({ // For production: we autoprefix all specific rules to fit most browsers need
+    cssLoaders.push({
       loader: 'postcss-loader',
       options: {
-        plugins: (loader) => [
+        plugins: () => [
           require('autoprefixer')({
-            browsers: ['last 2 versions']
+            browserlist: ['last 2 versions']
           })
         ]
       }
     });
   }
   // Default entrypoint for ManaZeak
-  let entry = { manazeak: ['./src/js/Start.js', './src/scss/style.scss'] };
+  let entry = { manazeak: ['./front/js/StartSession.js', './front/scss/manazeak.scss'] };
   // Plugin loading
   const fs = require('fs');
   if (fs.existsSync('./plugins/MzkWorldMap/js/MzkWorldMap.js')) { // Bundle MzkWorldMap if existing
@@ -72,11 +70,7 @@ module.exports = env => {
       ]
     },
     plugins: [
-      new CleanWebpackPlugin(['static/dist'], {
-        root: path.resolve('./'),
-        verbose: true,
-        dry: false
-      }),
+      new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[name].bundle.css'
       })

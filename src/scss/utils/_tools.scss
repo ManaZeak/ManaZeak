@@ -1,6 +1,0 @@
-@import 'tools/colors'; // Mzk color convention
-@import 'tools/variables'; // Mzk misc unified css rules
-@import 'tools/mixins'; // App mixins
-@import 'tools/keyframes'; // App keyframes
-@import 'tools/global'; // Define global style for native tags (after every Mzk framework tool and colors has been set)
-// _responsive.scss must be included last to properly override the standard value
