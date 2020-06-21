@@ -5,25 +5,25 @@ module.exports = function(config) {
     browsers: ['Firefox'],
     frameworks: ['jasmine'],
     files: [
-      './test-context.js'
+      './front/test/test-context.js'
     ],
     proxies: {
       '/static/': '/base/test/static/'
     },
     reporters: ['progress', 'coverage'],
     preprocessors: {
-      './test-context.js': ['webpack', 'sourcemap']
+      './front/test/test-context.js': ['webpack', 'sourcemap']
       //'./static/js/core/**/*.js': ['webpack', 'sourcemap', 'coverage']
     },
     babelPreprocessor: {
       options: {
-        presets: ["env"],
+        presets: ['env'],
         sourceMap: true
       }
     },
     coverageReporter: {
       type : 'lcov',
-      dir : './coverage/',
+      dir : './front/test/coverage/',
       subdir: (browser) => {
         // normalization process to keep a consistent browser name across different OS
         return browser.split(/[ /-]/)[0];
