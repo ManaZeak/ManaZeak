@@ -1,25 +1,27 @@
 package org.manazeak.manazeak.configuration.web;
 
-import org.manazeak.manazeak.util.ArrayUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.spring5.ISpringTemplateEngine;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @EnableWebMvc
 @Configuration
-// Scanning only the web pages.
+// Scanning only the web controllers.
 @ComponentScan(basePackages = { "org.manazeak.manazeak.controller.html" })
 public class WebConfiguration implements ApplicationContextAware, WebMvcConfigurer {
 
@@ -31,53 +33,81 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
     }
 
     /**
-     * Create the view resolver.
-     * @return the html view resolver.
+     * Generating the template resolver.
+     * @return the class loader for the template resolver.
      */
     @Bean
-    public ViewResolver htmlViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
-        resolver.setContentType("text/html");
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setViewNames(ArrayUtil.createArray("*.html"));
-        return resolver;
+    public ClassLoaderTemplateResolver templateResolver() {
+
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+
+        templateResolver.setPrefix("templates/");
+        templateResolver.setCacheable(true);
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCharacterEncoding("UTF-8");
+
+        return templateResolver;
     }
 
     /**
-     * The message resolver of spring.
-     * @return the source message.
+     * Loads the template engine.
+     * @return The template engine.
      */
     @Bean
-    public ResourceBundleMessageSource messageSource() {
+    public SpringTemplateEngine templateEngine() {
+
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+
+        return templateEngine;
+    }
+
+    /**
+     * Creating the thymeleaf template resolver.
+     * @return the thymeleaf template resolver.
+     */
+    @Bean
+    public ViewResolver viewResolver() {
+
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+
+        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
+
+        return viewResolver;
+    }
+
+    /**
+     * Configuration for internationalization.
+     * @return the message.
+     */
+    @Bean
+    public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
+        messageSource.setBasename("i18n/messages");
+        messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
     /**
-     * Create The template engine.
-     * @param templateResolver The template resolver.
-     * @return the template engine.
+     * How to get the local of a user.
+     * @return the local of the user.
      */
-    private ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
-        SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.setTemplateResolver(templateResolver);
-        engine.setTemplateEngineMessageSource(messageSource());
-        return engine;
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new AcceptHeaderLocaleResolver();
     }
 
-    /**
-     * Create the template resolver.
-     * @return The template resolver.
-     */
-    private ITemplateResolver htmlTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/WEB-INF/templates/");
-        resolver.setCacheable(false);
-        resolver.setTemplateMode(TemplateMode.HTML);
-        return resolver;
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 }
