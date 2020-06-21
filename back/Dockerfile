@@ -3,12 +3,12 @@ FROM maven:3.6.3-openjdk-11 as builder
 ADD pom.xml pom.xml
 # Downloading the dependancies.
 # This is used to use the docker cache and avoiding to download the package every time.
-RUN mvn verify install --fail-never
+RUN mvn clean verify --fail-never
 
 # Adding source files.
 ADD ./ /ManaZeak
 WORKDIR /ManaZeak
-RUN mvn clean compile package -DskipTests
+RUN mvn clean package -DskipTests
 
 
 # Creating the production image
@@ -21,7 +21,6 @@ RUN mkdir app
 # Moving the app executable into a folder
 RUN mv /BOOT-INF/lib /app
 RUN mv /META-INF /app
-RUN echo $(ls /BOOT-INF/classes/)
 RUN mv /BOOT-INF/classes/* /app/
 # Launching the app
 ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-cp","app:app/lib/*","org.manazeak.manazeak.ManaZeakApplication"]
@@ -39,7 +38,6 @@ RUN mkdir app
 RUN mv /BOOT-INF/lib /app
 RUN mv /META-INF /app
 RUN mv /BOOT-INF/classes/* /app/
-RUN echo $(ls /app/)
 # Launching the app
 ENTRYPOINT ["java","-cp","app:app/lib/*","org.manazeak.manazeak.ManaZeakApplication"]
 
