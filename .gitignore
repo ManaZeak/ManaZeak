@@ -177,7 +177,7 @@ static/img/covers/**
 static/lib/**
 static/zip/**
 static/plugins/**
-front/js/test/coverage/
+front/test/coverage/
 
 *.mood
 

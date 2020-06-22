@@ -8,6 +8,7 @@
     "debug": "webpack --env.prod=false --progress --display-error-details --verbose --profile",
     "prod": "webpack --env.prod=true --progress",
     "test": "karma start front/test/karma.config.js",
+    "testdev": "karma start front/test/karma.config.js --dev=true",
     "doc": "jsdoc -c ./doc/config/jsDoc.json",
     "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },

@@ -1,9 +1,14 @@
 module.exports = function(config) {
   config.set({
     basePath: '../..',
-    singleRun: false,
-    browsers: ['Firefox'],
+    singleRun: !config.dev, // Keep browser open in dev mode
+    browsers: ['Firefox', 'Chromium'],
     frameworks: ['jasmine'],
+    client: {
+      jasmine: {
+        random: !config.dev // Randomized in !dev mode
+      }
+    },
     files: [
       './front/test/test-context.js'
     ],
