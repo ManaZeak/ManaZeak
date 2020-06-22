@@ -72,8 +72,8 @@ class CustomEvents {
    * @returns {number|boolean} - The event ID to use to manually remove an event, false if arguments are invalid */
   addEvent(eventName, element, callback, scope = element, options = false) {
     // Missing mandatory arguments
-    if (eventName === undefined || eventName === null ||
-      element === undefined || element === null ||
+    if (eventName === null || eventName === undefined ||
+      element === null || element === undefined ||
       callback === null || callback === undefined) {
       if (this._debug) { console.error('Events.addEvent', 'Missing mandatory arguments'); }
       return false;
