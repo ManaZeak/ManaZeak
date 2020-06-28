@@ -25,6 +25,8 @@ services:
         # Debug ports.
         ports:
             - "5005:5005"
+            - "8080:8080"
+            - "35729:35729"
 
     nginx:
         image: nginx:latest

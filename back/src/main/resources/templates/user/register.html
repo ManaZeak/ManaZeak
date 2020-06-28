@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ManaZeak - Register</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1 th:text="#{label.register.title}">form</h1>
+
+<form th:object="${user}" method="POST">
+    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    <div>
+        <label th:text="#{label.user.login}">first</label>
+        <input th:field="*{username}"/>
+        <p th:each="error : ${#fields.errors('username')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.password}">password</label>
+        <input type="password" th:field="*{password1}"/>
+        <p th:each="error : ${#fields.errors('password1')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.confirm_pass}">confirm</label>
+        <input type="password" th:field="*{password2}"/>
+        <p th:each="error : ${#fields.errors('password2')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.surname}">last</label>
+        <input th:field="*{surname}"/>
+        <!-- <p th:each="error : ${#fields.errors('surname')}"
+           th:text="${error}">Validation error</p> !-->
+    </div>
+    <div>
+        <label th:text="#{label.user.email}">email</label>
+        <input type="email" th:field="*{mail}"/>
+        <p th:each="error : ${#fields.errors('mail')}"
+           th:text="${error}">Validation error</p>
+    </div>
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit" th:text="#{label.register.submit}">submit</button>
+</form>
+</body>
+</html>

@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.controller.rest.user;
 
-import org.manazeak.manazeak.dto.user.LightUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -23,11 +22,6 @@ public class LoginControllerRest {
     @GetMapping("/test/")
     public String test() {
         return "test";
-    }
-
-    @GetMapping("/test2/")
-    public LightUserDto test2() {
-        return new LightUserDto();
     }
 
     @GetMapping("/play/")

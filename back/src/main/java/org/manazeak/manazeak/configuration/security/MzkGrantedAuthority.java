@@ -16,7 +16,7 @@ public class MzkGrantedAuthority implements GrantedAuthority {
      * @param privilege The privilege used to create the authority.
      */
     public MzkGrantedAuthority(Privilege privilege) {
-        authorityName = "PRI_" + privilege.getCodePrivilege();
+        authorityName = privilege.getCodePrivilege();
     }
 
     /**

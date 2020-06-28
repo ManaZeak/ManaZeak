@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.user;
 
+import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 
@@ -15,6 +16,14 @@ public interface UserService {
      * @return the user corresponding to the username.
      */
     Optional<MzkUser> findByUsername(final String username);
+
+    /**
+     * This function will prepare and insert into the database a user.
+     *
+     * @param userToCreate the user that will be created.
+     * @return the created user.
+     */
+    MzkUser createUser(final NewUserDto userToCreate);
 
     /**
      * Get the list of privileges of a username.

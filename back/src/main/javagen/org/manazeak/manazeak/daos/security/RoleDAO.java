@@ -10,5 +10,12 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface RoleDAO extends CrudRepository<Role, Long> {
 
+    /**
+     * Get a role by it's id.
+     *
+     * @return the role.
+     */
+    Role getRoleByRoleId(Long id);
+
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -33,7 +33,7 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || "".equals(username)) {
             // Can't find user.
-            throw new AuthenticationCredentialsNotFoundException("User not found");
+            throw new MzkRuntimeException("No username given.");
         }
         // Getting the user for the database.
         final Optional<MzkUser> user = userService.findByUsername(username);

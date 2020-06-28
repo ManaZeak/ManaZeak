@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManaZeak - login</title>
+</head>
+<body>
+    <form th:object="${user}" method="POST">
+        <div th:if="${param.error}">
+            <p th:text="#{error.login.fail}">login fail</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.login}">first</label>
+            <input th:field="*{username}"/>
+            <p th:each="error : ${#fields.errors('username')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.password}">password</label>
+            <input type="password" th:field="*{password}"/>
+            <p th:each="error : ${#fields.errors('password')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" th:text="#{label.login.login}">submit</button>
+    </form>
+</body>
+</html>

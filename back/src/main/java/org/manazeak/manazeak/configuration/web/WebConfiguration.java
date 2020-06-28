@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.configuration.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -7,14 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -22,10 +20,13 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @EnableWebMvc
 @Configuration
 // Scanning only the web controllers.
-@ComponentScan(basePackages = { "org.manazeak.manazeak.controller.html" })
+@ComponentScan(basePackages = {"org.manazeak.manazeak.controller.html"})
 public class WebConfiguration implements ApplicationContextAware, WebMvcConfigurer {
 
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private MzkLocalResolver localResolver;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -34,6 +35,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * Generating the template resolver.
+     *
      * @return the class loader for the template resolver.
      */
     @Bean
@@ -44,7 +46,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
         templateResolver.setPrefix("templates/");
         templateResolver.setCacheable(true);
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setTemplateMode("HTML");
         templateResolver.setCharacterEncoding("UTF-8");
 
         return templateResolver;
@@ -52,6 +54,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * Loads the template engine.
+     *
      * @return The template engine.
      */
     @Bean
@@ -65,6 +68,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * Creating the thymeleaf template resolver.
+     *
      * @return the thymeleaf template resolver.
      */
     @Bean
@@ -78,36 +82,33 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
         return viewResolver;
     }
 
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
+    }
+
     /**
      * Configuration for internationalization.
+     *
      * @return the message.
      */
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("i18n/messages");
+        messageSource.setBasename("i18n/message");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
     /**
      * How to get the local of a user.
+     *
      * @return the local of the user.
      */
     @Bean
     public LocaleResolver localeResolver() {
-        return new AcceptHeaderLocaleResolver();
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang");
-        return lci;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+        return localResolver;
     }
 }

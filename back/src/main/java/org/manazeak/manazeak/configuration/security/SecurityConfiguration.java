@@ -1,7 +1,10 @@
 package org.manazeak.manazeak.configuration.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,6 +25,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfiguration.class);
+    @Value("${app.dev}")
+    private boolean dev_mode;
+
     /**
      * Setting the context of the security to the local thread.
      */
@@ -37,17 +44,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
+        // Allowing the spring dev tools.
+        if (dev_mode) {
+            LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
+            httpSecurity
+                    .authorizeRequests()
+                    .antMatchers("/.~~spring-boot!~/restart")
+                    .anonymous()
+                    .and()
+                    .csrf().ignoringAntMatchers("/.~~spring-boot!~/restart");
+        }
         httpSecurity
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // pas de création de session (pas de cookie)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Creates a session if required.
                 .and()
                 .authorizeRequests()
-                .antMatchers("/test5/").anonymous()
+                .antMatchers("/register", "/login").permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login")
+
+        ;
     }
 
     /**
@@ -71,14 +91,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
-    }
-
-    /**
-     * Hash of the provided password.
-     */
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 
     /**
