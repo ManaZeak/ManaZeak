@@ -1,6 +1,8 @@
 package org.manazeak.manazeak.service.error;
 
+import org.manazeak.manazeak.constant.errors.ErrorEnum;
 import org.manazeak.manazeak.entity.dto.KommunicatorObject;
+import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
@@ -12,10 +14,17 @@ import java.util.Locale;
 public interface ErrorHandlerService {
 
     /**
-     * Get the communicator object from the errors of the validation.
+     * Creates a rest exception when the a field validation wasn't ok.
+     *
      * @param errors the errors of the validator.
      * @param locale The locale of the user to translate the message correctly.
-     * @return the communicator object.
      */
-    KommunicatorObject createKommunicatorObjectFromError(Iterable<FieldError> errors, Locale locale);
+    void generateRestErrorFromException(Iterable<FieldError> errors, Locale locale) throws MzkRestException;
+
+    /**
+     * Creates a rest exception with a list of {@link ErrorEnum}.
+     * @param errors the errors that needs to be send to the user.
+     */
+    void generateRestErrorFromErrorEnum(ErrorEnum... errors);
+
 }

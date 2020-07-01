@@ -2,6 +2,7 @@ package org.manazeak.manazeak.service.user;
 
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
+import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 
 /**
@@ -20,5 +21,11 @@ public interface UserManager {
      * Change the current user password.
      * @param newPasswords the object containing the new passwords.
      */
-    void changeCurrentUserPassword(ResetPasswordDto newPasswords);
+    void changeCurrentUserPassword(ResetPasswordDto newPasswords, MzkUser user);
+
+    /**
+     * Change the password of the given user.
+     * @param resetUserPassword the object containing the password and the userId.
+     */
+    void changeUserPassword(ResetUserPasswordDto resetUserPassword);
 }

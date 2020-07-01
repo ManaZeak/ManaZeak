@@ -1,18 +1,36 @@
 package org.manazeak.manazeak.exception;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * This exception is used by the errors in the WS controller.
  */
 public class MzkRestException extends Exception {
 
-    private final String message;
+    private final Set<String> messages = new HashSet<>();
 
-    public MzkRestException(String message) {
-        this.message = message;
+    public MzkRestException() {
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    public Set<String> getMessages() {
+        return messages;
+    }
+
+    /**
+     * Add one message to the set of messages.
+     * @param message the exception message to add.
+     */
+    public void addMessage(String message) {
+        messages.add(message);
+    }
+
+    /**
+     * Add multiple message to the exception.
+     * @param messages the messages to add into the exception.
+     */
+    public void addMessages(List<String> messages) {
+        this.messages.addAll(messages);
     }
 }

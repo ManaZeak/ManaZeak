@@ -2,6 +2,7 @@ package org.manazeak.manazeak.controller.rest;
 
 import org.manazeak.manazeak.entity.dto.KommunicatorObject;
 import org.manazeak.manazeak.exception.MzkRestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Service
 public abstract class AbstractRestController {
 
-    private final MessageSource messageGetter;
-
-    public AbstractRestController(MessageSource messageSource) {
-        this.messageGetter = messageSource;
-    }
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * Handle the MzkRestException of the controller.
@@ -27,7 +25,7 @@ public abstract class AbstractRestController {
     @ExceptionHandler(MzkRestException.class)
     public KommunicatorObject handleException(MzkRestException e){
         // Building a error message from the available information.
-        return new KommunicatorObject(false, messageGetter.getMessage(e.getMessage(), null,
+        return new KommunicatorObject(false, messageSource.getMessage(e.getMessage(), null,
                 LocaleContextHolder.getLocale()));
     }
 }

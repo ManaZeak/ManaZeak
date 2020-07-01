@@ -1,17 +1,23 @@
 package org.manazeak.manazeak.service.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.constant.errors.ErrorEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
+import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Role;
-import org.manazeak.manazeak.util.DateUtil;
+import org.manazeak.manazeak.service.error.ErrorHandlerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -31,10 +37,16 @@ public class UserManagerImpl implements UserManager {
      */
     private final PasswordEncoder passEncoder;
 
-    public UserManagerImpl(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO) {
+    private final ErrorHandlerService errorHandlerService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserManagerImpl.class);
+
+    public UserManagerImpl(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO,
+                           ErrorHandlerService errorHandlerService) {
         this.roleDAO = roleDAO;
         this.passEncoder = passEncoder;
         this.userDAO = userDAO;
+        this.errorHandlerService = errorHandlerService;
     }
 
     /**
@@ -45,7 +57,8 @@ public class UserManagerImpl implements UserManager {
         // Getting the default role for a new user.
         Role defaultRole = roleDAO.getRoleByRoleId(RoleEnum.USER.getId());
         // Creating the user to insert.
-        MzkUser user = loadMzkUserFromNewUser(newUser);
+        MzkUser user = UserHelper.loadMzkUserFromNewUser(newUser);
+        user.setPassword(passEncoder.encode(newUser.getPassword1()));
         user.setRole(defaultRole);
         user.setIsActive(true);
         // Saving the user in the database.
@@ -57,22 +70,32 @@ public class UserManagerImpl implements UserManager {
      * {@inheritDoc}
      */
     @Override
-    public void changeCurrentUserPassword(ResetPasswordDto newPasswords) {
-        // Checking witch user has to be modified.
-
+    public void changeCurrentUserPassword(ResetPasswordDto newPasswords, MzkUser currentUser) {
+        encryptAndSaveUserPassword(currentUser, newPasswords.getNewPassword1());
+        LOG.info("The user {} changed his password.", currentUser.getUsername());
     }
 
-    public MzkUser loadMzkUserFromNewUser(NewUserDto newUser) {
-        MzkUser user = new MzkUser();
-        user.setUsername(newUser.getUsername());
-        user.setPassword(passEncoder.encode(newUser.getPassword1()));
-        user.setBio(newUser.getBio());
-        user.setLocale(newUser.getLocale());
-        user.setBirthDate(DateUtil.parseString(newUser.getBirthDate(), DateUtil.FR_DATE_FORMATTER));
-        // TODO: add country.
-        user.setMail(newUser.getMail());
-        user.setSurname(newUser.getSurname());
-        user.setName(newUser.getName());
-        return user;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void changeUserPassword(ResetUserPasswordDto resetUserPassword) {
+        // Getting the user from the id.
+        Optional<MzkUser> user = userDAO.findById(resetUserPassword.getUserId());
+        user.ifPresentOrElse(
+                // If the user was found.
+                (MzkUser mzkUser) -> encryptAndSaveUserPassword(mzkUser, resetUserPassword.getPassword()),
+                // If the user wasn't found.
+                () -> errorHandlerService.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND)
+        );
+    }
+
+    /**
+     * Change the password of a user.
+     */
+    private void encryptAndSaveUserPassword(MzkUser user, String password) {
+        String encodedPass = passEncoder.encode(password);
+        user.setPassword(encodedPass);
+        userDAO.save(user);
     }
 }

@@ -1,8 +1,11 @@
 package org.manazeak.manazeak.service.error;
 
+import org.manazeak.manazeak.constant.errors.ErrorEnum;
 import org.manazeak.manazeak.entity.dto.KommunicatorObject;
+import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
@@ -27,13 +30,26 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService{
      * {@inheritDoc}
      */
     @Override
-    public KommunicatorObject createKommunicatorObjectFromError(Iterable<FieldError> errors, Locale locale) {
-        // In this case, we are in a error state, so the status is not done.
-        KommunicatorObject response = new KommunicatorObject(false);
-        // Adding the errors to the kommunicator object.
+    public void generateRestErrorFromException(Iterable<FieldError> errors, Locale locale) throws MzkRestException {
+        // Generating the exception.
+        MzkRestException exception = new MzkRestException();
+        // Adding the errors to the exception.
         for (FieldError error : errors) {
-            response.addError(messageGetter.getMessage(error, locale));
+            exception.addMessage(messageGetter.getMessage(error, locale));
         }
-        return response;
+        throw exception;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) {
+        MzkRestException exception = new MzkRestException();
+        Locale userLocale = LocaleContextHolder.getLocale();
+        // Adding the errors for the enum.
+        for (ErrorEnum error : errors) {
+            exception.addMessage(messageGetter.getMessage(error.getKey(), null, userLocale));
+        }
     }
 }

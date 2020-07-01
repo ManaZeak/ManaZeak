@@ -6,8 +6,12 @@ import org.manazeak.manazeak.controller.rest.AbstractRestController;
 import org.manazeak.manazeak.entity.dto.KommunicatorObject;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
+import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
+import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.service.error.ErrorHandlerService;
-import org.springframework.context.MessageSource;
+import org.manazeak.manazeak.service.user.UserManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +27,16 @@ import java.util.Locale;
 @RestController
 public class ResetPasswordController extends AbstractRestController {
 
+    /**
+     * Allows to handle the front errors.
+     */
     private final ErrorHandlerService errorHandler;
 
-    public ResetPasswordController(ErrorHandlerService errorHandler, MessageSource messageSource) {
-        super(messageSource);
+    private final UserManager userManager;
+
+    public ResetPasswordController(ErrorHandlerService errorHandler, UserManager userManager) {
         this.errorHandler = errorHandler;
+        this.userManager = userManager;
     }
 
     @GetMapping("/test")
@@ -37,21 +46,37 @@ public class ResetPasswordController extends AbstractRestController {
     }
 
     /**
-     * Reset the password of the user.
+     * Reset the password of the current user.
      *
      * @param resetPasswordDto Containing the new password of the user.
+     * @param user The user making the request.
+     * @param result the result of the validation.
      * @param locale           The locale used by the user.
      * @return the status of the request.
      */
     @PostMapping("/resetPassword")
-    public KommunicatorObject changeUserPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,
-                                                 BindingResult result, Locale locale) {
+    public KommunicatorObject changeCurrentUserPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,
+                                                        @AuthenticationPrincipal MzkUser user,
+                                                        BindingResult result, Locale locale) throws MzkRestException {
         // If there is validation error.
         if (result.hasErrors()) {
-            return errorHandler.createKommunicatorObjectFromError(result.getFieldErrors(), locale);
+            errorHandler.generateRestErrorFromException(result.getFieldErrors(), locale);
         }
         // No validation errors, we proceed to change the user password.
+        userManager.changeCurrentUserPassword(resetPasswordDto, user);
+        // Success.
+        return new KommunicatorObject(true);
+    }
 
+    /**
+     * Change the password of a user.
+     * @return the status of the request.
+     */
+    @PostMapping("/resetUserPassword")
+    @RestSecurity(PrivilegeEnum.ADMV)
+    public KommunicatorObject changeUserPassword(ResetUserPasswordDto resetPasswordDto){
+        userManager.changeUserPassword(resetPasswordDto);
+        // Success.
         return new KommunicatorObject(true);
     }
 }
