@@ -257,7 +257,6 @@
 			<id>travis</id>
 			<build>
 				<plugins>
-					<plugin></plugin>
 					<!-- Plugin coverage analysis -->
 					<plugin>
 						<groupId>org.jacoco</groupId>
