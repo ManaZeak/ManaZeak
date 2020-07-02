@@ -1,10 +1,10 @@
 package org.manazeak.manazeak.service.error;
 
 import org.manazeak.manazeak.constant.errors.ErrorEnum;
-import org.manazeak.manazeak.entity.dto.KommunicatorObject;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
@@ -22,7 +22,7 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService{
      */
     private final MessageSource messageGetter;
 
-    public ErrorHandlerServiceImpl(@Qualifier("messageSource") MessageSource messageGetter) {
+    public ErrorHandlerServiceImpl(@Lazy @Qualifier("messageSource") MessageSource messageGetter) {
         this.messageGetter = messageGetter;
     }
 

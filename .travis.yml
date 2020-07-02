@@ -5,10 +5,14 @@ git:
   depth: false
 before_install:
   - git fetch
+  - docker-compose start db
   - cd back
 addons:
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
+  # The url of the database in a container.
+  hosts:
+    - db
 script:
   - mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak
