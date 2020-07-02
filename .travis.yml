@@ -1,14 +1,14 @@
 sudo: required
 dist: xenial
+language: java
 git:
   depth: false
 before_install:
   - git fetch
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq pylint
+  - cd back
 addons:
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
 script:
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=ManaZeak
+  - mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak
