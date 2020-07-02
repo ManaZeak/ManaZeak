@@ -5,6 +5,7 @@ git:
   depth: false
 before_install:
   - git fetch
+  - cp .env.travis .env
   - docker-compose start db
   - cd back
 addons:
