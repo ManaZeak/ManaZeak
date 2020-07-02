@@ -3,7 +3,7 @@ dist: xenial
 git:
   depth: false
 before_install:
-  - git fetch --unshallow
+  - git fetch
   - sudo apt-get update -qq
   - sudo apt-get install -qq pylint
 addons:
