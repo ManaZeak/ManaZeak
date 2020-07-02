@@ -10,8 +10,18 @@ import java.util.Set;
 public class MzkRestException extends Exception {
 
     private final Set<String> messages = new HashSet<>();
-
+    /**
+     * Create an exception.
+     */
     public MzkRestException() {
+    }
+
+    /**
+     * Create an exception with only one message.
+     * @param message The message contained in the exception.
+     */
+    public MzkRestException(String message) {
+        messages.add(message);
     }
 
     public Set<String> getMessages() {
