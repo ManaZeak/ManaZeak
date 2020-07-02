@@ -1,24 +1,14 @@
 sudo: required
 dist: xenial
-language: python
-python: 3.7
+git:
+  depth: false
 before_install:
   - git fetch --unshallow
   - sudo apt-get update -qq
   - sudo apt-get install -qq pylint
-before_script:
-  - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
-install:
-  - pip install -r docker/django/requirements.txt
-  - mv docker-compose.yml.travis docker-compose.yml
-  - mkdir database
-  - docker-compose build
-  - docker-compose up -d
-  - sudo rm -rf database
 addons:
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
 script:
-  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" | cat > report.txt"
-  - sonar-scanner
+  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=ManaZeak
