@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.entity.validator.user;
 
-import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.PasswordContainer;
 
 import javax.validation.ConstraintValidator;

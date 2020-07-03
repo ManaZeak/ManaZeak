@@ -1,7 +1,5 @@
 package org.manazeak.manazeak.entity.validator.global;
 
-import org.manazeak.manazeak.entity.validator.user.UniqueUsernameValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

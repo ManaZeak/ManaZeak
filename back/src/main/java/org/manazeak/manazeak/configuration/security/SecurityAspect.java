@@ -4,9 +4,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.manazeak.manazeak.entity.dto.KommunicatorObject;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +13,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class SecurityAspect {
-
-	private final MessageSource messageGetter;
-
-	public SecurityAspect(MessageSource messageSource) {
-		this.messageGetter = messageSource;
-	}
 
 	/**
 	 * Interceptor for adding security arround the @Security annotation.

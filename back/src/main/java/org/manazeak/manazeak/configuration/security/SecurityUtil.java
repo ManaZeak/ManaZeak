@@ -11,7 +11,11 @@ import java.util.List;
 /**
  * This class contains some useful methods for testing the privileges of a user.
  */
-public class SecurityUtil {
+public final class SecurityUtil {
+
+    private SecurityUtil() {
+
+    }
 
     /**
      * Check if the user has the privilege to do this action.

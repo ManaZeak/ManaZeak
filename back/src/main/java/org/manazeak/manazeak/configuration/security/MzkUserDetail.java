@@ -24,4 +24,6 @@ public class MzkUserDetail extends User {
     public MzkUser getUser() {
         return user;
     }
+
+
 }

@@ -6,7 +6,11 @@ import java.util.List;
 /**
  * This class is used to do operation of casting elements.
  */
-public class CastUtil {
+public final class CastUtil {
+
+    private CastUtil(){
+
+    }
 
     /**
      * Create a new list with the element of the other list and cast each one.

@@ -25,8 +25,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     private ApplicationContext applicationContext;
 
-    @Autowired
-    private MzkLocalResolver localResolver;
+    private static final String APP_ENCODING = "UTF-8";
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -47,7 +46,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
         templateResolver.setCacheable(true);
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
-        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setCharacterEncoding(APP_ENCODING);
 
         return templateResolver;
     }
@@ -77,12 +76,13 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 
         viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
+        viewResolver.setCharacterEncoding(APP_ENCODING);
 
         return viewResolver;
     }
 
     @Bean
+    @Override
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
@@ -98,7 +98,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("i18n/message");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultEncoding(APP_ENCODING);
         return messageSource;
     }
 
@@ -108,7 +108,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
      * @return the local of the user.
      */
     @Bean
-    public LocaleResolver localeResolver() {
+    public LocaleResolver localeResolver(MzkLocalResolver localResolver) {
         return localResolver;
     }
 }

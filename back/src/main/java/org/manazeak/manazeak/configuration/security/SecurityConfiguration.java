@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(SecurityConfiguration.class);
     @Value("${app.dev}")
-    private boolean dev_mode;
+    private boolean devMode;
 
     /**
      * Setting the context of the security to the local thread.
@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
         // Allowing the spring dev tools.
-        if (dev_mode) {
+        if (devMode) {
             LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
             httpSecurity
                     .authorizeRequests()

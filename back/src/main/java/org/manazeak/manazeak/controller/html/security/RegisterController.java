@@ -20,6 +20,8 @@ public class RegisterController {
 
     private final UserService userService;
 
+    private static final String REGISTER_PAGE = "user/register.html";
+
     public RegisterController(UserService userService) {
         this.userService = userService;
     }
@@ -28,16 +30,16 @@ public class RegisterController {
     public String showRegistrationForm(Model model) {
         NewUserDto userDto = new NewUserDto();
         model.addAttribute("user", userDto);
-        return "user/register.html";
+        return REGISTER_PAGE;
     }
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") @Valid NewUserDto newUser, BindingResult result) {
         // trying to create a user into the database.
         if (result.hasErrors()) {
-            return "user/register.html";
+            return REGISTER_PAGE;
         }
         MzkUser user = userService.createUser(newUser);
-        return "user/register.html";
+        return REGISTER_PAGE;
     }
 }

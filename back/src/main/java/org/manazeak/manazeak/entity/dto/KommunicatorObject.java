@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class KommunicatorObject implements Serializable {
 
-    protected final boolean done;
-    protected final List<String> errors = new ArrayList<>();
+    private final boolean done;
+    private final List<String> errors = new ArrayList<>();
 
     public KommunicatorObject(boolean done) {
         this.done = done;

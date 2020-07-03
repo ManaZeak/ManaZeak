@@ -6,7 +6,11 @@ import java.time.format.DateTimeFormatter;
 /**
  * This class allows to manipulate dates in the application.
  */
-public class DateUtil {
+public final class DateUtil {
+
+    private DateUtil(){
+        
+    }
 
     public static final DateTimeFormatter FR_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu");
 

@@ -1,9 +1,7 @@
 package org.manazeak.manazeak.service.error;
 
 import org.manazeak.manazeak.constant.errors.ErrorEnum;
-import org.manazeak.manazeak.entity.dto.KommunicatorObject;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
 import java.util.Locale;
