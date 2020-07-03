@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 // Transaction on each method (no commits)
 @Transactional
-public class AbstractManaZeakTest {
+public abstract class AbstractManaZeakTest {
 
     @Autowired
     protected EntityManager entityManager;
