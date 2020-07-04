@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Annotation for security control on controllers.
  * This is the equivalent of @PreAuthorize("hasAuthority(T(org.manazeak.manazeak.constant.security.PrivilegeEnum).XXXX)")
  */
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RestSecurity {
     PrivilegeEnum value();

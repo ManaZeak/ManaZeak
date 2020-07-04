@@ -15,7 +15,7 @@ import java.util.Locale;
  * Handle the errors of the controllers.
  */
 @Service
-public class ErrorHandlerServiceImpl implements ErrorHandlerService{
+public class ErrorHandlerServiceImpl implements ErrorHandlerService {
 
     /**
      * The object for getting internationalized messages.

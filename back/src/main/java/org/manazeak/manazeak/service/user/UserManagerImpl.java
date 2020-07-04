@@ -25,6 +25,7 @@ import java.util.Optional;
 @TransactionnalWithRollback
 public class UserManagerImpl implements UserManager {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserManagerImpl.class);
     /**
      * Used to manipulate the roles in the database.
      */
@@ -37,10 +38,7 @@ public class UserManagerImpl implements UserManager {
      * The Service to encode the password.
      */
     private final PasswordEncoder passEncoder;
-
     private final ErrorHandlerService errorHandlerService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserManagerImpl.class);
 
     public UserManagerImpl(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO,
                            ErrorHandlerService errorHandlerService) {

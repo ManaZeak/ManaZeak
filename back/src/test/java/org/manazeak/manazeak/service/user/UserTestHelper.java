@@ -19,6 +19,7 @@ public class UserTestHelper {
 
     /**
      * Get the default user from the database.
+     *
      * @return the default user.
      */
     public MzkUser getDefaultUser() {

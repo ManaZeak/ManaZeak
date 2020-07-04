@@ -49,8 +49,8 @@ public class ResetPasswordController extends AbstractRestController {
      * Reset the password of the current user.
      *
      * @param resetPasswordDto Containing the new password of the user.
-     * @param user The user making the request.
-     * @param result the result of the validation.
+     * @param user             The user making the request.
+     * @param result           the result of the validation.
      * @param locale           The locale used by the user.
      * @return the status of the request.
      */
@@ -70,6 +70,7 @@ public class ResetPasswordController extends AbstractRestController {
 
     /**
      * Change the password of a user.
+     *
      * @return the status of the request.
      */
     @PostMapping("/resetUserPassword")

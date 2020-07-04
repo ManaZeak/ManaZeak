@@ -10,6 +10,7 @@ import java.util.Set;
 public class MzkRestException extends Exception {
 
     private final Set<String> messages = new HashSet<>();
+
     /**
      * Create an exception.
      */
@@ -18,6 +19,7 @@ public class MzkRestException extends Exception {
 
     /**
      * Create an exception with only one message.
+     *
      * @param message The message contained in the exception.
      */
     public MzkRestException(String message) {
@@ -30,6 +32,7 @@ public class MzkRestException extends Exception {
 
     /**
      * Add one message to the set of messages.
+     *
      * @param message the exception message to add.
      */
     public void addMessage(String message) {
@@ -38,6 +41,7 @@ public class MzkRestException extends Exception {
 
     /**
      * Add multiple message to the exception.
+     *
      * @param messages the messages to add into the exception.
      */
     public void addMessages(List<String> messages) {

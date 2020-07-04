@@ -27,6 +27,7 @@ public class MzkUserDataCreation {
 
     /**
      * Creates a default user in the database.
+     *
      * @return the user that was created.
      */
     public MzkUser createDefaultMzkUser() {

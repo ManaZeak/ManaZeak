@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.configuration.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -23,9 +22,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @ComponentScan(basePackages = {"org.manazeak.manazeak.controller.html"})
 public class WebConfiguration implements ApplicationContextAware, WebMvcConfigurer {
 
-    private ApplicationContext applicationContext;
-
     private static final String APP_ENCODING = "UTF-8";
+    private ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {

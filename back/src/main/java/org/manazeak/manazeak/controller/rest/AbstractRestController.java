@@ -19,11 +19,12 @@ public abstract class AbstractRestController {
 
     /**
      * Handle the MzkRestException of the controller.
+     *
      * @param e the exception to handle.
      * @return the response to the front.
      */
     @ExceptionHandler(MzkRestException.class)
-    public KommunicatorObject handleException(MzkRestException e){
+    public KommunicatorObject handleException(MzkRestException e) {
         // Building a error message from the available information.
         return new KommunicatorObject(false, messageSource.getMessage(e.getMessage(), null,
                 LocaleContextHolder.getLocale()));

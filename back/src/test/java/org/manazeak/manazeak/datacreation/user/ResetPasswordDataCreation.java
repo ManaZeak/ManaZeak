@@ -12,6 +12,7 @@ public class ResetPasswordDataCreation {
 
     /**
      * Creates a reset password DTO with the default values for the user.
+     *
      * @return the reset password object.
      */
     public ResetPasswordDto createResetPasswordDto() {
@@ -20,6 +21,7 @@ public class ResetPasswordDataCreation {
 
     /**
      * Create a reset password DTO with the given user id and the default values.
+     *
      * @param userId the user id.
      * @return the reset user object.
      */
@@ -29,6 +31,7 @@ public class ResetPasswordDataCreation {
 
     /**
      * Create a reset password DTO with a non existent user and the default password.
+     *
      * @return the reset user object.
      */
     public ResetUserPasswordDto createNonExistingResetUserPasswordDto() {

@@ -8,14 +8,15 @@ import java.time.format.DateTimeFormatter;
  */
 public final class DateUtil {
 
-    private DateUtil(){
-        
-    }
-
     public static final DateTimeFormatter FR_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
+    private DateUtil() {
+
+    }
 
     /**
      * Allows to parse a date from a string.
+     *
      * @param strDate the string containing a date.
      * @return the date.
      */

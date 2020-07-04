@@ -32,6 +32,7 @@ public class KommunicatorObject implements Serializable {
 
     /**
      * Add a list of errors to the object.
+     *
      * @param errors the errors messages.
      */
     public void addErrors(List<String> errors) {
@@ -40,6 +41,7 @@ public class KommunicatorObject implements Serializable {
 
     /**
      * Add one error to the object.
+     *
      * @param error the error message.
      */
     public void addError(String error) {

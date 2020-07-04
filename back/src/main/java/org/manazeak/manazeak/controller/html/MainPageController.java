@@ -13,6 +13,7 @@ public class MainPageController {
 
     /**
      * Loading the template for the main page.
+     *
      * @return the main page to the user.
      */
     @GetMapping("/")

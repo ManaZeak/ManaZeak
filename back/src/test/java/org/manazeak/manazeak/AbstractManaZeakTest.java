@@ -11,11 +11,12 @@ import javax.transaction.Transactional;
 @Transactional
 public abstract class AbstractManaZeakTest {
 
+    /**
+     * Application's root path.
+     */
+    protected static final String ROOT_PATH = System.getProperty("user.dir");
     @Autowired
     protected EntityManager entityManager;
-
-    /** Application's root path. */
-    protected static final String ROOT_PATH = System.getProperty("user.dir");
 
     /**
      * Flush et clear de la session

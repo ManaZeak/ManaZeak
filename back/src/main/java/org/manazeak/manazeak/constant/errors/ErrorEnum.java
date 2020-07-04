@@ -5,7 +5,9 @@ package org.manazeak.manazeak.constant.errors;
  */
 public enum ErrorEnum {
 
-    /** The asked user desn't exists in the database. */
+    /**
+     * The asked user desn't exists in the database.
+     */
     USER_NOT_FOUND("error.db.user_not_found");
 
     private final String key;

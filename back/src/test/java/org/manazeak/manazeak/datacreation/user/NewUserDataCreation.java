@@ -11,6 +11,7 @@ public class NewUserDataCreation {
 
     /**
      * Creates a new user DTO with default values.
+     *
      * @return a new user DTO.
      */
     public NewUserDto createNewUserDto() {

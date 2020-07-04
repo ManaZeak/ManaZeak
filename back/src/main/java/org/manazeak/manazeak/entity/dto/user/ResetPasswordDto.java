@@ -13,7 +13,7 @@ public class ResetPasswordDto implements PasswordContainer {
     private final String newPassword2;
 
     @JsonCreator
-    public ResetPasswordDto(String newPassword1, String newPassword2){
+    public ResetPasswordDto(String newPassword1, String newPassword2) {
         this.newPassword1 = newPassword1;
         this.newPassword2 = newPassword2;
     }

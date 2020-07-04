@@ -18,9 +18,8 @@ import javax.validation.Valid;
 @Controller
 public class RegisterController {
 
-    private final UserService userService;
-
     private static final String REGISTER_PAGE = "user/register.html";
+    private final UserService userService;
 
     public RegisterController(UserService userService) {
         this.userService = userService;

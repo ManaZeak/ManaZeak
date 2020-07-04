@@ -8,7 +8,7 @@ import java.util.List;
  */
 public final class CastUtil {
 
-    private CastUtil(){
+    private CastUtil() {
 
     }
 
@@ -16,11 +16,11 @@ public final class CastUtil {
      * Create a new list with the element of the other list and cast each one.
      *
      * @param clazz the destination class.
-     * @param c the list of objects that have to be casted.
+     * @param c     the list of objects that have to be casted.
      * @return the casted list.
      */
     public static <T> List<T> castList(final Class<? extends T> clazz, final Iterable<?> c) {
-        if(c == null){
+        if (c == null) {
             return new ArrayList<>();
         }
 

@@ -15,6 +15,7 @@ public final class UserHelper {
 
     /**
      * Create a {@link MzkUser} from a {@link NewUserDto} used in the insertion in DB.
+     *
      * @param newUser the user that will be created.
      * @return The user that will be inserted in DB.
      */

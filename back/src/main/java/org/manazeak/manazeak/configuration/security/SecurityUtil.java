@@ -19,6 +19,7 @@ public final class SecurityUtil {
 
     /**
      * Check if the user has the privilege to do this action.
+     *
      * @param privilege the privilege that is required.
      * @return true if the user has the privilege, false otherwise.
      */
