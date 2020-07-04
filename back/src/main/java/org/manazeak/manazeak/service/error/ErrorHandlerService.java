@@ -23,6 +23,6 @@ public interface ErrorHandlerService {
      * Creates a rest exception with a list of {@link ErrorEnum}.
      * @param errors the errors that needs to be send to the user.
      */
-    void generateRestErrorFromErrorEnum(ErrorEnum... errors);
+    void generateRestErrorFromErrorEnum(ErrorEnum... errors) throws MzkRestException;
 
 }

@@ -10,6 +10,7 @@ import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Role;
+import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.service.error.ErrorHandlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,15 +80,15 @@ public class UserManagerImpl implements UserManager {
      * {@inheritDoc}
      */
     @Override
-    public void changeUserPassword(ResetUserPasswordDto resetUserPassword) {
+    public void changeUserPassword(ResetUserPasswordDto resetUserPassword) throws MzkRestException {
         // Getting the user from the id.
         Optional<MzkUser> user = userDAO.findById(resetUserPassword.getUserId());
-        user.ifPresentOrElse(
-                // If the user was found.
-                (MzkUser mzkUser) -> encryptAndSaveUserPassword(mzkUser, resetUserPassword.getPassword()),
-                // If the user wasn't found.
-                () -> errorHandlerService.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND)
-        );
+        if (user.isPresent()) {
+            encryptAndSaveUserPassword(user.get(), resetUserPassword.getPassword());
+        } else {
+            // If the user wasn't found.
+            errorHandlerService.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND);
+        }
     }
 
     /**

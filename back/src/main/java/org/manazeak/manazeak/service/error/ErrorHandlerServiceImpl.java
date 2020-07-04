@@ -44,12 +44,13 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService{
      * {@inheritDoc}
      */
     @Override
-    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) {
+    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) throws MzkRestException {
         MzkRestException exception = new MzkRestException();
         Locale userLocale = LocaleContextHolder.getLocale();
         // Adding the errors for the enum.
         for (ErrorEnum error : errors) {
             exception.addMessage(messageGetter.getMessage(error.getKey(), null, userLocale));
         }
+        throw exception;
     }
 }

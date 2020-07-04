@@ -13,11 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MzkUserDataCreation {
 
-    /** The username of the default user. */
-    public static String USERNAME = "test_user";
-    public static String PASSWORD = "pass";
-    public static String MAIL = "test@test.test";
-
     private final UserService userService;
 
     private final MzkUserDAO mzkUserDAO;
@@ -36,9 +31,9 @@ public class MzkUserDataCreation {
      */
     public MzkUser createDefaultMzkUser() {
         MzkUser user = new MzkUser();
-        user.setUsername(USERNAME);
-        user.setPassword(PASSWORD);
-        user.setMail(MAIL);
+        user.setUsername(UserTestConstants.USERNAME);
+        user.setPassword(UserTestConstants.PASSWORD);
+        user.setMail(UserTestConstants.MAIL);
         user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
         user.setIsActive(true);
         mzkUserDAO.save(user);

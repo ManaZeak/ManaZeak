@@ -4,6 +4,7 @@ import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkRestException;
 
 /**
  * Manages the creation of user in the database.
@@ -27,5 +28,5 @@ public interface UserManager {
      * Change the password of the given user.
      * @param resetUserPassword the object containing the password and the userId.
      */
-    void changeUserPassword(ResetUserPasswordDto resetUserPassword);
+    void changeUserPassword(ResetUserPasswordDto resetUserPassword) throws MzkRestException;
 }
