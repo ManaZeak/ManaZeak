@@ -74,7 +74,7 @@ public class ResetPasswordController extends AbstractRestController {
      */
     @PostMapping("/resetUserPassword")
     @RestSecurity(PrivilegeEnum.ADMV)
-    public KommunicatorObject changeUserPassword(ResetUserPasswordDto resetPasswordDto){
+    public KommunicatorObject changeUserPassword(ResetUserPasswordDto resetPasswordDto) throws MzkRestException {
         userManager.changeUserPassword(resetPasswordDto);
         // Success.
         return new KommunicatorObject(true);
