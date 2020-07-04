@@ -18,7 +18,7 @@ public class NewUserDataCreation {
         newUser.setUsername(UserTestConstants.USERNAME);
         newUser.setPassword1(UserTestConstants.PASSWORD);
         newUser.setPassword2(UserTestConstants.PASSWORD);
-        newUser.setMail(UserTestConstants.PASSWORD);
+        newUser.setMail(UserTestConstants.MAIL);
         return newUser;
     }
 }
