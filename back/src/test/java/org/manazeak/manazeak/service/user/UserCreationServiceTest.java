@@ -39,7 +39,7 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
         // Cleaning the JPA to have only DB results.
         cleanJpa();
         // Checking if the data is the same.
-        UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser());
+        UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser(), false);
     }
 
     /**
@@ -54,6 +54,6 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
         // Cleaning JPA before getting the object in the database.
         cleanJpa();
         // Checking if the data is the same
-        UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser());
+        UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser(), true);
     }
 }
