@@ -2,7 +2,7 @@
   "plugins": ["plugins/markdown"],
   "recurseDepth": 10,
   "source": {
-    "include": ["./src/js"],
+    "include": ["./front/js"],
     "exclude": ["./static/dist/js/manazeak.bundle.js"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
