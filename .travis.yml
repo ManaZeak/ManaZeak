@@ -6,6 +6,7 @@ before_install:
   - git fetch
   - cp .env.travis .env
   - docker-compose up -d db
+  - npm -i
 addons:
   sonarcloud:
     organization: "manazeak"
