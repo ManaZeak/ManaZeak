@@ -6,18 +6,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="manazeak_back" />
         <module name="mda-generator" />
-        <module name="manazeak" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="manazeak" target="11" />
+      <module name="manazeak" target="1.8" />
+      <module name="manazeak (1)" target="1.8" />
+      <module name="manazeak (1) (org.manazeak.manazeak)" target="1.8" />
+      <module name="manazeak_back" target="11" />
+      <module name="manazeak_front" target="1.8" />
       <module name="mda-generator" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="manazeak" options="-parameters" />
+      <module name="manazeak_back" options="-parameters" />
+      <module name="manazeak_front" options="-parameters" />
     </option>
   </component>
 </project>
