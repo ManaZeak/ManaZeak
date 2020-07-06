@@ -35,6 +35,11 @@
                         <goals>
                             <goal>webpack</goal>
                         </goals>
+
+
+                        <configuration>
+                            <arguments>--env.prod=false --progress</arguments>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>javascript tests</id>
