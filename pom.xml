@@ -53,7 +53,7 @@
         <profile>
             <id>travis</id>
             <properties>
-                <sonar.sources>back/, front/js, front/scss</sonar.sources>
+                <sonar.sources>front/js, front/scss</sonar.sources>
             </properties>
             <build>
                 <plugins>
