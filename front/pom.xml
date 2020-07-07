@@ -30,7 +30,7 @@
 
 
                         <configuration>
-                            <arguments>--env.prod=false --progress</arguments>
+                            <arguments>--env.prod=false</arguments>
                         </configuration>
                     </execution>
                     <execution>
