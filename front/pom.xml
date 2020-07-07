@@ -19,7 +19,7 @@
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <configuration>
-                    <workingDirectory>../ManaZeak</workingDirectory>
+                    <workingDirectory>../</workingDirectory>
                 </configuration>
                 <executions>
                     <execution>
