@@ -23,17 +23,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>webpack build</id>
-                        <goals>
-                            <goal>webpack</goal>
-                        </goals>
-
-
-                        <configuration>
-                            <arguments>--env.prod=false</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>javascript tests</id>
                         <goals>
                             <goal>karma</goal>
