@@ -19,7 +19,7 @@
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <configuration>
-                    <workingDirectory>ManaZeak</workingDirectory>
+                    <workingDirectory>../ManaZeak</workingDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -50,7 +50,7 @@
                             <goal>karma</goal>
                         </goals>
                         <configuration>
-                            <karmaConfPath>test/karma.config.js</karmaConfPath>
+                            <karmaConfPath>front/test/karma.config.js</karmaConfPath>
                         </configuration>
                     </execution>
                 </executions>
