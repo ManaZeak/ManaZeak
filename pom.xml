@@ -52,6 +52,9 @@
         <!-- Builder profile for travis -->
         <profile>
             <id>travis</id>
+            <properties>
+                <sonar.sources>back/, front/js, front/scss</sonar.sources>
+            </properties>
             <build>
                 <plugins>
                     <!-- Plugin coverage analysis -->
