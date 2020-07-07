@@ -8,8 +8,9 @@ before_install:
   - git fetch
   - cp .env.travis .env
   - docker-compose up -d db
-  - apt -y install firefox
 addons:
+  firefox: latest
+  chrome: stable
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
