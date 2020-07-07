@@ -3,9 +3,12 @@ language: java
 git:
   depth: false
 before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - git fetch
   - cp .env.travis .env
   - docker-compose up -d db
+  - apt -y install firefox
 addons:
   sonarcloud:
     organization: "manazeak"
