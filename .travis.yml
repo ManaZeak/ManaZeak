@@ -2,9 +2,9 @@ dist: xenial
 language: java
 git:
   depth: false
+services:
+  - xvfb
 before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   - git fetch
   - cp .env.travis .env
   - docker-compose up -d db
