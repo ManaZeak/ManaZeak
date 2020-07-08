@@ -2,27 +2,34 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1">
+    <meta name="description" content="Login to ManaZeak here! ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. https://github.com/ManaZeak/ManaZeak">
     <title>ManaZeak - login</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../../static/dist/css/auth.bundle.css">
 </head>
 <body>
-    <form th:object="${user}" method="POST">
-        <div th:if="${param.error}">
-            <p th:text="#{error.login.fail}">login fail</p>
-        </div>
-        <div>
-            <label th:text="#{label.user.login}">first</label>
-            <input th:field="*{username}"/>
-            <p th:each="error : ${#fields.errors('username')}"
-               th:text="${error}">Validation error</p>
-        </div>
-        <div>
-            <label th:text="#{label.user.password}">password</label>
-            <input type="password" th:field="*{password}"/>
-            <p th:each="error : ${#fields.errors('password')}"
-               th:text="${error}">Validation error</p>
-        </div>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <button type="submit" th:text="#{label.login.login}">submit</button>
-    </form>
+    <div class="mzk-user">
+        <img src="../../../../../../static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
+        <p>Please login below, or <a href="#">sign up</a></p>
+        <form th:object="${user}" method="POST">
+            <div th:if="${param.error}">
+                <p th:text="#{error.login.fail}">login fail</p>
+            </div>
+            <label for="username-input" th:text="#{label.user.login}">
+                <strong>username</strong>
+            </label>
+            <input id="username-input" maxlength="100" type="text" th:field="*{username}"/>
+            <p th:each="error : ${#fields.errors('username')}" th:text="${error}">Invalid username</p>
+
+            <label for="password-input" th:text="#{label.user.password}">
+                <strong>password</strong>
+            </label>
+            <input id="password-input" maxlength="256" type="password" th:field="*{password}"/>
+            <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Invalid password</p>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" th:text="#{label.login.login}">submit</button>
+        </form>
+    </div>
 </body>
 </html>

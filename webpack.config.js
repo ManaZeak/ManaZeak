@@ -28,7 +28,10 @@ module.exports = env => {
     });
   }
   // Default entrypoint for ManaZeak
-  let entry = { manazeak: ['./front/js/StartSession.js', './front/scss/manazeak.scss'] };
+  let entry = {
+    manazeak: ['./front/js/StartSession.js', './front/scss/manazeak.scss'],
+    auth: ['./front/scss/auth.scss']
+  };
   // Plugin loading
   const fs = require('fs');
   if (fs.existsSync('./plugins/MzkWorldMap/js/MzkWorldMap.js')) { // Bundle MzkWorldMap if existing
