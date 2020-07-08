@@ -22,7 +22,7 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
     private UserService userService;
 
     /**
-     * Test the login getter works properly.
+     * Test the user get by login works properly.
      */
     @Test
     void findByLoginTest() {
@@ -47,5 +47,10 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
         cleanJpa();
         // Checking if the data is the same
         UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser(), true);
+    }
+
+    @Test
+    void createNewUserTest() {
+
     }
 }

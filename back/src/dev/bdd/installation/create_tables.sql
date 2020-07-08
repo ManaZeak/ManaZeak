@@ -44,11 +44,13 @@ CREATE TABLE mzk_user (
 	birth_date DATE,
 	profile_pic VARCHAR(1000),
 	bio TEXT,
+	invite_code_id BIGINT,
 	country_id BIGINT,
 	role_id BIGINT,
 	CONSTRAINT PK_MZK_USER PRIMARY KEY (user_id)
 );
 COMMENT ON TABLE mzk_user IS 'A user object.';
+COMMENT ON COLUMN mzk_user.invite_code_id IS 'ManyToOne FK invite_code';
 COMMENT ON COLUMN mzk_user.country_id IS 'ManyToOne FK Country';
 COMMENT ON COLUMN mzk_user.role_id IS 'ManyToOne FK role';
 
@@ -89,10 +91,11 @@ COMMENT ON COLUMN privileges_role.privilege_id IS 'ManyToMany FK privilege';
 -- ================================
 -- FOREIGN KEYS
 -- ================================
+ALTER TABLE mzk_user ADD CONSTRAINT FK_invite_used FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
 ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_1 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_2 FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_user_country FOREIGN KEY (country_id) REFERENCES Country(country_id);
-ALTER TABLE mzk_user ADD CONSTRAINT FK_roles_user FOREIGN KEY (role_id) REFERENCES role(role_id);
+ALTER TABLE mzk_user ADD CONSTRAINT FK_role_user FOREIGN KEY (role_id) REFERENCES role(role_id);
 ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_1 FOREIGN KEY (role_id) REFERENCES role(role_id);
 ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (privilege_id) REFERENCES privilege(privilege_id);
 
@@ -100,10 +103,11 @@ ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (pri
 -- ================================
 -- FOREIGN KEYS INDEXES
 -- ================================
+CREATE INDEX IDX_invite_used ON mzk_user (invite_code_id);
 CREATE INDEX IDX_user_invite_1 ON user_invite (user_id);
 CREATE INDEX IDX_user_invite_2 ON user_invite (invite_code_id);
 CREATE INDEX IDX_user_country ON mzk_user (country_id);
-CREATE INDEX IDX_roles_user ON mzk_user (role_id);
+CREATE INDEX IDX_role_user ON mzk_user (role_id);
 CREATE INDEX IDX_privileges_role_1 ON privileges_role (role_id);
 CREATE INDEX IDX_privileges_role_2 ON privileges_role (privilege_id);
 

@@ -17,20 +17,22 @@ DROP SEQUENCE SEQ_ROLE;
 -- ================================
 -- DROP FOREIGN KEY
 -- ================================
+ALTER TABLE mzk_user DROP CONSTRAINT FK_invite_used;
 ALTER TABLE user_invite DROP CONSTRAINT FK_user_invite_1;
 ALTER TABLE user_invite DROP CONSTRAINT FK_user_invite_2;
 ALTER TABLE mzk_user DROP CONSTRAINT FK_user_country;
-ALTER TABLE mzk_user DROP CONSTRAINT FK_roles_user;
+ALTER TABLE mzk_user DROP CONSTRAINT FK_role_user;
 ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_1;
 ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_2;
  
 -- ================================
 -- DROP FOREIGN KEYS INDEXES
 -- ================================
+DROP INDEX IDX_invite_used;
 DROP INDEX IDX_user_invite_1;
 DROP INDEX IDX_user_invite_2;
 DROP INDEX IDX_user_country;
-DROP INDEX IDX_roles_user;
+DROP INDEX IDX_role_user;
 DROP INDEX IDX_privileges_role_1;
 DROP INDEX IDX_privileges_role_2;
  
