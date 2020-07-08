@@ -1,4 +1,4 @@
-import CustomEvents from '../CustomEvents.js'
+import CustomEvents from '../../js/utils/CustomEvents.js'
 'use strict';
 
 
@@ -23,7 +23,7 @@ describe('CustomEvents unit test', () => {
     expect(typeof AppEvents._idIncrementor).toEqual('number');
     expect(AppEvents._regularEvents.length).toEqual(0);
     expect(Object.keys(AppEvents._customEvents).length).toEqual(0);
-    expect(AppEvents.version).toEqual('1.0.0'); // Check version number
+    expect(AppEvents.version).toEqual('1.1.0'); // Check version number
     done();
   });
 
