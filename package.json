@@ -10,7 +10,8 @@
     "test": "karma start front/test/karma.config.js",
     "testdev": "karma start front/test/karma.config.js --dev=true",
     "doc": "jsdoc -c ./doc/config/jsDoc.json",
-    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
+    "beforecommit": "npm run test && npm run prod && npm run doc"
   },
   "homepage": "https://manazeak.github.io",
   "repository": {

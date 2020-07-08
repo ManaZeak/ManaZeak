@@ -51,7 +51,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual({});
     expect(AppLogger._notification).toEqual(null);
     expect(AppLogger._log).toEqual(true);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     AppLogger.destroy();
     AppLogger = null;
     done();
@@ -69,7 +69,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual(error);
     expect(AppLogger._notification).toEqual(null);
     expect(AppLogger._log).toEqual(true);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     AppLogger.destroy();
     AppLogger = null;
     done();
@@ -87,7 +87,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual({});
     expect(AppLogger._notification).toEqual(notification);
     expect(AppLogger._log).toEqual(true);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     AppLogger.destroy();
     AppLogger = null;
     done();
@@ -105,7 +105,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual({});
     expect(AppLogger._notification).toEqual(null);
     expect(AppLogger._log).toEqual(false);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     AppLogger.destroy();
     AppLogger = null;
     done();
@@ -121,7 +121,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual({});
     expect(AppLogger._notification).toEqual(null);
     expect(AppLogger._log).toEqual(true);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     // Reinstantiation, will not update any properties
     AppLogger = new Logger({
       errors: error,
@@ -135,7 +135,7 @@ describe('Logger unit test', () => {
     expect(AppLogger._errors).toEqual({});
     expect(AppLogger._notification).toEqual(null);
     expect(AppLogger._log).toEqual(true);
-    expect(AppLogger.version).toEqual('1.0.0');
+    expect(AppLogger.version).toEqual('1.1.0');
     AppLogger.destroy();
     AppLogger = null;
     done();
