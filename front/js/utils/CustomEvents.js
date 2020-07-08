@@ -15,7 +15,9 @@ class CustomEvents {
    * @param {boolean} [debug=false] - Debug flag ; when true, logs will be output in JavaScript console at each event */
   constructor(debug = false) {
     // Prevent wrong type for debug
-    if (typeof debug !== 'boolean') { debug = false; }
+    if (typeof debug !== 'boolean') {
+      debug = false;
+    }
     /** @private
      * @member {boolean} - Internal logging flag from constructor options, allow to output each event action */
     this._debug = debug;
@@ -41,11 +43,13 @@ class CustomEvents {
    * @description <blockquote>CustomEvents destructor. Will remove all event listeners and keys in instance.</blockquote> */
   destroy() {
     // Debug logging
-    if (this._debug) { console.log('Events.destroy'); }
+    this._raise('log', 'CustomEvents.destroy');
     // Remove all existing eventListener
     this.removeAllEvents();
     // Delete object attributes
-    Object.keys(this).forEach(key => { delete this[key]; });
+    Object.keys(this).forEach(key => {
+      delete this[key];
+    });
   }
 
 
@@ -71,24 +75,32 @@ class CustomEvents {
    * @param {object|boolean} [options=false] - The event options (useCapture and else)
    * @returns {number|boolean} - The event ID to use to manually remove an event, false if arguments are invalid */
   addEvent(eventName, element, callback, scope = element, options = false) {
+    // Debug logging
+    this._raise('log', `CustomEvents.addEvent: ${eventName} ${element} ${callback} ${scope} ${options}`);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined ||
       element === null || element === undefined ||
       callback === null || callback === undefined) {
-      if (this._debug) { console.error('Events.addEvent', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.addEvent: Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory and optional)
-    const err = () => { if (this._debug) { console.error('Events.addEvent', 'Wrong type for argument'); } };
-    if (typeof eventName !== 'string') { err(); return false; }
-    if (typeof element !== 'object') { err(); return false; }
-    if (typeof callback !== 'function') { err(); return false; }
-    if ((scope !== null && scope !== undefined) && typeof scope !== 'object') { err(); return false; }
-    if ((options !== null && options !== undefined)) {
-      if (typeof options !== 'object' && typeof options !== 'boolean') { err(); return false; }
+    const err = () => {
+      this._raise('error', 'CustomEvents.addEvent: Wrong type for argument');
+    };
+    // Test argument validity for further process
+    if (typeof eventName !== 'string' || typeof element !== 'object' || typeof callback !== 'function') {
+      err();
+      return false;
     }
-    // Debug logging
-    if (this._debug) { console.log('Events.addEvent', eventName, element, callback, scope, options); }
+    if ((scope !== null && scope !== undefined) && typeof scope !== 'object') {
+      err();
+      return false;
+    }
+    if ((options !== null && options !== undefined) && (typeof options !== 'object' && typeof options !== 'boolean')) {
+      err();
+      return false;
+    }
     // Save scope to callback function, default scope is DOM target object
     callback = callback.bind(scope);
     // Add event to internal array and keep all its data
@@ -116,16 +128,18 @@ class CustomEvents {
    * @param {number} eventId - The event ID to remove listener from. Returned when addEvent is called
    * @returns {boolean} - The method status ; true for success, false for non-existing event */
   removeEvent(eventId) {
+    // Debug logging
+    this._raise('log', `Events.removeEvent: ${eventId}`);
     // Missing mandatory arguments
     if (eventId === null || eventId === undefined) {
-      if (this._debug) { console.error('Events.removeEvent', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.removeEvent: Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory)
-    const err = () => { if (this._debug) { console.error('Events.removeEvent', 'Wrong type for argument'); } };
-    if (typeof eventId !== 'number') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events.removeEvent', eventId); }
+    if (typeof eventId !== 'number') {
+      this._raise('error', 'CustomEvents.removeEvent: Wrong type for argument');
+      return false;
+    }
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Iterate over saved listeners, reverse order for proper splicing
@@ -150,7 +164,7 @@ class CustomEvents {
    * @returns {boolean} - The method status ; true for success, false for not removed any event */
   removeAllEvents() {
     // Debug logging
-    if (this._debug) { console.log('Events.removeAllEvents'); }
+    this._raise('log', 'CustomEvents.removeAllEvents');
     // Returned value
     let statusCode = false; // Didn't removed any status code by default (false)
     // Flag to know if there was any previously stored event listeners
@@ -178,16 +192,18 @@ class CustomEvents {
    * @param {number} index - The regular event index to remove from class attributes
    * @return {boolean} - The method status ; true for success, false for not cleared any event */
   _clearRegularEvent(index) {
+    // Debug logging
+    this._raise('log', `CustomEvents._clearRegularEvent: ${index}`);
     // Missing mandatory arguments
     if (index === null || index === undefined) {
-      if (this._debug) { console.error('Events._clearRegularEvent', 'Missing mandatory argument'); }
+      this._raise('error', 'CustomEvents._clearRegularEvent: Missing mandatory argument');
       return false;
     }
     // Prevent wrong type for arguments (mandatory)
-    const err = () => { if (this._debug) { console.error('Events._clearRegularEvent', 'Wrong type for argument'); } };
-    if (typeof index !== 'number') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events._clearRegularEvent', index); }
+    if (typeof index !== 'number') {
+      this._raise('error', 'CustomEvents._clearRegularEvent: Wrong type for argument');
+      return false;
+    }
     // Check if index match an existing event in attributes
     if (this._regularEvents[index]) {
       // Remove its event listener and update regularEvents array
@@ -218,19 +234,26 @@ class CustomEvents {
    * @param {boolean} [oneShot=false] - One shot : to remove subscription the first time callback is fired
    * @returns {number|boolean} - The event id, to be used when manually unsubscribing */
   subscribe(eventName, callback, oneShot = false) {
+    // Debug logging
+    this._raise('log', `CustomEvents.subscribe: ${eventName} ${callback} ${oneShot}`);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined ||
       callback === null || callback === undefined) {
-      if (this._debug) { console.error('Events.subscribe', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.subscribe', 'Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory and optional)
-    const err = () => { if (this._debug) { console.error('Events.subscribe', 'Wrong type for argument'); } };
-    if (typeof eventName !== 'string') { err(); return false; }
-    if (typeof callback !== 'function') { err(); return false; }
-    if ((oneShot !== null && oneShot !== undefined) && typeof oneShot !== 'boolean') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events.subscribe', eventName, callback, oneShot); }
+    const err = () => {
+      this._raise('error', 'CustomEvents.subscribe: Wrong type for argument');
+    };
+    if (typeof eventName !== 'string' || typeof callback !== 'function') {
+      err();
+      return false;
+    }
+    if ((oneShot !== null && oneShot !== undefined) && typeof oneShot !== 'boolean') {
+      err();
+      return false;
+    }
     // Create event entry if not already existing in the registered events
     if (!this._customEvents[eventName]) {
       this._customEvents[eventName] = []; // Set empty array for new event subscriptions
@@ -255,16 +278,18 @@ class CustomEvents {
    * @param {number} eventId - The subscription id returned when subscribing to an event name
    * @returns {boolean} - The method status ; true for success, false for non-existing subscription **/
   unsubscribe(eventId) {
+    // Debug logging
+    this._raise('log', `CustomEvents.unsubscribe: ${eventId}`);
     // Missing mandatory arguments
     if (eventId === null || eventId === undefined) {
-      if (this._debug) { console.log('Events.unsubscribe', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.unsubscribe: Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory)
-    const err = () => { if (this._debug) { console.error('Events.unsubscribe', 'Wrong type for argument'); } };
-    if (typeof eventId !== 'number') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events.unsubscribe', eventId); }
+    if (typeof eventId !== 'number') {
+      this._raise('error', 'CustomEvents.unsubscribe: Wrong type for argument');
+      return false;
+    }
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
@@ -278,7 +303,7 @@ class CustomEvents {
         // In case we got a subscription for this events
         if (subs[j].id === eventId) {
           // Debug logging
-          if (this._debug) { console.log(`Events.unsubscribe : subscription found\n`, subs[j], `\nSubscription n°${eventId} for ${subs.name} has been removed`); }
+          this._raise('log', `CustomEvents.unsubscribe: subscription found\n`, subs[j], `\nSubscription n°${eventId} for ${subs.name} has been removed`);
           // Update status code
           statusCode = true; // Found and unsubscribed status code (true)
           // Remove subscription from event Array
@@ -305,16 +330,18 @@ class CustomEvents {
    * @param {string} eventName - The event to clear subscription from
    * @returns {boolean} - The method status ; true for success, false for non-existing event **/
   unsubscribeAllFor(eventName) {
+    // Debug logging
+    this._raise('log', `CustomEvents.unsubscribeAllFor: ${eventName}`);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined) {
-      if (this._debug) { console.log('Events.unsubscribeAllFor', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.unsubscribeAllFor: Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory and optional)
-    const err = () => { if (this._debug) { console.error('Events.unsubscribeAllFor', 'Wrong type for argument'); } };
-    if (typeof eventName !== 'string') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events.unsubscribeAllFor', eventName); }
+    if (typeof eventName !== 'string') {
+      this._raise('error', 'CustomEvents.unsubscribeAllFor: Wrong type for argument');
+      return false;
+    }
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
@@ -351,17 +378,18 @@ class CustomEvents {
    * @param {object} [data=undefined] - The data object to sent through the custom event
    * @returns {boolean} - The method status ; true for success, false for non-existing event **/
   publish(eventName, data = undefined) {
+    // Debug logging
+    this._raise('log', `CustomEvents.publish: ${eventName} ${data}`);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined) {
-      if (this._debug) { console.log('Events.publish', 'Missing mandatory arguments'); }
+      this._raise('error', 'CustomEvents.publish: Missing mandatory arguments');
       return false;
     }
     // Prevent wrong type for arguments (mandatory and optional)
-    const err = () => { if (this._debug) { console.error('Events.unsubscribeAllFor', 'Wrong type for argument'); } };
-    if (typeof eventName !== 'string') { err(); return false; }
-    if (data !== undefined && typeof data !== 'object') { err(); return false; }
-    // Debug logging
-    if (this._debug) { console.log('Events.publish', eventName, data); }
+    if (typeof eventName !== 'string' || (data !== undefined && typeof data !== 'object')) {
+      this._raise('error', 'CustomEvents.publish: Wrong type for argument');
+      return false;
+    }
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
@@ -378,13 +406,13 @@ class CustomEvents {
         // Reverse subscriptions iteration to properly splice without messing with iteration order
         for (let j = (subs.length - 1); j >= 0; --j) {
           // Debug logging
-          if (this._debug) { console.log(`Events.publish : fire callback for ${eventName}, subscription n°${subs[j].id}`, subs[j]); }
+          this._raise('log', `CustomEvents.publish: fire callback for ${eventName}, subscription n°${subs[j].id}`, subs[j]);
           // Fire saved callback
           subs[j].callback(data);
           // Remove oneShot listener from event entry
           if (subs[j].os) {
             // Debug logging
-            if (this._debug) { console.log(`Events.publish : remove subscription because one shot usage is done`); }
+            this._raise('log', 'CustomEvents.publish: remove subscription because one shot usage is done');
             subs.splice(j, 1);
             // Remove event name if no remaining subscriptions
             if (subs.length === 0) {
@@ -396,6 +424,18 @@ class CustomEvents {
     }
     // Return with status code
     return statusCode;
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  --------------------------------------------  COMPONENT UTILS  -----------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  _raise(level, errorValue) {
+    if (this._debug) {
+      console[level](errorValue);
+    }
   }
 
 
