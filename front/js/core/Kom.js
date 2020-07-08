@@ -37,7 +37,7 @@ class Kom {
    * @return {string} - The CSRF token string */
   _getCsrfCookie() {
     if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';')
+      const cookies = document.cookie.split(';');
       for (let i = 0; i < cookies.length; ++i) {
         // Parse current cookie to extract its properties
         const cookie = cookies[i].trim().match(/(\w+)=(.*)/);

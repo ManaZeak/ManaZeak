@@ -28,10 +28,16 @@ class Logger {
     }
     // Set object instance
     Logger.instance = this;
-    // Prevent wrong type for arguments
-    if (typeof options.errors !== 'object') { options.errors = {}; }
-    if (typeof options.notification !== 'object') { options.notification = null; }
-    if (typeof options.log !== 'boolean') { options.log = true; }
+    // Prevent wrong type for arguments, fallback according to attribute utility
+    if (typeof options.errors !== 'object') {
+      options.errors = {}; // Needs to define to empty object to avoid errors when checking custom errors
+    }
+    if (typeof options.notification !== 'object') {
+      options.notification = null; // Null to ignore the notification step in error raising
+    }
+    if (typeof options.log !== 'boolean') {
+      options.log = true; // No log means... useful component right?
+    }
     /** @private
      * @member {object} - The error messages to use in Logger */
     this._errors = options.errors;
@@ -43,7 +49,7 @@ class Logger {
     this._log = options.log;
     /** @public
      * @member {string} - Component version */
-    this.version = '1.0.0';
+    this.version = '1.1.0';
     return this;
   }
 
@@ -55,7 +61,10 @@ class Logger {
    * @description <blockquote>Logger destructor. Will delete singleton instance and its properties.</blockquote> */
   destroy() {
     // Delete object attributes
-    Object.keys(this).forEach(key => { delete this[key]; });
+    Object.keys(this).forEach(key => {
+      delete this[key];
+    });
+    // Clear singleton instance
     Logger.instance = null;
   }
 
@@ -174,7 +183,10 @@ class Logger {
       const outputString = `%c${errorParameters.message}\n${this._getCallerName(browsers)}`;
       console[logLevel](outputString, colors[errorParameters.severity]);
       // Only append console trace if severity is not an error (as error already display trace)
-      if (errorParameters.severity !== 'error' && errorParameters.severity !== 'warning') { console.trace(); }
+      if (errorParameters.severity !== 'error' && errorParameters.severity !== 'warning') {
+        console.trace();
+      }
+      // Close error group in console
       console.groupEnd();
     }
   }
@@ -189,15 +201,15 @@ class Logger {
    * @param {object} browsers - An object with booleans values for current browser used by session
    * @return {string} - The Logger standard caller name regardless the browser */
   _getCallerName(browsers) {
-    // Original code from: https://gist.github.com/irisli/716b6dacd3f151ce2b7e
+    // Original code from https://gist.github.com/irisli/716b6dacd3f151ce2b7e
     let caller = (new Error()).stack; // Create error and get its call stack
     // Get last called depending on browser
     if (typeof browsers === 'object') {
       if (browsers.firefox) {
-        caller = caller.split('\n')[3];
+        caller = caller.split('\n')[3]; // Third item is error caller method
         caller = caller.replace(/@+/, ' '); // Change `@` to `(`
       } else if (browsers.chrome) {
-        caller = caller.split('\n')[caller.split('\n').length - 2];
+        caller = caller.split('\n')[caller.split('\n').length - 2]; // Minus 2 to remove closing parenthesis as well
         // Remove Chrome specific strings to match Firefox look and feel (go ff)
         caller = caller.replace(/^Error\s+/, '');
         caller = caller.replace(/^\s+at./, '');
@@ -208,8 +220,13 @@ class Logger {
     } else {
       return 'Argument error, unable to get the caller name on this raise';
     }
-
-    return `Raised from function ${caller.charAt(0) === ' ' ? `<anonymous>${caller}`: caller}`;
+    // Prepare function name, and replace with anonymous in proper case
+    let functionName = caller;
+    if (caller.charAt(0) === ' ') { // First char is normally the function name first char. Space means anonymous cross browsers (so far...)
+      functionName = `<anonymous>${caller}`;
+    }
+    // Unified returned value for anonymous/non anonymous methods
+    return `Raised from function ${functionName}`;
   }
 
 
@@ -235,7 +252,7 @@ class Logger {
     // Create error specific values depending on error origin (JavaScript, Custom or Unknown) */
     const errorParameters = this._buildErrorInfo(error);
     /* If any Notification manager exists, use it with error parameters */
-    this._logErrorToNotification(errorParameters)
+    this._logErrorToNotification(errorParameters);
     /* In debug mode, fill the console with error parameters */
     this._logErrorToConsole(errorParameters);
   }
