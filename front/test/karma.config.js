@@ -15,10 +15,9 @@ module.exports = function(config) {
     proxies: {
       '/static/': '/base/test/static/'
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
     preprocessors: {
       './front/test/test-context.js': ['webpack', 'sourcemap']
-      //'./static/js/core/**/*.js': ['webpack', 'sourcemap', 'coverage']
     },
     babelPreprocessor: {
       options: {
@@ -26,29 +25,16 @@ module.exports = function(config) {
         sourceMap: true
       }
     },
-    coverageReporter: {
-      type : 'lcov',
-      dir : './front/test/coverage/',
-      subdir: (browser) => {
-        // normalization process to keep a consistent browser name across different OS
-        return browser.split(/[ /-]/)[0];
-      },
-      includeAllSources: true
-    },
     webpack: {
       devtool: 'source-map',
       module: {
-        rules: [
-          {
-            test: /\.js/,
-            exclude: /node_modules/,
-            use: [
-              {
-                loader: 'babel-loader'
-              }
-            ]
-          }
-        ]
+        rules: [{
+          test: /\.js/,
+          exclude: /node_modules/,
+          use: [{
+            loader: 'babel-loader'
+          }]
+        }]
       },
       watch: true,
       mode: 'development'

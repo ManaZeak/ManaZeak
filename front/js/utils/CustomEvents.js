@@ -434,6 +434,13 @@ class CustomEvents {
   /*  --------------------------------------------------------------------------------------------------------------- */
 
 
+  /** @method
+   * @name _raise
+   * @private
+   * @memberof CustomEvents
+   * @description <blockquote>Internal method to abstract console wrapped in debug flag./blockquote>
+   * @param {string} level - The console method to call
+   * @param {string} errorValue - The error value to display in console method **/
   _raise(level, errorValue) {
     if (this._debug) {
       console[level](errorValue);

@@ -1,9 +1,9 @@
 module.exports = env => {
-  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-  const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // Js minify
-  const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-  const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin"); // CSS minifier
   const path = require('path');
+  const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+  const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+  const TerserPlugin = require('terser-webpack-plugin');
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
   const SRC = path.resolve(__dirname, 'static');
   const DIST = path.resolve(__dirname, 'static/dist');
@@ -81,7 +81,12 @@ module.exports = env => {
     },
     optimization: (env.prod !== 'true') ? {} :  {
       minimizer: [
-        new UglifyJsPlugin(),
+        new TerserPlugin({
+          parallel: 4,
+          terserOptions: {
+            ecma: 5
+          }
+        }),
         new OptimizeCSSAssetsPlugin({
           assetNameRegExp: /\.css$/g,
           cssProcessor: require('cssnano'),
