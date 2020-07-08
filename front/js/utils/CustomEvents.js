@@ -212,6 +212,8 @@ class CustomEvents {
       this._regularEvents.splice(index, 1);
       return true;
     }
+
+    return false;
   }
 
 
@@ -377,7 +379,7 @@ class CustomEvents {
    * @param {string} eventName - Event name (the one to use to publish)
    * @param {object} [data=undefined] - The data object to sent through the custom event
    * @returns {boolean} - The method status ; true for success, false for non-existing event **/
-  publish(eventName, data = undefined) {
+  publish(eventName, data = null) {
     // Debug logging
     this._raise('log', `CustomEvents.publish: ${eventName} ${data}`);
     // Missing mandatory arguments

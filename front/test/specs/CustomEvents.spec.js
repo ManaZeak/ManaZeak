@@ -1,4 +1,4 @@
-import CustomEvents from '../../js/utils/CustomEvents.js'
+import CustomEvents from '../CustomEvents.js'
 'use strict';
 
 
@@ -309,7 +309,7 @@ describe('CustomEvents unit test', () => {
 
   it('Public method publish without data', done => {
     AppEvents.subscribe('TestEvent', data => {
-      expect(data).toEqual(undefined); // Default value for empty data must be undefined
+      expect(data).toEqual(null); // Default value for empty data must be undefined
     });
     // All subscribe expects will be handle in publish call
     expect(AppEvents.publish('TestEvent')).toEqual(true);
