@@ -168,7 +168,7 @@ class CustomEvents {
     // Returned value
     let statusCode = false; // Didn't removed any status code by default (false)
     // Flag to know if there was any previously stored event listeners
-    let hadEvents = (this._regularEvents.length > 0);
+    const hadEvents = (this._regularEvents.length > 0);
     // Iterate over saved listeners, reverse order for proper splicing
     for (let i = (this._regularEvents.length - 1); i >= 0; --i) {
       this._clearRegularEvent(i);
@@ -207,7 +207,7 @@ class CustomEvents {
     // Check if index match an existing event in attributes
     if (this._regularEvents[index]) {
       // Remove its event listener and update regularEvents array
-      let evt = this._regularEvents[index];
+      const evt = this._regularEvents[index];
       evt.element.removeEventListener(evt.eventName, evt.callback, evt.options);
       this._regularEvents.splice(index, 1);
       return true;
@@ -293,11 +293,11 @@ class CustomEvents {
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
-    let keys = Object.keys(this._customEvents);
+    const keys = Object.keys(this._customEvents);
     // Reverse events iteration to properly splice without messing with iteration order
     for (let i = (keys.length - 1); i >= 0; --i) {
       // Get event subscriptions
-      let subs = this._customEvents[keys[i]];
+      const subs = this._customEvents[keys[i]];
       // Iterate over events subscriptions to find the one with given id
       for (let j = 0; j < subs.length; ++j) {
         // In case we got a subscription for this events
@@ -345,12 +345,12 @@ class CustomEvents {
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
-    let keys = Object.keys(this._customEvents);
+    const keys = Object.keys(this._customEvents);
     // Iterate through custom event keys to find matching event to remove
     for (let i = 0; i < keys.length; ++i) {
       if (keys[i] === eventName) {
         // Get event subscriptions
-        let subs = this._customEvents[keys[i]];
+        const subs = this._customEvents[keys[i]];
         // Iterate over events subscriptions to find the one with given id, reverse iteration to properly splice without messing with iteration order
         for (let j = (subs.length - 1); j >= 0; --j) {
           // Update status code
@@ -393,7 +393,7 @@ class CustomEvents {
     // Returned value
     let statusCode = false; // Not found status code by default (false)
     // Save event keys to iterate properly on this._events Object
-    let keys = Object.keys(this._customEvents);
+    const keys = Object.keys(this._customEvents);
     // Iterate over saved custom events
     for (let i = 0; i < keys.length; ++i) {
       // If published name match an existing events, we iterate its subscriptions. First subscribed, first served
@@ -401,7 +401,7 @@ class CustomEvents {
         // Update status code
         statusCode = true; // Found and published status code (true)
         // Get event subscriptions
-        let subs = this._customEvents[keys[i]];
+        const subs = this._customEvents[keys[i]];
         // Iterate over events subscriptions to find the one with given id
         // Reverse subscriptions iteration to properly splice without messing with iteration order
         for (let j = (subs.length - 1); j >= 0; --j) {
