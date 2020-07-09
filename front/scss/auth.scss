@@ -24,17 +24,13 @@ input[type="text"] {
   border-bottom: solid 1px #aaaabe;
   color: #aaaabe;
   padding: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 1.2rem;
   text-align: center;
   transition: border-bottom .2s, color .2s;
 
   &:active,
   &:hover {
     border-bottom: solid 1px #ebebff;
-  }
-
-  &:focus {
-    border-bottom: solid 1px #56d45b;
   }
 
   &:active,
@@ -50,13 +46,13 @@ button {
   border-radius: 6px;
   color: #aaaabe;
   cursor: pointer;
-  margin: 25px 10px;
-  padding: 10px 25px;
-  transition: .2s;
+  padding: .5rem 2.5rem;
+  transition: all .2s;
 
   &:active,
   &:focus,
   &:hover {
+    background-color: rgba(127, 127, 127, .1);
     border: 1px solid #ebebff;
     box-shadow: 0 0 1px #ebebff;
     color: #ebebff;
@@ -100,7 +96,12 @@ input {
 }
 
 p {
-  margin: 20px 0;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 a {
@@ -109,14 +110,15 @@ a {
 }
 
 .mzk-user form {
-  background-color: #1f2127;
+  background-color: rgba(31, 33, 39, .1);
   border: 1px solid #0e0f14;
   border-radius: 6px;
+  box-shadow:  0 0 1rem 0 rgba(86, 212, 91, .05);
   box-sizing: border-box;
   display: table;
   margin-left: auto;
   margin-right: auto;
-  padding: 40px;
+  padding: 3rem;
   width: auto;
 
   p {
