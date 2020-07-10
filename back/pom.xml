@@ -13,7 +13,7 @@
 	<description>An online music library tool</description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.sources>src/main/java,src/main/javagen,src/test,src/main/resources/templates</sonar.sources>
+		<sonar.sources>src/main/java,src/main/javagen,src/main/resources/templates</sonar.sources>
 	</properties>
 	<dependencies>
 		<dependency>
