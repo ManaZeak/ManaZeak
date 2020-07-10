@@ -10,6 +10,7 @@ public final class HashUtil {
 
     /**
      * Get the MD5 hash of the given value.
+     *
      * @param value the value that will be hashed.
      * @return the hashed value.
      */
@@ -19,6 +20,7 @@ public final class HashUtil {
 
     /**
      * Get the MD5 hash of the given value.
+     *
      * @param value the value that will be hashed.
      * @return the hashed value.
      */

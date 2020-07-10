@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.user;
+package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.constant.errors.ErrorEnum;
@@ -38,6 +38,9 @@ public class UserManagerImpl implements UserManager {
      * The Service to encode the password.
      */
     private final PasswordEncoder passEncoder;
+    /**
+     * Handle the errors.
+     */
     private final ErrorHandlerService errorHandlerService;
 
     public UserManagerImpl(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO,
@@ -63,6 +66,14 @@ public class UserManagerImpl implements UserManager {
         // Saving the user in the database.
         userDAO.save(user);
         return user;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<MzkUser> findByUsername(String username) {
+        return userDAO.getByUsername(username);
     }
 
     /**

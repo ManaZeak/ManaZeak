@@ -3,7 +3,7 @@ package org.manazeak.manazeak.configuration.security;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
-import org.manazeak.manazeak.service.user.UserService;
+import org.manazeak.manazeak.service.security.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

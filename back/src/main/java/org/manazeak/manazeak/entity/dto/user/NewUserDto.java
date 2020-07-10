@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.user;
 
 import org.manazeak.manazeak.entity.validator.global.LettersOnly;
+import org.manazeak.manazeak.entity.validator.user.InviteCode;
 import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
 import org.manazeak.manazeak.entity.validator.user.UniqueUsername;
 
@@ -30,6 +31,7 @@ public class NewUserDto implements PasswordContainer {
     private String locale;
     private String birthDate;
     private String bio;
+    @InviteCode
     private String inviteCode;
     private String country;
 

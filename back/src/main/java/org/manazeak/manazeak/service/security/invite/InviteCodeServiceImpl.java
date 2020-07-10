@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.invite;
+package org.manazeak.manazeak.service.security.invite;
 
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
@@ -7,6 +7,7 @@ import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.util.HashUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -16,14 +17,16 @@ import java.util.Optional;
 @Service
 public class InviteCodeServiceImpl implements InviteCodeService {
 
+    /**
+     * The invite code DAO.
+     */
+    private final InviteCodeDAO inviteCodeDAO;
+    /**
+     * The user DAO.
+     */
+    private final MzkUserDAO mzkUserDAO;
     @Value("${app.inviteCodeDepth}")
     private int inviteCodeDepth;
-
-    /** The invite code DAO. */
-    private final InviteCodeDAO inviteCodeDAO;
-
-    /** The user DAO. */
-    private final MzkUserDAO mzkUserDAO;
 
     public InviteCodeServiceImpl(InviteCodeDAO inviteCodeDAO, MzkUserDAO mzkUserDAO) {
         this.inviteCodeDAO = inviteCodeDAO;

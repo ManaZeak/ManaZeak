@@ -7,11 +7,12 @@
 <body>
 <h1 th:text="#{label.register.title}">form</h1>
 
+<!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
 <form th:object="${user}" method="POST">
     <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
     <div>
-        <label th:text="#{label.user.login}">first</label>
-        <input th:field="*{username}"/>
+        <label for="username-input" th:text="#{label.user.login}">username</label>
+        <input id="username-input" th:field="*{username}"/>
         <p th:each="error : ${#fields.errors('username')}"
            th:text="${error}">Validation error</p>
     </div>
@@ -28,16 +29,22 @@
            th:text="${error}">Validation error</p>
     </div>
     <div>
-        <label th:text="#{label.user.surname}">last</label>
-        <input th:field="*{surname}"/>
-        <!-- <p th:each="error : ${#fields.errors('surname')}"
-           th:text="${error}">Validation error</p> !-->
+        <label for="inviteCode-input" th:text="#{label.user.invite_code}">confirm</label>
+        <input id="inviteCode-input" th:field="*{inviteCode}"/>
+        <p th:each="error : ${#fields.errors('inviteCode')}"
+           th:text="${error}">Validation error</p>
     </div>
     <div>
         <label th:text="#{label.user.email}">email</label>
         <input type="email" th:field="*{mail}"/>
         <p th:each="error : ${#fields.errors('mail')}"
            th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.surname}">last</label>
+        <input th:field="*{surname}"/>
+        <!-- <p th:each="error : ${#fields.errors('surname')}"
+           th:text="${error}">Validation error</p> !-->
     </div>
 
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

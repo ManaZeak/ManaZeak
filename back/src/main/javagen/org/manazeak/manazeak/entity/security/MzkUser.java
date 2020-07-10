@@ -1,8 +1,11 @@
 package org.manazeak.manazeak.entity.security;
 
+import org.manazeak.manazeak.entity.reference.Country;
+
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
@@ -14,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.CascadeType;
-import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 
@@ -342,6 +344,10 @@ public class MzkUser implements Serializable{
      * @param inviteCode the invite code to add.
      */
     public void addInviteCode(InviteCode inviteCode) {
-	    inviteCodeList.add(inviteCode);
+	    // If the invite code list doesn't exist we create it.
+    	if (inviteCodeList == null) {
+    		inviteCodeList = new HashSet<>();
+		}
+    	inviteCodeList.add(inviteCode);
     }
 }

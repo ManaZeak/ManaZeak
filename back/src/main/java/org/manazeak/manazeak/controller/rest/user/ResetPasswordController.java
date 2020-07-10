@@ -10,7 +10,7 @@ import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.service.error.ErrorHandlerService;
-import org.manazeak.manazeak.service.user.UserManager;
+import org.manazeak.manazeak.service.security.user.UserManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

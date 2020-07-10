@@ -11,6 +11,8 @@
   <div class="mzk-user">
     <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
     <p>Please login below, or <a href="register">register</a></p>
+    <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
+    <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
     <form th:object="${user}" method="POST">
       <div th:if="${param.error}">
         <p th:text="#{error.login.fail}">login fail</p>

@@ -1,10 +1,12 @@
-package org.manazeak.manazeak.service.user;
+package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRestException;
+
+import java.util.Optional;
 
 /**
  * Manages the creation of user in the database.
@@ -17,6 +19,14 @@ public interface UserManager {
      * @return the user inserted.
      */
     MzkUser insertUser(NewUserDto newUser);
+
+    /**
+     * Get a username by it's username in the username.
+     *
+     * @param username the username of the user.
+     * @return the user if it exists.
+     */
+    Optional<MzkUser> findByUsername(String username);
 
     /**
      * Change the current user password.

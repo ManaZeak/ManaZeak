@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.user;
+package org.manazeak.manazeak.service.security.user;
 
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;

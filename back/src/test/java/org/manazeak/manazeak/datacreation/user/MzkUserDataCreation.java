@@ -4,7 +4,7 @@ import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.service.user.UserService;
+import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Component;
 
 /**
