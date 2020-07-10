@@ -14,7 +14,7 @@
     <description>An online music library tool</description>
 
     <properties>
-        <sonar.sources>js/, scss/</sonar.sources>
+        <sonar.sources>js/,scss/</sonar.sources>
     </properties>
 
     <build>
