@@ -3,9 +3,6 @@ package org.manazeak.manazeak.configuration.security;
 import org.manazeak.manazeak.entity.security.Privilege;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MzkGrantedAuthority implements GrantedAuthority {
 
     /**
