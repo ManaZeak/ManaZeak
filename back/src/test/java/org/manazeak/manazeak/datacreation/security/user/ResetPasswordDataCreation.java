@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.datacreation.user;
+package org.manazeak.manazeak.datacreation.security.user;
 
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;

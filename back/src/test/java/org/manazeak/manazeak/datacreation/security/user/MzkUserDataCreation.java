@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.datacreation.user;
+package org.manazeak.manazeak.datacreation.security.user;
 
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;

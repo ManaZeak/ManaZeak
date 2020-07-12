@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.datacreation.user;
+package org.manazeak.manazeak.datacreation.security.user;
 
 public final class UserTestConstants {
 
@@ -10,6 +10,8 @@ public final class UserTestConstants {
     public static String NEW_PASS = "pass2";
     public static String MAIL = "test@test.test";
     public static String INVITE_CODE = "GG_JESUS";
+
+    public static String ADMIN_USERNAME = "JESUS";
 
     private UserTestConstants() {
 

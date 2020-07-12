@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.junit.jupiter.api.Assertions;
-import org.manazeak.manazeak.datacreation.user.UserTestConstants;
+import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
 import org.manazeak.manazeak.entity.security.MzkUser;
 
 public final class UserVerificationHelper {
