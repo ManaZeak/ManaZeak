@@ -4,6 +4,7 @@ import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.HashUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -48,11 +49,22 @@ public class InviteCodeServiceImpl implements InviteCodeService {
      * {@inheritDoc}
      */
     @Override
-    public void useInviteCode(String inviteCodeValue) {
+    public void useInviteCode(String inviteCodeValue, MzkUser newUser) {
         // Get the invite code from the database.
-        Optional<InviteCode> inviteCode = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
+        Optional<InviteCode> inviteCodeOpt = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
+        if (inviteCodeOpt.isEmpty()) {
+            throw new MzkRuntimeException("The invite code wasn't found in the database.");
+        }
         // Mark the invite code as used.
-        // Generate a new invite code for the user.
+        InviteCode inviteCode = inviteCodeOpt.get();
+        inviteCode.setIsActive(false);
+        // Saving the invite code in the database.
+        inviteCodeDAO.save(inviteCode);
+        // Setting the used invite code on the new user.
+        newUser.setInviteCode(inviteCode);
+        mzkUserDAO.save(newUser);
+        // Generating a new invite code for the parent.
+        generateInviteCode(mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode));
     }
 
     /**

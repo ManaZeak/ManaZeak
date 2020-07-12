@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="initial-scale=1">
-  <meta name="description" content="Login to ManaZeak here! ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. https://github.com/ManaZeak/ManaZeak">
-  <title>ManaZeak - login</title>
-  <link rel="stylesheet" type="text/css" href="static/dist/css/auth.bundle.css">
+    <meta charset="UTF-8">
+    <meta content="initial-scale=1" name="viewport">
+    <meta content="Login to ManaZeak here! ManaZeak is a free software that gives you the ability to listen to and edit your musical library from anywhere that has a connection and a true web browser (i.e. Chromium, Firefox). It is also linked to SyncThing, to automatically sync your online library with all the devices that share it. https://github.com/ManaZeak/ManaZeak"
+          name="description">
+    <title>ManaZeak - login</title>
+    <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="mzk-user">
-    <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
+<div class="mzk-user">
+    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg">
     <p>Please login below, or <a href="register">register</a></p>
     <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
-    <form th:object="${user}" method="POST">
-      <div th:if="${param.error}">
-        <p th:text="#{error.login.fail}">login fail</p>
-      </div>
-      <label for="username-input" th:text="#{label.user.login}">
-        <strong>username</strong>
-      </label>
-      <input id="username-input" maxlength="100" type="text" th:field="*{username}"/>
-      <p th:each="error : ${#fields.errors('username')}" th:text="${error}">Invalid username</p>
-      <label for="password-input" th:text="#{label.user.password}">
-        <strong>password</strong>
-      </label>
-      <input id="password-input" maxlength="256" type="password" th:field="*{password}"/>
-      <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Invalid password</p>
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <button type="submit" th:text="#{label.login.login}">submit</button>
+    <form method="POST" th:object="${user}">
+        <div th:if="${param.error}">
+            <p th:text="#{error.login.fail}">login fail</p>
+        </div>
+        <label for="username-input" th:text="#{label.user.login}">
+            <strong>username</strong>
+        </label>
+        <input id="username-input" maxlength="100" th:field="*{username}" type="text"/>
+        <p th:each="error : ${#fields.errors('username')}" th:text="${error}">Invalid username</p>
+        <label for="password-input" th:text="#{label.user.password}">
+            <strong>password</strong>
+        </label>
+        <input id="password-input" maxlength="256" th:field="*{password}" type="password"/>
+        <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Invalid password</p>
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <button th:text="#{label.login.login}" type="submit">submit</button>
     </form>
     <p>See what ManaZeak can do for you right <a href="https://manazeak.github.io/" target="_blank">here</a>.</p>
-  </div>
+</div>
 </body>
 </html>

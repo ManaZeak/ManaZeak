@@ -197,5 +197,9 @@ INSERT INTO invite_code
     (invite_code_id, value, is_active)
 VALUES (1, 'GG_JESUS', true);
 
+-- Linking the user and the invite code
+INSERT INTO user_invite
+    (user_id, invite_code_id)
+VALUES (1, 1);
 
 commit;

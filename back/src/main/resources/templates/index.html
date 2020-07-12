@@ -5,10 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-    <p>Hello !</p>
-    <p th:if="${loginError}" class="error">Wrong user or password</p>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout" />
-    </form>
+<p>Hello !</p>
+<p class="error" th:if="${loginError}">Wrong user or password</p>
+<form method="post" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>

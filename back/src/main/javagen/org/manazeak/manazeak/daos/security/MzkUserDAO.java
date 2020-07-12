@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.security;
 
+import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.repository.CrudRepository;
 
@@ -19,6 +20,13 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
      * @return the user.
      */
     Optional<MzkUser> getByUsername(String username);
+
+    /**
+     * Get a user from it's invite code.
+     * @param inviteCode the invite code of the user.
+     * @return The owner of this invite code.
+     */
+    MzkUser getMzkUserByInviteCodeListContains(InviteCode inviteCode);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

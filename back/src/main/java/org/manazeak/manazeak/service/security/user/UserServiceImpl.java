@@ -55,7 +55,9 @@ public class UserServiceImpl implements UserService {
         MzkUser user = userManager.insertUser(userToCreate);
         // Creating the invite code of the user.
         inviteCodeService.generateInviteCode(user);
-        return null;
+        // Invalidating the parent invite code.
+        inviteCodeService.useInviteCode(userToCreate.getInviteCode(), user);
+        return user;
     }
 
     /**

@@ -19,8 +19,9 @@ public interface InviteCodeService {
      * Invalidate the invite code used by the user, generate a new invite code.
      *
      * @param inviteCodeValue The value of the invite code.
+     * @param newUser         The user that was created.
      */
-    void useInviteCode(String inviteCodeValue);
+    void useInviteCode(String inviteCodeValue, MzkUser newUser);
 
     /**
      * Generate a new invite code for a user.

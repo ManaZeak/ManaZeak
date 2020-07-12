@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>ManaZeak - Register</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>ManaZeak - Register</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 </head>
 <body>
 <h1 th:text="#{label.register.title}">form</h1>
 
 <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
-<form th:object="${user}" method="POST">
+<form method="POST" th:object="${user}">
     <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
     <div>
         <label for="username-input" th:text="#{label.user.login}">username</label>
@@ -18,13 +18,13 @@
     </div>
     <div>
         <label th:text="#{label.user.password}">password</label>
-        <input type="password" th:field="*{password1}"/>
+        <input th:field="*{password1}" type="password"/>
         <p th:each="error : ${#fields.errors('password1')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
         <label th:text="#{label.user.confirm_pass}">confirm</label>
-        <input type="password" th:field="*{password2}"/>
+        <input th:field="*{password2}" type="password"/>
         <p th:each="error : ${#fields.errors('password2')}"
            th:text="${error}">Validation error</p>
     </div>
@@ -36,7 +36,7 @@
     </div>
     <div>
         <label th:text="#{label.user.email}">email</label>
-        <input type="email" th:field="*{mail}"/>
+        <input th:field="*{mail}" type="email"/>
         <p th:each="error : ${#fields.errors('mail')}"
            th:text="${error}">Validation error</p>
     </div>
@@ -47,8 +47,8 @@
            th:text="${error}">Validation error</p> !-->
     </div>
 
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button type="submit" th:text="#{label.register.submit}">submit</button>
+    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+    <button th:text="#{label.register.submit}" type="submit">submit</button>
 </form>
 </body>
 </html>

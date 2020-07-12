@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
-public class InviteCodeValidator implements ConstraintValidator<InviteCode, String>  {
+public class InviteCodeValidator implements ConstraintValidator<InviteCode, String> {
 
     /**
      * The service for checking the invite code.
@@ -20,7 +20,8 @@ public class InviteCodeValidator implements ConstraintValidator<InviteCode, Stri
 
     /**
      * Check if the invite code is correct and is active in the database.
-     * @param inviteCode the String containing the invite code.
+     *
+     * @param inviteCode                 the String containing the invite code.
      * @param constraintValidatorContext context object.
      * @return True if the code is valid.
      */
