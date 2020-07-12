@@ -23,20 +23,6 @@ public class MzkGrantedAuthority implements GrantedAuthority {
     }
 
     /**
-     * Get the list of granted authorities for a user with his privilege.
-     *
-     * @return the list of granted authorities of a user.
-     */
-    public static List<GrantedAuthority> getGrantedAuthoritiesFromListPrivileges(Iterable<Privilege> privileges) {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Privilege privilege : privileges) {
-            GrantedAuthority grantedAuthority = new MzkGrantedAuthority(privilege);
-            grantedAuthorities.add(grantedAuthority);
-        }
-        return grantedAuthorities;
-    }
-
-    /**
      * Get the authority.
      *
      * @return The authoprity name.

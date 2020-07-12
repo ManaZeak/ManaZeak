@@ -5,11 +5,13 @@ import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.DateUtil;
 import org.manazeak.manazeak.util.HashUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -75,7 +77,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         // Generating the object that will be hashed.
         StringBuilder inviteSeed = new StringBuilder();
         inviteSeed.append(user.getUsername());
-        inviteSeed.append(LocalDate.now());
+        inviteSeed.append(DateUtil.formatDateTime(LocalDateTime.now(), DateUtil.FULL_TIME_FORMATTER));
         // Generating the invite code object.
         InviteCode inviteCode = new InviteCode();
         inviteCode.setIsActive(true);

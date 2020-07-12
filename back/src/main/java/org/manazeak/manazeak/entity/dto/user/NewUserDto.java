@@ -31,6 +31,7 @@ public class NewUserDto implements PasswordContainer {
     private String locale;
     private String birthDate;
     private String bio;
+    @NotEmpty(message = "{error.register.empty_invite_code}")
     @InviteCode
     private String inviteCode;
     private String country;

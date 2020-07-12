@@ -1,10 +1,12 @@
 package org.manazeak.manazeak.service.security.user;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.datacreation.user.MzkUserDataCreation;
 import org.manazeak.manazeak.datacreation.user.NewUserDataCreation;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -35,12 +37,28 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
     }
 
     /**
+     * Test that the user creation blocks if there is no invite code.
+     */
+    @Test
+    void createUserTestWithoutInviteCode() {
+        // Creating the test object.
+        NewUserDto newUser = newUserDataCreation.createNewUserDto();
+        // Creating a user with the service
+        try {
+            userService.createUser(newUser);
+        } catch (MzkRuntimeException e) {
+            return;
+        }
+        Assertions.fail("The user shouldn't be present.");
+    }
+
+    /**
      * Test that the user creation work properly.
      */
     @Test
-    void createUserTest() {
+    void createUserTestWithInviteCode() {
         // Creating the test object.
-        NewUserDto newUser = newUserDataCreation.createNewUserDto();
+        NewUserDto newUser = newUserDataCreation.createNewUserDtoWithInvite();
         // Creating a user with the service
         userService.createUser(newUser);
         // Cleaning JPA before getting the object in the database.
@@ -49,8 +67,4 @@ class UserCreationServiceTest extends AbstractManaZeakTest {
         UserVerificationHelper.testDefaultUserValues(userTestHelper.getDefaultUser(), true);
     }
 
-    @Test
-    void createNewUserTest() {
-
-    }
 }

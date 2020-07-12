@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -9,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 public final class DateUtil {
 
     public static final DateTimeFormatter FR_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
+    public static final DateTimeFormatter FULL_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd kk:HH:mm:ss.SSS");
 
     private DateUtil() {
 
@@ -26,5 +29,9 @@ public final class DateUtil {
             return null;
         }
         return LocalDate.parse(strDate, formatter);
+    }
+
+    public static String formatDateTime(LocalDateTime date, DateTimeFormatter format) {
+        return date.format(format);
     }
 }
