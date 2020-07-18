@@ -7,7 +7,6 @@ html, body {
   font-family: Helvetica, serif;
   height: 100%;
   margin: 0;
-  overflow: hidden;
   padding: 0;
   width: 100%;
 }
@@ -17,6 +16,10 @@ form, .mzk-user {
   height: auto;
 }
 
+label {
+  font-weight: bold;
+}
+
 input[type="password"],
 input[type="text"] {
   background: 0;
@@ -24,7 +27,7 @@ input[type="text"] {
   border-bottom: solid 1px #aaaabe;
   color: #aaaabe;
   padding: 5px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.33rem;
   text-align: center;
   transition: border-bottom .2s, color .2s;
 
@@ -40,12 +43,18 @@ input[type="text"] {
   }
 }
 
+input.error {
+  border-bottom: solid 1px #FF6B67;
+}
+
 button {
   background: 0;
   border: 1px solid #aaaabe;
   border-radius: 6px;
   color: #aaaabe;
   cursor: pointer;
+  font-weight: bold;
+  margin-top: 1.33rem;
   padding: .5rem 2.5rem;
   transition: all .2s;
 
@@ -66,23 +75,6 @@ input {
   margin-right: auto;
 }
 
-@media (max-width: 1028px) {
-  .mzk-user.mzk-user img {
-    width: 85%;
-  }
-  .mzk-logo {
-    width: 25% !important;
-  }
-}
-
-.mzk-fork {
-  border: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 999;
-}
-
 .mzk-user {
   margin: 0;
   padding: 0;
@@ -97,11 +89,25 @@ input {
 
 p {
   font-size: 1.1rem;
-  margin: 2rem 0;
+  margin: 2rem 1rem;
 
   &:last-of-type {
     margin-bottom: 0;
   }
+}
+
+p.error {
+  color: #FF6B67;
+  font-size: .9rem;
+  font-style: italic;
+  margin: 0;
+}
+
+p.global-error {
+  color: #FF6B67;
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 1.33rem;
 }
 
 a {
@@ -131,5 +137,21 @@ a {
 
   .mzk-logo {
     width: 5%;
+  }
+}
+
+@media (max-width: 1028px) {
+  div.mzk-user img { // Text icon must take most of mobile width in portrait mode
+    width: 85%;
+  }
+
+  @media (orientation: landscape) {
+    body { // Proper scrolling on landscape ; replace flex
+      display: block;
+    }
+
+    .mzk-user { // Some air over page content
+      margin: 2rem 0;
+    }
   }
 }

@@ -12,31 +12,27 @@
 <body>
     <div class="mzk-user">
         <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg">
-        <p th:text="#{label.register.title}">form</p>
+        <p>Please create your account using the following form, or <a href="login">log in</a></p>
         <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
         <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
         <form method="POST" th:object="${user}">
-            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
-            <label for="username-input" th:text="#{label.user.login}">
-                <strong>username</strong>
-            </label>
-            <input id="username-input" th:field="*{username}" type="text"/>
-            <p th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation error</p>
-            <label for="inviteCode-input" th:text="#{label.user.invite_code}">
-                <strong>confirm</strong>
-            </label>
-            <input id="inviteCode-input" th:field="*{inviteCode}" type="text"/>
-            <p th:each="error : ${#fields.errors('inviteCode')}" th:text="${error}">Validation error</p>
-            <label th:text="#{label.user.password}">
-                <strong>password</strong>
-            </label>
-            <input th:field="*{password1}" type="password"/>
-            <p th:each="error : ${#fields.errors('password1')}" th:text="${error}">Validation error</p>
-            <label th:text="#{label.user.confirm_pass}">
-                <strong>confirm</strong>
-            </label>
-            <input th:field="*{password2}" type="password"/>
-            <p th:each="error : ${#fields.errors('password2')}" th:text="${error}">Validation error</p>
+            <label for="username-input" th:text="#{label.user.login}">username</label>
+            <p class="error" th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation error</p>
+            <input id="username-input" th:field="*{username}" th:errorClass="'error'" type="text"/>
+
+            <label for="inviteCode-input" th:text="#{label.user.invite_code}">invite code</label>
+            <p class="error" th:each="error : ${#fields.errors('inviteCode')}" th:text="${error}">Validation error</p>
+            <input id="inviteCode-input" th:field="*{inviteCode}" th:errorClass="'error'" type="text"/>
+
+            <label for="password-one" th:text="#{label.user.password}">password one</label>
+            <p class="error" th:each="error : ${#fields.errors('password1')}" th:text="${error}">Validation error</p>
+            <input id="password-one" th:field="*{password1}" th:errorClass="'error'" type="password"/>
+
+            <label for="password-two" th:text="#{label.user.confirm_pass}">password two</label>
+            <p class="error" th:each="error : ${#fields.errors('password2')}" th:text="${error}">Validation error</p>
+            <input id="password-two" th:field="*{password2}" th:errorClass="'error'" type="password"/>
+
+            <p class="global-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             <!-- Required csrf token from session cookies -->
             <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <button th:text="#{label.register.submit}" type="submit">submit</button>
