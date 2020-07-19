@@ -27,37 +27,6 @@ public class MzkLocalResolver extends SessionLocaleResolver {
     private UserService userService;
 
     /**
-     * Choose the local displayed of the user. The local is chosen from :
-     * - the user object stored in the database.
-     * - the user-agent if no user is logged in.
-     *
-     * @param request the request of the user.
-     * @return The local of the user.
-     */
-    @Override
-    public Locale resolveLocale(HttpServletRequest request) {
-        // Getting the security context of the application.
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        // Getting the name of the user.
-        String userName = securityContext.getAuthentication().getName();
-        // If there is no user connected, getting the information from the user agent.
-        if ("anonymousUser".equals(userName)) {
-            return getLocalFromRequestHeader(request);
-        }
-        // Getting the user from the database.
-        Optional<MzkUser> user = userService.findByUsername(userName);
-        if (user.isEmpty()) {
-            LOG.warn("A user has no user name and is connected.");
-            return Locale.US;
-        }
-        if (user.get().getLocale() != null) {
-            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale()));
-        } else {
-            return getAvailableLocale(null);
-        }
-    }
-
-    /**
      * Get the local from the user agent.
      *
      * @param request the user request.
@@ -93,6 +62,37 @@ public class MzkLocalResolver extends SessionLocaleResolver {
                 return Locale.FRANCE;
             default:
                 return Locale.US;
+        }
+    }
+
+    /**
+     * Choose the local displayed of the user. The local is chosen from :
+     * - the user object stored in the database.
+     * - the user-agent if no user is logged in.
+     *
+     * @param request the request of the user.
+     * @return The local of the user.
+     */
+    @Override
+    public Locale resolveLocale(HttpServletRequest request) {
+        // Getting the security context of the application.
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        // Getting the name of the user.
+        String userName = securityContext.getAuthentication().getName();
+        // If there is no user connected, getting the information from the user agent.
+        if ("anonymousUser".equals(userName)) {
+            return getLocalFromRequestHeader(request);
+        }
+        // Getting the user from the database.
+        Optional<MzkUser> user = userService.findByUsername(userName);
+        if (user.isEmpty()) {
+            LOG.warn("A user has no user name and is connected.");
+            return Locale.US;
+        }
+        if (user.get().getLocale() != null) {
+            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale()));
+        } else {
+            return getAvailableLocale(null);
         }
     }
 }

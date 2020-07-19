@@ -42,8 +42,16 @@ public class InviteCodeServiceImpl implements InviteCodeService {
     public boolean checkInviteCode(String inviteCodeValue) {
         // Getting the invite code from the database.
         Optional<InviteCode> inviteCode = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
-        // If the invite code was found, then it's a correct one.
-        return inviteCode.isPresent();
+        // If the invite code wasn't found, then it's not the correct one.
+        if (inviteCode.isEmpty()) {
+            return false;
+        }
+        // Getting the parent from the invite code.
+        MzkUser parent = mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode.get());
+        // Adding one to get the depth of the current user.
+        int userDepth = inviteCodeDAO.getParentUserDepth(parent.getUserId()) + 1;
+        // Checking the depth of the user.
+        return userDepth <= inviteCodeDepth;
     }
 
     /**

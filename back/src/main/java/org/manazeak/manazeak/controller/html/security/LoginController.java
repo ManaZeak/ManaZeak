@@ -14,6 +14,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     /**
+     * Add the user to the login page and display it.
+     *
+     * @param model the model of the page.
+     * @return the String containing the login page.
+     */
+    private static String displayLoginPage(Model model) {
+        UserLoginDto user = new UserLoginDto();
+        model.addAttribute("user", user);
+        return UserPageEnum.LOGIN_PAGE.getPage();
+    }
+
+    /**
      * Get the login page of the application.
      *
      * @param model the model for thymeleaf.
@@ -33,16 +45,5 @@ public class LoginController {
     @PostMapping("/login")
     public String postLoginPage(Model model) {
         return displayLoginPage(model);
-    }
-
-    /**
-     * Add the user to the login page and display it.
-     * @param model the model of the page.
-     * @return the String containing the login page.
-     */
-    private static String displayLoginPage(Model model) {
-        UserLoginDto user = new UserLoginDto();
-        model.addAttribute("user", user);
-        return UserPageEnum.LOGIN_PAGE.getPage();
     }
 }
