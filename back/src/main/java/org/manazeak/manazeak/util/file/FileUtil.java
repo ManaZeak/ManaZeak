@@ -20,12 +20,13 @@ public final class FileUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
-    private FileUtil () {
+    private FileUtil() {
 
     }
 
     /**
      * Get the extension of a file from it's magic bytes.
+     *
      * @param file The file in the form.
      */
     public static FileExtensionEnum getExtensionByMagicBytes(MultipartFile file) {
@@ -39,6 +40,7 @@ public final class FileUtil {
 
     /**
      * Create the parent and the current directory if it doesn't exist.
+     *
      * @param path The path of the directory to create.
      */
     public static void createDirectories(Path path) {

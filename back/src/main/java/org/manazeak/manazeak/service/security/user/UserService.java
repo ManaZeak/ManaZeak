@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.service.security.user;
 
-import org.manazeak.manazeak.controller.html.security.AdditionalRegisterInformationController;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -13,6 +12,7 @@ public interface UserService {
 
     /**
      * Get the current user connected.
+     *
      * @return the current user.
      */
     MzkUser getCurrentUser();
@@ -35,6 +35,7 @@ public interface UserService {
 
     /**
      * This function add the additional information about the user after the creation.
+     *
      * @param userInfo the user information to add to the user.
      */
     void addUserInformation(final UserFirstInfoDto userInfo);

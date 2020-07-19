@@ -26,6 +26,7 @@ public class UserProfilePicManagerImpl implements UserProfilePicManager {
 
     /**
      * {@inheritDoc}
+     *
      * @return
      */
     @Override
@@ -41,7 +42,7 @@ public class UserProfilePicManagerImpl implements UserProfilePicManager {
         // The destination path.
         Path dest = AVATAR_PATH.resolve(fileName);
         // We copy the file into the resources folder.
-        try(InputStream stream = file.getInputStream()) {
+        try (InputStream stream = file.getInputStream()) {
             Files.copy(stream, dest, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new MzkRuntimeException("Impossible to save the avatar into the storage.", e);

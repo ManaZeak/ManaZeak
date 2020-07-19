@@ -11,6 +11,7 @@ public class FieldUtil {
 
     /**
      * Check if a given String is empty or not.
+     *
      * @return true if the field is not empty.
      */
     public static boolean checkStringNotEmpty(String value) {

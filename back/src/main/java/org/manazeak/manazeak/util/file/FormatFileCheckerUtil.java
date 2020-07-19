@@ -3,14 +3,12 @@ package org.manazeak.manazeak.util.file;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.FileMagicNumberEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * This class allows to check the format of a file with the magic bytes.
  */
-public final class FormatFileCheckerUtil {
+public final class FormatFileCheckerUtil {w²
 
     private FormatFileCheckerUtil() {
 

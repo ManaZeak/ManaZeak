@@ -23,21 +23,21 @@ public enum FileExtensionEnum {
         this.contentTypes.addAll(Arrays.asList(contentTypes));
     }
 
+    public static FileExtensionEnum getFileExtensionByMimeType(String mimeType) {
+        for (FileExtensionEnum extension : FileExtensionEnum.values()) {
+            if (extension.getContentTypes().contains(mimeType)) {
+                return extension;
+            }
+        }
+        // Nothing was found
+        throw new MzkRuntimeException("This mime type is not supported.");
+    }
+
     public String getExtension() {
         return extension;
     }
 
     public List<String> getContentTypes() {
         return contentTypes;
-    }
-
-    public static FileExtensionEnum getFileExtensionByMimeType(String mimeType) {
-        for (FileExtensionEnum extension : FileExtensionEnum.values()) {
-            if(extension.getContentTypes().contains(mimeType)) {
-                return extension;
-            }
-        }
-        // Nothing was found
-        throw new MzkRuntimeException("This mime type is not supported.");
     }
 }

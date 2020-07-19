@@ -10,6 +10,7 @@ public interface UserProfilePicManager {
 
     /**
      * Save the avatar of a user into the FS. Replace the old avatar if any.
+     *
      * @param file The file in the form given by the user.
      * @param user The user changing it's picture.
      * @return true if an image has been saved.

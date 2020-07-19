@@ -53,14 +53,14 @@ public class UserServiceImpl implements UserService {
         // Getting the security context and the user.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-           throw new MzkRuntimeException("There is no connected user. Un-authenticated user should access this.");
+            throw new MzkRuntimeException("There is no connected user. Un-authenticated user should access this.");
         }
         // Getting the current username
         String currentUserName = authentication.getName();
         // Getting the user in the database.
         Optional<MzkUser> userOpt = findByUsername(currentUserName);
         if (userOpt.isEmpty()) {
-            throw  new MzkRuntimeException("The username wasn't found in the database, this is not normal!");
+            throw new MzkRuntimeException("The username wasn't found in the database, this is not normal!");
         }
         return userOpt.get();
     }

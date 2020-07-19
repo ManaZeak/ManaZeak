@@ -4,7 +4,6 @@ import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
-import org.manazeak.manazeak.service.security.user.UserProfilePicManager;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,14 +45,14 @@ public class AdditionalRegisterInformationController {
      * Handles the
      *
      * @param userInfo the information of the user.
-     * @param result The information about the validation errors.
+     * @param result   The information about the validation errors.
      * @return the redirection to the main page.
      */
     @Security(PrivilegeEnum.PLAY)
     @PostMapping("/additionalRegisterInfo")
     public String submitAdditionalRegisterInfoPage(@ModelAttribute("userInfo") @Valid UserFirstInfoDto userInfo,
                                                    BindingResult result) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return UserPageEnum.ADDITIONAL_INFO.getPage();
         }
         // Adding the information to the user.

@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.service.security.user;
 
-import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.util.DateUtil;
@@ -17,7 +16,8 @@ public final class UserHelper {
 
     /**
      * Fill a user object with auxiliary information.
-     * @param user the user that would be filled.
+     *
+     * @param user     the user that would be filled.
      * @param userInfo the information from the page.
      */
     public static void fillUserWithAdditionalInfo(MzkUser user, UserFirstInfoDto userInfo, String profilePic) {
