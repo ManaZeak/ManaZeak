@@ -24,7 +24,7 @@
         <!-- Invite code from an already registered user field (16 char) and specific errors -->
         <label for="inviteCode-input" th:text="#{label.user.invite_code}">invite code</label>
         <p class="error" th:each="error : ${#fields.errors('inviteCode')}" th:text="${error}">Validation error</p>
-        <input id="inviteCode-input" maxlength="16" th:errorClass="'error'" th:field="*{inviteCode}" type="text"/>
+        <input id="inviteCode-input" maxlength="32" th:errorClass="'error'" th:field="*{inviteCode}" type="text"/>
         <!-- Account password field (256 char) and specific errors -->
         <label for="password-one-input" th:text="#{label.user.password}">password one</label>
         <p class="error" th:each="error : ${#fields.errors('password1')}" th:text="${error}">Validation error</p>
