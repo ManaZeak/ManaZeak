@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * This class allows to check the format of a file with the magic bytes.
  */
-public final class FormatFileCheckerUtil {w²
+public final class FormatFileCheckerUtil {
 
     private FormatFileCheckerUtil() {
 
