@@ -63,7 +63,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
      * @param request the user request.
      * @return the local of the user.
      */
-    private Locale getLocalFromRequestHeader(HttpServletRequest request) {
+    private static Locale getLocalFromRequestHeader(HttpServletRequest request) {
         // Checking if the header for the language is present
         if (request.getHeader("Accept-Language") == null) {
             // Return english as a default language.
@@ -79,7 +79,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
      * @param askedLocale the locale we want to display.
      * @return the available locale.
      */
-    private Locale getAvailableLocale(Locale askedLocale) {
+    private static Locale getAvailableLocale(Locale askedLocale) {
         final String languageCode;
         // Getting the language code if there is one.
         if (askedLocale != null) {

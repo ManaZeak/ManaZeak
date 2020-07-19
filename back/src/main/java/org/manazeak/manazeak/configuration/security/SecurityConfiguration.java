@@ -77,7 +77,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @param auth builder for the authentication.
      */
     @Autowired
-    public void configAuthentication(final AuthenticationManagerBuilder auth, @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
+    public void configAuthentication(
+            final AuthenticationManagerBuilder auth,
+            @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
         auth.authenticationProvider(authenticationProvider(userDetailsService));
     }
 
@@ -87,7 +89,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @return Authentication provider.
      */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(@Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authenticationProvider(
+            @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());

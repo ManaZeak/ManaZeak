@@ -1,9 +1,6 @@
 package org.manazeak.manazeak.entity.validator.user;
 
-import org.manazeak.manazeak.service.security.user.UserService;
 import org.manazeak.manazeak.util.file.FormatFileCheckerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,13 +12,6 @@ import javax.validation.ConstraintValidatorContext;
  */
 @Component
 public class AvatarValidator implements ConstraintValidator<Avatar, MultipartFile> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AvatarValidator.class);
-    private final UserService userService;
-
-    public AvatarValidator(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * Checking if the file is an image or something else.

@@ -35,7 +35,12 @@ public class LoginController {
         return displayLoginPage(model);
     }
 
-    private String displayLoginPage(Model model) {
+    /**
+     * Add the user to the login page and display it.
+     * @param model the model of the page.
+     * @return the String containing the login page.
+     */
+    private static String displayLoginPage(Model model) {
         UserLoginDto user = new UserLoginDto();
         model.addAttribute("user", user);
         return UserPageEnum.LOGIN_PAGE.getPage();

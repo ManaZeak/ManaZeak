@@ -69,7 +69,8 @@ public class RegisterController {
         }
         MzkUser user = userService.createUser(newUser);
         // Log the user in.
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), newUser.getPassword1());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
+                newUser.getPassword1());
         // Preparing the login token.
         token.setDetails(new WebAuthenticationDetails(request));
         // Get the user authentication

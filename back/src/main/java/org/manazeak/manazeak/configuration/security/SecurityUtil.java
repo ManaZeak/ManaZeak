@@ -28,7 +28,8 @@ public final class SecurityUtil {
         // If the user is not authenticated we don't check.
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             // Get the list of privileges
-            List<MzkGrantedAuthority> authorities = CastUtil.castList(MzkGrantedAuthority.class, authentication.getAuthorities());
+            List<MzkGrantedAuthority> authorities = CastUtil.castList(MzkGrantedAuthority.class,
+                    authentication.getAuthorities());
             // Checking if the privilege is present.
             for (MzkGrantedAuthority authority : authorities) {
                 if (authority.getAuthority().equals(privilege.name())) {
