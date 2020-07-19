@@ -48,8 +48,14 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         }
         // Getting the parent from the invite code.
         MzkUser parent = mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode.get());
+        // Getting the depth of the parent
+        Optional<Integer> userDepthOpt = inviteCodeDAO.getParentUserDepth(parent.getUserId());
+        // JESUS is the parent, the user is allowed to register.
+        if (userDepthOpt.isEmpty()) {
+            return true;
+        }
         // Adding one to get the depth of the current user.
-        int userDepth = inviteCodeDAO.getParentUserDepth(parent.getUserId()) + 1;
+        int userDepth = userDepthOpt.get() + 1;
         // Checking the depth of the user.
         return userDepth <= inviteCodeDepth;
     }

@@ -42,6 +42,6 @@ public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
             + "where d.user_id != 1 "
             + "and d.user_id = :user "
             , nativeQuery = true)
-    int getParentUserDepth(@Param("user") Long userId);
+    Optional<Integer> getParentUserDepth(@Param("user") Long userId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

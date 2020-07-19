@@ -33,10 +33,9 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
      */
     @Test
     void checkInviteCode() {
-        // Create an invite code into the database.
-        inviteCodeDataCreation.createInviteCode();
+        // Using the invite code of the admin in the database.
         // The invite code should be valid.
-        Assertions.assertTrue(inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE),
+        Assertions.assertTrue(inviteCodeService.checkInviteCode(UserTestConstants.INVITE_CODE),
                 "The invite code should be valid.");
     }
 
