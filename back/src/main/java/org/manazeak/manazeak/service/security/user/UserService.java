@@ -1,6 +1,8 @@
 package org.manazeak.manazeak.service.security.user;
 
+import org.manazeak.manazeak.controller.html.security.AdditionalRegisterInformationController;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
+import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 
@@ -8,6 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+
+    /**
+     * Get the current user connected.
+     * @return the current user.
+     */
+    MzkUser getCurrentUser();
 
     /**
      * Get a user in the database from the username.
@@ -24,6 +32,12 @@ public interface UserService {
      * @return the created user.
      */
     MzkUser createUser(final NewUserDto userToCreate);
+
+    /**
+     * This function add the additional information about the user after the creation.
+     * @param userInfo the user information to add to the user.
+     */
+    void addUserInformation(final UserFirstInfoDto userInfo);
 
     /**
      * Get the list of privileges of a username.

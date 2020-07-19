@@ -5,6 +5,7 @@ package org.manazeak.manazeak.controller.page.user;
  */
 public enum UserPageEnum {
     REGISTER_PAGE("user/register.html", "/register"),
+    ADDITIONAL_INFO("user/additional-info.html", "/additionalRegisterInfo"),
     LOGIN_PAGE("user/login.html", "/login"),
     MAIN_PAGE("index.html", "/");
 

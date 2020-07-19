@@ -76,7 +76,7 @@ public class RegisterController {
         Authentication authenticatedUser = authenticationManager.authenticate(token);
         // Setting the user authentication in the app context.
         SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
-        // Redirecting to the main page
-        return UserPageEnum.MAIN_PAGE.getRedirectToPage();
+        // Redirecting to the additional information page.
+        return UserPageEnum.ADDITIONAL_INFO.getRedirectToPage();
     }
 }

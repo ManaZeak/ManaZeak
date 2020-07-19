@@ -17,7 +17,6 @@ public final class UserVerificationHelper {
      */
     public static void testDefaultUserValues(MzkUser user, boolean encodedPass) {
         Assertions.assertEquals(UserTestConstants.USERNAME, user.getUsername(), "The username didn't match.");
-        Assertions.assertEquals(UserTestConstants.MAIL, user.getMail(), "The email field didn't match.");
         if (!encodedPass) {
             Assertions.assertEquals(UserTestConstants.PASSWORD, user.getPassword(), "The password didn't match.");
         } else {
@@ -32,7 +31,6 @@ public final class UserVerificationHelper {
      */
     public static void testDefaultUserChangePassword(MzkUser user) {
         Assertions.assertEquals(UserTestConstants.USERNAME, user.getUsername(), "The username didn't match.");
-        Assertions.assertEquals(UserTestConstants.MAIL, user.getMail(), "The email field didn't match.");
         Assertions.assertNotEquals(UserTestConstants.PASSWORD, user.getPassword(), "The password hasn't been changed.");
         Assertions.assertNotEquals(UserTestConstants.NEW_PASS, user.getPassword(), "The password hasn't been encrypted.");
     }

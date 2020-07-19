@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.constant.errors;
+package org.manazeak.manazeak.constant.error;
 
 /**
  * This enum contains the possible errors of the application.

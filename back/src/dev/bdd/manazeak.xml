@@ -2,7 +2,7 @@
 <xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
 	<xmi:Documentation exporter="Enterprise Architect" exporterVersion="6.5"/>
 	<uml:Model xmi:type="uml:Model" name="EA_Model" visibility="public">
-		<packagedElement xmi:type="uml:Package" xmi:id="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1" name="ManaMeax" visibility="public">
+		<packagedElement xmi:type="uml:Package" xmi:id="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1" name="ManaZeak" visibility="public">
 			<packagedElement xmi:type="uml:Package" xmi:id="EAPK_E8A7988D_1D1E_4536_BB75_A6ACEA20BF15" name="org.manazeak.manazeak.entity.security" visibility="public">
 				<ownedComment xmi:type="uml:Comment" xmi:id="EAID_FE1EDB65_8C49_44f3_8E5F_72C51F0CDBC2" body="This package contains the objects interacting with the security of the application."/>
 				<packagedElement xmi:type="uml:Class" xmi:id="EAID_923981AD_E324_4984_B9BC_06FA5B1E01B8" name="invite_code" visibility="public">
@@ -57,7 +57,7 @@
 						<type xmi:idref="EAJava_DoPassword"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_5E4D9F6C_FFF9_4373_847B_76A3281EB35B" name="mail" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000017_FFF9_4373_847B_76A3281EB35B" value="1"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000017_FFF9_4373_847B_76A3281EB35B" value="0"/>
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000018_FFF9_4373_847B_76A3281EB35B" value="1"/>
 						<type xmi:idref="EAJava_DoTexte100"/>
 					</ownedAttribute>
@@ -193,10 +193,10 @@
 	</uml:Model>
 	<xmi:Extension extender="Enterprise Architect" extenderID="6.5">
 		<elements>
-			<element xmi:idref="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1" xmi:type="uml:Package" name="ManaMeax" scope="public">
+			<element xmi:idref="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1" xmi:type="uml:Package" name="ManaZeak" scope="public">
 				<model package2="EAID_9B182EA4_D892_4a91_A950_5888B0FBA3F1" package="EAPK_19A68E6F_C214_42cc_8D84_0E81C5DA1092" tpos="0" ea_localid="7" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
-				<project author="schouikha" version="1.0" phase="1.0" created="2019-08-08 14:15:24" modified="2020-05-22 18:20:57" complexity="1" status="Proposed"/>
+				<project author="schouikha" version="1.0" phase="1.0" created="2019-08-08 14:15:24" modified="2020-07-14 20:08:04" complexity="1" status="Proposed"/>
 				<code gentype="Java"/>
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
@@ -204,7 +204,7 @@
 				<extendedProperties tagged="0" package_name="Model"/>
 				<packageproperties version="1.0"/>
 				<paths/>
-				<times created="2019-08-08 14:15:24" modified="2020-05-22 18:20:57" lastloaddate="2020-06-22 00:08:17" lastsavedate="2019-08-21 18:00:53"/>
+				<times created="2019-08-08 14:15:24" modified="2020-07-14 20:08:04" lastloaddate="2020-06-22 00:08:17" lastsavedate="2019-08-21 18:00:53"/>
 				<flags iscontrolled="FALSE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE" packageFlags="isModel=1;VICON=3;"/>
 			</element>
 			<element xmi:idref="EAPK_E8A7988D_1D1E_4536_BB75_A6ACEA20BF15" xmi:type="uml:Package" name="org.manazeak.manazeak.entity.security" scope="public">
@@ -215,7 +215,7 @@
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
-				<extendedProperties tagged="0" package_name="ManaMeax"/>
+				<extendedProperties tagged="0" package_name="ManaZeak"/>
 				<packageproperties version="1.0"/>
 				<paths/>
 				<times created="2020-05-22 18:21:52" modified="2020-06-17 21:32:16"/>
@@ -345,7 +345,7 @@
 						<coords ordered="0"/>
 						<containment containment="Not Specified" position="3"/>
 						<stereotype/>
-						<bounds lower="1" upper="1"/>
+						<bounds lower="0" upper="1"/>
 						<options/>
 						<style/>
 						<styleex value="volatile=0;"/>
@@ -574,7 +574,7 @@
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
-				<extendedProperties tagged="0" package_name="ManaMeax"/>
+				<extendedProperties tagged="0" package_name="ManaZeak"/>
 				<packageproperties version="1.0" tpos="1"/>
 				<paths/>
 				<times created="2020-06-22 00:08:16" modified="2018-01-29 13:47:51" lastloaddate="2020-06-22 00:08:16" lastsavedate="2020-06-22 00:08:16"/>
@@ -864,8 +864,8 @@
 		<diagrams>
 			<diagram xmi:id="EAID_B0673450_9361_4308_9953_9B1CCF0BE42E">
 				<model package="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1" localID="14" owner="EAPK_9B182EA4_D892_4a91_A950_5888B0FBA3F1"/>
-				<properties name="ManaMeax" type="Package"/>
-				<project author="fcrapart" version="1.0" created="2019-10-08 11:39:50" modified="2020-06-22 00:11:25"/>
+				<properties name="ManaZeak" type="Package"/>
+				<project author="fcrapart" version="1.0" created="2019-10-08 11:39:50" modified="2020-07-14 20:07:57"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=780;DocSize.cy=1134;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=A45ADF75;"/>
 				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-10,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Carlito,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>

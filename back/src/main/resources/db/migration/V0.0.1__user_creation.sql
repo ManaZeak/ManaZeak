@@ -27,7 +27,7 @@ CREATE TABLE mzk_user
     user_id        BIGINT       not null,
     username       VARCHAR(200) not null,
     password       VARCHAR(500) not null,
-    mail           VARCHAR(100) not null,
+    mail           VARCHAR(100),
     is_active      BOOLEAN      not null,
     name           VARCHAR(100),
     surname        VARCHAR(100),

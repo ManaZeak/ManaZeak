@@ -1,11 +1,9 @@
 package org.manazeak.manazeak.entity.dto.user;
 
-import org.manazeak.manazeak.entity.validator.global.LettersOnly;
 import org.manazeak.manazeak.entity.validator.user.InviteCode;
 import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
 import org.manazeak.manazeak.entity.validator.user.UniqueUsername;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -21,20 +19,9 @@ public class NewUserDto implements PasswordContainer {
     private String password1;
     @NotEmpty(message = "{error.register.empty_pass}")
     private String password2;
-    @NotEmpty(message = "{error.register.empty_email}")
-    @Email(message = "{error.register.wrong_email}")
-    private String mail;
-    @LettersOnly(message = "{error.register.bad_char_name}")
-    private String name;
-    @LettersOnly(message = "{error.register.bad_char_surname}")
-    private String surname;
-    private String locale;
-    private String birthDate;
-    private String bio;
     @NotEmpty(message = "{error.register.empty_invite_code}")
     @InviteCode
     private String inviteCode;
-    private String country;
 
     public String getUsername() {
         return username;
@@ -62,67 +49,11 @@ public class NewUserDto implements PasswordContainer {
         this.password2 = password2;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
     public String getInviteCode() {
         return inviteCode;
     }
 
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 }

@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
-import org.manazeak.manazeak.constant.errors.ErrorEnum;
+import org.manazeak.manazeak.constant.error.ErrorEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
@@ -59,7 +59,8 @@ public class UserManagerImpl implements UserManager {
         // Getting the default role for a new user.
         Role defaultRole = roleDAO.getRoleByRoleId(RoleEnum.USER.getId());
         // Creating the user to insert.
-        MzkUser user = UserHelper.loadMzkUserFromNewUser(newUser);
+        MzkUser user = new MzkUser();
+        user.setUsername(newUser.getUsername());
         user.setPassword(passEncoder.encode(newUser.getPassword1()));
         user.setRole(defaultRole);
         user.setIsActive(true);

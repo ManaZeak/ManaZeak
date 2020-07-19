@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManaZeak - complete user</title>
+</head>
+<body>
+    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
+    <form method="POST" th:object="${userInfo}" enctype="multipart/form-data">
+        <input type="file" th:field="*{avatar}" />
+        <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
+        <input type="text" th:text="*{mail}"/>
+        <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
+
+
+        <!-- Required csrf token from session cookies -->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <button th:text="#{label.register.submit}" type="submit">submit</button>
+    </form>
+</body>
+</html>

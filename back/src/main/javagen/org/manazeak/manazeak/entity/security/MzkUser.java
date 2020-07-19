@@ -1,7 +1,5 @@
 package org.manazeak.manazeak.entity.security;
 
-import org.manazeak.manazeak.entity.reference.Country;
-
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -17,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.CascadeType;
+import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 
@@ -99,7 +98,7 @@ public class MzkUser implements Serializable{
      * No comment found in model diagram
      * @return value of mail
      */
-    @Column(name="mail", nullable=false)
+    @Column(name="mail", nullable=true)
 	public String getMail(){
 		return mail;
     }  

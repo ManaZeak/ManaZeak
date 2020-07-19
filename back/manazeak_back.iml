@@ -6,7 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="entityManagerFactory" />
+          <factory-entry name="entityManagerFactory" value="1c83f3f2-cd2c-4ac5-aef4-64238a30dea0" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
@@ -232,5 +232,9 @@
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-api:2.8.4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-manager:2.8.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.plexus:plexus-compiler-javac:2.8.4" level="project" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="idePathPrefix" value="back/src/main/resources" />
+    <option name="sqPathPrefix" value="app" />
   </component>
 </module>

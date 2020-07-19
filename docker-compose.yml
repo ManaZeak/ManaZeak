@@ -19,15 +19,17 @@ services:
             target: ${BACK_TARGET}
             dockerfile: back/Dockerfile
         container_name: manazeak_app
-        links:
-            - db
-        depends_on:
-            - db
         # Debug ports.
         ports:
             - "5005:5005"
             - "8080:8080"
             - "35729:35729"
+        volumes:
+            - ${RESOURCES_PATH}:/resources
+        links:
+            - db
+        depends_on:
+            - db
 
     nginx:
         image: nginx:latest
@@ -36,6 +38,7 @@ services:
             - "80:8080"
         volumes:
             - ${LIBRARY_PATH}:/library
+            - ${RESOURCES_PATH}:/resources
             - ./docker/nginx/config:/etc/nginx/conf.d
             - ./static:/static
         depends_on:
