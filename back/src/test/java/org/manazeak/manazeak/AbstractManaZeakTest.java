@@ -1,5 +1,7 @@
 package org.manazeak.manazeak;
 
+import org.apache.commons.io.FileUtils;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,6 +26,18 @@ public abstract class AbstractManaZeakTest {
     protected void cleanJpa() {
         entityManager.flush();
         entityManager.clear();
+    }
+
+    /**
+     * @return Renvoie l'emplacement sur le fs de l'application
+     */
+    protected String getApplicationPath() {
+        try {
+            return FileUtils.toFile(getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().toURI().toURL()).getAbsolutePath() + "/";
+        } catch (final Exception e) {
+            throw new MzkRuntimeException("Impossible to get the application path.", e);
+        }
     }
 }
 

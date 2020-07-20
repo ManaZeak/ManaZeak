@@ -13,7 +13,6 @@ import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.xml.bind.ValidationException;
 import java.util.Optional;
 import java.util.Set;
 

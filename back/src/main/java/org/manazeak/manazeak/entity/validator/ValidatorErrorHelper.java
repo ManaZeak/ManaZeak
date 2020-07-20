@@ -15,7 +15,8 @@ public class ValidatorErrorHelper {
 
     /**
      * Add the content of an validation exception into the context of the validator.
-     * @param e the exception that will be processed.
+     *
+     * @param e       the exception that will be processed.
      * @param context the context of the validator.
      */
     public static void addErrorMessage(MzkValidationException e, ConstraintValidatorContext context) {

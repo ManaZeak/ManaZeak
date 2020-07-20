@@ -9,6 +9,7 @@ public class MzkValidationException extends Exception {
 
     /**
      * Create a validation error.
+     *
      * @param message the key containing the message
      */
     public MzkValidationException(String message) {
