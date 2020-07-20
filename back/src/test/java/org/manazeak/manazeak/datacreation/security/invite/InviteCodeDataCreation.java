@@ -18,12 +18,19 @@ public class InviteCodeDataCreation {
 
     /**
      * Insert an invite code in the database.
+     *
+     * @param suffix Optional param insert the suffix after the default invite code.
      */
-    public void createInviteCode() {
+    public InviteCode createInviteCode(String suffix) {
         InviteCode inviteCode = new InviteCode();
         inviteCode.setIsActive(true);
-        inviteCode.setValue(InviteCodeConstants.VALUE);
+        if (suffix != null) {
+            inviteCode.setValue(InviteCodeConstants.VALUE + suffix);
+        } else {
+            inviteCode.setValue(InviteCodeConstants.VALUE);
+        }
         inviteCodeDAO.save(inviteCode);
+        return inviteCode;
     }
 
     /**

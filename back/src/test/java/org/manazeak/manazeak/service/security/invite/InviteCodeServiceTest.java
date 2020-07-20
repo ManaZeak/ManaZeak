@@ -8,11 +8,12 @@ import org.manazeak.manazeak.datacreation.security.invite.InviteCodeConstants;
 import org.manazeak.manazeak.datacreation.security.invite.InviteCodeDataCreation;
 import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
+import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * This class test the manipulation of invite codes in the application.
@@ -70,5 +71,20 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         Optional<MzkUser> userOpt = userDAO.getByUsername(UserTestConstants.ADMIN_USERNAME);
         Assertions.assertTrue(userOpt.isPresent(), "The parent user cannot be found.");
         Assertions.assertEquals(2, userOpt.get().getInviteCodeList().size(), "No other invite code has been generated.");
+    }
+
+    /**
+     * Check that the invite code depth limit is working.
+     */
+    @Test
+    void testDepthLimit() {
+        // Creating a chain of users and getting the deepest.
+        MzkUser user = userDataCreation.createMultipleMzkUser(3);
+        // The invite code of this user shouldn't be valid
+        Set<InviteCode> inviteCodes = user.getInviteCodeList();
+        Assertions.assertEquals(1, inviteCodes.size(), "There is more invite code than expected.");
+        for (InviteCode invite : inviteCodes) {
+            Assertions.assertFalse(inviteCodeService.checkInviteCode(invite.getValue()), "The invite code shouldn't be correct.");
+        }
     }
 }

@@ -10,8 +10,10 @@ public final class InviteCodeConstants {
      */
     public static String VALUE = "TEST_INVITE_CODE";
 
-    private InviteCodeConstants(){
+    private InviteCodeConstants() {
 
-    };
+    }
+
+    ;
 
 }

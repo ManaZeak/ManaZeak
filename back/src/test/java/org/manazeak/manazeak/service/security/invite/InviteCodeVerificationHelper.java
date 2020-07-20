@@ -5,7 +5,7 @@ package org.manazeak.manazeak.service.security.invite;
  */
 public final class InviteCodeVerificationHelper {
 
-    private InviteCodeVerificationHelper(){
+    private InviteCodeVerificationHelper() {
 
     }
 
