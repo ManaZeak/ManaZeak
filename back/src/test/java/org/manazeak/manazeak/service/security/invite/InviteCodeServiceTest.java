@@ -10,8 +10,10 @@ import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.bind.ValidationException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,11 +35,10 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
      * Checking that an active invite code is valid.
      */
     @Test
-    void checkInviteCode() {
+    void checkInviteCode() throws MzkValidationException {
         // Using the invite code of the admin in the database.
         // The invite code should be valid.
-        Assertions.assertTrue(inviteCodeService.checkInviteCode(UserTestConstants.INVITE_CODE),
-                "The invite code should be valid.");
+        inviteCodeService.checkInviteCode(UserTestConstants.INVITE_CODE);
     }
 
     /**
@@ -48,8 +49,14 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         // Create an invite code into the database.
         inviteCodeDataCreation.createDeactivatedInviteCode();
         // The invite code should be valid.
-        Assertions.assertFalse(inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE),
-                "The invite code should not be valid.");
+        try {
+            inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE);
+        } catch (MzkValidationException e) {
+            Assertions.assertEquals("{error.register.wrong_invite_code}", e.getMessage(),
+                    "The invite code was refused for the wrong reason");
+            return;
+        }
+        Assertions.fail("The invite code shouldn't be valid.");
     }
 
     /**
@@ -66,7 +73,12 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         // Checking if the new user has an invite code
         Assertions.assertNotNull(user.getInviteCode(), "The new user does't have an associated invite code.");
         // Checking if the invite code of the parent has been invalidated.
-        Assertions.assertFalse(inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE), "The invite code of the parent should not be valid.");
+        try {
+            inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE);
+        } catch (MzkValidationException e) {
+            Assertions.assertEquals("{error.register.wrong_invite_code}", e.getMessage(),
+                    "The invite code was refused for the wrong reason");
+        }
         // Checking if the parent has another invite code.
         Optional<MzkUser> userOpt = userDAO.getByUsername(UserTestConstants.ADMIN_USERNAME);
         Assertions.assertTrue(userOpt.isPresent(), "The parent user cannot be found.");
@@ -84,7 +96,12 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         Set<InviteCode> inviteCodes = user.getInviteCodeList();
         Assertions.assertEquals(1, inviteCodes.size(), "There is more invite code than expected.");
         for (InviteCode invite : inviteCodes) {
-            Assertions.assertFalse(inviteCodeService.checkInviteCode(invite.getValue()), "The invite code shouldn't be correct.");
+            try {
+                inviteCodeService.checkInviteCode(invite.getValue());
+            } catch (MzkValidationException e) {
+                Assertions.assertEquals("{error.register.invite_code_deep}", e.getMessage(),
+                        "The invite code was refused for the wrong reason");
+            }
         }
     }
 }

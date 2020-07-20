@@ -5,6 +5,7 @@ import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.MzkValidationException;
 import org.manazeak.manazeak.util.DateUtil;
 import org.manazeak.manazeak.util.HashUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,12 +40,12 @@ public class InviteCodeServiceImpl implements InviteCodeService {
      * {@inheritDoc}
      */
     @Override
-    public boolean checkInviteCode(String inviteCodeValue) {
+    public void checkInviteCode(String inviteCodeValue) throws MzkValidationException {
         // Getting the invite code from the database.
         Optional<InviteCode> inviteCode = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
         // If the invite code wasn't found, then it's not the correct one.
         if (inviteCode.isEmpty()) {
-            return false;
+            throw new MzkValidationException("{error.register.wrong_invite_code}");
         }
         // Getting the parent from the invite code.
         MzkUser parent = mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode.get());
@@ -52,12 +53,14 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         Optional<Integer> userDepthOpt = inviteCodeDAO.getParentUserDepth(parent.getUserId());
         // JESUS is the parent, the user is allowed to register.
         if (userDepthOpt.isEmpty()) {
-            return true;
+            return;
         }
         // Adding one to get the depth of the current user.
         int userDepth = userDepthOpt.get() + 1;
-        // Checking the depth of the user.
-        return userDepth <= inviteCodeDepth;
+        // If the user is too far from the creator, we refuse him.
+        if (userDepth > inviteCodeDepth) {
+            throw new MzkValidationException("{error.register.invite_code_deep}");
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.service.security.invite;
 
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkValidationException;
 
 /**
  * This interface handles the invite codes of the application.
@@ -11,9 +12,8 @@ public interface InviteCodeService {
      * Check if the invitation code is correct.
      *
      * @param inviteCodeValue The invite code provided by the user.
-     * @return true if the invitation code is correct, false otherwise.
      */
-    boolean checkInviteCode(String inviteCodeValue);
+    void checkInviteCode(String inviteCodeValue) throws MzkValidationException;
 
     /**
      * Invalidate the invite code used by the user, generate a new invite code.

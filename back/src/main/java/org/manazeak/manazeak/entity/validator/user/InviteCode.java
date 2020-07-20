@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = InviteCodeValidator.class)
 public @interface InviteCode {
-    String message() default "{error.register.wrong_invite_code}";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

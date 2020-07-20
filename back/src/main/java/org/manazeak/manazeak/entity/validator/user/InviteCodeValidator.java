@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.entity.validator.user;
 
+import org.manazeak.manazeak.entity.validator.ValidatorErrorHelper;
+import org.manazeak.manazeak.exception.MzkValidationException;
 import org.manazeak.manazeak.service.security.invite.InviteCodeService;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,17 @@ public class InviteCodeValidator implements ConstraintValidator<InviteCode, Stri
      */
     @Override
     public boolean isValid(String inviteCode, ConstraintValidatorContext constraintValidatorContext) {
-        return inviteCodeService.checkInviteCode(inviteCode);
+        // Disabling the default error reporting.
+        constraintValidatorContext.disableDefaultConstraintViolation();
+        boolean isValid = true;
+        try {
+            inviteCodeService.checkInviteCode(inviteCode);
+        } catch (MzkValidationException e) {
+            // Setting our own error message.
+            ValidatorErrorHelper.addErrorMessage(e, constraintValidatorContext);
+            // The invite code is not valid.
+            isValid = false;
+        }
+        return isValid;
     }
 }
