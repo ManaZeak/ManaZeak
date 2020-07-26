@@ -4,6 +4,8 @@ import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
+import org.manazeak.manazeak.service.reference.country.CountryService;
+import org.manazeak.manazeak.service.security.user.AdditionalInfoManager;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +22,13 @@ import javax.validation.Valid;
 @Controller
 public class AdditionalRegisterInformationController {
 
-    private final UserService userService;
+    private final AdditionalInfoManager additionalInfoManager;
 
-    public AdditionalRegisterInformationController(UserService userService) {
-        this.userService = userService;
+    private final CountryService countryService;
+
+    public AdditionalRegisterInformationController(AdditionalInfoManager additionalInfoManager, CountryService countryService) {
+        this.additionalInfoManager = additionalInfoManager;
+        this.countryService = countryService;
     }
 
     /**
@@ -37,6 +42,7 @@ public class AdditionalRegisterInformationController {
         UserFirstInfoDto userFirstInfoDto = new UserFirstInfoDto();
         // Adding the objects to the model
         model.addAttribute("userInfo", userFirstInfoDto);
+        addCountriesToPage(model);
         // Returning the page with the information.
         return UserPageEnum.ADDITIONAL_INFO.getPage();
     }
@@ -51,13 +57,18 @@ public class AdditionalRegisterInformationController {
     @Security(PrivilegeEnum.PLAY)
     @PostMapping("/additionalRegisterInfo")
     public String submitAdditionalRegisterInfoPage(@ModelAttribute("userInfo") @Valid UserFirstInfoDto userInfo,
-                                                   BindingResult result) {
+                                                   BindingResult result, Model model) {
         if (result.hasErrors()) {
+            addCountriesToPage(model);
             return UserPageEnum.ADDITIONAL_INFO.getPage();
         }
         // Adding the information to the user.
-        userService.addUserInformation(userInfo);
+        additionalInfoManager.addUserInformation(userInfo);
         // Redirecting to the main page.
         return UserPageEnum.MAIN_PAGE.getRedirectToPage();
+    }
+
+    private void addCountriesToPage(Model model) {
+        model.addAttribute("countries",countryService.getCountryList());
     }
 }

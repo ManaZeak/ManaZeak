@@ -9,10 +9,18 @@
 <form enctype="multipart/form-data" method="POST" th:object="${userInfo}">
     <input th:field="*{avatar}" type="file"/>
     <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
-    <input th:text="*{mail}" type="text"/>
+    <input th:field="*{mail}" type="text"/>
     <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
-
-
+    <input th:field="*{surname}" />
+    <input th:field="*{name}" />
+    <input th:field="*{bio}"/>
+    <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
+    <select th:field="*{countryId}">
+        <!-- Adding the empty value to the selection -->
+        <option value="0"></option>
+        <!-- Adding the rest of the objects in the database. -->
+        <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
+    </select>
     <!-- Required csrf token from session cookies -->
     <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
     <button th:text="#{label.register.submit}" type="submit">submit</button>

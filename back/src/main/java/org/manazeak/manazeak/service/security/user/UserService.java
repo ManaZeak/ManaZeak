@@ -34,13 +34,6 @@ public interface UserService {
     MzkUser createUser(final NewUserDto userToCreate);
 
     /**
-     * This function add the additional information about the user after the creation.
-     *
-     * @param userInfo the user information to add to the user.
-     */
-    void addUserInformation(final UserFirstInfoDto userInfo);
-
-    /**
      * Get the list of privileges of a username.
      *
      * @param username the username.

@@ -6,10 +6,15 @@ CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20;
 
 -- Creating the tables
-CREATE TABLE Country
-(
-    country_id BIGINT      not null,
-    name       VARCHAR(50) not null,
+CREATE TABLE Country (
+    country_id BIGINT not null,
+    name VARCHAR(50) not null,
+    trigram VARCHAR(32) not null,
+    capital_name VARCHAR(50) not null,
+    capital_lat DOUBLE PRECISION not null,
+    capital_long DOUBLE PRECISION not null,
+    center_lat DOUBLE PRECISION not null,
+    center_long DOUBLE PRECISION not null,
     CONSTRAINT PK_COUNTRY PRIMARY KEY (country_id)
 );
 

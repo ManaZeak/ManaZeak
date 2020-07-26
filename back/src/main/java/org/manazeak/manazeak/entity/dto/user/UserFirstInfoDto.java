@@ -20,7 +20,7 @@ public class UserFirstInfoDto {
     private String locale;
     private String birthDate;
     private String bio;
-    private String country;
+    private Long countryId;
     @Avatar
     private MultipartFile avatar;
 
@@ -72,12 +72,12 @@ public class UserFirstInfoDto {
         this.bio = bio;
     }
 
-    public String getCountry() {
-        return country;
+    public Long getCountryId() {
+        return countryId;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
     }
 
     public MultipartFile getAvatar() {

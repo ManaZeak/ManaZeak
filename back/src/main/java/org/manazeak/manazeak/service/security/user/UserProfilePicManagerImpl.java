@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user;
 
+import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.file.FileUtil;
@@ -17,6 +18,7 @@ import java.nio.file.StandardCopyOption;
  * Handles the save action of the avatar of the user.
  */
 @Service
+@TransactionnalWithRollback
 public class UserProfilePicManagerImpl implements UserProfilePicManager {
 
     /**

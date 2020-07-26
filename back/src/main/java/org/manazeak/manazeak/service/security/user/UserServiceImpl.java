@@ -35,14 +35,11 @@ public class UserServiceImpl implements UserService {
      */
     private final UserManager userManager;
     private final InviteCodeService inviteCodeService;
-    private final UserProfilePicManager profilePicManager;
 
-    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, InviteCodeService inviteCodeService,
-                           UserProfilePicManager userProfilePicManager) {
+    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, InviteCodeService inviteCodeService) {
         this.privilegeDAO = privilegeDAO;
         this.userManager = userManager;
         this.inviteCodeService = inviteCodeService;
-        this.profilePicManager = userProfilePicManager;
     }
 
     /**
@@ -86,19 +83,6 @@ public class UserServiceImpl implements UserService {
         // Invalidating the parent invite code.
         inviteCodeService.useInviteCode(userToCreate.getInviteCode(), user);
         return user;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addUserInformation(UserFirstInfoDto userInfo) {
-        MzkUser user = getCurrentUser();
-        LOG.info("Adding the new information for the user ");
-        // Save the profile pic into the filesystem.
-        String profilePic = profilePicManager.saveUserAvatarIntoResources(userInfo.getAvatar(), user);
-        // Fill the user with it's information.
-        UserHelper.fillUserWithAdditionalInfo(user, userInfo, profilePic);
     }
 
     /**

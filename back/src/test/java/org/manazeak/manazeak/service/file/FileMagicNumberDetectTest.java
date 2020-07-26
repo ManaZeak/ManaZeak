@@ -4,24 +4,17 @@ import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 class FileMagicNumberDetectTest extends AbstractManaZeakTest {
 
-    private static final String IMAGE_ROOT = "service/file/";
-
-    // JPG FILES
-    private static final String JPG_OK = "test_OK.jpg";
-    private static final String JPG_KO = "test_KO.jpg";
-
-    // PNG FILES
-    private static final String PNG_OK = "test_OK.png";
-    private static final String PNG_KO = "test_KO.png";
+    @Autowired
+    private TestImageGetter imageGetter;
 
     /**
      * Check that a JPG file is detected with the magic bytes.
@@ -30,7 +23,7 @@ class FileMagicNumberDetectTest extends AbstractManaZeakTest {
      */
     @Test
     void checkOkFormatJpgFile() throws IOException, MzkFileFormatException {
-        Path filePath = getImagePath(JPG_OK);
+        Path filePath = imageGetter.getImagePath(TestImageGetter.JPG_OK);
         try (InputStream stream = Files.newInputStream(filePath)) {
             FileMagicNumberVerifyHelper.checkFileTypeIsOk(stream, FileExtensionEnum.JGP);
         }
@@ -43,7 +36,7 @@ class FileMagicNumberDetectTest extends AbstractManaZeakTest {
      */
     @Test
     void checkKoFormatJpgFile() throws IOException {
-        Path filePath = getImagePath(JPG_KO);
+        Path filePath = imageGetter.getImagePath(TestImageGetter.JPG_KO);
         try (InputStream stream = Files.newInputStream(filePath)) {
             FileMagicNumberVerifyHelper.checkFileTypeIsKo(stream, FileExtensionEnum.JGP);
         }
@@ -56,7 +49,7 @@ class FileMagicNumberDetectTest extends AbstractManaZeakTest {
      */
     @Test
     void checkOkFormatPngFile() throws IOException, MzkFileFormatException {
-        Path filePath = getImagePath(PNG_OK);
+        Path filePath = imageGetter.getImagePath(TestImageGetter.PNG_OK);
         try (InputStream stream = Files.newInputStream(filePath)) {
             FileMagicNumberVerifyHelper.checkFileTypeIsOk(stream, FileExtensionEnum.PNG);
         }
@@ -69,19 +62,9 @@ class FileMagicNumberDetectTest extends AbstractManaZeakTest {
      */
     @Test
     void checkKoFormatPngFile() throws IOException {
-        Path filePath = getImagePath(PNG_KO);
+        Path filePath = imageGetter.getImagePath(TestImageGetter.PNG_KO);
         try (InputStream stream = Files.newInputStream(filePath)) {
             FileMagicNumberVerifyHelper.checkFileTypeIsKo(stream, FileExtensionEnum.PNG);
         }
-    }
-
-    /**
-     * Get the path of an image in the FS.
-     *
-     * @param image the image filename.
-     * @return the path to the image.
-     */
-    private Path getImagePath(String image) {
-        return Paths.get(getApplicationPath(), IMAGE_ROOT, image);
     }
 }

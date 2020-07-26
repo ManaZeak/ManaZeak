@@ -369,5 +369,16 @@
 			<Column name="GenericType" value="string"/>
 			<Column name="DatatypeID" value="1012"/>
 		</DataRow>
+        <DataRow>
+            <Column name="Type" value="Code"/>
+			<Column name="ProductName" value="Java"/>
+			<Column name="DataType" value="DoDouble"/>
+			<Column name="Size" value="0"/>
+			<Column name="MaxLen" value="0"/>
+			<Column name="MaxScale" value="0"/>
+			<Column name="User" value="1"/>
+			<Column name="GenericType" value="Double"/>
+			<Column name="DatatypeID" value="1013"/>
+        </DataRow>
 	</DataSet>
 </RefData>

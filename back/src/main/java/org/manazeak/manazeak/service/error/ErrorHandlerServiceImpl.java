@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.error;
 
+import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.constant.error.ErrorEnum;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +16,7 @@ import java.util.Locale;
  * Handle the errors of the controllers.
  */
 @Service
+@TransactionnalWithRollback
 public class ErrorHandlerServiceImpl implements ErrorHandlerService {
 
     /**
