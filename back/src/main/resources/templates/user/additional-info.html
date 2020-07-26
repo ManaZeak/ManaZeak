@@ -2,28 +2,68 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta content="initial-scale=1" name="viewport">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>ManaZeak - complete user</title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
+    <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
-<form enctype="multipart/form-data" method="POST" th:object="${userInfo}">
-    <input th:field="*{avatar}" type="file"/>
-    <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
-    <input th:field="*{mail}" type="text"/>
-    <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
-    <input th:field="*{surname}"/>
-    <input th:field="*{name}"/>
-    <input th:field="*{bio}"/>
-    <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
-    <select th:field="*{countryId}">
-        <!-- Adding the empty value to the selection -->
-        <option value="0"></option>
-        <!-- Adding the rest of the objects in the database. -->
-        <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
-    </select>
-    <!-- Required csrf token from session cookies -->
-    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-    <button th:text="#{label.register.submit}" type="submit">submit</button>
-</form>
+<div class="mzk-user">
+    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
+    <form enctype="multipart/form-data" method="POST" th:object="${userInfo}">
+
+        <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
+        <input th:field="*{avatar}" type="file"/>
+
+        <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
+        <input th:field="*{mail}" type="text"/>
+
+        <label for="surname-input" th:text="#{label.user.surname}">surname</label>
+        <!-- <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p> -->
+        <input id="surname-input" maxlength="128" th:errorClass="'error'" th:field="*{surname}" type="text"/>
+
+        <label for="name-input" th:text="#{label.user.name}">name</label>
+        <!-- <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p> -->
+        <input id="name-input" th:field="*{name}" type="text"/>
+
+        <label for="bio-input" th:text="#{label.user.name}">name</label>
+        <!-- <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}">Validation error</p> -->
+        <input id="bio-input" th:field="*{bio}" type="text"/>
+
+        <label for="birthday-input" th:text="#{label.user.name}">name</label>
+        <!-- <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}">Validation error</p> -->
+        <input id="birthday-input" name="birthday" value="2018-07-22" min="1900-01-01" type="date"> <!-- max attribute is set in script before </body> -->
+
+        <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
+        <select th:field="*{countryId}">
+            <!-- Adding the empty value to the selection -->
+            <option value="0"></option>
+            <!-- Adding the rest of the objects in the database. -->
+            <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
+        </select>
+        <!-- Required csrf token from session cookies -->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <button th:text="#{label.register.submit}" type="submit">submit</button>
+    </form>
+</div>
+<script>
+  /* Update max value for birthday selection to today, ES5 since not bundled */
+  var sessionDate = new Date();
+  var yyyy = sessionDate.getFullYear();
+  var mm = sessionDate.getMonth() + 1;
+  var dd = sessionDate.getDate();
+  // Prefix day with a zero if needed
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  // Prefix month with a zero if needed
+  if (mm < 10){
+    mm = '0' + mm;
+  }
+  // Create output string and update max attribute on birthday date input
+  maxDate = yyyy + '-' + mm + '-' + dd;
+  document.getElementById('birthday-input').setAttribute('max', maxDate);
+</script>
 </body>
 </html>
