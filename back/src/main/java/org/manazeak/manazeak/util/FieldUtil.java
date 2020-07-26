@@ -24,6 +24,7 @@ public class FieldUtil {
 
     /**
      * Check if the given id is empty or on the no select item.
+     *
      * @param value the value of the id.
      * @return True if the id field is not on default value or null.
      */

@@ -37,6 +37,7 @@ public class TestImageGetter extends AbstractManaZeakTest {
 
     /**
      * Generate a {@link MockMultipartFile} from a fileName that is present in the filesytem.
+     *
      * @param fileName The name of the file to create an multipart object.
      * @return a mock multipart object to test the upload of files.
      * @throws IOException Error during the process.

@@ -12,6 +12,7 @@ public class UserFirstInfoDataCreation {
 
     /**
      * Generate a object with correct information.
+     *
      * @param avatar optional avatar file for the user.
      * @return The object with the information.
      */

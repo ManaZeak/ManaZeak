@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
-import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 

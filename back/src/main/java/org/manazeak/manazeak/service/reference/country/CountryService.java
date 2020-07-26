@@ -12,12 +12,14 @@ public interface CountryService {
 
     /**
      * Get the list of available country
+     *
      * @return get the list of countries.
      */
     List<CountrySelectProjection> getCountryList();
 
     /**
      * Check if a country id is present in the database.
+     *
      * @param countryId the id of the country to check.
      * @return true if the country exists false otherwise.
      */
@@ -25,6 +27,7 @@ public interface CountryService {
 
     /**
      * Get a country by it's id.
+     *
      * @param countryId the id of the country.
      * @return The country corresponding to the id.
      */

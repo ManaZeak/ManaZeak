@@ -13,6 +13,7 @@ public class UserAddInformationVerifyHelper {
 
     /**
      * Check that a given user has been filled correctly.
+     *
      * @param user The user to check.
      */
     public static void checkUserHasBeenFilled(MzkUser user) {

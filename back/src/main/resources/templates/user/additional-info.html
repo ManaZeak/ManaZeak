@@ -11,8 +11,8 @@
     <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
     <input th:field="*{mail}" type="text"/>
     <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
-    <input th:field="*{surname}" />
-    <input th:field="*{name}" />
+    <input th:field="*{surname}"/>
+    <input th:field="*{name}"/>
     <input th:field="*{bio}"/>
     <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
     <select th:field="*{countryId}">

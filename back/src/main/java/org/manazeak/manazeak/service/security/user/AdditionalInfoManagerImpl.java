@@ -16,14 +16,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @TransactionnalWithRollback
-public class AdditionalInfoManagerImpl implements AdditionalInfoManager{
+public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AdditionalInfoManagerImpl.class);
     private final UserProfilePicManager profilePicManager;
     private final UserService userService;
     private final CountryService countryService;
     private final MzkUserDAO userDAO;
-
-    private static final Logger LOG = LoggerFactory.getLogger(AdditionalInfoManagerImpl.class);
 
     public AdditionalInfoManagerImpl(UserProfilePicManager userProfilePicManager, UserService userService,
                                      CountryService countryService, MzkUserDAO mzkUserDAO) {
@@ -52,7 +51,8 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager{
 
     /**
      * Adding the country to the user if any provided.
-     * @param user The user that will be modified.
+     *
+     * @param user      The user that will be modified.
      * @param countryId The country id.
      */
     private void linkUserWithCountry(MzkUser user, Long countryId) {

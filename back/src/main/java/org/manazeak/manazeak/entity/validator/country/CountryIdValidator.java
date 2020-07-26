@@ -20,7 +20,8 @@ public class CountryIdValidator implements ConstraintValidator<CountryId, Long> 
 
     /**
      * Check that the id of the country exists in the database.
-     * @param countryId The country id to check.
+     *
+     * @param countryId                  The country id to check.
      * @param constraintValidatorContext The context containing the errors.
      * @return True if the country id is valid.
      */

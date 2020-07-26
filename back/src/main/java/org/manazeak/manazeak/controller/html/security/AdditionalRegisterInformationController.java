@@ -6,7 +6,6 @@ import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.manazeak.manazeak.service.security.user.AdditionalInfoManager;
-import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,6 +68,6 @@ public class AdditionalRegisterInformationController {
     }
 
     private void addCountriesToPage(Model model) {
-        model.addAttribute("countries",countryService.getCountryList());
+        model.addAttribute("countries", countryService.getCountryList());
     }
 }
