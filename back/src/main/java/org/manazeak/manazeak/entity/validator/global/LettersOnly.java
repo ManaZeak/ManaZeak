@@ -14,9 +14,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LettersOnlyValidator.class)
 public @interface LettersOnly {
-    String message();
+
+    String message() default "{error.general.letters_only}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

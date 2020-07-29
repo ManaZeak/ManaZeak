@@ -11,9 +11,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 public @interface UniqueUsername {
+
     String message() default "{error.register.username_exists}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

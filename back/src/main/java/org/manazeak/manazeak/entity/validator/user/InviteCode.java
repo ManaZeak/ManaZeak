@@ -11,9 +11,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = InviteCodeValidator.class)
 public @interface InviteCode {
+
+    /**
+     * No default message, we add then during the process.
+     * @return an empty string.
+     */
     String message() default "";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

@@ -29,7 +29,7 @@ public final class UserHelper {
             user.setBio(userInfo.getBio());
         }
         if (FieldUtil.checkStringNotEmpty(userInfo.getBirthDate())) {
-            user.setBirthDate(DateUtil.parseString(userInfo.getBirthDate(), DateUtil.FR_DATE_FORMATTER));
+            user.setBirthDate(DateUtil.parseString(userInfo.getBirthDate(), DateUtil.US_DATE_FORMATTER));
         }
         if (FieldUtil.checkStringNotEmpty(userInfo.getName())) {
             user.setName(userInfo.getName());

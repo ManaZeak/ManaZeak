@@ -11,6 +11,8 @@ public final class DateUtil {
 
     public static final DateTimeFormatter FR_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu");
 
+    public static final DateTimeFormatter US_DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+
     public static final DateTimeFormatter FULL_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd kk:HH:mm:ss.SSS");
 
     private DateUtil() {

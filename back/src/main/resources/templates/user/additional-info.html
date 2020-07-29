@@ -20,21 +20,20 @@
         <input th:field="*{mail}" type="text"/>
 
         <label for="surname-input" th:text="#{label.user.surname}">surname</label>
-        <!-- <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p> -->
+        <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p>
         <input id="surname-input" maxlength="128" th:errorClass="'error'" th:field="*{surname}" type="text"/>
 
         <label for="name-input" th:text="#{label.user.name}">name</label>
-        <!-- <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p> -->
+        <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p>
         <input id="name-input" th:field="*{name}" type="text"/>
 
-        <label for="bio-input" th:text="#{label.user.name}">name</label>
-        <!-- <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}">Validation error</p> -->
+        <label for="bio-input" th:text="#{label.user.bio}">name</label>
         <input id="bio-input" th:field="*{bio}" type="text"/>
 
-        <label for="birthday-input" th:text="#{label.user.name}">name</label>
-        <!-- <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}">Validation error</p> -->
-        <input id="birthday-input" min="1900-01-01" name="birthday" type="date" value="2018-07-22">
-        <!-- max attribute is set in script before </body> -->
+        <label for="birthday-input" th:text="#{label.user.birth_date}">name</label>
+        <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}">Validation error</p>
+        <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
+        <!-- max attribute is set in script before -->
 
         <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
         <select th:field="*{countryId}">

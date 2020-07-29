@@ -14,4 +14,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = CountryIdValidator.class)
 public @interface CountryId {
+
+    /**
+     * The default message for this error.
+     *
+     * @return The message key for this error.
+     */
+    String message() default "{error.register.wrong_country}";
 }

@@ -11,9 +11,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordsMatchValidator.class)
 public @interface PasswordMatches {
+
     String message() default "{error.register.pass_mismatch}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }
