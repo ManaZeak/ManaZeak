@@ -7,6 +7,7 @@ public enum UserPageEnum {
     REGISTER_PAGE("user/register.html", "/register"),
     ADDITIONAL_INFO("user/additional-info.html", "/additionalRegisterInfo"),
     LOGIN_PAGE("user/login.html", "/login"),
+    LOGOUT_SUCCESS("user/logout-success.html", "/logoutSuccess"),
     MAIN_PAGE("index.html", "/");
 
     private static final String REDIRECTION_PREFIX = "redirect:";

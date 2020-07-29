@@ -25,7 +25,8 @@ public class AdditionalRegisterInformationController {
 
     private final CountryService countryService;
 
-    public AdditionalRegisterInformationController(AdditionalInfoManager additionalInfoManager, CountryService countryService) {
+    public AdditionalRegisterInformationController(AdditionalInfoManager additionalInfoManager,
+                                                   CountryService countryService) {
         this.additionalInfoManager = additionalInfoManager;
         this.countryService = countryService;
     }

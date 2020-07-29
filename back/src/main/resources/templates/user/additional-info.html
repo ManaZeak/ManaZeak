@@ -33,7 +33,8 @@
 
         <label for="birthday-input" th:text="#{label.user.name}">name</label>
         <!-- <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}">Validation error</p> -->
-        <input id="birthday-input" name="birthday" value="2018-07-22" min="1900-01-01" type="date"> <!-- max attribute is set in script before </body> -->
+        <input id="birthday-input" min="1900-01-01" name="birthday" type="date" value="2018-07-22">
+        <!-- max attribute is set in script before </body> -->
 
         <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
         <select th:field="*{countryId}">
@@ -48,22 +49,22 @@
     </form>
 </div>
 <script>
-  /* Update max value for birthday selection to today, ES5 since not bundled */
-  var sessionDate = new Date();
-  var yyyy = sessionDate.getFullYear();
-  var mm = sessionDate.getMonth() + 1;
-  var dd = sessionDate.getDate();
-  // Prefix day with a zero if needed
-  if (dd < 10) {
-    dd = '0' + dd;
-  }
-  // Prefix month with a zero if needed
-  if (mm < 10){
-    mm = '0' + mm;
-  }
-  // Create output string and update max attribute on birthday date input
-  maxDate = yyyy + '-' + mm + '-' + dd;
-  document.getElementById('birthday-input').setAttribute('max', maxDate);
+    /* Update max value for birthday selection to today, ES5 since not bundled */
+    var sessionDate = new Date();
+    var yyyy = sessionDate.getFullYear();
+    var mm = sessionDate.getMonth() + 1;
+    var dd = sessionDate.getDate();
+    // Prefix day with a zero if needed
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    // Prefix month with a zero if needed
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    // Create output string and update max attribute on birthday date input
+    maxDate = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('birthday-input').setAttribute('max', maxDate);
 </script>
 </body>
 </html>

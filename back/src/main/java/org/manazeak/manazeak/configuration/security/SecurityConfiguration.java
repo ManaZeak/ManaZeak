@@ -60,14 +60,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Creates a session if required.
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register", "/login").permitAll()
+                .antMatchers("/register", "/login", "/logoutSuccess").permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-
+                .and()
+                .logout().logoutSuccessUrl("/logoutSuccess")
         ;
     }
 
