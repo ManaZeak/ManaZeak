@@ -13,13 +13,20 @@
 <body>
 <div class="mzk-user">
     <p th:text="#{label.logout}">logout</p>
-    <p class="itl" th:text="#{label.logout.redirect}">redirection in 5s</p>
+    <p id="redirect-string" class="itl" th:text="#{label.logout.redirect}">redirection in 5s</p>
 </div>
 <script>
     /* Redirect user to login after 5 seconds */
-    window.setTimeout(function() {
-        window.location.replace('login');
-    }, 5000);
+    var counter = 0;
+    var redirectString = document.getElementById('redirect-string');
+    window.setInterval(function() {
+        if (counter === 4) {
+            window.location.replace('login');
+        }
+        redirectString.innerHTML = redirectString.innerHTML.replace(/[0-9]/g, "" + 4 - counter + "");
+        console.log(redirectString.innerHTML)
+        ++counter;
+    }, 1000);
 </script>
 </body>
 </html>
