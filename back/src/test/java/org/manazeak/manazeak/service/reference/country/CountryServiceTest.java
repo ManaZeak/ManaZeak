@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * This class allows to test the country service.
  */
-public class CountryServiceTest extends AbstractManaZeakTest {
+class CountryServiceTest extends AbstractManaZeakTest {
 
     @Autowired
     private CountryService countryService;

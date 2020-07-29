@@ -3,7 +3,7 @@ package org.manazeak.manazeak.util;
 /**
  * Util class for handling fields.
  */
-public class FieldUtil {
+public final class FieldUtil {
 
     private FieldUtil() {
 

@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * Used to add errors to the return of a validator for allowing multiple error in the same validation.
  */
-public class ValidatorErrorHelper {
+public final class ValidatorErrorHelper {
 
     private ValidatorErrorHelper() {
 
