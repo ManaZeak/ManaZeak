@@ -13,7 +13,7 @@
 <body>
 <div class="mzk-user">
     <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg">
-    <p>Please create your account using the following form, or <a href="login">login</a></p>
+    <p>Please create your account using the following form, or <a href="login" alt="log-in">login</a></p>
     <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
     <form method="POST" th:object="${user}">
@@ -40,7 +40,7 @@
         <button th:text="#{label.register.submit}" type="submit">submit</button>
     </form>
     <p>See what ManaZeak can do for you right <a href="https://manazeak.github.io/" rel="noopener noreferrer"
-                                                 target="_blank">here</a>.</p>
+                                                 target="_blank" alt="presentation-page">here</a>.</p>
 </div>
 </body>
 </html>
