@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = LettersOnlyValidator.class)
+@Constraint(validatedBy = DateValidator.class)
 public @interface Date {
 
     String message() default "{error.general.invalid_date}";

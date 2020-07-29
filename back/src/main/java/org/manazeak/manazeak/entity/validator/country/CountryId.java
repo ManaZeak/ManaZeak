@@ -2,6 +2,7 @@ package org.manazeak.manazeak.entity.validator.country;
 
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,4 +22,9 @@ public @interface CountryId {
      * @return The message key for this error.
      */
     String message() default "{error.register.wrong_country}";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
 }

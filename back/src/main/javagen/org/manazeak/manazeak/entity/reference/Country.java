@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.GenerationType;
 
 /**
- * No comment found in model diagram
+ * The countries on the earth.
  *
  * This file has been automatically generated
  */

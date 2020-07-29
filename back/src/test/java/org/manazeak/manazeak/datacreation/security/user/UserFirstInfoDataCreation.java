@@ -22,7 +22,7 @@ public class UserFirstInfoDataCreation {
         info.setBirthDate(UserTestConstants.BIRTH_DATE);
         info.setCountryId(UserTestConstants.LOCALE_ID);
         info.setMail(UserTestConstants.MAIL);
-        info.setLocale("tmp");
+        info.setLocaleId(1L);
         info.setName(UserTestConstants.NAME);
         info.setSurname(UserTestConstants.SURNAME);
         if (avatar != null) {

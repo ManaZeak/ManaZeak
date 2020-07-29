@@ -14,6 +14,7 @@ public @interface InviteCode {
 
     /**
      * No default message, we add then during the process.
+     *
      * @return an empty string.
      */
     String message() default "";

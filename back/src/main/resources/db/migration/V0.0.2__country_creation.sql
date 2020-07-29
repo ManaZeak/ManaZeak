@@ -395,3 +395,5 @@ INSERT INTO country (country_id, trigram, name, capital_name, capital_lat, capit
 values (197, 'ZMB', 'Zambia', 'Lusaka', -15.416152, 28.280741, -13.948994, 28.985954);
 INSERT INTO country (country_id, trigram, name, capital_name, capital_lat, capital_long, center_lat, center_long)
 values (198, 'ZWE', 'Zimbabwe', 'Harare', -17.830185, 31.048310, -19.116105, 29.917493);
+
+commit;

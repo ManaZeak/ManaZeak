@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.security;
 
 import java.io.Serializable;
+import org.manazeak.manazeak.entity.reference.Locale;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.HashSet;
@@ -37,13 +38,13 @@ public class MzkUser implements Serializable{
 	private Boolean isActive;
 	private String name;
 	private String surname;
-	private String locale;
 	private LocalDate birthDate;
 	private String profilePic;
 	private String bio;
 	private InviteCode inviteCode;
 	private Set<InviteCode> inviteCodeList;
 	private Country country;
+	private Locale locale;
 	private Role role;
 
     /**
@@ -156,21 +157,6 @@ public class MzkUser implements Serializable{
     }  
     /**
      * No comment found in model diagram
-     * @return value of locale
-     */
-    @Column(name="locale", nullable=true)
-	public String getLocale(){
-		return locale;
-    }  
-    /**
-     * No comment found in model diagram
-     * @param locale new value to give to locale
-     */
-	public void setLocale(final String locale){
-		this.locale = locale;
-    }  
-    /**
-     * No comment found in model diagram
      * @return value of birthDate
      */
     @Column(name="birth_date", nullable=true)
@@ -263,6 +249,22 @@ public class MzkUser implements Serializable{
 		this.country = country;
     }  
     /**
+     * Association user_locale to Locale
+     * @return value of locale
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="locale_id", referencedColumnName="locale_id")
+	public Locale getLocale(){
+		return locale;
+    }  
+    /**
+     * Association user_locale to Locale
+     * @param locale new value to give to locale
+     */
+	public void setLocale(final Locale locale){
+		this.locale = locale;
+    }  
+    /**
      * Association role_user to Role
      * @return value of role
      */
@@ -292,7 +294,6 @@ public class MzkUser implements Serializable{
 		result = 31 * result + (isActive == null? 0 : isActive.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
 		result = 31 * result + (surname == null? 0 : surname.hashCode());
-		result = 31 * result + (locale == null? 0 : locale.hashCode());
 		result = 31 * result + (birthDate == null? 0 : birthDate.hashCode());
 		result = 31 * result + (profilePic == null? 0 : profilePic.hashCode());
 		result = 31 * result + (bio == null? 0 : bio.hashCode());
@@ -327,7 +328,6 @@ public class MzkUser implements Serializable{
 			&& (isActive == null ?  (otherMzkUser.isActive == null) : isActive.equals(otherMzkUser.isActive))
 			&& (name == null ?  (otherMzkUser.name == null) : name.equals(otherMzkUser.name))
 			&& (surname == null ?  (otherMzkUser.surname == null) : surname.equals(otherMzkUser.surname))
-			&& (locale == null ?  (otherMzkUser.locale == null) : locale.equals(otherMzkUser.locale))
 			&& (birthDate == null ?  (otherMzkUser.birthDate == null) : birthDate.equals(otherMzkUser.birthDate))
 			&& (profilePic == null ?  (otherMzkUser.profilePic == null) : profilePic.equals(otherMzkUser.profilePic))
 			&& (bio == null ?  (otherMzkUser.bio == null) : bio.equals(otherMzkUser.bio))

@@ -19,7 +19,7 @@ public class UserFirstInfoDto {
     private String name;
     @LettersOnly(message = "{error.register.bad_char_surname}")
     private String surname;
-    private String locale;
+    private Long localeId;
     @Date
     private String birthDate;
     private String bio;
@@ -52,12 +52,12 @@ public class UserFirstInfoDto {
         this.surname = surname;
     }
 
-    public String getLocale() {
-        return locale;
+    public Long getLocaleId() {
+        return localeId;
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setLocaleId(Long localeId) {
+        this.localeId = localeId;
     }
 
     public String getBirthDate() {

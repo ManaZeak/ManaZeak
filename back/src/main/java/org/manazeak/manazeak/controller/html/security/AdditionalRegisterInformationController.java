@@ -5,6 +5,7 @@ import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.service.reference.country.CountryService;
+import org.manazeak.manazeak.service.reference.locale.LocaleService;
 import org.manazeak.manazeak.service.security.user.AdditionalInfoManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,13 @@ public class AdditionalRegisterInformationController {
 
     private final CountryService countryService;
 
+    private final LocaleService localeService;
+
     public AdditionalRegisterInformationController(AdditionalInfoManager additionalInfoManager,
-                                                   CountryService countryService) {
+                                                   CountryService countryService, LocaleService localeService) {
         this.additionalInfoManager = additionalInfoManager;
         this.countryService = countryService;
+        this.localeService = localeService;
     }
 
     /**
@@ -43,6 +47,7 @@ public class AdditionalRegisterInformationController {
         // Adding the objects to the model
         model.addAttribute("userInfo", userFirstInfoDto);
         addCountriesToPage(model);
+        addLocalesToPage(model);
         // Returning the page with the information.
         return UserPageEnum.ADDITIONAL_INFO.getPage();
     }
@@ -68,7 +73,21 @@ public class AdditionalRegisterInformationController {
         return UserPageEnum.MAIN_PAGE.getRedirectToPage();
     }
 
+    /**
+     * Adds to the model the countries contained in the database.
+     *
+     * @param model the model used by thymeleaf to render the page.
+     */
     private void addCountriesToPage(Model model) {
         model.addAttribute("countries", countryService.getCountryList());
+    }
+
+    /**
+     * Adds the locales to the model
+     *
+     * @param model the model used by thymeleaf to render the page.
+     */
+    private void addLocalesToPage(Model model) {
+        model.addAttribute("locales", localeService.getAllLocales());
     }
 }

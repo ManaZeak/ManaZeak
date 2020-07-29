@@ -90,7 +90,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             return Locale.US;
         }
         if (user.get().getLocale() != null) {
-            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale()));
+            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale().getCode()));
         } else {
             return getAvailableLocale(null);
         }
