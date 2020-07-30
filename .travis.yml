@@ -19,4 +19,4 @@ addons:
   hosts:
     - db
 script:
-  - mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak -Dmaven.test.failure.ignore=true
+  - mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak
