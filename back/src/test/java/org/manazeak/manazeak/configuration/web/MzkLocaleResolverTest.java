@@ -19,7 +19,6 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
     /**
      * Test that a user without any option in his browser display the default language.
      */
-    @Test
     void testLocaleResolveWithoutDefaultLocale() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         Locale userLocale = localResolver.resolveLocale(request);
@@ -29,7 +28,6 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
     /**
      * Test that a user with a preferred local in his request display his preferred language.
      */
-    @Test
     void testLocaleResolveWithDefaultLocale() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addPreferredLocale(Locale.FRANCE);
