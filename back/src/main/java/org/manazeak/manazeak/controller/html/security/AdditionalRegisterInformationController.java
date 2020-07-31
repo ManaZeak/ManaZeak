@@ -53,7 +53,7 @@ public class AdditionalRegisterInformationController {
     }
 
     /**
-     * Handles the
+     * Handles the additional information addition to the user.
      *
      * @param userInfo the information of the user.
      * @param result   The information about the validation errors.

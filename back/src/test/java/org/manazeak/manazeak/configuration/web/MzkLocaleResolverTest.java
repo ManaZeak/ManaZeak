@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.util.Locale;
 
@@ -19,6 +20,8 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
     /**
      * Test that a user without any option in his browser display the default language.
      */
+    @Test
+    @WithAnonymousUser
     void testLocaleResolveWithoutDefaultLocale() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         Locale userLocale = localResolver.resolveLocale(request);
@@ -28,6 +31,8 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
     /**
      * Test that a user with a preferred local in his request display his preferred language.
      */
+    @Test
+    @WithAnonymousUser
     void testLocaleResolveWithDefaultLocale() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addPreferredLocale(Locale.FRANCE);

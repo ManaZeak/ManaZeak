@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -75,14 +77,13 @@ public class MzkLocalResolver extends SessionLocaleResolver {
      */
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
-        // Getting the security context of the application.
-        SecurityContext securityContext = SecurityContextHolder.getContext();
         // Getting the name of the user.
-        String userName = securityContext.getAuthentication().getName();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         // If there is no user connected, getting the information from the user agent.
-        if ("anonymousUser".equals(userName)) {
+        if (auth instanceof AnonymousAuthenticationToken) {
             return getLocalFromRequestHeader(request);
         }
+        String userName = auth.getName();
         // Getting the user from the database.
         Optional<MzkUser> user = userService.findByUsername(userName);
         if (user.isEmpty()) {
