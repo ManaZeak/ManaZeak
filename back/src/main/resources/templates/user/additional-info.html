@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
     <meta content="Please give more information about you, so we can create a unique musical experience for you!"
@@ -15,7 +15,8 @@
 <div class="mzk-user">
     <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
     <p>Welcome to ManaZeak, your invite code is valid and you are one step closer to browse music!<br>
-        Please take a minute to give some information that will used to create a unique musical experience, based on your profile.</p>
+        Please take a minute to give some information that will used to create a unique musical experience, based on
+        your profile.</p>
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
     <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
         <div class="left-col">
@@ -32,7 +33,8 @@
             <input id="name-input" th:field="*{name}" type="text"/>
 
             <label for="bio-input" th:text="#{label.user.bio}">name</label>
-            <textarea id="bio-input" th:field="*{bio}" placeholder="Some words other users will see about you..."></textarea>
+            <textarea id="bio-input" placeholder="Some words other users will see about you..."
+                      th:field="*{bio}"></textarea>
         </div>
         <div class="right-col">
             <label for="birthday-input" th:text="#{label.user.birth_date}">name</label>
@@ -53,7 +55,8 @@
             <label for="country-select" th:text="#{label.user.birth_date}">langage</label>
             <select th:field="*{localeId}">
                 <!-- Adding the rest of the objects in the database. -->
-                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze</option>
+                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze
+                </option>
             </select>
 
             <label for="surname-input" th:text="#{label.user.surname}">Avatar</label>

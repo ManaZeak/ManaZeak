@@ -12,7 +12,8 @@ public final class UserTestConstants {
     public static final String MAIL = "test@test.test";
     public static final String NAME = "TEST_NAME";
     public static final String SURNAME = "TEST_SURNAME";
-    public static final Long LOCALE_ID = 61L;
+    public static final Long LOCALE_ID = 1L;
+    public static final Long COUNTRY_ID = 1L;
     public static final String BIRTH_DATE = "1981-02-12";
     public static final String BIO = "TEST_BIO";
 

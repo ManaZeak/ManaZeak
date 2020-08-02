@@ -20,9 +20,9 @@ public class UserFirstInfoDataCreation {
         UserFirstInfoDto info = new UserFirstInfoDto();
         info.setBio(UserTestConstants.BIO);
         info.setBirthDate(UserTestConstants.BIRTH_DATE);
-        info.setCountryId(UserTestConstants.LOCALE_ID);
+        info.setCountryId(UserTestConstants.COUNTRY_ID);
         info.setMail(UserTestConstants.MAIL);
-        info.setLocaleId(1L);
+        info.setLocaleId(UserTestConstants.LOCALE_ID);
         info.setName(UserTestConstants.NAME);
         info.setSurname(UserTestConstants.SURNAME);
         if (avatar != null) {
