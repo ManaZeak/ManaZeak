@@ -35,7 +35,6 @@ class UserAddInformationTest extends AbstractManaZeakTest {
      * Test that when a user add some information to his profile it fills the database.
      */
 
-    @Test
     @WithMockUser(username = UserTestConstants.USERNAME)
     void testAddUserInformation() throws IOException {
         // Creating the default user.
