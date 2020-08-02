@@ -9,6 +9,8 @@ before_install:
   - cp .env.travis .env
   - docker-compose up -d db
   - export CHROMIUM_BIN=/usr/bin/google-chrome
+  - sudo mkdir -p /resources/avatars/
+  - sudo chmod -R 777 /resources/
 addons:
   firefox: latest
   chrome: stable
