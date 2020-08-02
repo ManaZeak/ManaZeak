@@ -45,6 +45,8 @@
 
         <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
         <select th:field="*{localeId}">
+            <!-- Adding the empty value to the selection -->
+            <option value="0"></option>
             <!-- Adding the rest of the objects in the database. -->
             <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze</option>
         </select>

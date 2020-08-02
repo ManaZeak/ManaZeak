@@ -1,8 +1,9 @@
 package org.manazeak.manazeak.entity.dto.user;
 
-import org.manazeak.manazeak.entity.validator.country.CountryId;
 import org.manazeak.manazeak.entity.validator.global.Date;
 import org.manazeak.manazeak.entity.validator.global.LettersOnly;
+import org.manazeak.manazeak.entity.validator.reference.country.CountryId;
+import org.manazeak.manazeak.entity.validator.reference.locale.LocaleId;
 import org.manazeak.manazeak.entity.validator.user.Avatar;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,7 @@ public class UserFirstInfoDto {
     private String name;
     @LettersOnly(message = "{error.register.bad_char_surname}")
     private String surname;
+    @LocaleId
     private Long localeId;
     @Date
     private String birthDate;

@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.entity.validator.country;
+package org.manazeak.manazeak.entity.validator.reference.country;
 
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.springframework.stereotype.Component;

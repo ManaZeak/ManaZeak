@@ -34,7 +34,7 @@ public class UserProfilePicManagerImpl implements UserProfilePicManager {
     @Override
     public String saveUserAvatarIntoResources(MultipartFile file, MzkUser user) {
         // There is no file to save.
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             return null;
         }
         // Computing the filename.

@@ -1,5 +1,4 @@
-package org.manazeak.manazeak.entity.validator.country;
-
+package org.manazeak.manazeak.entity.validator.reference.locale;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -8,20 +7,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Validate that a country exists.
- */
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CountryIdValidator.class)
-public @interface CountryId {
+@Constraint(validatedBy = LocaleIdValidator.class)
+public @interface LocaleId {
 
     /**
      * The default message for this error.
      *
      * @return The message key for this error.
      */
-    String message() default "{error.register.wrong_country}";
+    String message() default "{error.register.wrong_locale}";
 
     Class<?>[] groups() default {};
 

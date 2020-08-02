@@ -39,4 +39,11 @@ public interface UserService {
      * @return The list of privileges of a user.
      */
     List<Privilege> getPrivilegeByUsername(final String username);
+
+    /**
+     * Save the given user into the database.
+     *
+     * @param user The user to save into the database.
+     */
+    void saveUser(MzkUser user);
 }

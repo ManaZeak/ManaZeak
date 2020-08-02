@@ -1,11 +1,11 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
-import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.reference.Country;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.reference.country.CountryService;
+import org.manazeak.manazeak.service.reference.locale.LocaleService;
 import org.manazeak.manazeak.util.FieldUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +22,14 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
     private final UserProfilePicManager profilePicManager;
     private final UserService userService;
     private final CountryService countryService;
-    private final MzkUserDAO userDAO;
+    private final LocaleService localeService;
 
     public AdditionalInfoManagerImpl(UserProfilePicManager userProfilePicManager, UserService userService,
-                                     CountryService countryService, MzkUserDAO mzkUserDAO) {
+                                     CountryService countryService, LocaleService localeService) {
         this.profilePicManager = userProfilePicManager;
         this.userService = userService;
         this.countryService = countryService;
-        this.userDAO = mzkUserDAO;
+        this.localeService = localeService;
     }
 
     /**
@@ -45,8 +45,10 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
         UserHelper.fillUserWithAdditionalInfo(user, userInfo, profilePic);
         // Link the user with his country.
         linkUserWithCountry(user, userInfo.getCountryId());
+        // Link the user with his locale.
+        linkUserWithLocale(user, userInfo.getLocaleId());
         // Saving the current user into the database.
-        userDAO.save(user);
+        userService.saveUser(user);
     }
 
     /**
@@ -62,5 +64,19 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
         }
         Country userCountry = countryService.getCountryById(countryId);
         user.setCountry(userCountry);
+    }
+
+    /**
+     * Adding the locale to the user if any provided.
+     *
+     * @param user     The user that will be modified.
+     * @param localeId The locale id.
+     */
+    private void linkUserWithLocale(MzkUser user, Long localeId) {
+        // If the locale field is not set, the there is nothing to do.
+        if (!FieldUtil.isIdFieldNotEmpty(localeId)) {
+            return;
+        }
+        localeService.setUserLocale(localeId, user);
     }
 }
