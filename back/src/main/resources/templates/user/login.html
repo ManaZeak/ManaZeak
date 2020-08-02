@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
-    <meta content="Welcome on a ManaZeak instance! To know what ManaZeak is, or to learn how to host it yourself ; https://github.com/ManaZeak/ManaZeak"
+    <meta content="Welcome on a ManaZeak instance! Learn more about ManaZeak ; https://github.com/ManaZeak/ManaZeak"
           name="description">
-    <title>ManaZeak - login</title>
+    <title>Mzk | Login</title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
@@ -25,9 +27,7 @@
         <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Invalid password</p>
         <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
         <!-- Global form errors -->
-        <div th:if="${param.error}">
-            <p class="global-error" th:text="#{error.login.fail}">login error</p>
-        </div>
+        <p class="global-error" th:if="${param.error}" th:text="#{error.login.fail}">login error</p>
         <!-- Required csrf token from session cookies -->
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
         <button th:text="#{label.login.login}" type="submit">submit</button>

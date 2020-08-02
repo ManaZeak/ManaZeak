@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <title>ManaZeak - Tell us more</title>
+    <meta content="Please give more information about you, so we can create a unique musical experience for you!"
+          name="description">
+    <title>Mzk | Tell us more</title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="mzk-user">
+    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
+    <p>Welcome to ManaZeak, your invite code is valid and you are one step closer to browse music!<br>
+        Please take a minute to give some information that will used to create a unique musical experience, based on your profile.</p>
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
-    <form enctype="multipart/form-data" method="POST" th:object="${userInfo}">
+    <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
+        <div class="left-col">
+            <label for="surname-input" th:text="#{label.user.surname}">mail</label>
+            <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
+            <input th:field="*{mail}" type="text"/>
 
-        <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
-        <input th:field="*{avatar}" type="file"/>
+            <label for="surname-input" th:text="#{label.user.surname}">surname</label>
+            <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p>
+            <input id="surname-input" maxlength="128" th:errorClass="'error'" th:field="*{surname}" type="text"/>
 
-        <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
-        <input th:field="*{mail}" type="text"/>
+            <label for="name-input" th:text="#{label.user.name}">name</label>
+            <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p>
+            <input id="name-input" th:field="*{name}" type="text"/>
 
-        <label for="surname-input" th:text="#{label.user.surname}">surname</label>
-        <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p>
-        <input id="surname-input" maxlength="128" th:errorClass="'error'" th:field="*{surname}" type="text"/>
+            <label for="bio-input" th:text="#{label.user.bio}">name</label>
+            <textarea id="bio-input" th:field="*{bio}" placeholder="Some words other users will see about you..."></textarea>
+        </div>
+        <div class="right-col">
+            <label for="birthday-input" th:text="#{label.user.birth_date}">name</label>
+            <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}">Validation error</p>
+            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
+            <!-- max attribute is set in script before -->
 
-        <label for="name-input" th:text="#{label.user.name}">name</label>
-        <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p>
-        <input id="name-input" th:field="*{name}" type="text"/>
+            <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
+            <label for="country-select" th:text="#{label.user.birth_date}">country</label>
+            <select id="country-select" th:field="*{countryId}">
+                <!-- Adding the empty value to the selection -->
+                <option value="0"></option>
+                <!-- Adding the rest of the objects in the database. -->
+                <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
+            </select>
 
-        <label for="bio-input" th:text="#{label.user.bio}">name</label>
-        <input id="bio-input" th:field="*{bio}" type="text"/>
+            <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
+            <label for="country-select" th:text="#{label.user.birth_date}">langage</label>
+            <select th:field="*{localeId}">
+                <!-- Adding the rest of the objects in the database. -->
+                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze</option>
+            </select>
 
-        <label for="birthday-input" th:text="#{label.user.birth_date}">name</label>
-        <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}">Validation error</p>
-        <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
-        <!-- max attribute is set in script before -->
-
-        <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
-        <select th:field="*{countryId}">
-            <!-- Adding the empty value to the selection -->
-            <option value="0"></option>
-            <!-- Adding the rest of the objects in the database. -->
-            <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
-        </select>
-
-        <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
-        <select th:field="*{localeId}">
-            <!-- Adding the empty value to the selection -->
-            <option value="0"></option>
-            <!-- Adding the rest of the objects in the database. -->
-            <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze</option>
-        </select>
+            <label for="surname-input" th:text="#{label.user.surname}">Avatar</label>
+            <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
+            <input th:field="*{avatar}" type="file"/>
+        </div>
         <!-- Required csrf token from session cookies -->
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
         <button th:text="#{label.register.submit}" type="submit">submit</button>
     </form>
+    <p>See what ManaZeak can do for you right <a href="https://manazeak.github.io/" rel="noopener noreferrer"
+                                                 target="_blank">here</a>.</p>
 </div>
 <script>
     /* Update max value for birthday selection to today, ES5 since not bundled */

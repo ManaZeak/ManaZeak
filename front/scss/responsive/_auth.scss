@@ -1,0 +1,31 @@
+@media (max-width: 1028px) {
+  /* Text icon must take most of mobile width in portrait mode */
+  div.mzk-user {
+    img {
+      width: 85%;
+    }
+  }
+
+  @media (orientation: landscape) {
+    // Proper scrolling on landscape ; replace flex
+    body {
+      display: block;
+    }
+
+    .mzk-user {
+      /* Some air over page content */
+      margin: 2rem 0;
+    }
+  }
+}
+
+@media (max-width: 512px) {
+  div.mzk-user {
+    form {
+      padding: 1rem;
+    }
+  }
+
+  @media (orientation: landscape) {
+  }
+}

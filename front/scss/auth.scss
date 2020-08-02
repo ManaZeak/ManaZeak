@@ -1,160 +1,117 @@
 @import "tools/mzkbase";
-
-html, body {
-  align-items: center;
-  background-color: #2c2c30;
-  background-image: radial-gradient(#2c2c30 0, #1f2127 45%, #0e0f14 80%);
-  color: #aaaabe;
-  display: flex;
-  font-family: Helvetica, serif;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-form, .mzk-user {
-  text-align: center;
-  height: auto;
-}
-
-label {
-  font-weight: bold;
-}
-
-input[type="password"],
-input[type="text"] {
-  background: 0;
-  border: 0;
-  border-bottom: solid 1px #aaaabe;
-  color: #aaaabe;
-  padding: 5px;
-  margin-bottom: 1.33rem;
-  text-align: center;
-  transition: border-bottom .2s, color .2s;
-
-  &:active,
-  &:hover {
-    border-bottom: solid 1px #ebebff;
-  }
-
-  &:active,
-  &:focus,
-  &:hover {
-    color: #ebebff;
-  }
-}
-
-input.error {
-  border-bottom: solid 1px #FF6B67;
-}
-
-button {
-  background: 0;
-  border: 1px solid #aaaabe;
-  border-radius: 6px;
-  color: #aaaabe;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 1.33rem;
-  padding: .5rem 2.5rem;
-  transition: all .2s;
-
-  &:active,
-  &:focus,
-  &:hover {
-    background-color: rgba(127, 127, 127, .1);
-    border: 1px solid #ebebff;
-    box-shadow: 0 0 1px #ebebff;
-    color: #ebebff;
-  }
-}
-
-button,
-input {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+@import "tools/shortcut";
+/* Content wrapper for whole page */
 .mzk-user {
+  height: auto;
   margin: 0;
   padding: 0;
+  text-align: center;
   width: 100%;
   z-index: 2;
-
+  /* Top page ManaZeak text logo */
   img {
     user-select: none;
     width: 35%;
   }
-}
-
-p {
-  font-size: 1.1rem;
-  margin: 2rem 1rem;
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-}
-
-p.error {
-  color: #FF6B67;
-  font-size: .9rem;
-  font-style: italic;
-  margin: 0;
-}
-
-p.global-error {
-  color: #FF6B67;
-  font-size: 1rem;
-  font-style: italic;
-  margin-bottom: 1.33rem;
-  max-width: 172px;
-}
-
-a {
-  color: #56d45b;
-  text-decoration: none;
-}
-
-.mzk-user form {
-  background-color: rgba(31, 33, 39, .1);
-  border: 1px solid #0e0f14;
-  border-radius: 6px;
-  box-shadow:  0 0 1rem 0 rgba(86, 212, 91, .05);
-  box-sizing: border-box;
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 3rem;
-  width: auto;
-
+  /* Text that are both in and out of the form */
   p {
-    margin-top: 0;
+    font-size: 1.1rem;
+    margin: 2rem 1rem;
+    /* Mainly for text under form to fit parent bottom */
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+    /* To handle specific error on fields */
+    &.error {
+      color: #FF6B67;
+      font-size: .9rem;
+      font-style: italic;
+      margin: 0;
+    }
+    /* Form global error (validation etc.) */
+    &.global-error {
+      color: #FF6B67;
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 1.33rem;
+    }
   }
-
-  button {
-    margin-bottom: 0;
+  /* Links */
+  a {
+    color: #56d45b;
+    text-decoration: none;
   }
-
-  .mzk-logo {
-    width: 5%;
-  }
-}
-
-@media (max-width: 1028px) {
-  div.mzk-user img { // Text icon must take most of mobile width in portrait mode
-    width: 85%;
-  }
-
-  @media (orientation: landscape) {
-    body { // Proper scrolling on landscape ; replace flex
+  /* Standard form across auth pages */
+  form {
+    background-color: rgba(31, 33, 39, .1);
+    border: 1px solid #0e0f14;
+    border-radius: 6px;
+    box-shadow:  0 0 1rem 0 rgba(86, 212, 91, .05);
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3rem;
+    width: auto;
+    /* Override auth margin on P for form errors */
+    p {
+      margin-top: 0;
+    }
+    /* All inputs labels */
+    label {
+      font-style: italic;
+      font-weight: bold;
+    }
+    /* Form margin for inputs */
+    input[type="password"],
+    input[type="text"],
+    input[type="file"],
+    input[type="date"],
+    select,
+    textarea {
+      margin-bottom: 1.33rem;
+      max-width: 225px;
+      width: 90%;
+    }
+    /* Error state for inputs */
+    input.error {
+      border-bottom: solid 1px #FF6B67;
+    }
+    /* Form submit button */
+    button {
+      margin-top: 1.33rem;
+    }
+    /* Positioning form elements */
+    button,
+    input,
+    select {
       display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .mzk-user { // Some air over page content
-      margin: 2rem 0;
+    &.two-col-form {
+      align-items: center;
+      display: grid;
+      grid-template-columns: 50%;
+      grid-template-rows: 1fr auto;
+
+      .left-col {
+        grid-column: 1;
+        justify-self: flex-end;
+        margin-right: 1.5rem;
+      }
+
+      .right-col {
+        grid-column: 2;
+        justify-self: flex-start;
+        margin-left: 1.5rem;
+      }
+
+      button {
+        grid-column: 1 / span 2;
+      }
     }
   }
 }
+
+@import "responsive/auth";
