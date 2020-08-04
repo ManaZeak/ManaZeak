@@ -1,5 +1,4 @@
 @import "tools/mzkbase";
-@import "tools/shortcut";
 /* Content wrapper for whole page */
 .mzk-user {
   height: auto;
@@ -64,6 +63,7 @@
     /* Form margin for inputs */
     input[type="password"],
     input[type="text"],
+    input[type="email"],
     input[type="file"],
     input[type="date"],
     select,
@@ -113,5 +113,6 @@
     }
   }
 }
-
+/* Import as last instruction to override standard behavior */
+@import "tools/shortcut";
 @import "responsive/auth";

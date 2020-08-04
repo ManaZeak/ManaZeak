@@ -7,68 +7,64 @@
     <meta content="initial-scale=1" name="viewport">
     <meta content="Please give more information about you, so we can create a unique musical experience for you!"
           name="description">
-    <title>Mzk | Tell us more</title>
+    <title th:text="#{auth.tellusmore.title}"></title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="mzk-user">
-    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
-    <p>Welcome to ManaZeak, your invite code is valid and you are one step closer to browse music!<br>
-        Please take a minute to give some information that will used to create a unique musical experience, based on
-        your profile.</p>
+    <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo"/>
+    <p th:utext="#{auth.tellusmore.header}"></p>
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
     <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
         <div class="left-col">
-            <label for="surname-input" th:text="#{label.user.surname}">mail</label>
+            <!-- Email address field (256 char) and specific errors -->
+            <label for="email-input" th:text="#{auth.tellusmore.email}"></label>
             <p th:each="error : ${#fields.errors('mail')}" th:text="${error}">Invalid mail</p>
-            <input th:field="*{mail}" type="text"/>
-
-            <label for="surname-input" th:text="#{label.user.surname}">surname</label>
+            <input id="email-input" maxlength="256" th:errorClass="'error'" th:field="*{mail}" type="email"/>
+            <!-- Surname field (256 char) and specific errors -->
+            <label for="surname-input" th:text="#{auth.tellusmore.surname}"></label>
             <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">Validation error</p>
-            <input id="surname-input" maxlength="128" th:errorClass="'error'" th:field="*{surname}" type="text"/>
-
-            <label for="name-input" th:text="#{label.user.name}">name</label>
+            <input id="surname-input" maxlength="256" th:errorClass="'error'" th:field="*{surname}" type="text"/>
+            <!-- Name field (256 char) and specific errors -->
+            <label for="name-input" th:text="#{auth.tellusmore.name}"></label>
             <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}">Validation error</p>
-            <input id="name-input" th:field="*{name}" type="text"/>
-
-            <label for="bio-input" th:text="#{label.user.bio}">name</label>
-            <textarea id="bio-input" placeholder="Some words other users will see about you..."
-                      th:field="*{bio}"></textarea>
+            <input id="name-input" maxlength="256" th:errorClass="'error'" th:field="*{name}" type="text"/>
+            <!-- Bio field (4096 char) -->
+            <label for="bio-input" th:text="#{auth.tellusmore.bio}"></label>
+            <textarea id="bio-input" placeholder="Some words other users will see about you..." maxlength="4096" th:field="*{bio}"></textarea>
         </div>
         <div class="right-col">
-            <label for="birthday-input" th:text="#{label.user.birth_date}">name</label>
+            <!-- Birthday field (date) and specific errors -->
+            <label for="birthday-input" th:text="#{auth.tellusmore.birthday}"></label>
             <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}">Validation error</p>
-            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
-            <!-- max attribute is set in script before -->
-
+            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date"> <!-- Max attribute is set with Js -->
+            <!-- Country selection (set from db) and specific errors -->
             <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
-            <label for="country-select" th:text="#{label.user.birth_date}">country</label>
+            <label for="country-select" th:text="#{auth.tellusmore.country}"></label>
             <select id="country-select" th:field="*{countryId}">
                 <!-- Adding the empty value to the selection -->
                 <option value="0"></option>
                 <!-- Adding the rest of the objects in the database. -->
-                <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}">aze</option>
+                <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}"></option>
             </select>
-
+            <!-- Locale selection (set from db) and specific errors -->
             <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
-            <label for="country-select" th:text="#{label.user.birth_date}">langage</label>
-            <select th:field="*{localeId}">
+            <label for="locale-select" th:text="#{auth.tellusmore.language}"></label>
+            <select id="locale-select" th:field="*{localeId}">
                 <!-- Adding the rest of the objects in the database. -->
-                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}">aze
-                </option>
+                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}"></option>
             </select>
-
-            <label for="surname-input" th:text="#{label.user.surname}">Avatar</label>
+            <!-- Avatar field (file) and specific errors -->
+            <label for="avatar-input" th:text="#{auth.tellusmore.avatar}">Test</label>
             <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}">Invalid avatar</p>
-            <input th:field="*{avatar}" type="file"/>
+            <input id="avatar-input" th:field="*{avatar}" type="file" accept=".jpg,.png"/>
         </div>
         <!-- Required csrf token from session cookies -->
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-        <button th:text="#{label.register.submit}" type="submit">submit</button>
+        <button th:text="#{auth.tellusmore.submit}" type="submit"></button>
     </form>
-    <p>See what ManaZeak can do for you right <a href="https://manazeak.github.io/" rel="noopener noreferrer"
-                                                 target="_blank">here</a>.</p>
+    <p th:utext="#{auth.tellusmore.footer}"></p>
 </div>
 <script>
     /* Update max value for birthday selection to today, ES5 since not bundled */

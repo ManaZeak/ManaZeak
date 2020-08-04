@@ -13,7 +13,8 @@ html, body {
 }
 /* Text inputs */
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+input[type="email"] {
   background: 0;
   border: 0;
   border-bottom: solid 1px #aaaabe;
