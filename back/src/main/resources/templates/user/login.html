@@ -7,33 +7,32 @@
     <meta content="initial-scale=1" name="viewport">
     <meta content="Welcome on a ManaZeak instance! Learn more about ManaZeak ; https://github.com/ManaZeak/ManaZeak"
           name="description">
-    <title>Mzk | Login</title>
+    <title th:text="#{auth.login.title}"></title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="mzk-user">
-    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
-    <p>Please login below, or <a href="register">register</a></p>
+    <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo"/>
+    <p th:utext="#{auth.login.header}"></p>
     <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
     <form method="POST" th:object="${user}">
         <!-- Username field (128 char) and specific errors -->
-        <label for="username-input" th:text="#{label.user.login}">username</label>
+        <label for="username-input" th:text="#{auth.login.username}"></label>
         <p th:each="error : ${#fields.errors('username')}" th:text="${error}">Invalid username</p>
         <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{username}" type="text"/>
         <!-- Associated password field (256 char) and specific errors -->
-        <label for="password-input" th:text="#{label.user.password}">password</label>
+        <label for="password-input" th:text="#{auth.login.password}"></label>
         <p th:each="error : ${#fields.errors('password')}" th:text="${error}">Invalid password</p>
         <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
         <!-- Global form errors -->
         <p class="global-error" th:if="${param.error}" th:text="#{error.login.fail}">login error</p>
         <!-- Required csrf token from session cookies -->
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-        <button th:text="#{label.login.login}" type="submit">submit</button>
+        <button th:text="#{auth.login.submit}" type="submit"></button>
     </form>
-    <p>See what ManaZeak can do for you right <a href="https://manazeak.github.io/" rel="noopener noreferrer"
-                                                 target="_blank">here</a>.</p>
+    <p th:utext="#{auth.login.footer}"></p>
 </div>
 </body>
 </html>
