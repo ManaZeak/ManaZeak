@@ -94,7 +94,11 @@
 			<version>2.8.2</version>
 			<type>pom</type>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>

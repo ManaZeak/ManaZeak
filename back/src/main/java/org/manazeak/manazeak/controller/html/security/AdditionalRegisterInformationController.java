@@ -10,11 +10,10 @@ import org.manazeak.manazeak.service.security.user.AdditionalInfoManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.validation.Valid;
 
 /**
  * This controller handles the page for completing the user account creation.
@@ -61,10 +60,11 @@ public class AdditionalRegisterInformationController {
      */
     @Security(PrivilegeEnum.PLAY)
     @PostMapping("/additionalRegisterInfo")
-    public String submitAdditionalRegisterInfoPage(@ModelAttribute("userInfo") @Valid UserFirstInfoDto userInfo,
+    public String submitAdditionalRegisterInfoPage(@ModelAttribute("userInfo") @Validated UserFirstInfoDto userInfo,
                                                    BindingResult result, Model model) {
         if (result.hasErrors()) {
             addCountriesToPage(model);
+            addLocalesToPage(model);
             return UserPageEnum.ADDITIONAL_INFO.getPage();
         }
         // Adding the information to the user.
