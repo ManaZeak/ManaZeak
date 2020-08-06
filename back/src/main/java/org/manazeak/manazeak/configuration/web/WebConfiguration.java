@@ -74,7 +74,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("i18n/message");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultEncoding(APP_ENCODING);
         return messageSource;
     }
 
