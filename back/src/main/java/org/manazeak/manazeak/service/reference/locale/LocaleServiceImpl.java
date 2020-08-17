@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.service.reference.locale;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.reference.LocaleDAO;
 import org.manazeak.manazeak.entity.reference.Locale;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -15,7 +14,6 @@ import java.util.Optional;
  * This service is used to manipulate the available locales in the app.
  */
 @Service
-@TransactionnalWithRollback
 public class LocaleServiceImpl implements LocaleService {
 
     private final LocaleDAO localeDAO;

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PasswordsMatchValidator.class)
 public @interface PasswordMatches {
 
-    String message() default "{error.register.pass_mismatch}";
+    String message() default "{user.register.error.pass_mismatch}";
 
     Class<?>[] groups() default {};
 

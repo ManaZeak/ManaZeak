@@ -5,29 +5,16 @@
     <meta content="ie=edge" http-equiv="x-ua-compatible">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
-    <meta content="Inspecting such an empty page... What a waste of time! Here's some good reading ; https://github.com/ManaZeak/ManaZeak"
-          name="description">
-    <title>Mzk | See you soon!</title>
-    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/png">
+    <meta th:content="#{user.logout.description}" name="description">
+    <title th:text="#{user.logout.title}"></title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="logout-success">
 <div class="mzk-user">
-    <p th:text="#{label.logout}">logout</p>
-    <p class="itl" id="redirect-string" th:text="#{label.logout.redirect}">redirection in 5s</p>
+    <p th:text="#{user.logout.status}"></p>
+    <p class="itl" id="redirect-string" th:text="#{user.logout.redirect}"></p>
 </div>
-<script>
-    /* Redirect user to login after 5 seconds */
-    var counter = 0;
-    var redirectString = document.getElementById('redirect-string');
-    window.setInterval(function () {
-        if (counter === 4) {
-            window.location.replace('login');
-        }
-        redirectString.innerHTML = redirectString.innerHTML.replace(/[0-9]/g, "" + 4 - counter + "");
-        console.log(redirectString.innerHTML)
-        ++counter;
-    }, 1000);
-</script>
+<script type="text/javascript" src="static/dist/js/redirect.bundle.js"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ public @interface CountryId {
      *
      * @return The message key for this error.
      */
-    String message() default "{error.register.wrong_country}";
+    String message() default "{user.tellusmore.error.wrong_country}";
 
     Class<?>[] groups() default {};
 

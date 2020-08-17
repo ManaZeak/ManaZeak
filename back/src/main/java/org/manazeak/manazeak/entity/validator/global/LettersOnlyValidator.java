@@ -1,12 +1,9 @@
 package org.manazeak.manazeak.entity.validator.global;
 
-import org.springframework.stereotype.Component;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
-@Component
 public class LettersOnlyValidator implements ConstraintValidator<LettersOnly, String> {
 
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z]+$");

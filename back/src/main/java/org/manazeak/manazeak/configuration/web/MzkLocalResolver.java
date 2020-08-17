@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.configuration.web;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.slf4j.Logger;
@@ -21,7 +20,6 @@ import java.util.Optional;
  * If there is no user, we select the user agent language.
  */
 @Configuration
-@TransactionnalWithRollback
 public class MzkLocalResolver extends SessionLocaleResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(MzkLocalResolver.class);
@@ -94,7 +92,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
         if (user.get().getLocale() != null) {
             return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale().getCode()));
         } else {
-            return getLocalFromRequestHeader(request);
+            return getAvailableLocale(null);
         }
     }
 }

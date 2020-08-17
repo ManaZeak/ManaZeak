@@ -14,11 +14,11 @@ import javax.validation.constraints.Email;
  */
 public class UserFirstInfoDto {
 
-    @Email(message = "{error.register.wrong_email}")
+    @Email(message = "{user.tellusmore.error.wrong_email}")
     private String mail;
-    @LettersOnly(message = "{error.register.bad_char_name}")
+    @LettersOnly(message = "{user.tellusmore.error.bad_char_name}")
     private String name;
-    @LettersOnly(message = "{error.register.bad_char_surname}")
+    @LettersOnly(message = "{user.tellusmore.error.bad_char_surname}")
     private String surname;
     @LocaleId
     private Long localeId;

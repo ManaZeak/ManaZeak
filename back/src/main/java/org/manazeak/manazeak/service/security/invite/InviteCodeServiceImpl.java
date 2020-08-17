@@ -47,7 +47,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         Optional<InviteCode> inviteCode = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
         // If the invite code wasn't found, then it's not the correct one.
         if (inviteCode.isEmpty()) {
-            throw new MzkValidationException("{error.register.wrong_invite_code}");
+            throw new MzkValidationException("{user.register.error.wrong_invite_code}");
         }
         // Getting the parent from the invite code.
         MzkUser parent = mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode.get());
@@ -61,7 +61,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         int userDepth = userDepthOpt.get() + 1;
         // If the user is too far from the creator, we refuse him.
         if (userDepth > inviteCodeDepth) {
-            throw new MzkValidationException("{error.register.invite_code_deep}");
+            throw new MzkValidationException("{user.register.error.invite_code_deep}");
         }
     }
 

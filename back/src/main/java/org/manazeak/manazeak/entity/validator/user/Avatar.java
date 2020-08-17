@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = AvatarValidator.class)
 public @interface Avatar {
 
-    String message() default "{error.register.bad_avatar}";
+    String message() default "{user.tellusmore.error.bad_avatar}";
 
     Class<?>[] groups() default {};
 

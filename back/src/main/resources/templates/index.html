@@ -6,8 +6,9 @@
 </head>
 <body>
 <p>Hello !</p>
+<p class="error" th:if="${loginError}">Wrong user or password</p>
 <form method="post" th:action="@{/logout}">
-    <button type="submit" th:text="#{label.logout.logout}">logout</button>
+    <input type="submit" value="Logout"/>
 </form>
 </body>
 </html>

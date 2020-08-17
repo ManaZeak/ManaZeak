@@ -17,7 +17,7 @@ public @interface LocaleId {
      *
      * @return The message key for this error.
      */
-    String message() default "{error.register.wrong_locale}";
+    String message() default "{user.tellusmore.error.wrong_locale}";
 
     Class<?>[] groups() default {};
 

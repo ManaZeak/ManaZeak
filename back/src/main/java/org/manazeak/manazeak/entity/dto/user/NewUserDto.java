@@ -12,14 +12,14 @@ import javax.validation.constraints.NotEmpty;
 @PasswordMatches
 public class NewUserDto implements PasswordContainer {
 
-    @NotEmpty(message = "{error.register.empty_username}")
+    @NotEmpty(message = "{user.register.error.empty_username}")
     @UniqueUsername
     private String username;
-    @NotEmpty(message = "{error.register.empty_pass}")
+    @NotEmpty(message = "{user.register.error.empty_password}")
     private String password1;
-    @NotEmpty(message = "{error.register.empty_pass}")
+    @NotEmpty(message = "{user.register.error.empty_confirm_password}")
     private String password2;
-    @NotEmpty(message = "{error.register.empty_invite_code}")
+    @NotEmpty(message = "{user.register.error.empty_invite_code}")
     @InviteCode
     private String inviteCode;
 

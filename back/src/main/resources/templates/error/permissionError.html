@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Permission error</title>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="initial-scale=1" name="viewport">
+    <meta th:content="#{error.permission.description}" name="description">
+    <title th:text="#{error.permission.title}"></title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+    <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-<p th:text="#{error.permission.fail}"> No permission</p>
+<body class="permission-error">
+<div class="mzk-user">
+    <p th:text="#{error.permission.status}"></p>
+    <p class="itl" id="redirect-string" th:text="#{error.permission.redirect}"></p>
+</div>
+<script type="text/javascript" src="static/dist/js/redirect.bundle.js"></script>
 </body>
 </html>
