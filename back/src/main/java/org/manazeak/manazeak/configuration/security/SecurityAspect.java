@@ -4,7 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class SecurityAspect {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityAspect.class);
 
     /**
      * Interceptor for adding security arround the @Security annotation.
@@ -29,9 +32,7 @@ public class SecurityAspect {
         if (SecurityUtil.currentUserHasPrivilege(securityAnnotation.value())) {
             return pjp.proceed(pjp.getArgs());
         } else {
-            throw new AccessDeniedException("The privilege " + securityAnnotation.value()
-                    + " is required to access this feature.");
-
+            return "error/permissionError.html";
         }
     }
 }
