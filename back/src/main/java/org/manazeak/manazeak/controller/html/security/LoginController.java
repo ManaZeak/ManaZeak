@@ -2,6 +2,8 @@ package org.manazeak.manazeak.controller.html.security;
 
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserLoginDto;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,10 @@ public class LoginController {
      * @return the String containing the login page.
      */
     private static String displayLoginPage(Model model) {
+        // If the user is already connected we redirect him to the main page.
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            return UserPageEnum.MAIN_PAGE.getRedirectToPage();
+        }
         UserLoginDto user = new UserLoginDto();
         model.addAttribute("user", user);
         return UserPageEnum.LOGIN_PAGE.getPage();
