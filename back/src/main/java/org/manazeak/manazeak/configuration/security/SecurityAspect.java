@@ -6,6 +6,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,6 +35,14 @@ public class SecurityAspect {
         if (SecurityUtil.currentUserHasPrivilege(securityAnnotation.value())) {
             return pjp.proceed(pjp.getArgs());
         } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            final String username;
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                username = "ANONYMOUS_USER";
+            } else {
+                username = authentication.getName();
+            }
+            LOG.error("Permission error for the user : {}", username);
             return "error/permissionError.html";
         }
     }
