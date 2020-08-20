@@ -11,9 +11,9 @@ public interface MzkUserDetailProjection {
 
     String getName();
 
-    String getSurname() ;
+    String getSurname();
 
-    String getEmail() ;
+    String getEmail();
 
     String getCountry();
 

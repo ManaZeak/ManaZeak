@@ -9,6 +9,7 @@ public interface UserInformationService {
 
     /**
      * Get the information about the current user.
+     *
      * @return The current user information.
      */
     MzkUserDetailProjection getCurrentUserInformation();

@@ -80,6 +80,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * Get the validator with the correct message source.
+     *
      * @return The validator object.
      */
     @Override
@@ -92,6 +93,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * Add the locale interceptor.
+     *
      * @param registry the object containing all the interceptors.
      */
     @Override
@@ -101,6 +103,7 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
     /**
      * This is used to set the locale of the user when he
+     *
      * @return The locale change interceptor.
      */
     @Bean

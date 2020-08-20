@@ -5,14 +5,14 @@
     <meta content="ie=edge" http-equiv="x-ua-compatible">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
-    <meta th:content="#{user.register.description}" name="description">
+    <meta name="description" th:content="#{user.register.description}">
     <title th:text="#{user.register.title}"></title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body class="register">
 <div class="mzk-user">
-    <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo">
+    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg">
     <p th:utext="#{user.register.header}"></p>
     <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->

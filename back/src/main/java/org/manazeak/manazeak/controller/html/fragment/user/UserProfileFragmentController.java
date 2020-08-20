@@ -23,6 +23,7 @@ public class UserProfileFragmentController {
 
     /**
      * Get the fragment containing the user information.
+     *
      * @param model The model for passing the elements to the front.
      * @return The fragment to the front.
      */

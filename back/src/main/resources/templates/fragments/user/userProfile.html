@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}">
+<div th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
     <label for="username" th:text="#{user.login.username}">username</label>
     <p id="username" th:text="*{username}">username</p>
@@ -8,9 +8,9 @@
     </span>
     <!-- If the user has an avatar -->
     <span th:unless="*{avatar == null}">
-        <img th:src='*{"/resources/avatars/"+avatar}' alt="avatar">
+        <img alt="avatar" th:src='*{"/resources/avatars/"+avatar}'>
     </span>
-    <label for="email" th:text="#{user.tellusmore.email}" >email</label>
+    <label for="email" th:text="#{user.tellusmore.email}">email</label>
     <p id="email" th:value="${userInfo.email}">email</p>
     <label for="name" th:text="#{user.tellusmore.name}">name</label>
     <p id="name" th:text="*{name}">name</p>

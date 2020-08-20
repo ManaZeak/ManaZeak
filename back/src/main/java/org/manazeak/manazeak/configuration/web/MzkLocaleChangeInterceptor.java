@@ -15,9 +15,10 @@ public class MzkLocaleChangeInterceptor extends LocaleChangeInterceptor {
 
     /**
      * Before every request we will check the language of the user/
-     * @param request the request of the user.
+     *
+     * @param request  the request of the user.
      * @param response the response for the user.
-     * @param handler the handler.
+     * @param handler  the handler.
      * @return true if the request was handled correctly.
      */
     @Override

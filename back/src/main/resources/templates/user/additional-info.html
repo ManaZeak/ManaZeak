@@ -5,14 +5,14 @@
     <meta content="ie=edge" http-equiv="x-ua-compatible">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <meta content="initial-scale=1" name="viewport">
-    <meta th:content="#{user.tellusmore.description}" name="description">
+    <meta name="description" th:content="#{user.tellusmore.description}">
     <title th:text="#{user.tellusmore.title}"></title>
     <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
     <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body class="tell-us-more">
 <div class="mzk-user">
-    <img src="static/img/logo/manazeak-text.svg" alt="manazeak-text-logo"/>
+    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
     <p th:utext="#{user.tellusmore.header}"></p>
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
     <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
@@ -31,13 +31,15 @@
             <input id="name-input" maxlength="256" th:errorClass="'error'" th:field="*{name}" type="text"/>
             <!-- Bio field (4096 char) -->
             <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
-            <textarea id="bio-input" placeholder="Some words other users will see about you..." maxlength="4096" th:field="*{bio}"></textarea>
+            <textarea id="bio-input" maxlength="4096" placeholder="Some words other users will see about you..."
+                      th:field="*{bio}"></textarea>
         </div>
         <div class="right-col">
             <!-- Birthday field (date) and specific errors -->
             <label for="birthday-input" th:text="#{user.tellusmore.birthday}"></label>
             <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}"></p>
-            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date"> <!-- Max attribute is set with Js -->
+            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
+            <!-- Max attribute is set with Js -->
             <!-- Country selection (set from db) and specific errors -->
             <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
             <label for="country-select" th:text="#{user.tellusmore.country}"></label>
@@ -57,7 +59,7 @@
             <!-- Avatar field (file) and specific errors -->
             <label for="avatar-input" th:text="#{user.tellusmore.avatar}">Test</label>
             <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}"></p>
-            <input id="avatar-input" th:field="*{avatar}" type="file" accept=".jpg,.png"/>
+            <input accept=".jpg,.png" id="avatar-input" th:field="*{avatar}" type="file"/>
         </div>
         <!-- Required csrf token from session cookies -->
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
@@ -65,6 +67,6 @@
     </form>
     <p th:utext="#{user.tellusmore.footer}"></p>
 </div>
-<script type="text/javascript" src="static/dist/js/tellusmore.bundle.js"></script>
+<script src="static/dist/js/tellusmore.bundle.js" type="text/javascript"></script>
 </body>
 </html>
