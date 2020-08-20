@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.controller.html.security;
+package org.manazeak.manazeak.controller.html.user;
 
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
@@ -65,6 +65,7 @@ public class AdditionalRegisterInformationController {
                                                    BindingResult result, Model model) {
         if (result.hasErrors()) {
             addCountriesToPage(model);
+            addLocalesToPage(model);
             return UserPageEnum.ADDITIONAL_INFO.getPage();
         }
         // Adding the information to the user.

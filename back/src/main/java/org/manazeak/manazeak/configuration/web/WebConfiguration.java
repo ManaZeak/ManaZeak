@@ -11,7 +11,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -64,6 +66,49 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
     }
 
     /**
+     * Configuration for internationalization.
+     *
+     * @return the message.
+     */
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("i18n/message");
+        messageSource.setDefaultEncoding(APP_ENCODING);
+        return messageSource;
+    }
+
+    /**
+     * Get the validator with the correct message source.
+     * @return The validator object.
+     */
+    @Override
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
+    }
+
+    /**
+     * Add the locale interceptor.
+     * @param registry the object containing all the interceptors.
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    /**
+     * This is used to set the locale of the user when he
+     * @return The locale change interceptor.
+     */
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        return new MzkLocaleChangeInterceptor();
+    }
+
+    /**
      * Creating the thymeleaf template resolver.
      *
      * @return the thymeleaf template resolver.
@@ -77,27 +122,6 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
         viewResolver.setCharacterEncoding(APP_ENCODING);
 
         return viewResolver;
-    }
-
-    @Bean
-    @Override
-    public LocalValidatorFactoryBean getValidator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource());
-        return bean;
-    }
-
-    /**
-     * Configuration for internationalization.
-     *
-     * @return the message.
-     */
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("i18n/message");
-        messageSource.setDefaultEncoding(APP_ENCODING);
-        return messageSource;
     }
 
     /**

@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         // Getting the security context and the user.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new MzkRuntimeException("There is no connected user. Un-authenticated user should access this.");
+            throw new MzkRuntimeException("There is no connected user. Un-authenticated user shouldn't access this.");
         }
         // Getting the current username
         String currentUserName = authentication.getName();

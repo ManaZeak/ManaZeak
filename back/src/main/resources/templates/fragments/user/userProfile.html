@@ -1,6 +1,29 @@
-<div xmlns:th="http://www.thymeleaf.org">
-    <div>
-        <p>This is a test !
-        <p th:text="#{label.user.surname}"></p>
-    </div>
+<div xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}">
+    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
+    <label for="username" th:text="#{user.login.username}">username</label>
+    <p id="username" th:text="*{username}">username</p>
+    <!-- If the user doesn't have any avatar display the default one. -->
+    <span th:if="*{avatar == null}">
+
+    </span>
+    <!-- If the user has an avatar -->
+    <span th:unless="*{avatar == null}">
+        <img th:src='*{"/resources/avatars/"+avatar}' alt="avatar">
+    </span>
+    <label for="email" th:text="#{user.tellusmore.email}" >email</label>
+    <p id="email" th:value="${userInfo.email}">email</p>
+    <label for="name" th:text="#{user.tellusmore.name}">name</label>
+    <p id="name" th:text="*{name}">name</p>
+    <label for="surname" th:text="#{user.tellusmore.surname}">surname</label>
+    <p id="surname" th:text="*{surname}">surname</p>
+    <label for="bio" th:text="#{user.tellusmore.bio}">bio</label>
+    <p id="bio" th:text="*{bio}"></p>
+    <label for="birthdate" th:text="#{user.tellusmore.birthday}">birthdate</label>
+    <p id="birthdate" th:text="*{birthDate}"></p>
+    <label for="country" th:text="#{user.tellusmore.country}">country</label>
+    <p id="country" th:text="*{country}">country</p>
+    <label for="locale" th:text="#{user.tellusmore.language}">locale</label>
+    <p id="locale" th:text="*{locale}">locale</p>
+    <label for="inviteCode" th:text="#{user.register.invite_code}">invite code</label>
+    <p id="inviteCode" th:text="*{inviteCode}">invite code</p>
 </div>
