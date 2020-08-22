@@ -46,4 +46,11 @@ public interface UserService {
      * @param user The user to save into the database.
      */
     void saveUser(MzkUser user);
+
+    /**
+     * Check if a user is connected.
+     *
+     * @return True if the user is connected.
+     */
+    boolean isUserConnected();
 }

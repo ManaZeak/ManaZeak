@@ -48,6 +48,10 @@ public class RegisterController {
      */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
+        // If the user is connected we redirect him to the main page.
+        if (userService.isUserConnected()) {
+            return UserPageEnum.MAIN_PAGE.getRedirectToPage();
+        }
         NewUserDto userDto = new NewUserDto();
         model.addAttribute("user", userDto);
         return UserPageEnum.REGISTER_PAGE.getPage();
@@ -66,6 +70,10 @@ public class RegisterController {
         // trying to create a user into the database.
         if (result.hasErrors()) {
             return UserPageEnum.REGISTER_PAGE.getPage();
+        }
+        // If the user is connected, we redirect him to the main page
+        if (userService.isUserConnected()) {
+            return UserPageEnum.MAIN_PAGE.getRedirectToPage();
         }
         MzkUser user = userService.createUser(newUser);
         // Log the user in.

@@ -109,4 +109,13 @@ public class UserServiceImpl implements UserService {
     public void saveUser(MzkUser user) {
         userDAO.save(user);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isUserConnected() {
+        // If the user is not anonymous, then he is connected.
+        return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    }
 }
