@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="initial-scale=1" name="viewport">
+    <meta name="description" th:content="#{mp.description}">
+    <title th:text="#{mp.title}"></title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+    <link href="static/dist/css/manazeak.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<p>Hello !</p>
-<p class="error" th:if="${loginError}">Wrong user or password</p>
-<form method="post" th:action="@{/logout}">
-    <input type="submit" value="Logout"/>
-</form>
+<div class="scene">
+    <p class="error" th:if="${loginError}">Wrong user or password</p>
+</div>
+<div class="aside">
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
+<div class="footbar"></div>
 </body>
 </html>

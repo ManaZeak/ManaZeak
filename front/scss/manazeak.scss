@@ -1,7 +1,28 @@
-body {
-  --margin-1x: 15px;
-  --padding-1x: 15px;
+@import "tools/mzkbase";
+.scene {
+  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
+  height: calc(100% - 6rem);
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 80%;
+}
 
-  line-height: 1;
-  margin: 0;
+.aside {
+  border-left: solid 1px #21252B;
+  height: calc(100% - 6rem);
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20%;
+}
+
+.footbar {
+  bottom: 0;
+  height: 6rem;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
 }
