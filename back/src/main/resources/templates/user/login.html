@@ -18,11 +18,17 @@
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
     <form method="POST" th:object="${user}">
         <!-- Username field (128 char) and specific errors -->
-        <label for="username-input" th:text="#{user.login.username}"></label>
+        <div class="tooltip">
+            <label for="username-input" th:text="#{user.login.username}"></label>
+            <span class="tooltip-top" th:text="#{user.login.username.help}"></span>
+        </div>
         <p th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
         <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{username}" type="text"/>
         <!-- Associated password field (256 char) and specific errors -->
-        <label for="password-input" th:text="#{user.login.password}"></label>
+        <div class="tooltip">
+            <label for="password-input" th:text="#{user.login.password}"></label>
+            <span class="tooltip-top" th:text="#{user.login.password.help}"></span>
+        </div>
         <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
         <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
         <!-- Global form errors -->

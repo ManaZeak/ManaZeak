@@ -137,12 +137,12 @@ html, body {
   border-radius: 6px;
   bottom: calc(100% + var(--help-text-margin));
   left: 50%;
-  margin-left: -100px; /* Half of the width */
+  margin-left: -110px; /* Half of the width */
   opacity: 0;
   position: absolute;
   text-align: center;
   transition: opacity .4s ease-in-out;
-  width: 200px;
+  width: 220px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
