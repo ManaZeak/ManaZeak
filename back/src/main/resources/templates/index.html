@@ -15,6 +15,7 @@
     <p class="error" th:if="${loginError}">Wrong user or password</p>
 </div>
 <div class="aside">
+    <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
     <form method="post" th:action="@{/logout}">
         <input type="submit" value="Logout"/>
     </form>
