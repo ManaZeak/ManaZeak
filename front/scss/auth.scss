@@ -132,6 +132,7 @@ html, body {
 .tooltip .tooltip-top {
   /* Half input bottom margin minus half help text height */
   --help-text-margin: calc((1.33rem / 2) - (.9rem / 2));
+  cursor: help;
   font-size: .8rem;
   font-style: italic;
   border-radius: 6px;

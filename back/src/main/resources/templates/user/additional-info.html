@@ -43,7 +43,7 @@
                 <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
                 <span class="tooltip-top" th:text="#{user.tellusmore.bio.help}"></span>
             </div>
-            <textarea id="bio-input" maxlength="4096" placeholder="Some words other users will see about you..."
+            <textarea id="bio-input" maxlength="4096" th:placeholder="#{user.tellusmore.bio.placeholder}"
                       th:field="*{bio}"></textarea>
         </div>
         <div class="right-col">
