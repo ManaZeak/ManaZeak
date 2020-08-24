@@ -61,6 +61,7 @@ html, body {
     }
     /* All inputs labels */
     label {
+      cursor: help;
       font-style: italic;
       font-weight: bold;
     }
@@ -120,3 +121,31 @@ html, body {
 /* Import as last instruction to override standard behavior */
 @import "tools/shortcut";
 @import "responsive/auth";
+
+/* Tooltip container */
+.tooltip {
+ position: relative;
+ display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltip-top {
+  /* Half input bottom margin minus half help text height */
+  --help-text-margin: calc((1.33rem / 2) - (.9rem / 2));
+  font-size: .8rem;
+  font-style: italic;
+  border-radius: 6px;
+  bottom: calc(100% + var(--help-text-margin));
+  left: 50%;
+  margin-left: -100px; /* Half of the width */
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  transition: opacity .4s ease-in-out;
+  width: 200px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltip-top {
+  opacity: 1;
+}

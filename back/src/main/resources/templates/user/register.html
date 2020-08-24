@@ -18,19 +18,31 @@
     <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
     <form method="POST" th:object="${user}">
         <!-- Account username field (128 char) and specific errors -->
-        <label for="username-input" th:text="#{user.register.username}"></label>
+        <div class="tooltip">
+            <label for="username-input" th:text="#{user.register.username}"></label>
+            <span class="tooltip-top">The username you want to use</span>
+        </div>
         <p class="error" th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
         <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{username}" type="text"/>
         <!-- Invite code from an already registered user field (16 char) and specific errors -->
-        <label for="inviteCode-input" th:text="#{user.register.invite_code}"></label>
+        <div class="tooltip">
+            <label for="inviteCode-input" th:text="#{user.register.invite_code}"></label>
+            <span class="tooltip-top">An invitation code you received</span>
+        </div>
         <p class="error" th:each="error : ${#fields.errors('inviteCode')}" th:text="${error}"></p>
         <input id="inviteCode-input" maxlength="32" th:errorClass="'error'" th:field="*{inviteCode}" type="text"/>
         <!-- Account password field (256 char) and specific errors -->
-        <label for="password-one-input" th:text="#{user.register.password_one}"></label>
+        <div class="tooltip">
+            <label for="password-one-input" th:text="#{user.register.password_one}"></label>
+            <span class="tooltip-top">Protect your account with a password</span>
+        </div>
         <p class="error" th:each="error : ${#fields.errors('password1')}" th:text="${error}"></p>
         <input id="password-one-input" maxlength="256" th:errorClass="'error'" th:field="*{password1}" type="password"/>
         <!-- Confirm password field (256 char) and specific errors -->
-        <label for="password-two-input" th:text="#{user.register.password_two}"></label>
+        <div class="tooltip">
+            <label for="password-two-input" th:text="#{user.register.password_two}"></label>
+            <span class="tooltip-top">Just to avoid typos</span>
+        </div>
         <p class="error" th:each="error : ${#fields.errors('password2')}" th:text="${error}"></p>
         <input id="password-two-input" maxlength="256" th:errorClass="'error'" th:field="*{password2}" type="password"/>
         <!-- Global form errors -->
