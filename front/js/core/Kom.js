@@ -238,7 +238,7 @@ class Kom {
       };
 
       fetch(url, options)
-        .then(this._resolveAsText)
+        .then(this._resolveAsText.bind(this))
         .then(resolve)
         .catch(reject);
     });
