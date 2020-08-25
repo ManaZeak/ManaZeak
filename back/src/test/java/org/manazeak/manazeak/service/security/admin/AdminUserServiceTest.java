@@ -7,7 +7,7 @@ import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AdminUserServiceTest extends AbstractManaZeakTest {
+class AdminUserServiceTest extends AbstractManaZeakTest {
 
     @Autowired
     MzkUserDataCreation userDataCreation;
