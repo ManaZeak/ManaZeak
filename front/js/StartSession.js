@@ -7,6 +7,11 @@ const kom = new Kom();
 const userTmp = document.getElementsByClassName('user-avatar')[0];
 userTmp.addEventListener('click', () => {
     kom.getText('/fragment/user-profile/').then(response => {
-        console.log(response);
+        const scene = document.getElementsByClassName('scene')[0];
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(response, 'text/html');
+        scene.appendChild(dom.body.firstChild);
+    }).catch(err => {
+        console.log(err);
     });
 });

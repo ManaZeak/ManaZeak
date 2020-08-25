@@ -18,8 +18,41 @@
   top: 0;
   width: 20%;
 
-  .user-avatar {
-    cursor: pointer;
+  .user {
+    display: flex;
+    justify-content: space-between;
+
+    .user-avatar {
+      cursor: pointer;
+    }
+
+    form {
+      height: 32px;
+      position: relative;
+      width: 32px;
+
+      img, input {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+      }
+
+      input {
+        border: inherit;
+        height: 100%;
+        padding: 0;
+        width: 100%;
+
+        &:active,
+        &:focus,
+        &:hover { /* Make input invisible on logout icon */
+          background-color: inherit;
+          border: inherit;
+          box-shadow: inherit;
+        }
+      }
+    }
   }
 }
 

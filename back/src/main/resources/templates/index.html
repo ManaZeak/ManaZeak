@@ -15,10 +15,13 @@
     <p class="error" th:if="${loginError}">Wrong user or password</p>
 </div>
 <div class="aside">
-    <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
-    <form method="post" th:action="@{/logout}">
-        <input type="submit" value="Logout"/>
-    </form>
+    <div class="user">
+        <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
+        <form method="post" th:action="@{/logout}">
+            <img src="static/img/actions/logout.svg" class="user-logout" alt="user-logout"/>
+            <input type="submit" value=""/>
+        </form>
+    </div>
 </div>
 <div class="footbar"></div>
 <script src="static/dist/js/manazeak.bundle.js" type="text/javascript"></script>
