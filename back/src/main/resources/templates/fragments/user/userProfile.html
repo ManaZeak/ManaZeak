@@ -2,13 +2,13 @@
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
     <label for="username" th:text="#{user.login.username}">username</label>
     <p id="username" th:text="*{username}">username</p>
-    <!-- If the user doesn't have any avatar display the default one. -->
     <span th:if="*{avatar == null}">
-
+        <!-- User doesn't have an avatar. Displaying default -->
+        <img src="static/img/default/user.svg" alt="user-avatar">
     </span>
-    <!-- If the user has an avatar -->
     <span th:unless="*{avatar == null}">
-        <img alt="avatar" th:src='*{"/resources/avatars/"+avatar}'>
+        <!-- User do have an avatar -->
+        <img th:src='*{"/resources/avatars/"+avatar}' alt="user-avatar">
     </span>
     <label for="email" th:text="#{user.tellusmore.email}">email</label>
     <p id="email" th:value="${userInfo.email}">email</p>
