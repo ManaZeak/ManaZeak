@@ -1,3 +1,6 @@
+@import "front/scss/tools/colors";
+@import "front/scss/tools/variables";
+@import "front/scss/tools/mixins";
 /* Global set for html and body tag to have unified platform across pages */
 html, body {
   align-items: center;

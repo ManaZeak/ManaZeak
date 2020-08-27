@@ -1,22 +1,22 @@
-@import "tools/mzkbase";
+@import "front/scss/tools/base";
 .scene {
   background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
-  height: calc(100% - 6rem);
+  height: calc(100% - var(--mzk-footbar-height));
   left: 0;
   overflow: hidden;
   position: absolute;
   top: 0;
-  width: 80%;
+  width: calc(100% - var(--mzk-aside-width));
 }
 
 .aside {
   border-left: solid 1px #21252B;
-  height: calc(100% - 6rem);
+  height: calc(100% - var(--mzk-footbar-height));
   overflow: hidden;
   position: absolute;
   right: 0;
   top: 0;
-  width: 20%;
+  width: var(--mzk-aside-width);
 
   .user {
     display: flex;
@@ -56,10 +56,6 @@
   }
 }
 
-.footbar {
-  bottom: 0;
-  height: 6rem;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-}
+@import 'components/footbar';
+/* Import as last instruction to override standard behavior */
+@import "tools/shortcut";

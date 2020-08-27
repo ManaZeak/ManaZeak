@@ -1,0 +1,53 @@
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+  -moz-user-select: $value;
+  user-select: $value;
+}
+
+@mixin text-ellipsis() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Mixin for volumebar, progressbar, speedometer */
+@mixin bar-container() {
+  background-color: var(--mzk-color-icons);
+  border-radius: var(--mzk-border-radius);
+  cursor: pointer;
+  height: var(--mzk-bar-height);
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: initial;
+  position: relative;
+  width: 75%;
+}
+
+@mixin bar-thumb() {
+  background-color: var(--mzk-color-text-lighter);
+  border-radius: 50%;
+  bottom: 0;
+  height: calc(var(--mzk-bar-height) * 2);
+  margin-left: calc(var(--mzk-bar-height) * -1);
+  margin-bottom: calc(var(--mzk-bar-height) / -2);
+  opacity: 0;
+  position: absolute;
+  width: calc(var(--mzk-bar-height) * 2);
+
+  transition: opacity .2s ease;
+}
+
+@mixin bar-current() {
+  background-color: var(--mzk-color-primary);
+  border-radius: var(--mzk-border-radius) 0 0 var(--mzk-border-radius);
+  border-right: solid var(--mzk-border-width) var(--mzk-color-secondary-darker);
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+
+  transition: background-color .2s ease;
+
+  &.full {
+    border-radius: var(--mzk-border-radius);
+  }
+}
