@@ -51,7 +51,9 @@
 
   --mzk-scene-icon-margin: 8px;
 
-  --mzk-aside-width: 19%;
+  --mzk-aside-default-width: 19%;
+  --mzk-aside-width: var(--mzk-aside-default-width); /* Opened by default, Js will update this variable on toggle */
+  --mzk-aside-collapsed-width: 40px;
   --mzk-aside-button-length: 25px;
 
   --mzk-scrollbar-width: 20px;

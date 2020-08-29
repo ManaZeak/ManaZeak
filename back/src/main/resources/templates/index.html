@@ -14,14 +14,22 @@
 <div class="scene">
     <p class="error" th:if="${loginError}">Wrong user or password</p>
 </div>
-<div class="aside">
-    <div class="user">
-        <img alt="user-avatar" class="user-avatar" src="static/img/default/user.svg"/>
+<div class="aside" id="aside">
+    <div class="aside-user">
+        <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
+        <h2>Username</h2>
         <form method="post" th:action="@{/logout}">
-            <img alt="user-logout" class="user-logout" src="static/img/actions/logout.svg"/>
+            <img src="static/img/actions/logout.svg" class="user-logout" alt="user-logout"/>
             <input type="submit" value=""/>
         </form>
     </div>
+    <div class="app-controls">
+        <div class="aside-collapser">
+            <img src="static/img/navigation/nav-right.svg" id="aside-toggle" class="aside-toggle" alt="aside-toggle">
+        </div>
+        <img src="static/img/logo/manazeak-text.svg" id="aside-logo" class="aside-logo" alt="manazeak-aside-text-logo">
+    </div>
+    <div class="aside-content"></div>
 </div>
 <div class="footbar">
     <div class="footbar-controls">

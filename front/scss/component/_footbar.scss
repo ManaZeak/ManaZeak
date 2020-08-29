@@ -17,7 +17,7 @@
     display: flex;
     height: var(--mzk-footbar-height);
     justify-content: center;
-    width: calc(100% - var(--mzk-aside-width));
+    width: calc(100% - var(--mzk-aside-default-width));
     z-index: 700;
 
     .left,
@@ -267,7 +267,7 @@
     right: 0;
     opacity: 0;
     position: absolute;
-    width: var(--mzk-aside-width);
+    width: var(--mzk-aside-default-width);
 
     transition: opacity .2s ease-in;
 

@@ -1,4 +1,4 @@
-@import "front/scss/tools/base";
+@import "front/scss/tool/base";
 .scene {
   background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
   height: calc(100% - var(--mzk-footbar-height));
@@ -18,7 +18,7 @@
   top: 0;
   width: var(--mzk-aside-width);
 
-  .user {
+  .aside-user {
     display: flex;
     justify-content: space-between;
 
@@ -54,8 +54,44 @@
       }
     }
   }
+
+  .app-controls {
+    align-items: center;
+    display: flex;
+    height: var(--mzk-topbar-height);
+    margin: var(--mzk-margin-small) 0;
+
+    .aside-collapser {
+      height: 100%;
+
+      transition: transform var(--mzk-animation-duration) ease-in-out;
+
+      img {
+        cursor: pointer;
+        height: 100%;
+      }
+    }
+
+    .aside-logo {
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      width: var(--mzk-logo-text-width);
+
+      transition: opacity var(--mzk-animation-duration-long) ease,
+        width var(--mzk-animation-duration) ease;
+    }
+  }
+
+  .aside-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - (var(--mzk-aside-icon-size) * 2) - var(--mzk-footbar-height) - var(--mzk-margin));
+    padding-top: var(--mzk-padding);
+  }
 }
 
-@import 'components/footbar';
+@import 'component/footbar';
 /* Import as last instruction to override standard behavior */
-@import "tools/shortcut";
+@import "tool/shortcut";

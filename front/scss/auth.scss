@@ -1,4 +1,4 @@
-@import "front/scss/tools/base";
+@import "front/scss/tool/base";
 /* Auth pages background is a dank radial gradient */
 html, body {
   background-image: radial-gradient(#2c2c30 0, #1f2127 45%, #0e0f14 80%);
@@ -119,7 +119,7 @@ html, body {
   }
 }
 /* Import as last instruction to override standard behavior */
-@import "tools/shortcut";
+@import "tool/shortcut";
 @import "responsive/auth";
 
 /* Tooltip container */
