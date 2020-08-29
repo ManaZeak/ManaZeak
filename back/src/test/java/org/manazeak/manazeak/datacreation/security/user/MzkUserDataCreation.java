@@ -50,6 +50,7 @@ public class MzkUserDataCreation {
         user.setMail(UserTestConstants.MAIL);
         user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
         user.setIsActive(true);
+        user.setIsComplete(true);
         mzkUserDAO.save(user);
         return user;
     }
@@ -70,6 +71,7 @@ public class MzkUserDataCreation {
             user.setPassword(UserTestConstants.PASSWORD);
             user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
             user.setIsActive(true);
+            user.setIsComplete(true);
             // Linking the user with it's parent.
             user.setInviteCode(parentInviteCode);
             // Create an invite code for him
