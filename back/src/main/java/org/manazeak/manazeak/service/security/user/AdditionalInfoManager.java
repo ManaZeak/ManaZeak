@@ -13,4 +13,10 @@ public interface AdditionalInfoManager {
      * @param userInfo the user information to add to the user.
      */
     void addUserInformation(final UserFirstInfoDto userInfo);
+
+    /**
+     * This function check if the user has filled the required fields.
+     * @return true if he has all the required fields.
+     */
+    boolean isUserComplete();
 }

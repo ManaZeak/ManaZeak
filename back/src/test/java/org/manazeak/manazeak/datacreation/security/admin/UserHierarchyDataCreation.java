@@ -12,6 +12,7 @@ public class UserHierarchyDataCreation {
 
     /**
      * Generate the hierarchy for the test case.
+     *
      * @return the tree of users.
      */
     public UserHierarchyDto generateTreeUserHierarchy() {
@@ -23,11 +24,11 @@ public class UserHierarchyDataCreation {
         List<UserHierarchyDto> child = new ArrayList<>();
         // Creating the child
         UserHierarchyDto childElement = new UserHierarchyDto();
-        childElement.setUsername(UserTestConstants.USERNAME+1);
+        childElement.setUsername(UserTestConstants.USERNAME + 1);
         // Creating the sub child
         List<UserHierarchyDto> child2 = new ArrayList<>();
         UserHierarchyDto childElement2 = new UserHierarchyDto();
-        childElement2.setUsername(UserTestConstants.USERNAME+2);
+        childElement2.setUsername(UserTestConstants.USERNAME + 2);
         child2.add(childElement2);
         childElement.setChildren(child2);
         // Adding the child

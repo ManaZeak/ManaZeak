@@ -8,6 +8,7 @@ import org.manazeak.manazeak.entity.validator.user.Avatar;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Contains all the information about a user after the creation of the account.
@@ -22,6 +23,7 @@ public class UserFirstInfoDto {
     private String surname;
     @LocaleId
     private Long localeId;
+    @NotEmpty(message = "{user.tellusmore.error.empty_birthdate}")
     @Date
     private String birthDate;
     private String bio;

@@ -64,6 +64,7 @@ public class UserManagerImpl implements UserManager {
         user.setPassword(passEncoder.encode(newUser.getPassword1()));
         user.setRole(defaultRole);
         user.setIsActive(true);
+        user.setIsComplete(false);
         // Saving the user in the database.
         userDAO.save(user);
         return user;

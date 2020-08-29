@@ -59,6 +59,7 @@ CREATE TABLE mzk_user (
 	birth_date DATE,
 	profile_pic VARCHAR(1000),
 	bio TEXT,
+	is_complete BOOLEAN not null,
 	invite_code_id BIGINT,
 	country_id BIGINT,
 	locale_id BIGINT,

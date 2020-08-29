@@ -28,9 +28,6 @@ public class CountryIdValidator implements ConstraintValidator<CountryId, Long> 
     @Override
     public boolean isValid(Long countryId, ConstraintValidatorContext constraintValidatorContext) {
         // The user didn't select any country. This is a valid choice.
-        if (countryId == 0) {
-            return true;
-        }
         return countryService.isCountryIdExists(countryId);
     }
 }

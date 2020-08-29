@@ -41,6 +41,7 @@ public class MzkUser implements Serializable{
 	private LocalDate birthDate;
 	private String profilePic;
 	private String bio;
+	private Boolean isComplete;
 	private InviteCode inviteCode;
 	private Set<InviteCode> inviteCodeList;
 	private Country country;
@@ -201,6 +202,21 @@ public class MzkUser implements Serializable{
 		this.bio = bio;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of isComplete
+     */
+    @Column(name="is_complete", nullable=false)
+	public Boolean getIsComplete(){
+		return isComplete;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param isComplete new value to give to isComplete
+     */
+	public void setIsComplete(final Boolean isComplete){
+		this.isComplete = isComplete;
+    }  
+    /**
      * Association invite_used to InviteCode
      * @return value of inviteCode
      */
@@ -297,6 +313,7 @@ public class MzkUser implements Serializable{
 		result = 31 * result + (birthDate == null? 0 : birthDate.hashCode());
 		result = 31 * result + (profilePic == null? 0 : profilePic.hashCode());
 		result = 31 * result + (bio == null? 0 : bio.hashCode());
+		result = 31 * result + (isComplete == null? 0 : isComplete.hashCode());
 			
 		return result;
 	}
@@ -331,6 +348,7 @@ public class MzkUser implements Serializable{
 			&& (birthDate == null ?  (otherMzkUser.birthDate == null) : birthDate.equals(otherMzkUser.birthDate))
 			&& (profilePic == null ?  (otherMzkUser.profilePic == null) : profilePic.equals(otherMzkUser.profilePic))
 			&& (bio == null ?  (otherMzkUser.bio == null) : bio.equals(otherMzkUser.bio))
+			&& (isComplete == null ?  (otherMzkUser.isComplete == null) : isComplete.equals(otherMzkUser.isComplete))
 		;
 	}
 

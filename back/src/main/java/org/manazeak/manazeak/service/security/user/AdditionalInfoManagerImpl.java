@@ -47,8 +47,19 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
         linkUserWithCountry(user, userInfo.getCountryId());
         // Link the user with his locale.
         linkUserWithLocale(user, userInfo.getLocaleId());
+        // The user has been completed
+        user.setIsComplete(true);
         // Saving the current user into the database.
         userService.saveUser(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isUserComplete() {
+        MzkUser user = userService.getCurrentUser();
+        return user.getIsComplete();
     }
 
     /**

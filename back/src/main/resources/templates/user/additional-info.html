@@ -43,8 +43,8 @@
                 <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
                 <span class="tooltip-top" th:text="#{user.tellusmore.bio.help}"></span>
             </div>
-            <textarea id="bio-input" maxlength="4096" th:placeholder="#{user.tellusmore.bio.placeholder}"
-                      th:field="*{bio}"></textarea>
+            <textarea id="bio-input" maxlength="4096" th:field="*{bio}"
+                      th:placeholder="#{user.tellusmore.bio.placeholder}"></textarea>
         </div>
         <div class="right-col">
             <!-- Birthday field (date) and specific errors -->
@@ -61,6 +61,7 @@
                 <label for="country-select" th:text="#{user.tellusmore.country}"></label>
                 <span class="tooltip-top" th:text="#{user.tellusmore.country.help}"></span>
             </div>
+            <p class="error" th:each="error : ${#fields.errors('countryId')}" th:text="${error}"></p>
             <select id="country-select" th:field="*{countryId}">
                 <!-- Adding the empty value to the selection -->
                 <option value="0"></option>
@@ -74,6 +75,8 @@
                 <span class="tooltip-top" th:text="#{user.tellusmore.language.help}"></span>
             </div>
             <select id="locale-select" th:field="*{localeId}">
+                <!-- Adding the empty value to the selection -->
+                <option value="0"></option>
                 <!-- Adding the rest of the objects in the database. -->
                 <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}"></option>
             </select>
