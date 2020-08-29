@@ -16,18 +16,18 @@
 </div>
 <div class="aside" id="aside">
     <div class="aside-user">
-        <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
+        <img alt="user-avatar" class="user-avatar" src="static/img/default/user.svg"/>
         <h2>Username</h2>
         <form method="post" th:action="@{/logout}">
-            <img src="static/img/actions/logout.svg" class="user-logout" alt="user-logout"/>
+            <img alt="user-logout" class="user-logout" src="static/img/actions/logout.svg"/>
             <input type="submit" value=""/>
         </form>
     </div>
     <div class="app-controls">
         <div class="aside-collapser">
-            <img src="static/img/navigation/nav-right.svg" id="aside-toggle" class="aside-toggle" alt="aside-toggle">
+            <img alt="aside-toggle" class="aside-toggle" id="aside-toggle" src="static/img/navigation/nav-right.svg">
         </div>
-        <img src="static/img/logo/manazeak-text.svg" id="aside-logo" class="aside-logo" alt="manazeak-aside-text-logo">
+        <img alt="manazeak-aside-text-logo" class="aside-logo" id="aside-logo" src="static/img/logo/manazeak-text.svg">
     </div>
     <div class="aside-content"></div>
 </div>
@@ -37,30 +37,37 @@
             <p id="footbar-left"></p>
         </div>
         <div class="center">
-            <div id="controls-container" class="controls-container">
-                <div class="image-wrapper repeat"><img src="static/img/player/repeat-off.svg" id="repeat" alt="player-repeat"></div>
-                <div class="image-wrapper shuffle"><img src="static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle"></div>
-                <div class="image-wrapper"><img id="previous" src="static/img/player/track-previous.svg" alt="player-previous"></div>
-                <div class="image-wrapper"><img id="stop" src="static/img/player/stop.svg" alt="player-stop"></div>
-                <div class="image-wrapper"><img id="play" src="static/img/player/play.svg" alt="player-play"></div>
-                <div class="image-wrapper"><img id="next" src="static/img/player/track-next.svg" alt="player-next"></div>
-                <div id="volumebar-wrapper" class="volumebar-wrapper">
-                    <div class="image-wrapper"><img id="volumebar-img" src="static/img/player/volume-full.svg" alt="player-volume"></div>
-                    <div id="volumebar-container" class="volumebar-container">
-                        <div id="volumebar-current" class="volumebar-current full"></div>
-                        <div id="volumebar-thumb" class="volumebar-thumb"></div>
+            <div class="controls-container" id="controls-container">
+                <div class="image-wrapper repeat"><img alt="player-repeat" id="repeat"
+                                                       src="static/img/player/repeat-off.svg"></div>
+                <div class="image-wrapper shuffle"><img alt="player-shuffle" id="shuffle"
+                                                        src="static/img/player/shuffle-off.svg"></div>
+                <div class="image-wrapper"><img alt="player-previous" id="previous"
+                                                src="static/img/player/track-previous.svg"></div>
+                <div class="image-wrapper"><img alt="player-stop" id="stop" src="static/img/player/stop.svg"></div>
+                <div class="image-wrapper"><img alt="player-play" id="play" src="static/img/player/play.svg"></div>
+                <div class="image-wrapper"><img alt="player-next" id="next" src="static/img/player/track-next.svg">
+                </div>
+                <div class="volumebar-wrapper" id="volumebar-wrapper">
+                    <div class="image-wrapper"><img alt="player-volume" id="volumebar-img"
+                                                    src="static/img/player/volume-full.svg"></div>
+                    <div class="volumebar-container" id="volumebar-container">
+                        <div class="volumebar-current full" id="volumebar-current"></div>
+                        <div class="volumebar-thumb" id="volumebar-thumb"></div>
                     </div>
                 </div>
-                <div class="image-wrapper speedometer"><img src="static/img/player/speedometer.svg" id="speedometer" alt="player-speedometer"></div>
-                <div class="image-wrapper queue"><img src="static/img/player/queue.svg" id="queue" alt="player-queue"></div>
-            </div>
-            <div id="progress-container" class="progress-container">
-                <div id="progress-track" class="progress-track">
-                    <div id="progress-current" class="progress-current"></div>
-                    <div id="progress-thumb" class="progress-thumb"></div>
-                    <div id="progress-hover" class="progress-hover">--:--</div>
+                <div class="image-wrapper speedometer"><img alt="player-speedometer" id="speedometer"
+                                                            src="static/img/player/speedometer.svg"></div>
+                <div class="image-wrapper queue"><img alt="player-queue" id="queue" src="static/img/player/queue.svg">
                 </div>
-                <div id="progress-moodbar" class="progress-moodbar">
+            </div>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-track" id="progress-track">
+                    <div class="progress-current" id="progress-current"></div>
+                    <div class="progress-thumb" id="progress-thumb"></div>
+                    <div class="progress-hover" id="progress-hover">--:--</div>
+                </div>
+                <div class="progress-moodbar" id="progress-moodbar">
                     <svg height="100%" width="100%"></svg>
                 </div>
             </div>
@@ -70,15 +77,15 @@
         </div>
     </div>
     <div class="footbar-track-preview">
-         <div class="track-preview-info">
-                <a class="track-preview-title"></a>
-                <a class="track-preview-yearalbum"></a>
-                <a class="track-preview-artist"></a>
-                <a class="track-preview-composer"></a>
-            </div>
-            <img src="#" class ="track-preview-cover" alt="current-track-cover">
+        <div class="track-preview-info">
+            <a class="track-preview-title"></a>
+            <a class="track-preview-yearalbum"></a>
+            <a class="track-preview-artist"></a>
+            <a class="track-preview-composer"></a>
         </div>
+        <img alt="current-track-cover" class="track-preview-cover" src="#">
     </div>
+</div>
 </div>
 <script src="static/dist/js/manazeak.bundle.js" type="text/javascript"></script>
 </body>

@@ -209,9 +209,11 @@ values (3, 11);
 
 -- Inserting the default admin user.
 INSERT INTO mzk_user
-(user_id, username, password, mail, is_active, is_complete, name, surname, locale_id, birth_date, profile_pic, bio, invite_code_id,
+(user_id, username, password, mail, is_active, is_complete, name, surname, locale_id, birth_date, profile_pic, bio,
+ invite_code_id,
  country_id, role_id)
-VALUES (1, 'JESUS', '$2a$10$6iwTp1lPS9cPKqshhJtFsOp/CPTRUA5u0XZnV6Ab0Z3KyBCCHg7DK', 'JESUS@JESUS.JESUS', true, true, null, '',
+VALUES (1, 'JESUS', '$2a$10$6iwTp1lPS9cPKqshhJtFsOp/CPTRUA5u0XZnV6Ab0Z3KyBCCHg7DK', 'JESUS@JESUS.JESUS', true, true,
+        null, '',
         null, null, null, null, null, null, 3);
 
 -- Inserting the default invite code for the admin.

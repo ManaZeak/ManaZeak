@@ -16,6 +16,7 @@ public interface AdditionalInfoManager {
 
     /**
      * This function check if the user has filled the required fields.
+     *
      * @return true if he has all the required fields.
      */
     boolean isUserComplete();
