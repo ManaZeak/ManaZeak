@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -65,6 +66,7 @@ public class UserManagerImpl implements UserManager {
         user.setRole(defaultRole);
         user.setIsActive(true);
         user.setIsComplete(false);
+        user.setCreationDate(LocalDateTime.now());
         // Saving the user in the database.
         userDAO.save(user);
         return user;

@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user;
+package org.manazeak.manazeak.service.security.user.avatar;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;

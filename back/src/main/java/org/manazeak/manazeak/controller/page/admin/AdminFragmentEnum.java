@@ -5,7 +5,8 @@ package org.manazeak.manazeak.controller.page.admin;
  */
 public enum AdminFragmentEnum {
 
-    USER_HIERARCHY("fragments/admin/user-hierarchy.html");
+    USER_HIERARCHY("fragments/admin/user-hierarchy.html"),
+    USER_LIST("fragments/admin/user-list.html");
 
     private final String page;
 

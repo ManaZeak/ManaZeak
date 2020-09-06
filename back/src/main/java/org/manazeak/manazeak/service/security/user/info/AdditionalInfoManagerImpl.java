@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user;
+package org.manazeak.manazeak.service.security.user.info;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
@@ -6,6 +6,9 @@ import org.manazeak.manazeak.entity.reference.Country;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.manazeak.manazeak.service.reference.locale.LocaleService;
+import org.manazeak.manazeak.service.security.user.UserHelper;
+import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.service.security.user.avatar.UserProfilePicManager;
 import org.manazeak.manazeak.util.FieldUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

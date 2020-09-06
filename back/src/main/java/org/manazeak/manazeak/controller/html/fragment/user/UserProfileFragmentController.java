@@ -2,7 +2,7 @@ package org.manazeak.manazeak.controller.html.fragment.user;
 
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.user.UserFragmentEnum;
-import org.manazeak.manazeak.service.security.user.UserInformationService;
+import org.manazeak.manazeak.service.security.user.info.UserInformationService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 

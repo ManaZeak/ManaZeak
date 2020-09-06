@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.security;
 
+import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,6 +55,19 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "left join usr.locale userLocale " +
             "where usr.userId = :userId " +
             "   and inv.isActive = true")
-    MzkUserDetailProjection getUserDetailById(@Param("userId") Long userId);
+    MzkUserDetailProjection getUserDetailFromUserId(@Param("userId") Long userId);
+
+    /**
+     * Get all the users from the database in a list way.
+     * @return the users of the database.
+     */
+    @Query("select " +
+            "   usr.username as username, " +
+            "   usr.profilePic as avatar, " +
+            "   usr.creationDate as creationDate, " +
+            "   usr.role.roleId as roleId, " +
+            "   usr.isActive as isActive " +
+            "from MzkUser usr")
+    List<UserListLineProjection> getAllLineUsers();
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

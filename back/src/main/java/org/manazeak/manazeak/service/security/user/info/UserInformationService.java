@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user;
+package org.manazeak.manazeak.service.security.user.info;
 
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
 

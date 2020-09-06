@@ -1,7 +1,7 @@
 <div th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
     <label for="username" th:text="#{user.login.username}">username</label>
-    <p id="username" th:text="*{username}">username</p>
+    <input id="username" readonly th:value="*{username}"/>
     <span th:if="*{avatar == null}">
         <!-- User doesn't have an avatar. Displaying default -->
         <img alt="user-avatar" src="static/img/default/user.svg">

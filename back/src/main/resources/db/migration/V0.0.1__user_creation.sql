@@ -52,6 +52,7 @@ CREATE TABLE mzk_user
     profile_pic    VARCHAR(1000),
     bio            TEXT,
     is_complete    BOOLEAN      not null,
+    creation_date  TIMESTAMP    not null,
     invite_code_id BIGINT,
     country_id     BIGINT,
     locale_id      BIGINT,
@@ -210,11 +211,9 @@ values (3, 11);
 -- Inserting the default admin user.
 INSERT INTO mzk_user
 (user_id, username, password, mail, is_active, is_complete, name, surname, locale_id, birth_date, profile_pic, bio,
- invite_code_id,
- country_id, role_id)
+ creation_date, invite_code_id, country_id, role_id)
 VALUES (1, 'JESUS', '$2a$10$6iwTp1lPS9cPKqshhJtFsOp/CPTRUA5u0XZnV6Ab0Z3KyBCCHg7DK', 'JESUS@JESUS.JESUS', true, true,
-        null, '',
-        null, null, null, null, null, null, 3);
+        null, '', null, null, null, null, CURRENT_TIMESTAMP, null, null, 3);
 
 -- Inserting the default invite code for the admin.
 INSERT INTO invite_code

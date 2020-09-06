@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.security;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import org.manazeak.manazeak.entity.reference.Locale;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -42,6 +43,7 @@ public class MzkUser implements Serializable{
 	private String profilePic;
 	private String bio;
 	private Boolean isComplete;
+	private LocalDateTime creationDate;
 	private InviteCode inviteCode;
 	private Set<InviteCode> inviteCodeList;
 	private Country country;
@@ -217,6 +219,21 @@ public class MzkUser implements Serializable{
 		this.isComplete = isComplete;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of creationDate
+     */
+    @Column(name="creation_date", nullable=false)
+	public LocalDateTime getCreationDate(){
+		return creationDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param creationDate new value to give to creationDate
+     */
+	public void setCreationDate(final LocalDateTime creationDate){
+		this.creationDate = creationDate;
+    }  
+    /**
      * Association invite_used to InviteCode
      * @return value of inviteCode
      */
@@ -314,6 +331,7 @@ public class MzkUser implements Serializable{
 		result = 31 * result + (profilePic == null? 0 : profilePic.hashCode());
 		result = 31 * result + (bio == null? 0 : bio.hashCode());
 		result = 31 * result + (isComplete == null? 0 : isComplete.hashCode());
+		result = 31 * result + (creationDate == null? 0 : creationDate.hashCode());
 			
 		return result;
 	}
@@ -349,6 +367,7 @@ public class MzkUser implements Serializable{
 			&& (profilePic == null ?  (otherMzkUser.profilePic == null) : profilePic.equals(otherMzkUser.profilePic))
 			&& (bio == null ?  (otherMzkUser.bio == null) : bio.equals(otherMzkUser.bio))
 			&& (isComplete == null ?  (otherMzkUser.isComplete == null) : isComplete.equals(otherMzkUser.isComplete))
+			&& (creationDate == null ?  (otherMzkUser.creationDate == null) : creationDate.equals(otherMzkUser.creationDate))
 		;
 	}
 

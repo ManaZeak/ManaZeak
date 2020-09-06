@@ -11,6 +11,7 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -51,6 +52,7 @@ public class MzkUserDataCreation {
         user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
         user.setIsActive(true);
         user.setIsComplete(true);
+        user.setCreationDate(LocalDateTime.now());
         mzkUserDAO.save(user);
         return user;
     }
