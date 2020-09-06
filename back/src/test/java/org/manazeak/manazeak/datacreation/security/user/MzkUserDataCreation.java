@@ -74,6 +74,7 @@ public class MzkUserDataCreation {
             user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
             user.setIsActive(true);
             user.setIsComplete(true);
+            user.setCreationDate(LocalDateTime.now());
             // Linking the user with it's parent.
             user.setInviteCode(parentInviteCode);
             // Create an invite code for him
