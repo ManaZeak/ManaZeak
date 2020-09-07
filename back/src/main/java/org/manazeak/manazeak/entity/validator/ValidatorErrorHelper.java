@@ -20,6 +20,15 @@ public final class ValidatorErrorHelper {
      * @param context the context of the validator.
      */
     public static void addErrorMessage(MzkValidationException e, ConstraintValidatorContext context) {
-        context.buildConstraintViolationWithTemplate(e.getMessage()).addConstraintViolation();
+        addErrorMessage(e.getMessage(), context);
+    }
+
+    /**
+     * Add validation error with a custom message.
+     * @param message The custom message to add.
+     * @param context the context of the validator.
+     */
+    public static void addErrorMessage(String message, ConstraintValidatorContext context) {
+        context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
     }
 }
