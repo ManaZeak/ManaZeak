@@ -17,6 +17,12 @@
       width: var(--mzk-aside-size);
       position: relative;
 
+      img {
+        cursor: pointer;
+        max-height: 85%;
+        max-width: 85%;
+      }
+
       form { /* Logout require a form */
         align-items: center;
         display: flex;
