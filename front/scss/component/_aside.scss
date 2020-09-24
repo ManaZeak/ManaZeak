@@ -7,6 +7,8 @@
   width: 100%;
 
   .item-group {
+    display: flex;
+
     .item {
       align-items: center;
       display: flex;
@@ -51,5 +53,9 @@
     flex-direction: column;
     height: 100%;
     width: var(--mzk-aside-size);
+
+    .item-group {
+      flex-direction: column;
+    }
   }
 }
