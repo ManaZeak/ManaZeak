@@ -1,0 +1,55 @@
+.aside {
+  background-color: var(--mzk-color-bg-dark-alpha-25);
+  border-bottom: solid 1px var(--mzk-color-text-alpha-10);
+  display: flex;
+  height: var(--mzk-aside-size);
+  justify-content: space-between;
+  width: 100%;
+
+  .item-group {
+    .item {
+      align-items: center;
+      display: flex;
+      height: var(--mzk-aside-size);
+      justify-content: center;
+      width: var(--mzk-aside-size);
+      position: relative;
+
+      form { /* Logout require a form */
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+
+        input { /* Remove any base style for input to make logout validation invisible */
+          border: none;
+          height: 100%;
+          left: 0;
+          padding: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+
+          &:active,
+          &:focus,
+          &:hover { /* Remove mouse effect aswell */
+            box-shadow: none;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .aside {
+    border-bottom: none;
+    border-right: solid 1px var(--mzk-color-text-alpha-10);
+    flex-direction: column;
+    height: 100%;
+    width: var(--mzk-aside-size);
+  }
+}

@@ -1,0 +1,11 @@
+.scene {
+  height: var(--mzk-scene-height-resp);
+  width: var(--mzk-scene-width-resp);
+}
+
+@media only screen and (min-width: 800px) {
+  .scene {
+    height: var(--mzk-scene-height);
+    width: var(--mzk-scene-width);
+  }
+}

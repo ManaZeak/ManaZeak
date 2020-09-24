@@ -9,6 +9,7 @@ html, body {
   display: flex;
   font-family: Helvetica, serif;
   height: 100%;
+  justify-content: center;
   line-height: 1;
   margin: 0;
   padding: 0;
@@ -115,4 +116,25 @@ input[type="submit"] {
 form {
   text-align: center;
   height: auto;
+}
+
+.components-wrapper,
+.scene-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.scene-wrapper {
+  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
+  height: calc(100% - var(--mzk-footbar-height));
+}
+
+@media only screen and (min-width: 800px) {
+  .scene-wrapper {
+    flex-direction: row;
+  }
 }

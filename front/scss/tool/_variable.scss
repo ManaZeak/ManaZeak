@@ -33,28 +33,14 @@
 
   /* ----------  Components variables  ---------- */
 
-  --mzk-topbar-height: 40px;
+  --mzk-aside-size: 3rem;
 
-  --mzk-footbar-height: 80px;
-  --mzk-progress-track-height: 6px;
-  --mzk-progress-thumb-height: 12px;
-  --mzk-footbar-moodbar-height: 25px;
-  --mzk-footbar-controls-height: 50px;
-  --mzk-footbar-progress-height: 30px;
-  --mzk-footbar-sides-width: 85px;
-  --mzk-footbar-volumebar-width: 170px;
-  --mzk-footbar-icons-size: 33px;
+  --mzk-footbar-height: 5rem;
 
-  --mzk-footbar-transition: var(--mzk-animation-duration-long);
-  --mzk-footbar-controls-scale: 50%; // Usefull for volume bar image
-  --mzk-footbar-controls-margin: 5px;
+  --mzk-scene-height-resp: calc(100% - var(--mzk-aside-size));
+  --mzk-scene-height: 100%;
+  --mzk-scene-width-resp: 100%;
+  --mzk-scene-width: calc(100% - var(--mzk-aside-size));
 
   --mzk-scene-icon-margin: 8px;
-
-  --mzk-aside-default-width: 19%;
-  --mzk-aside-width: var(--mzk-aside-default-width); /* Opened by default, Js will update this variable on toggle */
-  --mzk-aside-collapsed-width: 40px;
-  --mzk-aside-button-length: 25px;
-
-  --mzk-scrollbar-width: 20px;
 }
