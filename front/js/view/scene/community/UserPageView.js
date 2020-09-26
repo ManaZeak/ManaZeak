@@ -8,11 +8,7 @@ class UserPageView extends SceneView {
   constructor(options) {
     super(options);
 
-    this._dom = {
-      wrapper: null
-    };
-
-    this._fetchWrapper()
+    this._fetchWrapper('/fragment/user-profile/')
       .then(this._viewReady)
       .catch(error => {
         Logger.raise(error);
@@ -23,21 +19,6 @@ class UserPageView extends SceneView {
   destroy() {
     super.destroy();
     Utils.removeAllObjectKeys(this);
-  }
-
-
-  _fetchWrapper() {
-    return new Promise((resolve, reject) => {
-      mzk.kom.getText('/fragment/user-profile/').then(response => {
-        this._dom.wrapper = Utils.parseHTMLFragment(response);
-        resolve();
-      }).catch(reject);
-    });
-  }
-
-
-  get dom() {
-    return this._dom.wrapper;
   }
 
 

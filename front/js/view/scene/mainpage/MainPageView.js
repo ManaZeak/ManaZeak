@@ -8,11 +8,7 @@ class MainPageView extends SceneView {
   constructor(options) {
     super(options);
 
-    this._dom = {
-      wrapper: null
-    };
-
-    this._fetchWrapper()
+    this._fetchWrapper('/fragment/mainpage/')
       .then(this._viewReady)
       .catch(error => {
         Logger.raise(error);
@@ -23,21 +19,6 @@ class MainPageView extends SceneView {
   destroy() {
     super.destroy();
     Utils.removeAllObjectKeys(this);
-  }
-
-
-  _fetchWrapper() {
-    return new Promise((resolve, reject) => {
-      mzk.kom.getText('/fragment/mainpage/').then(response => {
-        this._dom.wrapper = Utils.parseHTMLFragment(response);
-        resolve();
-      }).catch(reject);
-    });
-  }
-
-
-  get dom() {
-    return this._dom.wrapper;
   }
 
 

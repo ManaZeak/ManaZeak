@@ -5,17 +5,34 @@ class SceneView {
 
 
   constructor() {
-    // To be done in child class
+    this.wrapper = null;
   }
 
 
   destroy() {
-    // To be done in child class
+    this.wrapper = null;
+  }
+
+
+  _fetchWrapper(url) {
+    return new Promise((resolve, reject) => {
+      mzk.kom.getText(url)
+        .then(response => {
+          this.wrapper = Utils.parseHTMLFragment(response);
+          resolve();
+        })
+        .catch(reject);
+    });
   }
 
 
   _viewReady() {
     Events.publish('SceneViewReady');
+  }
+
+
+  get dom() {
+    return this.wrapper;
   }
 
 

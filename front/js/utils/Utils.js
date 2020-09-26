@@ -5,7 +5,12 @@ class Utils {
 
 
   constructor() {
-
+    // If an instance of Utils already exists, we just return it
+    if (!!Utils.instance) {
+      return Utils.instance;
+    }
+    // Set object instance
+    Utils.instance = this;
   }
 
 
@@ -17,7 +22,9 @@ class Utils {
 
 
   removeAllObjectKeys(object) {
-    Object.keys(object).forEach(key => { delete object[key]; });
+    Object.keys(object).forEach(key => {
+      delete object[key];
+    });
   }
 
 
