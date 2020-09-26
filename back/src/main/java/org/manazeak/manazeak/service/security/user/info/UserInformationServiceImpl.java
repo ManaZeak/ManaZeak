@@ -4,7 +4,7 @@ import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.service.security.user.UserManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,12 +17,12 @@ public class UserInformationServiceImpl implements UserInformationService {
     /**
      * The service for interacting with users.
      */
-    private final UserService userService;
+    private final UserManager userManager;
 
     private final MzkUserDAO userDAO;
 
-    public UserInformationServiceImpl(UserService userService, MzkUserDAO userDAO) {
-        this.userService = userService;
+    public UserInformationServiceImpl(UserManager userManager, MzkUserDAO userDAO) {
+        this.userManager = userManager;
         this.userDAO = userDAO;
     }
 
@@ -31,7 +31,7 @@ public class UserInformationServiceImpl implements UserInformationService {
      */
     @Override
     public MzkUserDetailProjection getCurrentUserInformation() {
-        MzkUser currentUser = userService.getCurrentUser();
+        MzkUser currentUser = userManager.getCurrentUser();
         return userDAO.getUserDetailFromUserId(currentUser.getUserId());
     }
 }

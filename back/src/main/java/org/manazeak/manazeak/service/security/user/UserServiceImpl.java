@@ -6,12 +6,10 @@ import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.security.invite.InviteCodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -55,26 +53,6 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public MzkUser getCurrentUser() {
-        // Getting the security context and the user.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new MzkRuntimeException("There is no connected user. Un-authenticated user shouldn't access this.");
-        }
-        // Getting the current username
-        String currentUserName = authentication.getName();
-        // Getting the user in the database.
-        Optional<MzkUser> userOpt = findByUsername(currentUserName);
-        if (userOpt.isEmpty()) {
-            throw new MzkRuntimeException("The username wasn't found in the database, this is not normal!");
-        }
-        return userOpt.get();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Optional<MzkUser> findByUsername(String username) {
         return userManager.findByUsername(username);
     }
@@ -100,14 +78,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Privilege> getPrivilegeByUsername(String username) {
         return privilegeDAO.getPrivilegesByUsername(username);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void saveUser(MzkUser user) {
-        userDAO.save(user);
     }
 
     /**

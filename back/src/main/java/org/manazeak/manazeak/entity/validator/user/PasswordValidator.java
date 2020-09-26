@@ -31,6 +31,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
 
     /**
      * Add the message the password is too short to the validation.
+     *
      * @param constraintValidatorContext The validation context.
      */
     private void setErrorMessagePasswordTooShort(ConstraintValidatorContext constraintValidatorContext) {

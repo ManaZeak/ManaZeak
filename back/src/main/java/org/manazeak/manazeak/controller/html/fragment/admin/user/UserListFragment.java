@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.controller.html.fragment.admin;
+package org.manazeak.manazeak.controller.html.fragment.admin.user;
 
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
@@ -8,27 +8,30 @@ import org.manazeak.manazeak.service.security.admin.AdminUserService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 /**
- * This class is used to render the information about the users of the application.
+ * This fragment displays the list of user of the application.
  */
 @FragmentController
-public class UserHierarchyFragment {
+public class UserListFragment {
 
     private final AdminUserService adminUserService;
 
-    public UserHierarchyFragment(AdminUserService adminUserService) {
+    public UserListFragment(AdminUserService adminUserService) {
         this.adminUserService = adminUserService;
     }
 
     /**
-     * Display the page containing the users.
+     * Get the fragment containing the list of users available in the app.
      *
-     * @return Get the hierarchy of the user in the application.
+     * @return The fragment.
      */
     @Security(PrivilegeEnum.ADMV)
-    @GetMapping("/user-hierarchy")
-    public String getUserHierarchy(Model model) {
-        model.addAttribute("users", adminUserService.getUserHierarchy());
-        return AdminFragmentEnum.USER_HIERARCHY.getPage();
+    @GetMapping("/user-list")
+    public String getUserListFragment(Model model) {
+        // Adding the list of users to the model.
+        model.addAttribute("users", adminUserService.getUserList());
+        // Returning the page.
+        return AdminFragmentEnum.USER_LIST.getPage();
     }
 }

@@ -14,6 +14,8 @@ CREATE SEQUENCE SEQ_INVITE_CODE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_MZK_USER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_WISH START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
  
  
 -- ================================
@@ -105,6 +107,22 @@ COMMENT ON TABLE privileges_role IS 'ManyToMany role / privilege';
 COMMENT ON COLUMN privileges_role.role_id IS 'ManyToMany FK role';
 COMMENT ON COLUMN privileges_role.privilege_id IS 'ManyToMany FK privilege';
 
+CREATE TABLE wish (
+	wish_id BIGINT not null,
+	content TEXT not null,
+	user_id BIGINT,
+	wish_status_id BIGINT,
+	CONSTRAINT PK_WISH PRIMARY KEY (wish_id)
+);
+COMMENT ON COLUMN wish.user_id IS 'ManyToOne FK mzk_user';
+COMMENT ON COLUMN wish.wish_status_id IS 'ManyToOne FK wish_status';
+
+CREATE TABLE wish_status (
+	wish_status_id BIGINT not null,
+	code VARCHAR(32) not null,
+	CONSTRAINT PK_WISH_STATUS PRIMARY KEY (wish_status_id)
+);
+
 
 
 -- ================================
@@ -118,6 +136,8 @@ ALTER TABLE mzk_user ADD CONSTRAINT FK_user_locale FOREIGN KEY (locale_id) REFER
 ALTER TABLE mzk_user ADD CONSTRAINT FK_role_user FOREIGN KEY (role_id) REFERENCES role(role_id);
 ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_1 FOREIGN KEY (role_id) REFERENCES role(role_id);
 ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (privilege_id) REFERENCES privilege(privilege_id);
+ALTER TABLE wish ADD CONSTRAINT FK_user_wish FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
+ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFERENCES wish_status(wish_status_id);
 
 
 -- ================================
@@ -131,5 +151,7 @@ CREATE INDEX IDX_user_locale ON mzk_user (locale_id);
 CREATE INDEX IDX_role_user ON mzk_user (role_id);
 CREATE INDEX IDX_privileges_role_1 ON privileges_role (role_id);
 CREATE INDEX IDX_privileges_role_2 ON privileges_role (privilege_id);
+CREATE INDEX IDX_user_wish ON wish (user_id);
+CREATE INDEX IDX_wish_status ON wish (wish_status_id);
 
 -- END OF GENERATED CODE - YOU CAN EDIT THE FILE AFTER THIS LINE, DO NOT EDIT THIS LINE OR BEFORE THIS LINE

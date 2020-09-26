@@ -25,6 +25,7 @@ public final class ValidatorErrorHelper {
 
     /**
      * Add validation error with a custom message.
+     *
      * @param message The custom message to add.
      * @param context the context of the validator.
      */

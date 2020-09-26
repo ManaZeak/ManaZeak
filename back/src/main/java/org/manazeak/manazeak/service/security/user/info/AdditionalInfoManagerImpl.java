@@ -7,7 +7,7 @@ import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.manazeak.manazeak.service.reference.locale.LocaleService;
 import org.manazeak.manazeak.service.security.user.UserHelper;
-import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.service.security.user.UserManager;
 import org.manazeak.manazeak.service.security.user.avatar.UserProfilePicManager;
 import org.manazeak.manazeak.util.FieldUtil;
 import org.slf4j.Logger;
@@ -23,14 +23,14 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdditionalInfoManagerImpl.class);
     private final UserProfilePicManager profilePicManager;
-    private final UserService userService;
+    private final UserManager userManager;
     private final CountryService countryService;
     private final LocaleService localeService;
 
-    public AdditionalInfoManagerImpl(UserProfilePicManager userProfilePicManager, UserService userService,
+    public AdditionalInfoManagerImpl(UserProfilePicManager userProfilePicManager, UserManager userManager,
                                      CountryService countryService, LocaleService localeService) {
         this.profilePicManager = userProfilePicManager;
-        this.userService = userService;
+        this.userManager = userManager;
         this.countryService = countryService;
         this.localeService = localeService;
     }
@@ -40,7 +40,7 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
      */
     @Override
     public void addUserInformation(UserFirstInfoDto userInfo) {
-        MzkUser user = userService.getCurrentUser();
+        MzkUser user = userManager.getCurrentUser();
         LOG.info("Adding the new information for the user ");
         // Save the profile pic into the filesystem.
         String profilePic = profilePicManager.saveUserAvatarIntoResources(userInfo.getAvatar(), user);
@@ -53,7 +53,7 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
         // The user has been completed
         user.setIsComplete(true);
         // Saving the current user into the database.
-        userService.saveUser(user);
+        userManager.saveUser(user);
     }
 
     /**
@@ -61,7 +61,7 @@ public class AdditionalInfoManagerImpl implements AdditionalInfoManager {
      */
     @Override
     public boolean isUserComplete() {
-        MzkUser user = userService.getCurrentUser();
+        MzkUser user = userManager.getCurrentUser();
         return user.getIsComplete();
     }
 

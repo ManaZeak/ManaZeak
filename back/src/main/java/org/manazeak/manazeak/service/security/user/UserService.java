@@ -10,13 +10,6 @@ import java.util.Optional;
 public interface UserService {
 
     /**
-     * Get the current user connected.
-     *
-     * @return the current user.
-     */
-    MzkUser getCurrentUser();
-
-    /**
      * Get a user in the database from the username.
      *
      * @param username the username of the user.
@@ -39,13 +32,6 @@ public interface UserService {
      * @return The list of privileges of a user.
      */
     List<Privilege> getPrivilegeByUsername(final String username);
-
-    /**
-     * Save the given user into the database.
-     *
-     * @param user The user to save into the database.
-     */
-    void saveUser(MzkUser user);
 
     /**
      * Check if a user is connected.

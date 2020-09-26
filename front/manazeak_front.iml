@@ -87,5 +87,6 @@
   </component>
   <component name="SonarLintModuleSettings">
     <option name="idePathPrefix" value="front" />
+    <option name="sqPathPrefix" value="src" />
   </component>
 </module>

@@ -73,16 +73,11 @@ elif [ "$1" = "clean" ]; then
     echo -e "\e[93mWARNING\e[39m Images haven't been removed"
     printf "Use docker rmi \$(docker images -q) to remove every image on the system\n"
 
-elif [ "$1" = "repy" ]; then
-    eval "docker kill manazeak_app 2>/dev/null"
-    eval "docker start -i manazeak_app"
-
-elif [ "$1" = "gen-translation" ]; then
-    eval "python manage.py makemessages -l 'fr'"
-    eval "python manage.py makemessages -l 'es'"
-
-elif [ "$1" = "compile-translation" ]; then
-    eval "python manage.py compilemessages" # Run compilemessages from manage.py
+elif [ "$1" = "mvnbuild" ]; then
+    echo -e "Rebuilding the java container"
+    eval "docker-compose build back"
+    echo "Launching the container"
+    eval "docker-compose up -d back"
 
 elif [ "$1" = "test" ]; then
     eval "npm run test" # See package.json for test

@@ -13,12 +13,27 @@ import java.util.Optional;
  */
 public interface UserManager {
 
+
+    /**
+     * Get the current user connected.
+     *
+     * @return the current user.
+     */
+    MzkUser getCurrentUser();
+
     /**
      * Insert a user from the front into the database.
      *
      * @return the user inserted.
      */
     MzkUser insertUser(NewUserDto newUser);
+
+    /**
+     * Save a user into the database.
+     *
+     * @param user The user that will be saved.
+     */
+    void saveUser(MzkUser user);
 
     /**
      * Get a username by it's username in the username.

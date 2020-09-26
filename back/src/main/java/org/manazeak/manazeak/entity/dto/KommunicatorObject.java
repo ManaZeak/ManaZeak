@@ -12,6 +12,10 @@ public class KommunicatorObject implements Serializable {
     private final boolean done;
     private final List<String> errors = new ArrayList<>();
 
+    public KommunicatorObject() {
+        done = true;
+    }
+
     public KommunicatorObject(boolean done) {
         this.done = done;
     }
