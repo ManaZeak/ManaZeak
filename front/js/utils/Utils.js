@@ -11,6 +11,8 @@ class Utils {
     }
     // Set object instance
     Utils.instance = this;
+
+    return this;
   }
 
 

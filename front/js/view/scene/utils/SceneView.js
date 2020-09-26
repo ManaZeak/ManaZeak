@@ -18,7 +18,7 @@ class SceneView {
     return new Promise((resolve, reject) => {
       mzk.kom.getText(url)
         .then(response => {
-          this.wrapper = Utils.parseHTMLFragment(response);
+          this.dom = Utils.parseHTMLFragment(response);
           resolve();
         })
         .catch(reject);
@@ -33,6 +33,11 @@ class SceneView {
 
   get dom() {
     return this.wrapper;
+  }
+
+
+  set dom(dom) {
+    this.wrapper = dom;
   }
 
 
