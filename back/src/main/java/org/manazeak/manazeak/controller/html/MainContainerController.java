@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * This controller is used to handle the rendering of the main page.
  */
 @Controller
-public class MainPageController {
+public class MainContainerController {
 
     AdditionalInfoManager additionalInfoManager;
 
-    public MainPageController(AdditionalInfoManager additionalInfoManager) {
+    public MainContainerController(AdditionalInfoManager additionalInfoManager) {
         this.additionalInfoManager = additionalInfoManager;
     }
 
