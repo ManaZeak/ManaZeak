@@ -4,62 +4,36 @@
 class Aside {
 
 
-    constructor() {
-        this._collapser = document.getElementById('aside-toggle');
-        this._container = document.getElementById('aside');
+  constructor() {
+    this._homepage = document.getElementById('homepage-button');
+    this._userpage = document.getElementById('userpage-button');
 
-        this._isCollapsed = false;
-
-        this._events();
-    }
+    this._events();
+  }
 
 
-    _events() {
-        this._toggleAside = this._toggleAside.bind(this);
-        this._collapser.addEventListener('click', this._toggleAside, false);
-    }
+  _events() {
+    this._homepageClicked = this._homepageClicked.bind(this);
+    this._homepage.addEventListener('click', this._homepageClicked);
+
+    this._userpageClicked = this._userpageClicked.bind(this);
+    this._userpage.addEventListener('click', this._userpageClicked);
+  }
 
 
-    _toggleAside(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (this._isCollapsed === true) {
-            this.open();
-        } else {
-            this.close();
-        }
-    }
+  _homepageClicked() {
+    mzk.setView({
+      name: 'MainPage'
+    });
+  }
 
 
-    open() {
-        if (this._isCollapsed === true) {
-            const asideWidth = '--mzk-aside-width';
-            document.querySelector(':root').style.removeProperty(asideWidth); // Clear previous aside value
-            this._isCollapsed = false;
-            this._container.classList.remove('collapsed');
-            requestAnimationFrame(() => {
-                const style = getComputedStyle(document.documentElement);
-                const asideDefaultWidth = style.getPropertyValue('--mzk-aside-default-width');
-                document.querySelector(':root').style.setProperty(asideWidth, asideDefaultWidth);
-            });
-        }
-    }
+  _userpageClicked() {
+    mzk.setView({
+      name: 'UserPage'
+    });
+  }
 
-
-    close() {
-        if (this._isCollapsed === false) {
-            const asideWidth = '--mzk-aside-width';
-            document.querySelector(':root').style.removeProperty(asideWidth); // Clear previous aside value
-            this._isCollapsed = true;
-            this._container.classList.add('collapsed');
-            requestAnimationFrame(() => {
-                const style = getComputedStyle(document.documentElement);
-                const asideCollapsedWidth = style.getPropertyValue('--mzk-aside-collapsed-width');
-                document.querySelector(':root').style.setProperty(asideWidth, asideCollapsedWidth);
-            });
-        }
-    }
 
 }
 

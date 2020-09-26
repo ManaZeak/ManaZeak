@@ -15,26 +15,30 @@
   <div class="scene-wrapper">
     <div class="aside" id="aside">
       <div class="item-group">
-        <div class="item">
+        <div id="homepage-button" class="item tooltip">
           <img src="static/img/navigation/home.svg" class="homepage" alt="home-page"/>
+          <span class="tooltip-text right">Home page</span>
         </div>
-        <div class="item">
+        <div class="item tooltip">
           <img src="static/img/logo/manazeak-logo-square.svg" class="lib-info" alt="lib-info"/>
+          <span class="tooltip-text right">Library information</span>
         </div>
       </div>
       <div class="item-group">
-        <div class="item">
+        <div id="userpage-button" class="item tooltip">
           <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
+          <span class="tooltip-text right">User account</span>
         </div>
-        <div class="item">
+        <div class="item tooltip">
           <form method="post" th:action="@{/logout}">
             <img src="static/img/actions/logout.svg" class="user-logout" alt="user-logout"/>
             <input type="submit" value=""/>
           </form>
+          <span class="tooltip-text right">Log out</span>
         </div>
       </div>
     </div>
-    <div class="scene">
+    <div id="scene" class="scene">
 
     </div>
   </div>

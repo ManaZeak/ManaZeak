@@ -16,6 +16,13 @@
       justify-content: center;
       width: var(--mzk-aside-size);
       position: relative;
+      transition: background-color .2s;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--mzk-color-primary-alpha-10);
+      }
 
       img {
         cursor: pointer;
