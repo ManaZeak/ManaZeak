@@ -1,6 +1,8 @@
 @import "front/scss/tool/color";
 @import "front/scss/tool/variable";
-@import "front/scss/tool/mixins";
+@import "front/scss/tool/keyframe";
+@import "front/scss/tool/mixin";
+@import "front/scss/tool/overlay";
 /* Make sizes be true sizes */
 * {
   box-sizing: border-box;

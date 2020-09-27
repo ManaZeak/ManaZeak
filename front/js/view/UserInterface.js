@@ -10,6 +10,8 @@ class UserInterface {
     this._aside = new Aside();
     this._scene = new Scene();
 
+    this._loadingOverlay = document.createElement('DIV');
+    this._loadingOverlay.className = 'mzk-loading-overlay';
   }
 
 
@@ -26,16 +28,19 @@ class UserInterface {
 
   startLoading() {
     return new Promise(resolve => {
-      resolve();
+      document.body.appendChild(this._loadingOverlay);
+      requestAnimationFrame(resolve);
     });
   }
 
 
   stopLoading() {
     return new Promise(resolve => {
-      resolve();
+      document.body.removeChild(this._loadingOverlay);
+      requestAnimationFrame(resolve);
     });
   }
+
 
 }
 
