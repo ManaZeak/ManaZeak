@@ -21,8 +21,6 @@ class UserInterface {
         .catch(reject)
         .finally(this.stopLoading.bind(this));
     });
-
-
   }
 
 

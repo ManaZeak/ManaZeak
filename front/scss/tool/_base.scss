@@ -1,7 +1,10 @@
 @import "front/scss/tool/color";
 @import "front/scss/tool/variable";
 @import "front/scss/tool/mixins";
-@import "front/scss/tool/tooltip";
+/* Make sizes be true sizes */
+* {
+  box-sizing: border-box;
+}
 /* Global set for html and body tag to have unified platform across pages */
 html, body {
   align-items: center;

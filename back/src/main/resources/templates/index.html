@@ -16,25 +16,33 @@
     <div class="aside" id="aside">
       <div class="item-group">
         <div id="homepage-button" class="item tooltip">
-          <img src="static/img/navigation/home.svg" class="homepage" alt="home-page"/>
-          <span class="tooltip-text right">Home page</span>
+          <img src="static/img/navigation/home.svg" alt="home-page"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.homepage}"></span>
         </div>
         <div class="item tooltip">
-          <img src="static/img/logo/manazeak-logo-square.svg" class="lib-info" alt="lib-info"/>
-          <span class="tooltip-text right">Library information</span>
+          <img src="static/img/logo/manazeak-logo-square.svg" alt="lib-info"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
         </div>
+      </div>
+      <div class="item-group mobile-only track-preview">
+        <p>Track title</p>
+        <p>Artists</p>
       </div>
       <div class="item-group">
         <div id="userpage-button" class="item tooltip">
-          <img src="static/img/default/user.svg" class="user-avatar" alt="user-avatar"/>
-          <span class="tooltip-text right">User account</span>
+          <img src="static/img/default/user.svg" alt="user-avatar"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.user}"></span>
+        </div>
+        <div id="wish-button" class="item tooltip desktop-only">
+          <img src="static/img/actions/wish.svg" alt="make-wish"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.wish}"></span>
         </div>
         <div class="item tooltip">
           <form method="post" th:action="@{/logout}">
-            <img src="static/img/actions/logout.svg" class="user-logout" alt="user-logout"/>
+            <img src="static/img/actions/logout.svg" alt="user-logout"/>
             <input type="submit" value=""/>
           </form>
-          <span class="tooltip-text right">Log out</span>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
         </div>
       </div>
     </div>

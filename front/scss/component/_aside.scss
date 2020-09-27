@@ -56,19 +56,25 @@
         }
       }
     }
-  }
-}
-
-@media only screen and (min-width: 800px) {
-  .aside {
-    border-bottom: none;
-    border-right: solid 1px var(--mzk-color-text-alpha-10);
-    flex-direction: column;
-    height: 100%;
-    width: var(--mzk-aside-size);
-
-    .item-group {
+    /* This class is only for the mobile track preview, not the one in footbar */
+    &.track-preview {
       flex-direction: column;
+      justify-content: center;
+      max-width: calc(100% - (4 * var(--mzk-aside-size))); /* In mobile, only four icons allowed in aside */
+      padding: 5px;
+      text-align: center;
+
+      p {
+        font-size: .9rem;
+        margin: 0;
+        font-style: italic;
+        @include text-ellipsis();
+
+        &:first-child {
+          font-style: inherit;
+          font-weight: bold;
+        }
+      }
     }
   }
 }
