@@ -119,8 +119,8 @@ html, body {
   }
 }
 /* Import as last instruction to override standard behavior */
-@import "tool/shortcut";
-@import "responsive/auth";
+@import "front/scss/tool/shortcut";
+@import "front/scss/responsive/auth";
 
 /* Tooltip container */
 .tooltip {

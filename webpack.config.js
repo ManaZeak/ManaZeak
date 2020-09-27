@@ -29,8 +29,9 @@ module.exports = env => {
   }
   // Default entrypoint for ManaZeak
   let entry = {
-    manazeak: ['./front/js/StartSession.js', './front/scss/manazeak.scss'],
-    auth: ['./front/scss/auth.scss'],
+    manazeak: ['./front/js/StartSession.js', './front/scss/service/manazeak.scss'],
+    auth: ['./front/scss/service/auth.scss'],
+    userprofile: ['./front/scss/service/userprofile.scss'],
     tellusmore: ['./front/js/auth/TellUsMore.js'],
     redirect: ['./front/js/auth/Redirect.js']
   };

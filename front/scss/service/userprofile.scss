@@ -1,0 +1,68 @@
+/* Style service for user profile fragment */
+.user-profile-view {
+  height: 100%;
+  width: 100%;
+
+  .user-info {
+    display: flex;
+    height: calc(100% - var(--mzk-aside-size));
+    flex-direction: column;
+
+    .avatar-container {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      height: 12rem;
+      margin: 2rem 0;
+
+      img {
+        height: calc(100% - 2.3rem);
+        max-width: 85%;
+        object-fit: contain;
+      }
+
+      p {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 0;
+        margin-top: 1rem;
+      }
+    }
+
+    .info-container {
+      height: calc(100% - 12rem);
+      overflow: auto;
+      padding: 0 1rem;
+      text-align: center;
+
+      label {
+        font-size: .9rem;
+        font-style: italic;
+      }
+
+      p {
+        font-weight: bold;
+        margin: 1rem 0 2rem 0;
+      }
+    }
+  }
+
+  .button-container {
+    display: flex;
+    height: var(--mzk-aside-size);
+    justify-content: flex-end;
+
+    .item {
+      align-content: center;
+      display: flex;
+      height: var(--mzk-aside-size);
+      justify-content: center;
+      width: var(--mzk-aside-size);
+    }
+
+    img {
+      max-height: 85%;
+      max-width: 85%;
+    }
+  }
+}

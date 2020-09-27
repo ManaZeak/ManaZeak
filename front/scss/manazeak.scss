@@ -1,9 +1,0 @@
-/* Mzk style base (reset, vars, mixins etc.) */
-@import "tool/base";
-/* Main graphical components */
-@import 'component/aside';
-@import 'component/scene';
-@import 'component/footbar';
-/* Import as last instruction to override standard behavior */
-@import "tool/shortcut";
-@import "responsive/manazeak";

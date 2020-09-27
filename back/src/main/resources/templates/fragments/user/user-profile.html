@@ -1,29 +1,40 @@
-<div th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
+<div class="user-profile-view">
+  <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
-    <label for="username" th:text="#{user.login.username}">username</label>
-    <input id="username" readonly th:value="*{username}"/>
-    <span th:if="*{avatar == null}">
-        <!-- User doesn't have an avatar. Displaying default -->
-        <img alt="user-avatar" src="static/img/default/user.svg">
-    </span>
-    <span th:unless="*{avatar == null}">
-        <!-- User do have an avatar -->
-        <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
-    </span>
-    <label for="email" th:text="#{user.tellusmore.email}">email</label>
-    <p id="email" th:value="${userInfo.email}">email</p>
-    <label for="name" th:text="#{user.tellusmore.name}">name</label>
-    <p id="name" th:text="*{name}">name</p>
-    <label for="surname" th:text="#{user.tellusmore.surname}">surname</label>
-    <p id="surname" th:text="*{surname}">surname</p>
-    <label for="bio" th:text="#{user.tellusmore.bio}">bio</label>
-    <p id="bio" th:text="*{bio}"></p>
-    <label for="birthdate" th:text="#{user.tellusmore.birthday}">birthdate</label>
-    <p id="birthdate" th:text="*{birthDate}"></p>
-    <label for="country" th:text="#{user.tellusmore.country}">country</label>
-    <p id="country" th:text="*{country}">country</p>
-    <label for="locale" th:text="#{user.tellusmore.language}">locale</label>
-    <p id="locale" th:text="*{locale}">locale</p>
-    <label for="inviteCode" th:text="#{user.register.invite_code}">invite code</label>
-    <p id="inviteCode" th:text="*{inviteCode}">invite code</p>
+    <div class="avatar-container" th:if="*{avatar == null}"> <!-- User doesn't have an avatar. Displaying default -->
+      <img src="static/img/default/user.svg" alt="user-avatar">
+      <p id="username" th:text="*{username}"></p>
+    </div>
+    <div class="avatar-container" th:unless="*{avatar == null}">
+      <img th:src='*{"/resources/avatars/"+avatar}' alt="user-avatar">
+      <p id="username" th:text="*{username}"></p>
+    </div>
+    <div class="info-container">
+      <label for="email" th:text="#{user.tellusmore.email}"></label>
+      <p id="email" th:text="${userInfo.email}"></p>
+      <label for="name" th:text="#{user.tellusmore.name}"></label>
+      <p id="name" th:text="*{name}"></p>
+      <label for="surname" th:text="#{user.tellusmore.surname}"></label>
+      <p id="surname" th:text="*{surname}"></p>
+      <label for="bio" th:text="#{user.tellusmore.bio}"></label>
+      <p id="bio" th:text="*{bio}"></p>
+      <label for="birthdate" th:text="#{user.tellusmore.birthday}"></label>
+      <p id="birthdate" th:text="*{birthDate}"></p>
+      <label for="country" th:text="#{user.tellusmore.country}"></label>
+      <p id="country" th:text="*{country}"></p>
+      <label for="locale" th:text="#{user.tellusmore.language}"></label>
+      <p id="locale" th:text="*{locale}"></p>
+      <label for="inviteCode" th:text="#{user.register.invite_code}"></label>
+      <p id="inviteCode" th:text="*{inviteCode}"></p>
+    </div>
+  </div>
+  <div class="mobile-only button-container">
+    <div id="wish-button-mobile" class="item">
+      <img src="static/img/actions/wish.svg" alt="make-wish"/>
+    </div>
+    <!-- TODO protect next item with ADMIN permission -->
+    <div id="admin-button" class="item">
+      <img src="static/img/actions/option-gear.svg" alt="admin-page"/>
+    </div>
+  </div>
 </div>
