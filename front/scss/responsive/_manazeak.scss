@@ -1,0 +1,37 @@
+/* Desktop rules */
+@media only screen and (min-width: 800px) {
+  /* Aside mobile rules */
+  .aside {
+    border-bottom: none;
+    border-right: solid 1px var(--mzk-color-text-alpha-10);
+    flex-direction: column;
+    height: 100%;
+    width: var(--mzk-aside-size);
+
+    .item-group {
+      flex-direction: column;
+    }
+  }
+  /* Scene desktop rules */
+  .scene {
+    height: var(--mzk-scene-height);
+    width: var(--mzk-scene-width);
+  }
+  /* Tooltip are desktop only */
+  @import "../tool/tooltip";
+  /* Global class that disable element on desktop environment */
+  .mobile-only {
+    display: none !important;
+  }
+}
+/* Mobile rules (specific ones as style should be mobile first) */
+@media only screen and (max-width: 800px) {
+  /* Global class that disable element on a mobile environment */
+  .desktop-only {
+    display: none !important;
+  }
+  /* Make tooltip invisible on mobile environment */
+  .tooltip-text {
+    display: none;
+  }
+}

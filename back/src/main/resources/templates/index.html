@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="ie=edge" http-equiv="x-ua-compatible">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="initial-scale=1" name="viewport">
+  <meta name="description" th:content="#{mp.description}">
+  <title th:text="#{mp.title}"></title>
+  <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+  <link href="static/dist/css/manazeak.bundle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="components-wrapper">
+  <div class="scene-wrapper">
+    <div class="aside" id="aside">
+      <div class="item-group">
+        <div id="homepage-button" class="item tooltip">
+          <img src="static/img/navigation/home.svg" alt="home-page"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.homepage}"></span>
+        </div>
+        <div class="item tooltip">
+          <img src="static/img/logo/manazeak-logo-square.svg" alt="lib-info"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
+        </div>
+      </div>
+      <div class="item-group mobile-only track-preview">
+        <p>Track title</p>
+        <p>Artists</p>
+      </div>
+      <div class="item-group">
+        <div id="userpage-button" class="item tooltip">
+          <img src="static/img/default/user.svg" alt="user-avatar"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.user}"></span>
+        </div>
+        <div id="wish-button" class="item tooltip desktop-only">
+          <img src="static/img/actions/wish.svg" alt="make-wish"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.wish}"></span>
+        </div>
+        <div class="item tooltip">
+          <form method="post" th:action="@{/logout}">
+            <img src="static/img/actions/logout.svg" alt="user-logout"/>
+            <input type="submit" value=""/>
+          </form>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
+        </div>
+      </div>
+    </div>
+    <div id="scene" class="scene">
+
+    </div>
+  </div>
+  <div class="footbar">
+
+  </div>
+</div>
+<script src="static/dist/js/manazeak.bundle.js" type="text/javascript"></script>
+</body>
+</html>

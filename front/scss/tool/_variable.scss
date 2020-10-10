@@ -1,0 +1,46 @@
+:root { // Define colors in css root element
+  /* ----------  Global styling  ---------- */
+
+  --mzk-animation-duration: 0.2s;
+  --mzk-animation-duration-short: calc(var(--mzk-animation-duration) / 2);
+  --mzk-animation-duration-long: calc(var(--mzk-animation-duration) * 2);
+
+  --mzk-border-width: 1px;
+  --mzk-border-jumbo-width: 3px;
+  --mzk-border-radius: 3px;
+  --mzk-border-jumbo-radius: 9px;
+  --mzk-border-color: var(--mzk-color-bg-dark);
+
+  --mzk-font-size: 1em;
+  --mzk-font-size-big: 1.6rem;
+  --mzk-font-size-small: .8rem;
+
+  --mzk-padding: 10px;
+  --mzk-padding-tiny: calc(var(--mzk-padding) / 4);
+  --mzk-padding-small: calc(var(--mzk-padding) / 2);
+  --mzk-padding-big: calc(var(--mzk-padding) * 2);
+  --mzk-padding-huge: calc(var(--mzk-padding) * 4);
+
+  --mzk-margin: 10px;
+  --mzk-margin-tiny: calc(var(--mzk-margin) / 4);
+  --mzk-margin-small: calc(var(--mzk-margin) / 2);
+  --mzk-margin-big: calc(var(--mzk-margin) * 2);
+  --mzk-margin-huge: calc(var(--mzk-margin) * 4);
+
+  --mzk-logo-text-width: 145px;
+
+  --mzk-bar-height: 6px;
+
+  /* ----------  Components variables  ---------- */
+
+  --mzk-aside-size: 3rem;
+
+  --mzk-footbar-height: 5rem;
+
+  --mzk-scene-height-resp: calc(100% - var(--mzk-aside-size));
+  --mzk-scene-height: 100%;
+  --mzk-scene-width-resp: 100%;
+  --mzk-scene-width: calc(100% - var(--mzk-aside-size));
+
+  --mzk-scene-icon-margin: 8px;
+}

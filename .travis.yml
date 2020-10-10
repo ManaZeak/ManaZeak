@@ -1,24 +1,24 @@
-sudo: required
 dist: xenial
-language: python
-python: 3.7
+language: java
+git:
+  depth: false
+services:
+  - xvfb
 before_install:
-  - git fetch --unshallow
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq pylint
-before_script:
-  - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
-install:
-  - pip install -r docker/django/requirements.txt
-  - mv docker-compose.yml.travis docker-compose.yml
-  - mkdir database
-  - docker-compose build
-  - docker-compose up -d
-  - sudo rm -rf database
+  - git fetch
+  - cp .env.travis .env
+  - docker-compose up -d db
+  - export CHROMIUM_BIN=/usr/bin/google-chrome
+  - sudo mkdir -p /resources/avatars/
+  - sudo chmod -R 777 /resources/
 addons:
+  firefox: latest
+  chrome: stable
   sonarcloud:
     organization: "manazeak"
     token: $SONARCLOUDKEY
+  # The url of the database in a container.
+  hosts:
+    - db
 script:
-  - "pylint app -r n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" | cat > report.txt"
-  - sonar-scanner
+  - mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak

@@ -1,0 +1,80 @@
+.aside {
+  background-color: var(--mzk-color-bg-dark-alpha-25);
+  border-bottom: solid 1px var(--mzk-color-text-alpha-10);
+  display: flex;
+  height: var(--mzk-aside-size);
+  justify-content: space-between;
+  width: 100%;
+
+  .item-group {
+    display: flex;
+
+    .item {
+      align-items: center;
+      display: flex;
+      height: var(--mzk-aside-size);
+      justify-content: center;
+      width: var(--mzk-aside-size);
+      position: relative;
+      transition: background-color .2s;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--mzk-color-primary-alpha-10);
+      }
+
+      img {
+        cursor: pointer;
+        max-height: 85%;
+        max-width: 85%;
+      }
+
+      form { /* Logout require a form */
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+
+        input { /* Remove any base style for input to make logout validation invisible */
+          border: none;
+          height: 100%;
+          left: 0;
+          padding: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+
+          &:active,
+          &:focus,
+          &:hover { /* Remove mouse effect aswell */
+            box-shadow: none;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    /* This class is only for the mobile track preview, not the one in footbar */
+    &.track-preview {
+      flex-direction: column;
+      justify-content: center;
+      max-width: calc(100% - (4 * var(--mzk-aside-size))); /* In mobile, only four icons allowed in aside */
+      padding: 5px;
+      text-align: center;
+
+      p {
+        font-size: .9rem;
+        margin: 0;
+        font-style: italic;
+        @include text-ellipsis();
+
+        &:first-child {
+          font-style: inherit;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

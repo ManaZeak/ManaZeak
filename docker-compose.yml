@@ -1,0 +1,91 @@
+version: '3.4'
+services:
+
+    db:
+        image: postgres:latest
+        container_name: manazeak_postgresql
+        environment:
+            POSTGRES_DB: music
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - ${DB_DATA}:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+    back:
+        build:
+            context: .
+            target: ${BACK_TARGET}
+            dockerfile: back/Dockerfile
+        container_name: manazeak_app
+        # Debug ports.
+        ports:
+            - "5005:5005"
+            - "8080:8080"
+            - "35729:35729"
+        volumes:
+            - ${RESOURCES_PATH}:/resources
+        links:
+            - db
+        depends_on:
+            - db
+
+    nginx:
+        image: nginx:latest
+        container_name: manazeak_nginx
+        ports:
+            - "80:8080"
+        volumes:
+            - ${LIBRARY_PATH}:/library
+            - ${RESOURCES_PATH}:/resources
+            - ./docker/nginx/config:/etc/nginx/conf.d
+            - ./static:/static
+        depends_on:
+            - back
+        links:
+            - back
+
+    moodbar:
+        build:
+            context: docker/moodbar
+            target: mood
+        container_name: manazeak_moodbar
+        volumes:
+            - ${LIBRARY_PATH}:/library
+            - ./static/mood:/moodbar/static
+
+    syncthing:
+        image: syncthing/syncthing:latest
+        container_name: manazeak_syncthing
+        # network_mode: "host" # For local discovery
+#        environment:
+#            - PUID=1000
+        volumes:
+            - ${LIBRARY_PATH}:/ManaZeak
+            - /home/squadella/Documents/face:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
+        ports:
+            - "127.0.0.1:8384:8384"
+            - "22000:22000"
+            - "21027:21027/udp"
+
+    cache:
+        image: memcached
+        container_name: manazeak_memcached
+        command: bash -c "memcached -I 5m -m 1000m"
+
+#    transmission:
+#        image: linuxserver/transmission
+#        environment:
+#          - PUID=1000
+#          - PGID=1000
+#          - TZ=Europe/Paris
+#        volumes:
+#          - /PATH/TO/TR_CONFIG:/config
+#          - /PATH/TO/TR_DOWNLOADS:/downloads
+#          - /PATH/TO/TR_TORRENTS:/watch
+#        ports:
+#          - 9091:9091
+#          - 51413:51413
+#          - 51413:51413/udp
+#        restart: unless-stopped

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="initial-scale=1" name="viewport">
+    <meta name="description" th:content="#{user.login.description}">
+    <title th:text="#{user.login.title}"></title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+    <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
+</head>
+<body class="login">
+<div class="mzk-user">
+    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
+    <p th:utext="#{user.login.header}"></p>
+    <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
+    <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
+    <form method="POST" th:object="${user}">
+        <!-- Username field (128 char) and specific errors -->
+        <div class="tooltip">
+            <label for="username-input" th:text="#{user.login.username}"></label>
+            <span class="tooltip-top" th:text="#{user.login.username.help}"></span>
+        </div>
+        <p th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
+        <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{username}" type="text"/>
+        <!-- Associated password field (256 char) and specific errors -->
+        <div class="tooltip">
+            <label for="password-input" th:text="#{user.login.password}"></label>
+            <span class="tooltip-top" th:text="#{user.login.password.help}"></span>
+        </div>
+        <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
+        <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
+        <!-- Global form errors -->
+        <p class="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
+        <!-- Required csrf token from session cookies -->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <button th:text="#{user.login.submit}" type="submit"></button>
+    </form>
+    <p th:utext="#{user.login.footer}"></p>
+</div>
+</body>
+</html>

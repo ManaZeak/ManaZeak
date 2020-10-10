@@ -1,0 +1,7 @@
+<div th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishes}" xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="wishes" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+    <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+    <p th:text="*{wish.username}">username</p>
+    <p th:text="*{wish.content}"></p>
+    <p th:text="*{wish.status}"></p>
+</div>

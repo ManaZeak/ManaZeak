@@ -1,0 +1,152 @@
+@import "front/scss/tool/base";
+/* Auth pages background is a dank radial gradient */
+html, body {
+  background-image: radial-gradient(#2c2c30 0, #1f2127 45%, #0e0f14 80%);
+}
+/* Content wrapper for whole page */
+.mzk-user {
+  height: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+  /* Top page ManaZeak text logo */
+  img {
+    user-select: none;
+    width: 35%;
+  }
+  /* Text that are both in and out of the form */
+  p {
+    font-size: 1.1rem;
+    margin: 2rem 1rem;
+    /* Mainly for text under form to fit parent bottom */
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+    /* To handle specific error on fields */
+    &.error {
+      color: #FF6B67;
+      font-size: .9rem;
+      font-style: italic;
+      margin: 0;
+    }
+    /* Form global error (validation etc.) */
+    &.global-error {
+      color: #FF6B67;
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 1.33rem;
+    }
+  }
+  /* Links */
+  a {
+    color: #56d45b;
+    text-decoration: none;
+  }
+  /* Standard form across auth pages */
+  form {
+    background-color: rgba(31, 33, 39, .1);
+    border: 1px solid #0e0f14;
+    border-radius: 6px;
+    box-shadow:  0 0 1rem 0 rgba(86, 212, 91, .05);
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3rem;
+    width: max-content;
+    /* Override auth margin on P for form errors */
+    p {
+      margin-top: 0;
+    }
+    /* All inputs labels */
+    label {
+      cursor: help;
+      font-style: italic;
+      font-weight: bold;
+    }
+    /* Form margin for inputs */
+    input[type="password"],
+    input[type="text"],
+    input[type="email"],
+    input[type="file"],
+    input[type="date"],
+    select,
+    textarea {
+      margin-bottom: 1.33rem;
+      max-width: 225px;
+      width: 90%;
+    }
+    /* Error state for inputs */
+    input.error {
+      border-bottom: solid 1px #FF6B67;
+    }
+    /* Form submit button */
+    button {
+      margin-top: 1.33rem;
+    }
+    /* Positioning form elements */
+    button,
+    input,
+    select {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &.two-col-form {
+      align-items: center;
+      display: grid;
+      grid-template-columns: 50%;
+      grid-template-rows: 1fr auto;
+
+      .left-col {
+        grid-column: 1;
+        justify-self: flex-end;
+        margin-right: 1.5rem;
+      }
+
+      .right-col {
+        grid-column: 2;
+        justify-self: flex-start;
+        margin-left: 1.5rem;
+      }
+
+      button {
+        grid-column: 1 / span 2;
+      }
+    }
+  }
+}
+/* Import as last instruction to override standard behavior */
+@import "front/scss/tool/shortcut";
+@import "front/scss/responsive/auth";
+
+/* Tooltip container */
+.tooltip {
+ position: relative;
+ display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltip-top {
+  /* Half input bottom margin minus half help text height */
+  --help-text-margin: calc((1.33rem / 2) - (.9rem / 2));
+  cursor: help;
+  font-size: .8rem;
+  font-style: italic;
+  border-radius: 6px;
+  bottom: calc(100% + var(--help-text-margin));
+  left: 50%;
+  margin-left: -110px; /* Half of the width */
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  transition: opacity .4s ease-in-out;
+  width: 220px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltip-top {
+  opacity: 1;
+}

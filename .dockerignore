@@ -1,0 +1,7 @@
+# This file is used to ignore the directory not needed for the creation of the manazeak_back image.
+doc/
+docker/
+static/
+node_modules/
+.idea/
+back/target/
