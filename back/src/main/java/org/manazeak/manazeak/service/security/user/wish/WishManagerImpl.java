@@ -75,6 +75,7 @@ public class WishManagerImpl implements WishManager {
         Wish wish = new Wish();
         wish.setMzkUser(user);
         wish.setContent(wishDto.getContent());
+        wish.setWishStatus(wishStatusDAO.getWishStatusByWishStatusId(WishStatusEnum.TODO.getStatusId()));
         wishDAO.save(wish);
     }
 

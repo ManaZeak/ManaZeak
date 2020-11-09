@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * This class is used to test the wishes interactions.
  */
-public class WishServiceTest extends AbstractManaZeakTest {
+class WishServiceTest extends AbstractManaZeakTest {
 
     @Autowired
     private WishService wishService;
