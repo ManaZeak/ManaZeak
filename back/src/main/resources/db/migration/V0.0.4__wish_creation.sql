@@ -41,3 +41,4 @@ VALUES (2, 'NOK');
 INSERT INTO wish_status (wish_status_id, code)
 VALUES (3, 'TODO');
 
+commit;

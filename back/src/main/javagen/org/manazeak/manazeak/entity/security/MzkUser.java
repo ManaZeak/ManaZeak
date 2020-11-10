@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import org.manazeak.manazeak.entity.reference.Locale;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;

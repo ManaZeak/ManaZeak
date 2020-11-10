@@ -1,19 +1,53 @@
 package org.manazeak.manazeak.service.security.user.avatar;
 
+import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.file.FileUtil;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 /**
- * Used to manage the profile pic of a user.
+ * Handles the save action of the avatar of the user.
  */
-public interface UserProfilePicManager {
+@Service
+@TransactionnalWithRollback
+public class UserProfilePicManager {
 
     /**
-     * Save the avatar of a user into the FS. Replace the old avatar if any.
-     *
-     * @param file The file in the form given by the user.
-     * @param user The user changing it's picture.
-     * @return true if an image has been saved.
+     * Getting the folder where the covers are stored.
      */
-    String saveUserAvatarIntoResources(MultipartFile file, MzkUser user);
+    private static final Path AVATAR_PATH = Paths.get("/resources/avatars/");
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
+    public String saveUserAvatarIntoResources(MultipartFile file, MzkUser user) {
+        // There is no file to save.
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+        // Computing the filename.
+        String fileName = user.getUsername() + FileUtil.getExtensionByMagicBytes(file).getExtension();
+        // Checking if the folder exists and creating it.
+        FileUtil.createDirectories(AVATAR_PATH);
+        // The destination path.
+        Path dest = AVATAR_PATH.resolve(fileName);
+        // We copy the file into the resources folder.
+        try (InputStream stream = file.getInputStream()) {
+            Files.copy(stream, dest, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new MzkRuntimeException("Impossible to save the avatar into the storage.", e);
+        }
+        return fileName;
+    }
 }
