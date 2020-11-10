@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishDto"*/-->
+    <form method="POST" th:object="${wish}">
+        <label for="username-input" th:text="#{user.wish.content}"></label>
+        <p th:each="error : ${#fields.errors('content')}" th:text="${error}"></p>
+        <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{content}" type="text"/>
+        <!-- Global form errors -->
+        <p class="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
+        <!-- Required csrf token from session cookies -->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <button th:text="#{user.login.submit}" type="submit"></button>
+    </form>
+    <p th:utext="#{user.login.footer}"></p>
+</div>
