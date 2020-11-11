@@ -26,6 +26,16 @@ class Mzk {
     });
   }
 
+
+  setModal(options) {
+    this.ui.setModal(options).then(() => {
+      console.log('modal created');
+    }).catch(error => {
+      Logger.raise(error);
+    });
+  }
+
+
 }
 
 

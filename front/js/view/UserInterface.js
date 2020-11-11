@@ -1,5 +1,6 @@
 import Aside from './component/Aside';
 import Scene from './component/Scene';
+import WishModal from './modal/WishModal.js';
 'use strict';
 
 
@@ -51,6 +52,17 @@ class UserInterface {
         .then(resolve)
         .catch(reject)
         .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens
+    });
+  }
+
+
+  setModal(options) {
+    return new Promise((resolve, reject) => {
+      // TODO modal factory
+      // options.name + Modal
+      const modal = new WishModal({
+        url: '/fragment/wish'
+      });
     });
   }
 

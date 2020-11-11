@@ -1,0 +1,95 @@
+.loading-overlay {
+  align-items: center;
+  background-color: var(--mzk-color-bg-darker-alpha-75);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.modal {
+  background: var(--mzk-color-bg);
+  border-radius: var(--modal-radius);
+  box-shadow: 0 0 1em var(--mzk-color-primary-alpha-50);
+  max-width: 85%;
+  min-height: 250px;
+  min-width: 20%;
+  position: relative;
+  text-align: justify;
+  width: 35%;
+  z-index: 800;
+
+  .header {
+    text-align: center;
+
+    p { // The modal title
+      font-size: var(--modal-title-size);
+      height: var(--modal-hf-container-height);
+      line-height: var(--modal-hf-container-height);
+    }
+
+    span.close { // Header close button
+      cursor: pointer;
+      position: absolute;
+      right: var(--modal-title-size);
+      top: var(--modal-title-size);
+
+      transition: color var(--mzk-animation-duration) ease-out;
+
+      &:active,
+      &:focus,
+      &:hover {
+        color: var(--mzk-color-anti-primary);
+      }
+    }
+  }
+
+  .container {
+    background-color: var(--mzk-color-bg-galaxy);
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - (2 * var(--modal-hf-container-height)));
+    justify-content: center;
+    padding: var(--modal-padding);
+
+    p {
+      margin-bottom: var(--mzk-margin);
+      text-indent: 1rem;
+    }
+  }
+
+  .footer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: var(--modal-hf-container-height);
+
+    button {
+      border-radius: var(--mzk-border-radius);
+      cursor: pointer;
+      height: 55%;
+      outline: none;
+      text-decoration : none;
+
+      transition: background-color var(--mzk-animation-duration);
+
+      &.primary {
+        background-color: var(--mzk-color-primary);
+        border-color: var(--mzk-color-primary);
+        color: var(--mzk-color-text-negative);
+      }
+
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--mzk-color-secondary);
+        border-color: var(--mzk-color-secondary);
+        color: var(--mzk-color-text-negative);
+      }
+    }
+  }
+}
