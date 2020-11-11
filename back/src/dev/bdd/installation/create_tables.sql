@@ -10,6 +10,7 @@ SET search_path TO music;
 -- ================================
 CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_BADGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_INVITE_CODE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_MZK_USER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20; 
@@ -41,6 +42,21 @@ CREATE TABLE Locale (
 	CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
 );
 COMMENT ON TABLE Locale IS 'The locale supported by the app.';
+
+CREATE TABLE badge (
+	badge_id BIGINT not null,
+	label TEXT not null,
+	CONSTRAINT PK_BADGE PRIMARY KEY (badge_id)
+);
+
+CREATE TABLE badge_user (
+	badge_id BIGINT not null,
+	user_id BIGINT not null,
+	CONSTRAINT PK_BADGE_USER PRIMARY KEY (badge_id,user_id)
+);
+COMMENT ON TABLE badge_user IS 'ManyToMany badge / mzk_user';
+COMMENT ON COLUMN badge_user.badge_id IS 'ManyToMany FK badge';
+COMMENT ON COLUMN badge_user.user_id IS 'ManyToMany FK mzk_user';
 
 CREATE TABLE invite_code (
 	invite_code_id BIGINT not null,
@@ -128,6 +144,8 @@ CREATE TABLE wish_status (
 -- ================================
 -- FOREIGN KEYS
 -- ================================
+ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_1 FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
+ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_2 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_invite_used FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
 ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_1 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_2 FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
@@ -143,6 +161,8 @@ ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFE
 -- ================================
 -- FOREIGN KEYS INDEXES
 -- ================================
+CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
+CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
 CREATE INDEX IDX_invite_used ON mzk_user (invite_code_id);
 CREATE INDEX IDX_user_invite_1 ON user_invite (user_id);
 CREATE INDEX IDX_user_invite_2 ON user_invite (invite_code_id);

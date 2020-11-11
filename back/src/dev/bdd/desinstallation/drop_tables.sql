@@ -10,6 +10,7 @@ SET search_path TO music;
 -- ================================
 DROP SEQUENCE SEQ_COUNTRY;
 DROP SEQUENCE SEQ_LOCALE;
+DROP SEQUENCE SEQ_BADGE;
 DROP SEQUENCE SEQ_INVITE_CODE;
 DROP SEQUENCE SEQ_MZK_USER;
 DROP SEQUENCE SEQ_PRIVILEGE;
@@ -20,6 +21,8 @@ DROP SEQUENCE SEQ_WISH_STATUS;
 -- ================================
 -- DROP FOREIGN KEY
 -- ================================
+ALTER TABLE badge_user DROP CONSTRAINT FK_badge_user_1;
+ALTER TABLE badge_user DROP CONSTRAINT FK_badge_user_2;
 ALTER TABLE mzk_user DROP CONSTRAINT FK_invite_used;
 ALTER TABLE user_invite DROP CONSTRAINT FK_user_invite_1;
 ALTER TABLE user_invite DROP CONSTRAINT FK_user_invite_2;
@@ -34,6 +37,8 @@ ALTER TABLE wish DROP CONSTRAINT FK_wish_status;
 -- ================================
 -- DROP FOREIGN KEYS INDEXES
 -- ================================
+DROP INDEX IDX_badge_user_1;
+DROP INDEX IDX_badge_user_2;
 DROP INDEX IDX_invite_used;
 DROP INDEX IDX_user_invite_1;
 DROP INDEX IDX_user_invite_2;
@@ -50,6 +55,8 @@ DROP INDEX IDX_wish_status;
 -- ================================
 DROP TABLE Country;
 DROP TABLE Locale;
+DROP TABLE badge;
+DROP TABLE badge_user;
 DROP TABLE invite_code;
 DROP TABLE mzk_user;
 DROP TABLE user_invite;

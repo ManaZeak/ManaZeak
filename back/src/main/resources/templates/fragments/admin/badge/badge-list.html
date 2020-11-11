@@ -1,0 +1,11 @@
+<div th:each="badge : ${badges}" xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="badges" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->
+    <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->
+    <label for="badge-name" th:text="#{user.badge}"></label>
+    <p id="badge-name" th:text="*{badge.label}">badge-name</p>
+    <!-- iterating through the users -->
+    <div th:each="user : *{badge.users}">
+        <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto"*/-->
+        <p th:text="*{user.username}" th:attr="data-id=*{user.userId}">user</p>
+    </div>
+</div>
