@@ -19,7 +19,7 @@ public interface BadgeDAO extends CrudRepository<Badge, Long> {
      *
      * @return get all the badges of the application.
      */
-    @Query("SELECT DISTINCT b from Badge b JOIN FETCH b.mzkUserList")
+    @Query("SELECT DISTINCT b from Badge b LEFT JOIN FETCH b.mzkUserList")
     List<Badge> getAllBadges();
 
 

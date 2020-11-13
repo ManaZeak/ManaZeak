@@ -30,4 +30,6 @@ public class BadgeListFragmentController {
         model.addAttribute("badges", badgeService.getBadgesList());
         return BadgeFragmentEnum.BADGE_LIST.getPage();
     }
+
+
 }

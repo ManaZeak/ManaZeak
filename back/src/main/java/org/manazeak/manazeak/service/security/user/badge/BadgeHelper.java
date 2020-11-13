@@ -33,11 +33,13 @@ public class BadgeHelper {
 
             List<UserBadgeDto> linkedUsers = new ArrayList<>();
             // Iterating through the users
-            for (MzkUser user : badge.getMzkUserList()) {
-                UserBadgeDto userBadge = new UserBadgeDto();
-                userBadge.setUserId(user.getUserId());
-                userBadge.setUsername(user.getUsername());
-                linkedUsers.add(userBadge);
+            if (badge.getMzkUserList() != null) {
+                for (MzkUser user : badge.getMzkUserList()) {
+                    UserBadgeDto userBadge = new UserBadgeDto();
+                    userBadge.setUserId(user.getUserId());
+                    userBadge.setUsername(user.getUsername());
+                    linkedUsers.add(userBadge);
+                }
             }
             badgeLine.setUsers(linkedUsers);
 
