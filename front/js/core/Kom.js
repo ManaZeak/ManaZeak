@@ -41,10 +41,10 @@ class Kom {
       const cookies = document.cookie.split(';');
       for (let i = 0; i < cookies.length; ++i) {
         // Parse current cookie to extract its properties
-        const cookie = cookies[i].trim().match(/(\w+)=(.*)/);
-        if (cookie !== undefined && cookie[1] === 'csrftoken') {
+        const cookie = cookies[i].split('=');
+        if (cookie !== undefined && cookie[0].toLowerCase().includes('srf')) {
           // Found a matching cookie for csrftoken value, return as decoded string
-          return decodeURIComponent(cookie[2]);
+          return decodeURIComponent(cookie[1]);
         }
       }
     }
@@ -64,7 +64,7 @@ class Kom {
     return [
       ['Content-Type', 'application/json; charset=UTF-8'],
       ['Accept', 'application/json'],
-      ['X-CSRFToken', this._csrfToken]
+      ['XSRF-Token', this._csrfToken]
     ];
   }
 
