@@ -64,7 +64,7 @@ class Kom {
     return [
       ['Content-Type', 'application/json; charset=UTF-8'],
       ['Accept', 'application/json'],
-      ['XSRF-Token', this._csrfToken]
+      ['X-CSRF-Token', this._csrfToken]
     ];
   }
 
