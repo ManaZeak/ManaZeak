@@ -95,7 +95,8 @@ textarea {
 }
 /* Global button configuration */
 button,
-input[type="submit"] {
+input[type="submit"],
+label.submit {
   background: 0;
   border: 1px solid #aaaabe;
   border-radius: 6px;

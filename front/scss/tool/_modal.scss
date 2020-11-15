@@ -13,30 +13,32 @@
 
 .modal {
   background: var(--mzk-color-bg);
-  border-radius: var(--modal-radius);
-  box-shadow: 0 0 1em var(--mzk-color-primary-alpha-50);
+  border-radius: 5px;
+  box-shadow: 0 0 .3rem var(--mzk-color-primary-alpha-50);
   max-width: 85%;
-  min-height: 250px;
   min-width: 20%;
   position: relative;
   text-align: justify;
-  width: 35%;
   z-index: 800;
 
   .header {
+    align-items: center;
+    display: flex;
+    height: 4rem;
+    justify-content: center;
+    position: relative;
     text-align: center;
 
     p { // The modal title
-      font-size: var(--modal-title-size);
-      height: var(--modal-hf-container-height);
-      line-height: var(--modal-hf-container-height);
+      font-size: 1.3rem;
+      margin: 0;
     }
 
-    span.close { // Header close button
+    .close { // Header close button
       cursor: pointer;
       position: absolute;
-      right: var(--modal-title-size);
-      top: var(--modal-title-size);
+      right: 5px;
+      top: 5px;
 
       transition: color var(--mzk-animation-duration) ease-out;
 
@@ -52,24 +54,38 @@
     background-color: var(--mzk-color-bg-galaxy);
     display: flex;
     flex-direction: column;
-    height: calc(100% - (2 * var(--modal-hf-container-height)));
+    height: calc(100% - 8rem);
     justify-content: center;
-    padding: var(--modal-padding);
+    padding: 1rem;
 
     p {
-      margin-bottom: var(--mzk-margin);
+      margin-bottom: 1rem;
       text-indent: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      [type="submit"] {
+        display: none;
+      }
+    }
+
+    textarea {
+      height: inherit;
     }
   }
 
   .footer {
     align-items: center;
     display: flex;
+    height: 4rem;
     justify-content: center;
-    height: var(--modal-hf-container-height);
 
     button {
-      border-radius: var(--mzk-border-radius);
+      border: solid 1px gray;
+      border-radius: 5px;
       cursor: pointer;
       height: 55%;
       outline: none;
