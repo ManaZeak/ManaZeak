@@ -11,8 +11,8 @@
 /* Global set for html and body tag to have unified platform across pages */
 html, body {
   align-items: center;
-  background-color: #2c2c30;
-  color: #aaaabe;
+  background-color: var(--mzk-color-bg-light);
+  color: var(--mzk-color-text);
   display: flex;
   font-family: Helvetica, serif;
   height: 100%;
@@ -28,8 +28,8 @@ input[type="text"],
 input[type="email"] {
   background: 0;
   border: 0;
-  border-bottom: solid 1px #aaaabe;
-  color: #aaaabe;
+  border-bottom: solid 1px var(--mzk-color-border);
+  color: var(--mzk-color-text);
   margin: 0;
   padding: 5px;
   text-align: center;
@@ -60,10 +60,10 @@ input[type="file"] {
 input[type="date"],
 select {
   background: 0;
-  border: 1px solid #aaaabe;
+  border: 1px solid var(--mzk-color-border);
   border-radius: 6px;
   box-sizing: content-box;
-  color: #aaaabe;
+  color: var(--mzk-color-text);
   cursor: pointer;
   font-weight: bold;
   margin: 0;
@@ -71,9 +71,9 @@ select {
 }
 textarea {
   background: 0;
-  border: solid 1px #aaaabe;
+  border: solid 1px var(--mzk-color-border);
   border-radius: 6px;
-  color: #aaaabe;
+  color: var(--mzk-color-text);
   height: 3rem;
   margin: 0;
   padding: 5px;
@@ -98,9 +98,9 @@ button,
 input[type="submit"],
 label.submit {
   background: 0;
-  border: 1px solid #aaaabe;
+  border: 1px solid var(--mzk-color-border);
   border-radius: 6px;
-  color: #aaaabe;
+  color: var(--mzk-color-text);
   cursor: pointer;
   font-weight: bold;
   margin: 0;
@@ -120,6 +120,9 @@ label.submit {
     color: #ebebff;
   }
 }
+.light-theme img { /* Because of icon, we must add a drop shadow on image */
+  filter: drop-shadow(1px 1px 1px #222); // TODO, only for img.icon
+}
 /* Global form configuration */
 form {
   text-align: center;
@@ -137,7 +140,7 @@ form {
 }
 
 .scene-wrapper {
-  background-image: linear-gradient(rgb(60, 64, 93), rgb(6, 6, 9) 85%);
+  background-image: linear-gradient(var(--mzk-color-bg-lighter), var(--mzk-color-bg-darker) 85%);
   height: calc(100% - var(--mzk-footbar-height));
 }
 

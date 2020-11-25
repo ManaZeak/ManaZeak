@@ -1,11 +1,13 @@
 /* Style service for user profile fragment */
 .user-profile-view {
+  display: flex;
   height: 100%;
+  justify-content: center;
   width: 100%;
 
   .user-info {
     display: flex;
-    height: calc(100% - var(--mzk-aside-size));
+    height: 100%;
     flex-direction: column;
 
     .avatar-container {
@@ -45,6 +47,10 @@
         margin: 1rem 0 2rem 0;
       }
     }
+  }
+
+  .user-pref {
+
   }
 
   .button-container {
