@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
@@ -50,7 +51,7 @@ public class WishCreationFragment {
      */
     @RestSecurity(PrivilegeEnum.WISH)
     @PostMapping("/wish")
-    public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result) {
+    public String saveUserWish(@RequestBody @Valid UserWishDto wish, BindingResult result) {
         // Returning into the modal of wish creation.
         if (result.hasErrors()) {
             return WishFragmentEnum.WISH_CREATION.getPage();
