@@ -1,5 +1,4 @@
 import SceneView from '../utils/SceneView';
-'use strict';
 
 
 class MainPageView extends SceneView {

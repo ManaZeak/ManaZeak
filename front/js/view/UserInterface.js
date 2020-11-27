@@ -1,6 +1,6 @@
 import Aside from './component/Aside';
 import Scene from './component/Scene';
-import WishModal from './modal/WishModal.js';
+import WishModal from './modal/menupage/WishModal.js';
 'use strict';
 
 
@@ -58,11 +58,9 @@ class UserInterface {
 
   setModal(options) {
     return new Promise((resolve, reject) => {
-      // TODO modal factory
-      // options.name + Modal
-      const modal = new WishModal({
-        url: '/fragment/wish'
-      });
+      this._scene.buildModal(options)
+        .then(resolve)
+        .catch(reject);
     });
   }
 

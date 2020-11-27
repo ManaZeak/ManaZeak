@@ -1,9 +1,11 @@
 import MainPageView from './mainpage/MainPageView.js';
+import MenuPageView from './menupage/MenuPageView.js';
 import UserPageView from './community/UserPageView.js';
 
 
 const Classes = {
   MainPageView,
+  MenuPageView,
   UserPageView
 };
 

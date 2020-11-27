@@ -1,4 +1,4 @@
-import Modal from './Modal.js';
+import Modal from '../utils/Modal.js';
 
 
 class WishModal extends Modal {
@@ -112,27 +112,6 @@ class WishModal extends Modal {
       // Re-save internals with new template
       this._fillAttributes();
     });
-  }
-
-
-  /*  --------------------------------------------------------------------------------------------------------------- */
-  /*  ------------------------------------  MODAL VISIBILITY MANIPULATION  -----------------------------------------  */
-  /*  --------------------------------------------------------------------------------------------------------------- */
-
-
-  /** @method
-   * @name close
-   * @public
-   * @memberof WishModal
-   * @author Arthur Beaulieu
-   * @since November 2020
-   * @description <blockquote>This method will close the modal and destruct all of this class content.</blockquote>
-   * @param {object} [event] - The click event, not mandatory to allow the closing of the modal outside of any event **/
-  close(event) {
-    if (!event || (event && (event.target === this._modalOverlay || event.target === this._closeButton))) {
-      super.close(event);
-      this.destroy();
-    }
   }
 
 

@@ -7,8 +7,8 @@ class Modal {
    * @description <blockquote>This modal component is meant to be extended. It provides a base to build a modal, using
    * an HTML template from an existing backend url. It handles the loading and building of the HTML template. It also
    * exposes an open and a close method. Finally, it allows the user to click on the modal overlay, or on the close icon
-   * to close the modal. The developer must override <code>destroy()</code>, <code>_fillAttributes()</code> and <code>
-   * close()</code> methods to fully cover the modal lifecycle (see each of these methods documentation).</blockquote>
+   * to close the modal. The developer must override <code>destroy()</code> and <code>_fillAttributes()</code> methods
+   * to fully cover the modal lifecycle (see each of these methods documentation).</blockquote>
    * @param {object} options - The modal base options
    * @param {string} options.url - The url to fetch the modal template from **/
   constructor(options) {
@@ -86,7 +86,7 @@ class Modal {
       this._modalOverlay.className = 'loading-overlay';
       this._modalOverlay.appendChild(this._rootElement);
       // Get close button from template
-      this._closeButton = this._rootElement.querySelector('#wish-close');
+      this._closeButton = this._rootElement.querySelector('#modal-close');
       this.open();
       this._fillAttributes();
     }).catch(error => {
@@ -135,10 +135,9 @@ class Modal {
    * @memberof Modal
    * @author Arthur Beaulieu
    * @since November 2020
-   * @description <blockquote>This method will close the modal by removing the modal overlay from the document body. It
-   * must be overridden in child class to call from the child class destructor. When closed, a modal must be destroyed,
-   * and this responsibility is not for this class because the child class must implement its own <code>destroy()</code>
-   * method, to unsubscribe to any events it has and to remove its internal properties.</blockquote>
+   * @description <blockquote>This method will close the modal by removing the modal overlay from the document body.
+   * When closed, a modal must be destroyed, and the child class must implement its own <code>destroy()</code> method,
+   * to unsubscribe to any events it has and to remove its internal properties.</blockquote>
    * @param {object} [event] - The click event, not mandatory to allow the closing of the modal outside of any event **/
   close(event) {
     // Must be overridden in child class to properly clean extension properties and events
@@ -150,6 +149,8 @@ class Modal {
       this._closeClickedEvtId = -1;
       // Remove the overlay from the body
       document.body.removeChild(this._modalOverlay);
+      // Use the child class destroy
+      this.destroy();
     }
   }
 

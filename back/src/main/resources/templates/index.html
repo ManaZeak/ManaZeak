@@ -29,13 +29,9 @@
         <p>Artists</p>
       </div>
       <div class="item-group">
-        <div id="userpage-button" class="item tooltip">
-          <img src="static/img/default/user.svg" alt="user-avatar"/>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.user}"></span>
-        </div>
-        <div id="wish-button" class="item tooltip desktop-only">
-          <img src="static/img/actions/wish.svg" alt="make-wish"/>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.wish}"></span>
+        <div id="menupage-button" class="item tooltip">
+          <img src="static/img/navigation/menu.svg" alt="menu-page"/>
+          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.menu}"></span>
         </div>
         <div class="item tooltip">
           <form method="post" th:action="@{/logout}">
