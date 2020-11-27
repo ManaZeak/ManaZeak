@@ -132,9 +132,23 @@ class Kom {
           } else {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
-        } else if (type === 'json' || type === 'text') { // Call are made using fetch API
+        } else if (type === 'text') {
           if (response.ok) {
-            resolve(response[type]());
+            resolve(response.text());
+          } else {
+            reject(this._getErrorCodeFromHTTPStatus(response.status));
+          }
+        } else if (type === 'json') { // Call are made using fetch API
+          // As specified with backend, response is JSON if success, HTML otherwise
+          if (response.ok) {
+            response.text().then(responseText => {
+              try {
+                const output = JSON.parse(responseText);
+                resolve(output);
+              } catch {
+                reject(responseText);
+              }
+            });
           } else {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
