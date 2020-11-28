@@ -344,7 +344,7 @@ class Kom {
     return new Promise((resolve, reject) => {
       // Create virtual form
       const form = document.createElement('FORM');
-      form.method = 'post';
+      form.method = 'POST';
       form.action = url;
       // Declare its virtual fields from sent data
       for (const key in data) {
@@ -358,7 +358,7 @@ class Kom {
       }
       // Build XHR with xsrf token
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", url);
+      xhr.open('POST', url);
       xhr.setRequestHeader('X-XSRF-TOKEN', this._csrfToken);
       // Register the state change event
       xhr.onreadystatechange = response => {
