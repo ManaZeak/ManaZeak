@@ -92,7 +92,7 @@ class WishModal extends Modal {
     // Avoid form submit default behavior
     event.preventDefault();
     // Calling the modal url in post allow its resolution
-    mzk.kom.post(this._url, {
+    mzk.kom.postForm(this._url, {
       content: this._rootElement.querySelector('#wish-content').value
     }).then(response => {
       // TODO send i18n info to logger (severity, type and message)

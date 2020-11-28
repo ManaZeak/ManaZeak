@@ -337,7 +337,7 @@ class Kom {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('POST', url, true);
-      xhr.setRequestHeader('X-CSRFToken', this._csrfToken);
+      xhr.setRequestHeader('X-SRFToken', this._csrfToken);
       xhr.overrideMimeType('text/plain; charset=x-user-defined');
       xhr.onreadystatechange = response => {
         if (response.target.readyState === 4) { // Ready state changed has reach the response state
@@ -350,6 +350,48 @@ class Kom {
         reject('F_KOM_XHR_ERROR')
       };
       xhr.send(JSON.stringify(data));
+    });
+  }
+
+
+  postForm(url, data) {
+    return new Promise((resolve, reject) => {
+      const form = document.createElement('FORM');
+      form.method = 'post';
+      form.action = url;
+
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const hiddenField = document.createElement('INPUT');
+          hiddenField.type = 'hidden';
+          hiddenField.name = key;
+          hiddenField.value = data[key];
+          form.appendChild(hiddenField);
+        }
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+      xhr.setRequestHeader('X-XSRF-TOKEN', this._csrfToken);
+
+      xhr.onreadystatechange = response => {
+        if (response.target.readyState === 4) { // Ready state changed has reach the response state
+          // As specified with backend, response is JSON if success, HTML otherwise
+          try {
+            const output = JSON.parse(response.target.response);
+            resolve(output);
+          } catch {
+            reject(response.target.response);
+          }
+        }
+      };
+
+      xhr.onerror = () => {
+        reject('F_KOM_XHR_ERROR')
+      };
+
+      const formData = new FormData(form);
+      xhr.send(formData);
     });
   }
 
