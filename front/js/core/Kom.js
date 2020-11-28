@@ -132,23 +132,9 @@ class Kom {
           } else {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
-        } else if (type === 'text') {
+        } else if (type === 'json' || type === 'text') { // Call are made using fetch API
           if (response.ok) {
-            resolve(response.text());
-          } else {
-            reject(this._getErrorCodeFromHTTPStatus(response.status));
-          }
-        } else if (type === 'json') { // Call are made using fetch API
-          // As specified with backend, response is JSON if success, HTML otherwise
-          if (response.ok) {
-            response.text().then(responseText => {
-              try {
-                const output = JSON.parse(responseText);
-                resolve(output);
-              } catch {
-                reject(responseText);
-              }
-            });
+            resolve(response[type]());
           } else {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
@@ -356,10 +342,11 @@ class Kom {
 
   postForm(url, data) {
     return new Promise((resolve, reject) => {
+      // Create virtual form
       const form = document.createElement('FORM');
       form.method = 'post';
       form.action = url;
-
+      // Declare its virtual fields from sent data
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const hiddenField = document.createElement('INPUT');
@@ -369,27 +356,29 @@ class Kom {
           form.appendChild(hiddenField);
         }
       }
-
+      // Build XHR with xsrf token
       const xhr = new XMLHttpRequest();
       xhr.open("POST", url);
       xhr.setRequestHeader('X-XSRF-TOKEN', this._csrfToken);
-
+      // Register the state change event
       xhr.onreadystatechange = response => {
         if (response.target.readyState === 4) { // Ready state changed has reach the response state
           // As specified with backend, response is JSON if success, HTML otherwise
           try {
+            // If we can parse as a JSON, everything went fine server side
             const output = JSON.parse(response.target.response);
             resolve(output);
           } catch {
+            // Otherwise, the server returns the template with its errors
             reject(response.target.response);
           }
         }
       };
-
+      // XHR error handling
       xhr.onerror = () => {
         reject('F_KOM_XHR_ERROR')
       };
-
+      // Create form data and send it through the XHR
       const formData = new FormData(form);
       xhr.send(formData);
     });
