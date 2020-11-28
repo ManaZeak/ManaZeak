@@ -108,7 +108,7 @@ class Kom {
     } else if (code === HttpStatusCode.INTERNAL_ERROR) {
       return 'B_KOM_INTERNAL_ERROR';
     } else {
-      return `B_KOM_UNKNOWN_ERROR_${code}`;
+      return `B_KOM_UNKNOWN_ERROR`;
     }
   }
 

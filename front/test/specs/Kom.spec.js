@@ -38,13 +38,14 @@ describe('Kom unit tests,', () => {
     // Properties value test
     expect(kom._csrfToken).toEqual('');
     expect(kom._headers).toEqual(
-      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-CSRFToken', '']]
+      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-XSRF-TOKEN', '']]
     );
     // Then check component validity that must fail (no csrf token set)
-    kom.checkValidity().catch(code => {
-      expect(code).toEqual('F_KOM_INIT_FAILED');
+    spyOn(console, 'error').and.callFake(error => {
+      expect(error).toEqual('F_KOM_NO_CSRF_TOKEN');
       done();
-    })
+    });
+    kom._checkValidity();
   });
 
 
@@ -53,12 +54,15 @@ describe('Kom unit tests,', () => {
     // Properties value test
     expect(kom._csrfToken).toEqual('test-csrf');
     expect(kom._headers).toEqual(
-      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-CSRFToken', 'test-csrf']]
+      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-XSRF-TOKEN', 'test-csrf']]
     );
+    spyOn(console, 'error').and.callThrough();
     // Then check component validity that must succeed
-    kom.checkValidity().then(() => {
+    kom._checkValidity();
+    setTimeout(() => {
+      expect(console.error).not.toHaveBeenCalled();
       done();
-    })
+    });
   });
 
 
@@ -78,13 +82,13 @@ describe('Kom unit tests,', () => {
     // Test method call with csrf cookie
     let kom = new Kom();
     expect(kom._createRequestHeaders()).toEqual(
-      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-CSRFToken', 'test-csrf']]
+      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-XSRF-TOKEN', 'test-csrf']]
     );
     // Test method call without csrf cookie
     clearCookies();
     kom = new Kom();
     expect(kom._createRequestHeaders()).toEqual(
-      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-CSRFToken', '']]
+      [['Content-Type','application/json; charset=UTF-8'],['Accept', 'application/json'],['X-XSRF-TOKEN', '']]
     );
     done();
   });
@@ -181,23 +185,21 @@ describe('Kom unit tests,', () => {
 
   it('Public method checkValidity', done => {
     let kom = new Kom();
-    // Valid configuration
-    kom.checkValidity().then(() => {
-      // Resolve mean Kom component is properly set, trivial test indeed.
-      expect(true).toBe(true);
+    let calls = 0;
+    spyOn(console, 'error').and.callFake(error => {
+      if (calls === 0) {
+        expect(error).toEqual('F_KOM_HEADERS_ERROR');
+      } else {
+        expect(error).toEqual('F_KOM_NO_CSRF_TOKEN');
+      }
+      ++calls;
     });
     // Wrong header formatting
-    kom = new Kom();
     kom._headers = 'Not a string';
-    kom.checkValidity().catch(error => {
-      expect(error).toEqual('F_KOM_INIT_FAILED');
-    });
+    kom._checkValidity();
     // No csrf token
     clearCookies()
     kom = new Kom();
-    kom.checkValidity().catch(error => {
-      expect(error).toEqual('F_KOM_INIT_FAILED');
-    });
     // End IT after a some ms, since method calls are async
     setTimeout(done, 100);
   });
