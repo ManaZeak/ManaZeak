@@ -61,6 +61,13 @@
     p {
       margin-bottom: 1rem;
       text-indent: 1rem;
+
+      &.error {
+        color: #FF6B67;
+        font-size: .9rem;
+        font-style: italic;
+        margin: 0;
+      }
     }
 
     form {
