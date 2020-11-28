@@ -6,8 +6,9 @@ import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.modal.ModalFragmentEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 /* FIXME */
+
 /**
- * Allows to display the main page to the users.
+ * Allows to display the modals to the users.
  */
 @FragmentController
 public class ModalController {

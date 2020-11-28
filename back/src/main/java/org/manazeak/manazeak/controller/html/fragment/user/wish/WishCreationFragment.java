@@ -3,16 +3,14 @@ package org.manazeak.manazeak.controller.html.fragment.user.wish;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
-import org.manazeak.manazeak.controller.page.GeneralFragmentEnum;
+import org.manazeak.manazeak.controller.page.response.ResponseFragmentEnum;
 import org.manazeak.manazeak.controller.page.user.wish.WishFragmentEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
+import org.manazeak.manazeak.service.message.MessageManager;
 import org.manazeak.manazeak.service.security.user.wish.WishService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,8 +25,14 @@ public class WishCreationFragment {
      */
     private final WishService wishService;
 
-    public WishCreationFragment(WishService wishService) {
+    /**
+     * Manager for manipulating messages.
+     */
+    private final MessageManager messageManager;
+
+    public WishCreationFragment(WishService wishService, MessageManager messageSource) {
         this.wishService = wishService;
+        this.messageManager = messageSource;
     }
 
     /**
@@ -51,14 +55,16 @@ public class WishCreationFragment {
      */
     @RestSecurity(PrivilegeEnum.WISH)
     @PostMapping("/wish")
-    public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result) {
+    public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result, Model model) {
         // Returning into the modal of wish creation.
         if (result.hasErrors()) {
             return WishFragmentEnum.WISH_CREATION.getPage();
         }
         // Creating a wish for the user.
         wishService.saveCurrentUserWish(wish);
-        // Returns an empty fragment in case of success.
-        return GeneralFragmentEnum.EMPTY_PAGE.getPage();
+        model.addAttribute("message", messageManager.getMessage("user.wish.success"));
+        model.addAttribute("title", messageManager.getMessage("user.wish.title"));
+        // Returns a JSON with the status.
+        return ResponseFragmentEnum.EMPTY_PAGE.getPage();
     }
 }
