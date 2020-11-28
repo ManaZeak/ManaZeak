@@ -62,8 +62,8 @@ public class WishCreationFragment {
         }
         // Creating a wish for the user.
         wishService.saveCurrentUserWish(wish);
-        model.addAttribute("message", messageManager.getMessage("user.wish.success"));
-        model.addAttribute("title", messageManager.getMessage("user.wish.title"));
+        model.addAttribute("title", messageManager.getMessage("modal.wish.log.title"));
+        model.addAttribute("message", messageManager.getMessage("modal.wish.log.message"));
         // Returns a JSON with the status.
         return ResponseFragmentEnum.SUCCESS_RESPONSE.getPage();
     }

@@ -95,8 +95,7 @@ class WishModal extends Modal {
     mzk.kom.postForm(this._url, {
       content: this._rootElement.querySelector('#wish-content').value
     }).then(response => {
-      // TODO send i18n info to logger (severity, type and message)
-      console.log(response);
+      Logger.raise(response);
       this.close();
     }).catch(response => {
       // Parse new modal content as DOM object

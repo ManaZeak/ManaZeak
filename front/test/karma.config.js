@@ -6,7 +6,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     client: {
       jasmine: {
-        random: !config.dev // Randomized in !dev mode
+        random: false
       }
     },
     files: [

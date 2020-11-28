@@ -104,6 +104,10 @@ class Logger {
           severity = 'error';
           title = `JavaScript error`;
           message = `${error.message} in file ${filename}`;
+        } else if (error.severity && error.title && error.message) {
+          severity = error.severity || '';
+          title = error.title || '';
+          message = error.message || '';
         } else { // Unknown error that do not require any arguments
           severity = 'error';
           title = `Unexpected error ${error}`;

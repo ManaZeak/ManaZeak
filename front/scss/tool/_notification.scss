@@ -1,0 +1,277 @@
+:root {
+  /* Usefull classes and styles */
+  --notification-font-size: 14px;
+  --notification-line-spacing: calc(var(--notification-font-size) * 1.4);
+  --notification-border-radius: 2px;
+  --notification-border-thickness: 1px;
+  /* Colors */
+  --notification-color-dark-text: rgb(20, 20, 20);
+  --notification-color-dark-border: rgb(20, 20, 20);
+  --notification-color-info: rgb(3, 169, 244);
+  --notification-color-info-light: rgba(3, 169, 244, .25);
+  --notification-color-info-lighter: rgb(205, 238, 253);
+  --notification-color-success: rgb(76, 175, 80);
+  --notification-color-success-light: rgba(76, 175, 80, .25);
+  --notification-color-success-lighter: rgb(219, 239, 220);
+  --notification-color-warning: rgb(255, 152, 0);
+  --notification-color-warning-light: rgba(255, 152, 0, .25);
+  --notification-color-warning-lighter: rgb(255, 234, 204);
+  --notification-color-error: rgb(244, 67, 54);
+  --notification-color-error-light: rgba(244, 67, 54, .25);
+  --notification-color-error-lighter: rgb(253, 217, 215);
+  /* Notification specific variables */
+  --notification-max-width: 345px;
+  --notification-min-width: 200px;
+  --notification-icon: 25px;
+  --notification-counter-size: 18px;
+  --notification-padding: 12px;
+  --notification-margin: 10px;
+  --notification-border-thick: 3px;
+  --notification-border-std: 1px;
+}
+
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+  -moz-user-select: $value;
+  user-select: $value;
+}
+
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  transition: $transition;
+}
+
+@mixin box-shadow($shadow, $r, $g, $b, $a) {
+  -webkit-box-shadow: $shadow rgba($r, $g, $b, $a);
+  -moz-box-shadow: $shadow rgba($r, $g, $b, $a);
+  box-shadow: $shadow rgba($r, $g, $b, $a);
+}
+
+/* Notification style code begin here */
+.notification-container {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  font-family: Helvetica, sans-serif;
+  font-size: var(--notification-font-size);
+  height: auto;
+  line-height: var(--notification-line-spacing);
+  position: fixed;
+  width: auto;
+  z-index: 999;
+
+  &.top-left {
+    left: 0;
+    top: 0;
+  }
+
+  &.top-right {
+    right: 0;
+    top: 0;
+  }
+
+  &.bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+
+  &.bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.notification {
+  align-items: center;
+  border-radius: var(--notification-border-radius);
+  color: black;
+  cursor: pointer;
+  display: flex;
+  font-size: .9em;
+  height: auto;
+  margin: var(--notification-margin);
+  min-width: var(--notification-min-width);
+  opacity: 0;
+  padding: var(--notification-padding);
+  position: relative;
+  width: fit-content;
+  z-index: 999;
+
+  @include box-shadow(0 0 var(--notification-margin), 0, 0, 0, .2);
+  @include transition(opacity 1s ease .5s);
+  @include user-select(none);
+
+  &:nth-child(n + 2) {
+    margin-top: var(--notification-padding);
+  }
+
+  div, span, h1, h2, h3, h4, h5, h6, p {
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--notification-color-dark-text);
+    font-weight: bold;
+  }
+
+  .vector-container {
+    align-self: baseline;
+    height: var(--notification-icon);
+    margin: 0;
+    width: var(--notification-icon);
+
+    svg {
+      height: var(--notification-icon);
+      width: var(--notification-icon);
+    }
+  }
+
+  .text-container {
+    padding: 0 var(--notification-padding);
+    margin-right: var(--notification-margin);
+    text-align: justify;
+
+    h6,
+    p {
+      margin-bottom: calc(var(--notification-padding) / 2);
+      max-width: calc(var(--notification-max-width) - (2 * var(--notification-margin)) - (4 * var(--notification-padding)) - var(--notification-icon) - (2 * var(--notification-border-thickness)));
+      word-wrap: break-word;
+    }
+
+    p {
+      font-size: .9em;
+      line-height: 1.4em;
+      margin: 0;
+      margin-bottom: calc(var(--notification-padding) / 2);
+
+      &.iconless-width {
+        max-width: calc(var(--notification-max-width) - (2 * var(--notification-margin)) - (4 * var(--notification-padding)) - (2 * var(--notification-border-thickness)));
+      }
+    }
+
+    button {
+      background-color: transparent;
+      border: var(--notification-border-thickness) solid var(--notification-color-dark-border);
+      border-radius: var(--notification-border-radius);
+      cursor: pointer;
+      font-size: .9em;
+      margin-bottom: 0;
+      padding: calc(var(--notification-padding) / 2) var(--notification-padding);
+    }
+  }
+
+  &.left-border,
+  &.right-border {
+    h6,
+    p {
+      max-width: calc(var(--notification-max-width) - (2 * var(--notification-margin)) - (4 * var(--notification-padding)) - var(--notification-icon) - (var(--notification-border-thickness) + var(--notification-border-thickness)));
+      &.iconless-width {
+        max-width: calc(var(--notification-max-width) - (2 * var(--notification-margin)) - (4 * var(--notification-padding)) - (var(--notification-border-thickness) + var(--notification-border-thickness)));
+      }
+    }
+  }
+
+  .counter {
+    align-items: center;
+    border-radius: 50%;
+    color: var(--notification-color-dark-text);
+    display: flex;
+    font-size: .85em;
+    height: var(--notification-counter-size);
+    justify-content: center;
+    left: -7px;
+    line-height: 100%;
+    position: absolute;
+    top: -5px;
+    width: var(--notification-counter-size);
+  }
+
+  .close {
+    cursor: pointer;
+    position: absolute;
+    right: var(--notification-margin);
+    top: calc(var(--notification-margin) / 2);
+  }
+
+  &.info {
+    background-color: var(--notification-color-info-lighter);
+    border: solid var(--notification-border-std) var(--notification-color-info-light);
+
+    & > .close {
+      color: var(--notification-color-info);
+    }
+
+    & > .counter {
+      background: var(--notification-color-info)-lighter;
+      border: solid var(--notification-border-std) var(--notification-color-info);
+    }
+
+    &.top-border { border-top: solid var(--notification-border-thick) var(--notification-color-info); }
+    &.bottom-border { border-bottom: solid var(--notification-border-thick) var(--notification-color-info); }
+    &.left-border { border-left: solid var(--notification-border-thick) var(--notification-color-info); }
+    &.right-border { border-right: solid var(--notification-border-thick) var(--notification-color-info); }
+  }
+
+  &.success {
+    background-color: var(--notification-color-success-lighter);
+    border: solid var(--notification-border-std) var(--notification-color-success-light);
+
+    & > .close {
+      color: var(--notification-color-success);
+    }
+
+    & > .counter {
+      background: var(--notification-color-success-lighter);
+      border: solid var(--notification-border-std) var(--notification-color-success);
+    }
+
+    &.top-border { border-top: solid var(--notification-border-thick) var(--notification-color-success); }
+    &.bottom-border { border-bottom: solid var(--notification-border-thick) var(--notification-color-success); }
+    &.left-border { border-left: solid var(--notification-border-thick) var(--notification-color-success); }
+    &.right-border { border-right: solid var(--notification-border-thick) var(--notification-color-success); }
+  }
+
+  &.warning {
+    background-color: var(--notification-color-warning-lighter);
+    border: solid var(--notification-border-std) var(--notification-color-warning-light);
+
+    & > .close {
+      color: var(--notification-color-warning);
+    }
+
+    & > .counter {
+      background: var(--notification-color-warning-lighter);
+      border: solid var(--notification-border-std) var(--notification-color-warning);
+    }
+
+    &.top-border { border-top: solid var(--notification-border-thick) var(--notification-color-warning); }
+    &.bottom-border { border-bottom: solid var(--notification-border-thick) var(--notification-color-warning); }
+    &.left-border { border-left: solid var(--notification-border-thick) var(--notification-color-warning); }
+    &.right-border { border-right: solid var(--notification-border-thick) var(--notification-color-warning); }
+  }
+
+  &.error {
+    background-color: var(--notification-color-error-lighter);
+    border: solid var(--notification-border-std) var(--notification-color-error-light);
+
+    & > .close {
+      color: var(--notification-color-error);
+    }
+
+    & > .counter {
+      background: var(--notification-color-error-lighter);
+      border: solid var(--notification-border-std) var(--notification-color-error);
+    }
+
+    &.top-border { border-top: solid var(--notification-border-thick) var(--notification-color-error); }
+    &.bottom-border { border-bottom: solid var(--notification-border-thick) var(--notification-color-error); }
+    &.left-border { border-left: solid var(--notification-border-thick) var(--notification-color-error); }
+    &.right-border { border-right: solid var(--notification-border-thick) var(--notification-color-error); }
+  }
+}
