@@ -65,6 +65,6 @@ public class WishCreationFragment {
         model.addAttribute("message", messageManager.getMessage("user.wish.success"));
         model.addAttribute("title", messageManager.getMessage("user.wish.title"));
         // Returns a JSON with the status.
-        return ResponseFragmentEnum.EMPTY_PAGE.getPage();
+        return ResponseFragmentEnum.SUCCESS_RESPONSE.getPage();
     }
 }
