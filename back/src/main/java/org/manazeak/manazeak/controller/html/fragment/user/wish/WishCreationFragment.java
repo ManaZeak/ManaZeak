@@ -51,10 +51,9 @@ public class WishCreationFragment {
      */
     @RestSecurity(PrivilegeEnum.WISH)
     @PostMapping("/wish")
-    public String saveUserWish(@RequestBody @Valid UserWishDto wish, BindingResult result, Model model) {
+    public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result) {
         // Returning into the modal of wish creation.
         if (result.hasErrors()) {
-            model.addAttribute("wish", new UserWishDto());
             return WishFragmentEnum.WISH_CREATION.getPage();
         }
         // Creating a wish for the user.
