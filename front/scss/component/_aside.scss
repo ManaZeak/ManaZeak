@@ -65,8 +65,8 @@
       text-align: center;
 
       p {
-        font-size: .9rem;
         margin: 0;
+        font-size: var(--mzk-font-size-small);
         font-style: italic;
         @include text-ellipsis();
 

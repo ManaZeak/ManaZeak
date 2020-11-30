@@ -1,14 +1,24 @@
-<div class="user" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
-  <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
-  <span th:if="*{user.avatar == null}">
-    <!-- User doesn't have an avatar. Displaying default -->
-    <img src="static/img/default/user.svg" alt="user-avatar">
-  </span>
-  <span th:unless="*{user.avatar == null}">
-    <!-- User do have an avatar -->
-    <img th:src='*{"/resources/avatars/"+user.avatar}' alt="user-avatar">
-  </span>
-  <p th:text="*{user.username}">username</p>
-  <p th:text="*{user.roleValue}"></p>
-  <p th:text="*{user.creationDate}"></p>
+<div class="user-list-wrapper">
+  <div class="users-wrapper">
+    <div class="user-container" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
+      <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
+      <span th:if="*{user.avatar == null}">
+        <!-- User doesn't have an avatar. Displaying default -->
+        <img src="static/img/default/user.svg" alt="user-avatar">
+      </span>
+      <span th:unless="*{user.avatar == null}">
+        <!-- User do have an avatar -->
+        <img th:src='*{"/resources/avatars/"+user.avatar}' alt="user-avatar">
+      </span>
+      <p th:text="*{user.username}">username</p>
+      <p th:text="*{user.roleValue}"></p>
+      <p th:text="*{user.creationDate}"></p>
+    </div>
+  </div>
+  <div class="badge-container">
+    <!-- TODO fill with badges, with name and color, maybe an edit button ? -->
+    <div class="new badge">
+      <img src="static/img/navigation/expand.svg" alt="new-badge">
+    </div>
+  </div>
 </div>

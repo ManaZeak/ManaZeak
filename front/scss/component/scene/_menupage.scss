@@ -38,6 +38,10 @@
           transform: rotate(2deg);
         }
       }
+
+      p {
+        padding-left: var(--mzk-padding);
+      }
     }
   }
 }

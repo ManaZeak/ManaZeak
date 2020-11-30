@@ -8,6 +8,21 @@
 /* Make sizes be true sizes */
 * {
   box-sizing: border-box;
+  /* Firefox scroll bar restyle */
+  scrollbar-width: thin;
+  scrollbar-color: var(--mzk-color-scrollbar) transparent;
+}
+/* Webkit based scroll bar style */
+*::-webkit-scrollbar {
+  width: .6rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--mzk-color-scrollbar);
 }
 /* Global set for html and body tag to have unified platform across pages */
 html, body {
@@ -146,7 +161,7 @@ form {
 }
 
 .scene-wrapper {
-  background-image: linear-gradient(var(--mzk-color-bg-lighter), var(--mzk-color-bg-darker) 85%);
+  background-image: linear-gradient(var(--mzk-color-bg-lighter), var(--mzk-color-bg-darker));
   height: calc(100% - var(--mzk-footbar-height));
 }
 

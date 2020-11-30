@@ -202,6 +202,8 @@
   --mzk-color-text-darker-alpha-10: var(--color-text-darker-alpha-10);
   --mzk-color-icons: var(--mzk-color-text-darker);
   --mzk-color-border: var(--mzk-color-text-darker);
+
+  --mzk-color-scrollbar: var(--mzk-color-icons);
 }
 
 .light-theme {
@@ -283,4 +285,6 @@
   --mzk-color-text-darker-alpha-10: var(--color-bg-darker-alpha-10);
   --mzk-color-icons: var(--mzk-color-bg-darker);
   --mzk-color-border: var(--mzk-color-bg-darker);
+
+  --mzk-color-scrollbar: var(--mzk-color-icons);
 }
