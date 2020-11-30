@@ -58,7 +58,9 @@ class MenuPageView extends SceneView {
 
   _adminClicked() {
     mzk.setView({
-      name: 'AdminPage'
+      name: 'AdminPage', // To use in ViewFactory
+      type: 'admin', // To retrieve DOm elements
+      url: '/fragment/admin/'
     });
   }
 

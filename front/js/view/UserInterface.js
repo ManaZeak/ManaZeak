@@ -67,9 +67,11 @@ class UserInterface {
 
   getFragment(url) {
     return new Promise((resolve, reject) => {
-      mzk.kom.getText(url)
+      this.startLoading()
+        .then(mzk.kom.getText.bind(mzk.kom, url))
         .then(resolve)
-        .catch(reject);
+        .catch(reject)
+        .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens
     });
   }
 
