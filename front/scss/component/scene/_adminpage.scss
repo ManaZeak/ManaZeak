@@ -1,0 +1,42 @@
+.admin-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .admin-tabs {
+    align-items: flex-end;
+    border-bottom: solid 1px var(--mzk-color-text-alpha-10);
+    display: flex;
+    height: calc(var(--mzk-font-size) * 3);
+    justify-content: center;
+    width: 80%;
+
+    p {
+      border-bottom: solid 2px transparent;
+      cursor: pointer;
+      height: calc(var(--mzk-font-size) * 2);
+      padding: 0 var(--mzk-padding-huge);
+      margin: 0;
+      transition: border .3s;
+
+      &.selected {
+        border-bottom: solid 2px red;
+      }
+    }
+  }
+
+  .admin-view {
+    height: calc(100% - (var(--mzk-font-size) * 3));
+    width: 100%;
+
+    .user {
+      align-items: center;
+      background-color: var(--mzk-color-bg-light);
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      margin: 10px;
+      padding: 20px;
+    }
+  }
+}

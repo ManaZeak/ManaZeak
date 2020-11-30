@@ -2,6 +2,7 @@
   align-items: center;
   background-color: var(--mzk-color-bg-darker-alpha-75);
   display: flex;
+  font-size: var(--mzk-font-size);
   height: 100%;
   justify-content: center;
   left: 0;
@@ -15,7 +16,7 @@
   background: var(--mzk-color-bg);
   border-radius: 5px;
   box-shadow: 0 0 .3rem var(--mzk-color-primary-alpha-50);
-  max-width: 85%;
+  max-width: 66rem;
   min-width: 20%;
   position: relative;
   text-align: justify;
@@ -24,13 +25,13 @@
   .header {
     align-items: center;
     display: flex;
-    height: 4rem;
+    height: 6rem;
     justify-content: center;
     position: relative;
     text-align: center;
 
     p { // The modal title
-      font-size: 1.3rem;
+      font-size: var(--mzk-font-size-big);
       margin: 0;
     }
 
@@ -54,17 +55,16 @@
     background-color: var(--mzk-color-bg-galaxy);
     display: flex;
     flex-direction: column;
-    height: calc(100% - 8rem);
+    height: calc(100% - 12rem);
     justify-content: center;
-    padding: 1rem;
+    padding: var(--mzk-padding-big);
 
     p {
-      margin-bottom: 1rem;
+      margin-bottom: var(--mzk-font-size);
       text-indent: 1rem;
 
       &.error {
         color: #FF6B67;
-        font-size: .9rem;
         font-style: italic;
         margin: 0;
       }
@@ -87,7 +87,7 @@
   .footer {
     align-items: center;
     display: flex;
-    height: 4rem;
+    height: 6rem;
     justify-content: center;
 
     button {

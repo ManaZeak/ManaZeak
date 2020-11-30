@@ -1,14 +1,24 @@
 <div class="menu-page" xmlns:th="http://www.thymeleaf.org">
-  <div id="userpage-button" class="item">
-    <img src="static/img/default/user.svg" alt="user-avatar"/>
-    <span th:text="#{menu.user}"></span>
+  <div class="title-container">
+    <h1>ManaZeak war room</h1>
+    <p>Some text to put yeah</p>
   </div>
-  <div id="wish-button" class="item">
-    <img src="static/img/actions/wish.svg" alt="make-wish"/>
-    <span th:text="#{menu.wish}"></span>
-  </div>
-  <div id="about-button" class="item">
-    <img src="static/img/actions/info.svg" alt="about-mzk"/>
-    <span th:text="#{menu.about}"></span>
+  <div class="control-container">
+    <div id="admin-button" class="item"> <!-- TODO make available if user is admin only -->
+      <img src="static/img/actions/option-gear.svg" alt="admin-button"/>
+      <span th:text="#{menu.admin}"></span>
+    </div>
+    <div id="userpage-button" class="item">
+      <img src="static/img/default/user.svg" alt="user-avatar"/>
+      <span th:text="#{menu.user}"></span>
+    </div>
+    <div id="wish-button" class="item">
+      <img src="static/img/actions/wish.svg" alt="make-wish"/>
+      <span th:text="#{menu.wish}"></span>
+    </div>
+    <div id="about-button" class="item">
+      <img src="static/img/actions/info.svg" alt="about-mzk"/>
+      <span th:text="#{menu.about}"></span>
+    </div>
   </div>
 </div>

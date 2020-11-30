@@ -26,7 +26,7 @@ public class WishAdminFragment {
      * @param model The spring model.
      */
     @Security(PrivilegeEnum.WISR)
-    @GetMapping("/all-wishes")
+    @GetMapping("/admin/wish/all")
     public String getAllWishes(Model model) {
         model.addAttribute("wishes", wishService.getAllWishes());
         return AdminFragmentEnum.WISH_LIST.getPage();

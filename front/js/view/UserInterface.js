@@ -65,6 +65,15 @@ class UserInterface {
   }
 
 
+  getFragment(url) {
+    return new Promise((resolve, reject) => {
+      mzk.kom.getText(url)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
   /*  --------------------------------------------------------------------------------------------------------------- */
   /*  ----------------------------------------  LOADING OVERLAY METHODS  -------------------------------------------  */
   /*                                                                                                                  */

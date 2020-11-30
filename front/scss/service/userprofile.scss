@@ -1,6 +1,7 @@
 /* Style service for user profile fragment */
 .user-profile-view {
   display: flex;
+  font-size: var(--mzk-font-size);
   height: 100%;
   justify-content: center;
   width: 100%;
@@ -24,7 +25,6 @@
       }
 
       p {
-        font-size: 1.3rem;
         font-weight: bold;
         margin: 0;
         margin-top: 1rem;
@@ -38,7 +38,7 @@
       text-align: center;
 
       label {
-        font-size: .9rem;
+        font-size: var(--mzk-font-size-small);
         font-style: italic;
       }
 

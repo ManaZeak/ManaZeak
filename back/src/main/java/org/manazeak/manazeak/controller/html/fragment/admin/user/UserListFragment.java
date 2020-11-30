@@ -27,7 +27,7 @@ public class UserListFragment {
      * @return The fragment.
      */
     @Security(PrivilegeEnum.ADMV)
-    @GetMapping("/user-list")
+    @GetMapping("/admin/user-list")
     public String getUserListFragment(Model model) {
         // Adding the list of users to the model.
         model.addAttribute("users", adminUserService.getUserList());

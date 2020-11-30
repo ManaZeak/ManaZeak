@@ -20,7 +20,7 @@ class Mzk {
 
   setView(options) {
     this.ui.setSceneView(options).then(() => {
-      console.log('view instantiaded');
+      console.log('view instantiated');
     }).catch(error => {
       Logger.raise(error);
     });
@@ -32,6 +32,18 @@ class Mzk {
       console.log('modal created');
     }).catch(error => {
       Logger.raise(error);
+    });
+  }
+
+
+  getFragment(options) {
+    return new Promise((resolve, reject) => {
+      this.ui.getFragment(options).then(response => {
+        console.log('fragment fetched');
+        resolve(response);
+      }).catch(error => {
+        reject(error);
+      });
     });
   }
 
