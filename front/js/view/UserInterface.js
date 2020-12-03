@@ -23,8 +23,7 @@ class UserInterface {
      * @member {object} - The DOM loading overlay to use in transitions */
     this._loadingOverlay = null;
     // Build loading overlay and add its style class
-    this._loadingOverlay = document.createElement('DIV');
-    this._loadingOverlay.className = 'mzk-loading-overlay';
+    this._loadingOverlay = document.getElementById('mzk-loading-overlay');
   }
 
 
@@ -67,11 +66,9 @@ class UserInterface {
 
   getFragment(url) {
     return new Promise((resolve, reject) => {
-      this.startLoading()
-        .then(mzk.kom.getText.bind(mzk.kom, url))
+      mzk.kom.getText(url) // The loading overlay must be handled caller, since fragment is only a part of viewport
         .then(resolve)
         .catch(reject)
-        .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens
     });
   }
 

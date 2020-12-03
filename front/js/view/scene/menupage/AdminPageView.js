@@ -10,6 +10,7 @@ class AdminPageView extends TabView {
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))
       .then(this._viewReady)
+      .then(this._usersClicked.bind(this))
       .catch(error => {
         Logger.raise(error);
       });
@@ -30,27 +31,16 @@ class AdminPageView extends TabView {
 
   _events() {
     super._events();
-    this._usersClicked();
   }
 
 
   _usersClicked() {
-    this._viewContainer.innerHTML = '';
-    this._fetchFragment('/fragment/admin/user-list').then(response => {
-      this._viewContainer.innerHTML = response;
-    }).catch(error => {
-      Logger.raise(error);
-    });
+    this._fetchViewFragment('/fragment/admin/user-list');
   }
 
 
   _wishesClicked() {
-    this._viewContainer.innerHTML = '';
-    this._fetchFragment('/fragment/admin/wish/all').then(response => {
-      this._viewContainer.innerHTML = response;
-    }).catch(error => {
-      Logger.raise(error);
-    });
+    this._fetchViewFragment('/fragment/admin/wish/all');
   }
 
 

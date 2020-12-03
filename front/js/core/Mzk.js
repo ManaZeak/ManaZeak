@@ -15,6 +15,7 @@ class Mzk {
   initSession() {
     this.kom = new Kom();
     this.ui = new UserInterface();
+    this.ui.stopLoading();
   }
 
 

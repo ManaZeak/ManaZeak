@@ -14,6 +14,12 @@ class TabView extends SceneView {
     this._tabClickedEvtIds = [];
 
     this._viewContainer = null;
+    /** @private
+     * @member {object} - The DOM loading overlay to use in transitions */
+    this._loadingOverlay = null;
+    // Build loading overlay and add its style class
+    this._loadingOverlay = document.createElement('DIV');
+    this._loadingOverlay.className = 'mzk-loading-overlay fit-parent';
   }
 
 
@@ -51,16 +57,34 @@ class TabView extends SceneView {
       this._tabs.children[i].classList.remove('selected');
     }
   }
+  
+
+  _fetchViewFragment(url) {
+    this._viewContainer.innerHTML = '';
+    this.startLoading()
+      .then(mzk.getFragment.bind(mzk, url))
+      .then(response => {
+        this._viewContainer.insertAdjacentHTML( 'beforeend', response);
+      })
+      .catch(Logger.raise.bind(Logger))
+      .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens;
+  }
 
 
-  _fetchFragment(url) {
-    return new Promise((resolve, reject) => {
-      mzk.getFragment(url)
-        .then(resolve)
-        .catch(reject);
+  startLoading() {
+    return new Promise(resolve => {
+      this._viewContainer.appendChild(this._loadingOverlay);
+      requestAnimationFrame(resolve);
     });
   }
 
+
+  stopLoading() {
+    return new Promise(resolve => {
+      this._viewContainer.removeChild(this._loadingOverlay);
+      requestAnimationFrame(resolve);
+    });
+  }
 
 }
 
