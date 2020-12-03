@@ -39,7 +39,6 @@ class UserPageView extends SceneView {
 
   _events() {
     return new Promise((resolve, reject) => {
-      console.log('da')
       this._switchThemeEvtId = Events.addEvent('click', this.dom.querySelector('#theme-switch'), this._switchTheme, this);
       resolve();
     });
@@ -47,7 +46,6 @@ class UserPageView extends SceneView {
 
 
   _switchTheme() {
-    console.log('ZEAZ')
     if (this._theme === 'DARK') {
       this._theme = 'LIGHT';
       document.body.classList.remove('dark-theme');

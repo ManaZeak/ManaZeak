@@ -52,23 +52,4 @@
   .user-pref {
 
   }
-
-  .button-container {
-    display: flex;
-    height: var(--mzk-aside-size);
-    justify-content: flex-end;
-
-    .item {
-      align-content: center;
-      display: flex;
-      height: var(--mzk-aside-size);
-      justify-content: center;
-      width: var(--mzk-aside-size);
-    }
-
-    img {
-      max-height: 85%;
-      max-width: 85%;
-    }
-  }
 }

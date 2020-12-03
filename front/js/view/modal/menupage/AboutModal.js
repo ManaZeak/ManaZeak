@@ -17,10 +17,10 @@ class AboutModal extends Modal {
     super(options);
     /** @private
      * @member {object} - The modal close button */
-    this._closeButton = null;
+    this._footerCloseButton = null;
     /** @private
      * @member {number} - The event ID for the close button clicked */
-    this._closeEvtId = -1;
+    this._footerCloseEvtId = -1;
   }
 
 
@@ -33,7 +33,7 @@ class AboutModal extends Modal {
    * @description <blockquote>This method will destroy the Modal parent (see documentation).</blockquote> **/
   destroy() {
     super.destroy();
-    Events.removeEvent(this._closeEvtId);
+    Events.removeEvent(this._footerCloseEvtId);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -52,7 +52,7 @@ class AboutModal extends Modal {
    * @description <blockquote>This method doesn't do anything, the about modal is only for reading.</blockquote> **/
   _fillAttributes() {
     // The modal doesn't contain any interaction with user inputs
-    this._closeButton = this._rootElement.querySelector('#close-button');
+    this._footerCloseButton = this._rootElement.querySelector('#modal-footer-close');
     this._events();
   }
 
@@ -66,7 +66,7 @@ class AboutModal extends Modal {
    * @description <blockquote>This method will listen to any click on the submit button to process the textarea
    * content to send it to the backend if needed.</blockquote> **/
   _events() {
-    this._closeEvtId = Events.addEvent('click', this._closeButton, this.close, this);
+    this._footerCloseEvtId = Events.addEvent('click', this._footerCloseButton, this.close, this);
   }
 
 
