@@ -4,6 +4,9 @@ import org.manazeak.manazeak.daos.security.BadgeDAO;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
 import org.manazeak.manazeak.entity.security.Badge;
+import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
+import org.manazeak.manazeak.service.security.user.UserManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +22,11 @@ public class BadgeManager {
      */
     private final BadgeDAO badgeDAO;
 
-    public BadgeManager(BadgeDAO badgeDAO) {
+    private final UserManager userManager;
+
+    public BadgeManager(BadgeDAO badgeDAO, UserManager userManager) {
         this.badgeDAO = badgeDAO;
+        this.userManager = userManager;
     }
 
     /**
@@ -43,6 +49,34 @@ public class BadgeManager {
         // Getting the list of the badges.
         List<Badge> badges = badgeDAO.getAllBadges();
         return BadgeHelper.convertBadges(badges);
+    }
+
+    /**
+     * Get a badge with the badge id throw a {@link MzkObjectNotFoundException} if no object where found.
+     *
+     * @param badgeId The badge id.
+     * @return The badge found in the database.
+     */
+    public Badge getBadge(Long badgeId) {
+        return badgeDAO.findById(badgeId).orElseThrow(() ->
+                new MzkObjectNotFoundException("No wish found in database for id :" + badgeId,
+                        "user.wish.error.not_found", "user.wish.error.not_found_title")
+        );
+    }
+
+    /**
+     * Associate a user to a badge
+     *
+     * @param userId  The user id that will be linked to the badge.
+     * @param badgeId The badge id that will be linked to the user.
+     */
+    public void associateUserToBadge(Long userId, Long badgeId) {
+        // Getting the badge
+        Badge badge = getBadge(badgeId);
+        MzkUser user = userManager.getUserById(userId);
+        // Adding the user to the badge.
+        badge.getMzkUserList().add(user);
+        badgeDAO.save(badge);
     }
 
 }

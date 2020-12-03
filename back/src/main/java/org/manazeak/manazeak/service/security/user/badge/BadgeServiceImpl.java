@@ -42,6 +42,6 @@ public class BadgeServiceImpl implements BadgeService {
      */
     @Override
     public void associateBadgeToUser(Long userId, Long badgeId) {
-
+        badgeManager.associateUserToBadge(userId, badgeId);
     }
 }

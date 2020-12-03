@@ -1,5 +1,8 @@
 package org.manazeak.manazeak.exception;
 
+import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,27 +10,34 @@ import java.util.Set;
 /**
  * This exception is used by the errors in the WS controller.
  */
-public class MzkRestException extends Exception {
+public class MzkRestException extends RuntimeException {
 
-    private final Set<String> messages = new HashSet<>();
+    private final Set<NotificationDto> notifications = new HashSet<>();
 
     /**
-     * Create an exception.
+     * Create an exception with no message
      */
     public MzkRestException() {
+
     }
 
     /**
      * Create an exception with only one message.
      *
-     * @param message The message contained in the exception.
+     * @param titleCode the code of the string for the notification title.
+     * @param messageCode the code of the string for the notification message.
+     * @param severity the serveity of the notification.
      */
-    public MzkRestException(String message) {
-        messages.add(message);
+    public MzkRestException(String titleCode, String messageCode, NotificationSeverityEnum severity) {
+        NotificationDto notification = new NotificationDto();
+        notification.setTitleKey(titleCode);
+        notification.setMessageKey(messageCode);
+        notification.setSeverity(severity);
+        notifications.add(notification);
     }
 
-    public Set<String> getMessages() {
-        return messages;
+    public Set<NotificationDto> getNotifications() {
+        return notifications;
     }
 
     /**
@@ -35,8 +45,8 @@ public class MzkRestException extends Exception {
      *
      * @param message the exception message to add.
      */
-    public void addMessage(String message) {
-        messages.add(message);
+    public void addNotification(NotificationDto message) {
+        notifications.add(message);
     }
 
     /**
@@ -44,7 +54,7 @@ public class MzkRestException extends Exception {
      *
      * @param messages the messages to add into the exception.
      */
-    public void addMessages(List<String> messages) {
-        this.messages.addAll(messages);
+    public void addNotifications(List<NotificationDto> messages) {
+        this.notifications.addAll(messages);
     }
 }

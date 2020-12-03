@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.manazeak.manazeak.configuration.security.SecurityUtil;
+import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,8 @@ public class RestSecurityAspect {
             return pjp.proceed(pjp.getArgs());
         } else {
             // Throwing exception for the controller.
-            throw new MzkRestException("error.permission.fail");
+            throw new MzkRestException("error.permission.notification.title", "error.permission.notification.message",
+                    NotificationSeverityEnum.ERROR);
         }
     }
 }

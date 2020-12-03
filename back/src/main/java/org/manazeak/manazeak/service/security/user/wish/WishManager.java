@@ -50,6 +50,7 @@ public class WishManager {
      */
     public List<UserWishListLineDto> getAllWishes() {
         List<UserWishListLineDto> wishes = new ArrayList<>();
+        // FIXME: faire plusieurs liste, une pour les pending et une autre pour les acceptés et les refusés.
         for (Wish wish : wishDAO.findAll()) {
             UserWishListLineDto wishLine = new UserWishListLineDto();
             wishLine.setWishId(wish.getWishId());

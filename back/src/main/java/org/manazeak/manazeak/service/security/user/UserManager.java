@@ -10,6 +10,7 @@ import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Role;
+import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.error.ErrorHandlerService;
@@ -108,6 +109,19 @@ public class UserManager {
      */
     public Optional<MzkUser> findByUsername(String username) {
         return userDAO.getByUsername(username);
+    }
+
+    /**
+     * Get the user in the database if it exists. Throw a exception otherwise.
+     *
+     * @param userId the id of the user.
+     * @return the user.
+     */
+    public MzkUser getUserById(Long userId) {
+        return userDAO.findById(userId).orElseThrow(() ->
+                new MzkObjectNotFoundException("No user found in database for the id :" + userId,
+                        "user.error.not_found", "user.error.not_found")
+        );
     }
 
     /**

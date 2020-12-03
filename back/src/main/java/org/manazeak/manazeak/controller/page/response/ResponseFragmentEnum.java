@@ -4,7 +4,8 @@ package org.manazeak.manazeak.controller.page.response;
  * Contains the common pages for the fragments.
  */
 public enum ResponseFragmentEnum {
-    SUCCESS_RESPONSE("fragments/response/success-response.html");
+    SUCCESS_RESPONSE("fragments/response/success-response.html"),
+    ERROR_RESPONSE("fragments/response/error-response.html");
 
     private final String page;
 

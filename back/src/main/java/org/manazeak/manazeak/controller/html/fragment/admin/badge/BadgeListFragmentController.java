@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.controller.html.fragment.user.badge;
+package org.manazeak.manazeak.controller.html.fragment.admin.badge;
 
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
@@ -30,6 +30,4 @@ public class BadgeListFragmentController {
         model.addAttribute("badges", badgeService.getBadgesList());
         return BadgeFragmentEnum.BADGE_LIST.getPage();
     }
-
-
 }
