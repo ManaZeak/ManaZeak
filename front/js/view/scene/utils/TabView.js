@@ -57,7 +57,7 @@ class TabView extends SceneView {
       this._tabs.children[i].classList.remove('selected');
     }
   }
-  
+
 
   _fetchViewFragment(url) {
     this._viewContainer.innerHTML = '';

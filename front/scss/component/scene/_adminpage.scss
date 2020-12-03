@@ -16,9 +16,11 @@
     p {
       border-bottom: solid 2px transparent;
       cursor: pointer;
-      height: calc(var(--mzk-font-size) * 1.5);
+      height: calc(var(--mzk-font-size) * 2);
+      line-height: calc(var(--mzk-font-size) * 2);
       padding: 0 var(--mzk-padding-huge);
       margin: 0;
+      vertical-align: middle;
       transition: border .3s;
 
       &.selected {
@@ -42,7 +44,7 @@
       flex-direction: column;
 
       .users-wrapper {
-        height: calc(100% - 10rem);
+        height: calc(100% - 30rem);
         width: 100%;
 
         .user-container {
@@ -61,10 +63,26 @@
         }
       }
 
-      .badge-container {
-        height: 10rem;
+      .badges-wrapper {
+        height: 30rem;
         width: 100%;
+
+        .badge-container {
+          align-items: center;
+          background-color: var(--mzk-color-bg-light);
+          border-radius: 5px;
+          cursor: pointer;
+          display: flex;
+          margin: 10px;
+          padding: 20px;
+
+          img {
+            height: 4rem;
+            max-width: 4rem;
+          }
+        }
       }
+
     }
 
     .wish-grid-wrapper {
