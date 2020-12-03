@@ -14,7 +14,6 @@ public class BadgeUserAssociationDto {
     @NotEmpty(message = "{user.empty_id}")
     private final Long badgeId;
 
-    @JsonCreator
     public BadgeUserAssociationDto(final Long userId, final Long badgeId) {
         this.userId = userId;
         this.badgeId = badgeId;
