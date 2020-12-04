@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: utils/Logger.js | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="doc/jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/ManaZeak/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v0.2.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AboutModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="AboutModal.html#_closeButton">_closeButton</a></li><li><a href="AboutModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="AboutModal.html#_footerCloseButton">_footerCloseButton</a></li><li><a href="AboutModal.html#_footerCloseEvtId">_footerCloseEvtId</a></li><li><a href="AboutModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="AboutModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="AboutModal.html#_rootElement">_rootElement</a></li><li><a href="AboutModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="AboutModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="AboutModal.html#.destroy">destroy</a></li></ul></div></li><li><a href="CustomEvents.html">CustomEvents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomEvents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomEvents.html#_customEvents">_customEvents</a></li><li><a href="CustomEvents.html#_debug">_debug</a></li><li><a href="CustomEvents.html#_idIncrementor">_idIncrementor</a></li><li><a href="CustomEvents.html#_regularEvents">_regularEvents</a></li><li><a href="CustomEvents.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="CustomEvents.html#._clearRegularEvent">_clearRegularEvent</a></li><li><a href="CustomEvents.html#._raise">_raise</a></li><li><a href="CustomEvents.html#.addEvent">addEvent</a></li><li><a href="CustomEvents.html#.destroy">destroy</a></li><li><a href="CustomEvents.html#.publish">publish</a></li><li><a href="CustomEvents.html#.removeAllEvents">removeAllEvents</a></li><li><a href="CustomEvents.html#.removeEvent">removeEvent</a></li><li><a href="CustomEvents.html#.subscribe">subscribe</a></li><li><a href="CustomEvents.html#.unsubscribe">unsubscribe</a></li><li><a href="CustomEvents.html#.unsubscribeAllFor">unsubscribeAllFor</a></li></ul></div></li><li><a href="DragElement.html">DragElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DragElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DragElement.html#_data">_data</a></li><li><a href="DragElement.html#_eventIds">_eventIds</a></li><li><a href="DragElement.html#_target">_target</a></li><li><a href="DragElement.html#_touchPhantomDom">_touchPhantomDom</a></li><li><a href="DragElement.html#_touchStarted">_touchStarted</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DragElement.html#._buildElements">_buildElements</a></li><li><a href="DragElement.html#._dragStart">_dragStart</a></li><li><a href="DragElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DragElement.html#._dragTouchMove">_dragTouchMove</a></li><li><a href="DragElement.html#._events">_events</a></li><li><a href="DragElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="DropElement.html">DropElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DropElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DropElement.html#_eventIds">_eventIds</a></li><li><a href="DropElement.html#_movementCounter">_movementCounter</a></li><li><a href="DropElement.html#_onDropCB">_onDropCB</a></li><li><a href="DropElement.html#_target">_target</a></li><li><a href="DropElement.html#_transparentBorder">_transparentBorder</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DropElement.html#._buildElements">_buildElements</a></li><li><a href="DropElement.html#._dragEnter">_dragEnter</a></li><li><a href="DropElement.html#._dragLeave">_dragLeave</a></li><li><a href="DropElement.html#._dragOver">_dragOver</a></li><li><a href="DropElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DropElement.html#._dragTouchOver">_dragTouchOver</a></li><li><a href="DropElement.html#._drop">_drop</a></li><li><a href="DropElement.html#._eventBehavior">_eventBehavior</a></li><li><a href="DropElement.html#._events">_events</a></li><li><a href="DropElement.html#._isTouchEventInTarget">_isTouchEventInTarget</a></li><li><a href="DropElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="Kom.html">Kom</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Kom_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Kom.html#_csrfToken">_csrfToken</a></li><li><a href="Kom.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Kom.html#._checkValidity">_checkValidity</a></li><li><a href="Kom.html#._createRequestHeaders">_createRequestHeaders</a></li><li><a href="Kom.html#._getCsrfCookie">_getCsrfCookie</a></li><li><a href="Kom.html#._getErrorCodeFromHTTPStatus">_getErrorCodeFromHTTPStatus</a></li><li><a href="Kom.html#._resolveAs">_resolveAs</a></li><li><a href="Kom.html#._resolveAsJSON">_resolveAsJSON</a></li><li><a href="Kom.html#._resolveAsRaw">_resolveAsRaw</a></li><li><a href="Kom.html#._resolveAsText">_resolveAsText</a></li><li><a href="Kom.html#.get">get</a></li><li><a href="Kom.html#.getRaw">getRaw</a></li><li><a href="Kom.html#.getText">getText</a></li><li><a href="Kom.html#.post">post</a></li><li><a href="Kom.html#.postRaw">postRaw</a></li><li><a href="Kom.html#.postText">postText</a></li></ul></div></li><li><a href="Logger.html">Logger</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Logger_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Logger.html#_errors">_errors</a></li><li><a href="Logger.html#_log">_log</a></li><li><a href="Logger.html#_notification">_notification</a></li><li><a href="Logger.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Logger.html#._buildErrorInfo">_buildErrorInfo</a></li><li><a href="Logger.html#._getCallerName">_getCallerName</a></li><li><a href="Logger.html#._logErrorToConsole">_logErrorToConsole</a></li><li><a href="Logger.html#._logErrorToNotification">_logErrorToNotification</a></li><li><a href="Logger.html#.destroy">destroy</a></li><li><a href="Logger.html#.raise">raise</a></li></ul></div></li><li><a href="Modal.html">Modal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Modal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Modal.html#_closeButton">_closeButton</a></li><li><a href="Modal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="Modal.html#_modalOverlay">_modalOverlay</a></li><li><a href="Modal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="Modal.html#_rootElement">_rootElement</a></li><li><a href="Modal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Modal.html#._fillAttributes">_fillAttributes</a></li><li><a href="Modal.html#._loadTemplate">_loadTemplate</a></li><li><a href="Modal.html#.close">close</a></li><li><a href="Modal.html#.destroy">destroy</a></li><li><a href="Modal.html#.open">open</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Notification.html#_active">_active</a></li><li><a href="Notification.html#_default">_default</a></li><li><a href="Notification.html#_dismissAllLock">_dismissAllLock</a></li><li><a href="Notification.html#_dom">_dom</a></li><li><a href="Notification.html#_duration">_duration</a></li><li><a href="Notification.html#_maxActive">_maxActive</a></li><li><a href="Notification.html#_position">_position</a></li><li><a href="Notification.html#_queue">_queue</a></li><li><a href="Notification.html#_thickBorder">_thickBorder</a></li><li><a href="Notification.html#_transition">_transition</a></li><li><a href="Notification.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildNotificationType">_buildNotificationType</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._buildUIDom">_buildUIDom</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._checkNotificationOptionsValidity">_checkNotificationOptionsValidity</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._idGenerator">_idGenerator</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._setAttributesDefault">_setAttributesDefault</a></li><li><a href="Notification.html#._setOptionsDefault">_setOptionsDefault</a></li><li><a href="Notification.html#._setOptionsFallback">_setOptionsFallback</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#.destroy">destroy</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="SceneView.html">SceneView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="SceneView_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#wrapper">wrapper</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="SceneView.html#.destroy">destroy</a></li></ul></div></li><li><a href="UserInterface.html">UserInterface</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserInterface_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="UserInterface.html#_aside">_aside</a></li><li><a href="UserInterface.html#_loadingOverlay">_loadingOverlay</a></li><li><a href="UserInterface.html#_scene">_scene</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="UserInterface.html#._fetchWrapper">_fetchWrapper</a></li><li><a href="UserInterface.html#._viewReady">_viewReady</a></li><li><a href="UserInterface.html#.setSceneView">setSceneView</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li></ul></div></li><li><a href="ViewFactory.html">ViewFactory</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ViewFactory_sub"></div></li><li><a href="WishModal.html">WishModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="WishModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="WishModal.html#_closeButton">_closeButton</a></li><li><a href="WishModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="WishModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="WishModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="WishModal.html#_rootElement">_rootElement</a></li><li><a href="WishModal.html#_submitEvtId">_submitEvtId</a></li><li><a href="WishModal.html#_submitInput">_submitInput</a></li><li><a href="WishModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="WishModal.html#._submitClicked">_submitClicked</a></li><li><a href="WishModal.html#.destroy">destroy</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+
+class Logger {
+
+
+  /** @summary &lt;h1>JavaScript logger singleton to handle errors the same way&lt;/h1>
+   * @author Arthur Beaulieu
+   * @since June 2020
+   * @description &lt;blockquote>The Logger class provides a singleton object to allow brain dead logging for frontend
+   * JavaScript code. Errors can be raised from JavaScript errors (&lt;code>new Error()&lt;/code>), or using a custom error
+   * format, with a severity, title and message. It is also possible to pass a notification manager object to handle
+   * those error either in console and in UI. The recommended manager to use for notification can be found at
+   * &lt;a href="https://github.com/ArthurBeaulieu/Notification.js" alt="notification-js">Notification.js&lt;/a>. You can
+   * otherwise implement you system, but it as to take a type (severity), a title and a message ; for further information,
+   * refer to the &lt;code>_logErrorToNotification&lt;/code> documentation. For source code, please go to
+   * &lt;a href="https://github.com/ArthurBeaulieu/Logger.js" alt="logger-js">Logger.js&lt;/a>&lt;/blockquote>
+   * @param {object} [options={}] - The Logger object, not mandatory but it is recommended to provide one for full features
+   * @param {object} [options.errors={}] - The custom errors, JSON style, with key being the error name and value being
+   * an object with a &lt;code>severity&lt;/code>, a &lt;code>title&lt;/code> and a &lt;code>message&lt;/code> property (all strings)
+   * @param {object} [options.notification=null] - The notification manager (to create new notifications when logging)
+   * @param {boolean} [options.log=true] - Allow console logging (turn to false in prod environment)
+   * @return {object} - The Logger singleton instance */
+  constructor(options = {}) {
+    // If an instance of Logger already exists, we just return it
+    if (!!Logger.instance) {
+      return Logger.instance;
+    }
+    // Set object instance
+    Logger.instance = this;
+    // Prevent wrong type for arguments, fallback according to attribute utility
+    if (typeof options.errors !== 'object') {
+      options.errors = {}; // Needs to define to empty object to avoid errors when checking custom errors
+    }
+    if (typeof options.notification !== 'object') {
+      options.notification = null; // Null to ignore the notification step in error raising
+    }
+    if (typeof options.log !== 'boolean') {
+      options.log = true; // No log means... useful component right?
+    }
+    /** @private
+     * @member {object} - The error messages to use in Logger */
+    this._errors = options.errors;
+    /** @private
+     * @member {object} - The custom notification handler, must be able to take type, title and message (at least) */
+    this._notification = options.notification;
+    /** @private
+     * @member {boolean} - Internal logging flag from constructor options, allow to output each event action */
+    this._log = options.log;
+    /** @public
+     * @member {string} - Component version */
+    this.version = '1.1.0';
+    return this;
+  }
+
+
+  /** @method
+   * @name destroy
+   * @public
+   * @memberof Logger
+   * @description &lt;blockquote>Logger destructor. Will delete singleton instance and its properties.&lt;/blockquote> */
+  destroy() {
+    // Delete object attributes
+    Object.keys(this).forEach(key => {
+      delete this[key];
+    });
+    // Clear singleton instance
+    Logger.instance = null;
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  ----------------------------------------  LOGGER JS INTERN METHODS  ------------------------------------------  */
+  /*                                                                                                                  */
+  /*  These internal methods will build a raised error depending on logging level sent when building this singleton.  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _buildErrorInfo
+   * @private
+   * @memberof Logger
+   * @description &lt;blockquote>This method will be the error properties according to its type. A custom error will
+   * take values defined at construction of this singleton. JavaScrip error are parsed to extract title and
+   * message properties from stack, with specific handling for Chrome and Firefox.&lt;/blockquote>
+   * @param {object} error - The error to build info from. Can be a custom error or a standard JavaScript error
+   * @return {object} - The error properties ; &lt;code>severity&lt;/code>, &lt;code>title&lt;/code> and &lt;code>message&lt;/code> */
+  _buildErrorInfo(error) {
+    let severity = '';
+    let title = '';
+    let message = '';
+    if (typeof error === 'object' || typeof error === 'string') {
+      // this._errors doesn't contain the error key ; either a Js error or an unknown error
+      if (this._errors[error] === undefined) {
+        // JavaScript error created with new Error(), that need to contain fileName, message, line and column number
+        let filename = '';
+        if (error.fileName &amp;&amp; error.message &amp;&amp; error.lineNumber &amp;&amp; error.columnNumber) { // Firefox specific
+          filename = error.fileName.match(/\/([^\/]+)\/?$/)[1];
+          severity = 'error';
+          title = `JavaScript error`;
+          message = `${error.message} in file ${filename}:${error.lineNumber}:${error.columnNumber}`;
+        } else if (error.message &amp;&amp; error.stack) { // Chrome specific
+          filename = error.stack.split('\n')[error.stack.split('\n').length - 1].match(/\/([^\/]+)\/?$/)[1];
+          severity = 'error';
+          title = `JavaScript error`;
+          message = `${error.message} in file ${filename}`;
+        } else if (error.severity &amp;&amp; error.title &amp;&amp; error.message) {
+          severity = error.severity || '';
+          title = error.title || '';
+          message = error.message || '';
+        } else { // Unknown error that do not require any arguments
+          severity = 'error';
+          title = `Unexpected error ${error}`;
+          message = 'The error object sent to Logger.raise() is neither a JavaScript error nor a custom error (with severity, title and message).';
+        }
+      } else { // Custom error that need to be filled with a severity, a title and a message
+        severity = this._errors[error].severity || '';
+        title = this._errors[error].title || '';
+        message = this._errors[error].message || '';
+      }
+    }
+    // Return error standard properties
+    return {
+      severity: severity,
+      title: title,
+      message: message
+    };
+  }
+
+
+  /** @method
+   * @name _logErrorToNotification
+   * @private
+   * @memberof Logger
+   * @description &lt;blockquote>This method will call for a new notification if a component has been given to this singleton
+   * constructor. The component must expose a &lt;code>new()&lt;/code> methods that takes as arguments the Logger standard properties ;
+   * &lt;code>severity&lt;/code>, &lt;code>title&lt;/code> and &lt;code>message&lt;/code>. If no component has be provided, this method won't do anything.
+   * One can find such component &lt;a href="https://github.com/ArthurBeaulieu/Notification.js" alt="notification-js">here&lt;/a>.&lt;/blockquote>
+   * @param {object} errorParameters - The error with Logger standard properties (&lt;code>severity&lt;/code>, &lt;code>title&lt;/code> and &lt;code>message&lt;/code>) */
+  _logErrorToNotification(errorParameters) {
+    if (this._notification &amp;&amp; typeof errorParameters === 'object') {
+      this._notification.new({
+        type: errorParameters.severity || 'error',
+        title: errorParameters.title || 'Can\'t get error info',
+        message: errorParameters.message || 'Call for new notification wasn\'t made with arguments'
+      });
+    }
+  }
+
+
+  /** @method
+   * @name _logErrorToConsole
+   * @private
+   * @memberof Logger
+   * @description &lt;blockquote>This method will send error to console if logging has been allowed to this singleton constructor.
+   * It takes a Logger standard error (&lt;code>severity&lt;/code>, &lt;code>title&lt;/code> and &lt;code>message&lt;/code>) as argument.
+   * It will build a unified output regardless the Chrome or Firefox browser. It enhance &lt;code>console.log&lt;/code> and
+   * &lt;code>console.info&lt;/code> to also display the stack trace in a &lt;code>console.group&lt;/code>.&lt;/blockquote>
+   * @param {object} errorParameters - The error with Logger standard properties (&lt;code>severity&lt;/code>, &lt;code>title&lt;/code> and &lt;code>message&lt;/code>) */
+  _logErrorToConsole(errorParameters) {
+    if (this._log &amp;&amp; typeof errorParameters === 'object') {
+      // Missing mandatory arguments
+      if (!errorParameters.severity &amp;&amp; !errorParameters.title &amp;&amp; !errorParameters.message) {
+        return;
+      }
+      /* Colors to use, extracted from Notification.js (https://github.com/ArthurBeaulieu/Notification.js) */
+      const colors = {
+        success: 'color: rgb(76, 175, 80);',
+        info: 'color: rgb(3, 169, 244);',
+        warning: 'color: rgb(255, 152, 0);',
+        error: 'color: rgb(244, 67, 54);'
+      };
+      const browsers = {
+        firefox: /firefox/i.test(navigator.userAgent),
+        chrome: /chrome/i.test(navigator.userAgent) &amp;&amp; /google inc/i.test(navigator.vendor)
+      };
+      // Compute log level from severity, and handle warn and log as warning and success
+      let logLevel = errorParameters.severity;
+      if (errorParameters.severity === 'warning') {
+        logLevel = 'warn';
+      } else if (errorParameters.severity === 'success') {
+        logLevel = 'log';
+      }
+      // Create console group with associated style
+      console.groupCollapsed(`%c${errorParameters.severity.toUpperCase()}: ${errorParameters.title}`, colors[errorParameters.severity]);
+      // Apply type and severity to build console call
+      const outputString = `%c${errorParameters.message}\n${this._getCallerName(browsers)}`;
+      console[logLevel](outputString, colors[errorParameters.severity]);
+      // Only append console trace if severity is not an error (as error already display trace)
+      if (errorParameters.severity !== 'error' &amp;&amp; errorParameters.severity !== 'warning') {
+        console.trace();
+      }
+      // Close error group in console
+      console.groupEnd();
+    }
+  }
+
+
+  /** @method
+   * @name _getCallerName
+   * @private
+   * @memberof Logger
+   * @description &lt;blockquote>This method will build the caller name as a string, formatted to be easy to
+   * read and display in the log output.&lt;/blockquote>
+   * @param {object} browsers - An object with booleans values for current browser used by session
+   * @return {string} - The Logger standard caller name regardless the browser */
+  _getCallerName(browsers) {
+    // Original code from https://gist.github.com/irisli/716b6dacd3f151ce2b7e
+    let caller = (new Error()).stack; // Create error and get its call stack
+    // Get last called depending on browser
+    if (typeof browsers === 'object') {
+      if (browsers.firefox) {
+        caller = caller.split('\n')[3]; // Third item is error caller method
+        caller = caller.replace(/@+/, ' '); // Change `@` to `(`
+      } else if (browsers.chrome) {
+        caller = caller.split('\n')[caller.split('\n').length - 2]; // Minus 2 to remove closing parenthesis as well
+        // Remove Chrome specific strings to match Firefox look and feel (go ff)
+        caller = caller.replace(/^Error\s+/, '');
+        caller = caller.replace(/^\s+at./, '');
+        caller = caller.replace(/[{()}]/g, '');
+      } else {
+        return 'Unsupported browser to get the caller name from';
+      }
+    } else {
+      return 'Argument error, unable to get the caller name on this raise';
+    }
+    // Prepare function name, and replace with anonymous in proper case
+    let functionName = caller;
+    if (caller.charAt(0) === ' ') { // First char is normally the function name first char. Space means anonymous cross browsers (so far...)
+      functionName = `&lt;anonymous>${caller}`;
+    }
+    // Unified returned value for anonymous/non anonymous methods
+    return `Raised from function ${functionName}`;
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  ----------------------------------------  LOGGER JS PUBLIC METHOD  -------------------------------------------  */
+  /*                                                                                                                  */
+  /*  These are the exposed method of Logger component. It allows to raise error that will be displayed in the        */
+  /*  console if needed, and displayed in the interface using a notification component. Otherwise, it won't do        */
+  /*  anything.                                                                                                       */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name raise
+   * @public
+   * @memberof Logger
+   * @description &lt;blockquote>The raise method will build, according to argument sent to this singleton constructor,
+   * a console output and/or a notification for the given error. The input error can be a standard JavaScript error,
+   * raised like &lt;code>new Error()&lt;/code>, but can also be build using the custom format, using the key of the error
+   * as input string. See constructor and example for demonstration.&lt;/blockquote>
+   * @param {object} error - The error to handle. Can be a custom error or a standard JavaScript error */
+  raise(error) {
+    // Create error specific values depending on error origin (JavaScript, Custom or Unknown) */
+    const errorParameters = this._buildErrorInfo(error);
+    /* If any Notification manager exists, use it with error parameters */
+    this._logErrorToNotification(errorParameters);
+    /* In debug mode, fill the console with error parameters */
+    this._logErrorToConsole(errorParameters);
+  }
+
+
+}
+
+
+export default Logger;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
