@@ -14,6 +14,8 @@ class TabView extends SceneView {
     this._tabClickedEvtIds = [];
 
     this._viewContainer = null;
+
+    this._activeFragment = null;
     /** @private
      * @member {object} - The DOM loading overlay to use in transitions */
     this._loadingOverlay = null;
@@ -60,14 +62,25 @@ class TabView extends SceneView {
 
 
   _fetchViewFragment(url) {
-    this._viewContainer.innerHTML = '';
-    this.startLoading()
-      .then(mzk.getFragment.bind(mzk, url))
-      .then(response => {
-        this._viewContainer.insertAdjacentHTML( 'beforeend', response);
-      })
-      .catch(Logger.raise.bind(Logger))
-      .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens;
+    return new Promise((resolve, reject) => {
+      this._viewContainer.innerHTML = '';
+      this.startLoading()
+        .then(mzk.getFragment.bind(mzk, url))
+        .then(response => {
+          this._viewContainer.insertAdjacentHTML( 'beforeend', response);
+          requestAnimationFrame(resolve);
+        })
+        .catch(reject)
+        .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens;
+    });
+  }
+
+
+  _clearFragment() {
+    if (this._activeFragment) {
+      this._activeFragment.destroy();
+      this._activeFragment = null;
+    }
   }
 
 

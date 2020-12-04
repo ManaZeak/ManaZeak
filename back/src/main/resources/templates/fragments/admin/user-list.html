@@ -1,5 +1,5 @@
 <div class="user-list-wrapper">
-  <div class="users-wrapper">
+  <div id="users-wrapper" class="users-wrapper">
     <div class="user-container" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
       <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
       <span th:if="*{user.avatar == null}">
@@ -15,7 +15,7 @@
       <p th:text="*{user.creationDate}"></p>
     </div>
   </div>
-  <div class="badges-wrapper">
+  <div id="badges-wrapper" class="badges-wrapper">
     <div class="badge-container" th:attr="data-id=*{badge.badgeId}" th:each="badge : ${badges}" xmlns:th="http://www.thymeleaf.org">
       <!--/*@thymesVar id="badges" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->
       <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->

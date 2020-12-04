@@ -1,4 +1,5 @@
 import TabView from '../utils/TabView';
+import UsersFragment from './admin/UsersFragment';
 
 
 class AdminPageView extends TabView {
@@ -35,12 +36,26 @@ class AdminPageView extends TabView {
 
 
   _usersClicked() {
-    this._fetchViewFragment('/fragment/admin/user-list');
+    this._clearFragment();
+    this._fetchViewFragment('/fragment/admin/user-list')
+      .then(() => {
+        this._activeFragment = new UsersFragment(this._viewContainer);
+      })
+      .catch(error => {
+        Logger.raise(error)
+      });
   }
 
 
   _wishesClicked() {
-    this._fetchViewFragment('/fragment/admin/wish/all');
+    this._clearFragment();
+    this._fetchViewFragment('/fragment/admin/wish/all')
+      .then(() => {
+        //this._activeFragment = new WishesFragment();
+      })
+      .catch(error => {
+        Logger.raise(error)
+      });
   }
 
 
