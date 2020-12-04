@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="32"
+   width="32"
+   version="1.1"
+   id="svg18"
+   sodipodi:docname="delete.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+  <defs
+     id="defs22" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     id="namedview20"
+     showgrid="false"
+     inkscape:zoom="8"
+     inkscape:cx="6.9597046"
+     inkscape:cy="-1.0317825"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg18" />
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.28438846,0,0,0.28438846,-122.95943,-133.75722)"
+     id="g16"
+     style="stroke:#aaaabe;stroke-width:2.68646622;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+    <g
+       transform="matrix(1.25,0,0,1.25,426.12543,464.0939)"
+       id="g14"
+       style="fill:#aaaabe;fill-rule:evenodd;stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <g
+         id="g12"
+         style="fill:#aaaabe;stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+        <path
+           d="M 69.997,26 H 27 L 26.991,22 H 73 l 0.01,4 z M 66.138,83.87 C 66.135,83.925 66.055,84 66.001,84 H 34 c -0.05,0 -0.134,-0.079 -0.137,-0.129 L 30.139,28 H 69.862 Z M 42.975,16.406 C 43.017,16.232 43.311,16 43.492,16 h 13.017 c 0.176,0 0.476,0.235 0.516,0.407 L 57.875,20 H 42.126 Z M 73.01,20 H 59.93 L 58.972,15.947 C 58.718,14.872 57.615,14 56.509,14 H 43.492 c -1.112,0 -2.209,0.872 -2.463,1.947 L 40.071,20 H 26.991 C 25.89,20 25,20.895 25,21.998 v 4.004 C 25,27.113 25.892,28 26.991,28 h 1.143 l 3.733,56.004 C 31.941,85.105 32.896,86 34,86 h 32.001 c 1.11,0 2.059,-0.894 2.133,-1.996 L 71.867,28 H 73.01 C 74.111,28 75,27.105 75,26.002 V 21.998 C 75,20.887 74.109,20 73.01,20 Z"
+           id="path4"
+           inkscape:connector-curvature="0"
+           style="stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 41,76 c 0.556,0 1,-0.451 1,-1.009 V 37.009 C 42,36.449 41.552,36 41,36 c -0.556,0 -1,0.452 -1,1.009 V 74.991 C 40,75.551 40.448,76 41,76"
+           id="path6"
+           inkscape:connector-curvature="0"
+           style="stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 50,76 c 0.556,0 1,-0.451 1,-1.009 V 37.009 C 51,36.449 50.552,36 50,36 c -0.556,0 -1,0.452 -1,1.009 V 74.991 C 49,75.551 49.448,76 50,76"
+           id="path8"
+           inkscape:connector-curvature="0"
+           style="stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           d="m 59,76 c 0.556,0 1,-0.451 1,-1.009 V 37.009 C 60,36.449 59.552,36 59,36 c -0.556,0 -1,0.452 -1,1.009 V 74.991 C 58,75.551 58.448,76 59,76"
+           id="path10"
+           inkscape:connector-curvature="0"
+           style="stroke:#aaaabe;stroke-width:2.14917302;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+</svg>
