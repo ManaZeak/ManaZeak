@@ -52,6 +52,7 @@ public class UserProfileManager {
      */
     private UserListLineDto convertUserListLineProjection(UserListLineProjection userProjection) {
         UserListLineDto user = new UserListLineDto();
+        user.setUserId(userProjection.getUserId());
         user.setActive(userProjection.getIsActive());
         user.setAvatar(userProjection.getAvatar());
         user.setCreationDate(userProjection.getCreationDate());

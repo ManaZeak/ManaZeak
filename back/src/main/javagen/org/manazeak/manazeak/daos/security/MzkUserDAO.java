@@ -62,6 +62,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
      * @return the users of the database.
      */
     @Query("select " +
+            "   usr.userId as userId, " +
             "   usr.username as username, " +
             "   usr.profilePic as avatar, " +
             "   usr.creationDate as creationDate, " +

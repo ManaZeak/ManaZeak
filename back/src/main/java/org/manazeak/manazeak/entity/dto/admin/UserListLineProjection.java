@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
  */
 public interface UserListLineProjection {
 
+    Long getUserId();
+
     String getUsername();
 
     String getAvatar();

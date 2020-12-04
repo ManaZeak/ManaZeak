@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
  */
 public class UserListLineDto {
 
+    private Long userId;
+
     private String username;
 
     private String avatar;
@@ -16,6 +18,14 @@ public class UserListLineDto {
     private String roleValue;
 
     private boolean isActive;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;
