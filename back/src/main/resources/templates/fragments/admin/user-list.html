@@ -1,6 +1,6 @@
 <div class="user-list-wrapper">
   <div class="users-wrapper">
-    <div class="user-container" th:attr="data-id=*{user.userId}" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
+    <div class="user-container" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
       <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
       <span th:if="*{user.avatar == null}">
         <!-- User doesn't have an avatar. Displaying default -->
