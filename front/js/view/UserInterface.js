@@ -73,6 +73,15 @@ class UserInterface {
   }
 
 
+  processLogFromServer(errors) {
+    if (errors && errors.length > 0) {
+      for (let i = 0; i < errors.length; ++i) {
+        Logger.raise(errors[i]);
+      }
+    }
+  }
+
+
   /*  --------------------------------------------------------------------------------------------------------------- */
   /*  ----------------------------------------  LOADING OVERLAY METHODS  -------------------------------------------  */
   /*                                                                                                                  */

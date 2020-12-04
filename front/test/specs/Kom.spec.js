@@ -125,7 +125,8 @@ describe('Kom unit tests,', () => {
     // Regular error handling
     kom._resolveAsJSON({
       ok: false,
-      status: 404
+      status: 404,
+      json: () => { return 'B_KOM_NOT_FOUND' }
     }).catch(response => {
       expect(response).toEqual('B_KOM_NOT_FOUND');
     });
@@ -150,7 +151,8 @@ describe('Kom unit tests,', () => {
     // Regular error handling
     kom._resolveAsText({
       ok: false,
-      status: 404
+      status: 404,
+      text: () => { return 'B_KOM_NOT_FOUND' }
     }).catch(response => {
       expect(response).toEqual('B_KOM_NOT_FOUND');
     });

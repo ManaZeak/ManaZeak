@@ -5,8 +5,9 @@ import DropElement from '../../../../utils/DropElement';
 class UsersFragment {
 
 
-  constructor(parent) {
-    this._parent = parent;
+  constructor(options) {
+    this._target = options.target;
+    this._refreshCB = options.refresh;
 
     this._users = [];
     this._badges = [];
@@ -31,11 +32,11 @@ class UsersFragment {
 
 
   _fillAttributes() {
-    const usersWrapper = this._parent.querySelector('#users-wrapper');
+    const usersWrapper = this._target.querySelector('#users-wrapper');
     for (let i = 0; i < usersWrapper.children.length; ++i) {
       this._users.push(usersWrapper.children[i]);
     }
-    const badgesWrapper = this._parent.querySelector('#badges-wrapper');
+    const badgesWrapper = this._target.querySelector('#badges-wrapper');
     for (let i = 0; i < badgesWrapper.children.length; ++i) {
       this._badges.push(badgesWrapper.children[i]);
     }
@@ -46,7 +47,7 @@ class UsersFragment {
     for (let i = 0; i < this._users.length; ++i) {
       const dropElement = new DropElement({
         target: this._users[i],
-        onDrop: this._dropOnUser.bind(this)
+        onDrop: this._dropOnUser.bind(this._users[i], this._refreshCB)
       });
       this._dropElements.push(dropElement);
     }
@@ -55,8 +56,7 @@ class UsersFragment {
       const dragElement = new DragElement({
         target: this._badges[i],
         data: {
-          type: 'badge',
-          id: this._badges[i].dataset.id
+          badgeId: this._badges[i].dataset.id
         }
       });
       this._dragElements.push(dragElement);
@@ -64,8 +64,16 @@ class UsersFragment {
   }
 
 
-  _dropOnUser(data) {
-    console.log(data);
+  _dropOnUser(refreshCB, data) {
+    mzk.kom.post('/badge/associate', {
+      userId: this.dataset.id,
+      badgeId: data.badgeId
+    }).then(response => {
+      mzk.ui.processLogFromServer(response.errors);
+      refreshCB();
+    }).catch(error => {
+      console.error(error);
+    });
   }
 
 

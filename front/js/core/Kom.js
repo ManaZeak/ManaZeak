@@ -133,9 +133,9 @@ class Kom {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
         } else if (type === 'json' || type === 'text') { // Call are made using fetch API
-          if (response.ok) {
+          if (response[type]) {
             resolve(response[type]());
-          } else {
+          } else { // Fallback on standard error handling
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
         } else { // Resolution type doesn't exists
