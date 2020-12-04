@@ -42,14 +42,15 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
      * {@inheritDoc}
      */
     @Override
-    public void generateRestErrorFromValidationError(Iterable<FieldError> errors) throws MzkRestException {
+    public void generateRestErrorFromValidationError(Iterable<FieldError> errors) {
         // Generating the exception.
         MzkRestException exception = new MzkRestException();
         // Adding the errors to the exception.
         for (FieldError error : errors) {
             NotificationDto notification = new NotificationDto();
             notification.setTitleKey("general.error.validation_error");
-            notification.setMessageKey(error.getCode());
+            // Fixme: use another value for error.
+            // notification.setMessageKey(error.);
             notification.setSeverity(NotificationSeverityEnum.ERROR);
             exception.addNotification(notification);
         }
@@ -60,7 +61,7 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
      * {@inheritDoc}
      */
     @Override
-    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) throws MzkRestException {
+    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) {
         MzkRestException exception = new MzkRestException();
         // Adding the errors for the enum.
         for (ErrorEnum error : errors) {
@@ -71,5 +72,14 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
             exception.addNotification(notification);
         }
         throw exception;
+    }
+
+    /**
+     * Remove the {} of the code.
+     * @param code The i18n code
+     * @return the code without {}
+     */
+    private String getMessageKeyFromValidationError(String code) {
+        return code.substring(1, code.length() - 1);
     }
 }

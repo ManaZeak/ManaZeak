@@ -59,8 +59,8 @@ public class BadgeManager {
      */
     public Badge getBadge(Long badgeId) {
         return badgeDAO.findById(badgeId).orElseThrow(() ->
-                new MzkObjectNotFoundException("No wish found in database for id :" + badgeId,
-                        "user.wish.error.not_found", "user.wish.error.not_found_title")
+                new MzkObjectNotFoundException("No badge found in database for id :" + badgeId,
+                        "user.badge.error.not_found", "user.badge.error.not_found_title")
         );
     }
 

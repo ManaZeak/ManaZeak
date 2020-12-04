@@ -1,18 +1,15 @@
 package org.manazeak.manazeak.entity.dto.user.badge;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * Allows to associate a user and a badge
  */
 public class BadgeUserAssociationDto {
-    // FIXME not null instead of not empty
-    //@NotEmpty(message = "{user.badge.empty_id}")
+    @NotNull(message = "{user.badge.error.empty_id}")
     private Long userId;
 
-    //@NotEmpty(message = "{user.empty_id}")
+    @NotNull(message = "{user.error.empty_id}")
     private Long badgeId;
 
     public BadgeUserAssociationDto() {
@@ -28,12 +25,12 @@ public class BadgeUserAssociationDto {
         return userId;
     }
 
-    public Long getBadgeId() {
-        return badgeId;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getBadgeId() {
+        return badgeId;
     }
 
     public void setBadgeId(Long badgeId) {
