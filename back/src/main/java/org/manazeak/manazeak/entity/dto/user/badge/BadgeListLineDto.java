@@ -9,6 +9,8 @@ public class BadgeListLineDto {
 
     private String label;
 
+    private Long badgeId;
+
     private List<UserBadgeDto> users;
 
     public String getLabel() {
@@ -17,6 +19,14 @@ public class BadgeListLineDto {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public Long getBadgeId() {
+        return badgeId;
+    }
+
+    public void setBadgeId(Long badgeId) {
+        this.badgeId = badgeId;
     }
 
     public List<UserBadgeDto> getUsers() {

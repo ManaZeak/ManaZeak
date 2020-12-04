@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.daos.security;
 
-import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineProjection;
 import org.manazeak.manazeak.entity.security.Badge;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

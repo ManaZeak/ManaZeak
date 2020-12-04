@@ -30,6 +30,7 @@ public class BadgeHelper {
         for (Badge badge : badges) {
             BadgeListLineDto badgeLine = new BadgeListLineDto();
             badgeLine.setLabel(badge.getLabel());
+            badgeLine.setBadgeId(badge.getBadgeId());
 
             List<UserBadgeDto> linkedUsers = new ArrayList<>();
             // Iterating through the users
