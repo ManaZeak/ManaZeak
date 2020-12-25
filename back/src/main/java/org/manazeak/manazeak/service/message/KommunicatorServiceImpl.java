@@ -36,7 +36,12 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         for (NotificationDto notification : e.getNotifications()) {
             KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
             komNotif.setTitle(messageManager.getMessage(notification.getTitleKey()));
-            komNotif.setMessage(messageManager.getMessage(notification.getMessageKey()));
+            // In some case the message is already translated.
+            if(notification.hasMessage()) {
+                komNotif.setMessage(notification.getMessage());
+            } else {
+                komNotif.setMessage(messageManager.getMessage(notification.getMessageKey()));
+            }
             komNotif.setSeverity(notification.getSeverity().getStatus());
             kom.addNotification(komNotif);
         }

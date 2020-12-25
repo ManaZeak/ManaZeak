@@ -85,8 +85,4 @@
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-manager:2.8.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.plexus:plexus-compiler-javac:2.8.4" level="project" />
   </component>
-  <component name="SonarLintModuleSettings">
-    <option name="idePathPrefix" value="front" />
-    <option name="sqPathPrefix" value="src" />
-  </component>
 </module>
