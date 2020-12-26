@@ -6,8 +6,6 @@ import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.manazeak.manazeak.service.message.MessageManager;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +35,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
             KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
             komNotif.setTitle(messageManager.getMessage(notification.getTitleKey()));
             // In some case the message is already translated.
-            if(notification.hasMessage()) {
+            if (notification.hasMessage()) {
                 komNotif.setMessage(notification.getMessage());
             } else {
                 komNotif.setMessage(messageManager.getMessage(notification.getMessageKey()));
@@ -72,7 +70,8 @@ public class KommunicatorServiceImpl implements KommunicatorService {
 
     /**
      * Build a kommunicator object in succes mode with a notification.
-     * @param titleKey The key containing the title of the notification.
+     *
+     * @param titleKey   The key containing the title of the notification.
      * @param messageKey The key containing the message of the notification.
      * @return The kom object to send to the front.
      */

@@ -3,6 +3,7 @@ package org.manazeak.manazeak.service.security.user.wish;
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
+import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.Wish;
 import org.manazeak.manazeak.service.security.user.UserManager;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class WishServiceImpl implements WishService {
      * @return all the wishes.
      */
     @Override
-    public Iterable<UserWishListLineDto> getAllWishes() {
+    public WishesDisplayDto getAllWishes() {
         return wishManager.getAllWishes();
     }
 

@@ -4,6 +4,7 @@ import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
+import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.service.security.user.wish.WishService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,10 @@ public class WishAdminFragment {
     @Security(PrivilegeEnum.WISR)
     @GetMapping("/admin/wish/all")
     public String getAllWishes(Model model) {
-        model.addAttribute("wishes", wishService.getAllWishes());
+        WishesDisplayDto wishes = wishService.getAllWishes();
+        model.addAttribute("wishesTodo", wishes.getTodoWishes());
+        model.addAttribute("wishesRefused", wishes.getRefusedWishes());
+        model.addAttribute("wishesAccepted", wishes.getAcceptedWishes());
         return AdminFragmentEnum.WISH_LIST.getPage();
     }
 }

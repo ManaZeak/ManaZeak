@@ -5,6 +5,7 @@ import org.manazeak.manazeak.daos.security.WishDAO;
 import org.manazeak.manazeak.daos.security.WishStatusDAO;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
+import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Wish;
 import org.manazeak.manazeak.entity.security.WishStatus;
@@ -48,16 +49,23 @@ public class WishManager {
      *
      * @return all the wishes.
      */
-    public List<UserWishListLineDto> getAllWishes() {
-        List<UserWishListLineDto> wishes = new ArrayList<>();
-        // FIXME: faire plusieurs liste, une pour les pending et une autre pour les acceptés et les refusés.
+    public WishesDisplayDto getAllWishes() {
+        WishesDisplayDto wishes = new WishesDisplayDto();
+        // Getting all the wishes of the database.
         for (Wish wish : wishDAO.findAll()) {
             UserWishListLineDto wishLine = new UserWishListLineDto();
             wishLine.setWishId(wish.getWishId());
             wishLine.setContent(wish.getContent());
             wishLine.setStatus(getStatusString(wish.getWishStatus()));
             wishLine.setUsername(wish.getMzkUser().getUsername());
-            wishes.add(wishLine);
+            // Adding the wish to the right collection.
+            if (WishStatusEnum.OK.getStatusId().equals(wish.getWishStatus().getWishStatusId())) {
+                wishes.addAcceptedWish(wishLine);
+            } else if (WishStatusEnum.NOK.getStatusId().equals(wish.getWishStatus().getWishStatusId())) {
+                wishes.addRefusedWish(wishLine);
+            } else if (WishStatusEnum.TODO.getStatusId().equals(wish.getWishStatus().getWishStatusId())) {
+                wishes.addTodoWish(wishLine);
+            }
         }
         return wishes;
     }
