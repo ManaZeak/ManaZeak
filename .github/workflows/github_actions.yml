@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ubuntu
+    container: maven
     # Allows to launch a postgresql service for the unit test of the java app
     services:
       # Label used to access the service container
