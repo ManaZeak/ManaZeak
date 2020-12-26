@@ -8,6 +8,8 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    container: ubuntu
     # Allows to launch a postgresql service for the unit test of the java app
     services:
       # Label used to access the service container
@@ -24,7 +26,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
