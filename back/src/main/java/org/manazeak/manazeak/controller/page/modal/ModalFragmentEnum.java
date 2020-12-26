@@ -1,5 +1,5 @@
 package org.manazeak.manazeak.controller.page.modal;
-/* FIXME */
+
 /**
  * Contains all the modal urls.
  */

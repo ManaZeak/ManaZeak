@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * This class is used to manipulate the data of badges.
  */
-public class BadgeHelper {
+public final class BadgeHelper {
 
     /**
      * Private constructor, this is a helper.
@@ -22,6 +22,7 @@ public class BadgeHelper {
 
     /**
      * Converts a badge into a display object.
+     *
      * @param badges the list of objects to convert.
      * @return the converted objects.
      */

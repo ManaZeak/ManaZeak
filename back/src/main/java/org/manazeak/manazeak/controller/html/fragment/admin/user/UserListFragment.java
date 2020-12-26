@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserListFragment {
 
     private final AdminUserService adminUserService;
-    public BadgeService badgeService;
+    private final BadgeService badgeService;
 
     public UserListFragment(AdminUserService adminUserService, BadgeService badgeService) {
         this.adminUserService = adminUserService;
@@ -27,6 +27,7 @@ public class UserListFragment {
     /**
      * Get the fragment containing the list of users available in the app.
      * It also includes available badges.
+     *
      * @return The fragment.
      */
     @Security(PrivilegeEnum.ADMV)

@@ -1,35 +1,36 @@
 <div class="user-profile-view">
-  <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
-    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
-    <div class="avatar-container" th:if="*{avatar == null}"> <!-- User doesn't have an avatar. Displaying default -->
-      <img src="static/img/default/user.svg" alt="user-avatar">
-      <p id="username" th:text="*{username}"></p>
+    <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
+        <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
+        <div class="avatar-container" th:if="*{avatar == null}">
+            <!-- User doesn't have an avatar. Displaying default -->
+            <img alt="user-avatar" src="static/img/default/user.svg">
+            <p id="username" th:text="*{username}"></p>
+        </div>
+        <div class="avatar-container" th:unless="*{avatar == null}">
+            <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
+            <p id="username" th:text="*{username}"></p>
+        </div>
+        <div class="info-container">
+            <label for="email" th:text="#{user.tellusmore.email}"></label>
+            <p id="email" th:text="${userInfo.email}"></p>
+            <label for="name" th:text="#{user.tellusmore.name}"></label>
+            <p id="name" th:text="*{name}"></p>
+            <label for="surname" th:text="#{user.tellusmore.surname}"></label>
+            <p id="surname" th:text="*{surname}"></p>
+            <label for="bio" th:text="#{user.tellusmore.bio}"></label>
+            <p id="bio" th:text="*{bio}"></p>
+            <label for="birthdate" th:text="#{user.tellusmore.birthday}"></label>
+            <p id="birthdate" th:text="*{birthDate}"></p>
+            <label for="country" th:text="#{user.tellusmore.country}"></label>
+            <p id="country" th:text="*{country}"></p>
+            <label for="locale" th:text="#{user.tellusmore.language}"></label>
+            <p id="locale" th:text="*{locale}"></p>
+            <label for="inviteCode" th:text="#{user.register.invite_code}"></label>
+            <p id="inviteCode" th:text="*{inviteCode}"></p>
+        </div>
     </div>
-    <div class="avatar-container" th:unless="*{avatar == null}">
-      <img th:src='*{"/resources/avatars/"+avatar}' alt="user-avatar">
-      <p id="username" th:text="*{username}"></p>
+    <div class="user-pref">
+        <label for="theme-switch">Dark theme</label>
+        <input checked id="theme-switch" name="theme-switch" type="checkbox">
     </div>
-    <div class="info-container">
-      <label for="email" th:text="#{user.tellusmore.email}"></label>
-      <p id="email" th:text="${userInfo.email}"></p>
-      <label for="name" th:text="#{user.tellusmore.name}"></label>
-      <p id="name" th:text="*{name}"></p>
-      <label for="surname" th:text="#{user.tellusmore.surname}"></label>
-      <p id="surname" th:text="*{surname}"></p>
-      <label for="bio" th:text="#{user.tellusmore.bio}"></label>
-      <p id="bio" th:text="*{bio}"></p>
-      <label for="birthdate" th:text="#{user.tellusmore.birthday}"></label>
-      <p id="birthdate" th:text="*{birthDate}"></p>
-      <label for="country" th:text="#{user.tellusmore.country}"></label>
-      <p id="country" th:text="*{country}"></p>
-      <label for="locale" th:text="#{user.tellusmore.language}"></label>
-      <p id="locale" th:text="*{locale}"></p>
-      <label for="inviteCode" th:text="#{user.register.invite_code}"></label>
-      <p id="inviteCode" th:text="*{inviteCode}"></p>
-    </div>
-  </div>
-  <div class="user-pref">
-    <label for="theme-switch">Dark theme</label>
-    <input id="theme-switch" type="checkbox" name="theme-switch" checked>
-  </div>
 </div>

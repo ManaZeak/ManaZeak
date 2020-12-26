@@ -13,7 +13,6 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.message.MessageManager;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

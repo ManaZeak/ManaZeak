@@ -24,9 +24,9 @@ public class MzkRestException extends RuntimeException {
     /**
      * Create an exception with only one message.
      *
-     * @param titleCode the code of the string for the notification title.
+     * @param titleCode   the code of the string for the notification title.
      * @param messageCode the code of the string for the notification message.
-     * @param severity the serveity of the notification.
+     * @param severity    the serveity of the notification.
      */
     public MzkRestException(String titleCode, String messageCode, NotificationSeverityEnum severity) {
         NotificationDto notification = new NotificationDto();

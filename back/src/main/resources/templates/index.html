@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="ie=edge" http-equiv="x-ua-compatible">
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-  <meta content="initial-scale=1" name="viewport">
-  <meta name="description" th:content="#{mp.description}">
-  <title th:text="#{mp.title}"></title>
-  <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
-  <link href="static/dist/css/manazeak.bundle.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="initial-scale=1" name="viewport">
+    <meta name="description" th:content="#{mp.description}">
+    <title th:text="#{mp.title}"></title>
+    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+    <link href="static/dist/css/manazeak.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body class="dark-theme">
 <div class="components-wrapper">
-  <div class="scene-wrapper">
-    <div class="aside" id="aside">
-      <div class="item-group">
-        <div id="homepage-button" class="item tooltip">
-          <img src="static/img/navigation/home.svg" alt="home-page"/>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.homepage}"></span>
+    <div class="scene-wrapper">
+        <div class="aside" id="aside">
+            <div class="item-group">
+                <div class="item tooltip" id="homepage-button">
+                    <img alt="home-page" src="static/img/navigation/home.svg"/>
+                    <span class="tooltip-text right" th:text="#{mp.aside.tooltip.homepage}"></span>
+                </div>
+                <div class="item tooltip">
+                    <img alt="lib-info" src="static/img/logo/manazeak-logo-square.svg"/>
+                    <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
+                </div>
+            </div>
+            <div class="item-group mobile-only track-preview">
+                <p>Track title</p>
+                <p>Artists</p>
+            </div>
+            <div class="item-group">
+                <div class="item tooltip" id="menupage-button">
+                    <img alt="menu-page" src="static/img/navigation/menu.svg"/>
+                    <span class="tooltip-text right" th:text="#{mp.aside.tooltip.menu}"></span>
+                </div>
+                <div class="item tooltip">
+                    <form method="post" th:action="@{/logout}">
+                        <img alt="user-logout" src="static/img/actions/logout.svg"/>
+                        <input type="submit" value=""/>
+                    </form>
+                    <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
+                </div>
+            </div>
         </div>
-        <div class="item tooltip">
-          <img src="static/img/logo/manazeak-logo-square.svg" alt="lib-info"/>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
+        <div class="scene" id="scene">
+
         </div>
-      </div>
-      <div class="item-group mobile-only track-preview">
-        <p>Track title</p>
-        <p>Artists</p>
-      </div>
-      <div class="item-group">
-        <div id="menupage-button" class="item tooltip">
-          <img src="static/img/navigation/menu.svg" alt="menu-page"/>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.menu}"></span>
-        </div>
-        <div class="item tooltip">
-          <form method="post" th:action="@{/logout}">
-            <img src="static/img/actions/logout.svg" alt="user-logout"/>
-            <input type="submit" value=""/>
-          </form>
-          <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
-        </div>
-      </div>
     </div>
-    <div id="scene" class="scene">
+    <div class="footbar">
 
     </div>
-  </div>
-  <div class="footbar">
-
-  </div>
 </div>
 <!-- The global loading overlay is by default in UI. Must be removed using mzk.ui.stopLoading when mzk init is done -->
-<div id="mzk-loading-overlay" class="mzk-loading-overlay"></div>
+<div class="mzk-loading-overlay" id="mzk-loading-overlay"></div>
 <script src="static/dist/js/manazeak.bundle.js" type="text/javascript"></script>
 </body>
 </html>

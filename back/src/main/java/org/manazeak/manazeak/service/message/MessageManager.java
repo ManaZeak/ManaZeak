@@ -29,6 +29,7 @@ public class MessageManager {
 
     /**
      * Get a message from a validation error.
+     *
      * @param error The validation error.
      * @return The message in the connected user language.
      */

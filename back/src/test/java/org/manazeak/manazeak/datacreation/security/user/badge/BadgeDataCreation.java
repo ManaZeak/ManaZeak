@@ -17,6 +17,7 @@ public class BadgeDataCreation {
 
     /**
      * Creates a badge in the database.
+     *
      * @return The badge that was created.
      */
     public Badge createBadge() {

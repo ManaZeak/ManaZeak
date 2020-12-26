@@ -2,7 +2,6 @@ package org.manazeak.manazeak.service.security.user.wish;
 
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
-import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
 import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.Wish;
 

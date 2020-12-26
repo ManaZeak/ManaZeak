@@ -39,7 +39,7 @@ public class WishServiceVerifyHelper {
     /**
      * Check that a wish has changed status.
      *
-     * @param user the user linked to the wish.
+     * @param user   the user linked to the wish.
      * @param wishes the list of the wish of the user from the database.
      */
     public static void checkStatusWishChanged(final MzkUser user, final List<Wish> wishes) {
@@ -56,6 +56,7 @@ public class WishServiceVerifyHelper {
 
     /**
      * Check that the database contains only a wish.
+     *
      * @param wishes The list of wishes of the database.
      * @return return the wish.
      */

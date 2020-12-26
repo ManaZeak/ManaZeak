@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    private final KommunicatorServiceImpl kommunicatorServiceImpl;
-
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
+    private final KommunicatorServiceImpl kommunicatorServiceImpl;
 
     public RestExceptionHandler(KommunicatorServiceImpl kommunicatorServiceImpl) {
         this.kommunicatorServiceImpl = kommunicatorServiceImpl;

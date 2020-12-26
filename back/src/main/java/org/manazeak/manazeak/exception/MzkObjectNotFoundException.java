@@ -42,7 +42,15 @@ public class MzkObjectNotFoundException extends RuntimeException {
         return messageKey;
     }
 
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
+
     public String getTitleKey() {
         return titleKey;
+    }
+
+    public void setTitleKey(String titleKey) {
+        this.titleKey = titleKey;
     }
 }

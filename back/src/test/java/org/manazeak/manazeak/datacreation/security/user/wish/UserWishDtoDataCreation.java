@@ -13,6 +13,7 @@ public class UserWishDtoDataCreation {
 
     /**
      * Creates a {@link UserWishDto} for unit test.
+     *
      * @return the wish send by the user.
      */
     public UserWishDto createUserWishDto() {

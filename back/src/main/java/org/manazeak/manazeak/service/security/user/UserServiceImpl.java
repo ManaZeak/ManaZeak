@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
-import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -36,17 +35,11 @@ public class UserServiceImpl implements UserService {
      * Object used to manipulate the invite codes.
      */
     private final InviteCodeService inviteCodeService;
-    /**
-     * The DAO for the users.
-     */
-    private final MzkUserDAO userDAO;
 
-    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, InviteCodeService inviteCodeService,
-                           MzkUserDAO userDAO) {
+    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, InviteCodeService inviteCodeService) {
         this.privilegeDAO = privilegeDAO;
         this.userManager = userManager;
         this.inviteCodeService = inviteCodeService;
-        this.userDAO = userDAO;
     }
 
     /**

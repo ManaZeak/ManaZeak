@@ -9,7 +9,9 @@ public enum WishFragmentEnum {
 
     private final String page;
 
-    WishFragmentEnum(String page){this.page = page;}
+    WishFragmentEnum(String page) {
+        this.page = page;
+    }
 
     public String getPage() {
         return page;
