@@ -9,7 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: squadella/maven-firefox-chromium-jdk11
+    container: 
+      image: squadella/maven-firefox-chromium-jdk11
+      options: --user 1001
     # Allows to launch a postgresql service for the unit test of the java app
     services:
       # Label used to access the service container
