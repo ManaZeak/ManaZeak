@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: squadella/maven-firefox-chromium-jdk11
     container: maven
     # Allows to launch a postgresql service for the unit test of the java app
     services:
