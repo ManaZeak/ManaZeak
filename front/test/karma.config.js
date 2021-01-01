@@ -2,7 +2,7 @@ module.exports = function(config) {
   config.set({
     basePath: '../..',
     singleRun: !config.dev, // Keep browser open in dev mode
-    browsers: ['FirefoxHeadless', 'Chromium'],
+    browsers: ['FirefoxHeadless', 'ChromiumHeadless'],
     frameworks: ['jasmine'],
     client: {
       jasmine: {
