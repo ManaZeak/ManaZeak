@@ -34,5 +34,7 @@ jobs:
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 11
+    - name: Setting up folders
+      run: mkdir /resources/avatars/
     - name: Build with Maven
       run: mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak
