@@ -6,7 +6,7 @@ import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.manazeak.manazeak.service.reference.locale.LocaleService;
-import org.manazeak.manazeak.service.security.user.info.AdditionalInfoManager;
+import org.manazeak.manazeak.manager.security.user.info.AdditionalInfoManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

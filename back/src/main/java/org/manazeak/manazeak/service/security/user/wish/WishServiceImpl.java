@@ -4,7 +4,8 @@ import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
 import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.Wish;
-import org.manazeak.manazeak.service.security.user.UserManager;
+import org.manazeak.manazeak.manager.security.user.UserManager;
+import org.manazeak.manazeak.manager.security.user.wish.WishManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

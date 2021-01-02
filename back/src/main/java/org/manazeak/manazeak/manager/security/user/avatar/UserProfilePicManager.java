@@ -1,10 +1,9 @@
-package org.manazeak.manazeak.service.security.user.avatar;
+package org.manazeak.manazeak.manager.security.user.avatar;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.file.FileUtil;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,8 +16,7 @@ import java.nio.file.StandardCopyOption;
 /**
  * Handles the save action of the avatar of the user.
  */
-@Service
-@TransactionnalWithRollback
+@Component
 public class UserProfilePicManager {
 
     /**

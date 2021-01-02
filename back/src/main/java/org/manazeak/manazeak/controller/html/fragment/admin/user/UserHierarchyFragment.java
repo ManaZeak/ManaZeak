@@ -4,7 +4,7 @@ import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
-import org.manazeak.manazeak.service.security.admin.AdminUserService;
+import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FragmentController
 public class UserHierarchyFragment {
 
-    private final AdminUserService adminUserService;
+    private final UserService userService;
 
-    public UserHierarchyFragment(AdminUserService adminUserService) {
-        this.adminUserService = adminUserService;
+    public UserHierarchyFragment(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -28,7 +28,7 @@ public class UserHierarchyFragment {
     @Security(PrivilegeEnum.ADMV)
     @GetMapping("/user-hierarchy")
     public String getUserHierarchy(Model model) {
-        model.addAttribute("users", adminUserService.getUserHierarchy());
+        model.addAttribute("users", userService.getUserHierarchy());
         return AdminFragmentEnum.USER_HIERARCHY.getPage();
     }
 }

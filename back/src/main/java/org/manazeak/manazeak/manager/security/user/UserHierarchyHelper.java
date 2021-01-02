@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.admin;
+package org.manazeak.manazeak.manager.security.user;
 
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.security.InviteCode;

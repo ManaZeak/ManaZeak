@@ -11,6 +11,7 @@ import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkValidationException;
+import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -23,6 +24,8 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
 
     @Autowired
     InviteCodeService inviteCodeService;
+    @Autowired
+    InviteCodeManager inviteCodeManager;
     @Autowired
     InviteCodeDataCreation inviteCodeDataCreation;
     @Autowired
@@ -66,7 +69,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         // Creating a user.
         MzkUser user = userDataCreation.createDefaultMzkUser();
         // Using the default invite code.
-        inviteCodeService.useInviteCode(UserTestConstants.INVITE_CODE, user);
+        inviteCodeManager.useInviteCode(UserTestConstants.INVITE_CODE, user);
         // Cleaning the JPA to avoid any cache issue
         cleanJpa();
         // Checking if the new user has an invite code

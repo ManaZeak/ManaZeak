@@ -1,10 +1,10 @@
-package org.manazeak.manazeak.service.security.user.profile;
+package org.manazeak.manazeak.manager.security.user;
 
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Manager for accessing to the user profile information.
  */
-@Service
+@Component
 public class UserProfileManager {
 
     private static final String ROLE_REFERENCE_KEY = "reference.role.";

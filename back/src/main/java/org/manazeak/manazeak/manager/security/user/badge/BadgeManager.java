@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user.badge;
+package org.manazeak.manazeak.manager.security.user.badge;
 
 import org.manazeak.manazeak.daos.security.BadgeDAO;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
@@ -6,15 +6,15 @@ import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
 import org.manazeak.manazeak.entity.security.Badge;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
-import org.manazeak.manazeak.service.security.user.UserManager;
-import org.springframework.stereotype.Service;
+import org.manazeak.manazeak.manager.security.user.UserManager;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Manage the badges of the application.
  */
-@Service
+@Component
 public class BadgeManager {
 
     /**

@@ -4,7 +4,7 @@ import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.service.security.user.UserManager;
+import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.springframework.stereotype.Service;
 
 /**

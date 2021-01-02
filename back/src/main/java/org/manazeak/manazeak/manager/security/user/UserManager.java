@@ -1,6 +1,5 @@
-package org.manazeak.manazeak.service.security.user;
+package org.manazeak.manazeak.manager.security.user;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.constant.error.ErrorEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
@@ -21,14 +20,13 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 
-@Service
-@TransactionnalWithRollback
+@Component
 public class UserManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserManager.class);

@@ -29,6 +29,7 @@ public class MzkObjectNotFoundException extends RuntimeException {
         super(msg, cause);
     }
 
+
     /**
      * Construct an instance of DecaRuntimeException.
      *

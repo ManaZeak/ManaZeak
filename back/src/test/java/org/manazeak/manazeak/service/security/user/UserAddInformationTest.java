@@ -9,7 +9,7 @@ import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.file.TestImageGetter;
-import org.manazeak.manazeak.service.security.user.info.AdditionalInfoManager;
+import org.manazeak.manazeak.manager.security.user.info.AdditionalInfoManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 

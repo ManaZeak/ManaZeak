@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user.wish;
+package org.manazeak.manazeak.manager.security.user.wish;
 
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.daos.security.WishDAO;
@@ -11,6 +11,7 @@ import org.manazeak.manazeak.entity.security.Wish;
 import org.manazeak.manazeak.entity.security.WishStatus;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.message.MessageManager;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Optional;
 /**
  * Used to manipulate wishes in services.
  */
-@Service
+@Component
 public class WishManager {
 
     private static final String WISH_STATUS = "user.wish.status.";

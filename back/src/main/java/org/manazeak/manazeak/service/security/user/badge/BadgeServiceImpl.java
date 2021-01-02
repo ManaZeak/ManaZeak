@@ -4,6 +4,7 @@ package org.manazeak.manazeak.service.security.user.badge;
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
+import org.manazeak.manazeak.manager.security.user.badge.BadgeManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

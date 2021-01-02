@@ -2,10 +2,14 @@ package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.security.PrivilegeDAO;
+import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
+import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
-import org.manazeak.manazeak.service.security.invite.InviteCodeService;
+import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
+import org.manazeak.manazeak.manager.security.user.AdminUserManager;
+import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -32,14 +36,19 @@ public class UserServiceImpl implements UserService {
      */
     private final UserManager userManager;
     /**
+     * Used to manipulate the user for admin actions.
+     */
+    private final AdminUserManager adminUserManager;
+    /**
      * Object used to manipulate the invite codes.
      */
-    private final InviteCodeService inviteCodeService;
+    private final InviteCodeManager inviteCodeManager;
 
-    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, InviteCodeService inviteCodeService) {
+    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, AdminUserManager adminUserManager, InviteCodeManager inviteCodeManager) {
         this.privilegeDAO = privilegeDAO;
         this.userManager = userManager;
-        this.inviteCodeService = inviteCodeService;
+        this.adminUserManager = adminUserManager;
+        this.inviteCodeManager = inviteCodeManager;
     }
 
     /**
@@ -59,9 +68,9 @@ public class UserServiceImpl implements UserService {
         // Creating the user.
         MzkUser user = userManager.insertUser(userToCreate);
         // Creating the invite code of the user.
-        inviteCodeService.generateInviteCode(user);
+        inviteCodeManager.generateInviteCode(user);
         // Invalidating the parent invite code.
-        inviteCodeService.useInviteCode(userToCreate.getInviteCode(), user);
+        inviteCodeManager.useInviteCode(userToCreate.getInviteCode(), user);
         return user;
     }
 
@@ -80,5 +89,22 @@ public class UserServiceImpl implements UserService {
     public boolean isUserConnected() {
         // If the user is not anonymous, then he is connected.
         return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserHierarchyDto getUserHierarchy() {
+        // Getting the user hierarchy.
+        return adminUserManager.getUserHierarchy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserListLineDto> getUserList() {
+        return adminUserManager.getUserList();
     }
 }

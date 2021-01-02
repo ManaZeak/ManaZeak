@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.service.security.user;
 
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
-import org.manazeak.manazeak.service.security.user.info.AdditionalInfoManager;
+import org.manazeak.manazeak.manager.security.user.info.AdditionalInfoManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

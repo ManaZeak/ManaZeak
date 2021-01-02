@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.service.security.user.badge;
+package org.manazeak.manazeak.manager.security.user.badge;
 
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto;
