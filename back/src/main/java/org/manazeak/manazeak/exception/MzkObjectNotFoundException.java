@@ -9,7 +9,7 @@ public class MzkObjectNotFoundException extends RuntimeException {
     private String titleKey;
 
     /**
-     * Construct an instance of DecaRuntimeException.
+     * Construct an instance of MzkObjectNotFoundException.
      *
      * @param msg Error message
      */
@@ -20,7 +20,7 @@ public class MzkObjectNotFoundException extends RuntimeException {
     }
 
     /**
-     * Construct an instance of DecaRuntimeException.
+     * Construct an instance of MzkObjectNotFoundException.
      *
      * @param msg   Error message
      * @param cause The parent exception
@@ -31,7 +31,7 @@ public class MzkObjectNotFoundException extends RuntimeException {
 
 
     /**
-     * Construct an instance of DecaRuntimeException.
+     * Construct an instance of MzkObjectNotFoundException.
      *
      * @param cause Parent exception.
      */

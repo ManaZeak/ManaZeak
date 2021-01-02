@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
      */
     private final InviteCodeManager inviteCodeManager;
 
-    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, AdminUserManager adminUserManager, InviteCodeManager inviteCodeManager) {
+    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, AdminUserManager adminUserManager,
+                           InviteCodeManager inviteCodeManager) {
         this.privilegeDAO = privilegeDAO;
         this.userManager = userManager;
         this.adminUserManager = adminUserManager;
