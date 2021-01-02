@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="ManaZeak" pattern="file[manazeak_back]:src/test/java//*||file[manazeak_back]:src/main/java//*||file[manazeak_back]:src/main/resources//*" />
+</component>

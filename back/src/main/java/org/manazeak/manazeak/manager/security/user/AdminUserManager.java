@@ -26,6 +26,7 @@ public class AdminUserManager {
 
     /**
      * Get the object containing the users in a tree form.
+     *
      * @return the tree of users.
      */
     public UserHierarchyDto getUserHierarchy() {
@@ -37,6 +38,7 @@ public class AdminUserManager {
 
     /**
      * Get all the users from the database with all the information.
+     *
      * @return the user list.
      */
     public List<UserListLineDto> getUserList() {
