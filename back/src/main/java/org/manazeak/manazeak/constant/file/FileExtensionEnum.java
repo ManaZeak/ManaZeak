@@ -30,7 +30,7 @@ public enum FileExtensionEnum {
             }
         }
         // Nothing was found
-        throw new MzkRuntimeException("This mime type is not supported.");
+        throw new MzkRuntimeException("general.error.file.mime_type_error", "general.error.file.mime_type_error_title");
     }
 
     public String getExtension() {

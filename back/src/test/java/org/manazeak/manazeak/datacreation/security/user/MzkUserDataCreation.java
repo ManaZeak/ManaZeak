@@ -85,7 +85,7 @@ public class MzkUserDataCreation {
         // Getting the last created user.
         Optional<MzkUser> user = userService.findByUsername(UserTestConstants.USERNAME + suffix);
         if (user.isEmpty()) {
-            throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.");
+            throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.", "");
         }
         return user.get();
     }

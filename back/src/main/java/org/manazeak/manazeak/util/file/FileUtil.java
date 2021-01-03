@@ -34,7 +34,7 @@ public final class FileUtil {
             return FileMagicNumberEnum.getFileExtension(file);
         } catch (MzkFileFormatException e) {
             LOG.error("Wrong format detected after the validation of an uploaded file");
-            throw new MzkRuntimeException("Bad format detected", e);
+            throw new MzkRuntimeException("general.error.file.bad_format", "general.error.file.bad_format_title", e);
         }
     }
 
@@ -48,7 +48,7 @@ public final class FileUtil {
             try {
                 Files.createDirectories(path);
             } catch (IOException e) {
-                throw new MzkRuntimeException("Couldn't create the parent directories.");
+                throw new MzkRuntimeException("general.error.file.parent_directory", "general.error.file.parent_directory_title", e);
             }
         }
     }

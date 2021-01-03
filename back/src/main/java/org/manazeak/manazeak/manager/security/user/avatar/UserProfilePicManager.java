@@ -44,7 +44,7 @@ public class UserProfilePicManager {
         try (InputStream stream = file.getInputStream()) {
             Files.copy(stream, dest, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new MzkRuntimeException("Impossible to save the avatar into the storage.", e);
+            throw new MzkRuntimeException("error.file_system.avatar", "error.file_system.avatar_title", e);
         }
         return fileName;
     }

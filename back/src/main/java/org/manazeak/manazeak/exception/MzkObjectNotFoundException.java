@@ -3,10 +3,10 @@ package org.manazeak.manazeak.exception;
 /**
  * An object hasn't been found in the database.
  */
-public class MzkObjectNotFoundException extends RuntimeException {
+public class MzkObjectNotFoundException extends RuntimeException implements MzkException {
 
-    private String messageKey;
-    private String titleKey;
+    private final String messageKey;
+    private final String titleKey;
 
     /**
      * Construct an instance of MzkObjectNotFoundException.
@@ -19,39 +19,14 @@ public class MzkObjectNotFoundException extends RuntimeException {
         this.titleKey = titleKey;
     }
 
-    /**
-     * Construct an instance of MzkObjectNotFoundException.
-     *
-     * @param msg   Error message
-     * @param cause The parent exception
-     */
-    public MzkObjectNotFoundException(final String msg, final Throwable cause) {
-        super(msg, cause);
-    }
-
-
-    /**
-     * Construct an instance of MzkObjectNotFoundException.
-     *
-     * @param cause Parent exception.
-     */
-    public MzkObjectNotFoundException(final Throwable cause) {
-        super(cause);
-    }
-
+    @Override
     public String getMessageKey() {
         return messageKey;
     }
 
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
+    @Override
     public String getTitleKey() {
         return titleKey;
     }
 
-    public void setTitleKey(String titleKey) {
-        this.titleKey = titleKey;
-    }
 }

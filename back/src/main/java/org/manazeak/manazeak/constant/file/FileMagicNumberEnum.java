@@ -52,7 +52,7 @@ public enum FileMagicNumberEnum {
                     return magic.getExtension();
                 }
             } catch (IOException e) {
-                throw new MzkRuntimeException("IO error while processing the uploaded file.", e);
+                throw new MzkRuntimeException("error.file_system.io_error", "error.file_system.io_error_title", e);
             }
         }
         // No format has been found for the file, sending an exception.

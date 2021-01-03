@@ -29,14 +29,14 @@ public abstract class AbstractManaZeakTest {
     }
 
     /**
-     * @return Renvoie l'emplacement sur le fs de l'application
+     * @return Get the path of the application on in the file system
      */
     protected String getApplicationPath() {
         try {
             return FileUtils.toFile(getClass().getProtectionDomain()
                     .getCodeSource().getLocation().toURI().toURL()).getAbsolutePath() + "/";
         } catch (final Exception e) {
-            throw new MzkRuntimeException("Impossible to get the application path.", e);
+            throw new MzkRuntimeException("Impossible to get the application path.", "", e);
         }
     }
 }

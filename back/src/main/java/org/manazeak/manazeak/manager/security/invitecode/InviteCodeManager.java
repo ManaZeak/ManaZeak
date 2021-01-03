@@ -36,7 +36,7 @@ public class InviteCodeManager {
         // Get the invite code from the database.
         Optional<InviteCode> inviteCodeOpt = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
         if (inviteCodeOpt.isEmpty()) {
-            throw new MzkRuntimeException("The invite code wasn't found in the database.");
+            throw new MzkRuntimeException("user.invite_code.error.not_found", "user.invite_code.error.not_found_title");
         }
         // Mark the invite code as used.
         InviteCode inviteCode = inviteCodeOpt.get();

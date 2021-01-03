@@ -62,14 +62,16 @@ public class UserManager {
         // Getting the security context and the user.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new MzkRuntimeException("There is no connected user. Un-authenticated user shouldn't access this.");
+            LOG.error("There is no connected user. Un-authenticated user shouldn't access this.");
+            throw new MzkRuntimeException("error.user.not_connected", "error.user.not_connected_title");
         }
         // Getting the current username
         String currentUserName = authentication.getName();
         // Getting the user in the database.
         Optional<MzkUser> userOpt = findByUsername(currentUserName);
         if (userOpt.isEmpty()) {
-            throw new MzkRuntimeException("The username wasn't found in the database, this is not normal!");
+            LOG.error("The username wasn't found in the database, this is not normal!");
+            throw new MzkRuntimeException("user.error.not_found", "user.error.not_found_title");
         }
         return userOpt.get();
     }

@@ -3,7 +3,8 @@ package org.manazeak.manazeak.controller.rest;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.manazeak.manazeak.service.message.KommunicatorServiceImpl;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
-    private final KommunicatorServiceImpl kommunicatorServiceImpl;
+    private final KommunicatorService kommunicatorService;
 
-    public RestExceptionHandler(KommunicatorServiceImpl kommunicatorServiceImpl) {
-        this.kommunicatorServiceImpl = kommunicatorServiceImpl;
+    public RestExceptionHandler(KommunicatorService kommunicatorService) {
+        this.kommunicatorService = kommunicatorService;
     }
 
     /**
@@ -35,7 +36,15 @@ public class RestExceptionHandler {
     public KommunicatorDto handleExceptionRestException(MzkRestException e) {
         // Building a error message from the available information.
         LOG.error("Error encountered during processing the client request.", e);
-        return kommunicatorServiceImpl.buildKommunicatorFromException(e);
+        return kommunicatorService.buildKommunicatorFromException(e);
+    }
+
+    @ExceptionHandler(MzkRuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public KommunicatorDto handleMzkRuntimeException(MzkRuntimeException e) {
+        // Building an error message from the information of the exception.
+        LOG.error("Error encountered during processing the client request.", e);
+        return kommunicatorService.buildKommunicatorFromException(e);
     }
 
     @ExceptionHandler(MzkObjectNotFoundException.class)
@@ -43,6 +52,6 @@ public class RestExceptionHandler {
     public KommunicatorDto handleElementNotFoundException(MzkObjectNotFoundException e) {
         // Building an error message from the exception.
         LOG.error("Object not found in the database.", e);
-        return kommunicatorServiceImpl.buildKommunicatorFromException(e);
+        return kommunicatorService.buildKommunicatorFromException(e);
     }
 }

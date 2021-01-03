@@ -3,33 +3,42 @@ package org.manazeak.manazeak.exception;
 /**
  * Runtime exception for ManaZeak
  */
-public class MzkRuntimeException extends RuntimeException {
+public class MzkRuntimeException extends RuntimeException implements MzkException {
+
+    private final String messageKey;
+    private final String titleKey;
 
     /**
-     * Construct an instance of DecaRuntimeException.
+     * Constructs an instance of the exception with a message key and a title and a cause.
      *
-     * @param msg Error message
+     * @param messageKey The message key that will be used to display the message to the user.
+     * @param titleKey   The title key that will be used to display the title to the user.
+     * @param e          The cause of this exception.
      */
-    public MzkRuntimeException(final String msg) {
-        super(msg);
+    public MzkRuntimeException(String messageKey, String titleKey, Throwable e) {
+        super(e);
+        this.messageKey = messageKey;
+        this.titleKey = titleKey;
     }
 
     /**
-     * Construct an instance of DecaRuntimeException.
+     * Constructs an instance of the exception with a message key and a title and a cause.
      *
-     * @param msg   Error message
-     * @param cause The parent exception
+     * @param messageKey The message key that will be used to display the message to the user.
+     * @param titleKey   The title key that will be used to display the title to the user.
      */
-    public MzkRuntimeException(final String msg, final Throwable cause) {
-        super(msg, cause);
+    public MzkRuntimeException(String messageKey, String titleKey) {
+        this.messageKey = messageKey;
+        this.titleKey = titleKey;
     }
 
-    /**
-     * Construct an instance of DecaRuntimeException.
-     *
-     * @param cause Parent exception.
-     */
-    public MzkRuntimeException(final Throwable cause) {
-        super(cause);
+    @Override
+    public String getMessageKey() {
+        return messageKey;
+    }
+
+    @Override
+    public String getTitleKey() {
+        return titleKey;
     }
 }

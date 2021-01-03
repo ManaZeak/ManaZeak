@@ -9,12 +9,11 @@ import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Wish;
 import org.manazeak.manazeak.entity.security.WishStatus;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.service.message.MessageManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Used to manipulate wishes in services.
@@ -92,15 +91,23 @@ public class WishManager {
      */
     public void changeWishStatus(Long wishId, WishStatusEnum status) {
         // Trying to get the wish
-        Optional<Wish> wishOpt = wishDAO.findById(wishId);
-        if (wishOpt.isEmpty()) {
-            throw new MzkRuntimeException("The wish can't be found.");
-        }
-        Wish wish = wishOpt.get();
+        Wish wish = wishDAO.findById(wishId)
+                .orElseThrow(MzkExceptionHelper.generateObjectNotFoundException("user.wish.error.not_found"));
         // Setting the status with the enum.
         wish.setWishStatus(wishStatusDAO.getWishStatusByWishStatusId(status.getStatusId()));
         //saving the wish
         wishDAO.save(wish);
+    }
+
+    /**
+     * Delete a wish that is associated with the current user.
+     *
+     * @param wishId The wish that must be deleted.
+     */
+    public void deleteWishForCurrentUser(Long wishId, MzkUser user) {
+        // Getting the removed wish if no wish were delete an exception is thrown.
+        Wish deletedWish = wishDAO.removeByWishIdAndMzkUser(wishId, user)
+                .orElseThrow(MzkExceptionHelper.generateObjectNotFoundException("user.wish.error.not_found_for_user"));
     }
 
     /**
