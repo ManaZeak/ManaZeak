@@ -17,7 +17,7 @@
     <div id="accepted-wishes" class="accepted-wishes">
         <h1>Accepted wishes</h1>
         <!--/*@thymesVar id="wishesRefused" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
-        <div class="wish accepted" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesRefused}"
+        <div class="wish accepted" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesAccepted}"
              xmlns:th="http://www.thymeleaf.org">
             <div class="wish-info">
                 <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
@@ -32,7 +32,7 @@
     <div id="refused-wishes" class="refused-wishes">
         <h1>Refused wishes</h1>
         <!--/*@thymesVar id="wishesAccepted" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
-        <div class="wish refused" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesAccepted}"
+        <div class="wish refused" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesRefused}"
              xmlns:th="http://www.thymeleaf.org">
             <div class="wish-info">
                 <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
