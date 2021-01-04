@@ -66,6 +66,16 @@ public class WishServiceImpl implements WishService {
         wishManager.changeWishStatus(wishId, status);
     }
 
+    /**
+     * Delete a wish in the database.
+     *
+     * @param wishId The wish that will be deleted.
+     */
+    @Override
+    public void deleteUserWish(Long wishId) {
+        wishManager.deleteWish(wishId);
+    }
+
     @Override
     public void deleteCurrentUserWish(Long wishId) {
         wishManager.deleteWishForCurrentUser(wishId, userManager.getCurrentUser());

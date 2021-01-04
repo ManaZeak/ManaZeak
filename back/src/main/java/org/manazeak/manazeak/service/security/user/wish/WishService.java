@@ -42,7 +42,15 @@ public interface WishService {
     void changeWishStatus(Long wishId, WishStatusEnum status);
 
     /**
+     * Delete a wish from the application.
+     *
+     * @param wishId The wish that will be deleted.
+     */
+    void deleteUserWish(Long wishId);
+
+    /**
      * Delete a wish from the application that has been created by the connected user.
+     *
      * @param wishId The wish that will be deleted.
      */
     void deleteCurrentUserWish(Long wishId);

@@ -113,6 +113,15 @@ public class WishManager {
     }
 
     /**
+     * Delete a wish in the database.
+     *
+     * @param wishId The wish that must be deleted.
+     */
+    public void deleteWish(Long wishId) {
+        wishDAO.deleteById(wishId);
+    }
+
+    /**
      * Get the localized string from the code of the status.
      *
      * @return The status in a string format
