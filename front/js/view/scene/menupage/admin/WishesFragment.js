@@ -13,7 +13,6 @@ class WishesFragment {
     this._dragElements = [];
 
     this._fillAttributes();
-    this._events();
   }
 
 
@@ -29,68 +28,27 @@ class WishesFragment {
 
 
   _fillAttributes() {
-
+    this._setDragDropElements('#pending-wishes', 'reset');
+    this._setDragDropElements('#accepted-wishes', 'accept');
+    this._setDragDropElements('#refused-wishes', 'reject');
   }
 
 
-  _events() {
-    const pendingWishes = this._target.querySelector('#pending-wishes');
-    const acceptedWishes = this._target.querySelector('#accepted-wishes');
-    const refusedWishes = this._target.querySelector('#refused-wishes');
-
-    /* Drop containers */
-
-    const pendingDropContainer = new DropElement({
-      target: pendingWishes,
-      onDrop: this._dropOnPending.bind(this)
+  _setDragDropElements(selector, type) {
+    const wishes = this._target.querySelector(selector);
+    // Drop wrapper
+    const dropContainer = new DropElement({
+      target: wishes,
+      onDrop: this._wishDroppedOn.bind(this, type)
     });
-
-    const acceptedDropContainer = new DropElement({
-      target: acceptedWishes,
-      onDrop: this._dropOnAccepted.bind(this)
-    });
-
-    const refusedDropContainer = new DropElement({
-      target: refusedWishes,
-      onDrop: this._dropOnRefused.bind(this)
-    });
-
-    this._dropElements.push(pendingDropContainer);
-    this._dropElements.push(acceptedDropContainer);
-    this._dropElements.push(refusedDropContainer);
-
-    /* Draggable items */
-
-    for (let i = 0; i < pendingWishes.children.length; ++i) {
-      if (pendingWishes.children[i].nodeName !== 'H1') {
+    this._dropElements.push(dropContainer);
+    // Drag elements
+    for (let i = 0; i < wishes.children.length; ++i) {
+      if (wishes.children[i].nodeName !== 'H1') {
         const dragElement = new DragElement({
-          target: pendingWishes.children[i],
+          target: wishes.children[i],
           data: {
-            wishId: pendingWishes.children[i].dataset.id
-          }
-        });
-        this._dragElements.push(dragElement);
-      }
-    }
-
-    for (let i = 0; i < acceptedWishes.children.length; ++i) {
-      if (acceptedWishes.children[i].nodeName !== 'H1') {
-        const dragElement = new DragElement({
-          target: acceptedWishes.children[i],
-          data: {
-            wishId: acceptedWishes.children[i].dataset.id
-          }
-        });
-        this._dragElements.push(dragElement);
-      }
-    }
-
-    for (let i = 0; i < refusedWishes.children.length; ++i) {
-      if (refusedWishes.children[i].nodeName !== 'H1') {
-        const dragElement = new DragElement({
-          target: refusedWishes.children[i],
-          data: {
-            wishId: refusedWishes.children[i].dataset.id
+            wishId: wishes.children[i].dataset.id
           }
         });
         this._dragElements.push(dragElement);
@@ -99,28 +57,8 @@ class WishesFragment {
   }
 
 
-  _dropOnPending(data) {
-    mzk.kom.post(`/admin/wish/reset/${data.wishId}`, {}).then(response => {
-      mzk.ui.processLogFromServer(response.errors);
-      this._refreshCB();
-    }).catch(error => {
-      console.error(error);
-    });
-  }
-
-
-  _dropOnAccepted(data) {
-    mzk.kom.post(`/admin/wish/accept/${data.wishId}`, {}).then(response => {
-      mzk.ui.processLogFromServer(response.errors);
-      this._refreshCB();
-    }).catch(error => {
-      console.error(error);
-    });
-  }
-
-
-  _dropOnRefused(data) {
-    mzk.kom.post(`/admin/wish/reject/${data.wishId}`, {}).then(response => {
+  _wishDroppedOn(type, data) {
+    mzk.kom.post(`/admin/wish/${type}/${data.wishId}`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this._refreshCB();
     }).catch(error => {
