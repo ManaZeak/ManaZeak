@@ -44,8 +44,9 @@ class Scene {
 
 
   buildModal(options) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.modal = new ModalFactory(options.name, options);
+      resolve();
     });
   }
 

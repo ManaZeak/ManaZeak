@@ -167,6 +167,8 @@ class DragElement {
         if (type === 'text/plain') {
           return JSON.stringify(this._data);
         }
+
+        return null;
       }
     };
   }

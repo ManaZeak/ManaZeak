@@ -843,7 +843,7 @@ class Notification {
    * @author Arthur Beaulieu
    * @since June 2018
    * @description Hash the seed to generate an ID
-   * @param {string} seed   - The seed string to hash
+   * @param {string} seed - The seed string to hash
    * @param {number} length - The length of the returned ID */
   _idGenerator(seed, length) {
     /* Original code from:
@@ -853,11 +853,13 @@ class Notification {
     let hash = 0;
     let character = '';
 
-    if (seed.length === 0 || length > 12) { return undefined; }
+    if (seed.length === 0 || length > 12) {
+      return undefined;
+    }
 
     for (let i = 0; i < seed.length; ++i) {
       character = seed.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + character;
+      hash = ((hash << 5) - hash) + character;
       hash |= 0; // Convert to 32bit integer
     }
 
@@ -944,6 +946,7 @@ class Notification {
       return this.new(options);
     } else {
       console.error('Notification.js : No arguments provided for info() method.');
+      return null;
     }
   }
 
@@ -963,6 +966,7 @@ class Notification {
       return this.new(options);
     } else {
       console.error('Notification.js : No arguments provided for success() method.');
+      return null;
     }
   }
 
@@ -982,6 +986,7 @@ class Notification {
       return this.new(options);
     } else {
       console.error('Notification.js : No arguments provided for warning() method.');
+      return null;
     }
   }
 
@@ -1001,6 +1006,7 @@ class Notification {
       return this.new(options);
     } else {
       console.error('Notification.js : No arguments provided for error() method.');
+      return null;
     }
   }
 

@@ -29,7 +29,7 @@ class UserPageView extends SceneView {
 
 
   _buildView() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       /* Append service style into document */
       Utils.appendLinkInHead('static/dist/css/userprofile.bundle.css');
       resolve();
@@ -38,7 +38,7 @@ class UserPageView extends SceneView {
 
 
   _events() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this._switchThemeEvtId = Events.addEvent('click', this.dom.querySelector('#theme-switch'), this._switchTheme, this);
       resolve();
     });
