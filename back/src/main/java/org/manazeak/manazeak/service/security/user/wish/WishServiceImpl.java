@@ -68,8 +68,6 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public void deleteCurrentUserWish(Long wishId) {
-
+        wishManager.deleteWishForCurrentUser(wishId, userManager.getCurrentUser());
     }
-
-
 }

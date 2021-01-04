@@ -31,6 +31,14 @@ public class UserManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserManager.class);
     /**
+     * The message key for the error when the user can't be found.
+     */
+    private static final String USER_NOT_FOUND_KEY = "user.error.not_found";
+    /**
+     * The title key of the error when the user can't be found.
+     */
+    private static final String USER_NOT_FOUND_TITLE_KEY = "user.error.not_found_title";
+    /**
      * Used to manipulate the roles in the database.
      */
     private final RoleDAO roleDAO;
@@ -71,7 +79,7 @@ public class UserManager {
         Optional<MzkUser> userOpt = findByUsername(currentUserName);
         if (userOpt.isEmpty()) {
             LOG.error("The username wasn't found in the database, this is not normal!");
-            throw new MzkRuntimeException("user.error.not_found", "user.error.not_found_title");
+            throw new MzkRuntimeException(USER_NOT_FOUND_KEY, USER_NOT_FOUND_TITLE_KEY);
         }
         return userOpt.get();
     }
@@ -120,7 +128,7 @@ public class UserManager {
     public MzkUser getUserById(Long userId) {
         return userDAO.findById(userId).orElseThrow(() ->
                 new MzkObjectNotFoundException("No user found in database for the id :" + userId,
-                        "user.error.not_found", "user.error.not_found")
+                        USER_NOT_FOUND_KEY, USER_NOT_FOUND_TITLE_KEY)
         );
     }
 
@@ -148,6 +156,9 @@ public class UserManager {
 
     /**
      * Change the password of a user.
+     *
+     * @param user     The user to modify.
+     * @param password The password to encode and to use for the user.
      */
     private void encryptAndSaveUserPassword(MzkUser user, String password) {
         String encodedPass = passEncoder.encode(password);

@@ -14,16 +14,27 @@ public final class MzkExceptionHelper {
     }
 
     /**
-     * Creates a exception with the given message.
+     * Creates a supplier of an exception with the given message.
      *
      * @param messageKey The key corresponding to the message.
      * @return The exception with the message and a title.
      */
-    public static Supplier<MzkObjectNotFoundException> generateObjectNotFoundException(String messageKey) {
-        return () -> new MzkObjectNotFoundException("The object hasn't been found", messageKey, TITLE_OBJECT_NOT_FOUND);
+    public static Supplier<MzkObjectNotFoundException> generateSupplierObjectNotFoundException(String messageKey) {
+        return () -> generateObjectNotFoundException(messageKey);
+    }
+
+    /**
+     * Generate an exception with the given message.
+     *
+     * @param messageKey The key corresponding to the message.
+     * @return The exception with a message and a title.
+     */
+    public static MzkObjectNotFoundException generateObjectNotFoundException(String messageKey) {
+        return new MzkObjectNotFoundException("The object hasn't been found", messageKey, TITLE_OBJECT_NOT_FOUND);
     }
 
     public static Supplier<MzkRuntimeException> generateMzkRuntimeException(String messageKey, String titleKey) {
         return () -> new MzkRuntimeException(messageKey, titleKey);
     }
+
 }

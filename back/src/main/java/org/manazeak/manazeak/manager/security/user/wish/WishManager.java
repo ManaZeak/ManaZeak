@@ -92,7 +92,7 @@ public class WishManager {
     public void changeWishStatus(Long wishId, WishStatusEnum status) {
         // Trying to get the wish
         Wish wish = wishDAO.findById(wishId)
-                .orElseThrow(MzkExceptionHelper.generateObjectNotFoundException("user.wish.error.not_found"));
+                .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("user.wish.error.not_found"));
         // Setting the status with the enum.
         wish.setWishStatus(wishStatusDAO.getWishStatusByWishStatusId(status.getStatusId()));
         //saving the wish
@@ -106,8 +106,10 @@ public class WishManager {
      */
     public void deleteWishForCurrentUser(Long wishId, MzkUser user) {
         // Getting the removed wish if no wish were delete an exception is thrown.
-        Wish deletedWish = wishDAO.removeByWishIdAndMzkUser(wishId, user)
-                .orElseThrow(MzkExceptionHelper.generateObjectNotFoundException("user.wish.error.not_found_for_user"));
+        int nbRowDeleted = wishDAO.removeByWishIdAndMzkUser(wishId, user);
+        if (nbRowDeleted == 0) {
+            throw MzkExceptionHelper.generateObjectNotFoundException("user.wish.error.not_found_for_user");
+        }
     }
 
     /**

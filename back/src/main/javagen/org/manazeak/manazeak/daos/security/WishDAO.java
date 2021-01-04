@@ -28,6 +28,6 @@ public interface WishDAO extends CrudRepository<Wish, Long> {
      * @param user   The user that is associated with this wish.
      * @return The wishes that has been deleted.
      */
-    Optional<Wish> removeByWishIdAndMzkUser(Long wishId, MzkUser user);
+    int removeByWishIdAndMzkUser(Long wishId, MzkUser user);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

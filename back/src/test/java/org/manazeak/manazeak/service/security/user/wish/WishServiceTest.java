@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user.wish;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class is used to test the wishes interactions.
@@ -66,5 +68,42 @@ class WishServiceTest extends AbstractManaZeakTest {
         List<Wish> wishes = wishDAO.getAllByMzkUserOrderByWishStatusDesc(user);
         // Checking the wish.
         WishServiceVerifyHelper.checkStatusWishChanged(user, wishes);
+    }
+
+    @Test
+    @WithMockUser(username = UserTestConstants.USERNAME)
+    void testDeleteWishForCurrentUser() {
+        // Creating the default user.
+        MzkUser user = userDataCreation.createDefaultMzkUser();
+        // Creating the wish for the user in the database.
+        Wish wish = wishDataCreation.createWishForUser(user);
+        // Deleting the wish for the user.
+        wishService.deleteCurrentUserWish(wish.getWishId());
+        // Checking if the wish has been deleted.
+        Optional<Wish> wishDb = wishDAO.findById(wish.getWishId());
+        if(wishDb.isPresent()) {
+            Assertions.fail("The wish of the user shouldn't exist.");
+        }
+    }
+
+    /**
+     * Test that if a user try to delete a wish of another user.
+     */
+    @Test
+    @WithMockUser(username = UserTestConstants.USERNAME)
+    void testDeleteWishForOtherUserNotPermitted() {
+        // Creating the logged in user.
+        userDataCreation.createDefaultMzkUser();
+        // Creating the user linked to the wish
+        MzkUser user = userDataCreation.createMultipleMzkUser(1);
+        // Creating the wish.
+        Wish wish = wishDataCreation.createWishForUser(user);
+        // Trying to delete the wish
+        try {
+            wishService.deleteCurrentUserWish(wish.getWishId());
+        } catch (Exception e) {
+            return;
+        }
+        Assertions.fail("The wish shouldn't have been suppressed.");
     }
 }
