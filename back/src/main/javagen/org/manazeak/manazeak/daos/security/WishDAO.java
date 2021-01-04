@@ -5,7 +5,6 @@ import org.manazeak.manazeak.entity.security.Wish;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Data Access Object for Wish using Spring CrudRepository interface
