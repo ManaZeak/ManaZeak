@@ -189,6 +189,26 @@ class Kom {
   }
 
 
+  _xhrCall(url, verb, data) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(verb, url, true);
+      xhr.overrideMimeType('text/plain; charset=x-user-defined');
+      xhr.onreadystatechange = response => {
+        if (response.target.readyState === 4) { // Ready state changed has reach the response state
+          this._resolveAsRaw(response.target)
+            .then(resolve)
+            .catch(reject);
+        }
+      };
+      xhr.onerror = () => {
+        reject('F_KOM_XHR_ERROR');
+      };
+      xhr.send(data);
+    });
+  }
+
+
   /*  --------------------------------------------------------------------------------------------------------------- */
   /*  ---------------------------------------  HTTP SERVER CALLS METHODS  ------------------------------------------  */
   /*  --------------------------------------------------------------------------------------------------------------- */
@@ -246,20 +266,9 @@ class Kom {
    * @returns {Promise} The request <code>Promise</code> */
   getRaw(url) {
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.overrideMimeType('text/plain; charset=x-user-defined');
-      xhr.onreadystatechange = response => {
-        if (response.target.readyState === 4) { // Ready state changed has reach the response state
-          this._resolveAsRaw(response.target)
-            .then(resolve)
-            .catch(reject);
-        }
-      };
-      xhr.onerror = () => {
-        reject('F_KOM_XHR_ERROR');
-      };
-      xhr.send();
+      this._xhrCall(url, 'GET', null)
+        .then(resolve)
+        .catch(reject);
     });
   }
 
@@ -321,21 +330,9 @@ class Kom {
    * @returns {Promise} The request <code>Promise</code> */
   postRaw(url, data) {
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
-      xhr.setRequestHeader('X-SRFToken', this._csrfToken);
-      xhr.overrideMimeType('text/plain; charset=x-user-defined');
-      xhr.onreadystatechange = response => {
-        if (response.target.readyState === 4) { // Ready state changed has reach the response state
-          this._resolveAsRaw(response.target)
-            .then(resolve)
-            .catch(reject);
-        }
-      };
-      xhr.onerror = () => {
-        reject('F_KOM_XHR_ERROR');
-      };
-      xhr.send(JSON.stringify(data));
+      this._xhrCall(url, 'POST', JSON.stringify(data))
+        .then(resolve)
+        .catch(reject);
     });
   }
 
