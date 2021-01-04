@@ -11,6 +11,7 @@ class WishesFragment {
 
     this._dropElements = [];
     this._dragElements = [];
+    this._evtIds = [];
 
     this._fillAttributes();
   }
@@ -22,6 +23,9 @@ class WishesFragment {
     }
     for (let i = 0; i < this._dragElements.length; ++i) {
       this._dragElements[i].destroy();
+    }
+    for (let i = 0; i < this._evtIds.length; ++i) {
+      Events.removeEvent(this._evtIds[i]);
     }
     Utils.removeAllObjectKeys(this);
   }
@@ -42,9 +46,10 @@ class WishesFragment {
       onDrop: this._wishDroppedOn.bind(this, type)
     });
     this._dropElements.push(dropContainer);
-    // Drag elements
     for (let i = 0; i < wishes.children.length; ++i) {
+      // We ignore the title of each section (Pending/Accepted/Refused)
       if (wishes.children[i].nodeName !== 'H1') {
+        // Drag elements
         const dragElement = new DragElement({
           target: wishes.children[i],
           data: {
@@ -52,6 +57,8 @@ class WishesFragment {
           }
         });
         this._dragElements.push(dragElement);
+        // Remove wish
+        this._evtIds.push(Events.addEvent('click', wishes.children[i], this._removeWish, { element: wishes.children[i], scope: this }));
       }
     }
   }
@@ -61,6 +68,16 @@ class WishesFragment {
     mzk.kom.post(`/admin/wish/${type}/${data.wishId}`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this._refreshCB();
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
+
+  _removeWish() {
+    mzk.kom.post(`/admin/wish/delete/${this.element.dataset.id}`, {}).then(response => {
+      mzk.ui.processLogFromServer(response.errors);
+      this.scope._refreshCB();
     }).catch(error => {
       console.error(error);
     });
