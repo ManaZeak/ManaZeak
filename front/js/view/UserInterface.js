@@ -1,6 +1,5 @@
 import Aside from './component/Aside';
 import Scene from './component/Scene';
-import WishModal from './modal/menupage/WishModal.js';
 'use strict';
 
 
