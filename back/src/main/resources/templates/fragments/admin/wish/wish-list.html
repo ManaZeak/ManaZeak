@@ -1,5 +1,5 @@
 <div class="wish-grid-wrapper">
-    <div class="pending-wishes">
+    <div id="pending-wishes" class="pending-wishes">
         <h1>Pending wishes</h1>
         <!--/*@thymesVar id="wishesTodo" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
         <div class="wish pending" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesTodo}"
@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="accepted-wishes">
+    <div id="accepted-wishes" class="accepted-wishes">
         <h1>Accepted wishes</h1>
         <!--/*@thymesVar id="wishesRefused" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
         <div class="wish accepted" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesRefused}"
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="refused-wishes">
+    <div id="refused-wishes" class="refused-wishes">
         <h1>Refused wishes</h1>
         <!--/*@thymesVar id="wishesAccepted" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
         <div class="wish refused" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesAccepted}"
