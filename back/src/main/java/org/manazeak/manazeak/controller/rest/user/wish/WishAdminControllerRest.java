@@ -7,6 +7,7 @@ import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.service.security.user.wish.WishService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,7 +28,7 @@ public class WishAdminControllerRest {
      * @param wishId The id of the wish to change.
      */
     @Security(PrivilegeEnum.WISR)
-    @GetMapping("/admin/wish/accept/{wishId}")
+    @PostMapping("/admin/wish/accept/{wishId}")
     public KommunicatorDto acceptWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.OK);
         return new KommunicatorDto();
@@ -39,7 +40,7 @@ public class WishAdminControllerRest {
      * @param wishId The id of wish to change
      */
     @Security(PrivilegeEnum.WISR)
-    @GetMapping("/admin/wish/reject/{wishId}")
+    @PostMapping("/admin/wish/reject/{wishId}")
     public KommunicatorDto rejectWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.NOK);
         return new KommunicatorDto();
@@ -51,9 +52,19 @@ public class WishAdminControllerRest {
      * @param wishId The id of wish to change
      */
     @Security(PrivilegeEnum.WISR)
-    @GetMapping("/admin/wish/reset/{wishId}")
+    @PostMapping("/admin/wish/reset/{wishId}")
     public KommunicatorDto resetWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.TODO);
         return new KommunicatorDto();
+    }
+
+    /**
+     * Delete a wish in the database.
+     *
+     * @return The notification for the user.
+     */
+    @Security(PrivilegeEnum.WISR)
+    public KommunicatorDto deleteWish() {
+        return null;
     }
 }
