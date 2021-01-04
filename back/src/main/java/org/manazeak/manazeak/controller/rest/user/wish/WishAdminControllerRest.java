@@ -70,6 +70,6 @@ public class WishAdminControllerRest {
     @PostMapping("/admin/wish/delete/{wishId}")
     public KommunicatorDto deleteWish(@PathVariable Long wishId) {
         wishService.deleteUserWish(wishId);
-        return kommunicatorService.buildSuccessKom("user.wish.delete_title", "user.wish.delete");
+        return kommunicatorService.buildSuccessKom("user.wish.deleted_title", "user.wish.deleted");
     }
 }
