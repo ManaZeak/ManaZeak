@@ -92,27 +92,7 @@ class Logger {
     if (typeof error === 'object' || typeof error === 'string') {
       // this._errors doesn't contain the error key ; either a Js error or an unknown error
       if (this._errors[error] === undefined) {
-        // JavaScript error created with new Error(), that need to contain fileName, message, line and column number
-        let filename = '';
-        if (error.fileName && error.message && error.lineNumber && error.columnNumber) { // Firefox specific
-          filename = error.fileName.match(/\/([^\/]+)\/?$/)[1];
-          severity = 'error';
-          title = `JavaScript error`;
-          message = `${error.message} in file ${filename}:${error.lineNumber}:${error.columnNumber}`;
-        } else if (error.message && error.stack) { // Chrome specific
-          filename = error.stack.split('\n')[error.stack.split('\n').length - 1].match(/\/([^\/]+)\/?$/)[1];
-          severity = 'error';
-          title = `JavaScript error`;
-          message = `${error.message} in file ${filename}`;
-        } else if (error.severity && error.title && error.message) {
-          severity = error.severity || '';
-          title = error.title || '';
-          message = error.message || '';
-        } else { // Unknown error that do not require any arguments
-          severity = 'error';
-          title = `Unexpected error ${error}`;
-          message = 'The error object sent to Logger.raise() is neither a JavaScript error nor a custom error (with severity, title and message).';
-        }
+        return this._buildJsError(error);
       } else { // Custom error that need to be filled with a severity, a title and a message
         severity = this._errors[error].severity || '';
         title = this._errors[error].title || '';
@@ -120,6 +100,47 @@ class Logger {
       }
     }
     // Return error standard properties
+    return {
+      severity: severity,
+      title: title,
+      message: message
+    };
+  }
+
+
+  /** @method
+   * @name _buildJsError
+   * @private
+   * @memberof Logger
+   * @description <blockquote>Auxiliary method for <code>_buildErrorInfo</code> to handle JavaScript errors</blockquote>
+   * @param {object} error - The error to build info from. Must be a standard JavaScript error
+   * @return {object} - The error properties ; <code>severity</code>, <code>title</code> and <code>message</code> */
+  _buildJsError(error) {
+    let severity = '';
+    let title = '';
+    let message = '';
+    let filename = '';
+    // JavaScript error created with new Error(), that need to contain fileName, message, line and column number
+    if (error.fileName && error.message && error.lineNumber && error.columnNumber) { // Firefox specific
+      filename = error.fileName.match(/\/([^\/]+)\/?$/)[1];
+      severity = 'error';
+      title = `JavaScript error`;
+      message = `${error.message} in file ${filename}:${error.lineNumber}:${error.columnNumber}`;
+    } else if (error.message && error.stack) { // Chrome specific
+      filename = error.stack.split('\n')[error.stack.split('\n').length - 1].match(/\/([^\/]+)\/?$/)[1];
+      severity = 'error';
+      title = `JavaScript error`;
+      message = `${error.message} in file ${filename}`;
+    } else if (error.severity && error.title && error.message) { // User custom error
+      severity = error.severity || '';
+      title = error.title || '';
+      message = error.message || '';
+    } else { // Unknown error that do not require any arguments
+      severity = 'error';
+      title = `Unexpected error ${error}`;
+      message = 'The error object sent to Logger.raise() is neither a JavaScript error nor a custom error (with severity, title and message).';
+    }
+
     return {
       severity: severity,
       title: title,

@@ -46,7 +46,7 @@ class AdminPageView extends TabView {
         });
       })
       .catch(error => {
-        Logger.raise(error)
+        Logger.raise(error);
       });
   }
 
@@ -61,7 +61,7 @@ class AdminPageView extends TabView {
         });
       })
       .catch(error => {
-        Logger.raise(error)
+        Logger.raise(error);
       });
   }
 

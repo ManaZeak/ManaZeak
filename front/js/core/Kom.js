@@ -257,7 +257,7 @@ class Kom {
         }
       };
       xhr.onerror = () => {
-        reject('F_KOM_XHR_ERROR')
+        reject('F_KOM_XHR_ERROR');
       };
       xhr.send();
     });
@@ -333,7 +333,7 @@ class Kom {
         }
       };
       xhr.onerror = () => {
-        reject('F_KOM_XHR_ERROR')
+        reject('F_KOM_XHR_ERROR');
       };
       xhr.send(JSON.stringify(data));
     });
@@ -376,7 +376,7 @@ class Kom {
       };
       // XHR error handling
       xhr.onerror = () => {
-        reject('F_KOM_XHR_ERROR')
+        reject('F_KOM_XHR_ERROR');
       };
       // Create form data and send it through the XHR
       const formData = new FormData(form);

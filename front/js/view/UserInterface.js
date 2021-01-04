@@ -68,7 +68,7 @@ class UserInterface {
     return new Promise((resolve, reject) => {
       mzk.kom.getText(url) // The loading overlay must be handled caller, since fragment is only a part of viewport
         .then(resolve)
-        .catch(reject)
+        .catch(reject);
     });
   }
 
