@@ -6,10 +6,10 @@ import javax.validation.constraints.NotNull;
  * Allows to associate a user and a badge
  */
 public class BadgeUserAssociationDto {
-    @NotNull(message = "{user.badge.error.empty_id}")
+    @NotNull(message = "{admin.badge.error.empty_badge_id}")
     private Long userId;
 
-    @NotNull(message = "{user.error.empty_id}")
+    @NotNull(message = "{admin.badge.error.empty_user_id}")
     private Long badgeId;
 
     public BadgeUserAssociationDto() {

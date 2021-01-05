@@ -60,7 +60,7 @@ public class BadgeManager {
     public Badge getBadge(Long badgeId) {
         return badgeDAO.findById(badgeId).orElseThrow(() ->
                 new MzkObjectNotFoundException("No badge found in database for id :" + badgeId,
-                        "user.badge.error.not_found", "user.badge.error.not_found_title")
+                        "admin.badge.error.not_found", "admin.badge.error.not_found_title")
         );
     }
 

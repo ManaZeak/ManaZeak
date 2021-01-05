@@ -48,7 +48,7 @@ public class BadgeAdminControllerRest {
         // Linking the badge to the user.
         badgeService.associateBadgeToUser(badgeUserAssociation.getUserId(), badgeUserAssociation.getBadgeId());
         // Sending a ok response.
-        return kommunicatorService.buildSuccessKom("user.badge.success.link.title",
-                "user.badge.success.link.message");
+        return kommunicatorService.buildSuccessKom("admin.badge.success.link.title",
+                "admin.badge.success.link.message");
     }
 }
