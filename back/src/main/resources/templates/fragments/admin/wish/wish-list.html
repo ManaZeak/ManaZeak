@@ -1,7 +1,7 @@
 <!-- HTML fragment used in admin/wishes view -->
-<div class="wish-grid-wrapper">
+<div class="wish-grid-wrapper" xmlns:th="http://www.thymeleaf.org">
   <div id="pending-wishes" class="pending-wishes">
-    <h1>Pending wishes</h1> <!-- TODO i18 for titles -->
+    <h1 th:text="#{admin.wish.pending}"></h1>
     <!--/*@thymesVar id="wishesTodo" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
     <div class="wish pending" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesTodo}" xmlns:th="http://www.thymeleaf.org">
       <div class="wish-info">
@@ -15,7 +15,7 @@
     </div>
   </div>
   <div id="accepted-wishes" class="accepted-wishes">
-    <h1>Accepted wishes</h1>
+    <h1 th:text="#{admin.wish.accepted}"></h1>
     <!--/*@thymesVar id="wishesRefused" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
     <div class="wish accepted" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesAccepted}" xmlns:th="http://www.thymeleaf.org">
       <div class="wish-info">
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div id="refused-wishes" class="refused-wishes">
-    <h1>Refused wishes</h1>
+    <h1 th:text="#{admin.wish.refused}"></h1>
     <!--/*@thymesVar id="wishesAccepted" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
     <div class="wish refused" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesRefused}" xmlns:th="http://www.thymeleaf.org">
       <div class="wish-info">
