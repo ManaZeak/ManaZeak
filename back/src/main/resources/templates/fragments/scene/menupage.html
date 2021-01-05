@@ -1,24 +1,24 @@
 <div class="menu-page" xmlns:th="http://www.thymeleaf.org">
-    <div class="title-container">
-        <h1>ManaZeak war room</h1>
-        <p>Some text to put yeah</p>
+  <div class="title-container">
+    <h1>ManaZeak war room</h1>
+    <p>Some text to put yeah</p>
+  </div>
+  <div class="control-container">
+    <div class="item" id="admin-button"> <!-- TODO make available if user is admin only -->
+      <img alt="admin-button" src="static/img/actions/option-gear.svg"/>
+      <p th:text="#{menu.admin}"></p>
     </div>
-    <div class="control-container">
-        <div class="item" id="admin-button"> <!-- TODO make available if user is admin only -->
-            <img alt="admin-button" src="static/img/actions/option-gear.svg"/>
-            <p th:text="#{menu.admin}"></p>
-        </div>
-        <div class="item" id="userpage-button">
-            <img alt="user-avatar" src="static/img/default/user.svg"/>
-            <p th:text="#{menu.user}"></p>
-        </div>
-        <div class="item" id="wish-button">
-            <img alt="make-wish" src="static/img/actions/wish.svg"/>
-            <p th:text="#{menu.wish}"></p>
-        </div>
-        <div class="item" id="about-button">
-            <img alt="about-mzk" src="static/img/actions/info.svg"/>
-            <p th:text="#{menu.about}"></p>
-        </div>
+    <div class="item" id="userpage-button">
+      <img alt="user-avatar" src="static/img/default/user.svg"/>
+      <p th:text="#{menu.user}"></p>
     </div>
+    <div class="item" id="wish-button">
+      <img alt="make-wish" src="static/img/actions/wish.svg"/>
+      <p th:text="#{menu.wish}"></p>
+    </div>
+    <div class="item" id="about-button">
+      <img alt="about-mzk" src="static/img/actions/info.svg"/>
+      <p th:text="#{menu.about}"></p>
+    </div>
+  </div>
 </div>
