@@ -1,10 +1,12 @@
 import AboutModal from './menupage/AboutModal.js';
 import WishModal from './menupage/WishModal.js';
+import BadgeModal from './adminpage/BadgeModal.js';
 
 
 const Classes = {
   AboutModal,
-  WishModal
+  WishModal,
+  BadgeModal
 };
 
 
