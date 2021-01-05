@@ -42,7 +42,6 @@ public interface UserService {
      */
     boolean isUserConnected();
 
-
     /**
      * Get all the user in a tree starting from JESUS.
      *
@@ -56,4 +55,16 @@ public interface UserService {
      * @return The list of users.
      */
     List<UserListLineDto> getUserList();
+
+    /**
+     * Delete a user from the application.
+     * @param userId The id of the user that will be deleted.
+     */
+    void deleteUser(Long userId);
+
+    /**
+     * Deactivate a user of the application.
+     * @param userId The id of the user that will be deactivated.
+     */
+    void deactivateUser(Long userId);
 }

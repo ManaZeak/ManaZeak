@@ -108,4 +108,20 @@ public class UserServiceImpl implements UserService {
     public List<UserListLineDto> getUserList() {
         return adminUserManager.getUserList();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteUser(Long userId) {
+        adminUserManager.deleteUserById(userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deactivateUser(Long userId) {
+        adminUserManager.deactivateUserById(userId);
+    }
 }

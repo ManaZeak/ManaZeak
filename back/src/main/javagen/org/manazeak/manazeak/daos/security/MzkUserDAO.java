@@ -28,6 +28,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
 
     /**
      * Get a user from it's invite code.
+     *
      * @param inviteCode the invite code of the user.
      * @return The owner of this invite code.
      */
@@ -35,6 +36,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
 
     /**
      * Get a user projection from the user id.
+     *
      * @param userId The id of the user needed to get the details.
      * @return The information about the user.
      */
@@ -59,6 +61,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
 
     /**
      * Get all the users from the database in a list way.
+     *
      * @return the users of the database.
      */
     @Query("select " +
@@ -70,5 +73,13 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "   usr.isActive as isActive " +
             "from MzkUser usr")
     List<UserListLineProjection> getAllLineUsers();
+
+    /**
+     * Delete a user wy it's id and return the number of modified lines.
+     *
+     * @param userId The user id associated to the user that must be deleted.
+     * @return The number of modified lines.
+     */
+    Integer removeByUserId(Long userId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT
