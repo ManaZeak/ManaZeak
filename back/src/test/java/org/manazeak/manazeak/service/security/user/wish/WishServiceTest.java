@@ -81,7 +81,7 @@ class WishServiceTest extends AbstractManaZeakTest {
         wishService.deleteCurrentUserWish(wish.getWishId());
         // Checking if the wish has been deleted.
         Optional<Wish> wishDb = wishDAO.findById(wish.getWishId());
-        if(wishDb.isPresent()) {
+        if (wishDb.isPresent()) {
             Assertions.fail("The wish of the user shouldn't exist.");
         }
     }
