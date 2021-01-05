@@ -14,9 +14,9 @@ class UsersFragment {
 
     this._dropElements = [];
     this._dragElements = [];
+    this._evtIds = [];
 
     this._fillAttributes();
-    this._events();
   }
 
 
@@ -27,11 +27,15 @@ class UsersFragment {
     for (let i = 0; i < this._dragElements.length; ++i) {
       this._dragElements[i].destroy();
     }
+    for (let i = 0; i < this._evtIds.length; ++i) {
+      Events.removeEvent(this._evtIds[i]);
+    }
     Utils.removeAllObjectKeys(this);
   }
 
 
   _fillAttributes() {
+    // Saving users and badge from template
     const usersWrapper = this._target.querySelector('#users-wrapper');
     for (let i = 0; i < usersWrapper.children.length; ++i) {
       this._users.push(usersWrapper.children[i]);
@@ -40,18 +44,7 @@ class UsersFragment {
     for (let i = 0; i < badgesWrapper.children.length; ++i) {
       this._badges.push(badgesWrapper.children[i]);
     }
-  }
-
-
-  _events() {
-    for (let i = 0; i < this._users.length; ++i) {
-      const dropElement = new DropElement({
-        target: this._users[i],
-        onDrop: this._dropOnUser.bind(this._users[i], this._refreshCB)
-      });
-      this._dropElements.push(dropElement);
-    }
-
+    // Build drag behavior for badges
     for (let i = 0; i < this._badges.length; ++i) {
       const dragElement = new DragElement({
         target: this._badges[i],
@@ -60,6 +53,19 @@ class UsersFragment {
         }
       });
       this._dragElements.push(dragElement);
+    }
+    // Build drop behavior for users and setup ban/delete events for each
+    for (let i = 0; i < this._users.length; ++i) {
+      const dropElement = new DropElement({
+        target: this._users[i],
+        onDrop: this._dropOnUser.bind(this._users[i], this._refreshCB)
+      });
+      this._dropElements.push(dropElement);
+      // Ban/Delete events
+      const banUser = this._users[i].children[this._users[i].children.length - 1].children[0];
+      const deleteUser = this._users[i].children[this._users[i].children.length - 1].children[1];
+      this._evtIds.push(Events.addEvent('click', banUser, this._banUser, { element: this._users[i], scope: this }));
+      this._evtIds.push(Events.addEvent('click', deleteUser, this._deleteUser, { element: this._users[i], scope: this }));
     }
   }
 
@@ -71,6 +77,26 @@ class UsersFragment {
     }).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       refreshCB();
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
+
+  _banUser() {
+    mzk.kom.post(`/admin/user/deactivate/${this.element.dataset.id}`, {}).then(response => {
+      mzk.ui.processLogFromServer(response.errors);
+      this.scope._refreshCB();
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
+
+  _deleteUser() {
+    mzk.kom.post(`/admin/user/delete/${this.element.dataset.id}`, {}).then(response => {
+      mzk.ui.processLogFromServer(response.errors);
+      this.scope._refreshCB();
     }).catch(error => {
       console.error(error);
     });
