@@ -1,77 +1,83 @@
 #!/bin/bash
+vers="1.0.1"
 
-vmzk="0.2.1"
-mzkdir=$(dirname $0)
 
-createNecessaryFiles() {
-    echo -en "Setting up necessary files ... "
-    if [ ! -d "log" ]; then
-      mkdir log
-    fi
-    if [ ! -f "log/debug.log" ]; then
-      touch log/debug.log
-    fi
-    echo -e "OK\n"
-}
+# Script header
+echo # Line break
+echo -e "  ## ---------------------------------- ##"
+echo -e "  ##              \e[92mManaZeak\e[39m              ##"
+echo -e "  ##        2017/2021 -- GPL-3.0        ##"
+echo -e "  ##               v$vers               ##"
+echo -e "  ## ---------------------------------- ##"
+echo # Line break
 
+
+# First of all, test if user has send an argument
 if [ $# -eq 0 ]; then
-    echo -e "\e[31mERROR\e[39m No arguments supplied"
-    echo -e "Script usage: ./mzk.sh --help"
+  echo -e "mzk.sh : Missing argument\n"
+  echo -e "\e[31mERROR\e[39m Command executed without any arguments"
+  echo -e "      Check command help for available arguments: ./mzk.sh --help"
+  exit 0
+fi
 
-elif [ "$1" = "init" ]; then
-    echo -e "\nWelcome to the init wizard for ManaZeak. This will help you setup your ManaZeak environment."
-    createNecessaryFiles
-    read -p "Please enter a path for your music library: " musicpath
 
-    if [ -z $musicpath ]; then
-	    musicpath="$HOME/Music"
-    elif [ ${musicpath:0:1} != "/" -a ${musicpath:0:1} != "~" -a ${musicpath:0:2} != "./" -a ${musicpath:0:3} != "../" -a ! -d $musicpath ]; then
-	    musicpath="$HOME/$musicpath"
+# Initialization sequence (fill .env file to fit user inputs)
+if [ "$1" = "-i" ] || [ "$1" = "--init" ]; then
+  echo -e "mzk.sh $1 : ManaZeak initialization\n"
+  basedir=$(dirname "$0")
+  # Check for previous existing .env file
+  if [ -f "$basedir"/.env ]; then
+    echo -e "\e[93mWARNING\e[39m ManaZeak is already configured"
+    replaceconf="mzk" # Can't init to blank to get in while read loop
+    # Wait for user to send yY/nN or blank
+    while [[ "$replaceconf" != "" && "$replaceconf" != "y" && "$replaceconf" != "Y" && "$replaceconf" != "n" && "$replaceconf" != "N" ]]; do
+      read -rp "        Do you want to override this configuration? [y/N] " replaceconf
+    done
+    # Exit if user didn't enter anything, or entered n/N
+    if [ "$replaceconf" = "" ] || [ "$replaceconf" = "n" ] || [ "$replaceconf" = "N" ]; then
+      exit 0
+    else
+      rm -rf "$basedir"/.env # Clear previous .env file as it is recreated later
+      echo # Line break
     fi
+  fi
+  echo -e "Welcome to the ManaZeak installation wizard!"
+  echo -e "Ensure you've read the installation entry of the wiki before going any further"
+  echo -e "-> https://github.com/ManaZeak/ManaZeak/wiki\n"
+  echo -e "Please fill the following information to properly configure ManaZeak :\n"
+  # Database path (not empty and an existing directory on system)
+  unset dbpath
+  while [[ $dbpath = "" || ! -d $dbpath ]]; do
+     read -rp "  1/4. The path to store the database in : " dbpath
+  done
+  # Database password (not empty and >4 characters)
+  unset dbpassword
+  while [[ $dbpassword = "" || ${#dbpassword} -lt 4 ]]; do
+     read -rp "  2/4. The database password (> 4 characters) : " dbpassword
+  done
+  # Library path (not empty and an existing directory on system)
+  unset libpath
+  while [[ $libpath = "" || ! -d $libpath ]]; do
+     read -rp "  3/4. The path where all your audio files are : " libpath
+  done
+  # Resources path (not empty and an existing directory on system)
+  unset respath
+  while [[ $respath = "" || ! -d $respath ]]; do
+     read -rp "  4/4. The path to the library resources : " respath
+  done
+  # Create .env file
+  touch "$basedir"/.env
+  # Fill .env file with user parameters
+  { echo "DB_DATA=$dbpath"
+    echo "DB_PASSWORD=$dbpassword"
+    echo "LIBRARY_PATH=$libpath"
+    echo "RESOURCES_PATH=$respath"
+    echo "BACK_TARGET=app"
+  } >> "$basedir"/.env
+  echo # Line break
+  echo -e "\e[32mSUCCESS\e[39m ManaZeak was successfully configured!"
+  echo -e "        You can now run ./mzk.sh --build then ./mzk.sh --run to start ManaZeak"
 
-    echo -en "Setting music library path to $musicpath ... "
-    dockerconf=$(sed "s/\/PATH\/TO\/MUSIC/$(echo $musicpath | sed 's / \\/ g')/g" $mzkdir/docker-compose.yml.example)
-    echo -e "Done"
-    read -p "Please enter the path under which to store your ManaZeak database: " dbpath
-
-    if [ -z $dbpath ]; then
-	    dbpath="$mzkdir/dbdata"
-    elif [ ${dbpath:0:1} != "/" -a ${dbpath:0:1} != "~" -a ${dbpath:0:2} != "./" -a ${dbpath:0:3} != "../" ]; then
-        dbpath="$mzkdir/$dbpath"
-    fi
-
-    echo -en "Setting database data folder to $dbpath ... "
-    dockerconf=$(echo "$dockerconf" | sed "s/\/PATH\/TO\/DB_DATA/$(echo $dbpath | sed 's / \\/ g')"/g)
-    echo -e "Done"
-    echo "$dockerconf" > $mzkdir/docker-compose.yml
-    echo -e "\nManaZeak wizard setup complete ! You can now run the next mzk.sh commands to build your containers.\n"
-
-elif [ "$1" = "build" ]; then
-    createNecessaryFiles
-    eval "docker-compose build"
-    eval "npm install"
-
-elif [ "$1" = "dev" ]; then
-    eval "docker-compose up -d"
-    eval "npm run dev" # See package.json for dev
-
-elif [ "$1" = "debug" ]; then
-    eval "docker-compose up -d"
-    eval "npm run debug" # See package.json for debug
-
-elif [ "$1" = "prod" ]; then
-    eval "docker-compose up -d" #
-    eval "npm run prod" # See package.json for prod
-
-elif [ "$1" = "stop" ]; then
-    eval "docker-compose stop"
-    eval "docker ps"
-
-elif [ "$1" = "clean" ]; then
-    echo -e "Removing docker containers"
-    eval "docker-compose rm -sf"
-    echo -e "\e[93mWARNING\e[39m Images haven't been removed"
-    printf "Use docker rmi \$(docker images -q) to remove every image on the system\n"
 
 elif [ "$1" = "mvnbuild" ]; then
     echo -e "Rebuilding the java container"
@@ -79,127 +85,17 @@ elif [ "$1" = "mvnbuild" ]; then
     echo "Launching the container"
     eval "docker-compose up -d back"
 
-elif [ "$1" = "test" ]; then
-    eval "npm run test" # See package.json for test
 
-elif [ "$1" = "doc" ]; then
-    echo -e "Generating the JavaScript documentation (frontend)"
-    eval "npm run doc" # See package.json for doc
-    echo -e "Generating the Python documentation (backend)"
-    eval "doxygen ./doc/config/Doxyfile"
-    echo -e "Generation done. If the backend documentation failed, ensure you have doxygen installed on your system."
-    echo -e "You can now check the page ./doc/index.html to watch the documentation! glhf"
+# Gource version control visualization
+elif [ "$1" = '-g' ] || [ "$1" = '--gource' ]; then
+  echo -e "mzk.sh $1 : Gource visualization\n"
+  eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --title 'ManaZeak - version $vers' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about -r 60"
+  echo -e "If nothing happened, please ensure you have gource installed on your system (https://github.com/acaudwell/Gource)"
 
-elif [ "$1" = "cleandoc" ]; then
-    echo -e "Cleaning ManaZeak documentation"
-    eval "rm -r ./doc/frontend/ ./doc/backend/"
 
-elif [ "$1" = "sonar-scanner" ]; then
-    if [ -z "$2" ]; then
-        echo -e "\e[31mERROR\e[39m Your argument is invalid"
-        echo -e "You need to give an API key as a second argument. Usage ./mzk.sh sonar-scanner APIKEY"
-    else
-        eval "node_modules/sonar-scanner/bin/sonar-scanner -D sonar.login=$2"
-    fi
-
-elif [ "$1" = "plugin" ]; then
-    if [ "$2" = "install" ]; then
-      if [ "$3" = "MzkWorldMap" ]; then
-        echo -e "Install MzkWorldMap plugin"
-        if [ ! -d "plugins/MzkWorldMap" ]; then
-          eval "git clone https://github.com/ManaZeak/MzkWorldMap.git plugins/MzkWorldMap/"
-          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --install ./static/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkWorldMap"
-        else
-          echo -e "Plugin already installed"
-        fi
-      elif [ "$3" = "MzkVisualizer" ]; then
-        if [ ! -d "plugins/MzkVisualizer" ]; then
-          eval "git clone https://github.com/ManaZeak/MzkVisualizer.git plugins/MzkVisualizer/"
-          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --install ./static/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkVisualizer"
-        else
-          echo -e "Plugin already installed"
-        fi
-      else
-        echo -e "Missing plugin name"
-      fi
-    elif [ "$2" = "uninstall" ]; then
-      if [ "$3" = "MzkWorldMap" ]; then
-        echo -e "Uninstall MzkWorldMap plugin"
-        if [ -d "plugins/MzkWorldMap" ]; then
-          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --uninstall ./static/"
-          eval "rm -rvf plugins/MzkWorldMap/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to remove MzkWorldMap bundles"
-        else
-          echo -e "Plugin doesn't exists"
-        fi
-      elif [ "$3" = "MzkVisualizer" ]; then
-        if [ -d "plugins/MzkVisualizer" ]; then
-          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --uninstall ./static/"
-          eval "rm -rvf plugins/MzkVisualizer/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to remove MzkVisualizer bundles"
-        else
-          echo -e "Plugin doesn't exists"
-        fi
-      else
-        echo -e "Missing plugin name"
-      fi
-    elif [ "$2" = "update" ]; then
-      if [ "$3" = "MzkWorldMap" ]; then
-        echo -e "Update MzkWorldMap plugin"
-        if [ -d "plugins/MzkWorldMap" ]; then
-          eval "cd plugins/MzkWorldMap && git pull origin master && cd ../../"
-          eval "python plugins/MzkWorldMap/ManaZeakPluginInstall.py --pull ./static/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkWorldMap"
-        else
-          echo -e "Plugin not installed"
-        fi
-      elif [ "$3" = "MzkVisualizer" ]; then
-        echo -e "Update MzkVisualizer plugin"
-        if [ -d "plugins/MzkVisualizer" ]; then
-          eval "cd plugins/MzkVisualizer && git pull origin master && cd ../../"
-          eval "python plugins/MzkVisualizer/ManaZeakPluginInstall.py --pull ./static/"
-          echo -e "Run ./mzk.sh dev or ./mzk.sh prod to bundle MzkVisualizer"
-        else
-          echo -e "Plugin not installed"
-        fi
-      else
-        echo -e "Missing plugin name"
-      fi
-    else
-      echo -e "Missing arguments for plugin, see ./mzk.sh--help"
-    fi
-
-elif [ "$1" = 'gource' ]; then
-    eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --title 'ManaZeak - version $vmzk' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about -r 60"
-    echo -e "If nothing happens, please ensure you have gource installed on your system."
-
-elif [ "$1" = "--help" ] || [ $1 = "-h" ]; then
-    printf -- "#  ManaZeak-cli $vmzk, available commands:\n#\n"
-    printf -- "#  ./mzk.sh init : Run the initialisation wizard\n"
-    printf -- "#  ./mzk.sh build : Build ManaZeak\n#\n"
-    printf -- "#  ./mzk.sh dev : Run a dev environment\n"
-    printf -- "#  ./mzk.sh debug : Run a dev environment with frontend debug info\n"
-    printf -- "#  ./mzk.sh prod : Run a production environment\n#\n"
-    printf -- "#  ./mzk.sh stop : Stop ManaZeak application\n"
-    printf -- "#  ./mzk.sh clean : Remove ManaZeak containers\n"
-    printf -- "#  ./mzk.sh repy : Run the manazeak container in interactive mode\n#\n"
-    printf -- "#  ./mzk.sh gen-translation : Generate the po django translation template file so you can translate keys\n#\n"
-    printf -- "#  ./mzk.sh compile-translation : Compile po files into mo files for django\n#\n"
-    printf -- "#  ./mzk.sh doc : Generates both the Python and JavaScript documentations\n"
-    printf -- "#  ./mzk.sh cleandoc : Clear the ManaZeak documentation\n"
-    printf -- "#  ./mzk.sh test : Run all unit tests\n"
-    printf -- "#  ./mzk.sh sonar-scanner xxx: Perform a sonare-scanner on the folder. Require an API key (xxx) as second parameter\n#\n"
-    printf -- "#  ./mzk.sh plugin [install/uninstall/update] <plugin-name> : Manage ManaZeak plugins\n"
-    printf -- "#  ./mzk.sh gource : Run gource for the repository (require gource to be instaled)\n"
-    printf -- "#  ./mzk.sh --help : Display the script usage  (or -h)\n"
-    printf -- "#  ./mzk.sh --version : Display the version number (or -v)\n"
-
-elif [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
-    printf "ManaZeak $vmzk\n"
-
+# Provided argument is not supported by this script
 else
+    echo -e "mzk.sh $1 : Invalid argument\n"
     echo -e "\e[31mERROR\e[39m Your argument is invalid"
-    echo -e "Script usage: ./mzk.sh --help"
+    echo -e "      Check command help for available arguments: ./mzk.sh --help"
 fi
