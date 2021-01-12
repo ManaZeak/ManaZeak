@@ -84,6 +84,7 @@ elif [ "$1" = "mvnbuild" ]; then
     eval "docker-compose build back"
     echo "Launching the container"
     eval "docker-compose up -d back"
+    eval "docker-compose logs -f back"
 
 
 # Gource version control visualization

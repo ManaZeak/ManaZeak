@@ -5,11 +5,10 @@ import java.time.LocalDateTime;
 import org.manazeak.manazeak.entity.reference.Locale;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
@@ -19,7 +18,6 @@ import javax.persistence.Column;
 import javax.persistence.CascadeType;
 import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 
 /**
  * A user object.
@@ -250,16 +248,15 @@ public class MzkUser implements Serializable{
 		this.inviteCode = inviteCode;
     }  
     /**
-     * Association user_invite to InviteCode
+     * Association user_invite_parent to InviteCode
      * @return value of inviteCodeList
      */
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name="user_invite", joinColumns=@JoinColumn(name = "user_id"), inverseJoinColumns=@JoinColumn(name = "invite_code_id"))
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="parent", orphanRemoval=true)
 	public Set<InviteCode> getInviteCodeList(){
 		return inviteCodeList;
     }  
     /**
-     * Association user_invite to InviteCode
+     * Association user_invite_parent to InviteCode
      * @param inviteCodeList new value to give to inviteCodeList
      */
 	public void setInviteCodeList(final Set<InviteCode> inviteCodeList){
@@ -375,15 +372,4 @@ public class MzkUser implements Serializable{
 
 // END OF GENERATED CODE - YOU CAN EDIT THE FILE AFTER THIS LINE, DO NOT EDIT THIS LINE OR BEFORE THIS LINE
 
-    /**
-     * Add an invite code to the current user.
-     * @param inviteCode the invite code to add.
-     */
-    public void addInviteCode(InviteCode inviteCode) {
-	    // If the invite code list doesn't exist we create it.
-    	if (inviteCodeList == null) {
-    		inviteCodeList = new HashSet<>();
-		}
-    	inviteCodeList.add(inviteCode);
-    }
 }

@@ -35,9 +35,11 @@ CREATE TABLE invite_code
     invite_code_id BIGINT      not null,
     value          VARCHAR(50) not null,
     is_active      BOOLEAN     not null,
+    parent         BIGINT,
     CONSTRAINT PK_INVITE_CODE PRIMARY KEY (invite_code_id)
 );
 COMMENT ON TABLE invite_code IS 'The invite code of a user.';
+COMMENT ON COLUMN invite_code.parent IS 'ManyToOne FK mzk_user';
 
 CREATE TABLE mzk_user
 (
@@ -64,16 +66,6 @@ COMMENT ON COLUMN mzk_user.invite_code_id IS 'ManyToOne FK invite_code';
 COMMENT ON COLUMN mzk_user.country_id IS 'ManyToOne FK Country';
 COMMENT ON COLUMN mzk_user.locale_id IS 'ManyToOne FK Locale';
 COMMENT ON COLUMN mzk_user.role_id IS 'ManyToOne FK role';
-
-CREATE TABLE user_invite
-(
-    user_id        BIGINT not null,
-    invite_code_id BIGINT not null,
-    CONSTRAINT PK_USER_INVITE PRIMARY KEY (user_id, invite_code_id)
-);
-COMMENT ON TABLE user_invite IS 'ManyToMany mzk_user / invite_code';
-COMMENT ON COLUMN user_invite.user_id IS 'ManyToMany FK mzk_user';
-COMMENT ON COLUMN user_invite.invite_code_id IS 'ManyToMany FK invite_code';
 
 CREATE TABLE privilege
 (
@@ -105,10 +97,6 @@ COMMENT ON COLUMN privileges_role.privilege_id IS 'ManyToMany FK privilege';
 -- Creating the foreign keys
 ALTER TABLE mzk_user
     ADD CONSTRAINT FK_invite_used FOREIGN KEY (invite_code_id) REFERENCES invite_code (invite_code_id);
-ALTER TABLE user_invite
-    ADD CONSTRAINT FK_user_invite_1 FOREIGN KEY (user_id) REFERENCES mzk_user (user_id);
-ALTER TABLE user_invite
-    ADD CONSTRAINT FK_user_invite_2 FOREIGN KEY (invite_code_id) REFERENCES invite_code (invite_code_id);
 ALTER TABLE mzk_user
     ADD CONSTRAINT FK_user_country FOREIGN KEY (country_id) REFERENCES Country (country_id);
 ALTER TABLE mzk_user
@@ -119,12 +107,13 @@ ALTER TABLE privileges_role
     ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (privilege_id) REFERENCES privilege (privilege_id);
 ALTER TABLE mzk_user
     ADD CONSTRAINT FK_user_locale FOREIGN KEY (locale_id) REFERENCES Locale (locale_id);
+ALTER TABLE invite_code
+    ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user (user_id);
 
 
 -- Adding foreign key indexes
 CREATE INDEX IDX_invite_used ON mzk_user (invite_code_id);
-CREATE INDEX IDX_user_invite_1 ON user_invite (user_id);
-CREATE INDEX IDX_user_invite_2 ON user_invite (invite_code_id);
+CREATE INDEX IDX_user_invite ON invite_code (parent);
 CREATE INDEX IDX_user_country ON mzk_user (country_id);
 CREATE INDEX IDX_roles_user ON mzk_user (role_id);
 CREATE INDEX IDX_privileges_role_1 ON privileges_role (role_id);
@@ -217,12 +206,7 @@ VALUES (1, 'JESUS', '$2a$10$6iwTp1lPS9cPKqshhJtFsOp/CPTRUA5u0XZnV6Ab0Z3KyBCCHg7D
 
 -- Inserting the default invite code for the admin.
 INSERT INTO invite_code
-    (invite_code_id, value, is_active)
-VALUES (1, 'GG_JESUS', true);
-
--- Linking the user and the invite code
-INSERT INTO user_invite
-    (user_id, invite_code_id)
-VALUES (1, 1);
+    (invite_code_id, value, is_active, parent)
+VALUES (1, 'GG_JESUS', true, 1);
 
 commit;

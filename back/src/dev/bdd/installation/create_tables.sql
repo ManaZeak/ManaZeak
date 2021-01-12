@@ -62,9 +62,11 @@ CREATE TABLE invite_code (
 	invite_code_id BIGINT not null,
 	value VARCHAR(50) not null,
 	is_active BOOLEAN not null,
+	parent BIGINT,
 	CONSTRAINT PK_INVITE_CODE PRIMARY KEY (invite_code_id)
 );
 COMMENT ON TABLE invite_code IS 'The invite code of a user.';
+COMMENT ON COLUMN invite_code.parent IS 'ManyToOne FK mzk_user';
 
 CREATE TABLE mzk_user (
 	user_id BIGINT not null,
@@ -90,15 +92,6 @@ COMMENT ON COLUMN mzk_user.invite_code_id IS 'ManyToOne FK invite_code';
 COMMENT ON COLUMN mzk_user.country_id IS 'ManyToOne FK Country';
 COMMENT ON COLUMN mzk_user.locale_id IS 'ManyToOne FK Locale';
 COMMENT ON COLUMN mzk_user.role_id IS 'ManyToOne FK role';
-
-CREATE TABLE user_invite (
-	user_id BIGINT not null,
-	invite_code_id BIGINT not null,
-	CONSTRAINT PK_USER_INVITE PRIMARY KEY (user_id,invite_code_id)
-);
-COMMENT ON TABLE user_invite IS 'ManyToMany mzk_user / invite_code';
-COMMENT ON COLUMN user_invite.user_id IS 'ManyToMany FK mzk_user';
-COMMENT ON COLUMN user_invite.invite_code_id IS 'ManyToMany FK invite_code';
 
 CREATE TABLE privilege (
 	privilege_id BIGINT not null,
@@ -146,9 +139,8 @@ CREATE TABLE wish_status (
 -- ================================
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_1 FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_2 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
+ALTER TABLE invite_code ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user(user_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_invite_used FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
-ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_1 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
-ALTER TABLE user_invite ADD CONSTRAINT FK_user_invite_2 FOREIGN KEY (invite_code_id) REFERENCES invite_code(invite_code_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_user_country FOREIGN KEY (country_id) REFERENCES Country(country_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_user_locale FOREIGN KEY (locale_id) REFERENCES Locale(locale_id);
 ALTER TABLE mzk_user ADD CONSTRAINT FK_role_user FOREIGN KEY (role_id) REFERENCES role(role_id);
@@ -163,9 +155,8 @@ ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFE
 -- ================================
 CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
 CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
+CREATE INDEX IDX_user_invite_parent ON invite_code (parent);
 CREATE INDEX IDX_invite_used ON mzk_user (invite_code_id);
-CREATE INDEX IDX_user_invite_1 ON user_invite (user_id);
-CREATE INDEX IDX_user_invite_2 ON user_invite (invite_code_id);
 CREATE INDEX IDX_user_country ON mzk_user (country_id);
 CREATE INDEX IDX_user_locale ON mzk_user (locale_id);
 CREATE INDEX IDX_role_user ON mzk_user (role_id);

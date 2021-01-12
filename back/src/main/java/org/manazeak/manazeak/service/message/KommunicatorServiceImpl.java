@@ -4,10 +4,7 @@ import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
-import org.manazeak.manazeak.exception.MzkException;
-import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
-import org.manazeak.manazeak.exception.MzkRestException;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,6 +58,23 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         return buildKomFromMzkException(e);
     }
 
+    /**
+     * Build a response for the front when a exception occurred.
+     *
+     * @param e the exception to handle.
+     * @return The object that will be send to the front
+     */
+    @Override
+    public KommunicatorDto buildKommunicatorFromException(MzkSecurityException e) {
+        return buildKomFromMzkException(e);
+    }
+
+    /**
+     * Build a response for the front when a exception occurred.
+     *
+     * @param e the exception to handle.
+     * @return The object that will be send to the front
+     */
     @Override
     public KommunicatorDto buildKommunicatorFromException(MzkRuntimeException e) {
         return buildKomFromMzkException(e);

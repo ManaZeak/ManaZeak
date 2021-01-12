@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.controller.html.fragment.admin.user;
 
-import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
@@ -30,7 +30,7 @@ public class UserListFragment {
      *
      * @return The fragment.
      */
-    @Security(PrivilegeEnum.ADMV)
+    @RestSecurity(PrivilegeEnum.ADMV)
     @GetMapping("/admin/user-list")
     public String getUserListFragment(Model model) {
         // Adding the list of users to the model.

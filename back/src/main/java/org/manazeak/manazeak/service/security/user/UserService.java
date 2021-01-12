@@ -58,12 +58,14 @@ public interface UserService {
 
     /**
      * Delete a user from the application.
+     *
      * @param userId The id of the user that will be deleted.
      */
     void deleteUser(Long userId);
 
     /**
      * Deactivate a user of the application.
+     *
      * @param userId The id of the user that will be deactivated.
      */
     void deactivateUser(Long userId);

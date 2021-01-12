@@ -35,6 +35,18 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
     MzkUser getMzkUserByInviteCodeListContains(InviteCode inviteCode);
 
     /**
+     * Get the current parent of the user.
+     *
+     * @param userId The id of the user.
+     * @return The parent of the given user id.
+     */
+    @Query("select parent from MzkUser u " +
+            "inner join u.inviteCode inv " +
+            "inner join inv.parent parent " +
+            "where u.userId = :userId")
+    Optional<MzkUser> getUserParentByUserId(@Param("userId") Long userId);
+
+    /**
      * Get a user projection from the user id.
      *
      * @param userId The id of the user needed to get the details.

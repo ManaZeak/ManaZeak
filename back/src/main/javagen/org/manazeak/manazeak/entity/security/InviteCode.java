@@ -4,9 +4,12 @@ import java.io.Serializable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 
 /**
@@ -23,6 +26,7 @@ public class InviteCode implements Serializable{
 	private Long inviteCodeId;
 	private String value;
 	private Boolean isActive;
+	private MzkUser parent;
 
     /**
      * No comment found in model diagram
@@ -71,6 +75,22 @@ public class InviteCode implements Serializable{
      */
 	public void setIsActive(final Boolean isActive){
 		this.isActive = isActive;
+    }  
+    /**
+     * Association user_invite_parent to MzkUser
+     * @return value of parent
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="parent", referencedColumnName="user_id")
+	public MzkUser getParent(){
+		return parent;
+    }  
+    /**
+     * Association user_invite_parent to MzkUser
+     * @param parent new value to give to parent
+     */
+	public void setParent(final MzkUser parent){
+		this.parent = parent;
     }  
 
 	@Override

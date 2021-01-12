@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.controller.html.fragment.admin.user;
 
-import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
@@ -25,7 +25,7 @@ public class UserHierarchyFragment {
      *
      * @return Get the hierarchy of the user in the application.
      */
-    @Security(PrivilegeEnum.ADMV)
+    @RestSecurity(PrivilegeEnum.ADMV)
     @GetMapping("/user-hierarchy")
     public String getUserHierarchy(Model model) {
         model.addAttribute("users", userService.getUserHierarchy());

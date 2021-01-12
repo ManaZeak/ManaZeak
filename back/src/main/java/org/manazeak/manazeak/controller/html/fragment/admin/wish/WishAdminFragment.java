@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.controller.html.fragment.admin.wish;
 
-import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
@@ -26,7 +26,7 @@ public class WishAdminFragment {
      *
      * @param model The spring model.
      */
-    @Security(PrivilegeEnum.WISR)
+    @RestSecurity(PrivilegeEnum.WISR)
     @GetMapping("/admin/wish/all")
     public String getAllWishes(Model model) {
         WishesDisplayDto wishes = wishService.getAllWishes();

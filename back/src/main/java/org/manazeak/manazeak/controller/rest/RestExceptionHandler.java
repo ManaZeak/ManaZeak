@@ -4,6 +4,7 @@ import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.MzkSecurityException;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,13 @@ public class RestExceptionHandler {
     public KommunicatorDto handleExceptionRestException(MzkRestException e) {
         // Building a error message from the available information.
         LOG.error("Error encountered during processing the client request.", e);
+        return kommunicatorService.buildKommunicatorFromException(e);
+    }
+
+    @ExceptionHandler(MzkSecurityException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public KommunicatorDto handleMzkSecurityException(MzkSecurityException e) {
+        LOG.error("Security error !", e);
         return kommunicatorService.buildKommunicatorFromException(e);
     }
 

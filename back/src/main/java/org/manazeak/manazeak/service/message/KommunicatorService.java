@@ -4,6 +4,7 @@ import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.MzkSecurityException;
 
 /**
  * Handles the generation of kommunicator objects.
@@ -25,6 +26,14 @@ public interface KommunicatorService {
      * @return The object that will be send to the front
      */
     KommunicatorDto buildKommunicatorFromException(MzkObjectNotFoundException e);
+
+    /**
+     * Build a response for the front when a exception occurred.
+     *
+     * @param e the exception to handle.
+     * @return The object that will be send to the front
+     */
+    KommunicatorDto buildKommunicatorFromException(MzkSecurityException e);
 
     /**
      * Build a response for the front when a exception occured.

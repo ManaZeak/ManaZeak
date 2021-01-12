@@ -51,6 +51,28 @@ public class InviteCodeManager {
     }
 
     /**
+     * Allows to change all the invite codes of a user to another user. Used to delete a user.
+     *
+     * @param user     the user that will be deleted.
+     * @param newOwner The user that will gain the new invite codes.
+     */
+    public void changeUserInviteCodeOwner(MzkUser user, MzkUser newOwner) {
+        // Deleting the active invite code of the user to avoid 2 active invite codes.
+        inviteCodeDAO.deleteInviteCodeByParentAndIsActive(user, true);
+        // Changing the parent of the invite code.
+        inviteCodeDAO.updateParentByUserId(user, newOwner);
+    }
+
+    /**
+     * Delete an invite code in the database.
+     *
+     * @param inviteCode The invite code to delete.
+     */
+    public void deleteInviteCode(InviteCode inviteCode) {
+        inviteCodeDAO.delete(inviteCode);
+    }
+
+    /**
      * Generate a new invite code for a user.
      *
      * @param user The user that need a new invite code.
@@ -64,10 +86,8 @@ public class InviteCodeManager {
         InviteCode inviteCode = new InviteCode();
         inviteCode.setIsActive(true);
         inviteCode.setValue(HashUtil.getMd5Hash(inviteSeed));
+        inviteCode.setParent(user);
         // Saving the invite code into the database.
         inviteCodeDAO.save(inviteCode);
-        // Linking the invite code to the user.
-        user.addInviteCode(inviteCode);
-        userDAO.save(user);
     }
 }
