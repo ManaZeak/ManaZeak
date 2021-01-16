@@ -1,8 +1,10 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,13 +14,14 @@ import java.util.Map;
 /**
  * This class is used to generate the tree
  */
-public final class UserHierarchyHelper {
+@Component
+public class UserHierarchyManager {
 
-    /**
-     * Helper class we cannot instantiate it.
-     */
-    private UserHierarchyHelper() {
+    private final InviteCodeDAO inviteCodeDAO;
 
+
+    public UserHierarchyManager(InviteCodeDAO inviteCodeDAO) {
+        this.inviteCodeDAO = inviteCodeDAO;
     }
 
     /**
@@ -27,7 +30,7 @@ public final class UserHierarchyHelper {
      * @param users The list of users of the application.
      * @return The root user linked with its descendants.
      */
-    public static UserHierarchyDto buildUserHierarchyFromUsers(Iterable<MzkUser> users) {
+    public UserHierarchyDto buildUserHierarchyFromUsers(Iterable<MzkUser> users) {
         Map<Long, MzkUser> userByInviteCodeMap = new HashMap<>();
         // Iterating over the users and filling the map of users.
         for (MzkUser user : users) {
@@ -50,7 +53,7 @@ public final class UserHierarchyHelper {
      * @param userByInviteCodeMap The map containing the invite code id linked to the user.
      * @return The user hierarchy object.
      */
-    private static UserHierarchyDto createUserHierarchyFromUser(MzkUser user, Map<Long, MzkUser> userByInviteCodeMap) {
+    private UserHierarchyDto createUserHierarchyFromUser(MzkUser user, Map<Long, MzkUser> userByInviteCodeMap) {
         // The user can be null, if we are at the end of the hierarchy.
         if (user == null) {
             return null;
@@ -60,7 +63,7 @@ public final class UserHierarchyHelper {
         userHierarchy.setUsername(user.getUsername());
         List<UserHierarchyDto> children = new ArrayList<>();
         // Adding a children element for all the invite codes.
-        for (InviteCode inviteCode : user.getInviteCodeList()) {
+        for (InviteCode inviteCode : inviteCodeDAO.getInviteCodesByParent(user)) {
             // Creating the child element from the parent.
             UserHierarchyDto child = createUserHierarchyFromUser(
                     userByInviteCodeMap.get(inviteCode.getInviteCodeId()), userByInviteCodeMap

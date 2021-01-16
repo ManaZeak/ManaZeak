@@ -46,7 +46,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
             throw new MzkValidationException("{user.register.error.wrong_invite_code}");
         }
         // Getting the parent from the invite code.
-        MzkUser parent = mzkUserDAO.getMzkUserByInviteCodeListContains(inviteCode.get());
+        MzkUser parent = inviteCode.get().getParent();
         // Getting the depth of the parent
         Optional<Integer> userDepthOpt = inviteCodeDAO.getParentUserDepth(parent.getUserId());
         // JESUS is the parent, the user is allowed to register.

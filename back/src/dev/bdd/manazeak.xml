@@ -65,6 +65,11 @@
 				<packagedElement xmi:type="uml:Association" xmi:id="EAID_E4EC3A44_006D_49dd_9770_5A9CDC535852" name="user_invite_parent" visibility="public">
 					<memberEnd xmi:idref="EAID_dstEC3A44_006D_49dd_9770_5A9CDC535852"/>
 					<memberEnd xmi:idref="EAID_srcEC3A44_006D_49dd_9770_5A9CDC535852"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="EAID_dstEC3A44_006D_49dd_9770_5A9CDC535852" visibility="public" association="EAID_E4EC3A44_006D_49dd_9770_5A9CDC535852" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
+						<type xmi:idref="EAID_923981AD_E324_4984_B9BC_06FA5B1E01B8"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000049__006D_49dd_9770_5A9CDC535852" value="0"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000050__006D_49dd_9770_5A9CDC535852" value="-1"/>
+					</ownedEnd>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" xmi:id="EAID_9C805FC7_7A50_4e3b_BD35_EC3507BAAC9C" name="mzk_user" visibility="public">
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_95291BD1_BE82_4728_8899_98FCC103C6BA" name="user_id" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
@@ -146,11 +151,6 @@
 						<type xmi:idref="EAID_2668F7F4_D9CB_42a0_B142_11419EF854F2"/>
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000047__EC4C_4ce4_BA1A_08E0F27C61AA" value="0"/>
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000048__EC4C_4ce4_BA1A_08E0F27C61AA" value="1"/>
-					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_dstEC3A44_006D_49dd_9770_5A9CDC535852" visibility="public" association="EAID_E4EC3A44_006D_49dd_9770_5A9CDC535852" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
-						<type xmi:idref="EAID_923981AD_E324_4984_B9BC_06FA5B1E01B8"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000049__006D_49dd_9770_5A9CDC535852" value="0"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000050__006D_49dd_9770_5A9CDC535852" value="-1"/>
 					</ownedAttribute>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="EAID_7390A006_FA58_492c_A9D8_9A5235654104" name="user_country" visibility="public">
@@ -1172,17 +1172,17 @@
 					<role visibility="Public" targetScope="instance"/>
 					<type multiplicity="0..*" aggregation="none" containment="Unspecified"/>
 					<constraints/>
-					<modifiers isOrdered="false" changeable="none" isNavigable="true"/>
-					<style value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;alias=parent;Navigable=Navigable;"/>
+					<modifiers isOrdered="false" changeable="none" isNavigable="false"/>
+					<style value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;alias=parent;Navigable=Unspecified;"/>
 					<documentation/>
 					<xrefs/>
 					<tags/>
 				</target>
 				<model ea_localid="145"/>
-				<properties ea_type="Association" direction="Bi-Directional"/>
+				<properties ea_type="Association" direction="Destination -&gt; Source"/>
 				<modifiers isRoot="false" isLeaf="false"/>
 				<parameterSubstitutions/>
-				<documentation/>
+				<documentation value="&lt;ul&gt;&#xA;	&lt;li&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;"/>
 				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
 				<labels lb="0..1" lt="+parent" mt="user_invite_parent" rb="0..*"/>
 				<extendedProperties/>

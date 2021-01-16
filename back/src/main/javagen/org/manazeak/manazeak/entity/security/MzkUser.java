@@ -5,17 +5,14 @@ import java.time.LocalDateTime;
 import org.manazeak.manazeak.entity.reference.Locale;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
-import javax.persistence.CascadeType;
 import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
 
@@ -43,7 +40,6 @@ public class MzkUser implements Serializable{
 	private Boolean isComplete;
 	private LocalDateTime creationDate;
 	private InviteCode inviteCode;
-	private Set<InviteCode> inviteCodeList;
 	private Country country;
 	private Locale locale;
 	private Role role;
@@ -246,21 +242,6 @@ public class MzkUser implements Serializable{
      */
 	public void setInviteCode(final InviteCode inviteCode){
 		this.inviteCode = inviteCode;
-    }  
-    /**
-     * Association user_invite_parent to InviteCode
-     * @return value of inviteCodeList
-     */
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="parent", orphanRemoval=true)
-	public Set<InviteCode> getInviteCodeList(){
-		return inviteCodeList;
-    }  
-    /**
-     * Association user_invite_parent to InviteCode
-     * @param inviteCodeList new value to give to inviteCodeList
-     */
-	public void setInviteCodeList(final Set<InviteCode> inviteCodeList){
-		this.inviteCodeList = inviteCodeList;
     }  
     /**
      * Association user_country to Country

@@ -2,7 +2,6 @@ package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
-import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -27,26 +26,6 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
     Optional<MzkUser> getByUsername(String username);
 
     /**
-     * Get a user from it's invite code.
-     *
-     * @param inviteCode the invite code of the user.
-     * @return The owner of this invite code.
-     */
-    MzkUser getMzkUserByInviteCodeListContains(InviteCode inviteCode);
-
-    /**
-     * Get the current parent of the user.
-     *
-     * @param userId The id of the user.
-     * @return The parent of the given user id.
-     */
-    @Query("select parent from MzkUser u " +
-            "inner join u.inviteCode inv " +
-            "inner join inv.parent parent " +
-            "where u.userId = :userId")
-    Optional<MzkUser> getUserParentByUserId(@Param("userId") Long userId);
-
-    /**
      * Get a user projection from the user id.
      *
      * @param userId The id of the user needed to get the details.
@@ -64,7 +43,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "   userLocale.value as locale, " +
             "   inv.value as inviteCode " +
             "from MzkUser usr " +
-            "inner join usr.inviteCodeList inv " +
+            "inner join InviteCode inv on inv.parent = usr " +
             "left join usr.country userCountry " +
             "left join usr.locale userLocale " +
             "where usr.userId = :userId " +

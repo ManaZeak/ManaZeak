@@ -47,7 +47,7 @@ public class InviteCodeManager {
         newUser.setInviteCode(inviteCode);
         userDAO.save(newUser);
         // Generating a new invite code for the parent.
-        generateInviteCode(userDAO.getMzkUserByInviteCodeListContains(inviteCode));
+        generateInviteCode(inviteCode.getParent());
     }
 
     /**

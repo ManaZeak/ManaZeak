@@ -3,6 +3,7 @@ package org.manazeak.manazeak.service.security.invite;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
+import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.datacreation.security.invite.InviteCodeConstants;
 import org.manazeak.manazeak.datacreation.security.invite.InviteCodeDataCreation;
@@ -14,8 +15,8 @@ import org.manazeak.manazeak.exception.MzkValidationException;
 import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * This class test the manipulation of invite codes in the application.
@@ -32,6 +33,8 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
     MzkUserDataCreation userDataCreation;
     @Autowired
     MzkUserDAO userDAO;
+    @Autowired
+    InviteCodeDAO inviteCodeDAO;
 
     /**
      * Checking that an active invite code is valid.
@@ -84,7 +87,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         // Checking if the parent has another invite code.
         Optional<MzkUser> userOpt = userDAO.getByUsername(UserTestConstants.ADMIN_USERNAME);
         Assertions.assertTrue(userOpt.isPresent(), "The parent user cannot be found.");
-        Assertions.assertEquals(2, userOpt.get().getInviteCodeList().size(), "No other invite code has been generated.");
+        Assertions.assertEquals(2, inviteCodeDAO.getInviteCodesByParent(userOpt.get()).size(), "No other invite code has been generated.");
     }
 
     /**
@@ -95,7 +98,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         // Creating a chain of users and getting the deepest.
         MzkUser user = userDataCreation.createMultipleMzkUser(3);
         // The invite code of this user shouldn't be valid
-        Set<InviteCode> inviteCodes = user.getInviteCodeList();
+        List<InviteCode> inviteCodes = inviteCodeDAO.getInviteCodesByParent(user);
         Assertions.assertEquals(1, inviteCodes.size(), "There is more invite code than expected.");
         for (InviteCode invite : inviteCodes) {
             try {

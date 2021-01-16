@@ -24,11 +24,14 @@ public class AdminUserManager {
     private final MzkUserDAO userDAO;
     private final UserProfileManager userProfileManager;
     private final InviteCodeManager inviteCodeManager;
+    private final UserHierarchyManager userHierarchyManager;
 
-    public AdminUserManager(MzkUserDAO userDAO, UserProfileManager userProfileManager, InviteCodeManager inviteCodeManager) {
+    public AdminUserManager(MzkUserDAO userDAO, UserProfileManager userProfileManager,
+                            InviteCodeManager inviteCodeManager, UserHierarchyManager userHierarchyManager) {
         this.userDAO = userDAO;
         this.userProfileManager = userProfileManager;
         this.inviteCodeManager = inviteCodeManager;
+        this.userHierarchyManager = userHierarchyManager;
     }
 
     /**
@@ -40,7 +43,7 @@ public class AdminUserManager {
         // Get all the users of the database.
         Iterable<MzkUser> users = userDAO.findAll();
         // Build the hierarchy of the users.
-        return UserHierarchyHelper.buildUserHierarchyFromUsers(users);
+        return userHierarchyManager.buildUserHierarchyFromUsers(users);
     }
 
     /**

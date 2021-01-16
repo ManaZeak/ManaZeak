@@ -78,8 +78,7 @@ public class MzkUserDataCreation {
             // Linking the user with it's parent.
             user.setInviteCode(parentInviteCode);
             // Create an invite code for him
-            parentInviteCode = inviteCodeDataCreation.createInviteCode(String.valueOf(suffix));
-            user.getInviteCodeList().add(parentInviteCode);
+            parentInviteCode = inviteCodeDataCreation.createInviteCode(String.valueOf(suffix), user);
             mzkUserDAO.save(user);
         }
         // Getting the last created user.

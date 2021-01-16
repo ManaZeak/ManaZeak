@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,6 +34,13 @@ public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
     @Modifying
     @Query("update InviteCode set parent = :newUser where parent = :user")
     void updateParentByUserId(@Param("user") MzkUser user, @Param("newUser") MzkUser newUser);
+
+    /**
+     * Getting all the invite codes by the parent id.
+     * @param parent The parent user.
+     * @return The invite codes linked to the user.
+     */
+    List<InviteCode> getInviteCodesByParent(MzkUser parent);
 
     /**
      * Delete the invite code by parent and by status.
