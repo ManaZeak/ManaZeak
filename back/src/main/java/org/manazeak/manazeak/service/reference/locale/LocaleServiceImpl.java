@@ -43,7 +43,7 @@ public class LocaleServiceImpl implements LocaleService {
         // Getting the specified local.
         Optional<Locale> locale = localeDAO.findById(localeId);
         if (locale.isEmpty()) {
-            throw new MzkRuntimeException("The locale can't be found in the database.");
+            throw new MzkRuntimeException("user.locale.not_found", "user.locale.not_found_title");
         }
         // Setting the locale on the user.
         user.setLocale(locale.get());

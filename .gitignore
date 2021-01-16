@@ -166,7 +166,7 @@ db_data
 ### ManaZeak specific ###
 .scannerwork
 log/**
-doc/frontend/**
+doc/front/img/**
 doc/python/**
 node_modules/**
 plugins/**

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
  */
 public class UserWishDto {
 
-    @NotEmpty(message = "user.wish.error.empty")
+    @NotEmpty(message = "{user.wish.error.empty}")
     private String content;
 
     public String getContent() {

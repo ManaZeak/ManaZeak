@@ -63,7 +63,10 @@ class SceneView {
    * way, it will notify the UserInterface controller that te view creation is done, and that it should release the
    * UI removing the loading overlay.</blockquote> */
   _viewReady() {
-    Events.publish('SceneViewReady');
+    return new Promise(resolve => {
+      Events.publish('SceneViewReady');
+      resolve();
+    });
   }
 
 

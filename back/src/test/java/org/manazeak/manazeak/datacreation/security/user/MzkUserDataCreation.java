@@ -78,14 +78,13 @@ public class MzkUserDataCreation {
             // Linking the user with it's parent.
             user.setInviteCode(parentInviteCode);
             // Create an invite code for him
-            parentInviteCode = inviteCodeDataCreation.createInviteCode(String.valueOf(suffix));
-            user.addInviteCode(parentInviteCode);
+            parentInviteCode = inviteCodeDataCreation.createInviteCode(String.valueOf(suffix), user);
             mzkUserDAO.save(user);
         }
         // Getting the last created user.
         Optional<MzkUser> user = userService.findByUsername(UserTestConstants.USERNAME + suffix);
         if (user.isEmpty()) {
-            throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.");
+            throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.", "");
         }
         return user.get();
     }

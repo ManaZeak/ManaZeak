@@ -5,6 +5,7 @@ html, body {
 }
 /* Content wrapper for whole page */
 .mzk-user {
+  font-size: var(--mzk-font-size);
   height: auto;
   margin: 0;
   padding: 0;
@@ -18,8 +19,7 @@ html, body {
   }
   /* Text that are both in and out of the form */
   p {
-    font-size: 1.1rem;
-    margin: 2rem 1rem;
+    margin: var(--mzk-margin-big) var(--mzk-margin);
     /* Mainly for text under form to fit parent bottom */
     &:last-of-type {
       margin-bottom: 0;
@@ -27,16 +27,14 @@ html, body {
     /* To handle specific error on fields */
     &.error {
       color: #FF6B67;
-      font-size: .9rem;
       font-style: italic;
       margin: 0;
     }
     /* Form global error (validation etc.) */
     &.global-error {
       color: #FF6B67;
-      font-size: 1rem;
       font-style: italic;
-      margin-bottom: 1.33rem;
+      margin-bottom: var(--mzk-margin-big);
     }
   }
   /* Links */
@@ -53,8 +51,11 @@ html, body {
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
-    padding: 3rem;
+    padding: var(--mzk-margin-bigger);
     width: max-content;
+    div.tooltip {
+      margin: var(--mzk-margin-small) 0;
+    }
     /* Override auth margin on P for form errors */
     p {
       margin-top: 0;
@@ -73,9 +74,17 @@ html, body {
     input[type="date"],
     select,
     textarea {
-      margin-bottom: 1.33rem;
+      margin-bottom: var(--mzk-margin-big);
       max-width: 225px;
       width: 90%;
+    }
+    textarea {
+      height: 8rem;
+    }
+    input[type="date"],
+    select {
+      background-color: var(--mzk-color-icons);
+      color: var(--mzk-color-text-negative);
     }
     /* Error state for inputs */
     input.error {
@@ -83,7 +92,7 @@ html, body {
     }
     /* Form submit button */
     button {
-      margin-top: 1.33rem;
+      margin-top: var(--mzk-margin-big);
     }
     /* Positioning form elements */
     button,
@@ -133,7 +142,7 @@ html, body {
   /* Half input bottom margin minus half help text height */
   --help-text-margin: calc((1.33rem / 2) - (.9rem / 2));
   cursor: help;
-  font-size: .8rem;
+  font-size: var(--mzk-font-size-small);
   font-style: italic;
   border-radius: 6px;
   bottom: calc(100% + var(--help-text-margin));

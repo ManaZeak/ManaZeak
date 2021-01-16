@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: core/Kom.js | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="doc/jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/ManaZeak/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v1.0.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AboutModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="AboutModal.html#_closeButton">_closeButton</a></li><li><a href="AboutModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="AboutModal.html#_footerCloseButton">_footerCloseButton</a></li><li><a href="AboutModal.html#_footerCloseEvtId">_footerCloseEvtId</a></li><li><a href="AboutModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="AboutModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="AboutModal.html#_rootElement">_rootElement</a></li><li><a href="AboutModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="AboutModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="AboutModal.html#.destroy">destroy</a></li></ul></div></li><li><a href="CustomEvents.html">CustomEvents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomEvents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomEvents.html#_customEvents">_customEvents</a></li><li><a href="CustomEvents.html#_debug">_debug</a></li><li><a href="CustomEvents.html#_idIncrementor">_idIncrementor</a></li><li><a href="CustomEvents.html#_regularEvents">_regularEvents</a></li><li><a href="CustomEvents.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="CustomEvents.html#._clearRegularEvent">_clearRegularEvent</a></li><li><a href="CustomEvents.html#._raise">_raise</a></li><li><a href="CustomEvents.html#.addEvent">addEvent</a></li><li><a href="CustomEvents.html#.destroy">destroy</a></li><li><a href="CustomEvents.html#.publish">publish</a></li><li><a href="CustomEvents.html#.removeAllEvents">removeAllEvents</a></li><li><a href="CustomEvents.html#.removeEvent">removeEvent</a></li><li><a href="CustomEvents.html#.subscribe">subscribe</a></li><li><a href="CustomEvents.html#.unsubscribe">unsubscribe</a></li><li><a href="CustomEvents.html#.unsubscribeAllFor">unsubscribeAllFor</a></li></ul></div></li><li><a href="DragElement.html">DragElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DragElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DragElement.html#_data">_data</a></li><li><a href="DragElement.html#_eventIds">_eventIds</a></li><li><a href="DragElement.html#_target">_target</a></li><li><a href="DragElement.html#_touchPhantomDom">_touchPhantomDom</a></li><li><a href="DragElement.html#_touchStarted">_touchStarted</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DragElement.html#._buildElements">_buildElements</a></li><li><a href="DragElement.html#._dragStart">_dragStart</a></li><li><a href="DragElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DragElement.html#._dragTouchMove">_dragTouchMove</a></li><li><a href="DragElement.html#._events">_events</a></li><li><a href="DragElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="DropElement.html">DropElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DropElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DropElement.html#_eventIds">_eventIds</a></li><li><a href="DropElement.html#_movementCounter">_movementCounter</a></li><li><a href="DropElement.html#_onDropCB">_onDropCB</a></li><li><a href="DropElement.html#_target">_target</a></li><li><a href="DropElement.html#_transparentBorder">_transparentBorder</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DropElement.html#._buildElements">_buildElements</a></li><li><a href="DropElement.html#._dragEnter">_dragEnter</a></li><li><a href="DropElement.html#._dragLeave">_dragLeave</a></li><li><a href="DropElement.html#._dragOver">_dragOver</a></li><li><a href="DropElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DropElement.html#._dragTouchOver">_dragTouchOver</a></li><li><a href="DropElement.html#._drop">_drop</a></li><li><a href="DropElement.html#._eventBehavior">_eventBehavior</a></li><li><a href="DropElement.html#._events">_events</a></li><li><a href="DropElement.html#._isTouchEventInTarget">_isTouchEventInTarget</a></li><li><a href="DropElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="Kom.html">Kom</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Kom_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Kom.html#_csrfToken">_csrfToken</a></li><li><a href="Kom.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Kom.html#._checkValidity">_checkValidity</a></li><li><a href="Kom.html#._createRequestHeaders">_createRequestHeaders</a></li><li><a href="Kom.html#._getCsrfCookie">_getCsrfCookie</a></li><li><a href="Kom.html#._getErrorCodeFromHTTPStatus">_getErrorCodeFromHTTPStatus</a></li><li><a href="Kom.html#._resolveAs">_resolveAs</a></li><li><a href="Kom.html#._resolveAsJSON">_resolveAsJSON</a></li><li><a href="Kom.html#._resolveAsRaw">_resolveAsRaw</a></li><li><a href="Kom.html#._resolveAsText">_resolveAsText</a></li><li><a href="Kom.html#.get">get</a></li><li><a href="Kom.html#.getRaw">getRaw</a></li><li><a href="Kom.html#.getText">getText</a></li><li><a href="Kom.html#.post">post</a></li><li><a href="Kom.html#.postRaw">postRaw</a></li><li><a href="Kom.html#.postText">postText</a></li></ul></div></li><li><a href="Logger.html">Logger</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Logger_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Logger.html#_errors">_errors</a></li><li><a href="Logger.html#_log">_log</a></li><li><a href="Logger.html#_notification">_notification</a></li><li><a href="Logger.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Logger.html#._buildErrorInfo">_buildErrorInfo</a></li><li><a href="Logger.html#._buildJsError">_buildJsError</a></li><li><a href="Logger.html#._getCallerName">_getCallerName</a></li><li><a href="Logger.html#._logErrorToConsole">_logErrorToConsole</a></li><li><a href="Logger.html#._logErrorToNotification">_logErrorToNotification</a></li><li><a href="Logger.html#.destroy">destroy</a></li><li><a href="Logger.html#.raise">raise</a></li></ul></div></li><li><a href="Modal.html">Modal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Modal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Modal.html#_closeButton">_closeButton</a></li><li><a href="Modal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="Modal.html#_modalOverlay">_modalOverlay</a></li><li><a href="Modal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="Modal.html#_rootElement">_rootElement</a></li><li><a href="Modal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Modal.html#._fillAttributes">_fillAttributes</a></li><li><a href="Modal.html#._loadTemplate">_loadTemplate</a></li><li><a href="Modal.html#.close">close</a></li><li><a href="Modal.html#.destroy">destroy</a></li><li><a href="Modal.html#.open">open</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Notification.html#_active">_active</a></li><li><a href="Notification.html#_default">_default</a></li><li><a href="Notification.html#_dismissAllLock">_dismissAllLock</a></li><li><a href="Notification.html#_dom">_dom</a></li><li><a href="Notification.html#_duration">_duration</a></li><li><a href="Notification.html#_maxActive">_maxActive</a></li><li><a href="Notification.html#_position">_position</a></li><li><a href="Notification.html#_queue">_queue</a></li><li><a href="Notification.html#_thickBorder">_thickBorder</a></li><li><a href="Notification.html#_transition">_transition</a></li><li><a href="Notification.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildNotificationType">_buildNotificationType</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._buildUIDom">_buildUIDom</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._checkNotificationOptionsValidity">_checkNotificationOptionsValidity</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._idGenerator">_idGenerator</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._setAttributesDefault">_setAttributesDefault</a></li><li><a href="Notification.html#._setOptionsDefault">_setOptionsDefault</a></li><li><a href="Notification.html#._setOptionsFallback">_setOptionsFallback</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#.destroy">destroy</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="SceneView.html">SceneView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="SceneView_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#wrapper">wrapper</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="SceneView.html#.destroy">destroy</a></li></ul></div></li><li><a href="UserInterface.html">UserInterface</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserInterface_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="UserInterface.html#_aside">_aside</a></li><li><a href="UserInterface.html#_loadingOverlay">_loadingOverlay</a></li><li><a href="UserInterface.html#_scene">_scene</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="UserInterface.html#._fetchWrapper">_fetchWrapper</a></li><li><a href="UserInterface.html#._viewReady">_viewReady</a></li><li><a href="UserInterface.html#.setSceneView">setSceneView</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li></ul></div></li><li><a href="ViewFactory.html">ViewFactory</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ViewFactory_sub"></div></li><li><a href="WishModal.html">WishModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="WishModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="WishModal.html#_closeButton">_closeButton</a></li><li><a href="WishModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="WishModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="WishModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="WishModal.html#_rootElement">_rootElement</a></li><li><a href="WishModal.html#_submitEvtId">_submitEvtId</a></li><li><a href="WishModal.html#_submitInput">_submitInput</a></li><li><a href="WishModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="WishModal.html#._submitClicked">_submitClicked</a></li><li><a href="WishModal.html#.destroy">destroy</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import HttpStatusCode from '../utils/enum/HttpStatusCode.js';
+
+
+class Kom {
+
+
+  /** @summary &lt;h1>Server communication abstraction&lt;/h1>
+   * @author Arthur Beaulieu
+   * @since June 2020
+   * @description &lt;blockquote>This class is the main object to deal with when requesting something from the server.&lt;br>
+   * It handle all urls calls (&lt;code>GET&lt;/code>, &lt;code>POST&lt;/code>), treat responses or handle errors using
+   * &lt;code>Promise&lt;/code>.&lt;br>Because it uses &lt;code>Promise&lt;/code>, success and errors are to be handled in the caller
+   * function, using &lt;code>.then()&lt;/code> and &lt;code>.catch()&lt;/code>. To properly deal with &lt;code>POST&lt;/code> request,
+   * the session must contain a csrf token in cookies. Otherwise, those &lt;code>POST&lt;/code> call may fail.&lt;/blockquote> */
+  constructor() {
+    /** @private
+     * @member {string} - User session CSRF token to use in POST request */
+    this._csrfToken = this._getCsrfCookie();
+    /** @private
+     * @member {array[]} - Array of HTTP headers to be used in HTTP calls */
+    this._headers = this._createRequestHeaders();
+    // Check that CSRF token exists and that headers are properly created
+    this._checkValidity();
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  -------------------------------------------  CLASS INIT UTILS  -----------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _getCsrfCookie
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Extract CSRF token value from client cookies and returns it as a string. Returns an empty
+   * string by default. This method is required to be called on construction.&lt;/blockquote>
+   * @return {string} - The CSRF token string */
+  _getCsrfCookie() {
+    if (document.cookie &amp;&amp; document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i &lt; cookies.length; ++i) {
+        // Parse current cookie to extract its properties
+        const cookie = cookies[i].split('=');
+        if (cookie !== undefined &amp;&amp; cookie[0].toLowerCase().includes('srf')) {
+          // Found a matching cookie for csrftoken value, return as decoded string
+          return decodeURIComponent(cookie[1]);
+        }
+      }
+    }
+    // Return empty string by default, POST calls may fail
+    return '';
+  }
+
+
+  /** @method
+   * @name _createRequestHeaders
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Fills Kom &lt;code>_headers&lt;/code> private member array, to use in HTTP requests later on.
+   * This method is required to be called on construction.&lt;/blockquote>
+   * @return {array[]} - The headers array, length 3, to be used in HTTP requests */
+  _createRequestHeaders() {
+    return [
+      ['Content-Type', 'application/json; charset=UTF-8'],
+      ['Accept', 'application/json'],
+      ['X-XSRF-TOKEN', this._csrfToken]
+    ];
+  }
+
+
+  /** @method
+   * @async
+   * @name _checkValidity
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Check the Kom instance validity to ensure its properties validity.&lt;/blockquote> */
+  _checkValidity() {
+    if (this._csrfToken !== '') {
+      if (this._headers.length !== 3) {
+        console.error('F_KOM_HEADERS_ERROR');
+      }
+    } else {
+      console.error('F_KOM_NO_CSRF_TOKEN');
+    }
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  -------------------------------------------  PRIVATE METHODS  ------------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _getErrorCodeFromHTTPStatus
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>This method is called whenever a server request didn't went well. In case a request (from
+   * any type) fails, its HTTP status code have to be handle in the method, so it returns an error code can be handled
+   * in the user interface (with notification, console or else).&lt;/blockquote>
+   * @param {number} code - The HTTP status code to handle, in supported ones from HttpStatusCode enumeration
+   * @return {string} The HTTP status as an error code */
+  _getErrorCodeFromHTTPStatus(code) {
+    if (code === HttpStatusCode.NOT_FOUND) {
+      return 'B_KOM_NOT_FOUND';
+    } else if (code === HttpStatusCode.FORBIDDEN) {
+      return 'B_KOM_ACCESS_FORBIDDEN';
+    } else if (code === HttpStatusCode.INTERNAL_ERROR) {
+      return 'B_KOM_INTERNAL_ERROR';
+    } else {
+      return `B_KOM_UNKNOWN_ERROR`;
+    }
+  }
+
+
+  /** @method
+   * @async
+   * @name _resolveAs
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Generic tool method used by private methods on fetch responses to format output in the provided
+   * format. It must be either `json`, `text` or `raw`.&lt;/blockquote>
+   * @param {String} type - The type of resolution, can be `json`, `text` or `raw`
+   * @param {Object} response - The &lt;code>fetch&lt;/code> response object
+   * @returns {Promise} The request &lt;code>Promise&lt;/code>, format response as an object on resolve, as error code string on reject */
+  _resolveAs(type, response) {
+    return new Promise((resolve, reject) => {
+      if (response) {
+        if (type === 'raw') { // Raw are made in XMLHttpRequest and need special handling
+          if (response.status === HttpStatusCode.OK) {
+            resolve(response.responseText);
+          } else {
+            reject(this._getErrorCodeFromHTTPStatus(response.status));
+          }
+        } else if (type === 'json' || type === 'text') { // Call are made using fetch API
+          if (response[type]) {
+            resolve(response[type]());
+          } else { // Fallback on standard error handling
+            reject(this._getErrorCodeFromHTTPStatus(response.status));
+          }
+        } else { // Resolution type doesn't exists
+          reject('F_KOM_UNSUPPORTED_TYPE');
+        }
+      } else {
+        reject('F_KOM_MISSING_ARGUMENT');
+      }
+    });
+  }
+
+
+  /** @method
+   * @async
+   * @name _resolveAsJSON
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Tool method used by public methods on fetch responses to format output data as JSON to be
+   * read in JavaScript code as objects.&lt;/blockquote>
+   * @param {Object} response - The &lt;code>fetch&lt;/code> response object
+   * @returns {Promise} The request &lt;code>Promise&lt;/code>, format response as an object on resolve, as error code string on reject */
+  _resolveAsJSON(response) {
+    return this._resolveAs('json', response);
+  }
+
+
+  /** @method
+   * @async
+   * @name _resolveAsText
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Tool method used by public methods on fetch responses to format output data as text to be
+   * read in JavaScript code as string (mostly to parse HTML templates).&lt;/blockquote>
+   * @param {Object} response - The &lt;code>fetch&lt;/code> response object
+   * @returns {Promise} The request &lt;code>Promise&lt;/code>, format response as a string on resolve, as error code string on reject */
+  _resolveAsText(response) {
+    return this._resolveAs('text', response);
+  }
+
+
+  /** @method
+   * @async
+   * @name _resolveAsRaw
+   * @private
+   * @memberof Kom
+   * @description &lt;blockquote>Tool method used by XmlHTTPRequests to format server response as raw binary data.&lt;/blockquote>
+   * @param {Object} response - The &lt;code>XmlHTTPRequest&lt;/code> response status object
+   * @returns {Promise} The request &lt;code>Promise&lt;/code>, doesn't format response on resolve, send error code string on reject */
+  _resolveAsRaw(response) {
+    return this._resolveAs('raw', response);
+  }
+
+
+  _xhrCall(url, verb, data) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(verb, url, true);
+      xhr.overrideMimeType('text/plain; charset=x-user-defined');
+      xhr.onreadystatechange = response => {
+        if (response.target.readyState === 4) { // Ready state changed has reach the response state
+          this._resolveAsRaw(response.target)
+            .then(resolve)
+            .catch(reject);
+        }
+      };
+      xhr.onerror = () => {
+        reject('F_KOM_XHR_ERROR');
+      };
+      xhr.send(data);
+    });
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  ---------------------------------------  HTTP SERVER CALLS METHODS  ------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @async
+   * @name get
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>GET&lt;/code> HTTP request using the fetch API.&lt;br>&lt;code>resolve&lt;/code> returns the
+   * response as an &lt;code>Object&lt;/code>.&lt;br>&lt;code>reject&lt;/code> returns an error key as a &lt;code>String&lt;/code>.
+   * It is meant to perform API call to access database through the user interface.&lt;/blockquote>
+   * @param {String} url - The &lt;code>GET&lt;/code> url to fetch data from, in supported back URLs
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  get(url, resolution = this._resolveAsJSON.bind(this)) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: 'GET',
+        headers: new Headers([this._headers[0]]) // Content type to JSON
+      };
+
+      fetch(url, options)
+        .then(resolution)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /** @method
+   * @async
+   * @name getText
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>GET&lt;/code> HTTP request using the fetch API.&lt;br>&lt;code>resolve&lt;/code> returns the
+   * response as a &lt;code>String&lt;/code>.&lt;br>&lt;code>reject&lt;/code> returns an error key as a &lt;code>String&lt;/code>. It is
+   * meant to perform API call to get HTML templates as string to be parsed as documents/documents fragments.&lt;/blockquote>
+   * @param {String} url - The &lt;code>GET&lt;/code> url to fetch data from, in supported back URLs
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  getText(url) {
+    return this.get(url, this._resolveAsText.bind(this));
+  }
+
+
+  /** @method
+   * @async
+   * @name getRaw
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>GET&lt;/code> HTTP request using an &lt;code>XMLHttpRequest&lt;/code>, with an override
+   * mime type hack to pass bytes through unprocessed.&lt;br>&lt;code>resolve&lt;/code> returns the response as raw binary data.&lt;br>&lt;code>reject&lt;/code>
+   * returns an error code as a &lt;code>String&lt;/code>.&lt;/blockquote>
+   * @param {String} url - The url to fetch raw data from
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  getRaw(url) {
+    return new Promise((resolve, reject) => {
+      this._xhrCall(url, 'GET', null)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /** @method
+   * @async
+   * @name post
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>POST&lt;/code> HTTP request using the fetch API.&lt;br>Beware that the given options
+   * object match the url expectations.&lt;br>&lt;code>resolve&lt;/code>
+   * returns the response as an &lt;code>Object&lt;/code>.&lt;br>&lt;code>reject&lt;/code> returns an error key as a &lt;code>String&lt;/code>.&lt;/blockquote>
+   * @param {String} url - The &lt;code>POST&lt;/code> url to fetch data from
+   * @param {Object} data - The &lt;code>JSON&lt;/code> object that contains &lt;code>POST&lt;/code> parameters
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  post(url, data, resolution = this._resolveAsJSON.bind(this)) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: 'POST',
+        headers: new Headers(this._headers), // POST needs all previously defined headers
+        body: JSON.stringify(data)
+      };
+
+      fetch(url, options)
+        .then(resolution)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  /** @method
+   * @async
+   * @name postText
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>POST&lt;/code> HTTP request using the fetch API.&lt;br>Beware that the given options
+   * object match the url expectations.&lt;br>&lt;code>resolve&lt;/code>
+   * returns the response as a &lt;code>String&lt;/code>.&lt;br>&lt;code>reject&lt;/code> returns an error key as a &lt;code>String&lt;/code>.&lt;/blockquote>
+   * @param {String} url - The &lt;code>POST&lt;/code> url to fetch data from
+   * @param {Object} data - The &lt;code>JSON&lt;/code> object that contains &lt;code>POST&lt;/code> parameters
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  postText(url, data) {
+    return this.post(url, data, this._resolveAsText.bind(this));
+  }
+
+
+  /** @method
+   * @async
+   * @name postRaw
+   * @public
+   * @memberof Kom
+   * @description &lt;blockquote>&lt;code>POST&lt;/code> HTTP request using the fetch API.&lt;br>Beware that the given options
+   * object match the url expectations.&lt;br>&lt;code>resolve&lt;/code>, with an override
+   * mime type hack to pass bytes through unprocessed.&lt;br>&lt;code>resolve&lt;/code> returns the response as raw binary data.&lt;br>&lt;code>reject&lt;/code>
+   * returns an error code as a &lt;code>String&lt;/code>.&lt;/blockquote>
+   * @param {String} url - The url to fetch raw data from
+   * @param {Object} data - The &lt;code>JSON&lt;/code> object that contains &lt;code>POST&lt;/code> parameters
+   * @returns {Promise} The request &lt;code>Promise&lt;/code> */
+  postRaw(url, data) {
+    return new Promise((resolve, reject) => {
+      this._xhrCall(url, 'POST', JSON.stringify(data))
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  postForm(url, data) {
+    return new Promise((resolve, reject) => {
+      // Create virtual form
+      const form = document.createElement('FORM');
+      form.method = 'POST';
+      form.action = url;
+      // Declare its virtual fields from sent data
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const hiddenField = document.createElement('INPUT');
+          hiddenField.type = 'hidden';
+          hiddenField.name = key;
+          hiddenField.value = data[key];
+          form.appendChild(hiddenField);
+        }
+      }
+      // Build XHR with xsrf token
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.setRequestHeader('X-XSRF-TOKEN', this._csrfToken);
+      // Register the state change event
+      xhr.onreadystatechange = response => {
+        if (response.target.readyState === 4) { // Ready state changed has reach the response state
+          // As specified with backend, response is JSON if success, HTML otherwise
+          try {
+            // If we can parse as a JSON, everything went fine server side
+            const output = JSON.parse(response.target.response);
+            resolve(output);
+          } catch {
+            // Otherwise, the server returns the template with its errors
+            reject(response.target.response);
+          }
+        }
+      };
+      // XHR error handling
+      xhr.onerror = () => {
+        reject('F_KOM_XHR_ERROR');
+      };
+      // Create form data and send it through the XHR
+      const formData = new FormData(form);
+      xhr.send(formData);
+    });
+  }
+
+
+}
+
+
+export default Kom;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

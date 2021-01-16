@@ -31,13 +31,13 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         if (username == null || "".equals(username)) {
             // Can't find user.
-            throw new MzkRuntimeException("No username given.");
+            throw new MzkRuntimeException("user.error.no_username", "user.error.no_username");
         }
         // Getting the user for the database.
         final Optional<MzkUser> user = userService.findByUsername(username);
         if (user.isEmpty()) {
             LOG.warn("The unknown user {} tried to connect.", username);
-            throw new MzkRuntimeException("Authentication error");
+            throw new MzkRuntimeException("user.error.authentication_error", "user.error.authentication_error");
         }
         // Adding rights
         final List<MzkGrantedAuthority> grantedAuthorities = new ArrayList<>();

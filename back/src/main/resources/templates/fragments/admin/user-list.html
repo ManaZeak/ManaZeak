@@ -1,14 +1,40 @@
-<div th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
-  <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
-  <p th:text="*{user.username}">username</p>
-  <span th:if="*{user.avatar == null}">
-    <!-- User doesn't have an avatar. Displaying default -->
-    <img src="static/img/default/user.svg" alt="user-avatar">
-  </span>
-  <span th:unless="*{user.avatar == null}">
-    <!-- User do have an avatar -->
-    <img th:src='*{"/resources/avatars/"+user.avatar}' alt="user-avatar">
-  </span>
-  <p th:text="*{user.roleValue}"></p>
-  <p th:text="*{user.creationDate}"></p>
+<!-- HTML fragment used in admin/users view -->
+<div class="user-list-wrapper" xmlns:th="http://www.thymeleaf.org">
+  <div id="users-wrapper" class="users-wrapper">
+    <div class="user-container" th:attr="data-id=*{user.userId}" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
+      <!-- User doesn't have an avatar. Displaying default -->
+      <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
+      <span th:if="*{user.avatar == null}">
+        <img src="static/img/default/user.svg" alt="user-avatar">
+      </span>
+      <!-- User do have an avatar -->
+      <span th:unless="*{user.avatar == null}">
+        <img th:src='*{"/resources/avatars/"+user.avatar}' alt="user-avatar">
+      </span>
+      <p th:text="*{user.username}">username</p>
+      <p th:text="*{user.roleValue}"></p>
+      <p th:text="*{user.creationDate}"></p>
+      <div class="user-controls">
+        <img src="static/img/actions/close.svg" alt="ban-user">
+        <img src="static/img/actions/delete.svg" alt="delete-user">
+      </div>
+    </div>
+  </div>
+  <div id="badges-wrapper" class="badges-wrapper">
+    <div class="badge-container" th:attr="data-id=*{badge.badgeId}" th:each="badge : ${badges}" xmlns:th="http://www.thymeleaf.org">
+      <!--/*@thymesVar id="badges" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->
+      <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto"*/-->
+      <label for="badge-name" th:text="#{user.badge}"></label>
+      <p id="badge-name" th:text="*{badge.label}">badge-name</p>
+      <!-- Iterating through the users to list them -->
+      <div th:each="user : *{badge.users}">
+        <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto"*/-->
+        <p th:attr="data-id=*{user.userId}" th:text="*{user.username}">user</p>
+      </div>
+    </div>
+    <div id="new-badge" class="badge-container new">
+      <img alt="new-badge" src="static/img/navigation/expand.svg">
+      <p th:text="#{admin.user.new_badge}"></p>
+    </div>
+  </div>
 </div>

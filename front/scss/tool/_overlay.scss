@@ -21,4 +21,8 @@
 
     animation: rotate-plane 1.2s infinite ease-in-out; // Custom keyframe
   }
+
+  &.fit-parent {
+    position: inherit;
+  }
 }

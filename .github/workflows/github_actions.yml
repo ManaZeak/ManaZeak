@@ -1,4 +1,4 @@
-name: ManaZeak continuous integration
+name: build
 
 on:
   push:
@@ -38,10 +38,20 @@ jobs:
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 11
-    - name: Test
-      run: ls -a
     - name: Build with Maven
       run: mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak -Dsonar.organization=manazeak -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+    - name: Rocket.Chat Notification
+      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: '*Lint Check*'
+        mention: 'here'
+        mention_if: 'failure'
+        channel: '#mzk_ci'
+        url: ${{ secrets.ROCKET_WEB_HOOK }}
+        commit: true
+        token: ${{ secrets.GITHUB_TOKEN }}

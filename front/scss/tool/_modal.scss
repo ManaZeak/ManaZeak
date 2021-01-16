@@ -1,0 +1,118 @@
+.loading-overlay {
+  align-items: center;
+  background-color: var(--mzk-color-bg-darker-alpha-75);
+  display: flex;
+  font-size: var(--mzk-font-size);
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.modal {
+  background: var(--mzk-color-bg);
+  border-radius: 5px;
+  box-shadow: 0 0 .3rem var(--mzk-color-primary-alpha-50);
+  max-width: 66rem;
+  min-width: 20%;
+  position: relative;
+  text-align: justify;
+  z-index: 800;
+
+  .header {
+    align-items: center;
+    display: flex;
+    height: 6rem;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+
+    p { // The modal title
+      font-size: var(--mzk-font-size-big);
+      margin: 0;
+    }
+
+    .close { // Header close button
+      cursor: pointer;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+
+      transition: color var(--mzk-animation-duration) ease-out;
+
+      &:active,
+      &:focus,
+      &:hover {
+        color: var(--mzk-color-anti-primary);
+      }
+    }
+  }
+
+  .container {
+    background-color: var(--mzk-color-bg-galaxy);
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 12rem);
+    justify-content: center;
+    padding: var(--mzk-padding-big);
+
+    p {
+      margin-bottom: var(--mzk-font-size);
+      text-indent: 1rem;
+
+      &.error {
+        color: #FF6B67;
+        font-style: italic;
+        margin: 0;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      [type="submit"] {
+        display: none;
+      }
+    }
+
+    textarea {
+      height: inherit;
+    }
+  }
+
+  .footer {
+    align-items: center;
+    display: flex;
+    height: 6rem;
+    justify-content: center;
+
+    button {
+      border: solid 1px gray;
+      border-radius: 5px;
+      cursor: pointer;
+      height: 55%;
+      outline: none;
+      text-decoration : none;
+
+      transition: background-color var(--mzk-animation-duration);
+
+      &.primary {
+        background-color: var(--mzk-color-primary);
+        border-color: var(--mzk-color-primary);
+        color: var(--mzk-color-text-negative);
+      }
+
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--mzk-color-secondary);
+        border-color: var(--mzk-color-secondary);
+        color: var(--mzk-color-text-negative);
+      }
+    }
+  }
+}

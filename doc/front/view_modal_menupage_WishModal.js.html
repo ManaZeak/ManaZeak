@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: view/modal/menupage/WishModal.js | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="doc/jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/ManaZeak/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v1.0.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AboutModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="AboutModal.html#_closeButton">_closeButton</a></li><li><a href="AboutModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="AboutModal.html#_footerCloseButton">_footerCloseButton</a></li><li><a href="AboutModal.html#_footerCloseEvtId">_footerCloseEvtId</a></li><li><a href="AboutModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="AboutModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="AboutModal.html#_rootElement">_rootElement</a></li><li><a href="AboutModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="AboutModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="AboutModal.html#.destroy">destroy</a></li></ul></div></li><li><a href="CustomEvents.html">CustomEvents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomEvents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomEvents.html#_customEvents">_customEvents</a></li><li><a href="CustomEvents.html#_debug">_debug</a></li><li><a href="CustomEvents.html#_idIncrementor">_idIncrementor</a></li><li><a href="CustomEvents.html#_regularEvents">_regularEvents</a></li><li><a href="CustomEvents.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="CustomEvents.html#._clearRegularEvent">_clearRegularEvent</a></li><li><a href="CustomEvents.html#._raise">_raise</a></li><li><a href="CustomEvents.html#.addEvent">addEvent</a></li><li><a href="CustomEvents.html#.destroy">destroy</a></li><li><a href="CustomEvents.html#.publish">publish</a></li><li><a href="CustomEvents.html#.removeAllEvents">removeAllEvents</a></li><li><a href="CustomEvents.html#.removeEvent">removeEvent</a></li><li><a href="CustomEvents.html#.subscribe">subscribe</a></li><li><a href="CustomEvents.html#.unsubscribe">unsubscribe</a></li><li><a href="CustomEvents.html#.unsubscribeAllFor">unsubscribeAllFor</a></li></ul></div></li><li><a href="DragElement.html">DragElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DragElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DragElement.html#_data">_data</a></li><li><a href="DragElement.html#_eventIds">_eventIds</a></li><li><a href="DragElement.html#_target">_target</a></li><li><a href="DragElement.html#_touchPhantomDom">_touchPhantomDom</a></li><li><a href="DragElement.html#_touchStarted">_touchStarted</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DragElement.html#._buildElements">_buildElements</a></li><li><a href="DragElement.html#._dragStart">_dragStart</a></li><li><a href="DragElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DragElement.html#._dragTouchMove">_dragTouchMove</a></li><li><a href="DragElement.html#._events">_events</a></li><li><a href="DragElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="DropElement.html">DropElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DropElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DropElement.html#_eventIds">_eventIds</a></li><li><a href="DropElement.html#_movementCounter">_movementCounter</a></li><li><a href="DropElement.html#_onDropCB">_onDropCB</a></li><li><a href="DropElement.html#_target">_target</a></li><li><a href="DropElement.html#_transparentBorder">_transparentBorder</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DropElement.html#._buildElements">_buildElements</a></li><li><a href="DropElement.html#._dragEnter">_dragEnter</a></li><li><a href="DropElement.html#._dragLeave">_dragLeave</a></li><li><a href="DropElement.html#._dragOver">_dragOver</a></li><li><a href="DropElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DropElement.html#._dragTouchOver">_dragTouchOver</a></li><li><a href="DropElement.html#._drop">_drop</a></li><li><a href="DropElement.html#._eventBehavior">_eventBehavior</a></li><li><a href="DropElement.html#._events">_events</a></li><li><a href="DropElement.html#._isTouchEventInTarget">_isTouchEventInTarget</a></li><li><a href="DropElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="Kom.html">Kom</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Kom_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Kom.html#_csrfToken">_csrfToken</a></li><li><a href="Kom.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Kom.html#._checkValidity">_checkValidity</a></li><li><a href="Kom.html#._createRequestHeaders">_createRequestHeaders</a></li><li><a href="Kom.html#._getCsrfCookie">_getCsrfCookie</a></li><li><a href="Kom.html#._getErrorCodeFromHTTPStatus">_getErrorCodeFromHTTPStatus</a></li><li><a href="Kom.html#._resolveAs">_resolveAs</a></li><li><a href="Kom.html#._resolveAsJSON">_resolveAsJSON</a></li><li><a href="Kom.html#._resolveAsRaw">_resolveAsRaw</a></li><li><a href="Kom.html#._resolveAsText">_resolveAsText</a></li><li><a href="Kom.html#.get">get</a></li><li><a href="Kom.html#.getRaw">getRaw</a></li><li><a href="Kom.html#.getText">getText</a></li><li><a href="Kom.html#.post">post</a></li><li><a href="Kom.html#.postRaw">postRaw</a></li><li><a href="Kom.html#.postText">postText</a></li></ul></div></li><li><a href="Logger.html">Logger</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Logger_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Logger.html#_errors">_errors</a></li><li><a href="Logger.html#_log">_log</a></li><li><a href="Logger.html#_notification">_notification</a></li><li><a href="Logger.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Logger.html#._buildErrorInfo">_buildErrorInfo</a></li><li><a href="Logger.html#._buildJsError">_buildJsError</a></li><li><a href="Logger.html#._getCallerName">_getCallerName</a></li><li><a href="Logger.html#._logErrorToConsole">_logErrorToConsole</a></li><li><a href="Logger.html#._logErrorToNotification">_logErrorToNotification</a></li><li><a href="Logger.html#.destroy">destroy</a></li><li><a href="Logger.html#.raise">raise</a></li></ul></div></li><li><a href="Modal.html">Modal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Modal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Modal.html#_closeButton">_closeButton</a></li><li><a href="Modal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="Modal.html#_modalOverlay">_modalOverlay</a></li><li><a href="Modal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="Modal.html#_rootElement">_rootElement</a></li><li><a href="Modal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Modal.html#._fillAttributes">_fillAttributes</a></li><li><a href="Modal.html#._loadTemplate">_loadTemplate</a></li><li><a href="Modal.html#.close">close</a></li><li><a href="Modal.html#.destroy">destroy</a></li><li><a href="Modal.html#.open">open</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Notification.html#_active">_active</a></li><li><a href="Notification.html#_default">_default</a></li><li><a href="Notification.html#_dismissAllLock">_dismissAllLock</a></li><li><a href="Notification.html#_dom">_dom</a></li><li><a href="Notification.html#_duration">_duration</a></li><li><a href="Notification.html#_maxActive">_maxActive</a></li><li><a href="Notification.html#_position">_position</a></li><li><a href="Notification.html#_queue">_queue</a></li><li><a href="Notification.html#_thickBorder">_thickBorder</a></li><li><a href="Notification.html#_transition">_transition</a></li><li><a href="Notification.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildNotificationType">_buildNotificationType</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._buildUIDom">_buildUIDom</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._checkNotificationOptionsValidity">_checkNotificationOptionsValidity</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._idGenerator">_idGenerator</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._setAttributesDefault">_setAttributesDefault</a></li><li><a href="Notification.html#._setOptionsDefault">_setOptionsDefault</a></li><li><a href="Notification.html#._setOptionsFallback">_setOptionsFallback</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#.destroy">destroy</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="SceneView.html">SceneView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="SceneView_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#wrapper">wrapper</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="SceneView.html#.destroy">destroy</a></li></ul></div></li><li><a href="UserInterface.html">UserInterface</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserInterface_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="UserInterface.html#_aside">_aside</a></li><li><a href="UserInterface.html#_loadingOverlay">_loadingOverlay</a></li><li><a href="UserInterface.html#_scene">_scene</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="UserInterface.html#._fetchWrapper">_fetchWrapper</a></li><li><a href="UserInterface.html#._viewReady">_viewReady</a></li><li><a href="UserInterface.html#.setSceneView">setSceneView</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li></ul></div></li><li><a href="ViewFactory.html">ViewFactory</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ViewFactory_sub"></div></li><li><a href="WishModal.html">WishModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="WishModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="WishModal.html#_closeButton">_closeButton</a></li><li><a href="WishModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="WishModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="WishModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="WishModal.html#_rootElement">_rootElement</a></li><li><a href="WishModal.html#_submitEvtId">_submitEvtId</a></li><li><a href="WishModal.html#_submitInput">_submitInput</a></li><li><a href="WishModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="WishModal.html#._submitClicked">_submitClicked</a></li><li><a href="WishModal.html#.destroy">destroy</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Modal from '../utils/Modal.js';
+
+
+class WishModal extends Modal {
+
+
+  /** @summary &lt;h1>Wish modal&lt;/h1>
+   * @extends Modal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description &lt;blockquote>This modal is made to allow the user to send a wish (under the form of a string) to the
+   * instance administrators. This wish can be reviewed in the admin page, in the wishes sections. This way, users can
+   * leave a feedback on the instance, straight from their account.&lt;/blockquote>
+   * @param {object} options - The modal base options
+   * @param {string} options.url - The url to fetch the wish modal template from **/
+  constructor(options) {
+    super(options);
+    /** @private
+     * @member {object} - The form submit input */
+    this._submitInput = null;
+    /** @private
+     * @member {number} - The event ID for the submit input clicked */
+    this._submitEvtId = -1;
+  }
+
+
+  /** @method
+   * @name destroy
+   * @public
+   * @memberof WishModal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description &lt;blockquote>This method will destroy the Modal parent (see documentation), then clear the submit event
+   * subscription, and finally will destroy all properties of this class. It's then properly destroyed.&lt;/blockquote> **/
+  destroy() {
+    super.destroy();
+    Events.removeEvent(this._submitEvtId);
+    Utils.removeAllObjectKeys(this);
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  ------------------------------------  MODAL INSTANTIATION SEQUENCE  ------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _fillAttributes
+   * @private
+   * @memberof WishModal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description &lt;blockquote>This method will retrieve the submit button from the wish modal template. It will then
+   * call the event button to handle the interactivity with this button.&lt;/blockquote> **/
+  _fillAttributes() {
+    this._submitInput = this._rootElement.querySelector('#submit-wish-button');
+    this._events();
+  }
+
+
+  /** @method
+   * @name _events
+   * @private
+   * @memberof WishModal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description &lt;blockquote>This method will listen to any click on the submit button to process the textarea
+   * content to send it to the backend if needed.&lt;/blockquote> **/
+  _events() {
+    this._submitEvtId = Events.addEvent('click', this._submitInput, this._submitClicked, this);
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  -----------------------------------------  MODAL INTERACTIONS  -----------------------------------------------  */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _submitClicked
+   * @private
+   * @async
+   * @memberof WishModal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description &lt;blockquote>This method is the submit button callback. If the textarea content is empty, the server
+   * response to the post call will be the wish modal HTML template, completed with an error message. This callback
+   * will refresh the interface to display this error message. Otherwise, if the textarea isn't empty, the server will
+   * respond with a JSON object that contains the success information, to be displayed as a notification.&lt;/blockquote>
+   * @param {object} event - The click event (on submit button) **/
+  _submitClicked(event) {
+    // Avoid form submit default behavior
+    event.preventDefault();
+    // Calling the modal url in post allow its resolution
+    mzk.kom.postForm(this._url, {
+      content: this._rootElement.querySelector('#wish-content').value
+    }).then(response => {
+      Logger.raise(response);
+      this.close();
+    }).catch(response => {
+      // Parse new modal content as DOM object
+      this._rootElement = Utils.parseHTMLFragment(response);
+      // Clear overlay content
+      this._modalOverlay.innerHTML = '';
+      // Restore new modal content
+      this._modalOverlay.appendChild(this._rootElement);
+      // Avoid event stacking
+      Events.removeEvent(this._submitEvtId);
+      // Reset submit event id
+      this._submitEvtId = -1;
+      // Re-save internals with new template
+      this._fillAttributes();
+    });
+  }
+
+
+}
+
+
+export default WishModal;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

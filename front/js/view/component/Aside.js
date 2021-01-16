@@ -6,18 +6,19 @@ class Aside {
 
   constructor() {
     this._homepage = document.getElementById('homepage-button');
-    this._userpage = document.getElementById('userpage-button');
+    this._menupage = document.getElementById('menupage-button');
 
     this._events();
   }
 
 
   _events() {
+    // TODO: proper events
     this._homepageClicked = this._homepageClicked.bind(this);
     this._homepage.addEventListener('click', this._homepageClicked);
 
-    this._userpageClicked = this._userpageClicked.bind(this);
-    this._userpage.addEventListener('click', this._userpageClicked);
+    this._menupageClicked = this._menupageClicked.bind(this);
+    this._menupage.addEventListener('click', this._menupageClicked);
   }
 
 
@@ -28,9 +29,9 @@ class Aside {
   }
 
 
-  _userpageClicked() {
+  _menupageClicked() {
     mzk.setView({
-      name: 'UserPage'
+      name: 'MenuPage'
     });
   }
 

@@ -2,7 +2,7 @@ package org.manazeak.manazeak.service.security.user.wish;
 
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
-import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
+import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.Wish;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface WishService {
      *
      * @return all the wishes.
      */
-    Iterable<UserWishListLineDto> getAllWishes();
+    WishesDisplayDto getAllWishes();
 
     /**
      * The the wish of the current user.
@@ -40,4 +40,18 @@ public interface WishService {
      * @param status The target status.
      */
     void changeWishStatus(Long wishId, WishStatusEnum status);
+
+    /**
+     * Delete a wish from the application.
+     *
+     * @param wishId The wish that will be deleted.
+     */
+    void deleteUserWish(Long wishId);
+
+    /**
+     * Delete a wish from the application that has been created by the connected user.
+     *
+     * @param wishId The wish that will be deleted.
+     */
+    void deleteCurrentUserWish(Long wishId);
 }

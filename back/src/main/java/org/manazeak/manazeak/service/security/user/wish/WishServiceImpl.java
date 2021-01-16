@@ -2,9 +2,10 @@ package org.manazeak.manazeak.service.security.user.wish;
 
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
-import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
+import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
 import org.manazeak.manazeak.entity.security.Wish;
-import org.manazeak.manazeak.service.security.user.UserManager;
+import org.manazeak.manazeak.manager.security.user.UserManager;
+import org.manazeak.manazeak.manager.security.user.wish.WishManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class WishServiceImpl implements WishService {
      * @return all the wishes.
      */
     @Override
-    public Iterable<UserWishListLineDto> getAllWishes() {
+    public WishesDisplayDto getAllWishes() {
         return wishManager.getAllWishes();
     }
 
@@ -65,4 +66,18 @@ public class WishServiceImpl implements WishService {
         wishManager.changeWishStatus(wishId, status);
     }
 
+    /**
+     * Delete a wish in the database.
+     *
+     * @param wishId The wish that will be deleted.
+     */
+    @Override
+    public void deleteUserWish(Long wishId) {
+        wishManager.deleteWish(wishId);
+    }
+
+    @Override
+    public void deleteCurrentUserWish(Long wishId) {
+        wishManager.deleteWishForCurrentUser(wishId, userManager.getCurrentUser());
+    }
 }

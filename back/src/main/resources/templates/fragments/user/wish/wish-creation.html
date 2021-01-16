@@ -1,0 +1,22 @@
+<div class="modal" xmlns:th="http://www.thymeleaf.org">
+  <div class="header">
+    <p th:text="#{modal.wish.title}"></p>
+    <span class="close" id="modal-close">&#10006;</span>
+  </div>
+  <div class="container">
+    <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishDto"*/-->
+    <form method="POST" th:object="${wish}">
+      <label for="wish-content" th:text="#{modal.wish.label}"></label>
+      <p class="error" th:each="error : ${#fields.errors('content')}" th:text="${error}"></p>
+      <textarea cols="30" id="wish-content" maxlength="2048" rows="6" th:errorClass="'error'" th:field="*{content}"></textarea>
+      <!-- Global form errors -->
+      <p class="global-error" th:if="${param.error}" th:text="#{modal.wish.error.global}"></p>
+      <!-- Required csrf token from session cookies -->
+      <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+      <button id="submit-form" type="submit"></button>
+    </form>
+  </div>
+  <div class="footer">
+    <label class="submit" for="submit-form" id="submit-wish-button" th:text="#{modal.footer.submit}"></label>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.service.security.user;
 
+import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
+import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
@@ -39,4 +41,32 @@ public interface UserService {
      * @return True if the user is connected.
      */
     boolean isUserConnected();
+
+    /**
+     * Get all the user in a tree starting from JESUS.
+     *
+     * @return the tree containing all the users.
+     */
+    UserHierarchyDto getUserHierarchy();
+
+    /**
+     * Get all the users for displaying them in a list.
+     *
+     * @return The list of users.
+     */
+    List<UserListLineDto> getUserList();
+
+    /**
+     * Delete a user from the application.
+     *
+     * @param userId The id of the user that will be deleted.
+     */
+    void deleteUser(Long userId);
+
+    /**
+     * Deactivate a user of the application.
+     *
+     * @param userId The id of the user that will be deactivated.
+     */
+    void deactivateUser(Long userId);
 }

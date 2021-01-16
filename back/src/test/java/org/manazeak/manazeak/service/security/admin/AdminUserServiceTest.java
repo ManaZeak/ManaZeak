@@ -5,6 +5,7 @@ import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.datacreation.security.admin.UserHierarchyDataCreation;
 import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
+import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class AdminUserServiceTest extends AbstractManaZeakTest {
@@ -14,7 +15,7 @@ class AdminUserServiceTest extends AbstractManaZeakTest {
     @Autowired
     UserHierarchyDataCreation userHierarchyDataCreation;
     @Autowired
-    AdminUserService adminUserService;
+    UserService userService;
 
     /**
      * Test that the hierarchy of users is generated correctly.
@@ -26,7 +27,7 @@ class AdminUserServiceTest extends AbstractManaZeakTest {
         // Generating the expected result.
         UserHierarchyDto expectedHierarchy = userHierarchyDataCreation.generateTreeUserHierarchy();
         // Comparing the results
-        UserHierarchyDto userHierarchy = adminUserService.getUserHierarchy();
+        UserHierarchyDto userHierarchy = userService.getUserHierarchy();
         UserHierarchyValidationHelper.checkUserHierarchyIsSame(userHierarchy, expectedHierarchy);
     }
 }

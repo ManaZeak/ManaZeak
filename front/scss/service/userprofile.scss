@@ -1,11 +1,14 @@
 /* Style service for user profile fragment */
 .user-profile-view {
+  display: flex;
+  font-size: var(--mzk-font-size);
   height: 100%;
+  justify-content: center;
   width: 100%;
 
   .user-info {
     display: flex;
-    height: calc(100% - var(--mzk-aside-size));
+    height: 100%;
     flex-direction: column;
 
     .avatar-container {
@@ -22,7 +25,6 @@
       }
 
       p {
-        font-size: 1.3rem;
         font-weight: bold;
         margin: 0;
         margin-top: 1rem;
@@ -36,7 +38,7 @@
       text-align: center;
 
       label {
-        font-size: .9rem;
+        font-size: var(--mzk-font-size-small);
         font-style: italic;
       }
 
@@ -47,22 +49,7 @@
     }
   }
 
-  .button-container {
-    display: flex;
-    height: var(--mzk-aside-size);
-    justify-content: flex-end;
-
-    .item {
-      align-content: center;
-      display: flex;
-      height: var(--mzk-aside-size);
-      justify-content: center;
-      width: var(--mzk-aside-size);
-    }
-
-    img {
-      max-height: 85%;
-      max-width: 85%;
-    }
+  .user-pref {
+    // Waiting for feature in front and back...
   }
 }

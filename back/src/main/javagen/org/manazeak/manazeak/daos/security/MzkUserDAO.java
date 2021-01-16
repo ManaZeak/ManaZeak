@@ -2,7 +2,6 @@ package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
-import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -27,14 +26,8 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
     Optional<MzkUser> getByUsername(String username);
 
     /**
-     * Get a user from it's invite code.
-     * @param inviteCode the invite code of the user.
-     * @return The owner of this invite code.
-     */
-    MzkUser getMzkUserByInviteCodeListContains(InviteCode inviteCode);
-
-    /**
      * Get a user projection from the user id.
+     *
      * @param userId The id of the user needed to get the details.
      * @return The information about the user.
      */
@@ -50,7 +43,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "   userLocale.value as locale, " +
             "   inv.value as inviteCode " +
             "from MzkUser usr " +
-            "inner join usr.inviteCodeList inv " +
+            "inner join InviteCode inv on inv.parent = usr " +
             "left join usr.country userCountry " +
             "left join usr.locale userLocale " +
             "where usr.userId = :userId " +
@@ -59,9 +52,11 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
 
     /**
      * Get all the users from the database in a list way.
+     *
      * @return the users of the database.
      */
     @Query("select " +
+            "   usr.userId as userId, " +
             "   usr.username as username, " +
             "   usr.profilePic as avatar, " +
             "   usr.creationDate as creationDate, " +
@@ -69,5 +64,13 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "   usr.isActive as isActive " +
             "from MzkUser usr")
     List<UserListLineProjection> getAllLineUsers();
+
+    /**
+     * Delete a user wy it's id and return the number of modified lines.
+     *
+     * @param userId The user id associated to the user that must be deleted.
+     * @return The number of modified lines.
+     */
+    Integer removeByUserId(Long userId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

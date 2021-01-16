@@ -4,6 +4,7 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/back/src/main/resources/templates/fragments/user/userProfile.html" value="file://$PROJECT_DIR$/back/src/main/resources/templates/fragments/user" />
+        <entry key="file://$PROJECT_DIR$/back/src/main/resources/templates/fragments/user/wish/wish-creation.html" value="file://$PROJECT_DIR$/back/src/main/resources/templates/fragments/user/wish" />
       </map>
     </option>
   </component>

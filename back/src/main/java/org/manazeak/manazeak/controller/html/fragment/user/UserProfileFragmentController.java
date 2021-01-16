@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.controller.html.fragment.user;
 
+import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
+import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.html.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.user.UserFragmentEnum;
 import org.manazeak.manazeak.service.security.user.info.UserInformationService;
@@ -28,6 +30,7 @@ public class UserProfileFragmentController {
      * @return The fragment to the front.
      */
     @GetMapping("/user-profile")
+    @RestSecurity(PrivilegeEnum.PLAY)
     public String getUserProfileFragment(Model model) {
         model.addAttribute("userInfo", userInformationService.getCurrentUserInformation());
         return UserFragmentEnum.USER_INFORMATION.getPage();

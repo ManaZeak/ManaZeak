@@ -4,11 +4,10 @@ import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.reference.CountryDAO;
 import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
 import org.manazeak.manazeak.entity.reference.Country;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Handles the actions with the countries.
@@ -44,10 +43,8 @@ public class CountryServiceImpl implements CountryService {
      */
     @Override
     public Country getCountryById(Long countryId) {
-        Optional<Country> countryOpt = countryDAO.getCountryByCountryId(countryId);
-        if (countryOpt.isEmpty()) {
-            throw new MzkRuntimeException("The country wasn't found in the database.");
-        }
-        return countryOpt.get();
+        return countryDAO.getCountryByCountryId(countryId)
+                .orElseThrow(MzkExceptionHelper.generateMzkRuntimeException("reference.country.error.not_found",
+                        "reference.country.error.not_found_title"));
     }
 }

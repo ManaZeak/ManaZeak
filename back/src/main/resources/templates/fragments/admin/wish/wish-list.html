@@ -1,7 +1,45 @@
-<div th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishes}" xmlns:th="http://www.thymeleaf.org">
-    <!--/*@thymesVar id="wishes" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
-    <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
-    <p th:text="*{wish.username}">username</p>
-    <p th:text="*{wish.content}"></p>
-    <p th:text="*{wish.status}"></p>
+<!-- HTML fragment used in admin/wishes view -->
+<div class="wish-grid-wrapper" xmlns:th="http://www.thymeleaf.org">
+  <div id="pending-wishes" class="pending-wishes">
+    <h1 th:text="#{admin.wish.pending}"></h1>
+    <!--/*@thymesVar id="wishesTodo" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+    <div class="wish pending" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesTodo}" xmlns:th="http://www.thymeleaf.org">
+      <div class="wish-info">
+        <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+        <p th:text="*{wish.username}"></p>
+        <p th:text="*{wish.content}"></p>
+      </div>
+      <div class="wish-controls">
+        <img src="static/img/actions/delete.svg" alt="delete-wish">
+      </div>
+    </div>
+  </div>
+  <div id="accepted-wishes" class="accepted-wishes">
+    <h1 th:text="#{admin.wish.accepted}"></h1>
+    <!--/*@thymesVar id="wishesRefused" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+    <div class="wish accepted" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesAccepted}" xmlns:th="http://www.thymeleaf.org">
+      <div class="wish-info">
+        <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+        <p th:text="*{wish.username}"></p>
+        <p th:text="*{wish.content}"></p>
+      </div>
+      <div class="wish-controls">
+        <img src="static/img/actions/delete.svg" alt="delete-wish">
+      </div>
+    </div>
+  </div>
+  <div id="refused-wishes" class="refused-wishes">
+    <h1 th:text="#{admin.wish.refused}"></h1>
+    <!--/*@thymesVar id="wishesAccepted" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+    <div class="wish refused" th:attr="data-id=*{wish.wishId}" th:each="wish : ${wishesRefused}" xmlns:th="http://www.thymeleaf.org">
+      <div class="wish-info">
+        <!--/*@thymesVar id="wish" type="org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto"*/-->
+        <p th:text="*{wish.username}"></p>
+        <p th:text="*{wish.content}"></p>
+      </div>
+      <div class="wish-controls">
+        <img src="static/img/actions/delete.svg" alt="delete-wish">
+      </div>
+    </div>
+  </div>
 </div>

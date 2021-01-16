@@ -14,10 +14,10 @@
     border-radius: 3px;
     display: block;
     color: var(--mzk-color-text);
-    font-size: .9rem;
+    font-size: var(--mzk-font-size-small);
     max-width: 250px;
     opacity: 0;
-    padding: 5px 10px;
+    padding: var(--mzk-padding-small) var(--mzk-padding);
     position: absolute;
     text-align: center;
     transform: translate3d(0, 0, 0);
@@ -28,7 +28,7 @@
     width: max-content;
 
     &.right {
-      top: calc(50% - 1rem + 5px);
+      top: calc(50% - (var(--mzk-font-size-small) / 2) - var(--mzk-padding-small));
       left: 100%;
 
       &::after {

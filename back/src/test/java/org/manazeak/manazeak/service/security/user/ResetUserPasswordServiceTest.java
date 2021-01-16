@@ -7,6 +7,7 @@ import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.datacreation.security.user.ResetPasswordDataCreation;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRestException;
+import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 

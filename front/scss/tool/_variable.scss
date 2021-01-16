@@ -11,20 +11,21 @@
   --mzk-border-jumbo-radius: 9px;
   --mzk-border-color: var(--mzk-color-bg-dark);
 
-  --mzk-font-size: 1em;
-  --mzk-font-size-big: 1.6rem;
-  --mzk-font-size-small: .8rem;
+  --mzk-font-size: 1.6rem;
+  --mzk-font-size-big: 2.4rem;
+  --mzk-font-size-small: 1.2rem;
 
-  --mzk-padding: 10px;
+  --mzk-padding: 1rem;
   --mzk-padding-tiny: calc(var(--mzk-padding) / 4);
   --mzk-padding-small: calc(var(--mzk-padding) / 2);
   --mzk-padding-big: calc(var(--mzk-padding) * 2);
   --mzk-padding-huge: calc(var(--mzk-padding) * 4);
 
-  --mzk-margin: 10px;
+  --mzk-margin: 1rem;
   --mzk-margin-tiny: calc(var(--mzk-margin) / 4);
   --mzk-margin-small: calc(var(--mzk-margin) / 2);
   --mzk-margin-big: calc(var(--mzk-margin) * 2);
+  --mzk-margin-bigger: calc(var(--mzk-margin) * 3);
   --mzk-margin-huge: calc(var(--mzk-margin) * 4);
 
   --mzk-logo-text-width: 145px;
@@ -33,14 +34,12 @@
 
   /* ----------  Components variables  ---------- */
 
-  --mzk-aside-size: 3rem;
+  --mzk-aside-size: 4rem;
 
-  --mzk-footbar-height: 5rem;
+  --mzk-footbar-height: 8rem;
 
   --mzk-scene-height-resp: calc(100% - var(--mzk-aside-size));
   --mzk-scene-height: 100%;
   --mzk-scene-width-resp: 100%;
   --mzk-scene-width: calc(100% - var(--mzk-aside-size));
-
-  --mzk-scene-icon-margin: 8px;
 }

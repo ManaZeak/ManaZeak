@@ -1,0 +1,9 @@
+<!-- HTML fragment for the admin page skeleton -->
+<div class="admin-page" xmlns:th="http://www.thymeleaf.org">
+  <div id="admin-tabs" class="admin-tabs">
+    <p class="selected" data-view="users" th:text="#{admin.tab.user}"></p>
+    <p data-view="wishes" th:text="#{admin.tab.wish}"></p>
+  </div>
+  <!-- The following div needs to be filled with admin fragments, see Js source -->
+  <div id="admin-view" class="admin-view"></div>
+</div>

@@ -1,0 +1,7954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Class: Notification | ManaZeak</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+        
+            <link type="text/css" rel="stylesheet" href="doc/jsDoc.style.css">
+        
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: auto; height: 13px">
+        
+            <a href="https://github.com/ManaZeak/ManaZeak" rel="noopener noreferrer" target="_blank">
+                <img src="https://manazeak.org/static/img/logo/manazeak-text.svg" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ManaZeak</a></h1>
+        
+            <span class="version">v1.0.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AboutModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="AboutModal.html#_closeButton">_closeButton</a></li><li><a href="AboutModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="AboutModal.html#_footerCloseButton">_footerCloseButton</a></li><li><a href="AboutModal.html#_footerCloseEvtId">_footerCloseEvtId</a></li><li><a href="AboutModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="AboutModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="AboutModal.html#_rootElement">_rootElement</a></li><li><a href="AboutModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="AboutModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="AboutModal.html#.destroy">destroy</a></li></ul></div></li><li><a href="CustomEvents.html">CustomEvents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomEvents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomEvents.html#_customEvents">_customEvents</a></li><li><a href="CustomEvents.html#_debug">_debug</a></li><li><a href="CustomEvents.html#_idIncrementor">_idIncrementor</a></li><li><a href="CustomEvents.html#_regularEvents">_regularEvents</a></li><li><a href="CustomEvents.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="CustomEvents.html#._clearRegularEvent">_clearRegularEvent</a></li><li><a href="CustomEvents.html#._raise">_raise</a></li><li><a href="CustomEvents.html#.addEvent">addEvent</a></li><li><a href="CustomEvents.html#.destroy">destroy</a></li><li><a href="CustomEvents.html#.publish">publish</a></li><li><a href="CustomEvents.html#.removeAllEvents">removeAllEvents</a></li><li><a href="CustomEvents.html#.removeEvent">removeEvent</a></li><li><a href="CustomEvents.html#.subscribe">subscribe</a></li><li><a href="CustomEvents.html#.unsubscribe">unsubscribe</a></li><li><a href="CustomEvents.html#.unsubscribeAllFor">unsubscribeAllFor</a></li></ul></div></li><li><a href="DragElement.html">DragElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DragElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DragElement.html#_data">_data</a></li><li><a href="DragElement.html#_eventIds">_eventIds</a></li><li><a href="DragElement.html#_target">_target</a></li><li><a href="DragElement.html#_touchPhantomDom">_touchPhantomDom</a></li><li><a href="DragElement.html#_touchStarted">_touchStarted</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DragElement.html#._buildElements">_buildElements</a></li><li><a href="DragElement.html#._dragStart">_dragStart</a></li><li><a href="DragElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DragElement.html#._dragTouchMove">_dragTouchMove</a></li><li><a href="DragElement.html#._events">_events</a></li><li><a href="DragElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="DropElement.html">DropElement</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="DropElement_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="DropElement.html#_eventIds">_eventIds</a></li><li><a href="DropElement.html#_movementCounter">_movementCounter</a></li><li><a href="DropElement.html#_onDropCB">_onDropCB</a></li><li><a href="DropElement.html#_target">_target</a></li><li><a href="DropElement.html#_transparentBorder">_transparentBorder</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="DropElement.html#._buildElements">_buildElements</a></li><li><a href="DropElement.html#._dragEnter">_dragEnter</a></li><li><a href="DropElement.html#._dragLeave">_dragLeave</a></li><li><a href="DropElement.html#._dragOver">_dragOver</a></li><li><a href="DropElement.html#._dragTouchEnd">_dragTouchEnd</a></li><li><a href="DropElement.html#._dragTouchOver">_dragTouchOver</a></li><li><a href="DropElement.html#._drop">_drop</a></li><li><a href="DropElement.html#._eventBehavior">_eventBehavior</a></li><li><a href="DropElement.html#._events">_events</a></li><li><a href="DropElement.html#._isTouchEventInTarget">_isTouchEventInTarget</a></li><li><a href="DropElement.html#.destroy">destroy</a></li></ul></div></li><li><a href="Kom.html">Kom</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Kom_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Kom.html#_csrfToken">_csrfToken</a></li><li><a href="Kom.html#_headers">_headers</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Kom.html#._checkValidity">_checkValidity</a></li><li><a href="Kom.html#._createRequestHeaders">_createRequestHeaders</a></li><li><a href="Kom.html#._getCsrfCookie">_getCsrfCookie</a></li><li><a href="Kom.html#._getErrorCodeFromHTTPStatus">_getErrorCodeFromHTTPStatus</a></li><li><a href="Kom.html#._resolveAs">_resolveAs</a></li><li><a href="Kom.html#._resolveAsJSON">_resolveAsJSON</a></li><li><a href="Kom.html#._resolveAsRaw">_resolveAsRaw</a></li><li><a href="Kom.html#._resolveAsText">_resolveAsText</a></li><li><a href="Kom.html#.get">get</a></li><li><a href="Kom.html#.getRaw">getRaw</a></li><li><a href="Kom.html#.getText">getText</a></li><li><a href="Kom.html#.post">post</a></li><li><a href="Kom.html#.postRaw">postRaw</a></li><li><a href="Kom.html#.postText">postText</a></li></ul></div></li><li><a href="Logger.html">Logger</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Logger_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Logger.html#_errors">_errors</a></li><li><a href="Logger.html#_log">_log</a></li><li><a href="Logger.html#_notification">_notification</a></li><li><a href="Logger.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Logger.html#._buildErrorInfo">_buildErrorInfo</a></li><li><a href="Logger.html#._buildJsError">_buildJsError</a></li><li><a href="Logger.html#._getCallerName">_getCallerName</a></li><li><a href="Logger.html#._logErrorToConsole">_logErrorToConsole</a></li><li><a href="Logger.html#._logErrorToNotification">_logErrorToNotification</a></li><li><a href="Logger.html#.destroy">destroy</a></li><li><a href="Logger.html#.raise">raise</a></li></ul></div></li><li><a href="Modal.html">Modal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Modal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Modal.html#_closeButton">_closeButton</a></li><li><a href="Modal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="Modal.html#_modalOverlay">_modalOverlay</a></li><li><a href="Modal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="Modal.html#_rootElement">_rootElement</a></li><li><a href="Modal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Modal.html#._fillAttributes">_fillAttributes</a></li><li><a href="Modal.html#._loadTemplate">_loadTemplate</a></li><li><a href="Modal.html#.close">close</a></li><li><a href="Modal.html#.destroy">destroy</a></li><li><a href="Modal.html#.open">open</a></li></ul></div></li><li><a href="Notification.html">Notification</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Notification_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Notification.html#_active">_active</a></li><li><a href="Notification.html#_default">_default</a></li><li><a href="Notification.html#_dismissAllLock">_dismissAllLock</a></li><li><a href="Notification.html#_dom">_dom</a></li><li><a href="Notification.html#_duration">_duration</a></li><li><a href="Notification.html#_maxActive">_maxActive</a></li><li><a href="Notification.html#_position">_position</a></li><li><a href="Notification.html#_queue">_queue</a></li><li><a href="Notification.html#_thickBorder">_thickBorder</a></li><li><a href="Notification.html#_transition">_transition</a></li><li><a href="Notification.html#version">version</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Notification.html#._attach">_attach</a></li><li><a href="Notification.html#._buildNotificationType">_buildNotificationType</a></li><li><a href="Notification.html#._buildUI">_buildUI</a></li><li><a href="Notification.html#._buildUIDom">_buildUIDom</a></li><li><a href="Notification.html#._checkCounter">_checkCounter</a></li><li><a href="Notification.html#._checkNotificationOptionsValidity">_checkNotificationOptionsValidity</a></li><li><a href="Notification.html#._clearRequestCount">_clearRequestCount</a></li><li><a href="Notification.html#._close">_close</a></li><li><a href="Notification.html#._decrementRequestCounter">_decrementRequestCounter</a></li><li><a href="Notification.html#._dim">_dim</a></li><li><a href="Notification.html#._events">_events</a></li><li><a href="Notification.html#._idGenerator">_idGenerator</a></li><li><a href="Notification.html#._incrementRequestCounter">_incrementRequestCounter</a></li><li><a href="Notification.html#._init">_init</a></li><li><a href="Notification.html#._open">_open</a></li><li><a href="Notification.html#._resetTimeout">_resetTimeout</a></li><li><a href="Notification.html#._setAttributesDefault">_setAttributesDefault</a></li><li><a href="Notification.html#._setOptionsDefault">_setOptionsDefault</a></li><li><a href="Notification.html#._setOptionsFallback">_setOptionsFallback</a></li><li><a href="Notification.html#._start">_start</a></li><li><a href="Notification.html#._unDim">_unDim</a></li><li><a href="Notification.html#.destroy">destroy</a></li><li><a href="Notification.html#.dismiss">dismiss</a></li><li><a href="Notification.html#.dismissAll">dismissAll</a></li><li><a href="Notification.html#.dismissType">dismissType</a></li><li><a href="Notification.html#.error">error</a></li><li><a href="Notification.html#.info">info</a></li><li><a href="Notification.html#.new">new</a></li><li><a href="Notification.html#.success">success</a></li><li><a href="Notification.html#.warning">warning</a></li></ul></div></li><li><a href="SceneView.html">SceneView</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="SceneView_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#dom">dom</a></li><li><a href="SceneView.html#wrapper">wrapper</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="SceneView.html#.destroy">destroy</a></li></ul></div></li><li><a href="UserInterface.html">UserInterface</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="UserInterface_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="UserInterface.html#_aside">_aside</a></li><li><a href="UserInterface.html#_loadingOverlay">_loadingOverlay</a></li><li><a href="UserInterface.html#_scene">_scene</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="UserInterface.html#._fetchWrapper">_fetchWrapper</a></li><li><a href="UserInterface.html#._viewReady">_viewReady</a></li><li><a href="UserInterface.html#.setSceneView">setSceneView</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li><li><a href="UserInterface.html#.startLoading">startLoading</a></li></ul></div></li><li><a href="ViewFactory.html">ViewFactory</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ViewFactory_sub"></div></li><li><a href="WishModal.html">WishModal</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="WishModal_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="WishModal.html#_closeButton">_closeButton</a></li><li><a href="WishModal.html#_closeClickedEvtId">_closeClickedEvtId</a></li><li><a href="WishModal.html#_modalOverlay">_modalOverlay</a></li><li><a href="WishModal.html#_overlayClickedEvtId">_overlayClickedEvtId</a></li><li><a href="WishModal.html#_rootElement">_rootElement</a></li><li><a href="WishModal.html#_submitEvtId">_submitEvtId</a></li><li><a href="WishModal.html#_submitInput">_submitInput</a></li><li><a href="WishModal.html#_url">_url</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._events">_events</a></li><li><a href="WishModal.html#._fillAttributes">_fillAttributes</a></li><li><a href="WishModal.html#._submitClicked">_submitClicked</a></li><li><a href="WishModal.html#.destroy">destroy</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Notification<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="Notification">
+            
+                new <span class="type-signature"></span>Notification<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line14">line 14</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Create an instance of a notification handler</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build the notification singleton handler that will handle all incoming Notifications</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The notification handler global options</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    top-right
+                
+                </td>
+            
+
+            <td class="description last"><p><i>top-left; top-right; bottom-left; bottom-right;</i></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thickBorder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    top
+                
+                </td>
+            
+
+            <td class="description last"><p><i>top; bottom; left; right; none;</i></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    3000
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification life cycle duration (in ms) in range N*</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    100
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification fade animation transition timing (in ms) in range N*</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxActive</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    5
+                
+                </td>
+            
+
+            <td class="description last"><p>Maximum of simultaneously opened notification in range N*</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+
+<dt>
+<h4 class="name" id="_active">
+    <span class="type-signature"><span class="icon green">private</span> </span>_active<span class="type-signature"> :object</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line28">line 28</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Active notifications object : retrieve a notification using its ID (this._active[ID])</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_default">
+    <span class="type-signature"><span class="icon green">private</span> </span>_default<span class="type-signature"> :object</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line34">line 34</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Notification handler default values</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_dismissAllLock">
+    <span class="type-signature"><span class="icon green">private</span> </span>_dismissAllLock<span class="type-signature"> :boolean</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line22">line 22</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Dismiss all operation in progress flag</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_dom">
+    <span class="type-signature"><span class="icon green">private</span> </span>_dom<span class="type-signature"> :object</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line25">line 25</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Notification handler container node</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_duration">
+    <span class="type-signature"><span class="icon green">private</span> </span>_duration<span class="type-signature"> :number</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line43">line 43</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The Notification on screen duration in ms</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_maxActive">
+    <span class="type-signature"><span class="icon green">private</span> </span>_maxActive<span class="type-signature"> :number</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line49">line 49</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The maximum amount of active Notification</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_position">
+    <span class="type-signature"><span class="icon green">private</span> </span>_position<span class="type-signature"> :string</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line37">line 37</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The handler position in viewport - <i>top-left; top-right; bottom-left; bottom-right;</i></p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_queue">
+    <span class="type-signature"><span class="icon green">private</span> </span>_queue<span class="type-signature"> :object</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line31">line 31</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Queue notifications when max active has been reached</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_thickBorder">
+    <span class="type-signature"><span class="icon green">private</span> </span>_thickBorder<span class="type-signature"> :string</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line40">line 40</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The thick border position in the Notification - <i>top; bottom; left; right; none;</i></p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_transition">
+    <span class="type-signature"><span class="icon green">private</span> </span>_transition<span class="type-signature"> :number</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line46">line 46</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The fade transition time in ms</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="version">
+    <span class="type-signature"></span>version<span class="type-signature"> :number</span>
+    
+    <div class="container-source members">
+        <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+        <code><a href="utils_Notification.js.html#line52">line 52</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The component version</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="._attach">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_attach<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line225">line 225</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Attach the notification handler to the dom using a fragment</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>July 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._buildNotificationType">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_buildNotificationType<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line417">line 417</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Attach proper assets and css</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Fills the Notification icon and class according to its inner type</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification to fill</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._buildUI">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_buildUI<span class="signature">(notification)</span><span class="type-signature"> &rarr; {object}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line316">line 316</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Builds the DOM element that contains and that adapts to all given options</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Error, Warning, Info, Success</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification title</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification message</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iconless</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>No icon flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thickBorder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification border side (override handler side value)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>closable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Make notification closable flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Make notification sticky flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CBtitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification callback title</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification callback button</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">object</span>
+
+
+
+
+
+- <p>Enhanced and ready notification object</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._buildUIDom">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_buildUIDom<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line372">line 372</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Create the Notification DOM tree</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build all the Notification internal structure</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification to create</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._checkCounter">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_checkCounter<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line616">line 616</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This method will reset the fadeout/dim timeout or close/dim the notification depending on its requestCount</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification inner call counter</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timeoutID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification own setTimeout ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification sticky behvaior</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._checkNotificationOptionsValidity">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_checkNotificationOptionsValidity<span class="signature">(options)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line751">line 751</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Check the Notification options validity</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check a Notification options object against the required parameters.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options to check validity</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._clearRequestCount">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_clearRequestCount<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line646">line 646</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Method that clear every pending request</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._close">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_close<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line496">line 496</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Close and remove the notification from the container</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isClosing</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Already closing flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>renderTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>DOM object to render the notification in</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._decrementRequestCounter">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_decrementRequestCounter<span class="signature">(notification, force)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line575">line 575</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This method is called each notification cycle end to update its inner counter</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification sticky behvaior</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isDimmed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification dimmed status (only useful if notification.sticky is true)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification inner call counter</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification DOM element</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>force</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>To force the notification.requestCount decrementation</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._dim">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_dim<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line681">line 681</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Only useful for sticky notification that dim instead of close at the end of its life cycle</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification sticky behvaior</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isDimmed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification dimmed status (only useful if notification.sticky is true)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._events">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_events<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line248">line 248</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Handle mouse events for the given notification</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification inner call counter</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timeoutID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification own setTimeout ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification sticky behvaior</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>closable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Make notification closable flag</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._idGenerator">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_idGenerator<span class="signature">(seed, length)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line838">line 838</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Generate an ID</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Hash the seed to generate an ID</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The seed string to hash</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>length</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The length of the returned ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._incrementRequestCounter">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_incrementRequestCounter<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line531">line 531</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This method is called when a notification is requested another time</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification inner call counter</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification sticky behvaior</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isDimmed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification dimmed status (only useful if notification.sticky is true)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._init">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_init<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line86">line 86</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create the handler DOM element, set default values, test given options and properly add CSS class to the handler</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The notification handler global options</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    top-right
+                
+                </td>
+            
+
+            <td class="description last"><p><i>top-left; top-right; bottom-left; bottom-right;</i></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thickBorder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    top
+                
+                </td>
+            
+
+            <td class="description last"><p><i>top; bottom; left; right; none;</i></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    3000
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification life cycle duration (in ms) in range N*</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    100
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification fade animation transition timing (in ms) in range N*</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxActive</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    5
+                
+                </td>
+            
+
+            <td class="description last"><p>Maximum of simultaneously opened notification in range N*</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>July 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._open">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_open<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line471">line 471</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Open and add the notification to the container</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._resetTimeout">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_resetTimeout<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line663">line 663</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Use this to reset a notification life cycle, and delay its close event</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timeoutID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification own setTimeout ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._setAttributesDefault">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_setAttributesDefault<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line187">line 187</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Check the notification singleton options validity</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Fallback on default attributes value if the notification singleton options are invalid</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._setOptionsDefault">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_setOptionsDefault<span class="signature">(options)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line155">line 155</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Set singleton options</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build the notification singleton according to the user options</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The singleton options to set</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._setOptionsFallback">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_setOptionsFallback<span class="signature">(options)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line786">line 786</a></code>
+            </div>
+            
+        </h4>
+
+        
+        <p class="summary"><p>Set Notification fallback options</p></p>
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Check a Notification options object and fill it with default value in case they are empty.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options to fill with default value if empty</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._start">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_start<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line446">line 446</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Call this method to add the new notification to the DOM container, and launch its life cycle</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification own ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="._unDim">
+            
+                <span class="type-signature"><span class="icon green">private</span>, <span class="icon green">static</span> </span>_unDim<span class="signature">(notification)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line713">line 713</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Call this method when a notification is not inactive anymore</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notification</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification personnal ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notifiction DOM element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isDimmed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Notification dimmed status (only useful if notification.sticky is true)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".destroy">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>destroy<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line60">line 60</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Destroy the singleton and detach it from the DOM</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>March 2019</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".dismiss">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>dismiss<span class="signature">(id)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line1014">line 1014</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Dismiss a specific notification via its ID</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification ID to dismiss</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".dismissAll">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>dismissAll<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line1033">line 1033</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Clear the notification handler from all its active notifications</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".dismissType">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>dismissType<span class="signature">(type)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line1052">line 1052</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Dismiss all notifications from a given type</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><i>succes; info; warning; error;</i></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".error">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>error<span class="signature">(options)</span><span class="type-signature"> &rarr; {number}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line994">line 994</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build an error notification</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options object (see new() arguments since this is an abstraction of new())</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <p>The newly created notification ID</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".info">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>info<span class="signature">(options)</span><span class="type-signature"> &rarr; {number}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line934">line 934</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build an info notification</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options object (see new() arguments since this is an abstraction of new())</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <p>The newly created notification ID</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".new">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>new<span class="signature">(options)</span><span class="type-signature"> &rarr; {number}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line878">line 878</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build a notification according to the given options, then append it to notification container.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options object</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p><i>Error; Warning; Info; Success;</i></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    options.type
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification title</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification message</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    handler
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification duration (override handler duration value)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iconless</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>No icon flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>thickBorder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    handler
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification border side (override handler side value)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>closable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Make notification closable flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sticky</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Make notification sticky flag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>renderTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    handler
+                
+                </td>
+            
+
+            <td class="description last"><p>Dom object to render the notification in</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CBtitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Callback
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification callback title</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Notification callback button</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <p>The newly created notification ID</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".success">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>success<span class="signature">(options)</span><span class="type-signature"> &rarr; {number}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line954">line 954</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build a success notification</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options object (see new() arguments since this is an abstraction of new())</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <p>The newly created notification ID</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".warning">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>warning<span class="signature">(options)</span><span class="type-signature"> &rarr; {number}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_Notification.js.html">utils/Notification.js</a></code>,
+                <code><a href="utils_Notification.js.html#line974">line 974</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build a warning notification</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The notification options object (see new() arguments since this is an abstraction of new())</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">number</span>
+
+
+
+
+
+- <p>The newly created notification ID</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>June 2018</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Arthur Beaulieu</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://manazeak.org/static/img/logo/manazeak-text.svg" style="width: auto; height: 13px">
+    <div class="footer-text">&nbsp;&nbsp;ManaZeak is love</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'Notification_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

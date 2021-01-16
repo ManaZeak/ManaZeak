@@ -2,15 +2,12 @@ package org.manazeak.manazeak.service.error;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.constant.error.ErrorEnum;
+import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
-import java.util.Locale;
 
 /**
  * Handle the errors of the controllers.
@@ -20,24 +17,31 @@ import java.util.Locale;
 public class ErrorHandlerServiceImpl implements ErrorHandlerService {
 
     /**
-     * The object for getting internationalized messages.
+     * {@inheritDoc}
      */
-    private final MessageSource messageGetter;
-
-    public ErrorHandlerServiceImpl(@Lazy @Qualifier("messageSource") MessageSource messageGetter) {
-        this.messageGetter = messageGetter;
+    @Override
+    public void handleValidationErrors(BindingResult result) {
+        // Checking if there is some validation errors.
+        if (!result.hasErrors()) {
+            return;
+        }
+        generateRestErrorFromValidationError(result.getFieldErrors());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void generateRestErrorFromException(Iterable<FieldError> errors, Locale locale) throws MzkRestException {
+    public void generateRestErrorFromValidationError(Iterable<FieldError> errors) {
         // Generating the exception.
         MzkRestException exception = new MzkRestException();
         // Adding the errors to the exception.
         for (FieldError error : errors) {
-            exception.addMessage(messageGetter.getMessage(error, locale));
+            NotificationDto notification = new NotificationDto();
+            notification.setTitleKey("general.error.validation_error");
+            notification.setMessage(error.getDefaultMessage());
+            notification.setSeverity(NotificationSeverityEnum.ERROR);
+            exception.addNotification(notification);
         }
         throw exception;
     }
@@ -46,12 +50,15 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
      * {@inheritDoc}
      */
     @Override
-    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) throws MzkRestException {
+    public void generateRestErrorFromErrorEnum(ErrorEnum... errors) {
         MzkRestException exception = new MzkRestException();
-        Locale userLocale = LocaleContextHolder.getLocale();
         // Adding the errors for the enum.
         for (ErrorEnum error : errors) {
-            exception.addMessage(messageGetter.getMessage(error.getKey(), null, userLocale));
+            NotificationDto notification = new NotificationDto();
+            notification.setTitleKey(error.getTitleKey());
+            notification.setMessageKey(error.getMessageKey());
+            notification.setSeverity(error.getSeverity());
+            exception.addNotification(notification);
         }
         throw exception;
     }

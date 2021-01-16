@@ -1,12 +1,13 @@
 <div class="user-profile-view">
   <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
     <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
-    <div class="avatar-container" th:if="*{avatar == null}"> <!-- User doesn't have an avatar. Displaying default -->
-      <img src="static/img/default/user.svg" alt="user-avatar">
+    <div class="avatar-container" th:if="*{avatar == null}">
+      <!-- User doesn't have an avatar. Displaying default -->
+      <img alt="user-avatar" src="static/img/default/user.svg">
       <p id="username" th:text="*{username}"></p>
     </div>
     <div class="avatar-container" th:unless="*{avatar == null}">
-      <img th:src='*{"/resources/avatars/"+avatar}' alt="user-avatar">
+      <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
       <p id="username" th:text="*{username}"></p>
     </div>
     <div class="info-container">
@@ -28,13 +29,8 @@
       <p id="inviteCode" th:text="*{inviteCode}"></p>
     </div>
   </div>
-  <div class="mobile-only button-container">
-    <div id="wish-button-mobile" class="item">
-      <img src="static/img/actions/wish.svg" alt="make-wish"/>
-    </div>
-    <!-- TODO protect next item with ADMIN permission -->
-    <div id="admin-button" class="item">
-      <img src="static/img/actions/option-gear.svg" alt="admin-page"/>
-    </div>
+  <div class="user-pref">
+    <label for="theme-switch">Dark theme</label>
+    <input checked id="theme-switch" name="theme-switch" type="checkbox">
   </div>
 </div>
