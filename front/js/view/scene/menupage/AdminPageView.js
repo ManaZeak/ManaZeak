@@ -13,9 +13,7 @@ class AdminPageView extends TabView {
       .then(this._fillAttributes.bind(this))
       .then(this._viewReady)
       .then(this._usersClicked.bind(this))
-      .catch(error => {
-        Logger.raise(error);
-      });
+      .catch(this._viewFailed);
   }
 
 

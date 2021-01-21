@@ -47,8 +47,15 @@ class SceneView {
     return new Promise((resolve, reject) => {
       mzk.kom.getText(url)
         .then(response => {
-          this.dom = Utils.parseHTMLFragment(response);
-          resolve();
+          try {
+            // If we can parse as a JSON, the server returned an error
+            const output = JSON.parse(response);
+            reject(output.errors);
+          } catch {
+            // Otherwise, the server returned a HTML template as a string
+            this.dom = Utils.parseHTMLFragment(response);
+            resolve();
+          }
         })
         .catch(reject);
     });
@@ -67,6 +74,12 @@ class SceneView {
       Events.publish('SceneViewReady');
       resolve();
     });
+  }
+
+
+  _viewFailed(errors) {
+    // No need to return a promise, as it should be called last in failing process
+    Events.publish('SceneViewFailed', errors);
   }
 
 

@@ -25,18 +25,20 @@ class Scene {
 
   buildView(options) {
     return new Promise((resolve, reject) => {
+      const failEvtId = Events.subscribe('SceneViewFailed', errors => {
+        // Restore mainpage if view doesn't exists
+        this.clearScene();
+        this.view = new ViewFactory('MainPage');
+        mzk.ui.processLogFromServer(errors);
+      }, true);
       Events.subscribe('SceneViewReady', () => {
         this._scene.append(this.view.dom);
+        Events.unsubscribe(failEvtId);
         resolve();
       }, true);
-
+      // Scene clearing and view instantiation
       this.clearScene();
       this.view = new ViewFactory(options.name, options);
-      // Restore mainpage if view doesn't exists
-      if (this.view === null) {
-        this.view = new ViewFactory('MainPage');
-        // TODO raise warning
-      }
       // Reject view build if it exceed 5 seconds
       setTimeout(reject, 5000);
     });
