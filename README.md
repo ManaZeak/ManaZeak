@@ -1,70 +1,35 @@
 # ManaZeak
 
-[![Build Status](https://travis-ci.org/ManaZeak/ManaZeak.svg?branch=master)](https://travis-ci.org/ManaZeak/ManaZeak)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FManaZeak%2FManaZeak?ref=badge_shield)
-[![License](https://img.shields.io/github/license/ManaZeak/ManaZeak.svg)](https://github.com/ManaZeak/ManaZeak/blob/master/LICENSE.md)
+[![](https://github.com/ManaZeak/ManaZeak/workflows/build/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
+[![License](https://img.shields.io/github/license/ManaZeak/ManaZeak.svg)](https://github.com/ManaZeak/ManaZeak/blob/master/LICENSE.md)
+![](https://badgen.net/badge/version/1.0.1/blue)
 
 Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!
 
+[Demo page](https://manazeak.github.io/)
+
+The target application will provide the user a set of views to browse the musical library with the more details it can. Sorting by artists, albums, composers, producers, performers, genres, year (or timeframe), countries and even more! It will also allow users to create playlist that are private, or publicly shared with other users. Finally, restrain registrations on the instance using an invitation code system ; only the registered users have one and are able to share it to their friends and family. You may have a look at the [features list](https://github.com/ManaZeak/ManaZeak/wiki/%5BADM%5D-Features-list) so you have a complete understanding of how it works. Now without further ado, let's get started!
+
 ## Get Started
 
-ManaZeak shall be installed on a Linux distribution with the following packages installed (refer to your distribution package manager for installation):
+Administrators must first ensure their musical library follows the [ManaZeak naming convention](https://github.com/ManaZeak/ManaZeak/wiki/%5BADM%5D-Naming-convention), as most of the database building is based on that convention. The closer you are from it, the more pleasure you'll have to use ManaZeak! To share and sync this library with the server you're installing ManaZeak on, ensure you have configured a [SyncThing](https://github.com/syncthing/syncthing) shared folder where your audio library resides.
 
-``docker``
-``docker-compose``
-``npm``
+The complete installation process is described in this [article](https://github.com/ManaZeak/ManaZeak/wiki/%5BADM%5D-ManaZeak-installation).
 
-Once dependencies requirements are met, ensure you have properly added your user to the docker group, then clone the project to your machine and init the ManaZeak app:
+## About
 
-``sudo usermod -aG docker $USER``
+#### Maintainers
+[Arthur Beaulieu](https://github.com/ArthurBeaulieu) & [Pierre Bouniol](https://github.com/Squadella)
 
-``git clone https://github.com/Squadella/ManaZeak``
+#### Contributors
 
-``cd ManaZeak``
+[Valentin Peiro](https://github.com/Oxydiz), [Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash), [Armand Vignat](https://github.com/avignat), [Guilhem Piat](https://github.com/Syncrossus), [Raphael Beekmann](https://github.com/Asiberus), [Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
 
-To make ManaZeak work, it need two absolute path, leading respectively to :
+#### Technologies
 
-- the database path, where the database will be held ;
-- the path to your musical library ;
+[Docker](https://github.com/docker), [Spring Boot](https://github.com/spring-projects/spring-boot), [Postgresql](https://github.com/postgres/postgres), [SyncThing](https://github.com/syncthing/syncthing), [Webpack](https://github.com/webpack/webpack), [d3.js](https://github.com/d3/d3)
 
-``./mzk.sh init``
+---
 
-This will prompt you a wizard, to fill the previously listed pathes. When done, you might use the following command to build the docker containers and install the required dependancies (might take a while depending on your internet connection speed) :
-
-``./mzk.sh build ``
-
-When all is clear, you can run the app:
-
-``./mzk.sh dev`` or ``./mkz.sh prod``
-
-Finally, if everything is OK with [Docker](https://github.com/docker) and with [Webpack](https://github.com/webpack/webpack), grab a browser and go to [127.0.0.1/](127.0.0.1/). If you want further details about the ```.mzk.sh``` script, you can check the [wiki entry](https://github.com/ManaZeak/ManaZeak/wiki/Script-mzk.sh) that gives details about each available command from this script.
-
-The first user that will sign in into the app will be the app administrator. When the first user log in ManaZeak, he will be ask to create a library. 
-
-When declaring your libraries, prefix your path with ```/library/``` since ``/library/`` is equal to the path you gave in the ``./mzk.sh init`` wizard. Those declared libraries will be declared for every user in the app.
-
-However, if not everything went as expected, you might check the [Troubleshooting](https://github.com/Squadella/ManaZeak/wiki/Troubleshooting) entry to get some help.
-
-## Technologies
-[d3.js](https://github.com/d3/d3) |
-[Django](https://github.com/django/django) |
-[Docker](https://github.com/docker) |
-[Postgresql](https://github.com/postgres/postgres) |
-[SyncThing](https://github.com/syncthing/syncthing) |
-[Webpack](https://github.com/webpack/webpack)
-
-## Contributors
-[Arthur Beaulieu](https://github.com/ArthurBeaulieu) (Maintainer) |
-[Pierre Bouniol](https://github.com/Squadella) (Maintainer)
-
-[Valentin Peiro](https://github.com/Oxydiz) |
-[Pierre-Balthazar Donadieu de Lavit](https://github.com/Belash) |
-[Armand Vignat](https://github.com/avignat) |
-[Guilhem Piat](https://github.com/Syncrossus) |
-[Raphael Beekmann](https://github.com/Asiberus) |
-[Laetitia Genin](http://lmgtfy.com/?q=Laetitia+Genin)
-
-<p style="margin-bottom: 25px">
-    <img src="/static/img/logo/manazeak-logo.png" width="125" height="125" />
-</p>
+ManaZeak organisation -- 2017/2021
