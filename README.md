@@ -1,9 +1,9 @@
 # ManaZeak
 
-[](https://github.com/ManaZeak/ManaZeak/workflows/build/badge.svg)
+![](https://github.com/ManaZeak/ManaZeak/workflows/build/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ManaZeak&metric=alert_status)](https://sonarcloud.io/dashboard?id=ManaZeak)
 [![License](https://img.shields.io/github/license/ManaZeak/ManaZeak.svg)](https://github.com/ManaZeak/ManaZeak/blob/master/LICENSE.md)
-[](https://badgen.net/badge/version/1.0.1/blue)
+![](https://badgen.net/badge/version/1.0.1/blue)
 
 Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!
 
