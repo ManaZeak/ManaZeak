@@ -27,6 +27,7 @@ class Scene {
     return new Promise((resolve, reject) => {
       const failEvtId = Events.subscribe('SceneViewFailed', errors => {
         // Restore mainpage if view doesn't exists
+        // Don't unsubscribe ready evt as we load MainPage that requires this evt
         this.clearScene();
         this.view = new ViewFactory('MainPage');
         mzk.ui.processLogFromServer(errors);
