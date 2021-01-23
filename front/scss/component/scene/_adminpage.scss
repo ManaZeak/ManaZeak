@@ -34,7 +34,8 @@
     width: 100%;
 
     .user-list-wrapper,
-    .wish-grid-wrapper {
+    .wish-grid-wrapper,
+    .syncthing-wrapper {
       height: 100%;
       padding-top: 2rem;
     }
@@ -135,6 +136,17 @@
         p {
           margin: 0;
         }
+      }
+    }
+
+    .syncthing-wrapper {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      iframe {
+        height: 90%;
+        width: 90%;
       }
     }
   }

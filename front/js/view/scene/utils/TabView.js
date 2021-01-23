@@ -50,6 +50,7 @@ class TabView extends SceneView {
   _tabClicked(event) {
     this._unselectTabs();
     event.target.classList.add('selected');
+    // Method needs to be implemented in child class, using data-view as prefix for clicked callback
     this[`_${event.target.dataset.view}Clicked`]();
   }
 

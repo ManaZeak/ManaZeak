@@ -1,6 +1,7 @@
 import TabView from '../utils/TabView';
 import UsersFragment from './admin/UsersFragment';
 import WishesFragment from './admin/WishesFragment';
+import SyncThingFragment from './admin/SyncThingFragment';
 
 
 class AdminPageView extends TabView {
@@ -56,6 +57,21 @@ class AdminPageView extends TabView {
         this._activeFragment = new WishesFragment({
           target: this._viewContainer,
           refresh: this._wishesClicked.bind(this)
+        });
+      })
+      .catch(error => {
+        Logger.raise(error);
+      });
+  }
+
+
+  _syncthingClicked() {
+    this._clearFragment();
+    this._fetchViewFragment('/fragment/admin/syncthing')
+      .then(() => {
+        this._activeFragment = new SyncThingFragment({
+          target: this._viewContainer,
+          refresh: this._syncthingClicked.bind(this)
         });
       })
       .catch(error => {
