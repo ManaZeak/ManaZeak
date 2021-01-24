@@ -27,9 +27,7 @@ class TabView extends SceneView {
 
   destroy() {
     super.destroy();
-    for (let i = 0; i < this._tabClickedEvtIds.length; ++i) {
-      Events.removeEvent(this._tabClickedEvtIds[i]);
-    }
+    Utils.clearAllEvents(this._tabClickedEvtIds);
   }
 
 

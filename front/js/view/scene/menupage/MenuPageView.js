@@ -30,6 +30,7 @@ class MenuPageView extends SceneView {
 
   destroy() {
     super.destroy();
+    // TODO evtIds
     Events.removeEvent(this._adminClickedEvtId);
     Events.removeEvent(this._userClickedEvtId);
     Events.removeEvent(this._wishClickedEvtId);

@@ -11,23 +11,43 @@
     height: 100%;
     flex-direction: column;
 
-    .avatar-container {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      height: 12rem;
+    label {
+      font-size: var(--mzk-font-size-small);
+      font-style: italic;
+    }
+
+    .profile-header {
       margin: 2rem 0;
 
-      img {
-        height: calc(100% - 2.3rem);
-        max-width: 85%;
-        object-fit: contain;
+      .avatar-container {
+        height: 12rem;
+        text-align: center;
+
+        img {
+          height: calc(100% - 2.3rem);
+          max-width: 85%;
+          object-fit: contain;
+        }
       }
 
       p {
         font-weight: bold;
-        margin: 0;
-        margin-top: 1rem;
+        margin: 1rem 0 0;
+        text-align: center;
+      }
+
+      .reset-password {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0 0;
+
+        img {
+          cursor: pointer;
+          height: 2rem;
+          margin-left: 1rem;
+          width: 2rem;
+        }
       }
     }
 
@@ -36,11 +56,6 @@
       overflow: auto;
       padding: 0 1rem;
       text-align: center;
-
-      label {
-        font-size: var(--mzk-font-size-small);
-        font-style: italic;
-      }
 
       p {
         font-weight: bold;

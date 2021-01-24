@@ -30,6 +30,15 @@ class Utils {
   }
 
 
+  clearAllEvents(evtIds) {
+    if (evtIds.length > 0 && Events) {
+      for (let i = 0; i < evtIds.length; ++i) {
+        Events.removeEvent(evtIds);
+      }
+    }
+  }
+
+
   appendLinkInHead(path) {
     /* Search for existing link with same path */
     let alreadyExists = false;

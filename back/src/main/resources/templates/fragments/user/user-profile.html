@@ -1,14 +1,20 @@
 <div class="user-profile-view">
+  <!-- TODO make this become profile fragment, in my account tab view -->
   <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
-    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
-    <div class="avatar-container" th:if="*{avatar == null}">
-      <!-- User doesn't have an avatar. Displaying default -->
-      <img alt="user-avatar" src="static/img/default/user.svg">
+    <div class="profile-header">
+      <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
+      <div class="avatar-container" th:if="*{avatar == null}">
+        <!-- User doesn't have an avatar. Displaying default -->
+        <img alt="user-avatar" src="static/img/default/user.svg">
+      </div>
+      <div class="avatar-container" th:unless="*{avatar == null}">
+        <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
+      </div>
       <p id="username" th:text="*{username}"></p>
-    </div>
-    <div class="avatar-container" th:unless="*{avatar == null}">
-      <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
-      <p id="username" th:text="*{username}"></p>
+      <div class="reset-password">
+        <label for="password" th:text="#{user.profile.reset_password}"></label>
+        <img id="password" src="static/img/actions/passkey.svg" alt="reset-password">
+      </div>
     </div>
     <div class="info-container">
       <label for="email" th:text="#{user.tellusmore.email}"></label>

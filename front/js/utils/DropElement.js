@@ -40,6 +40,8 @@ class DropElement {
    * @since December 2020
    * @description <blockquote>This method will unsubscribe all drop events and remove all properties.</blockquote> **/
   destroy() {
+    // TODO rename evtIds
+    Utils.clearAllEvents(this._eventIds);
     for (let i = 0; i < this._eventIds.length; ++i) {
       Events.removeEvent(this._eventIds[i]);
     }

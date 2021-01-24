@@ -24,9 +24,8 @@ class WishesFragment {
     for (let i = 0; i < this._dragElements.length; ++i) {
       this._dragElements[i].destroy();
     }
-    for (let i = 0; i < this._evtIds.length; ++i) {
-      Events.removeEvent(this._evtIds[i]);
-    }
+
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 

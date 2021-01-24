@@ -8,7 +8,7 @@ class UserPageView extends SceneView {
   constructor(options) {
     super(options);
 
-    this._switchThemeEvtId = -1;
+    this._evtIds = [];
     this._theme = 'DARK'; // TODO load from pref (ls and server)
 
     this._fetchWrapper('/fragment/user-profile/')
@@ -23,7 +23,7 @@ class UserPageView extends SceneView {
 
   destroy() {
     super.destroy();
-    Events.removeEvent(this._switchThemeEvtId);
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -39,7 +39,8 @@ class UserPageView extends SceneView {
 
   _events() {
     return new Promise(resolve => {
-      this._switchThemeEvtId = Events.addEvent('click', this.dom.querySelector('#theme-switch'), this._switchTheme, this);
+      this._evtIds.push(Events.addEvent('click', this.dom.querySelector('#password'), this._resetPassword, this));
+      this._evtIds.push(Events.addEvent('click', this.dom.querySelector('#theme-switch'), this._switchTheme, this));
       resolve();
     });
   }
@@ -55,6 +56,14 @@ class UserPageView extends SceneView {
       document.body.classList.remove('light-theme');
       document.body.classList.add('dark-theme');
     }
+  }
+
+
+  _resetPassword() {
+    mzk.setModal({
+      name: 'ResetPassword',
+      url: '/fragment/modal/reset-password'
+    });
   }
 
 
