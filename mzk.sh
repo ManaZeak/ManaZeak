@@ -192,8 +192,22 @@ elif [ "$1" = '-g' ] || [ "$1" = '--gource' ]; then
   # Check if gource is installed on the system
   isInstalled "gource"
   # Start gource with custom parameters
-  eval "gource -f -a 1 -s 0.5 -c 1.5 -e 0.1 --title 'ManaZeak - version $vers' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about -r 60"
-
+  gourceOptions="--fullscreen --multi-sampling --auto-skip-seconds 0.1 --seconds-per-day 0.15 --elasticity 0.02 \
+           --camera-mode overview --font-size 18 --stop-at-end --bloom-intensity 0.5 --date-format '%d %B %Y' --hide mouse,progress \
+           --title 'ManaZeak - version $vers' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about"
+  ffmpegOptions="--output-ppm-stream - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset ultrafast -crf 1 -threads 0 -bf 0 mzk-git-history.mp4"
+  if [ -z "$2" ]; then
+    eval "gource $gourceOptions"
+  else
+    if [ "$2" = 'save' ]; then
+      echo -e "Exporting gource visualization as a mp4 file"
+      eval "gource $gourceOptions $ffmpegOptions"
+    else
+      echo -e "\e[31mERROR\e[39m $2 is not supported as an option"
+      echo -e "      Check command help for available arguments: ./mzk.sh --help"
+      exit 0
+    fi
+  fi
 
 # Command help and usage
 elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
@@ -209,6 +223,7 @@ elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   echo -e "  -r, --reset        Remove existing database and docker images and rebuild them"
   echo -e "                     It won't remove existing .env configuration file\n\n"
   echo -e "  -g, --gource       Review git history using gource package\n"
+  echo -e "                     Optional argument [save] to save visualization as a mp4 file\n"
 
 
 # Provided argument is not supported by this script
