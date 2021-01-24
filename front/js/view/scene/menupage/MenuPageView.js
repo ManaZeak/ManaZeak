@@ -8,16 +8,11 @@ class MenuPageView extends SceneView {
     super(options);
 
     this._adminItem = null;
-    this._adminClickedEvtId = -1;
-
     this._userItem = null;
-    this._userClickedEvtId = -1;
-
     this._wishItem = null;
-    this._wishClickedEvtId = -1;
-
     this._aboutItem = null;
-    this._aboutClickedEvtId = -1;
+
+    this._evtIds = [];
 
     this._fetchWrapper('/fragment/menupage/')
       .then(this._fillAttributes.bind(this))
@@ -30,11 +25,7 @@ class MenuPageView extends SceneView {
 
   destroy() {
     super.destroy();
-    // TODO evtIds
-    Events.removeEvent(this._adminClickedEvtId);
-    Events.removeEvent(this._userClickedEvtId);
-    Events.removeEvent(this._wishClickedEvtId);
-    Events.removeEvent(this._aboutClickedEvtId);
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -50,10 +41,10 @@ class MenuPageView extends SceneView {
 
 
   _events() {
-    this._adminClickedEvtId = Events.addEvent('click', this._adminItem, this._adminClicked, this);
-    this._userClickedEvtId = Events.addEvent('click', this._userItem, this._userClicked, this);
-    this._wishClickedEvtId = Events.addEvent('click', this._wishItem, this._wishClicked, this);
-    this._aboutClickedEvtId = Events.addEvent('click', this._aboutItem, this._aboutClicked, this);
+    this._evtIds.push(Events.addEvent('click', this._adminItem, this._adminClicked, this));
+    this._evtIds.push(Events.addEvent('click', this._userItem, this._userClicked, this));
+    this._evtIds.push(Events.addEvent('click', this._wishItem, this._wishClicked, this));
+    this._evtIds.push(Events.addEvent('click', this._aboutItem, this._aboutClicked, this));
   }
 
 

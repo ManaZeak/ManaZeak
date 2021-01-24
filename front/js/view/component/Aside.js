@@ -8,17 +8,18 @@ class Aside {
     this._homepage = document.getElementById('homepage-button');
     this._menupage = document.getElementById('menupage-button');
 
+    this._evtIds = [];
+
     this._events();
   }
 
 
-  _events() {
-    // TODO: proper events
-    this._homepageClicked = this._homepageClicked.bind(this);
-    this._homepage.addEventListener('click', this._homepageClicked);
+  /* Not meant to be destroyed */
 
-    this._menupageClicked = this._menupageClicked.bind(this);
-    this._menupage.addEventListener('click', this._menupageClicked);
+
+  _events() {
+    this._evtIds.push(Events.addEvent('click', this._homepage, this._homepageClicked, this));
+    this._evtIds.push(Events.addEvent('click', this._menupage, this._menupageClicked, this));
   }
 
 

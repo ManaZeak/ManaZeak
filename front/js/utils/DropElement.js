@@ -19,7 +19,7 @@ class DropElement {
     this._onDropCB = options.onDrop;
     /** @private
      * @member {number[]} - The event IDs for all mobile and desktop dropping events */
-    this._eventIds = [];
+    this._evtIds = [];
     /** @private
      * @member {number} - This counter helps to avoid enter/leave events to overlap when target has children */
     this._movementCounter = 0;
@@ -40,11 +40,7 @@ class DropElement {
    * @since December 2020
    * @description <blockquote>This method will unsubscribe all drop events and remove all properties.</blockquote> **/
   destroy() {
-    // TODO rename evtIds
-    Utils.clearAllEvents(this._eventIds);
-    for (let i = 0; i < this._eventIds.length; ++i) {
-      Events.removeEvent(this._eventIds[i]);
-    }
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -76,12 +72,12 @@ class DropElement {
    * @since December 2020
    * @description <blockquote>This method will subscribe to drop events, both for desktop and mobile.</blockquote> **/
   _events() {
-    this._eventIds.push(Events.addEvent('dragenter', this._target, this._dragEnter, this));
-    this._eventIds.push(Events.addEvent('dragover', this._target, this._dragOver, this));
-    this._eventIds.push(Events.addEvent('dragleave', this._target, this._dragLeave, this));
-    this._eventIds.push(Events.addEvent('drop', this._target, this._drop, this));
-    this._eventIds.push(Events.addEvent('touchmove', document.body, this._dragTouchOver, this));
-    this._eventIds.push(Events.addEvent('touchend', document.body, this._dragTouchEnd, this));
+    this._evtIds.push(Events.addEvent('dragenter', this._target, this._dragEnter, this));
+    this._evtIds.push(Events.addEvent('dragover', this._target, this._dragOver, this));
+    this._evtIds.push(Events.addEvent('dragleave', this._target, this._dragLeave, this));
+    this._evtIds.push(Events.addEvent('drop', this._target, this._drop, this));
+    this._evtIds.push(Events.addEvent('touchmove', document.body, this._dragTouchOver, this));
+    this._evtIds.push(Events.addEvent('touchend', document.body, this._dragTouchEnd, this));
   }
 
 

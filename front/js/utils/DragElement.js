@@ -19,7 +19,7 @@ class DragElement {
     this._data = options.data;
     /** @private
      * @member {number[]} - The event IDs for all mobile and desktop dragging events */
-    this._eventIds = [];
+    this._evtIds = [];
     /** @private
      * @member {boolean} - A flag to know if dragging is occurring in mobile */
     this._touchStarted = false;
@@ -40,11 +40,7 @@ class DragElement {
    * @since December 2020
    * @description <blockquote>This method will unsubscribe all drag events and remove all properties.</blockquote> **/
   destroy() {
-    // TODO rename evtIds
-    Utils.clearAllEvents(this._eventIds);
-    for (let i = 0; i < this._eventIds.length; ++i) {
-      Events.removeEvent(this._eventIds[i]);
-    }
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -79,10 +75,10 @@ class DragElement {
    * @since December 2020
    * @description <blockquote>This method will subscribe to drag events, both for desktop and mobile.</blockquote> **/
   _events() {
-    this._eventIds.push(Events.addEvent('dragstart', this._target, this._dragStart, this));
-    this._eventIds.push(Events.addEvent('touchstart', this._target, this._dragStart, this));
-    this._eventIds.push(Events.addEvent('touchmove', this._target, this._dragTouchMove, this));
-    this._eventIds.push(Events.addEvent('touchend', this._target, this._dragTouchEnd, this));
+    this._evtIds.push(Events.addEvent('dragstart', this._target, this._dragStart, this));
+    this._evtIds.push(Events.addEvent('touchstart', this._target, this._dragStart, this));
+    this._evtIds.push(Events.addEvent('touchmove', this._target, this._dragTouchMove, this));
+    this._evtIds.push(Events.addEvent('touchend', this._target, this._dragTouchEnd, this));
   }
 
 
