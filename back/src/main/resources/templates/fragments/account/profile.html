@@ -5,7 +5,7 @@
       <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
       <div class="avatar-container" th:if="*{avatar == null}">
         <!-- User doesn't have an avatar. Displaying default -->
-        <img alt="user-avatar" src="static/img/default/user.svg">
+        <img alt="user-avatar" src="../../../../../../../static/img/default/user.svg">
       </div>
       <div class="avatar-container" th:unless="*{avatar == null}">
         <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
@@ -13,7 +13,7 @@
       <p id="username" th:text="*{username}"></p>
       <div class="reset-password">
         <label for="password" th:text="#{user.profile.reset_password}"></label>
-        <img id="password" src="static/img/actions/passkey.svg" alt="reset-password">
+        <img id="password" src="../../../../../../../static/img/actions/passkey.svg" alt="reset-password">
       </div>
     </div>
     <div class="info-container">
@@ -34,9 +34,5 @@
       <label for="inviteCode" th:text="#{user.register.invite_code}"></label>
       <p id="inviteCode" th:text="*{inviteCode}"></p>
     </div>
-  </div>
-  <div class="user-pref">
-    <label for="theme-switch">Dark theme</label>
-    <input checked id="theme-switch" name="theme-switch" type="checkbox">
   </div>
 </div>

@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.controller.html.fragment.modal.resetPassword;
+package org.manazeak.manazeak.controller.html.fragment.modal.resetpassword;
 
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;

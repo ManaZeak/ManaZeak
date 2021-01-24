@@ -5,7 +5,7 @@ package org.manazeak.manazeak.controller.page.user;
  */
 public enum UserFragmentEnum {
 
-    USER_INFORMATION("fragments/user/user-profile.html");
+    USER_PROFILE("fragments/account/profile.html");
 
     private final String page;
 

@@ -29,10 +29,10 @@ public class UserProfileFragmentController {
      * @param model The model for passing the elements to the front.
      * @return The fragment to the front.
      */
-    @GetMapping("/user-profile")
+    @GetMapping("/account/profile")
     @RestSecurity(PrivilegeEnum.PLAY)
     public String getUserProfileFragment(Model model) {
         model.addAttribute("userInfo", userInformationService.getCurrentUserInformation());
-        return UserFragmentEnum.USER_INFORMATION.getPage();
+        return UserFragmentEnum.USER_PROFILE.getPage();
     }
 }

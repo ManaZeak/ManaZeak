@@ -1,14 +1,14 @@
 import MainPageView from './mainpage/MainPageView.js';
 import MenuPageView from './menupage/MenuPageView.js';
 import AdminPageView from './menupage/AdminPageView.js';
-import UserPageView from './menupage/UserPageView.js';
+import AccountPageView from './menupage/AccountPageView.js';
 
 
 const Classes = {
   MainPageView,
   MenuPageView,
   AdminPageView,
-  UserPageView
+  AccountPageView
 };
 
 
