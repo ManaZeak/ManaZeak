@@ -31,20 +31,6 @@
         padding: 2rem;
       }
 
-      .user-list-wrapper {
-        flex-direction: row;
-
-        .users-wrapper {
-          height: 100%;
-          width: calc(100% - 30rem);
-        }
-
-        .badges-wrapper {
-          height: 100%;
-          width: 30rem;
-        }
-      }
-
       .wish-grid-wrapper {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);

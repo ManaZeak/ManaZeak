@@ -44,8 +44,29 @@
       display: flex;
       flex-direction: column;
 
+      .badges-wrapper {
+        display: flex;
+        height: 14rem;
+        width: 100%;
+
+        .badge-container {
+          align-items: center;
+          border: solid 3px var(--mzk-color-bg-light);
+          border-radius: 5px;
+          cursor: pointer;
+          display: flex;
+          height: 4rem;
+          padding: 0 10px;
+
+          img {
+            height: 3rem;
+            max-width: 3rem;
+          }
+        }
+      }
+
       .users-wrapper {
-        height: calc(100% - 30rem);
+        height: calc(100% - 14rem);
         width: 100%;
 
         .user-container {
@@ -67,27 +88,6 @@
           }
         }
       }
-
-      .badges-wrapper {
-        height: 30rem;
-        width: 100%;
-
-        .badge-container {
-          align-items: center;
-          background-color: var(--mzk-color-bg-light);
-          border-radius: 5px;
-          cursor: pointer;
-          display: flex;
-          margin: 10px;
-          padding: 20px;
-
-          img {
-            height: 4rem;
-            max-width: 4rem;
-          }
-        }
-      }
-
     }
 
     .wish-grid-wrapper {

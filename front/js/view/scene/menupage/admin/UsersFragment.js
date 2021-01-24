@@ -108,7 +108,7 @@ class UsersFragment {
   _newBadge() {
     mzk.setModal({
       name: 'Badge',
-      url: '/fragment/badge'
+      url: '/fragment/modal/new-badge'
     });
   }
 

@@ -103,7 +103,6 @@ class DragElement {
     if (event.dataTransfer) { // Desktop behavior
       event.dataTransfer.setData('text/plain', JSON.stringify(this._data));
     } else { // Mobile behavior
-      event.preventDefault(); // Avoid context to be triggered on touch kept pushed
       this._touchStarted = true;
       // Define style for phantom DIV according to the dragged item style values
       const rect = this._target.getBoundingClientRect();
