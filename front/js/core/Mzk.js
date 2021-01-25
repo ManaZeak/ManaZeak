@@ -13,9 +13,15 @@ class Mzk {
 
 
   initSession() {
+    // HTML template is loaded with loading overlay
+    // Initializing communication and UI controllers
     this.kom = new Kom();
     this.ui = new UserInterface();
     this.ui.stopLoading();
+    // Init scene with main page
+    this.setView({
+      name: 'MainPage'
+    });
   }
 
 
