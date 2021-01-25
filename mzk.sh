@@ -195,7 +195,7 @@ elif [ "$1" = '-g' ] || [ "$1" = '--gource' ]; then
   gourceOptions="--fullscreen --multi-sampling --auto-skip-seconds 0.1 --seconds-per-day 0.15 --elasticity 0.02 \
            --camera-mode overview --font-size 18 --stop-at-end --bloom-intensity 0.5 --date-format '%d %B %Y' --hide mouse,progress \
            --title 'ManaZeak - version $vers' --logo ./static/img/logo/manazeak-logo.svg --user-image-dir ./static/img/about"
-  ffmpegOptions="--output-ppm-stream - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset ultrafast -crf 1 -threads 0 -bf 0 mzk-git-history.mp4"
+  ffmpegOptions="--output-ppm-stream - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset medium -crf 1 -threads 0 -bf 0 mzk-git-history.mp4"
   if [ -z "$2" ]; then
     eval "gource $gourceOptions"
   else
