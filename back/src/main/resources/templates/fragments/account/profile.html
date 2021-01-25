@@ -30,8 +30,12 @@
       <p id="country" th:text="*{country}"></p>
       <label for="locale" th:text="#{user.tellusmore.language}"></label>
       <p id="locale" th:text="*{locale}"></p>
-      <label for="inviteCode" th:text="#{user.register.invite_code}"></label>
-      <p id="inviteCode" th:text="*{inviteCode}"></p>
+      <div class="invitation-code">
+        <label for="invite-code" th:text="#{user.register.invite_code}"></label>
+        <img id="copy-invite" src="../../../../../../../static/img/actions/copy.svg" alt="copy-invite">
+        <img id="copy-invite-link" src="../../../../../../../static/img/actions/share.svg" alt="copy-invite-link">
+      </div>
+      <p id="invite-code" th:text="*{inviteCode}"></p>
     </div>
   </div>
 </div>

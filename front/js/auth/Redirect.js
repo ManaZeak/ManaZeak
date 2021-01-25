@@ -2,9 +2,9 @@
 const redirectString = document.getElementById('redirect-string');
 let counter = 0;
 window.setInterval(() => {
-    if (counter === 4) {
-        window.location.replace('login');
-    }
-    redirectString.innerHTML = redirectString.innerHTML.replace(/[0-9]/g, `${4 - counter}`);
-    ++counter;
+  if (counter === 4) {
+    window.location.replace('login');
+  }
+  redirectString.innerHTML = redirectString.innerHTML.replace(/[0-9]/g, `${4 - counter}`);
+  ++counter;
 }, 1000);
