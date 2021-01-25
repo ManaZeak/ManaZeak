@@ -32,6 +32,7 @@ module.exports = env => {
     manazeak: ['./front/js/StartSession.js', './front/scss/service/manazeak.scss'],
     auth: ['./front/scss/service/auth.scss'],
     account: ['./front/scss/service/account.scss'],
+    admin: ['./front/scss/service/admin.scss'],
     register: ['./front/js/auth/Register.js'],
     tellusmore: ['./front/js/auth/TellUsMore.js'],
     redirect: ['./front/js/auth/Redirect.js']

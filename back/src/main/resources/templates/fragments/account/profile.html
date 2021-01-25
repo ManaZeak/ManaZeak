@@ -1,18 +1,19 @@
 <div class="user-profile-view">
   <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
+    <img src="static/img/actions/edit.svg" id="edit-account" class="edit-account" alt="edit-account">
     <div class="profile-header">
       <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
       <div class="avatar-container" th:if="*{avatar == null}">
         <!-- User doesn't have an avatar. Displaying default -->
-        <img alt="user-avatar" src="../../../../../../../static/img/default/user.svg">
+        <img src="/static/img/default/user.svg" alt="user-avatar">
       </div>
       <div class="avatar-container" th:unless="*{avatar == null}">
-        <img alt="user-avatar" th:src='*{"/resources/avatars/"+avatar}'>
+        <img th:src='*{"/resources/avatars/"+avatar}' alt="user-avatar">
       </div>
       <p id="username" th:text="*{username}"></p>
       <div class="reset-password">
         <label for="password" th:text="#{user.profile.reset_password}"></label>
-        <img id="password" src="../../../../../../../static/img/actions/passkey.svg" alt="reset-password">
+        <img id="password" src="/static/img/actions/passkey.svg" alt="reset-password">
       </div>
     </div>
     <div class="info-container">
@@ -32,8 +33,8 @@
       <p id="locale" th:text="*{locale}"></p>
       <div class="invitation-code">
         <label for="invite-code" th:text="#{user.register.invite_code}"></label>
-        <img id="copy-invite" src="../../../../../../../static/img/actions/copy.svg" alt="copy-invite">
-        <img id="copy-invite-link" src="../../../../../../../static/img/actions/share.svg" alt="copy-invite-link">
+        <img id="copy-invite" src="/static/img/actions/copy.svg" alt="copy-invite">
+        <img id="copy-invite-link" src="/static/img/actions/share.svg" alt="copy-invite-link">
       </div>
       <p id="invite-code" th:text="*{inviteCode}"></p>
     </div>

@@ -18,9 +18,18 @@ class ProfileFragment {
 
 
   _fillAttributes() {
+    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#edit-account'), this._editAccount, this));
     this._evtIds.push(Events.addEvent('click', this._target.querySelector('#password'), this._resetPassword, this));
     this._evtIds.push(Events.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInvite, this));
     this._evtIds.push(Events.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
+  }
+
+
+  _editAccount() {
+    mzk.setModal({
+      name: 'EditAccount',
+      url: '/fragment/modal/edit-account'
+    });
   }
 
 

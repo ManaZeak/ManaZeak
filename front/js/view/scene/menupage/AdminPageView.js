@@ -10,6 +10,8 @@ class AdminPageView extends TabView {
   constructor(options) {
     super(options);
 
+    Utils.appendLinkInHead('static/dist/css/admin.bundle.css');
+
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))
       .then(this._viewReady)
