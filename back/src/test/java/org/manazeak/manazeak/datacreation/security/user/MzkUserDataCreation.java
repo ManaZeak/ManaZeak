@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.datacreation.security.user;
 
+import org.junit.jupiter.api.Assertions;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
@@ -12,6 +13,7 @@ import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,6 +60,35 @@ public class MzkUserDataCreation {
     }
 
     /**
+     * Creates a new user with the specified parent.
+     *
+     * @param parent the user that will be the parent of the user.
+     */
+    public MzkUser createUserWithParent(MzkUser parent, String suffix) {
+        final List<InviteCode> invites = inviteCodeDAO.getInviteCodesByParent(parent);
+        // Looking for the active invite code
+        InviteCode invite = null;
+        for (InviteCode inv : invites) {
+            if (inv.getIsActive()) {
+                invite = inv;
+            }
+        }
+        Assertions.assertNotNull(invite, "The invite code shouldn't be null.");
+
+        // Create the new user
+        MzkUser user = generateMzkUser(suffix + 3);
+        // Setting the invite code of the user
+        user.setInviteCode(invite);
+        invite.setIsActive(false);
+        mzkUserDAO.save(user);
+        inviteCodeDAO.save(invite);
+        // Creating a new invite code for the parent and for the user.
+        inviteCodeDataCreation.createInviteCode(suffix + 2, parent);
+        inviteCodeDataCreation.createInviteCode(suffix + 1, user);
+        return user;
+    }
+
+    /**
      * Create multiple users that are parent of each.
      *
      * @return the last user created.
@@ -68,13 +99,7 @@ public class MzkUserDataCreation {
         // Creating users with suffixes.
         for (int i = 0; i < userToCreate; ++i) {
             suffix++;
-            MzkUser user = new MzkUser();
-            user.setUsername(UserTestConstants.USERNAME + suffix);
-            user.setPassword(UserTestConstants.PASSWORD);
-            user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
-            user.setIsActive(true);
-            user.setIsComplete(true);
-            user.setCreationDate(LocalDateTime.now());
+            MzkUser user = generateMzkUser(String.valueOf(suffix));
             // Linking the user with it's parent.
             user.setInviteCode(parentInviteCode);
             // Create an invite code for him
@@ -87,5 +112,22 @@ public class MzkUserDataCreation {
             throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.", "");
         }
         return user.get();
+    }
+
+    /**
+     * Generate a user with the default values with a suffix.
+     *
+     * @param suffix This will be added to all the unique fields.
+     * @return The user generated, the user isn't saved into the database.
+     */
+    public MzkUser generateMzkUser(String suffix) {
+        MzkUser user = new MzkUser();
+        user.setUsername(UserTestConstants.USERNAME + suffix);
+        user.setPassword(UserTestConstants.PASSWORD);
+        user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
+        user.setIsActive(true);
+        user.setIsComplete(true);
+        user.setCreationDate(LocalDateTime.now());
+        return user;
     }
 }
