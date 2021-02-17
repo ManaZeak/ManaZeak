@@ -27,9 +27,9 @@ public class BadgeVerifHelper {
      */
     public static void checkListBadge(List<BadgeListLineDto> badges) {
         // Checking the size of the list.
-        Assertions.assertEquals(1, badges.size(), "Too many badges were found.");
+        Assertions.assertEquals(2, badges.size(), "Too many badges were found.");
         // Checking the content of the badge
-        BadgeListLineDto badge = badges.get(0);
+        BadgeListLineDto badge = badges.get(1);
         Assertions.assertEquals(BadgeDataCreation.BADGE_CONTENT, badge.getLabel(), "The badge label is wrong.");
         // Checking there is no user linked to the badge
         Assertions.assertEquals(0, badge.getUsers().size(), "No user should be linked to this badge.");
