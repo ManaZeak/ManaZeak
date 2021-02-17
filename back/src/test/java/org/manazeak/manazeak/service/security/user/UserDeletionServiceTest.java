@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Test that the user deletion works properly.
  */
-public class UserDeletionServiceTest extends AbstractManaZeakTest {
+class UserDeletionServiceTest extends AbstractManaZeakTest {
 
     @Autowired
     private MzkUserDataCreation userDataCreation;

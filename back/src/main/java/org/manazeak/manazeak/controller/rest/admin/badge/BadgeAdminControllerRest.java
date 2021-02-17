@@ -64,6 +64,7 @@ public class BadgeAdminControllerRest {
     @PostMapping("/bagde/delete/{badgeId}")
     public KommunicatorDto deleteBadge(@PathVariable @NotNull(message = "user.badge.error.empty_id") Long badgeId) {
         badgeService.deleteBadge(badgeId);
-        return kommunicatorService.buildSuccessKom("admin.badge.success.delete.title", "admin.badge.success.delete.message");
+        return kommunicatorService.buildSuccessKom("admin.badge.success.delete.title",
+                "admin.badge.success.delete.message");
     }
 }
