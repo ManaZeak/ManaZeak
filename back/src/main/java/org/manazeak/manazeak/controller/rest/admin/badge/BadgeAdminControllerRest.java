@@ -8,11 +8,13 @@ import org.manazeak.manazeak.service.error.ErrorHandlerService;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.manazeak.manazeak.service.security.user.badge.BadgeService;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 public class BadgeAdminControllerRest {
@@ -50,5 +52,18 @@ public class BadgeAdminControllerRest {
         // Sending a ok response.
         return kommunicatorService.buildSuccessKom("admin.badge.success.link.title",
                 "admin.badge.success.link.message");
+    }
+
+    /**
+     * Delete a badge from the application.
+     *
+     * @param badgeId The id of the badge to delete.
+     * @return The status of the request.
+     */
+    @RestSecurity(PrivilegeEnum.ADMV)
+    @PostMapping("/bagde/delete/{badgeId}")
+    public KommunicatorDto deleteBadge(@PathVariable @NotNull(message = "user.badge.error.empty_id") Long badgeId) {
+        badgeService.deleteBadge(badgeId);
+        return kommunicatorService.buildSuccessKom("admin.badge.success.delete.title", "admin.badge.success.delete.message");
     }
 }

@@ -29,4 +29,11 @@ public interface BadgeService {
      * @param badgeId The badge id that will be associated to the user.
      */
     void associateBadgeToUser(Long userId, Long badgeId);
+
+    /**
+     * Delete a badge and remove all the users linked to this badge.
+     *
+     * @param badgeId The badge that will be removed.
+     */
+    void deleteBadge(Long badgeId);
 }

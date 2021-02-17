@@ -79,4 +79,14 @@ public class BadgeManager {
         badgeDAO.save(badge);
     }
 
+    /**
+     * Allows to delete a badge.
+     * @param badgeId The badge that will be deleted.
+     */
+    public void deleteBadge(Long badgeId) {
+        // Getting the badge in the database.
+        Badge badge = getBadge(badgeId);
+        badgeDAO.delete(badge);
+    }
+
 }

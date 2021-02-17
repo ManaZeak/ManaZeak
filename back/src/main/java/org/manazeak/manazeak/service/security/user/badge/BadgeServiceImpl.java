@@ -45,4 +45,12 @@ public class BadgeServiceImpl implements BadgeService {
     public void associateBadgeToUser(Long userId, Long badgeId) {
         badgeManager.associateUserToBadge(userId, badgeId);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteBadge(Long badgeId) {
+        badgeManager.deleteBadge(badgeId);
+    }
 }

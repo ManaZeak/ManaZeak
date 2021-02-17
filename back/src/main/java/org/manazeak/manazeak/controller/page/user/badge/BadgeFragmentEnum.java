@@ -5,7 +5,8 @@ package org.manazeak.manazeak.controller.page.user.badge;
  */
 public enum BadgeFragmentEnum {
 
-    BADGE_LIST("fragments/admin/badge/badge-list.html");
+    BADGE_LIST("fragments/admin/badge/badge-list.html"),
+    NEW_BADGE_MODAL("fragments/modal/badge-creation.html");
 
     private final String page;
 

@@ -19,6 +19,9 @@ class BadgeServiceTest extends AbstractManaZeakTest {
     @Autowired
     private BadgeService badgeService;
 
+    @Autowired
+    private BadgeVerifHelper badgeVerifHelper;
+
     /**
      * Test the generation of the badges of the application.
      */
@@ -30,5 +33,14 @@ class BadgeServiceTest extends AbstractManaZeakTest {
         List<BadgeListLineDto> badges = badgeService.getBadgesList();
         // Checking the badge list.
         BadgeVerifHelper.checkListBadge(badges);
+    }
+
+    /**
+     * Test that the badge deletion works.
+     */
+    @Test
+    void testDeleteBadge() {
+        badgeService.deleteBadge(1L);
+        badgeVerifHelper.checkBadgeDeleted(1L);
     }
 }

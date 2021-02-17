@@ -26,4 +26,10 @@ ALTER TABLE badge_user
 CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
 CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
 
+-- Insert the emperor badge (for the super admin)
+INSERT INTO badge (badge_id, label) VALUES (1, 'Emperor');
+
+-- Linking the badge to the superuser.
+INSERT INTO badge_user (badge_id, user_id) VALUES (1, 1);
+
 commit;
