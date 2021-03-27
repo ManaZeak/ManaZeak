@@ -39,13 +39,18 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
             LOG.warn("The unknown user {} tried to connect.", username);
             throw new MzkRuntimeException("user.error.authentication_error", "user.error.authentication_error");
         }
+        // If the user is not active he can't connect
+        if(!user.get().getIsActive()) {
+            LOG.warn("The disabled user {} tried to connect.", username);
+            throw new MzkRuntimeException("user.error.disabled_user", "user.error.disabled_user");
+        }
         // Adding rights
         final List<MzkGrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (final Privilege privilege : userService.getPrivilegeByUsername(username)) {
             // Adding the roles of the user into the object.
             grantedAuthorities.add(new MzkGrantedAuthority(privilege));
         }
-        // Wrap l'utilisateur dans le UserDetails pour spring security
+        // Wrapper for the user for spring security.
         return new MzkUserDetail(user.get(), grantedAuthorities);
     }
 }

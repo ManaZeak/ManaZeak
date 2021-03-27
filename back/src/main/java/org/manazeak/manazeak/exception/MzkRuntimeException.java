@@ -16,7 +16,7 @@ public class MzkRuntimeException extends RuntimeException implements MzkExceptio
      * @param e          The cause of this exception.
      */
     public MzkRuntimeException(String messageKey, String titleKey, Throwable e) {
-        super(e);
+        super(messageKey, e);
         this.messageKey = messageKey;
         this.titleKey = titleKey;
     }
@@ -28,6 +28,7 @@ public class MzkRuntimeException extends RuntimeException implements MzkExceptio
      * @param titleKey   The title key that will be used to display the title to the user.
      */
     public MzkRuntimeException(String messageKey, String titleKey) {
+        super(messageKey);
         this.messageKey = messageKey;
         this.titleKey = titleKey;
     }
