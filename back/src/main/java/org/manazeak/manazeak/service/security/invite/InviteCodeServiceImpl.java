@@ -43,6 +43,10 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         }
         // Getting the parent from the invite code.
         MzkUser parent = inviteCode.get().getParent();
+        // If the parent is not active then the user cannot be invited.
+        if (!parent.getIsActive()) {
+            throw new MzkValidationException("{user.invite_code.error.user_deactivated}");
+        }
         // Getting the depth of the parent
         Optional<Integer> userDepthOpt = inviteCodeDAO.getParentUserDepth(parent.getUserId());
         // JESUS is the parent, the user is allowed to register.
