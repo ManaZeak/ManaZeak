@@ -26,4 +26,10 @@ public interface MzkUserDetailProjection {
     LocalDate getBirthDate();
 
     String getAvatar();
+
+    String getParentAvatar();
+
+    String getParentName();
+
+    String getParentSurname();
 }

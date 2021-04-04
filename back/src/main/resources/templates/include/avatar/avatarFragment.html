@@ -1,0 +1,9 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="avatarDisplay (avatar)">
+    <div class="avatar-container" th:if="${avatar == null}">
+        <!-- User doesn't have an avatar. Displaying default -->
+        <img src="static/img/default/user.svg" alt="user-avatar">
+    </div>
+    <div class="avatar-container" th:unless="${avatar == null}">
+        <img th:src='${"/resources/avatars/"+avatar}' alt="user-avatar">
+    </div>
+</div>
