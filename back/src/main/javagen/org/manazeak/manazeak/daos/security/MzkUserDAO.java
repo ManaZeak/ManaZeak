@@ -49,7 +49,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "inner join InviteCode inv on inv.parent = usr " +
             "left join usr.country userCountry " +
             "left join usr.locale userLocale " +
-            "inner join inv.parent parent " +
+            "inner join usr.inviteCode.parent parent " +
             "where usr.userId = :userId " +
             "   and inv.isActive = true")
     MzkUserDetailProjection getUserDetailFromUserId(@Param("userId") Long userId);
