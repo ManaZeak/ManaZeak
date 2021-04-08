@@ -47,13 +47,16 @@ services:
             - back
 
     moodbar:
-        build:
-            context: docker/moodbar
-            target: mood
+        image: squadella/py-moodbar-generator
         container_name: manazeak_moodbar
         volumes:
             - ${LIBRARY_PATH}:/library
             - ./static/mood:/moodbar/static
+            - ./static/mood_meta:/meta
+        environment:
+            MOOD_OUTPUT_FOLDER: /moodbar/static
+            LIBRARY_FOLDER: /library
+            METADATA_FOLDER: /meta
 
     syncthing:
         image: syncthing/syncthing:latest
