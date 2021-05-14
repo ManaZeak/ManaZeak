@@ -19,6 +19,15 @@ public final class UserTestConstants {
 
     public static final String ADMIN_USERNAME = "JESUS";
 
+    // Information about a modified user.
+    public static final String MAIL_EDITED = "test2@test.test";
+    public static final String NAME_EDITED = "TEST_NAME_E";
+    public static final String SURNAME_EDITED = "TEST_SURNAME_E";
+    public static final Long LOCALE_ID_EDITED = 2L;
+    public static final Long COUNTRY_ID_EDITED = 2L;
+    public static final String BIRTH_DATE_EDITED = "1981-02-14";
+    public static final String BIO_EDITED = "TEST_BIO_E";
+
     private UserTestConstants() {
 
     }

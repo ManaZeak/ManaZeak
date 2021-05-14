@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FragmentController
 public class AccountFragment {
 
+    /**
+     * Get the account page skeleton.
+     * @return The skeleton of the account page.
+     */
     @RestSecurity(PrivilegeEnum.PLAY)
     @GetMapping("/account")
-    public String getMainPage() {
+    public String getAccountDetail() {
         return AccountFragmentEnum.ACCOUNT_PAGE.getPage();
     }
+
 }

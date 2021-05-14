@@ -190,3 +190,4 @@ coverage.xml
 /back/target/
 /mda-generator/
 /node_modules/
+/node/

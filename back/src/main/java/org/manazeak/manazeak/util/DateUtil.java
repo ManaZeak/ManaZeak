@@ -33,7 +33,23 @@ public final class DateUtil {
         return LocalDate.parse(strDate, formatter);
     }
 
+    /**
+     * Formats a date and a time into a string with the given format.
+     * @param date The date that will be formatted.
+     * @param format The format that will be used.
+     * @return The formatted date as a string.
+     */
     public static String formatDateTime(LocalDateTime date, DateTimeFormatter format) {
         return date.format(format);
+    }
+
+    /**
+     * Formats a date into a string with the given format.
+     * @param date The date that will be formatted.
+     * @param formatter The format that will be used.
+     * @return The formatted date as a string.
+     */
+    public static String formatDate(LocalDate date, DateTimeFormatter formatter) {
+        return date.format(formatter);
     }
 }

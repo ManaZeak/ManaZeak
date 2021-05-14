@@ -2,14 +2,18 @@ package org.manazeak.manazeak.datacreation.security.user;
 
 import org.junit.jupiter.api.Assertions;
 import org.manazeak.manazeak.constant.security.RoleEnum;
+import org.manazeak.manazeak.daos.reference.CountryDAO;
+import org.manazeak.manazeak.daos.reference.LocaleDAO;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
 import org.manazeak.manazeak.datacreation.security.invite.InviteCodeDataCreation;
+import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.util.DateUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -30,13 +34,20 @@ public class MzkUserDataCreation {
 
     private final InviteCodeDAO inviteCodeDAO;
 
+    private final LocaleDAO localeDAO;
+
+    private final CountryDAO countryDAO;
+
     private final RoleDAO roleDAO;
 
     public MzkUserDataCreation(UserService userService, InviteCodeDataCreation inviteCodeDataCreation,
-                               InviteCodeDAO inviteCodeDAO, MzkUserDAO mzkUserDAO, RoleDAO roleDAO) {
+                               InviteCodeDAO inviteCodeDAO, MzkUserDAO mzkUserDAO, LocaleDAO localeDAO,
+                               CountryDAO countryDAO, RoleDAO roleDAO) {
         this.userService = userService;
         this.inviteCodeDataCreation = inviteCodeDataCreation;
         this.mzkUserDAO = mzkUserDAO;
+        this.localeDAO = localeDAO;
+        this.countryDAO = countryDAO;
         this.roleDAO = roleDAO;
         this.inviteCodeDAO = inviteCodeDAO;
     }
@@ -47,17 +58,29 @@ public class MzkUserDataCreation {
      * @return the user that was created.
      */
     public MzkUser createDefaultMzkUser() {
-        MzkUser user = new MzkUser();
-        user.setUsername(UserTestConstants.USERNAME);
-        user.setPassword(UserTestConstants.PASSWORD);
-        user.setMail(UserTestConstants.MAIL);
-        user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
-        user.setIsActive(true);
-        user.setIsComplete(true);
-        user.setCreationDate(LocalDateTime.now());
+        MzkUser user = generateDefaultUser();
         mzkUserDAO.save(user);
         return user;
     }
+
+    /**
+     * Creates a modified user into the database.
+     *
+     * @return the user that was created.
+     */
+    public MzkUser generateModifiedUser() {
+        MzkUser user = generateDefaultUser();
+        user.setLocale(localeDAO.findById(UserTestConstants.LOCALE_ID_EDITED).get());
+        user.setCountry(countryDAO.findById(UserTestConstants.COUNTRY_ID_EDITED).get());
+        user.setName(UserTestConstants.NAME_EDITED);
+        user.setBirthDate(DateUtil.parseString(UserTestConstants.BIRTH_DATE_EDITED, DateUtil.US_DATE_FORMATTER));
+        user.setBio(UserTestConstants.BIO_EDITED);
+        user.setMail(UserTestConstants.MAIL_EDITED);
+        user.setSurname(UserTestConstants.SURNAME_EDITED);
+
+        return user;
+    }
+
 
     /**
      * Creates a new user with the specified parent.
@@ -124,6 +147,23 @@ public class MzkUserDataCreation {
         MzkUser user = new MzkUser();
         user.setUsername(UserTestConstants.USERNAME + suffix);
         user.setPassword(UserTestConstants.PASSWORD);
+        user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
+        user.setIsActive(true);
+        user.setIsComplete(true);
+        user.setCreationDate(LocalDateTime.now());
+        return user;
+    }
+
+    /**
+     * Create the base of the default user in the application.
+     *
+     * @return The user.
+     */
+    private MzkUser generateDefaultUser() {
+        MzkUser user = new MzkUser();
+        user.setUsername(UserTestConstants.USERNAME);
+        user.setPassword(UserTestConstants.PASSWORD);
+        user.setMail(UserTestConstants.MAIL);
         user.setRole(roleDAO.getRoleByRoleId(RoleEnum.USER.getId()));
         user.setIsActive(true);
         user.setIsComplete(true);
