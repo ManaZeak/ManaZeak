@@ -3,15 +3,15 @@ package org.manazeak.manazeak.controller.fragment.user;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
-import org.manazeak.manazeak.controller.page.response.ResponseFragmentEnum;
+import org.manazeak.manazeak.controller.fragment.JsonResponseHandler;
 import org.manazeak.manazeak.controller.page.user.UserFragmentEnum;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
-import org.manazeak.manazeak.service.message.MessageManager;
 import org.manazeak.manazeak.service.security.user.info.UserInformationService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
@@ -26,11 +26,11 @@ public class UserProfileFragmentController {
      */
     private final UserInformationService userInformationService;
 
-    private final MessageManager messageManager;
+    private final JsonResponseHandler jsonResponseHandler;
 
-    public UserProfileFragmentController(UserInformationService userInformationService, MessageManager messageManager) {
+    public UserProfileFragmentController(UserInformationService userInformationService, JsonResponseHandler jsonResponseHandler) {
         this.userInformationService = userInformationService;
-        this.messageManager = messageManager;
+        this.jsonResponseHandler = jsonResponseHandler;
     }
 
     /**
@@ -66,16 +66,17 @@ public class UserProfileFragmentController {
      * @param model      The model for passing the information to the front.
      * @return The fragment to the front.
      */
+    @PostMapping("/account/profile-edit")
+    @RestSecurity(PrivilegeEnum.PLAY)
     public String saveProfileEditFragment(@ModelAttribute("userInfo") @Valid MzkUserEditDto editedUser,
                                           BindingResult result, Model model) {
         // Checking if the user send was validated.
         if (result.hasErrors()) {
             return UserFragmentEnum.EDIT_ACCOUNT.getPage();
         }
-        // Adding the information for the JSON return
-        model.addAttribute("title", messageManager.getMessage("user.edit.log.message"));
-        model.addAttribute("message", messageManager.getMessage("user.edit.log.title"));
-        // Returns a JSON with the status.
-        return ResponseFragmentEnum.SUCCESS_RESPONSE.getPage();
+        // Applying the modification to the user.
+        userInformationService.saveCurrentUserEditInformation(editedUser);
+        // Sends the ok response, the account has been created successfully
+        return jsonResponseHandler.prepareJsonSuccess("user.edit.log.title", "user.edit.log.message", model);
     }
 }

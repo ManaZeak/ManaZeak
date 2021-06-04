@@ -51,6 +51,7 @@ public class BadgeServiceImpl implements BadgeService {
      */
     @Override
     public void deleteBadge(Long badgeId) {
+        // Deleting the badge.
         badgeManager.deleteBadge(badgeId);
     }
 }
