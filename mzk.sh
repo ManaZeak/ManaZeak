@@ -221,8 +221,8 @@ elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   echo -e "  -s, --start        Start ManaZeak application"
   echo -e "                     Optional argument [dev/prod] depending on the mode you're starting ManaZeak with, will use prod if none are provided\n"
   echo -e "  -r, --reset        Remove existing database and docker images and rebuild them"
-  echo -e "                     It won't remove existing .env configuration file\n\n"
-  echo -e "  -g, --gource       Review git history using gource package\n"
+  echo -e "                     It won't remove existing .env configuration file\n"
+  echo -e "  -g, --gource       Review git history using gource package"
   echo -e "                     Optional argument [save] to save visualization as a mp4 file\n"
 
 
