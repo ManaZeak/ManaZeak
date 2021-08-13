@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -51,6 +52,23 @@ public final class FileUtil {
                 throw new MzkRuntimeException("general.error.file.parent_directory",
                         "general.error.file.parent_directory_title", e);
             }
+        }
+    }
+
+    /**
+     * Creates a file containing the given bytes.
+     *
+     * @param path  The path of the file that will be created.
+     * @param bytes The bytes that will be written into the file.
+     */
+    public static void writeBytesToFile(Path path, byte[] bytes) {
+        // Creating the directories needed for the file.
+        createDirectories(path);
+        // Creating the file and writing the data.
+        try (OutputStream fos = Files.newOutputStream(path)) {
+            fos.write(bytes);
+        } catch (IOException e) {
+            throw new MzkRuntimeException("general.error.file.writing_error", "general.error", e);
         }
     }
 }
