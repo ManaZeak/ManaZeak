@@ -45,6 +45,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
     - name: Matrix chat notification
       uses: Numericas/matrix-action@v1
+      if: always()
       with:
         server: ${{ secrets.MATRIX_SERVER }}
         room-id: ${{ secrets.MATRIX_ROOM_ID }}
