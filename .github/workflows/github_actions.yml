@@ -43,15 +43,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
-    - name: Rocket.Chat Notification
-      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
-      if: always()
+    - name: Matrix chat notification
+      uses: Numericas/matrix-action@v1
       with:
-        type: ${{ job.status }}
-        job_name: '*Lint Check*'
-        mention: 'here'
-        mention_if: 'failure'
-        channel: '#mzk_ci'
-        url: ${{ secrets.ROCKET_WEB_HOOK }}
-        commit: true
-        token: ${{ secrets.GITHUB_TOKEN }}
+        server: ${{ secrets.MATRIX_SERVER }}
+        room-id: ${{ secrets.MATRIX_ROOM_ID }}
+        user: ${{ secrets.MATRIX_USER }}
+        password: ${{ secrets.MATRIX_PASSWORD }}
+        status: ${{ job.status }}
