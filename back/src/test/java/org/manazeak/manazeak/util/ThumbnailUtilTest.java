@@ -25,16 +25,16 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
      * Nominal test, valid image.
      */
     @Test
-    public void testCreationThumb() {
+    void testCreationThumb() {
         // Getting the image for the FS.
         Path image = testImageGetter.getImagePath(TestImageGetter.THUMB_JPG_FULL_SIZE);
         // Getting the size that must be generated.
         List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
         // Trying to resize the image.
-        Path applicationPath = Paths.get(getApplicationPath());
-        ThumbnailUtil.generateThumbs(sizes, applicationPath, image);
+        Path tempFolder = getTempAppFolderPath();
+        ThumbnailUtil.generateThumbs(sizes, tempFolder, image);
         // Checking the image.
-        Path thumbnailPath = applicationPath.resolve(ThumbSizeEnum.TINY.getFolderName())
+        Path thumbnailPath = tempFolder.resolve(ThumbSizeEnum.TINY.getFolderName())
                 .resolve(TestImageGetter.THUMB_JPG_FULL_SIZE);
         Assertions.assertTrue(thumbnailPath.toFile().exists(), "The thumbnail hasn't been generated.");
     }
@@ -43,7 +43,7 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
      * Trying to generate a thumbnail with a missing file.
      */
     @Test
-    public void testCreationThumbMissingFile() {
+    void testCreationThumbMissingFile() {
         // Thumb folder
         Path applicationPath = Paths.get(getApplicationPath());
         // Getting a non image file.
@@ -51,23 +51,6 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         // Getting the size that must be generated.
         List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
         // Applying the modification to the file.
-        ThumbnailUtil.generateThumbs(sizes, applicationPath, image);
-        // Checking the image.
-        Assertions.assertFalse(image.toFile().exists());
-    }
-
-    /**
-     * Test when the original file is invalid.
-     */
-    @Test
-    public void testCreationThumbInvalidFile() {
-        // Thumb folder
-        Path applicationPath = getApplicationPathPath();
-        // Getting a invalid image file
-        Path image = testImageGetter.getImagePath(TestImageGetter.JPG_KO);
-        // Getting the size that must be generated.
-        List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
-        // Applying the modification to the file
         ThumbnailUtil.generateThumbs(sizes, applicationPath, image);
         // Checking the image.
         Assertions.assertFalse(image.toFile().exists());

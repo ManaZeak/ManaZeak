@@ -45,10 +45,14 @@ public abstract class AbstractManaZeakTest {
         }
     }
 
+    protected Path getTempAppFolderPath() {
+        return Paths.get(getApplicationPath()).resolve("temp");
+    }
+
     @AfterEach
     void doTearDown() throws IOException {
         // Cleaning the folder
-        FileUtils.deleteDirectory(getApplicationPathPath().toFile());
+        FileUtils.deleteDirectory(getTempAppFolderPath().toFile());
     }
 
     /**

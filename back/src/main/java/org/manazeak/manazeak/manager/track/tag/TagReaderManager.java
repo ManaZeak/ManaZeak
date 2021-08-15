@@ -10,7 +10,6 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.exception.MzkTagException;
-import org.manazeak.manazeak.util.file.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +33,9 @@ public class TagReaderManager {
             // Reading the audio file and handles errors.
             return AudioFileIO.read(filePath.toFile());
         } catch (CannotReadException e) {
-            LOG.error("Cannot read the audio file.", e);
             throw new MzkTagException("Cannot read a tag of the file : " + filePath,
                     "error.tag.audio_frame", filePath.toString(), e);
         } catch (TagException e) {
-            LOG.error("Error when reading tag", e);
             throw new MzkTagException("Error when reading the file : " + filePath, "error.tag.reading",
                     filePath.toString(), e);
         } catch (InvalidAudioFrameException e) {
@@ -57,6 +54,7 @@ public class TagReaderManager {
 
     /**
      * Extract the information contained a audio file.
+     *
      * @return The information extracted.
      */
     public AudioFileContainerDto extractAudioFile(Tag tag) {
