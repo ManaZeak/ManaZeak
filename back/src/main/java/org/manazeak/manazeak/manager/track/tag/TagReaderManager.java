@@ -8,6 +8,8 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.TagField;
+import org.manazeak.manazeak.constant.tag.FieldsTagEnum;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.exception.MzkTagException;
 import org.slf4j.Logger;
@@ -22,6 +24,47 @@ import java.nio.file.Path;
 public class TagReaderManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(TagReaderManager.class);
+
+    /**
+     * Extract the fields specific to the mp3 files.
+     * @param tag The informations about the 
+     * @param container
+     */
+    private static void extractSpecificMp3Tag(Tag tag, AudioFileContainerDto container) {
+        // Splitting the information for the disk number information.
+        final String diskInfo = tag.getFirst(FieldKey.DISC_NO);
+        if (diskInfo.contains("/")) {
+            String[] listDiskInfo = diskInfo.split("/");
+            container.setDiskNumber(listDiskInfo[0]);
+            container.setDiskTotal(listDiskInfo[1]);
+        } else {
+            LOG.warn("The track {} by {} has an invalid disk information. ({})", container.getTitle(),
+                    container.getArtist(), diskInfo);
+        }
+        // Splitting the information for the track number.
+        final String trackNumberInfo = tag.getFirst(FieldKey.TRACK_TOTAL);
+        if (trackNumberInfo.contains("/")) {
+            String[] listDisk = trackNumberInfo.split("/");
+            container.setTrackNumber(listDisk[0]);
+            container.setTrackTotal(listDisk[1]);
+        } else {
+            LOG.warn("The track {} by {} has an invalid track number information ({})", container.getTitle(),
+                    container.getArtist(), diskInfo);
+        }
+        // Getting the performer
+
+    }
+
+    /**
+     * Extract the tags specific to the flac files.
+     * @param tag The
+     * @param container
+     */
+    private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
+        // Getting the
+        container.setPerformer(tag.getFirst(FieldsTagEnum.ORIGINAL_ARTIST.name()));
+
+    }
 
     /**
      * Get the tag of a file.
@@ -57,10 +100,27 @@ public class TagReaderManager {
      *
      * @return The information extracted.
      */
-    public AudioFileContainerDto extractAudioFile(Tag tag) {
+    public AudioFileContainerDto extractAudioFile(Tag tag, boolean isMp3) {
+        // Contains the data extracted from the audio file.
+        final AudioFileContainerDto container = new AudioFileContainerDto();
+        // Extracting the data that is shared between flac and mp3.
+        container.setTitle(tag.getFirst(FieldKey.TITLE));
+        container.setArtist(tag.getFirst(FieldKey.ARTIST));
+        container.setDate(tag.getFirst(FieldKey.YEAR));
+        container.setAlbum(tag.getFirst(FieldKey.ALBUM));
+        container.setComposer(tag.getFirst(FieldKey.COMPOSER));
+
+        // If the file is an MP3
+        if (isMp3) {
+            extractSpecificMp3Tag(tag, container);
+        } else {
+
+        }
         // Extracting the cover art from the file.
-        tag.getFirst(FieldKey.COVER_ART);
-        return null;
+        TagField coverBinary = tag.getFirstField(FieldKey.COVER_ART);
+        container.setCover(coverBinary);
+        // Extracting the
+        return container;
     }
 
 }

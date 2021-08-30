@@ -1,7 +1,9 @@
 package org.manazeak.manazeak.util;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -31,6 +33,20 @@ public final class DateUtil {
             return null;
         }
         return LocalDate.parse(strDate, formatter);
+    }
+
+    /**
+     * Allows to parse a date from a string.
+     *
+     * @param millis the time in long.
+     * @return the date.
+     */
+    public static LocalDateTime parseLocalDateTimeString(Long millis) {
+        // If the string is null, then there is no date to get
+        if (millis == null) {
+            return null;
+        }
+        return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     /**

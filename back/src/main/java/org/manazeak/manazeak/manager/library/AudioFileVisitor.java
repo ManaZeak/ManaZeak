@@ -1,7 +1,12 @@
 package org.manazeak.manazeak.manager.library;
 
+import org.manazeak.manazeak.entity.dto.library.scan.ScannedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
+import org.manazeak.manazeak.entity.dto.library.scan.ScannedTrackDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.file.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -16,19 +21,29 @@ import java.util.List;
  */
 public class AudioFileVisitor implements FileVisitor<Path> {
 
-    private List<ScannedArtistDto> artists = new ArrayList<>();
-
+    private static final Logger LOG = LoggerFactory.getLogger(AudioFileVisitor.class);
+    private final List<ScannedArtistDto> artists = new ArrayList<>();
     private ScannedArtistDto artistFolder = null;
+    private ScannedAlbumDto albumFolder = null;
 
-    private String albumFolder = null;
+    private boolean isFirstFolder = true;
 
     @Override
-    public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
+    public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) {
+        // Skipping the .stdfolder, no music stored here.
+        if (path.getFileName().toString().equals(".stdfolder")) {
+            return FileVisitResult.SKIP_SUBTREE;
+        }
+        // Ignoring the starting folder.
+        if (isFirstFolder) {
+            isFirstFolder = false;
+            return FileVisitResult.CONTINUE;
+        }
         // The first directory encountered is the artist folder.
         if (artistFolder == null) {
             artistFolder = new ScannedArtistDto(path.getFileName().toString());
         } else if (albumFolder == null) {
-            albumFolder = path.getFileName().toString();
+            albumFolder = new ScannedAlbumDto(path.getFileName().toString());
         } else {
             // No further directories expected.
             throw new MzkRuntimeException("Library folder nested too deep.", "");
@@ -37,17 +52,41 @@ public class AudioFileVisitor implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
-        return null;
+    public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) {
+        // Adding the track to the current album
+        if (FileUtil.isAudioFileByExtension(path)) {
+            // Create the track with the information of the file.
+            ScannedTrackDto track = new ScannedTrackDto(path, basicFileAttributes);
+            // Adding the track to the album.
+            albumFolder.addTrack(track);
+        }
+        return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFileFailed(Path path, IOException e) throws IOException {
-        return null;
+        LOG.error("Error during the walk in the path {}", path, e);
+        throw e;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException {
-        return null;
+    public FileVisitResult postVisitDirectory(Path path, IOException e) {
+        // Test if we are exiting the album folder.
+        if (albumFolder != null) {
+            // Adding the album to the current artist.
+            artistFolder.addAlbum(albumFolder);
+            // Clearing the album.
+            albumFolder = null;
+        } else if (artistFolder != null) {
+            // Adding the artist to the list of artists.
+            artists.add(artistFolder);
+            // Clearing the artist
+            artistFolder = null;
+        }
+        return FileVisitResult.CONTINUE;
+    }
+
+    public List<ScannedArtistDto> getArtists() {
+        return artists;
     }
 }

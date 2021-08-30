@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.util.file;
 
+import org.apache.commons.io.FilenameUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.FileMagicNumberEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
@@ -26,7 +27,7 @@ public final class FileUtil {
     }
 
     /**
-     * Get the extension of a file from it's magic bytes.
+     * Get the extension of a file from its magic bytes.
      *
      * @param file The file in the form.
      */
@@ -70,5 +71,20 @@ public final class FileUtil {
         } catch (IOException e) {
             throw new MzkRuntimeException("general.error.file.writing_error", "general.error", e);
         }
+    }
+
+    /**
+     * Check if the file is an audio file.
+     *
+     * @return True if the file is a flac or a mp3
+     */
+    public static boolean isAudioFileByExtension(Path filePath) {
+        if (filePath == null) {
+            return false;
+        }
+        // Getting the extension of the file
+        String extension = FilenameUtils.getExtension(filePath.getFileName().toString());
+        return (extension.equals(FileExtensionEnum.FLAC.getExtensionWithoutDot())
+                || extension.equals(FileExtensionEnum.MP3.getExtensionWithoutDot()));
     }
 }

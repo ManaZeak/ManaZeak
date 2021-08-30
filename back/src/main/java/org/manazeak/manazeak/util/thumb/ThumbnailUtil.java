@@ -92,19 +92,4 @@ public final class ThumbnailUtil {
         graphics2D.dispose();
         return img;
     }
-
-    /**
-     * Get the image that will be written.
-     *
-     * @param w The width of the image.
-     * @param h The height of the image.
-     * @return The image that will be generated.
-     */
-    private static BufferedImage getCompatibleImage(int w, int h) {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        GraphicsConfiguration gc = gd.getDefaultConfiguration();
-        return gc.createCompatibleImage(w, h);
-    }
-
 }
