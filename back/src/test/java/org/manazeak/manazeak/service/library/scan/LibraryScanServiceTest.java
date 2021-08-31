@@ -32,13 +32,10 @@ class LibraryScanServiceTest extends AbstractManaZeakTest {
         Assertions.assertEquals(2, artists.size(), "Wrong number of scanned artist.");
         // Checking the artist name
         ScannedArtistDto artist = artists.get(0);
-        Assertions.assertEquals("artist1", artist.getArtistFolder(), "Invalid artist name");
         Assertions.assertEquals(2, artist.getAlbums().size(), "Wrong number of albums.");
         // Checking the album name
         ScannedAlbumDto album = artist.getAlbums().get(0);
-        Assertions.assertEquals("alb2", album.getAlbumTitle(), "Wrong album name");
         // Checking the track
         Assertions.assertEquals(2, album.getTracks().size(), "Wrong number of tracks.");
-        ScannedTrackDto trackDto = album.getTracks().get(0);
     }
 }
