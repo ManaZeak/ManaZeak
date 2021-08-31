@@ -6,6 +6,7 @@ import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
+import org.manazeak.manazeak.entity.dto.library.scan.ScannedTrackDto;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,7 +30,15 @@ class LibraryScanServiceTest extends AbstractManaZeakTest {
         List<ScannedArtistDto> artists = libraryScanManager.scanLibraryFolder();
         // Checking the results.
         Assertions.assertEquals(2, artists.size(), "Wrong number of scanned artist.");
-        Assertions.assertEquals(2, artists.get(0).getAlbums().size(), "Wrong number of albums.");
-        Assertions.assertEquals(2, artists.get(0).getAlbums().get(0).getTracks().size(), "Wrong number of tracks.");
+        // Checking the artist name
+        ScannedArtistDto artist = artists.get(0);
+        Assertions.assertEquals("artist1", artist.getArtistFolder(), "Invalid artist name");
+        Assertions.assertEquals(2, artist.getAlbums().size(), "Wrong number of albums.");
+        // Checking the album name
+        ScannedAlbumDto album = artist.getAlbums().get(0);
+        Assertions.assertEquals("alb2", album.getAlbumTitle(), "Wrong album name");
+        // Checking the track
+        Assertions.assertEquals(2, album.getTracks().size(), "Wrong number of tracks.");
+        ScannedTrackDto trackDto = album.getTracks().get(0);
     }
 }
