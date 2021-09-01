@@ -45,7 +45,11 @@ public class ScannedArtistDto {
     }
 
     private void updateLastModificationDate(LocalDateTime lastModificationDateAlbum) {
-        if (lastModificationDateAlbum.isAfter(lastModificationDate)) {
+        // Nothing to update.
+        if (lastModificationDateAlbum == null) {
+            return;
+        }
+        if (lastModificationDate == null || lastModificationDateAlbum.isAfter(lastModificationDate)) {
             lastModificationDate = lastModificationDateAlbum;
         }
     }

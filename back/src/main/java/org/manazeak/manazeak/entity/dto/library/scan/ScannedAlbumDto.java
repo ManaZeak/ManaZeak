@@ -47,7 +47,11 @@ public class ScannedAlbumDto {
      * @param lastModificationDate The modification of the track.
      */
     private void updateModificationDate(LocalDateTime lastModificationDate) {
-        if (lastModificationDate.isAfter(this.lastModificationDate)) {
+        // Nothing to do if the file has no modification date.
+        if (lastModificationDate == null) {
+            return;
+        }
+        if (this.lastModificationDate == null || lastModificationDate.isAfter(this.lastModificationDate)) {
             this.lastModificationDate = lastModificationDate;
         }
     }
