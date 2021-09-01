@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinTable;
 
 /**
- * No comment found in model diagram
+ * The track information.
  *
  * This file has been automatically generated
  */

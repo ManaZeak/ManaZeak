@@ -41,7 +41,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
         }
         // The first directory encountered is the artist folder.
         if (artistFolder == null) {
-            artistFolder = new ScannedArtistDto(path.getFileName().toString());
+            artistFolder = new ScannedArtistDto(path);
         } else if (albumFolder == null) {
             albumFolder = new ScannedAlbumDto(path.getFileName().toString());
         } else {

@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.GenerationType;
 
 /**
- * No comment found in model diagram
+ * The information about the 
  *
  * This file has been automatically generated
  */

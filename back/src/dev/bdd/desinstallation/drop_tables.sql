@@ -11,6 +11,15 @@ SET search_path TO music;
 DROP SEQUENCE SEQ_ARTIST;
 DROP SEQUENCE SEQ_BAND;
 DROP SEQUENCE SEQ_TRACK;
+DROP SEQUENCE SEQ_COUNTRY;
+DROP SEQUENCE SEQ_LOCALE;
+DROP SEQUENCE SEQ_BADGE;
+DROP SEQUENCE SEQ_INVITE_CODE;
+DROP SEQUENCE SEQ_MZK_USER;
+DROP SEQUENCE SEQ_PRIVILEGE;
+DROP SEQUENCE SEQ_ROLE;
+DROP SEQUENCE SEQ_WISH;
+DROP SEQUENCE SEQ_WISH_STATUS;
  
 -- ================================
 -- DROP FOREIGN KEY
@@ -21,6 +30,17 @@ ALTER TABLE track_band_artist DROP CONSTRAINT FK_track_band_artist_1;
 ALTER TABLE track_band_artist DROP CONSTRAINT FK_track_band_artist_2;
 ALTER TABLE track_band_performer DROP CONSTRAINT FK_track_band_performer_1;
 ALTER TABLE track_band_performer DROP CONSTRAINT FK_track_band_performer_2;
+ALTER TABLE badge_user DROP CONSTRAINT FK_badge_user_1;
+ALTER TABLE badge_user DROP CONSTRAINT FK_badge_user_2;
+ALTER TABLE invite_code DROP CONSTRAINT FK_user_invite_parent;
+ALTER TABLE mzk_user DROP CONSTRAINT FK_invite_used;
+ALTER TABLE mzk_user DROP CONSTRAINT FK_user_country;
+ALTER TABLE mzk_user DROP CONSTRAINT FK_user_locale;
+ALTER TABLE mzk_user DROP CONSTRAINT FK_role_user;
+ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_1;
+ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_2;
+ALTER TABLE wish DROP CONSTRAINT FK_user_wish;
+ALTER TABLE wish DROP CONSTRAINT FK_wish_status;
  
 -- ================================
 -- DROP FOREIGN KEYS INDEXES
@@ -31,6 +51,17 @@ DROP INDEX IDX_track_band_artist_1;
 DROP INDEX IDX_track_band_artist_2;
 DROP INDEX IDX_track_band_performer_1;
 DROP INDEX IDX_track_band_performer_2;
+DROP INDEX IDX_badge_user_1;
+DROP INDEX IDX_badge_user_2;
+DROP INDEX IDX_user_invite_parent;
+DROP INDEX IDX_invite_used;
+DROP INDEX IDX_user_country;
+DROP INDEX IDX_user_locale;
+DROP INDEX IDX_role_user;
+DROP INDEX IDX_privileges_role_1;
+DROP INDEX IDX_privileges_role_2;
+DROP INDEX IDX_user_wish;
+DROP INDEX IDX_wish_status;
  
 -- ================================
 -- DROP TABLES
@@ -41,5 +72,16 @@ DROP TABLE band_artist;
 DROP TABLE Track;
 DROP TABLE track_band_artist;
 DROP TABLE track_band_performer;
+DROP TABLE Country;
+DROP TABLE Locale;
+DROP TABLE badge;
+DROP TABLE badge_user;
+DROP TABLE invite_code;
+DROP TABLE mzk_user;
+DROP TABLE privilege;
+DROP TABLE role;
+DROP TABLE privileges_role;
+DROP TABLE wish;
+DROP TABLE wish_status;
 
 -- END OF GENERATED CODE - YOU CAN EDIT THE FILE AFTER THIS LINE, DO NOT EDIT THIS LINE OR BEFORE THIS LINE

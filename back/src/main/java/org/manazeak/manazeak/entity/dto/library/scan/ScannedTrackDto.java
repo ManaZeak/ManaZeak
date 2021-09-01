@@ -34,4 +34,16 @@ public class ScannedTrackDto {
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
+
+    /**
+     * Get the date of the file that is the most recent.
+     * @return The most recent date.
+     */
+    public LocalDateTime getMostRecentDate() {
+        if (lastModificationDate.isAfter(creationDate)) {
+            return lastModificationDate;
+        } else {
+            return creationDate;
+        }
+    }
 }

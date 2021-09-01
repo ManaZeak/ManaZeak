@@ -1,21 +1,22 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Set;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.ManyToMany;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.CascadeType;
-import javax.persistence.ManyToMany;
 import javax.persistence.Id;
-import javax.persistence.GenerationType;
 import javax.persistence.JoinTable;
 
 /**
- * No comment found in model diagram
+ * Contains the bands of the application.
  *
  * This file has been automatically generated
  */
@@ -27,6 +28,8 @@ public class Band implements Serializable{
 
 	private Long bandId;
 	private String name;
+	private LocalDateTime lastModificationDate;
+	private String location;
 	private Set<Artist> artistList;
 
     /**
@@ -63,6 +66,36 @@ public class Band implements Serializable{
 		this.name = name;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of lastModificationDate
+     */
+    @Column(name="last_modification_date", nullable=false)
+	public LocalDateTime getLastModificationDate(){
+		return lastModificationDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param lastModificationDate new value to give to lastModificationDate
+     */
+	public void setLastModificationDate(final LocalDateTime lastModificationDate){
+		this.lastModificationDate = lastModificationDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of location
+     */
+    @Column(name="location", nullable=false)
+	public String getLocation(){
+		return location;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param location new value to give to location
+     */
+	public void setLocation(final String location){
+		this.location = location;
+    }  
+    /**
      * Association band_artist to Artist
      * @return value of artistList
      */
@@ -87,6 +120,8 @@ public class Band implements Serializable{
 		// Calculating hashcode with all "primitives" attributes
 		result = 31 * result + (bandId == null? 0 : bandId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
+		result = 31 * result + (lastModificationDate == null? 0 : lastModificationDate.hashCode());
+		result = 31 * result + (location == null? 0 : location.hashCode());
 			
 		return result;
 	}
@@ -113,6 +148,8 @@ public class Band implements Serializable{
 	    
 		return (bandId == null ?  (otherBand.bandId == null) : bandId.equals(otherBand.bandId))
 			&& (name == null ?  (otherBand.name == null) : name.equals(otherBand.name))
+			&& (lastModificationDate == null ?  (otherBand.lastModificationDate == null) : lastModificationDate.equals(otherBand.lastModificationDate))
+			&& (location == null ?  (otherBand.location == null) : location.equals(otherBand.location))
 		;
 	}
 
