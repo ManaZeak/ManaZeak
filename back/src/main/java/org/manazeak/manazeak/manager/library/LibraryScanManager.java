@@ -49,11 +49,29 @@ public class LibraryScanManager {
         Map<String, ScannedArtistDto> artistBatch = new HashMap<>();
         // Creating the output list.
         List<ScannedArtistDto> artistsToUpdate = new ArrayList<>();
+        int elementCounter = 0;
+
         // Iterating over the artists
-        for (int i = 0; i < artists.size(); ++i) {
-            artistBatch.put(artists.get(i).getArtistPath().toString(), artists.get(i));
+        for (ScannedArtistDto artist : artists) {
+            // Adding the scanned artist to the map.
+            artistBatch.put(artist.getArtistPath().toString(), artist);
+            elementCounter++;
+            // If the buffer is full, requesting the database.
+            if (elementCounter > LibraryConstant.SCAN_BUFFER_SIZE) {
+                // Adding the artists to the exit list.
+                artistsToUpdate.addAll(compareWithDataBaseArtists(artistBatch));
+                // Clearing the map and resetting the counter
+                elementCounter = 0;
+                artistBatch.clear();
+            }
         }
-        return null;
+
+        // If there is any artist left in the buffer, we process them
+        if (elementCounter != 0) {
+            artistsToUpdate.addAll(compareWithDataBaseArtists(artistBatch));
+        }
+
+        return artistsToUpdate;
     }
 
     /**
@@ -62,21 +80,27 @@ public class LibraryScanManager {
      * @return
      */
     private List<ScannedArtistDto> compareWithDataBaseArtists(Map<String, ScannedArtistDto> artists) {
-        // Getting the locations to get in the database
+        // Getting the location of the artists to get.
         Set<String> locations = artists.keySet();
+        // Getting the locations to get in the database
         List<Band> bands = bandDAO.getBandByLocations(locations);
+
         // Creating the result list containing the artists that must be updated.
         List<ScannedArtistDto> artistsToUpdate = new ArrayList<>();
-        for (int i = 0 ; i < bands.size(); ++i) {
-            Band band = bands.get(i);
+        for (Band band : bands) {
             ScannedArtistDto scannedArtist = artists.get(band.getLocation());
             // Checking if the last modification date of the artist.
             if (scannedArtist.getLastModificationDate().isAfter(band.getLastModificationDate())) {
                 // The band must be updated
                 artistsToUpdate.add(scannedArtist);
-                // 
+                // Removing from the band from the map
+                artists.remove(band.getLocation());
             }
         }
-        return null;
+
+        // The bands that still are in the map were not found in the database, we must add them.
+        artistsToUpdate.addAll(artists.values());
+
+        return artistsToUpdate;
     }
 }

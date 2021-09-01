@@ -21,7 +21,7 @@ public interface BandDAO extends CrudRepository<Band, Long> {
      * @param locations The locations of the bands.
      * @return The bands corresponding to the locations.
      */
-    @Query("SELECT b FROM Band b WHERE b.location IN (:locations)")
+    @Query("SELECT DISTINCT b FROM Band b WHERE b.location IN (:locations)")
     List<Band> getBandByLocations(@Param("locations") Set<String> locations);
 
 }
