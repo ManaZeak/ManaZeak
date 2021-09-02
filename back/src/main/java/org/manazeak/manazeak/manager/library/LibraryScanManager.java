@@ -77,7 +77,7 @@ public class LibraryScanManager {
     /**
      * Getting the artist from the database and comparing
      *
-     * @return
+     * @return The list of the artists filtered.
      */
     private List<ScannedArtistDto> compareWithDataBaseArtists(Map<String, ScannedArtistDto> artists) {
         // Getting the location of the artists to get.

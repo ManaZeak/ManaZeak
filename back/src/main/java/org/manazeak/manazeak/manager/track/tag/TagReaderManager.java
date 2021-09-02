@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Allows to read the tag of a audio file.
+ * Allows to read the tag of an audio file.
  */
 public class TagReaderManager {
 
@@ -27,8 +27,9 @@ public class TagReaderManager {
 
     /**
      * Extract the fields specific to the mp3 files.
-     * @param tag The informations about the 
-     * @param container
+     *
+     * @param tag       The information about the tag.
+     * @param container The information extracted from the tracks.
      */
     private static void extractSpecificMp3Tag(Tag tag, AudioFileContainerDto container) {
         // Splitting the information for the disk number information.
@@ -57,8 +58,9 @@ public class TagReaderManager {
 
     /**
      * Extract the tags specific to the flac files.
-     * @param tag The
-     * @param container
+     *
+     * @param tag       The information about the tag.
+     * @param container contains the information about the track.
      */
     private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
         // Getting the
