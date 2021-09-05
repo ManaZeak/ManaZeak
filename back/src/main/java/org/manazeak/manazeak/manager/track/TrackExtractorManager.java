@@ -1,11 +1,19 @@
 package org.manazeak.manazeak.manager.track;
 
+import org.manazeak.manazeak.constant.library.LibraryConstant;
+import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Import the track into the database
@@ -13,21 +21,38 @@ import java.util.concurrent.Executors;
 @Component
 public class TrackExtractorManager {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(TrackExtractorManager.class);
 
     /**
      * Extracts the data contained in the track into an object.
      *
      * @param artists The list of folder to extract.
      */
-    public void extractTracks(List<ScannedArtistDto> artists) {
+    public List<ExtractedBandDto> extractTracks(List<ScannedArtistDto> artists) {
         // Creating the thread pool.
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-
+        ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.THREAD_NUMBER);
+        List<Future<ExtractedBandDto>> results = new ArrayList<>();
         // Launching the thread with an artist.
         for (ScannedArtistDto artist : artists) {
-
+            results.add(executor.submit(new ArtistFolderExtractor(artist)));
         }
-    }
 
+        // The pool doesn't accept any more jobs.
+        executor.shutdown();
+
+        List<ExtractedBandDto> bands = new ArrayList<>();
+        // Getting the results of the threads.
+        for (Future<ExtractedBandDto> result : results) {
+            try {
+                bands.add(result.get());
+            } catch (ExecutionException e) {
+                throw new MzkRuntimeException("An exception was encountered during the track extraction", "", e);
+            } catch (InterruptedException e) {
+                LOG.error("Track extraction thread was interrupted.", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        return bands;
+    }
 }

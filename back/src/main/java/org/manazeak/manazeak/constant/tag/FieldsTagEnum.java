@@ -5,6 +5,8 @@ package org.manazeak.manazeak.constant.tag;
  */
 public enum FieldsTagEnum {
 
-    ORIGINAL_ARTIST;
+    PERFORMER,
+    DISCNUMBER,
+    RELEASEDATE
 
 }

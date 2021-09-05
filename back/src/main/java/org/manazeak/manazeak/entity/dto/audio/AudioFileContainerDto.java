@@ -33,7 +33,7 @@ public class AudioFileContainerDto {
 
     private String copyright;
 
-    private String diskNumber;
+    private String discNumber;
 
     private String diskTotal;
 
@@ -45,7 +45,34 @@ public class AudioFileContainerDto {
 
     private String performer;
 
-    public AudioFileContainerDto() {
+    private String producer;
+
+    private String label;
+
+    private AudioFileHeaderContainerDto headers;
+
+    public AudioFileHeaderContainerDto getHeaders() {
+        return headers;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setHeaders(AudioFileHeaderContainerDto headers) {
+        this.headers = headers;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public String getTitle() {
@@ -136,12 +163,12 @@ public class AudioFileContainerDto {
         this.copyright = copyright;
     }
 
-    public String getDiskNumber() {
-        return diskNumber;
+    public String getDiscNumber() {
+        return discNumber;
     }
 
-    public void setDiskNumber(String diskNumber) {
-        this.diskNumber = diskNumber;
+    public void setDiscNumber(String discNumber) {
+        this.discNumber = discNumber;
     }
 
     public String getCountry() {

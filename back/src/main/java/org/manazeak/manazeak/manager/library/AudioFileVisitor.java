@@ -43,7 +43,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
         if (artistFolder == null) {
             artistFolder = new ScannedArtistDto(path);
         } else if (albumFolder == null) {
-            albumFolder = new ScannedAlbumDto(path.getFileName().toString());
+            albumFolder = new ScannedAlbumDto(path);
         } else {
             // No further directories expected.
             throw new MzkRuntimeException("Library folder nested too deep.", "");

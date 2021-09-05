@@ -14,6 +14,8 @@ public final class LibraryConstant {
     /** The number of items that will be processed at the same time. */
     public static final int SCAN_BUFFER_SIZE = 1000;
 
+    public static final int THREAD_NUMBER = 10;
+
     private LibraryConstant() {
 
     }
