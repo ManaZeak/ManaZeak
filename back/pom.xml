@@ -95,13 +95,10 @@
 			<type>pom</type>
 		</dependency>
 		<dependency>
-			<groupId>org.jaudiotagger</groupId>
-			<artifactId>tag</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/dev/lib/jaudiotagger-2.2.6-SNAPSHOT.jar</systemPath>
+			<groupId>org.bitbucket.ijabz</groupId>
+			<artifactId>jaudiotagger</artifactId>
+			<version>1</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>

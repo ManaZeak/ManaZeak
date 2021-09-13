@@ -17,7 +17,7 @@ public class ExtractedAlbumDto {
     private String label;
     private String year;
     private LocalDate releaseDate;
-    private int trackTotal;
+    private Integer trackTotal;
 
     public ExtractedAlbumDto(Path location) {
         this.location = location;
@@ -71,11 +71,11 @@ public class ExtractedAlbumDto {
         this.releaseDate = releaseDate;
     }
 
-    public int getTrackTotal() {
+    public Integer getTrackTotal() {
         return trackTotal;
     }
 
-    public void setTrackTotal(int trackTotal) {
+    public void setTrackTotal(Integer trackTotal) {
         this.trackTotal = trackTotal;
     }
 

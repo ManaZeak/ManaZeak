@@ -24,7 +24,47 @@ public class ExtractedTrackDto {
 
     private Integer discNumber;
 
-    private int trackNumber;
+    private Integer trackNumber;
+
+    private Integer bitrate;
+
+    private int sampleRate;
+
+    private long size;
+
+    private double length;
+
+    public Integer getBitrate() {
+        return bitrate;
+    }
+
+    public void setBitrate(Integer bitrate) {
+        this.bitrate = bitrate;
+    }
+
+    public int getSampleRate() {
+        return sampleRate;
+    }
+
+    public void setSampleRate(int sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
 
     public List<String> getProducers() {
         return producers;
@@ -90,11 +130,11 @@ public class ExtractedTrackDto {
         this.discNumber = discNumber;
     }
 
-    public int getTrackNumber() {
+    public Integer getTrackNumber() {
         return trackNumber;
     }
 
-    public void setTrackNumber(int trackNumber) {
+    public void setTrackNumber(Integer trackNumber) {
         this.trackNumber = trackNumber;
     }
 }

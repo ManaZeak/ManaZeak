@@ -26,6 +26,7 @@ services:
             - "35729:35729"
         volumes:
             - ${RESOURCES_PATH}:/resources
+            - ${LIBRARY_PATH}:/library
         links:
             - db
         depends_on:
@@ -46,17 +47,17 @@ services:
         links:
             - back
 
-    moodbar:
-        image: squadella/py-moodbar-generator
-        container_name: manazeak_moodbar
-        volumes:
-            - ${LIBRARY_PATH}:/library
-            - ./static/mood:/moodbar/static
-            - ./static/mood_meta:/meta
-        environment:
-            MOOD_OUTPUT_FOLDER: /moodbar/static
-            LIBRARY_FOLDER: /library
-            METADATA_FOLDER: /meta
+#    moodbar:
+#        image: squadella/py-moodbar-generator
+#        container_name: manazeak_moodbar
+#        volumes:
+#            - ${LIBRARY_PATH}:/library
+#            - ./static/mood:/moodbar/static
+#            - ./static/mood_meta:/meta
+#        environment:
+#            MOOD_OUTPUT_FOLDER: /moodbar/static
+#            LIBRARY_FOLDER: /library
+#            METADATA_FOLDER: /meta
 
     syncthing:
         image: syncthing/syncthing:latest

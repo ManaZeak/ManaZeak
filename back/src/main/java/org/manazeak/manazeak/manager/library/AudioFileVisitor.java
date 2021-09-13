@@ -31,7 +31,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
     @Override
     public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) {
         // Skipping the .stdfolder, no music stored here.
-        if (path.getFileName().toString().equals(".stdfolder")) {
+        if (path.getFileName().toString().equals(".stfolder")) {
             return FileVisitResult.SKIP_SUBTREE;
         }
         // Ignoring the starting folder.

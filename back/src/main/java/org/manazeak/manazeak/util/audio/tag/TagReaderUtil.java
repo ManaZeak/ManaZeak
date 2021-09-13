@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.logging.Level;
 
 /**
  * Read the information contained in the track.
@@ -28,10 +29,19 @@ public final class TagReaderUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(TagReaderUtil.class);
 
+    static {
+        // Disable loggers for jaudiotagger.
+        java.util.logging.Logger[] pin = new java.util.logging.Logger[]{
+                java.util.logging.Logger.getLogger("org.jaudiotagger")
+        };
+
+        for (java.util.logging.Logger l : pin)
+            l.setLevel(Level.WARNING);
+    }
+
     private TagReaderUtil() {
 
     }
-
 
     /**
      * Getting the data contained in the track tags.
@@ -92,10 +102,12 @@ public final class TagReaderUtil {
 
         // Getting the information from the headers.
         AudioHeader header = audioFile.getAudioHeader();
-        extractedHeader.setBitrate(header.getByteRate());
-        extractedHeader.setTrackLength(header.getPreciseTrackLength());
-        extractedHeader.setSampleRate(header.getSampleRateAsNumber());
-        extractedHeader.setSize(audioFile.getFile().length());
+        if (header != null) {
+            extractedHeader.setBitrate(header.getByteRate());
+            extractedHeader.setTrackLength(header.getPreciseTrackLength());
+            extractedHeader.setSampleRate(header.getSampleRateAsNumber());
+            extractedHeader.setSize(audioFile.getFile().length());
+        }
 
         // Adding the headers into the container.
         container.setHeaders(extractedHeader);
@@ -165,7 +177,7 @@ public final class TagReaderUtil {
                     container.getArtist(), diskInfo);
         }
         // Getting the performer
-        container.setPerformer(tag.getFirst(FieldKey.PERFORMER));
+        container.setPerformer(tag.getFirst(FieldKey.ORIGINAL_ARTIST));
         container.setReleaseDate(tag.getFirst(FieldKey.ORIGINAL_YEAR));
     }
 

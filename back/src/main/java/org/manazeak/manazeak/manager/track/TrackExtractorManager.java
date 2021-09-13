@@ -46,7 +46,7 @@ public class TrackExtractorManager {
             try {
                 bands.add(result.get());
             } catch (ExecutionException e) {
-                throw new MzkRuntimeException("An exception was encountered during the track extraction", "", e);
+                LOG.error("An exeption occured during the extraction of an artist. Skipping the artist folder.", e);
             } catch (InterruptedException e) {
                 LOG.error("Track extraction thread was interrupted.", e);
                 Thread.currentThread().interrupt();

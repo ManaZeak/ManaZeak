@@ -5,7 +5,7 @@ package org.manazeak.manazeak.entity.dto.audio;
  */
 public class AudioFileHeaderContainerDto {
 
-    private long bitrate;
+    private Integer bitrate;
 
     private int sampleRate;
 
@@ -13,11 +13,11 @@ public class AudioFileHeaderContainerDto {
 
     private long size;
 
-    public long getBitrate() {
+    public Integer getBitrate() {
         return bitrate;
     }
 
-    public void setBitrate(long bitrate) {
+    public void setBitrate(Integer bitrate) {
         this.bitrate = bitrate;
     }
 

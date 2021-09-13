@@ -2,6 +2,8 @@ package org.manazeak.manazeak;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +55,12 @@ public abstract class AbstractManaZeakTest {
     void doTearDown() throws IOException {
         // Cleaning the folder
         FileUtils.deleteDirectory(getTempAppFolderPath().toFile());
+    }
+
+    @BeforeEach
+    void doSetup() {
+        // Setting the path of the test library
+        LibraryConstant.LIBRARY_PATH = Paths.get(getApplicationPath(), "service", "library");
     }
 
     /**

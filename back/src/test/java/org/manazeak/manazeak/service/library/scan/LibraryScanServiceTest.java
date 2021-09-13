@@ -6,7 +6,6 @@ import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
-import org.manazeak.manazeak.entity.dto.library.scan.ScannedTrackDto;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,8 +23,6 @@ class LibraryScanServiceTest extends AbstractManaZeakTest {
 
     @Test
     void testFileScan() throws IOException {
-        // Setting the path of the test library
-        LibraryConstant.LIBRARY_PATH = Paths.get(getApplicationPath(), "service", "library");
         // Launching the library scan.
         List<ScannedArtistDto> artists = libraryScanManager.scanLibraryFolder();
         // Checking the results.

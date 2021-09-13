@@ -2,6 +2,11 @@
 doc/
 docker/
 static/
+node/
 node_modules/
+mda-generator/
 .idea/
 back/target/
+back/src/dev/bdd/
+.github
+.git

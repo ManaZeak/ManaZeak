@@ -4,12 +4,19 @@ import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
+import org.manazeak.manazeak.util.CastUtil;
 import org.manazeak.manazeak.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.format.DateTimeParseException;
 
 /**
  * Map the track fields into the different objects.
  */
 public final class TrackTagMapper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TrackTagMapper.class);
 
     private TrackTagMapper() {
 
@@ -46,6 +53,7 @@ public final class TrackTagMapper {
 
     /**
      * Get the information extracted in the track's tags into the album.
+     *
      * @param fileContainer the information about information
      */
     private static void fillAlbumInformation(AudioFileContainerDto fileContainer, ExtractedAlbumDto album) {
@@ -53,14 +61,20 @@ public final class TrackTagMapper {
         album.setDiscTotal(fileContainer.getDiskTotal());
         album.setLabel(fileContainer.getLabel());
         album.setYear(fileContainer.getDate());
-        album.setReleaseDate(DateUtil.parseString(fileContainer.getReleaseDate(), DateUtil.US_DATE_FORMATTER));
-        album.setTrackTotal(Integer.parseInt(fileContainer.getTrackTotal()));
+        try {
+            album.setReleaseDate(DateUtil.parseString(fileContainer.getReleaseDate(), DateUtil.US_DATE_FORMATTER));
+        } catch (DateTimeParseException e) {
+            LOG.warn("The release date : '{}' of the track {} - {} couldn't be parsed.",
+                    fileContainer.getReleaseDate(), fileContainer.getAlbumArtist(), fileContainer.getTitle(), e);
+        }
+        album.setTrackTotal(CastUtil.castStringToInt(fileContainer.getTrackTotal()));
     }
 
     /**
      * Get the information extracted from the track's tags.
+     *
      * @param fileContainer The extracted data from the track's tag.
-     * @param track The track information.
+     * @param track         The track information.
      */
     private static void fillTrackInformation(AudioFileContainerDto fileContainer, ExtractedTrackDto track) {
         // Getting the track title.
@@ -71,8 +85,12 @@ public final class TrackTagMapper {
         track.setProducers(TagSplitterHelper.splitTag(fileContainer.getProducer()));
         track.setGenres(TagSplitterHelper.splitTag(fileContainer.getGenre()));
         track.setYear(fileContainer.getDate());
-        track.setDiscNumber(Integer.parseInt(fileContainer.getDiscNumber()));
-        track.setTrackNumber(Integer.parseInt(fileContainer.getTrackNumber()));
+        track.setDiscNumber(CastUtil.castStringToInt(fileContainer.getDiscNumber()));
+        track.setTrackNumber(CastUtil.castStringToInt(fileContainer.getTrackNumber()));
+        track.setBitrate(fileContainer.getHeaders().getBitrate());
+        track.setSampleRate(fileContainer.getHeaders().getSampleRate());
+        track.setLength(fileContainer.getHeaders().getTrackLength());
+        track.setSize(fileContainer.getHeaders().getSize());
     }
 
 }

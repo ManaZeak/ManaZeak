@@ -2,6 +2,7 @@ package org.manazeak.manazeak.controller.html;
 
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
+import org.manazeak.manazeak.service.library.LibraryScanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -11,6 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TempController {
 
+    private final LibraryScanService scanService;
+
+    public TempController(LibraryScanService scanService) {
+        this.scanService = scanService;
+    }
+
     /**
      * Loading the template for the main page.
      *
@@ -19,6 +26,8 @@ public class TempController {
     @GetMapping("/testPriv")
     @Security(PrivilegeEnum.ADMV)
     public String getMainPage() {
+        // Test intégration bibliothèque
+        scanService.scanLibrary();
         return "index.html";
     }
 }

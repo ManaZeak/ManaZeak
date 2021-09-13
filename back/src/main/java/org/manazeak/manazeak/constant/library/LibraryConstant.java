@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 public final class LibraryConstant {
 
     /** The music library in the docker container. */
-    public static final Path LIBRARY_PATH = Paths.get("/library/");
+    public final static Path LIBRARY_PATH = Paths.get("/library/");
 
     /** The number of items that will be processed at the same time. */
     public static final int SCAN_BUFFER_SIZE = 1000;
 
-    public static final int THREAD_NUMBER = 10;
+    public static final int THREAD_NUMBER = 1;
 
     private LibraryConstant() {
 

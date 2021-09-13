@@ -30,4 +30,18 @@ public final class CastUtil {
         }
         return r;
     }
+
+    /**
+     * Cast a string into an integer.
+     *
+     * @param value the value to convert.
+     * @return An integer.
+     */
+    public static Integer castStringToInt(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        return Integer.parseInt(value);
+    }
+
 }
