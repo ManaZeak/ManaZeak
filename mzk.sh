@@ -37,6 +37,11 @@ fi
 # Initialization sequence, fill .env file to fit user inputs and build docker images
 if [ "$1" = "-i" ] || [ "$1" = "--install" ]; then
   echo -e "mzk.sh $1 : ManaZeak installation\n"
+  if [ "$2" = "mvn-dep" ]; then
+    echo -e "Installing maven dependencies"
+    eval "mvn install:install-file -Dfile=./back/src/dev/lib/jaudiotagger.jar -DgroupId=org.bitbucket.ijabz -DartifactId=jaudiotagger -Dversion=1 -Dpackaging=jar -DgeneratePom=true"
+    exit 0
+  fi
   # Check if all dependencies are installed
   for COMMAND in "docker" "docker-compose" "npm"; do
     isInstalled "${COMMAND}"
