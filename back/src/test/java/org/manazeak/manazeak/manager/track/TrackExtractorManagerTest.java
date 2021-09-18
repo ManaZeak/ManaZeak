@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.manager.track;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
@@ -28,7 +27,8 @@ class TrackExtractorManagerTest extends AbstractManaZeakTest {
         List<ScannedArtistDto> scannedArtists = libraryScanManager.scanLibraryFolder();
         // Extracting the tags of the scanned artist.
         List<ExtractedBandDto> bands = trackExtractorManager.extractTracks(scannedArtists);
-
+        // Checking the extracted data of the bands.
+        TrackExtractorVerifHelper.checkExtractedBands(bands);
     }
 
 }
