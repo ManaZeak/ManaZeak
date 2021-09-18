@@ -58,7 +58,7 @@ public final class TrackTagMapper {
      */
     private static void fillAlbumInformation(AudioFileContainerDto fileContainer, ExtractedAlbumDto album) {
         album.setTitle(fileContainer.getAlbum());
-        album.setDiscTotal(fileContainer.getDiskTotal());
+        album.setDiscTotal(CastUtil.castStringToInt(fileContainer.getDiskTotal()));
         album.setLabel(fileContainer.getLabel());
         album.setYear(fileContainer.getDate());
         try {

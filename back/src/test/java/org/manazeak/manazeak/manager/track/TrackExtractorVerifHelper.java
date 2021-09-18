@@ -3,6 +3,7 @@ package org.manazeak.manazeak.manager.track;
 import org.junit.jupiter.api.Assertions;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
+import org.manazeak.manazeak.util.DateUtil;
 
 import java.util.List;
 
@@ -37,12 +38,12 @@ public class TrackExtractorVerifHelper {
         checkArtistNameIsCorrect(band2.getName());
         // Check the information about the artist band.
         if (band1.getName().equals(ARTIST_NAME_1)) {
-            Assertions.assertEquals(band1.getAlbums().size(), 2, "Invalid album size for the artist 1");
-            Assertions.assertEquals(band2.getAlbums().size(), 2, "Invalid album size for the artist 2");
+            Assertions.assertEquals(2, band1.getAlbums().size(), "Invalid album size for the artist 1");
+            Assertions.assertEquals(2, band2.getAlbums().size(), "Invalid album size for the artist 2");
             checkExtractedAlbumsBand1(band1.getAlbums());
         } else {
-            Assertions.assertEquals(band2.getAlbums().size(), 2, "Invalid album size for the artist 1");
-            Assertions.assertEquals(band1.getAlbums().size(), 2, "Invalid album size for the artist 2");
+            Assertions.assertEquals(2, band2.getAlbums().size(), "Invalid album size for the artist 1");
+            Assertions.assertEquals(2, band1.getAlbums().size(), "Invalid album size for the artist 2");
         }
     }
 
@@ -64,7 +65,9 @@ public class TrackExtractorVerifHelper {
         // Check the data extracted from the album1
         String firstAlbumName = ALBUM_NAME + '1';
         if (firstAlbumName.equals(album1.getTitle())) {
-
+            checkExtractedAlbum1(album1);
+        } else {
+            checkExtractedAlbum1(album2);
         }
     }
 
@@ -72,7 +75,12 @@ public class TrackExtractorVerifHelper {
      * Checks if the albums contains all the expected fields.
      */
     public static void checkExtractedAlbum1(ExtractedAlbumDto album) {
-        // album.get
+        // Checking the number of tracks
+        Assertions.assertEquals(2, album.getTracks().size(), "Invalid number of tracks.");
+        // Checking the album information
+        Assertions.assertEquals(2, album.getDiscTotal(), "Invalid number of total disk.");
+        Assertions.assertEquals("test_copyr", album.getLabel(), "Invalid label.");
+        Assertions.assertEquals(DateUtil.parseString("1999-01-01", DateUtil.US_DATE_FORMATTER), album.getReleaseDate(), "Invalid release date.");
     }
 
     /**

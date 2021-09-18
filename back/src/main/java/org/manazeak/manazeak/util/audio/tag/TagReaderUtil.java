@@ -132,9 +132,11 @@ public final class TagReaderUtil {
         container.setComposer(tag.getFirst(FieldKey.COMPOSER));
         container.setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST));
         container.setProducer(tag.getFirst(FieldKey.PRODUCER));
-        container.setLabel(tag.getFirst(FieldKey.RECORD_LABEL));
         container.setCountry(tag.getFirst(FieldKey.COUNTRY));
         container.setCompilation(tag.getFirst(FieldKey.IS_COMPILATION));
+        // Getting the information for disk information
+        container.setDiscNumber(tag.getFirst(FieldKey.DISC_NO));
+        container.setDiskTotal(tag.getFirst(FieldKey.DISC_TOTAL));
 
         // If the file is an MP3
         if (isMp3) {
@@ -156,16 +158,6 @@ public final class TagReaderUtil {
      * @param container The information extracted from the tracks.
      */
     private static void extractSpecificMp3Tag(Tag tag, AudioFileContainerDto container) {
-        // Splitting the information for the disk number information.
-        final String diskInfo = tag.getFirst(FieldKey.DISC_NO);
-        if (diskInfo.contains("/")) {
-            String[] listDiskInfo = diskInfo.split("/");
-            container.setDiscNumber(listDiskInfo[0]);
-            container.setDiskTotal(listDiskInfo[1]);
-        } else {
-            LOG.warn("The track {} by {} has an invalid disk information. ({})", container.getTitle(),
-                    container.getArtist(), diskInfo);
-        }
         // Splitting the information for the track number.
         final String trackNumberInfo = tag.getFirst(FieldKey.TRACK_TOTAL);
         if (trackNumberInfo.contains("/")) {
@@ -174,11 +166,13 @@ public final class TagReaderUtil {
             container.setTrackTotal(listDisk[1]);
         } else {
             LOG.warn("The track {} by {} has an invalid track number information ({})", container.getTitle(),
-                    container.getArtist(), diskInfo);
+                    container.getArtist(), trackNumberInfo);
         }
         // Getting the performer
         container.setPerformer(tag.getFirst(FieldKey.ORIGINAL_ARTIST));
         container.setReleaseDate(tag.getFirst(FieldKey.ORIGINAL_YEAR));
+        // Getting the label
+        container.setLabel(tag.getFirst(FieldKey.COPYRIGHT));
     }
 
     /**
@@ -188,9 +182,6 @@ public final class TagReaderUtil {
      * @param container contains the information about the track.
      */
     private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
-        // Getting the information for disk information
-        container.setDiscNumber(tag.getFirst(FieldKey.DISC_NO));
-        container.setDiskTotal(tag.getFirst(FieldKey.DISC_TOTAL));
         // Getting the information for track number information
         container.setTrackTotal(tag.getFirst(FieldKey.TRACK_TOTAL));
         container.setTrackNumber(tag.getFirst(FieldKey.TRACK));
@@ -198,5 +189,6 @@ public final class TagReaderUtil {
         container.setPerformer(tag.getFirst(FieldsTagEnum.PERFORMER.name()));
         // Getting the release date of the track.
         container.setReleaseDate(tag.getFirst(FieldsTagEnum.RELEASEDATE.name()));
+        container.setLabel(tag.getFirst(FieldKey.RECORD_LABEL));
     }
 }

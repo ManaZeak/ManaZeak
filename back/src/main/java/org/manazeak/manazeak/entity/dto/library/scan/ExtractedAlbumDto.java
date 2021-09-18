@@ -13,7 +13,7 @@ public class ExtractedAlbumDto {
     private final List<ExtractedTrackDto> tracks = new ArrayList<>();
     private final Path location;
     private String title;
-    private String discTotal;
+    private Integer discTotal;
     private String label;
     private String year;
     private LocalDate releaseDate;
@@ -47,11 +47,11 @@ public class ExtractedAlbumDto {
         this.title = title;
     }
 
-    public String getDiscTotal() {
+    public Integer getDiscTotal() {
         return discTotal;
     }
 
-    public void setDiscTotal(String discTotal) {
+    public void setDiscTotal(Integer discTotal) {
         this.discTotal = discTotal;
     }
 

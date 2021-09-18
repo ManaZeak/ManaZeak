@@ -6,10 +6,21 @@ import java.nio.file.Paths;
 /**
  * Contains the location of the different file manipulated by the application.
  */
-public class FilePathEnum {
+public enum FilePathEnum {
 
-    /** Contains the extracted covers  */
-    public static Path COVER_FOLDER = Paths.get("/covers/");
+    COVER_FOLDER(Paths.get("/covers/"));
 
+    /**
+     * Contains the extracted covers
+     */
+    private final Path path;
+
+    FilePathEnum(Path path) {
+        this.path = path;
+    }
+
+    public Path getPath() {
+        return path;
+    }
 }
 

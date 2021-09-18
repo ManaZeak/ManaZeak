@@ -28,7 +28,8 @@ public class UserProfileFragmentController {
 
     private final JsonResponseHandler jsonResponseHandler;
 
-    public UserProfileFragmentController(UserInformationService userInformationService, JsonResponseHandler jsonResponseHandler) {
+    public UserProfileFragmentController(UserInformationService userInformationService,
+                                         JsonResponseHandler jsonResponseHandler) {
         this.userInformationService = userInformationService;
         this.jsonResponseHandler = jsonResponseHandler;
     }
