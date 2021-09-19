@@ -2,9 +2,7 @@ package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
-import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

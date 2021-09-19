@@ -40,7 +40,7 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
             throw new MzkRuntimeException("user.error.authentication_error", "user.error.authentication_error");
         }
         // If the user is not active he can't connect
-        if(!user.get().getIsActive()) {
+        if (Boolean.FALSE.equals(user.get().getIsActive())) {
             LOG.warn("The disabled user {} tried to connect.", username);
             throw new MzkRuntimeException("user.error.disabled_user", "user.error.disabled_user");
         }
