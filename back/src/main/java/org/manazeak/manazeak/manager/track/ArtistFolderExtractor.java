@@ -22,34 +22,6 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
         this.artistFolder = artistFolder;
     }
 
-    @Override
-    public ExtractedBandDto call() {
-        return extractArtistFolder();
-    }
-
-    /**
-     * Extract an artist folder containing albums and tracks.
-     *
-     * @return The extracted data of the artist.
-     */
-    private ExtractedBandDto extractArtistFolder() {
-        // Creating the band object.
-        ExtractedBandDto band = new ExtractedBandDto(artistFolder.getArtistPath());
-        // Going through the album of the artist.
-        for (ScannedAlbumDto scannedAlbum : artistFolder.getAlbums()) {
-            ExtractedAlbumDto album = extractAlbumFolder(band, scannedAlbum);
-            if (album == null) {
-                continue;
-            }
-            band.addExtractedAlbum(album);
-        }
-        if (band.getAlbums().isEmpty()) {
-            LOG.warn("The artist located at : {} is empty. No album has been extracted.", artistFolder.getArtistPath());
-            return null;
-        }
-        return band;
-    }
-
     /**
      * Extract the information contained in the album folder of an artist.
      *
@@ -57,7 +29,7 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
      * @param scannedAlbum The information about the album folder.
      * @return The album information extracted in the track tags.
      */
-    private ExtractedAlbumDto extractAlbumFolder(ExtractedBandDto band, ScannedAlbumDto scannedAlbum) {
+    private static ExtractedAlbumDto extractAlbumFolder(ExtractedBandDto band, ScannedAlbumDto scannedAlbum) {
         // Build the album object.
         ExtractedAlbumDto album = new ExtractedAlbumDto(scannedAlbum.getLocation());
         // Getting the information contained in the tracks.
@@ -86,9 +58,9 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
      * @param scannedTrack The FS information about the track.
      * @return The track that will be added to the album.
      */
-    private ExtractedTrackDto extractTrackFile(ExtractedBandDto band,
-                                               ExtractedAlbumDto album,
-                                               ScannedTrackDto scannedTrack) {
+    private static ExtractedTrackDto extractTrackFile(ExtractedBandDto band,
+                                                      ExtractedAlbumDto album,
+                                                      ScannedTrackDto scannedTrack) {
         try {
             // Getting the information from the track tag.
             AudioFileContainerDto fileContainer = TagReaderUtil.extractTagFromAudioFile(scannedTrack.getTrackPath());
@@ -98,5 +70,33 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
             LOG.warn("Error during the extraction of the track tag : {}", scannedTrack.getTrackPath(), e);
         }
         return null;
+    }
+
+    @Override
+    public ExtractedBandDto call() {
+        return extractArtistFolder();
+    }
+
+    /**
+     * Extract an artist folder containing albums and tracks.
+     *
+     * @return The extracted data of the artist.
+     */
+    private ExtractedBandDto extractArtistFolder() {
+        // Creating the band object.
+        ExtractedBandDto band = new ExtractedBandDto(artistFolder.getArtistPath());
+        // Going through the album of the artist.
+        for (ScannedAlbumDto scannedAlbum : artistFolder.getAlbums()) {
+            ExtractedAlbumDto album = extractAlbumFolder(band, scannedAlbum);
+            if (album == null) {
+                continue;
+            }
+            band.addExtractedAlbum(album);
+        }
+        if (band.getAlbums().isEmpty()) {
+            LOG.warn("The artist located at : {} is empty. No album has been extracted.", artistFolder.getArtistPath());
+            return null;
+        }
+        return band;
     }
 }
