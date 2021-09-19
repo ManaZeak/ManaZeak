@@ -78,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Allow to use our authentication system.
      *
      * @param auth builder for the authentication.
+     * @param userDetailsService The service used to authenticate the user.
      */
     @Autowired
     public void configAuthentication(
@@ -89,6 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * Defines the UserDetailsService used during the authentication.
      *
+     * @param userDetailsService The service used to get the user.
      * @return Authentication provider.
      */
     @Bean

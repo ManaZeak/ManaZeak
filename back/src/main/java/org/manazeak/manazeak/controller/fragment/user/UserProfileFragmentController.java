@@ -65,6 +65,7 @@ public class UserProfileFragmentController {
      *
      * @param editedUser The modified information of the user to be saved.
      * @param model      The model for passing the information to the front.
+     * @param result     The information about the validation.
      * @return The fragment to the front.
      */
     @PostMapping("/account/profile-edit")

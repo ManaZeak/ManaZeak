@@ -53,6 +53,7 @@ public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
     /**
      * Get the depth of the given user by it's id.
      *
+     * @param userId The id of the user.
      * @return the depth of the user.
      */
     @Query(value = "WITH RECURSIVE descendants AS ( " +

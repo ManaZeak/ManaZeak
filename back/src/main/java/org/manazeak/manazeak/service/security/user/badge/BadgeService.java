@@ -12,6 +12,7 @@ public interface BadgeService {
 
     /**
      * Create a new badge.
+     * @param badge The new badge information.
      */
     void createBadge(NewBadgeDto badge);
 

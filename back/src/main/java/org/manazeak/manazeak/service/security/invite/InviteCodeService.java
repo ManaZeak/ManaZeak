@@ -11,6 +11,7 @@ public interface InviteCodeService {
      * Check if the invitation code is correct.
      *
      * @param inviteCodeValue The invite code provided by the user.
+     * @throws MzkValidationException error when validating the invite code.
      */
     void checkInviteCode(String inviteCodeValue) throws MzkValidationException;
 }

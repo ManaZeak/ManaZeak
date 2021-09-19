@@ -48,6 +48,7 @@ public class UserProfileManager {
     /**
      * Convert a single user into a DTO.
      *
+     * @param userProjection The information about a user.
      * @return The converted user.
      */
     private UserListLineDto convertUserListLineProjection(UserListLineProjection userProjection) {

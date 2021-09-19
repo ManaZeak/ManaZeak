@@ -68,6 +68,7 @@ public class ResetPasswordController {
     /**
      * Change the password of a user.
      *
+     * @param resetPasswordDto The information containing the password.
      * @return the status of the request.
      */
     @PostMapping("/resetUserPassword")

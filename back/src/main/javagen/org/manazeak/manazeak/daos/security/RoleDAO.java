@@ -13,6 +13,7 @@ public interface RoleDAO extends CrudRepository<Role, Long> {
     /**
      * Get a role by it's id.
      *
+     * @param id The id of the role.
      * @return the role.
      */
     Role getRoleByRoleId(Long id);

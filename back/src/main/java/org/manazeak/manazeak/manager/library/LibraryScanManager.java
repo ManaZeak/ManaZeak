@@ -26,6 +26,7 @@ public class LibraryScanManager {
     /**
      * Scan the library folder to find the tracks of the library.
      *
+     * @return The list of scanned artists.
      * @throws IOException Error during the walk.
      */
     public List<ScannedArtistDto> scanLibraryFolder() throws IOException {
@@ -42,6 +43,7 @@ public class LibraryScanManager {
     /**
      * Remove all the artists that are not updated for the rescan.
      *
+     * @param artists The list of artists to filter.
      * @return The list of the artist to add or update into the library.
      */
     public List<ScannedArtistDto> removeArtistNotUpdated(List<ScannedArtistDto> artists) {
@@ -77,6 +79,7 @@ public class LibraryScanManager {
     /**
      * Getting the artist from the database and comparing
      *
+     * @param artists The map of artists linked to their location.
      * @return The list of the artists filtered.
      */
     private List<ScannedArtistDto> compareWithDataBaseArtists(Map<String, ScannedArtistDto> artists) {

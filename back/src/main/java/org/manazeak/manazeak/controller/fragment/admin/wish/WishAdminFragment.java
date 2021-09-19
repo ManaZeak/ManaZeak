@@ -25,6 +25,7 @@ public class WishAdminFragment {
      * Get all the wishes of the application
      *
      * @param model The spring model.
+     * @return The page containing the list of all the wishes.
      */
     @RestSecurity(PrivilegeEnum.WISR)
     @GetMapping("/admin/wish/all")

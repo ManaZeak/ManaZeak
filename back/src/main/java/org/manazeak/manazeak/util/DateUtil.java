@@ -24,7 +24,8 @@ public final class DateUtil {
     /**
      * Allows to parse a date from a string.
      *
-     * @param strDate the string containing a date.
+     * @param strDate   The string containing a date.
+     * @param formatter The formatter that will be used to parse the date.
      * @return the date.
      */
     public static LocalDate parseString(String strDate, DateTimeFormatter formatter) {
@@ -51,7 +52,8 @@ public final class DateUtil {
 
     /**
      * Formats a date and a time into a string with the given format.
-     * @param date The date that will be formatted.
+     *
+     * @param date   The date that will be formatted.
      * @param format The format that will be used.
      * @return The formatted date as a string.
      */
@@ -61,7 +63,8 @@ public final class DateUtil {
 
     /**
      * Formats a date into a string with the given format.
-     * @param date The date that will be formatted.
+     *
+     * @param date      The date that will be formatted.
      * @param formatter The format that will be used.
      * @return The formatted date as a string.
      */

@@ -12,6 +12,8 @@ public class MzkObjectNotFoundException extends RuntimeException implements MzkE
      * Construct an instance of MzkObjectNotFoundException.
      *
      * @param msg Error message
+     * @param messageKey The key of the message contained in the i18n file.
+     * @param titleKey The key of the title of the exception in the i18n file.
      */
     public MzkObjectNotFoundException(final String msg, final String messageKey, final String titleKey) {
         super(msg);

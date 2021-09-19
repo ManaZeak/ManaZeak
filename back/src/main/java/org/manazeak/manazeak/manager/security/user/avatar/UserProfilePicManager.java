@@ -27,7 +27,7 @@ public class UserProfilePicManager {
     /**
      * {@inheritDoc}
      *
-     * @return
+     * @return The name of the file.
      */
     public String saveUserAvatarIntoResources(MultipartFile file, MzkUser user) {
         // There is no file to save.

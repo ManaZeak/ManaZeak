@@ -48,6 +48,7 @@ public final class TagReaderUtil {
      *
      * @param audioFilePath The path of the track.
      * @return The information about the file.
+     * @throws MzkTagException Error when processing a tag.
      */
     public static AudioFileContainerDto extractTagFromAudioFile(Path audioFilePath) throws MzkTagException {
         // Reading the information from the track tag.
@@ -64,7 +65,9 @@ public final class TagReaderUtil {
     /**
      * Get the tag of a file.
      *
+     * @param filePath The path of the track.
      * @return The information about the tag of the file.
+     * @throws MzkTagException Error when processing tags.
      */
     private static AudioFile getFileTag(Path filePath) throws MzkTagException {
         try {
@@ -92,6 +95,9 @@ public final class TagReaderUtil {
 
     /**
      * Extract the headers contained in the audio file.
+     *
+     * @param audioFile The information about the audio file that is extracted.
+     * @return The information extracted from the audio file.
      */
     private static AudioFileContainerDto extractAudioHeaderInformation(AudioFile audioFile) {
         // Creating the audio file container.
@@ -119,6 +125,8 @@ public final class TagReaderUtil {
      * Extract the information contained a audio file.
      *
      * @param container The container of the information extracted from the audio file.
+     * @param audioFile The information about the track.
+     * @param isMp3 If the track is a mp3.
      */
     private static void extractAudioFile(AudioFileContainerDto container, AudioFile audioFile, boolean isMp3) {
         // Reading the tag.

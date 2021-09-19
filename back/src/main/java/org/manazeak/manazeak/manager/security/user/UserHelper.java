@@ -17,8 +17,9 @@ public final class UserHelper {
     /**
      * Fill a user object with auxiliary information.
      *
-     * @param user     the user that would be filled.
-     * @param userInfo the information from the page.
+     * @param user       The user that would be filled.
+     * @param userInfo   The information from the page.
+     * @param profilePic The location of the profile picture of the user.
      */
     public static void fillUserWithAdditionalInfo(MzkUser user, UserFirstInfoDto userInfo, String profilePic) {
         // Setting the fields only if it's not empty.

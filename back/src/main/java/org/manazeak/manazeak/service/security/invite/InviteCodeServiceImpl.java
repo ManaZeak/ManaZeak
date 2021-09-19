@@ -2,7 +2,6 @@ package org.manazeak.manazeak.service.security.invite;
 
 import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
-import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkValidationException;
@@ -44,7 +43,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
         // Getting the parent from the invite code.
         MzkUser parent = inviteCode.get().getParent();
         // If the parent is not active then the user cannot be invited.
-        if (!parent.getIsActive()) {
+        if (!Boolean.TRUE.equals(parent.getIsActive())) {
             throw new MzkValidationException("{user.invite_code.error.user_deactivated}");
         }
         // Getting the depth of the parent

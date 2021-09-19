@@ -30,6 +30,7 @@ public final class FileUtil {
      * Get the extension of a file from its magic bytes.
      *
      * @param file The file in the form.
+     * @return The extension of the file.
      */
     public static FileExtensionEnum getExtensionByMagicBytes(MultipartFile file) {
         try {
@@ -76,7 +77,8 @@ public final class FileUtil {
     /**
      * Check if the file is an audio file.
      *
-     * @return True if the file is a flac or a mp3
+     * @param filePath The location of the file to evaluate.
+     * @return True if the file is a flac or a mp3.
      */
     public static boolean isAudioFileByExtension(Path filePath) {
         if (filePath == null) {

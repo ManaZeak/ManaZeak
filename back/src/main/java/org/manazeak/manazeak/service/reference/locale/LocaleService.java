@@ -19,6 +19,9 @@ public interface LocaleService {
 
     /**
      * Set the locale of a user.
+     *
+     * @param localeId The id of the locale.
+     * @param user     The user associated to the locale.
      */
     void setUserLocale(Long localeId, MzkUser user);
 }

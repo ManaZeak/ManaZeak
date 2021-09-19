@@ -39,6 +39,7 @@ public class BadgeAdminControllerRest {
      * Associate a user with a badge.
      *
      * @param badgeUserAssociation The object containing the user and the badge that ill be associated.
+     * @param result               The object containing the validation information.
      * @return The status result.
      */
     @RestSecurity(PrivilegeEnum.ADMV)

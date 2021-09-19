@@ -55,6 +55,7 @@ public final class TrackTagMapper {
      * Get the information extracted in the track's tags into the album.
      *
      * @param fileContainer the information about information
+     * @param album         The information about the album.
      */
     private static void fillAlbumInformation(AudioFileContainerDto fileContainer, ExtractedAlbumDto album) {
         album.setTitle(fileContainer.getAlbum());

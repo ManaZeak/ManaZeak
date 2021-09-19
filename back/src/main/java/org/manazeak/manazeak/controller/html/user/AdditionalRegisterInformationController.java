@@ -38,6 +38,7 @@ public class AdditionalRegisterInformationController {
     /**
      * Render and display the page.
      *
+     * @param model The information needed to build the HTML page.
      * @return the page containing the additional information of the user.
      */
     @Security(PrivilegeEnum.PLAY)
@@ -57,6 +58,7 @@ public class AdditionalRegisterInformationController {
      *
      * @param userInfo the information of the user.
      * @param result   The information about the validation errors.
+     * @param model    The information need to build the HTML page.
      * @return the redirection to the main page.
      */
     @Security(PrivilegeEnum.PLAY)

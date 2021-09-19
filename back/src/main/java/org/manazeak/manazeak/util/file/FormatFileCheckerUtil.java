@@ -20,6 +20,7 @@ public final class FormatFileCheckerUtil {
     /**
      * Check that the given file is a valid image.
      *
+     * @param file The file that was sent.
      * @return True if the image is valid. False otherwise.
      */
     public static boolean isValidImage(MultipartFile file) {

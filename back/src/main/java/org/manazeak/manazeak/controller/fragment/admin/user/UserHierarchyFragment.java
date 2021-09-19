@@ -23,6 +23,7 @@ public class UserHierarchyFragment {
     /**
      * Display the page containing the users.
      *
+     * @param model The information needed to build the page.
      * @return Get the hierarchy of the user in the application.
      */
     @RestSecurity(PrivilegeEnum.ADMV)

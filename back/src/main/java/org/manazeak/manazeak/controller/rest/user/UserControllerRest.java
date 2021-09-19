@@ -29,6 +29,7 @@ public class UserControllerRest {
     /**
      * Delete a user of the application.
      *
+     * @param userId The id of the user.
      * @return The notification for the user.
      */
     @Security(PrivilegeEnum.ADMV)
@@ -41,6 +42,7 @@ public class UserControllerRest {
     /**
      * Deactivate a user in the database.
      *
+     * @param userId The id of the user.
      * @return The notification for the user.
      */
     @Security(PrivilegeEnum.ADMV)

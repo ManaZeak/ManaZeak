@@ -62,6 +62,7 @@ public class RegisterController {
      *
      * @param newUser This field is tested. If there is an error, the user cannot be created.
      * @param result  The error for thymeleaf to display errors.
+     * @param request The request, need by spring to authenticate the user.
      * @return The register page if the user fail to register. The main page if he registered successfully.
      */
     @PostMapping("/register")

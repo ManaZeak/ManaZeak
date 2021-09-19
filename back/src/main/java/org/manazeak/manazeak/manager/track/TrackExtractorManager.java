@@ -26,6 +26,7 @@ public class TrackExtractorManager {
      * Extracts the data contained in the track into an object.
      *
      * @param artists The list of folder to extract.
+     * @return The list of extracted bands contained in the library.
      */
     public List<ExtractedBandDto> extractTracks(List<ScannedArtistDto> artists) {
         // Creating the thread pool.

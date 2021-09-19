@@ -29,6 +29,7 @@ public class WishAdminControllerRest {
      * Change the status of a wish to accepted.
      *
      * @param wishId The id of the wish to change.
+     * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
     @PostMapping("/admin/wish/accept/{wishId}")
@@ -41,6 +42,7 @@ public class WishAdminControllerRest {
      * Change the status of a wish to non ok.
      *
      * @param wishId The id of wish to change
+     * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
     @PostMapping("/admin/wish/reject/{wishId}")
@@ -52,7 +54,8 @@ public class WishAdminControllerRest {
     /**
      * Change the status of a wish to be reviewed.
      *
-     * @param wishId The id of wish to change
+     * @param wishId The id of wish to change.
+     * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
     @PostMapping("/admin/wish/reset/{wishId}")
@@ -64,6 +67,7 @@ public class WishAdminControllerRest {
     /**
      * Delete a wish in the database.
      *
+     * @param wishId The id of the wish to delete.
      * @return The notification for the user.
      */
     @Security(PrivilegeEnum.WISR)

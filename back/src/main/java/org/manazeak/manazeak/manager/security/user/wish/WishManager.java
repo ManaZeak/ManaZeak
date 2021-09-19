@@ -103,6 +103,7 @@ public class WishManager {
      * Delete a wish that is associated with the current user.
      *
      * @param wishId The wish that must be deleted.
+     * @param user   The user associated to the wish to delete.
      */
     public void deleteWishForCurrentUser(Long wishId, MzkUser user) {
         // Getting the removed wish if no wish were delete an exception is thrown.
@@ -124,6 +125,7 @@ public class WishManager {
     /**
      * Get the localized string from the code of the status.
      *
+     * @param status The status of the wish.
      * @return The status in a string format
      */
     private String getStatusString(WishStatus status) {

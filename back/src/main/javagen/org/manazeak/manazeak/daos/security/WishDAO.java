@@ -16,6 +16,7 @@ public interface WishDAO extends CrudRepository<Wish, Long> {
     /**
      * Get all the wishes for a user sorted by content type in a descendant order.
      *
+     * @param user The user possessing the wishes.
      * @return The wishes of the user.
      */
     List<Wish> getAllByMzkUserOrderByWishStatusDesc(MzkUser user);

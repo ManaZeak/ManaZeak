@@ -53,6 +53,9 @@ public class WishCreationFragment {
     /**
      * Save the user wishes into the database if the input is correct.
      *
+     * @param model  The information contained in the page.
+     * @param result Contains the information about the validations.
+     * @param wish   The wish that must be saved.
      * @return the page.
      */
     @RestSecurity(PrivilegeEnum.WISH)

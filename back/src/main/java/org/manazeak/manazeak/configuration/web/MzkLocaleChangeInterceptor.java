@@ -39,7 +39,10 @@ public class MzkLocaleChangeInterceptor extends LocaleChangeInterceptor {
 
     /**
      * Checks if the http method used is correct.
-     * Copied code for LocalChangeInterceptor.
+     * Copied code for LocalChangeInterceptor, the méthode is final and cannot be overridden.
+     *
+     * @param currentMethod The HTTP method in use.
+     * @return If the HTTP methode is handled.
      */
     private boolean checkHttpMethod(String currentMethod) {
         String[] configuredMethods = this.getHttpMethods();
@@ -53,6 +56,5 @@ public class MzkLocaleChangeInterceptor extends LocaleChangeInterceptor {
         }
 
         return false;
-
     }
 }

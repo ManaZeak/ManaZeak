@@ -12,6 +12,7 @@ public final class FieldUtil {
     /**
      * Check if a given String is empty or not.
      *
+     * @param value The String to test.
      * @return true if the field is not empty.
      */
     public static boolean checkStringNotEmpty(String value) {

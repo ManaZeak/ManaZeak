@@ -33,6 +33,7 @@ public enum FileMagicNumberEnum {
      *
      * @param file The file to check.
      * @return the file extension of the given file.
+     * @throws MzkFileFormatException The format of the file wasn't recognized.
      */
     public static FileExtensionEnum getFileExtension(MultipartFile file) throws MzkFileFormatException {
         // Checking for each format the values.

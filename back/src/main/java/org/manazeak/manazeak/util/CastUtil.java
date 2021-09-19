@@ -17,6 +17,7 @@ public final class CastUtil {
      *
      * @param clazz the destination class.
      * @param c     the list of objects that have to be casted.
+     * @param <T>   The type of the list.
      * @return the casted list.
      */
     public static <T> List<T> castList(final Class<? extends T> clazz, final Iterable<?> c) {

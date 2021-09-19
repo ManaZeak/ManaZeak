@@ -28,6 +28,7 @@ public class UserListFragment {
      * Get the fragment containing the list of users available in the app.
      * It also includes available badges.
      *
+     * @param model The information need to build the HTML page.
      * @return The fragment.
      */
     @RestSecurity(PrivilegeEnum.ADMV)
