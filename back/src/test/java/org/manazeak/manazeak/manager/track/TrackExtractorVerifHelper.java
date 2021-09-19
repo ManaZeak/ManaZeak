@@ -41,14 +41,41 @@ public class TrackExtractorVerifHelper {
             Assertions.assertEquals(2, band1.getAlbums().size(), "Invalid album size for the artist 1");
             Assertions.assertEquals(2, band2.getAlbums().size(), "Invalid album size for the artist 2");
             checkExtractedAlbumsBand1(band1.getAlbums());
+            checkExtractedAlbumsBand2(band2.getAlbums());
         } else {
             Assertions.assertEquals(2, band2.getAlbums().size(), "Invalid album size for the artist 1");
             Assertions.assertEquals(2, band1.getAlbums().size(), "Invalid album size for the artist 2");
+            checkExtractedAlbumsBand1(band2.getAlbums());
+            checkExtractedAlbumsBand2(band1.getAlbums());
         }
     }
 
     /**
-     * Check the extracted albums from the tracks tags.
+     * Check the extracted albums from the tracks tags of falc files.
+     *
+     * @param albums The albums of the artist 2.
+     */
+    public static void checkExtractedAlbumsBand2(List<ExtractedAlbumDto> albums) {
+        // Checking the number of albums.
+        Assertions.assertEquals(2, albums.size(), "Wrong number of album found for the artist 2.");
+        // Checking the album names.
+        ExtractedAlbumDto album1 = albums.get(0);
+        ExtractedAlbumDto album2 = albums.get(1);
+        // Check the album name.
+        Assertions.assertNotEquals(album1.getTitle(), album2.getTitle(), "The albums have the same name.");
+        checkAlbumNameBand2(album1.getTitle());
+        checkAlbumNameBand2(album2.getTitle());
+        // Check the data extracted from the album3
+        String firstAlbumName = ALBUM_NAME + '3';
+        if (firstAlbumName.equals(album1.getTitle())) {
+            checkExtractedAlbum2(album1);
+        } else {
+            checkExtractedAlbum2(album2);
+        }
+    }
+
+    /**
+     * Check the extracted albums from the tracks tags of mp3 files.
      *
      * @param albums The albums of the artist 1.
      */
@@ -81,7 +108,24 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals(2, album.getDiscTotal(), "Invalid number of total disk.");
         Assertions.assertEquals("test_copyr", album.getLabel(), "Invalid label.");
         Assertions.assertEquals(DateUtil.parseString("1999-01-01", DateUtil.US_DATE_FORMATTER), album.getReleaseDate(), "Invalid release date.");
+        Assertions.assertEquals(5, album.getTrackTotal(), "Invalid number of tracks.");
+        Assertions.assertEquals("1111", album.getYear(), "Invalid album year.");
     }
+
+    /**
+     * Checks if the albums contains all the expected fields.
+     */
+    public static void checkExtractedAlbum2(ExtractedAlbumDto album) {
+        // Checking the number of tracks
+        Assertions.assertEquals(2, album.getTracks().size(), "Invalid number of tracks.");
+        // Checking the album information
+        Assertions.assertEquals(4, album.getDiscTotal(), "Invalid number of total disk.");
+        Assertions.assertEquals("test_copyr", album.getLabel(), "Invalid label.");
+        Assertions.assertEquals(DateUtil.parseString("1999-01-05", DateUtil.US_DATE_FORMATTER), album.getReleaseDate(), "Invalid release date.");
+        Assertions.assertEquals(3, album.getTrackTotal(), "Invalid number of tracks.");
+        Assertions.assertEquals("5555", album.getYear(), "Invalid album year.");
+    }
+
 
     /**
      * Check the album name for the band 1.
@@ -94,6 +138,16 @@ public class TrackExtractorVerifHelper {
         }
     }
 
+    /**
+     * Check the album name for the band 2.
+     *
+     * @param albumTitle The title of the extracted album.
+     */
+    private static void checkAlbumNameBand2(String albumTitle) {
+        if (!albumTitle.equals(ALBUM_NAME + "3") && !albumTitle.equals(ALBUM_NAME + "4")) {
+            Assertions.fail("The band2 album '" + albumTitle + "' isn't expected.");
+        }
+    }
 
     /**
      * Check that the artist is correct.
