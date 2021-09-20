@@ -21,6 +21,10 @@ public final class TagSplitterHelper {
     public static List<String> splitTag(String tag) {
         // Split the data with the regex pattern
         String[] data = PATTERN.split(tag);
+        // Trim The extracted data.
+        for (int i = 0; i < data.length; ++i) {
+            data[i] = data[i].trim();
+        }
         // Convert the array into a list.
         return Arrays.asList(data);
     }

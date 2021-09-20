@@ -92,6 +92,7 @@ public final class TrackTagMapper {
         track.setSampleRate(fileContainer.getHeaders().getSampleRate());
         track.setLength(fileContainer.getHeaders().getTrackLength());
         track.setSize(fileContainer.getHeaders().getSize());
+        track.setLyrics(fileContainer.getLyrics());
     }
 
 }

@@ -126,28 +126,28 @@ public final class TagReaderUtil {
      *
      * @param container The container of the information extracted from the audio file.
      * @param audioFile The information about the track.
-     * @param isMp3 If the track is a mp3.
+     * @param isMp3     If the track is a mp3.
      */
     private static void extractAudioFile(AudioFileContainerDto container, AudioFile audioFile, boolean isMp3) {
         // Reading the tag.
         Tag tag = audioFile.getTag();
         // Extracting the data that is shared between flac and mp3.
-        container.setTitle(tag.getFirst(FieldKey.TITLE));
+        container.setTitle(tag.getFirst(FieldKey.TITLE).trim());
         container.setArtist(tag.getFirst(FieldKey.ARTIST));
-        container.setDate(tag.getFirst(FieldKey.YEAR));
-        container.setAlbum(tag.getFirst(FieldKey.ALBUM));
-        container.setGenre(tag.getFirst(FieldKey.GENRE));
-        container.setComposer(tag.getFirst(FieldKey.COMPOSER));
-        container.setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST));
-        container.setProducer(tag.getFirst(FieldKey.PRODUCER));
-        container.setCountry(tag.getFirst(FieldKey.COUNTRY));
-        container.setCompilation(tag.getFirst(FieldKey.IS_COMPILATION));
+        container.setDate(tag.getFirst(FieldKey.YEAR).trim());
+        container.setAlbum(tag.getFirst(FieldKey.ALBUM).trim());
+        container.setGenre(tag.getFirst(FieldKey.GENRE).trim());
+        container.setComposer(tag.getFirst(FieldKey.COMPOSER).trim());
+        container.setAlbumArtist(tag.getFirst(FieldKey.ALBUM_ARTIST).trim());
+        container.setCountry(tag.getFirst(FieldKey.COUNTRY).trim());
+        container.setCompilation(tag.getFirst(FieldKey.IS_COMPILATION).trim());
+        container.setLyrics(tag.getFirst(FieldKey.LYRICS).trim());
         // Getting the information for disk information
-        container.setDiscNumber(tag.getFirst(FieldKey.DISC_NO));
-        container.setDiskTotal(tag.getFirst(FieldKey.DISC_TOTAL));
+        container.setDiscNumber(tag.getFirst(FieldKey.DISC_NO).trim());
+        container.setDiskTotal(tag.getFirst(FieldKey.DISC_TOTAL).trim());
         // Getting the information for track number information
-        container.setTrackTotal(tag.getFirst(FieldKey.TRACK_TOTAL));
-        container.setTrackNumber(tag.getFirst(FieldKey.TRACK));
+        container.setTrackTotal(tag.getFirst(FieldKey.TRACK_TOTAL).trim());
+        container.setTrackNumber(tag.getFirst(FieldKey.TRACK).trim());
 
         // If the file is an MP3
         if (isMp3) {
@@ -170,10 +170,11 @@ public final class TagReaderUtil {
      */
     private static void extractSpecificMp3Tag(Tag tag, AudioFileContainerDto container) {
         // Getting the performer
-        container.setPerformer(tag.getFirst(FieldKey.ORIGINAL_ARTIST));
-        container.setReleaseDate(tag.getFirst(FieldKey.ORIGINAL_YEAR));
+        container.setPerformer(tag.getFirst(FieldKey.ORIGINAL_ARTIST).trim());
+        container.setReleaseDate(tag.getFirst(FieldKey.ORIGINAL_YEAR).trim());
         // Getting the label
-        container.setLabel(tag.getFirst(FieldKey.COPYRIGHT));
+        container.setLabel(tag.getFirst(FieldKey.COPYRIGHT).trim());
+        container.setProducer(tag.getFirst(FieldKey.RECORD_LABEL));
     }
 
     /**
@@ -184,9 +185,10 @@ public final class TagReaderUtil {
      */
     private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
         // Getting the performers.
-        container.setPerformer(tag.getFirst(FieldsTagEnum.PERFORMER.name()));
+        container.setPerformer(tag.getFirst(FieldsTagEnum.PERFORMER.name()).trim());
         // Getting the release date of the track.
-        container.setReleaseDate(tag.getFirst(FieldsTagEnum.RELEASEDATE.name()));
-        container.setLabel(tag.getFirst(FieldKey.RECORD_LABEL));
+        container.setReleaseDate(tag.getFirst(FieldsTagEnum.RELEASEDATE.name()).trim());
+        container.setLabel(tag.getFirst(FieldKey.RECORD_LABEL).trim());
+        container.setProducer(tag.getFirst(FieldKey.PRODUCER).trim());
     }
 }

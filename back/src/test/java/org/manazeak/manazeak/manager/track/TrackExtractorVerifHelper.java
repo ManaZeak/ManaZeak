@@ -3,6 +3,7 @@ package org.manazeak.manazeak.manager.track;
 import org.junit.jupiter.api.Assertions;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
+import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.util.DateUtil;
 
 import java.util.List;
@@ -68,9 +69,9 @@ public class TrackExtractorVerifHelper {
         // Check the data extracted from the album3
         String firstAlbumName = ALBUM_NAME + '3';
         if (firstAlbumName.equals(album1.getTitle())) {
-            checkExtractedAlbum2(album1);
+            checkExtractedAlbum3(album1);
         } else {
-            checkExtractedAlbum2(album2);
+            checkExtractedAlbum3(album2);
         }
     }
 
@@ -110,12 +111,20 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals(DateUtil.parseString("1999-01-01", DateUtil.US_DATE_FORMATTER), album.getReleaseDate(), "Invalid release date.");
         Assertions.assertEquals(5, album.getTrackTotal(), "Invalid number of tracks.");
         Assertions.assertEquals("1111", album.getYear(), "Invalid album year.");
+        // Checking the first track of the album to verify all the tags were extracted.
+        ExtractedTrackDto track = album.getTracks().get(0);
+        checkTrackAlbum1Title(track.getTitle());
+        if (track.getTitle().equals("1")) {
+            checkTrack1(track);
+        } else {
+            checkTrack1(album.getTracks().get(1));
+        }
     }
 
     /**
      * Checks if the albums contains all the expected fields.
      */
-    public static void checkExtractedAlbum2(ExtractedAlbumDto album) {
+    public static void checkExtractedAlbum3(ExtractedAlbumDto album) {
         // Checking the number of tracks
         Assertions.assertEquals(2, album.getTracks().size(), "Invalid number of tracks.");
         // Checking the album information
@@ -146,6 +155,48 @@ public class TrackExtractorVerifHelper {
     private static void checkAlbumNameBand2(String albumTitle) {
         if (!albumTitle.equals(ALBUM_NAME + "3") && !albumTitle.equals(ALBUM_NAME + "4")) {
             Assertions.fail("The band2 album '" + albumTitle + "' isn't expected.");
+        }
+    }
+
+    /**
+     * Check the information extracted from the first track of the album 1 of the band 1.
+     *
+     * @param track The track to be tested.
+     */
+    private static void checkTrack1(ExtractedTrackDto track) {
+        Assertions.assertEquals("test_lyrics", track.getLyrics(), "Invalid lyrics.");
+        // Check the size of the extracted artists
+        Assertions.assertEquals(2, track.getArtists().size(), "Invalid number of extracted artists");
+        Assertions.assertEquals("test_artist1", track.getArtists().get(0), "Invalid name of the extracted artist 1");
+        Assertions.assertEquals("test_artist2", track.getArtists().get(1), "Invalid name of the extracted artist 2");
+        // Check the size of the composers
+        Assertions.assertEquals(3, track.getComposers().size(), "Invalid numbers of extracted albums");
+        Assertions.assertEquals("test_compo1", track.getComposers().get(0), "Invalid composer name");
+        Assertions.assertEquals("test_compo2", track.getComposers().get(1), "Invalid composer name");
+        Assertions.assertEquals("test_compo3", track.getComposers().get(2), "Invalid composer name");
+        // Check the genres.
+        Assertions.assertEquals(2, track.getGenres().size(), "Invalid number of genres.");
+        Assertions.assertEquals("test", track.getGenres().get(0), "Invalid genre name");
+        Assertions.assertEquals("test2", track.getGenres().get(1), "Invalid genre name");
+        // Check the size of the performers.
+        Assertions.assertEquals(2, track.getPerformers().size(), "Invalid number of performers.");
+        Assertions.assertEquals("test_art_orig", track.getPerformers().get(0), "Invalid performer name.");
+        Assertions.assertEquals("test_art_orig_2", track.getPerformers().get(1), "Invalid performer name.");
+        // Check the size of the producers.
+        Assertions.assertEquals(2, track.getProducers().size(), "Invalid number of producers");
+        Assertions.assertEquals("test_prod", track.getProducers().get(0), "Invalid producer name");
+        Assertions.assertEquals("test_prod2", track.getProducers().get(1), "Invalid producer name");
+
+    }
+
+    /**
+     * Checks if the extracted tracks from the album 1.
+     *
+     * @param trackTitle The title of the track.
+     */
+    private static void checkTrackAlbum1Title(String trackTitle) {
+        if (!"1".equals(trackTitle) && !"2".equals(trackTitle)) {
+            Assertions.fail("The track " + trackTitle + " wasn't expected.");
         }
     }
 

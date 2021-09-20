@@ -34,6 +34,16 @@ public class ExtractedTrackDto {
 
     private double length;
 
+    private String lyrics;
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
+    }
+
     public Integer getBitrate() {
         return bitrate;
     }
