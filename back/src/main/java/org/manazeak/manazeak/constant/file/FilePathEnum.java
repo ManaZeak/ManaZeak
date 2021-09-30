@@ -8,7 +8,7 @@ import java.nio.file.Paths;
  */
 public enum FilePathEnum {
 
-    COVER_FOLDER(Paths.get("/covers/"));
+    COVER_FOLDER(Paths.get("/resources/covers/"));
 
     /**
      * Contains the extracted covers

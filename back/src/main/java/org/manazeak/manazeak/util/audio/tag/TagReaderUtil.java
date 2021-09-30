@@ -35,8 +35,10 @@ public final class TagReaderUtil {
                 java.util.logging.Logger.getLogger("org.jaudiotagger")
         };
 
-        for (java.util.logging.Logger l : pin)
+        // Configuring the severity of the logs to warn.
+        for (java.util.logging.Logger l : pin) {
             l.setLevel(Level.WARNING);
+        }
     }
 
     private TagReaderUtil() {
