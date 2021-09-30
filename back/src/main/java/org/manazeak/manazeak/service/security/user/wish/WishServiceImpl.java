@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user.wish;
 
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
 import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Allows to manipulate wishes for the users.
  */
+@TransactionalWithRollback
 @Service
 public class WishServiceImpl implements WishService {
 

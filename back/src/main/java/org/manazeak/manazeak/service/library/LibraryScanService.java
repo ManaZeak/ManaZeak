@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library;
 
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * This service allows to scan the music library to get the information contained in the tracks.
  */
+@TransactionalWithRollback
 @Service
 public class LibraryScanService {
 
@@ -37,6 +39,8 @@ public class LibraryScanService {
             List<ScannedArtistDto> artists = libraryScanManager.scanLibraryFolder();
             // Extract the data contained in the tags of the tracks.
             trackExtractor.extractTracks(artists);
+            // Inserting the tracks into the database.
+
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.
             throw new MzkRuntimeException("File handling error during the scan", "", e);

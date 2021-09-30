@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.security.invite;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -14,7 +14,7 @@ import java.util.Optional;
  * This class handles the invite code operations.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class InviteCodeServiceImpl implements InviteCodeService {
 
     /**

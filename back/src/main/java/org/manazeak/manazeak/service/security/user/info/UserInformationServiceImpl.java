@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.security.user.info;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * This service is used to access the information about a user.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class UserInformationServiceImpl implements UserInformationService {
 
     /**

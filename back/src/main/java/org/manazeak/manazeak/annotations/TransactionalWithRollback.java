@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Transactional(rollbackFor = Exception.class)
-public @interface TransactionnalWithRollback {
+public @interface TransactionalWithRollback {
 
 }

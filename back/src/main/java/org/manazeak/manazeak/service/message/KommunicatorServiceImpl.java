@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.message;
 
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 /**
  * Allows to manipulate error before sending them to the front.
  */
+@TransactionalWithRollback
 @Service
 public class KommunicatorServiceImpl implements KommunicatorService {
 

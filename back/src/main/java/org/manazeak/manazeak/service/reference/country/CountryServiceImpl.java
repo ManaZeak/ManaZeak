@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.reference.country;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.reference.CountryDAO;
 import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
 import org.manazeak.manazeak.entity.reference.Country;
@@ -13,7 +13,7 @@ import java.util.List;
  * Handles the actions with the countries.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class CountryServiceImpl implements CountryService {
 
     private final CountryDAO countryDAO;

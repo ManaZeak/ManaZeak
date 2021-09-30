@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.security.user;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
@@ -23,7 +23,7 @@ import java.util.Optional;
  * This service is used get user in the database.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);

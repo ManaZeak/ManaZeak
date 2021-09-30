@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.service.security.user.badge;
 
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
 import org.manazeak.manazeak.manager.security.user.badge.BadgeManager;
@@ -13,7 +13,7 @@ import java.util.List;
  * Used to manipulate the badges in the app.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class BadgeServiceImpl implements BadgeService {
 
     private final BadgeManager badgeManager;

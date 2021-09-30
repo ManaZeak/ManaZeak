@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.error;
 
-import org.manazeak.manazeak.annotations.TransactionnalWithRollback;
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.error.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
@@ -13,7 +13,7 @@ import org.springframework.validation.FieldError;
  * Handle the errors of the controllers.
  */
 @Service
-@TransactionnalWithRollback
+@TransactionalWithRollback
 public class ErrorHandlerServiceImpl implements ErrorHandlerService {
 
     /**

@@ -195,7 +195,6 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals("test_prod", track.getProducers().get(0), "Invalid producer name");
         Assertions.assertEquals("test_prod2", track.getProducers().get(1), "Invalid producer name");
         // Check the lyrics
-        Assertions.assertEquals("test_lyrics", track.getLyrics(), "Invalid lyrics.");
         Assertions.assertEquals("1111", track.getYear(), "Invalid year.");
         Assertions.assertEquals(1, track.getDiscNumber(), "Invalid disc number.");
         Assertions.assertEquals(1, track.getTrackNumber(), "Invalid track number.");
