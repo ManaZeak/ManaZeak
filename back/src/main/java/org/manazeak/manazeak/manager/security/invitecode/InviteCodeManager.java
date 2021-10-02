@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.invitecode;
 
+import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
@@ -36,7 +37,8 @@ public class InviteCodeManager {
         // Get the invite code from the database.
         Optional<InviteCode> inviteCodeOpt = inviteCodeDAO.getInviteCodeByValueAndIsActiveTrue(inviteCodeValue);
         if (inviteCodeOpt.isEmpty()) {
-            throw new MzkRuntimeException("user.invite_code.error.not_found", "user.invite_code.error.not_found_title");
+            throw new MzkRuntimeException("The invite code : " + inviteCodeValue + "wasn't found",
+                    UserNotificationEnum.INVITE_CODE_NOT_FOUND);
         }
         // Mark the invite code as used.
         InviteCode inviteCode = inviteCodeOpt.get();

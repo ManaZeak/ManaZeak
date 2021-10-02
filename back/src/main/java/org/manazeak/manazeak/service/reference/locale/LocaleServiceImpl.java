@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.service.reference.locale;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.constant.notification.reference.locale.LocaleNotificationEnum;
 import org.manazeak.manazeak.daos.reference.LocaleDAO;
 import org.manazeak.manazeak.entity.reference.Locale;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -43,7 +44,8 @@ public class LocaleServiceImpl implements LocaleService {
         // Getting the specified local.
         Optional<Locale> locale = localeDAO.findById(localeId);
         if (locale.isEmpty()) {
-            throw new MzkRuntimeException("user.locale.not_found", "user.locale.not_found_title");
+            throw new MzkRuntimeException("The locale asked by the user wasn't found.",
+                    LocaleNotificationEnum.LOCALE_NOT_FOUND_ERROR);
         }
         // Setting the locale on the user.
         user.setLocale(locale.get());

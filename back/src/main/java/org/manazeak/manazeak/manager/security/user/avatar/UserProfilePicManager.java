@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user.avatar;
 
+import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.file.FileUtil;
@@ -44,7 +45,8 @@ public class UserProfilePicManager {
         try (InputStream stream = file.getInputStream()) {
             Files.copy(stream, dest, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new MzkRuntimeException("error.file_system.avatar", "error.file_system.avatar_title", e);
+            throw new MzkRuntimeException("The user avatar couldn't be written.",
+                    UserNotificationEnum.USER_AVATAR_NOT_FOUND, e);
         }
         return fileName;
     }

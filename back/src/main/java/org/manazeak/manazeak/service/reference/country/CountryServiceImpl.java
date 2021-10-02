@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.service.reference.country;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.constant.notification.reference.country.CountryNotificationEnum;
 import org.manazeak.manazeak.daos.reference.CountryDAO;
 import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
 import org.manazeak.manazeak.entity.reference.Country;
@@ -44,7 +45,7 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public Country getCountryById(Long countryId) {
         return countryDAO.getCountryByCountryId(countryId)
-                .orElseThrow(MzkExceptionHelper.generateMzkRuntimeException("reference.country.error.not_found",
-                        "reference.country.error.not_found_title"));
+                .orElseThrow(MzkExceptionHelper.generateMzkRuntimeException("The country wasn't found in the database.",
+                        CountryNotificationEnum.COUNTRY_NOT_FOUND_ERROR));
     }
 }

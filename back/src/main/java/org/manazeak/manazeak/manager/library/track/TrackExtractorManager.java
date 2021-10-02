@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.manager.track;
+package org.manazeak.manazeak.manager.library.track;
 
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;

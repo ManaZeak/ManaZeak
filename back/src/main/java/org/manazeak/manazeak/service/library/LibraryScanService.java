@@ -4,7 +4,7 @@ import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
-import org.manazeak.manazeak.manager.track.TrackExtractorManager;
+import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class LibraryScanService {
 
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.
-            throw new MzkRuntimeException("File handling error during the scan", "", e);
+            throw new MzkRuntimeException("File handling error during the scan", e);
         }
 
     }
@@ -61,7 +61,7 @@ public class LibraryScanService {
             trackExtractor.extractTracks(artists);
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.
-            throw new MzkRuntimeException("File handling error during the rescan", "", e);
+            throw new MzkRuntimeException("File handling error during the rescan", e);
         }
     }
 

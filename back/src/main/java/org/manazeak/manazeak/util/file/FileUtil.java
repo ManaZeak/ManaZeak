@@ -3,6 +3,7 @@ package org.manazeak.manazeak.util.file;
 import org.apache.commons.io.FilenameUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.FileMagicNumberEnum;
+import org.manazeak.manazeak.constant.notification.file.FileNotificationEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public final class FileUtil {
             return FileMagicNumberEnum.getFileExtension(file);
         } catch (MzkFileFormatException e) {
             LOG.error("Wrong format detected after the validation of an uploaded file");
-            throw new MzkRuntimeException("general.error.file.bad_format", "general.error.file.bad_format_title", e);
+            throw new MzkRuntimeException("Wrong format detected.", FileNotificationEnum.BAD_FORMAT_ERROR, e);
         }
     }
 
@@ -51,8 +52,8 @@ public final class FileUtil {
             try {
                 Files.createDirectories(path);
             } catch (IOException e) {
-                throw new MzkRuntimeException("general.error.file.parent_directory",
-                        "general.error.file.parent_directory_title", e);
+                throw new MzkRuntimeException("Error encountered when creating the parent directory",
+                        FileNotificationEnum.PARENT_DIRECTORY_CREATION_ERROR, e);
             }
         }
     }
@@ -70,7 +71,7 @@ public final class FileUtil {
         try (OutputStream fos = Files.newOutputStream(path)) {
             fos.write(bytes);
         } catch (IOException e) {
-            throw new MzkRuntimeException("general.error.file.writing_error", "general.error", e);
+            throw new MzkRuntimeException("Error writing file.", FileNotificationEnum.IO_ERROR, e);
         }
     }
 
@@ -88,5 +89,16 @@ public final class FileUtil {
         String extension = FilenameUtils.getExtension(filePath.getFileName().toString());
         return (extension.equals(FileExtensionEnum.FLAC.getExtensionWithoutDot())
                 || extension.equals(FileExtensionEnum.MP3.getExtensionWithoutDot()));
+    }
+
+    /**
+     * Check if the file is a cover file.
+     *
+     * @param filePath The location of the file to test.
+     * @return True if the file is a .jpg.
+     */
+    public static boolean isCoverFileByExtension(Path filePath) {
+        String extension = FilenameUtils.getExtension(filePath.getFileName().toString());
+        return extension.equals(FileExtensionEnum.JGP.getExtensionWithoutDot());
     }
 }

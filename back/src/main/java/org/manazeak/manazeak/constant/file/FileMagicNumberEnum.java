@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.constant.file;
 
 import com.google.inject.internal.util.ImmutableList;
+import org.manazeak.manazeak.constant.notification.file.FileNotificationEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +54,8 @@ public enum FileMagicNumberEnum {
                     return magic.getExtension();
                 }
             } catch (IOException e) {
-                throw new MzkRuntimeException("error.file_system.io_error", "error.file_system.io_error_title", e);
+                throw new MzkRuntimeException("Error when reading the multipart file :" + file.getName(),
+                        FileNotificationEnum.IO_ERROR, e);
             }
         }
         // No format has been found for the file, sending an exception.

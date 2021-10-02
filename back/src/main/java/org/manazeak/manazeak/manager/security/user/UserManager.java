@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.manager.security.user;
 
-import org.manazeak.manazeak.constant.error.ErrorEnum;
+import org.manazeak.manazeak.constant.message.ErrorEnum;
+import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
@@ -71,7 +72,8 @@ public class UserManager {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             LOG.error("There is no connected user. Un-authenticated user shouldn't access this.");
-            throw new MzkRuntimeException("error.user.not_connected", "error.user.not_connected_title");
+            throw new MzkRuntimeException("The user isn't connected, we stopped him.",
+                    UserNotificationEnum.USER_NOT_CONNECTED);
         }
         // Getting the current username
         String currentUserName = authentication.getName();
@@ -79,7 +81,8 @@ public class UserManager {
         Optional<MzkUser> userOpt = findByUsername(currentUserName);
         if (userOpt.isEmpty()) {
             LOG.error("The username wasn't found in the database, this is not normal!");
-            throw new MzkRuntimeException(USER_NOT_FOUND_KEY, USER_NOT_FOUND_TITLE_KEY);
+            throw new MzkRuntimeException("The user couldn't be found in the database.",
+                    UserNotificationEnum.USER_NOT_FOUND_ERROR);
         }
         return userOpt.get();
     }

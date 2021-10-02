@@ -78,7 +78,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
      * @return The object that will be send to the front
      */
     @Override
-    public KommunicatorDto buildKommunicatorFromException(MzkRuntimeException e) {
+    public KommunicatorDto buildKommunicatorFromException(MzkFrontNotificationException e) {
         return buildKomFromMzkException(e);
     }
 

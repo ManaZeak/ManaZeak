@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
@@ -19,8 +20,6 @@ import java.util.List;
 @Component
 public class AdminUserManager {
 
-    private static final String USER_NOT_FOUND = "user.error.not_found";
-    private static final String USER_NOT_FOUND_TITLE = "user.error.not_found_title";
     private final MzkUserDAO userDAO;
     private final UserProfileManager userProfileManager;
     private final InviteCodeManager inviteCodeManager;
@@ -65,16 +64,13 @@ public class AdminUserManager {
      */
     public void deleteUserById(Long userId) {
         // Getting the user
-        MzkUser user = userDAO.findById(userId)
-                .orElseThrow(MzkExceptionHelper.generateMzkRuntimeException(USER_NOT_FOUND, USER_NOT_FOUND_TITLE));
+        MzkUser user = getUser(userId);
         // Getting the parent of the user.
         MzkUser parent = user.getInviteCode().getParent();
         // If the user has no parent, then we cannot delete him.
         if (parent == null) {
-            throw new MzkRuntimeException(
-                    "user.error.delete_parent",
-                    "user.error.lock_out_protection_title"
-            );
+            throw new MzkRuntimeException("The user tried to delete the root user.",
+                    UserNotificationEnum.ERROR_DELETING_ADMIN);
         }
         // Changing the invite codes of the user.
         inviteCodeManager.changeUserInviteCodeOwner(user, parent);
@@ -90,9 +86,21 @@ public class AdminUserManager {
      * @param userId the user id.
      */
     public void deactivateUserById(Long userId) {
-        MzkUser user = userDAO.findById(userId)
-                .orElseThrow(MzkExceptionHelper.generateMzkRuntimeException(USER_NOT_FOUND, USER_NOT_FOUND_TITLE));
+        MzkUser user = getUser(userId);
         user.setIsActive(false);
         userDAO.save(user);
+    }
+
+    /**
+     * Get the user contained in the database.
+     * @param userId The id of the user.
+     * @return The user in the database.
+     */
+    public MzkUser getUser(Long userId) {
+        return userDAO.findById(userId).orElseThrow(
+                MzkExceptionHelper.generateMzkRuntimeException(
+                        "The user doesn't exists",
+                        UserNotificationEnum.USER_NOT_FOUND_ERROR)
+        );
     }
 }

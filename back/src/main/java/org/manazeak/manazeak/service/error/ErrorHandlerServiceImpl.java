@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.service.error;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.constant.error.ErrorEnum;
+import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.MzkRestException;

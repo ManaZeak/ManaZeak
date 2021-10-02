@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.exception;
 
+import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
+
 import java.util.function.Supplier;
 
 /**
@@ -33,8 +35,8 @@ public final class MzkExceptionHelper {
         return new MzkObjectNotFoundException("The object hasn't been found", messageKey, TITLE_OBJECT_NOT_FOUND);
     }
 
-    public static Supplier<MzkRuntimeException> generateMzkRuntimeException(String messageKey, String titleKey) {
-        return () -> new MzkRuntimeException(messageKey, titleKey);
+    public static Supplier<MzkRuntimeException> generateMzkRuntimeException(String message, NotificationMessageEnum notification) {
+        return () -> new MzkRuntimeException(message, notification);
     }
 
 }

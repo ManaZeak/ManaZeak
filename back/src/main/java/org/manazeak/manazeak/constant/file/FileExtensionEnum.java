@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.constant.file;
 
+import org.manazeak.manazeak.constant.notification.file.FileNotificationEnum;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public enum FileExtensionEnum {
             }
         }
         // Nothing was found
-        throw new MzkRuntimeException("general.error.file.mime_type_error", "general.error.file.mime_type_error_title");
+        throw new MzkRuntimeException("The mime type of the file :" + mimeType + "wasn't found",
+                FileNotificationEnum.MIME_TYPE_NOT_FOUND_ERROR);
     }
 
     public String getExtension() {

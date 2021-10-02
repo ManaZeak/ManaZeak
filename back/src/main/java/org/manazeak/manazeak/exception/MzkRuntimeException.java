@@ -1,45 +1,74 @@
 package org.manazeak.manazeak.exception;
 
+import org.manazeak.manazeak.constant.notification.NotificationMessage;
+import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
+
 /**
  * Runtime exception for ManaZeak
  */
-public class MzkRuntimeException extends RuntimeException implements MzkException {
+public class MzkRuntimeException extends RuntimeException {
 
-    private final String messageKey;
-    private final String titleKey;
+    /**
+     * Contains the messages contained in the notification.
+     */
+    private final NotificationMessage notificationMessage;
 
     /**
      * Constructs an instance of the exception with a message key and a title and a cause.
      *
-     * @param messageKey The message key that will be used to display the message to the user.
-     * @param titleKey   The title key that will be used to display the title to the user.
-     * @param e          The cause of this exception.
+     * @param message      The exception message that will be displayed in the logs.
+     * @param notification The notification that will be displayed to the user.
+     * @param e            The cause of this exception.
      */
-    public MzkRuntimeException(String messageKey, String titleKey, Throwable e) {
-        super(messageKey, e);
-        this.messageKey = messageKey;
-        this.titleKey = titleKey;
+    public MzkRuntimeException(String message, NotificationMessageEnum notification, Throwable e) {
+        super(message, e);
+        if (notification != null) {
+            notificationMessage = notification.getNotificationMessages();
+        } else {
+            notificationMessage = null;
+        }
+    }
+
+    /**
+     * Constructs an instance of the exception without information about the exception for the front.
+     *
+     * @param message The exception message that will be displayed in the logs.
+     * @param e       The cause of this exception.
+     */
+    public MzkRuntimeException(String message, Throwable e) {
+        super(message, e);
+        notificationMessage = null;
     }
 
     /**
      * Constructs an instance of the exception with a message key and a title and a cause.
      *
-     * @param messageKey The message key that will be used to display the message to the user.
-     * @param titleKey   The title key that will be used to display the title to the user.
+     * @param message      The message that will be displayed.
+     * @param notification The notification that will be displayed to the user.
      */
-    public MzkRuntimeException(String messageKey, String titleKey) {
-        super(messageKey);
-        this.messageKey = messageKey;
-        this.titleKey = titleKey;
+    public MzkRuntimeException(String message, NotificationMessageEnum notification) {
+        super(message);
+        if (notification != null) {
+            notificationMessage = notification.getNotificationMessages();
+        } else {
+            notificationMessage = null;
+        }
     }
 
-    @Override
-    public String getMessageKey() {
-        return messageKey;
+    /**
+     * Constructs an instance of the exception without the information about the exception for the front.
+     *
+     * @param message The message that will be displayed.
+     */
+    public MzkRuntimeException(String message) {
+        super(message);
+        notificationMessage = null;
     }
 
-    @Override
-    public String getTitleKey() {
-        return titleKey;
+    /**
+     * @return The key of the messages inside the notification.
+     */
+    public NotificationMessage getNotificationMessage() {
+        return notificationMessage;
     }
 }

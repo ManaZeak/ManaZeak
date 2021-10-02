@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.constant.error;
+package org.manazeak.manazeak.constant.message;
 
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 

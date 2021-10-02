@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.manager.track;
+package org.manazeak.manazeak.manager.library.track;
 
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;

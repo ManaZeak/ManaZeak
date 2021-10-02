@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.configuration.security;
 
+import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -31,18 +32,19 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         if (username == null || "".equals(username)) {
             // Can't find user.
-            throw new MzkRuntimeException("user.error.no_username", "user.error.no_username");
+            throw new MzkRuntimeException("No user given.", UserNotificationEnum.NO_USERNAME_ERROR);
         }
         // Getting the user for the database.
         final Optional<MzkUser> user = userService.findByUsername(username);
         if (user.isEmpty()) {
             LOG.warn("The unknown user {} tried to connect.", username);
-            throw new MzkRuntimeException("user.error.authentication_error", "user.error.authentication_error");
+            throw new MzkRuntimeException("An unknow user tryed to connect", UserNotificationEnum.USER_AUTH_ERROR);
         }
         // If the user is not active he can't connect
         if (Boolean.FALSE.equals(user.get().getIsActive())) {
             LOG.warn("The disabled user {} tried to connect.", username);
-            throw new MzkRuntimeException("user.error.disabled_user", "user.error.disabled_user");
+            throw new MzkRuntimeException("An disabled user tried to connect to the database.",
+                    UserNotificationEnum.DISABLED_USER_ERROR);
         }
         // Adding rights
         final List<MzkGrantedAuthority> grantedAuthorities = new ArrayList<>();

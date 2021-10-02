@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.manager.track;
+package org.manazeak.manazeak.manager.library.track;
 
 import org.junit.jupiter.api.Assertions;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;

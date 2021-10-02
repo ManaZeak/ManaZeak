@@ -43,7 +43,7 @@ public abstract class AbstractManaZeakTest {
             return FileUtils.toFile(getClass().getProtectionDomain()
                     .getCodeSource().getLocation().toURI().toURL()).getAbsolutePath() + "/";
         } catch (final Exception e) {
-            throw new MzkRuntimeException("Impossible to get the application path.", "", e);
+            throw new MzkRuntimeException("Impossible to get the application path.", e);
         }
     }
 

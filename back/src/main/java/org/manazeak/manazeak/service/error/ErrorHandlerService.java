@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.error;
 
-import org.manazeak.manazeak.constant.error.ErrorEnum;
+import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
