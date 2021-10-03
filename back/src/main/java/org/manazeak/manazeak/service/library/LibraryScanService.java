@@ -1,9 +1,11 @@
 package org.manazeak.manazeak.service.library;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
+import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,13 @@ public class LibraryScanService {
 
     private final TrackExtractorManager trackExtractor;
 
-    public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor) {
+    private final CoverManager coverManager;
+
+    public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
+                              CoverManager coverManager) {
         this.libraryScanManager = libraryScanManager;
         this.trackExtractor = trackExtractor;
+        this.coverManager = coverManager;
     }
 
     /**
@@ -35,10 +41,12 @@ public class LibraryScanService {
         try {
             // Cleaning the existing data.
             // TODO: clean the database.
-            // Getting the files from the filesystem.
-            List<ScannedArtistDto> artists = libraryScanManager.scanLibraryFolder();
+            // Scan result
+            LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
             // Extract the data contained in the tags of the tracks.
-            trackExtractor.extractTracks(artists);
+            trackExtractor.extractTracks(scanResult.getArtists());
+            // Extracting the covers
+            coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
             // Inserting the tracks into the database.
 
         } catch (IOException e) {
@@ -54,9 +62,10 @@ public class LibraryScanService {
     public void rescanLibrary() {
         // Iterating through the files of the library.
         try {
-            List<ScannedArtistDto> artists = libraryScanManager.scanLibraryFolder();
+            // Scan result
+            LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
             // Filtering the artists that must be updated.
-            artists = libraryScanManager.removeArtistNotUpdated(artists);
+            List<ScannedArtistDto> artists = libraryScanManager.removeArtistNotUpdated(scanResult.getArtists());
             // Extract the data contained in the tags of the tracks.
             trackExtractor.extractTracks(artists);
         } catch (IOException e) {

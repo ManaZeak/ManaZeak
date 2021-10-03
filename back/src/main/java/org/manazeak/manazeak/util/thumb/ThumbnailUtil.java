@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.util.thumb;
 
+import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.util.file.FileUtil;
@@ -12,7 +13,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * Generate thumbnails for images.
@@ -33,7 +33,7 @@ public final class ThumbnailUtil {
      * @param image            The image that will be transformed.
      * @param thumbName        The name of the generated thumbnail.
      */
-    public static void generateThumbs(List<ThumbSizeEnum> thumbsToGenerate, Path thumbFolder, Path image,
+    public static void generateThumbs(ThumbSizeEnum[] thumbsToGenerate, Path thumbFolder, Path image,
                                       String thumbName) {
         try {
             // Testing if the image exists.
@@ -42,7 +42,12 @@ public final class ThumbnailUtil {
             }
             // Generating the thumbnails for the given list of sizes.
             for (ThumbSizeEnum thumbSize : thumbsToGenerate) {
-                generateThumb(thumbSize, image, thumbFolder, thumbName);
+                // When the original mode is set, only copy the file into the orig folder.
+                if (thumbSize == ThumbSizeEnum.ORIGINAL) {
+                    FileUtils.copyFile(image.toFile(), getDestinationPath(thumbSize, thumbFolder, thumbName).toFile());
+                } else {
+                    generateThumb(thumbSize, image, thumbFolder, thumbName);
+                }
             }
         } catch (IOException e) {
             LOG.warn("Error when generating the thumbnail of the image {}", image, e);
@@ -62,11 +67,7 @@ public final class ThumbnailUtil {
                                       String thumbName) throws IOException {
         // Scaling the image.
         BufferedImage thumb = scaleImage(thumbSize, image);
-        // Creating the destination of the image.
-        Path destination = thumbFolder.resolve(thumbSize.getFolderName());
-        FileUtil.createDirectories(destination);
-        // Adding the filename.
-        destination = destination.resolve(thumbName + FileExtensionEnum.JGP.getExtension());
+        Path destination = getDestinationPath(thumbSize, thumbFolder, thumbName);
         // Creating the file.
         if (destination.toFile().createNewFile()) {
             // Writing the thumb into the FS.
@@ -74,6 +75,22 @@ public final class ThumbnailUtil {
         } else {
             LOG.warn("The thumbnail file : {} cannot be created.", destination);
         }
+    }
+
+    /**
+     * Get the destination path of the thumb given the size of the generated thumb and the thumb name.
+     *
+     * @param thumbSize   The size of the generated thumbnail.
+     * @param thumbFolder The folder used to store the thumbnails.
+     * @param thumbName   The name used for the thumbnail.
+     * @return The path were the thumbnail will be stored.
+     */
+    private static Path getDestinationPath(ThumbSizeEnum thumbSize, Path thumbFolder, String thumbName) {
+        // Creating the destination of the image.
+        Path destination = thumbFolder.resolve(thumbSize.getFolderName());
+        FileUtil.createDirectories(destination);
+        // Adding the filename.
+        return destination.resolve(thumbName + FileExtensionEnum.JGP.getExtension());
     }
 
     /**

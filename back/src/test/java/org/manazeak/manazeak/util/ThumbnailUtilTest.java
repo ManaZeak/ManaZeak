@@ -29,7 +29,7 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         // Getting the image for the FS.
         Path image = testImageGetter.getImagePath(TestImageGetter.THUMB_JPG_FULL_SIZE);
         // Getting the size that must be generated.
-        List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
+        ThumbSizeEnum[] sizes = getGeneratedThumbSize();
         // Trying to resize the image.
         Path tempFolder = getTempAppFolderPath();
         ThumbnailUtil.generateThumbs(sizes, tempFolder, image, TestImageGetter.THUMB_NAME);
@@ -48,10 +48,8 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         Path applicationPath = Paths.get(getApplicationPath());
         // Getting a non image file.
         Path image = applicationPath.resolve("thumb.jpg");
-        // Getting the size that must be generated.
-        List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
         // Applying the modification to the file.
-        ThumbnailUtil.generateThumbs(sizes, applicationPath, image, "thumb.jpg");
+        ThumbnailUtil.generateThumbs(getGeneratedThumbSize(), applicationPath, image, "thumb.jpg");
         // Checking the image.
         Assertions.assertFalse(image.toFile().exists());
     }
@@ -61,11 +59,9 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
      *
      * @return The list of thumbnails to generate.
      */
-    private List<ThumbSizeEnum> getGeneratedThumbSize() {
+    private ThumbSizeEnum[] getGeneratedThumbSize() {
         // Getting the size that must be generated.
-        List<ThumbSizeEnum> sizes = new ArrayList<>();
-        sizes.add(ThumbSizeEnum.TINY);
-        return sizes;
+        return new ThumbSizeEnum[]{ThumbSizeEnum.TINY};
     }
 
 }

@@ -8,7 +8,8 @@ public enum ThumbSizeEnum {
     TINY("tiny", 50, 50),
     SMALL("small", 100, 100),
     MEDIUM("medium", 200, 200),
-    LARGE("large", 500, 500);
+    LARGE("large", 500, 500),
+    ORIGINAL("orig", 0, 0);
 
     private final String folderName;
 

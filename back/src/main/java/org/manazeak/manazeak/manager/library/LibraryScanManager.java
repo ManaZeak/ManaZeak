@@ -2,6 +2,7 @@ package org.manazeak.manazeak.manager.library;
 
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.daos.track.BandDAO;
+import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.entity.track.Band;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class LibraryScanManager {
      * @return The list of scanned artists.
      * @throws IOException Error during the walk.
      */
-    public List<ScannedArtistDto> scanLibraryFolder() throws IOException {
+    public LibraryScanResultDto scanLibraryFolder() throws IOException {
         // The path of the music library that will be scanned.
         Path libPath = LibraryConstant.LIBRARY_PATH;
         // Creating the FileVisitor that will collect the tracks.
@@ -37,7 +38,7 @@ public class LibraryScanManager {
         // Launch the file walk.
         Files.walkFileTree(libPath, visitor);
         // Getting the scanned artist.
-        return visitor.getArtists();
+        return new LibraryScanResultDto(visitor.getArtists(), visitor.getCoverPaths());
     }
 
     /**

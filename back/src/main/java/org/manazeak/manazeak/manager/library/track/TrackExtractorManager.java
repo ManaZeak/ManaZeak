@@ -30,7 +30,7 @@ public class TrackExtractorManager {
      */
     public List<ExtractedBandDto> extractTracks(List<ScannedArtistDto> artists) {
         // Creating the thread pool.
-        ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.THREAD_NUMBER);
+        ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
         List<Future<ExtractedBandDto>> results = new ArrayList<>();
         // Launching the thread with an artist.
         for (ScannedArtistDto artist : artists) {
