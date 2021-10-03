@@ -1,9 +1,11 @@
 package org.manazeak.manazeak.constant.notification;
 
+import java.io.Serializable;
+
 /**
  * Contains the messages used to build the notification.
  */
-public final class NotificationMessage {
+public final class NotificationMessage implements Serializable {
 
     private final String messageKey;
 

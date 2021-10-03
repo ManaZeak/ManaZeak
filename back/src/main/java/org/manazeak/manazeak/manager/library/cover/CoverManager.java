@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.manager.library.cover;
 
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.DatatypeConverter;
@@ -36,6 +37,7 @@ public class CoverManager {
             byte[] digest = md5.digest();
             String coverName = DatatypeConverter.printHexBinary(digest).toUpperCase();
             // TODO: generate the cover at the sizes.
+            // ThumbnailUtil.generateThumbs();
         } catch (NoSuchAlgorithmException e) {
             throw new MzkRuntimeException("The md5 algorithm wasn't found.", e);
         }

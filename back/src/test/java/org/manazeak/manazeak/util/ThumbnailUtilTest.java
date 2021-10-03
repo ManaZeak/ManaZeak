@@ -32,10 +32,10 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
         // Trying to resize the image.
         Path tempFolder = getTempAppFolderPath();
-        ThumbnailUtil.generateThumbs(sizes, tempFolder, image);
+        ThumbnailUtil.generateThumbs(sizes, tempFolder, image, TestImageGetter.THUMB_NAME);
         // Checking the image.
         Path thumbnailPath = tempFolder.resolve(ThumbSizeEnum.TINY.getFolderName())
-                .resolve(TestImageGetter.THUMB_JPG_FULL_SIZE);
+                .resolve(TestImageGetter.THUMB_NAME + ".jpg");
         Assertions.assertTrue(thumbnailPath.toFile().exists(), "The thumbnail hasn't been generated.");
     }
 
@@ -51,7 +51,7 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         // Getting the size that must be generated.
         List<ThumbSizeEnum> sizes = getGeneratedThumbSize();
         // Applying the modification to the file.
-        ThumbnailUtil.generateThumbs(sizes, applicationPath, image);
+        ThumbnailUtil.generateThumbs(sizes, applicationPath, image, "thumb.jpg");
         // Checking the image.
         Assertions.assertFalse(image.toFile().exists());
     }

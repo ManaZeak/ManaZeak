@@ -19,6 +19,7 @@ public class TestImageGetter extends AbstractManaZeakTest {
     public static final String JPG_OK = "test_OK.jpg";
     public static final String JPG_KO = "test_KO.jpg";
     public static final String THUMB_JPG_FULL_SIZE = "image_full_sized.jpg";
+    public static final String THUMB_NAME = "exit_name";
 
     // PNG FILES
     public static final String PNG_OK = "test_OK.png";

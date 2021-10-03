@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.util.thumb;
 
+import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.util.file.FileUtil;
 import org.slf4j.Logger;
@@ -30,8 +31,10 @@ public final class ThumbnailUtil {
      * @param thumbsToGenerate The list of the size of the thumbnails that needs to be generated.
      * @param thumbFolder      The folder that will contain the thumbnail.
      * @param image            The image that will be transformed.
+     * @param thumbName        The name of the generated thumbnail.
      */
-    public static void generateThumbs(List<ThumbSizeEnum> thumbsToGenerate, Path thumbFolder, Path image) {
+    public static void generateThumbs(List<ThumbSizeEnum> thumbsToGenerate, Path thumbFolder, Path image,
+                                      String thumbName) {
         try {
             // Testing if the image exists.
             if (image.toFile().exists()) {
@@ -39,7 +42,7 @@ public final class ThumbnailUtil {
             }
             // Generating the thumbnails for the given list of sizes.
             for (ThumbSizeEnum thumbSize : thumbsToGenerate) {
-                generateThumb(thumbSize, image, thumbFolder);
+                generateThumb(thumbSize, image, thumbFolder, thumbName);
             }
         } catch (IOException e) {
             LOG.warn("Error when generating the thumbnail of the image {}", image, e);
@@ -52,16 +55,18 @@ public final class ThumbnailUtil {
      * @param thumbSize   The size of the output thumbnail.
      * @param image       The image that must be reduced.
      * @param thumbFolder The folder containing the thumbnail.
+     * @param thumbName   The name of the file without extension that will be created for the thumbnail.
      * @throws IOException Error during the generation of the image.
      */
-    private static void generateThumb(ThumbSizeEnum thumbSize, Path image, Path thumbFolder) throws IOException {
+    private static void generateThumb(ThumbSizeEnum thumbSize, Path image, Path thumbFolder,
+                                      String thumbName) throws IOException {
         // Scaling the image.
         BufferedImage thumb = scaleImage(thumbSize, image);
         // Creating the destination of the image.
         Path destination = thumbFolder.resolve(thumbSize.getFolderName());
         FileUtil.createDirectories(destination);
         // Adding the filename.
-        destination = destination.resolve(image.getFileName());
+        destination = destination.resolve(thumbName + FileExtensionEnum.JGP.getExtension());
         // Creating the file.
         if (destination.toFile().createNewFile()) {
             // Writing the thumb into the FS.
