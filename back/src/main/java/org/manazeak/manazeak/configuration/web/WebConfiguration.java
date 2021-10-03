@@ -126,15 +126,4 @@ public class WebConfiguration implements ApplicationContextAware, WebMvcConfigur
 
         return viewResolver;
     }
-
-    /**
-     * How to get the local of a user.
-     *
-     * @param localResolver The bean used to retrieve the user local.
-     * @return the local of the user.
-     */
-    @Bean
-    public LocaleResolver localeResolver(MzkLocalResolver localResolver) {
-        return localResolver;
-    }
 }
