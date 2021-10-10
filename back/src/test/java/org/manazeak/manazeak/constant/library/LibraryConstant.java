@@ -14,7 +14,16 @@ public final class LibraryConstant {
     /** The number of items that will be processed at the same time. */
     public static final int SCAN_BUFFER_SIZE = 1000;
 
-    public static final int THREAD_NUMBER = 1;
+    /**
+     * The number of thread that will be used to extract the track of the library.
+     */
+    public static final int LIBRARY_SCAN_THREAD_NUMBER = 1;
+
+    /**
+     * The number of thread that will be used to extract the covers.
+     */
+    public static final int COVER_EXTRACTION_THREAD_NUMBER = 5;
+
 
     private LibraryConstant() {
 
