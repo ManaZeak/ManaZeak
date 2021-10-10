@@ -157,10 +157,6 @@ public final class TagReaderUtil {
         } else {
             extractSpecificFlacTag(tag, container);
         }
-
-        // Extracting the cover art from the file.
-        TagField coverBinary = tag.getFirstField(FieldKey.COVER_ART);
-        container.setCover(coverBinary);
     }
 
 
