@@ -7,6 +7,8 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ public class LibraryScanService {
 
     private final CoverManager coverManager;
 
+    private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
+
     public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
                               CoverManager coverManager) {
         this.libraryScanManager = libraryScanManager;
@@ -38,15 +42,25 @@ public class LibraryScanService {
      */
     @Async
     public void scanLibrary() {
+        LOG.info("Starting the library scan.");
         try {
             // Cleaning the existing data.
             // TODO: clean the database.
             // Scan result
+            LOG.info("Starting the library FS scan.");
             LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
+            LOG.info("Ended the library FS scan.");
+
+            LOG.info("Starting the track tag extraction.");
             // Extract the data contained in the tags of the tracks.
             trackExtractor.extractTracks(scanResult.getArtists());
+            LOG.info("Ending the track tag extraction.");
+
+            LOG.info("Starting the cover extraction.");
             // Extracting the covers
             coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
+            LOG.info("Ending the cover extraction.");
+
             // Inserting the tracks into the database.
 
         } catch (IOException e) {
@@ -60,6 +74,7 @@ public class LibraryScanService {
      * Sync the tracks contained in the filesystem with the track contained in the database.
      */
     public void rescanLibrary() {
+        LOG.info("Starting the library re-scan.");
         // Iterating through the files of the library.
         try {
             // Scan result

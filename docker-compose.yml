@@ -27,6 +27,7 @@ services:
         volumes:
             - ${RESOURCES_PATH}:/resources
             - ${LIBRARY_PATH}:/library
+            - ${LOGS_PATH}:/log
         links:
             - db
         depends_on:

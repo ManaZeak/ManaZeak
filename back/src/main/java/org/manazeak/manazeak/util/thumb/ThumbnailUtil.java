@@ -37,7 +37,7 @@ public final class ThumbnailUtil {
                                       String thumbName) {
         try {
             // Testing if the image exists.
-            if (image.toFile().exists()) {
+            if (!image.toFile().exists()) {
                 LOG.warn("The image : {} cannot be found, the thumbnails haven't been created.", image);
             }
             // Generating the thumbnails for the given list of sizes.

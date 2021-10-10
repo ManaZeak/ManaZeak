@@ -35,7 +35,8 @@ public final class MzkExceptionHelper {
         return new MzkObjectNotFoundException("The object hasn't been found", messageKey, TITLE_OBJECT_NOT_FOUND);
     }
 
-    public static Supplier<MzkRuntimeException> generateMzkRuntimeException(String message, NotificationMessageEnum notification) {
+    public static Supplier<MzkRuntimeException> generateMzkRuntimeException(String message,
+                                                                            NotificationMessageEnum notification) {
         return () -> new MzkRuntimeException(message, notification);
     }
 

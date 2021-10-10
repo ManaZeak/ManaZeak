@@ -3,8 +3,6 @@ package org.manazeak.manazeak.exception;
 import org.manazeak.manazeak.constant.notification.NotificationMessage;
 import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
 
-import java.io.Serializable;
-
 /**
  * Runtime exception for ManaZeak
  */
