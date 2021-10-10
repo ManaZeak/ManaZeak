@@ -174,7 +174,7 @@ public class TrackExtractorVerifHelper {
     private static void checkTrack1(ExtractedTrackDto track) {
         Assertions.assertEquals("test_lyrics", track.getLyrics(), "Invalid lyrics.");
         // Check the size of the extracted artists
-        Assertions.assertEquals(2, track.getArtists().size(), "Invalid number of extracted artists");
+        Assertions.assertEquals(2, track.getArtists().size(), "Invalid number of extracted artists for the track5.");
         Assertions.assertEquals("test_artist1", track.getArtists().get(0), "Invalid name of the extracted artist 1");
         Assertions.assertEquals("test_artist2", track.getArtists().get(1), "Invalid name of the extracted artist 2");
         // Check the size of the composers
@@ -208,7 +208,7 @@ public class TrackExtractorVerifHelper {
     private static void checkTrack5(ExtractedTrackDto track) {
         Assertions.assertEquals("test_lyrics", track.getLyrics(), "Invalid lyrics.");
         // Check the size of the extracted artists
-        Assertions.assertEquals(2, track.getArtists().size(), "Invalid number of extracted artists");
+        Assertions.assertEquals(2, track.getArtists().size(), "Invalid number of extracted artists for the track5.");
         Assertions.assertEquals("test_artist3", track.getArtists().get(0), "Invalid name of the extracted artist 1");
         Assertions.assertEquals("test_artist2", track.getArtists().get(1), "Invalid name of the extracted artist 2");
         // Check the size of the composers
