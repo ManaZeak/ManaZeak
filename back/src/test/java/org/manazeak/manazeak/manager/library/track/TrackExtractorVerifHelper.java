@@ -136,7 +136,7 @@ public class TrackExtractorVerifHelper {
         // Checking the first track of the album to verify all the extracted tags.
         ExtractedTrackDto track = album.getTracks().get(0);
         checkTrackAlbum3Title(track.getTitle());
-        if (track.getTitle().equals("1")) {
+        if (track.getTitle().equals("5")) {
             checkTrack5(track);
         } else {
             checkTrack5(album.getTracks().get(1));

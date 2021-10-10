@@ -29,7 +29,6 @@ class TrackExtractorManagerTest extends AbstractManaZeakTest {
 
     @Test
     void testExtractionLibrary() throws IOException {
-        LOG.error("LIB path : " + LibraryConstant.LIBRARY_PATH );
         LibraryScanResultDto result = libraryScanManager.scanLibraryFolder();
         // Scanning the library files.
         List<ScannedArtistDto> scannedArtists = result.getArtists();
