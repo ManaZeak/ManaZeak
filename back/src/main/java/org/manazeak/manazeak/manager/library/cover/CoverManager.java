@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +35,7 @@ public class CoverManager {
      *
      * @param coverPaths The list of the cover path.
      */
-    public void launchCoverThumbnailGeneration(List<Path> coverPaths) {
+    public void launchCoverThumbnailGeneration(Collection<Path> coverPaths) {
         // Creating the thread pool.
         ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.COVER_EXTRACTION_THREAD_NUMBER);
         // Launching the thread with a cover path.

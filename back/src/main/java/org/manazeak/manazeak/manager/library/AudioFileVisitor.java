@@ -14,7 +14,9 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Controls the actions that must be done when iterating through the files and folders.
@@ -34,7 +36,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
     /**
      * The list of covers found during the library scan.
      */
-    private final List<Path> coverPaths = new ArrayList<>();
+    private final Set<Path> coverPaths = new HashSet<>();
 
     /**
      * The current artist folder during the scan.
@@ -152,7 +154,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
     /**
      * @return The list of the cover paths found during the library scan.
      */
-    public List<Path> getCoverPaths() {
+    public Set<Path> getCoverPaths() {
         return coverPaths;
     }
 }

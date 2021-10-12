@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.util.thumb;
 
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
@@ -7,10 +8,6 @@ import org.manazeak.manazeak.util.file.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -65,16 +62,11 @@ public final class ThumbnailUtil {
      */
     private static void generateThumb(ThumbSizeEnum thumbSize, Path image, Path thumbFolder,
                                       String thumbName) throws IOException {
-        // Scaling the image.
-        BufferedImage thumb = scaleImage(thumbSize, image);
         Path destination = getDestinationPath(thumbSize, thumbFolder, thumbName);
-        // Creating the file.
-        if (destination.toFile().createNewFile()) {
-            // Writing the thumb into the FS.
-            ImageIO.write(thumb, "jpg", destination.toFile());
-        } else {
-            LOG.warn("The thumbnail file : {} cannot be created.", destination);
-        }
+        // Generating the thumbnail with the desired size.
+        Thumbnails.of(image.toFile())
+                .size(thumbSize.getWidth(), thumbSize.getHeight())
+                .toFile(destination.toFile());
     }
 
     /**
@@ -91,27 +83,5 @@ public final class ThumbnailUtil {
         FileUtil.createDirectories(destination);
         // Adding the filename.
         return destination.resolve(thumbName + FileExtensionEnum.JGP.getExtension());
-    }
-
-    /**
-     * Scale an image using the thumb size given.
-     *
-     * @param thumbSize The size of the desired thumbnail.
-     * @param image     The image that will be resized.
-     * @return The image that has been resized.
-     * @throws IOException Error when scaling the image.
-     */
-    private static BufferedImage scaleImage(ThumbSizeEnum thumbSize, Path image) throws IOException {
-        // Getting the image that will be written.
-        BufferedImage img = new BufferedImage(thumbSize.getWidth(), thumbSize.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics2D = img.createGraphics();
-        // Getting the scale that will be applied to the image
-        double scaleX = (double) thumbSize.getWidth() / img.getWidth();
-        double scaleY = (double) thumbSize.getHeight() / img.getHeight();
-        AffineTransform transform = AffineTransform.getScaleInstance(scaleX, scaleY);
-        // Creating the image that will be scaled.
-        graphics2D.drawRenderedImage(ImageIO.read(image.toFile()), transform);
-        graphics2D.dispose();
-        return img;
     }
 }

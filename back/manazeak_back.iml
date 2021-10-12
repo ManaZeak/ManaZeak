@@ -167,6 +167,7 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:5.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.bitbucket.ijabz:jaudiotagger:1" level="project" />
+    <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.14" level="project" />
     <orderEntry type="library" name="Maven: org.jacoco:jacoco-maven-plugin:0.8.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-model:3.0" level="project" />
