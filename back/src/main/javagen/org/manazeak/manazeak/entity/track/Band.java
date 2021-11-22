@@ -5,13 +5,16 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Set;
+import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.CascadeType;
+import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 
@@ -21,7 +24,7 @@ import javax.persistence.JoinTable;
  * This file has been automatically generated
  */
 @Entity
-@Table(name="Band")
+@Table(name="band")
 public class Band implements Serializable{
 	/** Serial ID */
 	private static final long serialVersionUID = 1L;
@@ -30,7 +33,14 @@ public class Band implements Serializable{
 	private String name;
 	private LocalDateTime lastModificationDate;
 	private String location;
+	private Boolean isLabel;
+	private String testimonyFrom;
+	private String testimonyText;
 	private Set<Artist> artistList;
+	private Label label;
+	private Link link;
+	private Country country;
+	private Bio bio;
 
     /**
      * No comment found in model diagram
@@ -96,6 +106,51 @@ public class Band implements Serializable{
 		this.location = location;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of isLabel
+     */
+    @Column(name="is_label", nullable=false)
+	public Boolean getIsLabel(){
+		return isLabel;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param isLabel new value to give to isLabel
+     */
+	public void setIsLabel(final Boolean isLabel){
+		this.isLabel = isLabel;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of testimonyFrom
+     */
+    @Column(name="testimony_from", nullable=true)
+	public String getTestimonyFrom(){
+		return testimonyFrom;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param testimonyFrom new value to give to testimonyFrom
+     */
+	public void setTestimonyFrom(final String testimonyFrom){
+		this.testimonyFrom = testimonyFrom;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of testimonyText
+     */
+    @Column(name="testimony_text", nullable=true)
+	public String getTestimonyText(){
+		return testimonyText;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param testimonyText new value to give to testimonyText
+     */
+	public void setTestimonyText(final String testimonyText){
+		this.testimonyText = testimonyText;
+    }  
+    /**
      * Association band_artist to Artist
      * @return value of artistList
      */
@@ -111,6 +166,70 @@ public class Band implements Serializable{
 	public void setArtistList(final Set<Artist> artistList){
 		this.artistList = artistList;
     }  
+    /**
+     * Association band_label to Label
+     * @return value of label
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="label_id", referencedColumnName="label_id")
+	public Label getLabel(){
+		return label;
+    }  
+    /**
+     * Association band_label to Label
+     * @param label new value to give to label
+     */
+	public void setLabel(final Label label){
+		this.label = label;
+    }  
+    /**
+     * Association band_link to Link
+     * @return value of link
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="link_id", referencedColumnName="link_id")
+	public Link getLink(){
+		return link;
+    }  
+    /**
+     * Association band_link to Link
+     * @param link new value to give to link
+     */
+	public void setLink(final Link link){
+		this.link = link;
+    }  
+    /**
+     * Association band_country to Country
+     * @return value of country
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="country_id", referencedColumnName="country_id")
+	public Country getCountry(){
+		return country;
+    }  
+    /**
+     * Association band_country to Country
+     * @param country new value to give to country
+     */
+	public void setCountry(final Country country){
+		this.country = country;
+    }  
+    /**
+     * Association band_bio to Bio
+     * @return value of bio
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="bio_id", referencedColumnName="bio_id")
+	public Bio getBio(){
+		return bio;
+    }  
+    /**
+     * Association band_bio to Bio
+     * @param bio new value to give to bio
+     */
+	public void setBio(final Bio bio){
+		this.bio = bio;
+    }  
 
 	@Override
 	public int hashCode(){
@@ -122,6 +241,9 @@ public class Band implements Serializable{
 		result = 31 * result + (name == null? 0 : name.hashCode());
 		result = 31 * result + (lastModificationDate == null? 0 : lastModificationDate.hashCode());
 		result = 31 * result + (location == null? 0 : location.hashCode());
+		result = 31 * result + (isLabel == null? 0 : isLabel.hashCode());
+		result = 31 * result + (testimonyFrom == null? 0 : testimonyFrom.hashCode());
+		result = 31 * result + (testimonyText == null? 0 : testimonyText.hashCode());
 			
 		return result;
 	}
@@ -150,6 +272,9 @@ public class Band implements Serializable{
 			&& (name == null ?  (otherBand.name == null) : name.equals(otherBand.name))
 			&& (lastModificationDate == null ?  (otherBand.lastModificationDate == null) : lastModificationDate.equals(otherBand.lastModificationDate))
 			&& (location == null ?  (otherBand.location == null) : location.equals(otherBand.location))
+			&& (isLabel == null ?  (otherBand.isLabel == null) : isLabel.equals(otherBand.isLabel))
+			&& (testimonyFrom == null ?  (otherBand.testimonyFrom == null) : testimonyFrom.equals(otherBand.testimonyFrom))
+			&& (testimonyText == null ?  (otherBand.testimonyText == null) : testimonyText.equals(otherBand.testimonyText))
 		;
 	}
 

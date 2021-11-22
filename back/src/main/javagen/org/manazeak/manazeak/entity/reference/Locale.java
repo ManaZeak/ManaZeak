@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
  * This file has been automatically generated
  */
 @Entity
-@Table(name="Locale")
+@Table(name="locale")
 public class Locale implements Serializable{
 	/** Serial ID */
 	private static final long serialVersionUID = 1L;

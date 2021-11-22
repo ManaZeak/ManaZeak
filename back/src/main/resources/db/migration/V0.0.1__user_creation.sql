@@ -7,7 +7,7 @@ CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20;
 
 -- Creating the tables
-CREATE TABLE Country
+CREATE TABLE country
 (
     country_id   BIGINT           not null,
     name         VARCHAR(50)      not null,
@@ -19,16 +19,16 @@ CREATE TABLE Country
     center_long  DOUBLE PRECISION not null,
     CONSTRAINT PK_COUNTRY PRIMARY KEY (country_id)
 );
-COMMENT ON TABLE Country IS 'The countries on the earth.';
+COMMENT ON TABLE country IS 'The countries on the earth.';
 
-CREATE TABLE Locale
+CREATE TABLE locale
 (
     locale_id BIGINT      not null,
     code      VARCHAR(32) not null,
     value     VARCHAR(50) not null,
     CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
 );
-COMMENT ON TABLE Locale IS 'The locale supported by the app.';
+COMMENT ON TABLE locale IS 'The locale supported by the app.';
 
 CREATE TABLE invite_code
 (
@@ -63,8 +63,8 @@ CREATE TABLE mzk_user
 );
 COMMENT ON TABLE mzk_user IS 'A user object.';
 COMMENT ON COLUMN mzk_user.invite_code_id IS 'ManyToOne FK invite_code';
-COMMENT ON COLUMN mzk_user.country_id IS 'ManyToOne FK Country';
-COMMENT ON COLUMN mzk_user.locale_id IS 'ManyToOne FK Locale';
+COMMENT ON COLUMN mzk_user.country_id IS 'ManyToOne FK country';
+COMMENT ON COLUMN mzk_user.locale_id IS 'ManyToOne FK locale';
 COMMENT ON COLUMN mzk_user.role_id IS 'ManyToOne FK role';
 
 CREATE TABLE privilege
@@ -98,7 +98,7 @@ COMMENT ON COLUMN privileges_role.privilege_id IS 'ManyToMany FK privilege';
 ALTER TABLE mzk_user
     ADD CONSTRAINT FK_invite_used FOREIGN KEY (invite_code_id) REFERENCES invite_code (invite_code_id);
 ALTER TABLE mzk_user
-    ADD CONSTRAINT FK_user_country FOREIGN KEY (country_id) REFERENCES Country (country_id);
+    ADD CONSTRAINT FK_user_country FOREIGN KEY (country_id) REFERENCES country (country_id);
 ALTER TABLE mzk_user
     ADD CONSTRAINT FK_roles_user FOREIGN KEY (role_id) REFERENCES role (role_id);
 ALTER TABLE privileges_role
@@ -106,7 +106,7 @@ ALTER TABLE privileges_role
 ALTER TABLE privileges_role
     ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (privilege_id) REFERENCES privilege (privilege_id);
 ALTER TABLE mzk_user
-    ADD CONSTRAINT FK_user_locale FOREIGN KEY (locale_id) REFERENCES Locale (locale_id);
+    ADD CONSTRAINT FK_user_locale FOREIGN KEY (locale_id) REFERENCES locale (locale_id);
 ALTER TABLE invite_code
     ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user (user_id);
 
