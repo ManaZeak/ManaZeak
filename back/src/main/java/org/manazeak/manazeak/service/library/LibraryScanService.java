@@ -1,10 +1,13 @@
 package org.manazeak.manazeak.service.library;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.manager.library.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
+import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
 import org.slf4j.Logger;
@@ -26,14 +29,20 @@ public class LibraryScanService {
 
     private final TrackExtractorManager trackExtractor;
 
+    private final LibraryWiperManager libraryWiper;
+
+    private final LibraryIntegrationManager libraryIntegrationManager;
+
     private final CoverManager coverManager;
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
 
     public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
-                              CoverManager coverManager) {
+                              LibraryWiperManager libraryWiper, LibraryIntegrationManager libraryIntegrationManager, CoverManager coverManager) {
         this.libraryScanManager = libraryScanManager;
         this.trackExtractor = trackExtractor;
+        this.libraryWiper = libraryWiper;
+        this.libraryIntegrationManager = libraryIntegrationManager;
         this.coverManager = coverManager;
     }
 
@@ -45,15 +54,16 @@ public class LibraryScanService {
         LOG.info("Starting the library scan.");
         try {
             // Cleaning the existing data.
-            // TODO: clean the database.
-            // Scan result
+            libraryWiper.wipeLibraryData();
+
+            // Scanning the library and collecting the results.
             LOG.info("Starting the library FS scan.");
             LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
             LOG.info("Ended the library FS scan.");
 
             LOG.info("Starting the track tag extraction.");
             // Extract the data contained in the tags of the tracks.
-            trackExtractor.extractTracks(scanResult.getArtists());
+            List<ExtractedBandDto> extractedBands = trackExtractor.extractTracks(scanResult.getArtists());
             LOG.info("Ending the track tag extraction.");
 
             LOG.info("Starting the cover extraction.");
@@ -61,7 +71,10 @@ public class LibraryScanService {
             coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
             LOG.info("Ending the cover extraction.");
 
+            LOG.info("Starting the track integration.");
             // Inserting the tracks into the database.
+            libraryIntegrationManager.insertLibraryData(extractedBands);
+            LOG.info("Ending the track integration.");
 
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.

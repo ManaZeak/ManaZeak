@@ -43,12 +43,12 @@ public class Track implements Serializable{
 	private String subtitle;
 	private Album album;
 	private Set<Artist> producerList;
+	private Set<Artist> artistsList;
 	private Set<Artist> composerList;
 	private Set<Artist> lyricistList;
 	private Set<Artist> performerList;
 	private Set<Artist> engineerList;
 	private Set<Artist> arrangerList;
-	private Set<Band> artistsList;
 	private Bpm bpm;
 	private Set<Genre> genreList;
 	private Set<Key> keyList;
@@ -255,6 +255,22 @@ public class Track implements Serializable{
 		this.producerList = producerList;
     }  
     /**
+     * Association track_band_artist to Artist
+     * @return value of artistsList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="track_band_artist", joinColumns=@JoinColumn(name = "track_id"), inverseJoinColumns=@JoinColumn(name = "artist_id"))
+	public Set<Artist> getArtistsList(){
+		return artistsList;
+    }  
+    /**
+     * Association track_band_artist to Artist
+     * @param artistsList new value to give to artistsList
+     */
+	public void setArtistsList(final Set<Artist> artistsList){
+		this.artistsList = artistsList;
+    }  
+    /**
      * Association track_composer to Artist
      * @return value of composerList
      */
@@ -333,22 +349,6 @@ public class Track implements Serializable{
      */
 	public void setArrangerList(final Set<Artist> arrangerList){
 		this.arrangerList = arrangerList;
-    }  
-    /**
-     * Association track_band_artist to Band
-     * @return value of artistsList
-     */
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name="track_band_artist", joinColumns=@JoinColumn(name = "track_id"), inverseJoinColumns=@JoinColumn(name = "band_id"))
-	public Set<Band> getArtistsList(){
-		return artistsList;
-    }  
-    /**
-     * Association track_band_artist to Band
-     * @param artistsList new value to give to artistsList
-     */
-	public void setArtistsList(final Set<Band> artistsList){
-		this.artistsList = artistsList;
     }  
     /**
      * Association track_bpm to Bpm

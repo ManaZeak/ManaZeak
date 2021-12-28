@@ -1,10 +1,10 @@
 package org.manazeak.manazeak.manager.library;
 
 import org.manazeak.manazeak.constant.library.LibraryConstant;
-import org.manazeak.manazeak.daos.track.BandDAO;
+import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
-import org.manazeak.manazeak.entity.track.Band;
+import org.manazeak.manazeak.entity.track.Artist;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,10 +18,10 @@ import java.util.*;
 @Component
 public class LibraryScanManager {
 
-    private final BandDAO bandDAO;
+    private final ArtistDAO artistDAO;
 
-    public LibraryScanManager(BandDAO bandDAO) {
-        this.bandDAO = bandDAO;
+    public LibraryScanManager(ArtistDAO artistDAO) {
+        this.artistDAO = artistDAO;
     }
 
     /**
@@ -87,18 +87,18 @@ public class LibraryScanManager {
         // Getting the location of the artists to get.
         Set<String> locations = artists.keySet();
         // Getting the locations to get in the database
-        List<Band> bands = bandDAO.getBandByLocations(locations);
+        List<Artist> bands = artistDAO.getArtistByLocations(locations);
 
         // Creating the result list containing the artists that must be updated.
         List<ScannedArtistDto> artistsToUpdate = new ArrayList<>();
-        for (Band band : bands) {
-            ScannedArtistDto scannedArtist = artists.get(band.getLocation());
+        for (Artist artist : bands) {
+            ScannedArtistDto scannedArtist = artists.get(artist.getLocation());
             // Checking if the last modification date of the artist.
-            if (scannedArtist.getLastModificationDate().isAfter(band.getLastModificationDate())) {
-                // The band must be updated
+            if (scannedArtist.getLastModificationDate().isAfter(artist.getLastModificationDate())) {
+                // The artist must be updated
                 artistsToUpdate.add(scannedArtist);
-                // Removing from the band from the map
-                artists.remove(band.getLocation());
+                // Removing from the artist from the map
+                artists.remove(artist.getLocation());
             }
         }
 

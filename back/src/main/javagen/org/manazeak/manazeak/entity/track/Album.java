@@ -42,7 +42,7 @@ public class Album implements Serializable{
 	private CompilationType compilationType;
 	private Label label;
 	private Cover cover;
-	private Band band;
+	private Artist artist;
 
     /**
      * No comment found in model diagram
@@ -247,20 +247,20 @@ public class Album implements Serializable{
 		this.cover = cover;
     }  
     /**
-     * Association album_band to Band
-     * @return value of band
+     * Association album_band to Artist
+     * @return value of artist
      */
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="band_id", referencedColumnName="band_id")
-	public Band getBand(){
-		return band;
+    @JoinColumn(name="artist_id", referencedColumnName="artist_id")
+	public Artist getArtist(){
+		return artist;
     }  
     /**
-     * Association album_band to Band
-     * @param band new value to give to band
+     * Association album_band to Artist
+     * @param artist new value to give to artist
      */
-	public void setBand(final Band band){
-		this.band = band;
+	public void setArtist(final Artist artist){
+		this.artist = artist;
     }  
 
 	@Override

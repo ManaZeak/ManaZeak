@@ -2,7 +2,6 @@
 CREATE SEQUENCE SEQ_ALBUM START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_BIO START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_ARTIST START WITH 1000 CACHE 20;
-CREATE SEQUENCE SEQ_BAND START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_BPM START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_COVER START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20;
@@ -27,13 +26,13 @@ CREATE TABLE album (
                        compilation_type_id BIGINT,
                        label_id BIGINT,
                        cover_id INTEGER,
-                       band_id BIGINT,
+                       artist_id BIGINT,
                        CONSTRAINT PK_ALBUM PRIMARY KEY (album_id)
 );
 COMMENT ON COLUMN album.compilation_type_id IS 'ManyToOne FK compilation_type';
 COMMENT ON COLUMN album.label_id IS 'ManyToOne FK label';
 COMMENT ON COLUMN album.cover_id IS 'ManyToOne FK cover';
-COMMENT ON COLUMN album.band_id IS 'ManyToOne FK band';
+COMMENT ON COLUMN album.artist_id IS 'ManyToOne FK artist';
 
 CREATE TABLE album_bio (
                            album_id BIGINT not null,
@@ -46,37 +45,35 @@ COMMENT ON COLUMN album_bio.bio_id IS 'ManyToMany FK bio';
 
 CREATE TABLE artist (
                         artist_id BIGINT not null,
-                        name VARCHAR(200),
-                        real_name VARCHAR(200),
+                        name VARCHAR(200) not null,
+                        real_name VARCHAR(200) not null,
+                        location VARCHAR(500) not null,
                         birth_date DATE,
                         death_date DATE,
+                        last_modification_date TIMESTAMP,
+                        is_label BOOLEAN not null,
+                        testimony_from VARCHAR(200),
+                        testimony_text TEXT,
                         country_id BIGINT,
+                        label_id BIGINT,
+                        link_id BIGINT,
                         bio_id BIGINT,
                         CONSTRAINT PK_ARTIST PRIMARY KEY (artist_id)
 );
-COMMENT ON TABLE artist IS 'The information about the ';
-COMMENT ON COLUMN artist.country_id IS 'ManyToOne FK Country';
+COMMENT ON TABLE artist IS 'Contains the bands of the application.';
+COMMENT ON COLUMN artist.country_id IS 'ManyToOne FK country';
+COMMENT ON COLUMN artist.label_id IS 'ManyToOne FK label';
+COMMENT ON COLUMN artist.link_id IS 'ManyToOne FK link';
 COMMENT ON COLUMN artist.bio_id IS 'ManyToOne FK bio';
 
-CREATE TABLE band (
-                      band_id BIGINT not null,
-                      name VARCHAR(200) not null,
-                      last_modification_date TIMESTAMP not null,
-                      location VARCHAR(500) not null,
-                      is_label BOOLEAN not null,
-                      testimony_from VARCHAR(200),
-                      testimony_text TEXT,
-                      label_id BIGINT,
-                      link_id BIGINT,
-                      country_id BIGINT,
-                      bio_id BIGINT,
-                      CONSTRAINT PK_BAND PRIMARY KEY (band_id)
+CREATE TABLE band_member (
+                             band_id BIGINT not null,
+                             member_id BIGINT not null,
+                             CONSTRAINT PK_BAND_MEMBER PRIMARY KEY (band_id,member_id)
 );
-COMMENT ON TABLE band IS 'Contains the bands of the application.';
-COMMENT ON COLUMN band.label_id IS 'ManyToOne FK label';
-COMMENT ON COLUMN band.link_id IS 'ManyToOne FK link';
-COMMENT ON COLUMN band.country_id IS 'ManyToOne FK Country';
-COMMENT ON COLUMN band.bio_id IS 'ManyToOne FK bio';
+COMMENT ON TABLE band_member IS 'ManyToMany artist / artist';
+COMMENT ON COLUMN band_member.band_id IS 'ManyToMany FK artist';
+COMMENT ON COLUMN band_member.member_id IS 'ManyToMany FK artist';
 
 CREATE TABLE band_artist (
                              band_id BIGINT not null,
@@ -157,6 +154,15 @@ COMMENT ON TABLE track_producer IS 'ManyToMany track / artist';
 COMMENT ON COLUMN track_producer.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_producer.artist_id IS 'ManyToMany FK artist';
 
+CREATE TABLE track_band_artist (
+                                   track_id BIGINT not null,
+                                   artist_id BIGINT not null,
+                                   CONSTRAINT PK_TRACK_BAND_ARTIST PRIMARY KEY (track_id,artist_id)
+);
+COMMENT ON TABLE track_band_artist IS 'ManyToMany track / artist';
+COMMENT ON COLUMN track_band_artist.track_id IS 'ManyToMany FK track';
+COMMENT ON COLUMN track_band_artist.artist_id IS 'ManyToMany FK artist';
+
 CREATE TABLE track_composer (
                                 track_id BIGINT not null,
                                 artist_id BIGINT not null,
@@ -201,15 +207,6 @@ CREATE TABLE track_arranger (
 COMMENT ON TABLE track_arranger IS 'ManyToMany track / artist';
 COMMENT ON COLUMN track_arranger.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_arranger.artist_id IS 'ManyToMany FK artist';
-
-CREATE TABLE track_band_artist (
-                                   track_id BIGINT not null,
-                                   band_id BIGINT not null,
-                                   CONSTRAINT PK_TRACK_BAND_ARTIST PRIMARY KEY (track_id,band_id)
-);
-COMMENT ON TABLE track_band_artist IS 'ManyToMany track / band';
-COMMENT ON COLUMN track_band_artist.track_id IS 'ManyToMany FK track';
-COMMENT ON COLUMN track_band_artist.band_id IS 'ManyToMany FK band';
 
 CREATE TABLE track_genre (
                              track_id BIGINT not null,
@@ -266,19 +263,19 @@ ALTER TABLE album_bio ADD CONSTRAINT FK_album_bio_2 FOREIGN KEY (bio_id) REFEREN
 ALTER TABLE album ADD CONSTRAINT FK_album_compilation FOREIGN KEY (compilation_type_id) REFERENCES compilation_type(compilation_type_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_label FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_cover FOREIGN KEY (cover_id) REFERENCES cover(cover_id);
-ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (band_id) REFERENCES band(band_id);
+ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE artist ADD CONSTRAINT FK_artist_birth_country FOREIGN KEY (country_id) REFERENCES country(country_id);
-ALTER TABLE artist ADD CONSTRAINT FK_artist_bio FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
-ALTER TABLE band_artist ADD CONSTRAINT FK_band_artist_1 FOREIGN KEY (band_id) REFERENCES band(band_id);
-ALTER TABLE band_artist ADD CONSTRAINT FK_band_artist_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
-ALTER TABLE band ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCES label(label_id);
-ALTER TABLE band ADD CONSTRAINT FK_band_link FOREIGN KEY (link_id) REFERENCES link(link_id);
-ALTER TABLE band ADD CONSTRAINT FK_band_country FOREIGN KEY (country_id) REFERENCES country(country_id);
-ALTER TABLE band ADD CONSTRAINT FK_band_bio FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
+ALTER TABLE band_member ADD CONSTRAINT FK_band_member_1 FOREIGN KEY (band_id) REFERENCES artist(artist_id);
+ALTER TABLE band_member ADD CONSTRAINT FK_band_member_2 FOREIGN KEY (member_id) REFERENCES artist(artist_id);
+ALTER TABLE artist ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCES label(label_id);
+ALTER TABLE artist ADD CONSTRAINT FK_band_link FOREIGN KEY (link_id) REFERENCES link(link_id);
+ALTER TABLE artist ADD CONSTRAINT FK_band_bio FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
 ALTER TABLE link ADD CONSTRAINT FK_link_type FOREIGN KEY (website_id) REFERENCES website_type(website_id);
 ALTER TABLE track ADD CONSTRAINT FK_track_album FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE track_producer ADD CONSTRAINT FK_track_producer_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_producer ADD CONSTRAINT FK_track_producer_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE track_band_artist ADD CONSTRAINT FK_track_band_artist_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
+ALTER TABLE track_band_artist ADD CONSTRAINT FK_track_band_artist_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE track_composer ADD CONSTRAINT FK_track_composer_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_composer ADD CONSTRAINT FK_track_composer_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE track_lyricist ADD CONSTRAINT FK_track_lyricist_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
@@ -289,8 +286,6 @@ ALTER TABLE track_engineer ADD CONSTRAINT FK_track_engineer_1 FOREIGN KEY (track
 ALTER TABLE track_engineer ADD CONSTRAINT FK_track_engineer_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE track_arranger ADD CONSTRAINT FK_track_arranger_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_arranger ADD CONSTRAINT FK_track_arranger_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
-ALTER TABLE track_band_artist ADD CONSTRAINT FK_track_band_artist_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
-ALTER TABLE track_band_artist ADD CONSTRAINT FK_track_band_artist_2 FOREIGN KEY (band_id) REFERENCES band(band_id);
 ALTER TABLE track ADD CONSTRAINT FK_track_bpm FOREIGN KEY (bpm_id) REFERENCES bpm(bpm_id);
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_2 FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
@@ -307,19 +302,19 @@ CREATE INDEX IDX_album_bio_2 ON album_bio (bio_id);
 CREATE INDEX IDX_album_compilation ON album (compilation_type_id);
 CREATE INDEX IDX_album_label ON album (label_id);
 CREATE INDEX IDX_album_cover ON album (cover_id);
-CREATE INDEX IDX_album_band ON album (band_id);
+CREATE INDEX IDX_album_band ON album (artist_id);
 CREATE INDEX IDX_artist_birth_country ON artist (country_id);
-CREATE INDEX IDX_artist_bio ON artist (bio_id);
-CREATE INDEX IDX_band_artist_1 ON band_artist (band_id);
-CREATE INDEX IDX_band_artist_2 ON band_artist (artist_id);
-CREATE INDEX IDX_band_label ON band (label_id);
-CREATE INDEX IDX_band_link ON band (link_id);
-CREATE INDEX IDX_band_country ON band (country_id);
-CREATE INDEX IDX_band_bio ON band (bio_id);
+CREATE INDEX IDX_band_member_1 ON band_member (band_id);
+CREATE INDEX IDX_band_member_2 ON band_member (member_id);
+CREATE INDEX IDX_band_label ON artist (label_id);
+CREATE INDEX IDX_band_link ON artist (link_id);
+CREATE INDEX IDX_band_bio ON artist (bio_id);
 CREATE INDEX IDX_link_type ON link (website_id);
 CREATE INDEX IDX_track_album ON track (album_id);
 CREATE INDEX IDX_track_producer_1 ON track_producer (track_id);
 CREATE INDEX IDX_track_producer_2 ON track_producer (artist_id);
+CREATE INDEX IDX_track_band_artist_1 ON track_band_artist (track_id);
+CREATE INDEX IDX_track_band_artist_2 ON track_band_artist (artist_id);
 CREATE INDEX IDX_track_composer_1 ON track_composer (track_id);
 CREATE INDEX IDX_track_composer_2 ON track_composer (artist_id);
 CREATE INDEX IDX_track_lyricist_1 ON track_lyricist (track_id);
@@ -330,8 +325,6 @@ CREATE INDEX IDX_track_engineer_1 ON track_engineer (track_id);
 CREATE INDEX IDX_track_engineer_2 ON track_engineer (artist_id);
 CREATE INDEX IDX_track_arranger_1 ON track_arranger (track_id);
 CREATE INDEX IDX_track_arranger_2 ON track_arranger (artist_id);
-CREATE INDEX IDX_track_band_artist_1 ON track_band_artist (track_id);
-CREATE INDEX IDX_track_band_artist_2 ON track_band_artist (band_id);
 CREATE INDEX IDX_track_bpm ON track (bpm_id);
 CREATE INDEX IDX_track_genre_1 ON track_genre (track_id);
 CREATE INDEX IDX_track_genre_2 ON track_genre (genre_id);
