@@ -1,21 +1,26 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
+import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
-import org.manazeak.manazeak.entity.reference.Country;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.time.LocalDate;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.Column;
+import javax.persistence.CascadeType;
+import org.manazeak.manazeak.entity.reference.Country;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
 
 /**
- * The information about the 
+ * Contains the bands of the application.
  *
  * This file has been automatically generated
  */
@@ -28,9 +33,17 @@ public class Artist implements Serializable{
 	private Long artistId;
 	private String name;
 	private String realName;
+	private String location;
 	private LocalDate birthDate;
 	private LocalDate deathDate;
+	private LocalDateTime lastModificationDate;
+	private Boolean isLabel;
+	private String testimonyFrom;
+	private String testimonyText;
 	private Country country;
+	private Set<Artist> memberList;
+	private Label label;
+	private Link link;
 	private Bio bio;
 
     /**
@@ -55,7 +68,7 @@ public class Artist implements Serializable{
      * No comment found in model diagram
      * @return value of name
      */
-    @Column(name="name", nullable=true)
+    @Column(name="name", nullable=false)
 	public String getName(){
 		return name;
     }  
@@ -70,7 +83,7 @@ public class Artist implements Serializable{
      * No comment found in model diagram
      * @return value of realName
      */
-    @Column(name="real_name", nullable=true)
+    @Column(name="real_name", nullable=false)
 	public String getRealName(){
 		return realName;
     }  
@@ -80,6 +93,21 @@ public class Artist implements Serializable{
      */
 	public void setRealName(final String realName){
 		this.realName = realName;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of location
+     */
+    @Column(name="location", nullable=false)
+	public String getLocation(){
+		return location;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param location new value to give to location
+     */
+	public void setLocation(final String location){
+		this.location = location;
     }  
     /**
      * No comment found in model diagram
@@ -112,6 +140,66 @@ public class Artist implements Serializable{
 		this.deathDate = deathDate;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of lastModificationDate
+     */
+    @Column(name="last_modification_date", nullable=true)
+	public LocalDateTime getLastModificationDate(){
+		return lastModificationDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param lastModificationDate new value to give to lastModificationDate
+     */
+	public void setLastModificationDate(final LocalDateTime lastModificationDate){
+		this.lastModificationDate = lastModificationDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of isLabel
+     */
+    @Column(name="is_label", nullable=false)
+	public Boolean getIsLabel(){
+		return isLabel;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param isLabel new value to give to isLabel
+     */
+	public void setIsLabel(final Boolean isLabel){
+		this.isLabel = isLabel;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of testimonyFrom
+     */
+    @Column(name="testimony_from", nullable=true)
+	public String getTestimonyFrom(){
+		return testimonyFrom;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param testimonyFrom new value to give to testimonyFrom
+     */
+	public void setTestimonyFrom(final String testimonyFrom){
+		this.testimonyFrom = testimonyFrom;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of testimonyText
+     */
+    @Column(name="testimony_text", nullable=true)
+	public String getTestimonyText(){
+		return testimonyText;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param testimonyText new value to give to testimonyText
+     */
+	public void setTestimonyText(final String testimonyText){
+		this.testimonyText = testimonyText;
+    }  
+    /**
      * Association artist_birth_country to Country
      * @return value of country
      */
@@ -128,7 +216,55 @@ public class Artist implements Serializable{
 		this.country = country;
     }  
     /**
-     * Association artist_bio to Bio
+     * Association band_member to Artist
+     * @return value of memberList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="band_member", joinColumns=@JoinColumn(name = "band_id"), inverseJoinColumns=@JoinColumn(name = "member_id"))
+	public Set<Artist> getMemberList(){
+		return memberList;
+    }  
+    /**
+     * Association band_member to Artist
+     * @param memberList new value to give to memberList
+     */
+	public void setMemberList(final Set<Artist> memberList){
+		this.memberList = memberList;
+    }  
+    /**
+     * Association band_label to Label
+     * @return value of label
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="label_id", referencedColumnName="label_id")
+	public Label getLabel(){
+		return label;
+    }  
+    /**
+     * Association band_label to Label
+     * @param label new value to give to label
+     */
+	public void setLabel(final Label label){
+		this.label = label;
+    }  
+    /**
+     * Association band_link to Link
+     * @return value of link
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="link_id", referencedColumnName="link_id")
+	public Link getLink(){
+		return link;
+    }  
+    /**
+     * Association band_link to Link
+     * @param link new value to give to link
+     */
+	public void setLink(final Link link){
+		this.link = link;
+    }  
+    /**
+     * Association band_bio to Bio
      * @return value of bio
      */
     @ManyToOne(fetch=FetchType.LAZY)
@@ -137,7 +273,7 @@ public class Artist implements Serializable{
 		return bio;
     }  
     /**
-     * Association artist_bio to Bio
+     * Association band_bio to Bio
      * @param bio new value to give to bio
      */
 	public void setBio(final Bio bio){
@@ -153,8 +289,13 @@ public class Artist implements Serializable{
 		result = 31 * result + (artistId == null? 0 : artistId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
 		result = 31 * result + (realName == null? 0 : realName.hashCode());
+		result = 31 * result + (location == null? 0 : location.hashCode());
 		result = 31 * result + (birthDate == null? 0 : birthDate.hashCode());
 		result = 31 * result + (deathDate == null? 0 : deathDate.hashCode());
+		result = 31 * result + (lastModificationDate == null? 0 : lastModificationDate.hashCode());
+		result = 31 * result + (isLabel == null? 0 : isLabel.hashCode());
+		result = 31 * result + (testimonyFrom == null? 0 : testimonyFrom.hashCode());
+		result = 31 * result + (testimonyText == null? 0 : testimonyText.hashCode());
 			
 		return result;
 	}
@@ -182,8 +323,13 @@ public class Artist implements Serializable{
 		return (artistId == null ?  (otherArtist.artistId == null) : artistId.equals(otherArtist.artistId))
 			&& (name == null ?  (otherArtist.name == null) : name.equals(otherArtist.name))
 			&& (realName == null ?  (otherArtist.realName == null) : realName.equals(otherArtist.realName))
+			&& (location == null ?  (otherArtist.location == null) : location.equals(otherArtist.location))
 			&& (birthDate == null ?  (otherArtist.birthDate == null) : birthDate.equals(otherArtist.birthDate))
 			&& (deathDate == null ?  (otherArtist.deathDate == null) : deathDate.equals(otherArtist.deathDate))
+			&& (lastModificationDate == null ?  (otherArtist.lastModificationDate == null) : lastModificationDate.equals(otherArtist.lastModificationDate))
+			&& (isLabel == null ?  (otherArtist.isLabel == null) : isLabel.equals(otherArtist.isLabel))
+			&& (testimonyFrom == null ?  (otherArtist.testimonyFrom == null) : testimonyFrom.equals(otherArtist.testimonyFrom))
+			&& (testimonyText == null ?  (otherArtist.testimonyText == null) : testimonyText.equals(otherArtist.testimonyText))
 		;
 	}
 
