@@ -45,7 +45,8 @@ public enum CacheEnum {
 
     /**
      * Get a cache from the cache manager. The returned cache can't be null.
-     * @param cache The cache that will be fetched.
+     *
+     * @param cache        The cache that will be fetched.
      * @param cacheManager The cache holder.
      * @return The cache.
      */

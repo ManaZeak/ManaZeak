@@ -85,6 +85,8 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
     private ExtractedBandDto extractArtistFolder() {
         // Creating the band object.
         ExtractedBandDto band = new ExtractedBandDto(artistFolder.getArtistPath());
+        band.setModificationDate(artistFolder.getLastModificationDate());
+
         // Going through the album of the artist.
         for (ScannedAlbumDto scannedAlbum : artistFolder.getAlbums()) {
             ExtractedAlbumDto album = extractAlbumFolder(band, scannedAlbum);

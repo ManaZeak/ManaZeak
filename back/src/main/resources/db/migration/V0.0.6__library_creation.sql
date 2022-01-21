@@ -46,8 +46,7 @@ COMMENT ON COLUMN album_bio.bio_id IS 'ManyToMany FK bio';
 CREATE TABLE artist (
                         artist_id BIGINT not null,
                         name VARCHAR(200) not null,
-                        real_name VARCHAR(200) not null,
-                        location VARCHAR(500) not null,
+                        location VARCHAR(500),
                         birth_date DATE,
                         death_date DATE,
                         last_modification_date TIMESTAMP,
@@ -74,15 +73,6 @@ CREATE TABLE band_member (
 COMMENT ON TABLE band_member IS 'ManyToMany artist / artist';
 COMMENT ON COLUMN band_member.band_id IS 'ManyToMany FK artist';
 COMMENT ON COLUMN band_member.member_id IS 'ManyToMany FK artist';
-
-CREATE TABLE band_artist (
-                             band_id BIGINT not null,
-                             artist_id BIGINT not null,
-                             CONSTRAINT PK_BAND_ARTIST PRIMARY KEY (band_id,artist_id)
-);
-COMMENT ON TABLE band_artist IS 'ManyToMany band / artist';
-COMMENT ON COLUMN band_artist.band_id IS 'ManyToMany FK band';
-COMMENT ON COLUMN band_artist.artist_id IS 'ManyToMany FK artist';
 
 CREATE TABLE bio (
                      bio_id BIGINT not null,

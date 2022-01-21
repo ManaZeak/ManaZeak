@@ -1,13 +1,13 @@
 package org.manazeak.manazeak.manager.library;
 
-import org.manazeak.manazeak.entity.dto.library.IntegrationBufferDto;
-import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
+import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
-import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.library.integration.IntegrationBufferManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +15,8 @@ import java.util.List;
  */
 @Component
 public class LibraryIntegrationManager {
+
+    private final CacheManager cacheManager;
 
     @Value("${app.bufferLength}")
     private int bufferSize;
@@ -24,7 +26,9 @@ public class LibraryIntegrationManager {
      */
     private final IntegrationBufferManager integrationBufferManager;
 
-    public LibraryIntegrationManager(IntegrationBufferManager integrationBufferManager) {
+
+    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager) {
+        this.cacheManager = cacheManager;
         this.integrationBufferManager = integrationBufferManager;
     }
 
@@ -34,32 +38,39 @@ public class LibraryIntegrationManager {
      * @param extractedBands The list of the bands extracted from the tags and the FS.
      */
     public void insertLibraryData(List<ExtractedBandDto> extractedBands) {
-        IntegrationBufferDto integrationBuffer = new IntegrationBufferDto();
+        // Clear all the caches for the library integration.
+        clearAllIntegrationCaches();
+
+        List<ExtractedBandDto> bandsBuffer = new ArrayList<>();
 
         // Iterating through the tracks.
         for (ExtractedBandDto band : extractedBands) {
             // Extracting the information contained in the band.
-            integrationBuffer.addBand(band);
-            for (ExtractedAlbumDto album : band.getAlbums()) {
-                // Extracting the information contained on the album.
-                integrationBuffer.addAlbum(album);
-                for (ExtractedTrackDto track : album.getTracks()) {
-                    integrationBuffer.addTrack(track);
-                }
-            }
+            bandsBuffer.add(band);
             // Checking if the buffer must be integrated in the database.
-            if (integrationBuffer.isBufferFull(bufferSize)) {
+            if (bandsBuffer.size() == bufferSize) {
                 // Inserting the data into the database.
-                integrationBufferManager.integrateBuffer(integrationBuffer);
-                // Clear all the data contained in the buffer.
-                integrationBuffer.clearBuffer();
+                integrationBufferManager.integrateBuffer(bandsBuffer);
+                // Clear the bands
+                bandsBuffer.clear();
             }
         }
 
         // Is the buffer is not empty, integrating the last elements.
-        if (integrationBuffer.isBufferFull(0)) {
-            integrationBufferManager.integrateBuffer(integrationBuffer);
+        if (!bandsBuffer.isEmpty()) {
+            integrationBufferManager.integrateBuffer(bandsBuffer);
         }
     }
 
+    /**
+     * Delete all the data that is contained inside the cache in case the cache is not empty.
+     */
+    private void clearAllIntegrationCaches() {
+        // The list of the caches that needs to be cleared.
+        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME};
+        // Clearing each cache.
+        for (CacheEnum cache : caches) {
+            CacheEnum.getCache(cache, cacheManager).invalidate();
+        }
+    }
 }

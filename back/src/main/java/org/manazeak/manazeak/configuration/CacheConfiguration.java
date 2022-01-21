@@ -35,7 +35,7 @@ public class CacheConfiguration {
      *
      * @param cacheManager The manager that will be used in the application to get all caches.
      */
-    private void configureCaches(SpringCache2kCacheManager cacheManager) {
+    private static void configureCaches(SpringCache2kCacheManager cacheManager) {
         for (CacheEnum cache : CacheEnum.values()) {
             // Adding a new cache into the manager.
             cacheManager.addCaches(builder -> {

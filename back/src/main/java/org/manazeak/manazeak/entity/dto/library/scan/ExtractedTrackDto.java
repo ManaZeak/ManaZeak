@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
+import org.manazeak.manazeak.entity.dto.library.artist.ExtractedComposerDto;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class ExtractedTrackDto {
 
     private List<String> performers = new ArrayList<>();
 
-    private List<String> composers = new ArrayList<>();
+    private List<ExtractedComposerDto> composers = new ArrayList<>();
 
     private List<String> producers = new ArrayList<>();
 
@@ -108,11 +110,11 @@ public class ExtractedTrackDto {
         this.performers = performers;
     }
 
-    public List<String> getComposers() {
+    public List<ExtractedComposerDto> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<String> composers) {
+    public void setComposers(List<ExtractedComposerDto> composers) {
         this.composers = composers;
     }
 

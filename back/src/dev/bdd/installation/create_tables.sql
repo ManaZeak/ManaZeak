@@ -67,8 +67,7 @@ COMMENT ON COLUMN album_bio.bio_id IS 'ManyToMany FK bio';
 CREATE TABLE artist (
 	artist_id BIGINT not null,
 	name VARCHAR(200) not null,
-	real_name VARCHAR(200) not null,
-	location VARCHAR(500) not null,
+	location VARCHAR(500),
 	birth_date DATE,
 	death_date DATE,
 	last_modification_date TIMESTAMP,

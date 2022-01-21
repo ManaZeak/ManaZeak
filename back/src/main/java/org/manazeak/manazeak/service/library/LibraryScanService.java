@@ -25,20 +25,16 @@ import java.util.List;
 @Service
 public class LibraryScanService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
     private final LibraryScanManager libraryScanManager;
-
     private final TrackExtractorManager trackExtractor;
-
     private final LibraryWiperManager libraryWiper;
-
     private final LibraryIntegrationManager libraryIntegrationManager;
-
     private final CoverManager coverManager;
 
-    private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
-
     public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
-                              LibraryWiperManager libraryWiper, LibraryIntegrationManager libraryIntegrationManager, CoverManager coverManager) {
+                              LibraryWiperManager libraryWiper, LibraryIntegrationManager libraryIntegrationManager,
+                              CoverManager coverManager) {
         this.libraryScanManager = libraryScanManager;
         this.trackExtractor = trackExtractor;
         this.libraryWiper = libraryWiper;

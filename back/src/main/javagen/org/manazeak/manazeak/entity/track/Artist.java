@@ -32,7 +32,6 @@ public class Artist implements Serializable{
 
 	private Long artistId;
 	private String name;
-	private String realName;
 	private String location;
 	private LocalDate birthDate;
 	private LocalDate deathDate;
@@ -81,24 +80,9 @@ public class Artist implements Serializable{
     }  
     /**
      * No comment found in model diagram
-     * @return value of realName
-     */
-    @Column(name="real_name", nullable=false)
-	public String getRealName(){
-		return realName;
-    }  
-    /**
-     * No comment found in model diagram
-     * @param realName new value to give to realName
-     */
-	public void setRealName(final String realName){
-		this.realName = realName;
-    }  
-    /**
-     * No comment found in model diagram
      * @return value of location
      */
-    @Column(name="location", nullable=false)
+    @Column(name="location", nullable=true)
 	public String getLocation(){
 		return location;
     }  
@@ -288,7 +272,6 @@ public class Artist implements Serializable{
 		// Calculating hashcode with all "primitives" attributes
 		result = 31 * result + (artistId == null? 0 : artistId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
-		result = 31 * result + (realName == null? 0 : realName.hashCode());
 		result = 31 * result + (location == null? 0 : location.hashCode());
 		result = 31 * result + (birthDate == null? 0 : birthDate.hashCode());
 		result = 31 * result + (deathDate == null? 0 : deathDate.hashCode());
@@ -322,7 +305,6 @@ public class Artist implements Serializable{
 	    
 		return (artistId == null ?  (otherArtist.artistId == null) : artistId.equals(otherArtist.artistId))
 			&& (name == null ?  (otherArtist.name == null) : name.equals(otherArtist.name))
-			&& (realName == null ?  (otherArtist.realName == null) : realName.equals(otherArtist.realName))
 			&& (location == null ?  (otherArtist.location == null) : location.equals(otherArtist.location))
 			&& (birthDate == null ?  (otherArtist.birthDate == null) : birthDate.equals(otherArtist.birthDate))
 			&& (deathDate == null ?  (otherArtist.deathDate == null) : deathDate.equals(otherArtist.deathDate))

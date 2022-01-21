@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class ExtractedBandDto {
     private final List<ExtractedAlbumDto> albums = new ArrayList<>();
     private final Path location;
     private String name;
+    private LocalDateTime modificationDate;
 
     public ExtractedBandDto(Path location) {
         this.location = location;
@@ -23,6 +25,14 @@ public class ExtractedBandDto {
 
     public List<ExtractedAlbumDto> getAlbums() {
         return albums;
+    }
+
+    public LocalDateTime getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(LocalDateTime modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
     public void addAlbum(ExtractedAlbumDto album) {

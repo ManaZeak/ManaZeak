@@ -80,11 +80,11 @@ public final class TrackTagMapper {
     private static void fillTrackInformation(AudioFileContainerDto fileContainer, ExtractedTrackDto track) {
         // Getting the track title.
         track.setTitle(fileContainer.getTitle());
-        track.setArtists(TagSplitterHelper.splitTag(fileContainer.getArtist()));
-        track.setPerformers(TagSplitterHelper.splitTag(fileContainer.getPerformer()));
-        track.setComposers(TagSplitterHelper.splitTag(fileContainer.getComposer()));
-        track.setProducers(TagSplitterHelper.splitTag(fileContainer.getProducer()));
-        track.setGenres(TagSplitterHelper.splitTag(fileContainer.getGenre()));
+        track.setArtists(TagSplitterUtil.splitTag(fileContainer.getArtist()));
+        track.setPerformers(TagSplitterUtil.splitTag(fileContainer.getPerformer()));
+        track.setComposers(TagSplitterUtil.splitComposer(fileContainer.getComposer()));
+        track.setProducers(TagSplitterUtil.splitTag(fileContainer.getProducer()));
+        track.setGenres(TagSplitterUtil.splitTag(fileContainer.getGenre()));
         track.setYear(fileContainer.getDate());
         track.setDiscNumber(CastUtil.castStringToInt(fileContainer.getDiscNumber()));
         track.setTrackNumber(CastUtil.castStringToInt(fileContainer.getTrackNumber()));

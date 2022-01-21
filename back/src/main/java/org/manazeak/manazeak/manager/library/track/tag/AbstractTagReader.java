@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.manager.library.track.tag;
 
 /**
- * Allows to read specific tags.
+ * Read specific tags.
  */
 public class AbstractTagReader {
 
