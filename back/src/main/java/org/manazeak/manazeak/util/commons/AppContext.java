@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 /**
  * An class to access the application context in a static way.
  */
-public class AppContext {
+public final class AppContext {
 
     /**
      * Application context

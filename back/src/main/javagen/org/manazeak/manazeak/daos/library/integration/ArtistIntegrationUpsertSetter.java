@@ -1,9 +1,6 @@
 package org.manazeak.manazeak.daos.library.integration;
 
-import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import java.sql.PreparedStatement;

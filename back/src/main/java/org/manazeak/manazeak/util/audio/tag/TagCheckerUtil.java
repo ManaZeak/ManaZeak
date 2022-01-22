@@ -3,7 +3,7 @@ package org.manazeak.manazeak.util.audio.tag;
 /**
  * Some generic checks on the track tags.
  */
-public class TagCheckerUtil {
+public final class TagCheckerUtil {
 
     private static final String RECORD_SUFFIX = " Records";
 
