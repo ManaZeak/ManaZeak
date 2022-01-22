@@ -179,9 +179,9 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals("test_artist2", track.getArtists().get(1), "Invalid name of the extracted artist 2");
         // Check the size of the composers
         Assertions.assertEquals(3, track.getComposers().size(), "Invalid numbers of extracted albums");
-        Assertions.assertEquals("test_compo1", track.getComposers().get(0), "Invalid composer name");
-        Assertions.assertEquals("test_compo2", track.getComposers().get(1), "Invalid composer name");
-        Assertions.assertEquals("test_compo3", track.getComposers().get(2), "Invalid composer name");
+        Assertions.assertEquals("test_compo1", track.getComposers().get(0).getName(), "Invalid composer name");
+        Assertions.assertEquals("test_compo2", track.getComposers().get(1).getName(), "Invalid composer name");
+        Assertions.assertEquals("test_compo3", track.getComposers().get(2).getName(), "Invalid composer name");
         // Check the genres.
         Assertions.assertEquals(2, track.getGenres().size(), "Invalid number of genres.");
         Assertions.assertEquals("test", track.getGenres().get(0), "Invalid genre name");
@@ -213,8 +213,8 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals("test_artist2", track.getArtists().get(1), "Invalid name of the extracted artist 2");
         // Check the size of the composers
         Assertions.assertEquals(2, track.getComposers().size(), "Invalid numbers of extracted albums");
-        Assertions.assertEquals("test_compo2", track.getComposers().get(0), "Invalid composer name");
-        Assertions.assertEquals("test_compo5", track.getComposers().get(1), "Invalid composer name");
+        Assertions.assertEquals("test_compo2", track.getComposers().get(0).getName(), "Invalid composer name");
+        Assertions.assertEquals("test_compo5", track.getComposers().get(1).getName(), "Invalid composer name");
         // Check the genres.
         Assertions.assertEquals(2, track.getGenres().size(), "Invalid number of genres.");
         Assertions.assertEquals("test", track.getGenres().get(0), "Invalid genre name");
