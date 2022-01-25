@@ -35,6 +35,12 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
     @Query("SELECT a FROM Artist a WHERE a.location IN (:locations)")
     List<Artist> getArtistByLocations(@Param("locations") Set<String> locations);
 
+    /**
+     * Get all the artist with a not null location.
+     *
+     * @return The artists with a location.
+     */
+    List<Artist> getArtistByLocationNotNull();
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

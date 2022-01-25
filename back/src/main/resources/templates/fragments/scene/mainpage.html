@@ -1,3 +1,10 @@
-<div>
-  <h2>Test</h2>
+<div xmlns:th="http://www.thymeleaf.org">
+    <h2>Test</h2>
+    <!-- Iterating through the artists. -->
+    <!--/*@thymesVar id="artists" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
+    <div th:each="artist : ${artists}">
+        <p th:text="*{artist.name}"></p>
+        <p th:text="*{artist.cover}"></p>
+        <p th:text="*{artist.isLabel}"></p>
+    </div>
 </div>

@@ -1,13 +1,11 @@
 package org.manazeak.manazeak.daos.library.integration;
 
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
