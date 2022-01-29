@@ -1,6 +1,8 @@
 package org.manazeak.manazeak.service.library.artist;
 
+import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
+import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * Allows to interract with the artists of the application.
  */
+@TransactionalWithRollback
 @Service
 public class ArtistService {
 
@@ -38,6 +41,7 @@ public class ArtistService {
 
     /**
      * Get all the artist in the database with the minimal information.
+     *
      * @return The list of artists.
      */
     public List<ArtistMinimalInfoDto> getAllArtistsMinimal() {
@@ -49,5 +53,21 @@ public class ArtistService {
         }
 
         return minimalArtist;
+    }
+
+    /**
+     * Get the information about a specific artist in the database.
+     *
+     * @return The detail of the artist.
+     */
+    public ArtistDetailsDto getArtistDetail(Long artistId) {
+        // Getting the information of the artist.
+        ArtistDetailsDto detail = artistDAO.getArtistDetailById(artistId).orElseThrow(
+                MzkExceptionHelper.generateSupplierObjectNotFoundException("")
+        );
+        // Getting the minimal information on the members.
+        detail.setMembers(artistDAO.getArtistMinimalInfoByParent(detail.getArtistId()));
+
+        return detail;
     }
 }

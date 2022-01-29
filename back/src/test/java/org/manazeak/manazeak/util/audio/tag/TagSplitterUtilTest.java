@@ -3,7 +3,7 @@ package org.manazeak.manazeak.util.audio.tag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
-import org.manazeak.manazeak.entity.dto.library.artist.ExtractedComposerDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
 import java.util.List;
 

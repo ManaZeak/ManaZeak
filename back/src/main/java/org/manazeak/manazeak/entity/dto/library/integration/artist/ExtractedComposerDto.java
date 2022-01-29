@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.entity.dto.library.artist;
+package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
 import java.util.HashSet;
 import java.util.Set;

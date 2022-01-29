@@ -11,6 +11,15 @@ public class ArtistMinimalInfoDto {
 
     private boolean isLabel;
 
+    public ArtistMinimalInfoDto() {
+
+    }
+
+    public ArtistMinimalInfoDto(String name, boolean isLabel) {
+        this.name = name;
+        this.isLabel = isLabel;
+    }
+
     public String getName() {
         return name;
     }

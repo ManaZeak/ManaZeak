@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
-import org.manazeak.manazeak.entity.dto.library.artist.ExtractedComposerDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
 import java.util.ArrayList;
 import java.util.List;

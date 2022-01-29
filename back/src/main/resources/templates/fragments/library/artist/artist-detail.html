@@ -1,0 +1,19 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
+    <p th:text="${artist.artistId}"></p>
+    <p th:text="${artist.name}"></p>
+    <p th:text="${artist.birthDate}"></p>
+    <p th:text="${artist.deathDate}"></p>
+    <p th:text="${artist.isLabel()}"></p>
+    <p th:text="${artist.testimonyFrom}"></p>
+    <p th:text="${artist.testimonyText}"></p>
+    <p th:text="${artist.countryCode}"></p>
+    <p th:text="${artist.labelId}"></p>
+    <p th:text="${artist.label}"></p>
+    <p th:text="${artist.bio}"></p>
+
+    <p>MEMBERS</p>
+    <div th:each="member : ${artist.members}">
+        <p th:text="*{member.name}"></p>
+    </div>
+</div>

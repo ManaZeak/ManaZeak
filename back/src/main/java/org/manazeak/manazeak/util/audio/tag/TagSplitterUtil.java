@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.util.audio.tag;
 
 import org.manazeak.manazeak.constant.library.LibraryConstant;
-import org.manazeak.manazeak.entity.dto.library.artist.ExtractedComposerDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
