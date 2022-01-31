@@ -14,7 +14,6 @@ class MainPageView extends SceneView {
     Utils.appendLinkInHead('static/dist/css/mainpage.bundle.css');
 
     this._fetchWrapper(this._url)
-    this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
       .then(this._events.bind(this))
       .then(this._viewReady)
@@ -44,7 +43,7 @@ class MainPageView extends SceneView {
         mzk.setView({
           name: 'ArtistItem',
           id: artists.children[i].dataset.id
-        })
+        });
       });
     }
   }

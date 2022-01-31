@@ -139,12 +139,7 @@ class ScrollBar {
       // Save bar from previously added scroll element
       this._bar = this._target.lastChild;
       // Style update if user has specified style rules of its own
-      if (this._style.color) { this._target.style.setProperty('--scroll-color', this._style.color); }
-      if (this._style.size) { this._target.style.setProperty('--scroll-size', this._style.size); }
-      if (this._style.radius) { this._target.style.setProperty('--scroll-radius', this._style.radius); }
-      if (this._style.lowOpacity) { this._target.style.setProperty('--scroll-low-opacity', this._style.lowOpacity); }
-      if (this._style.highOpacity) { this._target.style.setProperty('--scroll-high-opacity', this._style.highOpacity); }
-      if (this._style.transitionDuration) { this._target.style.setProperty('--scroll-transition-duration', this._style.transitionDuration); }
+      this.style = this._style;
       // DOM initialization is done
       resolve();
     });
@@ -269,58 +264,68 @@ class ScrollBar {
    **/
   _updateScrollBar() {
     if (this._horizontal === true) {
-      const totalWidth = this._container.scrollWidth;
-      const ownWidth = this._container.clientWidth;
-      const bottom = (this._target.clientHeight - this._bar.clientHeight) * -1;
-      this._scrollRatio = ownWidth / totalWidth;
-      requestAnimationFrame(() => {
-        // Hide scrollbar if no scrolling is possible
-        if (this._scrollRatio >= 1) {
-          this._bar.classList.add('hidden');
-        } else {
-          let width = (Math.max(this._scrollRatio * 100, this._minSize) * ownWidth) / 100;
-          let left = ((this._container.scrollLeft / totalWidth) * 100) * ownWidth / 100;
-          // ScrollBar has reached its minimum size
-          if (Math.max(this._scrollRatio * 100, this._minSize) === this._minSize) {
-            // Set minSize as width, unless minSize is greater than container client width
-            width = (this._minSize < ownWidth) ? this._minSize : ownWidth / 2;
-            /* Here is a complex thing : scroll total height != DOM node total height. We must substract
-            a growing percentage (as user goes down) that is scaled after total scroll progress in %. */
-            const scrollProgressPercentage = (this._container.scrollLeft * 100) / (totalWidth - ownWidth);
-            left = ((ownWidth - width) * (((this._container.scrollLeft + (scrollProgressPercentage * ownWidth) / 100) / totalWidth) * 100)) / 100;
-          }
-          // Update the bar position
-          this._bar.classList.remove('hidden');
-          this._bar.style.cssText = `width: ${width}px; left: ${left}px; bottom: ${bottom}px;`;
-        }
-      });
+      this._updateHorizontalScroll();
     } else {
-      const totalHeight = this._container.scrollHeight;
-      const ownHeight = this._container.clientHeight;
-      const right = (this._target.clientWidth - this._bar.clientWidth) * -1;
-      this._scrollRatio = ownHeight / totalHeight;
-      requestAnimationFrame(() => {
-        // Hide scrollbar if no scrolling is possible
-        if (this._scrollRatio >= 1) {
-          this._bar.classList.add('hidden');
-        } else {
-          let height = (Math.max(this._scrollRatio * 100, this._minSize) * ownHeight) / 100;
-          let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
-          // ScrollBar has reached its minimum size
-          if (Math.max(this._scrollRatio * 100, this._minSize) === this._minSize) {
-            // Set minSize as height, unless minSize is greater than container client height
-            height = (this._minSize < ownHeight) ? this._minSize : ownHeight / 2;
-            /* Here is a complex thing : scroll total height != DOM node total height. We must substract
-            a growing percentage (as user goes down) that is scaled after total scroll progress in %. */
-            const scrollProgressPercentage = (this._container.scrollTop * 100) / (totalHeight - ownHeight);
-            top = ((ownHeight - height) * (((this._container.scrollTop + (scrollProgressPercentage * ownHeight) / 100) / totalHeight) * 100)) / 100;
-          }
-          // Update the bar position
-          this._bar.classList.remove('hidden');
-          this._bar.style.cssText = `height: ${height}px; top: ${top}px; right: ${right}px;`;
-        }
-      });
+      this._updateVerticalScroll();
     }
+  }
+
+
+  _updateHorizontalScroll() {
+    const totalWidth = this._container.scrollWidth;
+    const ownWidth = this._container.clientWidth;
+    const bottom = (this._target.clientHeight - this._bar.clientHeight) * -1;
+    this._scrollRatio = ownWidth / totalWidth;
+    requestAnimationFrame(() => {
+      // Hide scrollbar if no scrolling is possible
+      if (this._scrollRatio >= 1) {
+        this._bar.classList.add('hidden');
+      } else {
+        let width = (Math.max(this._scrollRatio * 100, this._minSize) * ownWidth) / 100;
+        let left = ((this._container.scrollLeft / totalWidth) * 100) * ownWidth / 100;
+        // ScrollBar has reached its minimum size
+        if (Math.max(this._scrollRatio * 100, this._minSize) === this._minSize) {
+          // Set minSize as width, unless minSize is greater than container client width
+          width = (this._minSize < ownWidth) ? this._minSize : ownWidth / 2;
+          /* Here is a complex thing : scroll total height != DOM node total height. We must substract
+          a growing percentage (as user goes down) that is scaled after total scroll progress in %. */
+          const scrollProgressPercentage = (this._container.scrollLeft * 100) / (totalWidth - ownWidth);
+          left = ((ownWidth - width) * (((this._container.scrollLeft + (scrollProgressPercentage * ownWidth) / 100) / totalWidth) * 100)) / 100;
+        }
+        // Update the bar position
+        this._bar.classList.remove('hidden');
+        this._bar.style.cssText = `width: ${width}px; left: ${left}px; bottom: ${bottom}px;`;
+      }
+    });
+  }
+
+
+  _updateVerticalScroll() {
+    const totalHeight = this._container.scrollHeight;
+    const ownHeight = this._container.clientHeight;
+    const right = (this._target.clientWidth - this._bar.clientWidth) * -1;
+    this._scrollRatio = ownHeight / totalHeight;
+    requestAnimationFrame(() => {
+      // Hide scrollbar if no scrolling is possible
+      if (this._scrollRatio >= 1) {
+        this._bar.classList.add('hidden');
+      } else {
+        let height = (Math.max(this._scrollRatio * 100, this._minSize) * ownHeight) / 100;
+        let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
+        // ScrollBar has reached its minimum size
+        if (Math.max(this._scrollRatio * 100, this._minSize) === this._minSize) {
+          // Set minSize as height, unless minSize is greater than container client height
+          height = (this._minSize < ownHeight) ? this._minSize : ownHeight / 2;
+          /* Here is a complex thing : scroll total height != DOM node total height. We must substract
+          a growing percentage (as user goes down) that is scaled after total scroll progress in %. */
+          const scrollProgressPercentage = (this._container.scrollTop * 100) / (totalHeight - ownHeight);
+          top = ((ownHeight - height) * (((this._container.scrollTop + (scrollProgressPercentage * ownHeight) / 100) / totalHeight) * 100)) / 100;
+        }
+        // Update the bar position
+        this._bar.classList.remove('hidden');
+        this._bar.style.cssText = `height: ${height}px; top: ${top}px; right: ${right}px;`;
+      }
+    });
   }
 
 
@@ -349,12 +354,30 @@ class ScrollBar {
    **/
   set style(style) {
     this._style = style;
-    if (this._style.color) { this._target.style.setProperty('--scroll-color', this._style.color); }
-    if (this._style.size) { this._target.style.setProperty('--scroll-size', this._style.size); }
-    if (this._style.radius) { this._target.style.setProperty('--scroll-radius', this._style.radius); }
-    if (this._style.lowOpacity) { this._target.style.setProperty('--scroll-low-opacity', this._style.lowOpacity); }
-    if (this._style.highOpacity) { this._target.style.setProperty('--scroll-high-opacity', this._style.highOpacity); }
-    if (this._style.transitionDuration) { this._target.style.setProperty('--scroll-transition-duration', this._style.transitionDuration); }
+
+    if (this._style.color) {
+      this._target.style.setProperty('--scroll-color', this._style.color);
+    }
+
+    if (this._style.size) {
+      this._target.style.setProperty('--scroll-size', this._style.size);
+    }
+
+    if (this._style.radius) {
+      this._target.style.setProperty('--scroll-radius', this._style.radius);
+    }
+
+    if (this._style.lowOpacity) {
+      this._target.style.setProperty('--scroll-low-opacity', this._style.lowOpacity);
+    }
+
+    if (this._style.highOpacity) {
+      this._target.style.setProperty('--scroll-high-opacity', this._style.highOpacity);
+    }
+
+    if (this._style.transitionDuration) {
+      this._target.style.setProperty('--scroll-transition-duration', this._style.transitionDuration);
+    }
   }
 
 
