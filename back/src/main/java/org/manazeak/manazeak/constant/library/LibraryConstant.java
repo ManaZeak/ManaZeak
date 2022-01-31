@@ -12,6 +12,7 @@ public final class LibraryConstant {
      * The music library in the docker container.
      */
     public static final Path LIBRARY_PATH = Paths.get("/library/");
+    public static final Path ARTIST_PROFILE_PICTURE_PATH = Paths.get("/Pictures/Pictures/ArtistsProfile/");
 
     /**
      * The number of items that will be processed at the same time.

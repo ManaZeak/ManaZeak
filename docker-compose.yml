@@ -28,6 +28,7 @@ services:
             - ${RESOURCES_PATH}:/resources
             - ${LIBRARY_PATH}:/library
             - ${LOGS_PATH}:/log
+            - ${ASSETS_PATH}:/Pictures
         links:
             - db
         depends_on:
@@ -68,7 +69,7 @@ services:
 #            - PUID=1000
         volumes:
             - ${LIBRARY_PATH}:/ManaZeak
-            - /home/squadella/Documents/face:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
+            - ${ASSETS_PATH}/home/squadella/Documents/face:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
         ports:
             - "127.0.0.1:8384:8384"
             - "22000:22000"

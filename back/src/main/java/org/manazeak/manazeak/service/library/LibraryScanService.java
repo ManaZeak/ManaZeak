@@ -9,6 +9,7 @@ import org.manazeak.manazeak.manager.library.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
+import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
 import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +32,17 @@ public class LibraryScanService {
     private final LibraryWiperManager libraryWiper;
     private final LibraryIntegrationManager libraryIntegrationManager;
     private final CoverManager coverManager;
+    private final ArtistProfilePicManager artistProfilePicManager;
 
     public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
                               LibraryWiperManager libraryWiper, LibraryIntegrationManager libraryIntegrationManager,
-                              CoverManager coverManager) {
+                              CoverManager coverManager, ArtistProfilePicManager artistProfilePicManager) {
         this.libraryScanManager = libraryScanManager;
         this.trackExtractor = trackExtractor;
         this.libraryWiper = libraryWiper;
         this.libraryIntegrationManager = libraryIntegrationManager;
         this.coverManager = coverManager;
+        this.artistProfilePicManager = artistProfilePicManager;
     }
 
     /**
@@ -66,6 +69,11 @@ public class LibraryScanService {
             // Extracting the covers
             coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
             LOG.info("Ending the cover extraction.");
+
+            LOG.info("Starting the artist profile pictures thumbnail generation");
+            // Generating the artists thumbnails.
+            artistProfilePicManager.generateArtistProfileThumb();
+            LOG.info("Starting the artist profile pictures thumbnail generation");
 
             LOG.info("Starting the track integration.");
             // Inserting the tracks into the database.

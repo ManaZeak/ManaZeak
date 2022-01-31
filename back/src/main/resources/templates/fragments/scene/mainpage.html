@@ -5,7 +5,7 @@
   <div id="artists-container" class="artists-container">
     <div class="artist-item" th:each="artist : ${artists}" th:data-id="${artist.id}">
       <p class="artist-name" th:text="*{artist.name}"></p>
-      <img th:src="/resources/artist_pictures/orig/*{artist.name}.jpg" class="artist-pp" alt="artist-pp">
+      <img th:src="'/resources/artist_pictures/orig/' + *{artist.name} + '.jpg'" class="artist-pp" alt="artist-pp">
       <!-- User doesn't have an avatar. Displaying default -->
       <span th:if="*{artist.isLabel}">
       <img src="static/img/object/label.svg" class="artist-is-label" alt="artist-is-label">

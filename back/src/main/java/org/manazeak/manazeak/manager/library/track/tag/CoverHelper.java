@@ -13,7 +13,7 @@ public final class CoverHelper {
      * @param albumFolder The folder containing the album.
      * @return The path of the cover that was extracted.
      */
-    public String saveCoverAndGetPath(Path albumFolder) {
+    public static String saveCoverAndGetPath(Path albumFolder) {
         return "";
     }
 

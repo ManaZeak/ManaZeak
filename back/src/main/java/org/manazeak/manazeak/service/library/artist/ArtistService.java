@@ -66,7 +66,10 @@ public class ArtistService {
                 MzkExceptionHelper.generateSupplierObjectNotFoundException("")
         );
         // Getting the minimal information on the members.
-        detail.setMembers(artistDAO.getArtistMinimalInfoByParent(detail.getArtistId()));
+        List<Artist> members = artistDAO.getArtistMinimalInfoByParent(detail.getArtistId());
+        for (Artist member : members) {
+            detail.addMember(ArtistHelper.convertArtist(member));
+        }
 
         return detail;
     }

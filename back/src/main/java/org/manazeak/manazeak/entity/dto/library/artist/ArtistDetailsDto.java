@@ -1,9 +1,8 @@
 package org.manazeak.manazeak.entity.dto.library.artist;
 
 
-import org.manazeak.manazeak.entity.track.Artist;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class ArtistDetailsDto {
     private String label;
     private List<String> links;
     private String bio;
-    private List<Artist> members;
+    private final List<ArtistMinimalInfoDto> members = new ArrayList<>();
 
     public ArtistDetailsDto(Long artistId, String name, String location, LocalDate birthDate,
                             LocalDate deathDate, Boolean isLabel, String testimonyFrom,
@@ -115,12 +114,12 @@ public class ArtistDetailsDto {
         this.bio = bio;
     }
 
-    public List<Artist> getMembers() {
+    public List<ArtistMinimalInfoDto> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Artist> members) {
-        this.members = members;
+    public void addMember(ArtistMinimalInfoDto member) {
+        members.add(member);
     }
 
     public String getTestimonyFrom() {
