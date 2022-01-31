@@ -19,9 +19,7 @@ class Mzk {
     this.ui = new UserInterface();
     this.ui.stopLoading();
     // Init scene with main page
-    this.setView({
-      name: 'MainPage'
-    });
+    this.setView({ name: 'MainPage' });
   }
 
 

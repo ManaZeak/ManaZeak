@@ -4,8 +4,13 @@ import SceneView from '../utils/SceneView';
 class MenuPageView extends SceneView {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      type: 'menu',
+      url: '/fragment/menupage/'
+    });
+
+    Utils.appendLinkInHead('static/dist/css/menu.bundle.css');
 
     this._adminItem = null;
     this._userItem = null;
@@ -14,7 +19,7 @@ class MenuPageView extends SceneView {
 
     this._evtIds = [];
 
-    this._fetchWrapper('/fragment/menupage/')
+    this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))
       .then(this._viewReady)
       .catch(error => {
@@ -35,50 +40,15 @@ class MenuPageView extends SceneView {
     this._userItem = this.dom.querySelector('#userpage-button');
     this._wishItem = this.dom.querySelector('#wish-button');
     this._aboutItem = this.dom.querySelector('#about-button');
-
     this._events();
   }
 
 
   _events() {
-    this._evtIds.push(Events.addEvent('click', this._adminItem, this._adminClicked, this));
-    this._evtIds.push(Events.addEvent('click', this._userItem, this._userClicked, this));
-    this._evtIds.push(Events.addEvent('click', this._wishItem, this._wishClicked, this));
-    this._evtIds.push(Events.addEvent('click', this._aboutItem, this._aboutClicked, this));
-  }
-
-
-  _adminClicked() {
-    mzk.setView({
-      name: 'AdminPage', // To use in ViewFactory
-      type: 'admin', // To retrieve DOM elements
-      url: '/fragment/admin'
-    });
-  }
-
-
-  _userClicked() {
-    mzk.setView({
-      name: 'AccountPage',
-      type: 'account',
-      url: '/fragment/account'
-    });
-  }
-
-
-  _wishClicked() {
-    mzk.setModal({
-      name: 'Wish',
-      url: '/fragment/wish'
-    });
-  }
-
-
-  _aboutClicked() {
-    mzk.setModal({
-      name: 'About',
-      url: '/fragment/modal/about'
-    });
+    this._evtIds.push(Events.addEvent('click', this._adminItem, mzk.setView.bind(mzk, { name: 'AdminPage' }), this));
+    this._evtIds.push(Events.addEvent('click', this._userItem, mzk.setView.bind(mzk, { name: 'AccountPage' }), this));
+    this._evtIds.push(Events.addEvent('click', this._wishItem, mzk.setModal.bind(mzk, { name: 'Wish' }), this));
+    this._evtIds.push(Events.addEvent('click', this._aboutItem, mzk.setModal.bind(mzk, { name: 'About' }), this));
   }
 
 

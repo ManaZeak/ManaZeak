@@ -4,8 +4,10 @@ import Modal from '../utils/Modal.js';
 class ResetPasswordModal extends Modal {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      url: '/fragment/modal/reset-password/'
+    });
   }
 
 

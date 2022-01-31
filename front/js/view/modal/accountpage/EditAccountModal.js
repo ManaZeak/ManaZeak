@@ -4,8 +4,10 @@ import Modal from '../utils/Modal.js';
 class EditAccountModal extends Modal {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      url: '/fragment/modal/edit-account/'
+    });
   }
 
 

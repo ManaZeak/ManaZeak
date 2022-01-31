@@ -6,8 +6,11 @@ import PreferenceFragment from "./account/PreferenceFragment";
 class AccountPageView extends TabView {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      type: 'account',
+      url: '/fragment/account/'
+    });
 
     Utils.appendLinkInHead('static/dist/css/account.bundle.css');
 

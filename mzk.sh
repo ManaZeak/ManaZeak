@@ -184,11 +184,19 @@ elif [ "$1" = "-r" ] || [ "$1" = "--reset" ]; then
   echo -e "3/4. Removing ManaZeak containers"
   eval "docker-compose down -v --rmi all --remove-orphans"
   echo # Line break
-  # Finally rebuild the whole thing
-  echo -e "4/4. Building ManaZeak containers"
-  eval "docker-compose build"
-  echo -e "\n\e[32mSUCCESS\e[39m ManaZeak was properly reset!"
-  echo -e "        You can now run ./mzk.sh --start [dev/prod] to start ManaZeak"
+  # Reset hard argument
+  if [ "$2" = "hard" ]; then
+    echo -e "4/4. Remove all existing docker images\n"
+    eval "docker system prune"
+    echo -e "\n\e[32mSUCCESS\e[39m ManaZeak was properly reset!"
+    echo -e "        You can now run ./mzk.sh --build to build docker images again"
+  # Rebuild the whole thing otherwise
+  else
+    echo -e "4/4. Building ManaZeak containers"
+    eval "docker-compose build"
+    echo -e "\n\e[32mSUCCESS\e[39m ManaZeak was properly reset!"
+    echo -e "        You can now run ./mzk.sh --start [dev/prod] to start ManaZeak"
+  fi
 
 
 # Gource version control visualization
@@ -225,8 +233,9 @@ elif [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   echo -e "                     Optional argument [mvn] for selective build, global build otherwise\n"
   echo -e "  -s, --start        Start ManaZeak application"
   echo -e "                     Optional argument [dev/prod] depending on the mode you're starting ManaZeak with, will use prod if none are provided\n"
-  echo -e "  -r, --reset        Remove existing database and docker images and rebuild them"
-  echo -e "                     It won't remove existing .env configuration file\n"
+  echo -e "  -r, --reset        Remove existing database and ManaZeak docker images and rebuild them"
+  echo -e "                     Optional argument [hard] will remove all docker images, and won't rebuild"
+  echo -e "                     This command will not remove the existing .env configuration file\n"
   echo -e "  -g, --gource       Review git history using gource package"
   echo -e "                     Optional argument [save] to save visualization as a mp4 file\n"
 

@@ -18,6 +18,7 @@ public final class ArtistHelper {
      */
     public static ArtistMinimalInfoDto convertArtist(Artist artist) {
         ArtistMinimalInfoDto minimal = new ArtistMinimalInfoDto();
+        minimal.setId(artist.getArtistId());
         minimal.setName(artist.getName());
         minimal.setLabel(artist.getIsLabel());
         // FIXME: add the cover to the artist object.

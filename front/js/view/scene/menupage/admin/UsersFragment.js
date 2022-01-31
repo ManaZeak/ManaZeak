@@ -67,7 +67,7 @@ class UsersFragment {
       this._evtIds.push(Events.addEvent('click', deleteUser, this._deleteUser, { element: this._users[i], scope: this }));
     }
     // Badge creation event
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#new-badge'), this._newBadge, this));
+    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#new-badge'), mzk.setModal.bind(mzk, { name: 'Badge' }), this));
   }
 
 
@@ -100,14 +100,6 @@ class UsersFragment {
       this.scope._refreshCB();
     }).catch(error => {
       console.error(error);
-    });
-  }
-
-
-  _newBadge() {
-    mzk.setModal({
-      name: 'Badge',
-      url: '/fragment/modal/new-badge'
     });
   }
 

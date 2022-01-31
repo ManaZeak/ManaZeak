@@ -1,10 +1,15 @@
-<div xmlns:th="http://www.thymeleaf.org">
-    <h2>Test</h2>
-    <!-- Iterating through the artists. -->
-    <!--/*@thymesVar id="artists" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
-    <div th:each="artist : ${artists}">
-        <p th:text="*{artist.name}"></p>
-        <p th:text="*{artist.cover}"></p>
-        <p th:text="*{artist.isLabel}"></p>
+<div class="main-page" xmlns:th="http://www.thymeleaf.org">
+  <h2>MainPage</h2>
+  <!--/*@thymesVar id="artists" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
+  <!-- Iterating through the artists. -->
+  <div id="artists-container" class="artists-container">
+    <div class="artist-item" th:each="artist : ${artists}" th:data-id="${artist.id}">
+      <p class="artist-name" th:text="*{artist.name}"></p>
+      <img th:src="/resources/artist_pictures/orig/*{artist.name}.jpg" class="artist-pp" alt="artist-pp">
+      <!-- User doesn't have an avatar. Displaying default -->
+      <span th:if="*{artist.isLabel}">
+      <img src="static/img/object/label.svg" class="artist-is-label" alt="artist-is-label">
+    </span>
     </div>
+  </div>
 </div>

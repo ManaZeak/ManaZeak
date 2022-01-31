@@ -7,8 +7,11 @@ import SyncThingFragment from './admin/SyncThingFragment';
 class AdminPageView extends TabView {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      type: 'admin',
+      url: '/fragment/admin/'
+    });
 
     Utils.appendLinkInHead('static/dist/css/admin.bundle.css');
 

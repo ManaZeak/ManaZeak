@@ -7,14 +7,9 @@ class TabView extends SceneView {
   constructor(options) {
     super(options);
 
-    this._type = options.type;
-    this._url = options.url;
-
     this._tabs = null;
     this._tabClickedEvtIds = [];
-
     this._viewContainer = null;
-
     this._activeFragment = null;
     /** @private
      * @member {object} - The DOM loading overlay to use in transitions */

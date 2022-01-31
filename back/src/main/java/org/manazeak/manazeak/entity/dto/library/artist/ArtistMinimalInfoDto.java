@@ -5,6 +5,8 @@ package org.manazeak.manazeak.entity.dto.library.artist;
  */
 public class ArtistMinimalInfoDto {
 
+    private Long id;
+
     private String name;
 
     private String cover;
@@ -42,6 +44,14 @@ public class ArtistMinimalInfoDto {
 
     public void setLabel(boolean label) {
         isLabel = label;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
 

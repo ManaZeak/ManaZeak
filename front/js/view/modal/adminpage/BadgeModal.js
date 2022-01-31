@@ -4,8 +4,10 @@ import Modal from '../utils/Modal.js';
 class BadgeModal extends Modal {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      url: '/fragment/modal/new-badge/'
+    });
     /** @private
      * @member {object} - The form submit input */
     this._submitInput = null;

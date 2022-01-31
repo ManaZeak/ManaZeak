@@ -1,13 +1,22 @@
 import SceneView from '../utils/SceneView';
+import ScrollBar from '../../navigation/ScrollBar';
 
 
 class MainPageView extends SceneView {
 
 
-  constructor(options) {
-    super(options);
+  constructor() {
+    super({
+      type: 'main',
+      url: '/fragment/mainpage/'
+    });
 
-    this._fetchWrapper('/fragment/mainpage/')
+    Utils.appendLinkInHead('static/dist/css/mainpage.bundle.css');
+
+    this._fetchWrapper(this._url)
+    this._fetchWrapper(this._url)
+      .then(this._buildNavigation.bind(this))
+      .then(this._events.bind(this))
       .then(this._viewReady)
       .catch(error => {
         Logger.raise(error);
@@ -18,6 +27,26 @@ class MainPageView extends SceneView {
   destroy() {
     super.destroy();
     Utils.removeAllObjectKeys(this);
+  }
+
+
+  _buildNavigation() {
+    this._scroll = new ScrollBar({
+      target: this.dom,
+    });
+  }
+
+
+  _events() {
+    const artists = this.dom.querySelector('#artists-container');
+    for (let i = 0; i < artists.children.length; ++i) {
+      artists.children[i].addEventListener('click', () => {
+        mzk.setView({
+          name: 'ArtistItem',
+          id: artists.children[i].dataset.id
+        })
+      });
+    }
   }
 
 

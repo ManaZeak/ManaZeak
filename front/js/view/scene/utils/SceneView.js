@@ -10,10 +10,12 @@ class SceneView {
    * @description <blockquote>Scene view base class that must be inherited to match the loading pattern. All views
    * are based on an HTML template, that will be loaded the parsed to be included in the DOM scene. When the view
    * building is done, a <code>SceneViewReady</code> event is fired through the custom event proxy.</blockquote> */
-  constructor() {
+  constructor(options) {
     /** @public
      * @member {object} - The view wrapper div */
     this.wrapper = null;
+    this._type = options.type;
+    this._url = options.url;
   }
 
 
