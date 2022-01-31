@@ -48,6 +48,7 @@ class ScrollBar {
      * @type {Object}
      * @private
      **/
+    debugger
     this._style = options.style || {};
     /**
      * The DOM element that will wrap the DOM target content
@@ -139,6 +140,7 @@ class ScrollBar {
       // Save bar from previously added scroll element
       this._bar = this._target.lastChild;
       // Style update if user has specified style rules of its own
+      debugger
       this.style = this._style;
       // DOM initialization is done
       resolve();

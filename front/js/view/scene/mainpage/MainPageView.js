@@ -32,6 +32,10 @@ class MainPageView extends SceneView {
   _buildNavigation() {
     this._scroll = new ScrollBar({
       target: this.dom,
+      minSize: 40,
+      style: {
+        color: '#56D45B'
+      }
     });
   }
 
