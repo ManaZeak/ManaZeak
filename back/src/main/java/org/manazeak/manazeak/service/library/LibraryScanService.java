@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This service allows to scan the music library to get the information contained in the tracks.
@@ -72,17 +74,23 @@ public class LibraryScanService {
 
             LOG.info("Starting the artist profile pictures thumbnail generation");
             // Generating the artists thumbnails.
-            artistProfilePicManager.generateArtistProfileThumb();
-            LOG.info("Starting the artist profile pictures thumbnail generation");
+            ExecutorService artistProfilePicExecutor = artistProfilePicManager.generateArtistProfileThumb();
 
             LOG.info("Starting the track integration.");
             // Inserting the tracks into the database.
             libraryIntegrationManager.insertLibraryData(extractedBands);
             LOG.info("Ending the track integration.");
 
+            LOG.info("Waiting for the artist profile pic extraction to be finished.");
+            artistProfilePicExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+            LOG.info("Ending artist profile picture thumbnail generation.");
+
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.
             throw new MzkRuntimeException("File handling error during the scan", e);
+        } catch (InterruptedException e) {
+            LOG.warn("The thread was interrupted.", e);
+            Thread.currentThread().interrupt();
         }
 
     }

@@ -47,7 +47,7 @@ public class ArtistProfilePicManager {
     /**
      * Generate the artist profil pic.
      */
-    public void generateArtistProfileThumb() {
+    public ExecutorService generateArtistProfileThumb() {
         // Creating the thread pool.
         ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.COVER_EXTRACTION_THREAD_NUMBER);
 
@@ -60,6 +60,8 @@ public class ArtistProfilePicManager {
 
         // The pool doesn't accept any more jobs.
         executor.shutdown();
+
+        return executor;
     }
 
 }
