@@ -100,9 +100,9 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>org.bitbucket.ijabz</groupId>
+            <groupId>net.jthink</groupId>
             <artifactId>jaudiotagger</artifactId>
-            <version>1</version>
+            <version>3.0.1</version>
         </dependency>
         <!-- Thumb generation -->
         <dependency>
