@@ -9,9 +9,12 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.flac.FlacTag;
 import org.manazeak.manazeak.constant.tag.FieldsTagEnum;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileHeaderContainerDto;
+import org.manazeak.manazeak.exception.MzkExceptionHelper;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.exception.MzkTagException;
 import org.manazeak.manazeak.util.file.FormatFileCheckerUtil;
 import org.slf4j.Logger;
@@ -84,11 +87,7 @@ public final class TagReaderUtil {
             LOG.error("Audio frame error in the file : {}", filePath);
             throw new MzkTagException("Error when reading the file invalid audio frame for the file : " + filePath,
                     "error.tag.audio_frame", filePath.toString(), e);
-        } catch (ReadOnlyFileException e) {
-            LOG.error("The opened file : {} is read only mode", filePath);
-            throw new MzkTagException("The file is in read-only mode : " + filePath, "error.tag.read_only",
-                    filePath.toString(), e);
-        } catch (IOException e) {
+        }  catch (IOException | ReadOnlyFileException e) {
             throw new MzkTagException("IO Error when reading the file: " + filePath, "error.file_system.io_error",
                     filePath.toString(), e);
         }
@@ -111,7 +110,7 @@ public final class TagReaderUtil {
         AudioHeader header = audioFile.getAudioHeader();
         if (header != null) {
             extractedHeader.setBitrate(header.getByteRate());
-            extractedHeader.setTrackLength(header.getPreciseTrackLength());
+            extractedHeader.setTrackLength(header.getAudioDataLength());
             extractedHeader.setSampleRate(header.getSampleRateAsNumber());
             extractedHeader.setSize(audioFile.getFile().length());
         }
@@ -149,6 +148,7 @@ public final class TagReaderUtil {
         // Getting the information for track number information
         container.setTrackTotal(tag.getFirst(FieldKey.TRACK_TOTAL).trim());
         container.setTrackNumber(tag.getFirst(FieldKey.TRACK).trim());
+        container.setArranger(tag.getFirst(FieldKey.ARRANGER).trim());
 
         // If the file is an MP3
         if (isMp3) {
@@ -181,11 +181,18 @@ public final class TagReaderUtil {
      * @param container contains the information about the track.
      */
     private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
+        if (!(tag instanceof FlacTag)) {
+            throw new MzkRuntimeException("The extracted track is not a FLAC type.");
+        }
+        FlacTag flacTag = (FlacTag) tag;
         // Getting the performers.
-        container.setPerformer(tag.getFirst(FieldsTagEnum.PERFORMER.name()).trim());
+        container.setPerformer(flacTag.getFirst(FieldKey.PERFORMER).trim());
         // Getting the release date of the track.
-        container.setReleaseDate(tag.getFirst(FieldsTagEnum.RELEASEDATE.name()).trim());
-        container.setLabel(tag.getFirst(FieldKey.RECORD_LABEL).trim());
-        container.setProducer(tag.getFirst(FieldKey.PRODUCER).trim());
+        container.setReleaseDate(flacTag.getFirst(FieldsTagEnum.RELEASEDATE.name()).trim());
+        container.setLabel(flacTag.getFirst(FieldKey.RECORD_LABEL).trim());
+        container.setProducer(flacTag.getFirst(FieldKey.PRODUCER).trim());
+        // Getting the catalog number and the ean/upn
+        container.setEanUpn(flacTag.getFirst("EAN/UPN")); // Using the deprecated method, since no other is available.
+        container.setCatalogNumber(flacTag.getFirst("CATALOGNUMBER"));
     }
 }

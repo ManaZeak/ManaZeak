@@ -133,6 +133,8 @@ public class TrackExtractorVerifHelper {
         Assertions.assertEquals(DateUtil.parseString("1999-01-05", DateUtil.US_DATE_FORMATTER), album.getReleaseDate(), "Invalid release date.");
         Assertions.assertEquals(3, album.getTrackTotal(), "Invalid number of tracks.");
         Assertions.assertEquals("5555", album.getYear(), "Invalid album year.");
+        // Check the special flac fields.
+        Assertions.assertEquals("test_ean", album.getEanUpn(), "Invalid EAN/UPN");
         // Checking the first track of the album to verify all the extracted tags.
         ExtractedTrackDto track = album.getTracks().get(0);
         checkTrackAlbum3Title(track.getTitle());

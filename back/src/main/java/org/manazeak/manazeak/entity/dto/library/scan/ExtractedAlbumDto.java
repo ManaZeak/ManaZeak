@@ -19,6 +19,10 @@ public class ExtractedAlbumDto {
     private LocalDate releaseDate;
     private Integer trackTotal;
 
+    private String eanUpn;
+
+    private String catalogNumber;
+
     public ExtractedAlbumDto(Path location) {
         this.location = location;
     }
@@ -81,5 +85,21 @@ public class ExtractedAlbumDto {
 
     public void addTrack(ExtractedTrackDto track) {
         tracks.add(track);
+    }
+
+    public String getEanUpn() {
+        return eanUpn;
+    }
+
+    public void setEanUpn(String eanUpn) {
+        this.eanUpn = eanUpn;
+    }
+
+    public String getCatalogNumber() {
+        return catalogNumber;
+    }
+
+    public void setCatalogNumber(String catalogNumber) {
+        this.catalogNumber = catalogNumber;
     }
 }

@@ -41,11 +41,12 @@ public class IntegrationBufferManager {
 
         LibraryIntegrationHelper integrationHelper = new LibraryIntegrationHelper(cacheAccessManager);
 
-        // Iterating over the objects of the buffer to set their id in the database.
+        // Iterating over the objects of the buffer to create the object to be inserted into the database.
         for (ExtractedBandDto band : bands) {
             // Extracting the information from the band.
             integrationHelper.convertBandIntoDto(band);
             for (ExtractedAlbumDto album : band.getAlbums()) {
+
                 for (ExtractedTrackDto track : album.getTracks()) {
                     integrationHelper.convertTrackIntoDto(track);
                 }

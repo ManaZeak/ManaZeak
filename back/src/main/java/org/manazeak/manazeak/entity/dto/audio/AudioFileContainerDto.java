@@ -49,6 +49,12 @@ public class AudioFileContainerDto {
 
     private String label;
 
+    private String eanUpn;
+
+    private String catalogNumber;
+
+    private String arranger;
+
     private AudioFileHeaderContainerDto headers;
 
     public AudioFileHeaderContainerDto getHeaders() {
@@ -225,5 +231,29 @@ public class AudioFileContainerDto {
 
     public void setTrackTotal(String trackTotal) {
         this.trackTotal = trackTotal;
+    }
+
+    public String getEanUpn() {
+        return eanUpn;
+    }
+
+    public void setEanUpn(String eanUpn) {
+        this.eanUpn = eanUpn;
+    }
+
+    public String getCatalogNumber() {
+        return catalogNumber;
+    }
+
+    public void setCatalogNumber(String catalogNumber) {
+        this.catalogNumber = catalogNumber;
+    }
+
+    public String getArranger() {
+        return arranger;
+    }
+
+    public void setArranger(String arranger) {
+        this.arranger = arranger;
     }
 }

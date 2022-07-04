@@ -3,6 +3,7 @@ package org.manazeak.manazeak.manager.library.integration.cache;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
+import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationCacheManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationManager;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +22,11 @@ public class CacheIntegrationInitializer {
      */
     private final ArtistIntegrationManager artistIntegrationManager;
 
-    public CacheIntegrationInitializer(ArtistIntegrationManager artistIntegrationManager) {
+    private final ArtistIntegrationCacheManager artistIntegrationCacheManager;
+
+    public CacheIntegrationInitializer(ArtistIntegrationManager artistIntegrationManager, ArtistIntegrationCacheManager artistIntegrationCacheManager) {
         this.artistIntegrationManager = artistIntegrationManager;
+        this.artistIntegrationCacheManager = artistIntegrationCacheManager;
     }
 
     /**
@@ -32,11 +36,13 @@ public class CacheIntegrationInitializer {
      */
     public void initCacheWithBuffer(List<ExtractedBandDto> bands) {
         Set<String> artistsNames = new HashSet<>();
+        Set<String> albumsNames = new HashSet<>();
 
         // Iterating through the bands.
         for (ExtractedBandDto band : bands) {
             artistsNames.add(band.getName());
             for (ExtractedAlbumDto album : band.getAlbums()) {
+                albumsNames.add(album.getTitle());
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Adding the artists from the track.
                     artistIntegrationManager.extractArtistNameFromExtractedTrack(track, artistsNames);
@@ -45,7 +51,9 @@ public class CacheIntegrationInitializer {
         }
 
         // Getting the artists in the database that are not present inside the cache.
-        artistIntegrationManager.addArtistFromDatabaseToCache(artistsNames);
+        artistIntegrationCacheManager.addElementsFromDatabaseToCache(artistsNames);
+        // Getting the albums in the database that are not present inside the cache.
+
     }
 
 }

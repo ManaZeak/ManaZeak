@@ -1,6 +1,19 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
-public interface ArtistLinkerProjection {
+
+import org.manazeak.manazeak.entity.dto.library.integration.CacheObject;
+
+public interface ArtistLinkerProjection extends CacheObject {
+
+    @Override
+    default Long getId() {
+        return getArtistId();
+    }
+
+    @Override
+    default String getKey() {
+        return getArtistName();
+    }
 
     Long getArtistId();
 

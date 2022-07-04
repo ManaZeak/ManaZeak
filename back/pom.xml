@@ -13,7 +13,7 @@
     <name>ManaZeak Back</name>
     <description>An online music library tool</description>
     <properties>
-        <cache2k-version>2.4.1.Final</cache2k-version>
+        <cache2k-version>2.6.1.Final</cache2k-version>
         <java.version>11</java.version>
         <sonar.sources>src/main/java,src/main/javagen,src/main/resources/templates</sonar.sources>
         <sonar.exclusions>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.15</version>
+            <version>0.4.17</version>
         </dependency>
         <dependency>
             <groupId>org.cache2k</groupId>

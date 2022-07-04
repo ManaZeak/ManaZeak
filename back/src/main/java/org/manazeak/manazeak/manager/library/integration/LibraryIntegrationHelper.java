@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration;
 
+import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
@@ -34,6 +35,15 @@ public class LibraryIntegrationHelper {
     public void convertTrackIntoDto(ExtractedTrackDto track) {
         // Adding the artists contained in the track.
         artistIntegrationHelper.extractArtistFromTrack(track);
+    }
+
+    /**
+     * Convert an extracted album into objects to be integrated into the database.
+     * @param album The extracted album information from the album folder.
+     */
+    public void convertAlbumIntoDto(ExtractedAlbumDto album) {
+        // Adding the album information.
+
     }
 
     /**

@@ -69,6 +69,8 @@ public final class TrackTagMapper {
                     fileContainer.getReleaseDate(), fileContainer.getAlbumArtist(), fileContainer.getTitle(), e);
         }
         album.setTrackTotal(CastUtil.castStringToInt(fileContainer.getTrackTotal()));
+        album.setEanUpn(fileContainer.getEanUpn());
+        album.setCatalogNumber(fileContainer.getCatalogNumber());
     }
 
     /**

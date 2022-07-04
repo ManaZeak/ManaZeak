@@ -67,7 +67,7 @@ public class LibraryIntegrationManager {
      */
     private void clearAllIntegrationCaches() {
         // The list of the caches that needs to be cleared.
-        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME};
+        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE};
         // Clearing each cache.
         for (CacheEnum cache : caches) {
             CacheEnum.getCache(cache, cacheManager).invalidate();

@@ -9,9 +9,13 @@ import org.springframework.cache.CacheManager;
  */
 public enum CacheEnum {
     /**
-     * Contains the artists name linked by their id in the database.
+     * Contains the artists name linked to their id in the database.
      */
-    ARTIST_ID_BY_NAME("artist_id_by_name", String.class, Long.class, true, 100000);
+    ARTIST_ID_BY_NAME("artist_id_by_name", String.class, Long.class, true, 100000),
+    /**
+     * Contains the album title linked to their id in the database.
+     */
+    ALBUM_ID_BY_TITLE("album_id_by_title", String.class, Long.class, true, 100000);
 
 
     /**

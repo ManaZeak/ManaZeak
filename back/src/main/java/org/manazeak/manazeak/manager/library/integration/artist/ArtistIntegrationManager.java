@@ -20,16 +20,9 @@ import java.util.*;
 @Component
 public class ArtistIntegrationManager {
 
-    private final CacheManager cacheManager;
-
-    private final ArtistDAO artistDAO;
-
     private final ArtistIntegrationDAO artistIntegrationDAO;
 
-    public ArtistIntegrationManager(CacheManager cacheManager, ArtistDAO artistDAO,
-                                    ArtistIntegrationDAO artistIntegrationDAO) {
-        this.cacheManager = cacheManager;
-        this.artistDAO = artistDAO;
+    public ArtistIntegrationManager(ArtistIntegrationDAO artistIntegrationDAO) {
         this.artistIntegrationDAO = artistIntegrationDAO;
     }
 
@@ -51,26 +44,6 @@ public class ArtistIntegrationManager {
         artistsNames.addAll(track.getPerformers());
         // Getting the producers.
         artistsNames.addAll(track.getProducers());
-    }
-
-    /**
-     * Adding in the cache all the artist name with the associated ID in the database.
-     *
-     * @param artistsNames The name of the artist.
-     */
-    public void addArtistFromDatabaseToCache(Set<String> artistsNames) {
-        // Removing from the set the artist that are already in the cache.
-        ArtistIntegrationCacheHelper.removeEntitiesAlreadyInCache(artistsNames, cacheManager);
-
-        // Getting the element in the database and adding them to the cache.
-        List<ArtistLinkerProjection> artistsInfo = artistDAO.getArtistByNames(artistsNames);
-
-        final Cache artistCache = CacheEnum.getCache(CacheEnum.ARTIST_ID_BY_NAME, cacheManager);
-
-        // Adding the artists into the cache.
-        for (ArtistLinkerProjection artistInfo : artistsInfo) {
-            artistCache.put(artistInfo.getArtistName(), artistInfo.getArtistId());
-        }
     }
 
     /**

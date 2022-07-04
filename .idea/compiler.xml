@@ -14,6 +14,7 @@
       <module name="ManaZeak" target="11" />
       <module name="manazeak_back" target="11" />
       <module name="manazeak_front" target="11" />
+      <module name="mda-generator" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

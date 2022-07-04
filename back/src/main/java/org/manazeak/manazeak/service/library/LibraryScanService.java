@@ -81,6 +81,8 @@ public class LibraryScanService {
             libraryIntegrationManager.insertLibraryData(extractedBands);
             LOG.info("Ending the track integration.");
 
+            // TODO : read the additional files containing information not present in the track tags.
+
             LOG.info("Waiting for the artist profile pic extraction to be finished.");
             artistProfilePicExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
             LOG.info("Ending artist profile picture thumbnail generation.");

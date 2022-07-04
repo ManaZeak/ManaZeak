@@ -5,8 +5,18 @@ package org.manazeak.manazeak.constant.tag;
  */
 public enum FieldsTagEnum {
 
-    PERFORMER,
     DISCNUMBER,
-    RELEASEDATE
+    RELEASEDATE,
+    EAN_UPN("EAN/UPN");
+
+    private final String tag;
+
+    FieldsTagEnum() {
+        tag = this.name();
+    }
+
+    FieldsTagEnum(String tag) {
+        this.tag = tag;
+    }
 
 }

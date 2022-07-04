@@ -4,5 +4,11 @@
     <file url="file://$PROJECT_DIR$/back/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/back/src/main/javagen" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/back/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/front/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/front/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mda-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mda-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>
