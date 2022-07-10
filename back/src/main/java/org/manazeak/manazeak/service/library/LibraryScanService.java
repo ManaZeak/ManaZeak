@@ -1,16 +1,14 @@
 package org.manazeak.manazeak.service.library;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
-import org.manazeak.manazeak.manager.library.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
+import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
-import org.manazeak.manazeak.manager.library.track.TrackExtractorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -30,19 +28,17 @@ public class LibraryScanService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
     private final LibraryScanManager libraryScanManager;
-    private final TrackExtractorManager trackExtractor;
-    private final LibraryWiperManager libraryWiper;
     private final LibraryIntegrationManager libraryIntegrationManager;
+    private final LibraryWiperManager libraryWiper;
     private final CoverManager coverManager;
     private final ArtistProfilePicManager artistProfilePicManager;
 
-    public LibraryScanService(LibraryScanManager libraryScanManager, TrackExtractorManager trackExtractor,
-                              LibraryWiperManager libraryWiper, LibraryIntegrationManager libraryIntegrationManager,
+    public LibraryScanService(LibraryScanManager libraryScanManager,
+                              LibraryIntegrationManager libraryIntegrationManager, LibraryWiperManager libraryWiper,
                               CoverManager coverManager, ArtistProfilePicManager artistProfilePicManager) {
         this.libraryScanManager = libraryScanManager;
-        this.trackExtractor = trackExtractor;
-        this.libraryWiper = libraryWiper;
         this.libraryIntegrationManager = libraryIntegrationManager;
+        this.libraryWiper = libraryWiper;
         this.coverManager = coverManager;
         this.artistProfilePicManager = artistProfilePicManager;
     }
@@ -62,10 +58,10 @@ public class LibraryScanService {
             LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
             LOG.info("Ended the library FS scan.");
 
-            LOG.info("Starting the track tag extraction.");
+            LOG.info("Starting the tracks integration.");
             // Extract the data contained in the tags of the tracks.
-            List<ExtractedBandDto> extractedBands = trackExtractor.extractTracks(scanResult.getArtists());
-            LOG.info("Ending the track tag extraction.");
+            libraryIntegrationManager.integrateScannedLibrary(scanResult.getArtists());
+            LOG.info("Ending the track integration.");
 
             LOG.info("Starting the cover extraction.");
             // Extracting the covers
@@ -75,11 +71,6 @@ public class LibraryScanService {
             LOG.info("Starting the artist profile pictures thumbnail generation");
             // Generating the artists thumbnails.
             ExecutorService artistProfilePicExecutor = artistProfilePicManager.generateArtistProfileThumb();
-
-            LOG.info("Starting the track integration.");
-            // Inserting the tracks into the database.
-            libraryIntegrationManager.insertLibraryData(extractedBands);
-            LOG.info("Ending the track integration.");
 
             // TODO : read the additional files containing information not present in the track tags.
 
@@ -109,7 +100,6 @@ public class LibraryScanService {
             // Filtering the artists that must be updated.
             List<ScannedArtistDto> artists = libraryScanManager.removeArtistNotUpdated(scanResult.getArtists());
             // Extract the data contained in the tags of the tracks.
-            trackExtractor.extractTracks(artists);
         } catch (IOException e) {
             // TODO: save the error in a table to show it to a front user.
             throw new MzkRuntimeException("File handling error during the rescan", e);

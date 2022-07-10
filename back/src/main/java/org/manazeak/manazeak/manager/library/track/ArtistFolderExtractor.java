@@ -11,15 +11,35 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Callable;
 
 /**
- * Extract all the tags contained in an artist folder.
+ * Extract all the tags contained in the track of the folder of an artist folder.
  */
-public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
+public class ArtistFolderExtractor {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArtistFolderExtractor.class);
-    private final ScannedArtistDto artistFolder;
 
-    public ArtistFolderExtractor(ScannedArtistDto artistFolder) {
-        this.artistFolder = artistFolder;
+    /**
+     * Extract an artist folder containing albums and tracks.
+     *
+     * @return The extracted data of the artist.
+     */
+    public static ExtractedBandDto extractArtistFolder(ScannedArtistDto artistFolder) {
+        // Creating the band object.
+        ExtractedBandDto band = new ExtractedBandDto(artistFolder.getArtistPath());
+        band.setModificationDate(artistFolder.getLastModificationDate());
+
+        // Going through the album of the artist.
+        for (ScannedAlbumDto scannedAlbum : artistFolder.getAlbums()) {
+            ExtractedAlbumDto album = extractAlbumFolder(band, scannedAlbum);
+            if (album == null) {
+                continue;
+            }
+            band.addExtractedAlbum(album);
+        }
+        if (band.getAlbums().isEmpty()) {
+            LOG.warn("The artist located at : {} is empty. No album has been extracted.", artistFolder.getArtistPath());
+            return null;
+        }
+        return band;
     }
 
     /**
@@ -70,35 +90,5 @@ public class ArtistFolderExtractor implements Callable<ExtractedBandDto> {
             LOG.warn("Error during the extraction of the track tag : {}", scannedTrack.getTrackPath(), e);
         }
         return null;
-    }
-
-    @Override
-    public ExtractedBandDto call() {
-        return extractArtistFolder();
-    }
-
-    /**
-     * Extract an artist folder containing albums and tracks.
-     *
-     * @return The extracted data of the artist.
-     */
-    private ExtractedBandDto extractArtistFolder() {
-        // Creating the band object.
-        ExtractedBandDto band = new ExtractedBandDto(artistFolder.getArtistPath());
-        band.setModificationDate(artistFolder.getLastModificationDate());
-
-        // Going through the album of the artist.
-        for (ScannedAlbumDto scannedAlbum : artistFolder.getAlbums()) {
-            ExtractedAlbumDto album = extractAlbumFolder(band, scannedAlbum);
-            if (album == null) {
-                continue;
-            }
-            band.addExtractedAlbum(album);
-        }
-        if (band.getAlbums().isEmpty()) {
-            LOG.warn("The artist located at : {} is empty. No album has been extracted.", artistFolder.getArtistPath());
-            return null;
-        }
-        return band;
     }
 }
