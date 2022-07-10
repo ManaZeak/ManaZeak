@@ -7,9 +7,6 @@ RUN mkdir back/
 RUN mkdir front/
 ADD back/pom.xml /ManaZeak/back/pom.xml
 ADD front/pom.xml /ManaZeak/front/pom.xml
-ADD back/src/dev/lib/jaudiotagger.jar /jaudiotagger.jar
-# Adding the JAudiotagger dependancy manualy, the repo is outdated...
-RUN mvn install:install-file -Dfile=/jaudiotagger.jar -DgroupId=org.bitbucket.ijabz -DartifactId=jaudiotagger -Dversion=1 -Dpackaging=jar -DgeneratePom=true
 # Downloading the dependancies.
 # This is used to use the docker cache and avoiding to download the package every time.
 RUN mvn clean verify --fail-never

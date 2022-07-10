@@ -2,7 +2,7 @@ version: '3.4'
 services:
 
     db:
-        image: postgres:latest
+        image: postgres:14-alpine
         container_name: manazeak_postgresql
         environment:
             POSTGRES_DB: music
@@ -69,7 +69,7 @@ services:
 #            - PUID=1000
         volumes:
             - ${LIBRARY_PATH}:/ManaZeak
-            - ${ASSETS_PATH}/home/squadella/Documents/face:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
+            - ${ASSETS_PATH}:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
         ports:
             - "127.0.0.1:8384:8384"
             - "22000:22000"
