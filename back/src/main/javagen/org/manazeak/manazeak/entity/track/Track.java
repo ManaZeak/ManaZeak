@@ -7,14 +7,12 @@ import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.ManyToMany;
-import java.time.LocalDate;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.CascadeType;
-import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
 import org.manazeak.manazeak.entity.reference.Key;
 import javax.persistence.JoinTable;
@@ -36,8 +34,6 @@ public class Track implements Serializable{
 	private Integer trackNumber;
 	private String isrc;
 	private String lyrics;
-	private LocalDate startRecordingDate;
-	private LocalDate endRecordingDate;
 	private Double duration;
 	private String opus;
 	private String subtitle;
@@ -52,7 +48,6 @@ public class Track implements Serializable{
 	private Bpm bpm;
 	private Set<Genre> genreList;
 	private Set<Key> keyList;
-	private Set<Country> countryList;
 
     /**
      * No comment found in model diagram
@@ -146,36 +141,6 @@ public class Track implements Serializable{
      */
 	public void setLyrics(final String lyrics){
 		this.lyrics = lyrics;
-    }  
-    /**
-     * No comment found in model diagram
-     * @return value of startRecordingDate
-     */
-    @Column(name="start_recording_date", nullable=true)
-	public LocalDate getStartRecordingDate(){
-		return startRecordingDate;
-    }  
-    /**
-     * No comment found in model diagram
-     * @param startRecordingDate new value to give to startRecordingDate
-     */
-	public void setStartRecordingDate(final LocalDate startRecordingDate){
-		this.startRecordingDate = startRecordingDate;
-    }  
-    /**
-     * No comment found in model diagram
-     * @return value of endRecordingDate
-     */
-    @Column(name="end_recording_date", nullable=true)
-	public LocalDate getEndRecordingDate(){
-		return endRecordingDate;
-    }  
-    /**
-     * No comment found in model diagram
-     * @param endRecordingDate new value to give to endRecordingDate
-     */
-	public void setEndRecordingDate(final LocalDate endRecordingDate){
-		this.endRecordingDate = endRecordingDate;
     }  
     /**
      * No comment found in model diagram
@@ -398,22 +363,6 @@ public class Track implements Serializable{
 	public void setKeyList(final Set<Key> keyList){
 		this.keyList = keyList;
     }  
-    /**
-     * Association track_recording_location to Country
-     * @return value of countryList
-     */
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name="track_recording_location", joinColumns=@JoinColumn(name = "track_id"), inverseJoinColumns=@JoinColumn(name = "country_id"))
-	public Set<Country> getCountryList(){
-		return countryList;
-    }  
-    /**
-     * Association track_recording_location to Country
-     * @param countryList new value to give to countryList
-     */
-	public void setCountryList(final Set<Country> countryList){
-		this.countryList = countryList;
-    }  
 
 	@Override
 	public int hashCode(){
@@ -427,8 +376,6 @@ public class Track implements Serializable{
 		result = 31 * result + (trackNumber == null? 0 : trackNumber.hashCode());
 		result = 31 * result + (isrc == null? 0 : isrc.hashCode());
 		result = 31 * result + (lyrics == null? 0 : lyrics.hashCode());
-		result = 31 * result + (startRecordingDate == null? 0 : startRecordingDate.hashCode());
-		result = 31 * result + (endRecordingDate == null? 0 : endRecordingDate.hashCode());
 		result = 31 * result + (duration == null? 0 : duration.hashCode());
 		result = 31 * result + (opus == null? 0 : opus.hashCode());
 		result = 31 * result + (subtitle == null? 0 : subtitle.hashCode());
@@ -462,8 +409,6 @@ public class Track implements Serializable{
 			&& (trackNumber == null ?  (otherTrack.trackNumber == null) : trackNumber.equals(otherTrack.trackNumber))
 			&& (isrc == null ?  (otherTrack.isrc == null) : isrc.equals(otherTrack.isrc))
 			&& (lyrics == null ?  (otherTrack.lyrics == null) : lyrics.equals(otherTrack.lyrics))
-			&& (startRecordingDate == null ?  (otherTrack.startRecordingDate == null) : startRecordingDate.equals(otherTrack.startRecordingDate))
-			&& (endRecordingDate == null ?  (otherTrack.endRecordingDate == null) : endRecordingDate.equals(otherTrack.endRecordingDate))
 			&& (duration == null ?  (otherTrack.duration == null) : duration.equals(otherTrack.duration))
 			&& (opus == null ?  (otherTrack.opus == null) : opus.equals(otherTrack.opus))
 			&& (subtitle == null ?  (otherTrack.subtitle == null) : subtitle.equals(otherTrack.subtitle))

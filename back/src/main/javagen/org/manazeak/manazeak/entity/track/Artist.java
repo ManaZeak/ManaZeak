@@ -127,7 +127,7 @@ public class Artist implements Serializable{
      * No comment found in model diagram
      * @return value of lastModificationDate
      */
-    @Column(name="last_modification_date", nullable=true)
+    @Column(name="last_modification_date", nullable=false)
 	public LocalDateTime getLastModificationDate(){
 		return lastModificationDate;
     }  

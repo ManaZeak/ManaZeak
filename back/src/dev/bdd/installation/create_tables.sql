@@ -16,12 +16,13 @@ CREATE SEQUENCE SEQ_COVER START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WEBSITE_TYPE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BADGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_INVITE_CODE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_MZK_USER START WITH 1000 CACHE 20; 
@@ -44,6 +45,8 @@ CREATE TABLE album (
 	ean_upn VARCHAR(50),
 	duration DOUBLE PRECISION not null,
 	disk_total INTEGER not null,
+	start_recording_date DATE,
+	end_recording_date DATE,
 	compilation_type_id BIGINT,
 	label_id BIGINT,
 	cover_id INTEGER,
@@ -64,13 +67,22 @@ COMMENT ON TABLE album_bio IS 'ManyToMany album / bio';
 COMMENT ON COLUMN album_bio.album_id IS 'ManyToMany FK album';
 COMMENT ON COLUMN album_bio.bio_id IS 'ManyToMany FK bio';
 
+CREATE TABLE album_recording_location (
+	album_id BIGINT not null,
+	recording_location_id BIGINT not null,
+	CONSTRAINT PK_ALBUM_RECORDING_LOCATION PRIMARY KEY (album_id,recording_location_id)
+);
+COMMENT ON TABLE album_recording_location IS 'ManyToMany album / recording_location';
+COMMENT ON COLUMN album_recording_location.album_id IS 'ManyToMany FK album';
+COMMENT ON COLUMN album_recording_location.recording_location_id IS 'ManyToMany FK recording_location';
+
 CREATE TABLE artist (
 	artist_id BIGINT not null,
 	name VARCHAR(200) not null,
 	location VARCHAR(500),
 	birth_date DATE,
 	death_date DATE,
-	last_modification_date TIMESTAMP,
+	last_modification_date TIMESTAMP not null,
 	is_label BOOLEAN not null,
 	testimony_from VARCHAR(200),
 	testimony_text TEXT,
@@ -136,6 +148,15 @@ CREATE TABLE link (
 );
 COMMENT ON COLUMN link.website_id IS 'ManyToOne FK website_type';
 
+CREATE TABLE recording_location (
+	recording_location_id BIGINT not null,
+	label VARCHAR(100) not null,
+	country_id BIGINT,
+	CONSTRAINT PK_RECORDING_LOCATION PRIMARY KEY (recording_location_id)
+);
+COMMENT ON TABLE recording_location IS 'Contains location where album where recorded.';
+COMMENT ON COLUMN recording_location.country_id IS 'ManyToOne FK country';
+
 CREATE TABLE track (
 	track_id BIGINT not null,
 	title VARCHAR(100) not null,
@@ -143,8 +164,6 @@ CREATE TABLE track (
 	track_number INTEGER not null,
 	isrc VARCHAR(32),
 	lyrics TEXT,
-	start_recording_date DATE,
-	end_recording_date DATE,
 	duration DOUBLE PRECISION not null,
 	opus VARCHAR(50),
 	subtitle VARCHAR(100),
@@ -237,20 +256,32 @@ COMMENT ON TABLE track_key IS 'ManyToMany track / key';
 COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
 
-CREATE TABLE track_recording_location (
-	track_id BIGINT not null,
-	country_id BIGINT not null,
-	CONSTRAINT PK_TRACK_RECORDING_LOCATION PRIMARY KEY (track_id,country_id)
+CREATE TABLE website_type (
+	website_id BIGINT not null,
+	label VARCHAR(100) not null,
+	asset_path VARCHAR(500) not null,
+	CONSTRAINT PK_WEBSITE_TYPE PRIMARY KEY (website_id)
 );
-COMMENT ON TABLE track_recording_location IS 'ManyToMany track / country';
-COMMENT ON COLUMN track_recording_location.track_id IS 'ManyToMany FK track';
-COMMENT ON COLUMN track_recording_location.country_id IS 'ManyToMany FK country';
+
+CREATE TABLE key (
+	key_id BIGINT not null,
+	label VARCHAR(32) not null,
+	CONSTRAINT PK_KEY PRIMARY KEY (key_id)
+);
 
 CREATE TABLE compilation_type (
 	compilation_type_id BIGINT not null,
 	label VARCHAR(50) not null,
 	CONSTRAINT PK_COMPILATION_TYPE PRIMARY KEY (compilation_type_id)
 );
+
+CREATE TABLE locale (
+	locale_id BIGINT not null,
+	code VARCHAR(32) not null,
+	value VARCHAR(50) not null,
+	CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
+);
+COMMENT ON TABLE locale IS 'The locale supported by the app.';
 
 CREATE TABLE country (
 	country_id BIGINT not null,
@@ -264,27 +295,6 @@ CREATE TABLE country (
 	CONSTRAINT PK_COUNTRY PRIMARY KEY (country_id)
 );
 COMMENT ON TABLE country IS 'The countries on the earth.';
-
-CREATE TABLE key (
-	key_id BIGINT not null,
-	label VARCHAR(32) not null,
-	CONSTRAINT PK_KEY PRIMARY KEY (key_id)
-);
-
-CREATE TABLE locale (
-	locale_id BIGINT not null,
-	code VARCHAR(32) not null,
-	value VARCHAR(50) not null,
-	CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
-);
-COMMENT ON TABLE locale IS 'The locale supported by the app.';
-
-CREATE TABLE website_type (
-	website_id BIGINT not null,
-	label VARCHAR(100) not null,
-	asset_path VARCHAR(500) not null,
-	CONSTRAINT PK_WEBSITE_TYPE PRIMARY KEY (website_id)
-);
 
 CREATE TABLE badge (
 	badge_id BIGINT not null,
@@ -384,6 +394,8 @@ ALTER TABLE album_bio ADD CONSTRAINT FK_album_bio_1 FOREIGN KEY (album_id) REFER
 ALTER TABLE album_bio ADD CONSTRAINT FK_album_bio_2 FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_compilation FOREIGN KEY (compilation_type_id) REFERENCES compilation_type(compilation_type_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_label FOREIGN KEY (label_id) REFERENCES label(label_id);
+ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_1 FOREIGN KEY (album_id) REFERENCES album(album_id);
+ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_2 FOREIGN KEY (recording_location_id) REFERENCES recording_location(recording_location_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_cover FOREIGN KEY (cover_id) REFERENCES cover(cover_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE artist ADD CONSTRAINT FK_artist_birth_country FOREIGN KEY (country_id) REFERENCES country(country_id);
@@ -393,6 +405,7 @@ ALTER TABLE artist ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCE
 ALTER TABLE artist ADD CONSTRAINT FK_band_link FOREIGN KEY (link_id) REFERENCES link(link_id);
 ALTER TABLE artist ADD CONSTRAINT FK_band_bio FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
 ALTER TABLE link ADD CONSTRAINT FK_link_type FOREIGN KEY (website_id) REFERENCES website_type(website_id);
+ALTER TABLE recording_location ADD CONSTRAINT FK_recording_location_country FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE track ADD CONSTRAINT FK_track_album FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE track_producer ADD CONSTRAINT FK_track_producer_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_producer ADD CONSTRAINT FK_track_producer_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
@@ -413,8 +426,6 @@ ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_1 FOREIGN KEY (track_id) R
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_2 FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_2 FOREIGN KEY (key_id) REFERENCES key(key_id);
-ALTER TABLE track_recording_location ADD CONSTRAINT FK_track_recording_location_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
-ALTER TABLE track_recording_location ADD CONSTRAINT FK_track_recording_location_2 FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_1 FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_2 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE invite_code ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user(user_id);
@@ -435,6 +446,8 @@ CREATE INDEX IDX_album_bio_1 ON album_bio (album_id);
 CREATE INDEX IDX_album_bio_2 ON album_bio (bio_id);
 CREATE INDEX IDX_album_compilation ON album (compilation_type_id);
 CREATE INDEX IDX_album_label ON album (label_id);
+CREATE INDEX IDX_album_recording_location_1 ON album_recording_location (album_id);
+CREATE INDEX IDX_album_recording_location_2 ON album_recording_location (recording_location_id);
 CREATE INDEX IDX_album_cover ON album (cover_id);
 CREATE INDEX IDX_album_band ON album (artist_id);
 CREATE INDEX IDX_artist_birth_country ON artist (country_id);
@@ -444,6 +457,7 @@ CREATE INDEX IDX_band_label ON artist (label_id);
 CREATE INDEX IDX_band_link ON artist (link_id);
 CREATE INDEX IDX_band_bio ON artist (bio_id);
 CREATE INDEX IDX_link_type ON link (website_id);
+CREATE INDEX IDX_recording_location_country ON recording_location (country_id);
 CREATE INDEX IDX_track_album ON track (album_id);
 CREATE INDEX IDX_track_producer_1 ON track_producer (track_id);
 CREATE INDEX IDX_track_producer_2 ON track_producer (artist_id);
@@ -464,8 +478,6 @@ CREATE INDEX IDX_track_genre_1 ON track_genre (track_id);
 CREATE INDEX IDX_track_genre_2 ON track_genre (genre_id);
 CREATE INDEX IDX_track_key_1 ON track_key (track_id);
 CREATE INDEX IDX_track_key_2 ON track_key (key_id);
-CREATE INDEX IDX_track_recording_location_1 ON track_recording_location (track_id);
-CREATE INDEX IDX_track_recording_location_2 ON track_recording_location (country_id);
 CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
 CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
 CREATE INDEX IDX_user_invite_parent ON invite_code (parent);

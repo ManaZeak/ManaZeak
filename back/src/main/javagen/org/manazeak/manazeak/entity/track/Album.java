@@ -38,9 +38,12 @@ public class Album implements Serializable{
 	private String eanUpn;
 	private Double duration;
 	private Integer diskTotal;
+	private LocalDate startRecordingDate;
+	private LocalDate endRecordingDate;
 	private Set<Bio> bioList;
 	private CompilationType compilationType;
 	private Label label;
+	private Set<RecordingLocation> recordingLocationList;
 	private Cover cover;
 	private Artist artist;
 
@@ -183,6 +186,36 @@ public class Album implements Serializable{
 		this.diskTotal = diskTotal;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of startRecordingDate
+     */
+    @Column(name="start_recording_date", nullable=true)
+	public LocalDate getStartRecordingDate(){
+		return startRecordingDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param startRecordingDate new value to give to startRecordingDate
+     */
+	public void setStartRecordingDate(final LocalDate startRecordingDate){
+		this.startRecordingDate = startRecordingDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of endRecordingDate
+     */
+    @Column(name="end_recording_date", nullable=true)
+	public LocalDate getEndRecordingDate(){
+		return endRecordingDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param endRecordingDate new value to give to endRecordingDate
+     */
+	public void setEndRecordingDate(final LocalDate endRecordingDate){
+		this.endRecordingDate = endRecordingDate;
+    }  
+    /**
      * Association album_bio to Bio
      * @return value of bioList
      */
@@ -229,6 +262,22 @@ public class Album implements Serializable{
      */
 	public void setLabel(final Label label){
 		this.label = label;
+    }  
+    /**
+     * Association album_recording_location to RecordingLocation
+     * @return value of recordingLocationList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="album_recording_location", joinColumns=@JoinColumn(name = "album_id"), inverseJoinColumns=@JoinColumn(name = "recording_location_id"))
+	public Set<RecordingLocation> getRecordingLocationList(){
+		return recordingLocationList;
+    }  
+    /**
+     * Association album_recording_location to RecordingLocation
+     * @param recordingLocationList new value to give to recordingLocationList
+     */
+	public void setRecordingLocationList(final Set<RecordingLocation> recordingLocationList){
+		this.recordingLocationList = recordingLocationList;
     }  
     /**
      * Association album_cover to Cover
@@ -278,6 +327,8 @@ public class Album implements Serializable{
 		result = 31 * result + (eanUpn == null? 0 : eanUpn.hashCode());
 		result = 31 * result + (duration == null? 0 : duration.hashCode());
 		result = 31 * result + (diskTotal == null? 0 : diskTotal.hashCode());
+		result = 31 * result + (startRecordingDate == null? 0 : startRecordingDate.hashCode());
+		result = 31 * result + (endRecordingDate == null? 0 : endRecordingDate.hashCode());
 			
 		return result;
 	}
@@ -311,6 +362,8 @@ public class Album implements Serializable{
 			&& (eanUpn == null ?  (otherAlbum.eanUpn == null) : eanUpn.equals(otherAlbum.eanUpn))
 			&& (duration == null ?  (otherAlbum.duration == null) : duration.equals(otherAlbum.duration))
 			&& (diskTotal == null ?  (otherAlbum.diskTotal == null) : diskTotal.equals(otherAlbum.diskTotal))
+			&& (startRecordingDate == null ?  (otherAlbum.startRecordingDate == null) : startRecordingDate.equals(otherAlbum.startRecordingDate))
+			&& (endRecordingDate == null ?  (otherAlbum.endRecordingDate == null) : endRecordingDate.equals(otherAlbum.endRecordingDate))
 		;
 	}
 
