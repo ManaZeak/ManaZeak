@@ -13,9 +13,12 @@ public class LibraryScanResultDto {
 
     private final Set<Path> coverPaths;
 
-    public LibraryScanResultDto(List<ScannedArtistDto> artists, Set<Path> coverPaths) {
+    private final int totalScannedTracks;
+
+    public LibraryScanResultDto(List<ScannedArtistDto> artists, Set<Path> coverPaths, int totalScannedTracks) {
         this.artists = artists;
         this.coverPaths = coverPaths;
+        this.totalScannedTracks = totalScannedTracks;
     }
 
     public List<ScannedArtistDto> getArtists() {
@@ -24,5 +27,9 @@ public class LibraryScanResultDto {
 
     public Set<Path> getCoverPaths() {
         return coverPaths;
+    }
+
+    public int getTotalScannedTracks() {
+        return totalScannedTracks;
     }
 }

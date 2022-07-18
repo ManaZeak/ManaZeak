@@ -91,7 +91,11 @@ public class ArtistIntegrationHelper {
         // If the artist isn't in the database, getting a new id.
         if (artist.getId() == null) {
             artist.setId(PkIdProvider.singleton().getNewPkId(Artist.class));
+            // Adding the new artist id into the cache.
+            cacheAccessManager.put(CacheEnum.ARTIST_ID_BY_NAME, artist.getName(), artist.getId());
         }
+
+        // FIXME : add the links with the other elements.
 
         return artist;
     }

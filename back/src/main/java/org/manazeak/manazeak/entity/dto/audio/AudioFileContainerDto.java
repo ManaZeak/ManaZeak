@@ -55,6 +55,11 @@ public class AudioFileContainerDto {
 
     private String arranger;
 
+    private String recordingLocation;
+
+    private String startRecordingDate;
+
+    private String endRecordingDate;
     private AudioFileHeaderContainerDto headers;
 
     public AudioFileHeaderContainerDto getHeaders() {
@@ -255,5 +260,29 @@ public class AudioFileContainerDto {
 
     public void setArranger(String arranger) {
         this.arranger = arranger;
+    }
+
+    public String getRecordingLocation() {
+        return recordingLocation;
+    }
+
+    public void setRecordingLocation(String recordingLocation) {
+        this.recordingLocation = recordingLocation;
+    }
+
+    public String getStartRecordingDate() {
+        return startRecordingDate;
+    }
+
+    public void setStartRecordingDate(String startRecordingDate) {
+        this.startRecordingDate = startRecordingDate;
+    }
+
+    public String getEndRecordingDate() {
+        return endRecordingDate;
+    }
+
+    public void setEndRecordingDate(String endRecordingDate) {
+        this.endRecordingDate = endRecordingDate;
     }
 }

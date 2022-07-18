@@ -30,7 +30,7 @@ public final class PkIdProvider {
     /**
      * Singleton local au thread
      */
-    private static final ThreadLocal<PkIdProvider> threadLocalSingleton =
+    private static final ThreadLocal<PkIdProvider> THREAD_LOCAL_SINGLETON =
             ThreadLocal.withInitial(PkIdProvider::new);
     private final Map<Class<?>, Integer> poolSizePerClass = new HashMap<>();
     private final Map<Class<?>, List<Long>> idPoolPerClass = new HashMap<>();
@@ -48,7 +48,7 @@ public final class PkIdProvider {
      * @return provider id local au thread
      */
     public static PkIdProvider singleton() {
-        return threadLocalSingleton.get();
+        return THREAD_LOCAL_SINGLETON.get();
     }
 
     /**

@@ -7,7 +7,9 @@ public enum FieldsTagEnum {
 
     DISCNUMBER,
     RELEASEDATE,
-    EAN_UPN("EAN/UPN");
+    EAN_UPN("EAN/UPN"),
+    LOCATION,
+    CATALOGNUMBER;
 
     private final String tag;
 
@@ -19,4 +21,7 @@ public enum FieldsTagEnum {
         this.tag = tag;
     }
 
+    public String getTag() {
+        return tag;
+    }
 }

@@ -1,14 +1,9 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
-import org.manazeak.manazeak.constant.cache.CacheEnum;
-import org.manazeak.manazeak.daos.library.integration.ArtistIntegrationDAO;
-import org.manazeak.manazeak.daos.track.ArtistDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
+import org.manazeak.manazeak.daos.library.integration.artist.ArtistIntegrationDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 

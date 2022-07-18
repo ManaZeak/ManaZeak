@@ -39,4 +39,19 @@ public class CacheAccessManager {
         throw new MzkRuntimeException("Invalid cache type " + cache.name() + ".");
     }
 
+    /**
+     * Put into the cache a pair of key value.
+     *
+     * @param key   The key of the element to add in the cache.
+     * @param value The value of the element to add in the cache.
+     */
+    public void put(CacheEnum cacheEnum, Object key, Object value) {
+        Cache cache = CacheEnum.getCache(cacheEnum, cacheManager);
+        // Checking that the elements are not null.
+        if (key == null || value == null) {
+            throw new MzkRuntimeException("The cache shouldn't be passed null values.");
+        }
+        cache.put(key, value);
+    }
+
 }

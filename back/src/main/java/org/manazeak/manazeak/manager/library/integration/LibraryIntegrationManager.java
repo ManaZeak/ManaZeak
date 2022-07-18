@@ -4,7 +4,7 @@ import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
-import org.manazeak.manazeak.manager.library.track.ArtistFolderExtractor;
+import org.manazeak.manazeak.manager.library.track.ArtistFolderExtractorHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ public class LibraryIntegrationManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryIntegrationManager.class);
     private final CacheManager cacheManager;
+    private final IntegrationBufferManager integrationBufferManager;
     /**
      * The number of artist folder that will be integrated by thread.
      */
@@ -33,8 +34,9 @@ public class LibraryIntegrationManager {
     private int bufferSize;
 
     @Autowired
-    public LibraryIntegrationManager(CacheManager cacheManager) {
+    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager) {
         this.cacheManager = cacheManager;
+        this.integrationBufferManager = integrationBufferManager;
     }
 
     /**
@@ -82,16 +84,20 @@ public class LibraryIntegrationManager {
      * @param artistFolders A list of artists folder to process.
      * @return The runnable to launch the integration into the thread pool.
      */
-    private Runnable launchArtistFoldersIntegration(List<ScannedArtistDto> artistFolders) {
+    private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders) {
         return () -> {
-            // Launch the tag extraction of the artist.
-            List<ExtractedBandDto> bands = new ArrayList<>();
-            for (ScannedArtistDto artistFolder : artistFolders) {
-                bands.add(ArtistFolderExtractor.extractArtistFolder(artistFolder));
+            try {
+                // Launch the tag extraction of the artist.
+                List<ExtractedBandDto> bands = new ArrayList<>();
+                for (ScannedArtistDto artistFolder : artistFolders) {
+                    bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
+                }
+
+                // Launch the integration of the artist data.
+                integrationBufferManager.integrateBuffer(bands);
+            } catch (Exception e) {
+                LOG.error("An error occurred during the artist folder integration.", e);
             }
-
-            // Launch the integration of the artist data.
-
         };
     }
 
@@ -100,7 +106,7 @@ public class LibraryIntegrationManager {
      */
     private void clearAllIntegrationCaches() {
         // The list of the caches that needs to be cleared.
-        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE};
+        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE, CacheEnum.LABEL_ID_BY_NAME};
         // Clearing each cache.
         for (CacheEnum cache : caches) {
             CacheEnum.getCache(cache, cacheManager).invalidate();

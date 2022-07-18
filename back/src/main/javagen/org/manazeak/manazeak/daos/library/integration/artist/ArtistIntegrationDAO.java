@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.daos.library.integration;
+package org.manazeak.manazeak.daos.library.integration.artist;
 
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.springframework.data.util.Pair;
@@ -32,9 +32,7 @@ public class ArtistIntegrationDAO {
                         "ON CONFLICT (artist_id) DO " +
                         "    UPDATE SET location = coalesce(excluded.location, artist.location)," +
                         "               is_label = excluded.is_label, " +
-                        "   last_modification_date = coalesce(" +
-                        "       excluded.last_modification_date, artist.last_modification_date" +
-                        "   )",
+                        "   last_modification_date = coalesce(excluded.last_modification_date, artist.last_modification_date)",
                 new ArtistIntegrationUpsertSetter(artists)
         );
     }

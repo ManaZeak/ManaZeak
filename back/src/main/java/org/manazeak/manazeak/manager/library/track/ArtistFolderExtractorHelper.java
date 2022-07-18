@@ -8,14 +8,16 @@ import org.manazeak.manazeak.util.audio.tag.TrackTagMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Callable;
-
 /**
  * Extract all the tags contained in the track of the folder of an artist folder.
  */
-public class ArtistFolderExtractor {
+public final class ArtistFolderExtractorHelper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ArtistFolderExtractor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ArtistFolderExtractorHelper.class);
+
+    private ArtistFolderExtractorHelper() {
+
+    }
 
     /**
      * Extract an artist folder containing albums and tracks.

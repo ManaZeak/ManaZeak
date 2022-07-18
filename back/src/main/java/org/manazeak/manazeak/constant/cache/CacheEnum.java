@@ -11,12 +11,17 @@ public enum CacheEnum {
     /**
      * Contains the artists name linked to their id in the database.
      */
-    ARTIST_ID_BY_NAME("artist_id_by_name", String.class, Long.class, true, 100000),
+    ARTIST_ID_BY_NAME("artist_id_by_name", String.class, Long.class, true),
     /**
      * Contains the album title linked to their id in the database.
      */
-    ALBUM_ID_BY_TITLE("album_id_by_title", String.class, Long.class, true, 100000);
+    ALBUM_ID_BY_TITLE("album_id_by_title", String.class, Long.class, true),
+    /**
+     * Contains the label name linked to their id in the database.
+     */
+    LABEL_ID_BY_NAME("label_id_by_name", String.class, Long.class, true);
 
+    private static final int UNLIMITED_SIZE = 100000;
 
     /**
      * If the entries of the cache expire after a certain time.
@@ -45,6 +50,14 @@ public enum CacheEnum {
         this.valueType = valueType;
         this.isEternal = isEternal;
         this.capacity = capacity;
+    }
+
+    CacheEnum(String cacheName, Class<?> keyType, Class<?> valueType, boolean isEternal) {
+        this.cacheName = cacheName;
+        this.keyType = keyType;
+        this.valueType = valueType;
+        this.isEternal = isEternal;
+        this.capacity = UNLIMITED_SIZE;
     }
 
     /**

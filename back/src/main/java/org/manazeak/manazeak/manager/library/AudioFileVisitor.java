@@ -53,6 +53,8 @@ public class AudioFileVisitor implements FileVisitor<Path> {
      */
     private boolean isFirstFolder = true;
 
+    private int totalScannedTrack = 0;
+
     /**
      * Called before entering into a directory
      *
@@ -99,6 +101,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
             ScannedTrackDto track = new ScannedTrackDto(path, basicFileAttributes);
             // Adding the track to the album.
             currentAlbumFolder.addTrack(track);
+            totalScannedTrack++;
         } else if (FileUtil.isCoverFileByExtension(path)) {
             // Adding the cover.
             coverPaths.add(path);
@@ -156,5 +159,9 @@ public class AudioFileVisitor implements FileVisitor<Path> {
      */
     public Set<Path> getCoverPaths() {
         return coverPaths;
+    }
+
+    public int getTotalScannedTrack() {
+        return totalScannedTrack;
     }
 }

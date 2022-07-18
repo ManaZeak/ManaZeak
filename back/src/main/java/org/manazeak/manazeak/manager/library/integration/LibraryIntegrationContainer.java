@@ -4,17 +4,26 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.manazeak.manazeak.manager.library.integration.album.AlbumIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationHelper;
+import org.manazeak.manazeak.manager.library.integration.label.LabelIntegrationHelper;
 
 /**
- * Contains the helpers needed to integrate the track tags.
+ * Contains and allows to convert the data contained that has been extracted from the tracks into the
+ * object for the database.
  */
-public class LibraryIntegrationHelper {
+public class LibraryIntegrationContainer {
 
     private final ArtistIntegrationHelper artistIntegrationHelper;
 
-    public LibraryIntegrationHelper(CacheAccessManager cacheAccessManager) {
+    private final AlbumIntegrationHelper albumIntegrationHelper;
+
+    private final LabelIntegrationHelper labelIntegrationHelper;
+
+    public LibraryIntegrationContainer(CacheAccessManager cacheAccessManager) {
         artistIntegrationHelper = new ArtistIntegrationHelper(cacheAccessManager);
+        albumIntegrationHelper = new AlbumIntegrationHelper(cacheAccessManager);
+        labelIntegrationHelper = new LabelIntegrationHelper(cacheAccessManager);
     }
 
     /**
@@ -39,11 +48,13 @@ public class LibraryIntegrationHelper {
 
     /**
      * Convert an extracted album into objects to be integrated into the database.
+     *
      * @param album The extracted album information from the album folder.
      */
     public void convertAlbumIntoDto(ExtractedAlbumDto album) {
         // Adding the album information.
-
+        albumIntegrationHelper.extractAlbum(album);
+        labelIntegrationHelper.extractLabelFromAlbum(album);
     }
 
     /**
@@ -55,4 +66,11 @@ public class LibraryIntegrationHelper {
         return artistIntegrationHelper;
     }
 
+    public AlbumIntegrationHelper getAlbumIntegrationHelper() {
+        return albumIntegrationHelper;
+    }
+
+    public LabelIntegrationHelper getLabelIntegrationHelper() {
+        return labelIntegrationHelper;
+    }
 }

@@ -58,6 +58,8 @@ public class LibraryScanService {
             LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
             LOG.info("Ended the library FS scan.");
 
+            LOG.info("There is {} track to scan.", scanResult.getTotalScannedTracks());
+
             LOG.info("Starting the tracks integration.");
             // Extract the data contained in the tags of the tracks.
             libraryIntegrationManager.integrateScannedLibrary(scanResult.getArtists());

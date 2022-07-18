@@ -18,10 +18,11 @@ public class ExtractedAlbumDto {
     private String year;
     private LocalDate releaseDate;
     private Integer trackTotal;
-
     private String eanUpn;
-
     private String catalogNumber;
+    private String recordingLocation;
+    private String startRecordingDate;
+    private String endRecordingDate;
 
     public ExtractedAlbumDto(Path location) {
         this.location = location;
@@ -101,5 +102,29 @@ public class ExtractedAlbumDto {
 
     public void setCatalogNumber(String catalogNumber) {
         this.catalogNumber = catalogNumber;
+    }
+
+    public String getRecordingLocation() {
+        return recordingLocation;
+    }
+
+    public void setRecordingLocation(String recordingLocation) {
+        this.recordingLocation = recordingLocation;
+    }
+
+    public String getStartRecordingDate() {
+        return startRecordingDate;
+    }
+
+    public void setStartRecordingDate(String startRecordingDate) {
+        this.startRecordingDate = startRecordingDate;
+    }
+
+    public String getEndRecordingDate() {
+        return endRecordingDate;
+    }
+
+    public void setEndRecordingDate(String endRecordingDate) {
+        this.endRecordingDate = endRecordingDate;
     }
 }

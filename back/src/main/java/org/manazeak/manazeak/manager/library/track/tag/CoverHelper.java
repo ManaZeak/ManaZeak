@@ -14,6 +14,7 @@ public final class CoverHelper {
      * @return The path of the cover that was extracted.
      */
     public static String saveCoverAndGetPath(Path albumFolder) {
+        // FIXME : to implement.
         return "";
     }
 

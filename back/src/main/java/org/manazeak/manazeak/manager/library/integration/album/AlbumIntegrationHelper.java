@@ -3,7 +3,10 @@ package org.manazeak.manazeak.manager.library.integration.album;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
+import org.manazeak.manazeak.entity.track.Album;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.manazeak.manazeak.util.DateUtil;
+import org.manazeak.manazeak.util.database.PkIdProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,14 +29,12 @@ public class AlbumIntegrationHelper {
 
     /**
      * Extract the information contained on the album
+     *
      * @param album The extracted album information.
      */
     public void extractAlbum(ExtractedAlbumDto album) {
         // Checking if the album has been extracted already.
-        if (albumMap.containsKey(album.getTitle())) {
-            // Checking if there is any missing fields.
-
-        } else {
+        if (!albumMap.containsKey(album.getTitle())) {
             // Creating the album.
             addNewAlbum(album);
         }
@@ -53,6 +54,17 @@ public class AlbumIntegrationHelper {
         newAlbum.setReleaseDate(album.getReleaseDate());
         newAlbum.setTotalTrack(album.getTrackTotal());
         newAlbum.setDiskTotal(album.getDiscTotal());
+        newAlbum.setEanUpn(album.getEanUpn());
+        newAlbum.setStartRecordingDate(DateUtil.parseString(album.getStartRecordingDate(), DateUtil.US_DATE_FORMATTER));
+        newAlbum.setEndRecordingDate(DateUtil.parseString(album.getEndRecordingDate(), DateUtil.US_DATE_FORMATTER));
+        newAlbum.setRecordingLocation(album.getRecordingLocation());
+
+        // If there is no album id, generating one.
+        if (newAlbum.getAlbumId() == null) {
+            newAlbum.setAlbumId(PkIdProvider.singleton().getNewPkId(Album.class));
+            // Adding the new album id into the cache.
+            cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_TITLE, newAlbum.getTitle(), newAlbum.getAlbumId());
+        }
 
         // Adding the album to the album map.
         albumMap.put(album.getTitle(), newAlbum);

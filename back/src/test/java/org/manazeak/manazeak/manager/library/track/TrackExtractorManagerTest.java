@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,10 +31,12 @@ class TrackExtractorManagerTest extends AbstractManaZeakTest {
         // Scanning the library files.
         List<ScannedArtistDto> scannedArtists = result.getArtists();
         // Extracting the tags of the scanned artist.
-        // FIXME : correct unit test.
-        //List<ExtractedBandDto> bands = trackExtractorManager.extractTracks(scannedArtists);
+        List<ExtractedBandDto> bands = new ArrayList<>();
+        for (ScannedArtistDto artistFolder : scannedArtists) {
+            bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
+        }
         // Checking the extracted data of the bands.
-        //TrackExtractorVerifHelper.checkExtractedBands(bands);
+        TrackExtractorVerifHelper.checkExtractedBands(bands);
     }
 
 }

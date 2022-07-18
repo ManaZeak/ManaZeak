@@ -71,6 +71,10 @@ public final class TrackTagMapper {
         album.setTrackTotal(CastUtil.castStringToInt(fileContainer.getTrackTotal()));
         album.setEanUpn(fileContainer.getEanUpn());
         album.setCatalogNumber(fileContainer.getCatalogNumber());
+        album.setRecordingLocation(fileContainer.getRecordingLocation());
+        // Getting the start recording date and the end recording date from the track.
+        album.setStartRecordingDate(fileContainer.getStartRecordingDate());
+        album.setEndRecordingDate(fileContainer.getEndRecordingDate());
     }
 
     /**

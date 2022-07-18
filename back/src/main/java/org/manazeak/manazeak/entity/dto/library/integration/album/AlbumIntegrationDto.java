@@ -25,6 +25,10 @@ public class AlbumIntegrationDto {
 
     private Integer diskTotal;
 
+    private String recordingLocation;
+    private LocalDate startRecordingDate;
+    private LocalDate endRecordingDate;
+
     public Long getAlbumId() {
         return albumId;
     }
@@ -95,5 +99,29 @@ public class AlbumIntegrationDto {
 
     public void setDiskTotal(Integer diskTotal) {
         this.diskTotal = diskTotal;
+    }
+
+    public LocalDate getStartRecordingDate() {
+        return startRecordingDate;
+    }
+
+    public void setStartRecordingDate(LocalDate startRecordingDate) {
+        this.startRecordingDate = startRecordingDate;
+    }
+
+    public LocalDate getEndRecordingDate() {
+        return endRecordingDate;
+    }
+
+    public void setEndRecordingDate(LocalDate endRecordingDate) {
+        this.endRecordingDate = endRecordingDate;
+    }
+
+    public String getRecordingLocation() {
+        return recordingLocation;
+    }
+
+    public void setRecordingLocation(String recordingLocation) {
+        this.recordingLocation = recordingLocation;
     }
 }

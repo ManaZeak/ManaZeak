@@ -38,6 +38,21 @@ public final class TagSplitterUtil {
     }
 
     /**
+     * Split the recording date tag.
+     * @param recordingDate The recording date contained in the tag.
+     * @return The recording date.
+     */
+    public static List<String> splitRecordingDate(String recordingDate) {
+        String[] data = recordingDate.split("/");
+        // Trim The extracted data.
+        for (int i = 0; i < data.length; ++i) {
+            data[i] = data[i].trim();
+        }
+        // Convert the array into a list.
+        return Arrays.asList(data);
+    }
+
+    /**
      * Split a performer field into an object.
      *
      * @param performerTag The string contained in the tag.

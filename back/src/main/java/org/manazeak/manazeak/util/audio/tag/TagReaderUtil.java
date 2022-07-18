@@ -13,7 +13,6 @@ import org.jaudiotagger.tag.flac.FlacTag;
 import org.manazeak.manazeak.constant.tag.FieldsTagEnum;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileHeaderContainerDto;
-import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.exception.MzkTagException;
 import org.manazeak.manazeak.util.file.FormatFileCheckerUtil;
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -30,6 +30,8 @@ import java.util.logging.Level;
 public final class TagReaderUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(TagReaderUtil.class);
+
+    private static final int SIZE_RECORDING_DATE = 2;
 
     static {
         // Disable loggers for jaudiotagger.
@@ -87,7 +89,7 @@ public final class TagReaderUtil {
             LOG.error("Audio frame error in the file : {}", filePath);
             throw new MzkTagException("Error when reading the file invalid audio frame for the file : " + filePath,
                     "error.tag.audio_frame", filePath.toString(), e);
-        }  catch (IOException | ReadOnlyFileException e) {
+        } catch (IOException | ReadOnlyFileException e) {
             throw new MzkTagException("IO Error when reading the file: " + filePath, "error.file_system.io_error",
                     filePath.toString(), e);
         }
@@ -191,8 +193,14 @@ public final class TagReaderUtil {
         container.setReleaseDate(flacTag.getFirst(FieldsTagEnum.RELEASEDATE.name()).trim());
         container.setLabel(flacTag.getFirst(FieldKey.RECORD_LABEL).trim());
         container.setProducer(flacTag.getFirst(FieldKey.PRODUCER).trim());
-        // Getting the catalog number and the ean/upn
-        container.setEanUpn(flacTag.getFirst("EAN/UPN")); // Using the deprecated method, since no other is available.
-        container.setCatalogNumber(flacTag.getFirst("CATALOGNUMBER"));
+        // Getting the catalog number, the ean/upn and the catalog number.
+        container.setRecordingLocation(FieldsTagEnum.LOCATION.getTag());
+        container.setEanUpn(flacTag.getFirst(FieldsTagEnum.EAN_UPN.getTag()));
+        container.setCatalogNumber(flacTag.getFirst(FieldsTagEnum.CATALOGNUMBER.getTag()));
+        List<String> recordingDates = TagSplitterUtil.splitRecordingDate(flacTag.getFirst(FieldKey.RECORDINGDATE));
+        if (recordingDates.size() == SIZE_RECORDING_DATE) {
+            container.setStartRecordingDate(recordingDates.get(0));
+            container.setEndRecordingDate(recordingDates.get(1));
+        }
     }
 }

@@ -38,7 +38,7 @@ public class LibraryScanManager {
         // Launch the file walk.
         Files.walkFileTree(libPath, visitor);
         // Getting the scanned artist.
-        return new LibraryScanResultDto(visitor.getArtists(), visitor.getCoverPaths());
+        return new LibraryScanResultDto(visitor.getArtists(), visitor.getCoverPaths(), visitor.getTotalScannedTrack());
     }
 
     /**
