@@ -117,6 +117,8 @@ elif [ "$1" = '-b' ] || [ "$1" = '--build' ]; then
     if [ "$2" = "mvn" ]; then
       echo -e "Selective build for $2 container with logs"
       eval "docker-compose build back"
+      # Stopping the back container to remove any dangling threads.
+      eval "docker-compose stop back"
       eval "docker-compose up -d back"
       eval "docker-compose logs -f back"
     # Selective build not supported
