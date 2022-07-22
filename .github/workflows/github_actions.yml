@@ -50,6 +50,4 @@ jobs:
         homeserver: ${{ secrets.MATRIX_SERVER }}
         token: ${{ secrets.ACCES_TOKEN }}
         channel: ${{ secrets.INTERNAL_ROOM_ID }}
-        message: |
-          #  <span style="color:green"> Build success</span> \
-          Build N°${{ github.GITHUB_RUN_NUMBER }}
+        message: Success.
