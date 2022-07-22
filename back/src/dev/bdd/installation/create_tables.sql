@@ -11,18 +11,18 @@ SET search_path TO music;
 CREATE SEQUENCE SEQ_ALBUM START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_ARTIST START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BIO START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_BPM START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COVER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_WEBSITE_TYPE START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_SCAN_STEP START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_WEBSITE_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BADGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_INVITE_CODE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_MZK_USER START WITH 1000 CACHE 20; 
@@ -30,6 +30,7 @@ CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_SCAN_STATUS START WITH 1000 CACHE 20; 
  
  
 -- ================================
@@ -113,14 +114,6 @@ CREATE TABLE bio (
 	CONSTRAINT PK_BIO PRIMARY KEY (bio_id)
 );
 
-CREATE TABLE bpm (
-	bpm_id BIGINT not null,
-	bpm DOUBLE PRECISION not null,
-	bpm_offset DOUBLE PRECISION,
-	first_bar DOUBLE PRECISION,
-	CONSTRAINT PK_BPM PRIMARY KEY (bpm_id)
-);
-
 CREATE TABLE cover (
 	cover_id INTEGER not null,
 	filename VARCHAR(50) not null,
@@ -164,16 +157,18 @@ CREATE TABLE track (
 	track_number INTEGER not null,
 	isrc VARCHAR(32),
 	lyrics TEXT,
+	location VARCHAR(500) not null,
+	bpm DOUBLE PRECISION,
+	bpm_offset DOUBLE PRECISION,
 	duration DOUBLE PRECISION not null,
+	first_bar DOUBLE PRECISION,
 	opus VARCHAR(50),
 	subtitle VARCHAR(100),
 	album_id BIGINT,
-	bpm_id BIGINT,
 	CONSTRAINT PK_TRACK PRIMARY KEY (track_id)
 );
 COMMENT ON TABLE track IS 'The track information.';
 COMMENT ON COLUMN track.album_id IS 'ManyToOne FK album';
-COMMENT ON COLUMN track.bpm_id IS 'ManyToOne FK bpm';
 
 CREATE TABLE track_producer (
 	track_id BIGINT not null,
@@ -256,32 +251,11 @@ COMMENT ON TABLE track_key IS 'ManyToMany track / key';
 COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
 
-CREATE TABLE website_type (
-	website_id BIGINT not null,
-	label VARCHAR(100) not null,
-	asset_path VARCHAR(500) not null,
-	CONSTRAINT PK_WEBSITE_TYPE PRIMARY KEY (website_id)
-);
-
-CREATE TABLE key (
-	key_id BIGINT not null,
-	label VARCHAR(32) not null,
-	CONSTRAINT PK_KEY PRIMARY KEY (key_id)
-);
-
 CREATE TABLE compilation_type (
 	compilation_type_id BIGINT not null,
 	label VARCHAR(50) not null,
 	CONSTRAINT PK_COMPILATION_TYPE PRIMARY KEY (compilation_type_id)
 );
-
-CREATE TABLE locale (
-	locale_id BIGINT not null,
-	code VARCHAR(32) not null,
-	value VARCHAR(50) not null,
-	CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
-);
-COMMENT ON TABLE locale IS 'The locale supported by the app.';
 
 CREATE TABLE country (
 	country_id BIGINT not null,
@@ -295,6 +269,34 @@ CREATE TABLE country (
 	CONSTRAINT PK_COUNTRY PRIMARY KEY (country_id)
 );
 COMMENT ON TABLE country IS 'The countries on the earth.';
+
+CREATE TABLE key (
+	key_id BIGINT not null,
+	label VARCHAR(32) not null,
+	CONSTRAINT PK_KEY PRIMARY KEY (key_id)
+);
+
+CREATE TABLE locale (
+	locale_id BIGINT not null,
+	code VARCHAR(32) not null,
+	value VARCHAR(50) not null,
+	CONSTRAINT PK_LOCALE PRIMARY KEY (locale_id)
+);
+COMMENT ON TABLE locale IS 'The locale supported by the app.';
+
+CREATE TABLE scan_step (
+	scan_step_id BIGINT not null,
+	label VARCHAR(50) not null,
+	code VARCHAR(50) not null,
+	CONSTRAINT PK_SCAN_STEP PRIMARY KEY (scan_step_id)
+);
+
+CREATE TABLE website_type (
+	website_id BIGINT not null,
+	label VARCHAR(100) not null,
+	asset_path VARCHAR(500) not null,
+	CONSTRAINT PK_WEBSITE_TYPE PRIMARY KEY (website_id)
+);
 
 CREATE TABLE badge (
 	badge_id BIGINT not null,
@@ -385,6 +387,18 @@ CREATE TABLE wish_status (
 	CONSTRAINT PK_WISH_STATUS PRIMARY KEY (wish_status_id)
 );
 
+CREATE TABLE scan_status (
+	scan_status_id BIGINT not null,
+	start_time TIMESTAMP not null,
+	end_time TIMESTAMP,
+	is_active BOOLEAN not null,
+	total_track_scanned INTEGER,
+	is_rescan BOOLEAN not null,
+	scan_step_id BIGINT,
+	CONSTRAINT PK_SCAN_STATUS PRIMARY KEY (scan_status_id)
+);
+COMMENT ON COLUMN scan_status.scan_step_id IS 'ManyToOne FK scan_step';
+
 
 
 -- ================================
@@ -421,7 +435,6 @@ ALTER TABLE track_engineer ADD CONSTRAINT FK_track_engineer_1 FOREIGN KEY (track
 ALTER TABLE track_engineer ADD CONSTRAINT FK_track_engineer_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE track_arranger ADD CONSTRAINT FK_track_arranger_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_arranger ADD CONSTRAINT FK_track_arranger_2 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
-ALTER TABLE track ADD CONSTRAINT FK_track_bpm FOREIGN KEY (bpm_id) REFERENCES bpm(bpm_id);
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_2 FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
@@ -437,6 +450,7 @@ ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_1 FOREIGN KEY (rol
 ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (privilege_id) REFERENCES privilege(privilege_id);
 ALTER TABLE wish ADD CONSTRAINT FK_user_wish FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFERENCES wish_status(wish_status_id);
+ALTER TABLE scan_status ADD CONSTRAINT FK_scan_status_step FOREIGN KEY (scan_step_id) REFERENCES scan_step(scan_step_id);
 
 
 -- ================================
@@ -473,7 +487,6 @@ CREATE INDEX IDX_track_engineer_1 ON track_engineer (track_id);
 CREATE INDEX IDX_track_engineer_2 ON track_engineer (artist_id);
 CREATE INDEX IDX_track_arranger_1 ON track_arranger (track_id);
 CREATE INDEX IDX_track_arranger_2 ON track_arranger (artist_id);
-CREATE INDEX IDX_track_bpm ON track (bpm_id);
 CREATE INDEX IDX_track_genre_1 ON track_genre (track_id);
 CREATE INDEX IDX_track_genre_2 ON track_genre (genre_id);
 CREATE INDEX IDX_track_key_1 ON track_key (track_id);
@@ -489,5 +502,6 @@ CREATE INDEX IDX_privileges_role_1 ON privileges_role (role_id);
 CREATE INDEX IDX_privileges_role_2 ON privileges_role (privilege_id);
 CREATE INDEX IDX_user_wish ON wish (user_id);
 CREATE INDEX IDX_wish_status ON wish (wish_status_id);
+CREATE INDEX IDX_scan_status_step ON scan_status (scan_step_id);
 
 -- END OF GENERATED CODE - YOU CAN EDIT THE FILE AFTER THIS LINE, DO NOT EDIT THIS LINE OR BEFORE THIS LINE
