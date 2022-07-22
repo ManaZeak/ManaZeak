@@ -28,6 +28,6 @@ public class TempController {
     public String getMainPage() {
         // Test intégration bibliothèque
         scanService.scanLibrary();
-        return "index.html";
+        return "error/permissionError.html";
     }
 }

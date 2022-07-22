@@ -1,7 +1,10 @@
 package org.manazeak.manazeak.manager.library;
 
+import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
 import org.manazeak.manazeak.daos.track.*;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManager;
 
 /**
  * Allows to wipe the data contained inside the library.
@@ -11,41 +14,46 @@ public class LibraryWiperManager {
 
     private final TrackDAO trackDao;
 
-    private final BpmDAO bpmDao;
-
     private final GenreDAO genreDao;
 
     private final AlbumDAO albumDao;
 
-    private final LabelDAO labelDAO;
+    private final LabelDAO labelDao;
 
     private final BioDAO bioDao;
 
     private final ArtistDAO artistDao;
 
+    private final LabelIntegrationDAO labelIntegrationDao;
 
-    public LibraryWiperManager(TrackDAO trackDao, BpmDAO bpmDao, GenreDAO genreDao, AlbumDAO albumDao,
-                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao) {
+    private final EntityManager entityManager;
+
+    public LibraryWiperManager(TrackDAO trackDao, GenreDAO genreDao, AlbumDAO albumDao,
+                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, LabelIntegrationDAO labelIntegrationDao, EntityManager entityManager) {
         this.trackDao = trackDao;
-        this.bpmDao = bpmDao;
         this.genreDao = genreDao;
         this.albumDao = albumDao;
-        this.labelDAO = labelDAO;
+        this.labelDao = labelDAO;
         this.bioDao = bioDao;
         this.artistDao = artistDao;
+        this.labelIntegrationDao = labelIntegrationDao;
+        this.entityManager = entityManager;
     }
 
     /**
      * Delete all the data contained inside the library in the database.
      */
     public void wipeLibraryData() {
+        labelIntegrationDao.deleteAllLabels();
+        entityManager.flush();
+        entityManager.clear();
         trackDao.deleteAll();
-        bpmDao.deleteAll();
         genreDao.deleteAll();
         albumDao.deleteAll();
         artistDao.deleteAll();
         bioDao.deleteAll();
-        labelDAO.deleteAll();
+        // labelDao.deleteAll();
+        // Flush the JPA.
     }
 
 }

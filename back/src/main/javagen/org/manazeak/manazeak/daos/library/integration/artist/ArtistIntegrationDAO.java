@@ -27,8 +27,8 @@ public class ArtistIntegrationDAO {
     public void mergeArtists(List<ArtistIntegrationDto> artists) {
         // Preparing the request to insert or update the artist in the database.
         jdbcTemplate.batchUpdate(
-                "INSERT INTO artist (artist_id, name, location, is_label, last_modification_date) " +
-                        "VALUES (?, ?, ?, ?, ?) " +
+                "INSERT INTO artist (artist_id, name, location, is_label, last_modification_date, label_id) " +
+                        "VALUES (?, ?, ?, ?, ?, ?) " +
                         "ON CONFLICT (artist_id) DO " +
                         "    UPDATE SET location = coalesce(excluded.location, artist.location)," +
                         "               is_label = excluded.is_label, " +

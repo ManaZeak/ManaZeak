@@ -31,6 +31,9 @@ public class CacheAccessManager {
             return null;
         }
         Object cacheObject = cacheValue.get();
+        if (cacheObject == null) {
+            return null;
+        }
         if (cacheObject instanceof String) {
             return Long.parseLong((String) cacheObject);
         } else if (cacheObject instanceof Long) {

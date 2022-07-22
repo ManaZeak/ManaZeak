@@ -33,6 +33,7 @@ public class ArtistIntegrationUpsertSetter implements BatchPreparedStatementSett
         } else {
             ps.setTimestamp(5, Timestamp.valueOf(artists.get(i).getModificationDate()));
         }
+        ps.setObject(6, artists.get(i).getLabelId());
     }
 
     @Override

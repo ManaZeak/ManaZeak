@@ -34,7 +34,11 @@ public class Track implements Serializable{
 	private Integer trackNumber;
 	private String isrc;
 	private String lyrics;
+	private String location;
+	private Double bpm;
+	private Double bpmOffset;
 	private Double duration;
+	private Double firstBar;
 	private String opus;
 	private String subtitle;
 	private Album album;
@@ -45,7 +49,6 @@ public class Track implements Serializable{
 	private Set<Artist> performerList;
 	private Set<Artist> engineerList;
 	private Set<Artist> arrangerList;
-	private Bpm bpm;
 	private Set<Genre> genreList;
 	private Set<Key> keyList;
 
@@ -144,6 +147,51 @@ public class Track implements Serializable{
     }  
     /**
      * No comment found in model diagram
+     * @return value of location
+     */
+    @Column(name="location", nullable=false)
+	public String getLocation(){
+		return location;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param location new value to give to location
+     */
+	public void setLocation(final String location){
+		this.location = location;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of bpm
+     */
+    @Column(name="bpm", nullable=true)
+	public Double getBpm(){
+		return bpm;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param bpm new value to give to bpm
+     */
+	public void setBpm(final Double bpm){
+		this.bpm = bpm;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of bpmOffset
+     */
+    @Column(name="bpm_offset", nullable=true)
+	public Double getBpmOffset(){
+		return bpmOffset;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param bpmOffset new value to give to bpmOffset
+     */
+	public void setBpmOffset(final Double bpmOffset){
+		this.bpmOffset = bpmOffset;
+    }  
+    /**
+     * No comment found in model diagram
      * @return value of duration
      */
     @Column(name="duration", nullable=false)
@@ -156,6 +204,21 @@ public class Track implements Serializable{
      */
 	public void setDuration(final Double duration){
 		this.duration = duration;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of firstBar
+     */
+    @Column(name="first_bar", nullable=true)
+	public Double getFirstBar(){
+		return firstBar;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param firstBar new value to give to firstBar
+     */
+	public void setFirstBar(final Double firstBar){
+		this.firstBar = firstBar;
     }  
     /**
      * No comment found in model diagram
@@ -316,22 +379,6 @@ public class Track implements Serializable{
 		this.arrangerList = arrangerList;
     }  
     /**
-     * Association track_bpm to Bpm
-     * @return value of bpm
-     */
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="bpm_id", referencedColumnName="bpm_id")
-	public Bpm getBpm(){
-		return bpm;
-    }  
-    /**
-     * Association track_bpm to Bpm
-     * @param bpm new value to give to bpm
-     */
-	public void setBpm(final Bpm bpm){
-		this.bpm = bpm;
-    }  
-    /**
      * Association track_genre to Genre
      * @return value of genreList
      */
@@ -376,7 +423,11 @@ public class Track implements Serializable{
 		result = 31 * result + (trackNumber == null? 0 : trackNumber.hashCode());
 		result = 31 * result + (isrc == null? 0 : isrc.hashCode());
 		result = 31 * result + (lyrics == null? 0 : lyrics.hashCode());
+		result = 31 * result + (location == null? 0 : location.hashCode());
+		result = 31 * result + (bpm == null? 0 : bpm.hashCode());
+		result = 31 * result + (bpmOffset == null? 0 : bpmOffset.hashCode());
 		result = 31 * result + (duration == null? 0 : duration.hashCode());
+		result = 31 * result + (firstBar == null? 0 : firstBar.hashCode());
 		result = 31 * result + (opus == null? 0 : opus.hashCode());
 		result = 31 * result + (subtitle == null? 0 : subtitle.hashCode());
 			
@@ -409,7 +460,11 @@ public class Track implements Serializable{
 			&& (trackNumber == null ?  (otherTrack.trackNumber == null) : trackNumber.equals(otherTrack.trackNumber))
 			&& (isrc == null ?  (otherTrack.isrc == null) : isrc.equals(otherTrack.isrc))
 			&& (lyrics == null ?  (otherTrack.lyrics == null) : lyrics.equals(otherTrack.lyrics))
+			&& (location == null ?  (otherTrack.location == null) : location.equals(otherTrack.location))
+			&& (bpm == null ?  (otherTrack.bpm == null) : bpm.equals(otherTrack.bpm))
+			&& (bpmOffset == null ?  (otherTrack.bpmOffset == null) : bpmOffset.equals(otherTrack.bpmOffset))
 			&& (duration == null ?  (otherTrack.duration == null) : duration.equals(otherTrack.duration))
+			&& (firstBar == null ?  (otherTrack.firstBar == null) : firstBar.equals(otherTrack.firstBar))
 			&& (opus == null ?  (otherTrack.opus == null) : opus.equals(otherTrack.opus))
 			&& (subtitle == null ?  (otherTrack.subtitle == null) : subtitle.equals(otherTrack.subtitle))
 		;

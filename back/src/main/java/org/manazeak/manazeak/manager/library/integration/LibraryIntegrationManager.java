@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Integrate the data contains in the track tags into the database.
@@ -27,6 +26,7 @@ public class LibraryIntegrationManager {
     private static final Logger LOG = LoggerFactory.getLogger(LibraryIntegrationManager.class);
     private final CacheManager cacheManager;
     private final IntegrationBufferManager integrationBufferManager;
+    private final EntityManager entityManager;
     /**
      * The number of artist folder that will be integrated by thread.
      */
@@ -34,9 +34,10 @@ public class LibraryIntegrationManager {
     private int bufferSize;
 
     @Autowired
-    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager) {
+    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager, EntityManager entityManager) {
         this.cacheManager = cacheManager;
         this.integrationBufferManager = integrationBufferManager;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -51,31 +52,41 @@ public class LibraryIntegrationManager {
         final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
 
         int startIndex = 0;
+        List<Future<?>> threads = new ArrayList<>();
         // Splitting the list in multiple lists.
         for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
             // Launch the integration of the sub element of the list.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex)));
+            threads.add(executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex))));
             startIndex = endIndex;
         }
 
         // Checking if the is any artists left in the integration buffer not processed.
         if (startIndex < artists.size()) {
             // There is some artist not processed.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size())));
+            threads.add(executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size()))));
         }
         // No more job accepted.
         executor.shutdown();
 
         try {
+            synchronized (this) {
+                for (Future<?> thread : threads) {
+                    thread.get();
+                }
+                LOG.error("ALL THREAD ARE DONE.");
+            }/*
             // Waiting for all the jobs to finish.
             if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
                 LOG.error("The thread executor was terminated by the thread pool timeout.");
-            }
+            }*/
         } catch (InterruptedException e) {
             LOG.warn("The integration thread interrupted.", e);
             Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            LOG.warn("The integration thread interrupted.", e);
         }
-
+        // Flushing all the modification of the database.
+        entityManager.flush();
     }
 
     /**
@@ -87,14 +98,17 @@ public class LibraryIntegrationManager {
     private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders) {
         return () -> {
             try {
+                LOG.error("WAITING A BIT");
                 // Launch the tag extraction of the artist.
                 List<ExtractedBandDto> bands = new ArrayList<>();
                 for (ScannedArtistDto artistFolder : artistFolders) {
+                    LOG.error("Launching the extraction of {}", artistFolder.getArtistFolder());
                     bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
                 }
 
                 // Launch the integration of the artist data.
                 integrationBufferManager.integrateBuffer(bands);
+                LOG.error("END THREAD.");
             } catch (Exception e) {
                 LOG.error("An error occurred during the artist folder integration.", e);
             }

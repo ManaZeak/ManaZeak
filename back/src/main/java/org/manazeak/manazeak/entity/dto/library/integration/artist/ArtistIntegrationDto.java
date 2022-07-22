@@ -21,6 +21,8 @@ public class ArtistIntegrationDto {
 
     private List<String> subArtists;
 
+    private Long labelId;
+
     public String getName() {
         return name;
     }
@@ -72,5 +74,13 @@ public class ArtistIntegrationDto {
 
     public void addArtist(String subArtist) {
         subArtists.add(subArtist);
+    }
+
+    public Long getLabelId() {
+        return labelId;
+    }
+
+    public void setLabelId(Long labelId) {
+        this.labelId = labelId;
     }
 }

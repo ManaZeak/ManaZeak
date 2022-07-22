@@ -14,10 +14,15 @@ import java.util.List;
  */
 @Repository
 public class LabelIntegrationDAO {
+    private static final String TRUNCATE_LABELS = "truncate table label CASCADE";
     private final JdbcTemplate jdbcTemplate;
 
     public LabelIntegrationDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void deleteAllLabels() {
+        jdbcTemplate.execute(TRUNCATE_LABELS);
     }
 
     public void mergeLabel(List<LabelIntegrationDto> label) {
