@@ -24,7 +24,7 @@ public class AlbumIntegrationCacheManager extends AbstractIntegrationCacheLoader
     }
 
     @Override
-    protected List<AlbumLinkerProjection> getObjects(Set<String> elements) {
+    protected List<AlbumLinkerProjection> getObjects(List<String> elements) {
         return albumDao.getAlbumsByTitles(elements);
     }
 

@@ -2,7 +2,6 @@ package org.manazeak.manazeak.manager.library.integration.cache;
 
 import org.manazeak.manazeak.entity.dto.library.integration.CacheObject;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,8 @@ import java.util.Set;
  */
 public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObject> {
 
+    private static final int BUFFER_SIZE = 50;
+
     /**
      * Add a set of elements ids into the cache with a list of unique names.
      *
@@ -24,8 +25,23 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
         // Removing the elements that are already in the cache.
         removeEntitiesAlreadyInCache(elements);
 
-        // Getting the objects from the database.
-        List<T> dbElements = getObjects(elements);
+        // Spliting the set in list of X objects.
+        List<String> listElements = new ArrayList<>();
+        List<T> dbElements = new ArrayList<>();
+
+        // Iterating through the objects and building the dbElement list.
+        for (String element : elements) {
+            listElements.add(element);
+            if (listElements.size() >= BUFFER_SIZE) {
+                dbElements.addAll(getObjects(listElements));
+                listElements.clear();
+            }
+        }
+
+        // Adding the missing elements.
+        if (!listElements.isEmpty()) {
+            dbElements.addAll(getObjects(listElements));
+        }
 
         // Adding the elements to the cache.
         for (T dbElement : dbElements) {
@@ -38,7 +54,7 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
      *
      * @return The objects to be inserted.
      */
-    protected abstract List<T> getObjects(Set<String> elements);
+    protected abstract List<T> getObjects(List<String> elements);
 
     /**
      * Get the cache where the data will be added.

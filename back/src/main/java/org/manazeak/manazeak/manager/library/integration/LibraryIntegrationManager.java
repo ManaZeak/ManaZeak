@@ -52,38 +52,29 @@ public class LibraryIntegrationManager {
         final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
 
         int startIndex = 0;
-        List<Future<?>> threads = new ArrayList<>();
         // Splitting the list in multiple lists.
         for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
             // Launch the integration of the sub element of the list.
-            threads.add(executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex))));
+            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex)));
             startIndex = endIndex;
         }
 
         // Checking if the is any artists left in the integration buffer not processed.
         if (startIndex < artists.size()) {
             // There is some artist not processed.
-            threads.add(executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size()))));
+            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size())));
         }
         // No more job accepted.
         executor.shutdown();
 
         try {
-            synchronized (this) {
-                for (Future<?> thread : threads) {
-                    thread.get();
-                }
-                LOG.error("ALL THREAD ARE DONE.");
-            }/*
             // Waiting for all the jobs to finish.
             if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
                 LOG.error("The thread executor was terminated by the thread pool timeout.");
-            }*/
+            }
         } catch (InterruptedException e) {
             LOG.warn("The integration thread interrupted.", e);
             Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            LOG.warn("The integration thread interrupted.", e);
         }
         // Flushing all the modification of the database.
         entityManager.flush();
@@ -98,17 +89,14 @@ public class LibraryIntegrationManager {
     private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders) {
         return () -> {
             try {
-                LOG.error("WAITING A BIT");
                 // Launch the tag extraction of the artist.
                 List<ExtractedBandDto> bands = new ArrayList<>();
                 for (ScannedArtistDto artistFolder : artistFolders) {
-                    LOG.error("Launching the extraction of {}", artistFolder.getArtistFolder());
                     bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
                 }
 
                 // Launch the integration of the artist data.
                 integrationBufferManager.integrateBuffer(bands);
-                LOG.error("END THREAD.");
             } catch (Exception e) {
                 LOG.error("An error occurred during the artist folder integration.", e);
             }

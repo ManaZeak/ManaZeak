@@ -9,7 +9,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<LabelLinkerProjection> {
@@ -24,7 +23,7 @@ public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoader
     }
 
     @Override
-    protected List<LabelLinkerProjection> getObjects(Set<String> elements) {
+    protected List<LabelLinkerProjection> getObjects(List<String> elements) {
         return labelDao.getAlbumsByTitles(elements);
     }
 

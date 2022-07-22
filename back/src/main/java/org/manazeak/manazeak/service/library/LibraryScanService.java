@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * This service allows to scan the music library to get the information contained in the tracks.
  */
-@TransactionalWithRollback
 @Service
+@TransactionalWithRollback
 public class LibraryScanService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);

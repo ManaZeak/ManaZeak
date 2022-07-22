@@ -1,10 +1,8 @@
 package org.manazeak.manazeak.manager.library;
 
-import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
 import org.manazeak.manazeak.daos.track.*;
+import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.EntityManager;
 
 /**
  * Allows to wipe the data contained inside the library.
@@ -24,36 +22,33 @@ public class LibraryWiperManager {
 
     private final ArtistDAO artistDao;
 
-    private final LabelIntegrationDAO labelIntegrationDao;
-
-    private final EntityManager entityManager;
+    private final AutonomousTransactionManager transactionManager;
 
     public LibraryWiperManager(TrackDAO trackDao, GenreDAO genreDao, AlbumDAO albumDao,
-                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, LabelIntegrationDAO labelIntegrationDao, EntityManager entityManager) {
+                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, AutonomousTransactionManager transactionManager) {
         this.trackDao = trackDao;
         this.genreDao = genreDao;
         this.albumDao = albumDao;
         this.labelDao = labelDAO;
         this.bioDao = bioDao;
         this.artistDao = artistDao;
-        this.labelIntegrationDao = labelIntegrationDao;
-        this.entityManager = entityManager;
+        this.transactionManager = transactionManager;
     }
 
     /**
      * Delete all the data contained inside the library in the database.
      */
     public void wipeLibraryData() {
-        labelIntegrationDao.deleteAllLabels();
-        entityManager.flush();
-        entityManager.clear();
-        trackDao.deleteAll();
-        genreDao.deleteAll();
-        albumDao.deleteAll();
-        artistDao.deleteAll();
-        bioDao.deleteAll();
-        // labelDao.deleteAll();
-        // Flush the JPA.
+        // We have to force hibernate to use a different transaction, or else the integration wait for the commit forever.
+        transactionManager.runInTransaction(() -> {
+            trackDao.deleteAll();
+            genreDao.deleteAll();
+            albumDao.deleteAll();
+            artistDao.deleteAll();
+            bioDao.deleteAll();
+            labelDao.deleteAll();
+        });
+
     }
 
 }

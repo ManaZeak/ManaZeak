@@ -9,7 +9,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Manager used to manipulate the artists in the cache and in the database.
@@ -27,7 +26,7 @@ public class ArtistIntegrationCacheManager extends AbstractIntegrationCacheLoade
     }
 
     @Override
-    protected List<ArtistLinkerProjection> getObjects(Set<String> elements) {
+    protected List<ArtistLinkerProjection> getObjects(List<String> elements) {
         return artistDao.getArtistByNames(elements);
     }
 
