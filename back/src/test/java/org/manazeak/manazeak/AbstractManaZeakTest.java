@@ -7,6 +7,7 @@ import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+// Activating the test profile to use the mocks.
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 // Transaction on each method (no commits)
 @Transactional
