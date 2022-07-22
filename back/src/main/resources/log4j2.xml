@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="filename">mzk</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %p %c{-1} [%t] %m%n"/>
+        </Console>
+        <RollingFile name="RollingFile"
+                     fileName="${filename}.log"
+                     filePattern="${filename}-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d %p %c{-1} [%t] %m%n"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.manazeak" level="INFO"/>
+        <Logger name="org.hibernate.SQL" level="debug"/>
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="debug"/>
+        <Logger name="org.hibernate.stat.internal.ConcurrentStatisticsImpl" level="debug"/>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
