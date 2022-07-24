@@ -1,9 +1,7 @@
 package org.manazeak.manazeak.util;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.sql.Timestamp;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -48,6 +46,31 @@ public final class DateUtil {
             return null;
         }
         return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    /**
+     * Get a SQL timestamp from a LocalDate.
+     *
+     * @param date The date to transform into a timestamp.
+     * @return The converted timestamp.
+     */
+    public static Timestamp getTimeStamp(LocalDate date) {
+        if (date == null) {
+            return null;
+        }
+        return Timestamp.valueOf(date.atTime(LocalTime.MIDNIGHT));
+    }
+
+    /**
+     * Get a SQL timestamp from a LocaleDateTime.
+     * @param date The
+     * @return
+     */
+    public static Timestamp getTimeStamp(LocalDateTime date) {
+        if (date == null) {
+            return null;
+        }
+        return Timestamp.valueOf(date);
     }
 
     /**

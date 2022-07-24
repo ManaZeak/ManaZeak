@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.library.integration.artist;
 
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
+import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,8 +16,11 @@ public class ArtistIntegrationDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ArtistIntegrationDAO(JdbcTemplate jdbcTemplate) {
+    private final CacheAccessManager cacheAccessManager;
+
+    public ArtistIntegrationDAO(JdbcTemplate jdbcTemplate, CacheAccessManager cacheAccessManager) {
         this.jdbcTemplate = jdbcTemplate;
+        this.cacheAccessManager = cacheAccessManager;
     }
 
     /**
@@ -33,7 +37,7 @@ public class ArtistIntegrationDAO {
                         "    UPDATE SET location = coalesce(excluded.location, artist.location)," +
                         "               is_label = excluded.is_label, " +
                         "   last_modification_date = coalesce(excluded.last_modification_date, artist.last_modification_date)",
-                new ArtistIntegrationUpsertSetter(artists)
+                new ArtistIntegrationUpsertSetter(artists, cacheAccessManager)
         );
     }
 

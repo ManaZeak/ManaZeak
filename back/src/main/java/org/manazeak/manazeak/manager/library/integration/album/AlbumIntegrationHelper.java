@@ -1,8 +1,10 @@
 package org.manazeak.manazeak.manager.library.integration.album;
 
 import org.manazeak.manazeak.constant.cache.CacheEnum;
+import org.manazeak.manazeak.constant.tag.CompilationTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
+import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.track.Album;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.util.DateUtil;
@@ -32,18 +34,18 @@ public class AlbumIntegrationHelper {
      *
      * @param album The extracted album information.
      */
-    public void extractAlbum(ExtractedAlbumDto album) {
+    public void extractAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
         // Checking if the album has been extracted already.
         if (!albumMap.containsKey(album.getTitle())) {
             // Creating the album.
-            addNewAlbum(album);
+            addNewAlbum(album, band);
         }
     }
 
     /**
      * Adds a new album into the maps of albums to add into the database.
      */
-    private void addNewAlbum(ExtractedAlbumDto album) {
+    private void addNewAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
         AlbumIntegrationDto newAlbum = new AlbumIntegrationDto();
         // Getting the album id from the cache.
         newAlbum.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, album.getTitle()));
@@ -58,6 +60,10 @@ public class AlbumIntegrationHelper {
         newAlbum.setStartRecordingDate(DateUtil.parseString(album.getStartRecordingDate(), DateUtil.US_DATE_FORMATTER));
         newAlbum.setEndRecordingDate(DateUtil.parseString(album.getEndRecordingDate(), DateUtil.US_DATE_FORMATTER));
         newAlbum.setRecordingLocation(album.getRecordingLocation());
+        newAlbum.setArtist(band.getName());
+        newAlbum.setLabel(album.getLabel());
+        newAlbum.setDuration(album.getDuration());
+        newAlbum.setCompilationTypeId(CompilationTypeEnum.getCompilationByCode(album.getCompilationCode()).getId());
 
         // If there is no album id, generating one.
         if (newAlbum.getAlbumId() == null) {
@@ -70,4 +76,7 @@ public class AlbumIntegrationHelper {
         albumMap.put(album.getTitle(), newAlbum);
     }
 
+    public Map<String, AlbumIntegrationDto> getAlbumMap() {
+        return albumMap;
+    }
 }

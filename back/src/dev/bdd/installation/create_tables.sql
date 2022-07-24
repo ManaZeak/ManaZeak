@@ -253,6 +253,7 @@ COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
 
 CREATE TABLE compilation_type (
 	compilation_type_id BIGINT not null,
+	code INTEGER not null,
 	label VARCHAR(50) not null,
 	CONSTRAINT PK_COMPILATION_TYPE PRIMARY KEY (compilation_type_id)
 );

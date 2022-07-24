@@ -95,11 +95,6 @@ public class ArtistIntegrationHelper {
             cacheAccessManager.put(CacheEnum.ARTIST_ID_BY_NAME, artist.getName(), artist.getId());
         }
 
-        // Linking the artist with the labels previously inserted.
-        artist.setLabelId(cacheAccessManager.getLongValue(CacheEnum.LABEL_ID_BY_NAME, artist.getName()));
-
-        // FIXME : add the links with the other elements.
-
         return artist;
     }
 

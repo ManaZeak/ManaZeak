@@ -21,6 +21,7 @@ public class CompilationType implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long compilationTypeId;
+	private Integer code;
 	private String label;
 
     /**
@@ -40,6 +41,21 @@ public class CompilationType implements Serializable{
      */
 	public void setCompilationTypeId(final Long compilationTypeId){
 		this.compilationTypeId = compilationTypeId;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of code
+     */
+    @Column(name="code", nullable=false)
+	public Integer getCode(){
+		return code;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param code new value to give to code
+     */
+	public void setCode(final Integer code){
+		this.code = code;
     }  
     /**
      * No comment found in model diagram
@@ -64,6 +80,7 @@ public class CompilationType implements Serializable{
 	
 		// Calculating hashcode with all "primitives" attributes
 		result = 31 * result + (compilationTypeId == null? 0 : compilationTypeId.hashCode());
+		result = 31 * result + (code == null? 0 : code.hashCode());
 		result = 31 * result + (label == null? 0 : label.hashCode());
 			
 		return result;
@@ -90,6 +107,7 @@ public class CompilationType implements Serializable{
 	    CompilationType otherCompilationType = (CompilationType) other;
 	    
 		return (compilationTypeId == null ?  (otherCompilationType.compilationTypeId == null) : compilationTypeId.equals(otherCompilationType.compilationTypeId))
+			&& (code == null ?  (otherCompilationType.code == null) : code.equals(otherCompilationType.code))
 			&& (label == null ?  (otherCompilationType.label == null) : label.equals(otherCompilationType.label))
 		;
 	}

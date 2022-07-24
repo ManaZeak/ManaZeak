@@ -1,6 +1,9 @@
 package org.manazeak.manazeak.daos.library.integration.artist;
 
+import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
+import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.springframework.cache.CacheManager;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import java.sql.PreparedStatement;
@@ -16,9 +19,11 @@ import java.util.List;
 public class ArtistIntegrationUpsertSetter implements BatchPreparedStatementSetter {
 
     private final List<ArtistIntegrationDto> artists;
+    private final CacheAccessManager cacheAccessManager;
 
-    public ArtistIntegrationUpsertSetter(List<ArtistIntegrationDto> artists) {
+    public ArtistIntegrationUpsertSetter(List<ArtistIntegrationDto> artists, CacheAccessManager cacheAccessManager) {
         this.artists = artists;
+        this.cacheAccessManager = cacheAccessManager;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class ArtistIntegrationUpsertSetter implements BatchPreparedStatementSett
         } else {
             ps.setTimestamp(5, Timestamp.valueOf(artists.get(i).getModificationDate()));
         }
-        ps.setObject(6, artists.get(i).getLabelId());
+        ps.setObject(6, cacheAccessManager.getLongValue(CacheEnum.LABEL_ID_BY_NAME, artists.get(i).getName()));
     }
 
     @Override

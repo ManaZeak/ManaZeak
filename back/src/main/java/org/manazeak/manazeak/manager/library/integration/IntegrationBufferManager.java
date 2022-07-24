@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration;
 
+import org.manazeak.manazeak.daos.library.integration.album.AlbumIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
@@ -26,13 +27,17 @@ public class IntegrationBufferManager {
 
     private final LabelIntegrationDAO labelIntegrationDAO;
 
+    private final AlbumIntegrationDAO albumIntegrationDAO;
+
     public IntegrationBufferManager(ArtistIntegrationManager artistIntegrationManager,
                                     CacheIntegrationInitializer cacheIntegrationInitializer,
-                                    CacheAccessManager cacheAccessManager, LabelIntegrationDAO labelIntegrationDAO) {
+                                    CacheAccessManager cacheAccessManager, LabelIntegrationDAO labelIntegrationDAO,
+                                    AlbumIntegrationDAO albumIntegrationDAO) {
         this.artistIntegrationManager = artistIntegrationManager;
         this.cacheIntegrationInitializer = cacheIntegrationInitializer;
         this.cacheAccessManager = cacheAccessManager;
         this.labelIntegrationDAO = labelIntegrationDAO;
+        this.albumIntegrationDAO = albumIntegrationDAO;
     }
 
     /**
@@ -46,12 +51,12 @@ public class IntegrationBufferManager {
         cacheIntegrationInitializer.initCacheWithBuffer(bands);
 
         // Launching the extraction of the tags contained in the library.
-        LibraryIntegrationContainer integrationContainer = launchTagExtraction(bands);
+        LibraryIntegrationContainer integrationContainer = launchTagDtoConversion(bands);
 
         // Launching the integration of objects.
         labelIntegrationDAO.mergeLabel(new ArrayList<>(integrationContainer.getLabelIntegrationHelper().getLabels().values()));
         artistIntegrationManager.mergeArtistsIntoDatabase(integrationContainer.getArtistIntegrationHelper().getArtists());
-
+        albumIntegrationDAO.mergeAlbums(new ArrayList<>(integrationContainer.getAlbumIntegrationHelper().getAlbumMap().values()));
     }
 
     /**
@@ -61,7 +66,7 @@ public class IntegrationBufferManager {
      * @param bands The information extracted from the tags and the folders.
      * @return An object containing all the entities that must be inserted.
      */
-    public LibraryIntegrationContainer launchTagExtraction(List<ExtractedBandDto> bands) {
+    public LibraryIntegrationContainer launchTagDtoConversion(List<ExtractedBandDto> bands) {
         LibraryIntegrationContainer integrationHelper = new LibraryIntegrationContainer(cacheAccessManager);
 
         // Iterating over the objects of the buffer to create the object to be inserted into the database.
@@ -70,7 +75,7 @@ public class IntegrationBufferManager {
             integrationHelper.convertBandIntoDto(band);
             for (ExtractedAlbumDto album : band.getAlbums()) {
                 // Extracting the information from the album.
-                integrationHelper.convertAlbumIntoDto(album);
+                integrationHelper.convertAlbumIntoDto(album, band);
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Extracting the information from the track.
                     integrationHelper.convertTrackIntoDto(track);

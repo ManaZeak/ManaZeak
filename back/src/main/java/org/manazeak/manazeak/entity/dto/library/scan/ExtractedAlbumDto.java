@@ -18,6 +18,8 @@ public class ExtractedAlbumDto {
     private String year;
     private LocalDate releaseDate;
     private Integer trackTotal;
+    private Integer compilationCode;
+    private double duration = 0D;
     private String eanUpn;
     private String catalogNumber;
     private String recordingLocation;
@@ -86,6 +88,7 @@ public class ExtractedAlbumDto {
 
     public void addTrack(ExtractedTrackDto track) {
         tracks.add(track);
+        duration += track.getLength();
     }
 
     public String getEanUpn() {
@@ -126,5 +129,21 @@ public class ExtractedAlbumDto {
 
     public void setEndRecordingDate(String endRecordingDate) {
         this.endRecordingDate = endRecordingDate;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public Integer getCompilationCode() {
+        return compilationCode;
+    }
+
+    public void setCompilationCode(Integer compilationCode) {
+        this.compilationCode = compilationCode;
     }
 }

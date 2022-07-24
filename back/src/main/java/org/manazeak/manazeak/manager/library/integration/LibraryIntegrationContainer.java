@@ -51,9 +51,9 @@ public class LibraryIntegrationContainer {
      *
      * @param album The extracted album information from the album folder.
      */
-    public void convertAlbumIntoDto(ExtractedAlbumDto album) {
+    public void convertAlbumIntoDto(ExtractedAlbumDto album, ExtractedBandDto band) {
         // Adding the album information.
-        albumIntegrationHelper.extractAlbum(album);
+        albumIntegrationHelper.extractAlbum(album, band);
         labelIntegrationHelper.extractLabelFromAlbum(album);
     }
 

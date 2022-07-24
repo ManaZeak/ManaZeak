@@ -13,6 +13,10 @@ public class AlbumIntegrationDto {
 
     private Integer totalTrack;
 
+    private String label;
+
+    private String artist;
+
     private Integer releaseYear;
 
     private LocalDate releaseDate;
@@ -28,6 +32,7 @@ public class AlbumIntegrationDto {
     private String recordingLocation;
     private LocalDate startRecordingDate;
     private LocalDate endRecordingDate;
+    private Long compilationTypeId;
 
     public Long getAlbumId() {
         return albumId;
@@ -123,5 +128,29 @@ public class AlbumIntegrationDto {
 
     public void setRecordingLocation(String recordingLocation) {
         this.recordingLocation = recordingLocation;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Long getCompilationTypeId() {
+        return compilationTypeId;
+    }
+
+    public void setCompilationTypeId(Long compilationTypeId) {
+        this.compilationTypeId = compilationTypeId;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 }

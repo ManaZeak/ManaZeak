@@ -75,6 +75,7 @@ public final class TrackTagMapper {
         // Getting the start recording date and the end recording date from the track.
         album.setStartRecordingDate(fileContainer.getStartRecordingDate());
         album.setEndRecordingDate(fileContainer.getEndRecordingDate());
+        album.setCompilationCode(CastUtil.castStringToInt(fileContainer.getCompilation()));
     }
 
     /**
