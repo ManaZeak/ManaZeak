@@ -3,7 +3,6 @@ package org.manazeak.manazeak.service.library.scan;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
-import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
@@ -11,7 +10,6 @@ import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**

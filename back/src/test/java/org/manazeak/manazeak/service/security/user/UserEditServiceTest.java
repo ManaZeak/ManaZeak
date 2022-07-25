@@ -13,8 +13,6 @@ import org.manazeak.manazeak.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.Date;
-
 /**
  * Allow us to test the user edition.
  */

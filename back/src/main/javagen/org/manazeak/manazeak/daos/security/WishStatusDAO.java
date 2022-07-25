@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.security;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.security.WishStatus;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for WishStatus using Spring CrudRepository interface

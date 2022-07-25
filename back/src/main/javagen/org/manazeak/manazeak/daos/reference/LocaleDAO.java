@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.reference;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.reference.Locale;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for Locale using Spring CrudRepository interface

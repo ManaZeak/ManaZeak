@@ -1,13 +1,16 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
 import org.manazeak.manazeak.daos.library.integration.artist.ArtistIntegrationDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Used to get the existing artists and create the new artists from the database.

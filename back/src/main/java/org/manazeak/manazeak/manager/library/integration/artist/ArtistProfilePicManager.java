@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.manazeak.manazeak.constant.file.FilePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;

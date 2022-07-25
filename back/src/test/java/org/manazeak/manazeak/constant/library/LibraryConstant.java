@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.constant.library;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Contains the static information about the music library. Override the class from the standard application.

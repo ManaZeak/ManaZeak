@@ -1,10 +1,9 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
+import org.manazeak.manazeak.entity.track.Album;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.manazeak.manazeak.entity.track.Album;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;

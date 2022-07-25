@@ -9,7 +9,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class AlbumIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<AlbumLinkerProjection> {

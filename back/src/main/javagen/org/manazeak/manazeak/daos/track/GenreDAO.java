@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.track.Genre;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for Genre using Spring CrudRepository interface

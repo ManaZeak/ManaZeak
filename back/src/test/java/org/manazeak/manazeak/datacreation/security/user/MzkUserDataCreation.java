@@ -8,7 +8,6 @@ import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
 import org.manazeak.manazeak.datacreation.security.invite.InviteCodeDataCreation;
-import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;

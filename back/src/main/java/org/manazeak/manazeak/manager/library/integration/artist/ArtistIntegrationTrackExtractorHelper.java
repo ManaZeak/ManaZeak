@@ -1,8 +1,8 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
 import org.manazeak.manazeak.constant.cache.CacheEnum;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;

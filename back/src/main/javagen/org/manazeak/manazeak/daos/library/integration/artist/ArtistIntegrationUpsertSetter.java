@@ -3,7 +3,6 @@ package org.manazeak.manazeak.daos.library.integration.artist;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
-import org.springframework.cache.CacheManager;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import java.sql.PreparedStatement;

@@ -1,5 +1,6 @@
 import ViewFactory from '../scene/ViewFactory';
 import ModalFactory from '../modal/ModalFactory';
+
 'use strict';
 
 

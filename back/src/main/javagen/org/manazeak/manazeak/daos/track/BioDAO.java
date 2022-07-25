@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.track.Bio;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for Bio using Spring CrudRepository interface

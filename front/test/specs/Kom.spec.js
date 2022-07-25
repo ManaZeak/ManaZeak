@@ -1,4 +1,5 @@
 import Kom from '../../js/core/Kom.js';
+
 'use strict';
 
 

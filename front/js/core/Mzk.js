@@ -1,5 +1,6 @@
 import UserInterface from '../view/UserInterface';
 import Kom from './Kom';
+
 'use strict';
 
 

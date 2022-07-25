@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.reference;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.reference.CompilationType;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for CompilationType using Spring CrudRepository interface
