@@ -5,10 +5,6 @@ package org.manazeak.manazeak.exception;
  */
 public class MzkTagException extends Exception {
 
-    /**
-     * The message that will be displayed in the log.
-     */
-    private final String message;
 
     /**
      * The message that will be saved in the database as an import error.
@@ -27,7 +23,6 @@ public class MzkTagException extends Exception {
      */
     public MzkTagException(String message, String messageKey, String filePath, Throwable e) {
         super(message, e);
-        this.message = message;
         this.messageKey = messageKey;
         this.filePath = filePath;
     }
@@ -41,7 +36,6 @@ public class MzkTagException extends Exception {
      */
     public MzkTagException(String message, String messageKey, String filePath) {
         super(message);
-        this.message = message;
         this.messageKey = messageKey;
         this.filePath = filePath;
     }
