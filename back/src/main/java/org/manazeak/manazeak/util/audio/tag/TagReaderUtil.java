@@ -112,7 +112,7 @@ public final class TagReaderUtil {
         AudioHeader header = audioFile.getAudioHeader();
         if (header != null) {
             extractedHeader.setBitrate(header.getByteRate());
-            extractedHeader.setTrackLength(header.getAudioDataLength());
+            extractedHeader.setTrackLength(header.getTrackLength());
             extractedHeader.setSampleRate(header.getSampleRateAsNumber());
             extractedHeader.setSize(audioFile.getFile().length());
         }
