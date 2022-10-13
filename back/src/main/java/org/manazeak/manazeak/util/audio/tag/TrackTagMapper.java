@@ -92,14 +92,22 @@ public final class TrackTagMapper {
         track.setComposers(TagSplitterUtil.splitComposer(fileContainer.getComposer()));
         track.setProducers(TagSplitterUtil.splitTag(fileContainer.getProducer()));
         track.setGenres(TagSplitterUtil.splitTag(fileContainer.getGenre()));
+        track.setLyricists(TagSplitterUtil.splitTag(fileContainer.getLyricists()));
+        track.setEngineers(TagSplitterUtil.splitTag(fileContainer.getEngineers()));
+        track.setArrangers(TagSplitterUtil.splitTag(fileContainer.getArranger()));
         track.setYear(fileContainer.getDate());
         track.setDiscNumber(CastUtil.castStringToInt(fileContainer.getDiscNumber()));
         track.setTrackNumber(CastUtil.castStringToInt(fileContainer.getTrackNumber()));
         track.setBitrate(fileContainer.getHeaders().getBitrate());
         track.setSampleRate(fileContainer.getHeaders().getSampleRate());
-        track.setLength(fileContainer.getHeaders().getTrackLength());
+        track.setDuration(fileContainer.getHeaders().getTrackLength());
         track.setSize(fileContainer.getHeaders().getSize());
         track.setLyrics(fileContainer.getLyrics());
+        track.setIrsc(fileContainer.getIrsc());
+        track.setBpm(fileContainer.getBpm());
+        track.setLocation(fileContainer.getFileLocation());
+        track.setOpus(fileContainer.getOpus());
+        track.setSubtitle(fileContainer.getSubtitle());
     }
 
 }

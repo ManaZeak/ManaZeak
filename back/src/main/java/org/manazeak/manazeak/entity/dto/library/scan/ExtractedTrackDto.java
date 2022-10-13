@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class ExtractedTrackDto {
 
+    private String location;
     private String title;
 
     private List<String> artists = new ArrayList<>();
@@ -19,6 +20,12 @@ public class ExtractedTrackDto {
     private List<ExtractedComposerDto> composers = new ArrayList<>();
 
     private List<String> producers = new ArrayList<>();
+
+    private List<String> lyricists = new ArrayList<>();
+
+    private List<String> engineers = new ArrayList<>();
+
+    private List<String> arrangers = new ArrayList<>();
 
     private List<String> genres = new ArrayList<>();
 
@@ -34,9 +41,17 @@ public class ExtractedTrackDto {
 
     private long size;
 
-    private double length;
+    private double duration;
 
     private String lyrics;
+
+    private String irsc;
+
+    private Double bpm;
+
+    private String opus;
+
+    private String subtitle;
 
     public String getLyrics() {
         return lyrics;
@@ -70,12 +85,12 @@ public class ExtractedTrackDto {
         this.size = size;
     }
 
-    public double getLength() {
-        return length;
+    public double getDuration() {
+        return duration;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public void setDuration(double duration) {
+        this.duration = duration;
     }
 
     public List<String> getProducers() {
@@ -148,5 +163,69 @@ public class ExtractedTrackDto {
 
     public void setTrackNumber(Integer trackNumber) {
         this.trackNumber = trackNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getIrsc() {
+        return irsc;
+    }
+
+    public void setIrsc(String irsc) {
+        this.irsc = irsc;
+    }
+
+    public Double getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(Double bpm) {
+        this.bpm = bpm;
+    }
+
+    public String getOpus() {
+        return opus;
+    }
+
+    public void setOpus(String opus) {
+        this.opus = opus;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public List<String> getLyricists() {
+        return lyricists;
+    }
+
+    public void setLyricists(List<String> lyricists) {
+        this.lyricists = lyricists;
+    }
+
+    public List<String> getEngineers() {
+        return engineers;
+    }
+
+    public void setEngineers(List<String> engineers) {
+        this.engineers = engineers;
+    }
+
+    public List<String> getArrangers() {
+        return arrangers;
+    }
+
+    public void setArrangers(List<String> arrangers) {
+        this.arrangers = arrangers;
     }
 }

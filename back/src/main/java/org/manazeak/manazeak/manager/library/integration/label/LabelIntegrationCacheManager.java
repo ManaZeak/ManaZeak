@@ -23,7 +23,7 @@ public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoader
     }
 
     @Override
-    protected List<LabelLinkerProjection> getObjects(List<String> elements) {
+    protected List<LabelLinkerProjection> getDatabaseObjects(List<String> elements) {
         return labelDao.getAlbumsByTitles(elements);
     }
 

@@ -15,6 +15,7 @@ import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.entity.dto.audio.AudioFileHeaderContainerDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.exception.MzkTagException;
+import org.manazeak.manazeak.util.CastUtil;
 import org.manazeak.manazeak.util.file.FormatFileCheckerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,6 +118,8 @@ public final class TagReaderUtil {
             extractedHeader.setSize(audioFile.getFile().length());
         }
 
+        container.setFileLocation(audioFile.getFile().getAbsolutePath());
+
         // Adding the headers into the container.
         container.setHeaders(extractedHeader);
 
@@ -150,6 +153,13 @@ public final class TagReaderUtil {
         // Getting the information for track number information
         container.setTrackTotal(tag.getFirst(FieldKey.TRACK_TOTAL).trim());
         container.setTrackNumber(tag.getFirst(FieldKey.TRACK).trim());
+        container.setArranger(tag.getFirst(FieldKey.ARRANGER).trim());
+        container.setLyricists(tag.getFirst(FieldKey.LYRICIST).trim());
+        container.setEngineers(tag.getFirst(FieldKey.ENGINEER).trim());
+        container.setIrsc(tag.getFirst(FieldKey.ISRC).trim());
+        container.setBpm(CastUtil.castStringToDouble(tag.getFirst(FieldKey.BPM)));
+        container.setOpus(tag.getFirst(FieldKey.OPUS).trim());
+        container.setSubtitle(tag.getFirst(FieldKey.SUBTITLE).trim());
         container.setArranger(tag.getFirst(FieldKey.ARRANGER).trim());
 
         // If the file is an MP3

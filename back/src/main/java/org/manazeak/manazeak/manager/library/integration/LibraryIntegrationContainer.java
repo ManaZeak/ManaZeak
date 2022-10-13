@@ -7,6 +7,7 @@ import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.manager.library.integration.album.AlbumIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.label.LabelIntegrationHelper;
+import org.manazeak.manazeak.manager.library.integration.track.TrackIntegrationHelper;
 
 /**
  * Contains and allows to convert the data contained that has been extracted from the tracks into the
@@ -20,10 +21,13 @@ public class LibraryIntegrationContainer {
 
     private final LabelIntegrationHelper labelIntegrationHelper;
 
+    private final TrackIntegrationHelper trackIntegrationHelper;
+
     public LibraryIntegrationContainer(CacheAccessManager cacheAccessManager) {
         artistIntegrationHelper = new ArtistIntegrationHelper(cacheAccessManager);
         albumIntegrationHelper = new AlbumIntegrationHelper(cacheAccessManager);
         labelIntegrationHelper = new LabelIntegrationHelper(cacheAccessManager);
+        trackIntegrationHelper = new TrackIntegrationHelper(cacheAccessManager);
     }
 
     /**
@@ -41,9 +45,10 @@ public class LibraryIntegrationContainer {
      *
      * @param track The information extracted from the track tags.
      */
-    public void convertTrackIntoDto(ExtractedTrackDto track) {
+    public void convertTrackIntoDto(ExtractedTrackDto track, ExtractedAlbumDto album) {
         // Adding the artists contained in the track.
         artistIntegrationHelper.extractArtistFromTrack(track);
+        trackIntegrationHelper.extractTrack(track, album);
     }
 
     /**
@@ -72,5 +77,9 @@ public class LibraryIntegrationContainer {
 
     public LabelIntegrationHelper getLabelIntegrationHelper() {
         return labelIntegrationHelper;
+    }
+
+    public TrackIntegrationHelper getTrackIntegrationHelper() {
+        return trackIntegrationHelper;
     }
 }

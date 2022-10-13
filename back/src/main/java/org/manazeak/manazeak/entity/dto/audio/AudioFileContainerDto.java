@@ -7,6 +7,7 @@ import org.jaudiotagger.tag.TagField;
  */
 public class AudioFileContainerDto {
 
+    private String fileLocation;
     private TagField cover;
 
     private String title;
@@ -32,6 +33,10 @@ public class AudioFileContainerDto {
     private String composer;
 
     private String copyright;
+
+    private String lyricists;
+
+    private String engineers;
 
     private String discNumber;
 
@@ -60,10 +65,23 @@ public class AudioFileContainerDto {
     private String startRecordingDate;
 
     private String endRecordingDate;
+
+    private String irsc;
+
+    private Double bpm;
+
+    private String opus;
+
+    private String subtitle;
+
     private AudioFileHeaderContainerDto headers;
 
     public AudioFileHeaderContainerDto getHeaders() {
         return headers;
+    }
+
+    public void setHeaders(AudioFileHeaderContainerDto headers) {
+        this.headers = headers;
     }
 
     public String getLabel() {
@@ -72,10 +90,6 @@ public class AudioFileContainerDto {
 
     public void setLabel(String label) {
         this.label = label;
-    }
-
-    public void setHeaders(AudioFileHeaderContainerDto headers) {
-        this.headers = headers;
     }
 
     public String getProducer() {
@@ -284,5 +298,61 @@ public class AudioFileContainerDto {
 
     public void setEndRecordingDate(String endRecordingDate) {
         this.endRecordingDate = endRecordingDate;
+    }
+
+    public String getIrsc() {
+        return irsc;
+    }
+
+    public void setIrsc(String irsc) {
+        this.irsc = irsc;
+    }
+
+    public Double getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(Double bpm) {
+        this.bpm = bpm;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+
+    public String getOpus() {
+        return opus;
+    }
+
+    public void setOpus(String opus) {
+        this.opus = opus;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public String getLyricists() {
+        return lyricists;
+    }
+
+    public void setLyricists(String lyricists) {
+        this.lyricists = lyricists;
+    }
+
+    public String getEngineers() {
+        return engineers;
+    }
+
+    public void setEngineers(String engineers) {
+        this.engineers = engineers;
     }
 }

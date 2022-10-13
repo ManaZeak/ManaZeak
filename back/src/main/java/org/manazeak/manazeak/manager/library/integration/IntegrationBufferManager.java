@@ -8,6 +8,7 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
+import org.manazeak.manazeak.manager.library.integration.track.TrackIntegrationManager;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,15 +30,18 @@ public class IntegrationBufferManager {
 
     private final AlbumIntegrationDAO albumIntegrationDAO;
 
+    private final TrackIntegrationManager trackIntegrationManager;
+
     public IntegrationBufferManager(ArtistIntegrationManager artistIntegrationManager,
                                     CacheIntegrationInitializer cacheIntegrationInitializer,
                                     CacheAccessManager cacheAccessManager, LabelIntegrationDAO labelIntegrationDAO,
-                                    AlbumIntegrationDAO albumIntegrationDAO) {
+                                    AlbumIntegrationDAO albumIntegrationDAO, TrackIntegrationManager trackIntegrationManager) {
         this.artistIntegrationManager = artistIntegrationManager;
         this.cacheIntegrationInitializer = cacheIntegrationInitializer;
         this.cacheAccessManager = cacheAccessManager;
         this.labelIntegrationDAO = labelIntegrationDAO;
         this.albumIntegrationDAO = albumIntegrationDAO;
+        this.trackIntegrationManager = trackIntegrationManager;
     }
 
     /**
@@ -57,6 +61,10 @@ public class IntegrationBufferManager {
         labelIntegrationDAO.mergeLabel(new ArrayList<>(integrationContainer.getLabelIntegrationHelper().getLabels().values()));
         artistIntegrationManager.mergeArtistsIntoDatabase(integrationContainer.getArtistIntegrationHelper().getArtists());
         albumIntegrationDAO.mergeAlbums(new ArrayList<>(integrationContainer.getAlbumIntegrationHelper().getAlbumMap().values()));
+
+        // Integrating the tracks into the database.
+        trackIntegrationManager.fillTrackIds(integrationContainer.getTrackIntegrationHelper().getTracksByLocation());
+        trackIntegrationManager.mergeTracksIntoDatabase(new ArrayList<>(integrationContainer.getTrackIntegrationHelper().getTracksByLocation().values()));
     }
 
     /**
@@ -78,7 +86,7 @@ public class IntegrationBufferManager {
                 integrationHelper.convertAlbumIntoDto(album, band);
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Extracting the information from the track.
-                    integrationHelper.convertTrackIntoDto(track);
+                    integrationHelper.convertTrackIntoDto(track, album);
                 }
             }
         }

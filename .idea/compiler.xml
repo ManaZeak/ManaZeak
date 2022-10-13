@@ -21,7 +21,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="manazeak_back" options="-parameters" />
-      <module name="manazeak_front" options="-parameters" />
+      <module name="manazeak_front" options="" />
     </option>
   </component>
 </project>

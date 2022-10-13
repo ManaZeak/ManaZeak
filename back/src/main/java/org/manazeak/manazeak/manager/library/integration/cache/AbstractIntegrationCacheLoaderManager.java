@@ -33,14 +33,14 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
         for (String element : elements) {
             listElements.add(element);
             if (listElements.size() >= BUFFER_SIZE) {
-                dbElements.addAll(getObjects(listElements));
+                dbElements.addAll(getDatabaseObjects(listElements));
                 listElements.clear();
             }
         }
 
         // Adding the missing elements.
         if (!listElements.isEmpty()) {
-            dbElements.addAll(getObjects(listElements));
+            dbElements.addAll(getDatabaseObjects(listElements));
         }
 
         // Adding the elements to the cache.
@@ -54,7 +54,7 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
      *
      * @return The objects to be inserted.
      */
-    protected abstract List<T> getObjects(List<String> elements);
+    protected abstract List<T> getDatabaseObjects(List<String> elements);
 
     /**
      * Get the cache where the data will be added.

@@ -42,6 +42,12 @@ public class ArtistIntegrationManager {
         artistsNames.addAll(track.getPerformers());
         // Getting the producers.
         artistsNames.addAll(track.getProducers());
+        // Getting the lyricists.
+        artistsNames.addAll(track.getLyricists());
+        // Getting the engineers.
+        artistsNames.addAll(track.getEngineers());
+        // Getting the arrangers.
+        artistsNames.addAll(track.getArrangers());
     }
 
     /**

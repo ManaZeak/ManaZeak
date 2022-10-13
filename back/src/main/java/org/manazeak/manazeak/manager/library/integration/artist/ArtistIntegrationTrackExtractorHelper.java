@@ -10,6 +10,7 @@ import org.manazeak.manazeak.util.audio.tag.TagCheckerUtil;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,17 +35,16 @@ public final class ArtistIntegrationTrackExtractorHelper {
         for (String artist : track.getArtists()) {
             processStringArtist(artists, artist, cacheAccessManager);
         }
-
         // Extracting the performers
-        for (String performer : track.getPerformers()) {
-            // Creating the artist from the performer.
-            processStringArtist(artists, performer, cacheAccessManager);
-        }
-
+        addListArtistNames(artists, track.getPerformers(), cacheAccessManager);
         // Extracting the producers.
-        for (String producer : track.getProducers()) {
-            processStringArtist(artists, producer, cacheAccessManager);
-        }
+        addListArtistNames(artists, track.getProducers(), cacheAccessManager);
+        // Extracting the lyricists.
+        addListArtistNames(artists, track.getLyricists(), cacheAccessManager);
+        // Extracting the engineers.
+        addListArtistNames(artists, track.getEngineers(), cacheAccessManager);
+        // Extracting the arrangers.
+        addListArtistNames(artists, track.getArrangers(), cacheAccessManager);
 
         // Extracting the composers.
         for (ExtractedComposerDto composer : track.getComposers()) {
@@ -74,6 +74,20 @@ public final class ArtistIntegrationTrackExtractorHelper {
         }
 
         return artist;
+    }
+
+    /**
+     * Add a list of artist names into the
+     *
+     * @param artists            The list of artist to be integrated.
+     * @param artistsNames       The list of artist names to add.
+     * @param cacheAccessManager The object used to access the caches.
+     */
+    private static void addListArtistNames(Map<String, ArtistIntegrationDto> artists, List<String> artistsNames,
+                                           CacheAccessManager cacheAccessManager) {
+        for (String artist : artistsNames) {
+            processStringArtist(artists, artist, cacheAccessManager);
+        }
     }
 
     /**

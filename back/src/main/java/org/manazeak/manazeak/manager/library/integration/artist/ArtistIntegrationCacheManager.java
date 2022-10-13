@@ -26,7 +26,7 @@ public class ArtistIntegrationCacheManager extends AbstractIntegrationCacheLoade
     }
 
     @Override
-    protected List<ArtistLinkerProjection> getObjects(List<String> elements) {
+    protected List<ArtistLinkerProjection> getDatabaseObjects(List<String> elements) {
         return artistDao.getArtistByNames(elements);
     }
 

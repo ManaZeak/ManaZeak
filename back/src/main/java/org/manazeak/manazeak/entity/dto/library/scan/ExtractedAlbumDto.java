@@ -88,7 +88,7 @@ public class ExtractedAlbumDto {
 
     public void addTrack(ExtractedTrackDto track) {
         tracks.add(track);
-        duration += track.getLength();
+        duration += track.getDuration();
     }
 
     public String getEanUpn() {

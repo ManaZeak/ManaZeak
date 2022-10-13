@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,20 @@ public final class CastUtil {
             return null;
         }
         return Integer.parseInt(value);
+    }
+
+    /**
+     * Cast a string into a double.
+     *
+     * @param value The value to convert.
+     * @return The double value.
+     */
+    public static Double castStringToDouble(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+
+        return Double.parseDouble(value);
     }
 
 }
