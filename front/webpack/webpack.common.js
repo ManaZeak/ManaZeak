@@ -1,13 +1,14 @@
-'use strict';
-
-const path = require('path');
 const webpack = require('webpack');
 const loaders = require('./loaders');
 const plugins = require('./plugins');
+const path = require('path');
+const fs = require('fs');
+
 
 const DIST = path.resolve(__dirname, '../../static/dist');
 
-// Default entrypoint for ManaZeak
+
+// Default js/scss entrypoints for ManaZeak app and services
 let entry = {
   manazeak: ['./front/js/StartSession.js', './front/scss/service/manazeak.scss'],
   auth: ['./front/scss/service/auth.scss'],
@@ -21,8 +22,8 @@ let entry = {
   redirect: ['./front/js/auth/Redirect.js']
 };
 
-// Plugin loading
-const fs = require('fs');
+
+// Plugin loading, if files exists in plugin folder, time to append them to the build list
 if (fs.existsSync('./plugins/MzkWorldMap/js/MzkWorldMap.js')) { // Bundle MzkWorldMap if existing
   entry.mzkworldmap = [
     './plugins/MzkWorldMap/js/MzkWorldMap.js',
@@ -36,6 +37,7 @@ if (fs.existsSync('./plugins/MzkVisualizer/js/MzkVisualizer.js')) { // Bundle Mz
     './plugins/MzkVisualizer/css/mzkvisualizer.scss'
   ];
 }
+
 
 module.exports = {
   entry: entry,

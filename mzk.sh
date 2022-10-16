@@ -19,7 +19,7 @@ isInstalled() {
 echo # Line break
 echo -e "  ## ---------------------------------- ##"
 echo -e "  ##              \e[92mManaZeak\e[39m              ##"
-echo -e "  ##        2017/2021 -- GPL-3.0        ##"
+echo -e "  ##        2017/2022 -- GPL-3.0        ##"
 echo -e "  ##               v$vers               ##"
 echo -e "  ## ---------------------------------- ##"
 echo # Line break
@@ -70,22 +70,32 @@ if [ "$1" = "-i" ] || [ "$1" = "--install" ]; then
   # Database path (not empty and an existing directory on system)
   unset dbpath
   while [[ $dbpath = "" || ! -d $dbpath ]]; do
-     read -rp "  1/4. The path to store the database in : " dbpath
+     read -rp "  1/6. The path to store the database in : " dbpath
   done
   # Database password (not empty and >4 characters)
   unset dbpassword
   while [[ $dbpassword = "" || ${#dbpassword} -lt 4 ]]; do
-     read -rp "  2/4. The database password (> 4 characters) : " dbpassword
+     read -rp "  2/6. The database password (> 4 characters) : " dbpassword
   done
   # Library path (not empty and an existing directory on system)
   unset libpath
   while [[ $libpath = "" || ! -d $libpath ]]; do
-     read -rp "  3/4. The path where all your audio files are : " libpath
+     read -rp "  3/6. The path where all your audio files are : " libpath
   done
   # Resources path (not empty and an existing directory on system)
   unset respath
   while [[ $respath = "" || ! -d $respath ]]; do
-     read -rp "  4/4. The path to the library resources : " respath
+     read -rp "  4/6. The path to the library resources : " respath
+  done
+  # Assets path (not empty and an existing directory on system)
+  unset asspath
+  while [[ $asspath = "" || ! -d $asspath ]]; do
+     read -rp "  5/6. The path to the library assets : " asspath
+  done
+  # Log path (not empty and an existing directory on system)
+  unset logpath
+  while [[ $logpath = "" || ! -d $logpath ]]; do
+     read -rp "  6/6. The path to the application log : " logpath
   done
   # Create .env file
   touch "$basedir"/.env
@@ -94,6 +104,8 @@ if [ "$1" = "-i" ] || [ "$1" = "--install" ]; then
     echo "DB_PASSWORD=$dbpassword"
     echo "LIBRARY_PATH=$libpath"
     echo "RESOURCES_PATH=$respath"
+    echo "ASSETS_PATH=$asspath"
+    echo "LOGS_PATH=$logpath"
     echo "BACK_TARGET=app"
   } >> "$basedir"/.env
   echo # Line break
