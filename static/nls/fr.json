@@ -1,0 +1,87 @@
+{
+  "B_KOM_NOT_FOUND": {
+    "title": "URL inexistante",
+    "message": "La requète HTTP à retourné un status 404. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "B_KOM_ACCESS_FORBIDDEN": {
+    "title": "Permission insuffisante",
+    "message": "La requète HTTP à retourné un status 403. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "B_KOM_INTERNAL_ERROR": {
+    "title": "Erreur interne du serveur",
+    "message": "La requète HTTP à retourné un status 500. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "B_KOM_UNKNOWN_ERROR": {
+    "title": "Erreur HTTP inconnue",
+    "message": "La requète HTTP à retourné un status inhabituel. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "F_KOM_MISSING_ARGUMENT": {
+    "title": "Argument manquant",
+    "message": "Des arguments sont manquant lors d'un appel de méthode. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "F_KOM_INIT_FAILED": {
+    "title": "Consigne CSRF manquante",
+    "message": "La session locale ne supportera pas certains types d'appels. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "F_KOM_XHR_ERROR": {
+    "title": "Erreur de communication",
+    "message": "Une requète XHR à rencontré une erreur. Voir la console pour plus de details.",
+    "severity": "error"
+  },
+  "F_VIEW_SET_ERROR": {
+    "title": "View not updated",
+    "message": "The view couldn't be instantiated nor displayed",
+    "severity": "error"
+  },
+  "F_MODAL_SET_ERROR": {
+    "title": "Modal not opened",
+    "message": "The modal couldn't be instantiated nor opened",
+    "severity": "error"
+  },
+  "F_FRAGMENT_GET_ERROR": {
+    "title": "Fragment not fetched",
+    "message": "The fragment couldn't be loaded",
+    "severity": "error"
+  },
+  "F_INVIT_CODE_CLIPBOARD_ERROR": {
+    "title": "Unable to save code in clipboard",
+    "message": "The invitation code wasn't saved in the clipboard",
+    "severity": "error"
+  },
+  "F_INVIT_LINK_CLIPBOARD_ERROR": {
+    "title": "Unable to save link in clipboard",
+    "message": "The invitation link wasn't saved in the clipboard",
+    "severity": "error"
+  },
+  "F_VIEW_SET_SUCCESS": {
+    "title": "View updated",
+    "message": "The view has been succesfully instantiated and displayed",
+    "severity": "success"
+  },
+  "F_MODAL_SET_SUCCESS": {
+    "title": "Modal opened",
+    "message": "The modal has been succesfully instantiated and opened",
+    "severity": "success"
+  },
+  "F_FRAGMENT_GET_SUCCESS": {
+    "title": "Fragment fetched",
+    "message": "The fragment has been succesfully loaded",
+    "severity": "success"
+  },
+  "F_INVIT_CODE_CLIPBOARD_SUCCESS": {
+    "title": "Code saved in clipboard",
+    "message": "The invitation code was saved in the clipboard successfully",
+    "severity": "success"
+  },
+  "F_INVIT_LINK_CLIPBOARD_SUCCESS": {
+    "title": "Link saved in clipboard",
+    "message": "The invitation link was saved in the clipboard successfully",
+    "severity": "success"
+  }
+}

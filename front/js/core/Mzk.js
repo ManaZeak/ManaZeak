@@ -1,5 +1,6 @@
 import UserInterface from '../view/UserInterface';
 import Kom from './Kom';
+import Lang from './Lang';
 'use strict';
 
 
@@ -16,8 +17,7 @@ class Mzk {
     // HTML template is loaded with loading overlay
     // Initializing communication and UI controllers
     this.kom = new Kom();
-    // Load User
-    // Load NLS from user pref
+    this.nls = new Lang('en');
     this.ui = new UserInterface();
     // Init scene with main page
     this.setView({ name: 'MainPage' });
@@ -25,56 +25,30 @@ class Mzk {
 
 
   setView(options) {
-    this.ui.setSceneView(options).then(() => {
-      Logger.raise({
-        severity: 'success',
-        title: 'View updated',
-        message: `The ${options.name} view has been succesfully instantiated and displayed`
-      });
-    }).catch(error => {
-      Logger.raise({
-        severity: 'error',
-        title: 'View not updated',
-        message: `The ${options.name} view hasn't been instantiated nor displayed, ${error}`
-      });
-    });
+    this.ui.setSceneView(options)
+      .then(() => Logger.raise('F_VIEW_SET_SUCCESS'))
+      .catch(() => Logger.raise('F_VIEW_SET_ERROR'));
   }
 
 
   setModal(options) {
-    this.ui.setModal(options).then(() => {
-      Logger.raise({
-        severity: 'success',
-        title: 'Modal opened',
-        message: `The ${options.name} view has been succesfully instantiated and opened`
-      });
-    }).catch(error => {
-      Logger.raise({
-        severity: 'error',
-        title: 'Modal not opened',
-        message: `The ${options.name} view hasn't been instantiated nor opened, ${error}`
-      });
-    });
+    this.ui.setModal(options)
+      .then(() => Logger.raise('F_MODAL_SET_SUCCESS'))
+      .catch(() => Logger.raise('F_MODAL_SET_ERROR'));
   }
 
 
   getFragment(options) {
     return new Promise((resolve, reject) => {
-      this.ui.getFragment(options).then(response => {
-        Logger.raise({
-          severity: 'success',
-          title: 'Fragment fetched',
-          message: `The ${options.name} fragment has been succesfully loaded`
+      this.ui.getFragment(options)
+        .then(fragment => {
+          Logger.raise('F_FRAGMENT_GET_SUCCESS')
+          resolve(fragment);
+        })
+        .catch(() => {
+          Logger.raise('F_FRAGMENT_GET_ERROR');
+          reject();
         });
-        resolve(response);
-      }).catch(error => {
-        Logger.raise({
-          severity: 'error',
-          title: 'Fragment not fetched',
-          message: `The ${options.name} view hasn't been loaded, ${error}`
-        });
-        reject(error);
-      });
     });
   }
 

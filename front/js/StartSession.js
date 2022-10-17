@@ -8,9 +8,12 @@ import Mzk from './core/Mzk';
 
 // Globally used util components
 window.Evts = new CustomEvents();
-window.Ntif = new Notification();
+window.Notif = new Notification();
 window.Utils = new Utils();
-window.Logger = new Logger({ notification: window.Notification });
+window.Logger = new Logger({
+  notification: window.Notif,
+  log: (window.location.href.indexOf('?debug') > -1) ? true : false
+});
 
 
 // Create new ManaZeak object to init internals then full init

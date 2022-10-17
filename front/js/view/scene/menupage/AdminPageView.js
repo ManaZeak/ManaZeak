@@ -41,46 +41,34 @@ class AdminPageView extends TabView {
 
   _usersClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/user-list')
-      .then(() => {
-        this._activeFragment = new UsersFragment({
-          target: this._viewContainer,
-          refresh: this._usersClicked.bind(this)
-        });
-      })
-      .catch(error => {
-        Logger.raise(error);
+    this._fetchViewFragment('/fragment/admin/user-list').then(() => {
+      this._activeFragment = new UsersFragment({
+        target: this._viewContainer,
+        refresh: this._usersClicked.bind(this)
       });
+    }).catch(error => Logger.raise(error));
   }
 
 
   _wishesClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/wish/all')
-      .then(() => {
-        this._activeFragment = new WishesFragment({
-          target: this._viewContainer,
-          refresh: this._wishesClicked.bind(this)
-        });
-      })
-      .catch(error => {
-        Logger.raise(error);
+    this._fetchViewFragment('/fragment/admin/wish/all').then(() => {
+      this._activeFragment = new WishesFragment({
+        target: this._viewContainer,
+        refresh: this._wishesClicked.bind(this)
       });
+    }).catch(error => Logger.raise(error));
   }
 
 
   _syncthingClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/syncthing')
-      .then(() => {
-        this._activeFragment = new SyncThingFragment({
-          target: this._viewContainer,
-          refresh: this._syncthingClicked.bind(this)
-        });
-      })
-      .catch(error => {
-        Logger.raise(error);
+    this._fetchViewFragment('/fragment/admin/syncthing').then(() => {
+      this._activeFragment = new SyncThingFragment({
+        target: this._viewContainer,
+        refresh: this._syncthingClicked.bind(this)
       });
+    }).catch(error => Logger.raise(error));
   }
 
 

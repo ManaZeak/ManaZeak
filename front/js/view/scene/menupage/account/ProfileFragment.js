@@ -20,45 +20,25 @@ class ProfileFragment {
   _fillAttributes() {
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
-    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInvite, this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInviteCode, this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
   }
 
 
-  _copyInvite() {
+  _copyInviteCode() {
     const inviteCode = this._target.querySelector('#invite-code').innerHTML;
-    this._saveToClipboard(inviteCode).then(() => {
-      Logger.raise({
-        severity: 'success',
-        title: 'Saved in clipboard',
-        message: 'The invitation code was saved in the clipboard successfully'
-      });
-    }).catch(() => {
-      Logger.raise({
-        severity: 'error',
-        title: 'Unable to save in clipboard',
-        message: 'The invitation code wasn\'t saved in the clipboard'
-      });
-    });
+    this._saveToClipboard(inviteCode)
+      .then(() => Logger.raise('F_INVIT_CODE_CLIPBOARD_SUCCESS'))
+      .catch(() => Logger.raise('F_INVIT_CODE_CLIPBOARD_ERROR'));
   }
 
 
   _copyInviteLink() {
     const inviteCode = this._target.querySelector('#invite-code').innerHTML;
     const link = `${window.location.origin}/register?invite-code=${inviteCode}`;
-    this._saveToClipboard(link).then(() => {
-      Logger.raise({
-        severity: 'success',
-        title: 'Saved in clipboard',
-        message: 'The invitation link was saved in the clipboard successfully'
-      });
-    }).catch(() => {
-      Logger.raise({
-        severity: 'error',
-        title: 'Unable to save in clipboard',
-        message: 'The invitation code wasn\'t saved in the clipboard'
-      });
-    });
+    this._saveToClipboard(link)
+      .then(() => Logger.raise('F_INVIT_LINK_CLIPBOARD_SUCCESS'))
+      .catch(() => Logger.raise('F_INVIT_LINK_CLIPBOARD_ERROR'));
   }
 
 

@@ -61,7 +61,7 @@ class TabView extends SceneView {
       this.startLoading()
         .then(mzk.getFragment.bind(mzk, url))
         .then(response => {
-          this._viewContainer.insertAdjacentHTML( 'beforeend', response);
+          this._viewContainer.insertAdjacentHTML('beforeend', response);
           requestAnimationFrame(resolve);
         })
         .catch(reject)

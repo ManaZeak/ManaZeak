@@ -40,31 +40,23 @@ class AccountPageView extends TabView {
 
   _profileClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/account/profile')
-      .then(() => {
-        this._activeFragment = new ProfileFragment({
-          target: this._viewContainer,
-          refresh: this._profileClicked.bind(this)
-        });
-      })
-      .catch(error => {
-        Logger.raise(error);
+    this._fetchViewFragment('/fragment/account/profile').then(() => {
+      this._activeFragment = new ProfileFragment({
+        target: this._viewContainer,
+        refresh: this._profileClicked.bind(this)
       });
+    }).catch(error => Logger.raise(error));
   }
 
 
   _preferenceClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/account/preference')
-      .then(() => {
-        this._activeFragment = new PreferenceFragment({
-          target: this._viewContainer,
-          refresh: this._preferenceClicked.bind(this)
-        });
-      })
-      .catch(error => {
-        Logger.raise(error);
+    this._fetchViewFragment('/fragment/account/preference').then(() => {
+      this._activeFragment = new PreferenceFragment({
+        target: this._viewContainer,
+        refresh: this._preferenceClicked.bind(this)
       });
+    }).catch(error => Logger.raise(error));
   }
 
 

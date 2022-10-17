@@ -21,9 +21,7 @@ class MenuPageView extends SceneView {
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))
       .then(this._viewReady)
-      .catch(error => {
-        Logger.raise(error);
-      });
+      .catch(error => Logger.raise(error));
   }
 
 
