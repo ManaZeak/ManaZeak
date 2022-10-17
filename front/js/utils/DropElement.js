@@ -72,12 +72,12 @@ class DropElement {
    * @since December 2020
    * @description <blockquote>This method will subscribe to drop events, both for desktop and mobile.</blockquote> **/
   _events() {
-    this._evtIds.push(Events.addEvent('dragenter', this._target, this._dragEnter, this));
-    this._evtIds.push(Events.addEvent('dragover', this._target, this._dragOver, this));
-    this._evtIds.push(Events.addEvent('dragleave', this._target, this._dragLeave, this));
-    this._evtIds.push(Events.addEvent('drop', this._target, this._drop, this));
-    this._evtIds.push(Events.addEvent('touchmove', document.body, this._dragTouchOver, this));
-    this._evtIds.push(Events.addEvent('touchend', document.body, this._dragTouchEnd, this));
+    this._evtIds.push(Evts.addEvent('dragenter', this._target, this._dragEnter, this));
+    this._evtIds.push(Evts.addEvent('dragover', this._target, this._dragOver, this));
+    this._evtIds.push(Evts.addEvent('dragleave', this._target, this._dragLeave, this));
+    this._evtIds.push(Evts.addEvent('drop', this._target, this._drop, this));
+    this._evtIds.push(Evts.addEvent('touchmove', document.body, this._dragTouchOver, this));
+    this._evtIds.push(Evts.addEvent('touchend', document.body, this._dragTouchEnd, this));
   }
 
 

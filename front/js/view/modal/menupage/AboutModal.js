@@ -33,7 +33,7 @@ class AboutModal extends Modal {
    * @description <blockquote>This method will destroy the Modal parent (see documentation).</blockquote> **/
   destroy() {
     super.destroy();
-    Events.removeEvent(this._footerCloseEvtId);
+    Evts.removeEvent(this._footerCloseEvtId);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -66,7 +66,7 @@ class AboutModal extends Modal {
    * @description <blockquote>This method will listen to any click on the submit button to process the textarea
    * content to send it to the backend if needed.</blockquote> **/
   _events() {
-    this._footerCloseEvtId = Events.addEvent('click', this._footerCloseButton, this.close, this);
+    this._footerCloseEvtId = Evts.addEvent('click', this._footerCloseButton, this.close, this);
   }
 
 

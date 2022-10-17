@@ -24,6 +24,8 @@ class UserInterface {
     this._loadingOverlay = null;
     // Build loading overlay and add its style class
     this._loadingOverlay = document.getElementById('mzk-loading-overlay');
+    // The HTML comes with the loading overlay visible
+    this.stopLoading();
   }
 
 

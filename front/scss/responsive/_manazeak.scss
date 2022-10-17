@@ -32,10 +32,11 @@
       }
 
       .wish-grid-wrapper {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
 
         .pending-wishes {
+          border-right: solid 1px var(--mzk-color-text-alpha-10) !important;
           grid-row: span 2;
         }
       }

@@ -8,10 +8,9 @@ class MainPageView extends SceneView {
   constructor() {
     super({
       type: 'main',
-      url: '/fragment/mainpage/'
+      url: '/fragment/mainpage/',
+      css: 'static/dist/css/mainpage.bundle.css'
     });
-
-    Utils.appendLinkInHead('static/dist/css/mainpage.bundle.css');
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))

@@ -75,10 +75,10 @@ class DragElement {
    * @since December 2020
    * @description <blockquote>This method will subscribe to drag events, both for desktop and mobile.</blockquote> **/
   _events() {
-    this._evtIds.push(Events.addEvent('dragstart', this._target, this._dragStart, this));
-    this._evtIds.push(Events.addEvent('touchstart', this._target, this._dragStart, this));
-    this._evtIds.push(Events.addEvent('touchmove', this._target, this._dragTouchMove, this));
-    this._evtIds.push(Events.addEvent('touchend', this._target, this._dragTouchEnd, this));
+    this._evtIds.push(Evts.addEvent('dragstart', this._target, this._dragStart, this));
+    this._evtIds.push(Evts.addEvent('touchstart', this._target, this._dragStart, this));
+    this._evtIds.push(Evts.addEvent('touchmove', this._target, this._dragTouchMove, this));
+    this._evtIds.push(Evts.addEvent('touchend', this._target, this._dragTouchEnd, this));
   }
 
 

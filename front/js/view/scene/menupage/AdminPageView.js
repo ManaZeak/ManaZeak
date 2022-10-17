@@ -10,10 +10,9 @@ class AdminPageView extends TabView {
   constructor() {
     super({
       type: 'admin',
-      url: '/fragment/admin/'
+      url: '/fragment/admin/',
+      css: 'static/dist/css/admin.bundle.css'
     });
-
-    Utils.appendLinkInHead('static/dist/css/admin.bundle.css');
 
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))

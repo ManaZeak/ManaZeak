@@ -18,10 +18,10 @@ class ProfileFragment {
 
 
   _fillAttributes() {
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInvite, this));
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInvite, this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
   }
 
 

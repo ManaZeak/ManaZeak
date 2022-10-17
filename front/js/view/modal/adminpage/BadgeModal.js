@@ -19,7 +19,7 @@ class BadgeModal extends Modal {
 
   destroy() {
     super.destroy();
-    Events.removeEvent(this._submitEvtId);
+    Evts.removeEvent(this._submitEvtId);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -36,7 +36,7 @@ class BadgeModal extends Modal {
 
 
   _events() {
-    this._submitEvtId = Events.addEvent('click', this._submitInput, this._submitClicked, this);
+    this._submitEvtId = Evts.addEvent('click', this._submitInput, this._submitClicked, this);
   }
 
 

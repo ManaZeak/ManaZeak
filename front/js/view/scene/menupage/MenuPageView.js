@@ -7,10 +7,9 @@ class MenuPageView extends SceneView {
   constructor() {
     super({
       type: 'menu',
-      url: '/fragment/menupage/'
+      url: '/fragment/menupage/',
+      css: 'static/dist/css/menu.bundle.css'
     });
-
-    Utils.appendLinkInHead('static/dist/css/menu.bundle.css');
 
     this._adminItem = null;
     this._userItem = null;
@@ -45,10 +44,10 @@ class MenuPageView extends SceneView {
 
 
   _events() {
-    this._evtIds.push(Events.addEvent('click', this._adminItem, mzk.setView.bind(mzk, { name: 'AdminPage' }), this));
-    this._evtIds.push(Events.addEvent('click', this._userItem, mzk.setView.bind(mzk, { name: 'AccountPage' }), this));
-    this._evtIds.push(Events.addEvent('click', this._wishItem, mzk.setModal.bind(mzk, { name: 'Wish' }), this));
-    this._evtIds.push(Events.addEvent('click', this._aboutItem, mzk.setModal.bind(mzk, { name: 'About' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._adminItem, mzk.setView.bind(mzk, { name: 'AdminPage' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._userItem, mzk.setView.bind(mzk, { name: 'AccountPage' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._wishItem, mzk.setModal.bind(mzk, { name: 'Wish' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._aboutItem, mzk.setModal.bind(mzk, { name: 'About' }), this));
   }
 
 

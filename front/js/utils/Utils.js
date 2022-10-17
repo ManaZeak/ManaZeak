@@ -31,9 +31,9 @@ class Utils {
 
 
   clearAllEvents(evtIds) {
-    if (evtIds.length > 0 && Events) {
+    if (evtIds.length > 0 && Evts) {
       for (let i = 0; i < evtIds.length; ++i) {
-        Events.removeEvent(evtIds);
+        Evts.removeEvent(evtIds);
       }
     }
   }

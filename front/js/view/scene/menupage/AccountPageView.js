@@ -9,10 +9,9 @@ class AccountPageView extends TabView {
   constructor() {
     super({
       type: 'account',
-      url: '/fragment/account/'
+      url: '/fragment/account/',
+      css: 'static/dist/css/account.bundle.css'
     });
-
-    Utils.appendLinkInHead('static/dist/css/account.bundle.css');
 
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))

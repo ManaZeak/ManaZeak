@@ -57,7 +57,7 @@ class WishesFragment {
         });
         this._dragElements.push(dragElement);
         // Remove wish
-        this._evtIds.push(Events.addEvent('click', wishes.children[i], this._removeWish, { element: wishes.children[i], scope: this }));
+        this._evtIds.push(Evts.addEvent('click', wishes.children[i], this._removeWish, { element: wishes.children[i], scope: this }));
       }
     }
   }

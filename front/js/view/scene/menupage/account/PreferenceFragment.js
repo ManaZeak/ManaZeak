@@ -20,7 +20,7 @@ class PreferenceFragment {
 
 
   _fillAttributes() {
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#theme-switch'), this._switchTheme, this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#theme-switch'), this._switchTheme, this));
   }
 
 

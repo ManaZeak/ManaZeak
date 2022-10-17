@@ -26,16 +26,16 @@ class Scene {
 
   buildView(options) {
     return new Promise((resolve, reject) => {
-      const failEvtId = Events.subscribe('SceneViewFailed', errors => {
+      const failEvtId = Evts.subscribe('SceneViewFailed', errors => {
         // Restore mainpage if view doesn't exists
         // Don't unsubscribe ready evt as we load MainPage that requires this evt
         this.clearScene();
         this.view = new ViewFactory('MainPage');
         mzk.ui.processLogFromServer(errors);
       }, true);
-      Events.subscribe('SceneViewReady', () => {
+      Evts.subscribe('SceneViewReady', () => {
         this._scene.append(this.view.dom);
-        Events.unsubscribe(failEvtId);
+        Evts.unsubscribe(failEvtId);
         resolve();
       }, true);
       // Scene clearing and view instantiation

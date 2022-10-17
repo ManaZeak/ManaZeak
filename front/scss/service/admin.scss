@@ -38,11 +38,42 @@
     .syncthing-wrapper {
       height: 100%;
       padding-top: 2rem;
+
+      h1 {
+        text-indent: 4rem;
+      }
     }
 
     .user-list-wrapper {
       display: flex;
       flex-direction: column;
+
+      .users-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 50rem);
+        height: calc(100% - 14rem);
+        width: 100%;
+
+        .user-container {
+          align-items: center;
+          background-color: var(--mzk-color-bg-light);
+          border-radius: 5px;
+          cursor: pointer;
+          display: flex;
+          height: 12rem;
+          margin: 10px;
+          padding: 20px;
+
+          img {
+            height: 4rem;
+            max-width: 4rem;
+          }
+
+          .user-controls {
+            margin-left: auto;
+          }
+        }
+      }
 
       .badges-wrapper {
         display: flex;
@@ -56,35 +87,20 @@
           cursor: pointer;
           display: flex;
           height: 4rem;
+          margin: 0 var(--mzk-margin);
           padding: 0 10px;
 
           img {
             height: 3rem;
             max-width: 3rem;
           }
-        }
-      }
 
-      .users-wrapper {
-        height: calc(100% - 14rem);
-        width: 100%;
-
-        .user-container {
-          align-items: center;
-          background-color: var(--mzk-color-bg-light);
-          border-radius: 5px;
-          cursor: pointer;
-          display: flex;
-          margin: 10px;
-          padding: 20px;
-
-          img {
-            height: 4rem;
-            max-width: 4rem;
+          &:first-child {
+            margin-left: 0;
           }
 
-          .user-controls {
-            margin-left: auto;
+          &:last-child {
+            margin-right: 0;
           }
         }
       }
@@ -101,10 +117,6 @@
       .accepted-wishes,
       .refused-wishes {
         overflow-y: auto;
-
-        h1 {
-          text-align: center;
-        }
       }
 
       .wish {

@@ -34,7 +34,7 @@ class WishModal extends Modal {
    * subscription, and finally will destroy all properties of this class. It's then properly destroyed.</blockquote> **/
   destroy() {
     super.destroy();
-    Events.removeEvent(this._submitEvtId);
+    Evts.removeEvent(this._submitEvtId);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -67,7 +67,7 @@ class WishModal extends Modal {
    * @description <blockquote>This method will listen to any click on the submit button to process the textarea
    * content to send it to the backend if needed.</blockquote> **/
   _events() {
-    this._submitEvtId = Events.addEvent('click', this._submitInput, this._submitClicked, this);
+    this._submitEvtId = Evts.addEvent('click', this._submitInput, this._submitClicked, this);
   }
 
 
@@ -105,7 +105,7 @@ class WishModal extends Modal {
       // Restore new modal content
       this._modalOverlay.appendChild(this._rootElement);
       // Avoid event stacking
-      Events.removeEvent(this._submitEvtId);
+      Evts.removeEvent(this._submitEvtId);
       // Reset submit event id
       this._submitEvtId = -1;
       // Re-save internals with new template

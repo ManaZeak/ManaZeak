@@ -51,8 +51,8 @@ class Modal {
    * calling this method, to make the destruction process complete.</blockquote> **/
   destroy() {
     // Must be overridden in child class to clean extension properties and events
-    Events.removeEvent(this._overlayClickedEvtId); // Might do nothing, as event is removed in close method
-    Events.removeEvent(this._closeClickedEvtId); // Same for this event
+    Evts.removeEvent(this._overlayClickedEvtId); // Might do nothing, as event is removed in close method
+    Evts.removeEvent(this._closeClickedEvtId); // Same for this event
     delete this._url;
     delete this._rootElement;
     delete this._modalOverlay;
@@ -124,8 +124,8 @@ class Modal {
    * also register a subscription for a user click event on the modal overlay or on the close icon.</blockquote> **/
   open() {
     document.body.appendChild(this._modalOverlay);
-    this._overlayClickedEvtId = Events.addEvent('click', this._modalOverlay, this.close, this);
-    this._closeClickedEvtId = Events.addEvent('click', this._closeButton, this.close, this);
+    this._overlayClickedEvtId = Evts.addEvent('click', this._modalOverlay, this.close, this);
+    this._closeClickedEvtId = Evts.addEvent('click', this._closeButton, this.close, this);
   }
 
 
@@ -143,8 +143,8 @@ class Modal {
     // Must be overridden in child class to properly clean extension properties and events
     if (!event || (event && (event.target === this._modalOverlay || event.target === this._closeButton))) {
       // Clear close events int eh Events component
-      Events.removeEvent(this._overlayClickedEvtId);
-      Events.removeEvent(this._closeClickedEvtId);
+      Evts.removeEvent(this._overlayClickedEvtId);
+      Evts.removeEvent(this._closeClickedEvtId);
       this._overlayClickedEvtId = -1;
       this._closeClickedEvtId = -1;
       // Remove the overlay from the body

@@ -63,11 +63,11 @@ class UsersFragment {
       // Ban/Delete events
       const banUser = this._users[i].children[this._users[i].children.length - 1].children[0];
       const deleteUser = this._users[i].children[this._users[i].children.length - 1].children[1];
-      this._evtIds.push(Events.addEvent('click', banUser, this._banUser, { element: this._users[i], scope: this }));
-      this._evtIds.push(Events.addEvent('click', deleteUser, this._deleteUser, { element: this._users[i], scope: this }));
+      this._evtIds.push(Evts.addEvent('click', banUser, this._banUser, { element: this._users[i], scope: this }));
+      this._evtIds.push(Evts.addEvent('click', deleteUser, this._deleteUser, { element: this._users[i], scope: this }));
     }
     // Badge creation event
-    this._evtIds.push(Events.addEvent('click', this._target.querySelector('#new-badge'), mzk.setModal.bind(mzk, { name: 'Badge' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#new-badge'), mzk.setModal.bind(mzk, { name: 'Badge' }), this));
   }
 
 

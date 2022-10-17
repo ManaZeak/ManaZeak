@@ -18,8 +18,8 @@ class Aside {
 
 
   _events() {
-    this._evtIds.push(Events.addEvent('click', this._homepage, mzk.setView.bind(mzk, { name: 'MainPage' }), this));
-    this._evtIds.push(Events.addEvent('click', this._menupage, mzk.setView.bind(mzk, { name: 'MenuPage' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._homepage, mzk.setView.bind(mzk, { name: 'MainPage' }), this));
+    this._evtIds.push(Evts.addEvent('click', this._menupage, mzk.setView.bind(mzk, { name: 'MenuPage' }), this));
   }
 
 

@@ -34,7 +34,7 @@ class TabView extends SceneView {
 
   _events() {
     for (let i = 0; i < this._tabs.children.length; ++i) {
-      const eventId = Events.addEvent('click', this._tabs.children[i], this._tabClicked, this);
+      const eventId = Evts.addEvent('click', this._tabs.children[i], this._tabClicked, this);
       this._tabClickedEvtIds.push(eventId);
     }
   }

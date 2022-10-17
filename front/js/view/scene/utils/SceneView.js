@@ -16,6 +16,9 @@ class SceneView {
     this.wrapper = null;
     this._type = options.type;
     this._url = options.url;
+    this._css = options.css;
+
+    Utils.appendLinkInHead(this._css);
   }
 
 
@@ -73,7 +76,7 @@ class SceneView {
    * UI removing the loading overlay.</blockquote> */
   _viewReady() {
     return new Promise(resolve => {
-      Events.publish('SceneViewReady');
+      Evts.publish('SceneViewReady');
       resolve();
     });
   }
@@ -81,7 +84,7 @@ class SceneView {
 
   _viewFailed(errors) {
     // No need to return a promise, as it should be called last in failing process
-    Events.publish('SceneViewFailed', errors);
+    Evts.publish('SceneViewFailed', errors);
   }
 
 
