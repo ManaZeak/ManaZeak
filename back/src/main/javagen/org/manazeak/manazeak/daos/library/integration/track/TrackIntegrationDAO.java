@@ -27,7 +27,6 @@ public class TrackIntegrationDAO {
             "                                     location     = excluded.location, " +
             "                                     bpm          = excluded.bpm";
 
-    private static final String SQL_GENRE_ASSOCIATION = "";
     private final JdbcTemplate jdbcTemplate;
 
     public TrackIntegrationDAO(JdbcTemplate jdbcTemplate) {
