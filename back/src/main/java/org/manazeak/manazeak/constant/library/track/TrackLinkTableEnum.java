@@ -3,9 +3,9 @@ package org.manazeak.manazeak.constant.library.track;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 
 /**
- * Contains the information about the table that links the artists and the tracks/
+ * Contains the information about the table that links the artists and the tracks.
  */
-public enum TrackArtistLinkTableEnum {
+public enum TrackLinkTableEnum {
 
     LYRICIST("track_lyricist"),
     ENGINEER("track_engineer"),
@@ -13,14 +13,15 @@ public enum TrackArtistLinkTableEnum {
     PRODUCER("track_producer"),
     PERFORMER("track_performer"),
     COMPOSER("track_composer"),
-    ARTIST("track_band_artist");
+    ARTIST("track_band_artist"),
+    GENRE("track_genre", " (track_id, genre_id) VALUES (?, ?)");
 
 
     private static final String SQL_DELETE_START = "DELETE FROM ";
 
     private static final String SQL_INSERT_START = "INSERT INTO ";
 
-    private static final String SQL_INSERT_END = " (track_id, artist_id) VALUES (?, ?)";
+    private static final String SQL_INSERT_ARTIST_END = " (track_id, artist_id) VALUES (?, ?)";
 
     private static final String WHERE = " WHERE track_id IN (";
 
@@ -36,13 +37,14 @@ public enum TrackArtistLinkTableEnum {
     private final String insertRequest;
 
 
-    TrackArtistLinkTableEnum(String tableName) {
+    TrackLinkTableEnum(String tableName) {
         this.tableName = tableName;
-        insertRequest = SQL_INSERT_START + tableName + SQL_INSERT_END;
+        insertRequest = SQL_INSERT_START + tableName + SQL_INSERT_ARTIST_END;
     }
 
-    public String getTableName() {
-        return tableName;
+    TrackLinkTableEnum(String tableName, String insertEnd) {
+        this.tableName = tableName;
+        insertRequest = SQL_INSERT_START + tableName + insertEnd;
     }
 
     public String getInsertRequest() {

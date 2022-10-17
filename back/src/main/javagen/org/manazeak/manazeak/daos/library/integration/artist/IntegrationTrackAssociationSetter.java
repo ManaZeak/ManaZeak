@@ -10,24 +10,24 @@ import java.util.List;
 /**
  * Allows to integrate new artist association in the database.
  */
-public class IntegrationArtistAssociationSetter implements BatchPreparedStatementSetter {
+public class IntegrationTrackAssociationSetter implements BatchPreparedStatementSetter {
 
-    private final List<Pair<Long, Long>> artistsIds;
+    private final List<Pair<Long, Long>> associationIds;
 
 
-    public IntegrationArtistAssociationSetter(List<Pair<Long, Long>> artistsIds) {
-        this.artistsIds = artistsIds;
+    public IntegrationTrackAssociationSetter(List<Pair<Long, Long>> associationIds) {
+        this.associationIds = associationIds;
     }
 
     @Override
     public void setValues(PreparedStatement ps, int i) throws SQLException {
         // Setting the data from the artist integration object.
-        ps.setLong(1, artistsIds.get(i).getFirst());
-        ps.setLong(2, artistsIds.get(i).getSecond());
+        ps.setLong(1, associationIds.get(i).getFirst());
+        ps.setLong(2, associationIds.get(i).getSecond());
     }
 
     @Override
     public int getBatchSize() {
-        return artistsIds.size();
+        return associationIds.size();
     }
 }

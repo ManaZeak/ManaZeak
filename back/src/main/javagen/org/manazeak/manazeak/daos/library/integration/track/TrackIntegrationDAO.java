@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.library.integration.track;
 
-import org.manazeak.manazeak.constant.library.track.TrackArtistLinkTableEnum;
-import org.manazeak.manazeak.daos.library.integration.artist.IntegrationArtistAssociationSetter;
+import org.manazeak.manazeak.constant.library.track.TrackLinkTableEnum;
+import org.manazeak.manazeak.daos.library.integration.artist.IntegrationTrackAssociationSetter;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrationDto;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,6 +27,7 @@ public class TrackIntegrationDAO {
             "                                     location     = excluded.location, " +
             "                                     bpm          = excluded.bpm";
 
+    private static final String SQL_GENRE_ASSOCIATION = "";
     private final JdbcTemplate jdbcTemplate;
 
     public TrackIntegrationDAO(JdbcTemplate jdbcTemplate) {
@@ -61,43 +62,44 @@ public class TrackIntegrationDAO {
     }
 
     /**
-     * Delete all the association between the tracks and the artists.
+     * Delete all the association between the tracks and the linked objects.
      *
      * @param trackIds The list of track ids.
      */
-    public void deleteTrackArtistAssociation(List<Long> trackIds) {
-        for (TrackArtistLinkTableEnum link : TrackArtistLinkTableEnum.values()) {
+    public void deleteTracksAssociation(List<Long> trackIds) {
+        for (TrackLinkTableEnum link : TrackLinkTableEnum.values()) {
             // Generating the request and executing it.
             jdbcTemplate.update(link.getDeleteRequestWithParams(trackIds.size()), trackIds.toArray());
         }
     }
 
     /**
-     * Associate the track with the corresponding artist.
+     * Associate the track with the other elements of the application.
      *
      * @param tracks The information about the tracks to be inserted in the database.
      */
-    public void associateTracksToArtists(List<TrackIntegrationDto> tracks) {
-        Map<TrackArtistLinkTableEnum, ArrayList<Pair<Long, Long>>> associations = new EnumMap<>(TrackArtistLinkTableEnum.class);
+    public void associateTracksToElements(List<TrackIntegrationDto> tracks) {
+        Map<TrackLinkTableEnum, ArrayList<Pair<Long, Long>>> associations = new EnumMap<>(TrackLinkTableEnum.class);
         // Filling the map with empty lists.
-        for (TrackArtistLinkTableEnum link : TrackArtistLinkTableEnum.values()) {
+        for (TrackLinkTableEnum link : TrackLinkTableEnum.values()) {
             associations.put(link, new ArrayList<>());
         }
         // Generating the list of association for the different tables.
         for (TrackIntegrationDto track : tracks) {
             Long trackId = track.getTrackId();
-            addPairsAssociation(trackId, track.getLyricistIds(), associations.get(TrackArtistLinkTableEnum.LYRICIST));
-            addPairsAssociation(trackId, track.getEngineerIds(), associations.get(TrackArtistLinkTableEnum.ENGINEER));
-            addPairsAssociation(trackId, track.getArrangerIds(), associations.get(TrackArtistLinkTableEnum.ARRANGER));
-            addPairsAssociation(trackId, track.getProducerIds(), associations.get(TrackArtistLinkTableEnum.PRODUCER));
-            addPairsAssociation(trackId, track.getPerformerIds(), associations.get(TrackArtistLinkTableEnum.PERFORMER));
-            addPairsAssociation(trackId, track.getComposerIds(), associations.get(TrackArtistLinkTableEnum.COMPOSER));
-            addPairsAssociation(trackId, track.getArtistIds(), associations.get(TrackArtistLinkTableEnum.ARTIST));
+            addPairsAssociation(trackId, track.getLyricistIds(), associations.get(TrackLinkTableEnum.LYRICIST));
+            addPairsAssociation(trackId, track.getEngineerIds(), associations.get(TrackLinkTableEnum.ENGINEER));
+            addPairsAssociation(trackId, track.getArrangerIds(), associations.get(TrackLinkTableEnum.ARRANGER));
+            addPairsAssociation(trackId, track.getProducerIds(), associations.get(TrackLinkTableEnum.PRODUCER));
+            addPairsAssociation(trackId, track.getPerformerIds(), associations.get(TrackLinkTableEnum.PERFORMER));
+            addPairsAssociation(trackId, track.getComposerIds(), associations.get(TrackLinkTableEnum.COMPOSER));
+            addPairsAssociation(trackId, track.getArtistIds(), associations.get(TrackLinkTableEnum.ARTIST));
+            addPairsAssociation(trackId, track.getGenreIds(), associations.get(TrackLinkTableEnum.GENRE));
         }
 
         // Inserting the data one table at a time.
-        for (TrackArtistLinkTableEnum link : TrackArtistLinkTableEnum.values()) {
-            IntegrationArtistAssociationSetter setter = new IntegrationArtistAssociationSetter(associations.get(link));
+        for (TrackLinkTableEnum link : TrackLinkTableEnum.values()) {
+            IntegrationTrackAssociationSetter setter = new IntegrationTrackAssociationSetter(associations.get(link));
             jdbcTemplate.batchUpdate(link.getInsertRequest(), setter);
         }
     }

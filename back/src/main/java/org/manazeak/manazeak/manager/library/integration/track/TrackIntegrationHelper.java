@@ -44,19 +44,16 @@ public class TrackIntegrationHelper {
         track.setDuration(extractedTrack.getDuration());
         track.setOpus(extractedTrack.getOpus());
         track.setSubtitle(extractedTrack.getSubtitle());
+        // Getting the ID of the genre.
+        track.setGenreIds(getGenresIdsByGenreName(extractedTrack.getGenres()));
 
         // Getting the album ID from the cache.
         track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, extractedAlbum.getTitle()));
         // Getting the IDs of the artists.
         linkArtists(track, extractedTrack);
-        // Getting the ID of the genre.
-        track.setGenreIds(getGenresIdsByGenreName(extractedTrack.getGenres()));
-        // FIXME : fetch the keys ids from an enum.
 
         tracksByLocation.put(track.getLocation(), track);
     }
-
-
 
     /**
      * Linking the artist with the existing elements in the database.
@@ -99,8 +96,7 @@ public class TrackIntegrationHelper {
     private Set<Long> getGenresIdsByGenreName(Collection<String> genreNames) {
         Set<Long> ids = new HashSet<>();
         for (String genreName : genreNames) {
-            // FIXME : finish the genre integration into the database.
-            // ids.add(cacheAccessManager.getLongValue());
+            ids.add(cacheAccessManager.getLongValue(CacheEnum.GENRE_ID_BY_NAME, genreName));
         }
         return ids;
     }

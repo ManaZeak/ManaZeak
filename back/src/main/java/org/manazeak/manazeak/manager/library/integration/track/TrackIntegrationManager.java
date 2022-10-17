@@ -43,7 +43,7 @@ public class TrackIntegrationManager {
         deleteTrackAssociations(tracks);
 
         // Linking the tracks with the artist table.
-        trackIntegrationDao.associateTracksToArtists(tracks);
+        trackIntegrationDao.associateTracksToElements(tracks);
     }
 
     /**
@@ -97,13 +97,13 @@ public class TrackIntegrationManager {
         for (TrackIntegrationDto track : tracks) {
             trackIds.add(track.getTrackId());
             if (trackIds.size() >= BUFFER_SIZE) {
-                trackIntegrationDao.deleteTrackArtistAssociation(trackIds);
+                trackIntegrationDao.deleteTracksAssociation(trackIds);
                 trackIds.clear();
             }
         }
 
         if (!trackIds.isEmpty()) {
-            trackIntegrationDao.deleteTrackArtistAssociation(trackIds);
+            trackIntegrationDao.deleteTracksAssociation(trackIds);
         }
     }
 }
