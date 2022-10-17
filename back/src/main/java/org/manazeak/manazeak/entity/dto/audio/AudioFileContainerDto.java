@@ -74,6 +74,8 @@ public class AudioFileContainerDto {
 
     private String subtitle;
 
+    private String key;
+
     private AudioFileHeaderContainerDto headers;
 
     public AudioFileHeaderContainerDto getHeaders() {
@@ -354,5 +356,13 @@ public class AudioFileContainerDto {
 
     public void setEngineers(String engineers) {
         this.engineers = engineers;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

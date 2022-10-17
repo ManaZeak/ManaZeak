@@ -6,6 +6,7 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.manager.library.integration.album.AlbumIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationHelper;
+import org.manazeak.manazeak.manager.library.integration.genre.GenreIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.label.LabelIntegrationHelper;
 import org.manazeak.manazeak.manager.library.integration.track.TrackIntegrationHelper;
 
@@ -22,12 +23,14 @@ public class LibraryIntegrationContainer {
     private final LabelIntegrationHelper labelIntegrationHelper;
 
     private final TrackIntegrationHelper trackIntegrationHelper;
+    private final GenreIntegrationHelper genreIntegrationHelper;
 
     public LibraryIntegrationContainer(CacheAccessManager cacheAccessManager) {
         artistIntegrationHelper = new ArtistIntegrationHelper(cacheAccessManager);
         albumIntegrationHelper = new AlbumIntegrationHelper(cacheAccessManager);
         labelIntegrationHelper = new LabelIntegrationHelper(cacheAccessManager);
         trackIntegrationHelper = new TrackIntegrationHelper(cacheAccessManager);
+        genreIntegrationHelper = new GenreIntegrationHelper(cacheAccessManager);
     }
 
     /**
@@ -49,6 +52,8 @@ public class LibraryIntegrationContainer {
         // Adding the artists contained in the track.
         artistIntegrationHelper.extractArtistFromTrack(track);
         trackIntegrationHelper.extractTrack(track, album);
+        // Adding the genre in the database.
+        track.getGenres().forEach(genreIntegrationHelper::addGenre);
     }
 
     /**
@@ -81,5 +86,9 @@ public class LibraryIntegrationContainer {
 
     public TrackIntegrationHelper getTrackIntegrationHelper() {
         return trackIntegrationHelper;
+	}
+	
+    public GenreIntegrationHelper getGenreIntegrationHelper() {
+        return genreIntegrationHelper;
     }
 }

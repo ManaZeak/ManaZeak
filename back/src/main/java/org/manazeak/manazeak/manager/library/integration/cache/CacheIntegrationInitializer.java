@@ -46,6 +46,7 @@ public class CacheIntegrationInitializer {
         Set<String> artistsNames = new HashSet<>();
         Set<String> albumsNames = new HashSet<>();
         Set<String> labelNames = new HashSet<>();
+        Set<String> genreNames = new HashSet<>();
 
         // Iterating through the bands.
         for (ExtractedBandDto band : bands) {
@@ -56,6 +57,7 @@ public class CacheIntegrationInitializer {
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Adding the artists from the track.
                     artistIntegrationManager.extractArtistNameFromExtractedTrack(track, artistsNames);
+                    genreNames.addAll(track.getGenres());
                 }
             }
         }
@@ -66,6 +68,8 @@ public class CacheIntegrationInitializer {
         albumIntegrationCacheManager.addElementsFromDatabaseToCache(albumsNames);
         // Getting the label in the database that are not present inside the cache.
         labelIntegrationCacheManager.addElementsFromDatabaseToCache(labelNames);
+        // Getting the genre in the database that are not present inside the cache.
+
     }
 
 }

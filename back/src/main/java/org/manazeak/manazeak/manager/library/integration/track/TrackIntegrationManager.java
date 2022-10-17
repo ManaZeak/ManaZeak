@@ -40,10 +40,10 @@ public class TrackIntegrationManager {
         trackIntegrationDao.mergeTracks(tracks);
 
         // Deleting the track association before updating them.
-
+        deleteTrackAssociations(tracks);
 
         // Linking the tracks with the artist table.
-
+        trackIntegrationDao.associateTracksToArtists(tracks);
     }
 
     /**

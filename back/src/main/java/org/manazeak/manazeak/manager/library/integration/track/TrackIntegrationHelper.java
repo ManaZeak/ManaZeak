@@ -6,6 +6,7 @@ import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrati
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.manazeak.manazeak.util.FieldUtil;
 
 import java.util.*;
 
@@ -74,6 +75,10 @@ public class TrackIntegrationHelper {
         track.setEngineerIds(getIdsFromArtistsNames(extractedTrack.getEngineers()));
         // Getting the arranger ids.
         track.setArrangerIds(getIdsFromArtistsNames(extractedTrack.getArrangers()));
+        // Getting the band artists
+        track.setArtistIds(getIdsFromArtistsNames(extractedTrack.getArtists()));
+        // Getting the producers ids.
+        track.setProducerIds(getIdsFromArtistsNames(extractedTrack.getProducers()));
     }
 
     /**
@@ -109,7 +114,9 @@ public class TrackIntegrationHelper {
     private Set<Long> getIdsFromArtistsNames(Collection<String> artistsNames) {
         Set<Long> ids = new HashSet<>();
         for (String artistName : artistsNames) {
-            ids.add(cacheAccessManager.getLongValue(CacheEnum.ARTIST_ID_BY_NAME, artistName));
+            if (FieldUtil.checkStringNotEmpty(artistName)) {
+                ids.add(cacheAccessManager.getLongValue(CacheEnum.ARTIST_ID_BY_NAME, artistName));
+            }
         }
 
         return ids;

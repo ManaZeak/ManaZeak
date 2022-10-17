@@ -54,17 +54,20 @@ public class LibraryIntegrationManager {
         final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
 
         int startIndex = 0;
+        int numberOfPackage = 1;
+        int totalNumberOfPackages = (int) Math.ceil((double) artists.size() / (double) bufferSize);
         // Splitting the list in multiple lists.
         for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
             // Launch the integration of the sub element of the list.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex)));
+            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex), numberOfPackage, totalNumberOfPackages));
             startIndex = endIndex;
+            numberOfPackage++;
         }
 
         // Checking if the is any artists left in the integration buffer not processed.
         if (startIndex < artists.size()) {
             // There is some artist not processed.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size())));
+            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size()), numberOfPackage, totalNumberOfPackages));
         }
         // No more job accepted.
         executor.shutdown();
@@ -88,17 +91,24 @@ public class LibraryIntegrationManager {
      * @param artistFolders A list of artists folder to process.
      * @return The runnable to launch the integration into the thread pool.
      */
-    private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders) {
+    private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders,
+                                                    final int currentPackageNumber, final int totalPackageNumber) {
         return () -> {
             try {
+                LOG.info("Processing the {} / {} package.", currentPackageNumber, totalPackageNumber);
+
                 // Launch the tag extraction of the artist.
                 List<ExtractedBandDto> bands = new ArrayList<>();
+                LOG.info("Starting the extraction the tags from the tracks.");
                 for (ScannedArtistDto artistFolder : artistFolders) {
                     bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
                 }
+                LOG.info("Finished the tag extractions.");
 
+                LOG.info("Starting the database insertion of the tags.");
                 // Launch the integration of the artist data.
                 integrationBufferManager.integrateBuffer(bands);
+                LOG.info("Finished the database insertion.");
             } catch (Exception e) {
                 LOG.error("An error occurred during the artist folder integration.", e);
             }
@@ -110,7 +120,7 @@ public class LibraryIntegrationManager {
      */
     private void clearAllIntegrationCaches() {
         // The list of the caches that needs to be cleared.
-        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE, CacheEnum.LABEL_ID_BY_NAME};
+        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE, CacheEnum.LABEL_ID_BY_NAME, CacheEnum.GENRE_ID_BY_NAME, CacheEnum.RECORDING_LOCATION_ID_BY_NAME};
         // Clearing each cache.
         for (CacheEnum cache : caches) {
             CacheEnum.getCache(cache, cacheManager).invalidate();

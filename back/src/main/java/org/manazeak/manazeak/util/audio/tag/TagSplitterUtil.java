@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.util.audio.tag;
 
+import org.apache.commons.lang.StringUtils;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
@@ -27,6 +28,10 @@ public final class TagSplitterUtil {
      * @return The spliced tags.
      */
     public static List<String> splitTag(String tag) {
+        // In the case where there is no tags, returning an empty list.
+        if (StringUtils.isEmpty(tag)) {
+            return new ArrayList<>();
+        }
         // Split the data with the regex pattern
         String[] data = tag.split(";");
         // Trim The extracted data.
@@ -39,6 +44,7 @@ public final class TagSplitterUtil {
 
     /**
      * Split the recording date tag.
+     *
      * @param recordingDate The recording date contained in the tag.
      * @return The recording date.
      */

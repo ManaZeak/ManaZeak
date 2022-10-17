@@ -6,6 +6,7 @@ import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComp
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.manazeak.manazeak.util.FieldUtil;
 import org.manazeak.manazeak.util.audio.tag.TagCheckerUtil;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 
@@ -86,7 +87,10 @@ public final class ArtistIntegrationTrackExtractorHelper {
     private static void addListArtistNames(Map<String, ArtistIntegrationDto> artists, List<String> artistsNames,
                                            CacheAccessManager cacheAccessManager) {
         for (String artist : artistsNames) {
-            processStringArtist(artists, artist, cacheAccessManager);
+            // If the artist string is empty, no artist to be added.
+            if (FieldUtil.checkStringNotEmpty(artist)) {
+                processStringArtist(artists, artist, cacheAccessManager);
+            }
         }
     }
 

@@ -26,6 +26,9 @@ public class CacheAccessManager {
      * @return The value contained in the cache.
      */
     public Long getLongValue(CacheEnum cache, Object key) {
+        if (key == null) {
+            return null;
+        }
         Cache.ValueWrapper cacheValue = CacheEnum.getCache(cache, cacheManager).get(key);
         if (cacheValue == null) {
             return null;

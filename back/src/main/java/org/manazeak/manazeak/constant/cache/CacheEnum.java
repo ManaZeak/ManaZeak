@@ -19,7 +19,15 @@ public enum CacheEnum {
     /**
      * Contains the label name linked to their id in the database.
      */
-    LABEL_ID_BY_NAME("label_id_by_name", String.class, Long.class, true);
+    LABEL_ID_BY_NAME("label_id_by_name", String.class, Long.class, true),
+    /**
+     * Contains the genre name linked to their id in the database.
+     */
+    GENRE_ID_BY_NAME("genre_id_by_name", String.class, Long.class, true),
+    /**
+     * Contains the recording location of an album linked to their id in the database.
+     */
+    RECORDING_LOCATION_ID_BY_NAME("recording_location_id_by_name", String.class, Long.class, true);
 
     private static final int UNLIMITED_SIZE = 100000;
 

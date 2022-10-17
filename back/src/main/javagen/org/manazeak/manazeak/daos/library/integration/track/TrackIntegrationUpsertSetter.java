@@ -21,16 +21,17 @@ public class TrackIntegrationUpsertSetter implements BatchPreparedStatementSette
     public void setValues(PreparedStatement ps, int i) throws SQLException {
         TrackIntegrationDto track = tracks.get(i);
         ps.setLong(1, track.getTrackId());
-        ps.setInt(2, track.getDiscNumber());
-        ps.setInt(3, track.getTrackNumber());
-        ps.setString(4, track.getIsrc());
-        ps.setString(5, track.getLyrics());
-        ps.setDouble(6, track.getDuration());
-        ps.setString(7, track.getOpus());
-        ps.setString(8, track.getSubtitle());
-        ps.setLong(9, track.getAlbumId());
-        ps.setString(10, track.getLocation());
-        ps.setDouble(11, track.getBpm());
+        ps.setString(2, track.getTitle());
+        ps.setInt(3, track.getDiscNumber());
+        ps.setInt(4, track.getTrackNumber());
+        ps.setString(5, track.getIsrc());
+        ps.setString(6, track.getLyrics());
+        ps.setDouble(7, track.getDuration());
+        ps.setString(8, track.getOpus());
+        ps.setString(9, track.getSubtitle());
+        ps.setLong(10, track.getAlbumId());
+        ps.setString(11, track.getLocation());
+        ps.setObject(12, track.getBpm());
     }
 
     @Override

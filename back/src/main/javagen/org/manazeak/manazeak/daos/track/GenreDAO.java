@@ -1,14 +1,27 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
 import org.manazeak.manazeak.entity.track.Genre;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 /**
  * Data Access Object for Genre using Spring CrudRepository interface
- *
+ * <p>
  * This file has been automatically generated
  */
-public interface GenreDAO extends CrudRepository<Genre,  Long> {
+public interface GenreDAO extends CrudRepository<Genre, Long> {
+
+    /**
+     * Select a list of genre inside the database.
+     *
+     * @param genreNames The list of genre to select.
+     * @return The genre found in the database that match.
+     */
+    @Query("select genreId, name as genreName from Genre where name in :genreNames")
+    List<GenreLinkerProjection> getGenreByNames(List<String> genreNames);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

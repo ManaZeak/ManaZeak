@@ -9,7 +9,8 @@ public enum FieldsTagEnum {
     RELEASEDATE,
     EAN_UPN("EAN/UPN"),
     LOCATION,
-    CATALOGNUMBER;
+    CATALOGNUMBER,
+    KEY("INITIALKEY");
 
     private final String tag;
 

@@ -184,6 +184,7 @@ public final class TagReaderUtil {
         // Getting the label
         container.setLabel(tag.getFirst(FieldKey.COPYRIGHT).trim());
         container.setProducer(tag.getFirst(FieldKey.RECORD_LABEL));
+        container.setKey(tag.getFirst(FieldKey.KEY));
     }
 
     /**
@@ -207,10 +208,12 @@ public final class TagReaderUtil {
         container.setRecordingLocation(FieldsTagEnum.LOCATION.getTag());
         container.setEanUpn(flacTag.getFirst(FieldsTagEnum.EAN_UPN.getTag()));
         container.setCatalogNumber(flacTag.getFirst(FieldsTagEnum.CATALOGNUMBER.getTag()));
+        container.setKey(flacTag.getFirst(FieldsTagEnum.KEY.getTag()));
         List<String> recordingDates = TagSplitterUtil.splitRecordingDate(flacTag.getFirst(FieldKey.RECORDINGDATE));
         if (recordingDates.size() == SIZE_RECORDING_DATE) {
             container.setStartRecordingDate(recordingDates.get(0));
             container.setEndRecordingDate(recordingDates.get(1));
         }
+
     }
 }

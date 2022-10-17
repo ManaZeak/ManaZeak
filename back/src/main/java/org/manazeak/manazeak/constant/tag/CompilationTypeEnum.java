@@ -8,7 +8,8 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 public enum CompilationTypeEnum {
     REGULAR(1L, 0),
     VARIOUS_ARTIST(2L, 1),
-    COMPILATION(3L, 2);
+    COMPILATION(3L, 2),
+    MIX(4L, 3);
 
     private final Long id;
     private final int code;
