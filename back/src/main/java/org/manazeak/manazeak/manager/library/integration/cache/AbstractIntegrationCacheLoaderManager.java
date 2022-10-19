@@ -43,10 +43,11 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
             dbElements.addAll(getDatabaseObjects(listElements));
         }
 
-        // Adding the elements to the cache.
-        for (T dbElement : dbElements) {
-            getCache().put(dbElement.getKey(), dbElement.getId());
-        }
+        addDbElementToCache(dbElements);
+    }
+
+    public void addAllElementFromDatabaseToCache() {
+        addDbElementToCache(getDatabaseObjects(new ArrayList<>()));
     }
 
     /**
@@ -62,6 +63,13 @@ public abstract class AbstractIntegrationCacheLoaderManager<T extends CacheObjec
      * @return The cache.
      */
     protected abstract Cache getCache();
+
+    private void addDbElementToCache(List<T> dbElements) {
+        // Adding the elements to the cache.
+        for (T dbElement : dbElements) {
+            getCache().put(dbElement.getKey(), dbElement.getId());
+        }
+    }
 
     /**
      * Remove the elements that are already present in the cache from the set.

@@ -22,7 +22,7 @@ public final class LibraryConstant {
     /**
      * The number of thread that will be used to extract the track of the library.
      */
-    public static final int LIBRARY_SCAN_THREAD_NUMBER = 1;
+    public static final int LIBRARY_SCAN_THREAD_NUMBER = 3;
 
     /**
      * The number of thread that will be used to extract the covers.

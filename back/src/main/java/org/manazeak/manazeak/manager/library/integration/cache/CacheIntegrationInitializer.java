@@ -6,6 +6,8 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.library.integration.album.AlbumIntegrationCacheManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationCacheManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationManager;
+import org.manazeak.manazeak.manager.library.integration.genre.GenreIntegrationCacheManager;
+import org.manazeak.manazeak.manager.library.integration.key.TonalKeyCacheManager;
 import org.manazeak.manazeak.manager.library.integration.label.LabelIntegrationCacheManager;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +28,29 @@ public class CacheIntegrationInitializer {
     private final ArtistIntegrationCacheManager artistIntegrationCacheManager;
     private final AlbumIntegrationCacheManager albumIntegrationCacheManager;
     private final LabelIntegrationCacheManager labelIntegrationCacheManager;
+    private final GenreIntegrationCacheManager genreIntegrationCacheManager;
+    private final TonalKeyCacheManager tonalKeyCacheManager;
 
     public CacheIntegrationInitializer(ArtistIntegrationManager artistIntegrationManager,
                                        ArtistIntegrationCacheManager artistIntegrationCacheManager,
                                        AlbumIntegrationCacheManager albumIntegrationCacheManager,
-                                       LabelIntegrationCacheManager labelIntegrationCacheManager) {
+                                       LabelIntegrationCacheManager labelIntegrationCacheManager,
+                                       GenreIntegrationCacheManager genreIntegrationCacheManager,
+                                       TonalKeyCacheManager tonalKeyCacheManager) {
         this.artistIntegrationManager = artistIntegrationManager;
         this.artistIntegrationCacheManager = artistIntegrationCacheManager;
         this.albumIntegrationCacheManager = albumIntegrationCacheManager;
         this.labelIntegrationCacheManager = labelIntegrationCacheManager;
+        this.genreIntegrationCacheManager = genreIntegrationCacheManager;
+        this.tonalKeyCacheManager = tonalKeyCacheManager;
+    }
+
+    /**
+     * Initialise the caches that are needed to integrate the data into the database. This operation is done only once at each integration.
+     */
+    public void initCacheIntegration() {
+        // Initialise the tonal keys cache.
+        tonalKeyCacheManager.addAllElementFromDatabaseToCache();
     }
 
     /**
@@ -69,7 +85,7 @@ public class CacheIntegrationInitializer {
         // Getting the label in the database that are not present inside the cache.
         labelIntegrationCacheManager.addElementsFromDatabaseToCache(labelNames);
         // Getting the genre in the database that are not present inside the cache.
-
+        genreIntegrationCacheManager.addElementsFromDatabaseToCache(genreNames);
     }
 
 }

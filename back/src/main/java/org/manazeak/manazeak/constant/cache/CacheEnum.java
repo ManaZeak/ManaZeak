@@ -27,7 +27,12 @@ public enum CacheEnum {
     /**
      * Contains the recording location of an album linked to their id in the database.
      */
-    RECORDING_LOCATION_ID_BY_NAME("recording_location_id_by_name", String.class, Long.class, true);
+    RECORDING_LOCATION_ID_BY_NAME("recording_location_id_by_name", String.class, Long.class, true),
+    /**
+     * Contains the keys names linked to their id in the reference table of the database.
+     */
+    KEY_ID_BY_NAME("key_id_by_name", String.class, Long.class, true, 100);
+
 
     private static final int UNLIMITED_SIZE = 100000;
 

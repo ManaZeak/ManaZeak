@@ -152,7 +152,7 @@ COMMENT ON COLUMN recording_location.country_id IS 'ManyToOne FK country';
 
 CREATE TABLE track (
 	track_id BIGINT not null,
-	title VARCHAR(100) not null,
+	title VARCHAR(500) not null,
 	disc_number INTEGER not null,
 	track_number INTEGER not null,
 	isrc VARCHAR(32),
@@ -163,7 +163,7 @@ CREATE TABLE track (
 	duration DOUBLE PRECISION not null,
 	first_bar DOUBLE PRECISION,
 	opus VARCHAR(50),
-	subtitle VARCHAR(100),
+	subtitle VARCHAR(200),
 	album_id BIGINT,
 	CONSTRAINT PK_TRACK PRIMARY KEY (track_id)
 );

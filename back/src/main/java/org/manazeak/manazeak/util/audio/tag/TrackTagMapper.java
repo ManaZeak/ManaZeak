@@ -95,6 +95,7 @@ public final class TrackTagMapper {
         track.setLyricists(TagSplitterUtil.splitTag(fileContainer.getLyricists()));
         track.setEngineers(TagSplitterUtil.splitTag(fileContainer.getEngineers()));
         track.setArrangers(TagSplitterUtil.splitTag(fileContainer.getArranger()));
+        track.setKeys(TagSplitterUtil.splitTag(fileContainer.getKey()));
         track.setYear(fileContainer.getDate());
         track.setDiscNumber(CastUtil.castStringToInt(fileContainer.getDiscNumber()));
         track.setTrackNumber(CastUtil.castStringToInt(fileContainer.getTrackNumber()));

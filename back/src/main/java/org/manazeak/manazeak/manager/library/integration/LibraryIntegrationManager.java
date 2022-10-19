@@ -4,6 +4,7 @@ import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
+import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
 import org.manazeak.manazeak.manager.library.track.ArtistFolderExtractorHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class LibraryIntegrationManager {
     private final CacheManager cacheManager;
     private final IntegrationBufferManager integrationBufferManager;
     private final EntityManager entityManager;
+    private final CacheIntegrationInitializer cacheIntegrationInitializer;
     /**
      * The number of artist folder that will be integrated by thread.
      */
@@ -36,10 +38,12 @@ public class LibraryIntegrationManager {
     private int bufferSize;
 
     @Autowired
-    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager, EntityManager entityManager) {
+    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager,
+                                     EntityManager entityManager, CacheIntegrationInitializer cacheIntegrationInitializer) {
         this.cacheManager = cacheManager;
         this.integrationBufferManager = integrationBufferManager;
         this.entityManager = entityManager;
+        this.cacheIntegrationInitializer = cacheIntegrationInitializer;
     }
 
     /**
@@ -50,6 +54,8 @@ public class LibraryIntegrationManager {
     public void integrateScannedLibrary(List<ScannedArtistDto> artists) {
         // Clearing all the data contained in the caches.
         clearAllIntegrationCaches();
+        // Adding the data needed to complete the integration.
+        //cacheIntegrationInitializer.initCacheIntegration();
 
         final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
 
@@ -120,7 +126,8 @@ public class LibraryIntegrationManager {
      */
     private void clearAllIntegrationCaches() {
         // The list of the caches that needs to be cleared.
-        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE, CacheEnum.LABEL_ID_BY_NAME, CacheEnum.GENRE_ID_BY_NAME, CacheEnum.RECORDING_LOCATION_ID_BY_NAME};
+        CacheEnum[] caches = {CacheEnum.ARTIST_ID_BY_NAME, CacheEnum.ALBUM_ID_BY_TITLE, CacheEnum.LABEL_ID_BY_NAME,
+                CacheEnum.GENRE_ID_BY_NAME, CacheEnum.RECORDING_LOCATION_ID_BY_NAME, CacheEnum.KEY_ID_BY_NAME};
         // Clearing each cache.
         for (CacheEnum cache : caches) {
             CacheEnum.getCache(cache, cacheManager).invalidate();

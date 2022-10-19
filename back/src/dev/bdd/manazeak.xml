@@ -774,7 +774,7 @@
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_1A9776F7_9266_4b20_A367_18245BAE50B1" name="title" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000227_9266_4b20_A367_18245BAE50B1" value="1"/>
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000228_9266_4b20_A367_18245BAE50B1" value="1"/>
-						<type xmi:idref="EAJava_DoTexte100"/>
+						<type xmi:idref="EAJava_DoTexte500"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_87F1B9BE_3366_4bc9_BFE2_7021A0600D01" name="disc_number" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000229_3366_4bc9_BFE2_7021A0600D01" value="1"/>
@@ -829,7 +829,7 @@
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_31431100_0018_4263_9E78_E28EF2491CF8" name="subtitle" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000249_0018_4263_9E78_E28EF2491CF8" value="0"/>
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000250_0018_4263_9E78_E28EF2491CF8" value="1"/>
-						<type xmi:idref="EAJava_DoTexte100"/>
+						<type xmi:idref="EAJava_DoTexte200"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_dst85F398_14A0_4e23_ADCD_451068ED0667" name="producer" visibility="public" association="EAID_2185F398_14A0_4e23_ADCD_451068ED0667" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
 						<type xmi:idref="EAID_73BF2901_CC6C_438e_84F8_5DE48E7128C1"/>
@@ -2348,7 +2348,7 @@
 						<initial/>
 						<documentation/>
 						<model ea_localid="936" ea_guid="{1A9776F7-9266-4b20-A367-18245BAE50B1}"/>
-						<properties type="DoTexte100" collection="false" static="0" duplicates="0" changeability="changeable"/>
+						<properties type="DoTexte500" collection="false" static="0" duplicates="0" changeability="changeable"/>
 						<coords ordered="0"/>
 						<containment containment="Not Specified" position="1"/>
 						<stereotype/>
@@ -2513,7 +2513,7 @@
 						<initial/>
 						<documentation/>
 						<model ea_localid="975" ea_guid="{31431100-0018-4263-9E78-E28EF2491CF8}"/>
-						<properties type="DoTexte100" collection="false" static="0" duplicates="0" changeability="changeable"/>
+						<properties type="DoTexte200" collection="false" static="0" duplicates="0" changeability="changeable"/>
 						<coords ordered="0"/>
 						<containment containment="Not Specified" position="13"/>
 						<stereotype/>

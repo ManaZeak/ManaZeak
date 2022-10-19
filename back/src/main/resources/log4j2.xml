@@ -19,9 +19,11 @@
 
     <Loggers>
         <Logger name="org.manazeak" level="INFO"/>
+        <!-- Debug parameters for hibernate, used to show the queries.
         <Logger name="org.hibernate.SQL" level="debug"/>
         <Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="debug"/>
         <Logger name="org.hibernate.stat.internal.ConcurrentStatisticsImpl" level="debug"/>
+        -->
         <Root level="INFO">
             <AppenderRef ref="Console"/>
         </Root>

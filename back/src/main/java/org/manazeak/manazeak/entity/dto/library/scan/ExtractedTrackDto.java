@@ -53,6 +53,8 @@ public class ExtractedTrackDto {
 
     private String subtitle;
 
+    private List<String> key;
+
     public String getLyrics() {
         return lyrics;
     }
@@ -227,5 +229,13 @@ public class ExtractedTrackDto {
 
     public void setArrangers(List<String> arrangers) {
         this.arrangers = arrangers;
+    }
+
+    public List<String> getKeys() {
+        return key;
+    }
+
+    public void setKeys(List<String> key) {
+        this.key = key;
     }
 }

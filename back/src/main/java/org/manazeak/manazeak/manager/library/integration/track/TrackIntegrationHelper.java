@@ -45,7 +45,9 @@ public class TrackIntegrationHelper {
         track.setOpus(extractedTrack.getOpus());
         track.setSubtitle(extractedTrack.getSubtitle());
         // Getting the ID of the genre.
-        track.setGenreIds(getGenresIdsByGenreName(extractedTrack.getGenres()));
+        track.setGenreIds(getElementIdsByNames(extractedTrack.getGenres(), CacheEnum.GENRE_ID_BY_NAME));
+        // TODO : uncomment and make it work (cache init problem).
+        // track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));
 
         // Getting the album ID from the cache.
         track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, extractedAlbum.getTitle()));
@@ -93,10 +95,11 @@ public class TrackIntegrationHelper {
         return ids;
     }
 
-    private Set<Long> getGenresIdsByGenreName(Collection<String> genreNames) {
+
+    private Set<Long> getElementIdsByNames(Collection<String> names, CacheEnum cache) {
         Set<Long> ids = new HashSet<>();
-        for (String genreName : genreNames) {
-            ids.add(cacheAccessManager.getLongValue(CacheEnum.GENRE_ID_BY_NAME, genreName));
+        for (String name : names) {
+            ids.add(cacheAccessManager.getLongValue(cache, name));
         }
         return ids;
     }

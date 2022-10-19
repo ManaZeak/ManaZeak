@@ -72,6 +72,7 @@ public final class ArtistIntegrationTrackExtractorHelper {
         // If no id has been found in the cache, we create a new one.
         if (artist.getId() == null) {
             artist.setId(PkIdProvider.singleton().getNewPkId(Artist.class));
+            cacheAccessManager.put(CacheEnum.ARTIST_ID_BY_NAME, artist.getName(), artist.getId());
         }
 
         return artist;
