@@ -3,7 +3,7 @@
   width: 100%;
 
   [class$="-item"] {
-    margin: 3rem;
+    margin: var(--margin-big);
     border: solid 1px lime;
   }
 }

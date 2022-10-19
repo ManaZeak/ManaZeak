@@ -10,7 +10,7 @@
   box-sizing: border-box;
   /* Firefox scroll bar restyle */
   scrollbar-width: thin;
-  scrollbar-color: var(--mzk-color-scrollbar) transparent;
+  scrollbar-color: var(--color-scrollbar) transparent;
 }
 /* Webkit based scroll bar style */
 *::-webkit-scrollbar {
@@ -22,13 +22,13 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--mzk-color-scrollbar);
+  background-color: var(--color-scrollbar);
 }
 /* Global set for html and body tag to have unified platform across pages */
 html, body {
   align-items: center;
-  background-color: var(--mzk-color-bg-light);
-  color: var(--mzk-color-text);
+  background-color: var(--color-bg-light);
+  color: var(--color-txt);
   display: flex;
   font-family: Helvetica, serif;
   font-size: 62.5%;
@@ -41,7 +41,7 @@ html, body {
   width: 100%;
 }
 body {
-  font-size: var(--mzk-font-size);
+  font-size: var(--font-size);
 }
 /* Text inputs */
 input[type="password"],
@@ -49,8 +49,8 @@ input[type="text"],
 input[type="email"] {
   background: 0;
   border: 0;
-  border-bottom: solid 1px var(--mzk-color-border);
-  color: var(--mzk-color-text);
+  border-bottom: solid 1px var(--color-border);
+  color: var(--color-txt);
   margin: 0;
   padding: 5px;
   text-align: center;
@@ -81,10 +81,10 @@ input[type="file"] {
 input[type="date"],
 select {
   background: 0;
-  border: 1px solid var(--mzk-color-border);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   box-sizing: content-box;
-  color: var(--mzk-color-text);
+  color: var(--color-txt);
   cursor: pointer;
   font-weight: bold;
   margin: 0;
@@ -92,9 +92,9 @@ select {
 }
 textarea {
   background: 0;
-  border: solid 1px var(--mzk-color-border);
+  border: solid 1px var(--color-border);
   border-radius: 6px;
-  color: var(--mzk-color-text);
+  color: var(--color-txt);
   height: 3rem;
   margin: 0;
   padding: 5px;
@@ -119,9 +119,9 @@ button,
 input[type="submit"],
 label.submit {
   background: 0;
-  border: 1px solid var(--mzk-color-border);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
-  color: var(--mzk-color-text);
+  color: var(--color-txt);
   cursor: pointer;
   font-weight: bold;
   margin: 0;
@@ -161,8 +161,8 @@ form {
 }
 
 .scene-wrapper {
-  background-image: linear-gradient(var(--mzk-color-bg-lighter), var(--mzk-color-bg-darker));
-  height: calc(100% - var(--mzk-footbar-height));
+  background-image: linear-gradient(var(--color-bg-lighter), var(--color-bg-darker));
+  height: calc(100% - var(--footbar-height));
 }
 
 @media only screen and (min-width: 800px) {

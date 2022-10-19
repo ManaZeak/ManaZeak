@@ -10,14 +10,14 @@
   }
 
   .tooltip-text {
-    background-color: var(--mzk-color-bg-alpha-75);
+    background-color: var(--color-bg-alpha-75);
     border-radius: 3px;
     display: block;
-    color: var(--mzk-color-text);
-    font-size: var(--mzk-font-size-small);
+    color: var(--color-txt);
+    font-size: var(--font-size-small);
     max-width: 250px;
     opacity: 0;
-    padding: var(--mzk-padding-small) var(--mzk-padding);
+    padding: var(--padding-small) var(--padding);
     position: absolute;
     text-align: center;
     transform: translate3d(0, 0, 0);
@@ -28,12 +28,12 @@
     width: max-content;
 
     &.right {
-      top: calc(50% - (var(--mzk-font-size-small) / 2) - var(--mzk-padding-small));
+      top: calc(50% - (var(--font-size-small) / 2) - var(--padding-small));
       left: 100%;
 
       &::after {
         content: ' ';
-        border-color: transparent var(--mzk-color-bg-alpha-75) transparent transparent;
+        border-color: transparent var(--color-bg-alpha-75) transparent transparent;
         border-style: solid;
         border-width: .25rem;
         position: absolute;
@@ -49,7 +49,7 @@
 
       &::after {
         content: ' ';
-        border-color: transparent transparent transparent var(--mzk-color-bg-alpha-75);
+        border-color: transparent transparent transparent var(--color-bg-alpha-75);
         border-style: solid;
         border-width: .25rem;
         position: absolute;

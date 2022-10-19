@@ -5,7 +5,9 @@
   "main": "src/js/Start.js",
   "scripts": {
     "dev": "webpack --config front/webpack/webpack.dev.js --progress",
+    "watch": "webpack --config front/webpack/webpack.dev.js --progress",
     "prod": "webpack --config front/webpack/webpack.prod.js",
+    "build": "webpack --config front/webpack/webpack.prod.js",
     "test": "karma start front/test/karma.config.js",
     "testdev": "karma start front/test/karma.config.js --dev=true",
     "doc": "jsdoc -c ./doc/config/jsDoc.json",
@@ -38,9 +40,6 @@
     },
     {
       "name": "Armand Vignat"
-    },
-    {
-      "name": "Laetitia Genin"
     }
   ],
   "license": "GPL-3.0",

@@ -1,6 +1,6 @@
 /* Loading spinner between views */
 .mzk-loading-overlay {
-  background-color: var(--mzk-color-bg-darker-alpha-75);
+  background-color: var(--color-bg-darker-alpha-75);
   cursor: progress;
   height: 100%;
   left: 0;
@@ -11,13 +11,13 @@
 
   &::before {
     content: '';
-    background-color: var(--mzk-color-primary);
-    border-radius: var(--mzk-border-radius);
-    height: var(--mzk-margin-big);
-    left: calc(50% - var(--mzk-margin-small));
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+    height: var(--margin-big);
+    left: calc(50% - var(--margin-small));
     position: absolute;
     top: 50%;
-    width: var(--mzk-margin-big);
+    width: var(--margin-big);
 
     animation: rotate-plane 1.2s infinite ease-in-out; // Custom keyframe
   }

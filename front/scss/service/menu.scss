@@ -20,7 +20,7 @@
 
     .item {
       align-items: center;
-      background-color: var(--mzk-color-bg-light);
+      background-color: var(--color-bg-light);
       border-radius: 5px;
       cursor: pointer;
       display: flex;
@@ -31,7 +31,7 @@
       &:active,
       &:focus,
       &:hover {
-        box-shadow: 0 0 0.3rem var(--mzk-color-primary-alpha-50);
+        box-shadow: 0 0 0.3rem var(--color-primary-alpha-50);
         transform: rotate(-2deg);
 
         &:nth-child(2n + 1) {
@@ -40,7 +40,7 @@
       }
 
       p {
-        padding-left: var(--mzk-padding);
+        padding-left: var(--padding);
       }
     }
   }

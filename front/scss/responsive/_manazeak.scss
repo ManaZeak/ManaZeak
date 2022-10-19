@@ -3,10 +3,10 @@
   /* Aside mobile rules */
   .aside {
     border-bottom: none;
-    border-right: solid 1px var(--mzk-color-text-alpha-10);
+    border-right: solid 1px var(--color-txt-alpha-10);
     flex-direction: column;
     height: 100%;
-    width: var(--mzk-aside-size);
+    width: var(--aside-size);
 
     .item-group {
       flex-direction: column;
@@ -14,8 +14,8 @@
   }
   /* Scene desktop rules */
   .scene {
-    height: var(--mzk-scene-height);
-    width: var(--mzk-scene-width);
+    height: var(--scene-height);
+    width: var(--scene-width);
   }
   /* Tooltip are desktop only */
   @import "../tool/tooltip";
@@ -36,7 +36,7 @@
         grid-template-rows: repeat(2, 1fr) !important;
 
         .pending-wishes {
-          border-right: solid 1px var(--mzk-color-text-alpha-10) !important;
+          border-right: solid 1px var(--color-txt-alpha-10) !important;
           grid-row: span 2;
         }
       }

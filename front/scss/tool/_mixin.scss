@@ -12,10 +12,10 @@
 
 /* Mixin for volumebar, progressbar, speedometer */
 @mixin bar-container() {
-  background-color: var(--mzk-color-icons);
-  border-radius: var(--mzk-border-radius);
+  background-color: var(--color-icons);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  height: var(--mzk-bar-height);
+  height: var(--bar-height);
   margin-left: auto;
   margin-right: auto;
   pointer-events: initial;
@@ -24,23 +24,23 @@
 }
 
 @mixin bar-thumb() {
-  background-color: var(--mzk-color-text-lighter);
+  background-color: var(--color-txt-lighter);
   border-radius: 50%;
   bottom: 0;
-  height: calc(var(--mzk-bar-height) * 2);
-  margin-left: calc(var(--mzk-bar-height) * -1);
-  margin-bottom: calc(var(--mzk-bar-height) / -2);
+  height: calc(var(--bar-height) * 2);
+  margin-left: calc(var(--bar-height) * -1);
+  margin-bottom: calc(var(--bar-height) / -2);
   opacity: 0;
   position: absolute;
-  width: calc(var(--mzk-bar-height) * 2);
+  width: calc(var(--bar-height) * 2);
 
   transition: opacity .2s ease;
 }
 
 @mixin bar-current() {
-  background-color: var(--mzk-color-primary);
-  border-radius: var(--mzk-border-radius) 0 0 var(--mzk-border-radius);
-  border-right: solid var(--mzk-border-width) var(--mzk-color-secondary-darker);
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  border-right: solid var(--border-width) var(--color-secondary-darker);
   bottom: 0;
   height: 100%;
   position: absolute;
@@ -48,6 +48,6 @@
   transition: background-color .2s ease;
 
   &.full {
-    border-radius: var(--mzk-border-radius);
+    border-radius: var(--border-radius);
   }
 }

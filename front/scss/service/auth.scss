@@ -5,7 +5,7 @@ html, body {
 }
 /* Content wrapper for whole page */
 .mzk-user {
-  font-size: var(--mzk-font-size);
+  font-size: var(--font-size);
   height: auto;
   margin: 0;
   padding: 0;
@@ -19,7 +19,7 @@ html, body {
   }
   /* Text that are both in and out of the form */
   p {
-    margin: var(--mzk-margin-big) var(--mzk-margin);
+    margin: var(--margin-big) var(--margin);
     /* Mainly for text under form to fit parent bottom */
     &:last-of-type {
       margin-bottom: 0;
@@ -34,7 +34,7 @@ html, body {
     &.global-error {
       color: #FF6B67;
       font-style: italic;
-      margin-bottom: var(--mzk-margin-big);
+      margin-bottom: var(--margin-big);
     }
   }
   /* Links */
@@ -51,10 +51,10 @@ html, body {
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
-    padding: var(--mzk-margin-bigger);
+    padding: var(--margin-bigger);
     width: max-content;
     div.tooltip {
-      margin: var(--mzk-margin-small) 0;
+      margin: var(--margin-small) 0;
     }
     /* Override auth margin on P for form errors */
     p {
@@ -74,7 +74,7 @@ html, body {
     input[type="date"],
     select,
     textarea {
-      margin-bottom: var(--mzk-margin-big);
+      margin-bottom: var(--margin-big);
       max-width: 225px;
       width: 90%;
     }
@@ -83,8 +83,8 @@ html, body {
     }
     input[type="date"],
     select {
-      background-color: var(--mzk-color-icons);
-      color: var(--mzk-color-text-negative);
+      background-color: var(--color-icons);
+      color: var(--color-txt-negative);
     }
     /* Error state for inputs */
     input.error {
@@ -92,7 +92,7 @@ html, body {
     }
     /* Form submit button */
     button {
-      margin-top: var(--mzk-margin-big);
+      margin-top: var(--margin-big);
     }
     /* Positioning form elements */
     button,
@@ -128,7 +128,6 @@ html, body {
   }
 }
 /* Import as last instruction to override standard behavior */
-@import "front/scss/tool/shortcut";
 @import "front/scss/responsive/auth";
 
 /* Tooltip container */
@@ -142,7 +141,7 @@ html, body {
   /* Half input bottom margin minus half help text height */
   --help-text-margin: calc((1.33rem / 2) - (.9rem / 2));
   cursor: help;
-  font-size: var(--mzk-font-size-small);
+  font-size: var(--font-size-small);
   font-style: italic;
   border-radius: 6px;
   bottom: calc(100% + var(--help-text-margin));

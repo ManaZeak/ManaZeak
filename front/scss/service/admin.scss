@@ -7,30 +7,30 @@
 
   .admin-tabs {
     align-items: flex-end;
-    border-bottom: solid 1px var(--mzk-color-text-alpha-10);
+    border-bottom: solid 1px var(--color-txt-alpha-10);
     display: flex;
-    height: calc(var(--mzk-font-size) * 2);
+    height: calc(var(--font-size) * 2);
     justify-content: center;
     width: 80%;
 
     p {
       border-bottom: solid 2px transparent;
       cursor: pointer;
-      height: calc(var(--mzk-font-size) * 2);
-      line-height: calc(var(--mzk-font-size) * 2);
-      padding: 0 var(--mzk-padding-huge);
+      height: calc(var(--font-size) * 2);
+      line-height: calc(var(--font-size) * 2);
+      padding: 0 var(--padding-huge);
       margin: 0;
       vertical-align: middle;
       transition: border .3s;
 
       &.selected {
-        border-bottom: solid 2px var(--mzk-color-primary);
+        border-bottom: solid 2px var(--color-primary);
       }
     }
   }
 
   .admin-view {
-    height: calc(100% - (var(--mzk-font-size) * 2));
+    height: calc(100% - (var(--font-size) * 2));
     width: 100%;
 
     .user-list-wrapper,
@@ -56,7 +56,7 @@
 
         .user-container {
           align-items: center;
-          background-color: var(--mzk-color-bg-light);
+          background-color: var(--color-bg-light);
           border-radius: 5px;
           cursor: pointer;
           display: flex;
@@ -82,13 +82,13 @@
 
         .badge-container {
           align-items: center;
-          border: solid 3px var(--mzk-color-bg-light);
+          border: solid 3px var(--color-bg-light);
           border-radius: 5px;
           cursor: pointer;
           display: flex;
           height: 4rem;
-          margin: 0 var(--mzk-margin);
-          padding: 0 10px;
+          margin: 0 var(--margin);
+          padding: 0 var(--padding);
 
           img {
             height: 3rem;
@@ -125,19 +125,19 @@
         cursor: pointer;
         display: flex;
         justify-content: space-between;
-        margin: 2rem;
-        padding: 2rem;
+        margin: var(--margin);
+        padding: var(--padding-big);
 
         &.pending {
-          background-image: linear-gradient(135deg, var(--mzk-color-bg-light) 50%, var(--mzk-color-anti-secondary) 150%);
+          background-image: linear-gradient(135deg, var(--color-bg-light) 50%, var(--color-anti-secondary) 150%);
         }
 
         &.accepted {
-          background-image: linear-gradient(135deg, var(--mzk-color-bg-light) 50%, var(--mzk-color-primary) 150%);
+          background-image: linear-gradient(135deg, var(--color-bg-light) 50%, var(--color-primary) 150%);
         }
 
         &.refused {
-          background-image: linear-gradient(135deg, var(--mzk-color-bg-light) 50%, var(--mzk-color-anti-primary) 150%);
+          background-image: linear-gradient(135deg, var(--color-bg-light) 50%, var(--color-anti-primary) 150%);
         }
 
         .wish-info {

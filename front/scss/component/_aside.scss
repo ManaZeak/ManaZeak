@@ -1,8 +1,8 @@
 .aside {
-  background-color: var(--mzk-color-bg-dark-alpha-25);
-  border-bottom: solid 1px var(--mzk-color-text-alpha-10);
+  background-color: var(--color-bg-dark-alpha-25);
+  border-bottom: solid 1px var(--color-txt-alpha-10);
   display: flex;
-  height: var(--mzk-aside-size);
+  height: var(--aside-size);
   justify-content: space-between;
   width: 100%;
 
@@ -12,16 +12,16 @@
     .item {
       align-items: center;
       display: flex;
-      height: var(--mzk-aside-size);
+      height: var(--aside-size);
       justify-content: center;
-      width: var(--mzk-aside-size);
+      width: var(--aside-size);
       position: relative;
       transition: background-color .2s;
 
       &:active,
       &:focus,
       &:hover {
-        background-color: var(--mzk-color-primary-alpha-10);
+        background-color: var(--color-primary-alpha-10);
       }
 
       img {
@@ -60,13 +60,13 @@
     &.track-preview {
       flex-direction: column;
       justify-content: center;
-      max-width: calc(100% - (4 * var(--mzk-aside-size))); /* In mobile, only four icons allowed in aside */
+      max-width: calc(100% - (4 * var(--aside-size))); /* In mobile, only four icons allowed in aside */
       padding: 5px;
       text-align: center;
 
       p {
         margin: 0;
-        font-size: var(--mzk-font-size-small);
+        font-size: var(--font-size-small);
         font-style: italic;
         @include text-ellipsis();
 
