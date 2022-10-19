@@ -5,9 +5,7 @@ class ResetPasswordModal extends Modal {
 
 
   constructor() {
-    super({
-      url: '/fragment/modal/reset-password/'
-    });
+    super('modal/reset-password');
   }
 
 

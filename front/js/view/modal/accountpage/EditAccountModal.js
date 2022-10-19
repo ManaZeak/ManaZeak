@@ -5,9 +5,7 @@ class EditAccountModal extends Modal {
 
 
   constructor() {
-    super({
-      url: '/fragment/modal/edit-account/'
-    });
+    super('modal/edit-account');
   }
 
 

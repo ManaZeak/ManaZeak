@@ -1,7 +1,7 @@
 @import "front/scss/tool/base";
 /* Auth pages background is a dank radial gradient */
 html, body {
-  background-image: radial-gradient(#2c2c30 0, #1f2127 45%, #0e0f14 80%);
+  background-image: radial-gradient(var(--color-bg-lighter) 0, var(--color-bg-light) 45%, var(--color-bg-dark) 80%);
 }
 /* Content wrapper for whole page */
 .mzk-user {
@@ -26,35 +26,34 @@ html, body {
     }
     /* To handle specific error on fields */
     &.error {
-      color: #FF6B67;
+      color: var(--color-anti-primary);
       font-style: italic;
       margin: 0;
     }
     /* Form global error (validation etc.) */
     &.global-error {
-      color: #FF6B67;
+      color: var(--color-anti-primary);
       font-style: italic;
       margin-bottom: var(--margin-big);
     }
   }
   /* Links */
   a {
-    color: #56d45b;
+    color: var(--color-primary);
     text-decoration: none;
   }
   /* Standard form across auth pages */
   form {
-    background-color: rgba(31, 33, 39, .1);
-    border: 1px solid #0e0f14;
-    border-radius: 6px;
-    box-shadow:  0 0 1rem 0 rgba(86, 212, 91, .05);
+    background-color: var(--color-bg);
+    border: var(--border-width) solid var(--color-bg-dark-alpha-25);
+    border-radius: var(--font-size);
+    box-shadow:  0 0 var(--padding) 0 var(--color-txt-darker-alpha-10);
     box-sizing: border-box;
-    margin-left: auto;
-    margin-right: auto;
-    padding: var(--margin-bigger);
-    width: max-content;
-    div.tooltip {
-      margin: var(--margin-small) 0;
+
+    padding: var(--padding-bigger) var(--padding-huge);
+
+    .tooltip {
+      margin: var(--margin) 0 0;
     }
     /* Override auth margin on P for form errors */
     p {
@@ -74,13 +73,16 @@ html, body {
     input[type="date"],
     select,
     textarea {
-      margin-bottom: var(--margin-big);
-      max-width: 225px;
-      width: 90%;
+      margin-bottom: var(--margin-small);
+      max-width: 50%;
+      outline: none;
+      width: 25rem;
     }
+    
     textarea {
       height: 8rem;
     }
+    
     input[type="date"],
     select {
       background-color: var(--color-icons);
@@ -88,7 +90,7 @@ html, body {
     }
     /* Error state for inputs */
     input.error {
-      border-bottom: solid 1px #FF6B67;
+      border-bottom: solid 1px var(--color-anti-primary);
     }
     /* Form submit button */
     button {
@@ -102,33 +104,12 @@ html, body {
       margin-left: auto;
       margin-right: auto;
     }
-
-    &.two-col-form {
-      align-items: center;
-      display: grid;
-      grid-template-columns: 50%;
-      grid-template-rows: 1fr auto;
-
-      .left-col {
-        grid-column: 1;
-        justify-self: flex-end;
-        margin-right: 1.5rem;
-      }
-
-      .right-col {
-        grid-column: 2;
-        justify-self: flex-start;
-        margin-left: 1.5rem;
-      }
-
-      button {
-        grid-column: 1 / span 2;
-      }
-    }
   }
 }
 /* Import as last instruction to override standard behavior */
 @import "front/scss/responsive/auth";
+
+/* Overriding tooltip to fit experience in login/register */
 
 /* Tooltip container */
 .tooltip {

@@ -126,6 +126,7 @@
 
   --color-txt-negative: var(--color-bg);
   --color-icons: var(--color-txt-darker);
+  --border-color: var(--color-txt-alpha-50);
 }
 
 .light-theme {
@@ -205,4 +206,5 @@
 
   --color-txt-negative: var(--color-bg);
   --color-icons: var(--color-txt-darker);
+  --border-color: var(--color-txt);
 }

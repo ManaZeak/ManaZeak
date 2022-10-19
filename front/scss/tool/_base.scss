@@ -49,7 +49,7 @@ input[type="text"],
 input[type="email"] {
   background: 0;
   border: 0;
-  border-bottom: solid 1px var(--color-border);
+  border-bottom: solid 1px var(--border-color);
   color: var(--color-txt);
   margin: 0;
   padding: 5px;
@@ -81,7 +81,7 @@ input[type="file"] {
 input[type="date"],
 select {
   background: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   box-sizing: content-box;
   color: var(--color-txt);
@@ -92,7 +92,7 @@ select {
 }
 textarea {
   background: 0;
-  border: solid 1px var(--color-border);
+  border: solid 1px var(--border-color);
   border-radius: 6px;
   color: var(--color-txt);
   height: 3rem;
@@ -119,7 +119,7 @@ button,
 input[type="submit"],
 label.submit {
   background: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   color: var(--color-txt);
   cursor: pointer;

@@ -9,12 +9,14 @@ class Modal {
    * exposes an open and a close method. Finally, it allows the user to click on the modal overlay, or on the close icon
    * to close the modal. The developer must override <code>destroy()</code> and <code>_fillAttributes()</code> methods
    * to fully cover the modal lifecycle (see each of these methods documentation).</blockquote>
-   * @param {object} options - The modal base options
-   * @param {string} options.url - The url to fetch the modal template from **/
-  constructor(options) {
+   * @param {string} type - The modal type to load (must match html template filename, no extension) **/
+  constructor(type) {
+    /** @private
+     * @member {string} - The modal type */
+     this._type = type;
     /** @private
      * @member {string} - The HTML template url to fetch */
-    this._url = options.url;
+    this._url = `/fragment/${this._type}/`;
     /** @private
      * @member {object} - The template root DOM element */
     this._rootElement = null;
@@ -80,7 +82,9 @@ class Modal {
    * so the child class constructor can be fully executed.</blockquote> **/
   _loadTemplate() {
     mzk.kom.getText(this._url).then(response => {
+      // Create DOM from fragment and tweak url to only keep modal type as css class
       this._rootElement = Utils.parseHTMLFragment(response);
+      this._rootElement.classList.add(`${this._type}-modal`);
       // Create overlay modal container
       this._modalOverlay = document.createElement('DIV');
       this._modalOverlay.className = 'loading-overlay';

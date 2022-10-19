@@ -12,9 +12,7 @@ class AboutModal extends Modal {
    * instance administrators. This wish can be reviewed in the admin page, in the wishes sections. This way, users can
    * leave a feedback on the instance, straight from their account.</blockquote> **/
   constructor() {
-    super({
-      url: '/fragment/about/'
-    });
+    super('about');
     /** @private
      * @member {object} - The modal close button */
     this._footerCloseButton = null;

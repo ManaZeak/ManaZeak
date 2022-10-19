@@ -12,9 +12,7 @@ class WishModal extends Modal {
    * instance administrators. This wish can be reviewed in the admin page, in the wishes sections. This way, users can
    * leave a feedback on the instance, straight from their account.</blockquote> **/
   constructor() {
-    super({
-      url: '/fragment/wish/'
-    });
+    super('wish');
     /** @private
      * @member {object} - The form submit input */
     this._submitInput = null;

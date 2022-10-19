@@ -9,7 +9,6 @@
   --border-jumbo-width: 3px;
   --border-radius: 3px;
   --border-jumbo-radius: 9px;
-  --border-color: var(--color-bg-dark);
 
   --font-size: 1.6rem;
   --font-size-big: 2.4rem;
@@ -19,14 +18,15 @@
   --padding-tiny: calc(var(--padding) / 4);
   --padding-small: calc(var(--padding) / 2);
   --padding-big: calc(var(--padding) * 2);
-  --padding-huge: calc(var(--padding) * 4);
+  --padding-bigger: calc(var(--padding) * 3);
+  --padding-huge: calc(var(--padding) * 6);
 
   --margin: 2rem;
   --margin-tiny: calc(var(--margin) / 4);
   --margin-small: calc(var(--margin) / 2);
   --margin-big: calc(var(--margin) * 2);
   --margin-bigger: calc(var(--margin) * 3);
-  --margin-huge: calc(var(--margin) * 4);
+  --margin-huge: calc(var(--margin) * 6);
 
   --logo-text-width: 145px;
 

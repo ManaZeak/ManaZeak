@@ -26,17 +26,12 @@
       display: flex;
       margin: 10px;
       padding: 20px;
-      transition: transform .2s, box-shadow .2s;
+      transition: box-shadow .2s;
 
       &:active,
       &:focus,
       &:hover {
         box-shadow: 0 0 0.3rem var(--color-primary-alpha-50);
-        transform: rotate(-2deg);
-
-        &:nth-child(2n + 1) {
-          transform: rotate(2deg);
-        }
       }
 
       p {

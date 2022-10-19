@@ -5,9 +5,7 @@ class BadgeModal extends Modal {
 
 
   constructor() {
-    super({
-      url: '/fragment/modal/new-badge/'
-    });
+    super('modal/new-badge');
     /** @private
      * @member {object} - The form submit input */
     this._submitInput = null;
