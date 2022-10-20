@@ -5,9 +5,11 @@
 [![License](https://img.shields.io/github/license/ManaZeak/ManaZeak.svg)](https://github.com/ManaZeak/ManaZeak/blob/master/LICENSE.md)
 ![](https://badgen.net/badge/version/1.0.1/blue)
 
-Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!
+*Are you fed up getting commercials while listening to your music online ? We are too. This is ManaZeak, a self-hostable web application that is based on your musical library. Share it with friends, with no restrictions and enjoy together your exquisite array of musical genius!*
 
 [Presentation page](https://manazeak.github.io/)
+
+![alt text](https://manazeak.github.io/assets/img/screenshot.png)
 
 The target application will provide the user a set of views to browse the musical library with the more details it can. Sorting by artists, albums, composers, producers, performers, genres, year (or timeframe), countries and even more! It will also allow users to create playlist that are private, or publicly shared with other users. Finally, restrain registrations on the instance using an invitation code system ; only the registered users have one and are able to share it to their friends and family. You may have a look at the [features list](https://github.com/ManaZeak/ManaZeak/wiki/%5BADM%5D-Features-list) so you have a complete understanding of how it works. Now without further ado, let's get started!
 
