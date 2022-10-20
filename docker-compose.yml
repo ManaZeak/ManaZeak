@@ -28,7 +28,7 @@ services:
             - ${RESOURCES_PATH}:/resources
             - ${LIBRARY_PATH}:/library
             - ${LOGS_PATH}:/log
-            - ${ASSETS_PATH}:/Pictures
+            - ${ASSETS_PATH}:/assets
         links:
             - db
         depends_on:
