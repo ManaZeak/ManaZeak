@@ -43,7 +43,19 @@
 
 .genre-graph-wrapper {
   height: 100%;
+  position: relative;
   width: 100%;
+
+  .graph-aside {
+    background-color: var(--color-bg-light-alpha-90);
+    border-radius: .5rem;
+    height: 20rem;
+    opacity: 0;
+    position: absolute;
+    bottom: var(--padding);
+    left: var(--padding);
+    width: 20rem;
+  }
 
   .graph-container {
     height: 100%;

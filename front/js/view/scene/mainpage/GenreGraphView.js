@@ -15,8 +15,11 @@ class GenreGraphView extends SceneView  {
     this._dataPath = '/static/GenresTaxonomy.json';
     this._data = {};
 
+    this._genres = {};
+
     this._fetchWrapper(this._url)
       .then(this._fetchData.bind(this, this._dataPath))
+      .then(this._init.bind(this))
       .then(this._viewReady) // We must ensure DOM is computed to its height/width
       .then(this._buildGraph.bind(this))
       .catch(error => Logger.raise(error));
@@ -45,6 +48,16 @@ class GenreGraphView extends SceneView  {
     });
   }
 
+
+  _init() {
+    return new Promise(resolve => {
+      const genres = this._data.genres.subgenres;
+      for (let i = 0; i < genres.length; ++i) {
+        this._genres[genres[i].name] = genres[i];
+      }
+      resolve();
+    });
+  }
 
   _buildGraph() {
     return new Promise(resolve => {
@@ -79,8 +92,15 @@ class GenreGraphView extends SceneView  {
   }
 
 
-  _genreClicked(data) {
-    console.log(data);
+  _genreClicked(data = {}) {
+    if (data.name && data.info) {
+      document.getElementById('genre-name').innerHTML = data.name;
+      document.getElementById('genre-start').innerHTML = data.info.start;
+      document.getElementById('genre-cover').src = `/resources/genre_cover/${data.name}.jpg`;
+      document.getElementById('graph-aside').style.opacity = 1;
+    } else {
+      document.getElementById('graph-aside').style.opacity = 0;      
+    }
   }
 
 

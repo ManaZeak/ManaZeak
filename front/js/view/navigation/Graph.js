@@ -72,7 +72,7 @@ class Graph {
   _canvasHovered(event, newNode) {
     const hoverPosition = this.canvas.ctx.transformedPoint( // Get clicked position relatively to all canvas transformations
       event.offsetX || (event.pageX - this.canvas.offsetLeft), // X coordinate
-      event.offsetY || (event.pageY - this.canvas.offsetTop)   // Y coordinate
+      event.offsetY || (event.pageY - this.canvas.offsetTop) // Y coordinate
     );
 
     for (let i = 0; i < this.tree.nodes.length; ++i) { // Iterate over nodes
@@ -96,7 +96,7 @@ class Graph {
   _click(event) {
     const clickPosition = this.canvas.ctx.transformedPoint( // Get clicked position relatively to all canvas transformations
       event.offsetX || (event.pageX - this.canvas.offsetLeft), // X coordinate
-      event.offsetY || (event.pageY - this.canvas.offsetTop)   // Y coordinate
+      event.offsetY || (event.pageY - this.canvas.offsetTop) // Y coordinate
     );
 
     for (let i = 0; i < this.tree.nodes.length; ++i) { // Iterate over nodes
@@ -113,6 +113,7 @@ class Graph {
       }
     }
 
+    this.cellClickedCB();
     this.tree.unselectAll(); // If no nodes have been clicked, we unselect all nodes
   }
 
@@ -123,17 +124,17 @@ class Graph {
    * @description Draw the tree in Canvas. Use RequestAnimationFram for more fluidity
    **/
   _draw() {
-    this.canvas.ctx.save();                                                               // Save previous translation / scale state
-    this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);                                       // Reset transformation temporary
+    this.canvas.ctx.save(); // Save previous translation / scale state
+    this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformation temporary
     this.canvas.ctx.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height); // Clearing viewport
-    this.canvas.ctx.restore();                                                            // Restoring translation / scale state
+    this.canvas.ctx.restore(); // Restoring translation / scale state
 
     for (let i = 0; i < this.tree.nodes.length; ++i) { // Iterate over tree
       if (this.tree.nodes[i].isVisible) { // Node visibility test
         this.tree.nodes[i].draw(this.canvas.ctx, this.tree.nodes[i].origin, this.tree.nodes[i].label); // Draw node
 
         if (this.tree.nodes[i].parent) { // Node parent test
-          this.canvas.ctx.strokeStyle = this.style.tree.connectorColor;       // Connector color
+          this.canvas.ctx.strokeStyle = this.style.tree.connectorColor; // Connector color
           // Draw connector
           this.canvas.ctx.stroke(this.canvas.connectorPath(
             this.tree.nodes[i].parent.getConnectorCoordinates(),
