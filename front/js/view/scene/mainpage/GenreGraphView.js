@@ -22,6 +22,13 @@ class GenreGraphView extends SceneView  {
       .catch(error => Logger.raise(error));
   }
 
+
+  destroy() {
+    this._graph.destroy();
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   // TODO share in parent class GraphView
   _fetchData(url) {
     return new Promise((resolve, reject) => {
@@ -36,7 +43,7 @@ class GenreGraphView extends SceneView  {
         })
         .catch(reject);
     });
-}
+  }
 
 
   _buildGraph() {
