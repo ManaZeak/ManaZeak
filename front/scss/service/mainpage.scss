@@ -55,6 +55,8 @@
     bottom: var(--padding);
     left: var(--padding);
     width: 20rem;
+
+    transition: opacity .2s;
   }
 
   .graph-container {

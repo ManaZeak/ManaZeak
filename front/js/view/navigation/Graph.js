@@ -26,7 +26,7 @@ class Graph {
     this._rafId
     this._evtIds = [];
 
-    this._init(this.tree.layoutWidth());
+    this._init(this.tree.layoutSize());
     this._eventListeners(); // Listen to App events
   }
 
@@ -44,10 +44,13 @@ class Graph {
    * @method start
    * @description App is ready to use
    **/
-   _init(width) {
+   _init(size) {
+    console.log(this.canvas.canvas.getBoundingClientRect())
       this._rafId = window.requestAnimationFrame(this._draw.bind(this)); // Start draw animation
       // Center canvas on root node
-/*        this.canvas.ctx.translate(
+      const pt = this.canvas.ctx.transformedPoint(this.canvas.pointer.x, this.canvas.pointer.y);   // Convert pointer in canvas' coordinates
+      this.canvas.ctx.translate(pt.x - size.width / 2, pt.y - size.height / 2); // Translate accordingly
+      /*        this.canvas.ctx.translate(
           -(this.tree.nodes[0].origin.x - (this.canvas.canvas.width / 2) + (this.style.node.width / 2)),
           this.tree.nodes[0].origin.y + this.style.node.height
       );*/

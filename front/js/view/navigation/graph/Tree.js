@@ -98,7 +98,7 @@ class Tree {
   }
 
 
-  layoutWidth() {
+  layoutSize() {
     return this.layout.getSize();        
   }
 
