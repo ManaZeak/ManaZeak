@@ -64,6 +64,7 @@ public class AlbumIntegrationHelper {
         newAlbum.setLabel(album.getLabel());
         newAlbum.setDuration(album.getDuration());
         newAlbum.setCompilationTypeId(CompilationTypeEnum.getCompilationByCode(album.getCompilationCode()).getId());
+        newAlbum.setLocation(album.getLocation().toString());
 
         // If there is no album id, generating one.
         if (newAlbum.getAlbumId() == null) {

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
 import org.manazeak.manazeak.entity.track.Album;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +12,9 @@ import java.util.List;
 
 /**
  * Data Access Object for Album using Spring CrudRepository interface
- *
  * This file has been automatically generated
  */
-public interface AlbumDAO extends CrudRepository<Album,  Long> {
+public interface AlbumDAO extends CrudRepository<Album, Long> {
 
     /**
      * Get the artist id from the artist name.
@@ -24,5 +24,8 @@ public interface AlbumDAO extends CrudRepository<Album,  Long> {
      */
     @Query("select title as albumTitle, albumId from Album where title in (:albumTitles)")
     List<AlbumLinkerProjection> getAlbumsByTitles(@Param("albumTitles") Collection<String> albumTitles);
+
+    @Query("select albumId, location as albumLocation from Album where location in (:locations)")
+    List<AlbumCoverLinkerProjection> getAlbumByLocations(@Param("locations") Collection<String> location);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

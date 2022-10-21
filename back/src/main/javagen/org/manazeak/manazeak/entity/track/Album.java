@@ -40,6 +40,7 @@ public class Album implements Serializable{
 	private Integer diskTotal;
 	private LocalDate startRecordingDate;
 	private LocalDate endRecordingDate;
+	private String location;
 	private Set<Bio> bioList;
 	private CompilationType compilationType;
 	private Label label;
@@ -216,6 +217,21 @@ public class Album implements Serializable{
 		this.endRecordingDate = endRecordingDate;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of location
+     */
+    @Column(name="location", nullable=false)
+	public String getLocation(){
+		return location;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param location new value to give to location
+     */
+	public void setLocation(final String location){
+		this.location = location;
+    }  
+    /**
      * Association album_bio to Bio
      * @return value of bioList
      */
@@ -329,6 +345,7 @@ public class Album implements Serializable{
 		result = 31 * result + (diskTotal == null? 0 : diskTotal.hashCode());
 		result = 31 * result + (startRecordingDate == null? 0 : startRecordingDate.hashCode());
 		result = 31 * result + (endRecordingDate == null? 0 : endRecordingDate.hashCode());
+		result = 31 * result + (location == null? 0 : location.hashCode());
 			
 		return result;
 	}
@@ -364,6 +381,7 @@ public class Album implements Serializable{
 			&& (diskTotal == null ?  (otherAlbum.diskTotal == null) : diskTotal.equals(otherAlbum.diskTotal))
 			&& (startRecordingDate == null ?  (otherAlbum.startRecordingDate == null) : startRecordingDate.equals(otherAlbum.startRecordingDate))
 			&& (endRecordingDate == null ?  (otherAlbum.endRecordingDate == null) : endRecordingDate.equals(otherAlbum.endRecordingDate))
+			&& (location == null ?  (otherAlbum.location == null) : location.equals(otherAlbum.location))
 		;
 	}
 
