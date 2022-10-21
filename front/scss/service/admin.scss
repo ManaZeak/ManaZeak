@@ -55,22 +55,29 @@
         width: 100%;
 
         .user-container {
-          align-items: center;
           background-color: var(--color-bg-light);
           border-radius: 5px;
           cursor: pointer;
-          display: flex;
-          height: 12rem;
-          margin: 10px;
-          padding: 20px;
+          display: grid;
+          grid-template-columns: calc(var(--font-size) * 7) 1fr calc(var(--font-size) * 3);
+          height: calc(var(--font-size) * 7);
+          margin: var(--margin-small);
 
-          img {
-            height: 4rem;
-            max-width: 4rem;
+          span {
+            height: calc(100% - 6px); // 3px dashed border for DnD
+
+            img {
+              aspect-ratio: 1 / 1;
+              height: 100%;
+              padding: var(--padding);
+            }
           }
 
           .user-controls {
-            margin-left: auto;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
           }
         }
       }

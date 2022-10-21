@@ -47,6 +47,12 @@ class MainPageView extends SceneView {
         });
       });
     }
+    const genreGraph = this.dom.querySelector('#test-button');
+    genreGraph.addEventListener('click', () => {
+      mzk.setView({
+        name: 'GenreGraph'
+      });      
+    });
   }
 
 

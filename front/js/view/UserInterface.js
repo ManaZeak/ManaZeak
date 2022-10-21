@@ -1,5 +1,5 @@
-import Aside from './component/Aside';
-import Scene from './component/Scene';
+import Aside from './element/Aside';
+import Scene from './element/Scene';
 
 'use strict';
 

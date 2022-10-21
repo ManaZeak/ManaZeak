@@ -44,7 +44,7 @@ html, body {
   }
   /* Standard form across auth pages */
   form {
-    background-color: var(--color-bg);
+    background: linear-gradient(90deg, var(--color-bg-dark) 10%, var(--color-bg-dark-alpha-50) 50%, var(--color-bg-dark) 90%);
     border: var(--border-width) solid var(--color-bg-dark-alpha-25);
     border-radius: var(--font-size);
     box-shadow:  0 0 var(--padding) 0 var(--color-txt-darker-alpha-10);

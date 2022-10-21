@@ -14,7 +14,7 @@
   --font-size-big: 2.4rem;
   --font-size-small: 1.2rem;
 
-  --padding: 1rem;
+  --padding: 1.6rem;
   --padding-tiny: calc(var(--padding) / 4);
   --padding-small: calc(var(--padding) / 2);
   --padding-big: calc(var(--padding) * 2);
@@ -42,4 +42,12 @@
   --scene-height: 100%;
   --scene-width-resp: 100%;
   --scene-width: calc(100% - var(--aside-size));
+
+  --default-scroll-size: 18px;
+  --scroll-color: rgb(155, 155, 155);
+  --scroll-size: 10px;
+  --scroll-radius: calc(var(--scroll-size) / 2);
+  --scroll-low-opacity: .2;
+  --scroll-high-opacity: .8;
+  --scroll-transition-duration: .2s;
 }

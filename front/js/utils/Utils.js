@@ -40,21 +40,23 @@ class Utils {
 
 
   appendLinkInHead(path) {
-    /* Search for existing link with same path */
-    let alreadyExists = false;
-    for (let i =0; i < document.head.children.length; ++i) {
-      const meta = document.head.children[i];
-      if (meta.nodeName === 'LINK' && meta.href === `${window.location}${path}`) {
-        alreadyExists = true;
-        break;
+    if (path) {
+      /* Search for existing link with same path */
+      let alreadyExists = false;
+      for (let i = 0; i < document.head.children.length; ++i) {
+        const meta = document.head.children[i];
+        if (meta.nodeName === 'LINK' && meta.href === `${window.location}${path}`) {
+          alreadyExists = true;
+          break;
+        }
       }
-    }
-    /* Only append style if not already existing in document header */
-    if (!alreadyExists) {
-      const link = document.createElement('LINK');
-      link.rel = 'stylesheet';
-      link.href = path;
-      document.head.appendChild(link);
+      /* Only append style if not already existing in document header */
+      if (!alreadyExists) {
+        const link = document.createElement('LINK');
+        link.rel = 'stylesheet';
+        link.href = path;
+        document.head.appendChild(link);
+      }
     }
   }
 

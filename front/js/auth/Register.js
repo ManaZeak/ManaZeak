@@ -1,7 +1,8 @@
-/* Parse url to check if it contains an invit code, so the fields is auto-filled */
-const pageLocation = window.location.href;
-const url = new URL(pageLocation);
+// Parse url to check if it contains a ?invit-code=, so the input is auto-filled
+const url = new URL(window.location.href);
 const inviteCode = url.searchParams.get('invite-code');
-if (inviteCode) {
-  document.getElementById('inviteCode-input').value = inviteCode;
+const inviteCodeElement = document.getElementById('inviteCode-input');
+// Update input value if url do contains a invit-code param
+if (inviteCodeElement && inviteCode) {
+  inviteCodeElement.value = inviteCode;
 }

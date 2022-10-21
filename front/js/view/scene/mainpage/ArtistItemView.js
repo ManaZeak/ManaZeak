@@ -1,4 +1,4 @@
-import SceneView from '../../utils/SceneView';
+import SceneView from '../utils/SceneView';
 
 
 class ArtistItemView extends SceneView {
