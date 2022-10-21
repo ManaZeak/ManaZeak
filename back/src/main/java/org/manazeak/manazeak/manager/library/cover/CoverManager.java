@@ -10,6 +10,8 @@ import org.manazeak.manazeak.entity.track.Cover;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Allows to handle the covers of the albums of the library.
@@ -28,6 +31,7 @@ import java.util.concurrent.Executors;
 @Component
 public class CoverManager {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CoverManager.class);
     private static final int BUFFER_SIZE = 100;
     /**
      * The sizes of the thumbs that will be generated.
@@ -82,12 +86,15 @@ public class CoverManager {
 
             // Getting the albums from the locations.
             Map<String, Long> albumIdByLocation = new HashMap<>();
-            for (AlbumCoverLinkerProjection album : albumDAO.getAlbumByLocations(albumPaths)) {
+            List<AlbumCoverLinkerProjection> albums = albumDAO.getAlbumByLocations(albumPaths);
+            for (AlbumCoverLinkerProjection album : albums) {
                 albumIdByLocation.put(album.getAlbumLocation(), album.getAlbumId());
             }
 
             List<Cover> newCovers = new ArrayList<>();
             List<Pair<Long, Long>> albumCovers = new ArrayList<>();
+            // Modifying the buffer size to avoid taking all the space.
+            PkIdProvider.singleton().setPoolSize(Cover.class, BUFFER_SIZE);
             // Iterating through the covers generating the covers and linking the covers with the ids.
             for (Path cover : covers) {
                 String coverName = generateCoverThumbs(cover);
@@ -96,12 +103,13 @@ public class CoverManager {
                 dbCover.setCoverId(PkIdProvider.singleton().getNewPkId(Cover.class));
                 dbCover.setFilename(coverName);
                 newCovers.add(dbCover);
-                albumCovers.add(Pair.of(albumIdByLocation.get(cover.getParent().toString()), dbCover.getCoverId()));
+                albumCovers.add(Pair.of(dbCover.getCoverId(), albumIdByLocation.get(cover.getParent().toString())));
             }
 
             // Saving the covers into the database.
             coverIntegrationDAO.insertCovers(newCovers);
-
+            // Setting the covers on the album file.
+            coverIntegrationDAO.updateAlbumCovers(albumCovers);
         };
     }
 
@@ -127,5 +135,12 @@ public class CoverManager {
 
         // The pool doesn't accept any more jobs.
         executor.shutdown();
+
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOG.error("The album cover thumbnail generation was interrupted", e);
+            Thread.currentThread().interrupt();
+        }
     }
 }

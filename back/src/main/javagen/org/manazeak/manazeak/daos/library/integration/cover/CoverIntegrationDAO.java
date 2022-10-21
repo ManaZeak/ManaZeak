@@ -1,13 +1,12 @@
 package org.manazeak.manazeak.daos.library.integration.cover;
 
+import org.manazeak.manazeak.daos.library.integration.album.AlbumCoverSetter;
 import org.manazeak.manazeak.entity.track.Cover;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Integrate the cover information into the database.
@@ -37,10 +36,11 @@ public class CoverIntegrationDAO {
 
     /**
      * Update the information about the album cover in the database.
-     * @param covers The information about the covers to be updated.
-     * @param albumIdByLocation The album id linked to the album location.
+     *
+     * @param albumCovers The relation between the album and the cover to be inserted into the database.
      */
     public void updateAlbumCovers(List<Pair<Long, Long>> albumCovers) {
-        //FIXME: save data into DB.
+        AlbumCoverSetter coverSetter = new AlbumCoverSetter(albumCovers);
+        jdbcTemplate.batchUpdate(SQL_ALBUM_LINKER_COVER, coverSetter);
     }
 }

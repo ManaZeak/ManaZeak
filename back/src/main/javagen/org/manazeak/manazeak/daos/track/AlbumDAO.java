@@ -25,7 +25,7 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
     @Query("select title as albumTitle, albumId from Album where title in (:albumTitles)")
     List<AlbumLinkerProjection> getAlbumsByTitles(@Param("albumTitles") Collection<String> albumTitles);
 
-    @Query("select albumId, location as albumLocation from Album where location in (:locations)")
+    @Query("select albumId as albumId, location as albumLocation from Album where location in (:locations)")
     List<AlbumCoverLinkerProjection> getAlbumByLocations(@Param("locations") Collection<String> location);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

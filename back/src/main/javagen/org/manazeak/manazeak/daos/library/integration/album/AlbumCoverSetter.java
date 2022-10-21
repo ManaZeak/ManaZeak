@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Allows to set the parameters on the request to update the album cover in the database.
+ */
 public class AlbumCoverSetter implements BatchPreparedStatementSetter {
 
     private final List<Pair<Long, Long>> albumCovers;
@@ -17,11 +20,12 @@ public class AlbumCoverSetter implements BatchPreparedStatementSetter {
 
     @Override
     public void setValues(PreparedStatement ps, int i) throws SQLException {
-        //ps.setLong(albumCovers.get(i).);
+        ps.setLong(1, albumCovers.get(i).getFirst());
+        ps.setLong(2, albumCovers.get(i).getSecond());
     }
 
     @Override
     public int getBatchSize() {
-        return 0;
+        return albumCovers.size();
     }
 }
