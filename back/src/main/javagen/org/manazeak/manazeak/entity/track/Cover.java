@@ -20,7 +20,7 @@ public class Cover implements Serializable{
 	/** Serial ID */
 	private static final long serialVersionUID = 1L;
 
-	private Integer coverId;
+	private Long coverId;
 	private String filename;
 
     /**
@@ -31,14 +31,14 @@ public class Cover implements Serializable{
     @SequenceGenerator(name="SEQ_COVER", sequenceName="SEQ_COVER", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_COVER")
     @Column(name="cover_id", nullable=false)
-	public Integer getCoverId(){
+	public Long getCoverId(){
 		return coverId;
     }  
     /**
      * No comment found in model diagram
      * @param coverId new value to give to coverId
      */
-	public void setCoverId(final Integer coverId){
+	public void setCoverId(final Long coverId){
 		this.coverId = coverId;
     }  
     /**

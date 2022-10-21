@@ -48,9 +48,10 @@ CREATE TABLE album (
 	disk_total INTEGER not null,
 	start_recording_date DATE,
 	end_recording_date DATE,
+	location VARCHAR(500) not null,
 	compilation_type_id BIGINT,
 	label_id BIGINT,
-	cover_id INTEGER,
+	cover_id BIGINT,
 	artist_id BIGINT,
 	CONSTRAINT PK_ALBUM PRIMARY KEY (album_id)
 );
@@ -115,7 +116,7 @@ CREATE TABLE bio (
 );
 
 CREATE TABLE cover (
-	cover_id INTEGER not null,
+	cover_id BIGINT not null,
 	filename VARCHAR(50) not null,
 	CONSTRAINT PK_COVER PRIMARY KEY (cover_id)
 );

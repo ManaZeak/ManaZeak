@@ -14,8 +14,8 @@ import java.util.List;
 public class AlbumIntegrationDAO {
 
     private static final String MERGE_ALBUM_SQL = "INSERT INTO album (album_id, title, total_track, release_year, release_date, catalog_number, ean_upn, duration, " +
-            "                   disk_total, compilation_type_id, label_id, artist_id, start_recording_date, end_recording_date) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+            "                   disk_total, compilation_type_id, label_id, artist_id, start_recording_date, end_recording_date, location) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
             "ON CONFLICT (album_id) DO UPDATE SET title                = excluded.title, " +
             "                                     total_track          = excluded.total_track, " +
             "                                     release_year         = excluded.release_year, " +
@@ -28,7 +28,8 @@ public class AlbumIntegrationDAO {
             "                                     label_id             = excluded.label_id, " +
             "                                     artist_id            = excluded.artist_id, " +
             "                                     start_recording_date = excluded.start_recording_date, " +
-            "                                     end_recording_date   = excluded.end_recording_date";
+            "                                     end_recording_date   = excluded.end_recording_date, " +
+            "                                     location             = excluded.location";
     private final JdbcTemplate jdbcTemplate;
     private final CacheAccessManager cacheAccessManager;
 

@@ -61,7 +61,7 @@ public class LibraryIntegrationManager {
 
         int startIndex = 0;
         int numberOfPackage = 1;
-        int totalNumberOfPackages = (int) Math.ceil((double) artists.size() / (double) bufferSize);
+        int totalNumberOfPackages = (int) Math.ceil((double) artists.size() / bufferSize);
         // Splitting the list in multiple lists.
         for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
             // Launch the integration of the sub element of the list.

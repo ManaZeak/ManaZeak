@@ -33,6 +33,7 @@ public class AlbumIntegrationDto {
     private LocalDate startRecordingDate;
     private LocalDate endRecordingDate;
     private Long compilationTypeId;
+    private String location;
 
     public Long getAlbumId() {
         return albumId;
@@ -152,5 +153,13 @@ public class AlbumIntegrationDto {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

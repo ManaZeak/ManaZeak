@@ -46,6 +46,7 @@ public class AlbumIntegrationUpsertSetter implements BatchPreparedStatementSette
         ps.setLong(12, cacheAccessManager.getLongValue(CacheEnum.ARTIST_ID_BY_NAME, currentAlbum.getArtist()));
         ps.setTimestamp(13, DateUtil.getTimeStamp(currentAlbum.getStartRecordingDate()));
         ps.setTimestamp(14, DateUtil.getTimeStamp(currentAlbum.getEndRecordingDate()));
+        ps.setString(15, currentAlbum.getLocation());
     }
 
     @Override
