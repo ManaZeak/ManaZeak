@@ -26,7 +26,7 @@ class Graph {
     this._rafId
     this._evtIds = [];
 
-    this._init(this.tree.layoutSize());
+    this._init();
     this._eventListeners(); // Listen to App events
   }
 
@@ -45,6 +45,7 @@ class Graph {
    * @description App is ready to use
    **/
    _init(size) {
+      this.canvas.graphSize = this.tree.layoutSize();
       this._rafId = window.requestAnimationFrame(this._draw.bind(this)); // Start draw animation
       // Center canvas on root node depending on orientation
       this.centerOnRootNode();

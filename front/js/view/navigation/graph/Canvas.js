@@ -19,6 +19,7 @@ class Canvas {
     this.isDragged = false; // Dragging lock
     this.pointer = {}; // Pointer position
     this.scaleFactor = 0; // Zooming scale factor intensity
+    this._graphSize = {}; // Graph size in pixels
     this._evtIds = [];
     this._createCanvas(); // Create DOM element
   }
@@ -82,7 +83,6 @@ class Canvas {
 
     if (this.dragStart) { // Move context
       const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y);   // Convert pointer in canvas' coordinates
-      console.log(pt, this.dragStart)
       this.ctx.translate(pt.x - this.dragStart.x, pt.y - this.dragStart.y); // Translate accordingly
     }
   }
@@ -136,8 +136,182 @@ class Canvas {
    * @param {int} value : Zoom value (-1 or 1 to zoom/unzoom)
    **/
   _zoom(value) {
+    if (value < -5) {
+      value = -5;
+    } else if (value > 5) {
+      value = 5;
+    }
+
     const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y); // Convert pointer in canvas' coordinates
     const sf = Math.pow(this.scaleFactor, value); // Compute local scale factor
+
+    const ptMin = this.ctx.transformedPoint(0, 0);
+    const ptMax = this.ctx.transformedPoint(this.width, this.height);
+
+    if (value < 0) { // Dezooming only
+      // Graph is horizontal
+      if (this._graphSize.width > this._graphSize.height) {
+        // Getting graph and canvas aspect ratio
+        const canvasAR = this._graphSize.width / this._graphSize.height;
+        const elementAR = this.width / this.height;
+        const xPadding = ((this._graphSize.width / (elementAR * canvasAR) / 2));
+        const yPadding = 100;
+  
+        const border = {
+          l: (ptMin.x < -xPadding),
+          t: (ptMin.y < -yPadding),
+          r: (ptMax.x - this._graphSize.width > xPadding), // 100 padding times 2
+          b: (ptMax.y - this._graphSize.height > yPadding) // 100 padding times 2
+        };
+ 
+        // Double side bounds
+        if (border.l) {
+          if (border.r) {
+            return;
+          }
+
+          if (border.t) {
+            if (border.r || border.b) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(0, 0);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          if (border.b) {
+            if (border.r || border.t) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(0, this.height);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          const ptMid = this.ctx.transformedPoint(0, this.height / 2);
+          this.ctx.translate(ptMid.x, ptMid.y);
+          this.ctx.scale(sf, sf); // Scale context
+          this.ctx.translate(-ptMid.x, -ptMid.y);
+          return;
+        }
+
+        if (border.t) {
+          if (border.b) {
+            return;
+          }
+
+          if (border.l) {
+            if (border.r || border.b) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(0, 0);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          if (border.r) {
+            if (border.b || border.l) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(this.width, 0);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+          
+          const ptMid = this.ctx.transformedPoint(this.width / 2, 0);
+          this.ctx.translate(ptMid.x, ptMid.y);
+          this.ctx.scale(sf, sf); // Scale context
+          this.ctx.translate(-ptMid.x, -ptMid.y);
+          return;
+        }
+
+        if (border.r) {
+          if (border.l) {
+            return;
+          }
+
+          if (border.t) {
+            if (border.b || border.l) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(this.width, 0);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          if (border.b) {
+            if (border.l || border.t) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(this.width, this.height);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          const ptMid = this.ctx.transformedPoint(this.width, this.height / 2);
+          this.ctx.translate(ptMid.x, ptMid.y);
+          this.ctx.scale(sf, sf); // Scale context
+          this.ctx.translate(-ptMid.x, -ptMid.y);
+          return;
+        }
+
+        if (border.b) {
+          if (border.t) {
+            return;
+          }
+
+          if (border.l) {
+            if (border.r || border.t) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(0, this.height);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+
+          if (border.r) {
+            if (border.t || border.l) {
+              return;
+            }
+
+            const ptMid = this.ctx.transformedPoint(this.width, this.height);
+            this.ctx.translate(ptMid.x, ptMid.y);
+            this.ctx.scale(sf, sf); // Scale context
+            this.ctx.translate(-ptMid.x, -ptMid.y);
+            return;
+          }
+          
+          const ptMid = this.ctx.transformedPoint(this.width / 2, this.height);
+          this.ctx.translate(ptMid.x, ptMid.y);
+          this.ctx.scale(sf, sf); // Scale context
+          this.ctx.translate(-ptMid.x, -ptMid.y);
+          return;
+        }
+      }
+    }
+    
+    // Zoom from pointer position
     this.ctx.translate(pt.x, pt.y); // Positive offset accordingly
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-pt.x, -pt.y); // Negative offset to align
@@ -414,6 +588,11 @@ class Canvas {
 
   getCtx() {
     return this.ctx;
+  }
+
+
+  set graphSize(size) {
+    this._graphSize = size;
   }
 
 
