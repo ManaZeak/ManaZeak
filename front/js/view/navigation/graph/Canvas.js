@@ -82,6 +82,7 @@ class Canvas {
 
     if (this.dragStart) { // Move context
       const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y);   // Convert pointer in canvas' coordinates
+      console.log(pt, this.dragStart)
       this.ctx.translate(pt.x - this.dragStart.x, pt.y - this.dragStart.y); // Translate accordingly
     }
   }

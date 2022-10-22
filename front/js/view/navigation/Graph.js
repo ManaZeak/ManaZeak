@@ -45,15 +45,9 @@ class Graph {
    * @description App is ready to use
    **/
    _init(size) {
-    console.log(this.canvas.canvas.getBoundingClientRect())
       this._rafId = window.requestAnimationFrame(this._draw.bind(this)); // Start draw animation
-      // Center canvas on root node
-      const pt = this.canvas.ctx.transformedPoint(this.canvas.pointer.x, this.canvas.pointer.y);   // Convert pointer in canvas' coordinates
-      this.canvas.ctx.translate(pt.x - size.width / 2, pt.y - size.height / 2); // Translate accordingly
-      /*        this.canvas.ctx.translate(
-          -(this.tree.nodes[0].origin.x - (this.canvas.canvas.width / 2) + (this.style.node.width / 2)),
-          this.tree.nodes[0].origin.y + this.style.node.height
-      );*/
+      // Center canvas on root node depending on orientation
+      this.centerOnRootNode();
   }
 
 
@@ -109,7 +103,7 @@ class Graph {
         this.cellClickedCB({
           name: this.tree.nodes[i].label,
           info: this.tree.nodes[i].info,
-          parent: this.tree.nodes[i].parent.label,
+          parent: this.tree.nodes[i].parent ? this.tree.nodes[i].parent.label : '',
           children: this.tree.nodes[i].getChildrenLabels()
         });
         return; // Exit loop
@@ -148,6 +142,35 @@ class Graph {
     }
 
     this._rafId = window.requestAnimationFrame(this._draw.bind(this)); // Request next frame
+  }
+
+
+  centerOnRootNode() {
+    let pt = {};
+    
+    if (this.style.tree.orientation === 0) { // Top to Bottom
+      pt = this.canvas.ctx.transformedPoint(
+        -this.tree.nodes[0].origin.x + (this.canvas.width / 2) - (this.style.node.width / 2),
+        -this.tree.nodes[0].origin.y + 100
+      );
+    } else if (this.style.tree.orientation === 1) { // Right to Left
+      pt = this.canvas.ctx.transformedPoint(
+        -this.tree.nodes[0].origin.x + this.canvas.width - this.style.node.width - 100,
+        -this.tree.nodes[0].origin.y + (this.canvas.height / 2) - (this.style.node.height / 2)
+      );
+    } else if (this.style.tree.orientation === 2) { // Bottom to Top
+      pt = this.canvas.ctx.transformedPoint(
+        -this.tree.nodes[0].origin.x + (this.canvas.width / 2) - (this.style.node.width / 2),
+        -this.tree.nodes[0].origin.y + (this.canvas.height) - this.style.node.height - 100
+      );
+    } else if (this.style.tree.orientation === 3) { // Left to Right
+      pt = this.canvas.ctx.transformedPoint(
+        -this.tree.nodes[0].origin.x + 100,
+        -this.tree.nodes[0].origin.y + (this.canvas.height / 2) - (this.style.node.height / 2)
+      );
+    }
+    // Translate accordingly
+    this.canvas.ctx.translate(pt.x, pt.y)
   }
 
 
