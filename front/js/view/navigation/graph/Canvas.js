@@ -136,10 +136,10 @@ class Canvas {
    * @param {int} value : Zoom value (-1 or 1 to zoom/unzoom)
    **/
   _zoom(value) {
-    if (value < -5) {
-      value = -5;
-    } else if (value > 5) {
-      value = 5;
+    if (value < -4) {
+      value = -4;
+    } else if (value > 4) {
+      value = 4;
     }
 
     const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y); // Convert pointer in canvas' coordinates
@@ -154,8 +154,8 @@ class Canvas {
         // Getting graph and canvas aspect ratio
         const canvasAR = this._graphSize.width / this._graphSize.height;
         const elementAR = this.width / this.height;
-        const xPadding = ((this._graphSize.width / (elementAR * canvasAR) / 2));
-        const yPadding = 100;
+        const xPadding = ((this._graphSize.width / (elementAR * canvasAR)));
+        const yPadding = ((this._graphSize.height / (elementAR * canvasAR)));
   
         const border = {
           l: (ptMin.x < -xPadding),
