@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.integration.label.LabelPictureProjection;
 import org.manazeak.manazeak.entity.track.Label;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,8 +23,11 @@ public interface LabelDAO extends CrudRepository<Label, Long> {
      * @param labelNames The lists of label name to fetch.
      * @return The label name associated with a label id.
      */
-    @Query("select name as labelName, labelId from Label where name in (:labelNames)")
-    List<LabelLinkerProjection> getAlbumsByTitles(@Param("labelNames") Collection<String> labelNames);
+    @Query("select name as labelName, labelId as labelId from Label where name in (:labelNames)")
+    List<LabelLinkerProjection> getLabelsByNames(@Param("labelNames") Collection<String> labelNames);
+
+    @Query("select labelId as labelId, name as name from Label where pictureFilename is null")
+    List<LabelPictureProjection> getLabelsWithoutPicture();
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

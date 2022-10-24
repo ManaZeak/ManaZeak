@@ -38,6 +38,7 @@ public class Artist implements Serializable{
 	private LocalDateTime lastModificationDate;
 	private Boolean isLabel;
 	private String testimonyFrom;
+	private String pictureFilename;
 	private String testimonyText;
 	private Country country;
 	private Set<Artist> memberList;
@@ -170,6 +171,21 @@ public class Artist implements Serializable{
     }  
     /**
      * No comment found in model diagram
+     * @return value of pictureFilename
+     */
+    @Column(name="picture_filename", nullable=true)
+	public String getPictureFilename(){
+		return pictureFilename;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param pictureFilename new value to give to pictureFilename
+     */
+	public void setPictureFilename(final String pictureFilename){
+		this.pictureFilename = pictureFilename;
+    }  
+    /**
+     * No comment found in model diagram
      * @return value of testimonyText
      */
     @Column(name="testimony_text", nullable=true)
@@ -278,6 +294,7 @@ public class Artist implements Serializable{
 		result = 31 * result + (lastModificationDate == null? 0 : lastModificationDate.hashCode());
 		result = 31 * result + (isLabel == null? 0 : isLabel.hashCode());
 		result = 31 * result + (testimonyFrom == null? 0 : testimonyFrom.hashCode());
+		result = 31 * result + (pictureFilename == null? 0 : pictureFilename.hashCode());
 		result = 31 * result + (testimonyText == null? 0 : testimonyText.hashCode());
 			
 		return result;
@@ -311,6 +328,7 @@ public class Artist implements Serializable{
 			&& (lastModificationDate == null ?  (otherArtist.lastModificationDate == null) : lastModificationDate.equals(otherArtist.lastModificationDate))
 			&& (isLabel == null ?  (otherArtist.isLabel == null) : isLabel.equals(otherArtist.isLabel))
 			&& (testimonyFrom == null ?  (otherArtist.testimonyFrom == null) : testimonyFrom.equals(otherArtist.testimonyFrom))
+			&& (pictureFilename == null ?  (otherArtist.pictureFilename == null) : pictureFilename.equals(otherArtist.pictureFilename))
 			&& (testimonyText == null ?  (otherArtist.testimonyText == null) : testimonyText.equals(otherArtist.testimonyText))
 		;
 	}

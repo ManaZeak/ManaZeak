@@ -87,6 +87,7 @@ CREATE TABLE artist (
 	last_modification_date TIMESTAMP not null,
 	is_label BOOLEAN not null,
 	testimony_from VARCHAR(200),
+	picture_filename VARCHAR(50),
 	testimony_text TEXT,
 	country_id BIGINT,
 	label_id BIGINT,
@@ -131,6 +132,7 @@ CREATE TABLE genre (
 CREATE TABLE label (
 	label_id BIGINT not null,
 	name VARCHAR(100) not null,
+	picture_filename VARCHAR(50),
 	CONSTRAINT PK_LABEL PRIMARY KEY (label_id)
 );
 

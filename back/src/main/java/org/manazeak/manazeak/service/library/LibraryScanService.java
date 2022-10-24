@@ -10,6 +10,7 @@ import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
+import org.manazeak.manazeak.manager.library.integration.label.LabelPictureThumbManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,15 +38,18 @@ public class LibraryScanService {
 
     private final LibraryScanStatusManager libraryScanStatusManager;
 
+    private final LabelPictureThumbManager labelThumbManager;
+
     public LibraryScanService(LibraryScanManager libraryScanManager, LibraryIntegrationManager libraryIntegrationManager,
                               LibraryWiperManager libraryWiper, CoverManager coverManager,
-                              ArtistProfilePicManager artistProfilePicManager, LibraryScanStatusManager libraryScanStatusManager) {
+                              ArtistProfilePicManager artistProfilePicManager, LibraryScanStatusManager libraryScanStatusManager, LabelPictureThumbManager labelThumbManager) {
         this.libraryScanManager = libraryScanManager;
         this.libraryIntegrationManager = libraryIntegrationManager;
         this.libraryWiper = libraryWiper;
         this.coverManager = coverManager;
         this.artistProfilePicManager = artistProfilePicManager;
         this.libraryScanStatusManager = libraryScanStatusManager;
+        this.labelThumbManager = labelThumbManager;
     }
 
     /**
@@ -92,6 +96,8 @@ public class LibraryScanService {
             LOG.info("Waiting for the artist profile pic extraction to be finished.");
             artistProfilePicExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
             LOG.info("Ending artist profile picture thumbnail generation.");
+
+            labelThumbManager.generateLabelThumbs();
 
             libraryScanStatusManager.setCurrentStep(ScanStepEnum.DONE);
         } catch (IOException e) {

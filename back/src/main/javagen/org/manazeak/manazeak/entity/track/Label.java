@@ -22,6 +22,7 @@ public class Label implements Serializable{
 
 	private Long labelId;
 	private String name;
+	private String pictureFilename;
 
     /**
      * No comment found in model diagram
@@ -56,6 +57,21 @@ public class Label implements Serializable{
 	public void setName(final String name){
 		this.name = name;
     }  
+    /**
+     * No comment found in model diagram
+     * @return value of pictureFilename
+     */
+    @Column(name="picture_filename", nullable=true)
+	public String getPictureFilename(){
+		return pictureFilename;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param pictureFilename new value to give to pictureFilename
+     */
+	public void setPictureFilename(final String pictureFilename){
+		this.pictureFilename = pictureFilename;
+    }  
 
 	@Override
 	public int hashCode(){
@@ -65,6 +81,7 @@ public class Label implements Serializable{
 		// Calculating hashcode with all "primitives" attributes
 		result = 31 * result + (labelId == null? 0 : labelId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
+		result = 31 * result + (pictureFilename == null? 0 : pictureFilename.hashCode());
 			
 		return result;
 	}
@@ -91,6 +108,7 @@ public class Label implements Serializable{
 	    
 		return (labelId == null ?  (otherLabel.labelId == null) : labelId.equals(otherLabel.labelId))
 			&& (name == null ?  (otherLabel.name == null) : name.equals(otherLabel.name))
+			&& (pictureFilename == null ?  (otherLabel.pictureFilename == null) : pictureFilename.equals(otherLabel.pictureFilename))
 		;
 	}
 
