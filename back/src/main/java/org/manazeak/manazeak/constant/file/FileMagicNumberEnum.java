@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.constant.file;
 
-import com.google.inject.internal.util.ImmutableList;
 import org.manazeak.manazeak.constant.notification.file.FileNotificationEnum;
 import org.manazeak.manazeak.exception.MzkFileFormatException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -16,7 +15,7 @@ public enum FileMagicNumberEnum {
     PNG(FileExtensionEnum.PNG, 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A);
 
     private final FileExtensionEnum extension;
-    private final ImmutableList<Integer> magicNumbers;
+    private final List<Integer> magicNumbers;
 
     /**
      * Build the magic number information.
@@ -26,7 +25,7 @@ public enum FileMagicNumberEnum {
      */
     FileMagicNumberEnum(FileExtensionEnum extension, Integer... magicNumbers) {
         this.extension = extension;
-        this.magicNumbers = ImmutableList.copyOf(Arrays.asList(magicNumbers));
+        this.magicNumbers = Arrays.asList(magicNumbers);
     }
 
     /**
@@ -84,7 +83,7 @@ public enum FileMagicNumberEnum {
         return extension;
     }
 
-    public ImmutableList<Integer> getMagicNumbers() {
+    public List<Integer> getMagicNumbers() {
         return magicNumbers;
     }
 }
