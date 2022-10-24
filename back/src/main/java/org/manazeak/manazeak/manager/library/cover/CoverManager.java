@@ -8,6 +8,7 @@ import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.track.Cover;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.slf4j.Logger;
@@ -54,23 +55,14 @@ public class CoverManager {
      * @return The hashed name of the cover.
      */
     private static String generateCoverThumbs(Path cover) {
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
+        String coverName = HashUtil.getMd5Hash(cover.getParent().toString()).toUpperCase();
 
-            // Getting the name of the thumb for the location md5
-            md5.update(cover.getParent().toString().getBytes(StandardCharsets.UTF_8));
-            byte[] digest = md5.digest();
-            String coverName = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        // Generating the thumbnails.
+        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, FilePathEnum.COVER_FOLDER.getPath(), cover,
+                coverName);
 
-            // Generating the thumbnails.
-            ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, FilePathEnum.COVER_FOLDER.getPath(), cover,
-                    coverName);
-
-            // Returning the cover name to save it into the database.
-            return coverName;
-        } catch (NoSuchAlgorithmException e) {
-            throw new MzkRuntimeException("The md5 algorithm wasn't found.", e);
-        }
+        // Returning the cover name to save it into the database.
+        return coverName;
     }
 
     /**
