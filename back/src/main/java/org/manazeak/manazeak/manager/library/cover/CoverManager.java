@@ -1,13 +1,12 @@
 package org.manazeak.manazeak.manager.library.cover;
 
-import org.manazeak.manazeak.constant.file.FilePathEnum;
+import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.daos.library.integration.cover.CoverIntegrationDAO;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.track.Cover;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
@@ -16,11 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,7 +53,7 @@ public class CoverManager {
         String coverName = HashUtil.getMd5Hash(cover.getParent().toString()).toUpperCase();
 
         // Generating the thumbnails.
-        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, FilePathEnum.COVER_FOLDER.getPath(), cover,
+        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.COVER_FOLDER.getPath(), cover,
                 coverName);
 
         // Returning the cover name to save it into the database.

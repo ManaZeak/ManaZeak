@@ -1,13 +1,21 @@
 package org.manazeak.manazeak.manager.library.integration.label;
 
+import org.manazeak.manazeak.constant.file.FileExtensionEnum;
+import org.manazeak.manazeak.constant.file.ResourcePathEnum;
+import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
+import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
 import org.manazeak.manazeak.daos.track.LabelDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelPictureProjection;
+import org.manazeak.manazeak.util.FieldUtil;
+import org.manazeak.manazeak.util.HashUtil;
+import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -21,6 +29,10 @@ public class LabelPictureThumbManager {
     private static final int NB_THREADS = 5;
 
     private static final int BUFFER_SIZE = 500;
+
+    private static final ThumbSizeEnum[] LIST_THUMB_SIZE_TO_GENERATE = {
+            ThumbSizeEnum.ORIGINAL, ThumbSizeEnum.MEDIUM, ThumbSizeEnum.SMALL
+    };
     private static final Logger LOG = LoggerFactory.getLogger(LabelPictureThumbManager.class);
     private final LabelDAO labelDAO;
 
@@ -93,8 +105,22 @@ public class LabelPictureThumbManager {
      * @return The id of the label and the name of the generated file.
      */
     private Callable<Pair<Long, String>> launchLabelPictureThumbnailGeneration(LabelPictureProjection label) {
-        // FIXME: to be implemented.
-        return () -> Pair.of(1L, "aze");
+        return () -> {
+            // Checking if the label has a file in the label picture folder.
+            String fsLabelName = FieldUtil.removeForbiddenFsChar(label.getName());
+            Path labelPicturePath = LibraryConstant.LABEL_PICTURE_PATH.resolve(fsLabelName + FileExtensionEnum.JGP.getExtension());
+            if (!labelPicturePath.toFile().exists()) {
+                // No file found for this label, skipping this one.
+                return null;
+            }
+
+            String hashLabelName = HashUtil.getMd5Hash(label.getName());
+            // Generating the thumbnail.
+            ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.LABEL_PICTURE_FOLDER.getPath(), labelPicturePath, hashLabelName);
+
+            // Returning the name associated with the id of the label.
+            return Pair.of(label.getLabelId(), hashLabelName);
+        };
     }
 
 }

@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
 import org.apache.commons.io.FilenameUtils;
-import org.manazeak.manazeak.constant.file.FilePathEnum;
+import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -35,7 +35,7 @@ public class ArtistProfilePicManager {
     private static void generateThumbsArtist(Path path) {
         try {
             if (path != null && !Files.isDirectory(path)) {
-                ThumbnailUtil.generateThumbs(THUMB_SIZE_TO_GENERATE, FilePathEnum.ARTIST_PROFILE_PIC_FOLDER.getPath(),
+                ThumbnailUtil.generateThumbs(THUMB_SIZE_TO_GENERATE, ResourcePathEnum.ARTIST_PROFILE_PIC_FOLDER.getPath(),
                         path, FilenameUtils.removeExtension(path.getFileName().toString()));
             }
         } catch (Exception e) {

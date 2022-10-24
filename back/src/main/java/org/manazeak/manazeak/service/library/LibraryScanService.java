@@ -97,7 +97,9 @@ public class LibraryScanService {
             artistProfilePicExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
             LOG.info("Ending artist profile picture thumbnail generation.");
 
+            LOG.info("Starting the label pictures thumbnail generation");
             labelThumbManager.generateLabelThumbs();
+            LOG.info("Ending the label pictures thumbnail generation");
 
             libraryScanStatusManager.setCurrentStep(ScanStepEnum.DONE);
         } catch (IOException e) {
