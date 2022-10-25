@@ -62,7 +62,7 @@ public enum FileMagicNumberEnum {
     }
 
     /**
-     * Check that a file has all the correct magic bytes. To define it's type.
+     * Check that a file has all the correct magic bytes. To define its type.
      *
      * @param bytes      The bytes contained inside the file.
      * @param magicBytes The expected magic bytes for the format.
