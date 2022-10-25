@@ -2,22 +2,18 @@ package org.manazeak.manazeak.configuration.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
@@ -25,7 +21,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(SecurityConfiguration.class);
     @Value("${app.dev}")
@@ -35,7 +31,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Setting the context of the security to the local thread.
      */
     public SecurityConfiguration() {
-        super();
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
@@ -44,8 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      *
      * @param httpSecurity Configuration object for the security.
      */
-    @Override
-    protected void configure(final HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(final HttpSecurity httpSecurity) throws Exception {
         // Allowing the spring dev tools.
         if (devMode) {
             LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
@@ -72,34 +67,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessUrl("/logoutSuccess")
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         ;
-    }
 
-    /**
-     * Allow to use our authentication system.
-     *
-     * @param auth builder for the authentication.
-     * @param userDetailsService The service used to authenticate the user.
-     */
-    @Autowired
-    public void configAuthentication(
-            final AuthenticationManagerBuilder auth,
-            @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
-        auth.authenticationProvider(authenticationProvider(userDetailsService));
+        return httpSecurity.build();
     }
-
-    /**
-     * Defines the UserDetailsService used during the authentication.
-     *
-     * @param userDetailsService The service used to get the user.
-     * @return Authentication provider.
-     */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(
-            @Qualifier("mzkUserDetailServiceImpl") final UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     /**
@@ -108,11 +81,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 }
