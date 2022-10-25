@@ -71,6 +71,6 @@ public class ArtistIntegrationManager {
             }
         }
         // Inserting the links into the database.
-        artistIntegrationDAO.linkArtists(new ArrayList<>(artistsLinks));
+        artistIntegrationDAO.createBandMembers(new ArrayList<>(artistsLinks));
     }
 }

@@ -66,10 +66,11 @@ public class ArtistService {
                 MzkExceptionHelper.generateSupplierObjectNotFoundException("")
         );
         // Getting the minimal information on the members.
-        List<Artist> members = artistDAO.getArtistMinimalInfoByParent(detail.getArtistId());
-        for (Artist member : members) {
-            detail.addMember(ArtistHelper.convertArtist(member));
-        }
+        // FIXME :  use the new table band_member.
+//        List<Artist> members = artistDAO.getArtistMinimalInfoByParent(detail.getArtistId());
+//        for (Artist member : members) {
+//            detail.addMember(ArtistHelper.convertArtist(member));
+//        }
 
         return detail;
     }

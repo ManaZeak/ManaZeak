@@ -4,20 +4,16 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Set;
 import javax.persistence.FetchType;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.ManyToMany;
 import java.time.LocalDate;
 import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
-import javax.persistence.CascadeType;
 import org.manazeak.manazeak.entity.reference.Country;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 
 /**
  * Contains the bands of the application.
@@ -41,7 +37,6 @@ public class Artist implements Serializable{
 	private String pictureFilename;
 	private String testimonyText;
 	private Country country;
-	private Set<Artist> memberList;
 	private Label label;
 	private Link link;
 	private Bio bio;
@@ -214,22 +209,6 @@ public class Artist implements Serializable{
      */
 	public void setCountry(final Country country){
 		this.country = country;
-    }  
-    /**
-     * Association band_member to Artist
-     * @return value of memberList
-     */
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name="band_member", joinColumns=@JoinColumn(name = "band_id"), inverseJoinColumns=@JoinColumn(name = "member_id"))
-	public Set<Artist> getMemberList(){
-		return memberList;
-    }  
-    /**
-     * Association band_member to Artist
-     * @param memberList new value to give to memberList
-     */
-	public void setMemberList(final Set<Artist> memberList){
-		this.memberList = memberList;
     }  
     /**
      * Association band_label to Label

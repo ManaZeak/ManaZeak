@@ -14,9 +14,12 @@ import java.util.List;
 @Repository
 public class ArtistIntegrationDAO {
 
+    private static final String INSERT_BAND_MEMBERS = "INSERT INTO band_member (band_member_id, band_id, member_id) " +
+            "VALUES (nextval('seq_band_member'), ?, ?) ON CONFLICT (band_id, member_id) DO NOTHING";
     private final JdbcTemplate jdbcTemplate;
 
     private final CacheAccessManager cacheAccessManager;
+
 
     public ArtistIntegrationDAO(JdbcTemplate jdbcTemplate, CacheAccessManager cacheAccessManager) {
         this.jdbcTemplate = jdbcTemplate;
@@ -42,25 +45,25 @@ public class ArtistIntegrationDAO {
     }
 
     /**
-     * Create the link of the artists in the database.
+     * Creating the link between the artist and the band members.
      *
-     * @param artistLink The pair of id of the artist.
+     * @param artistLinks The links between the artist
      */
-    public void linkArtists(List<Pair<Long, Long>> artistLink) {
+    public void createBandMembers(List<Pair<Long, Long>> artistLinks) {
         jdbcTemplate.batchUpdate(
-                "INSERT INTO band_member (band_id, member_id) VALUES (?, ?)" +
-                        "ON CONFLICT DO NOTHING",
+                INSERT_BAND_MEMBERS,
                 new BatchPreparedStatementSetter() {
-
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setLong(1, artistLink.get(i).getFirst());
-                        ps.setLong(2, artistLink.get(i).getSecond());
+                        // Setting the band_id
+                        ps.setLong(1, artistLinks.get(i).getFirst());
+                        // Setting the member id.
+                        ps.setLong(2, artistLinks.get(i).getSecond());
                     }
 
                     @Override
                     public int getBatchSize() {
-                        return artistLink.size();
+                        return artistLinks.size();
                     }
                 }
         );

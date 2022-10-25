@@ -10,13 +10,16 @@ SET search_path TO music;
 -- ================================
 CREATE SEQUENCE SEQ_ALBUM START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_ARTIST START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_BAND_MEMBER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BIO START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COVER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_TIME_INTERVAL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_BAND_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
@@ -102,13 +105,32 @@ COMMENT ON COLUMN artist.link_id IS 'ManyToOne FK link';
 COMMENT ON COLUMN artist.bio_id IS 'ManyToOne FK bio';
 
 CREATE TABLE band_member (
-	band_id BIGINT not null,
-	member_id BIGINT not null,
-	CONSTRAINT PK_BAND_MEMBER PRIMARY KEY (band_id,member_id)
+	band_member_id BIGINT not null,
+	band_id BIGINT,
+	member_id BIGINT,
+	CONSTRAINT PK_BAND_MEMBER PRIMARY KEY (band_member_id)
 );
-COMMENT ON TABLE band_member IS 'ManyToMany artist / artist';
-COMMENT ON COLUMN band_member.band_id IS 'ManyToMany FK artist';
-COMMENT ON COLUMN band_member.member_id IS 'ManyToMany FK artist';
+COMMENT ON TABLE band_member IS 'Contains the information about each band member.';
+COMMENT ON COLUMN band_member.band_id IS 'ManyToOne FK artist';
+COMMENT ON COLUMN band_member.member_id IS 'ManyToOne FK artist';
+
+CREATE TABLE member_time_interval (
+	band_member_id BIGINT not null,
+	interval_id BIGINT not null,
+	CONSTRAINT PK_MEMBER_TIME_INTERVAL PRIMARY KEY (band_member_id,interval_id)
+);
+COMMENT ON TABLE member_time_interval IS 'ManyToMany band_member / time_interval';
+COMMENT ON COLUMN member_time_interval.band_member_id IS 'ManyToMany FK band_member';
+COMMENT ON COLUMN member_time_interval.interval_id IS 'ManyToMany FK time_interval';
+
+CREATE TABLE member_role (
+	band_member_id BIGINT not null,
+	band_role_id BIGINT not null,
+	CONSTRAINT PK_MEMBER_ROLE PRIMARY KEY (band_member_id,band_role_id)
+);
+COMMENT ON TABLE member_role IS 'ManyToMany band_member / band_role';
+COMMENT ON COLUMN member_role.band_member_id IS 'ManyToMany FK band_member';
+COMMENT ON COLUMN member_role.band_role_id IS 'ManyToMany FK band_role';
 
 CREATE TABLE bio (
 	bio_id BIGINT not null,
@@ -152,6 +174,14 @@ CREATE TABLE recording_location (
 );
 COMMENT ON TABLE recording_location IS 'Contains location where album where recorded.';
 COMMENT ON COLUMN recording_location.country_id IS 'ManyToOne FK country';
+
+CREATE TABLE time_interval (
+	interval_id BIGINT not null,
+	starting_date DATE not null,
+	ending_date DATE not null,
+	CONSTRAINT PK_TIME_INTERVAL PRIMARY KEY (interval_id)
+);
+COMMENT ON TABLE time_interval IS 'A time interval between two dates.';
 
 CREATE TABLE track (
 	track_id BIGINT not null,
@@ -253,6 +283,14 @@ CREATE TABLE track_key (
 COMMENT ON TABLE track_key IS 'ManyToMany track / key';
 COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
+
+CREATE TABLE band_role (
+	band_role_id BIGINT not null,
+	label VARCHAR(200) not null,
+	description VARCHAR(1000),
+	CONSTRAINT PK_BAND_ROLE PRIMARY KEY (band_role_id)
+);
+COMMENT ON TABLE band_role IS 'A role of a member of a band.';
 
 CREATE TABLE compilation_type (
 	compilation_type_id BIGINT not null,
@@ -417,11 +455,15 @@ ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_
 ALTER TABLE album ADD CONSTRAINT FK_album_cover FOREIGN KEY (cover_id) REFERENCES cover(cover_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE artist ADD CONSTRAINT FK_artist_birth_country FOREIGN KEY (country_id) REFERENCES country(country_id);
-ALTER TABLE band_member ADD CONSTRAINT FK_band_member_1 FOREIGN KEY (band_id) REFERENCES artist(artist_id);
-ALTER TABLE band_member ADD CONSTRAINT FK_band_member_2 FOREIGN KEY (member_id) REFERENCES artist(artist_id);
 ALTER TABLE artist ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE artist ADD CONSTRAINT FK_band_link FOREIGN KEY (link_id) REFERENCES link(link_id);
 ALTER TABLE artist ADD CONSTRAINT FK_band_bio FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
+ALTER TABLE band_member ADD CONSTRAINT FK_artist_band_member FOREIGN KEY (band_id) REFERENCES artist(artist_id);
+ALTER TABLE band_member ADD CONSTRAINT FK_band_member_artist FOREIGN KEY (member_id) REFERENCES artist(artist_id);
+ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_1 FOREIGN KEY (band_member_id) REFERENCES band_member(band_member_id);
+ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_2 FOREIGN KEY (interval_id) REFERENCES time_interval(interval_id);
+ALTER TABLE member_role ADD CONSTRAINT FK_member_role_1 FOREIGN KEY (band_member_id) REFERENCES band_member(band_member_id);
+ALTER TABLE member_role ADD CONSTRAINT FK_member_role_2 FOREIGN KEY (band_role_id) REFERENCES band_role(band_role_id);
 ALTER TABLE link ADD CONSTRAINT FK_link_type FOREIGN KEY (website_id) REFERENCES website_type(website_id);
 ALTER TABLE recording_location ADD CONSTRAINT FK_recording_location_country FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE track ADD CONSTRAINT FK_track_album FOREIGN KEY (album_id) REFERENCES album(album_id);
@@ -469,11 +511,15 @@ CREATE INDEX IDX_album_recording_location_2 ON album_recording_location (recordi
 CREATE INDEX IDX_album_cover ON album (cover_id);
 CREATE INDEX IDX_album_band ON album (artist_id);
 CREATE INDEX IDX_artist_birth_country ON artist (country_id);
-CREATE INDEX IDX_band_member_1 ON band_member (band_id);
-CREATE INDEX IDX_band_member_2 ON band_member (member_id);
 CREATE INDEX IDX_band_label ON artist (label_id);
 CREATE INDEX IDX_band_link ON artist (link_id);
 CREATE INDEX IDX_band_bio ON artist (bio_id);
+CREATE INDEX IDX_artist_band_member ON band_member (band_id);
+CREATE INDEX IDX_band_member_artist ON band_member (member_id);
+CREATE INDEX IDX_member_time_interval_1 ON member_time_interval (band_member_id);
+CREATE INDEX IDX_member_time_interval_2 ON member_time_interval (interval_id);
+CREATE INDEX IDX_member_role_1 ON member_role (band_member_id);
+CREATE INDEX IDX_member_role_2 ON member_role (band_role_id);
 CREATE INDEX IDX_link_type ON link (website_id);
 CREATE INDEX IDX_recording_location_country ON recording_location (country_id);
 CREATE INDEX IDX_track_album ON track (album_id);

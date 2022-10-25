@@ -64,17 +64,6 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
 
     /**
-     * Get the information about the member of an artist.
-     *
-     * @param artistId The artist id of the parent.
-     * @return The information about the members of the artist.
-     */
-    @Query("SELECT a.memberList " +
-            "FROM Artist a " +
-            "WHERE a.artistId = :artistId")
-    List<Artist> getArtistMinimalInfoByParent(Long artistId);
-
-    /**
      * Get all the artist with a not null location.
      *
      * @return The artists with a location.
