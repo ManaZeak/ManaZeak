@@ -1,23 +1,28 @@
 <div class="main-page" xmlns:th="http://www.thymeleaf.org">
-  <h2 th:text="#{mp.release_artists}"></h2>
-  <!--/*@thymesVar id="artists" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
-  <!-- Iterating through the artists -->
-  <div id="artists-container" class="artists-container">
-    <div class="artist-item" th:each="artist : ${artists}" th:data-id="${artist.id}">
-      <img 
-        th:src="'/resources/artist_pictures/orig/' + *{artist.name} + '.jpg'"
-        class="artist-pp"
-        alt="artist-pp"
-        onerror="this.onerror = null; this.src = 'static/img/object/artist.svg';">
-      <p class="artist-name" th:text="*{artist.name}"></p>
-      <!-- User doesn't have an avatar. Displaying default -->
-      <span th:if="*{artist.isLabel}">
+    <h2 th:text="#{mp.release_artists}"></h2>
+    <!--/*@thymesVar id="artists" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
+    <!-- Iterating through the artists -->
+    <div id="artists-container" class="artists-container">
+        <div class="artist-item" th:each="artist : ${artists}" th:data-id="${artist.id}">
+            <div th:if="${artist.cover != null}">
+                <img th:src="'/resources/artist_pictures/medium/' + *{artist.cover} + '.jpg'"
+                     class="artist-pp"
+                     alt="artist-pp">
+            </div>
+            <div th:if="${artist.cover == null}">
+                <img th:src="'static/img/object/artist.svg'"
+                     class="artist-pp"
+                     alt="artist-pp">
+            </div>
+            <p class="artist-name" th:text="*{artist.name}"></p>
+            <!-- User doesn't have an avatar. Displaying default -->
+            <span th:if="*{artist.isLabel}">
       <img src="static/img/object/label.svg" class="artist-is-label" alt="artist-is-label">
     </span>
+        </div>
     </div>
-  </div>
-  <h2 th:text="#{mp.genres}"></h2>
-  <div id="genres-container" class="genres-container">
-    <button id="test-button">Test</button>
-  </div>
+    <h2 th:text="#{mp.genres}"></h2>
+    <div id="genres-container" class="genres-container">
+        <button id="test-button">Test</button>
+    </div>
 </div>

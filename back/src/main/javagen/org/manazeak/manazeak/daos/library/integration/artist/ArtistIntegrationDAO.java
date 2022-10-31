@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.library.integration.artist;
 
+import org.manazeak.manazeak.daos.library.integration.cover.ThumbNameUpdaterSetter;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.springframework.data.util.Pair;
@@ -16,6 +17,9 @@ public class ArtistIntegrationDAO {
 
     private static final String INSERT_BAND_MEMBERS = "INSERT INTO band_member (band_member_id, band_id, member_id) " +
             "VALUES (nextval('seq_band_member'), ?, ?) ON CONFLICT (band_id, member_id) DO NOTHING";
+
+    private static final String UPDATE_ARTIST_THUMB = "UPDATE artist SET picture_filename = ? WHERE artist_id = ?";
+
     private final JdbcTemplate jdbcTemplate;
 
     private final CacheAccessManager cacheAccessManager;
@@ -67,5 +71,15 @@ public class ArtistIntegrationDAO {
                     }
                 }
         );
+    }
+
+    /**
+     * Update the artist picture.
+     *
+     * @param artistPicture The list of objects linking the id of the artist to the name.
+     */
+    public void updateThumbArtistPicture(List<Pair<Long, String>> artistPicture) {
+        ThumbNameUpdaterSetter thumbSetter = new ThumbNameUpdaterSetter(artistPicture);
+        jdbcTemplate.batchUpdate(UPDATE_ARTIST_THUMB, thumbSetter);
     }
 }

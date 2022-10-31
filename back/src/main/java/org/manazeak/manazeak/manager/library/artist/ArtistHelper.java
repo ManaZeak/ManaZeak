@@ -13,6 +13,7 @@ public final class ArtistHelper {
 
     /**
      * Convert an artist from the database into a minimal artist.
+     *
      * @param artist The artist object.
      * @return The minimal artist.
      */
@@ -21,7 +22,7 @@ public final class ArtistHelper {
         minimal.setId(artist.getArtistId());
         minimal.setName(artist.getName());
         minimal.setLabel(artist.getIsLabel());
-        // FIXME: add the cover to the artist object.
+        minimal.setCover(artist.getPictureFilename());
 
         return minimal;
     }

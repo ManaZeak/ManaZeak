@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.library.integration.label;
 
+import org.manazeak.manazeak.daos.library.integration.cover.ThumbNameUpdaterSetter;
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelIntegrationDto;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -60,20 +61,8 @@ public class LabelIntegrationDAO {
      * @param labels The information about the label and the generated image name.
      */
     public void updateLabelPicture(List<Pair<Long, String>> labels) {
-        jdbcTemplate.batchUpdate(UPDATE_LABEL_PICTURE,
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, labels.get(i).getSecond());
-                        ps.setLong(2, labels.get(i).getFirst());
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return labels.size();
-                    }
-                }
-        );
+        ThumbNameUpdaterSetter thumbSetter = new ThumbNameUpdaterSetter(labels);
+        jdbcTemplate.batchUpdate(UPDATE_LABEL_PICTURE, thumbSetter);
     }
 
 }
