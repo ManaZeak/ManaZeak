@@ -22,6 +22,11 @@ public final class LibraryConstant {
     public static final Path LABEL_PICTURE_PATH = Paths.get("/assets/labels/img");
 
     /**
+     * The folder containing the original genre pictures.
+     */
+    public static final Path GENRE_PICTURE_PATH = Paths.get("/assets/genres/img");
+
+    /**
      * The number of items that will be processed at the same time.
      */
     public static final int SCAN_BUFFER_SIZE = 1000;

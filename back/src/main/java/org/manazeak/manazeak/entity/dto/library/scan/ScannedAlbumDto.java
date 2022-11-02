@@ -11,10 +11,8 @@ import java.util.List;
 public class ScannedAlbumDto {
 
     private final List<ScannedTrackDto> tracks = new ArrayList<>();
-
-    private LocalDateTime lastModificationDate;
-
     private final Path location;
+    private LocalDateTime lastModificationDate;
 
     public ScannedAlbumDto(Path location) {
         this.location = location;

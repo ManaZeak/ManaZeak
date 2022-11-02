@@ -93,6 +93,7 @@ public class AdminUserManager {
 
     /**
      * Get the user contained in the database.
+     *
      * @param userId The id of the user.
      * @return The user in the database.
      */

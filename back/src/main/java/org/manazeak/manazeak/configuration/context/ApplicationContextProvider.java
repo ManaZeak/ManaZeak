@@ -13,6 +13,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 
     /**
      * Set the application context into the static object.
+     *
      * @param ctx The Spring context
      */
     @Override

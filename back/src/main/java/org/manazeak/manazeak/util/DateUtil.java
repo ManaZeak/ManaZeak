@@ -63,6 +63,7 @@ public final class DateUtil {
 
     /**
      * Get a SQL timestamp from a LocaleDateTime.
+     *
      * @param date The
      * @return
      */

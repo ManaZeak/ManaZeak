@@ -10,6 +10,7 @@ public enum ScanStepEnum {
     TRACK_COVER_EXTRACTION(4L),
     ARTIST_PICTURE_EXTRACTION(5L),
     LABEL_PICTURE_EXTRACTION(7L),
+    GENRE_PICTURE_EXTRACTION(8L),
     DONE(6L);
 
     private final Long scanStatusId;

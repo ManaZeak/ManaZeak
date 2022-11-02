@@ -20,6 +20,7 @@ public interface CountryDAO extends CrudRepository<Country, Long> {
 
     /**
      * Get a country by it's id.
+     *
      * @param countryId the id of the country.
      * @return A country if it exists.
      */

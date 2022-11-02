@@ -86,8 +86,8 @@ public class LibraryIntegrationContainer {
 
     public TrackIntegrationHelper getTrackIntegrationHelper() {
         return trackIntegrationHelper;
-	}
-	
+    }
+
     public GenreIntegrationHelper getGenreIntegrationHelper() {
         return genreIntegrationHelper;
     }

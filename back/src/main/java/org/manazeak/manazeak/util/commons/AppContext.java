@@ -36,8 +36,9 @@ public final class AppContext {
 
     /**
      * Get the bean of the specified type.
+     *
      * @param clazz The class of the bean.
-     * @param <T> The type of the bean.
+     * @param <T>   The type of the bean.
      * @return The bean.
      */
     public static <T> T getBean(final Class<T> clazz) {

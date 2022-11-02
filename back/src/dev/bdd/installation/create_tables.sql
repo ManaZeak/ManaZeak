@@ -148,6 +148,7 @@ CREATE TABLE genre (
 	genre_id BIGINT not null,
 	name VARCHAR(100) not null,
 	description TEXT,
+	picture_filename VARCHAR(32),
 	CONSTRAINT PK_GENRE PRIMARY KEY (genre_id)
 );
 

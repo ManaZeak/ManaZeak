@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * No autonomous transaction for tests.
- *
  */
 @Component
 public class AutonomousTransactionManagerMock implements AutonomousTransactionManager {

@@ -21,7 +21,7 @@ public class InviteCodeDataCreation {
      * Insert an invite code in the database.
      *
      * @param suffix Optional param insert the suffix after the default invite code.
-     * @param owner The user that owns this new invite code
+     * @param owner  The user that owns this new invite code
      */
     public InviteCode createInviteCode(String suffix, MzkUser owner) {
         InviteCode inviteCode = new InviteCode();

@@ -70,6 +70,7 @@ public class SecurityConfiguration {
 
         return httpSecurity.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

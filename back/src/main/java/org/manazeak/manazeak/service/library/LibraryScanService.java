@@ -9,8 +9,6 @@ import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
-import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
-import org.manazeak.manazeak.manager.library.integration.label.LabelPictureThumbManager;
 import org.manazeak.manazeak.manager.library.integration.picture.LibraryPictureIntegrationManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.slf4j.Logger;

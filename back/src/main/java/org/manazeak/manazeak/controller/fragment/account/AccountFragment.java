@@ -14,6 +14,7 @@ public class AccountFragment {
 
     /**
      * Get the account page skeleton.
+     *
      * @return The skeleton of the account page.
      */
     @RestSecurity(PrivilegeEnum.PLAY)

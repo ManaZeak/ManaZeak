@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class ArtistDetailsDto {
 
+    private final List<ArtistMinimalInfoDto> members = new ArrayList<>();
     private Long artistId;
     private String name;
     private String location;
@@ -23,7 +24,6 @@ public class ArtistDetailsDto {
     private String label;
     private List<String> links;
     private String bio;
-    private final List<ArtistMinimalInfoDto> members = new ArrayList<>();
 
     public ArtistDetailsDto(Long artistId, String name, String location, LocalDate birthDate,
                             LocalDate deathDate, Boolean isLabel, String testimonyFrom,

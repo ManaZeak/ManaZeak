@@ -23,6 +23,7 @@ public class Genre implements Serializable{
 	private Long genreId;
 	private String name;
 	private String description;
+	private String pictureFilename;
 
     /**
      * No comment found in model diagram
@@ -72,6 +73,21 @@ public class Genre implements Serializable{
 	public void setDescription(final String description){
 		this.description = description;
     }  
+    /**
+     * No comment found in model diagram
+     * @return value of pictureFilename
+     */
+    @Column(name="picture_filename", nullable=true)
+	public String getPictureFilename(){
+		return pictureFilename;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param pictureFilename new value to give to pictureFilename
+     */
+	public void setPictureFilename(final String pictureFilename){
+		this.pictureFilename = pictureFilename;
+    }  
 
 	@Override
 	public int hashCode(){
@@ -82,6 +98,7 @@ public class Genre implements Serializable{
 		result = 31 * result + (genreId == null? 0 : genreId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
 		result = 31 * result + (description == null? 0 : description.hashCode());
+		result = 31 * result + (pictureFilename == null? 0 : pictureFilename.hashCode());
 			
 		return result;
 	}
@@ -109,6 +126,7 @@ public class Genre implements Serializable{
 		return (genreId == null ?  (otherGenre.genreId == null) : genreId.equals(otherGenre.genreId))
 			&& (name == null ?  (otherGenre.name == null) : name.equals(otherGenre.name))
 			&& (description == null ?  (otherGenre.description == null) : description.equals(otherGenre.description))
+			&& (pictureFilename == null ?  (otherGenre.pictureFilename == null) : pictureFilename.equals(otherGenre.pictureFilename))
 		;
 	}
 

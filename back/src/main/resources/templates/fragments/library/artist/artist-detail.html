@@ -11,7 +11,7 @@
     <p th:text="${artist.labelId}"></p>
     <p th:text="${artist.label}"></p>
     <p th:text="${artist.bio}"></p>
-    <img th:src="'/resources/artist_pictures/orig/' + *{artist.name} + '.jpg'" class="artist-pp" alt="artist-pp">
+    <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{artist.name} + '.jpg'">
 
 
     <p>MEMBERS</p>
@@ -19,6 +19,6 @@
         <p th:text="*{member.name}"></p>
         <p th:text="*{member.cover}"></p>
         <p th:text="*{member.label}"></p>
-        <img th:src="'/resources/artist_pictures/orig/' + *{member.name} + '.jpg'" class="artist-pp" alt="artist-pp">
+        <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{member.name} + '.jpg'">
     </div>
 </div>

@@ -24,6 +24,7 @@ public interface UserInformationService {
 
     /**
      * Saves the information of the edited user.
+     *
      * @param mzkUserEditDto The information
      */
     void saveCurrentUserEditInformation(MzkUserEditDto mzkUserEditDto);

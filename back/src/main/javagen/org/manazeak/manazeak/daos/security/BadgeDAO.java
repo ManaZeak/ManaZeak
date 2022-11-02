@@ -22,6 +22,5 @@ public interface BadgeDAO extends CrudRepository<Badge, Long> {
     List<Badge> getAllBadges();
 
 
-
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -2,6 +2,7 @@ package org.manazeak.manazeak.manager.library.integration.picture;
 
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
+import org.manazeak.manazeak.manager.library.integration.genre.GenreThumbManager;
 import org.manazeak.manazeak.manager.library.integration.label.LabelPictureThumbManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.slf4j.Logger;
@@ -18,11 +19,13 @@ public class LibraryPictureIntegrationManager {
     private final LibraryScanStatusManager libraryScanStatusManager;
     private final ArtistProfilePicManager artistProfilePicManager;
     private final LabelPictureThumbManager labelThumbManager;
+    private final GenreThumbManager genreThumbManager;
 
-    public LibraryPictureIntegrationManager(LibraryScanStatusManager libraryScanStatusManager, ArtistProfilePicManager artistProfilePicManager, LabelPictureThumbManager labelThumbManager) {
+    public LibraryPictureIntegrationManager(LibraryScanStatusManager libraryScanStatusManager, ArtistProfilePicManager artistProfilePicManager, LabelPictureThumbManager labelThumbManager, GenreThumbManager genreThumbManager) {
         this.libraryScanStatusManager = libraryScanStatusManager;
         this.artistProfilePicManager = artistProfilePicManager;
         this.labelThumbManager = labelThumbManager;
+        this.genreThumbManager = genreThumbManager;
     }
 
     public void integrateLibraryPictures() {
@@ -37,6 +40,11 @@ public class LibraryPictureIntegrationManager {
         labelThumbManager.generateLabelThumbs();
         LOG.info("Ending the label pictures thumbnail generation");
 
+        libraryScanStatusManager.setCurrentStep(ScanStepEnum.GENRE_PICTURE_EXTRACTION);
+        LOG.info("Starting the genre pictures thumbnail generation");
+        genreThumbManager.generateGenreThumbs();
+        libraryScanStatusManager.setCurrentStep(ScanStepEnum.GENRE_PICTURE_EXTRACTION);
+        LOG.info("Ending the genre pictures thumbnail generation");
 
     }
 

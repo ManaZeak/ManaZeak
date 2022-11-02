@@ -1,9 +1,9 @@
 <!-- HTML fragment for the account page skeleton -->
 <div class="account-page" xmlns:th="http://www.thymeleaf.org">
-  <div id="account-tabs" class="account-tabs">
-    <p class="selected" data-view="profile" th:text="#{account.tab.profile}"></p>
-    <p data-view="preference" th:text="#{account.tab.pref}"></p>
-  </div>
-  <!-- The following div needs to be filled with admin fragments, see Js source -->
-  <div id="account-view" class="account-view"></div>
+    <div class="account-tabs" id="account-tabs">
+        <p class="selected" data-view="profile" th:text="#{account.tab.profile}"></p>
+        <p data-view="preference" th:text="#{account.tab.pref}"></p>
+    </div>
+    <!-- The following div needs to be filled with admin fragments, see Js source -->
+    <div class="account-view" id="account-view"></div>
 </div>

@@ -21,7 +21,9 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Allows to manage the picture of the artists.
@@ -44,6 +46,30 @@ public class ArtistProfilePicManager {
     public ArtistProfilePicManager(ArtistProfilePicDAO artistProfilePicDAO, ArtistIntegrationDAO artistIntegrationDAO) {
         this.artistProfilePicDAO = artistProfilePicDAO;
         this.artistIntegrationDAO = artistIntegrationDAO;
+    }
+
+    /**
+     * Generate the thumbnails of an artist if the artist exists in the database.
+     *
+     * @param artist The information needed to find the artist picture.
+     * @return A pair containing the id of the artist and the name of the thumbnail. If not thumb has been generated, returns null.
+     */
+    private static Pair<Long, String> generateThumbsArtist(ArtistPictureProjection artist) {
+        // Generating the name of the artist on the FS.
+        String fsArtistName = FieldUtil.removeForbiddenFsChar(artist.getName());
+        // Checking if the file is on the FS.
+        Path artistPicturePath = LibraryConstant.ARTIST_PROFILE_PICTURE_PATH
+                .resolve(fsArtistName + FileExtensionEnum.JGP.getExtension());
+        if (!artistPicturePath.toFile().exists()) {
+            return null;
+        }
+
+        String thumbName = HashUtil.getMd5Hash(artist.getName());
+        // Generating the thumbnails for the artist.
+        ThumbnailUtil.generateThumbs(THUMB_SIZE_TO_GENERATE, ResourcePathEnum.ARTIST_PROFILE_PIC_FOLDER.getPath(),
+                artistPicturePath, thumbName);
+
+        return Pair.of(artist.getId(), thumbName);
     }
 
     /**
@@ -72,30 +98,6 @@ public class ArtistProfilePicManager {
                 LOG.error("Error during the generation of the artists thumbnails.", e);
             }
         };
-    }
-
-    /**
-     * Generate the thumbnails of an artist if the artist exists in the database.
-     *
-     * @param artist The information needed to find the artist picture.
-     * @return A pair containing the id of the artist and the name of the thumbnail. If not thumb has been generated, returns null.
-     */
-    private static Pair<Long, String> generateThumbsArtist(ArtistPictureProjection artist) {
-        // Generating the name of the artist on the FS.
-        String fsArtistName = FieldUtil.removeForbiddenFsChar(artist.getName());
-        // Checking if the file is on the FS.
-        Path artistPicturePath = LibraryConstant.ARTIST_PROFILE_PICTURE_PATH
-                .resolve(fsArtistName + FileExtensionEnum.JGP.getExtension());
-        if (!artistPicturePath.toFile().exists()) {
-            return null;
-        }
-
-        String thumbName = HashUtil.getMd5Hash(artist.getName());
-        // Generating the thumbnails for the artist.
-        ThumbnailUtil.generateThumbs(THUMB_SIZE_TO_GENERATE, ResourcePathEnum.ARTIST_PROFILE_PIC_FOLDER.getPath(),
-                artistPicturePath, thumbName);
-
-        return Pair.of(artist.getId(), thumbName);
     }
 
     /**

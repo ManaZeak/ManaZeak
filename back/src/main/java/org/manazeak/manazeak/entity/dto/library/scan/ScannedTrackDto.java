@@ -37,6 +37,7 @@ public class ScannedTrackDto {
 
     /**
      * Get the date of the file that is the most recent.
+     *
      * @return The most recent date.
      */
     public LocalDateTime getMostRecentDate() {

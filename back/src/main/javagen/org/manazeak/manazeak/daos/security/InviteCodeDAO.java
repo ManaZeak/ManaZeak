@@ -37,6 +37,7 @@ public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
 
     /**
      * Getting all the invite codes by the parent id.
+     *
      * @param parent The parent user.
      * @return The invite codes linked to the user.
      */

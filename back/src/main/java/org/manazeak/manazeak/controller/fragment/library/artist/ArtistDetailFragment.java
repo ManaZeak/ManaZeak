@@ -23,6 +23,7 @@ public class ArtistDetailFragment {
 
     /**
      * Get the information about an artist.
+     *
      * @param artistId The id of the artist.
      * @return The template to display to the user containing the user information.
      */

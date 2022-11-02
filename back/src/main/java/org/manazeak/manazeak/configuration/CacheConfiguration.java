@@ -15,22 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class CacheConfiguration {
 
     /**
-     * Configuring the cache for the spring application.
-     *
-     * @return The cache manager that will be used in the application.
-     */
-    @Bean
-    public CacheManager cacheManager() {
-        // Building a cache with a name for unit tests.
-        SpringCache2kCacheManager cacheManager = new SpringCache2kCacheManager("spring-" + hashCode());
-
-        // Configuring the caches.
-        configureCaches(cacheManager);
-
-        return cacheManager;
-    }
-
-    /**
      * Creates all the caches in the manager from the enum containing all the configuration of the caches.
      *
      * @param cacheManager The manager that will be used in the application to get all caches.
@@ -49,5 +33,21 @@ public class CacheConfiguration {
                 return builder;
             });
         }
+    }
+
+    /**
+     * Configuring the cache for the spring application.
+     *
+     * @return The cache manager that will be used in the application.
+     */
+    @Bean
+    public CacheManager cacheManager() {
+        // Building a cache with a name for unit tests.
+        SpringCache2kCacheManager cacheManager = new SpringCache2kCacheManager("spring-" + hashCode());
+
+        // Configuring the caches.
+        configureCaches(cacheManager);
+
+        return cacheManager;
     }
 }

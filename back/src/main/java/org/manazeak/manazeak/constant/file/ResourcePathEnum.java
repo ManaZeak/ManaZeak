@@ -10,7 +10,8 @@ public enum ResourcePathEnum {
 
     COVER_FOLDER(Paths.get("/resources/covers/")),
     ARTIST_PROFILE_PIC_FOLDER(Paths.get("/resources/artist_pictures/")),
-    LABEL_PICTURE_FOLDER(Paths.get("/resources/label_pictures/"));
+    LABEL_PICTURE_FOLDER(Paths.get("/resources/label_pictures/")),
+    GENRE_PICTURE_FOLDER(Paths.get("/resources/genre_pictures/"));
 
 
     /**

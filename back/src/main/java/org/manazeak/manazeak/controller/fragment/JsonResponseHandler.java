@@ -19,9 +19,10 @@ public class JsonResponseHandler {
 
     /**
      * Prepare a JSON response for the front as a success.
-     * @param titleCode The code of the title that will be sent to the user.
+     *
+     * @param titleCode   The code of the title that will be sent to the user.
      * @param messageCode The content of the message that will be sent to the user.
-     * @param model The 
+     * @param model       The
      * @return The JSON response message.
      */
     public String prepareJsonSuccess(final String titleCode, final String messageCode, Model model) {
