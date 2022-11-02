@@ -46,8 +46,7 @@ public class TrackIntegrationHelper {
         track.setSubtitle(extractedTrack.getSubtitle());
         // Getting the ID of the genre.
         track.setGenreIds(getElementIdsByNames(extractedTrack.getGenres(), CacheEnum.GENRE_ID_BY_NAME));
-        // TODO : uncomment and make it work (cache init problem).
-        // track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));
+        track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));
 
         // Getting the album ID from the cache.
         track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, extractedAlbum.getTitle()));

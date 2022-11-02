@@ -82,6 +82,7 @@ public class LibraryScanService {
             coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
             LOG.info("Ending the cover extraction.");
 
+            // Generating the thumbnails of the external mzk assets.
             libraryPictureIntegrationManager.integrateLibraryPictures();
 
             // TODO : read the additional files containing information not present in the track tags.

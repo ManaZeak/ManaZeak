@@ -94,6 +94,7 @@ public class TrackIntegrationDAO {
             addPairsAssociation(trackId, track.getComposerIds(), associations.get(TrackLinkTableEnum.COMPOSER));
             addPairsAssociation(trackId, track.getArtistIds(), associations.get(TrackLinkTableEnum.ARTIST));
             addPairsAssociation(trackId, track.getGenreIds(), associations.get(TrackLinkTableEnum.GENRE));
+            addPairsAssociation(trackId, track.getKeyIds(), associations.get(TrackLinkTableEnum.KEY));
         }
 
         // Inserting the data one table at a time.

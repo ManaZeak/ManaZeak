@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface KeyDAO extends CrudRepository<Key, Long> {
 
-    @Query("select keyId, label from Key")
+    @Query("select keyId as keyId, label as label from Key")
     List<KeyLinkerProjection> getAll();
 
 }

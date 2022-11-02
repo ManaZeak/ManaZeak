@@ -124,7 +124,9 @@ public class CoverManager {
         executor.shutdown();
 
         try {
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+            if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
+                LOG.error("The executor of the album cover thumbnails generation timed out");
+            }
         } catch (InterruptedException e) {
             LOG.error("The album cover thumbnail generation was interrupted", e);
             Thread.currentThread().interrupt();

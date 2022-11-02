@@ -55,7 +55,7 @@ public class LibraryIntegrationManager {
         // Clearing all the data contained in the caches.
         clearAllIntegrationCaches();
         // Adding the data needed to complete the integration.
-        //cacheIntegrationInitializer.initCacheIntegration();
+        cacheIntegrationInitializer.initCacheIntegration();
 
         final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
 

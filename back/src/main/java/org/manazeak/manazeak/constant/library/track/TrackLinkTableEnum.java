@@ -14,7 +14,8 @@ public enum TrackLinkTableEnum {
     PERFORMER("track_performer"),
     COMPOSER("track_composer"),
     ARTIST("track_band_artist"),
-    GENRE("track_genre", " (track_id, genre_id) VALUES (?, ?)");
+    GENRE("track_genre", " (track_id, genre_id) VALUES (?, ?)"),
+    KEY("track_key", " (track_id, key_id) VALUES (?, ?)");
 
 
     private static final String SQL_DELETE_START = "DELETE FROM ";
