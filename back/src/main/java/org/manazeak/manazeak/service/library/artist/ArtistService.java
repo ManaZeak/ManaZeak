@@ -2,6 +2,7 @@ package org.manazeak.manazeak.service.library.artist;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
+import org.manazeak.manazeak.daos.track.BandMemberDAO;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.track.Artist;
@@ -21,8 +22,11 @@ public class ArtistService {
 
     private final ArtistDAO artistDAO;
 
-    public ArtistService(ArtistDAO artistDAO) {
+    private final BandMemberDAO bandMemberDAO;
+
+    public ArtistService(ArtistDAO artistDAO, BandMemberDAO bandMemberDAO) {
         this.artistDAO = artistDAO;
+        this.bandMemberDAO = bandMemberDAO;
     }
 
 
@@ -63,14 +67,13 @@ public class ArtistService {
     public ArtistDetailsDto getArtistDetail(Long artistId) {
         // Getting the information of the artist.
         ArtistDetailsDto detail = artistDAO.getArtistDetailById(artistId).orElseThrow(
-                MzkExceptionHelper.generateSupplierObjectNotFoundException("")
+                MzkExceptionHelper.generateSupplierObjectNotFoundException("artist.error.not_found")
         );
         // Getting the minimal information on the members.
-        // FIXME :  use the new table band_member.
-//        List<Artist> members = artistDAO.getArtistMinimalInfoByParent(detail.getArtistId());
-//        for (Artist member : members) {
-//            detail.addMember(ArtistHelper.convertArtist(member));
-//        }
+        List<Artist> members = bandMemberDAO.getLinkedArtists(detail.getArtistId());
+        for (Artist member : members) {
+            detail.addMember(ArtistHelper.convertArtist(member));
+        }
 
         return detail;
     }

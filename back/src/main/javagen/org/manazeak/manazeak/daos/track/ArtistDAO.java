@@ -54,6 +54,7 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "   country.trigram, " +
             "   label.labelId, " +
             "   label.name, " +
+            "   a.pictureFilename, " +
             "   bio.text" +
             ") " +
             "FROM Artist a " +

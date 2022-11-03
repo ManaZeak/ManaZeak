@@ -11,14 +11,13 @@
     <p th:text="${artist.labelId}"></p>
     <p th:text="${artist.label}"></p>
     <p th:text="${artist.bio}"></p>
-    <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{artist.name} + '.jpg'">
-
+    <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
 
     <p>MEMBERS</p>
     <div th:each="member : ${artist.members}">
         <p th:text="*{member.name}"></p>
         <p th:text="*{member.cover}"></p>
         <p th:text="*{member.label}"></p>
-        <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{member.name} + '.jpg'">
+        <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
     </div>
 </div>

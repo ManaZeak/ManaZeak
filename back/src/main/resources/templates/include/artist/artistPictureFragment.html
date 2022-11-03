@@ -1,0 +1,14 @@
+<div th:fragment="artistPictureDisplay (cover, size)" xmlns:th="http://www.thymeleaf.org">
+    <div th:if="*{cover != null}">
+        <div th:if="*{size == null}">
+            <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{cover} + '.jpg'">
+        </div>
+        <div th:if="*{size != null}">
+            <img alt="artist-pp" class="artist-pp"
+                 th:src="'/resources/artist_pictures/' + *{size} + '/' + *{cover} + '.jpg'">
+        </div>
+    </div>
+    <div th:if="*{cover == null}">
+        <img alt="artist-pp" class="artist-pp" th:src="'static/img/object/artist.svg'">
+    </div>
+</div>

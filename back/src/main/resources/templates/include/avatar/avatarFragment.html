@@ -3,7 +3,7 @@
         <!-- User doesn't have an avatar. Displaying default -->
         <img alt="user-avatar" src="static/img/default/user.svg">
     </div>
-    <div class="avatar-container" th:unless="${avatar == null}">
+    <div class="avatar-container" th:unless="${avatar != null}">
         <img alt="user-avatar" th:src='${"/resources/avatars/"+avatar}'>
     </div>
 </div>

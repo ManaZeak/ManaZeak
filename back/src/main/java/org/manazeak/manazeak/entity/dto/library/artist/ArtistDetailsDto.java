@@ -22,12 +22,13 @@ public class ArtistDetailsDto {
     private String countryCode;
     private Long labelId;
     private String label;
+    private String cover;
     private List<String> links;
     private String bio;
 
     public ArtistDetailsDto(Long artistId, String name, String location, LocalDate birthDate,
                             LocalDate deathDate, Boolean isLabel, String testimonyFrom,
-                            String testimonyText, String countryCode, Long labelId, String label, String bio) {
+                            String testimonyText, String countryCode, Long labelId, String label, String cover, String bio) {
         this.artistId = artistId;
         this.name = name;
         this.location = location;
@@ -39,6 +40,7 @@ public class ArtistDetailsDto {
         this.countryCode = countryCode;
         this.labelId = labelId;
         this.label = label;
+        this.cover = cover;
         this.bio = bio;
     }
 
@@ -152,5 +154,13 @@ public class ArtistDetailsDto {
 
     public void setArtistId(Long artistId) {
         this.artistId = artistId;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }
