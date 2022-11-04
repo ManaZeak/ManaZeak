@@ -13,6 +13,13 @@
     <p th:text="${artist.bio}"></p>
     <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
 
+    <p>ALBUMS</p>
+    <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
+    <div th:each="album : ${albums}">
+        <p th:text="*{album.title}"></p>
+        <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')"></div>
+    </div>
+
     <p>MEMBERS</p>
     <div th:each="member : ${artist.members}">
         <p th:text="*{member.name}"></p>

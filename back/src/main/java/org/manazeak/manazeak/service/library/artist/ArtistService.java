@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Allows to interract with the artists of the application.
+ * Allows to interact with the artists of the application.
  */
 @TransactionalWithRollback
 @Service

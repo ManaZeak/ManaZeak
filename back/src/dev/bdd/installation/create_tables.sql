@@ -12,7 +12,6 @@ CREATE SEQUENCE SEQ_ALBUM START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_ARTIST START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BAND_MEMBER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BIO START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_COVER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20; 
@@ -52,15 +51,14 @@ CREATE TABLE album (
 	start_recording_date DATE,
 	end_recording_date DATE,
 	location VARCHAR(500) not null,
+	cover VARCHAR(32),
 	compilation_type_id BIGINT,
 	label_id BIGINT,
-	cover_id BIGINT,
 	artist_id BIGINT,
 	CONSTRAINT PK_ALBUM PRIMARY KEY (album_id)
 );
 COMMENT ON COLUMN album.compilation_type_id IS 'ManyToOne FK compilation_type';
 COMMENT ON COLUMN album.label_id IS 'ManyToOne FK label';
-COMMENT ON COLUMN album.cover_id IS 'ManyToOne FK cover';
 COMMENT ON COLUMN album.artist_id IS 'ManyToOne FK artist';
 
 CREATE TABLE album_bio (
@@ -136,12 +134,6 @@ CREATE TABLE bio (
 	bio_id BIGINT not null,
 	text TEXT not null,
 	CONSTRAINT PK_BIO PRIMARY KEY (bio_id)
-);
-
-CREATE TABLE cover (
-	cover_id BIGINT not null,
-	filename VARCHAR(50) not null,
-	CONSTRAINT PK_COVER PRIMARY KEY (cover_id)
 );
 
 CREATE TABLE genre (
@@ -453,7 +445,6 @@ ALTER TABLE album ADD CONSTRAINT FK_album_compilation FOREIGN KEY (compilation_t
 ALTER TABLE album ADD CONSTRAINT FK_album_label FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_1 FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_2 FOREIGN KEY (recording_location_id) REFERENCES recording_location(recording_location_id);
-ALTER TABLE album ADD CONSTRAINT FK_album_cover FOREIGN KEY (cover_id) REFERENCES cover(cover_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE artist ADD CONSTRAINT FK_artist_birth_country FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE artist ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCES label(label_id);
@@ -509,7 +500,6 @@ CREATE INDEX IDX_album_compilation ON album (compilation_type_id);
 CREATE INDEX IDX_album_label ON album (label_id);
 CREATE INDEX IDX_album_recording_location_1 ON album_recording_location (album_id);
 CREATE INDEX IDX_album_recording_location_2 ON album_recording_location (recording_location_id);
-CREATE INDEX IDX_album_cover ON album (cover_id);
 CREATE INDEX IDX_album_band ON album (artist_id);
 CREATE INDEX IDX_artist_birth_country ON artist (country_id);
 CREATE INDEX IDX_band_label ON artist (label_id);

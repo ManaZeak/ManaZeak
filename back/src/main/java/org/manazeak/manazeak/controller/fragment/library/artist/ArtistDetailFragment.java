@@ -2,6 +2,7 @@ package org.manazeak.manazeak.controller.fragment.library.artist;
 
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.library.artist.ArtistFragmentEnum;
+import org.manazeak.manazeak.service.library.album.AlbumService;
 import org.manazeak.manazeak.service.library.artist.ArtistService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,11 @@ public class ArtistDetailFragment {
 
     private final ArtistService artistService;
 
-    public ArtistDetailFragment(ArtistService artistService) {
+    private final AlbumService albumService;
+
+    public ArtistDetailFragment(ArtistService artistService, AlbumService albumService) {
         this.artistService = artistService;
+        this.albumService = albumService;
     }
 
     /**
@@ -32,6 +36,7 @@ public class ArtistDetailFragment {
                                           Model model) {
         // Loading the artist.
         model.addAttribute("artist", artistService.getArtistDetail(artistId));
+        model.addAttribute("albums", albumService.getMinimalAlbumByArtistId(artistId));
 
         return ArtistFragmentEnum.ARTIST_DETAIL.getPage();
     }

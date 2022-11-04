@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
 import org.manazeak.manazeak.entity.track.Album;
@@ -27,5 +28,19 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
 
     @Query("select albumId as albumId, location as albumLocation from Album where location in (:locations)")
     List<AlbumCoverLinkerProjection> getAlbumByLocations(@Param("locations") Collection<String> location);
+
+    /**
+     * Get the basic information needed to display albums in the front.
+     *
+     * @param artistId The id of the artist that created the album.
+     * @return The list of corresponding albums for the given artist id.
+     */
+    @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto( " +
+            "alb.albumId, " +
+            "alb.title, " +
+            "alb.cover) " +
+            "from Album alb " +
+            "where alb.artist.artistId = :artistId")
+    List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(@Param("artistId") Long artistId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -41,11 +41,11 @@ public class Album implements Serializable{
 	private LocalDate startRecordingDate;
 	private LocalDate endRecordingDate;
 	private String location;
+	private String cover;
 	private Set<Bio> bioList;
 	private CompilationType compilationType;
 	private Label label;
 	private Set<RecordingLocation> recordingLocationList;
-	private Cover cover;
 	private Artist artist;
 
     /**
@@ -232,6 +232,21 @@ public class Album implements Serializable{
 		this.location = location;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of cover
+     */
+    @Column(name="cover", nullable=true)
+	public String getCover(){
+		return cover;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param cover new value to give to cover
+     */
+	public void setCover(final String cover){
+		this.cover = cover;
+    }  
+    /**
      * Association album_bio to Bio
      * @return value of bioList
      */
@@ -296,22 +311,6 @@ public class Album implements Serializable{
 		this.recordingLocationList = recordingLocationList;
     }  
     /**
-     * Association album_cover to Cover
-     * @return value of cover
-     */
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="cover_id", referencedColumnName="cover_id")
-	public Cover getCover(){
-		return cover;
-    }  
-    /**
-     * Association album_cover to Cover
-     * @param cover new value to give to cover
-     */
-	public void setCover(final Cover cover){
-		this.cover = cover;
-    }  
-    /**
      * Association album_band to Artist
      * @return value of artist
      */
@@ -346,6 +345,7 @@ public class Album implements Serializable{
 		result = 31 * result + (startRecordingDate == null? 0 : startRecordingDate.hashCode());
 		result = 31 * result + (endRecordingDate == null? 0 : endRecordingDate.hashCode());
 		result = 31 * result + (location == null? 0 : location.hashCode());
+		result = 31 * result + (cover == null? 0 : cover.hashCode());
 			
 		return result;
 	}
@@ -382,6 +382,7 @@ public class Album implements Serializable{
 			&& (startRecordingDate == null ?  (otherAlbum.startRecordingDate == null) : startRecordingDate.equals(otherAlbum.startRecordingDate))
 			&& (endRecordingDate == null ?  (otherAlbum.endRecordingDate == null) : endRecordingDate.equals(otherAlbum.endRecordingDate))
 			&& (location == null ?  (otherAlbum.location == null) : location.equals(otherAlbum.location))
+			&& (cover == null ?  (otherAlbum.cover == null) : cover.equals(otherAlbum.cover))
 		;
 	}
 
