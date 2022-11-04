@@ -44,6 +44,31 @@ public class LabelPictureThumbManager {
     }
 
     /**
+     * Generate the thumbnails of the given label if the picture exists on the FS.
+     *
+     * @param label The information about the label.
+     * @return The id of the label and the name of the generated file.
+     */
+    private static Callable<Pair<Long, String>> launchLabelPictureThumbnailGeneration(LabelPictureProjection label) {
+        return () -> {
+            // Checking if the label has a file in the label picture folder.
+            String fsLabelName = FieldUtil.removeForbiddenFsChar(label.getName());
+            Path labelPicturePath = LibraryConstant.LABEL_PICTURE_PATH.resolve(fsLabelName + FileExtensionEnum.JGP.getExtension());
+            if (!labelPicturePath.toFile().exists()) {
+                // No file found for this label, skipping this one.
+                return null;
+            }
+
+            String hashLabelName = HashUtil.getMd5Hash(label.getName());
+            // Generating the thumbnail.
+            ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.LABEL_PICTURE_FOLDER.getPath(), labelPicturePath, hashLabelName);
+
+            // Returning the name associated with the id of the label.
+            return Pair.of(label.getLabelId(), hashLabelName);
+        };
+    }
+
+    /**
      * Search all the labels that doesn't have a picture and try to generate the image.
      */
     public void generateLabelThumbs() {
@@ -96,31 +121,6 @@ public class LabelPictureThumbManager {
         if (!buffer.isEmpty()) {
             labelIntegrationDAO.updateLabelPicture(buffer);
         }
-    }
-
-    /**
-     * Generate the thumbnails of the given label if the picture exists on the FS.
-     *
-     * @param label The information about the label.
-     * @return The id of the label and the name of the generated file.
-     */
-    private Callable<Pair<Long, String>> launchLabelPictureThumbnailGeneration(LabelPictureProjection label) {
-        return () -> {
-            // Checking if the label has a file in the label picture folder.
-            String fsLabelName = FieldUtil.removeForbiddenFsChar(label.getName());
-            Path labelPicturePath = LibraryConstant.LABEL_PICTURE_PATH.resolve(fsLabelName + FileExtensionEnum.JGP.getExtension());
-            if (!labelPicturePath.toFile().exists()) {
-                // No file found for this label, skipping this one.
-                return null;
-            }
-
-            String hashLabelName = HashUtil.getMd5Hash(label.getName());
-            // Generating the thumbnail.
-            ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.LABEL_PICTURE_FOLDER.getPath(), labelPicturePath, hashLabelName);
-
-            // Returning the name associated with the id of the label.
-            return Pair.of(label.getLabelId(), hashLabelName);
-        };
     }
 
 }

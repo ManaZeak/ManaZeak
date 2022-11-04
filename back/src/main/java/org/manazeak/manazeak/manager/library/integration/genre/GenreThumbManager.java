@@ -37,6 +37,31 @@ public class GenreThumbManager {
     }
 
     /**
+     * Generate the thumbnail if the genre exists in the FS.
+     *
+     * @param genre The information on the genre to generate the thumbnails.
+     * @return The pair of genre id linked to the genre name.
+     */
+    private static Pair<Long, String> generateGenreThumbnails(GenrePictureProjection genre) {
+        // Check if the genre picture exists on the FS.
+        String fsGenreName = FieldUtil.removeForbiddenFsChar(genre.getName());
+        Path genrePicturePath = LibraryConstant.GENRE_PICTURE_PATH
+                .resolve(fsGenreName + FileExtensionEnum.JGP.getExtension());
+        if (!genrePicturePath.toFile().exists()) {
+            return null;
+        }
+
+        // Getting the hashed name of the genre.
+        String hashGenreName = HashUtil.getMd5Hash(genre.getName());
+
+        // Generating the thumbnails.
+        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.GENRE_PICTURE_FOLDER.getPath(),
+                genrePicturePath, hashGenreName);
+
+        return Pair.of(genre.getGenreId(), hashGenreName);
+    }
+
+    /**
      * Generate the thumbnails of the genres.
      */
     public void generateGenreThumbs() {
@@ -54,30 +79,5 @@ public class GenreThumbManager {
         }
 
         genrePictureIntegrationDAO.updateGenrePictures(results);
-    }
-
-    /**
-     * Generate the thumbnail if the genre exists in the FS.
-     *
-     * @param genre The information on the genre to generate the thumbnails.
-     * @return The pair of genre id linked to the genre name.
-     */
-    private Pair<Long, String> generateGenreThumbnails(GenrePictureProjection genre) {
-        // Check if the genre picture exists on the FS.
-        String fsGenreName = FieldUtil.removeForbiddenFsChar(genre.getName());
-        Path genrePicturePath = LibraryConstant.GENRE_PICTURE_PATH
-                .resolve(fsGenreName + FileExtensionEnum.JGP.getExtension());
-        if (!genrePicturePath.toFile().exists()) {
-            return null;
-        }
-
-        // Getting the hashed name of the genre.
-        String hashGenreName = HashUtil.getMd5Hash(genre.getName());
-
-        // Generating the thumbnails.
-        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.GENRE_PICTURE_FOLDER.getPath(),
-                genrePicturePath, hashGenreName);
-
-        return Pair.of(genre.getGenreId(), hashGenreName);
     }
 }
