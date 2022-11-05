@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.daos.library.integration.cover;
 
-import org.manazeak.manazeak.daos.library.integration.album.AlbumCoverSetter;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
