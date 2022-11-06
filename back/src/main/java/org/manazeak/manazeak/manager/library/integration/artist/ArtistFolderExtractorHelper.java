@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.manager.library.track;
+package org.manazeak.manazeak.manager.library.integration.artist;
 
 import org.manazeak.manazeak.entity.dto.audio.AudioFileContainerDto;
 import org.manazeak.manazeak.entity.dto.library.scan.*;

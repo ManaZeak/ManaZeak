@@ -5,7 +5,7 @@ import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
-import org.manazeak.manazeak.manager.library.track.ArtistFolderExtractorHelper;
+import org.manazeak.manazeak.manager.library.integration.artist.ArtistFolderExtractorHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
