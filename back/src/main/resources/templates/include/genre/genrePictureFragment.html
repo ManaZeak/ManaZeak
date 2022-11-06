@@ -1,0 +1,15 @@
+<div th:fragment="genrePictureDisplay (picture, size)" xmlns:th="http://www.thymeleaf.org">
+  <div th:if="*{picture != null}">
+    <!-- If the size is null using the original size -->
+    <div th:if="*{size == null}">
+      <img alt="artist-pp" class="artist-pp" th:src="'/resources/genre_pictures/orig/' + *{picture} + '.jpg'">
+    </div>
+    <div th:if="*{size != null}">
+      <img alt="artist-pp" class="artist-pp"
+           th:src="'/resources/genre_pictures/' + *{size} + '/' + *{picture} + '.jpg'">
+    </div>
+  </div>
+  <div th:if="*{picture == null}">
+    <img alt="artist-pp" class="artist-pp" th:src="'static/img/object/genre.svg'">
+  </div>
+</div>

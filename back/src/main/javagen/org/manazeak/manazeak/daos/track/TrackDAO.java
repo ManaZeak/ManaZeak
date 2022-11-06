@@ -2,6 +2,7 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.manazeak.manazeak.entity.track.Track;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -33,5 +34,21 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             "where trk.album.albumId = :albumId")
     List<MinimalTrackInfoDto> getMinimalTracksByAlbumId(@Param("albumId") Long albumId);
 
+
+    /**
+     * Get the track information given a genre.
+     *
+     * @param genreId The id of the genre to get in the database.
+     * @return The list of tracks corresponding to the genre.
+     */
+    @Query("select new org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto(" +
+            "trk.title," +
+            "trk.duration," +
+            "art.name) " +
+            "from Track trk " +
+            "join trk.genreList genre " +
+            "join trk.album.artist art " +
+            "where genre.genreId = :genreId")
+    List<TrackInfoDto> getTrackInfoByGenreId(@Param("genreId") Long genreId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

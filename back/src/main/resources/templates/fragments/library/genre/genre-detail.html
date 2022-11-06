@@ -1,0 +1,12 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <p th:text="*{genre.genreName}"></p>
+    <div th:replace="include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
+    <!-- Display the list of tracks corresponding to the genre. -->
+    <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto"*/-->
+    <div th:each="track : *{genre.tracks}">
+        <p th:text="*{track.title}"></p>
+        <p th:text="*{track.duration}"></p>
+        <p th:text="*{track.artistName}"></p>
+    </div>
+
+</div>

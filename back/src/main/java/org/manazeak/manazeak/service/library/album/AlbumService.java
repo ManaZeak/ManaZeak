@@ -2,10 +2,10 @@ package org.manazeak.manazeak.service.library.album;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
-import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
+import org.manazeak.manazeak.manager.library.track.TrackManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +19,11 @@ public class AlbumService {
 
     private final AlbumDAO albumDAO;
 
-    private final TrackDAO trackDAO;
+    private final TrackManager trackManager;
 
-    public AlbumService(AlbumDAO albumDAO, TrackDAO trackDAO) {
+    public AlbumService(AlbumDAO albumDAO, TrackManager trackManager) {
         this.albumDAO = albumDAO;
-        this.trackDAO = trackDAO;
+        this.trackManager = trackManager;
     }
 
     /**
@@ -48,7 +48,7 @@ public class AlbumService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.album.not_found"));
 
         // Getting the tracks of the albums.
-        album.setTracks(trackDAO.getMinimalTracksByAlbumId(albumId));
+        album.setTracks(trackManager.getMinimalTrackInfoByAlbumId(albumId));
 
         return album;
     }
