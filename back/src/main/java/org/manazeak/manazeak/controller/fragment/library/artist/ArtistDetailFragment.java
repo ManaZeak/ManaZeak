@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.controller.fragment.library.artist;
 
+import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.library.artist.ArtistFragmentEnum;
 import org.manazeak.manazeak.service.library.album.AlbumService;
@@ -31,8 +33,9 @@ public class ArtistDetailFragment {
      * @param artistId The id of the artist.
      * @return The template to display to the user containing the user information.
      */
+    @Security(PrivilegeEnum.PLAY)
     @GetMapping("/library/artist/{artistId}")
-    public String getArtistDetailFragment(@PathVariable @NotNull(message = "user.wish.error.empty_id") Long artistId,
+    public String getArtistDetailFragment(@PathVariable @NotNull(message = "general.error.no_id") Long artistId,
                                           Model model) {
         // Loading the artist.
         model.addAttribute("artist", artistService.getArtistDetail(artistId));

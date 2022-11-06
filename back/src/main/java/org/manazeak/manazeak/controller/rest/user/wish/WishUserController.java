@@ -28,7 +28,7 @@ public class WishUserController {
 
     @RestSecurity(PrivilegeEnum.WISH)
     @PostMapping("/wish/delete/{wishId}")
-    public KommunicatorDto deleteCurrentUserWish(@NotNull(message = "user.wish.error.empty_id")
+    public KommunicatorDto deleteCurrentUserWish(@NotNull(message = "general.error.no_id")
                                                  @PathVariable Long wishId) {
         // Trying to delete the selected wish for the current user.
         wishService.deleteCurrentUserWish(wishId);

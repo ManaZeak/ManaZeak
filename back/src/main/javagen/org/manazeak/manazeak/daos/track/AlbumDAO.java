@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object for Album using Spring CrudRepository interface
@@ -42,5 +44,31 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "from Album alb " +
             "where alb.artist.artistId = :artistId")
     List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(@Param("artistId") Long artistId);
+
+    /**
+     * Get the detail of an album from the database.
+     *
+     * @param albumId The id of the album.
+     * @return The details of the album.
+     */
+    @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto(" +
+            "alb.albumId," +
+            "alb.title," +
+            "alb.cover," +
+            "alb.totalTrack," +
+            "art.artistId," +
+            "art.name," +
+            "alb.releaseDate," +
+            "lab.labelId," +
+            "lab.name," +
+            "alb.duration," +
+            "alb.catalogNumber," +
+            "alb.eanUpn," +
+            "alb.startRecordingDate," +
+            "alb.endRecordingDate) from Album alb " +
+            "join alb.artist art " +
+            "join alb.label lab " +
+            "where alb.albumId = :albumId")
+    Optional<AlbumDetailsDto> getAlbumDetailsById(@Param("albumId") Long albumId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

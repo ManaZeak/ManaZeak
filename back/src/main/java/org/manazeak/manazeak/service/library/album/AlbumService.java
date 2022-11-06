@@ -2,7 +2,10 @@ package org.manazeak.manazeak.service.library.album;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
+import org.manazeak.manazeak.daos.track.TrackDAO;
+import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
+import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +19,11 @@ public class AlbumService {
 
     private final AlbumDAO albumDAO;
 
-    public AlbumService(AlbumDAO albumDAO) {
+    private final TrackDAO trackDAO;
+
+    public AlbumService(AlbumDAO albumDAO, TrackDAO trackDAO) {
         this.albumDAO = albumDAO;
+        this.trackDAO = trackDAO;
     }
 
     /**
@@ -28,6 +34,23 @@ public class AlbumService {
      */
     public List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(Long artistId) {
         return albumDAO.getMinimalAlbumByArtistId(artistId);
+    }
+
+    /**
+     * Get the album information from the database.
+     *
+     * @param albumId The id of the album.
+     * @return The detail of the album.
+     */
+    public AlbumDetailsDto getAlbumInformation(Long albumId) {
+        // Getting the album in the database.
+        AlbumDetailsDto album = albumDAO.getAlbumDetailsById(albumId)
+                .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.album.not_found"));
+
+        // Getting the tracks of the albums.
+        album.setTracks(trackDAO.getMinimalTracksByAlbumId(albumId));
+
+        return album;
     }
 
 }
