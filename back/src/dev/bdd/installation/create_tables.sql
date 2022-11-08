@@ -15,6 +15,7 @@ CREATE SEQUENCE SEQ_BIO START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_RANDOM_RELEASE_ARTIST START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TIME_INTERVAL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
@@ -158,6 +159,14 @@ CREATE TABLE link (
 	CONSTRAINT PK_LINK PRIMARY KEY (link_id)
 );
 COMMENT ON COLUMN link.website_id IS 'ManyToOne FK website_type';
+
+CREATE TABLE random_release_artist (
+	random_release_artist_id BIGINT not null,
+	index BIGINT not null,
+	artist_id BIGINT,
+	CONSTRAINT PK_RANDOM_RELEASE_ARTIST PRIMARY KEY (random_release_artist_id)
+);
+COMMENT ON COLUMN random_release_artist.artist_id IS 'ManyToOne FK artist';
 
 CREATE TABLE recording_location (
 	recording_location_id BIGINT not null,
@@ -457,6 +466,7 @@ ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_2 FOREIG
 ALTER TABLE member_role ADD CONSTRAINT FK_member_role_1 FOREIGN KEY (band_member_id) REFERENCES band_member(band_member_id);
 ALTER TABLE member_role ADD CONSTRAINT FK_member_role_2 FOREIGN KEY (band_role_id) REFERENCES band_role(band_role_id);
 ALTER TABLE link ADD CONSTRAINT FK_link_type FOREIGN KEY (website_id) REFERENCES website_type(website_id);
+ALTER TABLE random_release_artist ADD CONSTRAINT FK_rand_rl_artist FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE recording_location ADD CONSTRAINT FK_recording_location_country FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE track ADD CONSTRAINT FK_track_album FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE track_producer ADD CONSTRAINT FK_track_producer_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
@@ -512,6 +522,7 @@ CREATE INDEX IDX_member_time_interval_2 ON member_time_interval (interval_id);
 CREATE INDEX IDX_member_role_1 ON member_role (band_member_id);
 CREATE INDEX IDX_member_role_2 ON member_role (band_role_id);
 CREATE INDEX IDX_link_type ON link (website_id);
+CREATE INDEX IDX_rand_rl_artist ON random_release_artist (artist_id);
 CREATE INDEX IDX_recording_location_country ON recording_location (country_id);
 CREATE INDEX IDX_track_album ON track (album_id);
 CREATE INDEX IDX_track_producer_1 ON track_producer (track_id);

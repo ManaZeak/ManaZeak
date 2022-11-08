@@ -10,6 +10,7 @@ import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.picture.LibraryPictureIntegrationManager;
+import org.manazeak.manazeak.manager.library.integration.random.RandomInitializationManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ public class LibraryScanService {
     private final LibraryWiperManager libraryWiper;
     private final CoverManager coverManager;
 
+    private final RandomInitializationManager randomInitializationManager;
+
     private final LibraryPictureIntegrationManager libraryPictureIntegrationManager;
 
     private final LibraryScanStatusManager libraryScanStatusManager;
@@ -39,11 +42,12 @@ public class LibraryScanService {
 
     public LibraryScanService(LibraryScanManager libraryScanManager, LibraryIntegrationManager libraryIntegrationManager,
                               LibraryWiperManager libraryWiper, CoverManager coverManager,
-                              LibraryPictureIntegrationManager libraryPictureIntegrationManager, LibraryScanStatusManager libraryScanStatusManager) {
+                              RandomInitializationManager randomInitializationManager, LibraryPictureIntegrationManager libraryPictureIntegrationManager, LibraryScanStatusManager libraryScanStatusManager) {
         this.libraryScanManager = libraryScanManager;
         this.libraryIntegrationManager = libraryIntegrationManager;
         this.libraryWiper = libraryWiper;
         this.coverManager = coverManager;
+        this.randomInitializationManager = randomInitializationManager;
         this.libraryPictureIntegrationManager = libraryPictureIntegrationManager;
         this.libraryScanStatusManager = libraryScanStatusManager;
     }
@@ -84,6 +88,9 @@ public class LibraryScanService {
 
             // Generating the thumbnails of the external mzk assets.
             libraryPictureIntegrationManager.integrateLibraryPictures();
+
+            // Init the random tables.
+            randomInitializationManager.initRandomTables();
 
             // TODO : read the additional files containing information not present in the track tags.
 
