@@ -1,19 +1,24 @@
-<div xmlns:th="http://www.thymeleaf.org">
   <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
-  <p th:text="*{album.title}"></p>
-  <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'orig')"></div>
-  <p th:text="*{album.totalTrack}"></p>
-  <p th:text="*{album.albumArtist}"></p>
-  <p th:text="*{album.releaseDate}"></p>
-  <p th:text="*{album.labelName}"></p>
-  <p th:text="*{album.duration}"></p>
-  <p th:text="*{album.catalogNumber}"></p>
-  <p th:text="*{album.eanUpn}"></p>
-  <p th:text="*{album.startingRecordingDate}"></p>
-  <p th:text="*{album.endRecordingDate}"></p>
-  <!-- Displaying the tracks. -->
-  <div th:each="track : *{album.tracks}">
-      <p th:text="*{track.title}"></p>
-      <p th:text="*{track.duration}"></p>
+<div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
+  <div class="album-container">
+    <div class="album-aside">
+      <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'orig')"></div>
+      <h1 th:text="*{album.title}"></h1>
+    </div>
+    <div class="album-content">
+      <div class="album-info">
+        <h2><span th:text="*{album.albumArtist}"></span> – <span th:text="*{album.title}"></span></h2>
+        <p><span th:text="*{album.totalTrack}"></span> Track(s) (<span th:text="*{album.duration}" id="album-duration"></span>) – Released on <span th:text="*{album.releaseDate}" id="album-release-date"></span></p>
+        <p><span th:text="*{album.labelName}"></span> (<span th:text="*{album.catalogNumber}"></span>)</p>
+        <!-- <p th:text="*{album.startingRecordingDate}"></p> -->
+        <!-- <p th:text="*{album.endRecordingDate}"></p> -->
+        <!-- <p th:text="*{album.eanUpn}"></p> -->
+      </div>
+      <div class="album-tracks">
+        <div th:each="track : *{album.tracks}" class="track">
+          <p><span th:text="*{track.title}"></p><span th:text="*{track.duration}"></span></p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

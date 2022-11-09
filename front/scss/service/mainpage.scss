@@ -41,7 +41,7 @@
   }
 }
 
-.release-artist-wrapper {
+.release-artist-view-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -143,7 +143,124 @@
   }
 }
 
-.genre-graph-wrapper {
+.album-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .album-container {
+    align-items: flex-start;
+    display: flex;
+    margin: var(--margin);
+    width: 100%;
+
+    .album-aside, .abum-content, .album-tracks {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .album-aside {
+      margin: var(--margin);
+      width: calc(40rem - (2 * var(--margin)));
+
+      .album-picture {
+        height: calc(40rem - var(--margin));
+        width: calc(40rem - (2 * var(--margin)));
+
+        img {
+          height: 100%;
+          margin-bottom: var(--margin);
+          width: 100%;
+        }
+      }
+
+      h1 {
+        font-size: var(--font-size-big);
+        margin: 0;
+        text-align: center;
+      }
+    }
+
+    .album-content {
+      margin: var(--margin);
+      width: calc(100% - 40rem - (4 * var(--margin)));
+
+      .album-info {
+        border-bottom: solid 1px var(--color-txt);
+        margin-bottom: var(--margin);
+        padding-bottom: var(--margin);
+        width: 100%;
+
+        h2 {
+          font-size: var(--font-size);
+          margin-top: 0;
+        }
+
+        p {
+          font-style: italic;
+          color: var(--color-txt-darker);
+          margin: var(--margin-small);
+          text-indent: var(--font-size);
+        }
+      }
+
+      .album-tracks {
+        counter-reset: track; /* Create counter instance */
+        padding: var(--padding) 0;
+        width: 100%;
+
+        .track {
+          background-color: var(--color-bg-light-alpha-25);
+          cursor: pointer;
+          position: relative;
+          width: 100%;
+          transition: background-color .1s;
+
+          &:nth-child(odd) {
+            background-color: var(--color-bg-dark-alpha-25);
+          }
+
+          &:active,
+          &:focus,
+          &:hover {
+            background-color: var(--color-primary-alpha-10);            
+          }
+
+          &::before {
+            counter-increment: track;
+            content: "#" counters(track, ".");
+            color: var(--color-txt-darker);
+            font-size: var(--font-size-small);
+            font-style: italic;
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            width: 5rem;
+          }
+
+          p {
+            padding: 0 var(--padding);
+            padding-left: 5rem;
+          }
+
+          span:last-child {
+            margin-left: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.genre-graph-view-wrapper {
   height: 100%;
   position: relative;
   width: 100%;
