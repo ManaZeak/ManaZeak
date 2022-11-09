@@ -5,18 +5,6 @@
       width: 85%;
     }
   }
-
-  @media (orientation: landscape) {
-    // Proper scrolling on landscape ; replace flex
-    body {
-      display: block;
-    }
-
-    .mzk-user {
-      /* Some air over page content */
-      margin: var(--margin) 0;
-    }
-  }
 }
 
 @media (max-width: 512px) {
@@ -24,9 +12,5 @@
     form {
       padding: 3rem 1rem;
     }
-  }
-
-  @media (orientation: landscape) {
-    /* Will be used */
   }
 }

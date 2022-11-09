@@ -42,7 +42,7 @@ class MainPageView extends SceneView {
     for (let i = 0; i < artists.children.length; ++i) {
       artists.children[i].addEventListener('click', () => {
         mzk.setView({
-          name: 'ArtistItem',
+          name: 'ReleaseArtist',
           id: artists.children[i].dataset.id
         });
       });

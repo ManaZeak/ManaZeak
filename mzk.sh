@@ -187,32 +187,30 @@ elif [ "$1" = "-r" ] || [ "$1" = "--reset" ]; then
   fi
   # Ensure all docker are stopped
   echo # Line break
-  echo -e "1/6. Stopping any ManaZeak containers"
+  echo -e "1/5. Stopping any ManaZeak containers"
   eval "docker-compose stop"
   echo # Line break
   # Remove db_data from disk, using DB_DATA path in .env file
-  echo -e "2/6. Removing the database from disk (with rm -rf $(awk -F"=" '/DB_DATA/{print $NF}' .env))"
+  echo -e "2/5. Removing the database and ressources from disk (with rm -rf $(awk -F"=" '/DB_DATA/{print $NF}' .env) $(awk -F"=" '/RESOURCES_PATH/{print $NF}' .env))"
   sudo rm -rf "$(awk -F"=" '/DB_DATA/{print $NF}' .env)"
-  # Remove ressources from disk, using RESSOURCES_PATH path in .env file
-  echo -e "3/6. Removing the database from disk (with rm -rf $(awk -F"=" '/RESOURCES_PATH/{print $NF}' .env))"
   sudo rm -rf "$(awk -F"=" '/RESOURCES_PATH/{print $NF}' .env)"
   # Remove ressources from disk, using RESSOURCES_PATH path in .env file
-  echo -e "4/6. Removing logs from disk (with rm -rf $(awk -F"=" '/LOGS_PATH/{print $NF}' .env))"
+  echo -e "3/5. Removing logs from disk (with rm -rf $(awk -F"=" '/LOGS_PATH/{print $NF}' .env))"
   sudo rm -rf "$(awk -F"=" '/LOGS_PATH/{print $NF}' .env)"
   echo # Line break
   # Remove ManaZeak's related dockers
-  echo -e "5/6. Removing ManaZeak containers"
+  echo -e "4/5. Removing ManaZeak containers"
   eval "docker-compose down -v --rmi all --remove-orphans"
   echo # Line break
   # Reset hard argument
   if [ "$2" = "hard" ]; then
-    echo -e "6/6. Remove all existing docker images\n"
+    echo -e "5/5. Remove all existing docker images\n"
     eval "docker system prune"
     echo -e "\n\e[32mSUCCESS\e[39m ManaZeak was properly reset!"
     echo -e "        You can now run ./mzk.sh --build to build docker images again"
   # Rebuild the whole thing otherwise
   else
-    echo -e "5/4. Building ManaZeak containers"
+    echo -e "5/5. Building ManaZeak containers"
     eval "docker-compose build"
     echo -e "\n\e[32mSUCCESS\e[39m ManaZeak was properly reset!"
     echo -e "        You can now run ./mzk.sh --start [dev/prod] to start ManaZeak"

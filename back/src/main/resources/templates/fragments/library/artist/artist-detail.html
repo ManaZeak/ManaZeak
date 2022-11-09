@@ -1,30 +1,41 @@
-<div xmlns:th="http://www.thymeleaf.org">
-    <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
-    <p th:text="${artist.artistId}"></p>
-    <p th:text="${artist.name}"></p>
-    <p th:text="${artist.birthDate}"></p>
-    <p th:text="${artist.deathDate}"></p>
-    <p th:text="${artist.isLabel()}"></p>
-    <p th:text="${artist.testimonyFrom}"></p>
-    <p th:text="${artist.testimonyText}"></p>
-    <p th:text="${artist.countryCode}"></p>
-    <p th:text="${artist.labelId}"></p>
-    <p th:text="${artist.label}"></p>
-    <p th:text="${artist.bio}"></p>
-    <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
-
-    <p>ALBUMS</p>
-    <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
-    <div th:each="album : ${albums}">
-        <p th:text="*{album.title}"></p>
+<!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
+<!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
+<div xmlns:th="http://www.thymeleaf.org" class="release-artist-wrapper">
+  <div class="artist-header">
+    <div class="artist-header-left">
+      <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
+      <h1 th:text="${artist.name}"></h1>
+    </div>
+    <div class="artist-header-right">
+      <p>About <span th:text="${artist.name}"></span></p>
+      <p class="artist-birth-death"><i><span th:text="${artist.birthDate}"></span> – <span th:text="${artist.deathDate}"></span></i></p>
+      <p th:text="${artist.countryCode}"></p>
+      <p th:text="${artist.bio}"></p>
+    </div>
+    <!-- <p th:text="${artist.testimonyFrom}"></p> -->
+    <!-- <p th:text="${artist.testimonyText}"></p> -->
+    <!-- <p th:text="${artist.artistId}"></p> -->
+    <!-- <p th:text="${artist.isLabel()}"></p> -->
+    <!-- <p th:text="${artist.labelId}"></p> -->
+    <!-- <p th:text="${artist.label}"></p> -->
+  </div>
+  <div class="artist-content">
+    <h1>Albums released by <span th:text="${artist.name}"></span></h1>
+    <div id="released-albums" class="released-albums">
+      <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
         <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')"></div>
+        <h2><!--<span th:text="*{album.year}"></span> --><span th:text="*{album.title}"></span></h2>
+        </div>
+      </div>
     </div>
-
-    <p>MEMBERS</p>
-    <div th:each="member : ${artist.members}">
-        <p th:text="*{member.name}"></p>
-        <p th:text="*{member.cover}"></p>
-        <p th:text="*{member.label}"></p>
-        <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
-    </div>
+  </div>
+<!--
+  <p>MEMBERS</p>
+  <div th:each="member : ${artist.members}">
+    <p th:text="*{member.name}"></p>
+    <p th:text="*{member.cover}"></p>
+    <p th:text="*{member.label}"></p>
+    <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
+  </div>
+-->
 </div>

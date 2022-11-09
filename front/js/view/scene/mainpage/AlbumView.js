@@ -1,16 +1,17 @@
 import SceneView from '../utils/SceneView';
 
 
-class ArtistItemView extends SceneView {
+class AlbumView extends SceneView {
 
 
   constructor(options) {
     super({
       type: 'item',
-      url: `/fragment/library/artist/${options.id}`
+      url: `/fragment/library/album/${options.id}`
     });
 
     this._fetchWrapper(this._url)
+      .then(this._makeInteractive.bind(this))
       .then(this._viewReady)
       .catch(error => Logger.raise(error));
   }
@@ -22,7 +23,14 @@ class ArtistItemView extends SceneView {
   }
 
 
+  _makeInteractive() {
+    return new Promise((resolve, reject) => {
+      resolve();
+    });
+  }
+
+
 }
 
 
-export default ArtistItemView;
+export default AlbumView;
