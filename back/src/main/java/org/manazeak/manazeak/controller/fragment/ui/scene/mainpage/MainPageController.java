@@ -25,7 +25,7 @@ public class MainPageController {
     @GetMapping("/mainpage")
     public String getMainPage(Model model) {
         // Adding the artists
-        model.addAttribute("artists", artistService.getAllArtistsMinimal());
+        model.addAttribute("rlArtists", artistService.getSomeArtistMinimal(10));
 
         return UiFragmentEnum.MAIN_PAGE.getPage();
     }

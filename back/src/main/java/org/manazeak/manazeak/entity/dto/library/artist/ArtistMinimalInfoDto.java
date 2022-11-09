@@ -17,6 +17,13 @@ public class ArtistMinimalInfoDto {
 
     }
 
+    public ArtistMinimalInfoDto(Long id, String name, String cover, boolean isLabel) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+        this.isLabel = isLabel;
+    }
+
     public ArtistMinimalInfoDto(String name, boolean isLabel) {
         this.name = name;
         this.isLabel = isLabel;

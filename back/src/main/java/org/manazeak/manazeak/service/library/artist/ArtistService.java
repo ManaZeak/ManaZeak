@@ -8,6 +8,7 @@ import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.artist.ArtistHelper;
+import org.manazeak.manazeak.manager.library.random.artist.RandomReleaseArtistManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,9 +25,12 @@ public class ArtistService {
 
     private final BandMemberDAO bandMemberDAO;
 
-    public ArtistService(ArtistDAO artistDAO, BandMemberDAO bandMemberDAO) {
+    private final RandomReleaseArtistManager randomReleaseArtistManager;
+
+    public ArtistService(ArtistDAO artistDAO, BandMemberDAO bandMemberDAO, RandomReleaseArtistManager randomReleaseArtistManager) {
         this.artistDAO = artistDAO;
         this.bandMemberDAO = bandMemberDAO;
+        this.randomReleaseArtistManager = randomReleaseArtistManager;
     }
 
 
@@ -57,6 +61,14 @@ public class ArtistService {
         }
 
         return minimalArtist;
+    }
+
+    /**
+     * @param nbArtists The number of random artist to get in the database.
+     * @return X artist found at random in the database.
+     */
+    public List<ArtistMinimalInfoDto> getSomeArtistMinimal(int nbArtists) {
+        return randomReleaseArtistManager.getRandomElements(nbArtists);
     }
 
     /**

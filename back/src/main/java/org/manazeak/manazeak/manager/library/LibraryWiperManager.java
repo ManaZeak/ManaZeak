@@ -24,10 +24,12 @@ public class LibraryWiperManager {
 
     private final BandMemberDAO bandMemberDAO;
 
+    private final RandomReleaseArtistDAO randomReleaseArtistDAO;
+
     private final AutonomousTransactionManager transactionManager;
 
     public LibraryWiperManager(TrackDAO trackDao, GenreDAO genreDao, AlbumDAO albumDao,
-                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, BandMemberDAO bandMemberDAO, AutonomousTransactionManager transactionManager) {
+                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, BandMemberDAO bandMemberDAO, RandomReleaseArtistDAO randomReleaseArtistDAO, AutonomousTransactionManager transactionManager) {
         this.trackDao = trackDao;
         this.genreDao = genreDao;
         this.albumDao = albumDao;
@@ -35,6 +37,7 @@ public class LibraryWiperManager {
         this.bioDao = bioDao;
         this.artistDao = artistDao;
         this.bandMemberDAO = bandMemberDAO;
+        this.randomReleaseArtistDAO = randomReleaseArtistDAO;
         this.transactionManager = transactionManager;
     }
 
@@ -48,6 +51,7 @@ public class LibraryWiperManager {
             genreDao.deleteAll();
             albumDao.deleteAll();
             bandMemberDAO.deleteAll();
+            randomReleaseArtistDAO.deleteAll();
             artistDao.deleteAll();
             bioDao.deleteAll();
             labelDao.deleteAll();
