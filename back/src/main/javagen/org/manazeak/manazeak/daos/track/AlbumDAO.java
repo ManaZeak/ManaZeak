@@ -58,6 +58,7 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "alb.totalTrack," +
             "art.artistId," +
             "art.name," +
+            "art.pictureFilename," +
             "alb.releaseDate," +
             "lab.labelId," +
             "lab.name," +

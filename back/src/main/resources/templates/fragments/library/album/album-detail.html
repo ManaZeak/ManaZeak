@@ -1,5 +1,5 @@
-  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
+  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
   <div class="album-container">
     <div class="album-aside">
       <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'orig')"></div>
@@ -8,7 +8,9 @@
     <div class="album-content">
       <div class="album-info">
         <h2><span th:text="*{album.albumArtist}"></span> – <span th:text="*{album.title}"></span></h2>
-        <p><span th:text="*{album.totalTrack}"></span> Track(s) (<span th:text="*{album.duration}" id="album-duration"></span>) – Released on <span th:text="*{album.releaseDate}" id="album-release-date"></span></p>
+        <p><span th:text="*{album.totalTrack}"></span> Track(s) (<span th:text="*{album.duration}"
+                                                                       id="album-duration"></span>) – Released on <span
+                th:text="*{album.releaseDate}" id="album-release-date"></span></p>
         <p><span th:text="*{album.labelName}"></span> (<span th:text="*{album.catalogNumber}"></span>)</p>
         <!-- <p th:text="*{album.startingRecordingDate}"></p> -->
         <!-- <p th:text="*{album.endRecordingDate}"></p> -->
@@ -16,8 +18,14 @@
       </div>
       <div class="album-tracks">
         <div th:each="track : *{album.tracks}" class="track">
-          <p><span th:text="*{track.title}"></p><span th:text="*{track.duration}"></span></p>
+          <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
         </div>
+      </div>
+      <!-- FIXME : move this info where it is needed. -->
+      <div>
+        <p th:text="*{album.albumArtist}"></p>
+        <p th:text="*{album.albumArtistId}"></p>
+        <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, orig)"></div>
       </div>
     </div>
   </div>

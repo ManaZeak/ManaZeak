@@ -22,6 +22,8 @@ public class AlbumDetailsDto {
 
     private String albumArtist;
 
+    private String albumArtistPicture;
+
     private LocalDate releaseDate;
 
     private Long labelId;
@@ -41,7 +43,7 @@ public class AlbumDetailsDto {
     private List<MinimalTrackInfoDto> tracks;
 
     public AlbumDetailsDto(Long albumId, String title, String cover, Integer totalTrack, Long albumArtistId, String albumArtist,
-                           LocalDate releaseDate, Long labelId, String labelName, Double duration, String catalogNumber,
+                           String albumArtistPicture, LocalDate releaseDate, Long labelId, String labelName, Double duration, String catalogNumber,
                            String eanUpn, LocalDate startingRecordingDate, LocalDate endRecordingDate) {
         this.albumId = albumId;
         this.title = title;
@@ -49,6 +51,7 @@ public class AlbumDetailsDto {
         this.totalTrack = totalTrack;
         this.albumArtistId = albumArtistId;
         this.albumArtist = albumArtist;
+        this.albumArtistPicture = albumArtistPicture;
         this.releaseDate = releaseDate;
         this.labelId = labelId;
         this.labelName = labelName;
@@ -177,5 +180,13 @@ public class AlbumDetailsDto {
 
     public void setTracks(List<MinimalTrackInfoDto> tracks) {
         this.tracks = tracks;
+    }
+
+    public String getAlbumArtistPicture() {
+        return albumArtistPicture;
+    }
+
+    public void setAlbumArtistPicture(String albumArtistPicture) {
+        this.albumArtistPicture = albumArtistPicture;
     }
 }
