@@ -83,5 +83,10 @@
     "title": "Link saved in clipboard",
     "message": "The invitation link was saved in the clipboard successfully",
     "severity": "success"
+  },
+  "F_SCAN_REQUEST_ERROR": {
+    "title": "Impossible de scanner la librairie",
+    "message": "Contacter un administrateur, c'est un problème critique",
+    "severity": "error"
   }
 }

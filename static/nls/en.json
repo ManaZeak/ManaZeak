@@ -83,5 +83,10 @@
     "title": "Link saved in clipboard",
     "message": "The invitation link was saved in the clipboard successfully",
     "severity": "success"
+  },
+  "F_SCAN_REQUEST_ERROR": {
+    "title": "Scan could'nt be performed",
+    "message": "Please contact administrator as it is a major failure",
+    "severity": "error"
   }
 }

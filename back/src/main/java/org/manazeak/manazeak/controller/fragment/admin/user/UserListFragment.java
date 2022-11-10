@@ -41,4 +41,11 @@ public class UserListFragment {
         // Returning the page.
         return AdminFragmentEnum.USER_LIST.getPage();
     }
+
+
+    @RestSecurity(PrivilegeEnum.ADMV)
+    @GetMapping("/admin/commands")
+    public String getCommandsFragment(Model model) {
+        return AdminFragmentEnum.COMMANDS.getPage();
+    }
 }

@@ -8,7 +8,8 @@ public enum AdminFragmentEnum {
     USER_HIERARCHY("fragments/admin/user-hierarchy.html"),
     USER_LIST("fragments/admin/user-list.html"),
     WISH_LIST("fragments/admin/wish-list.html"),
-    SYNCTHING("fragments/admin/syncthing.html");
+    SYNCTHING("fragments/admin/syncthing.html"),
+    COMMANDS("fragments/admin/commands.html");
 
     private final String page;
 
