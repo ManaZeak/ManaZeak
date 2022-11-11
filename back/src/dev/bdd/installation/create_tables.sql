@@ -162,7 +162,7 @@ COMMENT ON COLUMN link.website_id IS 'ManyToOne FK website_type';
 
 CREATE TABLE random_release_artist (
 	random_release_artist_id BIGINT not null,
-	index BIGINT not null,
+	random_index BIGINT not null,
 	artist_id BIGINT,
 	CONSTRAINT PK_RANDOM_RELEASE_ARTIST PRIMARY KEY (random_release_artist_id)
 );

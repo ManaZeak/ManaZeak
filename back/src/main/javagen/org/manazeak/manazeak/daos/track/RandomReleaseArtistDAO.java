@@ -8,6 +8,7 @@ import org.manazeak.manazeak.entity.track.RandomReleaseArtist;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Data Access Object for RandomReleaseArtist using Spring CrudRepository interface
@@ -19,7 +20,7 @@ public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArti
     /**
      * @return Get the minimum and the maximum index of the random table.
      */
-    @Query("select min(index) as minIndex, max(index) as maxIndex from RandomReleaseArtist")
+    @Query("select min(randomIndex) as minIndex, max(randomIndex) as maxIndex from RandomReleaseArtist")
     RandomMinMaxProjection getRandomReleaseArtistMinMax();
 
     /**
@@ -34,8 +35,8 @@ public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArti
             "art.isLabel) " +
             "from RandomReleaseArtist rand " +
             "join rand.artist art " +
-            "where rand.index in (:indexIds)")
-    List<ArtistMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") List<Long> indexIds);
+            "where rand.randomIndex in (:indexIds)")
+    List<ArtistMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") Set<Long> indexIds);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

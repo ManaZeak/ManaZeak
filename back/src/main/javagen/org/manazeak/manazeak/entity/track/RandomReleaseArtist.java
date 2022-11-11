@@ -24,7 +24,7 @@ public class RandomReleaseArtist implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long randomReleaseArtistId;
-	private Long index;
+	private Long randomIndex;
 	private Artist artist;
 
     /**
@@ -47,18 +47,18 @@ public class RandomReleaseArtist implements Serializable{
     }  
     /**
      * No comment found in model diagram
-     * @return value of index
+     * @return value of randomIndex
      */
-    @Column(name="index", nullable=false)
-	public Long getIndex(){
-		return index;
+    @Column(name="random_index", nullable=false)
+	public Long getRandomIndex(){
+		return randomIndex;
     }  
     /**
      * No comment found in model diagram
-     * @param index new value to give to index
+     * @param randomIndex new value to give to randomIndex
      */
-	public void setIndex(final Long index){
-		this.index = index;
+	public void setRandomIndex(final Long randomIndex){
+		this.randomIndex = randomIndex;
     }  
     /**
      * Association rand_rl_artist to Artist
@@ -84,7 +84,7 @@ public class RandomReleaseArtist implements Serializable{
 	
 		// Calculating hashcode with all "primitives" attributes
 		result = 31 * result + (randomReleaseArtistId == null? 0 : randomReleaseArtistId.hashCode());
-		result = 31 * result + (index == null? 0 : index.hashCode());
+		result = 31 * result + (randomIndex == null? 0 : randomIndex.hashCode());
 			
 		return result;
 	}
@@ -110,7 +110,7 @@ public class RandomReleaseArtist implements Serializable{
 	    RandomReleaseArtist otherRandomReleaseArtist = (RandomReleaseArtist) other;
 	    
 		return (randomReleaseArtistId == null ?  (otherRandomReleaseArtist.randomReleaseArtistId == null) : randomReleaseArtistId.equals(otherRandomReleaseArtist.randomReleaseArtistId))
-			&& (index == null ?  (otherRandomReleaseArtist.index == null) : index.equals(otherRandomReleaseArtist.index))
+			&& (randomIndex == null ?  (otherRandomReleaseArtist.randomIndex == null) : randomIndex.equals(otherRandomReleaseArtist.randomIndex))
 		;
 	}
 

@@ -7,6 +7,7 @@ import org.manazeak.manazeak.manager.library.random.AbstractRandomManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class RandomReleaseArtistManager extends AbstractRandomManager<ArtistMinimalInfoDto> {
@@ -23,7 +24,7 @@ public class RandomReleaseArtistManager extends AbstractRandomManager<ArtistMini
     }
 
     @Override
-    protected List<ArtistMinimalInfoDto> getElementByIndexes(List<Long> indexValues) {
+    protected List<ArtistMinimalInfoDto> getElementByIndexes(Set<Long> indexValues) {
         return randomReleaseArtistDAO.getListMinimalInfoByIndexes(indexValues);
     }
 

@@ -802,7 +802,7 @@
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000232_7CE9_40e9_A4AB_4E75EA997D48" value="1"/>
 						<type xmi:idref="EAJava_DoId"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_1B6AF9EE_C926_4a58_BC98_D76A83A668C6" name="index" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_1B6AF9EE_C926_4a58_BC98_D76A83A668C6" name="random_index" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000233_C926_4a58_BC98_D76A83A668C6" value="1"/>
 						<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000234_C926_4a58_BC98_D76A83A668C6" value="1"/>
 						<type xmi:idref="EAJava_DoId"/>
@@ -2469,7 +2469,7 @@
 						<tags/>
 						<xrefs value="$XREFPROP=$XID={DE1C739B-6E66-4c43-87C8-082798078288}$XID;$NAM=CustomProperties$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PROP=@NAME=isID@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=1@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={B612DD64-7CE9-40e9-A4AB-4E75EA997D48}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 					</attribute>
-					<attribute xmi:idref="EAID_1B6AF9EE_C926_4a58_BC98_D76A83A668C6" name="index" scope="Private">
+					<attribute xmi:idref="EAID_1B6AF9EE_C926_4a58_BC98_D76A83A668C6" name="random_index" scope="Private">
 						<initial/>
 						<documentation/>
 						<model ea_localid="1012" ea_guid="{1B6AF9EE-C926-4a58-BC98-D76A83A668C6}"/>
