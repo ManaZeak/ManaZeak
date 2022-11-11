@@ -26,16 +26,25 @@ public class RandomReleaseArtistInitDAO extends AbstractRandomInit {
         super(jdbcTemplate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getInitRequest() {
         return INIT_RANDOM_RELEASE_ARTISTS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getSequenceName() {
         return SEQUENCE_NAME;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getTableName() {
         return TABLE_NAME;

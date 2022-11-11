@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Allows to get from the database random release artists.
+ */
 @Component
 public class RandomReleaseArtistManager extends AbstractRandomManager<ArtistMinimalInfoDto> {
 
@@ -18,11 +21,17 @@ public class RandomReleaseArtistManager extends AbstractRandomManager<ArtistMini
         this.randomReleaseArtistDAO = randomReleaseArtistDAO;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected RandomMinMaxProjection getMinMaxIndex() {
         return randomReleaseArtistDAO.getRandomReleaseArtistMinMax();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<ArtistMinimalInfoDto> getElementByIndexes(Set<Long> indexValues) {
         return randomReleaseArtistDAO.getListMinimalInfoByIndexes(indexValues);
