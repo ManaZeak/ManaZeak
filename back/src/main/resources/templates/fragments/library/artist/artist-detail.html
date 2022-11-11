@@ -8,7 +8,8 @@
     </div>
     <div class="artist-header-right">
       <p>About <span th:text="${artist.name}"></span></p>
-      <p class="artist-birth-death"><i><span th:text="${artist.birthDate}"></span> – <span th:text="${artist.deathDate}"></span></i></p>
+      <p class="artist-birth-death"><i><span th:text="${artist.birthDate}"></span> – <span
+              th:text="${artist.deathDate}"></span></i></p>
       <p th:text="${artist.countryCode}"></p>
       <p th:text="${artist.bio}"></p>
     </div>
@@ -25,10 +26,10 @@
       <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
         <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')"></div>
         <h2><!--<span th:text="*{album.year}"></span> --><span th:text="*{album.title}"></span></h2>
-        </div>
       </div>
     </div>
   </div>
+</div>
 <!--
   <p>MEMBERS</p>
   <div th:each="member : ${artist.members}">
@@ -38,4 +39,3 @@
     <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
   </div>
 -->
-</div>
