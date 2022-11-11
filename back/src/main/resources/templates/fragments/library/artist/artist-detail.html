@@ -1,6 +1,6 @@
-<!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
-<!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="release-artist-view-wrapper">
+  <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
+  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
   <div class="artist-header">
     <div class="artist-header-left">
       <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
