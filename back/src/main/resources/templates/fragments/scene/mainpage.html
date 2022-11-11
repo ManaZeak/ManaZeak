@@ -1,27 +1,15 @@
 <div class="main-page" xmlns:th="http://www.thymeleaf.org">
   <!--/*@thymesVar id="rlArtists" type="java.util.List"*/-->
+  <!-- Display the release artists. -->
   <h2 th:text="#{mp.release_artists}"></h2>
-  <!-- Iterating through the artists -->
   <div class="artists-container" id="artists-container">
-    <!--/*@thymesVar id="rlArtist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
-    <div class="artist-item" th:data-id="${rlArtist.id}" th:each="rlArtist : ${rlArtists}">
-      <div th:if="${rlArtist.cover != null}">
-        <img alt="artist-pp"
-             class="artist-pp"
-             th:src="'/resources/artist_pictures/medium/' + *{rlArtist.cover} + '.jpg'">
-      </div>
-      <div th:if="${rlArtist.cover == null}">
-        <img alt="artist-pp"
-             class="artist-pp"
-             th:src="'static/img/object/artist.svg'">
-      </div>
-      <p class="artist-name" th:text="*{rlArtist.name}"></p>
-      <!-- User doesn't have an avatar. Displaying default -->
-      <span th:if="*{rlArtist.isLabel}">
-        <img alt="artist-is-label" class="artist-is-label" src="static/img/object/label.svg">
-      </span>
+    <!-- Iterating through the artists -->
+    <div th:each="rlArtist : ${rlArtists}">
+      <div th:replace="/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, medium)"></div>
     </div>
   </div>
+
+  <!-- Display the genres. -->
   <h2 th:text="#{mp.genres}"></h2>
   <div class="genres-container" id="genres-container">
     <button id="test-button">Test</button>

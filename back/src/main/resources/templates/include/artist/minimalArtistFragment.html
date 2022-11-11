@@ -1,0 +1,10 @@
+<!-- Display the information about a minimal artist. -->
+<div th:fragment="displayMinimalArtist(artist, size)" xmlns:th="http://www.thymeleaf.org" class="artist-item"
+     th:data-id="${artist.id}">
+  <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
+  <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, *{size})"></div>
+  <p class="artist-name" th:text="*{artist.name}"></p>
+  <span th:if="*{artist.isLabel}">
+    <img alt="artist-is-label" class="artist-is-label" src="static/img/object/label.svg">
+  </span>
+</div>

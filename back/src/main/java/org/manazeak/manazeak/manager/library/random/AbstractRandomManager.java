@@ -2,7 +2,6 @@ package org.manazeak.manazeak.manager.library.random;
 
 import org.manazeak.manazeak.entity.dto.library.integration.random.RandomMinMaxProjection;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

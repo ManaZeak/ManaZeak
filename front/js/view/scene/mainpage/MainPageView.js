@@ -40,10 +40,10 @@ class MainPageView extends SceneView {
   _events() {
     const artists = this.dom.querySelector('#artists-container');
     for (let i = 0; i < artists.children.length; ++i) {
-      artists.children[i].addEventListener('click', () => {
+      artists.children[i].children[0].addEventListener('click', () => {
         mzk.setView({
           name: 'ReleaseArtist',
-          id: artists.children[i].dataset.id
+          id: artists.children[i].children[0].dataset.id
         });
       });
     }
