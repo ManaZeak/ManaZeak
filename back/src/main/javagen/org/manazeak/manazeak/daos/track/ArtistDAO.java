@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
+import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.springframework.data.jpa.repository.Query;
@@ -64,12 +65,13 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "WHERE a.artistId = :artistId")
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
 
-    /**
-     * Get all the artist with a not null location.
-     *
-     * @return The artists with a location.
-     */
-    List<Artist> getArtistByLocationNotNull();
+    @Query("select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
+            "art.artistId," +
+            "art.name," +
+            "art.pictureFilename," +
+            "art.isLabel) from Artist art " +
+            "where art.location is not null")
+    List<ArtistMinimalInfoDto> getAllReleaseArtistMinimalInfo();
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

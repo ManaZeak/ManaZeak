@@ -5,7 +5,9 @@ package org.manazeak.manazeak.controller.page.library.artist;
  */
 public enum ArtistFragmentEnum {
 
-    ARTIST_DETAIL("fragments/library/artist/artist-detail.html");
+    ARTIST_DETAIL("fragments/library/artist/artist-detail.html"),
+    ALL_RELEASE_ARTISTS("fragments/library/artist/all-release-artists.html");
+
 
     private final String page;
 

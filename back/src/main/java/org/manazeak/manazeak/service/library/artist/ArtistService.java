@@ -11,7 +11,6 @@ import org.manazeak.manazeak.manager.library.artist.ArtistHelper;
 import org.manazeak.manazeak.manager.library.random.artist.RandomReleaseArtistManager;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,15 +51,8 @@ public class ArtistService {
      *
      * @return The list of artists.
      */
-    public List<ArtistMinimalInfoDto> getAllArtistsMinimal() {
-        List<Artist> artists = artistDAO.getArtistByLocationNotNull();
-        List<ArtistMinimalInfoDto> minimalArtist = new ArrayList<>();
-
-        for (Artist artist : artists) {
-            minimalArtist.add(ArtistHelper.convertArtist(artist));
-        }
-
-        return minimalArtist;
+    public List<ArtistMinimalInfoDto> getAllReleaseArtistsMinimal() {
+        return artistDAO.getAllReleaseArtistMinimalInfo();
     }
 
     /**

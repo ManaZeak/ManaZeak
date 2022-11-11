@@ -16,13 +16,13 @@ import javax.validation.constraints.NotNull;
  * Display the detail about an artist.
  */
 @FragmentController
-public class ArtistDetailFragment {
+public class ArtistFragment {
 
     private final ArtistService artistService;
 
     private final AlbumService albumService;
 
-    public ArtistDetailFragment(ArtistService artistService, AlbumService albumService) {
+    public ArtistFragment(ArtistService artistService, AlbumService albumService) {
         this.artistService = artistService;
         this.albumService = albumService;
     }
@@ -42,6 +42,14 @@ public class ArtistDetailFragment {
         model.addAttribute("albums", albumService.getMinimalAlbumByArtistId(artistId));
 
         return ArtistFragmentEnum.ARTIST_DETAIL.getPage();
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/library/release-artist/all")
+    public String getAllReleaseArtistFragment(Model model) {
+        model.addAttribute("rlArtists", artistService.getAllReleaseArtistsMinimal());
+
+        return ArtistFragmentEnum.ALL_RELEASE_ARTISTS.getPage();
     }
 
 }
