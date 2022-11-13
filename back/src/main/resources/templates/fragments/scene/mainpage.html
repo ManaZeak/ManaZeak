@@ -1,14 +1,16 @@
 <div class="main-page" xmlns:th="http://www.thymeleaf.org">
   <!--/*@thymesVar id="rlArtists" type="java.util.List"*/-->
   <!-- Display the release artists. -->
-  <h2 th:text="#{mp.release_artists}"></h2>
+  <div class="section-header">
+    <h2 th:text="#{mp.release_artists}"></h2>
+    <h3 th:text="#{mp.release_artists_all}" id="see-all-release-artists"></h3>    
+  </div>
   <div class="artists-container" id="artists-container">
     <!-- Iterating through the artists -->
     <div th:each="rlArtist : ${rlArtists}">
       <div th:replace="/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, medium)"></div>
     </div>
   </div>
-
   <!-- Display the genres. -->
   <h2 th:text="#{mp.genres}"></h2>
   <div class="genres-container" id="genres-container">

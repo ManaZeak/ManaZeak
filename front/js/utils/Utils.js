@@ -61,6 +61,64 @@ class Utils {
   }
 
 
+
+  /** @method
+   * @name secondsToTimecode
+   * @public
+   * @memberof Utils
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description Convert a time in seconds into a time DD HH MM SS
+   * @param {number} time - The time in seconds to convert
+   * @return {string} - The output string according to time duration */
+   secondsToTimecode(time) {
+    const transformedTime = {
+      d: 0,
+      h: 0,
+      m: 0,
+      s: 0
+    };
+
+    // Cutting total seconds
+    transformedTime.d = Math.floor(time / 86400);
+    transformedTime.h = Math.floor((time - (transformedTime.d * 86400)) / 3600);
+    transformedTime.m = Math.floor((time - (transformedTime.d * 86400) - (transformedTime.h * 3600)) / 60);
+    transformedTime.s = Math.floor(time - (transformedTime.d * 86400) - (transformedTime.h * 3600) - (transformedTime.m * 60));
+
+    // Adding an extra 0 for values inferior to 10
+    if (transformedTime.d < 10) {
+      transformedTime.d = `0${transformedTime.d}`;
+    }
+
+    if (transformedTime.h < 10) {
+      transformedTime.h = `0${transformedTime.h}`;
+    }
+
+    if (transformedTime.m < 10) {
+      transformedTime.m = `0${transformedTime.m}`;
+    }
+
+    if (transformedTime.s < 10) {
+      transformedTime.s = `0${transformedTime.s}`;
+    }
+
+    // Formatting output
+    if (transformedTime.d > 0) {
+      return `${transformedTime.d}d ${transformedTime.h}h ${transformedTime.m}m ${transformedTime.s}s`;
+    } else if (transformedTime.h > 0) {
+      return `${transformedTime.h}:${transformedTime.m}:${transformedTime.s}`;
+    } else {
+      return `${transformedTime.m}:${transformedTime.s}`;
+    }
+  }
+
+
+
+  formatDate(string) {
+    let date = new Date(string);
+    return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+  }
+
 }
 
 

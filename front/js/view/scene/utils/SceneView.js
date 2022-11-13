@@ -1,6 +1,3 @@
-'use strict';
-
-
 class SceneView {
 
 
@@ -17,6 +14,7 @@ class SceneView {
     this._type = options.type;
     this._url = options.url;
     this._css = options.css;
+    this._evtIds = [];
 
     Utils.appendLinkInHead(this._css);
   }

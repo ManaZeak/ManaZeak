@@ -2,8 +2,32 @@
   height: 100%;
   width: 100%;
 
-  h1, h2 {
-    text-align: center;
+  .section-header {
+    align-items: flex-end;
+    display: flex;
+    margin: var(--margin);
+    padding: 0 var(--padding);
+    width: calc(100% - (2 * var(--margin)));
+
+    h2, h3 {
+      margin: 0;
+    }
+
+    h3 {
+      color: var(--color-txt-darker);
+      cursor: pointer;
+      font-size: var(--font-size);
+      font-style: italic;
+      margin: 0;
+      margin-left: var(--margin);
+      transition: color .2s;
+
+      &:active,
+      &:focus,
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
   }
 
   .artists-container {
@@ -126,6 +150,9 @@
         h2 {
           font-size: var(--font-size);  
           margin: 0;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .album-picture {
@@ -180,7 +207,50 @@
       h1 {
         font-size: var(--font-size-big);
         margin: 0;
+        margin-bottom: var(--margin);
         text-align: center;
+      }
+
+      .performers-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: var(--margin);
+        justify-content: center;
+        width: 100%;
+
+        .performer {
+          cursor: pointer;
+          margin: var(--margin-small);
+          position: relative;
+
+          transition: all .2s;
+
+          img { /* 1/2 width of small artist right over performers */
+            height: 50px;
+            width: 50px;
+          }
+
+          p {
+            display: none;
+            font-size: var(--font-size-small);
+            left: 50%;
+            margin: 0;
+            position: absolute;
+            text-align: center;
+            width: max-content;
+            transform: translateX(-50%);
+          }
+
+          &:active,
+          &:focus,
+          &:hover {
+            transform: scale(1.2);
+
+            p {
+              display: block;
+            }
+          }
+        }
       }
     }
 
@@ -192,11 +262,23 @@
         border-bottom: solid 1px var(--color-txt);
         margin-bottom: var(--margin);
         padding-bottom: var(--margin);
+        position: relative;
         width: 100%;
 
         h2 {
           font-size: var(--font-size);
           margin-top: 0;
+
+          span:first-child {
+            cursor: pointer;
+            transition: color .2s;
+
+            &:active,
+            &:focus,
+            &:hover {
+              color: var(--color-primary);
+            }
+          }
         }
 
         p {
@@ -205,6 +287,18 @@
           margin: var(--margin-small);
           text-indent: var(--font-size);
         }
+
+        .release-artist-container {
+          cursor: pointer;
+          position: absolute;
+          right: 0;
+          top: 0;
+
+          img {
+            height: 6rem;
+            width: 6rem;
+          }
+        }  
       }
 
       .album-tracks {
@@ -252,7 +346,7 @@
           }
 
           span:last-child {
-            margin-left: auto;
+            float: right;
           }
         }
       }

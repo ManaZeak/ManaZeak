@@ -1,5 +1,6 @@
 import MainPageView from './mainpage/MainPageView.js';
 import ReleaseArtistView from './mainpage/ReleaseArtistView.js';
+import AllReleaseArtistView from './mainpage/AllReleaseArtistView.js';
 import AlbumView from './mainpage/AlbumView.js';
 import GenreGraphView from './mainpage/GenreGraphView.js';
 import MenuPageView from './menupage/MenuPageView.js';
@@ -10,6 +11,7 @@ import AccountPageView from './menupage/AccountPageView.js';
 const Classes = {
   MainPageView,
   ReleaseArtistView,
+  AllReleaseArtistView,
   AlbumView,
   GenreGraphView,
   MenuPageView,

@@ -38,6 +38,11 @@ class MainPageView extends SceneView {
 
 
   _events() {
+    this.dom.querySelector('#see-all-release-artists').addEventListener('click', () => {
+      mzk.setView({
+        name: 'AllReleaseArtist'
+      });
+    });
     const artists = this.dom.querySelector('#artists-container');
     for (let i = 0; i < artists.children.length; ++i) {
       artists.children[i].children[0].addEventListener('click', () => {
