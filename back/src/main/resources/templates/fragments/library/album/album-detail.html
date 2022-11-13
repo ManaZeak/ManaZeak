@@ -27,6 +27,12 @@
         <p th:text="*{album.albumArtistId}"></p>
         <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, orig)"></div>
       </div>
+      <!-- FIXME : move this info where it is needed. -->
+      <!--/*@thymesVar id="performers" type="java.util.List"*/-->
+      <!--/*@thymesVar id="performer" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
+      <div th:each="performer : ${performers}">
+        <div th:replace="/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{performer}, medium)"></div>
+      </div>
     </div>
   </div>
 </div>

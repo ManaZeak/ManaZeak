@@ -64,6 +64,16 @@ public class ArtistService {
     }
 
     /**
+     * Get the list of performers of an album.
+     *
+     * @param albumId The id of the album.
+     * @return The list of performers for the album.
+     */
+    public List<ArtistMinimalInfoDto> getAlbumPerformers(Long albumId) {
+        return artistDAO.getAlbumPerformers(albumId);
+    }
+
+    /**
      * Get the information about a specific artist in the database.
      *
      * @return The detail of the artist.

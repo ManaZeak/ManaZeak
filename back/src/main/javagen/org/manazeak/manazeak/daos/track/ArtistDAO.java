@@ -65,6 +65,9 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "WHERE a.artistId = :artistId")
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
 
+    /**
+     * @return All the release artist of the application.
+     */
     @Query("select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
             "art.artistId," +
             "art.name," +
@@ -72,6 +75,22 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "art.isLabel) from Artist art " +
             "where art.location is not null")
     List<ArtistMinimalInfoDto> getAllReleaseArtistMinimalInfo();
+
+    /**
+     * Get all the performer of an album.
+     *
+     * @param albumId The id of the album.
+     * @return The list of performers in the album.
+     */
+    @Query("select distinct new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
+            "perf.artistId," +
+            "perf.name," +
+            "perf.pictureFilename," +
+            "perf.isLabel) " +
+            "from Track trk " +
+            "join trk.performerList perf " +
+            "where trk.album.albumId = :albumId")
+    List<ArtistMinimalInfoDto> getAlbumPerformers(@Param("albumId") Long albumId);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT
