@@ -42,7 +42,7 @@ class Mzk {
     return new Promise((resolve, reject) => {
       this.ui.getFragment(options)
         .then(fragment => {
-          Logger.raise('F_FRAGMENT_GET_SUCCESS')
+          Logger.raise('F_FRAGMENT_GET_SUCCESS');
           resolve(fragment);
         })
         .catch(() => {

@@ -112,7 +112,7 @@ class Utils {
 
 
   formatDate(string) {
-    let date = new Date(string);
+    const date = new Date(string);
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   }
 

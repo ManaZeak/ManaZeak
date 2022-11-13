@@ -15,21 +15,21 @@ class Tree {
   constructor(options) {
     this.style = options.style;
     this._data = options.data;
-    this.nodes     = [];       // {array}    Nodes array
-    this.layout    = null;     // {object}   Layout controller
-    this.callback  = options.callback; // {function} End of loading callback
+    this.nodes = [];       // {array}    Nodes array
+    this.layout = null;     // {object}   Layout controller
+    this.callback = options.callback; // {function} End of loading callback
     this._loadNodes(); // Fill nodes array
   }
 
 
   destroy() {
-  this.layout.destroy();
+    this.layout.destroy();
 
-  for (let i = 0; i < this.nodes.length; ++i) {
-    this.nodes[i].destroy();
-  }
+    for (let i = 0; i < this.nodes.length; ++i) {
+      this.nodes[i].destroy();
+    }
 
-  Utils.removeAllObjectKeys(this);
+    Utils.removeAllObjectKeys(this);
   }
 
 
@@ -39,8 +39,8 @@ class Tree {
    * @description GET the API url and build Tree object
    **/
   _loadNodes() {
-    this._addNode(this._data.genres, null);    // Make tree first iteration, recursive call
-    this.layout = new Layout(this.style);      // Arrange layout (set cartesian coordinates)
+    this._addNode(this._data.genres, null); // Make tree first iteration, recursive call
+    this.layout = new Layout(this.style); // Arrange layout (set cartesian coordinates)
     this.layout.arrange(this.nodes); // Orientation (0: root top || 1: root: right || 2: root bottom || 3: root left)
   }
 
@@ -55,14 +55,8 @@ class Tree {
   _addNode(toAdd, parent) {
     const node = new Node(toAdd, parent, this.style); // Create node
     this.nodes.push(node); // Fill nodes array
-    if (toAdd.subgenres) { // toAdd comes from JSON (raw node)
-      for (let i = 0; i < toAdd.subgenres.length; ++i) { // Iterate over children
-        this._addNode(toAdd.subgenres[i], node); // Recursive call on each children
-      }
-    } else { // toAdd comes from an existing Node
-      for (let i = 0; i < toAdd.subgenres.length; ++i) { // Iterate over children
-        this._addNode(toAdd.subgenres[i], node); // Recursive call on each children
-      }
+    for (let i = 0; i < toAdd.subgenres.length; ++i) { // Iterate over children
+      this._addNode(toAdd.subgenres[i], node); // Recursive call on each children
     }
   }
 

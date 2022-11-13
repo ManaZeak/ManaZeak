@@ -1,9 +1,3 @@
-'use strict';
-
-import Logger from "../utils/Logger";
-import Mzk from "./Mzk";
-
-
 class Lang {
 
 

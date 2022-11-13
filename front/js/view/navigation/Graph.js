@@ -19,11 +19,11 @@ class Graph {
     this.cellClickedCB = options.cellClicked;
     this.canvas = new Canvas(options);
     this.tree = new Tree({
-        data: this.data,
-        style: this.style
+      data: this.data,
+      style: this.style
     });
 
-    this._rafId
+    this._rafId = -1;
     this._evtIds = [];
 
     this._init();
@@ -171,7 +171,7 @@ class Graph {
       );
     }
     // Translate accordingly
-    this.canvas.ctx.translate(pt.x, pt.y)
+    this.canvas.ctx.translate(pt.x, pt.y);
   }
 
 

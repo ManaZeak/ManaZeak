@@ -6,7 +6,7 @@
     <div class="album-aside">
       <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, large)"></div>
       <h1 th:text="*{album.title}"></h1>
-      <i><p th:text="#{view.album.performers}"></p></i>
+      <em><p th:text="#{view.album.performers}"></p></em>
       <div id="performers-container" class="performers-container">
         <div th:each="performer : ${performers}" class="performer" th:attr="data-id=*{performer.id}">
           <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)"></div>
