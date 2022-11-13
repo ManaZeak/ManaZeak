@@ -36,8 +36,12 @@ class ReleaseArtistView extends SceneView {
 
         this._scroll = new ScrollBar({
           target: albums,
-          horizontal: true
+          horizontal: true,
+          style: {
+            color: '#56D45B'
+          }
         });
+
         resolve();
       } else {
         reject('F_RELEASEARTIST_INVALID_HTML');

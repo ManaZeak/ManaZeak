@@ -47,10 +47,12 @@ class AlbumView extends SceneView {
         this._evtIds.push(Evts.addEvent('click', performers[i], this._artistClicked, performers[i]));
       }
   
-      const ra = this.dom.querySelector('#release-artist'); // Text artist name
-      const rac = this.dom.querySelector('#release-artist-container'); // Artist picture
-      this._evtIds.push(Evts.addEvent('click', rac, this._artistClicked, ra));
-      this._evtIds.push(Evts.addEvent('click', ra, this._artistClicked, ra));
+      const rlArtist = this.dom.querySelector('#release-artist'); // Text artist name
+      const rlArtistContainer = this.dom.querySelector('#release-artist-container'); // Artist picture
+      this._evtIds.push(Evts.addEvent('click', rlArtistContainer, this._artistClicked, rlArtist));
+      this._evtIds.push(Evts.addEvent('click', rlArtist, this._artistClicked, rlArtist));
+      const label = this.dom.querySelector('#album-label');
+      this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
       resolve();
     });
   }
@@ -61,6 +63,14 @@ class AlbumView extends SceneView {
       name: 'ReleaseArtist',
       id: this.dataset.id
     });
+  }
+
+
+  _labelClicked() {
+    mzk.setView({
+      name: 'Label',
+      id: this.dataset.id
+    });    
   }
 
 

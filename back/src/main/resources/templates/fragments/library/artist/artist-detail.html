@@ -1,15 +1,20 @@
+<!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
+<!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="release-artist-view-wrapper">
-  <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
-  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
   <div class="artist-header">
     <div class="artist-header-left">
       <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
       <h1 th:text="${artist.name}"></h1>
     </div>
     <div class="artist-header-right">
-      <p>About <span th:text="${artist.name}"></span></p>
-      <p class="artist-birth-death"><i><span th:text="${artist.birthDate}"></span> – <span
-              th:text="${artist.deathDate}"></span></i></p>
+      <p>
+        <span th:text="#{view.rlartist.about}"></span>&nbsp;
+        <span th:text="${artist.name}"></span>
+      </p>
+      <p class="artist-birth-death"><i>
+        <span th:text="${artist.birthDate}"></span>&nbsp;–&nbsp;
+        <span th:text="${artist.deathDate}"></span>
+      </i></p>
       <p th:text="${artist.countryCode}"></p>
       <p th:text="${artist.bio}"></p>
     </div>
@@ -21,11 +26,15 @@
     <!-- <p th:text="${artist.label}"></p> -->
   </div>
   <div class="artist-content">
-    <h1>Albums released by <span th:text="${artist.name}"></span></h1>
+    <h1>
+      <span th:text="#{view.rlartist.album_released}"></span>&nbsp;
+      <span th:text="${artist.name}"></span>
+    </h1>
     <div id="released-albums" class="released-albums">
       <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
+        <!--<h3 th:text="*{album.year}"></h3>-->
         <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')"></div>
-        <h2><!--<span th:text="*{album.year}"></span> --><span th:text="*{album.title}"></span></h2>
+        <h2><span th:text="*{album.title}"></span></h2>
       </div>
     </div>
   </div>

@@ -35,16 +35,19 @@ class GenreGraphView extends SceneView  {
   // TODO share in parent class GraphView
   _fetchData(url) {
     return new Promise((resolve, reject) => {
-      mzk.kom.get(url)
-        .then(response => {
-          try {
-            this._data = response;
-            resolve();
-          } catch {
-            reject();
-          }
-        })
-        .catch(reject);
+      mzk.kom.get(url).then(response => {
+        try {
+          this._data = response;
+          resolve();
+          /*
+          mzk.kom.get('/fragment/library/genre/all').then(response => {
+            console.log(response)
+          }).catch(reject);
+*/
+        } catch {
+          reject();
+        }
+      }).catch(reject);
     });
   }
 

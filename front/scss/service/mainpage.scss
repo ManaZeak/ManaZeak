@@ -127,6 +127,7 @@
     }
 
     .released-albums {
+      border-spacing: 1rem;
       overflow: auto;
       width: 100%;
 
@@ -134,7 +135,6 @@
         cursor: pointer;
         display: table-cell;
         padding: var(--padding);
-        margin: var(--margin-small);
         max-width: 20rem;
         text-align: center;
 
@@ -348,17 +348,6 @@
         h2 {
           font-size: var(--font-size);
           margin-top: 0;
-
-          span:first-child {
-            cursor: pointer;
-            transition: color .2s;
-
-            &:active,
-            &:focus,
-            &:hover {
-              color: var(--color-primary);
-            }
-          }
         }
 
         p {
@@ -366,6 +355,17 @@
           color: var(--color-txt-darker);
           margin: var(--margin-small);
           text-indent: var(--font-size);
+        }
+
+        .link {
+          cursor: pointer;
+          transition: color .2s;
+
+          &:active,
+          &:focus,
+          &:hover {
+            color: var(--color-primary);
+          }
         }
 
         .release-artist-container {
