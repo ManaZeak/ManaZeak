@@ -1,3 +1,4 @@
+import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
 
 
@@ -10,6 +11,8 @@ class ReleaseArtistView extends SceneView {
       url: `/fragment/library/artist/${options.id}`
     });
 
+    this._scroll = null;
+    
     this._fetchWrapper(this._url)
       .then(this._makeInteractive.bind(this))
       .then(this._viewReady)
@@ -30,6 +33,11 @@ class ReleaseArtistView extends SceneView {
         for (let i = 0; i < albums.children.length; ++i) {
           albums.children[i].addEventListener('click', this._albumClicked);
         }
+
+        this._scroll = new ScrollBar({
+          target: albums,
+          horizontal: true
+        });
         resolve();
       } else {
         reject('F_RELEASEARTIST_INVALID_HTML');

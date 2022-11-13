@@ -99,7 +99,7 @@
   z-index: 999;
 
   @include box-shadow(0 0 var(--notification-margin), 0, 0, 0, .2);
-  @include transition(opacity 1s ease .5s);
+  @include transition(opacity .2s ease .2s);
   @include user-select(none);
 
   &:nth-child(n + 2) {

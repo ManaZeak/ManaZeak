@@ -109,7 +109,7 @@ class Notification {
       handler: {
         position: 'top-right',
         thickBorder: 'top',
-        duration: 5000,
+        duration: 4000,
         transition: 200,
         maxActive: 10
       },

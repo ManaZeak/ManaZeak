@@ -1,5 +1,4 @@
 import SceneView from '../utils/SceneView';
-import ScrollBar from '../../navigation/ScrollBar';
 
 
 class AlbumView extends SceneView {
@@ -12,7 +11,8 @@ class AlbumView extends SceneView {
     });
 
     this._fetchWrapper(this._url)
-      .then(this._makeInteractive.bind(this))
+      .then(this._buildNavigation.bind(this))
+      .then(this._events.bind(this))
       .then(this._viewReady)
       .catch(error => Logger.raise(error));
   }
@@ -20,11 +20,12 @@ class AlbumView extends SceneView {
 
   destroy() {
     super.destroy();
+    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
 
-  _makeInteractive() {
+  _buildNavigation() {
     return new Promise((resolve, reject) => {
       const date = this.dom.querySelector('#album-release-date').innerHTML;
       this.dom.querySelector('#album-duration').innerHTML = Utils.secondsToTimecode(parseFloat(this.dom.querySelector('#album-duration').innerHTML)); 
@@ -34,32 +35,32 @@ class AlbumView extends SceneView {
         const duration = tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
-
-      const performers = this.dom.querySelector('#performers-container').children;
-      for (let i = 0; i < performers.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', performers[i], this._performerClicked, performers[i]));
-      }
-
-      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#release-artist-container'), this._releaseArtistClicked, this.dom.querySelector('#release-artist')));
-      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#release-artist'), this._releaseArtistClicked, this.dom.querySelector('#release-artist')));
       resolve();
     });
   }
 
 
-  _releaseArtistClicked() {
-    mzk.setView({
-      name: 'ReleaseArtist',
-      id: this.dataset.id
+  _events() {
+    return new Promise((resolve, reject) => {
+      const performers = this.dom.querySelector('#performers-container').children;
+      for (let i = 0; i < performers.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', performers[i], this._artistClicked, performers[i]));
+      }
+  
+      const ra = this.dom.querySelector('#release-artist'); // Text artist name
+      const rac = this.dom.querySelector('#release-artist-container'); // Artist picture
+      this._evtIds.push(Evts.addEvent('click', rac, this._artistClicked, ra));
+      this._evtIds.push(Evts.addEvent('click', ra, this._artistClicked, ra));
+      resolve();
     });
   }
 
 
-  _performerClicked() {
+  _artistClicked() {
     mzk.setView({
       name: 'ReleaseArtist',
       id: this.dataset.id
-    });    
+    });
   }
 
 
