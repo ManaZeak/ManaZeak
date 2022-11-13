@@ -44,7 +44,7 @@ public class WishCreationFragment {
      * @return the fragment for creating the wish.
      */
     @RestSecurity(PrivilegeEnum.WISH)
-    @GetMapping("/wish")
+    @GetMapping("/modal/wish")
     public String getModalWishUserCreation(Model model) {
         model.addAttribute("wish", new UserWishDto());
         return WishFragmentEnum.WISH_CREATION.getPage();

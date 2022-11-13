@@ -16,7 +16,7 @@ class Modal {
      this._type = type;
     /** @private
      * @member {string} - The HTML template url to fetch */
-    this._url = `/fragment/${this._type}/`;
+    this._url = `/fragment/modal/${this._type}`;
     /** @private
      * @member {object} - The template root DOM element */
     this._rootElement = null;
@@ -145,7 +145,7 @@ class Modal {
    * @param {object} [event] - The click event, not mandatory to allow the closing of the modal outside of any event **/
   close(event) {
     // Must be overridden in child class to properly clean extension properties and events
-    if (!event || (event && (event.target === this._modalOverlay || event.target === this._closeButton))) {
+    if (!event || (event && (event.target === this._modalOverlay || event.target === this._closeButton)) || event.target.id.indexOf('close') !== -1) {
       // Clear close events int eh Events component
       Evts.removeEvent(this._overlayClickedEvtId);
       Evts.removeEvent(this._closeClickedEvtId);

@@ -5,7 +5,7 @@ class EditAccountModal extends Modal {
 
 
   constructor() {
-    super('modal/edit-account');
+    super('edit-account');
   }
 
 

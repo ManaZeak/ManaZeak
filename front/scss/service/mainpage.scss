@@ -232,7 +232,7 @@
       margin: var(--margin-small);
       position: relative;
   
-      transition: all .2s;
+      transition: transform .2s;
   
       img {
         height: 9rem;
@@ -287,6 +287,7 @@
       width: calc(40rem - (2 * var(--margin)));
 
       .album-picture {
+        cursor: pointer;
         height: calc(40rem - var(--margin));
         width: calc(40rem - (2 * var(--margin)));
 
@@ -389,10 +390,17 @@
           position: absolute;
           right: 0;
           top: 0;
+          transition: transform .2s;
 
           img {
             height: 6rem;
             width: 6rem;
+          }
+
+          &:active,
+          &:focus,
+          &:hover {
+            transform: scale(1.1);
           }
         }  
       }

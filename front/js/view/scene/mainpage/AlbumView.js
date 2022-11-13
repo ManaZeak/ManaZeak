@@ -42,6 +42,8 @@ class AlbumView extends SceneView {
 
   _events() {
     return new Promise((resolve, reject) => {
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
+
       const performers = this.dom.querySelector('#performers-container').children;
       for (let i = 0; i < performers.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', performers[i], this._artistClicked, performers[i]));
@@ -51,9 +53,20 @@ class AlbumView extends SceneView {
       const rlArtistContainer = this.dom.querySelector('#release-artist-container'); // Artist picture
       this._evtIds.push(Evts.addEvent('click', rlArtistContainer, this._artistClicked, rlArtist));
       this._evtIds.push(Evts.addEvent('click', rlArtist, this._artistClicked, rlArtist));
+
       const label = this.dom.querySelector('#album-label');
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
       resolve();
+    });
+  }
+
+
+  _coverClicked() {
+    mzk.setModal({
+      name: 'AlbumCover',
+      path: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
+      title: this.dom.querySelector('#release-artist').nextElementSibling.innerHTML,
+      artist: this.dom.querySelector('#release-artist').innerHTML
     });
   }
 

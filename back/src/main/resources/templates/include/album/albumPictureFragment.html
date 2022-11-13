@@ -1,4 +1,4 @@
-<div th:fragment="albumPictureDisplay (cover, size)" xmlns:th="http://www.thymeleaf.org" class="album-picture">
+<div th:fragment="albumPictureDisplay (cover, size)" xmlns:th="http://www.thymeleaf.org" id="album-picture" class="album-picture">
   <div th:if="*{cover != null}">
     <!-- If the size is null using the original size -->
     <div th:if="*{size == null}">

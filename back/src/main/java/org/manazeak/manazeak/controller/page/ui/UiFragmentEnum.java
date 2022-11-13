@@ -6,6 +6,7 @@ package org.manazeak.manazeak.controller.page.ui;
 public enum UiFragmentEnum {
     MAIN_PAGE("fragments/scene/mainpage.html"),
     MENU_PAGE("fragments/scene/menupage.html"),
+    ALBUM_COVER_MODAL("fragments/modal/album-cover.html"),
     ABOUT_MODAL("fragments/modal/about.html");
 
     private final String page;

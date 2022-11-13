@@ -35,21 +35,6 @@
       font-size: var(--font-size-big);
       margin: 0;
     }
-
-    .close { // Header close button
-      cursor: pointer;
-      position: absolute;
-      right: var(--font-size-small);
-      top: var(--font-size-small);
-
-      transition: color var(--animation-duration) ease-out;
-
-      &:active,
-      &:focus,
-      &:hover {
-        color: var(--color-anti-primary);
-      }
-    }
   }
 
   .container {
@@ -59,6 +44,7 @@
     height: calc(100% - 12rem);
     justify-content: center;
     padding: var(--padding-big);
+    position: relative;
 
     p {
       margin-bottom: var(--font-size);
@@ -112,6 +98,21 @@
       }
     }
   }
+
+  .close { // Header close button
+    cursor: pointer;
+    position: absolute;
+    right: var(--font-size-small);
+    top: var(--font-size-small);
+
+    transition: color var(--animation-duration) ease-out;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: var(--color-anti-primary);
+    }
+  }
 }
 
 .wish-modal {
@@ -119,5 +120,48 @@
     border: solid 1px gray;
     border-radius: var(--font-size-small);
     height: inherit;
+  }
+}
+
+.album-cover-modal {
+  max-height: 95%;
+  max-width: inherit;
+
+  .container {
+    height: calc(100% - 6rem);
+
+    img {
+      height: 80vh;
+    }
+
+    .album-info {
+      background-color: var(--color-bg-lighter-alpha-90);
+      bottom: var(--padding);
+      border-radius: .5rem;
+      left: 50%;
+      max-width: 90%;
+      opacity: 0;
+      padding: var(--padding) var(--padding-big);
+      position: absolute;
+      text-align: center;
+      width: max-content;
+      transform: translateX(-50%);
+      transition: opacity .2s;
+
+      h1, p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: var(--font-size);
+        margin-bottom: var(--margin-tiny);
+      }
+    }
+
+    &:active .album-info,
+    &:focus .album-info,
+    &:hover .album-info {
+      opacity: .9;
+    }
   }
 }

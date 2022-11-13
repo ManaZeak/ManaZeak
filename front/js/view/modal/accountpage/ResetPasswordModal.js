@@ -5,7 +5,7 @@ class ResetPasswordModal extends Modal {
 
 
   constructor() {
-    super('modal/reset-password');
+    super('reset-password');
   }
 
 
