@@ -173,6 +173,10 @@
 }
 
 .all-release-artist-view-wrapper {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+
   .section-header {
     align-items: flex-end;
     display: flex;
@@ -209,6 +213,11 @@
   
     .section-separator {
       grid-column: 1 / -1;
+      border-bottom: solid 3px var(--color-txt-alpha-50);
+      margin-bottom: var(--margin);
+      padding-bottom: var(--margin);
+      text-indent: var(--font-size-big);
+      max-width: 33rem;
     }
   
     .artist {
