@@ -1,40 +1,40 @@
 <div class="user-profile-view">
-    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
-    <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
-        <img alt="edit-account" class="edit-account" id="edit-account" src="static/img/actions/edit.svg">
-        <div class="profile-header">
-            <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
-            <p id="username" th:text="*{username}"></p>
-            <div class="reset-password">
-                <label for="password" th:text="#{user.profile.reset_password}"></label>
-                <img alt="reset-password" id="password" src="static/img/actions/passkey.svg">
-            </div>
-        </div>
-        <div class="info-container">
-            <label for="email" th:text="#{user.tellusmore.email}"></label>
-            <p id="email" th:text="${userInfo.email}"></p>
-            <label for="name" th:text="#{user.tellusmore.name}"></label>
-            <p id="name" th:text="*{name}"></p>
-            <label for="surname" th:text="#{user.tellusmore.surname}"></label>
-            <p id="surname" th:text="*{surname}"></p>
-            <label for="bio" th:text="#{user.tellusmore.bio}"></label>
-            <p id="bio" th:text="*{bio}"></p>
-            <label for="birthdate" th:text="#{user.tellusmore.birthday}"></label>
-            <p id="birthdate" th:text="*{birthDate}"></p>
-            <label for="country" th:text="#{user.tellusmore.country}"></label>
-            <p id="country" th:text="*{country}"></p>
-            <label for="locale" th:text="#{user.tellusmore.language}"></label>
-            <p id="locale" th:text="*{locale}"></p>
-            <p id="member-since" th:text="*{memberSince}"></p>
-            <div class="invitation-code">
-                <label for="invite-code" th:text="#{user.register.invite_code}"></label>
-                <img alt="copy-invite" id="copy-invite" src="static/img/actions/copy.svg">
-                <img alt="copy-invite-link" id="copy-invite-link" src="static/img/actions/share.svg">
-            </div>
-            <p id="invite-code" th:text="*{inviteCode}"></p>
-            <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
-            <p id="parent-name" th:text="*{parentName}"></p>
-            <p id="parent-surname" th:text="*{parentSurname}"></p>
-        </div>
+  <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
+  <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
+    <img alt="edit-account" class="edit-account" id="edit-account" src="static/img/actions/edit.svg">
+    <div class="profile-header">
+      <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
+      <p id="username" th:text="*{username}"></p>
+      <div class="reset-password">
+        <label for="password" th:text="#{user.profile.reset_password}"></label>
+        <img alt="reset-password" id="password" src="static/img/actions/passkey.svg">
+      </div>
     </div>
+    <div class="info-container">
+      <label for="email" th:text="#{user.tellusmore.email}"></label>
+      <p id="email" th:text="${userInfo.email}"></p>
+      <label for="name" th:text="#{user.tellusmore.name}"></label>
+      <p id="name" th:text="*{name}"></p>
+      <label for="surname" th:text="#{user.tellusmore.surname}"></label>
+      <p id="surname" th:text="*{surname}"></p>
+      <label for="bio" th:text="#{user.tellusmore.bio}"></label>
+      <p id="bio" th:text="*{bio}"></p>
+      <label for="birthdate" th:text="#{user.tellusmore.birthday}"></label>
+      <p id="birthdate" th:text="*{birthDate}"></p>
+      <label for="country" th:text="#{user.tellusmore.country}"></label>
+      <p id="country" th:text="*{country}"></p>
+      <label for="locale" th:text="#{user.tellusmore.language}"></label>
+      <p id="locale" th:text="*{locale}"></p>
+      <p id="member-since" th:text="*{memberSince}"></p>
+      <div class="invitation-code">
+        <label for="invite-code" th:text="#{user.register.invite_code}"></label>
+        <img alt="copy-invite" id="copy-invite" src="static/img/actions/copy.svg">
+        <img alt="copy-invite-link" id="copy-invite-link" src="static/img/actions/share.svg">
+      </div>
+      <p id="invite-code" th:text="*{inviteCode}"></p>
+      <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
+      <p id="parent-name" th:text="*{parentName}"></p>
+      <p id="parent-surname" th:text="*{parentSurname}"></p>
+    </div>
+  </div>
 </div>

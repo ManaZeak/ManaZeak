@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.user;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * This object contains all the information for a user.
@@ -27,7 +28,7 @@ public interface MzkUserDetailProjection {
 
     String getAvatar();
 
-    LocalDate getMemberSince();
+    LocalDateTime getMemberSince();
 
     String getParentAvatar();
 
