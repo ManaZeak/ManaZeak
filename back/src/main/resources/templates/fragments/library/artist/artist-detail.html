@@ -1,10 +1,10 @@
+<!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
+<!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="release-artist-view-wrapper">
-  <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto"*/-->
-  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto"*/-->
   <div class="artist-header">
     <div class="artist-header-left">
       <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
-      <h1 th:text="${artist.name}"></h1>
+      <h1 th:text="${artist.name}" id="artist-name"></h1>
     </div>
     <div class="artist-header-right">
       <p>
@@ -18,12 +18,6 @@
       <p th:text="${artist.countryCode}"></p>
       <p th:text="${artist.bio}"></p>
     </div>
-    <!-- <p th:text="${artist.testimonyFrom}"></p> -->
-    <!-- <p th:text="${artist.testimonyText}"></p> -->
-    <!-- <p th:text="${artist.artistId}"></p> -->
-    <!-- <p th:text="${artist.isLabel()}"></p> -->
-    <!-- <p th:text="${artist.labelId}"></p> -->
-    <!-- <p th:text="${artist.label}"></p> -->
   </div>
   <div class="artist-content">
     <h1>

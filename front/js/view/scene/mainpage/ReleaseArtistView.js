@@ -28,6 +28,7 @@ class ReleaseArtistView extends SceneView {
 
   _makeInteractive() {
     return new Promise((resolve, reject) => {
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#artist-picture'), this._pictureClicked, this))
       const albums = this.dom.querySelector('#released-albums');
       if (albums && albums.children) {
         for (let i = 0; i < albums.children.length; ++i) {
@@ -46,6 +47,15 @@ class ReleaseArtistView extends SceneView {
       } else {
         reject('F_RELEASEARTIST_INVALID_HTML');
       }
+    });
+  }
+
+
+  _pictureClicked() {
+    mzk.setModal({
+      name: 'ArtistPicture',
+      path: this.dom.querySelector('#artist-picture').children[0].children[0].children[0].src,
+      artist: this.dom.querySelector('#artist-name').innerHTML
     });
   }
 

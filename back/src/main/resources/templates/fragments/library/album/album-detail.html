@@ -30,9 +30,6 @@
           <span th:text="*{album.labelName}" th:attr="data-id=*{album.labelId}" id="album-label" class="link"></span>,&nbsp;
           <span th:text="*{album.catalogNumber}"></span>
         </p>
-        <!-- <p th:text="*{album.startingRecordingDate}"></p> -->
-        <!-- <p th:text="*{album.endRecordingDate}"></p> -->
-        <!-- <p th:text="*{album.eanUpn}"></p> -->
         <div id="release-artist-container" class="release-artist-container">
           <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)"></div>
         </div>

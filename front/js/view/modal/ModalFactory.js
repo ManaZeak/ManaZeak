@@ -1,3 +1,4 @@
+import ArtistPictureModal from './mainpage/ArtistPictureModal.js';
 import AlbumCoverModal from './mainpage/AlbumCoverModal.js';
 import AboutModal from './menupage/AboutModal.js';
 import WishModal from './menupage/WishModal.js';
@@ -7,6 +8,7 @@ import EditAccountModal from './accountpage/EditAccountModal.js';
 
 
 const Classes = {
+  ArtistPictureModal,
   AlbumCoverModal,
   AboutModal,
   WishModal,

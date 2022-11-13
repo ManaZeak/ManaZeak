@@ -123,7 +123,8 @@
   }
 }
 
-.album-cover-modal {
+.album-cover-modal,
+.artist-picture-modal {
   max-height: 95%;
   max-width: inherit;
 
@@ -131,10 +132,10 @@
     height: calc(100% - 6rem);
 
     img {
-      height: 80vh;
+      max-height: 80vh;
     }
 
-    .album-info {
+    [class$="-info"] {
       background-color: var(--color-bg-lighter-alpha-90);
       bottom: var(--padding);
       border-radius: .5rem;
@@ -158,9 +159,9 @@
       }
     }
 
-    &:active .album-info,
-    &:focus .album-info,
-    &:hover .album-info {
+    &:active [class$="-info"],
+    &:focus [class$="-info"],
+    &:hover [class$="-info"] {
       opacity: .9;
     }
   }
