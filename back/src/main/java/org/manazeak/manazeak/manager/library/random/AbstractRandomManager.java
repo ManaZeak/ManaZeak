@@ -2,6 +2,8 @@ package org.manazeak.manazeak.manager.library.random;
 
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +38,11 @@ public abstract class AbstractRandomManager<T> {
         // Getting the random values.
         Set<Long> indexValues = getRandomIndexValues(numberOfElements);
 
+        // If there is no index values, then sending an empty list.
+        if (indexValues.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         // Getting the values in the database.
         return getElementByIndexes(indexValues);
     }
@@ -63,6 +70,10 @@ public abstract class AbstractRandomManager<T> {
     protected Set<Long> getRandomIndexValues(int numberRandomValues) {
         // Get the min value and the max value of the random.
         RandomMinMaxProjection randomMinMaxProjection = getMinMaxIndex();
+
+        if (randomMinMaxProjection == null || randomMinMaxProjection.getMaxIndex() == null || getMinMaxIndex().getMinIndex() == null) {
+            return Collections.emptySet();
+        }
 
         // Checking if we can get the number of values asked.
         final int dbMaxNumberValue;
