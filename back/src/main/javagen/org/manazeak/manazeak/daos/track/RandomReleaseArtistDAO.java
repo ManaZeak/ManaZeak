@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.integration.random.RandomMinMaxProjection;
+import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.track.RandomReleaseArtist;
