@@ -15,7 +15,6 @@ DROP SEQUENCE SEQ_BIO;
 DROP SEQUENCE SEQ_GENRE;
 DROP SEQUENCE SEQ_LABEL;
 DROP SEQUENCE SEQ_LINK;
-DROP SEQUENCE SEQ_RANDOM_RELEASE_ARTIST;
 DROP SEQUENCE SEQ_RECORDING_LOCATION;
 DROP SEQUENCE SEQ_TIME_INTERVAL;
 DROP SEQUENCE SEQ_TRACK;
@@ -33,6 +32,8 @@ DROP SEQUENCE SEQ_PRIVILEGE;
 DROP SEQUENCE SEQ_ROLE;
 DROP SEQUENCE SEQ_WISH;
 DROP SEQUENCE SEQ_WISH_STATUS;
+DROP SEQUENCE SEQ_RANDOM_GENRE;
+DROP SEQUENCE SEQ_RANDOM_RELEASE_ARTIST;
 DROP SEQUENCE SEQ_SCAN_STATUS;
  
 -- ================================
@@ -56,7 +57,6 @@ ALTER TABLE member_time_interval DROP CONSTRAINT FK_member_time_interval_2;
 ALTER TABLE member_role DROP CONSTRAINT FK_member_role_1;
 ALTER TABLE member_role DROP CONSTRAINT FK_member_role_2;
 ALTER TABLE link DROP CONSTRAINT FK_link_type;
-ALTER TABLE random_release_artist DROP CONSTRAINT FK_rand_rl_artist;
 ALTER TABLE recording_location DROP CONSTRAINT FK_recording_location_country;
 ALTER TABLE track DROP CONSTRAINT FK_track_album;
 ALTER TABLE track_producer DROP CONSTRAINT FK_track_producer_1;
@@ -88,6 +88,8 @@ ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_1;
 ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_2;
 ALTER TABLE wish DROP CONSTRAINT FK_user_wish;
 ALTER TABLE wish DROP CONSTRAINT FK_wish_status;
+ALTER TABLE random_genre DROP CONSTRAINT FK_rand_genre;
+ALTER TABLE random_release_artist DROP CONSTRAINT FK_rand_rl_artist;
 ALTER TABLE scan_status DROP CONSTRAINT FK_scan_status_step;
  
 -- ================================
@@ -111,7 +113,6 @@ DROP INDEX IDX_member_time_interval_2;
 DROP INDEX IDX_member_role_1;
 DROP INDEX IDX_member_role_2;
 DROP INDEX IDX_link_type;
-DROP INDEX IDX_rand_rl_artist;
 DROP INDEX IDX_recording_location_country;
 DROP INDEX IDX_track_album;
 DROP INDEX IDX_track_producer_1;
@@ -143,6 +144,8 @@ DROP INDEX IDX_privileges_role_1;
 DROP INDEX IDX_privileges_role_2;
 DROP INDEX IDX_user_wish;
 DROP INDEX IDX_wish_status;
+DROP INDEX IDX_rand_genre;
+DROP INDEX IDX_rand_rl_artist;
 DROP INDEX IDX_scan_status_step;
  
 -- ================================
@@ -159,7 +162,6 @@ DROP TABLE bio;
 DROP TABLE genre;
 DROP TABLE label;
 DROP TABLE link;
-DROP TABLE random_release_artist;
 DROP TABLE recording_location;
 DROP TABLE time_interval;
 DROP TABLE track;
@@ -188,6 +190,8 @@ DROP TABLE role;
 DROP TABLE privileges_role;
 DROP TABLE wish;
 DROP TABLE wish_status;
+DROP TABLE random_genre;
+DROP TABLE random_release_artist;
 DROP TABLE scan_status;
 
 -- END OF GENERATED CODE - YOU CAN EDIT THE FILE AFTER THIS LINE, DO NOT EDIT THIS LINE OR BEFORE THIS LINE

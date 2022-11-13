@@ -2,6 +2,7 @@ package org.manazeak.manazeak.manager.library.integration.random;
 
 import org.manazeak.manazeak.daos.library.integration.random.AbstractRandomInit;
 import org.manazeak.manazeak.daos.library.integration.random.artist.RandomReleaseArtistInitDAO;
+import org.manazeak.manazeak.daos.library.integration.random.genre.RandomGenreInitDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,10 @@ public class RandomInitializationManager {
 
     private final List<AbstractRandomInit> randomInitializers;
 
-    public RandomInitializationManager(RandomReleaseArtistInitDAO randomReleaseArtistInitDAO) {
+    public RandomInitializationManager(RandomReleaseArtistInitDAO randomReleaseArtistInitDAO, RandomGenreInitDAO randomGenreInitDAO) {
         randomInitializers = new ArrayList<>();
         randomInitializers.add(randomReleaseArtistInitDAO);
+        randomInitializers.add(randomGenreInitDAO);
     }
 
     /**

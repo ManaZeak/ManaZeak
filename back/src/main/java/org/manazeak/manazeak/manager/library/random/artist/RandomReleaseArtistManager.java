@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.manager.library.random.artist;
 
-import org.manazeak.manazeak.daos.track.RandomReleaseArtistDAO;
+import org.manazeak.manazeak.daos.random.RandomReleaseArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 import org.manazeak.manazeak.manager.library.random.AbstractRandomManager;

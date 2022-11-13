@@ -1,10 +1,10 @@
-package org.manazeak.manazeak.daos.track;
+package org.manazeak.manazeak.daos.random;
 
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
+import org.manazeak.manazeak.entity.random.RandomReleaseArtist;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.manazeak.manazeak.entity.track.RandomReleaseArtist;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -25,6 +25,7 @@ public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArti
 
     /**
      * Get a list of random artists from the database.
+     *
      * @param indexIds The list of index ids that will be fecthed.
      * @return The list of minimal artist info to display.
      */
@@ -37,6 +38,7 @@ public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArti
             "join rand.artist art " +
             "where rand.randomIndex in (:indexIds)")
     List<ArtistMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") Set<Long> indexIds);
+
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

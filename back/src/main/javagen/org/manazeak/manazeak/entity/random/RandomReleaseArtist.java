@@ -1,7 +1,8 @@
-package org.manazeak.manazeak.entity.track;
+package org.manazeak.manazeak.entity.random;
 
 import java.io.Serializable;
 import javax.persistence.GeneratedValue;
+import org.manazeak.manazeak.entity.track.Artist;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;

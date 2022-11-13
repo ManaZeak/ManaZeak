@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.manager.library;
 
+import org.manazeak.manazeak.daos.random.RandomGenreDAO;
+import org.manazeak.manazeak.daos.random.RandomReleaseArtistDAO;
 import org.manazeak.manazeak.daos.track.*;
 import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.springframework.stereotype.Component;
@@ -26,10 +28,12 @@ public class LibraryWiperManager {
 
     private final RandomReleaseArtistDAO randomReleaseArtistDAO;
 
+    private final RandomGenreDAO randomGenreDAO;
+
     private final AutonomousTransactionManager transactionManager;
 
     public LibraryWiperManager(TrackDAO trackDao, GenreDAO genreDao, AlbumDAO albumDao,
-                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, BandMemberDAO bandMemberDAO, RandomReleaseArtistDAO randomReleaseArtistDAO, AutonomousTransactionManager transactionManager) {
+                               LabelDAO labelDAO, BioDAO bioDao, ArtistDAO artistDao, BandMemberDAO bandMemberDAO, RandomReleaseArtistDAO randomReleaseArtistDAO, RandomGenreDAO randomGenreDAO, AutonomousTransactionManager transactionManager) {
         this.trackDao = trackDao;
         this.genreDao = genreDao;
         this.albumDao = albumDao;
@@ -38,6 +42,7 @@ public class LibraryWiperManager {
         this.artistDao = artistDao;
         this.bandMemberDAO = bandMemberDAO;
         this.randomReleaseArtistDAO = randomReleaseArtistDAO;
+        this.randomGenreDAO = randomGenreDAO;
         this.transactionManager = transactionManager;
     }
 
@@ -52,6 +57,7 @@ public class LibraryWiperManager {
             albumDao.deleteAll();
             bandMemberDAO.deleteAll();
             randomReleaseArtistDAO.deleteAll();
+            randomGenreDAO.deleteAll();
             artistDao.deleteAll();
             bioDao.deleteAll();
             labelDao.deleteAll();
