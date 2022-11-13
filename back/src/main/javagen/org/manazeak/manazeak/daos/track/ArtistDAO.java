@@ -73,7 +73,8 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "art.name," +
             "art.pictureFilename," +
             "art.isLabel) from Artist art " +
-            "where art.location is not null")
+            "where art.location is not null " +
+            "order by art.name")
     List<ArtistMinimalInfoDto> getAllReleaseArtistMinimalInfo();
 
     /**
