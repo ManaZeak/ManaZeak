@@ -3,6 +3,7 @@ package org.manazeak.manazeak.service.library.album;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
+import org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.track.TrackManager;
@@ -32,7 +33,7 @@ public class AlbumService {
      * @param artistId The id of the artist.
      * @return The list of albums made by the artist.
      */
-    public List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(Long artistId) {
+    public List<AlbumInfoArtistViewDto> getMinimalAlbumByArtistId(Long artistId) {
         return albumDAO.getMinimalAlbumByArtistId(artistId);
     }
 
