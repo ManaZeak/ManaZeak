@@ -108,13 +108,19 @@ class Canvas {
    * @param {event} event : Mouse event
    **/
   _mouseWheel(event) {
-    const delta = event.wheelDelta ? (event.wheelDelta / 40) : event.detail ? -event.detail : 0; // Convert scroll to variation
+    event.preventDefault();
+    // Convert scroll to variation
+    let delta = 0;
+    if (event.wheelDelta) {
+      delta = (event.wheelDelta / 40);
+    } else if (event.detail) {
+      delta = -event.detail;
+    }
+
 
     if (delta) {
       this._zoom(delta);
     }
-
-    return (event.preventDefault() && false); // Keep propagation
   };
 
 
@@ -163,158 +169,191 @@ class Canvas {
           r: (ptMax.x - this._graphSize.width > xPadding), // 100 padding times 2
           b: (ptMax.y - this._graphSize.height > yPadding) // 100 padding times 2
         };
- 
-        // Double side bounds
-        if (border.l) {
-          if (border.r) {
-            return;
-          }
-
-          if (border.t) {
-            if (border.r || border.b) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(0, 0);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          if (border.b) {
-            if (border.r || border.t) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(0, this.height);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          const ptMid = this.ctx.transformedPoint(0, this.height / 2);
-          this.ctx.translate(ptMid.x, ptMid.y);
-          this.ctx.scale(sf, sf); // Scale context
-          this.ctx.translate(-ptMid.x, -ptMid.y);
-          return;
-        }
-
-        if (border.t) {
-          if (border.b) {
-            return;
-          }
-
-          if (border.l) {
-            if (border.r || border.b) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(0, 0);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          if (border.r) {
-            if (border.b || border.l) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(this.width, 0);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-          
-          const ptMid = this.ctx.transformedPoint(this.width / 2, 0);
-          this.ctx.translate(ptMid.x, ptMid.y);
-          this.ctx.scale(sf, sf); // Scale context
-          this.ctx.translate(-ptMid.x, -ptMid.y);
-          return;
-        }
-
-        if (border.r) {
-          if (border.l) {
-            return;
-          }
-
-          if (border.t) {
-            if (border.b || border.l) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(this.width, 0);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          if (border.b) {
-            if (border.l || border.t) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(this.width, this.height);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          const ptMid = this.ctx.transformedPoint(this.width, this.height / 2);
-          this.ctx.translate(ptMid.x, ptMid.y);
-          this.ctx.scale(sf, sf); // Scale context
-          this.ctx.translate(-ptMid.x, -ptMid.y);
-          return;
-        }
-
-        if (border.b) {
-          if (border.t) {
-            return;
-          }
-
-          if (border.l) {
-            if (border.r || border.t) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(0, this.height);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-
-          if (border.r) {
-            if (border.t || border.l) {
-              return;
-            }
-
-            const ptMid = this.ctx.transformedPoint(this.width, this.height);
-            this.ctx.translate(ptMid.x, ptMid.y);
-            this.ctx.scale(sf, sf); // Scale context
-            this.ctx.translate(-ptMid.x, -ptMid.y);
-            return;
-          }
-          
-          const ptMid = this.ctx.transformedPoint(this.width / 2, this.height);
-          this.ctx.translate(ptMid.x, ptMid.y);
-          this.ctx.scale(sf, sf); // Scale context
-          this.ctx.translate(-ptMid.x, -ptMid.y);
+        
+        if (!this._dezoomingHandleBorders(border, sf)) {
           return;
         }
       }
     }
-    
+
     // Zoom from pointer position
     this.ctx.translate(pt.x, pt.y); // Positive offset accordingly
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-pt.x, -pt.y); // Negative offset to align
+  }
+
+
+  _dezoomingHandleBorders(border, sf) {
+    // Double side bounds
+    if (border.l) {
+      this.__dezoomingBorderLeft(border, sf);
+      return false;
+    }
+
+    if (border.t) {
+      this.__dezoomingBorderTop(border, sf);
+      return false;
+    }
+
+    if (border.r) {
+      this.__dezoomingBorderRight(border, sf);
+      return false;
+    }
+
+    if (border.b) {
+      this.__dezoomingBorderBottom(border, sf);
+      return false;
+    }
+
+    return true;
+  }
+
+
+  __dezoomingBorderLeft(border, sf) {
+    if (border.r) {
+      return;
+    }
+
+    if (border.t) {
+      if (border.r || border.b) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(0, 0);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    if (border.b) {
+      if (border.r || border.t) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(0, this.height);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    const ptMid = this.ctx.transformedPoint(0, this.height / 2);
+    this.ctx.translate(ptMid.x, ptMid.y);
+    this.ctx.scale(sf, sf); // Scale context
+    this.ctx.translate(-ptMid.x, -ptMid.y);
+    return;
+  }
+
+
+  __dezoomingBorderTop(border, sf) {
+    if (border.b) {
+      return;
+    }
+
+    if (border.l) {
+      if (border.r || border.b) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(0, 0);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    if (border.r) {
+      if (border.b || border.l) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(this.width, 0);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+    
+    const ptMid = this.ctx.transformedPoint(this.width / 2, 0);
+    this.ctx.translate(ptMid.x, ptMid.y);
+    this.ctx.scale(sf, sf); // Scale context
+    this.ctx.translate(-ptMid.x, -ptMid.y);
+    return;
+  }
+
+
+  __dezoomingBorderRight(border, sf) {
+    if (border.l) {
+      return;
+    }
+
+    if (border.t) {
+      if (border.b || border.l) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(this.width, 0);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    if (border.b) {
+      if (border.l || border.t) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(this.width, this.height);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    const ptMid = this.ctx.transformedPoint(this.width, this.height / 2);
+    this.ctx.translate(ptMid.x, ptMid.y);
+    this.ctx.scale(sf, sf); // Scale context
+    this.ctx.translate(-ptMid.x, -ptMid.y);
+    return;
+  }
+
+
+  __dezoomingBorderBottom(border, sf) {
+    if (border.t) {
+      return;
+    }
+
+    if (border.l) {
+      if (border.r || border.t) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(0, this.height);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+
+    if (border.r) {
+      if (border.t || border.l) {
+        return;
+      }
+
+      const ptMid = this.ctx.transformedPoint(this.width, this.height);
+      this.ctx.translate(ptMid.x, ptMid.y);
+      this.ctx.scale(sf, sf); // Scale context
+      this.ctx.translate(-ptMid.x, -ptMid.y);
+      return;
+    }
+    
+    const ptMid = this.ctx.transformedPoint(this.width / 2, this.height);
+    this.ctx.translate(ptMid.x, ptMid.y);
+    this.ctx.scale(sf, sf); // Scale context
+    this.ctx.translate(-ptMid.x, -ptMid.y);
+    return;    
   }
 
 
@@ -407,30 +446,72 @@ class Canvas {
 
 
   connectorPath(startPoint, endPoint) {
-    let orientation = this.style.tree.orientation; // Graph orientation
-    let direction = 1; // Connector direction -> 0: left, 1: center, 2: right - default is straight line
     let horizontalFlag = false; // Horizontal layout (root on left/right)
-    let path = new Path2D(); // Draw path
+    const orientation = this.style.tree.orientation; // Graph orientation
+    const path = new Path2D(); // Draw path
     // Set horizontalFlag depending on graph orientation
     if (orientation === 1 || orientation === 3) {
       horizontalFlag = true;
     }
 
     if (horizontalFlag) { // Left and right
-      if (startPoint.end.y < endPoint.start.y) {
-        direction = 2;
-      } else if (startPoint.end.y > endPoint.start.y) {
-        direction = 0;
-      }
+      this.__leftRightConnector(startPoint, endPoint, orientation, path);
+    } else { // Top and bottom
+      this.__bottomTopConnector(startPoint, endPoint, orientation, path);
+    }
 
-      if (orientation === 1) { // Right
-        switch (direction) {
+    return path;
+  }
+
+
+  __leftRightConnector(startPoint, endPoint, orientation, path) {
+    let direction = 1;
+    if (startPoint.end.x < endPoint.start.x) {
+      direction = 2;
+    } else if (startPoint.end.x > endPoint.start.x) {
+      direction = 0;
+    }
+
+    if (orientation === 1) { // Right
+      switch (direction) {
+        case 0: // endPoint is over startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x - (this.style.tree.airspaceH / 2),
+            startPoint.end.y,
+            endPoint.start.x + (this.style.tree.airspaceH / 2),
+            endPoint.start.y,
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        case 1: // endPoint is in the same row as startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.lineTo(endPoint.start.x, endPoint.start.y);
+          break;
+        case 2: // endPoint is under startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x - (this.style.tree.airspaceH / 2),
+            startPoint.end.y,
+            endPoint.start.x + (this.style.tree.airspaceH / 2),
+            endPoint.start.y,
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        default:
+          console.log("Something went wrong with connector direction...");
+          break;
+      }
+    } else { // Left
+      switch (direction) {
           case 0: // endPoint is over startPoint
             path.moveTo(startPoint.end.x, startPoint.end.y);
             path.bezierCurveTo(
-              startPoint.end.x - (this.style.tree.airspaceH / 2),
+              startPoint.end.x + (this.style.tree.airspaceH / 2),
               startPoint.end.y,
-              endPoint.start.x + (this.style.tree.airspaceH / 2),
+              endPoint.start.x - (this.style.tree.airspaceH / 2),
               endPoint.start.y,
               endPoint.start.x,
               endPoint.start.y
@@ -443,9 +524,9 @@ class Canvas {
           case 2: // endPoint is under startPoint
             path.moveTo(startPoint.end.x, startPoint.end.y);
             path.bezierCurveTo(
-              startPoint.end.x - (this.style.tree.airspaceH / 2),
+              startPoint.end.x + (this.style.tree.airspaceH / 2),
               startPoint.end.y,
-              endPoint.start.x + (this.style.tree.airspaceH / 2),
+              endPoint.start.x - (this.style.tree.airspaceH / 2),
               endPoint.start.y,
               endPoint.start.x,
               endPoint.start.y
@@ -454,115 +535,84 @@ class Canvas {
           default:
             console.log("Something went wrong with connector direction...");
             break;
-        }
-      } else { // Left
-        switch (direction) {
-            case 0: // endPoint is over startPoint
-              path.moveTo(startPoint.end.x, startPoint.end.y);
-              path.bezierCurveTo(
-                startPoint.end.x + (this.style.tree.airspaceH / 2),
-                startPoint.end.y,
-                endPoint.start.x - (this.style.tree.airspaceH / 2),
-                endPoint.start.y,
-                endPoint.start.x,
-                endPoint.start.y
-              );
-              break;
-            case 1: // endPoint is in the same row as startPoint
-              path.moveTo(startPoint.end.x, startPoint.end.y);
-              path.lineTo(endPoint.start.x, endPoint.start.y);
-              break;
-            case 2: // endPoint is under startPoint
-              path.moveTo(startPoint.end.x, startPoint.end.y);
-              path.bezierCurveTo(
-                startPoint.end.x + (this.style.tree.airspaceH / 2),
-                startPoint.end.y,
-                endPoint.start.x - (this.style.tree.airspaceH / 2),
-                endPoint.start.y,
-                endPoint.start.x,
-                endPoint.start.y
-              );
-              break;
-            default:
-              console.log("Something went wrong with connector direction...");
-              break;
-        }
-      }
-    } else { // Top and bottom
-      if (startPoint.end.x < endPoint.start.x) {
-        direction = 2;
-      } else if (startPoint.end.x > endPoint.start.x) {
-        direction = 0;
-      }
-
-      if (orientation === 0) { // Top
-        switch (direction) {
-          case 0: // endPoint is at the left of startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x,
-              startPoint.end.y + (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y - (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y
-            );
-            break;
-          case 1: // endPoint is in the same col as startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.lineTo(endPoint.start.x, endPoint.start.y);
-            break;
-          case 2: // endPoint is at the right of startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x,
-              startPoint.end.y + (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y - (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y
-            );
-            break;
-          default:
-            console.log("Something went wrong with connector direction...");
-            break;
-        }
-      } else { // Bottom
-        switch (direction) {
-          case 0: // endPoint is at the left of startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x,
-              startPoint.end.y - (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y + (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y
-            );
-            break;
-          case 1: // endPoint is in the same col as startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.lineTo(endPoint.start.x, endPoint.start.y);
-            break;
-          case 2: // endPoint is at the right of startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x,
-              startPoint.end.y - (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y + (this.style.tree.airspaceV / 2),
-              endPoint.start.x,
-              endPoint.start.y
-            );
-            break;
-          default:
-            console.log("Something went wrong with connector direction...");
-            break;
-        }
       }
     }
+  }
 
-    return path;
+
+  __bottomTopConnector() {
+    let direction = 1;
+    if (startPoint.end.x < endPoint.start.x) {
+      direction = 2;
+    } else if (startPoint.end.x > endPoint.start.x) {
+      direction = 0;
+    }
+
+    if (orientation === 0) { // Top
+      switch (direction) {
+        case 0: // endPoint is at the left of startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x,
+            startPoint.end.y + (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y - (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        case 1: // endPoint is in the same col as startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.lineTo(endPoint.start.x, endPoint.start.y);
+          break;
+        case 2: // endPoint is at the right of startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x,
+            startPoint.end.y + (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y - (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        default:
+          console.log("Something went wrong with connector direction...");
+          break;
+      }
+    } else { // Bottom
+      switch (direction) {
+        case 0: // endPoint is at the left of startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x,
+            startPoint.end.y - (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y + (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        case 1: // endPoint is in the same col as startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.lineTo(endPoint.start.x, endPoint.start.y);
+          break;
+        case 2: // endPoint is at the right of startPoint
+          path.moveTo(startPoint.end.x, startPoint.end.y);
+          path.bezierCurveTo(
+            startPoint.end.x,
+            startPoint.end.y - (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y + (this.style.tree.airspaceV / 2),
+            endPoint.start.x,
+            endPoint.start.y
+          );
+          break;
+        default:
+          console.log("Something went wrong with connector direction...");
+          break;
+      }
+    }
   }
 
 

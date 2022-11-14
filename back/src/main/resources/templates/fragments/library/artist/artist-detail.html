@@ -6,7 +6,7 @@
       <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')"></div>
       <h1 th:text="${artist.name}" id="artist-name"></h1>
     </div>
-    <div class="artist-header-right">
+    <div class="artist-header-center">
       <p>
         <span th:text="#{view.rlartist.about}"></span>&nbsp;
         <span th:text="${artist.name}"></span>
@@ -17,6 +17,15 @@
       </em></p>
       <p th:text="${artist.countryCode}"></p>
       <p th:text="${artist.bio}"></p>
+    </div>
+    <div class="artist-header-center">
+      <p>Members</p>
+      <div th:each="member : ${artist.members}">
+        <p th:text="*{member.name}"></p>
+        <p th:text="*{member.cover}"></p>
+        <p th:text="*{member.label}"></p>
+        <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
+      </div>
     </div>
   </div>
   <div class="artist-content">
@@ -33,12 +42,3 @@
     </div>
   </div>
 </div>
-<!--
-  <p>MEMBERS</p>
-  <div th:each="member : ${artist.members}">
-    <p th:text="*{member.name}"></p>
-    <p th:text="*{member.cover}"></p>
-    <p th:text="*{member.label}"></p>
-    <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
-  </div>
--->

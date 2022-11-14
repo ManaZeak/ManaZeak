@@ -112,9 +112,14 @@
       }
     }
 
-    .artist-header-right {
+    .artist-header-center {
       margin: var(--margin);
-      width: calc(100% - 30rem);
+      width: calc(100% - 30rem - 30rem);
+    }
+
+    .artist-header-right {
+      height: 100%;
+      width: 30rem;
     }
   }
 

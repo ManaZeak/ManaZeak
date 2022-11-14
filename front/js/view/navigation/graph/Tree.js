@@ -75,7 +75,7 @@ class Tree {
    * @description Clear and re-create the nodes array, according to hierrarchy contained in root node
    **/
   reorganizeTree() {
-    let root = this.nodes[0]; // Save root node
+    const root = this.nodes[0]; // Save root node
     this.nodes = []; // Clear tree nodes
     this._addNode(root, null); // Build tree again
   }

@@ -9,7 +9,7 @@ window.setInterval(() => {
   }
   // Update text with remaining time, 5 displayed when HTML is loaded
   if (redirectString && redirectString.innerHTML) {
-    redirectString.innerHTML = redirectString.innerHTML.replace(/[0-9]/g, `${4 - counter}`);
+    redirectString.innerHTML = redirectString.innerHTML.replace(/\d/g, `${4 - counter}`);
   }
   // Increment counter
   ++counter;

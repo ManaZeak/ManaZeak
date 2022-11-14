@@ -4,9 +4,7 @@ class ProfileFragment {
   constructor(options) {
     this._target = options.target;
     this._refreshCB = options.refresh;
-
     this._evtIds = [];
-
     this._fillAttributes();
   }
 

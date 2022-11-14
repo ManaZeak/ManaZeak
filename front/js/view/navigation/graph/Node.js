@@ -12,7 +12,6 @@ class Node {
   constructor(opts, parent, style) {
     this.style = style;
     this.info = opts.info; // Node type
-    // TODO custom keyWord for diff dataset ?
     this.label = opts.name; // Node label text
     this.children = []; // Children nodes, array
     this.parent = parent; // Parent node
@@ -170,8 +169,8 @@ class Node {
    **/
   isInNode(position) {
     let inside = false; // In node indicator boolean
-    let x = position.x; // X target
-    let y = position.y; // Y target
+    const x = position.x; // X target
+    const y = position.y; // Y target
 
     if (x >= this.origin.x && // Greater than X origin
       x <= this.origin.x + this.style.node.width &&  // Smaller than X origin + node width
@@ -251,7 +250,7 @@ class Node {
   fitString(ctx, str, maxWidth) {
     const ellipsis = '…'; // Ellipsis text format
     let width = ctx.measureText(str).width; // Get str width
-    let ellipsisWidth = ctx.measureText(ellipsis).width; // Get ellipsis width
+    const ellipsisWidth = ctx.measureText(ellipsis).width; // Get ellipsis width
 
     if (width <= maxWidth || width <= ellipsisWidth) { // String can be display as it is
       return str; // Return input string

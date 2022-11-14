@@ -77,7 +77,7 @@ class Layout {
     const keys = Object.keys(levels); // Get key number in levels
     const reservedCols = []; // Already used cols - NB: Carefull, have to substract -1 when comparing
     for (let i = 0; i < keys.length; ++i) { // Parse levels
-      let nodes = levels[keys[i]]; // Get all nodes in level
+      const nodes = levels[keys[i]]; // Get all nodes in level
       let positionCursor = 0; // Cursor that moves from the left to the right of the level
       for (let j = 0; j < nodes.length; ++j) { // Parse nodes
         switch (this.orientation) { // Assign first coordinate (row or col depending on orientation)

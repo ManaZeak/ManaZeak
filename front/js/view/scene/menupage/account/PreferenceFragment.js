@@ -4,9 +4,7 @@ class PreferenceFragment {
   constructor(options) {
     this._target = options.target;
     this._refreshCB = options.refresh;
-
-    this._theme = 'DARK'; // TODO load from pref
-
+    this._theme = 'DARK';
     this._evtIds = [];
 
     this._fillAttributes();
