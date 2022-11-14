@@ -1,7 +1,5 @@
 import Kom from '../../js/core/Kom.js';
 
-'use strict';
-
 
 const clearCookies = () => {
   // Clear all cookies - https://stackoverflow.com/a/179514

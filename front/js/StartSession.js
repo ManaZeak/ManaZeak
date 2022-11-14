@@ -3,18 +3,15 @@ import Notification from './utils/Notification';
 import Logger from './utils/Logger';
 import Utils from './utils/Utils';
 import Mzk from './core/Mzk';
-'use strict';
 
 
-// Globally used util components
-window.Evts = new CustomEvents();
-window.Notif = new Notification();
+// Globally used components (singleton)
 window.Utils = new Utils();
+window.Evts = new CustomEvents();
 window.Logger = new Logger({
-  notification: window.Notif,
+  notification: new Notification(),
   log: (window.location.href.indexOf('?debug') > -1) ? true : false
 });
-
 
 // Create new ManaZeak object to init internals then full init
 window.mzk = new Mzk();

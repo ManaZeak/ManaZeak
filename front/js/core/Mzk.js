@@ -1,7 +1,6 @@
 import UserInterface from '../view/UserInterface';
 import Kom from './Kom';
 import Lang from './Lang';
-'use strict';
 
 
 class Mzk {

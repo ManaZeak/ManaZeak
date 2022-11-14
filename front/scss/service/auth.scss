@@ -76,17 +76,19 @@ html, body {
       margin-bottom: var(--margin-small);
       max-width: 50%;
       outline: none;
-      width: 25rem;
+      min-width: 25rem;
     }
     
     textarea {
+      display: block;
       height: 8rem;
+      margin-left: auto;
+      margin-right: auto;
     }
-    
-    input[type="date"],
-    select {
-      background-color: var(--color-icons);
-      color: var(--color-txt-negative);
+
+    select option {
+      background: var(--color-bg);
+      color: var(--color-txt);
     }
     /* Error state for inputs */
     input.error {
@@ -103,6 +105,30 @@ html, body {
       display: block;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    &.two-col-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      .left-col,
+      .right-col {
+        width: fit-content;        
+      }
+
+      .left-col {
+        margin-left: auto;
+        margin-right: var(--margin);
+      }
+
+      .right-col {
+        margin-left: var(--margin);
+        margin-right: auto;
+      }
+
+      button {
+        grid-column: 1 / -1;
+      }
     }
   }
 }

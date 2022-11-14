@@ -1,7 +1,5 @@
 import Logger from '../../js/utils/Logger.js'
 
-'use strict';
-
 
 // Working component, must be delete after each test because of singleton
 let AppLogger = null;

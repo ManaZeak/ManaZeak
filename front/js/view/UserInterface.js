@@ -1,8 +1,6 @@
 import Aside from './element/Aside';
 import Scene from './element/Scene';
 
-'use strict';
-
 
 class UserInterface {
 

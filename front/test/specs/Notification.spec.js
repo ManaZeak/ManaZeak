@@ -1,7 +1,5 @@
 import Notification from '../../js/utils/Notification.js';
 
-'use strict';
-
 
 let NotificationMgt = {};
 const testDefaultArguments = notificationMgt => {

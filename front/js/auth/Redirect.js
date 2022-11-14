@@ -1,13 +1,13 @@
 // Redirect user to login after 5 seconds, and update redirect string
 const redirectString = document.getElementById('redirect-string');
 let counter = 0;
-// 'Clock' iterating 5 times
-window.setInterval(() => {
+const id = setInterval(() => {
   // Stoping condition, redirect to login page
   if (counter === 4) {
-    window.location.replace('login');
+    clearInterval(id);
+    location.replace('login');
   }
-  // Update text with remaining time, 5 displayed when HTML is loaded
+  // Update text with remaining time, 5 must be displayed by default in HTML when loaded
   if (redirectString && redirectString.innerHTML) {
     redirectString.innerHTML = redirectString.innerHTML.replace(/\d/g, `${4 - counter}`);
   }

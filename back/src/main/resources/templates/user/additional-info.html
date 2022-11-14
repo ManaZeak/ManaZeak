@@ -1,98 +1,97 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-    <meta content="initial-scale=1" name="viewport">
-    <meta name="description" th:content="#{user.tellusmore.description}">
-    <title th:text="#{user.tellusmore.title}"></title>
-    <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
-    <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8">
+  <meta content="ie=edge" http-equiv="x-ua-compatible">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="initial-scale=1" name="viewport">
+  <meta name="description" th:content="#{user.tellusmore.description}">
+  <title th:text="#{user.tellusmore.title}"></title>
+  <link href="static/img/logo/manazeak-logo-square.svg" rel="icon" type="image/svg">
+  <link href="static/dist/css/auth.bundle.css" rel="stylesheet" type="text/css">
 </head>
 <body class="dark-theme tell-us-more">
 <div class="mzk-user">
-    <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
-    <p th:utext="#{user.tellusmore.header}"></p>
-    <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
-    <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
-        <div class="left-col">
-            <!-- Email address field (256 char) and specific errors -->
-            <div class="tooltip">
-                <label for="email-input" th:text="#{user.tellusmore.email}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.email.help}"></span>
-            </div>
-            <p th:each="error : ${#fields.errors('mail')}" th:text="${error}"></p>
-            <input id="email-input" maxlength="256" th:errorClass="'error'" th:field="*{mail}" type="email"/>
-            <!-- Surname field (256 char) and specific errors -->
-            <div class="tooltip">
-                <label for="surname-input" th:text="#{user.tellusmore.surname}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.surname.help}"></span>
-            </div>
-            <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}"></p>
-            <input id="surname-input" maxlength="256" th:errorClass="'error'" th:field="*{surname}" type="text"/>
-            <!-- Name field (256 char) and specific errors -->
-            <div class="tooltip">
-                <label for="name-input" th:text="#{user.tellusmore.name}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.name.help}"></span>
-            </div>
-            <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
-            <input id="name-input" maxlength="256" th:errorClass="'error'" th:field="*{name}" type="text"/>
-            <!-- Bio field (4096 char) -->
-            <div class="tooltip">
-                <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.bio.help}"></span>
-            </div>
-            <textarea id="bio-input" maxlength="4096" th:field="*{bio}"
-                      th:placeholder="#{user.tellusmore.bio.placeholder}"></textarea>
-        </div>
-        <div class="right-col">
-            <!-- Birthday field (date) and specific errors -->
-            <div class="tooltip">
-                <label for="birthday-input" th:text="#{user.tellusmore.birthday}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.birthday.help}"></span>
-            </div>
-            <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}"></p>
-            <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
-            <!-- Max attribute is set with Js -->
-            <!-- Country selection (set from db) and specific errors -->
-            <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
-            <div class="tooltip">
-                <label for="country-select" th:text="#{user.tellusmore.country}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.country.help}"></span>
-            </div>
-            <p class="error" th:each="error : ${#fields.errors('countryId')}" th:text="${error}"></p>
-            <select id="country-select" th:field="*{countryId}">
-                <!-- Adding the empty value to the selection -->
-                <option value="0"></option>
-                <!-- Adding the rest of the objects in the database. -->
-                <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}"></option>
-            </select>
-            <!-- Locale selection (set from db) and specific errors -->
-            <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
-            <div class="tooltip">
-                <label for="locale-select" th:text="#{user.tellusmore.language}"></label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.language.help}"></span>
-            </div>
-            <select id="locale-select" th:field="*{localeId}">
-                <!-- Adding the empty value to the selection -->
-                <option value="0"></option>
-                <!-- Adding the rest of the objects in the database. -->
-                <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}"></option>
-            </select>
-            <!-- Avatar field (file) and specific errors -->
-            <div class="tooltip">
-                <label for="avatar-input" th:text="#{user.tellusmore.avatar}">Test</label>
-                <span class="tooltip-top" th:text="#{user.tellusmore.avatar.help}"></span>
-            </div>
-            <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}"></p>
-            <input accept=".jpg,.png" id="avatar-input" th:field="*{avatar}" type="file"/>
-        </div>
-        <!-- Required csrf token from session cookies -->
-        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-        <button th:text="#{user.tellusmore.submit}" type="submit"></button>
-    </form>
-    <p th:utext="#{user.tellusmore.footer}"></p>
+  <img alt="manazeak-text-logo" src="static/img/logo/manazeak-text.svg"/>
+  <p th:utext="#{user.tellusmore.header}"></p>
+  <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
+  <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}">
+    <div class="left-col">
+      <!-- Email address field (256 char) and specific errors -->
+      <div class="tooltip">
+        <label for="email-input" th:text="#{user.tellusmore.email}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.email.help}"></span>
+      </div>
+      <p th:each="error : ${#fields.errors('mail')}" th:text="${error}"></p>
+      <input id="email-input" maxlength="256" th:errorClass="'error'" th:field="*{mail}" type="email"/>
+      <!-- Surname field (256 char) and specific errors -->
+      <div class="tooltip">
+        <label for="surname-input" th:text="#{user.tellusmore.surname}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.surname.help}"></span>
+      </div>
+      <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}"></p>
+      <input id="surname-input" maxlength="256" th:errorClass="'error'" th:field="*{surname}" type="text"/>
+      <!-- Name field (256 char) and specific errors -->
+      <div class="tooltip">
+        <label for="name-input" th:text="#{user.tellusmore.name}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.name.help}"></span>
+      </div>
+      <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
+      <input id="name-input" maxlength="256" th:errorClass="'error'" th:field="*{name}" type="text"/>
+      <!-- Bio field (4096 char) -->
+      <div class="tooltip">
+        <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.bio.help}"></span>
+      </div>
+      <textarea id="bio-input" maxlength="4096" th:field="*{bio}" th:placeholder="#{user.tellusmore.bio.placeholder}"></textarea>
+    </div>
+    <div class="right-col">
+      <!-- Birthday field (date) and specific errors -->
+      <div class="tooltip">
+        <label for="birthday-input" th:text="#{user.tellusmore.birthday}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.birthday.help}"></span>
+      </div>
+      <p class="error" th:each="error : ${#fields.errors('birthDate')}" th:text="${error}"></p>
+      <input id="birthday-input" min="1900-01-01" name="birthday" th:field="*{birthDate}" type="date">
+      <!-- Max attribute is set with Js -->
+      <!-- Country selection (set from db) and specific errors -->
+      <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectProjection"*/-->
+      <div class="tooltip">
+        <label for="country-select" th:text="#{user.tellusmore.country}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.country.help}"></span>
+      </div>
+      <p class="error" th:each="error : ${#fields.errors('countryId')}" th:text="${error}"></p>
+      <select id="country-select" th:field="*{countryId}">
+        <!-- Adding the empty value to the selection -->
+        <option value="0"></option>
+        <!-- Adding the rest of the objects in the database. -->
+        <option th:each="country : ${countries}" th:text="${country.name}" th:value="${country.id}"></option>
+      </select>
+      <!-- Locale selection (set from db) and specific errors -->
+      <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
+      <div class="tooltip">
+        <label for="locale-select" th:text="#{user.tellusmore.language}"></label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.language.help}"></span>
+      </div>
+      <select id="locale-select" th:field="*{localeId}">
+        <!-- Adding the empty value to the selection -->
+        <option value="0"></option>
+        <!-- Adding the rest of the objects in the database. -->
+        <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}"></option>
+      </select>
+      <!-- Avatar field (file) and specific errors -->
+      <div class="tooltip">
+        <label for="avatar-input" th:text="#{user.tellusmore.avatar}">Test</label>
+        <span class="tooltip-top" th:text="#{user.tellusmore.avatar.help}"></span>
+      </div>
+      <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}"></p>
+      <input accept=".jpg,.png" id="avatar-input" th:field="*{avatar}" type="file"/>
+    </div>
+    <!-- Required csrf token from session cookies -->
+    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+    <button th:text="#{user.tellusmore.submit}" type="submit"></button>
+  </form>
+  <p th:utext="#{user.tellusmore.footer}"></p>
 </div>
 <script src="static/dist/js/tellusmore.bundle.js" type="text/javascript"></script>
 </body>

@@ -1,7 +1,5 @@
 import CustomEvents from '../../js/utils/CustomEvents.js'
 
-'use strict';
-
 
 // Working component, re-instantiated before each test
 let AppEvents = null;

@@ -46,7 +46,9 @@ body {
 /* Text inputs */
 input[type="password"],
 input[type="text"],
-input[type="email"] {
+input[type="email"],
+input[type="date"],
+select {
   background: 0;
   border: 0;
   border-bottom: solid 1px var(--border-color);
@@ -73,6 +75,7 @@ input[type="file"] {
   background: 0;
   border: 0;
   color: #aaaabe;
+  font-style: italic;
   margin: 0;
   padding: 5px;
   text-align: center;
@@ -80,16 +83,10 @@ input[type="file"] {
 
 input[type="date"],
 select {
-  background: 0;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  box-sizing: content-box;
-  color: var(--color-txt);
-  cursor: pointer;
-  font-weight: bold;
-  margin: 0;
-  padding: .5rem;
+  color-scheme: dark;
+  text-align: left;
 }
+
 textarea {
   background: 0;
   border: solid 1px var(--border-color);
