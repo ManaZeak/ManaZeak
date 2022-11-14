@@ -59,7 +59,7 @@ public class ArtistService {
      * @param nbArtists The number of random artist to get in the database.
      * @return X artist found at random in the database.
      */
-    public List<ArtistMinimalInfoDto> getSomeArtistMinimal(int nbArtists) {
+    public List<ArtistMinimalInfoDto> getSomeRandomArtistMinimal(int nbArtists) {
         return randomReleaseArtistManager.getRandomElements(nbArtists);
     }
 

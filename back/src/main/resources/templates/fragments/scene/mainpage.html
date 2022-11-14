@@ -13,6 +13,9 @@
     <h2 th:text="#{mp.genres}"></h2>
   </div>
   <div class="genres-container" id="genres-container">
+    <div th:each="genre : ${genres}">
+      <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalArtist(*{genre}, medium)"></div>
+    </div>
     <button id="test-button">Test</button>
   </div>
 </div>

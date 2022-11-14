@@ -3,9 +3,13 @@ package org.manazeak.manazeak.service.library.genre;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.GenreDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
+import org.manazeak.manazeak.manager.library.random.genre.RandomGenreManager;
 import org.manazeak.manazeak.manager.library.track.TrackManager;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Control the genre of the application.
@@ -18,9 +22,12 @@ public class GenreService {
 
     private final TrackManager trackManager;
 
-    public GenreService(GenreDAO genreDAO, TrackManager trackManager) {
+    private final RandomGenreManager randomGenreManager;
+
+    public GenreService(GenreDAO genreDAO, TrackManager trackManager, RandomGenreManager randomGenreManager) {
         this.genreDAO = genreDAO;
         this.trackManager = trackManager;
+        this.randomGenreManager = randomGenreManager;
     }
 
     /**
@@ -37,6 +44,16 @@ public class GenreService {
         genre.setTracks(trackManager.getTrackInfoByGenreId(genreId));
 
         return genre;
+    }
+
+    /**
+     * Get some random genre in the database.
+     *
+     * @param nbGenre The number of genre to get.
+     * @return The list of genres.
+     */
+    public List<GenreMinimalInfoDto> getSomeRandomGenreMinimal(int nbGenre) {
+        return randomGenreManager.getRandomElements(nbGenre);
     }
 
 }
