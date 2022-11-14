@@ -186,30 +186,22 @@
   width: 100%;
 
   .section-header {
-    align-items: flex-end;
+    align-items: flex-start;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     margin: var(--margin);
     padding: 0 var(--padding);
     width: calc(100% - (2 * var(--margin)));
 
-    h2, h3 {
-      margin: 0;
+    h1, p {
+      margin-top: 0;
     }
 
-    h3 {
-      color: var(--color-txt-darker);
-      cursor: pointer;
-      font-size: var(--font-size);
+    p {
+      margin-bottom: 0;
       font-style: italic;
-      margin: 0;
-      margin-left: var(--margin);
-      transition: color .2s;
-
-      &:active,
-      &:focus,
-      &:hover {
-        color: var(--color-primary);
-      }
+      text-indent: var(--font-size);
     }
   }
 

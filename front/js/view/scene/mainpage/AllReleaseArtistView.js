@@ -15,7 +15,7 @@ class AllReleaseArtistView extends SceneView {
       .then(this._events.bind(this)) // We listen events first before altering the DOM
       .then(this._buildNavigation.bind(this))
       .then(this._viewReady)
-      .catch(error => Logger.raise(error));
+      .catch(this._viewFailed);
   }
 
 
@@ -44,6 +44,7 @@ class AllReleaseArtistView extends SceneView {
     return new Promise((resolve, reject) => {
       const artists = this.dom.querySelector('#artist-container').children;
       if (artists && artists.length) {
+        this.dom.querySelector('#artist-count').innerHTML = this.dom.querySelector('#artist-count').innerHTML.replace('{x}', artists.length);
         let currentLetter = '';
         for (let i = 0; i < artists.length; ++i) {
           const artistFirstLetter = artists[i].children[0].children[1].innerHTML[0];
@@ -61,7 +62,7 @@ class AllReleaseArtistView extends SceneView {
           style: {
             color: '#56D45B'
           }
-        })
+        });
         resolve();
       } else {
         reject();

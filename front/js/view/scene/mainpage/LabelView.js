@@ -14,7 +14,7 @@ class LabelView extends SceneView {
       .then(this._buildNavigation.bind(this))
       .then(this._events.bind(this))
       .then(this._viewReady)
-      .catch(error => Logger.raise(error));
+      .catch(this._viewFailed);
   }
 
 

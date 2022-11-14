@@ -22,7 +22,7 @@ class GenreGraphView extends SceneView  {
       .then(this._init.bind(this))
       .then(this._viewReady) // We must ensure DOM is computed to its height/width
       .then(this._buildGraph.bind(this))
-      .catch(error => Logger.raise(error));
+      .catch(this._viewFailed);
   }
 
 
