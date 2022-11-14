@@ -117,7 +117,6 @@ class Canvas {
       delta = -event.detail;
     }
 
-
     if (delta) {
       this._zoom(delta);
     }
@@ -150,32 +149,32 @@ class Canvas {
 
     const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y); // Convert pointer in canvas' coordinates
     const sf = Math.pow(this.scaleFactor, value); // Compute local scale factor
-
     const ptMin = this.ctx.transformedPoint(0, 0);
     const ptMax = this.ctx.transformedPoint(this.width, this.height);
+    // Dezooming only, Graph is horizontal
+    if (value < 0) {
+      let canvasAR = this._graphSize.height / this._graphSize.width;
+      let elementAR = this.height / this.width;
 
-    if (value < 0) { // Dezooming only
-      // Graph is horizontal
       if (this._graphSize.width > this._graphSize.height) {
         // Getting graph and canvas aspect ratio
-        const canvasAR = this._graphSize.width / this._graphSize.height;
-        const elementAR = this.width / this.height;
-        const xPadding = ((this._graphSize.width / (elementAR * canvasAR)));
-        const yPadding = ((this._graphSize.height / (elementAR * canvasAR)));
-  
-        const border = {
-          l: (ptMin.x < -xPadding),
-          t: (ptMin.y < -yPadding),
-          r: (ptMax.x - this._graphSize.width > xPadding), // 100 padding times 2
-          b: (ptMax.y - this._graphSize.height > yPadding) // 100 padding times 2
-        };
-        
-        if (!this._dezoomingHandleBorders(border, sf)) {
-          return;
-        }
+        canvasAR = this._graphSize.width / this._graphSize.height;
+        elementAR = this.width / this.height;
+      }
+
+      const xPadding = ((this._graphSize.width / (elementAR * canvasAR)));
+      const yPadding = ((this._graphSize.height / (elementAR * canvasAR)));
+      const border = {
+        l: (ptMin.x < -xPadding),
+        t: (ptMin.y < -yPadding),
+        r: (ptMax.x - this._graphSize.width > xPadding), // 100 padding times 2
+        b: (ptMax.y - this._graphSize.height > yPadding) // 100 padding times 2
+      };
+
+      if (!this._dezoomingHandleBorders(border, sf)) {
+        return;
       }
     }
-
     // Zoom from pointer position
     this.ctx.translate(pt.x, pt.y); // Positive offset accordingly
     this.ctx.scale(sf, sf); // Scale context
@@ -242,7 +241,6 @@ class Canvas {
     this.ctx.translate(ptMid.x, ptMid.y);
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-ptMid.x, -ptMid.y);
-    return;
   }
 
 
@@ -279,7 +277,6 @@ class Canvas {
     this.ctx.translate(ptMid.x, ptMid.y);
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-ptMid.x, -ptMid.y);
-    return;
   }
 
 
@@ -316,7 +313,6 @@ class Canvas {
     this.ctx.translate(ptMid.x, ptMid.y);
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-ptMid.x, -ptMid.y);
-    return;
   }
 
 
@@ -353,7 +349,6 @@ class Canvas {
     this.ctx.translate(ptMid.x, ptMid.y);
     this.ctx.scale(sf, sf); // Scale context
     this.ctx.translate(-ptMid.x, -ptMid.y);
-    return;    
   }
 
 
@@ -472,33 +467,41 @@ class Canvas {
       direction = 0;
     }
 
+    const _curvedLineLeft = () => {
+      path.moveTo(startPoint.end.x, startPoint.end.y);
+      path.bezierCurveTo(
+        startPoint.end.x + (this.style.tree.airspaceH / 2),
+        startPoint.end.y,
+        endPoint.start.x - (this.style.tree.airspaceH / 2),
+        endPoint.start.y,
+        endPoint.start.x,
+        endPoint.start.y
+      );
+    };
+
+    const _curvedLineRight = () => {
+      path.moveTo(startPoint.end.x, startPoint.end.y);
+      path.bezierCurveTo(
+        startPoint.end.x - (this.style.tree.airspaceH / 2),
+        startPoint.end.y,
+        endPoint.start.x + (this.style.tree.airspaceH / 2),
+        endPoint.start.y,
+        endPoint.start.x,
+        endPoint.start.y
+      );
+    };
+
     if (orientation === 1) { // Right
       switch (direction) {
         case 0: // endPoint is over startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x - (this.style.tree.airspaceH / 2),
-            startPoint.end.y,
-            endPoint.start.x + (this.style.tree.airspaceH / 2),
-            endPoint.start.y,
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineRight();
           break;
         case 1: // endPoint is in the same row as startPoint
           path.moveTo(startPoint.end.x, startPoint.end.y);
           path.lineTo(endPoint.start.x, endPoint.start.y);
           break;
         case 2: // endPoint is under startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x - (this.style.tree.airspaceH / 2),
-            startPoint.end.y,
-            endPoint.start.x + (this.style.tree.airspaceH / 2),
-            endPoint.start.y,
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineRight();
           break;
         default:
           console.log("Something went wrong with connector direction...");
@@ -507,30 +510,14 @@ class Canvas {
     } else { // Left
       switch (direction) {
           case 0: // endPoint is over startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x + (this.style.tree.airspaceH / 2),
-              startPoint.end.y,
-              endPoint.start.x - (this.style.tree.airspaceH / 2),
-              endPoint.start.y,
-              endPoint.start.x,
-              endPoint.start.y
-            );
+            _curvedLineLeft();
             break;
           case 1: // endPoint is in the same row as startPoint
             path.moveTo(startPoint.end.x, startPoint.end.y);
             path.lineTo(endPoint.start.x, endPoint.start.y);
             break;
           case 2: // endPoint is under startPoint
-            path.moveTo(startPoint.end.x, startPoint.end.y);
-            path.bezierCurveTo(
-              startPoint.end.x + (this.style.tree.airspaceH / 2),
-              startPoint.end.y,
-              endPoint.start.x - (this.style.tree.airspaceH / 2),
-              endPoint.start.y,
-              endPoint.start.x,
-              endPoint.start.y
-            );
+            _curvedLineLeft();
             break;
           default:
             console.log("Something went wrong with connector direction...");
@@ -540,7 +527,7 @@ class Canvas {
   }
 
 
-  __bottomTopConnector() {
+  __bottomTopConnector(startPoint, endPoint, orientation, path) {
     let direction = 1;
     if (startPoint.end.x < endPoint.start.x) {
       direction = 2;
@@ -548,33 +535,41 @@ class Canvas {
       direction = 0;
     }
 
+    const _curvedLineBottom = () => {
+      path.moveTo(startPoint.end.x, startPoint.end.y);
+      path.bezierCurveTo(
+        startPoint.end.x,
+        startPoint.end.y + (this.style.tree.airspaceV / 2),
+        endPoint.start.x,
+        endPoint.start.y - (this.style.tree.airspaceV / 2),
+        endPoint.start.x,
+        endPoint.start.y
+      );
+    };
+
+    const _curvedLineTop = () => {
+      path.moveTo(startPoint.end.x, startPoint.end.y);
+      path.bezierCurveTo(
+        startPoint.end.x,
+        startPoint.end.y + (this.style.tree.airspaceV / 2),
+        endPoint.start.x,
+        endPoint.start.y - (this.style.tree.airspaceV / 2),
+        endPoint.start.x,
+        endPoint.start.y
+      );
+    };
+
     if (orientation === 0) { // Top
       switch (direction) {
         case 0: // endPoint is at the left of startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x,
-            startPoint.end.y + (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y - (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineTop();
           break;
         case 1: // endPoint is in the same col as startPoint
           path.moveTo(startPoint.end.x, startPoint.end.y);
           path.lineTo(endPoint.start.x, endPoint.start.y);
           break;
         case 2: // endPoint is at the right of startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x,
-            startPoint.end.y + (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y - (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineBottom();
           break;
         default:
           console.log("Something went wrong with connector direction...");
