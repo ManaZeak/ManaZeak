@@ -103,74 +103,88 @@ class Layout {
         this._getHeight(nodes[j]); // Get height of node
         /*  ----  CASE 1 : NODE IN GRAPH ----  */
         if (nodes[j].children.length !== 0) {
-          if (nodes[j].widthInGraph === 1) {
-            ++positionCursor;
-          } else {
-            while (reservedCols.indexOf(positionCursor) !== -1) {
-              ++positionCursor;
-            }
-            positionCursor += Math.round(nodes[j].widthInGraph / 2); // reservedCols array only store integer, so we need to round
-            if (nodes[j].widthInGraph % 2 === 0) { // If it is even, we offset the col position from a half
-              positionCursor += 0.5;
-            }
-          }
-
-          while (reservedCols.indexOf(Math.round(positionCursor) - 1) !== -1) { // reservedCols array only store integer, so we need to round
-            ++positionCursor;
-          }
-          
-          switch (this.orientation) { // Assign second coordinate (row or col depending on orientation)
-            case 0: // Top
-              nodes[j].col = positionCursor;
-              break;
-            case 1: // Left
-              nodes[j].row = positionCursor;
-              break;
-            case 2: // Bot
-              nodes[j].col = positionCursor;
-              break;
-            case 3: // Right
-              nodes[j].row = positionCursor;
-              break;
-            default: // Fallback (top)
-              nodes[j].col = positionCursor;
-              break;
-          }
-
-          if (nodes[j].widthInGraph !== 1) {
-            positionCursor += Math.floor(nodes[j].widthInGraph / 2);
-            if (nodes[j].widthInGraph % 2 === 0) { // We must substract the offset before going any further
-              positionCursor -= 0.5;
-            }
-          }
+          positionCursor = this.__childrenNode(reservedCols, positionCursor, nodes[j]);
         } else {
-          while (reservedCols.indexOf(positionCursor) !== -1) {
-            ++positionCursor;
-          }
-
-          reservedCols.push(positionCursor);
-          ++positionCursor;
-
-          switch (this.orientation) { // Assign second coordinate (row or col depending on orientation)
-            case 0: // Top
-              nodes[j].col = positionCursor;
-              break;
-            case 1: // Left
-              nodes[j].row = positionCursor;
-              break;
-            case 2: // Bot
-              nodes[j].col = positionCursor;
-              break;
-            case 3: // Right
-              nodes[j].row = positionCursor;
-              break;
-            default: // Fallback (top)
-              nodes[j].col = positionCursor;
-              break;
-          }
+          positionCursor = this.__noChildrenNode(reservedCols, positionCursor, nodes[j]);
         }
       }
     }
+  }
+
+
+  __childrenNode(reservedCols, positionCursor, node) {
+    if (node.widthInGraph === 1) {
+      ++positionCursor;
+    } else {
+      while (reservedCols.indexOf(positionCursor) !== -1) {
+        ++positionCursor;
+      }
+      positionCursor += Math.round(node.widthInGraph / 2); // reservedCols array only store integer, so we need to round
+      if (node.widthInGraph % 2 === 0) { // If it is even, we offset the col position from a half
+        positionCursor += 0.5;
+      }
+    }
+
+    while (reservedCols.indexOf(Math.round(positionCursor) - 1) !== -1) { // reservedCols array only store integer, so we need to round
+      ++positionCursor;
+    }
+    
+    switch (this.orientation) { // Assign second coordinate (row or col depending on orientation)
+      case 0: // Top
+        node.col = positionCursor;
+        break;
+      case 1: // Left
+        node.row = positionCursor;
+        break;
+      case 2: // Bot
+        node.col = positionCursor;
+        break;
+      case 3: // Right
+        node.row = positionCursor;
+        break;
+      default: // Fallback (top)
+        node.col = positionCursor;
+        break;
+    }
+
+    if (node.widthInGraph !== 1) {
+      positionCursor += Math.floor(node.widthInGraph / 2);
+      if (node.widthInGraph % 2 === 0) { // We must substract the offset before going any further
+        positionCursor -= 0.5;
+      }
+    }
+
+    return positionCursor;
+  }
+
+
+  __noChildrenNode(reservedCols, positionCursor, node) {
+    while (reservedCols.indexOf(positionCursor) !== -1) {
+      ++positionCursor;
+    }
+
+    reservedCols.push(positionCursor);
+    ++positionCursor;
+
+    switch (this.orientation) { // Assign second coordinate (row or col depending on orientation)
+      case 0: // Top
+        node.col = positionCursor;
+        break;
+      case 1: // Left
+        node.row = positionCursor;
+        break;
+      case 2: // Bot
+        node.col = positionCursor;
+        break;
+      case 3: // Right
+        node.row = positionCursor;
+        break;
+      default: // Fallback (top)
+        node.col = positionCursor;
+        break;
+    }
+
+    return positionCursor;
   }
 
 

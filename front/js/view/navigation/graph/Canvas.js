@@ -539,9 +539,9 @@ class Canvas {
       path.moveTo(startPoint.end.x, startPoint.end.y);
       path.bezierCurveTo(
         startPoint.end.x,
-        startPoint.end.y + (this.style.tree.airspaceV / 2),
+        startPoint.end.y - (this.style.tree.airspaceV / 2),
         endPoint.start.x,
-        endPoint.start.y - (this.style.tree.airspaceV / 2),
+        endPoint.start.y + (this.style.tree.airspaceV / 2),
         endPoint.start.x,
         endPoint.start.y
       );
@@ -569,7 +569,7 @@ class Canvas {
           path.lineTo(endPoint.start.x, endPoint.start.y);
           break;
         case 2: // endPoint is at the right of startPoint
-          _curvedLineBottom();
+          _curvedLineTop();
           break;
         default:
           console.log("Something went wrong with connector direction...");
@@ -578,30 +578,14 @@ class Canvas {
     } else { // Bottom
       switch (direction) {
         case 0: // endPoint is at the left of startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x,
-            startPoint.end.y - (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y + (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineBottom();
           break;
         case 1: // endPoint is in the same col as startPoint
           path.moveTo(startPoint.end.x, startPoint.end.y);
           path.lineTo(endPoint.start.x, endPoint.start.y);
           break;
         case 2: // endPoint is at the right of startPoint
-          path.moveTo(startPoint.end.x, startPoint.end.y);
-          path.bezierCurveTo(
-            startPoint.end.x,
-            startPoint.end.y - (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y + (this.style.tree.airspaceV / 2),
-            endPoint.start.x,
-            endPoint.start.y
-          );
+          _curvedLineBottom();
           break;
         default:
           console.log("Something went wrong with connector direction...");
