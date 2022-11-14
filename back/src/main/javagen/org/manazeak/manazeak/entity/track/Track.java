@@ -40,6 +40,7 @@ public class Track implements Serializable{
 	private Double duration;
 	private Double firstBar;
 	private String opus;
+	private Boolean isMp3;
 	private String subtitle;
 	private Album album;
 	private Set<Artist> producerList;
@@ -237,6 +238,21 @@ public class Track implements Serializable{
     }  
     /**
      * No comment found in model diagram
+     * @return value of isMp3
+     */
+    @Column(name="is_mp3", nullable=false)
+	public Boolean getIsMp3(){
+		return isMp3;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param isMp3 new value to give to isMp3
+     */
+	public void setIsMp3(final Boolean isMp3){
+		this.isMp3 = isMp3;
+    }  
+    /**
+     * No comment found in model diagram
      * @return value of subtitle
      */
     @Column(name="subtitle", nullable=true)
@@ -429,6 +445,7 @@ public class Track implements Serializable{
 		result = 31 * result + (duration == null? 0 : duration.hashCode());
 		result = 31 * result + (firstBar == null? 0 : firstBar.hashCode());
 		result = 31 * result + (opus == null? 0 : opus.hashCode());
+		result = 31 * result + (isMp3 == null? 0 : isMp3.hashCode());
 		result = 31 * result + (subtitle == null? 0 : subtitle.hashCode());
 			
 		return result;
@@ -466,6 +483,7 @@ public class Track implements Serializable{
 			&& (duration == null ?  (otherTrack.duration == null) : duration.equals(otherTrack.duration))
 			&& (firstBar == null ?  (otherTrack.firstBar == null) : firstBar.equals(otherTrack.firstBar))
 			&& (opus == null ?  (otherTrack.opus == null) : opus.equals(otherTrack.opus))
+			&& (isMp3 == null ?  (otherTrack.isMp3 == null) : isMp3.equals(otherTrack.isMp3))
 			&& (subtitle == null ?  (otherTrack.subtitle == null) : subtitle.equals(otherTrack.subtitle))
 		;
 	}

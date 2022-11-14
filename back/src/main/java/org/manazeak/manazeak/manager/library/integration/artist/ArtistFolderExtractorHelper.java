@@ -87,7 +87,9 @@ public final class ArtistFolderExtractorHelper {
             // Getting the information from the track tag.
             AudioFileContainerDto fileContainer = TagReaderUtil.extractTagFromAudioFile(scannedTrack.getTrackPath());
             // Mapping the container with the extracted objects.
-            return TrackTagMapper.mapExtractedTrackToObjects(fileContainer, album, band);
+            ExtractedTrackDto track = TrackTagMapper.mapExtractedTrackToObjects(fileContainer, album, band);
+            track.setMp3(scannedTrack.isMp3());
+            return track;
         } catch (MzkTagException e) {
             LOG.warn("Error during the extraction of the track tag : {}", scannedTrack.getTrackPath(), e);
         }

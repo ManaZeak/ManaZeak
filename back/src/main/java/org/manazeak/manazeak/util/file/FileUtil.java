@@ -92,6 +92,17 @@ public final class FileUtil {
     }
 
     /**
+     * Check if a file is an MP3 file.
+     *
+     * @param filePath The path of the file to check.
+     * @return True if the file is a mp3.
+     */
+    public static boolean isFileMp3(Path filePath) {
+        String extension = FilenameUtils.getExtension(filePath.getFileName().toString());
+        return extension.equals(FileExtensionEnum.MP3.getExtensionWithoutDot());
+    }
+
+    /**
      * Check if the file is a cover file.
      *
      * @param filePath The location of the file to test.

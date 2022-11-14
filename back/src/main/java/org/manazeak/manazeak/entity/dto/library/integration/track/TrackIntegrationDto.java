@@ -28,7 +28,7 @@ public class TrackIntegrationDto {
     private Set<Long> arrangerIds;
     private Set<Long> genreIds;
     private Set<Long> keyIds;
-
+    private boolean isMp3;
 
     public Long getTrackId() {
         return trackId;
@@ -200,5 +200,13 @@ public class TrackIntegrationDto {
 
     public void addKeyId(Long keyId) {
         keyIds.add(keyId);
+    }
+
+    public boolean isMp3() {
+        return isMp3;
+    }
+
+    public void setMp3(boolean mp3) {
+        isMp3 = mp3;
     }
 }

@@ -17,10 +17,13 @@ public class ScannedTrackDto {
 
     private final LocalDateTime creationDate;
 
-    public ScannedTrackDto(Path trackPath, BasicFileAttributes fileAttributes) {
+    private final boolean isMp3;
+
+    public ScannedTrackDto(Path trackPath, BasicFileAttributes fileAttributes, boolean isMp3) {
         this.trackPath = trackPath;
         this.lastModificationDate = DateUtil.parseLocalDateTimeString(fileAttributes.lastModifiedTime().toMillis());
         this.creationDate = DateUtil.parseLocalDateTimeString(fileAttributes.creationTime().toMillis());
+        this.isMp3 = isMp3;
     }
 
     public LocalDateTime getLastModificationDate() {
@@ -33,6 +36,10 @@ public class ScannedTrackDto {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public boolean isMp3() {
+        return isMp3;
     }
 
     /**

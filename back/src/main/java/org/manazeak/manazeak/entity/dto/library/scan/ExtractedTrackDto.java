@@ -55,6 +55,8 @@ public class ExtractedTrackDto {
 
     private List<String> key;
 
+    private boolean isMp3;
+
     public String getLyrics() {
         return lyrics;
     }
@@ -237,5 +239,13 @@ public class ExtractedTrackDto {
 
     public void setKeys(List<String> key) {
         this.key = key;
+    }
+
+    public boolean isMp3() {
+        return isMp3;
+    }
+
+    public void setMp3(boolean mp3) {
+        isMp3 = mp3;
     }
 }

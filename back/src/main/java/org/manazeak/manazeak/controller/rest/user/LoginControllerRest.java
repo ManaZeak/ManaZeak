@@ -24,16 +24,5 @@ public class LoginControllerRest {
         return "test";
     }
 
-    @GetMapping("/play/")
-    public ResponseEntity<Object> test3() throws URISyntaxException {
-        LOG.info("Going to play !");
-        URI url = new URI("http://library/test.mp3");
-        HttpHeaders header = new HttpHeaders();
-        header.setLocation(url);
-        header.set("Content-Type", "audio/mpeg");
-        header.set("Content-Disposition", "inline");
-        header.set("X-Accel-Redirect", "/library/test.mp3");
-        return new ResponseEntity<>(header, HttpStatus.SEE_OTHER);
-    }
 
 }

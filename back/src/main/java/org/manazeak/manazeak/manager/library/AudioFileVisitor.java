@@ -98,7 +98,7 @@ public class AudioFileVisitor implements FileVisitor<Path> {
         // Adding the track to the current album
         if (FileUtil.isAudioFileByExtension(path)) {
             // Create the track with the information of the file.
-            ScannedTrackDto track = new ScannedTrackDto(path, basicFileAttributes);
+            ScannedTrackDto track = new ScannedTrackDto(path, basicFileAttributes, FileUtil.isFileMp3(path));
             // Adding the track to the album.
             currentAlbumFolder.addTrack(track);
             totalScannedTrack++;

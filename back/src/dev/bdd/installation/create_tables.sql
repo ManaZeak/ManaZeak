@@ -191,6 +191,7 @@ CREATE TABLE track (
 	duration DOUBLE PRECISION not null,
 	first_bar DOUBLE PRECISION,
 	opus VARCHAR(50),
+	is_mp3 BOOLEAN not null,
 	subtitle VARCHAR(200),
 	album_id BIGINT,
 	CONSTRAINT PK_TRACK PRIMARY KEY (track_id)
