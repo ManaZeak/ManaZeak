@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FragmentController
 public class MainPageController {
 
-    private final ArtistService artistService;
-
-    private final GenreService genreService;
-
     private static final int NB_ELEMENTS = 10;
+    private final ArtistService artistService;
+    private final GenreService genreService;
 
     public MainPageController(ArtistService artistService, GenreService genreService) {
         this.artistService = artistService;

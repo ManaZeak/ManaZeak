@@ -29,6 +29,7 @@ public class TrackRestController {
 
     /**
      * Send a request to the nginx to play the given track.
+     *
      * @param trackId The id of the track in the database.
      * @return The redirection to the nginx to
      */
@@ -41,7 +42,7 @@ public class TrackRestController {
             URI url = new URI(TRACK_URI_PREFIX + track.getLocation());
             HttpHeaders header = new HttpHeaders();
             header.setLocation(url);
-            if (track.getIsMp3()) {
+            if (Boolean.TRUE.equals(track.getIsMp3())) {
                 header.set("Content-Type", "audio/mpeg");
             } else {
                 header.set("Content-Type", "audio/flac");

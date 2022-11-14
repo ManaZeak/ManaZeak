@@ -2,7 +2,6 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto;
-import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
 import org.manazeak.manazeak.entity.track.Album;
