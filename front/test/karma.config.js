@@ -13,10 +13,25 @@ module.exports = function (config) {
             }
         },
         frameworks: ['jasmine'],
+        plugins: [
+            require('karma-jasmine'),
+            require('karma-chrome-launcher'),
+            require('karma-coverage-istanbul-reporter'),
+            require('karma-webpack'),
+            require('karma-sourcemap-loader'),
+            require('karma-firefox-launcher')
+        ],
         client: {
             jasmine: {
                 random: false
-            }
+            },
+            clearContext: false // leave Jasmine Spec Runner output visible in browser
+        },
+        coverageIstanbulReporter: {
+            reports: ['lcovonly'],
+            fixWebpackSourcePaths: true,
+            dir: 'coverage',
+            verbose: true
         },
         files: [
             './front/test/test-context.js'
@@ -24,7 +39,7 @@ module.exports = function (config) {
         proxies: {
             '/static/': '/base/test/static/'
         },
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage-istanbul'],
         preprocessors: {
             './front/test/test-context.js': ['webpack', 'sourcemap']
         },
@@ -35,14 +50,15 @@ module.exports = function (config) {
             }
         },
         webpack: {
-            devtool: 'source-map',
+            devtool: 'inline-source-map',
             module: {
                 rules: [{
                     test: /\.js/,
                     exclude: /node_modules/,
-                    use: [{
-                        loader: 'babel-loader'
-                    }]
+                    use: [
+                        { loader: 'babel-loader'},
+                        "coverage-istanbul-loader"
+                    ]
                 }]
             },
             watch: true,
