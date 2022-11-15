@@ -30,7 +30,7 @@ module.exports = function (config) {
         coverageIstanbulReporter: {
             reports: ['lcovonly'],
             fixWebpackSourcePaths: true,
-            dir: 'coverage',
+            dir: '/__w/ManaZeak/ManaZeak/coverage',
             verbose: true
         },
         files: [
