@@ -40,7 +40,7 @@ jobs:
         java-version: 11
         distribution: adopt 
     - name: Build with Maven
-      run: mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak -Dsonar.organization=manazeak -Dsonar.scm.provider=git -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+      run: mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak -Dsonar.organization=manazeak -Dsonar.scm.provider=git -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
