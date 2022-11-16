@@ -17,6 +17,10 @@ class Lang {
    * </blockquote>
    **/
   constructor(lang) {
+    // Enforce sent argument is properly set
+    if (!this._testInput(lang)) {
+      return;
+    }
     /** The class current lang used
      * @private
      * @member {String}
@@ -29,6 +33,16 @@ class Lang {
     this._nls = {};
     // Must first fetch keys before being ready to use
     this._fetchKeys(this._lang);
+  }
+
+
+  _testInput(lang) {
+    // Proper type and length
+    if (!lang || typeof lang !== 'string' || lang.length !== 2) {
+      return null;
+    }
+
+    return true;
   }
 
 

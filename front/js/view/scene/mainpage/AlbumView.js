@@ -44,7 +44,7 @@ class AlbumView extends SceneView {
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
 
-      const performers = this.dom.querySelector('#performers-container').children;
+      const performers = this.dom.querySelector('#album-performers').children;
       for (let i = 0; i < performers.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', performers[i], this._artistClicked, performers[i]));
       }
@@ -56,6 +56,12 @@ class AlbumView extends SceneView {
 
       const label = this.dom.querySelector('#album-label');
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
+
+      const tracks = this.dom.querySelector('#album-tracks').children;
+      for (let i = 0; i < tracks.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', tracks[i], this._trackClicked, tracks[i]));
+      }
+
       resolve();
     });
   }
@@ -83,7 +89,14 @@ class AlbumView extends SceneView {
     mzk.setView({
       name: 'Label',
       id: this.dataset.id
-    });    
+    });
+  }
+
+
+  _trackClicked() {
+    mzk.changeTrack({
+      id: this.dataset.id
+    });
   }
 
 

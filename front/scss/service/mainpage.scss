@@ -27,10 +27,15 @@
       &:hover {
         color: var(--color-primary);
       }
+
+      &:nth-child(3) {
+        margin-left: auto;
+      }
     }
   }
 
-  .artists-container {
+  .artists-container,
+  .genres-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     width: calc(100% - var(--default-scroll-size));
@@ -303,7 +308,7 @@
         text-align: center;
       }
 
-      .performers-container {
+      .album-performers {
         background-color: var(--color-bg-lighter-alpha-50);
         border-radius: .5rem;
         display: flex;

@@ -18,7 +18,7 @@ window.Logger = {
 describe('Lang unit tests,', () => {
 
 
-  it('Component construction with no arguments', done => {
+  xit('Component construction with no arguments', done => {
     let lang = new Lang();
     // Component proper instanciation
     expect(lang).not.toEqual(null);

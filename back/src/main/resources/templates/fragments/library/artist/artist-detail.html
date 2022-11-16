@@ -18,7 +18,7 @@
       <p th:text="${artist.countryCode}"></p>
       <p th:text="${artist.bio}"></p>
     </div>
-    <div class="artist-header-center">
+    <div class="artist-header-right">
       <p>Members</p>
       <div th:each="member : ${artist.members}">
         <p th:text="*{member.name}"></p>

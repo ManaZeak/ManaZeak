@@ -2,7 +2,7 @@
 <div class="main-page" xmlns:th="http://www.thymeleaf.org">
   <div class="section-header">
     <h2 th:text="#{mp.release_artists}"></h2>
-    <h3 th:text="#{mp.release_artists_all}" id="see-all-release-artists"></h3>    
+    <h3 th:text="#{mp.see_all}" id="see-all-release-artists"></h3>    
   </div>
   <div class="artists-container" id="artists-container">
     <div th:each="rlArtist : ${rlArtists}">
@@ -11,11 +11,12 @@
   </div>
   <div class="section-header">
     <h2 th:text="#{mp.genres}"></h2>
+    <h3 th:text="#{mp.see_all}" id="see-all-genres"></h3>
+    <h3 th:text="#{mp.genres_graph}" id="see-genres-graph"></h3>
   </div>
   <div class="genres-container" id="genres-container">
     <div th:each="genre : ${genres}">
       <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalArtist(*{genre}, medium)"></div>
     </div>
-    <button id="test-button">Test</button>
   </div>
 </div>

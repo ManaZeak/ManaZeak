@@ -7,7 +7,7 @@
       <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)"></div>
       <h1 th:text="*{album.title}"></h1>
       <em><p th:text="#{view.album.performers}"></p></em>
-      <div id="performers-container" class="performers-container">
+      <div id="album-performers" class="album-performers">
         <div th:each="performer : ${performers}" class="performer" th:attr="data-id=*{performer.id}">
           <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div id="album-tracks" class="album-tracks">
-        <div th:each="track : *{album.tracks}" class="track">
+        <div th:each="track : *{album.tracks}"  th:attr="data-id=*{track.trackId}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
         </div>
       </div>

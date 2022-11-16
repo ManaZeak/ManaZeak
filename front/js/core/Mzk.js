@@ -1,6 +1,7 @@
-import UserInterface from '../view/UserInterface';
 import Kom from './Kom';
 import Lang from './Lang';
+import UserInterface from '../view/UserInterface';
+import Controller from './Controller.js';
 
 
 class Mzk {
@@ -8,7 +9,9 @@ class Mzk {
 
   constructor() {
     this.kom = null;
+    this.nls = null;
     this.ui = null;
+    this.ctrl = null;
   }
 
 
@@ -18,6 +21,7 @@ class Mzk {
     this.kom = new Kom();
     this.nls = new Lang('en');
     this.ui = new UserInterface();
+    this.ctrl = new Controller();
     // Init scene with main page
     this.setView({ name: 'MainPage' });
   }
@@ -37,18 +41,8 @@ class Mzk {
   }
 
 
-  getFragment(options) {
-    return new Promise((resolve, reject) => {
-      this.ui.getFragment(options)
-        .then(fragment => {
-          Logger.raise('F_FRAGMENT_GET_SUCCESS');
-          resolve(fragment);
-        })
-        .catch(() => {
-          Logger.raise('F_FRAGMENT_GET_ERROR');
-          reject();
-        });
-    });
+  changeTrack(options) {
+    this.ctrl.changeTrack(options);
   }
 
 

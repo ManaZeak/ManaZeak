@@ -110,11 +110,35 @@ class Utils {
   }
 
 
-
   formatDate(string) {
     const date = new Date(string);
     return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   }
+
+
+  /**
+   * @method
+   * @name precisionRound
+   * @public
+   * @memberof Utils
+   * @author Arthur Beaulieu
+   * @since September 2018
+   * @description
+   * <blockquote>
+   * Do a Math.round with a given precision (ie amount of integers after the coma). 
+   * </blockquote>
+   * @param {Nunmber} value - The value to precisely round (> 0)
+   * @param {Number} precision - The number of integers after the coma (> 0)
+   * @return {Number} - The rounded value 
+   **/
+   precisionRound(value, precision) {
+    if (typeof value !== 'number' || typeof precision !== 'number') {
+      return -1;
+    }
+    const multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+  }
+
 
 }
 

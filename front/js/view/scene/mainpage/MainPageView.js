@@ -38,6 +38,7 @@ class MainPageView extends SceneView {
 
 
   _events() {
+    /* Release artists */
     this.dom.querySelector('#see-all-release-artists').addEventListener('click', () => {
       mzk.setView({
         name: 'AllReleaseArtist'
@@ -52,7 +53,22 @@ class MainPageView extends SceneView {
         });
       });
     }
-    const genreGraph = this.dom.querySelector('#test-button');
+    /* Genres */
+    this.dom.querySelector('#see-all-genres').addEventListener('click', () => {
+      mzk.setView({
+        name: 'AllGenre'
+      });
+    });
+    const genres = this.dom.querySelector('#genres-container');
+    for (let i = 0; i < genres.children.length; ++i) {
+      genres.children[i].children[0].addEventListener('click', () => {
+        mzk.setView({
+          name: 'Genre',
+          id: genres.children[i].children[0].dataset.id
+        });
+      });
+    }
+    const genreGraph = this.dom.querySelector('#see-genres-graph');
     genreGraph.addEventListener('click', () => {
       mzk.setView({
         name: 'GenreGraph'
