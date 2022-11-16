@@ -6,7 +6,6 @@
     <div class="container">
         <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto"*/-->
         <form method="POST" th:object="${badge}">
-            <!-- TODO implem name and color fields from db info -->
             <!-- Required csrf token from session cookies -->
             <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <button id="submit-form" type="submit"></button>

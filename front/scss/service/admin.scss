@@ -164,8 +164,9 @@
       justify-content: center;
 
       iframe {
-        height: 90%;
-        width: 90%;
+        border: solid 1px var(--color-bg-alpha-50);
+        height: 100%;
+        width: 100%;
       }
     }
   }

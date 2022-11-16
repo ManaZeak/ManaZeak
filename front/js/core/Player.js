@@ -235,12 +235,8 @@ class Player {
       // Start loading in event      
       let loadingEventId = -1;
       const loadedListener = () => {
-        // Remove loaded track listener then star playback, raise error otherwise
-        if (Evts.removeEvent(loadingEventId)) {
-          startPlayback();
-        } else {
-          // TODO raise remove event error for desktop app
-        }
+        Evts.removeEvent(loadingEventId);
+        startPlayback();
       };
       loadingEventId = Evts.addEvent('loadedmetadata', this._player, loadedListener, this);
     });
