@@ -162,9 +162,10 @@
       align-items: center;
       display: flex;
       justify-content: center;
+      padding: 0;
 
       iframe {
-        border: solid 1px var(--color-bg-alpha-50);
+        border: none;
         height: 100%;
         width: 100%;
       }
