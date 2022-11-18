@@ -1,0 +1,26 @@
+package org.manazeak.manazeak.constant.library;
+
+/**
+ * Contains all the tables of the application.
+ */
+public enum LibraryTablesEnum {
+    TRACK_ARRANGER,
+    TRACK_BAND_ARTIST,
+    TRACK_COMPOSER,
+    TRACK_ENGINEER,
+    TRACK_GENRE,
+    TRACK_KEY,
+    TRACK_PERFORMER,
+    TRACK_PRODUCER,
+    TRACK,
+    RANDOM_RELEASE_ARTIST,
+    RANDOM_GENRE,
+    GENRE,
+    ALBUM,
+    ALBUM_RECORDING_LOCATION,
+    ALBUM_BIO,
+    BAND_MEMBER,
+    BIO,
+    ARTIST,
+    LABEL
+}

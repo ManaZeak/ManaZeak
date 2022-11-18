@@ -2,11 +2,11 @@ package org.manazeak.manazeak.service.library;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
+import org.manazeak.manazeak.daos.library.wiper.LibraryWiperDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
-import org.manazeak.manazeak.manager.library.LibraryWiperManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.picture.LibraryPictureIntegrationManager;
@@ -30,9 +30,8 @@ public class LibraryScanService {
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
     private final LibraryScanManager libraryScanManager;
     private final LibraryIntegrationManager libraryIntegrationManager;
-    private final LibraryWiperManager libraryWiper;
     private final CoverManager coverManager;
-
+    private final LibraryWiperDAO libraryWiperDAO;
     private final RandomInitializationManager randomInitializationManager;
 
     private final LibraryPictureIntegrationManager libraryPictureIntegrationManager;
@@ -40,13 +39,12 @@ public class LibraryScanService {
     private final LibraryScanStatusManager libraryScanStatusManager;
 
 
-    public LibraryScanService(LibraryScanManager libraryScanManager, LibraryIntegrationManager libraryIntegrationManager,
-                              LibraryWiperManager libraryWiper, CoverManager coverManager,
-                              RandomInitializationManager randomInitializationManager, LibraryPictureIntegrationManager libraryPictureIntegrationManager, LibraryScanStatusManager libraryScanStatusManager) {
+    public LibraryScanService(LibraryScanManager libraryScanManager, LibraryIntegrationManager libraryIntegrationManager, CoverManager coverManager,
+                              LibraryWiperDAO libraryWiperDAO, RandomInitializationManager randomInitializationManager, LibraryPictureIntegrationManager libraryPictureIntegrationManager, LibraryScanStatusManager libraryScanStatusManager) {
         this.libraryScanManager = libraryScanManager;
         this.libraryIntegrationManager = libraryIntegrationManager;
-        this.libraryWiper = libraryWiper;
         this.coverManager = coverManager;
+        this.libraryWiperDAO = libraryWiperDAO;
         this.randomInitializationManager = randomInitializationManager;
         this.libraryPictureIntegrationManager = libraryPictureIntegrationManager;
         this.libraryScanStatusManager = libraryScanStatusManager;
@@ -63,7 +61,7 @@ public class LibraryScanService {
         try {
             libraryScanStatusManager.setCurrentStep(ScanStepEnum.CLEARING_LIBRARY);
             // Cleaning the existing data.
-            libraryWiper.wipeLibraryData();
+            libraryWiperDAO.wipeLibraryData();
 
             // Scanning the library and collecting the results.
             LOG.info("Starting the library FS scan.");
