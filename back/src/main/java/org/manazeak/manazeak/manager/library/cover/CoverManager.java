@@ -96,32 +96,36 @@ public class CoverManager {
      */
     private Runnable generateThumbForCover(Collection<Path> coverPaths) {
         return () -> {
-            // Getting the location of the albums from the cover paths.
-            List<String> albumPaths = new ArrayList<>();
-            for (Path cover : coverPaths) {
-                albumPaths.add(cover.getParent().toString());
+            try {
+                // Getting the location of the albums from the cover paths.
+                List<String> albumPaths = new ArrayList<>();
+                for (Path cover : coverPaths) {
+                    albumPaths.add(cover.getParent().toString());
+                }
+
+                // Getting the albums from the locations.
+                List<AlbumCoverLinkerProjection> albums = albumDAO.getAlbumByLocations(albumPaths);
+
+                // Creating a map of the album by location.
+                Map<String, Long> albumIdByLocation = new HashMap<>();
+                for (AlbumCoverLinkerProjection album : albums) {
+                    albumIdByLocation.put(album.getAlbumLocation(), album.getAlbumId());
+                }
+
+                // Associating the covers with the albums in the database.
+                List<Pair<Long, String>> albumCovers = new ArrayList<>();
+                for (Path cover : coverPaths) {
+                    // Generating the thumbnails of the cover.
+                    String coverName = generateCoverThumbs(cover);
+                    // Adding to the element to update.
+                    albumCovers.add(Pair.of(albumIdByLocation.get(cover.getParent().toString()), coverName));
+                }
+
+                // Saving the covers into the database.
+                coverIntegrationDAO.insertCovers(albumCovers);
+            } catch (Exception e) {
+                LOG.error("Error during the cover insertion in the database.", e);
             }
-
-            // Getting the albums from the locations.
-            List<AlbumCoverLinkerProjection> albums = albumDAO.getAlbumByLocations(albumPaths);
-
-            // Creating a map of the album by location.
-            Map<String, Long> albumIdByLocation = new HashMap<>();
-            for (AlbumCoverLinkerProjection album : albums) {
-                albumIdByLocation.put(album.getAlbumLocation(), album.getAlbumId());
-            }
-
-            // Associating the covers with the albums in the database.
-            List<Pair<Long, String>> albumCovers = new ArrayList<>();
-            for (Path cover : coverPaths) {
-                // Generating the thumbnails of the cover.
-                String coverName = generateCoverThumbs(cover);
-                // Adding to the element to update.
-                albumCovers.add(Pair.of(albumIdByLocation.get(cover.getParent().toString()), coverName));
-            }
-
-            // Saving the covers into the database.
-            coverIntegrationDAO.insertCovers(albumCovers);
         };
     }
 }
