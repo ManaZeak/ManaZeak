@@ -164,20 +164,23 @@
 
 /* MP View class */
 
-.release-artist-view-wrapper {
+[class$="-view-wrapper"] {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
+}
 
-  .artist-header {
+.release-artist-view-wrapper,
+.genre-view-wrapper {
+  [class$="-header"] {
     border-bottom: solid 1px var(--color-txt);
     display: flex;
     height: 30rem;
     margin: 0 var(--margin);
     width: calc(100% - (2 * var(--margin)));
 
-    .artist-header-left {
+    [class$="-header-left"] {
       align-items: center;
       border-right: solid 1px var(--color-txt);
       display: flex;
@@ -187,7 +190,7 @@
       margin: var(--margin) 0;
       width: 30rem;
 
-      .artist-picture {
+      [class$="-picture"] {
         cursor: pointer;
         height: calc(20rem + var(--margin));
         width: 20rem;
@@ -211,13 +214,33 @@
       }
     }
 
+    [class$="-header-right"] {
+      margin: var(--margin);
+      width: calc(100% - 30rem);
+    }
+  }
+}
+
+.all-release-artist-view-wrapper,
+.all-genre-view-wrapper {
+  display: inherit;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+
+  .section-header {
+    margin: 0 var(--margin);
+  }
+}
+
+.release-artist-view-wrapper {
+  .artist-header {
     .artist-header-center {
       margin: var(--margin);
       width: calc(100% - 30rem - 32rem - var(--margin));
     }
 
     .artist-header-right {
-      margin: var(--margin);
       width: 33rem;
     }
   }
@@ -290,23 +313,7 @@
   }
 }
 
-.all-release-artist-view-wrapper,
-.all-genre-view-wrapper {
-  height: 100%;
-  position: absolute;
-  width: 100%;
-
-  .section-header {
-    margin: 0 var(--margin);
-  }
-}
-
 .album-view-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-
   .album-container {
     align-items: flex-start;
     display: flex;
@@ -464,7 +471,14 @@
   }
 }
 
+.genre-view-wrapper {
+  img {
+    height: 50px;
+  }
+}
+
 .genre-graph-view-wrapper {
+  display: inherit;
   height: 100%;
   position: relative;
   width: 100%;

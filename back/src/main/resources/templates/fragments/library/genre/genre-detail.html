@@ -1,10 +1,19 @@
   <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto"*/-->
-<div xmlns:th="http://www.thymeleaf.org">
-  <p th:text="*{genre.genreName}"></p>
-  <div th:replace="include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
-  <div th:each="track : *{genre.tracks}">
-    <p th:text="*{track.title}"></p>
-    <p th:text="*{track.duration}"></p>
-    <p th:text="*{track.artistName}"></p>
+<div xmlns:th="http://www.thymeleaf.org" class="genre-view-wrapper">
+  <div class="genre-header">
+    <div class="genre-header-left">
+      <div th:replace="include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
+      <h1 th:text="${genre.genreName}" id="artist-name"></h1>
+    </div>
+    <div class="genre-header-right">
+
+    </div>
+  </div>
+  <div class="genre-content">
+    <div th:each="track : *{genre.tracks}">
+      <p th:text="*{track.title}"></p>
+      <p th:text="*{track.duration}"></p>
+      <p th:text="*{track.artistName}"></p>
+    </div>
   </div>
 </div>
