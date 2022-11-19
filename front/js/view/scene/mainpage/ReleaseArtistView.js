@@ -45,7 +45,6 @@ class ReleaseArtistView extends SceneView {
         this._scroll = new ScrollBar({
           target: albums,
           horizontal: true,
-          minSize: 200,
           style: {
             color: '#56D45B'
           }
