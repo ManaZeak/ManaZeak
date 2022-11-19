@@ -125,7 +125,7 @@ public class CoverManager {
                         LOG.error("The album of path '{}' doesn't have any id in the database.", cover.getParent());
                     }
                     // Adding to the element to update.
-                    albumCovers.add(Pair.of(, coverName));
+                    albumCovers.add(Pair.of(albumId, coverName));
                 }
 
                 // Saving the covers into the database.
