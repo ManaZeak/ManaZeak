@@ -46,7 +46,7 @@ public final class ThumbnailUtil {
                     generateThumb(thumbSize, image, thumbFolder, thumbName);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.warn("Error when generating the thumbnail of the image {}", image, e);
         }
     }
