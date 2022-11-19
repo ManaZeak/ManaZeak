@@ -1,3 +1,4 @@
+import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
 
 
@@ -35,14 +36,14 @@ class AlbumView extends SceneView {
         const duration = tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
-/*
+
       this._scroll = new ScrollBar({
-        target: this.dom,
+        target: this.dom.querySelector('#album-tracks'),
         style: {
           color: '#56D45B'
         }
       });
-*/
+
       resolve();
     });
   }
