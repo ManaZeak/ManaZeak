@@ -50,7 +50,7 @@ public class TrackIntegrationHelper {
         track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));
 
         // Getting the album ID from the cache.
-        track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, extractedAlbum.getTitle()));
+        track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_LOCATION, extractedAlbum.getLocation().toString()));
         // Getting the IDs of the artists.
         linkArtists(track, extractedTrack);
 

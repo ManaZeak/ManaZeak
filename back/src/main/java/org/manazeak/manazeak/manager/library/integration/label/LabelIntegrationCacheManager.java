@@ -29,6 +29,6 @@ public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoader
 
     @Override
     protected Cache getCache() {
-        return CacheEnum.getCache(CacheEnum.ALBUM_ID_BY_TITLE, cacheManager);
+        return CacheEnum.getCache(CacheEnum.ALBUM_ID_BY_LOCATION, cacheManager);
     }
 }

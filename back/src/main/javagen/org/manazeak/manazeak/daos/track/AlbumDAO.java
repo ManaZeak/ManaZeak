@@ -22,11 +22,11 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
     /**
      * Get the artist id from the artist name.
      *
-     * @param albumTitles The list of the title of the albums.
+     * @param albumLocations The list of the locations of the albums.
      * @return The album title linked to the album ID.
      */
-    @Query("select title as albumTitle, albumId from Album where title in (:albumTitles)")
-    List<AlbumLinkerProjection> getAlbumsByTitles(@Param("albumTitles") Collection<String> albumTitles);
+    @Query("select location as albumLocation, albumId from Album where location in (:albumLocations)")
+    List<AlbumLinkerProjection> getAlbumsByLocations(@Param("albumLocations") Collection<String> albumLocations);
 
     @Query("select albumId as albumId, location as albumLocation from Album where location in (:locations)")
     List<AlbumCoverLinkerProjection> getAlbumByLocations(@Param("locations") Collection<String> location);

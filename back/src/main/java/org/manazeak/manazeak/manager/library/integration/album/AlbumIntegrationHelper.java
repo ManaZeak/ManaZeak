@@ -36,7 +36,7 @@ public class AlbumIntegrationHelper {
      */
     public void extractAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
         // Checking if the album has been extracted already.
-        if (!albumMap.containsKey(album.getTitle())) {
+        if (!albumMap.containsKey(album.getLocation().toString())) {
             // Creating the album.
             addNewAlbum(album, band);
         }
@@ -48,7 +48,7 @@ public class AlbumIntegrationHelper {
     private void addNewAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
         AlbumIntegrationDto newAlbum = new AlbumIntegrationDto();
         // Getting the album id from the cache.
-        newAlbum.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_TITLE, album.getTitle()));
+        newAlbum.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_LOCATION, album.getLocation().toString()));
         // Setting the other fields.
         newAlbum.setTitle(album.getTitle());
         newAlbum.setTotalTrack(album.getTrackTotal());
@@ -70,11 +70,11 @@ public class AlbumIntegrationHelper {
         if (newAlbum.getAlbumId() == null) {
             newAlbum.setAlbumId(PkIdProvider.singleton().getNewPkId(Album.class));
             // Adding the new album id into the cache.
-            cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_TITLE, newAlbum.getTitle(), newAlbum.getAlbumId());
+            cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_LOCATION, newAlbum.getLocation().toString(), newAlbum.getAlbumId());
         }
 
         // Adding the album to the album map.
-        albumMap.put(album.getTitle(), newAlbum);
+        albumMap.put(album.getLocation().toString(), newAlbum);
     }
 
     public Map<String, AlbumIntegrationDto> getAlbumMap() {

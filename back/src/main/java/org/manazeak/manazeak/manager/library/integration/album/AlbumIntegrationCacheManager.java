@@ -24,11 +24,11 @@ public class AlbumIntegrationCacheManager extends AbstractIntegrationCacheLoader
 
     @Override
     protected List<AlbumLinkerProjection> getDatabaseObjects(List<String> elements) {
-        return albumDao.getAlbumsByTitles(elements);
+        return albumDao.getAlbumsByLocations(elements);
     }
 
     @Override
     protected Cache getCache() {
-        return CacheEnum.getCache(CacheEnum.ALBUM_ID_BY_TITLE, cacheManager);
+        return CacheEnum.getCache(CacheEnum.ALBUM_ID_BY_LOCATION, cacheManager);
     }
 }

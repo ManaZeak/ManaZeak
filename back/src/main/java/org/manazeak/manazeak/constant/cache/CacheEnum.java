@@ -15,7 +15,7 @@ public enum CacheEnum {
     /**
      * Contains the album title linked to their id in the database.
      */
-    ALBUM_ID_BY_TITLE("album_id_by_title", String.class, Long.class, true),
+    ALBUM_ID_BY_LOCATION("album_id_by_title", String.class, Long.class, true),
     /**
      * Contains the label name linked to their id in the database.
      */

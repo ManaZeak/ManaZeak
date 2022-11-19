@@ -68,7 +68,7 @@ public class CacheIntegrationInitializer {
         for (ExtractedBandDto band : bands) {
             artistsNames.add(band.getName());
             for (ExtractedAlbumDto album : band.getAlbums()) {
-                albumsNames.add(album.getTitle());
+                albumsNames.add(album.getLocation().toString());
                 labelNames.add(album.getLabel());
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Adding the artists from the track.

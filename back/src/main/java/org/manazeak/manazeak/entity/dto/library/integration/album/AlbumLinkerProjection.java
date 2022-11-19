@@ -14,10 +14,10 @@ public interface AlbumLinkerProjection extends CacheObject {
 
     @Override
     default String getKey() {
-        return getAlbumTitle();
+        return getAlbumLocation();
     }
 
     Long getAlbumId();
 
-    String getAlbumTitle();
+    String getAlbumLocation();
 }
