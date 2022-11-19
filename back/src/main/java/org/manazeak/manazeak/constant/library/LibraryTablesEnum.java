@@ -12,6 +12,7 @@ public enum LibraryTablesEnum {
     TRACK_KEY,
     TRACK_PERFORMER,
     TRACK_PRODUCER,
+    TRACK_LYRICIST,
     TRACK,
     RANDOM_RELEASE_ARTIST,
     RANDOM_GENRE,
@@ -20,6 +21,8 @@ public enum LibraryTablesEnum {
     ALBUM_RECORDING_LOCATION,
     ALBUM_BIO,
     BAND_MEMBER,
+    MEMBER_ROLE,
+    MEMBER_TIME_INTERVAL,
     BIO,
     ARTIST,
     LABEL

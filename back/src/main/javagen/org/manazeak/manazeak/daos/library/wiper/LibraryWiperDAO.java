@@ -29,13 +29,15 @@ public class LibraryWiperDAO {
     }
 
     public void wipeLibraryData() {
-        for (LibraryTablesEnum table : LibraryTablesEnum.values()) {
-            autonomousTransactionManager.runInTransaction(() -> {
-                String tableName = table.name().toLowerCase(Locale.ENGLISH);
-                LOG.info(tableName);
-                jdbcTemplate.update(TRUNCATE_REQUEST + tableName);
-            });
+        StringBuilder sb = new StringBuilder();
+        LibraryTablesEnum[] tables = LibraryTablesEnum.values();
+        for (int i = 0; i < tables.length; ++i) {
+            sb.append(tables[i]);
+            if (i != tables.length - 1) {
+                sb.append(",");
+            }
         }
+        autonomousTransactionManager.runInTransaction(() -> jdbcTemplate.update(TRUNCATE_REQUEST + sb));
     }
 
 }
