@@ -19,12 +19,12 @@
       <p th:text="${artist.bio}"></p>
     </div>
     <div class="artist-header-right">
-      <p>Members</p>
-      <div th:each="member : ${artist.members}">
-        <p th:text="*{member.name}"></p>
-        <p th:text="*{member.cover}"></p>
-        <p th:text="*{member.label}"></p>
-        <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
+      <p th:text="#{view.rlartist.about}"></p>
+      <div id="artist-members" class="artists-small">
+        <div th:each="member : ${artist.members}" class="artist" th:attr="data-id=*{member.id}">
+          <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
+          <p th:text="*{member.name}"></p>
+        </div>
       </div>
     </div>
   </div>

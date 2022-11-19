@@ -1,5 +1,6 @@
 .tooltip {
   position: relative;
+  z-index: 999;
 
   &:active .tooltip-text,
   &:focus .tooltip-text,

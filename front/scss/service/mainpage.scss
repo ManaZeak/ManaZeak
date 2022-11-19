@@ -70,6 +70,55 @@
   }
 }
 
+
+/* Utils class */
+
+.artists-small {
+  border-radius: .5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 var(--margin);
+  padding: var(--padding);
+  width: 100%;
+
+  .artist {
+    cursor: pointer;
+    margin: var(--margin-small);
+    position: relative;
+
+    transition: all .2s;
+
+    img { /* 1/2 width of small artist right over performers */
+      height: 50px;
+      width: 50px;
+    }
+
+    p {
+      display: none;
+      font-size: var(--font-size-small);
+      left: 50%;
+      margin: 0;
+      position: absolute;
+      text-align: center;
+      width: max-content;
+      transform: translateX(-50%);
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      transform: scale(1.2);
+
+      p {
+        display: block;
+      }
+    }
+  }
+}
+
+/* MP View class */
+
 .release-artist-view-wrapper {
   display: flex;
   flex-direction: column;
@@ -140,7 +189,8 @@
 
     .released-albums {
       border-spacing: 1rem;
-      overflow: auto;
+      height: 27rem;
+      overflow: hidden;
       width: 100%;
 
       .album {
@@ -307,51 +357,10 @@
         margin-bottom: var(--margin);
         text-align: center;
       }
+    }
 
-      .album-performers {
-        background-color: var(--color-bg-lighter-alpha-50);
-        border-radius: .5rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 0 var(--margin);
-        padding: var(--padding);
-        width: 100%;
-
-        .performer {
-          cursor: pointer;
-          margin: var(--margin-small);
-          position: relative;
-
-          transition: all .2s;
-
-          img { /* 1/2 width of small artist right over performers */
-            height: 50px;
-            width: 50px;
-          }
-
-          p {
-            display: none;
-            font-size: var(--font-size-small);
-            left: 50%;
-            margin: 0;
-            position: absolute;
-            text-align: center;
-            width: max-content;
-            transform: translateX(-50%);
-          }
-
-          &:active,
-          &:focus,
-          &:hover {
-            transform: scale(1.2);
-
-            p {
-              display: block;
-            }
-          }
-        }
-      }
+    .artists-small {
+      background-color: var(--color-bg-lighter-alpha-50);
     }
 
     .album-content {
