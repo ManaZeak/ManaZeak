@@ -2,14 +2,13 @@
   <div th:if="*{cover != null}">
     <!-- If the size is null using the original size -->
     <div th:if="*{size == null}">
-      <img alt="artist-pp" class="artist-pp" th:src="'/resources/covers/orig/' + *{cover} + '.jpg'">
+      <img alt="album-cover" class="album-cover" loading="lazy" th:src="'/resources/covers/orig/' + *{cover} + '.jpg'">
     </div>
     <div th:if="*{size != null}">
-      <img alt="artist-pp" class="artist-pp"
-        th:src="'/resources/covers/' + *{size} + '/' + *{cover} + '.jpg'">
+      <img alt="album-cover" class="album-cover" loading="lazy" th:src="'/resources/covers/' + *{size} + '/' + *{cover} + '.jpg'">
     </div>
   </div>
   <div th:if="*{cover == null}">
-    <p>The image of the album wasn't found, please contact the administrator.</p>
+    <img alt="album-cover" class="album-cover" loading="lazy" th:src="'static/img/object/album.svg'">
   </div>
 </div>

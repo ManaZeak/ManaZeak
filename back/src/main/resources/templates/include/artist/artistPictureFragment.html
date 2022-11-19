@@ -2,14 +2,13 @@
   <div th:if="*{picture != null}">
     <!-- If the size is null using the original size -->
     <div th:if="*{size == null}">
-      <img alt="artist-pp" class="artist-pp" th:src="'/resources/artist_pictures/orig/' + *{picture} + '.jpg'">
+      <img alt="artist-pp" class="artist-pp" loading="lazy" th:src="'/resources/artist_pictures/orig/' + *{picture} + '.jpg'">
     </div>
     <div th:if="*{size != null}">
-      <img alt="artist-pp" class="artist-pp"
-        th:src="'/resources/artist_pictures/' + *{size} + '/' + *{picture} + '.jpg'">
+      <img alt="artist-pp" class="artist-pp" loading="lazy" th:src="'/resources/artist_pictures/' + *{size} + '/' + *{picture} + '.jpg'">
     </div>
   </div>
   <div th:if="*{picture == null}">
-    <img alt="artist-pp" class="artist-pp" th:src="'static/img/object/artist.svg'">
+    <img alt="artist-pp" class="artist-pp" loading="lazy" th:src="'static/img/object/artist.svg'">
   </div>
 </div>
