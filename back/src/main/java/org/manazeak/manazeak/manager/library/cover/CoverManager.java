@@ -109,6 +109,9 @@ public class CoverManager {
                 // Creating a map of the album by location.
                 Map<String, Long> albumIdByLocation = new HashMap<>();
                 for (AlbumCoverLinkerProjection album : albums) {
+                    if (album.getAlbumId() == null) {
+                        LOG.error("The album with the path {} doesn't exists in the database.", album.getAlbumLocation());
+                    }
                     albumIdByLocation.put(album.getAlbumLocation(), album.getAlbumId());
                 }
 
