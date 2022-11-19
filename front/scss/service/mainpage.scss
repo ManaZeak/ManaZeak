@@ -409,7 +409,7 @@
 
       .album-tracks {
         counter-reset: track; /* Create counter instance */
-        height: calc(100% - 10rem);
+        height: calc(100% - 10rem - (2 * var(--padding)));
         padding: var(--padding) var(--padding-small);
         width: 100%;
 
