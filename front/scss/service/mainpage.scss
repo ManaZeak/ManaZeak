@@ -66,6 +66,7 @@
     p {
       font-size: var(--font-size-small);
       margin-bottom: 0;
+      text-align: center;
     }
   }
 }
@@ -149,7 +150,7 @@
       margin: 0;
       position: absolute;
       text-align: center;
-      width: max-content;
+      width: 100%;
       transform: translateX(-50%);
     }
 
