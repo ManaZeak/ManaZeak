@@ -11,6 +11,10 @@ public final class FieldUtil {
 
     private static final Pattern FORBIDDEN_CHAR_PATTERN = Pattern.compile("[*/\\\\:;?<>\"|']");
 
+    private static final Pattern SPACE_REPLACE = Pattern.compile(" ");
+
+    private static final String SPACE_REPLACER = "%20";
+
     private FieldUtil() {
 
     }
@@ -38,6 +42,10 @@ public final class FieldUtil {
     public static boolean isIdFieldNotEmpty(Long value) {
         // If the value is null or is equal to 0 it can't be an id.
         return !(value == null || value == 0);
+    }
+
+    public static String formatToUrl(String location) {
+        return SPACE_REPLACE.matcher(location).replaceAll(SPACE_REPLACER);
     }
 
     /**

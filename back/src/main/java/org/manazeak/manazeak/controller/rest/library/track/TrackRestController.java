@@ -5,6 +5,7 @@ import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.track.Track;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.service.track.TrackService;
+import org.manazeak.manazeak.util.FieldUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,9 @@ public class TrackRestController {
         try {
             Track track = trackService.getTrackById(trackId);
 
-            URI url = new URI(TRACK_URI_PREFIX + track.getLocation());
+
+            String trackLocation = FieldUtil.formatToUrl(track.getLocation());
+            URI url = new URI(TRACK_URI_PREFIX + trackLocation);
             HttpHeaders header = new HttpHeaders();
             header.setLocation(url);
             if (Boolean.TRUE.equals(track.getIsMp3())) {
@@ -48,8 +51,7 @@ public class TrackRestController {
                 header.set("Content-Type", "audio/flac");
             }
             header.set("Content-Disposition", "inline");
-            URI trackLocation = new URI(track.getLocation());
-            header.set("X-Accel-Redirect", trackLocation.toASCIIString());
+            header.set("X-Accel-Redirect", trackLocation);
 
             return new ResponseEntity<>(header, HttpStatus.SEE_OTHER);
         } catch (URISyntaxException e) {
