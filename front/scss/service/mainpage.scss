@@ -144,7 +144,6 @@
     }
 
     p {
-      display: none;
       font-size: var(--font-size-small);
       left: 50%;
       margin: 0;
@@ -158,10 +157,6 @@
     &:focus,
     &:hover {
       transform: scale(1.2);
-
-      p {
-        display: block;
-      }
     }
   }
 }

@@ -35,6 +35,14 @@ class AlbumView extends SceneView {
         const duration = tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
+
+      this._scroll = new ScrollBar({
+        target: this.dom,
+        style: {
+          color: '#56D45B'
+        }
+      });
+
       resolve();
     });
   }
