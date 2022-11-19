@@ -1,5 +1,12 @@
-<div class="genres-container" id="genres-container">
-  <div th:each="genre : ${genres}">
-    <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)"></div>
+<!--/*@thymesVar id="rlArtist" type="org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto"*/-->
+<div xmlns:th="http://www.thymeleaf.org" class="all-genre-view-wrapper">
+  <div class="section-header">
+    <h1 th:text="#{view.agenre.title}"></h1>
+    <p th:text="#{view.agenre.genre_count}" id="genre-count"></p>
+  </div>
+  <div id="genres-container" class="grid-items-container">
+    <div th:each="genre : ${genres}" th:attr="data-id=*{genre.genreId}" class="item">
+      <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)"></div>
+    </div>
   </div>
 </div>

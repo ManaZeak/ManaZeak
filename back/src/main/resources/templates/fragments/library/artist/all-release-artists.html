@@ -4,8 +4,8 @@
     <h1 th:text="#{view.arlartist.title}"></h1>
     <p th:text="#{view.arlartist.artist_count}" id="artist-count"></p>
   </div>
-  <div id="artist-container" class="artist-container">
-    <div th:each="rlArtist : ${rlArtists}" th:attr="data-id=*{rlArtist.id}" class="artist">
+  <div id="artists-container" class="grid-items-container">
+    <div th:each="rlArtist : ${rlArtists}" th:attr="data-id=*{rlArtist.id}" class="item">
       <div th:replace="/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, medium)"></div>
     </div>
   </div>

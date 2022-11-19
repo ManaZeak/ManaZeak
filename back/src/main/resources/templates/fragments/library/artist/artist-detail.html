@@ -19,7 +19,7 @@
       <p th:text="${artist.bio}"></p>
     </div>
     <div class="artist-header-right">
-      <p th:text="#{view.rlartist.about}"></p>
+      <p th:text="#{view.rlartist.members}"></p>
       <div id="artist-members" class="artists-small">
         <div th:each="member : ${artist.members}" class="artist" th:attr="data-id=*{member.id}">
           <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')"></div>
