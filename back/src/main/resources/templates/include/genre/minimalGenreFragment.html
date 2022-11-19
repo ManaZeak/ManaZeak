@@ -1,5 +1,5 @@
 <!-- Display the information about a minimal artist. -->
-<div th:fragment="displayMinimalArtist(genre, size)" xmlns:th="http://www.thymeleaf.org" class="artist-item" th:data-id="${genre.genreId}">
+<div th:fragment="displayMinimalGenre(genre, size)" xmlns:th="http://www.thymeleaf.org" class="artist-item" th:data-id="${genre.genreId}">
   <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto"*/-->
   <div th:replace="/include/genre/genrePictureFragment.html :: genrePictureDisplay(*{genre.picture}, *{size})"></div>
   <p class="artist-name" th:text="*{genre.name}"></p>

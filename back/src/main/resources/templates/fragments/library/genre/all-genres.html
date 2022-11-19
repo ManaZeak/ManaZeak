@@ -1,0 +1,5 @@
+<div class="genres-container" id="genres-container">
+  <div th:each="genre : ${genres}">
+    <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)"></div>
+  </div>
+</div>

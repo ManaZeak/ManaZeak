@@ -37,4 +37,12 @@ public class GenreFragment {
 
         return GenreFragmentEnum.GENRE_VIEW.getPage();
     }
+
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/library/genre/all")
+    public String getAllGenreViewFragment(Model model) {
+        model.addAttribute("genres", genreService.getAllRandomGenreMinimal());
+
+        return GenreFragmentEnum.ALL_GENRES.getPage();
+    }
 }

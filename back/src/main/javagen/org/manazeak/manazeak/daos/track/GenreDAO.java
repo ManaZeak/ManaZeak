@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenrePictureProjection;
 import org.manazeak.manazeak.entity.track.Genre;
@@ -29,6 +30,13 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
 
     @Query("select genreId as genreId, name as name from Genre where pictureFilename is null ")
     List<GenrePictureProjection> getGenresPictureProjection();
+
+    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(" +
+            "gen.genreId," +
+            "gen.name," +
+            "gen.pictureFilename) " +
+            "from Genre gen")
+    List<GenreMinimalInfoDto> getAllMinimalGenre();
 
     /**
      * Get the information of the genre.

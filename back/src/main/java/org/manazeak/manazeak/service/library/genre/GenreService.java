@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.service.library.genre;
 
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.controller.fragment.library.genre.GenreFragment;
 import org.manazeak.manazeak.daos.track.GenreDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
@@ -44,6 +45,10 @@ public class GenreService {
         genre.setTracks(trackManager.getTrackInfoByGenreId(genreId));
 
         return genre;
+    }
+
+    public List<GenreMinimalInfoDto> getAllRandomGenreMinimal() {
+        return genreDAO.getAllMinimalGenre();
     }
 
     /**
