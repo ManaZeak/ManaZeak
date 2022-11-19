@@ -120,8 +120,12 @@ public class CoverManager {
                 for (Path cover : coverPaths) {
                     // Generating the thumbnails of the cover.
                     String coverName = generateCoverThumbs(cover);
+                    Long albumId = albumIdByLocation.get(cover.getParent().toString());
+                    if (albumId == null) {
+                        LOG.error("The album of path '{}' doesn't have any id in the database.", cover.getParent());
+                    }
                     // Adding to the element to update.
-                    albumCovers.add(Pair.of(albumIdByLocation.get(cover.getParent().toString()), coverName));
+                    albumCovers.add(Pair.of(, coverName));
                 }
 
                 // Saving the covers into the database.
