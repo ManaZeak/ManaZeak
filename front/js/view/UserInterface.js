@@ -18,6 +18,9 @@ class UserInterface {
      * @member {object} - The scene controller */
     this._scene = new Scene();
     /** @private
+     * @member {object} - Home button icon */
+    this._homeButton = document.getElementById('mzk-home-icon');
+    /** @private
      * @member {object} - The DOM loading overlay to use in transitions */
     this._loadingOverlay = null;
     // Build loading overlay and add its style class
@@ -47,6 +50,7 @@ class UserInterface {
   setSceneView(options) {
     return new Promise((resolve, reject) => {
       this.startLoading()
+        .then(this._updateHomeIcon.bind(this, options))
         .then(this._scene.buildView.bind(this._scene, options))
         .then(resolve)
         .catch(reject)
@@ -84,6 +88,19 @@ class UserInterface {
         Logger.raise(errors[i]);
       }
     }
+  }
+
+
+  _updateHomeIcon(options) {
+    return new Promise(resolve => {
+      if (options.name === 'MainPage') {
+        this._homeButton.src = 'static/img/actions/random-roll.svg';
+      } else if (this._homeButton.src !== 'static/img/navigation/home.svg') {
+        this._homeButton.src = 'static/img/navigation/home.svg';
+      }
+
+      resolve();
+    });
   }
 
 

@@ -237,7 +237,7 @@
   .artist-header {
     .artist-header-center {
       margin: var(--margin);
-      width: calc(100% - 30rem - 32rem - var(--margin));
+      width: calc(100% - 30rem - 33rem - var(--margin));
     }
 
     .artist-header-right {
@@ -417,7 +417,7 @@
       .album-tracks {
         counter-reset: track; /* Create counter instance */
         height: calc(100% - 10rem - (2 * var(--padding)));
-        padding: var(--padding) var(--padding-small);
+        padding: var(--padding) 0;
         width: 100%;
 
         .track {
@@ -464,6 +464,7 @@
 
           span:last-child {
             float: right;
+            margin-right: var(--margin);
           }
         }
       }
