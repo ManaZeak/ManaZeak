@@ -11,6 +11,11 @@ class AlbumView extends SceneView {
       url: `/fragment/library/album/${options.id}`
     });
 
+    this._performers = [];
+    this._tracks = [];
+
+    this._changeTrackEvt = null;
+
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
       .then(this._events.bind(this))
@@ -22,18 +27,22 @@ class AlbumView extends SceneView {
   destroy() {
     super.destroy();
     Utils.clearAllEvents(this._evtIds);
+    Evts.unsubscribe(this._changeTrackEvt);
     Utils.removeAllObjectKeys(this);
   }
 
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      this._performers = this.dom.querySelector('#album-performers').children;
+      this._tracks = this.dom.querySelector('#album-tracks').children;
+
       const date = this.dom.querySelector('#album-release-date').innerHTML;
       this.dom.querySelector('#album-duration').innerHTML = Utils.secondsToTimecode(parseFloat(this.dom.querySelector('#album-duration').innerHTML)); 
       this.dom.querySelector('#album-release-date').innerHTML = Utils.formatDate(date);
-      const tracks = this.dom.querySelector('#album-tracks').children;
-      for (let i = 0; i < tracks.length; ++i) {
-        const duration = tracks[i].children[0].children[1];
+
+      for (let i = 0; i < this._tracks.length; ++i) {
+        const duration = this._tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
 
@@ -43,6 +52,25 @@ class AlbumView extends SceneView {
           color: '#56D45B'
         }
       });
+      // Update tracks bc of scroll DOM
+      this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
+
+      if (this._performers.length > 4) {
+        this.dom.querySelector('#album-performers').style.height = '190px';
+        // Ensure height is properly applied before creating scroll on performers
+        requestAnimationFrame(() => {
+          this._scroll = new ScrollBar({
+            target: this.dom.querySelector('#album-performers'),
+            style: {
+              color: '#56D45B'
+            }
+          });
+          // Update performers bc of scroll DOM
+          this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
+        });        
+      } else {
+        this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
+      }
 
       resolve();
     });
@@ -53,9 +81,8 @@ class AlbumView extends SceneView {
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
 
-      const performers = this.dom.querySelector('#album-performers').children;
-      for (let i = 0; i < performers.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', performers[i], this._artistClicked, performers[i]));
+      for (let i = 0; i < this._performers.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', this._performers[i], this._artistClicked, this._performers[i]));
       }
   
       const rlArtist = this.dom.querySelector('#release-artist'); // Text artist name
@@ -66,14 +93,19 @@ class AlbumView extends SceneView {
       const label = this.dom.querySelector('#album-label');
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
 
-      const tracks = this.dom.querySelector('#album-tracks').children;
-      for (let i = 0; i < tracks.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', tracks[i], this._trackClicked, tracks[i]));
+      for (let i = 0; i < this._tracks.length; ++i) {
+        this._tracks[i]._buildAlbumObject = this._buildAlbumObject.bind(this);
+        this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
       }
+
+      this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._trackChanged.bind(this));
 
       resolve();
     });
   }
+
+
+  /* UI element callbacks */
 
 
   _coverClicked() {
@@ -102,12 +134,39 @@ class AlbumView extends SceneView {
   }
 
 
+  /* Handling click on tracks and callbacks */
+
+
   _trackClicked() {
     mzk.changeTrack({
-      id: this.dataset.id
+      id: this.dataset.id,
+      playObject: this._buildAlbumObject()
     });
   }
 
+
+  _buildAlbumObject() {
+    const album = {};
+    return album;
+  }
+
+
+  _trackChanged(data) {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._tracks[i].classList.remove('playing');
+      if (this._tracks[i].dataset.id === data.id) {
+        this._tracks[i].classList.add('playing');
+        // Not breaking to properly remove playing on next tracks
+      }
+    }
+  }
+
+
+  stopPlayback() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._tracks[i].classList.remove('playing');
+    }
+  }
 
 }
 

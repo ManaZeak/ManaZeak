@@ -1,0 +1,34 @@
+.volumebar-wrapper {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    position: absolute;
+    right: calc(6rem + (4 * var(--margin-tiny)));
+    text-align: center;
+    width: 14rem;
+  
+    .volumebar-container {
+      @include bar-container();
+  
+      .volumebar-current {
+        width: 100%;
+  
+        @include bar-current();
+      }
+  
+      .volumebar-thumb {
+        left: 100%; // Volume is init with max value
+  
+        @include bar-thumb();
+      }
+  
+      &:hover > .volumebar-current {
+        background-color: var(--color-secondary);
+      }
+  
+      &:hover > .volumebar-thumb {
+        opacity: 1;
+      }
+    }
+  }
+  

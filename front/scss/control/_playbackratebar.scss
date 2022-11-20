@@ -1,0 +1,81 @@
+.context-transparent-overlay {
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+  }
+
+/* Parent element is in context subfolder */
+.playback-rate-container {
+    @include bar-container();
+  
+    .playback-rate-current {
+      width: 50%;
+  
+      @include bar-current();
+    }
+  
+    .playback-rate-thumb {
+      left: 50%;
+      z-index: 999; // Since playback rate bar is in a context high in z-index
+  
+      @include bar-thumb();
+    }
+  
+    &:hover > .playback-rate-current {
+      background-color: var(--color-secondary);
+    }
+  
+    &:hover > .playback-rate-thumb {
+      opacity: 1;
+    }
+  }
+
+.playback-rate-context {
+    align-items: center;
+    background-color: var(--color-bg);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    bottom: var(--footbar-height);
+    display: flex;
+    height: calc(var(--footbar-height) / 2);
+    opacity: 0;
+    position: absolute;
+    transform: translateY(3rem);
+    // Volumebar width and speedometer icon only
+    width: calc(14rem + (2 * 3rem) - (4 * var(--margin-tiny)));
+    @include user-select(none);
+
+    
+    transition: transform .2s ease-out, opacity .2s ease-in;
+  
+    img {
+      cursor: pointer;
+      margin: 0 var(--margin-tiny);
+      width: 3rem;
+
+      @include user-select(none);
+    }
+  
+    div#playback-rate-text {
+      position: absolute;
+      color: var(--color-text-darker);
+      top: 3px;
+      left: calc(50% - 10px);
+      width: 20px;
+      text-align: center;
+      font-size: 0.8em;
+    }
+  
+    img#reset-playback-rate {
+      cursor: pointer;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      height: 15px;
+      margin: 0;
+      transform: translateX(-50%);
+    }
+  }

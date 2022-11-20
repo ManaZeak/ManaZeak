@@ -1,0 +1,97 @@
+@import 'front/scss/control/volumebar';
+@import 'front/scss/control/progressbar';
+@import 'front/scss/control/playbackratebar';
+
+.footbar {
+  background-color: var(--color-bg-light);
+  height: var(--footbar-height);
+  width: 100%;
+
+  .playback-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: calc(1000px + var(--margin-huge));
+
+    .top-line,
+    .bottom-line {
+      height: 50%;
+      width: 100%;
+    }
+
+    .top-line {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+
+      @include user-select(none);
+
+      .image-wrapper {
+        cursor: pointer;
+        height: 66%;
+        margin: 0 var(--margin-tiny);
+        text-align: center;
+        width: 3rem;
+
+        img {
+          height: 100%;          
+        }
+
+        &::before {
+          content: attr(data-before); // To be retrieved in Js
+          border-radius: 50%;
+          color: var(--color-primary);
+          font-size: .9em;
+          height: 13px;
+          position:absolute;
+          right: -10px;
+          top: 5px;
+          text-align: center;
+          text-shadow: #000 1px 0 5px;
+          width: 13px;
+        }
+
+        &.shuffle {
+          left: 4rem;
+          position: absolute;
+        }
+
+        &.repeat {
+          left: 0;
+          position: absolute;
+        }
+
+        &.speedometer {
+          position: absolute;
+          right: calc(3rem + (2 * var(--margin-tiny)));
+
+          img {
+            height: 100% !important;
+          }
+        }
+
+        &.queue {
+          position: absolute;
+          right: 0;
+          width: 3rem;
+
+          img {
+            height: 100% !important;
+          }
+        }
+      }
+    }
+
+    .bottom-line {
+      display: flex;
+
+      .moodbar-container {
+        background-color: black;
+        height: 100%;
+        margin: auto 0;
+        width: 1000px;
+      }
+    }
+  }
+}

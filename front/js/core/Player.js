@@ -271,7 +271,7 @@ class Player {
    **/
   _trackEnded() {
     this._isPlaying = false; // Update playling state
-    mzk.trackEnded();
+    Evts.publish('TrackEnded');
   }
 
 

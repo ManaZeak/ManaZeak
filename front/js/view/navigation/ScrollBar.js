@@ -85,10 +85,18 @@ class ScrollBar {
      * @private
      **/
     this._lastPageY = 0;
+
+    this._evtIds = [];
     // Component initialization sequence
     this._init()
       .then(this._events.bind(this))
       .then(this._updateScrollBar.bind(this));
+  }
+
+
+  destroy() {
+    Utils.clearAllEvents(this._evtIds);
+    Utils.removeAllObjectKeys(this);
   }
 
 

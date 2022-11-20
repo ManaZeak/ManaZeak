@@ -43,6 +43,37 @@ class Mzk {
 
   changeTrack(options) {
     this.ctrl.changeTrack(options);
+    this.ui.setPlay(true);
+  }
+
+
+  togglePlay() {
+    this.ctrl.togglePlay();
+    this.ui.setPlay(this.ctrl.player.playing);    
+  }
+
+
+  stopPlayback() {
+    this.ctrl.stopPlayback();
+    this.ui.stopPlayback();
+  }
+
+
+  toggleMute() {
+    this.ctrl.toggleMute();
+    this.ui.setMute(this.ctrl.player);
+  }
+
+
+  setVolume(volume) {
+    this.ctrl.setVolume(volume);
+    this.ui.setVolume(this.ctrl.player);
+  }
+
+
+  setPlaybackRate(percentage) {
+    this.ctrl.player.setPlaybackRate(percentage);
+    this.ui.setPlaybackRate(percentage);
   }
 
 

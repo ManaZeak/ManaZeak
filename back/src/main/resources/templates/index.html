@@ -44,7 +44,57 @@
     </div>
     <div class="scene" id="scene"></div>
   </div>
-  <div class="footbar"></div>
+  <div class="footbar">
+    <div class="playback-wrapper">
+      <div class="top-line">
+        <div class="image-wrapper repeat">
+          <img src="static/img/player/repeat-off.svg" id="repeat" alt="player-repeat">
+        </div>
+        <div class="image-wrapper shuffle">
+          <img src="static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle">
+        </div>
+        <div class="image-wrapper">
+          <img id="previous" src="static/img/player/track-previous.svg" alt="player-previous">
+        </div>
+        <div class="image-wrapper">
+          <img id="stop" src="static/img/player/stop.svg" alt="player-stop">
+        </div>
+        <div class="image-wrapper">
+          <img id="play" src="static/img/player/play.svg" alt="player-play">
+        </div>
+        <div class="image-wrapper">
+          <img id="next" src="static/img/player/track-next.svg" alt="player-next">
+        </div>
+        <div id="volumebar-wrapper" class="volumebar-wrapper">
+          <div class="image-wrapper"><img id="volumebar-img" src="static/img/player/volume-full.svg" alt="player-volume"></div>
+          <div id="volumebar-container" class="volumebar-container">
+            <div id="volumebar-current" class="volumebar-current full"></div>
+            <div id="volumebar-thumb" class="volumebar-thumb"></div>
+          </div>
+        </div>
+        <div class="image-wrapper speedometer">
+          <img src="static/img/player/speedometer.svg" id="speedometer" alt="player-speedometer">
+        </div>
+        <div class="image-wrapper queue">
+          <img src="static/img/player/queue.svg" id="queue" alt="player-queue">
+        </div>
+      </div>
+      <div class="bottom-line">
+        <p id="footbar-left"></p>
+        <div id="progress-container" class="progress-container">
+          <div id="progress-track" class="progress-track">
+            <div id="progress-current" class="progress-current"></div>
+            <div id="progress-thumb" class="progress-thumb"></div>
+            <div id="progress-hover" class="progress-hover">--:--</div>
+          </div>
+          <div id="progress-moodbar" class="progress-moodbar">
+            <svg height="100%" width="100%" draggable="false"></svg>
+          </div>
+        </div>
+        <p id="footbar-right"></p>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- The global loading overlay is by default in UI. Must be removed using mzk.ui.stopLoading when mzk init is done -->
 <div class="mzk-loading-overlay" id="mzk-loading-overlay"></div>

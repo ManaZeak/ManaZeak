@@ -1,4 +1,5 @@
 import Aside from './element/Aside';
+import NavBar from './element/NavBar';
 import Scene from './element/Scene';
 
 
@@ -17,6 +18,8 @@ class UserInterface {
     /** @private
      * @member {object} - The scene controller */
     this._scene = new Scene();
+
+    this._navBar = new NavBar();
     /** @private
      * @member {object} - Home button icon */
     this._homeButton = document.getElementById('mzk-home-icon');
@@ -136,6 +139,42 @@ class UserInterface {
       document.body.removeChild(this._loadingOverlay);
       requestAnimationFrame(resolve);
     });
+  }
+
+
+  /* Playback */
+
+
+  setPlay(playing) {
+    if (!this._navBar.progressBar.isActive) {
+      this._navBar.progressBar.activate();
+    }
+
+    this._navBar.updatePlayButton(playing);
+  }
+
+
+  stopPlayback() {
+    this.setPlay(false);
+    this._navBar.progressBar.deactivate();
+    if (this._scene.view.stopPlayback) {
+      this._scene.view.stopPlayback();
+    }
+  }
+
+
+  setMute(player) {
+    this._navBar.volumeBar.updateVolume(player.muted, player.volume);
+  }
+
+
+  setVolume(player) {
+    this._navBar.volumeBar.updateVolume(player.muted, player.volume);
+  }
+
+
+  setPlaybackRate(rate) {
+    this._navBar.playbackRateContext.updatePlaybackRate(rate);
   }
 
 
