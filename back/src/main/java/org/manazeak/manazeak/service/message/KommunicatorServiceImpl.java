@@ -1,11 +1,13 @@
 package org.manazeak.manazeak.service.message;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.*;
+import org.manazeak.manazeak.manager.MessageManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,13 +15,10 @@ import org.springframework.stereotype.Service;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class KommunicatorServiceImpl implements KommunicatorService {
 
     private final MessageManager messageManager;
-
-    public KommunicatorServiceImpl(MessageManager messageManager) {
-        this.messageManager = messageManager;
-    }
 
     /**
      * Build a response for the front when a exception occurred.

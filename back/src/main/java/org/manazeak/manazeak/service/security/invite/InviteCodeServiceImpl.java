@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.invite;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.entity.security.InviteCode;
@@ -15,6 +16,7 @@ import java.util.Optional;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class InviteCodeServiceImpl implements InviteCodeService {
 
     /**
@@ -24,10 +26,6 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Value("${app.inviteCodeDepth}")
     private int inviteCodeDepth;
-
-    public InviteCodeServiceImpl(InviteCodeDAO inviteCodeDAO) {
-        this.inviteCodeDAO = inviteCodeDAO;
-    }
 
     /**
      * {@inheritDoc}

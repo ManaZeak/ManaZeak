@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.cover;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Allows to handle the covers of the albums of the library.
  */
 @Component
+@RequiredArgsConstructor
 public class CoverManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(CoverManager.class);
@@ -35,11 +37,6 @@ public class CoverManager {
     };
     private final AlbumDAO albumDAO;
     private final CoverIntegrationDAO coverIntegrationDAO;
-
-    public CoverManager(AlbumDAO albumDAO, CoverIntegrationDAO coverIntegrationDAO) {
-        this.albumDAO = albumDAO;
-        this.coverIntegrationDAO = coverIntegrationDAO;
-    }
 
     /**
      * Generate the thumbnails from the album cover.

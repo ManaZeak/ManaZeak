@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
@@ -18,20 +19,13 @@ import java.util.List;
  * Interacts with the user for the admin.
  */
 @Component
+@RequiredArgsConstructor
 public class AdminUserManager {
 
     private final MzkUserDAO userDAO;
     private final UserProfileManager userProfileManager;
     private final InviteCodeManager inviteCodeManager;
     private final UserHierarchyManager userHierarchyManager;
-
-    public AdminUserManager(MzkUserDAO userDAO, UserProfileManager userProfileManager,
-                            InviteCodeManager inviteCodeManager, UserHierarchyManager userHierarchyManager) {
-        this.userDAO = userDAO;
-        this.userProfileManager = userProfileManager;
-        this.inviteCodeManager = inviteCodeManager;
-        this.userHierarchyManager = userHierarchyManager;
-    }
 
     /**
      * Get the object containing the users in a tree form.

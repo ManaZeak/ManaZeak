@@ -6,7 +6,7 @@ import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.response.ResponseFragmentEnum;
 import org.manazeak.manazeak.controller.page.user.wish.WishFragmentEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
-import org.manazeak.manazeak.service.message.MessageManager;
+import org.manazeak.manazeak.manager.MessageManager;
 import org.manazeak.manazeak.service.security.user.wish.WishService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

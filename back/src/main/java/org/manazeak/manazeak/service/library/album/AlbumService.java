@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library.album;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
@@ -15,16 +16,12 @@ import java.util.List;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class AlbumService {
 
     private final AlbumDAO albumDAO;
 
     private final TrackManager trackManager;
-
-    public AlbumService(AlbumDAO albumDAO, TrackManager trackManager) {
-        this.albumDAO = albumDAO;
-        this.trackManager = trackManager;
-    }
 
     /**
      * Get the albums of the given artist
@@ -48,7 +45,7 @@ public class AlbumService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.album.not_found"));
 
         // Getting the tracks of the albums.
-        album.setTracks(trackManager.getMinimalTrackInfoByAlbumId(albumId));
+        album.addTracks(trackManager.getMinimalTrackInfoByAlbumId(albumId));
 
         return album;
     }

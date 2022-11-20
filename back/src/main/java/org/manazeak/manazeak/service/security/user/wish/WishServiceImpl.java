@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user.wish;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
@@ -16,16 +17,12 @@ import java.util.List;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class WishServiceImpl implements WishService {
 
     private final WishManager wishManager;
 
     private final UserManager userManager;
-
-    public WishServiceImpl(final WishManager wishManager, final UserManager userManager) {
-        this.wishManager = wishManager;
-        this.userManager = userManager;
-    }
 
     /**
      * Get all the wishes of the current user.

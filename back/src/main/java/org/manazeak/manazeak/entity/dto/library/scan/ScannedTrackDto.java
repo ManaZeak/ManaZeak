@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
+import lombok.Data;
 import org.manazeak.manazeak.util.DateUtil;
 
 import java.nio.file.Path;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 /**
  * Contains the information about a track.
  */
+@Data
 public class ScannedTrackDto {
 
     private final Path trackPath;
@@ -24,22 +26,6 @@ public class ScannedTrackDto {
         this.lastModificationDate = DateUtil.parseLocalDateTimeString(fileAttributes.lastModifiedTime().toMillis());
         this.creationDate = DateUtil.parseLocalDateTimeString(fileAttributes.creationTime().toMillis());
         this.isMp3 = isMp3;
-    }
-
-    public LocalDateTime getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public Path getTrackPath() {
-        return trackPath;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public boolean isMp3() {
-        return isMp3;
     }
 
     /**

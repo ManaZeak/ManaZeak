@@ -1,5 +1,8 @@
 package org.manazeak.manazeak.entity.dto.kommunicator;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.List;
 /**
  * Object used to communicate with the front.
  */
+@Data
+@AllArgsConstructor
 public class KommunicatorDto implements Serializable {
 
     private final boolean done;
@@ -16,16 +21,8 @@ public class KommunicatorDto implements Serializable {
         done = true;
     }
 
-    public KommunicatorDto(boolean done) {
-        this.done = done;
-    }
-
     public boolean isDone() {
         return done;
-    }
-
-    public List<KommunicatorNotificationDto> getErrors() {
-        return notifications;
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.reference.locale;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.notification.reference.locale.LocaleNotificationEnum;
 import org.manazeak.manazeak.daos.reference.LocaleDAO;
@@ -17,13 +18,10 @@ import java.util.Optional;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class LocaleServiceImpl implements LocaleService {
 
     private final LocaleDAO localeDAO;
-
-    public LocaleServiceImpl(LocaleDAO localeDAO) {
-        this.localeDAO = localeDAO;
-    }
 
     /**
      * {@inheritDoc}

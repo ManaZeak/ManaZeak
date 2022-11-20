@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.controller.fragment;
 
 import org.manazeak.manazeak.controller.page.response.ResponseFragmentEnum;
-import org.manazeak.manazeak.service.message.MessageManager;
+import org.manazeak.manazeak.manager.MessageManager;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 

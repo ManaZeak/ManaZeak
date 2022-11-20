@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library.artist;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.daos.track.BandMemberDAO;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class ArtistService {
 
     private final ArtistDAO artistDAO;
@@ -25,13 +27,6 @@ public class ArtistService {
     private final BandMemberDAO bandMemberDAO;
 
     private final RandomReleaseArtistManager randomReleaseArtistManager;
-
-    public ArtistService(ArtistDAO artistDAO, BandMemberDAO bandMemberDAO, RandomReleaseArtistManager randomReleaseArtistManager) {
-        this.artistDAO = artistDAO;
-        this.bandMemberDAO = bandMemberDAO;
-        this.randomReleaseArtistManager = randomReleaseArtistManager;
-    }
-
 
     /**
      * Get the minimal information needed to display an artist.

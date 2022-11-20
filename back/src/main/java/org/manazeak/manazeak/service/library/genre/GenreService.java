@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library.genre;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.controller.fragment.library.genre.GenreFragment;
 import org.manazeak.manazeak.daos.track.GenreDAO;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class GenreService {
 
     private final GenreDAO genreDAO;
@@ -24,12 +26,6 @@ public class GenreService {
     private final TrackManager trackManager;
 
     private final RandomGenreManager randomGenreManager;
-
-    public GenreService(GenreDAO genreDAO, TrackManager trackManager, RandomGenreManager randomGenreManager) {
-        this.genreDAO = genreDAO;
-        this.trackManager = trackManager;
-        this.randomGenreManager = randomGenreManager;
-    }
 
     /**
      * Get the details of a genre by its id.
@@ -42,7 +38,7 @@ public class GenreService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.genre.not_found"));
 
         // Getting the tracks by the genre id.
-        genre.setTracks(trackManager.getTrackInfoByGenreId(genreId));
+        genre.addGenres(trackManager.getTrackInfoByGenreId(genreId));
 
         return genre;
     }

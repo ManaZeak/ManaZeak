@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.key;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.reference.KeyDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.key.KeyLinkerProjection;
@@ -14,16 +15,12 @@ import java.util.List;
  * Used to interract with the tonal key cache. This cache is loaded once at the start of the integration.
  */
 @Component
+@RequiredArgsConstructor
 public class TonalKeyCacheManager extends AbstractIntegrationCacheLoaderManager<KeyLinkerProjection> {
 
     private final CacheManager cacheManager;
 
     private final KeyDAO keyDAO;
-
-    public TonalKeyCacheManager(CacheManager cacheManager, KeyDAO keyDAO) {
-        this.cacheManager = cacheManager;
-        this.keyDAO = keyDAO;
-    }
 
     @Override
     protected List<KeyLinkerProjection> getDatabaseObjects(List<String> elements) {

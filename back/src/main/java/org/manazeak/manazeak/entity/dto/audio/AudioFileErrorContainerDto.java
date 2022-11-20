@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.entity.dto.audio;
 
+import lombok.Data;
 import org.manazeak.manazeak.exception.MzkTagException;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Contain the errors that were encountered during the extraction of the audio file.
  */
+@Data
 public class AudioFileErrorContainerDto {
 
     /**
@@ -24,12 +26,4 @@ public class AudioFileErrorContainerDto {
         errors.add(e);
     }
 
-    /**
-     * Get the list of the errors.
-     *
-     * @return The list of the errors.
-     */
-    public List<MzkTagException> getErrors() {
-        return errors;
-    }
 }

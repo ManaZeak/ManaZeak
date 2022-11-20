@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.track;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.track.Track;
@@ -11,13 +12,11 @@ import org.springframework.stereotype.Service;
  */
 @TransactionalWithRollback
 @Service
+@RequiredArgsConstructor
 public class TrackService {
 
     private final TrackDAO trackDAO;
 
-    public TrackService(TrackDAO trackDAO) {
-        this.trackDAO = trackDAO;
-    }
 
     /**
      * Get a track with its id. Throws an exception if the track doesn't exists.

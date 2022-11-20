@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.album;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
@@ -11,16 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AlbumIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<AlbumLinkerProjection> {
 
     private final AlbumDAO albumDao;
 
     private final CacheManager cacheManager;
-
-    public AlbumIntegrationCacheManager(AlbumDAO albumDao, CacheManager cacheManager) {
-        this.albumDao = albumDao;
-        this.cacheManager = cacheManager;
-    }
 
     @Override
     protected List<AlbumLinkerProjection> getDatabaseObjects(List<String> elements) {

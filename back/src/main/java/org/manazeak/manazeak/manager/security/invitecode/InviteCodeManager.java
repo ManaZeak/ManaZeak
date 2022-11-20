@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.invitecode;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
@@ -17,15 +18,11 @@ import java.util.Optional;
  * Manages the invites codes for the users.
  */
 @Component
+@RequiredArgsConstructor
 public class InviteCodeManager {
 
     private final InviteCodeDAO inviteCodeDAO;
     private final MzkUserDAO userDAO;
-
-    public InviteCodeManager(InviteCodeDAO inviteCodeDAO, MzkUserDAO userDAO) {
-        this.inviteCodeDAO = inviteCodeDAO;
-        this.userDAO = userDAO;
-    }
 
     /**
      * Invalidate the invite code used by the user, generate a new invite code.

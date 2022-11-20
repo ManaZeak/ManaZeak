@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.service.security.user.badge;
 
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
@@ -14,13 +15,10 @@ import java.util.List;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class BadgeServiceImpl implements BadgeService {
 
     private final BadgeManager badgeManager;
-
-    public BadgeServiceImpl(BadgeManager badgeManager) {
-        this.badgeManager = badgeManager;
-    }
 
     /**
      * {@inheritDoc}

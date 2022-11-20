@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user.info;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class UserInformationServiceImpl implements UserInformationService {
 
     /**
@@ -24,12 +26,6 @@ public class UserInformationServiceImpl implements UserInformationService {
     private final UserEditManager userEditManager;
 
     private final MzkUserDAO userDAO;
-
-    public UserInformationServiceImpl(UserManager userManager, UserEditManager userEditManager, MzkUserDAO userDAO) {
-        this.userManager = userManager;
-        this.userEditManager = userEditManager;
-        this.userDAO = userDAO;
-    }
 
     /**
      * {@inheritDoc}

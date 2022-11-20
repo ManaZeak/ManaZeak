@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user.info;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto;
 import org.manazeak.manazeak.entity.reference.Country;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  * This class is used to fill the user with information provided after the login page.
  */
 @Component
+@RequiredArgsConstructor
 public class AdditionalInfoManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdditionalInfoManager.class);
@@ -24,14 +26,6 @@ public class AdditionalInfoManager {
     private final UserManager userManager;
     private final CountryService countryService;
     private final LocaleService localeService;
-
-    public AdditionalInfoManager(UserProfilePicManager userProfilePicManager, UserManager userManager,
-                                 CountryService countryService, LocaleService localeService) {
-        this.profilePicManager = userProfilePicManager;
-        this.userManager = userManager;
-        this.countryService = countryService;
-        this.localeService = localeService;
-    }
 
     /**
      * {@inheritDoc}

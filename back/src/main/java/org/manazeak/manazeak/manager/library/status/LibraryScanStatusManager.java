@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.status;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.daos.computation.ScanStatusDAO;
 import org.manazeak.manazeak.daos.reference.ScanStepDAO;
@@ -15,6 +16,7 @@ import java.util.Optional;
  * Allows to handle the status of the scan of the library.
  */
 @Component
+@RequiredArgsConstructor
 public class LibraryScanStatusManager {
 
     private final ScanStatusDAO scanStatusDAO;
@@ -22,13 +24,6 @@ public class LibraryScanStatusManager {
     private final ScanStepDAO scanStepDAO;
 
     private final AutonomousTransactionManager autonomousTransactionManager;
-
-    public LibraryScanStatusManager(ScanStatusDAO scanStatusDAO, ScanStepDAO scanStepDAO,
-                                    AutonomousTransactionManager autonomousTransactionManager) {
-        this.scanStatusDAO = scanStatusDAO;
-        this.scanStepDAO = scanStepDAO;
-        this.autonomousTransactionManager = autonomousTransactionManager;
-    }
 
     /**
      * Check if another library isn't in the process of integration.

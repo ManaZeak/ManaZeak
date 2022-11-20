@@ -1,46 +1,25 @@
 package org.manazeak.manazeak.entity.dto.library.genre;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Contains the details of a genre of the application.
  */
+@Data
+@AllArgsConstructor
 public class GenreDetailDto {
 
+    private final List<TrackInfoDto> tracks = new ArrayList<>();
     private String genreName;
-
     private String cover;
 
-    private List<TrackInfoDto> tracks;
-
-    public GenreDetailDto(String genreName, String cover) {
-        this.genreName = genreName;
-        this.cover = cover;
+    public void addGenres(List<TrackInfoDto> newTracks) {
+        tracks.addAll(newTracks);
     }
 
-    public String getGenreName() {
-        return genreName;
-    }
-
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
-    public List<TrackInfoDto> getTracks() {
-        return tracks;
-    }
-
-    public void setTracks(List<TrackInfoDto> tracks) {
-        this.tracks = tracks;
-    }
 }

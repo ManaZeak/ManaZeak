@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
@@ -16,13 +17,10 @@ import java.util.*;
  * Permit the scan of the music library.
  */
 @Component
+@RequiredArgsConstructor
 public class LibraryScanManager {
 
     private final ArtistDAO artistDAO;
-
-    public LibraryScanManager(ArtistDAO artistDAO) {
-        this.artistDAO = artistDAO;
-    }
 
     /**
      * Scan the library folder to find the tracks of the library.

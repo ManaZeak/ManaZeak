@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
@@ -26,6 +27,7 @@ import java.util.Optional;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -46,13 +48,6 @@ public class UserServiceImpl implements UserService {
      */
     private final InviteCodeManager inviteCodeManager;
 
-    public UserServiceImpl(PrivilegeDAO privilegeDAO, UserManager userManager, AdminUserManager adminUserManager,
-                           InviteCodeManager inviteCodeManager) {
-        this.privilegeDAO = privilegeDAO;
-        this.userManager = userManager;
-        this.adminUserManager = adminUserManager;
-        this.inviteCodeManager = inviteCodeManager;
-    }
 
     /**
      * {@inheritDoc}

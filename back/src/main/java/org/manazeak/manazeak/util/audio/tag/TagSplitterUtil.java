@@ -100,7 +100,7 @@ public final class TagSplitterUtil {
         // Extracting the real names of the performers
         List<String> members = Arrays.asList(membersString.split(","));
         members.replaceAll(String::trim);
-        performer.setMembers(new HashSet<>(members));
+        performer.addMembers(new HashSet<>(members));
 
         return performer;
     }

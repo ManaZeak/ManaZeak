@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
@@ -29,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  * Allows to manage the picture of the artists.
  */
 @Component
+@RequiredArgsConstructor
 public class ArtistProfilePicManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArtistProfilePicManager.class);
@@ -42,11 +44,6 @@ public class ArtistProfilePicManager {
     private final ArtistProfilePicDAO artistProfilePicDAO;
 
     private final ArtistIntegrationDAO artistIntegrationDAO;
-
-    public ArtistProfilePicManager(ArtistProfilePicDAO artistProfilePicDAO, ArtistIntegrationDAO artistIntegrationDAO) {
-        this.artistProfilePicDAO = artistProfilePicDAO;
-        this.artistIntegrationDAO = artistIntegrationDAO;
-    }
 
     /**
      * Generate the thumbnails of an artist if the artist exists in the database.

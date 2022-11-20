@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.security.InviteCodeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.security.InviteCode;
@@ -15,14 +16,11 @@ import java.util.Map;
  * This class is used to generate the tree
  */
 @Component
+@RequiredArgsConstructor
 public class UserHierarchyManager {
 
     private final InviteCodeDAO inviteCodeDAO;
 
-
-    public UserHierarchyManager(InviteCodeDAO inviteCodeDAO) {
-        this.inviteCodeDAO = inviteCodeDAO;
-    }
 
     /**
      * Build the tree of the users from the list of users of the application.

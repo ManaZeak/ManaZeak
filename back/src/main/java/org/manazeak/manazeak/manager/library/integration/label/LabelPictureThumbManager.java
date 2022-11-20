@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.label;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
@@ -24,6 +25,7 @@ import java.util.concurrent.*;
  * Allows to generate the thumbnails of the label pictures.
  */
 @Component
+@RequiredArgsConstructor
 public class LabelPictureThumbManager {
 
     private static final int NB_THREADS = 5;
@@ -37,11 +39,6 @@ public class LabelPictureThumbManager {
     private final LabelDAO labelDAO;
 
     private final LabelIntegrationDAO labelIntegrationDAO;
-
-    public LabelPictureThumbManager(LabelDAO labelDAO, LabelIntegrationDAO labelIntegrationDAO) {
-        this.labelDAO = labelDAO;
-        this.labelIntegrationDAO = labelIntegrationDAO;
-    }
 
     /**
      * Generate the thumbnails of the given label if the picture exists on the FS.

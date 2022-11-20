@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.entity.dto.user;
 
+import lombok.Data;
 import org.manazeak.manazeak.entity.validator.global.Date;
 import org.manazeak.manazeak.entity.validator.global.LettersOnly;
 import org.manazeak.manazeak.entity.validator.reference.country.CountryId;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 /**
  * Contains all the information about a user after the creation of the account.
  */
+@Data
 public class UserFirstInfoDto {
 
     @Email(message = "{user.tellusmore.error.wrong_email}")
@@ -32,67 +34,4 @@ public class UserFirstInfoDto {
     @Avatar
     private MultipartFile avatar;
 
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Long getLocaleId() {
-        return localeId;
-    }
-
-    public void setLocaleId(Long localeId) {
-        this.localeId = localeId;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public Long getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
-    }
-
-    public MultipartFile getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(MultipartFile avatar) {
-        this.avatar = avatar;
-    }
 }

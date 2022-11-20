@@ -1,8 +1,14 @@
 package org.manazeak.manazeak.entity.dto.library.album;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Contains the minimal information needed to display an album in the front.
  */
+@Data
+@AllArgsConstructor
 public class AlbumMinimalInfoDto {
 
     private Long albumId;
@@ -11,33 +17,4 @@ public class AlbumMinimalInfoDto {
 
     private String cover;
 
-    public AlbumMinimalInfoDto(Long albumId, String title, String cover) {
-        this.albumId = albumId;
-        this.title = title;
-        this.cover = cover;
-    }
-
-    public Long getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(Long albumId) {
-        this.albumId = albumId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
 }

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.springframework.context.MessageSource;
@@ -13,6 +14,7 @@ import java.util.List;
  * Manager for accessing to the user profile information.
  */
 @Component
+@RequiredArgsConstructor
 public class UserProfileManager {
 
     private static final String ROLE_REFERENCE_KEY = "reference.role.";
@@ -21,10 +23,6 @@ public class UserProfileManager {
      * The message source for the internationalization of the message.
      */
     private final MessageSource messageGetter;
-
-    public UserProfileManager(MessageSource messageSource) {
-        this.messageGetter = messageSource;
-    }
 
     /**
      * Convert the user lines to a DTO for displaying it in the admin page.

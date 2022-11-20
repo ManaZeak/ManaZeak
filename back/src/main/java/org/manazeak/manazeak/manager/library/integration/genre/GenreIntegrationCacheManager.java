@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.genre;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.track.GenreDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
@@ -14,16 +15,13 @@ import java.util.List;
  * Allows to load the cache with the data that is present inside the database.
  */
 @Component
+@RequiredArgsConstructor
 public class GenreIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<GenreLinkerProjection> {
 
     private final CacheManager cacheManager;
 
     private final GenreDAO genreDao;
 
-    public GenreIntegrationCacheManager(CacheManager cacheManager, GenreDAO genreDao) {
-        this.cacheManager = cacheManager;
-        this.genreDao = genreDao;
-    }
 
     @Override
     protected List<GenreLinkerProjection> getDatabaseObjects(List<String> elements) {

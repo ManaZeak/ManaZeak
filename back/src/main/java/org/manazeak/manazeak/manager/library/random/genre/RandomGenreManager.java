@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.random.genre;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.random.RandomGenreDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
@@ -13,13 +14,10 @@ import java.util.Set;
  * Allows to get random genres in the database.
  */
 @Component
+@RequiredArgsConstructor
 public class RandomGenreManager extends AbstractRandomManager<GenreMinimalInfoDto> {
 
     private final RandomGenreDAO randomGenreDAO;
-
-    public RandomGenreManager(RandomGenreDAO randomGenreDAO) {
-        this.randomGenreDAO = randomGenreDAO;
-    }
 
     @Override
     protected RandomMinMaxProjection getMinMaxIndex() {

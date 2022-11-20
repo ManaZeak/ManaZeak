@@ -1,11 +1,14 @@
 package org.manazeak.manazeak.entity.dto.user.wish;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Contains all the wishes sorted by status.
  */
+@Data
 public class WishesDisplayDto {
 
     private final List<UserWishListLineDto> todoWishes = new ArrayList<>();
@@ -39,17 +42,5 @@ public class WishesDisplayDto {
      */
     public void addAcceptedWish(UserWishListLineDto wish) {
         acceptedWishes.add(wish);
-    }
-
-    public List<UserWishListLineDto> getTodoWishes() {
-        return todoWishes;
-    }
-
-    public List<UserWishListLineDto> getRefusedWishes() {
-        return refusedWishes;
-    }
-
-    public List<UserWishListLineDto> getAcceptedWishes() {
-        return acceptedWishes;
     }
 }

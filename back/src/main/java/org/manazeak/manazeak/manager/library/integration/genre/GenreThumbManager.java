@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.genre;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
@@ -21,6 +22,7 @@ import java.util.List;
  * Handles the generation of the thumbnails for the genre of the application.
  */
 @Component
+@RequiredArgsConstructor
 public class GenreThumbManager {
 
     private static final ThumbSizeEnum[] LIST_THUMB_SIZE_TO_GENERATE = {
@@ -31,10 +33,6 @@ public class GenreThumbManager {
 
     private final GenrePictureIntegrationDAO genrePictureIntegrationDAO;
 
-    public GenreThumbManager(GenreDAO genreDAO, GenrePictureIntegrationDAO genrePictureIntegrationDAO) {
-        this.genreDAO = genreDAO;
-        this.genrePictureIntegrationDAO = genrePictureIntegrationDAO;
-    }
 
     /**
      * Generate the thumbnail if the genre exists in the FS.

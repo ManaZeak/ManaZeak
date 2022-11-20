@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * Integrate the data contains in the track tags into the database.
  */
 @Component
+@RequiredArgsConstructor
 public class LibraryIntegrationManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryIntegrationManager.class);
@@ -37,14 +39,6 @@ public class LibraryIntegrationManager {
     @Value("${app.bufferLength}")
     private int bufferSize;
 
-    @Autowired
-    public LibraryIntegrationManager(CacheManager cacheManager, IntegrationBufferManager integrationBufferManager,
-                                     EntityManager entityManager, CacheIntegrationInitializer cacheIntegrationInitializer) {
-        this.cacheManager = cacheManager;
-        this.integrationBufferManager = integrationBufferManager;
-        this.entityManager = entityManager;
-        this.cacheIntegrationInitializer = cacheIntegrationInitializer;
-    }
 
     /**
      * Integrate the data that has been marked as changed.

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.picture;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
 import org.manazeak.manazeak.manager.library.integration.genre.GenreThumbManager;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * Process the pictures processed during the library scan.
  */
 @Component
+@RequiredArgsConstructor
 public class LibraryPictureIntegrationManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryPictureIntegrationManager.class);
@@ -20,13 +22,6 @@ public class LibraryPictureIntegrationManager {
     private final ArtistProfilePicManager artistProfilePicManager;
     private final LabelPictureThumbManager labelThumbManager;
     private final GenreThumbManager genreThumbManager;
-
-    public LibraryPictureIntegrationManager(LibraryScanStatusManager libraryScanStatusManager, ArtistProfilePicManager artistProfilePicManager, LabelPictureThumbManager labelThumbManager, GenreThumbManager genreThumbManager) {
-        this.libraryScanStatusManager = libraryScanStatusManager;
-        this.artistProfilePicManager = artistProfilePicManager;
-        this.labelThumbManager = labelThumbManager;
-        this.genreThumbManager = genreThumbManager;
-    }
 
     public void integrateLibraryPictures() {
         LOG.info("Starting the artist profile pictures thumbnail generation");

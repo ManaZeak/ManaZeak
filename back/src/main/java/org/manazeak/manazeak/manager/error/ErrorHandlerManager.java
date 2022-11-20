@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.error;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
@@ -12,6 +13,7 @@ import org.springframework.validation.FieldError;
  * Handle the errors of the controllers.
  */
 @Component
+@RequiredArgsConstructor
 public class ErrorHandlerManager {
 
     /**

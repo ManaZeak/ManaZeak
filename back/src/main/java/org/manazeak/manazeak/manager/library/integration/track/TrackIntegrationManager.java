@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.track;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.track.TrackIntegrationDAO;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrationDto;
@@ -16,6 +17,7 @@ import java.util.Map;
  * Allows to insert the scanned tracks into the database.
  */
 @Component
+@RequiredArgsConstructor
 public class TrackIntegrationManager {
 
     private static final int BUFFER_SIZE = 50;
@@ -23,11 +25,6 @@ public class TrackIntegrationManager {
     private final TrackDAO trackDao;
 
     private final TrackIntegrationDAO trackIntegrationDao;
-
-    public TrackIntegrationManager(TrackDAO trackDao, TrackIntegrationDAO trackIntegrationDao) {
-        this.trackDao = trackDao;
-        this.trackIntegrationDao = trackIntegrationDao;
-    }
 
 
     /**

@@ -50,7 +50,7 @@ public final class ArtistIntegrationTrackExtractorHelper {
         // Extracting the composers.
         for (ExtractedComposerDto composer : track.getComposers()) {
             processStringArtist(artists, composer.getName(), cacheAccessManager);
-            artists.get(composer.getName()).setSubArtists(new ArrayList<>(composer.getMembers()));
+            artists.get(composer.getName()).addSubArtists(new ArrayList<>(composer.getMembers()));
             // Adding the member of the artists (or the real name).
             for (String member : composer.getMembers()) {
                 processStringArtist(artists, member, cacheAccessManager);

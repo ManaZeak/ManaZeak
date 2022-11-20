@@ -1,10 +1,12 @@
 package org.manazeak.manazeak.entity.dto.kommunicator;
 
+import lombok.Data;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 
 /**
  * Contains the information to build a notification with error codes.
  */
+@Data
 public class NotificationDto {
 
     /**
@@ -26,37 +28,5 @@ public class NotificationDto {
 
     public boolean hasMessage() {
         return message != null;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getTitleKey() {
-        return titleKey;
-    }
-
-    public void setTitleKey(String titleKey) {
-        this.titleKey = titleKey;
-    }
-
-    public String getMessageKey() {
-        return messageKey;
-    }
-
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
-    public NotificationSeverityEnum getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(NotificationSeverityEnum severity) {
-        this.severity = severity;
     }
 }

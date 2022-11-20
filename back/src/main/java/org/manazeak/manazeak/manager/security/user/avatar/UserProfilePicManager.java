@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user.avatar;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -18,6 +19,7 @@ import java.nio.file.StandardCopyOption;
  * Handles the save action of the avatar of the user.
  */
 @Component
+@RequiredArgsConstructor
 public class UserProfilePicManager {
 
     /**

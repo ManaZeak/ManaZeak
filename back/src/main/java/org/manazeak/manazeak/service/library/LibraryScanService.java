@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.daos.library.wiper.LibraryWiperDAO;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class LibraryScanService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
@@ -37,18 +39,6 @@ public class LibraryScanService {
     private final LibraryPictureIntegrationManager libraryPictureIntegrationManager;
 
     private final LibraryScanStatusManager libraryScanStatusManager;
-
-
-    public LibraryScanService(LibraryScanManager libraryScanManager, LibraryIntegrationManager libraryIntegrationManager, CoverManager coverManager,
-                              LibraryWiperDAO libraryWiperDAO, RandomInitializationManager randomInitializationManager, LibraryPictureIntegrationManager libraryPictureIntegrationManager, LibraryScanStatusManager libraryScanStatusManager) {
-        this.libraryScanManager = libraryScanManager;
-        this.libraryIntegrationManager = libraryIntegrationManager;
-        this.coverManager = coverManager;
-        this.libraryWiperDAO = libraryWiperDAO;
-        this.randomInitializationManager = randomInitializationManager;
-        this.libraryPictureIntegrationManager = libraryPictureIntegrationManager;
-        this.libraryScanStatusManager = libraryScanStatusManager;
-    }
 
     /**
      * Cleaning all the data contained in the library and importing all the tracks.

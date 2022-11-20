@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.reference.country.CountryService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  * Allows to transform a user into a edit user.
  */
 @Component
+@RequiredArgsConstructor
 public class UserEditManager {
 
     private final UserManager userManager;
@@ -18,12 +20,6 @@ public class UserEditManager {
     private final CountryService countryService;
 
     private final LocaleService localeService;
-
-    public UserEditManager(UserManager userManager, CountryService countryService, LocaleService localeService) {
-        this.userManager = userManager;
-        this.countryService = countryService;
-        this.localeService = localeService;
-    }
 
 
     /**

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.random.artist;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.random.RandomReleaseArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
@@ -13,13 +14,10 @@ import java.util.Set;
  * Allows to get from the database random release artists.
  */
 @Component
+@RequiredArgsConstructor
 public class RandomReleaseArtistManager extends AbstractRandomManager<ArtistMinimalInfoDto> {
 
     private final RandomReleaseArtistDAO randomReleaseArtistDAO;
-
-    public RandomReleaseArtistManager(RandomReleaseArtistDAO randomReleaseArtistDAO) {
-        this.randomReleaseArtistDAO = randomReleaseArtistDAO;
-    }
 
     /**
      * {@inheritDoc}

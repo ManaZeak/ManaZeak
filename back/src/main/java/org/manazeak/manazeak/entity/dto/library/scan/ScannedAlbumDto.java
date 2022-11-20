@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
+import lombok.Data;
+
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,15 +10,12 @@ import java.util.List;
 /**
  * Contains the information about a scanned album.
  */
+@Data
 public class ScannedAlbumDto {
 
     private final List<ScannedTrackDto> tracks = new ArrayList<>();
     private final Path location;
     private LocalDateTime lastModificationDate;
-
-    public ScannedAlbumDto(Path location) {
-        this.location = location;
-    }
 
     /**
      * Adding the track to the container and update the last modification date
@@ -26,18 +25,6 @@ public class ScannedAlbumDto {
     public void addTrack(ScannedTrackDto track) {
         updateModificationDate(track.getMostRecentDate());
         tracks.add(track);
-    }
-
-    public List<ScannedTrackDto> getTracks() {
-        return tracks;
-    }
-
-    public LocalDateTime getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public Path getLocation() {
-        return location;
     }
 
     /**

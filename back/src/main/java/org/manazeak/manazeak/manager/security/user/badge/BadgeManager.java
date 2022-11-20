@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user.badge;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.security.BadgeDAO;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeListLineDto;
 import org.manazeak.manazeak.entity.dto.user.badge.NewBadgeDto;
@@ -15,6 +16,7 @@ import java.util.List;
  * Manage the badges of the application.
  */
 @Component
+@RequiredArgsConstructor
 public class BadgeManager {
 
     /**
@@ -23,11 +25,6 @@ public class BadgeManager {
     private final BadgeDAO badgeDAO;
 
     private final UserManager userManager;
-
-    public BadgeManager(BadgeDAO badgeDAO, UserManager userManager) {
-        this.badgeDAO = badgeDAO;
-        this.userManager = userManager;
-    }
 
     /**
      * Creates a badge.

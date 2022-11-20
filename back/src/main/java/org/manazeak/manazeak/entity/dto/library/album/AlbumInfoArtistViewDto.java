@@ -1,24 +1,22 @@
 package org.manazeak.manazeak.entity.dto.library.album;
 
-import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 
 /**
  * Contains the data needed to display an album in the artist detail page.
  */
-public class AlbumInfoArtistViewDto extends AlbumMinimalInfoDto {
+@Data
+@AllArgsConstructor
+public class AlbumInfoArtistViewDto {
+
+    private Long albumId;
+
+    private String title;
+
+    private String cover;
 
     private Integer releaseYear;
 
-    public AlbumInfoArtistViewDto(Long albumId, String title, String cover, Integer releaseYear) {
-        super(albumId, title, cover);
-        this.releaseYear = releaseYear;
-    }
-
-    public Integer getReleaseYear() {
-        return releaseYear;
-    }
-
-    public void setReleaseYear(Integer releaseYear) {
-        this.releaseYear = releaseYear;
-    }
 }

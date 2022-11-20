@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.album.AlbumIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.genre.GenreIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
@@ -21,6 +22,7 @@ import java.util.List;
  * Integrate a buffer of scanned tracks into the database.
  */
 @Component
+@RequiredArgsConstructor
 public class IntegrationBufferManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(IntegrationBufferManager.class);
@@ -31,19 +33,6 @@ public class IntegrationBufferManager {
     private final AlbumIntegrationDAO albumIntegrationDAO;
     private final GenreIntegrationDAO genreIntegrationDAO;
     private final TrackIntegrationManager trackIntegrationManager;
-
-    public IntegrationBufferManager(ArtistIntegrationManager artistIntegrationManager,
-                                    CacheIntegrationInitializer cacheIntegrationInitializer,
-                                    CacheAccessManager cacheAccessManager, LabelIntegrationDAO labelIntegrationDAO,
-                                    AlbumIntegrationDAO albumIntegrationDAO, GenreIntegrationDAO genreIntegrationDAO, TrackIntegrationManager trackIntegrationManager) {
-        this.artistIntegrationManager = artistIntegrationManager;
-        this.cacheIntegrationInitializer = cacheIntegrationInitializer;
-        this.cacheAccessManager = cacheAccessManager;
-        this.labelIntegrationDAO = labelIntegrationDAO;
-        this.albumIntegrationDAO = albumIntegrationDAO;
-        this.trackIntegrationManager = trackIntegrationManager;
-        this.genreIntegrationDAO = genreIntegrationDAO;
-    }
 
     /**
      * Integrate a buffer of tracks into the database.

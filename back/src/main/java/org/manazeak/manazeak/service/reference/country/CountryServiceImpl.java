@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.reference.country;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.notification.reference.country.CountryNotificationEnum;
 import org.manazeak.manazeak.daos.reference.CountryDAO;
@@ -15,13 +16,10 @@ import java.util.List;
  */
 @Service
 @TransactionalWithRollback
+@RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
     private final CountryDAO countryDAO;
-
-    public CountryServiceImpl(CountryDAO countryDAO) {
-        this.countryDAO = countryDAO;
-    }
 
     /**
      * {@inheritDoc}

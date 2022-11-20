@@ -1,21 +1,20 @@
-package org.manazeak.manazeak.service.message;
+package org.manazeak.manazeak.manager;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
 /**
  * Handle the message resolution in the services and in the managers.
  */
-@Service
+@Component
+@RequiredArgsConstructor
 public class MessageManager {
 
     private final MessageSource messageSource;
-
-    public MessageManager(final MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     /**
      * Get a message from a message key.

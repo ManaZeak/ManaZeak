@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.track;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
@@ -11,13 +12,10 @@ import java.util.List;
  * Allows to manipulate the tracks in the application.
  */
 @Component
+@RequiredArgsConstructor
 public class TrackManager {
 
     private final TrackDAO trackDAO;
-
-    public TrackManager(TrackDAO trackDAO) {
-        this.trackDAO = trackDAO;
-    }
 
     /**
      * Get the list of tracks linked to the album.

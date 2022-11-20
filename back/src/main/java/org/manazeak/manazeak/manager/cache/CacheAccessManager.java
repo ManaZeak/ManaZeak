@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.cache;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.cache.Cache;
@@ -10,13 +11,10 @@ import org.springframework.stereotype.Component;
  * Allows to access the cache.
  */
 @Component
+@RequiredArgsConstructor
 public class CacheAccessManager {
 
     private final CacheManager cacheManager;
-
-    public CacheAccessManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
-    }
 
     /**
      * Get a long value from the cache.

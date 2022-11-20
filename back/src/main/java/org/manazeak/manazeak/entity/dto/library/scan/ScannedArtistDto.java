@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.scan;
 
+import lombok.Data;
+
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 /**
  * Contains the information about a scanned artist directory.
  */
+@Data
 public class ScannedArtistDto {
 
     private final String artistFolder;
@@ -21,22 +24,6 @@ public class ScannedArtistDto {
     public ScannedArtistDto(Path artistFolder) {
         this.artistFolder = artistFolder.getFileName().toString();
         artistPath = artistFolder;
-    }
-
-    public Path getArtistPath() {
-        return artistPath;
-    }
-
-    public String getArtistFolder() {
-        return artistFolder;
-    }
-
-    public List<ScannedAlbumDto> getAlbums() {
-        return albums;
-    }
-
-    public LocalDateTime getLastModificationDate() {
-        return lastModificationDate;
     }
 
     public void addAlbum(ScannedAlbumDto album) {

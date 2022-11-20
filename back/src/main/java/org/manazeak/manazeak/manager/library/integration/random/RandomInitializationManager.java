@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.random;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.random.AbstractRandomInit;
 import org.manazeak.manazeak.daos.library.integration.random.artist.RandomReleaseArtistInitDAO;
 import org.manazeak.manazeak.daos.library.integration.random.genre.RandomGenreInitDAO;
@@ -14,17 +15,12 @@ import java.util.List;
  * Handles the random management of the application.
  */
 @Component
+@RequiredArgsConstructor
 public class RandomInitializationManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(RandomInitializationManager.class);
 
     private final List<AbstractRandomInit> randomInitializers;
-
-    public RandomInitializationManager(RandomReleaseArtistInitDAO randomReleaseArtistInitDAO, RandomGenreInitDAO randomGenreInitDAO) {
-        randomInitializers = new ArrayList<>();
-        randomInitializers.add(randomReleaseArtistInitDAO);
-        randomInitializers.add(randomGenreInitDAO);
-    }
 
     /**
      * Reset and initialise all the random tables.

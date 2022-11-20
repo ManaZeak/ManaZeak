@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.security.user;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
@@ -16,7 +17,6 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +28,7 @@ import java.util.Optional;
 
 
 @Component
+@RequiredArgsConstructor
 public class UserManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserManager.class);
@@ -55,14 +56,6 @@ public class UserManager {
      * Handle the errors.
      */
     private final ErrorHandlerManager errorHandlerManager;
-
-    public UserManager(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO,
-                       ErrorHandlerManager errorHandlerManager) {
-        this.roleDAO = roleDAO;
-        this.passEncoder = passEncoder;
-        this.userDAO = userDAO;
-        this.errorHandlerManager = errorHandlerManager;
-    }
 
     /**
      * {@inheritDoc}

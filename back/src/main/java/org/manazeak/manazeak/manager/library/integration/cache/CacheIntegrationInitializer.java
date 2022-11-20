@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.cache;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
@@ -19,6 +20,7 @@ import java.util.Set;
  * Initialise all the caches need for the integration of the library.
  */
 @Component
+@RequiredArgsConstructor
 public class CacheIntegrationInitializer {
 
     /**
@@ -31,19 +33,6 @@ public class CacheIntegrationInitializer {
     private final GenreIntegrationCacheManager genreIntegrationCacheManager;
     private final TonalKeyCacheManager tonalKeyCacheManager;
 
-    public CacheIntegrationInitializer(ArtistIntegrationManager artistIntegrationManager,
-                                       ArtistIntegrationCacheManager artistIntegrationCacheManager,
-                                       AlbumIntegrationCacheManager albumIntegrationCacheManager,
-                                       LabelIntegrationCacheManager labelIntegrationCacheManager,
-                                       GenreIntegrationCacheManager genreIntegrationCacheManager,
-                                       TonalKeyCacheManager tonalKeyCacheManager) {
-        this.artistIntegrationManager = artistIntegrationManager;
-        this.artistIntegrationCacheManager = artistIntegrationCacheManager;
-        this.albumIntegrationCacheManager = albumIntegrationCacheManager;
-        this.labelIntegrationCacheManager = labelIntegrationCacheManager;
-        this.genreIntegrationCacheManager = genreIntegrationCacheManager;
-        this.tonalKeyCacheManager = tonalKeyCacheManager;
-    }
 
     /**
      * Initialise the caches that are needed to integrate the data into the database. This operation is done only once at each integration.

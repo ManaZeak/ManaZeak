@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.artist.ArtistIntegrationDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
@@ -16,13 +17,10 @@ import java.util.Set;
  * Used to get the existing artists and create the new artists from the database.
  */
 @Component
+@RequiredArgsConstructor
 public class ArtistIntegrationManager {
 
     private final ArtistIntegrationDAO artistIntegrationDAO;
-
-    public ArtistIntegrationManager(ArtistIntegrationDAO artistIntegrationDAO) {
-        this.artistIntegrationDAO = artistIntegrationDAO;
-    }
 
     /**
      * Extract the artists names from the tags of a track.
