@@ -16,6 +16,15 @@
   .scene {
     height: var(--scene-height);
     width: var(--scene-width);
+
+    .admin-page .admin-tabs,
+    .account-page .account-tabs {
+      width: 85%;
+
+      p {
+        padding: 0 var(--padding-bigger);
+      }
+    }
   }
   /* Tooltip are desktop only */
   @import "../tool/tooltip";
@@ -43,6 +52,21 @@
     }
   }
 }
+
+@media only screen and (min-width: 1200px) {
+  /* Scene desktop rules */
+  .scene {
+    .admin-page .admin-tabs,
+    .account-page .account-tabs {
+      width: 90%;
+
+      p {
+        padding: 0 var(--padding-huge);
+      }
+    }
+  }
+}
+
 /* Mobile rules (specific ones as style should be mobile first) */
 @media only screen and (max-width: 800px) {
   /* Global class that disable element on a mobile environment */
