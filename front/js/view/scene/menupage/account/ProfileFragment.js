@@ -16,6 +16,10 @@ class ProfileFragment {
 
 
   _fillAttributes() {
+    if (this._target.querySelector('#parent-name').innerHTML === '') {
+      this._target.querySelector('#user-info').removeChild(this._target.querySelector('#user-parent'));
+    }
+
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInviteCode, this));

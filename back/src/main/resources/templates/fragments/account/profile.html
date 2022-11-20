@@ -5,7 +5,7 @@
       <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
       <p id="username" th:text="*{username}"></p>
     </div>
-    <div class="user-profile-header-center">
+    <div id="user-info" class="user-profile-header-center">
       <div>
         <label for="email" th:text="#{user.tellusmore.email}"></label>
         <p id="email" th:text="${userInfo.email}"></p>
@@ -42,7 +42,7 @@
         <label for="invite-code" th:text="#{user.tellusmore.inviteCode}"></label>
         <p id="invite-code" th:text="*{inviteCode}"></p>
       </div>
-      <div>
+      <div id="user-parent">
         <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
         <p id="parent-name" th:text="*{parentName}"></p>
         <p id="parent-surname" th:text="*{parentSurname}"></p>
