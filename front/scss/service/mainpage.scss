@@ -141,12 +141,13 @@
     cursor: pointer;
     margin: var(--margin-small);
     position: relative;
-
+    width: 9rem;
     transition: transform .2s;
 
+    [class$="-picture"],
     img {
       height: 9rem;
-      width: 9rem;
+      width: 9rem;      
     }
 
     p {
@@ -163,6 +164,21 @@
     &:focus,
     &:hover {
       transform: scale(1.2);
+    }
+
+    span {
+      position: absolute;
+      bottom: .5rem;
+      right: .5rem;
+      height: 2rem;
+      width: 2rem;
+      filter: drop-shadow(0 0 .5rem var(--color-bg));
+      transform: translateX(-50%);
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }
