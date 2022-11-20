@@ -140,13 +140,34 @@ class AlbumView extends SceneView {
   _trackClicked() {
     mzk.changeTrack({
       id: this.dataset.id,
-      playObject: this._buildAlbumObject()
+      playObject: this._buildAlbumObject(this.dataset.id)
     });
   }
 
 
-  _buildAlbumObject() {
-    const album = {};
+  _buildAlbumObject(currentId) {
+    const album = {
+      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
+      artist: this.dom.querySelector('#release-artist').innerHTML,
+      tracks: []
+    };
+
+    let currentReached = false;
+    for (let i = 0; i < this._tracks.length; ++i) {
+      if (currentReached === true) {
+        album.tracks.push({
+          name: this._tracks[i].children[0].children[0].innerHTML,
+          // TODO track artist instead of release artist
+          duration: this._tracks[i].children[0].children[1].innerHTML,
+          id: this._tracks[i].dataset.id
+        });
+      }
+
+      if (this._tracks[i].dataset.id === currentId) {
+        currentReached = true;
+      }
+    }
+
     return album;
   }
 

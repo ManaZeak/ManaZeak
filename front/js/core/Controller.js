@@ -40,7 +40,15 @@ class Controller {
 
 
   _trackEnded() {
-    console.log(this._playObject)
+    if (this._playObject.tracks.length > 0) {
+      const track = this._playObject.tracks.shift();
+      mzk.changeTrack({
+        id: track.id,
+        playObject: this._playObject
+      })
+    } else {
+      mzk.stopPlayback();
+    }
   }
 
 
