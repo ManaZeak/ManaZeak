@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.manazeak.manazeak.entity.validator.user.Password;
 import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
 
 /**
@@ -9,6 +10,7 @@ import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
 @PasswordMatches
 public class ResetPasswordDto implements PasswordContainer {
 
+    @Password
     private final String newPassword1;
     private final String newPassword2;
 

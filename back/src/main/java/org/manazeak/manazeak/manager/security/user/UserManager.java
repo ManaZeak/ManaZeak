@@ -13,7 +13,7 @@ import org.manazeak.manazeak.entity.security.Role;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
-import org.manazeak.manazeak.service.error.ErrorHandlerService;
+import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -54,14 +54,14 @@ public class UserManager {
     /**
      * Handle the errors.
      */
-    private final ErrorHandlerService errorHandlerService;
+    private final ErrorHandlerManager errorHandlerManager;
 
     public UserManager(RoleDAO roleDAO, @Lazy PasswordEncoder passEncoder, MzkUserDAO userDAO,
-                       ErrorHandlerService errorHandlerService) {
+                       ErrorHandlerManager errorHandlerManager) {
         this.roleDAO = roleDAO;
         this.passEncoder = passEncoder;
         this.userDAO = userDAO;
-        this.errorHandlerService = errorHandlerService;
+        this.errorHandlerManager = errorHandlerManager;
     }
 
     /**
@@ -136,15 +136,22 @@ public class UserManager {
     }
 
     /**
-     * {@inheritDoc}
+     * Change the password of the current user.
+     *
+     * @param newPasswords The information about the new password.
+     * @param currentUser  The user to be modified.
      */
     public void changeCurrentUserPassword(ResetPasswordDto newPasswords, MzkUser currentUser) {
         encryptAndSaveUserPassword(currentUser, newPasswords.getNewPassword1());
         LOG.info("The user {} changed his password.", currentUser.getUsername());
     }
 
+
     /**
-     * {@inheritDoc}
+     * Change the password of a given user.
+     *
+     * @param resetUserPassword The information on the user and the new password to use.
+     * @throws MzkRestException Error during the change of password.
      */
     public void changeUserPassword(ResetUserPasswordDto resetUserPassword) throws MzkRestException {
         // Getting the user from the id.
@@ -153,7 +160,7 @@ public class UserManager {
             encryptAndSaveUserPassword(user.get(), resetUserPassword.getPassword());
         } else {
             // If the user wasn't found.
-            errorHandlerService.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND);
+            errorHandlerManager.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND);
         }
     }
 

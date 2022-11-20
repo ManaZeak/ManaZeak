@@ -1,25 +1,22 @@
-package org.manazeak.manazeak.service.error;
+package org.manazeak.manazeak.manager.error;
 
-import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 /**
  * Handle the errors of the controllers.
  */
-@Service
-@TransactionalWithRollback
-public class ErrorHandlerServiceImpl implements ErrorHandlerService {
+@Component
+public class ErrorHandlerManager {
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public void handleValidationErrors(BindingResult result) {
         // Checking if there is some validation errors.
         if (!result.hasErrors()) {
@@ -31,7 +28,6 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void generateRestErrorFromValidationError(Iterable<FieldError> errors) {
         // Generating the exception.
         MzkRestException exception = new MzkRestException();
@@ -49,7 +45,6 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void generateRestErrorFromErrorEnum(ErrorEnum... errors) {
         MzkRestException exception = new MzkRestException();
         // Adding the errors for the enum.

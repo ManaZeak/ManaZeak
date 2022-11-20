@@ -3,6 +3,8 @@ package org.manazeak.manazeak.service.security.user;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
+import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
+import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 
@@ -34,6 +36,19 @@ public interface UserService {
      * @return The list of privileges of a user.
      */
     List<Privilege> getPrivilegeByUsername(final String username);
+
+    /**
+     * Change the password of the user in the application.
+     *
+     * @param newPassword The password information of the user.
+     */
+    void changeUserPassword(final ResetPasswordDto newPassword, final MzkUser user);
+
+    /**
+     * Change the password of a user.
+     * @param resetUserPassword Contains the information about the user and the new password.
+     */
+    void changeUserPassword(final ResetUserPasswordDto resetUserPassword);
 
     /**
      * Check if a user is connected.

@@ -3,16 +3,14 @@ package org.manazeak.manazeak.controller.rest.user;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
-import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRestException;
-import org.manazeak.manazeak.manager.security.user.UserManager;
-import org.manazeak.manazeak.service.error.ErrorHandlerService;
+import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
+import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,19 +26,13 @@ public class ResetPasswordController {
     /**
      * Allows to handle the front errors.
      */
-    private final ErrorHandlerService errorHandler;
+    private final ErrorHandlerManager errorHandler;
 
-    private final UserManager userManager;
+    private final UserService userService;
 
-    public ResetPasswordController(ErrorHandlerService errorHandler, UserManager userManager) {
+    public ResetPasswordController(ErrorHandlerManager errorHandler, UserService userService) {
         this.errorHandler = errorHandler;
-        this.userManager = userManager;
-    }
-
-    @GetMapping("/test")
-    @RestSecurity(PrivilegeEnum.ADMV)
-    public NewUserDto test() {
-        return new NewUserDto();
+        this.userService = userService;
     }
 
     /**
@@ -52,6 +44,7 @@ public class ResetPasswordController {
      * @return the status of the request.
      */
     @PostMapping("/resetPassword")
+    @RestSecurity(PrivilegeEnum.PLAY)
     public KommunicatorDto changeCurrentUserPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,
                                                      @AuthenticationPrincipal MzkUser user,
                                                      BindingResult result) throws MzkRestException {
@@ -60,7 +53,7 @@ public class ResetPasswordController {
             errorHandler.generateRestErrorFromValidationError(result.getFieldErrors());
         }
         // No validation errors, we proceed to change the user password.
-        userManager.changeCurrentUserPassword(resetPasswordDto, user);
+        userService.changeUserPassword(resetPasswordDto, user);
         // Success.
         return new KommunicatorDto(true);
     }
@@ -73,8 +66,8 @@ public class ResetPasswordController {
      */
     @PostMapping("/resetUserPassword")
     @RestSecurity(PrivilegeEnum.ADMV)
-    public KommunicatorDto changeUserPassword(ResetUserPasswordDto resetPasswordDto) throws MzkRestException {
-        userManager.changeUserPassword(resetPasswordDto);
+    public KommunicatorDto changeUserPassword(@RequestBody ResetUserPasswordDto resetPasswordDto) throws MzkRestException {
+        userService.changeUserPassword(resetPasswordDto);
         // Success.
         return new KommunicatorDto(true);
     }

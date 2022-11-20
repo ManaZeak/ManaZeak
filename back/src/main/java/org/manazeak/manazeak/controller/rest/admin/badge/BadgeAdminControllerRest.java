@@ -4,7 +4,7 @@ import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.user.badge.BadgeUserAssociationDto;
-import org.manazeak.manazeak.service.error.ErrorHandlerService;
+import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.manazeak.manazeak.service.security.user.badge.BadgeService;
 import org.springframework.validation.BindingResult;
@@ -22,13 +22,13 @@ public class BadgeAdminControllerRest {
     /**
      * Allows to handle the reporting of errors to the front.
      */
-    private final ErrorHandlerService errorHandler;
+    private final ErrorHandlerManager errorHandler;
 
     private final BadgeService badgeService;
 
     private final KommunicatorService kommunicatorService;
 
-    public BadgeAdminControllerRest(BadgeService badgeService, ErrorHandlerService errorHandler,
+    public BadgeAdminControllerRest(BadgeService badgeService, ErrorHandlerManager errorHandler,
                                     KommunicatorService kommunicatorService) {
         this.badgeService = badgeService;
         this.errorHandler = errorHandler;

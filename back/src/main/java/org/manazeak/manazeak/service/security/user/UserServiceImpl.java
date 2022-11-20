@@ -5,6 +5,8 @@ import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
+import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
+import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
@@ -81,6 +83,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Privilege> getPrivilegeByUsername(String username) {
         return privilegeDAO.getPrivilegesByUsername(username);
+    }
+
+    @Override
+    public void changeUserPassword(ResetPasswordDto newPassword, MzkUser user) {
+        userManager.changeCurrentUserPassword(newPassword, user);
+    }
+
+    @Override
+    public void changeUserPassword(ResetUserPasswordDto resetUserPassword) {
+        userManager.changeUserPassword(resetUserPassword);
     }
 
     /**

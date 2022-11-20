@@ -7,14 +7,20 @@ import org.manazeak.manazeak.controller.page.user.UserFragmentEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controller used to display the about us modal to the user.
+ * Contains the different modals displayed to the user on the user information.
  */
 @FragmentController
-public class ResetPasswordModalController {
+public class UserModalController {
 
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/modal/reset-password")
-    public String getPage() {
+    public String getResetPasswordModal() {
         return UserFragmentEnum.RESET_PASSWORD_MODAL.getPage();
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/modal/edit-account")
+    public String getEditAccountModal() {
+        return UserFragmentEnum.EDIT_ACCOUNT_MODAL.getPage();
     }
 }
