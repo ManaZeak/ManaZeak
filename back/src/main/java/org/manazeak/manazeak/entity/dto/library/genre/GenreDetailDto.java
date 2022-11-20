@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreDetailDto {
 
-    private final List<TrackInfoDto> tracks = new ArrayList<>();
     private String genreName;
     private String cover;
+    private final List<GenreDetailArtistDto> artists = new ArrayList<>();
 
-    public void addGenres(List<TrackInfoDto> newTracks) {
-        tracks.addAll(newTracks);
+    public void addArtists(List<GenreDetailArtistDto> artists) {
+        this.artists.addAll(artists);
     }
 
 }

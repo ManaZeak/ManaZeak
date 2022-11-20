@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
@@ -30,6 +31,24 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
 
     @Query("select genreId as genreId, name as name from Genre where pictureFilename is null ")
     List<GenrePictureProjection> getGenresPictureProjection();
+
+    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto(" +
+            "art.artistId, " +
+            "art.name, " +
+            "art.pictureFilename, " +
+            "alb.albumId, " +
+            "alb.title, " +
+            "alb.cover, " +
+            "trk.trackId, " +
+            "trk.title, " +
+            "trk.duration) " +
+            "from Track trk " +
+            "join trk.genreList gen " +
+            "join trk.album alb " +
+            "join alb.artist art " +
+            "where gen.genreId = :genreId " +
+            "order by art.name, alb.title, trk.discNumber, trk.trackNumber")
+    List<GenreArtistDetailBuilderDto> getGenreDetailById(@Param("genreId") Long genreId);
 
     @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(" +
             "gen.genreId," +

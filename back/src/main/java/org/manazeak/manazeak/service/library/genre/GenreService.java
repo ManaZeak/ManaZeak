@@ -38,7 +38,7 @@ public class GenreService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.genre.not_found"));
 
         // Getting the tracks by the genre id.
-        genre.addGenres(trackManager.getTrackInfoByGenreId(genreId));
+        // genre.addGenres(trackManager.getTrackInfoByGenreId(genreId));
 
         return genre;
     }
