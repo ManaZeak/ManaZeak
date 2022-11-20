@@ -38,9 +38,9 @@
     background-color: var(--color-bg);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
-    bottom: var(--footbar-height);
+    bottom: var(--navbar-height);
     display: flex;
-    height: calc(var(--footbar-height) / 2);
+    height: calc(var(--navbar-height) / 2);
     opacity: 0;
     position: absolute;
     transform: translateY(3rem);
@@ -48,7 +48,6 @@
     width: calc(14rem + (2 * 3rem) - (4 * var(--margin-tiny)));
     @include user-select(none);
 
-    
     transition: transform .2s ease-out, opacity .2s ease-in;
   
     img {

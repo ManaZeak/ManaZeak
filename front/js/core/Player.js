@@ -236,6 +236,7 @@ class Player {
       let loadingEventId = -1;
       const loadedListener = () => {
         Evts.removeEvent(loadingEventId);
+        Evts.publish('TrackLoaded');
         startPlayback();
       };
       loadingEventId = Evts.addEvent('loadedmetadata', this._player, loadedListener, this);

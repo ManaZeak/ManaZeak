@@ -2,16 +2,17 @@
 @import 'front/scss/control/progressbar';
 @import 'front/scss/control/playbackratebar';
 
-.footbar {
+.navbar {
   background-color: var(--color-bg-light);
-  height: var(--footbar-height);
+  height: var(--navbar-height);
+  user-select: none;
   width: 100%;
 
   .playback-wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: calc(1000px + var(--margin-huge));
+    width: 100%;
 
     .top-line,
     .bottom-line {
@@ -84,13 +85,15 @@
     }
 
     .bottom-line {
+      align-items: flex-end;
       display: flex;
 
-      .moodbar-container {
-        background-color: black;
-        height: 100%;
-        margin: auto 0;
-        width: 1000px;
+      p {
+        line-height: calc(25px + .5rem);
+        margin: 0;
+        opacity: 0;
+        text-align: center;
+        width: 8rem;
       }
     }
   }

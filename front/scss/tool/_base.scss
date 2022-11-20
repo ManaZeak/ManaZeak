@@ -159,7 +159,7 @@ form {
 
 .scene-wrapper {
   background-image: linear-gradient(var(--color-bg-lighter), var(--color-bg-darker));
-  height: calc(100% - var(--footbar-height));
+  height: calc(100% - var(--navbar-height));
 }
 
 @media only screen and (min-width: 800px) {

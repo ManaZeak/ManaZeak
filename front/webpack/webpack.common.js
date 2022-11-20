@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 
-const DIST = path.resolve(__dirname, '../../static/dist');
+const DIST = path.resolve(__dirname, '../../static/dist/');
 
 
 // Default js/scss entrypoints for ManaZeak app and services

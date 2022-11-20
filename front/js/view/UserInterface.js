@@ -173,6 +173,11 @@ class UserInterface {
   }
 
 
+  setProgress(progress) {
+    this._navBar.progressBar.setProgress(progress); 
+  }
+
+
   setPlaybackRate(rate) {
     this._navBar.playbackRateContext.updatePlaybackRate(rate);
   }

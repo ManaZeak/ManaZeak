@@ -53,8 +53,8 @@ class ProgressBar {
     this._progress.thumb = document.getElementById('progress-thumb');
     this._progress.hover = document.getElementById('progress-hover');
     this._progress.moodbar = document.getElementById('progress-moodbar');
-    this._progress.left = document.getElementById('footbar-left');
-    this._progress.right = document.getElementById('footbar-right');
+    this._progress.left = document.getElementById('timecode-left');
+    this._progress.right = document.getElementById('timecode-right');
 
     this._resetTimecode();
 
@@ -81,6 +81,10 @@ class ProgressBar {
     this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
     window.addEventListener('mousemove', this._mouseMove);
     window.addEventListener('mouseup', this._mouseUp);
+
+    Evts.subscribe('TrackLoaded', () => {
+      this.updateDuration(mzk.ctrl.player.duration);
+    });
   }
 
 
@@ -222,7 +226,7 @@ class ProgressBar {
    * @description Set the progress bar completion according to the Mzk player progress value
    **/
   _animate() {
-    this.setProgress(mzk.playerProgress);
+    this.setProgress(mzk.ctrl.player.progress);
     this._rafId = requestAnimationFrame(this._animate.bind(this));
   }
 

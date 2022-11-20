@@ -59,6 +59,14 @@ class Mzk {
   }
 
 
+  mute() {
+    this.ctrl.mute();
+  }
+
+  unmute() {
+    this.ctrl.unmute();
+  }
+
   toggleMute() {
     this.ctrl.toggleMute();
     this.ui.setMute(this.ctrl.player);
@@ -68,6 +76,12 @@ class Mzk {
   setVolume(volume) {
     this.ctrl.setVolume(volume);
     this.ui.setVolume(this.ctrl.player);
+  }
+
+
+  setProgress(progress) {
+    this.ctrl.setProgress(progress);
+    this.ui.setProgress(this.ctrl.player.progress);
   }
 
 

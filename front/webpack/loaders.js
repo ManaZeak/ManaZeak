@@ -9,7 +9,7 @@ const CSSLoader = {
     {
       loader: MiniCssExtractPlugin.loader,
       options: {
-        publicPath: path.resolve(__dirname, '../dist/')
+        publicPath: '../../dist/'
       }
     },
     {
@@ -20,7 +20,7 @@ const CSSLoader = {
       loader: 'postcss-loader',
       options: {
         postcssOptions: {
-          config: path.resolve(__dirname, 'postcss.config.js'),
+          config: path.resolve(__dirname, 'postcss.config.js')
         },
       },
     },
