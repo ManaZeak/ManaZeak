@@ -1,6 +1,7 @@
 import Aside from './element/Aside';
 import NavBar from './element/NavBar';
 import Scene from './element/Scene';
+import ViewHistory from './scene/utils/ViewHistory';
 
 
 class UserInterface {
@@ -20,6 +21,8 @@ class UserInterface {
     this._scene = new Scene();
 
     this._navBar = new NavBar();
+
+    this._history = new ViewHistory();
     /** @private
      * @member {object} - Home button icon */
     this._homeButton = document.getElementById('mzk-home-icon');
@@ -53,6 +56,7 @@ class UserInterface {
   setSceneView(options) {
     return new Promise((resolve, reject) => {
       this.startLoading()
+        .then(this._updateHistory.bind(this, options))
         .then(this._updateHomeIcon.bind(this, options))
         .then(this._scene.buildView.bind(this._scene, options))
         .then(resolve)
@@ -85,12 +89,33 @@ class UserInterface {
   }
 
 
+  previousHistoryView() {
+    const view = this._history.getPreviousView();
+    if (view !== null) {
+      mzk.setView(view);
+    }
+  }
+
+
+  nextHistoryView() {
+    const view = this._history.getNextView();
+    if (view !== null) {
+      mzk.setView(view);
+    }    
+  }
+
+
   processLogFromServer(errors) {
     if (errors && errors.length > 0) {
       for (let i = 0; i < errors.length; ++i) {
         Logger.raise(errors[i]);
       }
     }
+  }
+
+
+  _updateHistory(options) {
+    this._history.addView(options);
   }
 
 
@@ -122,7 +147,9 @@ class UserInterface {
    * @return {promise} - The action promise */
   startLoading() {
     return new Promise(resolve => {
-      document.body.appendChild(this._loadingOverlay);
+      if (!document.body.contains(this._loadingOverlay)) {
+        document.body.appendChild(this._loadingOverlay);
+      }
       requestAnimationFrame(resolve);
     });
   }
@@ -136,7 +163,9 @@ class UserInterface {
    * @return {promise} - The action promise */
   stopLoading() {
     return new Promise(resolve => {
-      document.body.removeChild(this._loadingOverlay);
+      if (document.body.contains(this._loadingOverlay)) {
+        document.body.removeChild(this._loadingOverlay);
+      }
       requestAnimationFrame(resolve);
     });
   }

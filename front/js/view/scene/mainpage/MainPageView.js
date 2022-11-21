@@ -22,6 +22,7 @@ class MainPageView extends SceneView {
 
   destroy() {
     super.destroy();
+    Evts.unsubscribe('SceneViewReady');
     Utils.removeAllObjectKeys(this);
   }
 
@@ -74,6 +75,14 @@ class MainPageView extends SceneView {
         name: 'GenreGraph'
       });      
     });
+
+    this._readyEvtId = Evts.subscribe('SceneViewReady', () => {
+      if (this.dom.querySelector('#artists-container').children.length === 0) {
+        mzk.setView({
+          name: 'MenuPage'
+        });
+      }
+    })
   }
 
 
