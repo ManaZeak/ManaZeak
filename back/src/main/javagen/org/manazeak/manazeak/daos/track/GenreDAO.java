@@ -34,7 +34,8 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
 
     @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto(" +
             "art.artistId, " +
-            "art.name, " +
+            "art.name," +
+            "art.isLabel,  " +
             "art.pictureFilename, " +
             "alb.albumId, " +
             "alb.title, " +

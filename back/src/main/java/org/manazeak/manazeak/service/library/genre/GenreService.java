@@ -7,6 +7,7 @@ import org.manazeak.manazeak.daos.track.GenreDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
+import org.manazeak.manazeak.manager.library.genre.GenreManager;
 import org.manazeak.manazeak.manager.library.random.genre.RandomGenreManager;
 import org.manazeak.manazeak.manager.library.track.TrackManager;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class GenreService {
 
     private final GenreDAO genreDAO;
 
-    private final TrackManager trackManager;
+    private final GenreManager genreManager;
 
     private final RandomGenreManager randomGenreManager;
 
@@ -38,7 +39,7 @@ public class GenreService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.genre.not_found"));
 
         // Getting the tracks by the genre id.
-        // genre.addGenres(trackManager.getTrackInfoByGenreId(genreId));
+        genre.addArtists(genreManager.getArtistsInfoByGenreId(genreId));
 
         return genre;
     }

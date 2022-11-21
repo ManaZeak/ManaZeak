@@ -51,9 +51,9 @@ public class LibraryIntegrationContainer {
     public void convertTrackIntoDto(ExtractedTrackDto track, ExtractedAlbumDto album) {
         // Adding the artists contained in the track.
         artistIntegrationHelper.extractArtistFromTrack(track);
-        trackIntegrationHelper.extractTrack(track, album);
         // Adding the genre in the database.
         track.getGenres().forEach(genreIntegrationHelper::addGenre);
+        trackIntegrationHelper.extractTrack(track, album);
     }
 
     /**

@@ -1,5 +1,5 @@
-  <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="genre-view-wrapper">
+  <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto"*/-->
   <div class="genre-header">
     <div class="genre-header-left">
       <div th:replace="include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
@@ -10,10 +10,21 @@
     </div>
   </div>
   <div class="genre-content">
-    <div th:each="track : *{genre.tracks}">
-      <p th:text="*{track.title}"></p>
-      <p th:text="*{track.duration}"></p>
-      <p th:text="*{track.artistName}"></p>
+    <div th:each="artist : ${genre.artists}">
+      <p th:text="*{artist.artistName}"></p>
+      <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)"></div>
+
+      <!-- The list of albums of this artist. -->
+      <div th:each="album : *{artist.albums}">
+        <p th:text="*{album.albumTitle}"></p>
+        <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
+
+        <!-- The list of tracks containing the genre of the album. -->
+        <div th:each="track : *{album.tracks}">
+          <p th:text="*{track.title}"></p>
+          <p th:text="*{track.duration}"></p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

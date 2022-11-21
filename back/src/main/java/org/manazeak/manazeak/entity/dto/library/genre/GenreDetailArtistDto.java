@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.entity.dto.library.genre;
 
 import lombok.Data;
-import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,11 @@ public class GenreDetailArtistDto {
 
     private final String artistPicture;
 
-    private final List<GenreDetailAlbumDto> genreDetailAlbums = new ArrayList<>();
+    private final boolean isLabel;
 
+    private final List<GenreDetailAlbumDto> albums = new ArrayList<>();
 
+    public void addAlbum(GenreDetailAlbumDto album) {
+        albums.add(album);
+    }
 }
