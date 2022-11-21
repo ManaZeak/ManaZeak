@@ -2,13 +2,10 @@ package org.manazeak.manazeak.manager.library.integration.random;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.random.AbstractRandomInit;
-import org.manazeak.manazeak.daos.library.integration.random.artist.RandomReleaseArtistInitDAO;
-import org.manazeak.manazeak.daos.library.integration.random.genre.RandomGenreInitDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

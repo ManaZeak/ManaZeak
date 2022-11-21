@@ -16,7 +16,7 @@ public class ExtractedComposerDto {
     private final Set<String> members = new HashSet<>();
     private String name;
 
-    public void addMembers(Set<String> newMembers)  {
+    public void addMembers(Set<String> newMembers) {
         members.addAll(newMembers);
     }
 }

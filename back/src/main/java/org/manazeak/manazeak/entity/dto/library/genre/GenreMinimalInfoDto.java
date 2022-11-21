@@ -10,9 +10,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class GenreMinimalInfoDto {
 
-    private  Long genreId;
+    private Long genreId;
 
-    private  String name;
+    private String name;
 
     private String picture;
 }

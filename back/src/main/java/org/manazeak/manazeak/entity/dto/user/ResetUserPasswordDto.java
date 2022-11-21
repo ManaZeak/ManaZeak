@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
  * Used to store the information
  */
 @Data
-@RequiredArgsConstructor(onConstructor=@__(@JsonCreator))
+@RequiredArgsConstructor(onConstructor = @__(@JsonCreator))
 public class ResetUserPasswordDto {
 
     private final String password;

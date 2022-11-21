@@ -17,6 +17,7 @@ public interface BandMemberDAO extends CrudRepository<BandMember, Long> {
 
     /**
      * Get the artist information
+     *
      * @param artistId The id of the band.
      * @return The list of member of this band.
      */

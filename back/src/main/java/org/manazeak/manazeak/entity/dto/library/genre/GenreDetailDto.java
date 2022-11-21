@@ -2,7 +2,6 @@ package org.manazeak.manazeak.entity.dto.library.genre;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class GenreDetailDto {
 
+    private final List<GenreDetailArtistDto> artists = new ArrayList<>();
     private String genreName;
     private String cover;
-    private final List<GenreDetailArtistDto> artists = new ArrayList<>();
 
     public void addArtists(List<GenreDetailArtistDto> artists) {
         this.artists.addAll(artists);

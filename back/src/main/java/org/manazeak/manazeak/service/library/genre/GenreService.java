@@ -2,14 +2,12 @@ package org.manazeak.manazeak.service.library.genre;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.controller.fragment.library.genre.GenreFragment;
 import org.manazeak.manazeak.daos.track.GenreDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.genre.GenreManager;
 import org.manazeak.manazeak.manager.library.random.genre.RandomGenreManager;
-import org.manazeak.manazeak.manager.library.track.TrackManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

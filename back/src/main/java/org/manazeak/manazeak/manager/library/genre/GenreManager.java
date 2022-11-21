@@ -6,7 +6,6 @@ import org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDt
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailArtistDto;
 import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
-import org.manazeak.manazeak.entity.track.Genre;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class GenreManager {
 
     /**
      * Create a new album from the data of the genre of the database.
+     *
      * @param artistBuilder The information from the database.
      * @return The album.
      */

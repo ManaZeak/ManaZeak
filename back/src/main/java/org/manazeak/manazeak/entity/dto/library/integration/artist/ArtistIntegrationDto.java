@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,18 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 public class ArtistIntegrationDto {
 
-    private Long id;
-
-    private String name;
-
-    private String location;
-
-    private boolean isLabel;
-
-    private LocalDateTime modificationDate;
-
     private final List<String> subArtists = new ArrayList<>();
-
+    private Long id;
+    private String name;
+    private String location;
+    private boolean isLabel;
+    private LocalDateTime modificationDate;
     private Long labelId;
 
     public void addSubArtists(List<String> newSubArtists) {

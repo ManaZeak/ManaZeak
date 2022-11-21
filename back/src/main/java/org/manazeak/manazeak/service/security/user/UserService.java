@@ -46,6 +46,7 @@ public interface UserService {
 
     /**
      * Change the password of a user.
+     *
      * @param resetUserPassword Contains the information about the user and the new password.
      */
     void changeUserPassword(final ResetUserPasswordDto resetUserPassword);

@@ -11,7 +11,7 @@ import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
  */
 @PasswordMatches
 @Data
-@RequiredArgsConstructor(onConstructor=@__(@JsonCreator))
+@RequiredArgsConstructor(onConstructor = @__(@JsonCreator))
 public class ResetPasswordDto implements PasswordContainer {
 
     @Password
