@@ -90,7 +90,8 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "perf.isLabel) " +
             "from Track trk " +
             "join trk.performerList perf " +
-            "where trk.album.albumId = :albumId")
+            "where trk.album.albumId = :albumId " +
+            "order by perf.name")
     List<ArtistMinimalInfoDto> getAlbumPerformers(@Param("albumId") Long albumId);
 
 }

@@ -31,7 +31,8 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             "trk.title," +
             "trk.duration) " +
             "from Track trk " +
-            "where trk.album.albumId = :albumId")
+            "where trk.album.albumId = :albumId " +
+            "order by trk.trackNumber")
     List<MinimalTrackInfoDto> getMinimalTracksByAlbumId(@Param("albumId") Long albumId);
 
 
