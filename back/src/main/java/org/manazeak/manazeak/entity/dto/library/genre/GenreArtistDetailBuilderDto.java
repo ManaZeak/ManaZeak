@@ -12,6 +12,8 @@ public class GenreArtistDetailBuilderDto {
 
     private final String artistName;
 
+    private final Boolean artistIsLabel;
+
     private final String artistPicture;
 
     private final Long albumId;
