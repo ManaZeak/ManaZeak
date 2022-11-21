@@ -82,6 +82,7 @@ public class LibraryIntegrationManager {
         }
         // Flushing all the modification of the database.
         entityManager.flush();
+        clearAllIntegrationCaches();
     }
 
     /**
