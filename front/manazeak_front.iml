@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jacoco:jacoco-maven-plugin:0.8.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.0.22" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.shared:file-management:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-shared-io:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact:2.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact-manager:2.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-repository-metadata:2.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-provider-api:1.0-alpha-6" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-9" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:4.13.2" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
+    <orderEntry type="library" name="Maven: classworlds:classworlds:1.1-alpha-2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.reporting:maven-reporting-api:3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.doxia:doxia-sink-api:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.agent:runtime:0.8.8" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.core:0.8.8" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-commons:9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-analysis:9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-tree:9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.report:0.8.8" level="project" />
+    <orderEntry type="library" name="Maven: org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184" level="project" />
+    <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-sec-dispatcher:1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-cipher:1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.sonarsource.scanner.api:sonar-scanner-api:2.16.2.588" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.plugins:maven-compiler-plugin:3.10.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-shared-utils:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-shared-incremental:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-component-annotations:1.5.5" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-java:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.qdox:qdox:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-api:2.11.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-manager:2.11.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.plexus:plexus-compiler-javac:2.11.1" level="project" />
+  </component>
+</module>
