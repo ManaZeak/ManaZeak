@@ -1,3 +1,4 @@
+import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
 
 
@@ -9,6 +10,8 @@ class GenreView extends SceneView {
       type: 'item',
       url: `/fragment/library/genre/${options.id}`
     });
+
+    this._scrolls = [];
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
@@ -26,6 +29,13 @@ class GenreView extends SceneView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      this._scrolls.push(new ScrollBar({
+        target: this.dom,
+        style: {
+          color: '#56D45B'
+        }
+      }));
+
       resolve();
     });
   }

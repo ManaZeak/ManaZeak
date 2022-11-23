@@ -9,20 +9,24 @@
 
     </div>
   </div>
-  <div class="genre-content">
-    <div th:each="artist : ${genre.artists}">
-      <p th:text="*{artist.artistName}"></p>
-      <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)"></div>
-
-      <!-- The list of albums of this artist. -->
-      <div th:each="album : *{artist.albums}">
-        <p th:text="*{album.albumTitle}"></p>
-        <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
-
-        <!-- The list of tracks containing the genre of the album. -->
-        <div th:each="track : *{album.tracks}">
-          <p th:text="*{track.title}"></p>
-          <p th:text="*{track.duration}"></p>
+  <div id="genre-content" class="genre-content">
+    <div th:each="artist : ${genre.artists}" class="artist">
+      <div th:attr="data-id=*{artist.artistId}" class="artist-info">
+        <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)"></div>
+        <p th:text="*{artist.artistName}"></p>
+      </div>
+      <div class="artist-albums">
+        <div th:each="album : *{artist.albums}" class="album-tracks">
+          <h2 th:text="*{album.albumTitle}"></h2>
+          <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId}" class="track">
+            <div class="album-id" th:attr="data-id=*{album.albumId}">
+              <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
+            </div>
+            <div>
+              <p th:text="*{track.title}"></p>
+            </div>
+            <p th:text="*{track.duration}"></p>
+          </div>
         </div>
       </div>
     </div>

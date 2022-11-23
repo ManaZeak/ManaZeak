@@ -213,7 +213,7 @@
 
       [class$="-picture"] {
         cursor: pointer;
-        height: calc(20rem + var(--margin));
+        height: 20rem;
         width: 20rem;
   
         img {
@@ -238,6 +238,38 @@
     [class$="-header-right"] {
       margin: var(--margin);
       width: calc(100% - 30rem);
+    }
+  }
+}
+
+.album-view-wrapper,
+.genre-view-wrapper {
+  .album-tracks {
+    counter-reset: track; /* Create counter instance */
+    padding: var(--padding) 0;
+    width: 100%;
+
+    .track {
+      background-color: var(--color-bg-light-alpha-25);
+      cursor: pointer;
+      height: 5rem;
+      position: relative;
+      width: 100%;
+      transition: background-color .1s;
+
+      &:nth-child(odd) {
+        background-color: var(--color-bg-dark-alpha-25);
+      }
+
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--color-primary-alpha-10);
+      }
+
+      &.playing {
+        background-color: var(--color-primary-alpha-50);
+      }
     }
   }
 }
@@ -441,69 +473,44 @@
       }
 
       .album-tracks {
-        counter-reset: track; /* Create counter instance */
         height: calc(100% - 10rem - (2 * var(--padding)));
-        padding: var(--padding) 0;
-        width: 100%;
 
-        .track {
-          background-color: var(--color-bg-light-alpha-25);
-          cursor: pointer;
-          height: 5rem;
-          position: relative;
-          width: 100%;
-          transition: background-color .1s;
+        /* before is used for track number */
+        &::before {
+          counter-increment: track;
+          content: "#" counters(track, ".");
+          color: var(--color-txt-darker);
+          font-size: var(--font-size-small);
+          font-style: italic;
+          position: absolute;
+          top: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          bottom: 0;
+          left: 0;
+          text-align: center;
+          width: 5rem;
+        }
 
-          &:nth-child(odd) {
-            background-color: var(--color-bg-dark-alpha-25);
-          }
+        p {
+          line-height: 5rem;
+          margin: 0;
+          padding: 0 var(--padding);
+          padding-left: 5rem;
+        }
 
-          &:active,
-          &:focus,
-          &:hover {
-            background-color: var(--color-primary-alpha-10);
-          }
+        span:first-child  {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
 
-          &.playing {
-            background-color: var(--color-primary-alpha-50);
-          }
-          /* before is used for track number */
-          &::before {
-            counter-increment: track;
-            content: "#" counters(track, ".");
-            color: var(--color-txt-darker);
-            font-size: var(--font-size-small);
-            font-style: italic;
-            position: absolute;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            bottom: 0;
-            left: 0;
-            text-align: center;
-            width: 5rem;
-          }
-
-          p {
-            line-height: 5rem;
-            margin: 0;
-            padding: 0 var(--padding);
-            padding-left: 5rem;
-          }
-
-          span:first-child  {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-
-          span:last-child {
-            float: right;
-            margin-right: var(--margin);
-            text-align: right;
-            width: 7rem;
-          }
+        span:last-child {
+          float: right;
+          margin-right: var(--margin);
+          text-align: right;
+          width: 7rem;
         }
       }
     }
@@ -511,6 +518,71 @@
 }
 
 .genre-view-wrapper {
+  height: 100%;
+
+  .artist {
+    background-color: var(--color-bg-alpha-75);
+    border-radius: var(--font-size);
+    display: flex;
+    margin: var(--margin-big);
+    padding: var(--padding);
+    padding-top: calc(2 * var(--padding));
+
+    .artist-info {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 30rem;
+
+      [class$="-picture"] {
+        cursor: pointer;
+        height: 20rem;
+        width: 20rem;
+  
+        img {
+          height: 100%;
+          margin-bottom: var(--margin);
+          width: 100%;
+        }
+      }
+    }
+
+    .artist-albums {
+      width: calc(100% - 30rem);
+
+      .album-tracks {
+        padding-top: 0;
+        width: 100%;
+
+        h2 {
+          margin-top: 0;
+        }
+
+        .track {
+          display: flex;
+
+          div:not(:first-child) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 2rem;
+            width: calc(100% - 50px - 7rem);
+
+            p {
+              margin: 0;
+            }
+
+            p:last-child {
+              font-style: italic;
+              text-indent: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
   img {
     height: 50px;
   }
