@@ -16,16 +16,16 @@
         <p th:text="*{artist.artistName}"></p>
       </div>
       <div class="artist-albums">
-        <div th:each="album : *{artist.albums}" class="album-tracks">
-          <h2 th:text="*{album.albumTitle}"></h2>
+        <div th:each="album : *{artist.albums}" class="album">
+          <div th:attr="data-id=*{album.albumId}" class="album-info">
+            <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
+            <h2 th:text="*{album.albumTitle}"></h2>
+          </div>
           <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId}" class="track">
-            <div class="album-id" th:attr="data-id=*{album.albumId}">
-              <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
-            </div>
             <div>
               <p th:text="*{track.title}"></p>
             </div>
-            <p th:text="*{track.duration}"></p>
+            <p th:text="*{track.duration}" class="duration"></p>
           </div>
         </div>
       </div>

@@ -94,7 +94,7 @@ class AlbumView extends SceneView {
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
 
       for (let i = 0; i < this._tracks.length; ++i) {
-        this._tracks[i]._buildAlbumObject = this._buildAlbumObject.bind(this);
+        this._tracks[i]._buildPlaybackObject = this._buildPlaybackObject.bind(this);
         this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
       }
 
@@ -140,12 +140,12 @@ class AlbumView extends SceneView {
   _trackClicked() {
     mzk.changeTrack({
       id: this.dataset.id,
-      playObject: this._buildAlbumObject(this.dataset.id)
+      playObject: this._buildPlaybackObject(this.dataset.id)
     });
   }
 
 
-  _buildAlbumObject(currentId) {
+  _buildPlaybackObject(currentId) {
     const album = {
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       artist: this.dom.querySelector('#release-artist').innerHTML,

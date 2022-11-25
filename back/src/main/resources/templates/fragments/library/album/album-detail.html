@@ -34,7 +34,7 @@
           <div th:replace="include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)"></div>
         </div>
       </div>
-      <div id="album-tracks" class="album-tracks">
+      <div id="album-tracks" class="album">
         <div th:each="track : *{album.tracks}"  th:attr="data-id=*{track.trackId}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
         </div>
