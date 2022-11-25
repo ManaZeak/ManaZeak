@@ -1,12 +1,3 @@
-.context-transparent-overlay {
-    height: 100%;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999;
-  }
-
 /* Parent element is in context subfolder */
 .playback-rate-container {
     @include bar-container();

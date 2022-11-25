@@ -8,10 +8,16 @@ class ContextMenu {
     this._dom = {};
 
     this._fetchTemplate();
-}
+  }
 
 
-_fetchTemplate() {
+  destroy() {
+
+  }
+
+
+  /* TODO destroy and proper event handling */
+  _fetchTemplate() {
     mzk.kom.getText(this._url)
       .then((response) => {
         const parser = new DOMParser();
@@ -71,6 +77,7 @@ _fetchTemplate() {
   isOpen() {
     return document.body.contains(this._overlay);
   }
+
 
   get dom() {
     return this._dom;

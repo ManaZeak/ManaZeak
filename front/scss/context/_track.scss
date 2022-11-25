@@ -1,0 +1,44 @@
+.track-context {
+  background: #1f2127;
+  border: solid 1px black;
+  border-radius: 5px;
+  top: 0;
+  height: auto;
+  position: absolute;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  width: auto;
+  justify-content: center;
+  flex-direction: column;
+
+  .entry {
+    height: 30px; // Match value in TrackContext.js if modified here
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 5px;
+
+    &:first-child {
+      border-bottom: solid var(--mzk-border-width) var(--mzk-color-text-light-alpha-25);
+    }
+
+    img {
+      height: 20px;
+      margin: 0 10px;
+      width: 20px;
+    }
+
+    p {
+      line-height: 30px;
+    }
+
+    &.add-to-queue::before {
+      content: '+';
+      color: #56D45B;
+      position: absolute;
+      font-weight: bold;
+      left: 5px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
+import TrackContext from '../../context/TrackContext';
 
 
 class AlbumView extends SceneView {
@@ -26,6 +27,7 @@ class AlbumView extends SceneView {
 
   destroy() {
     super.destroy();
+    this._trackContext.destroy();
     Utils.clearAllEvents(this._evtIds);
     Evts.unsubscribe(this._changeTrackEvt);
     Utils.removeAllObjectKeys(this);
@@ -54,7 +56,7 @@ class AlbumView extends SceneView {
       });
       // Update tracks bc of scroll DOM
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
-
+      // <scrollbar to performers for better UI
       if (this._performers.length > 4) {
         this.dom.querySelector('#album-performers').style.height = '190px';
         // Ensure height is properly applied before creating scroll on performers
@@ -71,7 +73,12 @@ class AlbumView extends SceneView {
       } else {
         this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
       }
-
+      // Track context on container
+      this._trackContext = new TrackContext({
+        target: this.dom.querySelector('#album-tracks') ,
+        name: 'track'
+      });
+      
       resolve();
     });
   }
@@ -100,6 +107,15 @@ class AlbumView extends SceneView {
 
       this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._trackChanged.bind(this));
 
+      this.dom.querySelector('#album-tracks').addEventListener('contextmenu', event => {
+        event.preventDefault();
+        if (this.dom.querySelector('#album-tracks').contains(this._trackContext.dom)) {
+          this._trackContext.close();
+        } else {
+          this._contextClicked(event);
+        }
+      });
+      
       resolve();
     });
   }
@@ -131,6 +147,33 @@ class AlbumView extends SceneView {
       name: 'Label',
       id: this.dataset.id
     });
+  }
+
+
+  _contextClicked(event) {
+    if (event.target.closest('.track')) {
+      let title = event.target.parentNode.children[0].children;
+      if (event.target.className !== 'track') {
+        if (title.length === 0) {
+          title = event.target.parentNode.parentNode.children[0].children[0]
+        } else {
+          title = title[0];
+        }
+        console.log(title)
+
+        this._trackContext.open(event, {
+          id: event.target.parentNode.dataset.id,
+          name: `${document.getElementById('release-artist').innerHTML} - ${title.textContent}`
+        });
+      } else {
+        console.log(title)
+
+        this._trackContext.open(event, {
+          id: event.target.dataset.id,
+          name: `${document.getElementById('release-artist').innerHTML} - ${title[0].textContent}`
+        });
+      }
+    }
   }
 
 

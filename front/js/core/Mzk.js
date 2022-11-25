@@ -91,6 +91,10 @@ class Mzk {
   }
 
 
+  download(options) {
+    this.ctrl.download(options);
+  }
+
 }
 
 

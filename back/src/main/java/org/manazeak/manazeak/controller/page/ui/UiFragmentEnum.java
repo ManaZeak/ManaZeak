@@ -9,7 +9,8 @@ public enum UiFragmentEnum {
     ALBUM_COVER_MODAL("fragments/modal/album-cover.html"),
     ARTIST_PICTURE_MODAL("fragments/modal/artist-picture.html"),
     ABOUT_MODAL("fragments/modal/about.html"),
-    PLAYBACK_RATE_CONTEXT("fragments/context/playbackrate.html");
+    PLAYBACK_RATE_CONTEXT("fragments/context/playbackrate.html"),
+    TRACK_CONTEXT("fragments/context/track.html");
 
     private final String page;
 
