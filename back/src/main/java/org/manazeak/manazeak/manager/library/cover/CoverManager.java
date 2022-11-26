@@ -15,6 +15,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,7 +45,7 @@ public class CoverManager {
      * @param cover The cover location in the FS.
      * @return The hashed name of the cover.
      */
-    private static String generateCoverThumbs(Path cover) {
+    public static String generateCoverThumbs(Path cover) {
         String coverName = HashUtil.getMd5Hash(cover.toString()).toUpperCase();
 
         // Generating the thumbnails.
@@ -53,6 +54,10 @@ public class CoverManager {
 
         // Returning the cover name to save it into the database.
         return coverName;
+    }
+
+    public static void generateCoverThumbs(String path) {
+        generateCoverThumbs(Paths.get(path));
     }
 
     /**

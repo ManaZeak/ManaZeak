@@ -3,8 +3,10 @@ package org.manazeak.manazeak.daos.track;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverUpdateProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
 import org.manazeak.manazeak.entity.track.Album;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -73,5 +75,13 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "join alb.label lab " +
             "where alb.albumId = :albumId")
     Optional<AlbumDetailsDto> getAlbumDetailsById(@Param("albumId") Long albumId);
+
+    @Query("select " +
+            "   albumId as id, " +
+            "   location as albumLocation " +
+            "from Album " +
+            "where albumId > :lastAlbumId " +
+            "order by albumId")
+    List<AlbumCoverUpdateProjection> getAlbumsLocationAndCoverName(@Param("lastAlbumId") Long lastAlbumId, Pageable pageable);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

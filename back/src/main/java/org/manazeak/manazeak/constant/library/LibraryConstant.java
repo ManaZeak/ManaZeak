@@ -39,7 +39,7 @@ public final class LibraryConstant {
     /**
      * The number of thread that will be used to extract the covers.
      */
-    public static final int COVER_EXTRACTION_THREAD_NUMBER = 5;
+    public static final int COVER_EXTRACTION_THREAD_NUMBER = 10;
 
     private LibraryConstant() {
 
