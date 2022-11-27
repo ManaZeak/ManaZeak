@@ -42,7 +42,8 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
             "alb.cover, " +
             "trk.trackId, " +
             "trk.title, " +
-            "trk.duration) " +
+            "trk.duration," +
+            "trk.mood) " +
             "from Track trk " +
             "join trk.genreList gen " +
             "join trk.album alb " +
