@@ -91,6 +91,11 @@ class Mzk {
   }
 
 
+  queue(data) {
+    this.ctrl.queue(data);
+  }
+
+
   download(options) {
     this.ctrl.download(options);
   }

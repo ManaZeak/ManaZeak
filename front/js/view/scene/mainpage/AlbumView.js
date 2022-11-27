@@ -190,6 +190,7 @@ class AlbumView extends SceneView {
 
   _buildPlaybackObject(currentId) {
     const album = {
+      type: 'album',
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       artist: this.dom.querySelector('#release-artist').innerHTML,
       tracks: []

@@ -103,7 +103,9 @@ class GenreView extends SceneView {
 
 
   _buildPlaybackObject() {
-    return {};
+    return {
+      type: 'genre'
+    };
   }
 
 

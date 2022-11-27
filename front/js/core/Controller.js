@@ -7,6 +7,7 @@ class Controller {
   constructor() {
     this._player = null;
     this._playObject = null;
+    this._queue = []; // User manual queue
     this._init();
     this._events();
   }
@@ -31,7 +32,9 @@ class Controller {
 
 
   changeTrack(options) {
-    this._playObject = options.playObject;
+    if (options.playObject) { // Only replace current playObject if existing
+      this._playObject = options.playObject;
+    }
     this._player.changeTrack(`/play/${options.id}`);
     Evts.publish('ChangeTrack', {
       id: options.id
@@ -40,12 +43,21 @@ class Controller {
 
 
   _trackEnded() {
+    // First, we check user manual queue that override everything
+    if (this._queue.length > 0) {
+      mzk.changeTrack({
+        id: this._queue[this._queue.length - 1].id
+      });
+      this._queue.pop();
+      return;
+    }
+    // Now check last playObject in memory for tracks to play
     if (this._playObject.tracks.length > 0) {
       const track = this._playObject.tracks.shift();
       mzk.changeTrack({
         id: track.id,
         playObject: this._playObject
-      })
+      });
     } else {
       mzk.stopPlayback();
     }
@@ -100,6 +112,11 @@ class Controller {
 
   next() {
 
+  }
+
+
+  queue(data) {
+    this._queue.push(data);
   }
 
 

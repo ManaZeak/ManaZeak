@@ -35,7 +35,11 @@ constructor(options) {
 
   _addToQueue(event) {
     event.stopImmediatePropagation();
-    //mzk.addTrackToQueue(this._targetId);
+    mzk.queue({
+      type: 'track',
+      id: this._targetId,
+      info: {}
+    });
     this.close();
   }
 
