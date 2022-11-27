@@ -4,7 +4,8 @@
         <p>Some text to put yeah</p>
     </div>
     <div class="control-container">
-        <div class="item" id="admin-button"> <!-- TODO make available if user is admin only -->
+        <!--/*@thymesVar id="isAdmin" type="java.lang.Boolean"*/-->
+        <div class="item" id="admin-button" th:if="${isAdmin}">
             <img alt="admin-button" src="static/img/actions/option-gear.svg"/>
             <p th:text="#{menu.admin}"></p>
         </div>
