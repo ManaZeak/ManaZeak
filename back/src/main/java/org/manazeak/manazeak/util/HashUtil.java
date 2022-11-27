@@ -17,7 +17,11 @@ public final class HashUtil {
      * @return the hashed value.
      */
     public static String getMd5Hash(String value) {
-        return DigestUtils.md5DigestAsHex(value.getBytes()).toUpperCase(Locale.ENGLISH);
+        return getMd5HashLower(value).toUpperCase(Locale.ENGLISH);
+    }
+
+    public static String getMd5HashLower(String value) {
+        return DigestUtils.md5DigestAsHex(value.getBytes());
     }
 
     /**
