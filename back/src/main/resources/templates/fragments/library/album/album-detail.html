@@ -1,7 +1,7 @@
-<!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
-<!--/*@thymesVar id="performers" type="java.util.List"*/-->
-<!--/*@thymesVar id="performer" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
+  <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
+  <!--/*@thymesVar id="performers" type="java.util.List"*/-->
+  <!--/*@thymesVar id="performer" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
   <div class="album-container">
     <div class="album-aside">
       <div th:replace="include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)"></div>
@@ -37,6 +37,7 @@
       <div id="album-tracks" class="album">
         <div th:each="track : *{album.tracks}"  th:attr="data-id=*{track.trackId}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
+          <p th:text="*{track.mood}"></p>
         </div>
       </div>
     </div>

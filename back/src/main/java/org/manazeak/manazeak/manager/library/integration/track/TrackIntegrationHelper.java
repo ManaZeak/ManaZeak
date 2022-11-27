@@ -7,6 +7,7 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.util.FieldUtil;
+import org.manazeak.manazeak.util.HashUtil;
 
 import java.util.*;
 
@@ -51,6 +52,7 @@ public class TrackIntegrationHelper {
 
         // Getting the album ID from the cache.
         track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_LOCATION, extractedAlbum.getLocation().toString()));
+        track.setMoodbar(HashUtil.getMd5Hash(track.getLocation()));
         // Getting the IDs of the artists.
         linkArtists(track, extractedTrack);
 

@@ -33,6 +33,7 @@ public class TrackIntegrationUpsertSetter implements BatchPreparedStatementSette
         ps.setString(11, track.getLocation());
         ps.setObject(12, track.getBpm());
         ps.setBoolean(13, track.isMp3());
+        ps.setString(14, track.getMoodbar());
     }
 
     @Override

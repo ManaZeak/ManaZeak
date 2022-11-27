@@ -29,7 +29,8 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
     @Query("select new org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto(" +
             "trk.trackId," +
             "trk.title," +
-            "trk.duration) " +
+            "trk.duration, " +
+            "trk.mood) " +
             "from Track trk " +
             "where trk.album.albumId = :albumId " +
             "order by trk.trackNumber")

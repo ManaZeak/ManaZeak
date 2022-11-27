@@ -28,4 +28,6 @@ public class GenreArtistDetailBuilderDto {
 
     private final Double trackDuration;
 
+    private final String trackMood;
+
 }

@@ -42,6 +42,7 @@ public class Track implements Serializable{
 	private String opus;
 	private Boolean isMp3;
 	private String subtitle;
+	private String mood;
 	private Album album;
 	private Set<Artist> producerList;
 	private Set<Artist> artistsList;
@@ -267,6 +268,21 @@ public class Track implements Serializable{
 		this.subtitle = subtitle;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of mood
+     */
+    @Column(name="mood", nullable=false)
+	public String getMood(){
+		return mood;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param mood new value to give to mood
+     */
+	public void setMood(final String mood){
+		this.mood = mood;
+    }  
+    /**
      * Association track_album to Album
      * @return value of album
      */
@@ -447,6 +463,7 @@ public class Track implements Serializable{
 		result = 31 * result + (opus == null? 0 : opus.hashCode());
 		result = 31 * result + (isMp3 == null? 0 : isMp3.hashCode());
 		result = 31 * result + (subtitle == null? 0 : subtitle.hashCode());
+		result = 31 * result + (mood == null? 0 : mood.hashCode());
 			
 		return result;
 	}
@@ -485,6 +502,7 @@ public class Track implements Serializable{
 			&& (opus == null ?  (otherTrack.opus == null) : opus.equals(otherTrack.opus))
 			&& (isMp3 == null ?  (otherTrack.isMp3 == null) : isMp3.equals(otherTrack.isMp3))
 			&& (subtitle == null ?  (otherTrack.subtitle == null) : subtitle.equals(otherTrack.subtitle))
+			&& (mood == null ?  (otherTrack.mood == null) : mood.equals(otherTrack.mood))
 		;
 	}
 

@@ -35,7 +35,7 @@ public class GenreManager {
     }
 
     private static MinimalTrackInfoDto createMinimalTrackInfo(GenreArtistDetailBuilderDto artistBuilder) {
-        return new MinimalTrackInfoDto(artistBuilder.getTrackId(), artistBuilder.getTrackTitle(), artistBuilder.getTrackDuration());
+        return new MinimalTrackInfoDto(artistBuilder.getTrackId(), artistBuilder.getTrackTitle(), artistBuilder.getTrackDuration(), artistBuilder.getTrackMood());
     }
 
     /**

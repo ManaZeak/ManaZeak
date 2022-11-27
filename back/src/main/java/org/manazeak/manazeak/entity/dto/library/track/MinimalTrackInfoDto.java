@@ -13,4 +13,6 @@ public class MinimalTrackInfoDto {
     private final String title;
 
     private final Double duration;
+
+    private final String mood;
 }

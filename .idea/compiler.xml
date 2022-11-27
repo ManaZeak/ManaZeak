@@ -11,12 +11,6 @@
         <module name="manazeak_back" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="manazeak" target="11" />
-      <module name="manazeak_back" target="11" />
-      <module name="manazeak_front" target="11" />
-      <module name="mda-generator" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

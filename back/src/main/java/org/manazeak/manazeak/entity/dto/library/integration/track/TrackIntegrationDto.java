@@ -22,6 +22,7 @@ public class TrackIntegrationDto {
     private String opus;
     private String subtitle;
     private Long albumId;
+    private String moodbar;
     private Set<Long> producerIds;
     private Set<Long> artistIds;
     private Set<Long> composerIds;
