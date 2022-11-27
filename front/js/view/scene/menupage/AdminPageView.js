@@ -17,8 +17,8 @@ class AdminPageView extends TabView {
 
     this._fetchWrapper(this._url)
       .then(this._fillAttributes.bind(this))
-      .then(this._viewReady)
       .then(this._usersClicked.bind(this))
+      .then(this._viewReady)
       .catch(this._viewFailed);
   }
 
