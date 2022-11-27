@@ -8,6 +8,7 @@ class Controller {
     this._player = null;
     this._playObject = null;
     this._queue = []; // User manual queue
+    this._playingId = -1;
     this._init();
     this._events();
   }
@@ -36,6 +37,7 @@ class Controller {
       this._playObject = options.playObject;
     }
     this._player.changeTrack(`/play/${options.id}`);
+    this._playingId = options.id;
     Evts.publish('ChangeTrack', {
       id: options.id
     });
@@ -132,6 +134,11 @@ class Controller {
 
   get player() {
     return this._player;
+  }
+
+
+  get playingId() {
+    return this._playingId;
   }
 
 

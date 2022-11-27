@@ -78,7 +78,13 @@ class AlbumView extends SceneView {
         target: this.dom.querySelector('#album-tracks') ,
         name: 'track'
       });
-      
+
+      if (mzk.ctrl.playingId) {
+        this._updatePlaying({
+          id: mzk.ctrl.playingId
+        });
+      }
+
       resolve();
     });
   }
@@ -105,7 +111,7 @@ class AlbumView extends SceneView {
         this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
       }
 
-      this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._trackChanged.bind(this));
+      this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._updatePlaying.bind(this));
 
       this.dom.querySelector('#album-tracks').addEventListener('contextmenu', event => {
         event.preventDefault();
@@ -216,7 +222,7 @@ class AlbumView extends SceneView {
   }
 
 
-  _trackChanged(data) {
+  _updatePlaying(data) {
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.remove('playing');
       if (this._tracks[i].dataset.id === data.id) {
