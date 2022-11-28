@@ -210,7 +210,7 @@ class AlbumView extends SceneView {
           // TODO track artist instead of release artist
           duration: this._tracks[i].children[0].children[1].innerHTML,
           id: this._tracks[i].dataset.id,
-          mood: this._tracks[i].dataset.mood
+          mood: this._tracks[i].getAttribute('data')
         });
       }
 
