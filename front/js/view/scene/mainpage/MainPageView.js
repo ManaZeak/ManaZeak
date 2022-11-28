@@ -22,7 +22,7 @@ class MainPageView extends SceneView {
 
   destroy() {
     super.destroy();
-    Evts.unsubscribe('SceneViewReady');
+    Evts.unsubscribe(this._readyEvtId);
     Utils.removeAllObjectKeys(this);
   }
 
