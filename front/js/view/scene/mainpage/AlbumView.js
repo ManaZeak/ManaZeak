@@ -78,7 +78,7 @@ class AlbumView extends SceneView {
         target: this.dom.querySelector('#album-tracks') ,
         name: 'track'
       });
-
+      // Update playing track if necessary
       if (mzk.ctrl.playingId) {
         this._updatePlaying({
           id: mzk.ctrl.playingId
@@ -209,7 +209,8 @@ class AlbumView extends SceneView {
           name: this._tracks[i].children[0].children[0].innerHTML,
           // TODO track artist instead of release artist
           duration: this._tracks[i].children[0].children[1].innerHTML,
-          id: this._tracks[i].dataset.id
+          id: this._tracks[i].dataset.id,
+          mood: this._tracks[i].dataset.mood
         });
       }
 

@@ -102,10 +102,31 @@ class GenreView extends SceneView {
   }
 
 
-  _buildPlaybackObject() {
-    return {
-      type: 'genre'
+  _buildPlaybackObject(currentId) {
+    const genre = {
+      type: 'genre',
+      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
+      genre: this.dom.querySelector('#genre-name').innerHTML,
+      tracks: []
     };
+
+    let currentReached = false;
+    for (let i = 0; i < this._tracks.length; ++i) {
+      if (currentReached === true) {
+        genre.tracks.push({
+          name: this._tracks[i].children[0].children[0].innerHTML,
+          duration: this._tracks[i].children[0].children[1].innerHTML,
+          id: this._tracks[i].dataset.id,
+          mood: this._tracks[i].dataset.mood
+        });
+      }
+
+      if (this._tracks[i].dataset.id === currentId) {
+        currentReached = true;
+      }
+    }
+
+    return genre;
   }
 
 

@@ -35,9 +35,8 @@
         </div>
       </div>
       <div id="album-tracks" class="album">
-        <div th:each="track : *{album.tracks}"  th:attr="data-id=*{track.trackId}" class="track">
+        <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId}" th:attr="data-mood=*{track.mood}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
-          <p th:text="*{track.mood}"></p>
         </div>
       </div>
     </div>

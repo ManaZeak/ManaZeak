@@ -72,20 +72,6 @@
   
       transition: height .2s ease 0s, 
         opacity .2s ease 0s;
-  
-      svg {
-        animation: .2s ease-in-out 0s;
-      }
-  
-      svg.fade-in {
-        g {
-          animation: fadein .2s ease-in-out 0s;
-        }
-      }
-  
-      svg.fade-out {
-        animation: fadeout .2s ease-in-out 0s;
-      }
     }
   }
   

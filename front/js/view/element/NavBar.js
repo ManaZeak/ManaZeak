@@ -24,6 +24,7 @@ class NavBar {
     this._progressBar = {};
     this._playbackRateContext = {};
     this._queueContext = {};
+    this._mmodbar = {};
 
     this._init();
     this._events();
@@ -53,6 +54,7 @@ class NavBar {
       name: 'context/queuecontext/'
     });
 */
+    this._moodbar = document.getElementById('progress-moodbar');
   }
 
 
@@ -111,7 +113,7 @@ class NavBar {
   }
 
 
-/**
+  /**
    * @method
    * @name updatePlayButton
    * @public
@@ -121,20 +123,26 @@ class NavBar {
    * @description Updates the play icon according to a given state
    * @param {boolean} isPlaying - The player playback state
    **/
- updatePlayButton(isPlaying) {
-  if (isPlaying) {
-    this._controls.play.src = '/static/img/player/pause.svg';
-  } else {
-    this._controls.play.src = '/static/img/player/play.svg';
+  updatePlayButton(isPlaying) {
+    if (isPlaying) {
+      this._controls.play.src = '/static/img/player/pause.svg';
+    } else {
+      this._controls.play.src = '/static/img/player/play.svg';
+    }
   }
-}
 
 
-updatePlaybackRate(playbackRate) {
-  if (this._playbackRateContext !== null) {
-    this._playbackRateContext.updatePlaybackRate(playbackRate);
+  updatePlaybackRate(playbackRate) {
+    if (this._playbackRateContext !== null) {
+      this._playbackRateContext.updatePlaybackRate(playbackRate);
+    }
   }
-}
+
+
+  updateMoodbar(mood) {
+    console.log(mood);
+    this._moodbar.src = `/resources/moods/ld/${mood}.webp`;
+  }
 
 
 

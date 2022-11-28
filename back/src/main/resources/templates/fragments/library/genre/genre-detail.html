@@ -3,7 +3,7 @@
   <div class="genre-header">
     <div class="genre-header-left">
       <div th:replace="include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
-      <h1 th:text="${genre.genreName}" id="artist-name"></h1>
+      <h1 th:text="${genre.genreName}" id="genre-name"></h1>
     </div>
     <div class="genre-header-right">
 
@@ -21,11 +21,8 @@
             <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
             <h2 th:text="*{album.albumTitle}"></h2>
           </div>
-          <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId}" class="track">
-            <div>
-              <p th:text="*{track.title}"></p>
-            </div>
-            <p th:text="*{track.duration}" class="duration"></p>
+          <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId}" th:attr="data-mood=*{track.mood}" class="track">
+            <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
           </div>
         </div>
       </div>

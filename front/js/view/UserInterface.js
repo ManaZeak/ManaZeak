@@ -174,6 +174,12 @@ class UserInterface {
   /* Playback */
 
 
+  changeTrack(options) {
+    this._navBar.updateMoodbar(options.playObject.mood);
+    this.setPlay(true);
+  }
+
+
   setPlay(playing) {
     if (!this._navBar.progressBar.isActive) {
       this._navBar.progressBar.activate();

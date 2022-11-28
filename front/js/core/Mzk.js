@@ -43,7 +43,7 @@ class Mzk {
 
   changeTrack(options) {
     this.ctrl.changeTrack(options);
-    this.ui.setPlay(true);
+    this.ui.changeTrack(options);
   }
 
 
