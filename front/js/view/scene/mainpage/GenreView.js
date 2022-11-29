@@ -1,7 +1,7 @@
 import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
 
-
+/*TODO extend TrackBiew  */
 class GenreView extends SceneView {
 
 
@@ -117,7 +117,7 @@ class GenreView extends SceneView {
           name: this._tracks[i].children[0].children[0].innerHTML,
           duration: this._tracks[i].children[0].children[1].innerHTML,
           id: this._tracks[i].dataset.id,
-          mood: this._tracks[i].getAttribute('data')
+          mood: this._tracks[i].dataset.mood
         });
       }
 
