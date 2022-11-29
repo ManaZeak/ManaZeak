@@ -1,5 +1,16 @@
 <!-- HTML fragment used in admin/users view -->
 <div class="commands-wrapper" xmlns:th="http://www.thymeleaf.org">
   <h1 th:text="#{admin.cmd.page_title}"></h1>
-  <button th:text="#{admin.cmd.scan_button}" id="scan-library"></button>
+  <div class="command">
+    <label for="scan-library" th:text="#{admin.cmd.scan_label}"></label>
+    <button th:text="#{admin.cmd.scan_button}" id="scan-library"></button>
+  </div>
+  <div class="command">
+    <label for="regen-thumbs" th:text="#{admin.cmd.thumbs_label}"></label>
+    <button th:text="#{admin.cmd.thumbs_button}" id="regen-thumbs"></button>
+  </div>
+  <div class="command">
+    <label for="regen-moods" th:text="#{admin.cmd.moods_label}"></label>
+    <button th:text="#{admin.cmd.moods_button}" id="regen-moods"></button>
+  </div>
 </div>

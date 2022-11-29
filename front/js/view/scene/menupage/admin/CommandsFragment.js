@@ -21,6 +21,12 @@ class CommandsFragment {
     // Saving users and badge from template
     const scanButton = this._target.querySelector('#scan-library');
     this._evtIds.push(Evts.addEvent('click', scanButton, this._scanClicked));
+
+    const regenThumbs = this._target.querySelector('#regen-thumbs');
+    this._evtIds.push(Evts.addEvent('click', regenThumbs, this._thumbsClicked));
+
+    const regenMoods = this._target.querySelector('#regen-moods');
+    this._evtIds.push(Evts.addEvent('click', regenMoods, this._moodsClicked));
   }
 
 
@@ -30,6 +36,16 @@ class CommandsFragment {
     }).catch(() => {
       Logger.raise('F_SCAN_REQUEST_ERROR');
     });
+  }
+
+
+  _thumbsClicked() {
+    console.log('Regen thumbs clicked');
+  }
+
+
+  _moodsClicked() {
+    console.log('Regen moods clicked');
   }
 
 
