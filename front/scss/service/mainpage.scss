@@ -270,6 +270,44 @@
       &.playing {
         background-color: var(--color-primary-alpha-50);
       }
+
+      /* before is used for track number */
+      &::before {
+        counter-increment: track;
+        content: "#" counters(track, ".");
+        color: var(--color-txt-darker);
+        font-size: var(--font-size-small);
+        font-style: italic;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        width: 5rem;
+      }
+
+      p {
+        line-height: 5rem;
+        margin: 0;
+        padding: 0 var(--padding);
+        padding-left: 5rem;
+      }
+
+      span:first-child  {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      span:last-child {
+        float: right;
+        margin-right: var(--margin);
+        text-align: right;
+        width: 7rem;
+      }
     }
   }
 }
@@ -474,46 +512,6 @@
 
       .album {
         height: calc(100% - 10rem - (2 * var(--padding)));
-
-        .track {
-          /* before is used for track number */
-          &::before {
-            counter-increment: track;
-            content: "#" counters(track, ".");
-            color: var(--color-txt-darker);
-            font-size: var(--font-size-small);
-            font-style: italic;
-            position: absolute;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            bottom: 0;
-            left: 0;
-            text-align: center;
-            width: 5rem;
-          }
-
-          p {
-            line-height: 5rem;
-            margin: 0;
-            padding: 0 var(--padding);
-            padding-left: 5rem;
-          }
-
-          span:first-child  {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-
-          span:last-child {
-            float: right;
-            margin-right: var(--margin);
-            text-align: right;
-            width: 7rem;
-          }
-        }
       }
     }
   }
@@ -571,46 +569,6 @@
 
         h2 {
           margin-top: 0;
-        }
-
-        .track {
-          display: flex;
-
-          /* before is used for track number */
-          &::before {
-            counter-increment: track;
-            content: "#" counters(track, ".");
-            color: var(--color-txt-darker);
-            font-size: var(--font-size-small);
-            font-style: italic;
-            position: absolute;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            bottom: 0;
-            left: 0;
-            text-align: center;
-            width: 5rem;
-          }
-
-          div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-left: 5rem;
-            width: calc(100% - 9rem);
-
-            p {
-              margin: 0;
-            }
-          }
-
-          .duration {
-            padding-right: var(--padding);
-            text-align: right;
-            width: 9rem;
-          }
         }
       }
     }

@@ -40,7 +40,7 @@ class GenreView extends SceneView {
       this._albums = this.dom.querySelectorAll('.album-info');
       this._tracks = this.dom.querySelectorAll('.track');
       for (let i = 0; i < this._tracks.length; ++i) {
-        const duration = this._tracks[i].children[1];
+        const duration = this._tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
 
@@ -96,7 +96,6 @@ class GenreView extends SceneView {
 
   _trackClicked() {
     mzk.changeTrack({
-      id: this.dataset.id,
       playObject: this._buildPlaybackObject(this.dataset.id)
     });
   }
@@ -112,6 +111,10 @@ class GenreView extends SceneView {
 
     let currentReached = false;
     for (let i = 0; i < this._tracks.length; ++i) {
+      if (this._tracks[i].dataset.id === currentId) {
+        currentReached = true;
+      }
+
       if (currentReached === true) {
         genre.tracks.push({
           name: this._tracks[i].children[0].children[0].innerHTML,
@@ -119,10 +122,6 @@ class GenreView extends SceneView {
           id: this._tracks[i].dataset.id,
           mood: this._tracks[i].dataset.mood
         });
-      }
-
-      if (this._tracks[i].dataset.id === currentId) {
-        currentReached = true;
       }
     }
 

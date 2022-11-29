@@ -174,8 +174,8 @@ class UserInterface {
   /* Playback */
 
 
-  changeTrack(options) {
-    this._navBar.updateMoodbar(options.playObject.mood);
+  changeTrack(track) {
+    this._navBar.updateMoodbar(track.mood);
     this.setPlay(true);
   }
 

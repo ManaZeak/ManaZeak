@@ -140,8 +140,7 @@ class NavBar {
 
 
   updateMoodbar(mood) {
-    console.log(mood);
-    this._moodbar.src = `/resources/moods/ld/${mood}.webp`;
+    this._moodbar.src = `/resources/moods/ld/${mood}`;
   }
 
 

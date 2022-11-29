@@ -42,8 +42,8 @@ class Mzk {
 
 
   changeTrack(options) {
-    this.ctrl.changeTrack(options);
-    this.ui.changeTrack(options);
+    const track = this.ctrl.changeTrack(options);
+    this.ui.changeTrack(track);
   }
 
 

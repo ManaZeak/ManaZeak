@@ -33,14 +33,14 @@ class Controller {
 
 
   changeTrack(options) {
-    if (options.playObject) { // Only replace current playObject if existing
-      this._playObject = options.playObject;
-    }
-    this._player.changeTrack(`/play/${options.id}`);
-    this._playingId = options.id;
+    this._playObject = options.playObject;
+    const track = options.playObject.tracks.shift();
+    this._player.changeTrack(`/play/${track.id}`);
+    this._playingId = track.id;
     Evts.publish('ChangeTrack', {
-      id: options.id
+      id: track.id
     });
+    return track;
   }
 
 

@@ -204,6 +204,10 @@ class AlbumView extends SceneView {
 
     let currentReached = false;
     for (let i = 0; i < this._tracks.length; ++i) {
+      if (this._tracks[i].dataset.id === currentId) {
+        currentReached = true;
+      }
+      
       if (currentReached === true) {
         album.tracks.push({
           name: this._tracks[i].children[0].children[0].innerHTML,
@@ -212,10 +216,6 @@ class AlbumView extends SceneView {
           id: this._tracks[i].dataset.id,
           mood: this._tracks[i].dataset.mood
         });
-      }
-
-      if (this._tracks[i].dataset.id === currentId) {
-        currentReached = true;
       }
     }
 
