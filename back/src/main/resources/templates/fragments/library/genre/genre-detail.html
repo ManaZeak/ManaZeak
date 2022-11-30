@@ -11,6 +11,9 @@
   </div>
   <div id="genre-content" class="genre-content">
     <div th:each="artist : ${genre.artists}" class="artist">
+      <div class="artist-commands"> <!-- Must remain first children of artist commands -->
+        <img src="static/img/navigation/nav-up.svg" th:attr="data-id=*{artist.artistId}" class="collapse-artist" alt="collapse-artist">
+      </div>
       <div th:attr="data-id=*{artist.artistId}" class="artist-info">
         <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)"></div>
         <p th:text="*{artist.artistName}"></p>
@@ -25,6 +28,9 @@
             <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
           </div>
         </div>
+      </div>
+      <div class="expand-artist-wrapper">
+        <img src="static/img/navigation/nav-down.svg" th:attr="data-id=*{artist.artistId}" class="expand-artist" alt="expand-artist">        
       </div>
     </div>
   </div>

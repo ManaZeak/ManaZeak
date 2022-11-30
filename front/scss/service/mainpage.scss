@@ -527,6 +527,27 @@
     margin: var(--margin-big);
     padding: var(--padding);
     padding-top: calc(2 * var(--padding));
+    position: relative;
+
+    &.collapsed {
+      height: 18rem;
+      overflow: hidden;
+
+      .expand-artist-wrapper {
+        display: flex;
+      }
+    }
+
+    .artist-commands {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+
+      img {
+        cursor: pointer;
+        height: 2rem;
+      }
+    }
 
     .artist-info {
       align-items: center;
@@ -570,6 +591,26 @@
         h2 {
           margin-top: 0;
         }
+      }
+    }
+
+    .expand-artist-wrapper {
+      align-items: flex-end;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .01) 1%, var(--color-bg) 75%);
+      bottom: 0;
+      display: none;
+      height: 8rem;
+      justify-content: center;
+      left: 0;
+      position: absolute;
+      width: 100%;
+
+      transition: opacity .2s;
+
+      img {
+        cursor: pointer;
+        height: 2rem;
+        margin-bottom: 1rem;
       }
     }
   }

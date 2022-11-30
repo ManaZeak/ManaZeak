@@ -71,6 +71,16 @@ class GenreView extends SceneView {
         this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
       }
 
+      const collapsers = this.dom.querySelectorAll('.collapse-artist');
+      for (let i = 0; i < collapsers.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', collapsers[i], this._toggleArtistExpansion.bind(this, collapsers[i]), this));
+      }
+
+      const expanders = this.dom.querySelectorAll('.expand-artist');
+      for (let i = 0; i < expanders.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', expanders[i], this._expandArtist.bind(this, expanders[i]), this));
+      }
+
       this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._trackChanged.bind(this));
 
       resolve();
@@ -98,6 +108,49 @@ class GenreView extends SceneView {
     mzk.changeTrack({
       playObject: this._buildPlaybackObject(this.dataset.id)
     });
+  }
+
+
+  _toggleArtistExpansion(collapser) {
+    for (let i = 0; i < this._artists.length; ++i) {
+      if (this._artists[i].dataset.id === collapser.dataset.id) {
+        if (this._artists[i].parentNode.classList.contains('collapsed')) {
+          this._expandArtist(collapser);
+        } else {
+          this._collapseArtist(collapser);
+        }
+
+        break;
+      }
+    }
+  }
+
+
+  _collapseArtist(collapser) {
+    for (let i = 0; i < this._artists.length; ++i) {
+      if (this._artists[i].dataset.id === collapser.dataset.id) {
+        if (!collapser.classList.contains('expand-artist')) {
+          collapser.src = 'static/img/navigation/nav-down.svg';
+        }
+        this._artists[i].parentNode.classList.add('collapsed');
+        break;
+      }
+    }
+  }
+
+
+  _expandArtist(collapser) {
+    for (let i = 0; i < this._artists.length; ++i) {
+      if (this._artists[i].dataset.id === collapser.dataset.id) {
+        if (!collapser.classList.contains('expand-artist')) { // Update icon if event doesn't come from expander
+          collapser.src = 'static/img/navigation/nav-up.svg';
+        } else { // When expanding we must ensure to restore collapser icon to initial state
+          this._artists[i].parentNode.children[0].children[0].src = 'static/img/navigation/nav-up.svg';
+        }
+        this._artists[i].parentNode.classList.remove('collapsed');
+        break;
+      }
+    }
   }
 
 
