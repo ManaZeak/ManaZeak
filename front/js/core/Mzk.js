@@ -2,6 +2,7 @@ import Kom from './Kom';
 import Lang from './Lang';
 import UserInterface from '../view/UserInterface';
 import Controller from './Controller.js';
+import Data from './Data.js';
 
 
 class Mzk {
@@ -12,6 +13,7 @@ class Mzk {
     this.nls = null;
     this.ui = null;
     this.ctrl = null;
+    this.data = null;
   }
 
 
@@ -22,6 +24,7 @@ class Mzk {
     this.nls = new Lang('en');
     this.ui = new UserInterface();
     this.ctrl = new Controller();
+    this.data = new Data();
     // Init scene with main page
     this.setView({ name: 'MainPage' });
   }
@@ -73,9 +76,21 @@ class Mzk {
   }
 
 
+  adjustVolume(amount) {
+    this.ctrl.adjustVolume(amount);
+    this.ui.setVolume(this.ctrl.player);
+  }
+
+
   setVolume(volume) {
     this.ctrl.setVolume(volume);
     this.ui.setVolume(this.ctrl.player);
+  }
+
+
+  adjustProgress(amount) {
+    this.ctrl.adjustProgress(amount);
+    this.ui.setProgress(this.ctrl.player.progress);
   }
 
 

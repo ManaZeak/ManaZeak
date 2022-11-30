@@ -11,6 +11,8 @@ class GenreView extends SceneView {
       url: `/fragment/library/genre/${options.id}`
     });
 
+    this._genre = '';
+
     this._artists = [];
     this._albums = [];
     this._tracks = [];
@@ -20,6 +22,7 @@ class GenreView extends SceneView {
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
+      .then(this._prepareUi.bind(this))
       .then(this._events.bind(this))
       .then(this._viewReady)
       .catch(this._viewFailed);
@@ -36,9 +39,11 @@ class GenreView extends SceneView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      this._genre = this.dom.querySelector('#genre-name').innerHTML;
       this._artists = this.dom.querySelectorAll('.artist-info');
       this._albums = this.dom.querySelectorAll('.album-info');
       this._tracks = this.dom.querySelectorAll('.track');
+
       for (let i = 0; i < this._tracks.length; ++i) {
         const duration = this._tracks[i].children[0].children[1];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
@@ -56,8 +61,20 @@ class GenreView extends SceneView {
   }
 
 
+  _prepareUi() {
+    return new Promise((resolve, reject) => {
+      mzk.data.getGenreInfo(this._genre).then(() => {
+        resolve();
+      }).catch(reject);
+    });
+  }
+
+
   _events() {
     return new Promise((resolve, reject) => {
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#expand-all'), this._expandAll, this));
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#collapse-all'), this._collapseAll, this));
+
       for (let i = 0; i < this._artists.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', this._artists[i], this._artistClicked, this._artists[i]));
       }
@@ -111,6 +128,9 @@ class GenreView extends SceneView {
   }
 
 
+  /* Toggle/Collapse */
+
+
   _toggleArtistExpansion(collapser) {
     for (let i = 0; i < this._artists.length; ++i) {
       if (this._artists[i].dataset.id === collapser.dataset.id) {
@@ -150,6 +170,22 @@ class GenreView extends SceneView {
         this._artists[i].parentNode.classList.remove('collapsed');
         break;
       }
+    }
+  }
+
+
+  _expandAll() {
+    for (let i = 0; i < this._artists.length; ++i) {
+      this._artists[i].parentNode.children[0].children[0].src = 'static/img/navigation/nav-up.svg';
+      this._artists[i].parentNode.classList.remove('collapsed');
+    }
+  }
+
+
+  _collapseAll() {
+    for (let i = 0; i < this._artists.length; ++i) {
+      this._artists[i].parentNode.children[0].children[0].src = 'static/img/navigation/nav-down.svg';
+      this._artists[i].parentNode.classList.add('collapsed');
     }
   }
 

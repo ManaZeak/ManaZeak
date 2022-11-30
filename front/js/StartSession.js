@@ -1,13 +1,17 @@
-import CustomEvents from './utils/CustomEvents';
-import Notification from './utils/Notification';
-import Logger from './utils/Logger';
 import Utils from './utils/Utils';
+import CustomEvents from './utils/CustomEvents';
+import Shortcut from './utils/Shortcut';
+import Logger from './utils/Logger';
+import Notification from './utils/Notification';
+
+
 import Mzk from './core/Mzk';
 
 
 // Globally used components (singleton)
 window.Utils = new Utils();
 window.Evts = new CustomEvents();
+window.Shortcut = new Shortcut();
 window.Logger = new Logger({
   notification: new Notification(),
   log: (window.location.href.indexOf('?debug') > -1) ? true : false

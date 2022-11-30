@@ -520,6 +520,21 @@
 .genre-view-wrapper {
   height: 100%;
 
+  .genre-header-right {
+    position: relative;
+
+    .view-commands {
+      bottom: 0;
+      position: absolute;
+      right: 0;
+
+      img {
+        cursor: pointer;
+        height: 2rem;
+      }
+    }
+  }
+
   .artist {
     background-color: var(--color-bg-alpha-75);
     border-radius: var(--font-size);
