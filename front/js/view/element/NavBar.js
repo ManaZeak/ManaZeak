@@ -140,7 +140,7 @@ class NavBar {
 
 
   updateMoodbar(mood) {
-    this._moodbar.src = `/resources/moods/ld/${mood}`;
+    this._moodbar.src = `/resources/moods/hd/${mood}`;
   }
 
 

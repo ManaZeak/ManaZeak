@@ -8,6 +8,7 @@
   width: 100%;
 
   .playback-wrapper {
+    align-items: center;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -16,7 +17,7 @@
     .top-line,
     .bottom-line {
       height: 50%;
-      width: 100%;
+      max-width: 2000px;
     }
 
     .top-line {
@@ -24,6 +25,7 @@
       display: flex;
       justify-content: center;
       position: relative;
+      width: calc(100% - 16rem);
 
       @include user-select(none);
 
@@ -86,6 +88,7 @@
     .bottom-line {
       align-items: flex-end;
       display: flex;
+      width: 100%;
 
       p {
         line-height: calc(25px + .5rem);
