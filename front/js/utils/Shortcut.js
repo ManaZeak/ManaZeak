@@ -143,7 +143,7 @@ class Shortcut {
     // Iterate over registered single key shortcut to fire it if one matches
     for (let i = 0; i < this._singleKey.length; ++i) {
       // Check that event is active and flatten key string to compare
-      if (!this._singleKey[i].pause && event.key.toLowerCase() === this._singleKey[i].keyString) {
+      if (!this._singleKey[i].pause && event.key.toLowerCase() === this._singleKey[i].keyString.toLowerCase()) {
         if (this._noPrevention === false) {
           event.preventDefault();
         }
@@ -168,7 +168,7 @@ class Shortcut {
       // Handy shortcut variable to work with
       const sh = this._multiKey[i];
       // Check that event is active and flatten key string to compare
-      if (!sh.pause && event.key.toLowerCase() === sh.keyString) {
+      if (!sh.pause && event.key.toLowerCase() === sh.key) {
         switch (sh.modifierCount) {
           case 1: // 2 key strokes
             if ((sh.modifiers.ctrlKey && event.ctrlKey)
