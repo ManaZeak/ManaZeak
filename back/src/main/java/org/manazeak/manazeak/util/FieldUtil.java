@@ -9,7 +9,7 @@ public final class FieldUtil {
 
     private static final String PLACEHOLDER_CHAR = "-";
 
-    private static final Pattern FORBIDDEN_CHAR_PATTERN = Pattern.compile("[*/\\\\:;?<>\"|']");
+    private static final Pattern FORBIDDEN_CHAR_PATTERN = Pattern.compile("[*/\\\\:;?<>\"|]");
 
     private FieldUtil() {
 
@@ -35,9 +35,9 @@ public final class FieldUtil {
      * @param value the value of the id.
      * @return True if the id field is not on default value or null.
      */
-    public static boolean isIdFieldNotEmpty(Long value) {
+    public static boolean isIdFieldEmpty(Long value) {
         // If the value is null or is equal to 0 it can't be an id.
-        return !(value == null || value == 0);
+        return value == null || value == 0;
     }
 
     /**

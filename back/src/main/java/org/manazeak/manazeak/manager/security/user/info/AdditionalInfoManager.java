@@ -63,7 +63,7 @@ public class AdditionalInfoManager {
      */
     private void linkUserWithCountry(MzkUser user, Long countryId) {
         // If the country field is not set, then there is nothing to do.
-        if (!FieldUtil.isIdFieldNotEmpty(countryId)) {
+        if (FieldUtil.isIdFieldEmpty(countryId)) {
             return;
         }
         Country userCountry = countryService.getCountryById(countryId);
@@ -78,7 +78,7 @@ public class AdditionalInfoManager {
      */
     private void linkUserWithLocale(MzkUser user, Long localeId) {
         // If the locale field is not set, the there is nothing to do.
-        if (!FieldUtil.isIdFieldNotEmpty(localeId)) {
+        if (FieldUtil.isIdFieldEmpty(localeId)) {
             return;
         }
         localeService.setUserLocale(localeId, user);
