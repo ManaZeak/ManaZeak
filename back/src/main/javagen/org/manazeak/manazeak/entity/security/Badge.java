@@ -1,18 +1,18 @@
 package org.manazeak.manazeak.entity.security;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.util.Set;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToMany;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Id;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinTable;
 
 /**
  * No comment found in model diagram

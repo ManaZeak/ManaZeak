@@ -15,7 +15,7 @@ public class LogoutSuccessController {
      *
      * @return The logged out page.
      */
-    @GetMapping("/logoutSuccess")
+    @GetMapping("/logoutSuccess/")
     public String getLogoutSuccess() {
         return UserPageEnum.LOGOUT_SUCCESS.getPage();
     }

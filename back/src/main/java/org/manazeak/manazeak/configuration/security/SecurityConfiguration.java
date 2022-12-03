@@ -45,26 +45,26 @@ public class SecurityConfiguration {
         if (devMode) {
             LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
             httpSecurity
-                    .authorizeRequests()
-                    .antMatchers("/.~~spring-boot!~/restart")
+                    .authorizeHttpRequests()
+                    .requestMatchers("/.~~spring-boot!~/restart")
                     .anonymous()
                     .and()
-                    .csrf().ignoringAntMatchers("/.~~spring-boot!~/restart");
+                    .csrf().ignoringRequestMatchers("/.~~spring-boot!~/restart");
         }
         httpSecurity
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Creates a session if required.
                 .and()
-                .authorizeRequests()
-                .antMatchers("/register", "/login", "/logoutSuccess").permitAll()
+                .authorizeHttpRequests()
+                .requestMatchers("/register/", "/login/", "/logoutSuccess/").permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/**").authenticated()
+                .authorizeHttpRequests()
+                .requestMatchers("/**").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login/")
                 .and()
-                .logout().logoutSuccessUrl("/logoutSuccess")
+                .logout().logoutSuccessUrl("/logoutSuccess/")
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         ;
 

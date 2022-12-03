@@ -28,7 +28,7 @@ public class WishAdminFragment {
      * @return The page containing the list of all the wishes.
      */
     @RestSecurity(PrivilegeEnum.WISR)
-    @GetMapping("/admin/wish/all")
+    @GetMapping("/admin/wish/all/")
     public String getAllWishes(Model model) {
         WishesDisplayDto wishes = wishService.getAllWishes();
         model.addAttribute("wishesTodo", wishes.getTodoWishes());

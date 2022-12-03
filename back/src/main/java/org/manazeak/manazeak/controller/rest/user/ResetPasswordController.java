@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.rest.user;
 
+import jakarta.validation.Valid;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 /**
  * This function allows the user to change his password.

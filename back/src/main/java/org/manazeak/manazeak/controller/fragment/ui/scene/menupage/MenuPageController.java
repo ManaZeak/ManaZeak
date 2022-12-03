@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MenuPageController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/menupage")
+    @GetMapping("/menupage/")
     public String getMenuPage(Model model) {
         model.addAttribute("isAdmin", SecurityUtil.currentUserHasPrivilege(PrivilegeEnum.ADMV));
         return UiFragmentEnum.MENU_PAGE.getPage();

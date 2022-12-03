@@ -6,10 +6,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Table;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Table;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

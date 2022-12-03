@@ -1,17 +1,17 @@
 package org.manazeak.manazeak.entity.random;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
+import jakarta.persistence.GeneratedValue;
 import org.manazeak.manazeak.entity.track.Artist;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.GenerationType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GenerationType;
 
 /**
  * No comment found in model diagram

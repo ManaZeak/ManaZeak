@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PlaybackRateContextController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/context/playbackrate")
+    @GetMapping("/context/playbackrate/")
     public String getPage() {
         return UiFragmentEnum.PLAYBACK_RATE_CONTEXT.getPage();
     }

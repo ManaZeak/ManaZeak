@@ -2,6 +2,7 @@ package org.manazeak.manazeak.controller.rest.library.track;
 
 import com.google.common.escape.UnicodeEscaper;
 import com.google.common.net.PercentEscaper;
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.track.Track;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -35,7 +35,7 @@ public class TrackRestController {
      * @return The redirection to the nginx to
      */
     @RestSecurity(PrivilegeEnum.PLAY)
-    @GetMapping("/play/{trackId}")
+    @GetMapping("/play/{trackId}/")
     public ResponseEntity<Object> playTrackFromId(@PathVariable @NotNull(message = "general.error.no_id") Long trackId) throws URISyntaxException {
         // Getting the track for the id.
         Track track = trackService.getTrackById(trackId);

@@ -1,14 +1,14 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
-import javax.persistence.GenerationType;
+import jakarta.persistence.GenerationType;
 
 /**
  * A time interval between two dates.

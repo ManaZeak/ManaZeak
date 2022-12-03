@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.fragment.library.album;
 
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Display the details of an album.
@@ -28,7 +28,7 @@ public class AlbumDetailFragment {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/album/{albumId}")
+    @GetMapping("/library/album/{albumId}/")
     public String getAlbumDetail(@PathVariable @NotNull(message = "general.error.no_id") Long albumId,
                                  Model model) {
         // Getting the album in the database.

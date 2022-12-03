@@ -22,7 +22,7 @@ public class RestSecurityAspect {
      * @return the call.
      * @throws Throwable The function returned an error or the user doesn't have the right.
      */
-    @Around("@annotation(org.manazeak.manazeak.configuration.security.rest.RestSecurity)")
+    @Around("@annotation(org.manazeak.manazeak.configuration.security.rest.RestSecurity)/")
     public Object intercept(final ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature sig = (MethodSignature) pjp.getSignature();
         RestSecurity securityAnnotation = sig.getMethod().getAnnotation(RestSecurity.class);

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.fragment.library.artist;
 
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Display the detail about an artist.
@@ -34,7 +34,7 @@ public class ArtistFragment {
      * @return The template to display to the user containing the user information.
      */
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/artist/{artistId}")
+    @GetMapping("/library/artist/{artistId}/")
     public String getArtistDetailFragment(@PathVariable @NotNull(message = "general.error.no_id") Long artistId,
                                           Model model) {
         // Loading the artist.
@@ -45,7 +45,7 @@ public class ArtistFragment {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/release-artist/all")
+    @GetMapping("/library/release-artist/all/")
     public String getAllReleaseArtistFragment(Model model) {
         model.addAttribute("rlArtists", artistService.getAllReleaseArtistsMinimal());
 

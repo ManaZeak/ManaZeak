@@ -3,8 +3,8 @@ package org.manazeak.manazeak.entity.validator.reference.country;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * Allows to check that a country ID exists in the database.

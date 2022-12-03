@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.rest.user.wish;
 
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Allows the user to interact wish his wishes
@@ -27,7 +27,7 @@ public class WishUserController {
     }
 
     @RestSecurity(PrivilegeEnum.WISH)
-    @PostMapping("/wish/delete/{wishId}")
+    @PostMapping("/wish/delete/{wishId}/")
     public KommunicatorDto deleteCurrentUserWish(@NotNull(message = "general.error.no_id")
                                                  @PathVariable Long wishId) {
         // Trying to delete the selected wish for the current user.

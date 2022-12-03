@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.fragment.library.genre;
 
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
@@ -9,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Display the detail about an artist.
@@ -24,13 +24,13 @@ public class GenreFragment {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/genre/genre-graph.html")
+    @GetMapping("/library/genre/genre-graph.html/")
     public String getGenreGraphFragment() {
         return GenreFragmentEnum.GENRE_GRAPH.getPage();
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/genre/{genreId}")
+    @GetMapping("/library/genre/{genreId}/")
     public String getGenreViewFragment(@PathVariable @NotNull(message = "general.error.no_id") Long genreId,
                                        Model model) {
         model.addAttribute("genre", genreService.getGenreDetailById(genreId));
@@ -39,7 +39,7 @@ public class GenreFragment {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/genre/all")
+    @GetMapping("/library/genre/all/")
     public String getAllGenreViewFragment(Model model) {
         model.addAttribute("genres", genreService.getAllRandomGenreMinimal());
 

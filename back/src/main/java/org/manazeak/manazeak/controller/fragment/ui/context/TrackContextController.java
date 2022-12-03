@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TrackContextController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/context/track")
+    @GetMapping("/context/track/")
     public String getPage() {
         return UiFragmentEnum.TRACK_CONTEXT.getPage();
     }

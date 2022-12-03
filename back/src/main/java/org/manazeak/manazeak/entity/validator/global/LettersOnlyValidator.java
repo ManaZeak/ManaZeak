@@ -2,8 +2,8 @@ package org.manazeak.manazeak.entity.validator.global;
 
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 @Component

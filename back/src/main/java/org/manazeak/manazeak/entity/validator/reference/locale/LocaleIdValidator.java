@@ -4,8 +4,8 @@ import org.manazeak.manazeak.daos.reference.LocaleDAO;
 import org.manazeak.manazeak.entity.reference.Locale;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
 @Component

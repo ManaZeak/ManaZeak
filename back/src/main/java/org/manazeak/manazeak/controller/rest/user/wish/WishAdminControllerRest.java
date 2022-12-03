@@ -32,7 +32,7 @@ public class WishAdminControllerRest {
      * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
-    @PostMapping("/admin/wish/accept/{wishId}")
+    @PostMapping("/admin/wish/accept/{wishId}/")
     public KommunicatorDto acceptWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.OK);
         return new KommunicatorDto();
@@ -45,7 +45,7 @@ public class WishAdminControllerRest {
      * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
-    @PostMapping("/admin/wish/reject/{wishId}")
+    @PostMapping("/admin/wish/reject/{wishId}/")
     public KommunicatorDto rejectWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.NOK);
         return new KommunicatorDto();
@@ -58,7 +58,7 @@ public class WishAdminControllerRest {
      * @return A successful communicator object.
      */
     @Security(PrivilegeEnum.WISR)
-    @PostMapping("/admin/wish/reset/{wishId}")
+    @PostMapping("/admin/wish/reset/{wishId}/")
     public KommunicatorDto resetWish(@PathVariable Long wishId) {
         wishService.changeWishStatus(wishId, WishStatusEnum.TODO);
         return new KommunicatorDto();
@@ -71,7 +71,7 @@ public class WishAdminControllerRest {
      * @return The notification for the user.
      */
     @Security(PrivilegeEnum.WISR)
-    @PostMapping("/admin/wish/delete/{wishId}")
+    @PostMapping("/admin/wish/delete/{wishId}/")
     public KommunicatorDto deleteWish(@PathVariable Long wishId) {
         wishService.deleteUserWish(wishId);
         return kommunicatorService.buildSuccessKom("user.wish.deleted_title", "user.wish.deleted");

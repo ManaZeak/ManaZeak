@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.fragment.user.wish;
 
+import jakarta.validation.Valid;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
@@ -13,8 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.validation.Valid;
 
 /**
  * Controller used to create a wish for a user.
@@ -44,7 +43,7 @@ public class WishCreationFragment {
      * @return the fragment for creating the wish.
      */
     @RestSecurity(PrivilegeEnum.WISH)
-    @GetMapping("/modal/wish")
+    @GetMapping("/modal/wish/")
     public String getModalWishUserCreation(Model model) {
         model.addAttribute("wish", new UserWishDto());
         return WishFragmentEnum.WISH_CREATION.getPage();
@@ -59,7 +58,7 @@ public class WishCreationFragment {
      * @return the page.
      */
     @RestSecurity(PrivilegeEnum.WISH)
-    @PostMapping("/wish")
+    @PostMapping("/wish/")
     public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result, Model model) {
         // Returning into the modal of wish creation.
         if (result.hasErrors()) {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AboutModalController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/about")
+    @GetMapping("/modal/about/")
     public String getPage() {
         return UiFragmentEnum.ABOUT_MODAL.getPage();
     }
