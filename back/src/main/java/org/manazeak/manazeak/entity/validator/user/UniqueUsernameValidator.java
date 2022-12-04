@@ -4,8 +4,8 @@ import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
 /**

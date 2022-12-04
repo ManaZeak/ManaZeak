@@ -2,7 +2,7 @@ package org.manazeak.manazeak.entity.validator;
 
 import org.manazeak.manazeak.exception.MzkValidationException;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * Used to add errors to the return of a validator for allowing multiple error in the same validation.

@@ -9,7 +9,7 @@ class AlbumView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: `/fragment/library/album/${options.id}`
+      url: `/fragment/library/album/${options.id}/`
     });
 
     this._performers = [];

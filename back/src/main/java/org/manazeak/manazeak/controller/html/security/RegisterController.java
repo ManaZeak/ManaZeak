@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.controller.html.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -15,9 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 /**
  * This controller allows users to create an account into the application.
@@ -46,7 +45,7 @@ public class RegisterController {
      * @param model the object to pass to thymeleaf to fill.
      * @return the register page.
      */
-    @GetMapping("/register")
+    @GetMapping("/register/")
     public String showRegistrationForm(Model model) {
         // If the user is connected we redirect him to the main page.
         if (userService.isUserConnected()) {
@@ -65,7 +64,7 @@ public class RegisterController {
      * @param request The request, need by spring to authenticate the user.
      * @return The register page if the user fail to register. The main page if he registered successfully.
      */
-    @PostMapping("/register")
+    @PostMapping("/register/")
     public String registerUser(@ModelAttribute("user") @Valid NewUserDto newUser, BindingResult result,
                                HttpServletRequest request) {
         // trying to create a user into the database.

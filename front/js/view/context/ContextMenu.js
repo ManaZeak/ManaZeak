@@ -3,7 +3,7 @@ class ContextMenu {
 
   constructor(options) {
     this._target = options.target;
-    this._url = `/fragment/context/${options.name}`;
+    this._url = `/fragment/context/${options.name}/`;
     this._overlay = {};
     this._dom = {};
 

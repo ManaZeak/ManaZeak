@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FragmentController
 public class SyncThingAdminFragment {
 
-    @GetMapping("/admin/syncthing")
+    @GetMapping("/admin/syncthing/")
     public String getSyncThingFragment() {
         return AdminFragmentEnum.SYNCTHING.getPage();
     }

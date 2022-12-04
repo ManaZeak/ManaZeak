@@ -26,7 +26,7 @@ public class MainPageController {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/mainpage")
+    @GetMapping("/mainpage/")
     public String getMainPage(Model model) {
         // Adding the artists
         model.addAttribute("rlArtists", artistService.getSomeRandomArtistMinimal(NB_ELEMENTS));

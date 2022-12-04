@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.user;
 
 
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 import org.manazeak.manazeak.entity.validator.global.Date;
 import org.manazeak.manazeak.entity.validator.global.LettersOnly;
@@ -8,8 +9,6 @@ import org.manazeak.manazeak.entity.validator.reference.country.CountryId;
 import org.manazeak.manazeak.entity.validator.reference.locale.LocaleId;
 import org.manazeak.manazeak.entity.validator.user.Avatar;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.Email;
 
 /**
  * Contains the editable information about a user.

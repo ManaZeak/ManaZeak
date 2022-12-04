@@ -5,8 +5,8 @@ import org.manazeak.manazeak.exception.MzkValidationException;
 import org.manazeak.manazeak.service.security.invite.InviteCodeService;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @Component
 public class InviteCodeValidator implements ConstraintValidator<InviteCode, String> {

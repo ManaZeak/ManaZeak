@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FragmentController
 public class PreferenceAccountFragment {
 
-    @GetMapping("/account/preference")
+    @GetMapping("/account/preference/")
     public String getPreferenceFragment() {
         return AccountFragmentEnum.PREFERENCE.getPage();
     }

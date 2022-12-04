@@ -1,8 +1,8 @@
 package org.manazeak.manazeak.entity.dto.user.wish;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 
 /**
  * Represent a wish for a user.

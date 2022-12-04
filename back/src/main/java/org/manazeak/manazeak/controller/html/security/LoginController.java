@@ -26,7 +26,7 @@ public class LoginController {
      * @param model the model for thymeleaf.
      * @return The login page.
      */
-    @GetMapping("/login")
+    @GetMapping("/login/")
     public String getLoginPage(Model model) {
         return displayLoginPage(model);
     }
@@ -37,7 +37,7 @@ public class LoginController {
      * @param model the model for thymeleaf.
      * @return the login page.
      */
-    @PostMapping("/login")
+    @PostMapping("/login/")
     public String postLoginPage(Model model) {
         return displayLoginPage(model);
     }

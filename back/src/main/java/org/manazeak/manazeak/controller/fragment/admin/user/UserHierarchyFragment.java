@@ -27,7 +27,7 @@ public class UserHierarchyFragment {
      * @return Get the hierarchy of the user in the application.
      */
     @RestSecurity(PrivilegeEnum.ADMV)
-    @GetMapping("/user-hierarchy")
+    @GetMapping("/user-hierarchy/")
     public String getUserHierarchy(Model model) {
         model.addAttribute("users", userService.getUserHierarchy());
         return AdminFragmentEnum.USER_HIERARCHY.getPage();

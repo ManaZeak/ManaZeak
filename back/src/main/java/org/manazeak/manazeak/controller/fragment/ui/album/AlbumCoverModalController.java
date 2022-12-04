@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AlbumCoverModalController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/album-cover")
+    @GetMapping("/modal/album-cover/")
     public String getPage() {
         return UiFragmentEnum.ALBUM_COVER_MODAL.getPage();
     }

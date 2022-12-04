@@ -2,12 +2,12 @@
   <artifact type="exploded-war" name="manazeak_back:Web exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/manazeak_back_Web_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="manazeak_back/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="manazeak_back" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="manazeak_back/web/Web" />
     </root>
   </artifact>
 </component>

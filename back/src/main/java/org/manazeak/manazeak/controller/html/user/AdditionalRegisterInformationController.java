@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.controller.html.user;
 
+import jakarta.validation.Valid;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.page.user.UserPageEnum;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
 
 /**
  * This controller handles the page for completing the user account creation.
@@ -42,7 +42,7 @@ public class AdditionalRegisterInformationController {
      * @return the page containing the additional information of the user.
      */
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/additionalRegisterInfo")
+    @GetMapping("/additionalRegisterInfo/")
     public String getAdditionalRegisterInfoPage(Model model) {
         UserFirstInfoDto userFirstInfoDto = new UserFirstInfoDto();
         // Adding the objects to the model
@@ -62,7 +62,7 @@ public class AdditionalRegisterInformationController {
      * @return the redirection to the main page.
      */
     @Security(PrivilegeEnum.PLAY)
-    @PostMapping("/additionalRegisterInfo")
+    @PostMapping("/additionalRegisterInfo/")
     public String submitAdditionalRegisterInfoPage(@ModelAttribute("userInfo") @Valid UserFirstInfoDto userInfo,
                                                    BindingResult result, Model model) {
         if (result.hasErrors()) {

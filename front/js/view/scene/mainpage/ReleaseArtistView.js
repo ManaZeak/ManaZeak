@@ -8,7 +8,7 @@ class ReleaseArtistView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: `/fragment/library/artist/${options.id}`
+      url: `/fragment/library/artist/${options.id}/`
     });
 
     this._scroll = null;

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Controller
-@RequestMapping("/fragment")
+@RequestMapping("/fragment/")
 public @interface FragmentController {
 
     @AliasFor(annotation = Controller.class)

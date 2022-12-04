@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.controller.rest.admin.badge;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RestController
 public class BadgeAdminControllerRest {
@@ -43,7 +43,7 @@ public class BadgeAdminControllerRest {
      * @return The status result.
      */
     @RestSecurity(PrivilegeEnum.ADMV)
-    @PostMapping("/badge/associate")
+    @PostMapping("/badge/associate/")
     public KommunicatorDto linkBadgeToUser(@RequestBody @Valid BadgeUserAssociationDto badgeUserAssociation,
                                            BindingResult result) {
         // Checking if there is validation error.
@@ -62,7 +62,7 @@ public class BadgeAdminControllerRest {
      * @return The status of the request.
      */
     @RestSecurity(PrivilegeEnum.ADMV)
-    @PostMapping("/bagde/delete/{badgeId}")
+    @PostMapping("/bagde/delete/{badgeId}/")
     public KommunicatorDto deleteBadge(@PathVariable @NotNull(message = "user.badge.error.empty_id") Long badgeId) {
         badgeService.deleteBadge(badgeId);
         return kommunicatorService.buildSuccessKom("admin.badge.success.delete.title",

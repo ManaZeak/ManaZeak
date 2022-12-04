@@ -1,12 +1,12 @@
 package org.manazeak.manazeak.entity.dto.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.manazeak.manazeak.entity.validator.user.InviteCode;
 import org.manazeak.manazeak.entity.validator.user.Password;
 import org.manazeak.manazeak.entity.validator.user.PasswordMatches;
 import org.manazeak.manazeak.entity.validator.user.UniqueUsername;
 
-import javax.validation.constraints.NotEmpty;
 
 /**
  * This class represents a new user trying to create an account.

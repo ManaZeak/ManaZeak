@@ -60,7 +60,7 @@ class Controller {
   changeTrack(options) {
     this._playObject = options.playObject;
     const track = options.playObject.tracks[0];
-    this._player.changeTrack(`/play/${track.id}`);
+    this._player.changeTrack(`/play/${track.id}/`);
     this._playingId = track.id;
     Evts.publish('ChangeTrack', {
       id: track.id

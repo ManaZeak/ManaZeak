@@ -8,7 +8,7 @@ class AllGenreView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: '/fragment/library/genre/all'
+      url: '/fragment/library/genre/all/'
     });
 
     this._fetchWrapper(this._url)

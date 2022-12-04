@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserModalController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/reset-password")
+    @GetMapping("/modal/reset-password/")
     public String getResetPasswordModal() {
         return UserFragmentEnum.RESET_PASSWORD_MODAL.getPage();
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/edit-account")
+    @GetMapping("/modal/edit-account/")
     public String getEditAccountModal() {
         return UserFragmentEnum.EDIT_ACCOUNT_MODAL.getPage();
     }

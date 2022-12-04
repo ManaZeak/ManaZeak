@@ -64,7 +64,7 @@ class WishesFragment {
 
 
   _wishDroppedOn(type, data) {
-    mzk.kom.post(`/admin/wish/${type}/${data.wishId}`, {}).then(response => {
+    mzk.kom.post(`/admin/wish/${type}/${data.wishId}/`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this._refreshCB();
     }).catch(error => {
@@ -74,7 +74,7 @@ class WishesFragment {
 
 
   _removeWish() {
-    mzk.kom.post(`/admin/wish/delete/${this.element.dataset.id}`, {}).then(response => {
+    mzk.kom.post(`/admin/wish/delete/${this.element.dataset.id}/`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this.scope._refreshCB();
     }).catch(error => {

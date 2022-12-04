@@ -1,17 +1,17 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.SequenceGenerator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.SequenceGenerator;
 import org.manazeak.manazeak.entity.reference.Country;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GenerationType;
 
 /**
  * Contains location where album where recorded.

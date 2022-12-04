@@ -1,10 +1,10 @@
 package org.manazeak.manazeak.entity.dto.user.badge;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Allows to associate a user and a badge

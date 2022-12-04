@@ -18,7 +18,7 @@ public class AccountFragment {
      * @return The skeleton of the account page.
      */
     @RestSecurity(PrivilegeEnum.PLAY)
-    @GetMapping("/account")
+    @GetMapping("/account/")
     public String getAccountDetail() {
         return AccountFragmentEnum.ACCOUNT_PAGE.getPage();
     }

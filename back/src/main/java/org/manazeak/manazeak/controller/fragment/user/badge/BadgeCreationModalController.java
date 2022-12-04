@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BadgeCreationModalController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/new-badge")
+    @GetMapping("/modal/new-badge/")
     public String getPage() {
         return BadgeFragmentEnum.NEW_BADGE_MODAL.getPage();
     }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ArtistPictureModalController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/modal/artist-picture")
+    @GetMapping("/modal/artist-picture/")
     public String getPage() {
         return UiFragmentEnum.ARTIST_PICTURE_MODAL.getPage();
     }

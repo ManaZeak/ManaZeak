@@ -16,7 +16,7 @@ class Modal {
      this._type = type;
     /** @private
      * @member {string} - The HTML template url to fetch */
-    this._url = `/fragment/modal/${this._type}`;
+    this._url = `/fragment/modal/${this._type}/`;
     /** @private
      * @member {object} - The template root DOM element */
     this._rootElement = null;

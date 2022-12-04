@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AdminFragment {
 
     @RestSecurity(PrivilegeEnum.ADMV)
-    @GetMapping("/admin")
+    @GetMapping("/admin/")
     public String getMainPage() {
         return AdminFragmentEnum.ADMIN_PAGE.getPage();
     }

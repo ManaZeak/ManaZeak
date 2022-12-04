@@ -32,7 +32,7 @@ public class UserListFragment {
      * @return The fragment.
      */
     @RestSecurity(PrivilegeEnum.ADMV)
-    @GetMapping("/admin/user-list")
+    @GetMapping("/admin/user-list/")
     public String getUserListFragment(Model model) {
         // Adding the list of users to the model.
         model.addAttribute("users", userService.getUserList());
@@ -44,7 +44,7 @@ public class UserListFragment {
 
 
     @RestSecurity(PrivilegeEnum.ADMV)
-    @GetMapping("/admin/commands")
+    @GetMapping("/admin/commands/")
     public String getCommandsFragment(Model model) {
         return AdminFragmentEnum.COMMANDS.getPage();
     }
