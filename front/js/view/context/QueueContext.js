@@ -1,5 +1,4 @@
 import ContextMenu from './ContextMenu.js';
-import QueueEntry from "./QueueEntry.js";
 import ScrollBar from "../navigation/ScrollBar.js";
 
 

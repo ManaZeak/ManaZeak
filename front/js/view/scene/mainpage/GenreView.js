@@ -8,7 +8,7 @@ class GenreView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: `/fragment/library/genre/${options.id}`
+      url: `/fragment/library/genre/${options.id}/`
     });
 
     this._genre = '';

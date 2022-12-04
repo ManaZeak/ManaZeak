@@ -72,7 +72,7 @@ class UsersFragment {
 
 
   _dropOnUser(refreshCB, data) {
-    mzk.kom.post('/badge/associate', {
+    mzk.kom.post('/badge/associate/', {
       userId: this.dataset.id,
       badgeId: data.badgeId
     }).then(response => {
@@ -85,7 +85,7 @@ class UsersFragment {
 
 
   _banUser() {
-    mzk.kom.post(`/admin/user/deactivate/${this.element.dataset.id}`, {}).then(response => {
+    mzk.kom.post(`/admin/user/deactivate/${this.element.dataset.id}/`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this.scope._refreshCB();
     }).catch(error => {
@@ -95,7 +95,7 @@ class UsersFragment {
 
 
   _deleteUser() {
-    mzk.kom.post(`/admin/user/delete/${this.element.dataset.id}`, {}).then(response => {
+    mzk.kom.post(`/admin/user/delete/${this.element.dataset.id}/`, {}).then(response => {
       mzk.ui.processLogFromServer(response.errors);
       this.scope._refreshCB();
     }).catch(error => {

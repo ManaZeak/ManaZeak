@@ -8,7 +8,7 @@ class AllReleaseArtistView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: '/fragment/library/release-artist/all'
+      url: '/fragment/library/release-artist/all/'
     });
 
     this._fetchWrapper(this._url)

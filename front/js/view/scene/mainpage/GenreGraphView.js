@@ -8,7 +8,7 @@ class GenreGraphView extends SceneView  {
   constructor() {
     super({
       type: 'graph',
-      url: '/fragment/library/genre/genre-graph.html'
+      url: '/fragment/library/genre/genre-graph/'
     });
 
     this._graph = null;

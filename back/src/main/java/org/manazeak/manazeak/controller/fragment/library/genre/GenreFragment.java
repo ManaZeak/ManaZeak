@@ -24,7 +24,7 @@ public class GenreFragment {
     }
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/library/genre/genre-graph.html/")
+    @GetMapping("/library/genre/genre-graph/")
     public String getGenreGraphFragment() {
         return GenreFragmentEnum.GENRE_GRAPH.getPage();
     }

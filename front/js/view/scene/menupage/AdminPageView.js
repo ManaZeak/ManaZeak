@@ -42,7 +42,7 @@ class AdminPageView extends TabView {
 
   _usersClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/user-list').then(() => {
+    this._fetchViewFragment('/fragment/admin/user-list/').then(() => {
       this._activeFragment = new UsersFragment({
         target: this._viewContainer,
         refresh: this._usersClicked.bind(this)
@@ -53,7 +53,7 @@ class AdminPageView extends TabView {
 
   _wishesClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/wish/all').then(() => {
+    this._fetchViewFragment('/fragment/admin/wish/all/').then(() => {
       this._activeFragment = new WishesFragment({
         target: this._viewContainer,
         refresh: this._wishesClicked.bind(this)
@@ -64,7 +64,7 @@ class AdminPageView extends TabView {
 
   _syncthingClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/syncthing').then(() => {
+    this._fetchViewFragment('/fragment/admin/syncthing/').then(() => {
       this._activeFragment = new SyncThingFragment({
         target: this._viewContainer,
         refresh: this._syncthingClicked.bind(this)
@@ -75,7 +75,7 @@ class AdminPageView extends TabView {
 
   _commandsClicked() {
     this._clearFragment();
-    this._fetchViewFragment('/fragment/admin/commands').then(() => {
+    this._fetchViewFragment('/fragment/admin/commands/').then(() => {
       this._activeFragment = new CommandsFragment({
         target: this._viewContainer,
         refresh: this._commandsClicked.bind(this)
