@@ -48,12 +48,12 @@ class NavBar {
       target: document.body,
       name: 'playbackrate'
     });
-/*
+
     this._queueContext = new QueueContext({
       target: document.body,
-      name: 'context/queuecontext/'
+      name: 'queue'
     });
-*/
+
     this._moodbar = document.getElementById('progress-moodbar');
   }
 
