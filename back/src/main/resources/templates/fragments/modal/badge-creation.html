@@ -1,17 +1,17 @@
 <div class="modal" xmlns:th="http://www.thymeleaf.org">
-    <div class="header">
-        <p th:text="#{modal.badge.title}"></p>
-        <span class="close" id="modal-close">&#10006;</span>
-    </div>
-    <div class="container">
-        <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto"*/-->
-        <form method="POST" th:object="${badge}">
-            <!-- Required csrf token from session cookies -->
-            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-            <button id="submit-form" type="submit"></button>
-        </form>
-    </div>
-    <div class="footer">
-        <label class="submit" for="submit-form" id="submit-badge-button" th:text="#{modal.footer.submit}"></label>
-    </div>
+  <div class="header">
+    <p th:text="#{modal.badge.title}"></p>
+    <span class="close" id="modal-close">&#10006;</span>
+  </div>
+  <div class="container">
+    <!--/*@thymesVar id="badge" type="org.manazeak.manazeak.entity.dto.user.badge.UserBadgeDto"*/-->
+    <form method="POST" th:object="${badge}">
+      <!-- Required csrf token from session cookies -->
+      <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+      <button id="submit-form" type="submit"></button>
+    </form>
+  </div>
+  <div class="footer">
+    <label class="submit" for="submit-form" id="submit-badge-button" th:text="#{modal.footer.submit}"></label>
+  </div>
 </div>

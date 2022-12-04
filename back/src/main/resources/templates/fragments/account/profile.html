@@ -2,7 +2,7 @@
 <div xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}" class="user-profile-view">
   <div class="user-profile-header">
     <div class="user-profile-header-left">
-      <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
+      <div th:replace="/include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
       <p id="username" th:text="*{username}"></p>
     </div>
     <div id="user-info" class="user-profile-header-center">
@@ -43,7 +43,7 @@
         <p id="invite-code" th:text="*{inviteCode}"></p>
       </div>
       <div id="user-parent">
-        <div th:replace="include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
+        <div th:replace="/include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
         <p id="parent-name" th:text="*{parentName}"></p>
         <p id="parent-surname" th:text="*{parentSurname}"></p>
       </div>
@@ -51,16 +51,16 @@
     <div class="user-profile-header-right">
       <div class="cmd">
         <label>Edit Account</label>
-        <img alt="edit-account" class="edit-account" id="edit-account" src="static/img/actions/edit.svg">
+        <img alt="edit-account" class="edit-account" id="edit-account" src="/static/img/actions/edit.svg">
       </div>
       <div class="cmd">
         <label for="password" th:text="#{user.profile.reset_password}"></label>
-        <img alt="reset-password" id="password" src="static/img/actions/passkey.svg">
+        <img alt="reset-password" id="password" src="/static/img/actions/passkey.svg">
       </div>
       <div class="cmd invite-code">
         <label for="invite-code" th:text="#{user.register.invite_code}"></label>
-        <img alt="copy-invite-link" id="copy-invite-link" src="static/img/actions/share.svg">
-        <img alt="copy-invite" id="copy-invite" src="static/img/actions/copy.svg">
+        <img alt="copy-invite-link" id="copy-invite-link" src="/static/img/actions/share.svg">
+        <img alt="copy-invite" id="copy-invite" src="/static/img/actions/copy.svg">
       </div>
     </div>
   </div>
