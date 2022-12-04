@@ -15,9 +15,9 @@ class QueueContext extends ContextMenu {
 
 
   setActions(doc) {
-    this._dom.container = doc.getElementsByClassName('track-container')[0];
-    this._dom.status = doc.getElementsByClassName('queue-status')[0];
-    this._emptyContainer = doc.getElementsByClassName('track-container')[0].children[0];
+    // this._dom.container = doc.getElementsByClassName('track-container')[0];
+    // this._dom.status = doc.getElementsByClassName('queue-status')[0];
+    // this._emptyContainer = doc.getElementsByClassName('track-container')[0].children[0];
   }
 
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class QueueContextController {
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/context/queue")
+    @GetMapping("/context/queue/")
     public String getPage() {
         return UiFragmentEnum.QUEUE_CONTEXT.getPage();
     }
