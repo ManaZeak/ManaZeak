@@ -50,6 +50,7 @@
     flex-direction: column;
     margin: var(--margin-small);
     padding: var(--padding-small);
+    position: relative;
 
     transition: .2s background-color, .2s box-shadow;
 
@@ -68,6 +69,14 @@
       font-size: var(--font-size-small);
       margin-bottom: 0;
       text-align: center;
+    }
+
+    .label-artist {
+      position: absolute;
+
+      img {
+        height: 2rem;
+      }
     }
   }
 }
