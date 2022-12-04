@@ -6,7 +6,7 @@
   </div>
   <div id="genres-container" class="grid-items-container">
     <div th:each="genre : ${genres}" th:attr="data-id=*{genre.genreId}" class="item">
-      <div th:replace="/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)"></div>
+      <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
     </div>
   </div>
 </div>

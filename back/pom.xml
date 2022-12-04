@@ -14,7 +14,7 @@
     <description>An online music library tool</description>
     <properties>
         <cache2k-version>2.6.1.Final</cache2k-version>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <sonar.sources>src/main/java,src/main/javagen,src/main/resources/templates</sonar.sources>
         <sonar.exclusions>
             src/main/javagen/org/manazeak/manazeak/entity/**/*,src/main/java/org/manazeak/manazeak/entity/dto/**/*

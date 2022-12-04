@@ -3,7 +3,7 @@ package org.manazeak.manazeak.service.security.user.info;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
-import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
+import org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.manager.security.user.UserEditManager;
@@ -31,7 +31,7 @@ public class UserInformationServiceImpl implements UserInformationService {
      * {@inheritDoc}
      */
     @Override
-    public MzkUserDetailProjection getCurrentUserInformation() {
+    public MzkUserDetailDto getCurrentUserInformation() {
         MzkUser currentUser = userManager.getCurrentUser();
         return userDAO.getUserDetailFromUserId(currentUser.getUserId());
     }

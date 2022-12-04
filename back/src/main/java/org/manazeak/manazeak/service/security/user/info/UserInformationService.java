@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.security.user.info;
 
-import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
+import org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 
 /**
@@ -13,7 +13,7 @@ public interface UserInformationService {
      *
      * @return The current user information.
      */
-    MzkUserDetailProjection getCurrentUserInformation();
+    MzkUserDetailDto getCurrentUserInformation();
 
     /**
      * Get the editable information about the current user.

@@ -4,12 +4,13 @@
   <!--/*@thymesVar id="performer" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
   <div class="album-container">
     <div class="album-aside">
-      <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)"></div>
+      <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)}"></div>
       <h1 th:text="*{album.title}" id="album-title"></h1>
       <em><p th:text="#{view.album.performers}"></p></em>
       <div id="album-performers" class="artists-small">
         <div th:each="performer : ${performers}" th:attr="data-id=*{performer.id}" class="artist">
-          <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)"></div>
+          <div
+              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
         </div>
       </div>
@@ -17,7 +18,8 @@
     <div class="album-content">
       <div class="album-info">
         <h2>
-          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist" class="link"></span>&nbsp;–&nbsp;
+          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist"
+                class="link"></span>&nbsp;–&nbsp;
           <span th:text="*{album.title}"></span>
         </h2>
         <p>
@@ -31,7 +33,8 @@
           <span th:text="*{album.catalogNumber}"></span>
         </p>
         <div id="release-artist-container" class="release-artist-container">
-          <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)"></div>
+          <div
+              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
         </div>
       </div>
       <div id="album-tracks" class="album">

@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
-import org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection;
+import org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,21 +31,21 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
      * @param userId The id of the user needed to get the details.
      * @return The information about the user.
      */
-    @Query("select " +
-            "   usr.username as username, " +
-            "   usr.name as name, " +
-            "   usr.surname as surname, " +
-            "   usr.birthDate as birthDate, " +
-            "   usr.profilePic as avatar, " +
-            "   usr.bio as bio, " +
-            "   usr.mail as email, " +
-            "   usr.creationDate as memberSince, " +
-            "   userCountry.name as country, " +
-            "   userLocale.value as locale, " +
-            "   inv.value as inviteCode," +
-            "   parent.name as parentName," +
-            "   parent.surname as parentSurname, " +
-            "   parent.profilePic as parentAvatar " +
+    @Query("select new org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto(" +
+            "   usr.username, " +
+            "   usr.name, " +
+            "   usr.surname, " +
+            "   usr.mail, " +
+            "   userCountry.name, " +
+            "   userLocale.value, " +
+            "   inv.value," +
+            "   usr.bio, " +
+            "   usr.birthDate, " +
+            "   usr.profilePic, " +
+            "   usr.creationDate, " +
+            "   parent.profilePic," +
+            "   parent.name," +
+            "   parent.surname)" +
             "from MzkUser usr " +
             "inner join InviteCode inv on inv.parent = usr " +
             "left join usr.country userCountry " +
@@ -53,7 +53,7 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
             "left join usr.inviteCode.parent parent " +
             "where usr.userId = :userId " +
             "   and inv.isActive = true")
-    MzkUserDetailProjection getUserDetailFromUserId(@Param("userId") Long userId);
+    MzkUserDetailDto getUserDetailFromUserId(@Param("userId") Long userId);
 
     /**
      * Get all the users from the database in a list way.

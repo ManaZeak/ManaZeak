@@ -1,5 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org">
   <p>Test fragment for user hierarchy</p>
   <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto"*/-->
-  <div th:insert="/include/admin/userHierarchyInclude :: userHierarchy(users=${users})">hierarchy</div>
+  <div th:insert="~{/include/admin/userHierarchyInclude :: userHierarchy(users=${users})}">hierarchy</div>
 </div>

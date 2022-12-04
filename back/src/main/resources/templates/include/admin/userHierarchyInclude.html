@@ -1,5 +1,8 @@
 <!-- This page is not a thymeleaf fragment. Doesn't work if it's a fragment. -->
-<div th:each="user : ${users}" th:fragment="userHierarchy(users)" th:if="${users != null}" xmlns:th="http://www.thymeleaf.org">
+<div th:each="user : ${users}" th:fragment="userHierarchy(users)" th:if="${users != null}"
+     xmlns:th="http://www.thymeleaf.org">
   <p th:text="${user.username}"></p>
-  <div th:if="${user.children.size() > 0}" th:insert="/include/admin/userHierarchyInclude :: userHierarchy(users=${user.children})"> children</div>
+  <div th:if="${user.children.size() > 0}"
+       th:insert="~{/include/admin/userHierarchyInclude :: userHierarchy(users=${user.children})}"> children
+  </div>
 </div>

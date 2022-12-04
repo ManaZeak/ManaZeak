@@ -39,8 +39,8 @@ public class UserProfileFragmentController {
      * @param model The model for passing the elements to the front.
      * @return The fragment to the front.
      */
-    @GetMapping("/account/profile")
     @RestSecurity(PrivilegeEnum.PLAY)
+    @GetMapping("/account/profile/")
     public String getUserProfileFragment(Model model) {
         model.addAttribute("userInfo", userInformationService.getCurrentUserInformation());
         return UserFragmentEnum.USER_PROFILE.getPage();
@@ -52,8 +52,8 @@ public class UserProfileFragmentController {
      * @param model The model for passing the element to the front.
      * @return The fragment to the front.
      */
-    @GetMapping("/account/profile-edit")
     @RestSecurity(PrivilegeEnum.PLAY)
+    @GetMapping("/account/profile-edit/")
     public String getUserProfileEditFragment(Model model) {
         model.addAttribute("userInfo", userInformationService.getUserEditableInformation());
         return UserFragmentEnum.EDIT_ACCOUNT.getPage();
@@ -67,8 +67,8 @@ public class UserProfileFragmentController {
      * @param result     The information about the validation.
      * @return The fragment to the front.
      */
-    @PostMapping("/account/profile-edit")
     @RestSecurity(PrivilegeEnum.PLAY)
+    @PostMapping("/account/profile-edit/")
     public String saveProfileEditFragment(@ModelAttribute("userInfo") @Valid MzkUserEditDto editedUser,
                                           BindingResult result, Model model) {
         // Checking if the user send was validated.

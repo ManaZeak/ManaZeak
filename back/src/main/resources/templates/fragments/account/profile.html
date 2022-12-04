@@ -1,14 +1,14 @@
-<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailProjection"*/-->
+<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto"*/-->
 <div xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}" class="user-profile-view">
   <div class="user-profile-header">
     <div class="user-profile-header-left">
-      <div th:replace="/include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
+      <div th:replace="~{/include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})}"></div>
       <p id="username" th:text="*{username}"></p>
     </div>
     <div id="user-info" class="user-profile-header-center">
       <div>
         <label for="email" th:text="#{user.tellusmore.email}"></label>
-        <p id="email" th:text="${userInfo.email}"></p>
+        <p id="email" th:text="*{email}"></p>
       </div>
       <div>
         <label for="name" th:text="#{user.tellusmore.name}"></label>
@@ -43,7 +43,7 @@
         <p id="invite-code" th:text="*{inviteCode}"></p>
       </div>
       <div id="user-parent">
-        <div th:replace="/include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})"></div>
+        <div th:replace="~{/include/avatar/avatarFragment.html :: avatarDisplay(*{parentAvatar})}"></div>
         <p id="parent-name" th:text="*{parentName}"></p>
         <p id="parent-surname" th:text="*{parentSurname}"></p>
       </div>

@@ -2,7 +2,7 @@
   <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserEditDto"*/-->
   <div class="user-info" th:object="${userInfo}" xmlns:th="http://www.thymeleaf.org">
     <div class="profile-header">
-      <div th:replace="/include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})"></div>
+      <div th:replace="~{/include/avatar/avatarFragment.html :: avatarDisplay(*{avatar})}"></div>
       <!-- Display the file picker for the avatar of the user. -->
       <p th:each="error : ${#fields.errors('avatar')}" th:text="${error}"></p>
       <input accept=".jpg,.png" id="avatar-input" th:field="*{avatar}" type="file"/>
