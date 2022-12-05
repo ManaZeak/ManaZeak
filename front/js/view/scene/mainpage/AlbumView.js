@@ -201,11 +201,12 @@ class AlbumView extends TrackView {
 
   _buildTrackObject(track) {
     return {
+      id: track.dataset.id,
       title: track.children[0].children[0].innerHTML,
       // TODO track artist instead of release artist
       artist: this.dom.querySelector('#release-artist').innerHTML,
+      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       duration: track.children[0].children[1].innerHTML,
-      id: track.dataset.id,
       mood: track.dataset.mood
     };
   }

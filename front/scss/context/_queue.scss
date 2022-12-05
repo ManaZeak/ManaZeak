@@ -4,7 +4,8 @@
   border-radius: 5px;
   bottom: calc(var(--navbar-height) + 8px);
   height: auto;
-  max-height: 500px;
+  max-height: 66%;
+  max-width: 66%;
   position: absolute;
   width: auto;
   z-index: 800;
@@ -25,18 +26,87 @@
     left: 8px;
   }
 
+  h2 {
+    font-size: var(--font-size);
+    font-style: italic;
+    margin: 0;
+    padding: 0 var(--padding-small);
+    padding-bottom: 0;
+
+    &:first-child {
+      padding-top: var(--padding);
+    }
+  }
+
   .queue,
   .play-object {
+    padding: var(--padding);
+
     p {
       margin: 0;
     }
   }
 
+  /* Queued tracks */
+
   .queue {
     padding: var(--padding);
+
+    .queue-track-entry {
+      cursor: pointer;
+      display: flex;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--color-primary-alpha-10);
+      border-radius: 0.5rem;
+      min-width: 30rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      img {
+        height: 4rem;
+        width: 4rem;
+      }
+
+      .track-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 var(--margin);
+
+        h2, h3 {
+          margin: 0;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        h2 {
+          font-size: var(--font-size);
+          font-style: inherit;
+          padding: inherit;
+        }
+
+        h3 {
+          font-size: var(--font-size-small);
+          font-style: italic;
+        }
+      }
+
+      p {
+        align-items: center;
+        display: flex;
+        justify-content: flex-end;
+        margin-left: auto;
+      }
+    }
   }
 
+  /* User play object */
+
   .play-object {
-    border-top: solid 1px var(--color-txt);
+    /* */
   }
 }

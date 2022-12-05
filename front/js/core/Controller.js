@@ -76,7 +76,11 @@ class Controller {
     // First, we check user manual queue that override everything
     if (this._queue.length > 0) {
       mzk.changeTrack({
-        id: this._queue[this._queue.length - 1].id
+        id: this._queue[this._queue.length - 1].id,
+        playObject: {
+          type: 'queue',
+          tracks: [ this._queue[this._queue.length - 1] ]
+        }
       });
       this._queue.pop();
       return;

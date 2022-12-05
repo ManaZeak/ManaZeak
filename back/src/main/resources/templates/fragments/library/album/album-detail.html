@@ -33,13 +33,13 @@
           <span th:text="*{album.catalogNumber}"></span>
         </p>
         <div id="release-artist-container" class="release-artist-container">
-          <div
-              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
+          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
         </div>
       </div>
       <div id="album-tracks" class="album">
         <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
+          <img th:src='*{"/resources/moods/hd/"+track.mood}'>
         </div>
       </div>
     </div>
